@@ -202,7 +202,6 @@ exports.getCompanyGroups = function(req, res) {
       //console.log(err);
       return res.status(404).send([]);
     } else {
-      //console.log(company_groups);
       return res.send({
         'group':company.group,
         'cid':company_id
