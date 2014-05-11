@@ -795,14 +795,18 @@ exports.tempPhoto = function(req, res) {
   var target_path = target_dir + target_img;
 
   var gm = require('gm').subClass({ imageMagick: true });
-  gm(temp_path)
-  .write(target_path, function(err) {
-    if (err) console.log(err);
-    fs.unlink(temp_path, function(err) {
+  try {
+    gm(temp_path)
+    .write(target_path, function(err) {
       if (err) console.log(err);
-      res.send({ img: target_img });
+      fs.unlink(temp_path, function(err) {
+        if (err) console.log(err);
+        res.send({ img: target_img });
+      });
     });
-  });
+  } catch (e) {
+    console.log(e);
+  }
 
 };
 
@@ -866,7 +870,7 @@ exports.savePhoto = function(req, res) {
             res.redirect('/users/editPhoto');
           }
           var unlink_dir = meanConfig.root + '/public';
-          if (ori_photo !== '/img/user/photo/default.png') {
+          if (ori_photo !== '/img/icons/default_user_photo.png') {
             if (fs.existsSync(unlink_dir + ori_photo)) {
               fs.unlinkSync(unlink_dir + ori_photo);
             }

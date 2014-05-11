@@ -986,54 +986,64 @@ exports.saveLogo = function(req, res) {
 
   var gm = require('gm').subClass({ imageMagick: true });
 
-  gm(temp_path).size(function(err, value) {
-    if (err) {
-      console.log(err);
-      res.redirect('/group/editLogo');
-    }
+  try {
+    gm(temp_path).size(function(err, value) {
+      if (err) {
+        console.log(err);
+        res.redirect('/group/editLogo');
+      }
 
-    var w = req.body.width * value.width;
-    var h = req.body.height * value.height;
-    var x = req.body.x * value.width;
-    var y = req.body.y * value.height;
+      var w = req.body.width * value.width;
+      var h = req.body.height * value.height;
+      var x = req.body.x * value.width;
+      var y = req.body.y * value.height;
 
-    CompanyGroup.findOne({ gid: req.session.gid, cid: req.user.cid }).exec(function(err, company_group) {
-      var ori_logo = company_group.logo;
+      CompanyGroup.findOne({ gid: req.session.gid, cid: req.user.cid }).exec(function(err, company_group) {
+        var ori_logo = company_group.logo;
 
-      gm(temp_path)
-      .crop(w, h, x, y)
-      .resize(150, 150)
-      .write(target_dir + logo, function(err) {
-        if (err) {
-          console.log(err);
-          res.redirect('/group/editLogo');
-        } else {
-          company_group.logo = uri_dir + logo;
-          company_group.save(function(err) {
+        try {
+          gm(temp_path)
+          .crop(w, h, x, y)
+          .resize(150, 150)
+          .write(target_dir + logo, function(err) {
             if (err) {
               console.log(err);
               res.redirect('/group/editLogo');
-            }
-          });
+            } else {
+              company_group.logo = uri_dir + logo;
+              company_group.save(function(err) {
+                if (err) {
+                  console.log(err);
+                  res.redirect('/group/editLogo');
+                }
+              });
 
-          fs.unlink(temp_path, function(err) {
-            if (err) {
-              console(err);
-              res.redirect('/group/editLogo');
+              fs.unlink(temp_path, function(err) {
+                if (err) {
+                  console(err);
+                  res.redirect('/group/editLogo');
+                }
+                var unlink_dir = meanConfig.root + '/public';
+                if (ori_logo && ori_logo !== '/img/icons/default_group_logo.png') {
+                  if (fs.existsSync(unlink_dir + ori_logo)) {
+                    fs.unlinkSync(unlink_dir + ori_logo);
+                  }
+                }
+                res.redirect('/group/editLogo');
+              });
             }
-            var unlink_dir = meanConfig.root + '/public';
-            if (ori_logo && ori_logo !== '/img/group/logo/default.png') {
-              if (fs.existsSync(unlink_dir + ori_logo)) {
-                fs.unlinkSync(unlink_dir + ori_logo);
-              }
-            }
-            res.redirect('/group/editLogo');
+
           });
+        } catch(e) {
+          console.log(e);
         }
 
       });
     });
-  });
+  } catch(e) {
+    console.log(e);
+  }
+
 
 };
 

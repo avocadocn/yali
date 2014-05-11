@@ -182,30 +182,35 @@ exports.createPhoto = function(req, res) {
         function(callback) {
           var photo_name = Date.now().toString() + '.png';
 
-          gm(photos[i].path)
-          .write(config.root + '/public' + uri_dir + photo_name,
-            function(err) {
-              if (err) {
-                callback(err);
-              } else {
-                var photo = {
-                  uri: uri_dir + photo_name
-                };
-                photo_album.photos.push(photo);
-                photo_album.save(function(err) {
-                  if (err) callback(err);
-                  else {
-                    fs.unlink(photos[i].path, function(err) {
-                      if (err) callback(err);
-                      else {
-                        i++;
-                        callback();
-                      }
-                    });
-                  }
-                });
-              }
-          });
+          try {
+            gm(photos[i].path)
+            .write(config.root + '/public' + uri_dir + photo_name,
+              function(err) {
+                if (err) {
+                  callback(err);
+                } else {
+                  var photo = {
+                    uri: uri_dir + photo_name
+                  };
+                  photo_album.photos.push(photo);
+                  photo_album.save(function(err) {
+                    if (err) callback(err);
+                    else {
+                      fs.unlink(photos[i].path, function(err) {
+                        if (err) callback(err);
+                        else {
+                          i++;
+                          callback();
+                        }
+                      });
+                    }
+                  });
+                }
+            });
+          } catch (e) {
+            console.log(e);
+          }
+
         },
 
         function(err) {

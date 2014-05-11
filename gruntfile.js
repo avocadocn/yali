@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('./config/config');
+
 module.exports = function(grunt) {
     // Project Configuration
     grunt.initConfig({
@@ -43,7 +45,7 @@ module.exports = function(grunt) {
                     nodeArgs: ['--debug'],
                     delayTime: 1,
                     env: {
-                        PORT: 3000
+                        PORT: config.port
                     },
                     cwd: __dirname
                 }
