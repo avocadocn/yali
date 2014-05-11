@@ -333,7 +333,7 @@ var _users =[
 "nickname" : "eric",
 "realname":"张三",
 "phone" : "18801910251",
-"photo" : "/img/user/photo/default.png",
+"photo" : "/img/icons/default_group_logo.png",
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -359,7 +359,7 @@ var _users =[
 "nickname" : "yali_yg1",
 "realname":"李三",
 "phone" : "18801910251",
-"photo" : "/img/user/photo/default.png",
+"photo" : "/img/icons/default_group_logo.png",
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -385,7 +385,7 @@ var _users =[
 "nickname" : "yali_yg2",
 "realname":"李四",
 "phone" : "18801910251",
-"photo" : "/img/user/photo/default.png",
+"photo" : "/img/icons/default_group_logo.png",
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -411,7 +411,7 @@ var _users =[
 "nickname" : "apple1",
 "realname":"王三",
 "phone" : "18801910251",
-"photo" : "/img/user/photo/default.png",
+"photo" : "/img/icons/default_group_logo.png",
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -437,7 +437,7 @@ var _users =[
 "nickname" : "eric",
 "realname":"赵四",
 "phone" : "18801910251",
-"photo" : "/img/user/photo/default.png",
+"photo" : "/img/icons/default_group_logo.png",
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -463,7 +463,7 @@ var _users =[
 "nickname" : "xiangjiao_yg2",
 "realname":"赵五",
 "phone" : "18801910251",
-"photo" : "/img/user/photo/default.png",
+"photo" : "/img/icons/default_group_logo.png",
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -490,17 +490,17 @@ var _company_groups =[
         {
             "uid" : "0001-0001-0001-0001-000100010002",
             "nickname" : "eric",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
     "member" : [
         {
             "uid" : "0001-0001-0001-0001-000100010002",
             "nickname" : "eric",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
-    "logo":"/img/group/logo/default.png",
+    "logo":"/img/icons/default_group_logo.png",
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -513,17 +513,17 @@ var _company_groups =[
         {
             "uid" : "0002-0002-0002-0002-000200020003",
             "nickname" : "yali_yg1",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
     "member" : [
         {
             "uid" : "0002-0002-0002-0002-000200020003",
             "nickname" : "yali_yg1",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
-    "logo":"/img/group/logo/default.png",
+    "logo":"/img/icons/default_group_logo.png",
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -536,17 +536,17 @@ var _company_groups =[
         {
             "uid" : "0003-0003-0003-0003-000300030004",
             "nickname" : "apple1",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
     "member" : [
         {
             "uid" : "0003-0003-0003-0003-000300030004",
             "nickname" : "apple1",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
-    "logo":"/img/group/logo/default.png",
+    "logo":"/img/icons/default_group_logo.png",
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -559,17 +559,17 @@ var _company_groups =[
         {
             "uid" : "0004-0004-0004-0004-000400040006",
             "nickname" : "xiangjiao_yg2",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
     "member" : [
         {
             "uid" : "0004-0004-0004-0004-000400040006",
             "nickname" : "xiangjiao_yg2",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }
     ],
-    "logo":"/img/group/logo/default.png",
+    "logo":"/img/icons/default_group_logo.png",
     "entity_type":"FootBall",
     "brief":"足球队"
 }
@@ -591,7 +591,7 @@ var _football = [
         "main_force": [{
             "uid" : "0001-0001-0001-0001-000100010002",
             "nickname" : "eric",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }],   //主力
         "create_date": new Date()
     },
@@ -601,7 +601,7 @@ var _football = [
         "main_force": [{
             "uid" : "0002-0002-0002-0002-000200020003",
             "nickname" : "yali_yg1",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }],   //主力
         "create_date": new Date()
     },
@@ -611,7 +611,7 @@ var _football = [
         "main_force": [{
             "uid" : "0003-0003-0003-0003-000300030004",
             "nickname" : "apple1",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }],   //主力
         "create_date": new Date()
     },
@@ -621,7 +621,7 @@ var _football = [
         "main_force": [{
             "uid" : "0004-0004-0004-0004-000400040006",
             "nickname" : "xiangjiao_yg2",
-            "photo": "/img/user/photo/default.png"
+            "photo": "/img/icons/default_group_logo.png"
         }],   //主力
         "create_date": new Date()
     }

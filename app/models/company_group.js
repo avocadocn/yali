@@ -27,7 +27,7 @@ var CompanyGroup = new Schema({
     leader: [_member],
     logo: {
         type: String,
-        default: '/img/group/logo/default.png'
+        default: '/img/icons/default_group_logo.png'
     },
     entity_type: String,
     brief: String,

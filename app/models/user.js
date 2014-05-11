@@ -44,7 +44,7 @@ var UserSchema = new Schema({
 
     photo: {
         type: String,
-        default: '/img/user/photo/default.png'
+        default: '/img/icons/default_user_photo.png'
     },
 
     nickname: String,
