@@ -5,7 +5,9 @@
  */
 var express = require('express'),
     fs = require('fs'),
+    path = require('path'),
     passport = require('passport'),
+    mkdirp = require('mkdirp'),
     logger = require('mean-logger');
 
 /**
@@ -84,3 +86,12 @@ exports = module.exports = app;
 //var dataInit = require('./app/config/db');
 
 //dataInit.create();
+
+
+// 创建被git排除的目录
+mkdirp.sync(path.join(__dirname, 'temp_uploads'));
+mkdirp.sync(path.join(__dirname, 'public/img/user/photo/temp/'));
+mkdirp.sync(path.join(__dirname, 'public/img/group/logo/temp/'));
+mkdirp.sync(path.join(__dirname, 'public/img/photo_album/'));
+
+

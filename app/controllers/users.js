@@ -786,9 +786,6 @@ exports.tempPhoto = function(req, res) {
   var temp_path = req.files.temp_photo.path;
 
   var target_dir = meanConfig.root + '/public/img/user/photo/temp/';
-  if (!fs.existsSync(target_dir)) {
-    fs.mkdirSync(target_dir);
-  }
 
   var shasum = crypto.createHash('sha1');
 
