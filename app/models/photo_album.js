@@ -17,7 +17,11 @@ var Photo = new Schema({
     type: Boolean,
     default: false
   },
-  comment: String
+  comment: String,
+  publish_user: {
+    id: String,
+    nickname: String
+  }
 });
 
 Photo.pre('save', function(next) {

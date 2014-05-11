@@ -190,7 +190,11 @@ exports.createPhoto = function(req, res) {
                   callback(err);
                 } else {
                   var photo = {
-                    uri: uri_dir + photo_name
+                    uri: uri_dir + photo_name,
+                    publish_user: {
+                      id: req.user.id,
+                      nickname: req.user.nickname
+                    }
                   };
                   photo_album.photos.push(photo);
                   photo_album.save(function(err) {
@@ -265,7 +269,8 @@ exports.readPhoto = function(req, res) {
       res.send({ result: 1, msg: '获取照片成功',
         data: {
           uri: photo.uri,
-          comment: photo.comment
+          comment: photo.comment,
+          publish_user: photo.publish_user.nickname
         }
       });
     } else {
@@ -350,10 +355,12 @@ exports.readPhotos = function(req, res) {
           var photos = [];
           photo_album.photos.forEach(function(photo) {
             if (photo.hidden === false) {
-              var temp_photo = {};
-              temp_photo.pid = photo._id;
-              temp_photo.uri = photo.uri;
-              temp_photo.comment = photo.comment;
+              var temp_photo = {
+                pid: photo._id,
+                uri: photo.uri,
+                comment: photo.comment,
+                publish_user: photo.publish_user.nickname
+              };
               photos.push(temp_photo);
             }
           });
