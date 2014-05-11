@@ -722,10 +722,18 @@ exports.getGroupMember = function(req,res){
 //比赛
 exports.getCompetition = function(req, res){
   var msg_show,score_a,score_b,rst_content,date;
+
+  var is_leader = false;
+  for(var i = 0; i < req.user.group.length; i ++) {
+    if(req.user.group[i].gid === req.competition.gid){
+      is_leader = req.user.group[i].leader;
+      break;
+    }
+  }
   if(req.competition.camp[0].cid === req.session.cid) {
     //发赛方收到应赛方的成绩确认消息
     if(req.competition.camp[1].result.confirm && !req.competition.camp[0].result.confirm) {
-      msg_show = req.session.leader;
+      msg_show = is_leader;
       score_a = req.competition.camp[0].score;
       score_b = req.competition.camp[1].score;
       rst_content = req.competition.camp[1].result.content;
@@ -740,7 +748,7 @@ exports.getCompetition = function(req, res){
   } else {
     //应赛方收到发赛方的成绩确认消息
     if(req.competition.camp[0].result.confirm && !req.competition.camp[1].result.confirm) {
-      msg_show = req.session.leader;
+      msg_show = is_leader;
       score_a = req.competition.camp[1].score;
       score_b = req.competition.camp[0].score;
       rst_content = req.competition.camp[0].result.content;
@@ -753,12 +761,14 @@ exports.getCompetition = function(req, res){
       date = 0;
     }
   }
+
+  var confirm = req.competition.camp[1].result.confirm && req.competition.camp[0].result.confirm;
   console.log(rst_content);
   res.render('competition/football', {
     'title': '发起足球比赛',
     'competition' : req.competition,
     'team': req.competition_team,
-    'leader' : req.session.leader,
+    'rst_confirm_show' : is_leader && !confirm,  //双方都确认后就不用再显示发出确认按钮了,只有组长才可以确认
     'msg_show' : msg_show,
     'score_a' : score_a,
     'score_b' : score_b,
