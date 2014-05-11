@@ -333,7 +333,11 @@ var _users =[
 "nickname" : "eric",
 "realname":"张三",
 "phone" : "18801910251",
+<<<<<<< HEAD
 "photo" : "/img/icons/default_group_logo.png",
+=======
+"photo" : "/img/icons/default_user_photo.png",
+>>>>>>> 修改代码中的默认路径
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -359,7 +363,11 @@ var _users =[
 "nickname" : "yali_yg1",
 "realname":"李三",
 "phone" : "18801910251",
+<<<<<<< HEAD
 "photo" : "/img/icons/default_group_logo.png",
+=======
+"photo" : "/img/icons/default_user_photo.png",
+>>>>>>> 修改代码中的默认路径
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -385,7 +393,11 @@ var _users =[
 "nickname" : "yali_yg2",
 "realname":"李四",
 "phone" : "18801910251",
+<<<<<<< HEAD
 "photo" : "/img/icons/default_group_logo.png",
+=======
+"photo" : "/img/icons/default_user_photo.png",
+>>>>>>> 修改代码中的默认路径
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -411,7 +423,11 @@ var _users =[
 "nickname" : "apple1",
 "realname":"王三",
 "phone" : "18801910251",
+<<<<<<< HEAD
 "photo" : "/img/icons/default_group_logo.png",
+=======
+"photo" : "/img/icons/default_user_photo.png",
+>>>>>>> 修改代码中的默认路径
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -437,7 +453,11 @@ var _users =[
 "nickname" : "eric",
 "realname":"赵四",
 "phone" : "18801910251",
+<<<<<<< HEAD
 "photo" : "/img/icons/default_group_logo.png",
+=======
+"photo" : "/img/icons/default_user_photo.png",
+>>>>>>> 修改代码中的默认路径
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -463,7 +483,11 @@ var _users =[
 "nickname" : "xiangjiao_yg2",
 "realname":"赵五",
 "phone" : "18801910251",
+<<<<<<< HEAD
 "photo" : "/img/icons/default_group_logo.png",
+=======
+"photo" : "/img/icons/default_user_photo.png",
+>>>>>>> 修改代码中的默认路径
 "provider" : "user",
 "register_date" : new Date(),
 "role" : "EMPLOYEE",
@@ -490,14 +514,22 @@ var _company_groups =[
         {
             "uid" : "0001-0001-0001-0001-000100010002",
             "nickname" : "eric",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "member" : [
         {
             "uid" : "0001-0001-0001-0001-000100010002",
             "nickname" : "eric",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "logo":"/img/icons/default_group_logo.png",
@@ -513,14 +545,22 @@ var _company_groups =[
         {
             "uid" : "0002-0002-0002-0002-000200020003",
             "nickname" : "yali_yg1",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "member" : [
         {
             "uid" : "0002-0002-0002-0002-000200020003",
             "nickname" : "yali_yg1",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "logo":"/img/icons/default_group_logo.png",
@@ -536,14 +576,22 @@ var _company_groups =[
         {
             "uid" : "0003-0003-0003-0003-000300030004",
             "nickname" : "apple1",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "member" : [
         {
             "uid" : "0003-0003-0003-0003-000300030004",
             "nickname" : "apple1",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "logo":"/img/icons/default_group_logo.png",
@@ -559,14 +607,22 @@ var _company_groups =[
         {
             "uid" : "0004-0004-0004-0004-000400040006",
             "nickname" : "xiangjiao_yg2",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "member" : [
         {
             "uid" : "0004-0004-0004-0004-000400040006",
             "nickname" : "xiangjiao_yg2",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }
     ],
     "logo":"/img/icons/default_group_logo.png",
@@ -591,7 +647,11 @@ var _football = [
         "main_force": [{
             "uid" : "0001-0001-0001-0001-000100010002",
             "nickname" : "eric",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }],   //主力
         "create_date": new Date()
     },
@@ -601,7 +661,11 @@ var _football = [
         "main_force": [{
             "uid" : "0002-0002-0002-0002-000200020003",
             "nickname" : "yali_yg1",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }],   //主力
         "create_date": new Date()
     },
@@ -611,7 +675,11 @@ var _football = [
         "main_force": [{
             "uid" : "0003-0003-0003-0003-000300030004",
             "nickname" : "apple1",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }],   //主力
         "create_date": new Date()
     },
@@ -621,7 +689,11 @@ var _football = [
         "main_force": [{
             "uid" : "0004-0004-0004-0004-000400040006",
             "nickname" : "xiangjiao_yg2",
+<<<<<<< HEAD
             "photo": "/img/icons/default_group_logo.png"
+=======
+            "photo": "/img/icons/default_user_photo.png"
+>>>>>>> 修改代码中的默认路径
         }],   //主力
         "create_date": new Date()
     }

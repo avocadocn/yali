@@ -4,7 +4,7 @@ block panel
   #competition_content(data-nowteam="#{team}" data-id='#{competition.id}')
     .row
       .teamInfo.col-xs-4
-        img.size_210.teamLogo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/group/logo/default.png"}')
+        img.size_210.teamLogo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
         div
           a.teamName= competition.camp[0].tname
         div
@@ -13,7 +13,7 @@ block panel
       .vs.col-xs-4
         h1.text-center VS
       .teamInfo.col-xs-4
-        img.size_210.teamLogo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/group/logo/default.png"}')
+        img.size_210.teamLogo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
         div
           a.teamName= competition.camp[1].tname
         div

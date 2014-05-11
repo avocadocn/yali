@@ -82,7 +82,7 @@ block panel
       .row
         h1 擂主信息
       .row
-          img.size_80(src='#{arena.champion.logo ? arena.champion.logo:"/img/group/logo/default.png"}')
+          img.size_80(src='#{arena.champion.logo ? arena.champion.logo:"/img/icons/default_group_logo.png"}')
           .row
             label 公司名称：
             label= arena.champion.cname
@@ -133,7 +133,7 @@ block panel
       h1 历届擂主信息
     each champion in arena.history
       .row
-        img.size_80(src='#{champion.logo ? champion.logo:"/img/group/logo/default.png"}')
+        img.size_80(src='#{champion.logo ? champion.logo:"/img/icons/default_group_logo.png"}')
         .row
           label 公司名称：
           label= champion.cname
