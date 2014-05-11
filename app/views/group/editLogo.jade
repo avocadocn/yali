@@ -17,7 +17,7 @@ block content
             p 你可以上传JPG、JPEG、GIF、PNG或BMP文件
             form#temp_photo_form(action="/group/tempLogo" method="post" enctype="multipart/form-data")
               label.btn.btn-default 选择logo
-                input#temp_photo.hidden(type="file" name="temp_photo")
+                input#temp_photo.hidden(type="file" name="temp_photo" accept="image/*")
               label#photo_path 未选择文件
         .row
           .col-xs-12.col-sm-12

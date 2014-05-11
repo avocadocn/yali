@@ -9,7 +9,7 @@ block content
   hr
   h2 上传照片
   form.js_ajax_form(action="/photoAlbum/#{photo_album.id}/photo" method="post" enctype="multipart/form-data")
-    input(type="file" name="photos" multiple="multiple" required="required")
+    input(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
     button(type="submit") 上传照片
 
   h2 修改相册名字
