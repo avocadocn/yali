@@ -91,26 +91,14 @@ exports.getTeam = function(req, res) {
 //根据公司id搜索成员(该成员不是该组的组长)
 exports.getUser = function(req, res) {
   var cid = req.body.cid;   //根据公司名找它的员工
-  var gid = req.body.gid;   //找选择了该组的员工
-  console.log('GID:' + gid);
-  User.find({'cid': cid , 'group':{'$elemMatch':{'gid':gid}},
-    '$where':function(){
-      for(var i = 0; i < this.group.length; i ++) {
-        if(this.group[i].leader === true && this.group[i].gid === gid){
-          return false;
-        }
-      }
-      return true;
-    }
-  },{'id':1,'nickname':1,'username':1}, function (err, users){
-    if(err){
+  var _gid = req.body.gid;   //找选择了该组的员工
+  User.find({'cid': cid , 'group':{'$elemMatch':{'gid':_gid, 'leader':false}} },{'id':1,'nickname':1,'username':1,'group':1}, function (err, users){
+    if(err || !users){
+      console.log('ERROR');
       return res.send([]);
     }else{
-      if(users){
-        return res.send(users);
-      } else {
-        return res.send([]);
-      }
+      console.log(users);
+      return res.send(users);
     }
   });
 };

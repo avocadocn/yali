@@ -30,7 +30,7 @@
       <div class="modal-body">
         <div class="row">
           <p>该小组的成员</p>
-          <li ng-repeat="user in group.users">
+          <li ng-repeat="user in users">
             <a ng-click="appointLeader(user.id)" data-dismiss="modal">{{user.nickname}}</a>
           </li>
         </div>
