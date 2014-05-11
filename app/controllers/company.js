@@ -418,7 +418,7 @@ exports.getCompanyMessage = function(req, res) {
   var cid = req.session.cid;
 
   //公司的动态消息都归在虚拟组里
-  GroupMessage.find({'cid' : {'$all':[cid]} , 'group.gid' : {'$all':[0]}}, function(err, group_messages) {
+  GroupMessage.find({'cid' : {'$all':[cid]} , 'group.gid' : {'$all':['0']}}, function(err, group_messages) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
@@ -438,7 +438,7 @@ exports.getCompanyCampaign = function(req, res) {
     var role = req.session.role;
 
     //公司发布的活动都归在虚拟组 gid = 0 里
-    Campaign.find({'cid' : {'$all':[cid]}, 'gid' : {'$all':[0]}}, function(err, campaign) {
+    Campaign.find({'cid' : {'$all':[cid]}, 'gid' : {'$all':['0']}}, function(err, campaign) {
         if (err) {
             console.log(err);
             return res.status(404).send([]);
@@ -628,7 +628,7 @@ exports.sponsor = function (req, res) {
     var username = req.session.username;
     var cid = req.session.cid;    //公司id
     var uid = req.session.uid;    //用户id
-    var gid = 0;                  //HR发布的活动,全部归在虚拟组里,虚拟组的id默认是0
+    var gid = '0';                  //HR发布的活动,全部归在虚拟组里,虚拟组的id默认是0
     var group_type = '虚拟组';
     var company_in_campaign = req.body.company_in_campaign;//公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是次hr所在的公司!
 

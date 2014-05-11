@@ -38,6 +38,10 @@ userApp.controller('GroupsController', ['$scope','$http', function($scope, $http
                 });
             }
         });
+
+        $scope.selected.push({
+            'gid': '0'
+        });
         try {
             $http({
                 method: 'post',

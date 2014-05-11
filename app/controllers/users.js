@@ -261,7 +261,7 @@ exports.dealSelectGroup = function(req, res) {
               console.log(err);
               res.render('users/message', message.dbError);
             }
-            for( var i = 0; i < user.group.length; i ++) {
+            for( var i = 0; i < user.group.length && user.group[i].gid != '0'; i ++) {
               CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i].gid}, function(err, company_group) {
                 company_group.member.push({
                   'cid':user.cid,
@@ -421,11 +421,11 @@ exports.home = function(req, res) {
       var _ugids = [];
       var _glength = group.length;
       var tmp_gid = [];
-      for(var j=0;j<req.user.group.length;j++){
+      for(var j=0;j<req.user.group.length && req.user.group[j].gid != '0';j++){
         tmp_gid.push(req.user.group[j].gid);
       }
       for(var i=0;i<_glength;i++){
-        if(group[i].gid != 0 && tmp_gid.indexOf(group[i].gid) == -1){
+        if(group[i].gid != '0' && tmp_gid.indexOf(group[i].gid) == -1){
           _ugids.push(group[i].gid);
         }
       };

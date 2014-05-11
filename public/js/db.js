@@ -326,6 +326,9 @@ var _users =[
         "entity_type" : "FootBall",
         "tname":"上海动梨信息技术有限公司-足球队",
         "leader" : true
+    },
+    {
+        "gid":"0"
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
@@ -356,6 +359,9 @@ var _users =[
         "entity_type" : "FootBall",
         "tname":"上海鸭梨信息技术有限公司-足球队",
         "leader" : true
+    },
+    {
+        "gid":"0"
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
@@ -386,6 +392,9 @@ var _users =[
         "entity_type" : "FootBall",
         "tname":"上海鸭梨信息技术有限公司-足球队",
         "leader" : false
+    },
+    {
+        "gid":"0"
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
@@ -416,6 +425,9 @@ var _users =[
         "entity_type" : "FootBall",
         "tname":"上海苹果信息技术有限公司-足球队",
         "leader" : true
+    },
+    {
+        "gid":"0"
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
@@ -446,6 +458,9 @@ var _users =[
         "entity_type" : "FootBall",
         "tname":"上海香蕉信息技术有限公司-足球队",
         "leader" : false
+    },
+    {
+        "gid":"0"
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
@@ -476,6 +491,9 @@ var _users =[
         "entity_type" : "FootBall",
         "tname":"上海香蕉信息技术有限公司-足球队",
         "leader" : true
+    },
+    {
+        "gid":"0"
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",

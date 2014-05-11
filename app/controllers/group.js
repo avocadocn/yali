@@ -147,11 +147,11 @@ exports.home = function(req, res) {
     var tmp_gid = [];
     var _glength = group.length;
     var _uglenth = req.user.group.length;
-    for(var j=0;j<_uglenth;j++){
+    for(var j=0;j<_uglenth && req.user.group[j].gid != '0';j++){
       tmp_gid.push(req.user.group[j].gid);
     }
     for(var i=0;i<_glength;i++){
-      if(group[i].gid !== '0' && tmp_gid.indexOf(group[i].gid) === -1){
+      if(group[i].gid != '0' && tmp_gid.indexOf(group[i].gid) === -1){
         _ugids.push(group[i].gid);
       }
     }
@@ -190,7 +190,6 @@ exports.home = function(req, res) {
 
 //返回公司组件的所有数据,待前台调用
 exports.getCompanyGroups = function(req, res) {
-
   var company_id = req.session.cid;
   var param_id = req.params.id;
   if(param_id) {

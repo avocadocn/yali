@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewCompany = angular.module('tabViewCompany', ['ngRoute']);
+var tabViewCompany = angular.module('tabViewCompany', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
 
 
 tabViewCompany.directive('match', function($parse) {
