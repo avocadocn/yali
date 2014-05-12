@@ -28,8 +28,8 @@ module.exports = function(config) {
             'public/js/directives.js',
             'public/js/filters.js',
             'public/js/services/global.js',
-            'public/js/services/articles.js',
-            'public/js/controllers/articles.js',
+            //'public/js/services/articles.js',
+            //'public/js/controllers/articles.js',
             'public/js/controllers/index.js',
             'public/js/controllers/header.js',
             'public/js/init.js',
@@ -87,7 +87,7 @@ module.exports = function(config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['PhantomJS'],
+        browsers: ['Chrome'],
 
 
         // If browser does not capture in given timeout [ms], kill it
@@ -96,6 +96,10 @@ module.exports = function(config) {
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
-        singleRun: true
+        singleRun: true,
+
+
+        //plugins
+        plugins : ['karma-coverage','karma-jasmine','karma-Chrome-launcher']
     });
 };

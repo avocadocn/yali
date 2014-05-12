@@ -19,6 +19,7 @@
             it('should expose some global scope', function() {
 
                 expect(scope.global).toBeTruthy();
+                expect(scope.isCollapsed).not.toBeTruthy();
 
             });
         });
