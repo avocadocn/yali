@@ -571,20 +571,6 @@ exports.campaignCancel = function (req, res) {
             return res.send('not exist');
         }
     });
-    /*
-    Campaign.findOneAndUpdate({ id: campaign_id}, { $set: { active: false }},null, function(err, company) {
-        if (err) {
-            console.log('数据错误');
-            res.send({'result':0,'msg':'数据查询错误'});
-            return;
-        };
-        if(company) {
-            res.send({'result':1,'msg':'更新成功'});
-        } else {
-            res.send({'result':0,'msg':'不存在该公司'});
-        }
-    });
-    */
 };
 
 
