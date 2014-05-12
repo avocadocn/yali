@@ -22,10 +22,7 @@ a {
   padding-top: 70px;
   padding-bottom: 60px;
 }
-input[type='button'],
-input[type='submit'],
-button,
-a.dl_btn {
+.dl_btn {
   border-radius: 0px !important;
   box-shadow: none !important;
   color: #fff;
@@ -34,12 +31,11 @@ a.dl_btn {
   border-style: solid;
   line-height: 1;
 }
-button:hover,
-.btn:hover {
+.dl_btn:hover {
   background-color: #3abde7;
   border-color: #3abde7;
 }
-input[disabled='disabled'].editToggle {
+.dl_btn[disabled='disabled'].editToggle {
   background-color: inherit;
   border: 0px solid;
   box-shadow: none;
@@ -142,7 +138,6 @@ input[type="number"] {
 .dl_form_control,
 .dl_full_control {
   display: inline-block;
-  background-color: #fafafa;
 }
 .dl_form_control {
   width: auto;
