@@ -555,10 +555,6 @@ var _company_groups =[
             "uid" : "0003-0003-0003-0003-000300030004",
             "nickname" : "apple1",
             "photo": "/img/icons/default_user_photo.png"
-<<<<<<< HEAD
-
-=======
->>>>>>> 消除冲突
         }
     ],
     "member" : [
