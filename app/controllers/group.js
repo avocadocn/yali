@@ -846,7 +846,6 @@ exports.competition = function(req, res, next, id){
   });
 };
 
-
 //某一方发送或者修改比赛成绩确认消息
 exports.resultConfirm = function (req, res) {
   var competition_id = req.params.competitionId;
@@ -862,37 +861,16 @@ exports.resultConfirm = function (req, res) {
       console.log(err);
       res.send(err);
     } else {
-      if(req.session.cid === competition.camp[0].cid) {
-        //发赛方发出成绩确认请求
-
-        //发赛方接受应赛方的比分确认
-        if(rst_accept) {
-          competition.camp[0].result.confirm = true;
-        //不接受或者第一次发出比赛确认
-        } else {
-          competition.camp[0].score = score_a;
-          competition.camp[1].score = score_b;
-          competition.camp[1].result.confirm = false,
-          competition.camp[0].result.confirm = true,
-          competition.camp[0].result.content = rst_content,
-          competition.camp[0].result.start_date = Date.now();
-        }
-      } else {
-        //应赛方发出成绩确认请求
-
-        //应赛方接受发赛方的比分确认
-        if(rst_accept) {
-          competition.camp[1].result.confirm = true;
-
-        //不接受或者第一次发出比赛确认
-        } else {
-          competition.camp[0].score = score_b;
-          competition.camp[1].score = score_a;
-          competition.camp[0].result.confirm = false,
-          competition.camp[1].result.confirm = true,
-          competition.camp[1].result.content = rst_content,
-          competition.camp[1].result.start_date = Date.now();
-        }
+      //本组的index
+      var _campFlag = req.session.cid === competition.camp[0].cid ? 0 : 1;
+      var _otherCampFlag = req.session.cid === competition.camp[0].cid ? 1 : 0;
+      competition.camp[_campFlag].result.confirm = true;
+      if(!rst_accept) {
+        competition.camp[_campFlag].score = score_a;
+        competition.camp[_otherCampFlag].score = score_b;
+        competition.camp[_otherCampFlag].result.confirm = false;
+        competition.camp[_campFlag].result.content = rst_content;
+        competition.camp[_campFlag].result.start_date = Date.now();
       }
       competition.save(function (err){
         if(err){

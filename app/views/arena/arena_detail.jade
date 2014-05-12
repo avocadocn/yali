@@ -75,9 +75,9 @@ block panel
                               input.form-control(type="text" ng-model="campaign_info.deadline" name="date" data-autoclose="1" placeholder="Date" bs-datepicker)
                             .col-md-6
                               input.form-control(type="text" ng-model="campaign_info.deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker)
-                          .modal-footer
-                            button(class="btn btn-default" data-dismiss="modal") 取消
-                            button(class="btn btn-primary" ng-disabled='campaignDisabled' ng-click='addCampaignInfo("#{arena.id}")' data-dismiss="modal") 确定
+                  .modal-footer
+                    button(class="btn btn-default" data-dismiss="modal") 取消
+                    button(class="btn btn-primary" ng-disabled='campaignDisabled' ng-click='addCampaignInfo("#{arena.id}")' data-dismiss="modal") 确定
     if(arena.champion.cid)
       .row
         h1 擂主信息

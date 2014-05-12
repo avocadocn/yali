@@ -19,28 +19,34 @@ exports.home = function(req, res) {
           return res.status(400).send([]);
       }
       var _nowTime = new Date();
-      console.log(_nowTime);
       arenas.forEach(function(arena){
-        console.log(arena.id,!arena.champion.active,_nowTime>arena.champion.end_time);
         if(!arena.champion.active && _nowTime>arena.champion.end_time){
-          if (!arena.history) {
-            arena.history = [];
-          }
-          var _champion =arena.champion.toObject();
-          delete _champion.provoke_status;
-          delete _champion.active;
-          arena.history.push(_champion);
-          delete arena.champion;
-          arena.save(function(err,arena){
-            if(err){
-              console.log(err);
-            }
-            else{
-              console.log(arena);
+          CompanyGroup.findOne({cid: arena.champion.cid, gid: arena.champion.gid},function(err,companyGroup){
+            if(!err &&companyGroup){
+              companyGroup.arena_id = undefined;
+              companyGroup.save(function(err){
+                if (!err) {
+                  if (!arena.history) {
+                    arena.history = [];
+                  }
+                  var _champion =arena.champion.toObject();
+                  delete _champion.provoke_status;
+                  delete _champion.active;
+                  arena.history.unshift(_champion);
+                  arena.champion = undefined;
+                  arena.save(function(err,arena){
+                    if(err){
+                      console.log(err);
+                    }
+                    else{
+                      console.log(arena);
+                    }
+                  });
+                };
+              })
             }
           });
         }
-
       });
       res.render('arena/arena_list', {'title': '擂台列表','arenas': arenas});
   });
@@ -63,8 +69,11 @@ exports.detail = function(req, res){
 };
 exports.rob = function(req, res){
   if(!req.arena.champion.cid){
+    console.log(req.arena.history);
+    if(req.arena.history.length!==0 && req.arena.history[0].cid === req.session.cid){
+      return res.send({'result':0,'msg':'您无法连续抢同一擂台！'});
+    }
     CompanyGroup.findOne({'cid':req.session.cid,'gid':req.session.gid},function(err,company_group){
-      console.log(company_group);
       if (err || !company_group) {
         return res.send({'result':0,'msg':'您没有权限抢擂'});
       }
@@ -138,7 +147,6 @@ exports.addCampaignInfo = function(req, res){
     if(req.body.campaign_info.number===null || req.body.campaign_info.competition_date===null){
       return res.send({'result':0,'msg':'挑战信息不完整'});
     }
-    console.log(req.body.campaign_info);
     Arena.findOne({'id':req.params.arenaId},function(err,arena){
       if (err) {
           console.log(err);
@@ -147,7 +155,6 @@ exports.addCampaignInfo = function(req, res){
       else if(arena) {
         arena.campaign_info = req.body.campaign_info;
         arena.champion.active = true;
-        console.log(arena);
         arena.save(function(err){
           if(err){
             console.log(err);
