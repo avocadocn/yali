@@ -21,20 +21,26 @@ exports.home = function(req, res) {
       var _nowTime = new Date();
       console.log(_nowTime);
       arenas.forEach(function(arena){
-        console.log(arena.id,_nowTime>arena.champion.end_time,_nowTime>arena.champion.end_time);
+        console.log(arena.id,!arena.champion.active,_nowTime>arena.champion.end_time);
         if(!arena.champion.active && _nowTime>arena.champion.end_time){
           if (!arena.history) {
             arena.history = [];
           }
-          arena.champion.provoke_status = null;
-          arena.history.push(arena.champion);
-          arena.champion = null;
-          arena.save(function(err){
+          var _champion =arena.champion.toObject();
+          delete _champion.provoke_status;
+          delete _champion.active;
+          arena.history.push(_champion);
+          delete arena.champion;
+          arena.save(function(err,arena){
             if(err){
               console.log(err);
             }
+            else{
+              console.log(arena);
+            }
           });
         }
+
       });
       res.render('arena/arena_list', {'title': '擂台列表','arenas': arenas});
   });

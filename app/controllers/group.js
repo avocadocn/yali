@@ -1026,18 +1026,21 @@ exports.saveLogo = function(req, res) {
                   res.redirect('/group/editLogo');
                 }
               });
-          fs.unlink(temp_path, function(err) {
-            if (err) {
-              console(err);
-              res.redirect('/group/editLogo');
-            }
-            var unlink_dir = meanConfig.root + '/public';
-            if (ori_logo && ori_logo !== '/img/icons/default_group_logo.png') {
-              if (fs.existsSync(unlink_dir + ori_logo)) {
-                fs.unlinkSync(unlink_dir + ori_logo);
-              }
-            }
+              fs.unlink(temp_path, function(err) {
+                if (err) {
+                  console(err);
+                  res.redirect('/group/editLogo');
+                }
+                var unlink_dir = meanConfig.root + '/public';
+                if (ori_logo && ori_logo !== '/img/icons/default_group_logo.png') {
+                  if (fs.existsSync(unlink_dir + ori_logo)) {
+                    fs.unlinkSync(unlink_dir + ori_logo);
+                  }
+                }
 
+              });
+            }
+            res.redirect('/group/editLogo');
           });
         } catch(e) {
           console.log(e);

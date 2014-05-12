@@ -24,13 +24,15 @@ a {
 }
 input[type='button'],
 input[type='submit'],
-button {
+button,
+a.dl_btn {
   border-radius: 0px !important;
   box-shadow: none !important;
   color: #fff;
   background-color: #3bbee8;
   border-color: #3bbee8;
   border-style: solid;
+  line-height: 1;
 }
 button:hover,
 .btn:hover {
@@ -147,11 +149,6 @@ input[type="number"] {
 }
 .dl_full_control {
   width: 100%;
-}
-.dl_btn {
-  line-height: 1;
-  background-color: #32afe0;
-  border: none;
 }
 .dl_register_nav {
   height: 70px;

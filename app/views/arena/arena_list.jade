@@ -45,8 +45,8 @@ block panel
                 label 挑战备注：
                 label= arena.campaign_info.remark ? arena.campaign_info.remark : ''
       .row
-        a(href='/arena/detail/#{arena.id}') 详情
-      if(!arena.champion.cid)
-        button(ng-click='robArena("#{arena.id}")') 我要抢擂
+        a.dl_btn(href='/arena/detail/#{arena.id}') 详情
+        if(!arena.champion.cid)
+          button(ng-click='robArena("#{arena.id}")') 我要抢擂
 append footExt
   script(src="/js/controllers/arena.js")
