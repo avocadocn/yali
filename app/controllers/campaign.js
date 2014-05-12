@@ -11,14 +11,6 @@ var mongoose = require('mongoose'),
     Arena = mongoose.model('Arena'),
     Campaign = mongoose.model('Campaign');
 
-
-
-
-
-
-
-
-
 exports.getGroupId = function(req, res) {
 
 };

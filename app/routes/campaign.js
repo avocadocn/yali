@@ -16,5 +16,5 @@ module.exports = function(app) {
 
   app.get('/campaign/:groupId', campaign.getGroupId);   //只是为了将groupId传进去
 
-  app.param('groupId',campaign.group);
+  //app.param('groupId',campaign.group);
 }

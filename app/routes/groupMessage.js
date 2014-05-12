@@ -10,5 +10,5 @@ module.exports = function(app) {
   app.get('/campaign/user/getMessages', group_message.getUserMessage);
 
   app.get('/groupMessage/:groupId', group_message.getGroupId);
-  app.param('groupId',group_message.group);
+  //app.param('groupId',group_message.group);
 }
