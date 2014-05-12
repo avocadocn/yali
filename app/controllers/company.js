@@ -13,7 +13,8 @@ var mongoose = require('mongoose'),
     GroupMessage = mongoose.model('GroupMessage'),
     Config = mongoose.model('Config'),
     Campaign = mongoose.model('Campaign'),
-    config = require('../config/config');
+    config = require('../config/config'),
+    async = require('async');
 
 var mail = require('../services/mail');
 var encrypt = require('../middlewares/encrypt');
@@ -214,9 +215,18 @@ exports.create = function(req, res) {
         if (config && config.company_register_need_invite === true) {
             return CompanyRegisterInviteCode
             .findOne({ code: req.body.invite_code })
+            .populate('company')
             .exec()
             .then(function(code) {
                 if (code) {
+                    // 如果邀请码属于公司，则在公司邀请码列表中将其移除
+
+                    if (code.company) {
+                        var company = code.company;
+                        var removeIndex = company.register_invite_code.indexOf(code.code);
+                        company.register_invite_code.splice(removeIndex, 1);
+                        company.save(console.log);
+                    }
                     code.remove(function(err) {
                         if (err) {
                             console.log(err);
@@ -231,9 +241,6 @@ exports.create = function(req, res) {
                         }
                     });
                 } else {
-                    res.render('company/company_signup', {
-                        invite_code_err: '邀请码不正确'
-                    });
                     throw new Error('邀请码不正确');
                 }
             });
@@ -262,37 +269,68 @@ exports.create = function(req, res) {
         company.login_email = req.body.host+'@'+req.body.domain;
 
 
+        // 为该公司添加3个注册邀请码
+        company.register_invite_code = [];
+        var code_count = 0;
 
-        //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
-        company.status.date = new Date().getTime();
+        async.whilst(
+            function() { return code_count < 3; },
 
-        company.save(function(err) {
-            if (err) {
-                console.log(err);
-                //检查信息是否重复
-                switch (err.code) {
-                    case 11000:
-                        break;
-                    case 11001:
-                        res.status(400).send({'result':0,'msg':'该公司已经存在!'});
-                        break;
-                    default:
-                        break;
+            function(callback) {
+                var invite_code = new CompanyRegisterInviteCode({
+                    company: company._id
+                });
+                invite_code.save(function(err) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        company.register_invite_code.push(invite_code.code);
+                        code_count++;
+                        callback();
+                    }
+                });
+            },
+
+            function(err) {
+
+                if (err) {
+                    return console.log(err);
                 }
-                return res.render('company/company_signup', {
-                    company: company
+                //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
+                company.status.date = new Date().getTime();
+
+                company.save(function(err) {
+                    if (err) {
+                        console.log(err);
+                        //检查信息是否重复
+                        switch (err.code) {
+                            case 11000:
+                                break;
+                            case 11001:
+                                res.status(400).send({'result':0,'msg':'该公司已经存在!'});
+                                break;
+                            default:
+                                break;
+                        }
+                        return res.render('company/company_signup', {
+                            company: company
+                        });
+                    }
+
+                    //发送邮件
+                    //注意,这里只是测试发送邮件,正常流程是应该在平台的后台管理中向hr发送确认邮件
+                    mail.sendCompanyActiveMail(req.body.host+'@'+req.body.domain, req.body.name, company.id, req.headers.host);
+                    res.redirect('/company/wait');
                 });
             }
+        );
 
-            //发送邮件
-            //注意,这里只是测试发送邮件,正常流程是应该在平台的后台管理中向hr发送确认邮件
-            mail.sendCompanyActiveMail(req.body.host+'@'+req.body.domain, req.body.name, company.id, req.headers.host);
-            res.redirect('/company/wait');
-        });
     })
     .then(null, function(err) {
         console.log(err);
-        res.redirect('/company/signup');
+        res.render('company/company_signup', {
+            invite_code_err: '邀请码不正确'
+        });
     });
 
 };
