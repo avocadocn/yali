@@ -10,30 +10,31 @@
     <div ng-repeat="campaign_item in campaigns" >
       <div class="row">
         <div class="col-md-2">
-          <span>{{ campaign_item.start_time }}</span>
+          <span>{{ campaign_item.start_time | date:'yyyy-MM-dd HH:mm:ss'}}</span>
         </div>
         <div class="col-md-8">
           <div class="row">
+            <div class="col-md-10">
               <span class="message_label">{{ campaign_item.content }}</span>
-              <input type = "button" ng-if="show" value = "{{ campaign_item.active_value}}" ng-click="cancel(campaign_item.id)" />
+            </div>
+            <div class="col-md-2">
+                <input class="dl_btn dl_btn_close" type = "button" ng-if="show" value = "{{ campaign_item.active_value}}" ng-click="cancel(campaign_item.id)" />
+            </div>
           </div>
           <div class="row">
             <span class="message_label">类型: {{ campaign_item.group_type}}</span>
             <span class="message_label">参加活动人数：{{ campaign_item.member.length }}</span>
             <span class="message_label">赛制: {{ campaign_item.provoke.competition_format }}</span>
             <span class="message_label">地点: {{ campaign_item.location }}</span>
-            <span class="message_label">截止时间: {{ campaign_item.end_time }}</span>
-            <a ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}">详情</a>
+            <span class="message_label">截止时间: {{ campaign_item.end_time | date:'yyyy-MM-dd HH:mm:ss'}}</span>
           </div>
         </div>
         <div class="col-md-2">
             <div ng-switch on="{{campaign_item.join}}" ng-if="campaign_item.active">
-              <input type = "button" value = "退出" ng-click="quit(campaign_item.id)" ng-switch-when="true"/>
-              <input type = "button" value = "参加" ng-click="join(campaign_item.id)" ng-switch-default/>
+              <input class="btn dl_btn" type = "button" value = "退出" ng-click="quit(campaign_item.id)" ng-switch-when="true"/>
+              <input class="btn dl_btn" type = "button" value = "参加" ng-click="join(campaign_item.id)" ng-switch-default/>
             </div>
-            <div>
-              <input type = "button" ng-if="(show && false)" value = "编辑" ng-click="getId(campaign_item.id)" data-toggle="modal" data-target="#editModel"/>
-            </div>
+            <a class="btn dl_btn" ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}">详情</a>
         </div>
       </div>
       <hr>

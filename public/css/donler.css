@@ -30,16 +30,20 @@ a {
   border-color: #3bbee8;
   border-style: solid;
   line-height: 1;
+  margin: 5px;
 }
 .dl_btn:hover {
   background-color: #3abde7;
   border-color: #3abde7;
 }
-.dl_btn[disabled='disabled'].editToggle {
+.dl_input.editToggle[disabled='disabled'] {
   background-color: inherit;
   border: 0px solid;
   box-shadow: none;
   cursor: default;
+}
+.dl_btn_close {
+  background-color: #f00;
 }
 .info_border {
   padding: 5px;

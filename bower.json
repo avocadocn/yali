@@ -13,6 +13,7 @@
     "linkage-selector": "latest",
     "jquery-form": "3.46.0",
     "angular-strap": "2.0.2",
-    "angular-motion": "~0.3.2"
+    "angular-motion": "~0.3.2",
+    "momentjs": "~2.6.0"
   }
 }

@@ -255,8 +255,8 @@ exports.getGroupMessage = function(req, res) {
           'poster': group_message[i].poster,
           'content': group_message[i].content,
           'location' : group_message[i].location,
-          'start_time' : group_message[i].start_time ? group_message[i].start_time.toLocaleDateString() : '',
-          'end_time' : group_message[i].end_time ? group_message[i].end_time.toLocaleDateString() : '',
+          'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
+          'end_time' : group_message[i].end_time ? group_message[i] : '',
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
           'provoke_accept': group_message[i].provoke.active && (group_message[i].group.gid[0] === gid) && leader && (!group_message[i].provoke.start_confirm) && (group_message[i].cid[1] === req.session.cid)
         });
@@ -321,9 +321,8 @@ exports.getGroupCampaign = function(req, res) {
           'content': campaign[i].content,
           'location': campaign[i].location,
           'member': campaign[i].member,
-          'create_time': campaign[i].create_time ? campaign[i].create_time.toLocaleDateString() : '',
-          'start_time': campaign[i].start_time ? campaign[i].start_time.toLocaleDateString() : '',
-          'end_time': campaign[i].end_time ? campaign[i].end_time.toLocaleDateString() : '',
+          'start_time': campaign[i].start_time ? campaign[i].start_time : '',
+          'end_time': campaign[i].end_time ? campaign[i].end_time : '',
           'join':join,
           'provoke':campaign[i].provoke
         });

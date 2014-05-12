@@ -393,7 +393,7 @@ exports.getAccount = function(req, res) {
             if(_company) {
                 var _account = {
                     'login_email': _company.login_email,
-                    'register_date': _company.register_date.toLocaleDateString()
+                    'register_date': _company.register_date
                 };
                 return res.send({
                     'result': 1,

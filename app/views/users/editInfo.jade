@@ -2,7 +2,7 @@ div
   form.form-horizontal(name="accountForm")
     .infoHead.row
       h1 基本信息
-      a.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
+      a.btn.dl_btn.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
     .form-group
       label.col-md-2.control-label 登录邮箱
       .col-md-4
@@ -11,11 +11,11 @@ div
     .form-group
       label.col-md-2.control-label 昵称
       .col-md-4
-        input.form-control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-disabled="baseUnEdit")
+        input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-disabled="baseUnEdit")
     .form-group
       label.col-md-2.control-label 真实姓名
       .col-md-4
-        input.form-control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
+        input.dl_input.form-control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
     .form-group
       label.col-md-2.control-label 公司
       .col-md-4
@@ -23,7 +23,7 @@ div
     .form-group
       label.col-md-2.control-label 职位
       .col-md-4
-        input.form-control.editToggle(type="text" name="position" ng-model="user.position" ng-disabled="baseUnEdit")
+        input.dl_input.form-control.editToggle(type="text" name="position" ng-model="user.position" ng-disabled="baseUnEdit")
     .form-group
       label.col-md-2.control-label 所在地
     .form-group
@@ -39,11 +39,11 @@ div
     .form-group
       label.col-md-2.control-label 生日
       .col-md-2
-        input.form-control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-startView="-1" placeholder="Date" ng-disabled="baseUnEdit" bs-datepicker)
+        input.dl_input.form-control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-startView="-1" placeholder="Date" ng-disabled="baseUnEdit" bs-datepicker)
     .form-group
       label.col-md-2.control-label 血型
       .col-md-2
-        select.form-control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-disabled="baseUnEdit")
+        select.dl_input.form-control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-disabled="baseUnEdit")
           option(ng-select="user.bloodType === 'A'") A
           option(ng-select="user.bloodType === 'B'") B
           option(ng-select="user.bloodType === 'O'") O
@@ -51,24 +51,24 @@ div
     .form-group
       label.col-md-2.control-label 简介
       .col-md-4
-        input.form-control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-disabled="baseUnEdit")
+        input.dl_input.form-control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-disabled="baseUnEdit")
     .form-group
       label.col-md-2.control-label 注册时间
       .col-md-8
-        label.info_label= user.register_date
+        label.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
   form.form-horizontal(name="linkForm")
     .infoHead.row
       h1 基本信息
-      a.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
+      a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     .form-group
       label.col-md-2.control-label 手机
       .col-md-4
-        input.form-control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
+        input.dl_input.form-control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
     .form-group
       label.col-md-2.control-label 邮箱
       .col-md-4
-        input.form-control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="linkUnEdit")
+        input.dl_input.form-control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="linkUnEdit")
     .form-group
       label.col-md-2.control-label QQ
       .col-md-4
-        input.form-control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")
+        input.dl_input.form-control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")
