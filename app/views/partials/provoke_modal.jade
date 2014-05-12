@@ -43,8 +43,8 @@
           hr
           p 公司id: {{company.id}}
           p 公司名: {{company.name}}
-          button(ng-click="getTeam(company.id)") 列出小组
+          button.btn.dl_btn(ng-click="getTeam(company.id)") 列出小组
       a(ng-click="provoke_select(teams.tname)") {{teams.tname}}
     .modal-footer
-      button(class="btn btn-default" data-dismiss="modal") 取消
-      button(class="btn btn-primary" ng-click='provoke()' data-dismiss="modal") 确定
+      button(class="btn dl_btn" data-dismiss="modal") 取消
+      button(class="btn dl_btn" ng-click='provoke()' data-dismiss="modal") 确定

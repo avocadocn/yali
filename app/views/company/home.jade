@@ -2,20 +2,20 @@ extends ../layouts/manager
 
 block baseInfo
 
-  button.btn-primary.btn-lg(data-toggle="modal" data-target="#sponsorCampaignModel") 活动
+  button.btn.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") 活动
 
 block panel
 
   div(ng-app="tabViewCompany")
     ul.nav.nav-tabs
-      li
-        a(href="#/company_message") 公司动态
-      li
-        a(href="#/company_group") 公司组件
-      li
-        a(href="#/company_campaign") 公司活动
-      li
-        a(href="#/company_info") 公司资料
+      li(ng-class="{'active':nowTab=='company_message'}")
+        a(href="#/company_message"  ng-click="addactive('company_message')") 公司动态
+      li(ng-class="{'active':nowTab=='company_group'}")
+        a(href="#/company_group"  ng-click="addactive('company_group')") 公司组件
+      li(ng-class="{'active':nowTab=='company_campaign'}")
+        a(href="#/company_campaign"  ng-click="addactive('company_campaign')") 公司活动
+      li(ng-class="{'active':nowTab=='company_info'}")
+        a(href="#/company_info"  ng-click="addactive('company_info')") 公司资料
     .tab-content
       .tab-pane.active
         div(ng-view)

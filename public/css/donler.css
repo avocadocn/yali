@@ -6,6 +6,7 @@ html {
   font-size: 62.5%;
 }
 body {
+  font-family: "Microsoft YaHei";
   font-size: 14px;
   line-height: 1;
   color: #666;
@@ -30,7 +31,6 @@ a {
   border-color: #3bbee8;
   border-style: solid;
   line-height: 1;
-  margin: 5px;
 }
 .dl_btn:hover {
   background-color: #3abde7;
@@ -47,9 +47,9 @@ a {
 }
 .info_border {
   padding: 5px;
-  margin: -3px;
+  margin: -2px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #3bbee8;
 }
 .size_family {
@@ -149,7 +149,7 @@ input[type="number"] {
 .dl_full_control {
   width: 100%;
 }
-.dl_register_nav {
+.dl_nav {
   height: 70px;
   background-color: #32afe0;
   background: -ms-linear-gradient(top, #32afe0, #33b0e3);
@@ -160,7 +160,12 @@ input[type="number"] {
   border-color: #fff;
   color: #fff;
 }
-.dl_register_nav .logo {
+.dl_nav ul li a {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  color: #fff !important;
+}
+.dl_nav .logo {
   margin-top: 5px;
 }
 .wrap {

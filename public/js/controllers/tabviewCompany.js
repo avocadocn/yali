@@ -2,7 +2,13 @@
 
 var tabViewCompany = angular.module('tabViewCompany', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
 
-
+tabViewCompany.run(['$rootScope', function( $rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    console.log($rootScope.nowTab);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
+}]);
 tabViewCompany.directive('match', function($parse) {
   return {
     require: 'ngModel',

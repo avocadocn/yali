@@ -264,9 +264,13 @@ exports.create = function(req, res) {
         company.info.lindline.extension = req.body.extension;
         company.info.phone = req.body.phone;
         company.id = UUID.id();//公司的id
-        company.email.domain.push(req.body.domain);
         company.provider = 'company';
-        company.login_email = req.body.host+'@'+req.body.domain;
+        company.login_email = req.body.email;
+        var _email = req.body.email.split('@');
+        if(_email[1])
+            company.email.domain.push(_email[1]);
+        else
+            return res.status(400).send({'result':0,'msg':'您输入的邮箱不正确'});
 
 
         // 为该公司添加3个注册邀请码

@@ -47,9 +47,7 @@ block content
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="email_host") *电子邮箱
           .col-xs-9
-            input#email_host.form-control.dl_form_control(type="text" name="host" required)
-            label.control-label @
-            input#email_domain.form-control.dl_form_control(type="text" name="domain" required)
+            input#email.form-control.dl_form_control(type="email" name="email" required)
         if is_need_invite
           .form-group.dl_sm_group
             label.col-xs-3.control-label(for="invite_code") *邀请码

@@ -11,7 +11,8 @@ var mongoose = require('mongoose'),
     PhotoAlbum = mongoose.model('PhotoAlbum'),
     Arena = mongoose.model('Arena'),
     fs = require('fs'),
-    meanConfig = require('../../config/config');
+    meanConfig = require('../../config/config'),
+    moment = require('moment');
 exports.home = function(req, res) {
   Arena.find({'gid':req.session.gid},function(err,arenas){
       if (err) {
@@ -48,7 +49,7 @@ exports.home = function(req, res) {
           });
         }
       });
-      res.render('arena/arena_list', {'title': '擂台列表','arenas': arenas});
+      res.render('arena/arena_list', {'title': '擂台列表','arenas': arenas,'moment':moment});
   });
 };
 exports.detail = function(req, res){
@@ -64,7 +65,7 @@ exports.detail = function(req, res){
     });
   }
   else{
-    res.render('arena/arena_detail', {'title': '擂台详情','arena': req.arena,'champion_flag': req.arena.champion.uid===req.session.uid,'alert_flag':req.arena.champion.cid!==null&&req.arena.champion.active===false && req.arena.champion.uid===req.session.uid});
+    res.render('arena/arena_detail', {'title': '擂台详情','moment':moment,'arena': req.arena,'champion_flag': req.arena.champion.uid===req.session.uid,'alert_flag':req.arena.champion.cid!==null&&req.arena.champion.active===false && req.arena.champion.uid===req.session.uid});
   }
 };
 exports.rob = function(req, res){

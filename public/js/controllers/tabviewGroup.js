@@ -3,7 +3,7 @@
 var tabViewGroup = angular.module('tabViewGroup', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
 
 tabViewGroup.run(['$rootScope', function( $rootScope) {
-
+    $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };

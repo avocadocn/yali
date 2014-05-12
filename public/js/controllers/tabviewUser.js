@@ -2,6 +2,12 @@
 
 var tabViewUser = angular.module('tabViewUser', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker']);
 
+tabViewUser.run(['$rootScope', function( $rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
+}]);
 tabViewUser.directive('match', function($parse) {
   return {
     require: 'ngModel',

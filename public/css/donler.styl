@@ -7,6 +7,7 @@ html
   font-size 62.5%
 
 body
+  font-family "Microsoft YaHei"
   font-size 14px
   line-height 1
   color fontColor
@@ -15,7 +16,7 @@ a
   color linkColor
 .content
   width 100%
-  min-height: 100%
+  min-height 100%
   height auto
   margin 0 auto -(footerHeight)
   padding-top 70px
@@ -27,8 +28,7 @@ a
   background-color buttonColor
   border-color buttonColor
   border-style solid
-  line-height 1
-  margin 5px
+  line-height 1btn.dl_btn
 .dl_btn:hover
   background-color buttonHoverColor
   border-color buttonHoverColor
@@ -41,9 +41,9 @@ a
   background-color red
 .info_border
   padding 5px
-  margin -3px
+  margin -2px
   border-style solid
-  border-width 2px
+  border-width 1px
   border-color buttonColor
 .size_family
   height 300px
@@ -113,13 +113,9 @@ input[type="number"]
 .dl_form_control, .dl_full_control
   display inline-block
 
-.dl_form_control
-  width auto
-
 .dl_full_control
   width 100%
-
-.dl_register_nav
+.dl_nav
   height 70px
   background-color themeColor
   background -ms-linear-gradient(top, themeColor, navbarLinearColor)
@@ -129,7 +125,10 @@ input[type="number"]
   background -o-linear-gradient(top, themeColor, navbarLinearColor)
   border-color #fff
   color navbarFontColor
-
+  ul li a
+    padding-top 25px
+    padding-bottom 25px
+    color #fff !important
   .logo
     margin-top 5px
 
