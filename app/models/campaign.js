@@ -39,8 +39,16 @@ var Campaign = new Schema({
             enum: ['HR','LEADER']      //HR 组长
         },
     },
-    content: String,
-    location: String,                  //地点
+    content: {
+        type: String,
+        required: true
+    },
+
+    location: {//地点
+        type: String,
+        required: true
+    },
+
     member: [_member],
 
     create_time: {
