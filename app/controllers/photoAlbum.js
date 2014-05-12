@@ -47,6 +47,7 @@ exports.createPhotoAlbum = function(req, res) {
   photo_album.save(function(err) {
     if (err) {
       console.log(err);
+      res.send({ result: 0, msg: '创建相册失败' });
     } else {
 
       async.waterfall([
@@ -70,7 +71,10 @@ exports.createPhotoAlbum = function(req, res) {
           });
         }
       ], function(err, result) {
-        if (err) console.log(err);
+        if (err) {
+          console.log(err);
+          res.send({ result: 0, msg: '创建相册失败' });
+        }
       });
 
     }
