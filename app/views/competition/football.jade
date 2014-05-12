@@ -70,10 +70,10 @@ block aside
     label.col-xs-8.control-label= competition.brief.location.name
   .row
     label.col-xs-4.control-label 应战截止时间：
-    label.col-xs-8.control-label= competition.brief.deadline.toLocaleDateString()
+    label.col-xs-8.control-label= moment(competition.brief.deadline).format("YYYY-MM-DD HH:mm")
   .row
     label.col-xs-4.control-label 活动时间：
-    label.col-xs-8.control-label= competition.brief.competition_date.toLocaleDateString()
+    label.col-xs-8.control-label= moment(competition.brief.competition_date).format("YYYY-MM-DD HH:mm")
   .row
     label.col-xs-4.control-label 备注：
     label.col-xs-8.control-label= competition.brief.remark

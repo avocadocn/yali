@@ -20,7 +20,8 @@ var mongoose = require('mongoose'),
     validator = require('validator'),
     async = require('async'),
     fs = require('fs'),
-    gm = require('gm').subClass({ imageMagick: true });
+    gm = require('gm').subClass({ imageMagick: true }),
+    moment = require('moment');
 
 
 //返回组件模型里的所有组件(除了虚拟组),待HR选择
@@ -771,7 +772,8 @@ exports.getCompetition = function(req, res){
     'score_a' : score_a,
     'score_b' : score_b,
     'rst_content' : rst_content,
-    'date' : date
+    'date' : date,
+    'moment': moment
   });
 };
 

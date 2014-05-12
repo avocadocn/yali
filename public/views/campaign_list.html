@@ -31,10 +31,10 @@
         </div>
         <div class="col-md-2">
             <div ng-switch on="{{campaign_item.join}}" ng-if="campaign_item.active">
-              <input class="btn dl_btn" type = "button" value = "退出" ng-click="quit(campaign_item.id)" ng-switch-when="true"/>
+              <input class="btn dl_btn margin_5" type = "button" value = "退出" ng-click="quit(campaign_item.id)" ng-switch-when="true"/>
               <input class="btn dl_btn" type = "button" value = "参加" ng-click="join(campaign_item.id)" ng-switch-default/>
             </div>
-            <a class="btn dl_btn" ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}">详情</a>
+            <a class="btn dl_btn margin_5" ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}">详情</a>
         </div>
       </div>
       <hr>
