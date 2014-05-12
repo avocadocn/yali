@@ -1,7 +1,7 @@
 {
   "name": "yali",
   "description": "yali - A fullStack javascript framework powered by  MongoDB, ExpressJS, AngularJS, NodeJS.",
-  "version": "0.4",
+  "version": "0.1.2",
   "private": true,
   "repository": {
     "type": "git",
