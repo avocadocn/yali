@@ -51,20 +51,20 @@ exports.createPhotoAlbum = function(req, res) {
 
       async.waterfall([
         function(callback) {
+          fs.mkdir(config.root + '/public/img/photo_album/' + photo_album._id, function(err) {
+            if (err) callback(err);
+            else {
+              callback(null)
+            }
+          });
+        },
+        function(callback) {
           var pushObj = { pid: photo_album._id, name: photo_album.name };
           req.model.photo.push(pushObj);
           req.model.save(function(err) {
             if (err) callback(err);
             else {
               delete req.model;
-              callback(null);
-            }
-          });
-        },
-        function(callback) {
-          fs.mkdir(config.root + '/public/img/photo_album/' + photo_album._id, function(err) {
-            if (err) callback(err);
-            else {
               return res.send({ result: 1, msg: '创建相册成功' });
             }
           });
