@@ -48,12 +48,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
-    .state('app.playlists', {
-      url: "/playlists",
+    .state('app.campaign_list', {
+      url: "/campaign_list",
       views: {
         'menuContent' :{
-          templateUrl: "templates/playlists.html",
-          controller: 'PlaylistsCtrl'
+          templateUrl: "templates/campaign_list.html",
+          controller: 'CampaignListCtrl'
         }
       }
     })
@@ -68,7 +68,35 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/login');
+
+})
+
+.factory('Authorize', function($state) {
+  var authorize = false;
+
+  var Authorize = function() {
+    if (authorize === false) {
+      $state.go('app.login');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  var Login = function() {
+    authorize = true;
+  }
+
+  var Logout = function() {
+    authorize = false;
+  }
+
+  return {
+    Authorize: Authorize,
+    Login: Login,
+    Logout: Logout
+  };
 
 });
 

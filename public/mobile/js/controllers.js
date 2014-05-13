@@ -1,9 +1,15 @@
 angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope) {
+
 })
 
-.controller('LoginCtrl', function($scope, $http, $rootScope) {
+.controller('LoginCtrl', function($scope, $http, $rootScope, $state, Authorize) {
+
+  if (Authorize.Authorize() === true) {
+    $state.go('app.campaign_list');
+  }
+
   $scope.data = {
     username: '',
     password: ''
@@ -13,25 +19,17 @@ angular.module('starter.controllers', [])
     $http.post('/users/login', { username: $scope.data.username, password: $scope.data.password }).
       success(function(data, status, headers, config) {
         if (data.result === 1) {
-          $rootScope.authorize = true;
-          window.location = '#/app/playlists';
-        } else {
-
+          Authorize.Login();
+          $state.go('app.campaign_list');
         }
       });
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('CampaignListCtrl', function($scope, $http, Authorize, $state) {
+  Authorize.Authorize();
+  $http.get('/users/getCampaigns').
+    success(function(data, status, headers, config) {
+      $scope.campaign_list = data.data;
+    })
 })
