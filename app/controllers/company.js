@@ -146,7 +146,7 @@ exports.groupSelect = function(req, res) {
                     'entity_type' : selected_groups[i].entity_type,
                     'tname' : tname
                 });
-
+                console.log(req.user);
                 var companyGroup = new CompanyGroup();
                 companyGroup.cid = req.session.company_id;
                 companyGroup.cname = company.info.name;
@@ -358,7 +358,7 @@ exports.createDetail = function(req, res) {
                 console.log('错误');
             }
 
-            company.username = req.body.username;
+            company.info.official_name = req.body.username;
             company.password = req.body.password;
             company.status.active = true;
 
