@@ -1,8 +1,28 @@
 extends ../layouts/manager
 
 block baseInfo
-  if(role === 'HR')
-    button.btn.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") 活动
+  
+  .row
+    .col-md-2
+      img.img-responsive.img-thumbnail.size_210.img_contain(src="#{logo}")
+    .col-md-10
+      .row
+        h1= cname
+      .row
+        label= sign
+      .row
+        .col-md-2
+          label.info_border 人数
+          label.info_border  #{number} 人
+        .col-md-2
+          label.info_border  积分
+          label.info_border= score
+        .col-md-2
+          label.info_border  胜率
+          label.info_border  100%
+      if(role === 'HR')
+        .col-md-4.col-md-offset-2
+          button(class="dl_btn" data-toggle="modal" data-target="#sponsorCampaignModel") 活动
 
 block panel
 

@@ -181,7 +181,11 @@ exports.home = function(req, res) {
               'role': req.session.role === 'EMPLOYEE',  //等加入权限功能后再修改  TODO
               'logo': company_group.logo,
               'group_id': company_group._id,
-              'photo_albums': visible_photo_albums
+              'photo_albums': visible_photo_albums,
+              //'cname': company_group._cname,
+              //'sign': company_group.sign
+              'cname': 'dongli',
+              'sign': 'lalala'
             });
           }
         });

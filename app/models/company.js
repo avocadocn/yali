@@ -84,6 +84,11 @@ var CompanySchema = new Schema({
         default: 'company'
     },
     salt: String,
+    
+    logo:{
+        type:String,
+        default: '/img/icons/default_company_logo.png'
+    },
 
     // 企业注册用的邀请码
     register_invite_code: [String]

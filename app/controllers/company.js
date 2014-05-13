@@ -382,6 +382,10 @@ exports.home = function(req, res) {
     return res.render('company/home', {
         title : '公司主页',
         role : req.role
+        cname : 'yali',
+        sign :'lala',
+        score: 0,
+        number: 0
     });
 };
 

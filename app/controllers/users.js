@@ -440,7 +440,14 @@ exports.home = function(req, res) {
         }
       };
 
-      return res.render('users/home', {'groups': req.user.group, 'ugids':_ugids, photo: req.user.photo});
+      return res.render('users/home', {
+        'groups': req.user.group,
+        'ugids':_ugids,
+        photo: req.user.photo,
+        'realname':req.user.realname,
+        'cname':'yali',
+        'sign':'lalala'
+      });
     });
 
   }
