@@ -1,8 +1,8 @@
 extends ../layouts/manager
 
 block baseInfo
-
-  button.btn.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") 活动
+  if(role === 'HR')
+    button.btn.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") 活动
 
 block panel
 

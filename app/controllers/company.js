@@ -149,7 +149,7 @@ exports.groupSelect = function(req, res) {
 
                 var companyGroup = new CompanyGroup();
                 companyGroup.cid = req.session.company_id;
-                companyGroup.cname = req.user.info.name;
+                companyGroup.cname = company.info.name;
                 companyGroup.gid = selected_groups[i].gid;
                 companyGroup.group_type = selected_groups[i].group_type;
                 companyGroup.entity_type = selected_groups[i].entity_type;
@@ -380,9 +380,8 @@ exports.createDetail = function(req, res) {
 
 exports.home = function(req, res) {
     return res.render('company/home', {
-        title : '公司组件和活动',
-        cid : req.session.cid,
-        role : req.session.role === 'EMPLOYEE'  //等加入权限功能后再修改  TODO
+        title : '公司主页',
+        role : req.role
     });
 };
 
