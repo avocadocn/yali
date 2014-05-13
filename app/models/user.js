@@ -81,6 +81,7 @@ var UserSchema = new Schema({
         enum: ['LEADER','EMPLOYEE']      //HR 组长 普通员工
     },
     cid: String,
+    cname: String,
     group: [_group]
 });
 

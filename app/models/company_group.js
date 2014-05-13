@@ -22,6 +22,7 @@ var CompanyGroup = new Schema({
     cid: String,
     gid: String,
     group_type: String,
+    cname:String,
     name: String,
     member: [_member],
     leader: [_member],

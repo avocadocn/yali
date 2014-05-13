@@ -2,7 +2,7 @@
 
 // User routes use users controller
 var users = require('../controllers/users');
-
+var authorization = require('./middlewares/authorization');
 var express = require('express');
 var config = require('../../config/config');
 var photoBodyParser = express.bodyParser({
@@ -11,17 +11,15 @@ var photoBodyParser = express.bodyParser({
 
 module.exports = function(app, passport) {
 
-    var authorize = users.authorize;
-
     app.get('/users/signin', users.signin);
-    app.get('/users/signout', authorize, users.signout);
+    app.get('/users/signout', authorization.requiresLogin, users.signout);
     // Setting the local strategy route
     app.post('/users/session', passport.authenticate('user', {
         failureRedirect: '/users/signin',
         failureFlash: true
     }), users.loginSuccess);
 
-    app.get('/users/home', authorize, users.home);
+    app.get('/users/home', authorization.requiresLogin, users.home);
 
     // Active produce
     app.get('/users/invite', users.invite);
@@ -33,23 +31,23 @@ module.exports = function(app, passport) {
     app.get('/users/finishRegister', users.finishRegister);
 
 
-    app.get('/users/getGroupMessages', authorize, users.getGroupMessages);
-    app.get('/users/getCampaigns', authorize, users.getCampaigns);
+    app.get('/users/getGroupMessages', authorization.requiresLogin, users.getGroupMessages);
+    app.get('/users/getCampaigns', authorization.requiresLogin, users.getCampaigns);
 
-    app.get('/users/getAccount', authorize, users.getAccount);
-    app.post('/users/saveAccount', authorize, users.saveAccount);
-    app.post('/users/changePassword', authorize, users.changePassword);
-    app.get('/users/editInfo', authorize, users.editInfo);
+    app.get('/users/getAccount', authorization.requiresLogin, users.getAccount);
+    app.post('/users/saveAccount', authorization.requiresLogin, users.saveAccount);
+    app.post('/users/changePassword', authorization.requiresLogin, users.changePassword);
+    app.get('/users/editInfo', authorization.requiresLogin, users.editInfo);
 
-    app.post('/users/joinCampaign', authorize, users.joinCampaign);
-    app.post('/users/quitCampaign', authorize, users.quitCampaign);
+    app.post('/users/joinCampaign', authorization.requiresLogin, users.joinCampaign);
+    app.post('/users/quitCampaign', authorization.requiresLogin, users.quitCampaign);
 
-    app.post('/users/vote', authorize, users.vote);
+    app.post('/users/vote', authorization.requiresLogin, users.vote);
 
-    app.post('/users/tempPhoto', authorize, photoBodyParser, users.tempPhoto);
-    app.post('/users/savePhoto', authorize, users.savePhoto);
+    app.post('/users/tempPhoto', authorization.requiresLogin, photoBodyParser, users.tempPhoto);
+    app.post('/users/savePhoto', authorization.requiresLogin, users.savePhoto);
 
-    app.get('/users/editPhoto', authorize, users.editPhoto);
+    app.get('/users/editPhoto', authorization.requiresLogin, users.editPhoto);
 
     app.get('/userPhoto/:id/:width/:height', users.getPhoto);
 

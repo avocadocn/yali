@@ -131,6 +131,7 @@ exports.dealActive = function(req, res) {
                 user.username = user.email;
                 user.cid = company.id;
                 user.id = UUID.id();
+                user.cname = company.info.name;
                 user.save(function(err) {
                   if (err) {
                     console.log(err);

@@ -1,13 +1,6 @@
 <div>
-  <div class="row">
-    <div class="col-md-6">
-      <h1>活动列表</h1>
-    </div>
-    <div class="col-md-6">
-    </div>
-  </div>
-  <div>
-    <div ng-repeat="campaign_item in campaigns" >
+  <div >
+    <div class="margin_15" ng-repeat="campaign_item in campaigns" >
       <div class="row">
         <div class="col-md-2">
           <span>{{ campaign_item.start_time | date:'yyyy-MM-dd HH:mm:ss'}}</span>
@@ -15,17 +8,17 @@
         <div class="col-md-8">
           <div class="row">
             <div class="col-md-10">
-              <span class="message_label">{{ campaign_item.content }}</span>
-            </div>
-            <div class="col-md-2">
-                <input class="dl_btn dl_btn_close" type = "button" ng-if="show" value = "{{ campaign_item.active_value}}" ng-click="cancel(campaign_item.id)" />
+              <span>{{ campaign_item.content }}</span>
+              <input class="dl_btn dl_btn_close" type = "button" ng-if="show" value = "{{ campaign_item.active_value}}" ng-click="cancel(campaign_item.id)" />
             </div>
           </div>
-          <div class="row">
+          <div class="row margin_top_15">
             <span class="message_label">类型: {{ campaign_item.group_type}}</span>
             <span class="message_label">参加活动人数：{{ campaign_item.member.length }}</span>
             <span class="message_label">赛制: {{ campaign_item.provoke.competition_format }}</span>
             <span class="message_label">地点: {{ campaign_item.location }}</span>
+          </div>
+          <div class="row margin_top_15">
             <span class="message_label">截止时间: {{ campaign_item.end_time | date:'yyyy-MM-dd HH:mm:ss'}}</span>
           </div>
         </div>

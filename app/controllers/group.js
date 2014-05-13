@@ -134,7 +134,7 @@ exports.saveInfo =function(req,res) {
 
 //返回组件页面
 exports.home = function(req, res) {
-
+  console.log(req.user);
   if (req.params.groupId !== null) {
     req.session.gid = req.params.groupId;
   }

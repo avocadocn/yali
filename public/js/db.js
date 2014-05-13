@@ -317,6 +317,7 @@ var _users =[
 {
 "active" : true,
 "cid" : "0001-0001-0001-0001-000100010001",
+"cname":"上海动梨信息技术有限公司",
 "department" : "hr",
 "email" : "eric@55yali.com",
 "group" : [
@@ -346,6 +347,7 @@ var _users =[
 {
 "active" : true,
 "cid" : "0002-0002-0002-0002-000200020002",
+"cname":"上海鸭梨信息技术有限公司",
 "department" : "hr",
 "email" : "yali_yg1@163.com",
 "group" : [
@@ -375,6 +377,7 @@ var _users =[
 {
 "active" : true,
 "cid" : "0002-0002-0002-0002-000200020002",
+"cname":"上海鸭梨信息技术有限公司",
 "department" : "IT",
 "email" : "yali_yg2@163.com",
 "group" : [
@@ -404,6 +407,7 @@ var _users =[
 {
 "active" : true,
 "cid" : "0003-0003-0003-0003-000300030003",
+"cname":"上海苹果信息技术有限公司",
 "department" : "hr",
 "email" : "pingguo_yg1@sina.com",
 "group" : [
@@ -433,6 +437,7 @@ var _users =[
 {
 "active" : true,
 "cid" : "0004-0004-0004-0004-000400040004",
+"cname":"上海香蕉信息技术有限公司",
 "department" : "hr",
 "email" : "xiangjiao_yg1@sohu.com",
 "group" : [
@@ -462,6 +467,7 @@ var _users =[
 {
 "active" : true,
 "cid" : "0004-0004-0004-0004-000400040004",
+"cname":"上海香蕉信息技术有限公司",
 "department" : "IT",
 "email" : "xiangjiao_yg2@sohu.com",
 "group" : [
@@ -501,6 +507,7 @@ try{
 var _company_groups =[
 {
     "cid" : "0001-0001-0001-0001-000100010001",
+    "cname":"上海动梨信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海动梨信息技术有限公司-足球队",
@@ -524,6 +531,7 @@ var _company_groups =[
 },
 {
     "cid" : "0002-0002-0002-0002-000200020002",
+    "cname":"上海鸭梨信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海鸭梨信息技术有限公司-足球队",
@@ -547,6 +555,7 @@ var _company_groups =[
 },
 {
     "cid" : "0003-0003-0003-0003-000300030003",
+    "cname":"上海苹果信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海苹果信息技术有限公司-足球队",
@@ -570,6 +579,7 @@ var _company_groups =[
 },
 {
     "cid" : "0004-0004-0004-0004-000400040004",
+    "cname":"上海香蕉信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海香蕉信息技术有限公司-足球队",
