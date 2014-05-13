@@ -184,8 +184,8 @@ exports.home = function(req, res) {
               'photo_albums': visible_photo_albums,
               //'cname': company_group._cname,
               //'sign': company_group.sign
-              'cname': 'dongli',
-              'sign': 'lalala'
+              'cname': company_group.cname,
+              'sign': company_group.brief
             });
           }
         });

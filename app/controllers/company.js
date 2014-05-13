@@ -25,15 +25,16 @@ exports.authCallback = function(req, res) {
     res.redirect('/');
 };
 exports.authorize = function(req, res, next){
-    if(req.user.provider==='company' && req.params.companyId === req.user.id){
+    if(req.user.provider==='company' && (!req.params.companyId || req.params.companyId === req.user.id)){
         req.role = 'HR';
     }
-    else if(req.user.provider ==='user' && req.params.companyId === req.user.cid){
+    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid)){
         req.role = 'EMPLOYEE';
     }
     else{
         req.role = 'GUEST';
     }
+    console.log(req.role +'ss');
     next();
 };
 exports.signin = function(req, res) {
@@ -379,14 +380,35 @@ exports.createDetail = function(req, res) {
 
 
 exports.home = function(req, res) {
-    return res.render('company/home', {
-        title : '公司主页',
-        role : req.role
-        cname : 'yali',
-        sign :'lala',
-        score: 0,
-        number: 0
-    });
+    if(req.role === 'HR'){
+        return res.render('company/home', {
+            title : '公司主页',
+            role : req.role,
+            cname : req.user.info.name,
+            sign : req.user.info.brief,
+            groupnumber: req.user.group.length,
+            membernumber: req.user.info.membernumber
+        });
+    }
+    else{
+        Company.findOne({id: req.user.cid}, function(err, company) {
+            if(company) {
+                if (err) {
+                    console.log('错误');
+                }
+                return res.render('company/home', {
+                    title : '公司主页',
+                    role : company.role,
+                    cname : company.info.name,
+                    sign : company.info.brief,
+                    groupnumber: company.group.length,
+                    membernumber: company.info.membernumber
+                });
+            }
+            else
+                res.redirect('/');
+        });
+    }
 };
 
 exports.Info = function(req, res) {

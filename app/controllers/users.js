@@ -445,8 +445,8 @@ exports.home = function(req, res) {
         'ugids':_ugids,
         photo: req.user.photo,
         'realname':req.user.realname,
-        'cname':'yali',
-        'sign':'lalala'
+        'cname':req.user.cname,
+        'sign':req.user.introduce
       });
     });
 
