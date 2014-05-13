@@ -25,16 +25,16 @@ exports.authCallback = function(req, res) {
     res.redirect('/');
 };
 exports.authorize = function(req, res, next){
-    if(req.company.id && req.params.companyId === req.company.id){
+    if(req.user.provider==='company' && req.params.companyId === req.user.id){
         req.role = 'HR';
     }
-    else if(req.user.cid && req.params.companyId === req.user.cid){
+    else if(req.user.provider ==='user' && req.params.companyId === req.user.cid){
         req.role = 'EMPLOYEE';
     }
     else{
-        req
+        req.role = 'GUEST';
     }
-
+    next();
 };
 exports.signin = function(req, res) {
     res.render('company/signin', {title: '公司登录'});
