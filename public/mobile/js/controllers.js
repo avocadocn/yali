@@ -3,6 +3,25 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope) {
 })
 
+.controller('LoginCtrl', function($scope, $http, $rootScope) {
+  $scope.data = {
+    username: '',
+    password: ''
+  };
+
+  $scope.login = function() {
+    $http.post('/users/login', { username: $scope.data.username, password: $scope.data.password }).
+      success(function(data, status, headers, config) {
+        if (data.result === 1) {
+          $rootScope.authorize = true;
+          window.location = '#/app/playlists';
+        } else {
+
+        }
+      });
+  };
+})
+
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
     { title: 'Reggae', id: 1 },

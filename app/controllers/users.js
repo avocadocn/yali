@@ -67,6 +67,15 @@ exports.loginSuccess = function(req, res) {
   res.redirect('/users/home');
 };
 
+exports.appLoginSuccess = function(req, res) {
+  req.session.username = req.body.username;
+  req.session.cid = req.user.cid;
+  req.session.uid = req.user.id;
+  req.session.role = req.user.role;
+
+  res.send({ result: 1, msg: '登录成功' });
+}
+
 exports.authorize = function(req, res, next) {
   if (req.user) {
     next();

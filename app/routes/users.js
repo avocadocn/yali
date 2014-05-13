@@ -53,4 +53,12 @@ module.exports = function(app, passport) {
 
     app.get('/userPhoto/:id/:width/:height', users.getPhoto);
 
+
+    // for app
+    app.post('/users/login', passport.authenticate('user', {
+        failureRedirect: '/mobile/#app/login',
+        failureFlash: true
+    }), users.appLoginSuccess);
+
 };
+

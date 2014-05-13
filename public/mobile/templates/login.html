@@ -1,0 +1,19 @@
+<ion-view title="登录">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <div class="list list-inset">
+      <label class="item item-input">
+        <input type="email" placeholder="邮箱" ng-model="data.username">
+      </label>
+      <label class="item item-input">
+        <input type="password" placeholder="密码" ng-model="data.password">
+      </label>
+    </div>
+    <div class="padding">
+      <button class="button button-block button-positive" ng-click="login()">登录</button>
+    </div>
+  </ion-content>
+
+</ion-view>
