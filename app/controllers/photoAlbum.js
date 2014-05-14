@@ -196,7 +196,7 @@ exports.createPhoto = function(req, res) {
                   var photo = {
                     uri: uri_dir + photo_name,
                     publish_user: {
-                      id: req.user.id,
+                      id: req.user._id,
                       nickname: req.user.nickname
                     }
                   };

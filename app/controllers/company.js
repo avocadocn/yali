@@ -353,8 +353,8 @@ exports.create = function(req, res) {
  * 验证通过后创建公司进一步的信息(用户名\密码等)
  */
 exports.createDetail = function(req, res) {
-
     Company.findOne({_id: req.session.company_id}, function(err, company) {
+        console.log(company);
         if(company) {
             if (err) {
                 console.log('错误');

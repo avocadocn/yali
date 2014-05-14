@@ -30,7 +30,7 @@ userApp.controller('GroupsController', ['$scope','$http', function($scope, $http
         angular.forEach($scope.groups, function(value, key) {
             if(value.select === '1') {
                 $scope.selected.push({
-                    'gid': value.gid,
+                    '_id': value._id,
                     'group_type': value.group_type,
                     'entity_type': value.entity_type,
                     'tname': value.tname,
@@ -40,7 +40,7 @@ userApp.controller('GroupsController', ['$scope','$http', function($scope, $http
         });
 
         $scope.selected.push({
-            'gid': '0'
+            '_id': '0'
         });
         try {
             $http({

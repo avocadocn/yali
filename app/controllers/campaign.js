@@ -348,7 +348,7 @@ exports.getUserCampaign = function(req, res) {
             for(var j = 0; j < length; j ++) {
               join = false;
               for(var k = 0;k < campaign[j].member.length; k ++) {
-                if(req.user.id === campaign[j].member[k].uid) {
+                if(req.user._id === campaign[j].member[k].uid) {
                   join = true;
                   break;
                 }

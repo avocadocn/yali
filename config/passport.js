@@ -10,7 +10,7 @@ module.exports = function(passport) {
 
     // Serialize the user id to push into the session
     passport.serializeUser(function(user, done) {
-        done(null, {'id':user.id,'provider':user.provider});
+        done(null, {'_id':user.id,'provider':user.provider});
     });
 
     // Deserialize the user object based on a pre-serialized token
@@ -18,14 +18,14 @@ module.exports = function(passport) {
     passport.deserializeUser(function(id_provider, done) {
         if(id_provider.provider==='user'){
             User.findOne({
-                id: id_provider.id
+                _id: id_provider._id
             }, '-salt -hashed_password', function(err, user) {
                 done(err, user);
             });
         }
         else if(id_provider.provider==='company') {
             Company.findOne({
-                id: id_provider.id
+                _id: id_provider._id
             }, '-salt -hashed_password', function(err, company) {
                 done(err, company);
             });

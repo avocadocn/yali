@@ -2,8 +2,8 @@
     <ul>
       <div>
         <div ng-repeat="group in group_lists" >
-            <div class="row"><label class="group_{{ group.gid }}"></label></div>
-            <div class="row">id：{{ group.gid }}</div>
+            <div class="row"><label class="group_{{ group._id }}"></label></div>
+            <div class="row">id：{{ group._id }}</div>
             <div class="row">{{ group.name }}</div>
             <div class="row">组件类型：{{ group.group_type }}</div>
             <div class="row">
@@ -11,7 +11,7 @@
               <div class="col-md-2" ng-repeat="l in group.leader">
                 <a>{{l.nickname}}</a>
               </div>
-             </div>            <input class="btn dl_btn" type = "button" value = "任命组长" ng-click="setGroupId(group.gid)"  data-toggle="modal" data-target="#appointLeaderModel"/>
+             </div>            <input class="btn dl_btn" type = "button" value = "任命组长" ng-click="setGroupId(group._id)"  data-toggle="modal" data-target="#appointLeaderModel"/>
         </div>
       </div>
     </ul>
@@ -30,7 +30,7 @@
         <div class="row">
           <p>该小组的成员</p>
           <li ng-repeat="user in users">
-            <a ng-click="appointLeader(user.id)" data-dismiss="modal">{{user.nickname}}</a>
+            <a ng-click="appointLeader(user._id)" data-dismiss="modal">{{user.nickname}}</a>
           </li>
         </div>
 

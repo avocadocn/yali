@@ -6,10 +6,11 @@ html {
   font-size: 62.5%;
 }
 body {
+  font-family: "Microsoft YaHei";
   font-size: 14px;
   line-height: 1;
   color: #666;
-  background-color: #f9f9f9;
+  background-color: #f7f7f7;
 }
 a {
   color: #28689b;
@@ -22,33 +23,44 @@ a {
   padding-top: 70px;
   padding-bottom: 60px;
 }
-input[type='button'],
-input[type='submit'],
-button {
+.dl_btn {
   border-radius: 0px !important;
   box-shadow: none !important;
   color: #fff;
   background-color: #3bbee8;
   border-color: #3bbee8;
   border-style: solid;
+  line-height: 1;
 }
-button:hover,
-.btn:hover {
+.dl_btn:hover {
   background-color: #3abde7;
   border-color: #3abde7;
 }
-input[disabled='disabled'].editToggle {
+.dl_input.editToggle[disabled='disabled'] {
   background-color: inherit;
   border: 0px solid;
   box-shadow: none;
   cursor: default;
 }
+.dl_btn_close {
+  background-color: #ff8c00;
+  border-color: #ff8c00;
+}
 .info_border {
   padding: 5px;
-  margin: -3px;
+  margin: -2px;
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   border-color: #3bbee8;
+}
+.margin_5 {
+  margin: 5px;
+}
+.margin_15 {
+  margin: 15px;
+}
+.margin_top_15 {
+  margin-top: 15px;
 }
 .size_family {
   height: 300px;
@@ -140,20 +152,11 @@ input[type="number"] {
 .dl_form_control,
 .dl_full_control {
   display: inline-block;
-  background-color: #fafafa;
-}
-.dl_form_control {
-  width: auto;
 }
 .dl_full_control {
   width: 100%;
 }
-.dl_btn {
-  line-height: 1;
-  background-color: #32afe0;
-  border: none;
-}
-.dl_register_nav {
+.dl_nav {
   height: 70px;
   background-color: #32afe0;
   background: -ms-linear-gradient(top, #32afe0, #33b0e3);
@@ -164,7 +167,12 @@ input[type="number"] {
   border-color: #fff;
   color: #fff;
 }
-.dl_register_nav .logo {
+.dl_nav ul li a {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  color: #fff !important;
+}
+.dl_nav .logo {
   margin-top: 5px;
 }
 .wrap {

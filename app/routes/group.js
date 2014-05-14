@@ -13,8 +13,8 @@ var photoBodyParser = express.bodyParser({
 module.exports = function(app) {
   app.get('/group/getgroups', group.getGroups);
 
-  app.get('/group/getCompanyGroups/:id', authorization.requiresLogin, group.getCompanyGroups);
-  app.get('/group/getCompanyGroups', authorization.requiresLogin, group.getCompanyGroups);
+  app.get('/group/getCompanyGroups/:id', group.getCompanyGroups);
+  app.get('/group/getCompanyGroups', group.getCompanyGroups);
 
 
   app.get('/group/home/:groupId', authorization.requiresLogin, group.home);

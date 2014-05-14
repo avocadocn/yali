@@ -61,7 +61,7 @@ exports.signout = function(req, res) {
 exports.loginSuccess = function(req, res) {
   req.session.username = req.body.username;
   req.session.cid = req.user.cid;
-  req.session.uid = req.user.id;
+  req.session.uid = req.user._id;
   req.session.role = req.user.role;
 
   res.redirect('/users/home');
@@ -70,7 +70,7 @@ exports.loginSuccess = function(req, res) {
 exports.appLoginSuccess = function(req, res) {
   req.session.username = req.body.username;
   req.session.cid = req.user.cid;
-  req.session.uid = req.user.id;
+  req.session.uid = req.user._id;
   req.session.role = req.user.role;
 
   res.send({ result: 1, msg: '登录成功' });
@@ -111,7 +111,7 @@ exports.dealActive = function(req, res) {
   var key = req.session.key;
   var name = req.session.name;
 
-  User.findOne({username: req.body.host + '@' + req.body.domain}, function(err, user) {
+  User.findOne({ username: req.body.host + '@' + req.body.domain }, function(err, user) {
     if(err) {
       console.log(err);
     } else if(user) {
@@ -122,15 +122,15 @@ exports.dealActive = function(req, res) {
       }
     } else {
       if(encrypt.encrypt(name, config.SECRET) === key) {
-        Company.findOne({'username': name}).exec(function(err, company){
+        Company.findOne({ 'info.official_name': name }).exec(function(err, company){
           if (company != null) {
             for(var i = 0; i < company.email.domain.length; i++) {
               if(req.body.domain === company.email.domain[i]) {
                 var user = new User();
                 user.email = req.body.host + '@' + req.body.domain;
                 user.username = user.email;
-                user.cid = company.id;
-                user.id = UUID.id();
+                user.cid = company._id;
+                user._id = UUID.id();
                 user.cname = company.info.name;
                 user.save(function(err) {
                   if (err) {
@@ -139,7 +139,7 @@ exports.dealActive = function(req, res) {
                   }
                 });
                 //系统再给员工发一封激活邮件
-                mail.sendStaffActiveMail(user.email, user.id, company.id, req.headers.host);
+                mail.sendStaffActiveMail(user.email, user._id, company._id, req.headers.host);
                 res.render('users/message', message.wait);
                 return;
               }
@@ -163,7 +163,7 @@ exports.dealActive = function(req, res) {
 exports.setProfile = function(req, res) {
   var key = req.query.key;
   var uid = req.query.uid;
-  User.findOne({id: uid}, function(err, user) {
+  User.findOne({ _id: uid }, function(err, user) {
     if(err) {
       console.log(err);
       res.render('users/message', message.dbError);
@@ -193,7 +193,7 @@ exports.setProfile = function(req, res) {
  */
 exports.dealSetProfile = function(req, res) {
   User.findOne(
-    {id : req.query.uid}
+    { _id : req.query.uid }
   , function(err, user) {
     if(err) {
       console.log(err);
@@ -232,7 +232,7 @@ exports.dealSetProfile = function(req, res) {
  * 选择组件页面
  */
 exports.selectGroup = function(req, res) {
-  User.findOne({username: req.session.username}, function(err, user) {
+  User.findOne({ username: req.session.username }, function(err, user) {
     if(err) {
       console.log(err);
       res.render('users/message', message.dbError);
@@ -240,7 +240,7 @@ exports.selectGroup = function(req, res) {
       if(user.active === true) {
         res.render('users/message', message.actived);
       } else {
-        res.render('users/selectGroup', {title: '选择你的兴趣小组', group_head: '个人'});
+        res.render('users/selectGroup', { title: '选择你的兴趣小组', group_head: '个人' });
       }
     } else {
       res.render('users/message', message.unregister);
@@ -271,11 +271,11 @@ exports.dealSelectGroup = function(req, res) {
               console.log(err);
               res.render('users/message', message.dbError);
             }
-            for( var i = 0; i < user.group.length && user.group[i].gid != '0'; i ++) {
-              CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i].gid}, function(err, company_group) {
+            for( var i = 0; i < user.group.length && user.group[i]._id != '0'; i ++) {
+              CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i]._id}, function(err, company_group) {
                 company_group.member.push({
                   'cid':user.cid,
-                  'uid':user.id,
+                  'uid':user._id,
                   'username':user.username,
                   'email':user.email,
                   'phone':user.phone,
@@ -395,7 +395,7 @@ exports.getCampaigns = function(req, res) {
             for(var j = 0; j < length; j ++) {
               join = false;
               for(var k = 0;k < campaign[j].member.length; k ++) {
-                if(req.user.id === campaign[j].member[k].uid) {
+                if(req.user._id === campaign[j].member[k].uid) {
                   join = true;
                   break;
                 }
@@ -452,12 +452,12 @@ exports.home = function(req, res) {
       var _ugids = [];
       var _glength = group.length;
       var tmp_gid = [];
-      for(var j=0;j<req.user.group.length && req.user.group[j].gid != '0';j++){
-        tmp_gid.push(req.user.group[j].gid);
+      for(var j=0;j<req.user.group.length && req.user.group[j]._id != '0';j++){
+        tmp_gid.push(req.user.group[j]._id);
       }
       for(var i=0;i<_glength;i++){
-        if(group[i].gid != '0' && tmp_gid.indexOf(group[i].gid) == -1){
-          _ugids.push(group[i].gid);
+        if(group[i]._id != '0' && tmp_gid.indexOf(group[i]._id) == -1){
+          _ugids.push(group[i]._id);
         }
       };
 
@@ -476,7 +476,7 @@ exports.home = function(req, res) {
 
 exports.editInfo = function(req, res) {
   User.findOne({
-    id: req.user.id
+    _id: req.user._id
   },
   function (err, user) {
     if(err) {
@@ -748,7 +748,7 @@ exports.quitCampaign = function (req, res) {
 
 exports.getSchedules = function(req, res) {
   Campaign
-  .find({ 'member.uid': req.user.id })
+  .find({ 'member.uid': req.user._id })
   .sort('-start_time')
   .exec()
   .then(function(campaigns) {
@@ -783,7 +783,7 @@ exports.getSchedules = function(req, res) {
 //获取账户信息
 exports.getAccount = function (req, res) {
     User.findOne({
-            id : req.session.uid
+            _id : req.session.uid
         },{'_id':0,'hashed_password':0,'salt':0}, function(err, user) {
             if(err) {
                 console.log(err);
@@ -802,7 +802,7 @@ exports.getAccount = function (req, res) {
 //保存用户信息
 exports.saveAccount = function (req, res) {
     User.findOneAndUpdate({
-            id : req.session.uid
+            _id : req.session.uid
         }, req.body.user,null,function(err, user) {
             if(err) {
                 console.log(err);
@@ -820,11 +820,11 @@ exports.saveAccount = function (req, res) {
 
 //修改密码
 exports.changePassword = function (req, res) {
-  if(req.user.id==null){
+  if(req.user._id==null){
       return res.send({'result':0,'msg':'您没有登录'});
   }
   User.findOne({
-      id : req.session.uid
+      _id : req.session.uid
     },function(err, user) {
       if(err) {
         console.log(err);
@@ -962,7 +962,7 @@ exports.savePhoto = function(req, res) {
 exports.editPhoto = function(req, res) {
   res.render('users/editPhoto', {
     photo: req.user.photo,
-    uid: req.user.id
+    uid: req.user._id
   });
 };
 

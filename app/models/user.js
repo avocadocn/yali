@@ -11,7 +11,10 @@ var mongoose = require('mongoose'),
 
 
 var _group = new Schema({
-    gid: String,
+    _id: {
+        type: String,
+        ref: 'Group'
+    },
     group_type: String,
     entity_type: String,           //对应的增强组件名字
     tname: String,                 //小队名称,这是很关键的关键字!
@@ -21,7 +24,7 @@ var _group = new Schema({
  * User Schema
  */
 var UserSchema = new Schema({
-    id: String,
+    _id: String,
     username: {
         type: String,
         unique: true
@@ -80,7 +83,10 @@ var UserSchema = new Schema({
         type: String,
         enum: ['LEADER','EMPLOYEE']      //HR 组长 普通员工
     },
-    cid: String,
+    cid: {
+        type: String,
+        ref: 'Company'
+    },
     cname: String,
     group: [_group]
 });

@@ -148,12 +148,12 @@ exports.home = function(req, res) {
     var tmp_gid = [];
     var _glength = group.length;
     var _uglenth = req.user.group.length;
-    for(var j=0;j<_uglenth && req.user.group[j].gid != '0';j++){
-      tmp_gid.push(req.user.group[j].gid);
+    for(var j=0;j<_uglenth && req.user.group[j]._id != '0';j++){
+      tmp_gid.push(req.user.group[j]._id);
     }
     for(var i=0;i<_glength;i++){
-      if(group[i].gid != '0' && tmp_gid.indexOf(group[i].gid) === -1){
-        _ugids.push(group[i].gid);
+      if(group[i]._id != '0' && tmp_gid.indexOf(group[i]._id) === -1){
+        _ugids.push(group[i]._id);
       }
     }
     CompanyGroup.findOne({ gid: req.session.gid, cid: req.user.cid }).exec(function(err, company_group) {
@@ -201,7 +201,7 @@ exports.getCompanyGroups = function(req, res) {
     company_id = param_id;
   }
   //console.log(company_id);
-  Company.findOne({id: company_id}, function(err, company) {
+  Company.findOne({_id: company_id}, function(err, company) {
     if (err) {
       //console.log(err);
       return res.status(404).send([]);

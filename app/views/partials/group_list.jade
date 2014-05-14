@@ -3,5 +3,5 @@ mixin group_list(gids)
   ul
     each group in groups
       li
-        label(class='group_'+group.gid for=group.gid)
-        a(href="/group/home/#{group.gid}")= group.group_type
+        label(class='group_'+group._id for=group._id)
+        a(href="/group/home/#{group._id}")= group.group_type

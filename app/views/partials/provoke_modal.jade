@@ -41,7 +41,7 @@
       .row
         li(ng-repeat="company in companies")
           hr
-          p 公司id: {{company.id}}
+          p 公司id: {{company._id}}
           p 公司名: {{company.name}}
           button.btn.dl_btn(ng-click="getTeam(company.id)") 列出小组
       a(ng-click="provoke_select(teams.tname)") {{teams.tname}}
