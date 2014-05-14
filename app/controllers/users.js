@@ -315,6 +315,7 @@ exports.getGroupMessages = function(req, res) {
 
     function(callback) {
       GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i]._id]} }, function(err, group_message) {
+        flag++;
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
@@ -969,7 +970,7 @@ exports.getPhoto = function(req, res) {
   if (validator.isNumeric(width + height)) {
     async.waterfall([
       function(callback) {
-        User.findOne({ id: uid })
+        User.findOne({ _id: uid })
         .exec(function(err, user) {
           if (err) callback(err);
           else callback(null, user.photo);
