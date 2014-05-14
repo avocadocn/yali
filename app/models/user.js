@@ -7,7 +7,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     validate = require('mongoose-validate'),
     crypto = require('crypto'),
+    UUID = require('../services/uuid'),
     config = require('../../config/config');
+
 
 
 var _group = new Schema({
