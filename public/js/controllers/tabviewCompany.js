@@ -316,7 +316,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                         info : $scope.info
                     }
                 }).success(function(data, status) {
-                    console.log(data);
                     //TODO:更改对话框
                     if(data.result === 1)
                         alert(data.msg);

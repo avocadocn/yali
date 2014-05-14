@@ -134,7 +134,8 @@ var _company = [
             'name': '上海动梨信息技术有限公司',
             'city': {
                 'province': '上海',
-                'city': '上海',
+                'city': '上海'
+            },
             'address': '上海市',
             'phone': '18801910101',
 
@@ -181,7 +182,8 @@ var _company = [
             'name': '上海鸭梨信息技术有限公司',
             'city': {
                 'province': '上海',
-                'city': '上海',
+                'city': '上海'
+            },
             'address': '上海市',
             'phone': '18801910101',
 
@@ -228,7 +230,8 @@ var _company = [
             'name': '上海苹果信息技术有限公司',
             'city': {
                 'province': '上海',
-                'city': '上海',
+                'city': '上海'
+            },
             'address': '上海市',
             'phone': '18801910101',
 
@@ -275,7 +278,8 @@ var _company = [
             'name': '上海香蕉信息技术有限公司',
             'city': {
                 'province': '上海',
-                'city': '上海',
+                'city': '上海'
+            },
             'address': '上海市',
             'phone': '18801910101',
 
