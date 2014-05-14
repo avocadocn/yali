@@ -31,5 +31,5 @@ angular.module('starter.controllers', [])
   $http.get('/users/getCampaigns').
     success(function(data, status, headers, config) {
       $scope.campaign_list = data.data;
-    })
+    });
 })
