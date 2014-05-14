@@ -97,7 +97,7 @@ var CompanySchema = new Schema({
         default: 'company'
     },
     salt: String,
-    
+
 
 
     // 企业注册用的邀请码

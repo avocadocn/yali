@@ -314,7 +314,7 @@ exports.getGroupMessages = function(req, res) {
     function() { return i < req.user.group.length; },
 
     function(callback) {
-      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i].gid]} }, function(err, group_message) {
+      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i]._id]} }, function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
@@ -377,13 +377,12 @@ exports.getCampaigns = function(req, res) {
 
   var campaigns = [];
   var join = false;
-  var flag = 0;
   var i = 0;
   async.whilst(
     function() { return i < req.user.group.length; },
 
     function(callback) {
-      Campaign.find({'cid' : {'$all':[req.user.cid]} , 'gid' : {'$all':[req.user.group[i].gid]} }, function(err, campaign) {
+      Campaign.find({'cid' : {'$all':[req.user.cid]} , 'gid' : {'$all':[req.user.group[i]._id]} }, function(err, campaign) {
         if(campaign.length > 0) {
           if (err) {
             callback(err);

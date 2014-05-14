@@ -92,12 +92,11 @@ exports.getTeam = function(req, res) {
 exports.getUser = function(req, res) {
   var cid = req.body.cid;   //根据公司名找它的员工
   var _gid = req.body.gid;   //找选择了该组的员工
-  User.find({'cid': cid , 'group':{'$elemMatch':{'gid':_gid, 'leader':false}} },{'id':1,'nickname':1,'username':1,'group':1}, function (err, users){
+  User.find({'cid': cid , 'group':{'$elemMatch':{'_id':_gid, 'leader':false}} },{'_id':1,'nickname':1,'username':1,'group':1}, function (err, users){
     if(err || !users){
       console.log('ERROR');
       return res.send([]);
     }else{
-      console.log(users);
       return res.send(users);
     }
   });

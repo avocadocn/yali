@@ -557,7 +557,6 @@ exports.appointLeader = function (req, res) {
   var cid = req.body.cid;
 
 
-  console.log(uid);
   User.findOne({
         _id : uid
     },function (err, user) {
@@ -566,7 +565,7 @@ exports.appointLeader = function (req, res) {
             return res.send('ERROR');
         } else {
             for(var i =0; i< user.group.length; i ++) {
-                if(user.group[i].gid === gid) {
+                if(user.group[i]._id === gid) {
                     user.group[i].leader = true;
                 }
             }
@@ -581,10 +580,9 @@ exports.appointLeader = function (req, res) {
                             return res.send('ERROR');
                         } else {
                             company_group.leader.push({
-                                'cid' : cid,
-                                'uid' : uid,
-                                'username' : user.username,
-                                'nickname' : user.nickname
+                                '_id' : uid,
+                                'nickname' : user.nickname,
+                                'photo': user.photo
                             });
                             company_group.save(function(err){
                                 if(err){
@@ -597,9 +595,9 @@ exports.appointLeader = function (req, res) {
                                             return res.send('ERROR');
                                         } else {
                                             for(var i = 0; i < company.group.length; i ++) {
-                                                if(company.group[i].gid === gid) {
+                                                if(company.group[i]._id === gid) {
                                                     company.group[i].leader.push({
-                                                        'uid':uid,
+                                                        '_id':uid,
                                                         'nickname':user.nickname
                                                     });
                                                     company.save(function (err) {
