@@ -147,7 +147,8 @@ var _company = [
             'linkman': '动力',              //联系人
             'email': 'hr@55yali.com',
             'brief': '我们是动力',
-            'official_name': '上海动梨信息技术有限公司'
+            'official_name': '上海动梨信息技术有限公司',
+            'logo':'/img/icons/default_company_logo.png'
             }
         },
         'register_date': new Date(),
@@ -193,7 +194,8 @@ var _company = [
             'linkman': '鸭梨',              //联系人
             'email': 'yali_hr@163.com',
             'brief': '我们是鸭梨',
-            'official_name': '上海鸭梨信息技术有限公司'
+            'official_name': '上海鸭梨信息技术有限公司',
+            'logo':'/img/icons/default_company_logo.png'
             }
         },
         'register_date': new Date(),
@@ -239,7 +241,8 @@ var _company = [
             'linkman': '苹果',              //联系人
             'email': 'pingguo_hr@sina.com',
             'brief': '我们是苹果',
-            'official_name': '上海苹果信息技术有限公司'
+            'official_name': '上海苹果信息技术有限公司',
+            'logo':'/img/icons/default_company_logo.png'
             }
         },
         'register_date': new Date(),
@@ -285,7 +288,8 @@ var _company = [
             'linkman': '香蕉',              //联系人
             'email': 'xiangjiao_hr@sohu.com',
             'brief': '我们是香蕉',
-            'official_name': '上海香蕉信息技术有限公司'
+            'official_name': '上海香蕉信息技术有限公司',
+            'logo':'/img/icons/default_company_logo.png'
             }
         },
         'register_date': new Date(),

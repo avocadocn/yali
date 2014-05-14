@@ -4,7 +4,7 @@ block baseInfo
   
   .row
     .col-md-2
-      img.img-responsive.img-thumbnail.size_210.img_contain(src="#{logo}")
+      img.img-responsive.img-thumbnail.size_210.img_contain(src="#{logo ? log :'/img/icons/default_company_logo.png'}")
     .col-md-10
       .row
         h1= cname
