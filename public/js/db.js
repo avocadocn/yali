@@ -150,7 +150,6 @@ var _company = [
             'brief': '我们是动力',
             'official_name': '上海动梨信息技术有限公司',
             'logo':'/img/icons/default_company_logo.png'
-            }
         },
         'register_date': new Date(),
         'provider': 'company',
@@ -198,7 +197,6 @@ var _company = [
             'brief': '我们是鸭梨',
             'official_name': '上海鸭梨信息技术有限公司',
             'logo':'/img/icons/default_company_logo.png'
-            }
         },
         'register_date': new Date(),
         'provider': 'company',
@@ -246,7 +244,6 @@ var _company = [
             'brief': '我们是苹果',
             'official_name': '上海苹果信息技术有限公司',
             'logo':'/img/icons/default_company_logo.png'
-            }
         },
         'register_date': new Date(),
         'provider': 'company',
@@ -294,7 +291,6 @@ var _company = [
             'brief': '我们是香蕉',
             'official_name': '上海香蕉信息技术有限公司',
             'logo':'/img/icons/default_company_logo.png'
-            }
         },
         'register_date': new Date(),
         'provider': 'company',
