@@ -171,8 +171,11 @@ tabViewUser.controller('AccountFormController',['$scope','$http',function($scope
                     }
                 }).success(function(data, status) {
                     //TODO:更改对话框
-                    if(data.result === 1)
+                    if(data.result === 1){
                         alert('信息修改成功！');
+                        //重新刷新页面
+                        window.location.reload();
+                    }
                     else
                         alert(data.msg);
                 }).error(function(data, status) {

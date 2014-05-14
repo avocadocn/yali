@@ -7,7 +7,7 @@ div
       label.col-md-2.control-label 登录邮箱
       .col-md-4
         label.info_label(ng-bind="user.email")
-      a.col-md-2(href="#/changePassword") 修改密码
+      a.col-md-2.btn.dl_btn(href="#/changePassword") 修改密码
     .form-group
       label.col-md-2.control-label 昵称
       .col-md-4
@@ -58,7 +58,7 @@ div
         label.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
   form.form-horizontal(name="linkForm")
     .infoHead.row
-      h1 基本信息
+      h1 联系信息
       a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     .form-group
       label.col-md-2.control-label 手机

@@ -322,6 +322,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                         alert(data.msg);
                     else
                         alert(data.msg);
+                    window.location.reload();
                 }).error(function(data, status) {
                     //TODO:更改对话框
                     alert('数据发生错误！');

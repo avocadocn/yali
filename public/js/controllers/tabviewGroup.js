@@ -323,6 +323,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope',function($http, $sc
                     //TODO:更改对话框
                     if(data.result === 1) {
                         alert('信息修改成功！');
+                        window.location.reload();
                     }
                     else
                         alert(data.msg);
