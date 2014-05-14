@@ -756,6 +756,7 @@ exports.getSchedules = function(req, res) {
       var responseData = [];
       campaigns.forEach(function(campaign) {
         var tempObj = {
+          id: campaign.id,
           content: campaign.content,
           start_time: campaign.start_time,
           end_time: campaign.end_time,

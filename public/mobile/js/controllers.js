@@ -28,6 +28,7 @@ angular.module('starter.controllers', [])
 
 .controller('CampaignListCtrl', function($scope, $http, Authorize, $state) {
   Authorize.Authorize();
+
   $http.get('/users/getCampaigns').
     success(function(data, status, headers, config) {
       $scope.campaign_list = data.data;
@@ -37,13 +38,21 @@ angular.module('starter.controllers', [])
     $http.post('/users/joinCampaign', { campaign_id: id }).
       success(function(data, status, headers, config) {
       });
-  }
+  };
 })
 
 .controller('ScheduleListCtrl', function($scope, $http, Authorize, $state) {
   Authorize.Authorize();
+
   $http.get('/users/schedules').
     success(function(data, status, headers, config) {
       $scope.schedule_list = data.data;
     });
+
+  $scope.quit = function(id) {
+    $http.post('/users/quitCampaign', { campaign_id: id }).
+      success(function(data, status, headers, config) {
+
+      });
+  };
 })
