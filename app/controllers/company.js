@@ -148,6 +148,7 @@ exports.groupSelect = function(req, res) {
                 });
                 console.log(req.user);
                 var companyGroup = new CompanyGroup();
+                companyGroup._id = UUID.id();
                 companyGroup.cid = req.session.company_id;
                 companyGroup.cname = company.info.name;
                 companyGroup.gid = selected_groups[i].gid;
