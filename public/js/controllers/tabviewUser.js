@@ -232,7 +232,7 @@ tabViewUser.controller('PasswordFormController', ['$http','$scope', function($ht
     $scope.nowpassword = '';
     $scope.newpassword = '';
     $scope.confirmpassword = '';
-    this.change_password = function(){
+    $scope.change_password = function(){
         $http({
             method : 'post',
             url : '/users/changePassword',
@@ -244,7 +244,7 @@ tabViewUser.controller('PasswordFormController', ['$http','$scope', function($ht
             //TODO:更改对话框
             if(data.result === 1){
                 alert(data.msg);
-                window.loaction.href = '#/personal';
+                window.location.href = '#/personal';
             }
             else
                 alert(data.msg);

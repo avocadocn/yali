@@ -5,13 +5,13 @@
  */
 exports.requiresLogin = function(req, res, next) {
     if (!req.user) {
-        return  res.redirect('/');
+        return res.send(403, 'forbidden!');
     }
     next();
 };
 exports.requiresUser = function(req, res, next) {
     if (!req.user || req.user.provider !=='user') {
-        return  res.redirect('/users/signin');
+        return res.send(403, 'forbidden!');
     }
     next();
 };
@@ -23,7 +23,7 @@ exports.requiresLeader = function(req, res, next) {
 };
 exports.requiresCompany = function(req, res, next) {
     if (!req.user || req.user.provider !=='company') {
-        return  res.redirect('/company/signin');
+        return res.send(403, 'forbidden!');
     }
     next();
 };

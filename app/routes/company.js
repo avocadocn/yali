@@ -32,7 +32,7 @@ module.exports = function(app, passport) {
 
     //公司信息查看和修改
     app.get('/company/getAccount', authorization.requiresLogin, company.getAccount);
-    app.get('/company/info', authorization.requiresLogin, company.Info);
+    app.get('/company/info', authorization.requiresLogin,company.authorize, company.Info);
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);
     app.post('/company/saveAccount', authorization.requiresCompany, company.saveAccount);
 

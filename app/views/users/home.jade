@@ -4,7 +4,7 @@ block baseInfo
   .row
     .col-md-2
       //用户头像
-      img.img-responsive.img-thumbnail(src="#{photo}" width="128px")
+      img.img-responsive.img-thumbnail(src="#{photo ? photo :'/img/icons/default_user_photo.png'}" width="128px")
     .col-md-10
       //人名
       .row

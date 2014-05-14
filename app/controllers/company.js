@@ -34,7 +34,6 @@ exports.authorize = function(req, res, next){
     else{
         req.role = 'GUEST';
     }
-    console.log(req.role +'ss');
     next();
 };
 exports.signin = function(req, res) {
@@ -398,7 +397,7 @@ exports.home = function(req, res) {
                 }
                 return res.render('company/home', {
                     title : '公司主页',
-                    role : company.role,
+                    role : req.role,
                     cname : company.info.name,
                     sign : company.info.brief,
                     groupnumber: company.group.length,
@@ -412,13 +411,10 @@ exports.home = function(req, res) {
 };
 
 exports.Info = function(req, res) {
-    if(req.session.cpname !== null) {
-        res.render('company/company_info', {
-            title: '企业信息管理'
+    res.render('company/company_info', {
+            title: '企业信息管理',
+            role: req.role
         });
-    }
-    else
-        res.status(403).send([]);
 };
 
 exports.getAccount = function(req, res) {
