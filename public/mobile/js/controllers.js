@@ -32,6 +32,12 @@ angular.module('starter.controllers', [])
     success(function(data, status, headers, config) {
       $scope.campaign_list = data.data;
     });
+
+  $scope.join = function(id) {
+    $http.post('/users/joinCampaign', { campaign_id: id }).
+      success(function(data, status, headers, config) {
+      });
+  }
 })
 
 .controller('ScheduleListCtrl', function($scope, $http, Authorize, $state) {

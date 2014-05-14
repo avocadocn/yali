@@ -6,7 +6,7 @@
     <ion-list>
       <ion-item ng-repeat="campaign in campaign_list" href="#">
         <p>{{ campaign.content }}</p>
-        <button class="button button-block">参加活动</button>
+        <button class="button button-block" ng-click="join(campaign.id)">参加活动</button>
       </ion-item>
     </ion-list>
   </ion-content>
