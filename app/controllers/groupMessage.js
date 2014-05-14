@@ -94,54 +94,64 @@ exports.getGroupMessage = function(req, res) {
 exports.getUserMessage = function(req, res) {
   var group_messages = [];
   var flag = 0;
-  console.log(req.session.role);
-  for(var i = 0; i < req.user.group.length; i ++) {
-     GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i].gid]} }, function(err, group_message) {
-      flag ++;
-      if (group_message.length > 0) {
-        if (err) {
-          console.log(err);
-          return;
-        } else {
+  var i = 0;
+  async.whilst(
+    function() { return i < req.user.group.length; },
 
-          var length = group_message.length;
-          for(var j = 0; j < length; j ++) {
+    function(callback) {
+      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i].gid]} }, function(err, group_message) {
+        if (group_message.length > 0) {
+          if (err) {
+            console.log(err);
+            return;
+          } else {
 
-            var positive = 0;
-            var negative = 0;
-            console.log(req.session.companyGroup);
-            for(var k = 0; k < group_message[j].provoke.camp.length; k ++) {
-              if(group_message[j].provoke.camp[k].tname === req.user.group[flag-1].tname){
-                positive = group_message[j].provoke.camp[k].vote.positive;
-                negative = group_message[j].provoke.camp[k].vote.negative;
-                break;
+            var length = group_message.length;
+            for(var j = 0; j < length; j ++) {
+
+              var positive = 0;
+              var negative = 0;
+              for(var k = 0; k < group_message[j].provoke.camp.length; k ++) {
+                if(group_message[j].provoke.camp[k].tname === req.user.group[flag-1].tname){
+                  positive = group_message[j].provoke.camp[k].vote.positive;
+                  negative = group_message[j].provoke.camp[k].vote.negative;
+                  break;
+                }
               }
+              group_messages.push({
+                'positive' : positive,
+                'negative' : negative,
+                'my_tname': req.user.group[i].tname,
+                'id': group_message[j].id,
+                'cid': group_message[j].cid,
+                'group': group_message[j].group,
+                'active': group_message[j].active,
+                'date': group_message[j].date,
+                'poster': group_message[j].poster,
+                'content': group_message[j].content,
+                'location' : group_message[j].location,
+                'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
+                'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
+                'provoke': group_message[j].provoke,                  //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工公司id和被约公司id一致 3.约战没有确认 4.当前员工是该小队的队长
+                'provoke_accept': group_message[j].provoke.active && (group_message[j].group.gid[0] === req.user.group[flag-1].gid) && (!group_message[j].provoke.start_confirm) && req.user.group[flag-1].leader && (group_message[j].cid[1] === req.session.cid)
+              });
             }
-            group_messages.push({
-              'positive' : positive,
-              'negative' : negative,
-              'my_tname': req.user.group[flag-1].tname,
-              'id': group_message[j].id,
-              'cid': group_message[j].cid,
-              'group': group_message[j].group,
-              'active': group_message[j].active,
-              'date': group_message[j].date,
-              'poster': group_message[j].poster,
-              'content': group_message[j].content,
-              'location' : group_message[j].location,
-              'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
-              'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
-              'provoke': group_message[j].provoke,                  //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工公司id和被约公司id一致 3.约战没有确认 4.当前员工是该小队的队长
-              'provoke_accept': group_message[j].provoke.active && (group_message[j].group.gid[0] === req.user.group[flag-1].gid) && (!group_message[j].provoke.start_confirm) && req.user.group[flag-1].leader && (group_message[j].cid[1] === req.session.cid)
-            });
           }
         }
-      }
-      if(flag === req.user.group.length) {
+        i++;
+        callback();
+      });
+    },
+
+    function(err) {
+      if (err) {
+        console.log(err);
+        res.send([]);
+      } else {
         res.send(group_messages);
       }
-    });
-  }
+    }
+  );
 };
 
 

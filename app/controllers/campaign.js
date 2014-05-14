@@ -334,50 +334,61 @@ exports.getUserCampaign = function(req, res) {
   var campaigns = [];
   var join = false;
   var flag = 0;
-  for(var i = 0; i < req.user.group.length; i ++) {
-     Campaign.find({'cid' : {'$all':[req.user.cid]} , 'gid' : {'$all':[req.user.group[i].gid]} }, function(err, campaign) {
-      flag ++;
-      if(campaign.length > 0) {
-        if (err) {
-          console.log(err);
-          return;
-        } else {
-          var length = campaign.length;
-          for(var j = 0; j < length; j ++) {
-            join = false;
-            for(var k = 0;k < campaign[j].member.length; k ++) {
-              if(req.user.id === campaign[j].member[k].uid) {
-                join = true;
-                break;
+  var i = 0;
+  async.whilst(
+    function() { return i < req.user.group.length; },
+
+    function(callback) {
+      Campaign.find({'cid' : {'$all':[req.user.cid]} , 'gid' : {'$all':[req.user.group[i].gid]} }, function(err, campaign) {
+        if(campaign.length > 0) {
+          if (err) {
+            callback(err);
+          } else {
+            var length = campaign.length;
+            for(var j = 0; j < length; j ++) {
+              join = false;
+              for(var k = 0;k < campaign[j].member.length; k ++) {
+                if(req.user.id === campaign[j].member[k].uid) {
+                  join = true;
+                  break;
+                }
               }
+              campaigns.push({
+                'active':campaign[j].active,
+                'id': campaign[j].id,
+                'gid': campaign[j].gid,
+                'group_type': campaign[j].group_type,
+                'cid': campaign[j].cid,
+                'cname': campaign[j].cname,
+                'poster': campaign[j].poster,
+                'content': campaign[j].content,
+                'location': campaign[j].location,
+                'member': campaign[j].member,
+                'create_time': campaign[j].create_time ? campaign[j].create_time.toLocaleDateString() : '',
+                'start_time': campaign[j].start_time ? campaign[j].start_time.toLocaleDateString() : '',
+                'end_time': campaign[j].end_time ? campaign[j].end_time.toLocaleDateString() : '',
+                'join':join,
+                'provoke':campaign[j].provoke
+              });
             }
-            campaigns.push({
-              'active':campaign[j].active,
-              'id': campaign[j].id,
-              'gid': campaign[j].gid,
-              'group_type': campaign[j].group_type,
-              'cid': campaign[j].cid,
-              'cname': campaign[j].cname,
-              'poster': campaign[j].poster,
-              'content': campaign[j].content,
-              'location': campaign[j].location,
-              'member': campaign[j].member,
-              'create_time': campaign[j].create_time ? campaign[j].create_time.toLocaleDateString() : '',
-              'start_time': campaign[j].start_time ? campaign[j].start_time.toLocaleDateString() : '',
-              'end_time': campaign[j].end_time ? campaign[j].end_time.toLocaleDateString() : '',
-              'join':join,
-              'provoke':campaign[j].provoke
-            });
           }
         }
-      }
-      if(flag === req.user.group.length) {
+        i++;
+        callback();
+      });
+    },
+
+    function(err) {
+      if (err) {
+        console.log(err);
+        res.send([]);
+      } else {
         res.send({
           'data':campaigns
         });
       }
-    });
-  }
+    }
+  );
 };
 
 
