@@ -559,7 +559,7 @@ exports.appointLeader = function (req, res) {
 
   console.log(uid);
   User.findOne({
-        id : uid
+        _id : uid
     },function (err, user) {
 
         if (err || !user) {

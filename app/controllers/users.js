@@ -274,12 +274,9 @@ exports.dealSelectGroup = function(req, res) {
             for( var i = 0; i < user.group.length && user.group[i]._id != '0'; i ++) {
               CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i]._id}, function(err, company_group) {
                 company_group.member.push({
-                  'cid':user.cid,
-                  'uid':user._id,
-                  'username':user.username,
-                  'email':user.email,
-                  'phone':user.phone,
-                  'number':0                     //个人队号暂定为0,到时由队长统一修改
+                  _id: user._id,
+                  nickname: user.nickname,
+                  photo: user.photo
                 });
                 company_group.save(function(err){
                   if(err){
@@ -483,14 +480,13 @@ exports.editInfo = function(req, res) {
       console.log(err);
     } else if(user) {
       Company.findOne({
-        id: user.cid
+        _id: user.cid
       },
       function(err, company) {
         if(err) {
           console.log(err);
         } else if(company) {
           user.register_date = user.register_date.toLocaleString();
-          console.log(user.register_date.toLocaleString());
           return res.render('users/editInfo',
             {'title': '编辑个人资料',
             'user': user,
