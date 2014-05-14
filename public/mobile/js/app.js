@@ -49,11 +49,21 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     })
     .state('app.campaign_list', {
-      url: "/campaign_list",
+      url: '/campaign_list',
       views: {
-        'menuContent' :{
-          templateUrl: "templates/campaign_list.html",
+        'menuContent': {
+          templateUrl: 'templates/campaign_list.html',
           controller: 'CampaignListCtrl'
+        }
+      }
+    })
+
+    .state('app.schedule_list', {
+      url: '/schedule_list',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/schedule_list.html',
+          controller: 'ScheduleListCtrl'
         }
       }
     })

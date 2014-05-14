@@ -722,6 +722,42 @@ exports.quitCampaign = function (req, res) {
 };
 
 
+
+// 获取用户日程
+
+exports.getSchedules = function(req, res) {
+  Campaign
+  .find({ 'member.uid': req.user.id })
+  .sort('-start_time')
+  .exec()
+  .then(function(campaigns) {
+    if (campaigns) {
+      var responseData = [];
+      campaigns.forEach(function(campaign) {
+        var tempObj = {
+          content: campaign.content,
+          start_time: campaign.start_time,
+          end_time: campaign.end_time,
+          location: campaign.location
+        }
+        responseData.push(tempObj);
+      });
+    }
+    res.send({ result: 1, msg: '获取日程列表成功', data: responseData });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send({ result: 0, msg: '获取日程列表失败' });
+  })
+};
+
+
+
+
+
+
+
+
 //获取账户信息
 exports.getAccount = function (req, res) {
     User.findOne({

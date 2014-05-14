@@ -58,5 +58,7 @@ module.exports = function(app, passport) {
         failureFlash: true
     }), users.appLoginSuccess);
 
+    app.get('/users/schedules', authorization.requiresLogin, users.getSchedules);
+
 };
 

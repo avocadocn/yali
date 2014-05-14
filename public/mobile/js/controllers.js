@@ -33,3 +33,11 @@ angular.module('starter.controllers', [])
       $scope.campaign_list = data.data;
     });
 })
+
+.controller('ScheduleListCtrl', function($scope, $http, Authorize, $state) {
+  Authorize.Authorize();
+  $http.get('/users/schedules').
+    success(function(data, status, headers, config) {
+      $scope.schedule_list = data.data;
+    });
+})

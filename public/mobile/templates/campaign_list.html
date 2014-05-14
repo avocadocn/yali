@@ -5,7 +5,8 @@
   <ion-content class="has-header">
     <ion-list>
       <ion-item ng-repeat="campaign in campaign_list" href="#">
-        {{ campaign.content }}
+        <p>{{ campaign.content }}</p>
+        <button class="button button-block">参加活动</button>
       </ion-item>
     </ion-list>
   </ion-content>
