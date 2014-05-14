@@ -17,7 +17,7 @@ var CompanyRegisterInviteCode = new Schema({
     },
 
     company: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "Company"
     }
 

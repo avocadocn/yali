@@ -11,7 +11,7 @@ var photoBodyParser = express.bodyParser({
 
 
 module.exports = function(app) {
-  app.get('/group/getgroups', authorization.requiresLogin, group.getGroups);
+  app.get('/group/getgroups', group.getGroups);
 
   app.get('/group/getCompanyGroups/:id', authorization.requiresLogin, group.getCompanyGroups);
   app.get('/group/getCompanyGroups', authorization.requiresLogin, group.getCompanyGroups);

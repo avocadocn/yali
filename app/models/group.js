@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
  * 组件模型
  */
 var GroupModel = new Schema({
-    gid: String,
+    _id: String,
     group_type: String,
     entity_type: String,
     icon: String,

@@ -25,7 +25,7 @@ exports.authCallback = function(req, res) {
     res.redirect('/');
 };
 exports.authorize = function(req, res, next){
-    if(req.user.provider==='company' && (!req.params.companyId || req.params.companyId === req.user.id)){
+    if(req.user.provider==='company' && (!req.params.companyId || req.params.companyId === req.user._id)){
         req.role = 'HR';
     }
     else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid)){
@@ -42,7 +42,7 @@ exports.signin = function(req, res) {
 
 exports.loginSuccess = function(req, res) {
     req.session.cpname = req.body.username;
-    req.session.cid = req.user.id;
+    req.session.cid = req.user._id;
     req.session.role = 'HR';
     res.redirect('/company/home');
 };
@@ -130,7 +130,7 @@ exports.groupSelect = function(req, res) {
         return  res.redirect('/company/signup');
     }
 
-    Company.findOne({id : req.session.company_id}, function(err, company) {
+    Company.findOne({_id : req.session.company_id}, function(err, company) {
         if(company) {
             if (err) {
                 console.log('不存在公司');
@@ -141,17 +141,17 @@ exports.groupSelect = function(req, res) {
                 var tname = company.info.name + '-'+ selected_groups[i].group_type + '队'; //默认的小队名
 
                 company.group.push({
-                    'gid' : selected_groups[i].gid,
+                    '_id' : selected_groups[i]._id,
                     'group_type' : selected_groups[i].group_type,
                     'entity_type' : selected_groups[i].entity_type,
                     'tname' : tname
                 });
-                console.log(req.user);
+
                 var companyGroup = new CompanyGroup();
                 companyGroup._id = UUID.id();
                 companyGroup.cid = req.session.company_id;
                 companyGroup.cname = company.info.name;
-                companyGroup.gid = selected_groups[i].gid;
+                companyGroup.gid = selected_groups[i]._id;
                 companyGroup.group_type = selected_groups[i].group_type;
                 companyGroup.entity_type = selected_groups[i].entity_type;
                 companyGroup.name = tname;
@@ -167,7 +167,7 @@ exports.groupSelect = function(req, res) {
 
                 //增强组件目前只能存放这两个字段
                 entity.cid = req.session.company_id;
-                entity.gid = selected_groups[i].gid;
+                entity.gid = selected_groups[i]._id;
 
                 entity.save(function (err){
                     if (err) {
@@ -191,7 +191,7 @@ exports.validate = function(req, res) {
     var key = req.query.key;
     var _id = req.query.id;
     Company.findOne({
-        id : _id
+        _id : _id
     },
     function (err, user) {
         if (user) {
@@ -247,6 +247,7 @@ exports.create = function(req, res) {
                         }
                     });
                     return Company.create({
+                        _id: UUID.id(),
                         username: UUID.id(),
                         password: UUID.id(),
                         info: {
@@ -259,6 +260,7 @@ exports.create = function(req, res) {
             });
         } else {
             return Company.create({
+                _id: UUID.id(),
                 username: UUID.id(),
                 password: UUID.id(),
                 info: {
@@ -276,7 +278,6 @@ exports.create = function(req, res) {
         company.info.lindline.number = req.body.number;
         company.info.lindline.extension = req.body.extension;
         company.info.phone = req.body.phone;
-        company.id = UUID.id();//公司的id
         company.provider = 'company';
         company.login_email = req.body.email;
         var _email = req.body.email.split('@');
@@ -353,7 +354,7 @@ exports.create = function(req, res) {
  */
 exports.createDetail = function(req, res) {
 
-    Company.findOne({id: req.session.company_id}, function(err, company) {
+    Company.findOne({_id: req.session.company_id}, function(err, company) {
         if(company) {
             if (err) {
                 console.log('错误');
@@ -391,7 +392,7 @@ exports.home = function(req, res) {
         });
     }
     else{
-        Company.findOne({id: req.user.cid}, function(err, company) {
+        Company.findOne({ _id: req.user.cid }, function(err, company) {
             if(company) {
                 if (err) {
                     console.log('错误');
@@ -420,7 +421,7 @@ exports.Info = function(req, res) {
 
 exports.getAccount = function(req, res) {
     if(req.session.cid !== null) {
-        Company.findOne({'id': req.session.cid}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
+        Company.findOne({'_id': req.session.cid}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
             if (err) {
                 console.log(err);
             }
@@ -444,13 +445,13 @@ exports.getAccount = function(req, res) {
 exports.saveAccount = function(req, res) {
     if(req.session.cid !== undefined) {
         var _company = {};
-        if(req.body.company!==undefined){
+        if(req.body.company !== undefined){
             _company = req.body.company;
         }
-        else if(req.body.info!==undefined){
+        else if(req.body.info !== undefined){
             _company.info = req.body.info;
         }
-        Company.findOneAndUpdate({'id': req.session.cid}, _company,null, function(err, company) {
+        Company.findOneAndUpdate({ '_id': req.session.cid }, _company, null, function(err, company) {
             if (err) {
                 console.log('数据错误');
                 res.send({'result':0,'msg':'数据查询错误'});
@@ -590,7 +591,7 @@ exports.appointLeader = function (req, res) {
                                     //这里需要回滚User的操作
                                     return res.send('ERROR');
                                 } else {
-                                    Company.findOne({'id':cid}, function (err, company) {
+                                    Company.findOne({'_id':cid}, function (err, company) {
                                         if(err || !company) {
                                             //这里需要回滚User,CompanyGroup的操作
                                             return res.send('ERROR');
@@ -664,7 +665,7 @@ exports.sponsor = function (req, res) {
     var cname = '';
 
     Company.findOne({
-            id : cid
+            _id : cid
         },
         function (err, company) {
             cname = company.info.name;

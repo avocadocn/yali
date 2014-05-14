@@ -9,7 +9,10 @@ var mongoose = require('mongoose'),
 
 
 var _member = new Schema({
-    uid: String,
+    _id: {
+        type: String,
+        ref: 'User'
+    },
     nickname: String,
     photo: String
 });
@@ -21,11 +24,17 @@ var _member = new Schema({
  * 企业组件
  */
 var CompanyGroup = new Schema({
-    _id : String,                   //新增字段,暂时不用
-    cid: String,
-    gid: String,
+    _id : String,
+    cid: {
+        type: String,
+        ref: 'Company'
+    },
+    gid: {
+        type: String,
+        ref: 'Group'
+    },
     group_type: String,
-    cname:String,
+    cname: String,
     name: String,
     member: [_member],
     leader: [_member],
