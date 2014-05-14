@@ -629,7 +629,7 @@ exports.sponsor = function (req, res) {
   campaign.cid.push(cid);//其实只有一个公司
 
   Company.findOne({
-      id : cid
+      _id : cid
     },
     function (err, company) {
       cname = company.info.name;
