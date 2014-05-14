@@ -442,12 +442,12 @@ exports.getAccount = function(req, res) {
 };
 
 exports.saveAccount = function(req, res) {
-    if(req.session.cid !== null) {
+    if(req.session.cid !== undefined) {
         var _company = {};
-        if(req.body.company!==null){
+        if(req.body.company!==undefined){
             _company = req.body.company;
         }
-        else if(req.body.info!==null){
+        else if(req.body.info!==undefined){
             _company.info = req.body.info;
         }
         Company.findOneAndUpdate({'id': req.session.cid}, _company,null, function(err, company) {
