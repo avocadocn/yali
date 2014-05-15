@@ -155,7 +155,6 @@ exports.groupSelect = function(req, res) {
                 });
 
                 var companyGroup = new CompanyGroup();
-                companyGroup._id = UUID.id();
                 companyGroup.cid = req.session.company_id;
                 companyGroup.cname = company.info.name;
                 companyGroup.gid = selected_groups[i]._id;
@@ -254,7 +253,6 @@ exports.create = function(req, res) {
                         }
                     });
                     return Company.create({
-                        _id: UUID.id(),
                         username: UUID.id(),
                         password: UUID.id(),
                         info: {
@@ -267,7 +265,6 @@ exports.create = function(req, res) {
             });
         } else {
             return Company.create({
-                _id: UUID.id(),
                 username: UUID.id(),
                 password: UUID.id(),
                 info: {

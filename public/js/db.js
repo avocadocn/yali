@@ -150,7 +150,6 @@ try{
 //公司脚本
 var _company = [
     {
-        '_id': '0001-0001-0001-0001-000100010001',
         'username': 'donler',
         'login_email': 'hr@55yali.com',
         'hashed_password': 'AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==',
@@ -182,22 +181,9 @@ var _company = [
             'logo':'/img/icons/default_company_logo.png'
         },
         'register_date': new Date(),
-        'provider': 'company',
-        'group':[
-            {
-                "_id" : "7",
-                "group_type" : "足球",
-                "entity_type" : "FootBall",
-                "tname":"上海动梨信息技术有限公司-足球队",
-                "leader":[{
-                    "_id":"0001-0001-0001-0001-000100010002",
-                    "nickname":"eric"
-                }]
-            }
-        ]
+        'provider': 'company'
     },
     {
-        '_id': '0002-0002-0002-0002-000200020002',
         'username': 'yali',
         'login_email': 'yali_hr@163.com',
         'hashed_password': 'AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==',
@@ -229,22 +215,9 @@ var _company = [
             'logo':'/img/icons/default_company_logo.png'
         },
         'register_date': new Date(),
-        'provider': 'company',
-        'group':[
-            {
-                "_id" : "7",
-                "group_type" : "足球",
-                "entity_type" : "FootBall",
-                "tname":"上海鸭梨信息技术有限公司-足球队",
-                "leader":[{
-                    "_id":"0002-0002-0002-0002-000200020003",
-                    "nickname":"yali_yg1"
-                }]
-            }
-        ]
+        'provider': 'company'
     },
     {
-        '_id': '0003-0003-0003-0003-000300030003',
         'username': 'apple',
         'login_email': 'pingguo_hr@sina.com',
         'hashed_password': 'AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==',
@@ -276,22 +249,9 @@ var _company = [
             'logo':'/img/icons/default_company_logo.png'
         },
         'register_date': new Date(),
-        'provider': 'company',
-        'group':[
-            {
-                "_id" : "7",
-                "group_type" : "足球",
-                "entity_type" : "FootBall",
-                "tname":"上海苹果信息技术有限公司-足球队",
-                "leader":[{
-                    "_id":"0003-0003-0003-0003-000300030004",
-                    "nickname":"apple1"
-                }]
-            }
-        ]
+        'provider': 'company'
     },
     {
-        '_id': '0004-0004-0004-0004-000400040004',
         'username': 'banana',
         'login_email': 'xiangjiao_hr@sohu.com',
         'hashed_password': 'AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==',
@@ -323,19 +283,7 @@ var _company = [
             'logo':'/img/icons/default_company_logo.png'
         },
         'register_date': new Date(),
-        'provider': 'company',
-        'group':[
-            {
-                "_id" : "7",
-                "group_type" : "足球",
-                "entity_type" : "FootBall",
-                "tname":"上海香蕉信息技术有限公司-足球队",
-                "leader":[{
-                    "_id":"0004-0004-0004-0004-000400040006",
-                    "nickname":"xiangjiao_yg2"
-                }]
-            }
-        ]
+        'provider': 'company'
     }
 ];
 try{
@@ -346,11 +294,16 @@ try{
     print(e);
 };
 
+var company_donler = db.companies.findOne({ 'username': 'donler' });
+var company_yali = db.companies.findOne({ 'username': 'yali' });
+var company_apple = db.companies.findOne({ 'username': 'apple' });
+var company_banana = db.companies.findOne({ 'username': 'banana' });
+
 //员工脚本
 var _users =[
 {
 "active" : true,
-"cid" : "0001-0001-0001-0001-000100010001",
+"cid" : company_donler._id,
 "cname":"上海动梨信息技术有限公司",
 "department" : "hr",
 "email" : "eric@55yali.com",
@@ -367,7 +320,6 @@ var _users =[
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
-"_id" : "0001-0001-0001-0001-000100010002",
 "nickname" : "eric",
 "realname":"张三",
 "phone" : "18801910251",
@@ -380,7 +332,7 @@ var _users =[
 },
 {
 "active" : true,
-"cid" : "0002-0002-0002-0002-000200020002",
+"cid" : company_yali._id,
 "cname":"上海鸭梨信息技术有限公司",
 "department" : "hr",
 "email" : "yali_yg1@163.com",
@@ -397,7 +349,6 @@ var _users =[
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
-"_id" : "0002-0002-0002-0002-000200020003",
 "nickname" : "yali_yg1",
 "realname":"李三",
 "phone" : "18801910251",
@@ -410,7 +361,7 @@ var _users =[
 },
 {
 "active" : true,
-"cid" : "0002-0002-0002-0002-000200020002",
+"cid" : company_yali._id,
 "cname":"上海鸭梨信息技术有限公司",
 "department" : "IT",
 "email" : "yali_yg2@163.com",
@@ -427,7 +378,6 @@ var _users =[
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
-"_id" : "0002-0002-0002-0002-000200020004",
 "nickname" : "yali_yg2",
 "realname":"李四",
 "phone" : "18801910251",
@@ -440,7 +390,7 @@ var _users =[
 },
 {
 "active" : true,
-"cid" : "0003-0003-0003-0003-000300030003",
+"cid" : company_apple._id,
 "cname":"上海苹果信息技术有限公司",
 "department" : "hr",
 "email" : "pingguo_yg1@sina.com",
@@ -457,7 +407,6 @@ var _users =[
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
-"_id" : "0003-0003-0003-0003-000300030004",
 "nickname" : "apple1",
 "realname":"王三",
 "phone" : "18801910251",
@@ -470,7 +419,7 @@ var _users =[
 },
 {
 "active" : true,
-"cid" : "0004-0004-0004-0004-000400040004",
+"cid" : company_banana._id,
 "cname":"上海香蕉信息技术有限公司",
 "department" : "hr",
 "email" : "xiangjiao_yg1@sohu.com",
@@ -487,7 +436,6 @@ var _users =[
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
-"_id" : "0004-0004-0004-0004-000400040005",
 "nickname" : "eric",
 "realname":"赵四",
 "phone" : "18801910251",
@@ -500,7 +448,7 @@ var _users =[
 },
 {
 "active" : true,
-"cid" : "0004-0004-0004-0004-000400040004",
+"cid" : company_banana._id,
 "cname":"上海香蕉信息技术有限公司",
 "department" : "IT",
 "email" : "xiangjiao_yg2@sohu.com",
@@ -517,7 +465,6 @@ var _users =[
     }
 ],
 "hashed_password" : "AMQEr5SljqggnlY9LTJR8ZrHMAnYRRNJLnbNU/PriiZNiTkk9hPqPHc3T21mPcNVUqUL7xX1bJJ8axkoyK0cXQ==",
-"_id" : "0004-0004-0004-0004-000400040006",
 "nickname" : "xiangjiao_yg2",
 "realname":"赵五",
 "phone" : "18801910251",
@@ -537,25 +484,95 @@ try{
     print(e);
 };
 
+
+var user_eric = db.users.findOne({ 'email': 'eric@55yali.com' });
+var user_yali_yg1 = db.users.findOne({ 'email': 'yali_yg1@163.com' });
+var user_yali_yg2 = db.users.findOne({ 'email': 'yali_yg2@163.com' });
+var user_apple1 = db.users.findOne({ 'email': 'pingguo_yg1@sina.com' });
+var user_xiangjiao_yg1 = db.users.findOne({ 'email': 'xiangjiao_yg1@sohu.com' });
+var user_xiangjiao_yg2 = db.users.findOne({ 'email': 'xiangjiao_yg2@sohu.com' });
+
+
+
+company_donler.group = [
+            {
+                "_id" : "7",
+                "group_type" : "足球",
+                "entity_type" : "FootBall",
+                "tname":"上海动梨信息技术有限公司-足球队",
+                "leader":[{
+                    "_id": user_eric._id,
+                    "nickname":"eric"
+                }]
+            }
+        ];
+db.companies.update({ "_id": company_donler._id }, company_donler);
+
+company_yali.group = [
+            {
+                "_id" : "7",
+                "group_type" : "足球",
+                "entity_type" : "FootBall",
+                "tname":"上海鸭梨信息技术有限公司-足球队",
+                "leader":[{
+                    "_id": user_yali_yg1._id,
+                    "nickname":"yali_yg1"
+                }]
+            }
+        ];
+db.companies.update({ "_id": company_yali._id }, company_yali);
+
+company_apple.group = [
+            {
+                "_id" : "7",
+                "group_type" : "足球",
+                "entity_type" : "FootBall",
+                "tname":"上海苹果信息技术有限公司-足球队",
+                "leader":[{
+                    "_id": user_apple1._id,
+                    "nickname":"apple1"
+                }]
+            }
+        ];
+db.companies.update({ "_id": company_apple._id }, company_apple);
+
+company_banana.group = [
+            {
+                "_id" : "7",
+                "group_type" : "足球",
+                "entity_type" : "FootBall",
+                "tname":"上海香蕉信息技术有限公司-足球队",
+                "leader":[{
+                    "_id": user_xiangjiao_yg2._id,
+                    "nickname":"xiangjiao_yg2"
+                }]
+            }
+        ];
+db.companies.update({ "_id": company_banana._id }, company_banana);
+
+
+
+
+
+
 // 公司组件
 var _company_groups =[
 {
-    "_id" : "0001-0001-0001-0001-000100021212",
-    "cid" : "0001-0001-0001-0001-000100010001",
+    "cid" : company_donler._id,
     "cname":"上海动梨信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海动梨信息技术有限公司-足球队",
     "leader" : [
         {
-            "_id" : "0001-0001-0001-0001-000100010002",
+            "_id" : user_eric._id,
             "nickname" : "eric",
             "photo": "/img/icons/default_user_photo.png"
         }
     ],
     "member" : [
         {
-            "_id" : "0001-0001-0001-0001-000100010002",
+            "_id" : user_eric._id,
             "nickname" : "eric",
             "photo": "/img/icons/default_user_photo.png"
         }
@@ -565,22 +582,21 @@ var _company_groups =[
     "brief":"足球队"
 },
 {
-    "_id" : "0002-0002-0002-0002-000100021212",
-    "cid" : "0002-0002-0002-0002-000200020002",
+    "cid" : company_yali._id,
     "cname":"上海鸭梨信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海鸭梨信息技术有限公司-足球队",
     "leader" : [
         {
-            "_id" : "0002-0002-0002-0002-000200020003",
+            "_id" : user_yali_yg1._id,
             "nickname" : "yali_yg1",
             "photo": "/img/icons/default_user_photo.png"
         }
     ],
     "member" : [
         {
-            "_id" : "0002-0002-0002-0002-000200020003",
+            "_id" : user_yali_yg1._id,
             "nickname" : "yali_yg1",
             "photo": "/img/icons/default_user_photo.png"
         }
@@ -590,22 +606,21 @@ var _company_groups =[
     "brief":"足球队"
 },
 {
-    "_id" : "0003-0003-0003-0003-000100021212",
-    "cid" : "0003-0003-0003-0003-000300030003",
+    "cid" : company_yali._id,
     "cname":"上海苹果信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海苹果信息技术有限公司-足球队",
     "leader" : [
         {
-            "_id" : "0003-0003-0003-0003-000300030004",
+            "_id" : user_apple1._id,
             "nickname" : "apple1",
             "photo": "/img/icons/default_user_photo.png"
         }
     ],
     "member" : [
         {
-            "_id" : "0003-0003-0003-0003-000300030004",
+            "_id" : user_apple1._id,
             "nickname" : "apple1",
             "photo": "/img/icons/default_user_photo.png"
         }
@@ -615,22 +630,21 @@ var _company_groups =[
     "brief":"足球队"
 },
 {
-    "_id" : "0004-0004-0004-0004-000100021212",
-    "cid" : "0004-0004-0004-0004-000400040004",
+    "cid" : company_banana._id,
     "cname":"上海香蕉信息技术有限公司",
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海香蕉信息技术有限公司-足球队",
     "leader" : [
         {
-            "_id" : "0004-0004-0004-0004-000400040006",
+            "_id" : user_xiangjiao_yg2._id,
             "nickname" : "xiangjiao_yg2",
             "photo": "/img/icons/default_user_photo.png"
         }
     ],
     "member" : [
         {
-            "_id" : "0004-0004-0004-0004-000400040006",
+            "_id" : user_xiangjiao_yg2._id,
             "nickname" : "xiangjiao_yg2",
             "photo": "/img/icons/default_user_photo.png"
         }
@@ -652,40 +666,40 @@ try{
 //足球组件
 var _football = [
     {
-        "cid": "0001-0001-0001-0001-000100010001",
+        "cid": company_donler._id,
         "gid": "7",
         "main_force": [{
-            "uid" : "0001-0001-0001-0001-000100010002",
+            "uid" : user_eric._id,
             "nickname" : "eric",
             "photo": "/img/icons/default_user_photo.png"
         }],   //主力
         "create_date": new Date()
     },
     {
-        "cid": "0002-0002-0002-0002-000200020002",
+        "cid": company_yali._id,
         "gid": "7",
         "main_force": [{
-            "uid" : "0002-0002-0002-0002-000200020003",
+            "uid" : user_yali_yg1._id,
             "nickname" : "yali_yg1",
             "photo": "/img/icons/default_user_photo.png"
         }],   //主力
         "create_date": new Date()
     },
     {
-        "cid": "0003-0003-0003-0003-000300030003",
+        "cid": company_apple._id,
         "gid": "7",
         "main_force": [{
-            "uid" : "0003-0003-0003-0003-000300030004",
+            "uid" : user_apple1._id,
             "nickname" : "apple1",
             "photo": "/img/icons/default_user_photo.png"
         }],   //主力
         "create_date": new Date()
     },
     {
-        "cid": "0004-0004-0004-0004-000400040004",
+        "cid": company_banana._id,
         "gid": "7",
         "main_force": [{
-            "uid" : "0004-0004-0004-0004-000400040006",
+            "uid" : user_xiangjiao_yg2._id,
             "nickname" : "xiangjiao_yg2",
             "photo": "/img/icons/default_user_photo.png"
         }],   //主力

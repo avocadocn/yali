@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 
 var _member = new Schema({
     _id : {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
     nickname : String
@@ -18,10 +18,7 @@ var _member = new Schema({
 });
 
 var _group = new Schema({
-    _id: {
-        type: String,
-        ref: 'Group'
-    },
+    _id: String,
     group_type: String,
     entity_type: String,           //对应的增强组件名字
     tname: String,                 //小队名称,这是很关键的关键字!
@@ -32,7 +29,6 @@ var _group = new Schema({
  */
 var CompanySchema = new Schema({
 
-    _id: String,
     username: {
         type: String,
         unique: true

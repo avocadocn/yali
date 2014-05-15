@@ -7,7 +7,6 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     validate = require('mongoose-validate'),
     crypto = require('crypto'),
-    UUID = require('../services/uuid'),
     config = require('../../config/config');
 
 
@@ -26,7 +25,6 @@ var _group = new Schema({
  * User Schema
  */
 var UserSchema = new Schema({
-    _id: String,
     username: {
         type: String,
         unique: true
@@ -86,7 +84,7 @@ var UserSchema = new Schema({
         enum: ['LEADER','EMPLOYEE']      //HR 组长 普通员工
     },
     cid: {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'Company'
     },
     cname: String,

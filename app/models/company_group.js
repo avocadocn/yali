@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 
 var _member = new Schema({
     _id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'User'
     },
     nickname: String,
@@ -24,9 +24,8 @@ var _member = new Schema({
  * 企业组件
  */
 var CompanyGroup = new Schema({
-    _id : String,
     cid: {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'Company'
     },
     gid: {

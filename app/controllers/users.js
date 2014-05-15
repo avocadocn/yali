@@ -130,7 +130,6 @@ exports.dealActive = function(req, res) {
                 user.email = req.body.host + '@' + req.body.domain;
                 user.username = user.email;
                 user.cid = company._id;
-                user._id = UUID.id();
                 user.cname = company.info.name;
                 user.save(function(err) {
                   if (err) {
@@ -457,6 +456,7 @@ exports.home = function(req, res) {
           _ugids.push(group[i]._id);
         }
       };
+
 
       return res.render('users/home', {
         'groups': req.user.group,
