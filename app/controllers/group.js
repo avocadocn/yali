@@ -20,7 +20,8 @@ var mongoose = require('mongoose'),
     validator = require('validator'),
     async = require('async'),
     fs = require('fs'),
-    gm = require('gm').subClass({ imageMagick: true }),
+    gm = require('gm'),
+    path = require('path'),
     moment = require('moment');
 
 
@@ -941,10 +942,9 @@ exports.saveLogo = function(req, res) {
   var fs = require('fs');
   var user = req.user;
 
-  var shasum = crypto.createHash('sha1');
+  var logo_temp_path = req.files.logo.path;
 
-  shasum.update(req.session.gid + req.user.cid);
-  var temp_img = shasum.digest('hex') + '.png';
+  var shasum = crypto.createHash('sha1');
 
   var shasum = crypto.createHash('sha1');
   shasum.update( Date.now().toString() + Math.random().toString() );
@@ -952,16 +952,13 @@ exports.saveLogo = function(req, res) {
 
 
   // 文件系统路径，供fs使用
-  var temp_path = meanConfig.root + '/public/img/group/logo/temp/' + temp_img;
-  var target_dir = meanConfig.root + '/public/img/group/logo/';
+  var target_dir = path.join(meanConfig.root, '/public/img/group/logo/');
 
   // uri路径，存入数据库的路径，供前端访问
   var uri_dir = '/img/group/logo/';
 
-  var gm = require('gm').subClass({ imageMagick: true });
-
   try {
-    gm(temp_path).size(function(err, value) {
+    gm(logo_temp_path).size(function(err, value) {
       if (err) {
         console.log(err);
         res.redirect('/group/editLogo');
@@ -976,27 +973,27 @@ exports.saveLogo = function(req, res) {
         var ori_logo = company_group.logo;
 
         try {
-          gm(temp_path)
+          gm(logo_temp_path)
           .crop(w, h, x, y)
           .resize(150, 150)
-          .write(target_dir + logo, function(err) {
+          .write(path.join(target_dir, logo), function(err) {
             if (err) {
               console.log(err);
               res.redirect('/group/editLogo');
             } else {
-              company_group.logo = uri_dir + logo;
+              company_group.logo = path.join(uri_dir, logo);
               company_group.save(function(err) {
                 if (err) {
                   console.log(err);
                   res.redirect('/group/editLogo');
                 }
               });
-              fs.unlink(temp_path, function(err) {
+              fs.unlink(logo_temp_path, function(err) {
                 if (err) {
                   console(err);
                   res.redirect('/group/editLogo');
                 }
-                var unlink_dir = meanConfig.root + '/public';
+                var unlink_dir = path.join(meanConfig.root, '/public');
                 if (ori_logo && ori_logo !== '/img/icons/default_group_logo.png') {
                   if (fs.existsSync(unlink_dir + ori_logo)) {
                     fs.unlinkSync(unlink_dir + ori_logo);

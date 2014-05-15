@@ -11,14 +11,11 @@ block content
         .row
           .col-xs-4.col-sm-4
             .img_frame
-              img#edit_img.img-responsive.img-thumbnail(src="#{logo}")
+              img#jcrop_img.img-responsive.img-thumbnail(src="#{logo}")
           .col-xs-8.col-sm-8
             h3 从电脑中选择你喜欢的照片
             p 你可以上传JPG、JPEG、GIF、PNG或BMP文件
-            form#temp_photo_form(action="/group/tempLogo" method="post" enctype="multipart/form-data")
-              label.btn.btn-default 选择logo
-                input#temp_photo.hidden(type="file" name="temp_photo" accept="image/*")
-              label#photo_path 未选择文件
+              label.btn.btn-default(for="logo") 选择logo
         .row
           .col-xs-12.col-sm-12
             h3 这是你在动梨上的logo小图标
@@ -35,11 +32,12 @@ block content
               img#preview_small(src="#{'/groupLogo/' + id + '/27/27'}")
           .col-xs-4.col-sm-4
         .row
-          form(action="/group/saveLogo" method="post")
+          form(action="/group/saveLogo" method="post" enctype="multipart/form-data")
             input#w(type="hidden" name="width" value="128")
             input#h(type="hidden" name="height" value="128")
             input#x(type="hidden" name="x" value="0")
             input#y(type="hidden" name="y" value="0")
+            input#logo.hidden(type="file" name="logo" accept="image/*")
             button#save_button.btn.btn-primary(type="submit" disabled) 保存logo设置
       .col-xs-12.col-sm-5
         h3 给你的小队自己扮酷
@@ -49,4 +47,5 @@ block content
 append footExt
   script(src="/js/jquery.Jcrop.min.js")
   script(src="/lib/jquery-form/jquery.form.js")
+  script(src="/js/file_helper.js")
   script(src="/js/edit_group_logo.js")

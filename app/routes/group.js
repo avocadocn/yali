@@ -5,9 +5,9 @@ var group = require('../controllers/group');
 var authorization = require('./middlewares/authorization');
 var express = require('express');
 var config = require('../../config/config');
-var photoBodyParser = express.bodyParser({
+var fileBodyParser = express.bodyParser({
   uploadDir: config.root + '/temp_uploads/',
-  limit: 1024 * 500 });
+  limit: 1024 * 1024 * 2 });
 
 
 module.exports = function(app) {
@@ -46,8 +46,7 @@ module.exports = function(app) {
 
   app.post('/group/resultConfirm/:competitionId', authorization.requiresLogin, group.resultConfirm);
 
-  app.post('/group/tempLogo', photoBodyParser, group.tempLogo);
-  app.post('/group/saveLogo', group.saveLogo);
+  app.post('/group/saveLogo', fileBodyParser, group.saveLogo);
 
   app.get('/group/editLogo', group.editLogo);
 
