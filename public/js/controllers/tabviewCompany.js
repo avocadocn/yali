@@ -220,43 +220,10 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         //TODO:更改对话框
         alert('企业账号信息获取失败！');
     });
-    $scope.accountUnEdit = true;
-    $scope.accountButtonStatus = '编辑';
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
     $scope.groupInfoButton = true;
     $scope.groupInfoButtonStatus = '编辑队名'
-    $scope.accountEditToggle = function() {
-        $scope.accountUnEdit = !$scope.accountUnEdit;
-        if($scope.accountUnEdit) {
-            try{
-                $http({
-                    method : 'post',
-                    url : '/company/saveAccount',
-                    data : {
-                        company : $scope.company
-                    }
-                }).success(function(data, status) {
-                    console.log(data);
-                    //TODO:更改对话框
-                    if(data.result === 1)
-                        alert(data.msg);
-                    else
-                        alert(data.msg);
-                }).error(function(data, status) {
-                    //TODO:更改对话框
-                    alert('数据发生错误！');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-            $scope.accountButtonStatus = '编辑';
-        }
-        else {
-            $scope.accountButtonStatus = '保存';
-        }
-    };
     $scope.infoEditToggle = function() {
         $scope.infoUnEdit = !$scope.infoUnEdit;
         if($scope.infoUnEdit) {
@@ -399,6 +366,5 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope', function(
 }]);
 
 tabViewCompany.controller('CompanyGroupFormController',['$http','$scope', function($http, $scope){
-
-    //$scope.
+    
 }]);
