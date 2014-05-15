@@ -10,8 +10,6 @@
     var preview_small = $('#preview_small');
     var save_button = $('#save_button');
 
-
-
     photo.change(function() {
       if (photo.val() === null) {
         save_button[0].disabled = true;
@@ -29,6 +27,7 @@
         jcrop_img.Jcrop({
           setSelect: [0, 0, 128, 128],
           aspectRatio: 1,
+          onSelect: showPreview,
           onChange: showPreview
         });
 
