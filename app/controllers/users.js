@@ -461,7 +461,7 @@ exports.home = function(req, res) {
       return res.render('users/home', {
         'groups': req.user.group,
         'ugids':_ugids,
-        photo: req.user.photo,
+        'photo': req.user.photo,
         'realname':req.user.realname,
         'cname':req.user.cname,
         'sign':req.user.introduce

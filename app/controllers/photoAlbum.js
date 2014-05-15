@@ -11,7 +11,7 @@ var PhotoAlbum = mongoose.model('PhotoAlbum');
 
 // 3rd
 var validator = require('validator');
-var gm = require('gm').subClass({ imageMagick: true });
+var gm = require('gm');
 var async = require('async');
 
 // custom
