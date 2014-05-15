@@ -61,3 +61,33 @@ div
       label.col-md-2.control-label 简介
       .col-md-5
         input.dl_input.form-control.editToggle(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
+  form.form-horizontal(name="companyGroup")
+    .infoHead.row
+      h4.pull-left 小组信息
+      if(role ==='HR')
+        a.dl_btn.pull-right(href="#/addGroup") 增加小组
+    hr
+    .row(ng-repeat="group in group_lists")
+      .col-md-2
+        img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
+      .col-md-10
+        .row
+          .col-md-2
+            label.control-label 队名
+          .col-md-10
+            input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="tname" ng-disabled="infoUnEdit")
+            if(role ==='HR')
+              button.dl_btn.pull-right(ng-click="groupEditToggle()" ng-bind="groupInfoButtonStatus")
+        .row
+          .col-md-2
+            label.control-label 队长
+          .col-md-5(ng-repeat="l in group.leader")
+            label {{l.nickname}}
+          .col-md-5
+            if(role ==='HR')
+              a.btn.dl_btn(ng-click="setGroupId(group.gid)" data-toggle="modal" data-target="#appointLeaderModel") 任命组长
+        .row
+          .col-md-2
+            label.control-label 人数 
+          .col-md-10
+            label {{group.member.length()}} //Todo

@@ -113,6 +113,13 @@ exports.invite = function(req, res) {
         inviteLink: inviteUrl
     });
 };
+//配合路由渲染增加小组列表Todo
+exports.add_company_group = function(req, res){
+    res.render('company/company_addgroup'),{
+        group_head: '企业',
+        title: '新建小组!',
+    }
+}
 
 //显示企业小组列表
 exports.groupList = function(req, res) {
@@ -466,6 +473,16 @@ exports.saveAccount = function(req, res) {
     }
     else
         res.send({'result':0,'msg':'未登录'});
+};
+//todo
+exports.saveGroupInfo = function(req, res){
+    if(req.session.gid !== undefined){
+        var _group ={};
+        if(req.body.group!==undefined){
+            _group = req.body.company;
+        }
+
+    }
 };
 
 /**

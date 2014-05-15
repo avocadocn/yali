@@ -25,6 +25,7 @@ module.exports = function(app, passport) {
     app.get('/company/create_company_account', company.create_company_account);//创建公司账号
     app.get('/company/select', company.select);//选择组件
     app.get('/company/invite', company.invite);//发送邀请链接
+    app.get('/company/add_group', company.add_company_group);//增加小组
 
     app.post('/company/groupSelect', company.groupSelect);
     app.post('/company', company.create);// 提交公司申请信息
@@ -35,6 +36,9 @@ module.exports = function(app, passport) {
     app.get('/company/info', authorization.requiresLogin,company.authorize, company.Info);
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);
     app.post('/company/saveAccount', authorization.requiresCompany, company.saveAccount);
+
+    //公司小组查看修改
+    app.post('/company/saveGroupInfo',authorization.requiresCompany,company.saveGroupInfo);
 
     //企业发布活动
     app.post('/company/campaignSponsor', authorization.requiresCompany, company.sponsor);

@@ -14,6 +14,7 @@ var _member = new Schema({
         ref: 'User'
     },
     nickname : String
+    //nickname略不合理吧？-M
 });
 
 var _group = new Schema({

@@ -4,7 +4,7 @@ block baseInfo
   
   .row
     .col-md-2
-      img.img-responsive.img-thumbnail.size_210.img_contain(src="#{logo ? log :'/img/icons/default_company_logo.png'}")
+      img.img-responsive.img-thumbnail.size_210.img_contain(src="#{logo ? logo :'/img/icons/default_company_logo.png'}")
     .col-md-10
       .row
         h1= cname
@@ -28,10 +28,10 @@ block panel
 
   div(ng-app="tabViewCompany")
     ul.nav.nav-tabs
-      li(ng-class="{'active':nowTab=='company_message'}")
-        a(href="#/company_message"  ng-click="addactive('company_message')") 公司动态
-      li(ng-class="{'active':nowTab=='company_group'}")
-        a(href="#/company_group"  ng-click="addactive('company_group')") 公司组件
+      //- li(ng-class="{'active':nowTab=='company_message'}")
+      //-   a(href="#/company_message"  ng-click="addactive('company_message')") 公司动态
+      //- li(ng-class="{'active':nowTab=='company_group'}")
+      //-   a(href="#/company_group"  ng-click="addactive('company_group')") 公司组件
       li(ng-class="{'active':nowTab=='company_campaign'}")
         a(href="#/company_campaign"  ng-click="addactive('company_campaign')") 公司活动
       li(ng-class="{'active':nowTab=='company_info'}")

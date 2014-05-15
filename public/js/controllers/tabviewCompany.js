@@ -28,12 +28,12 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         templateUrl: '/views/group_message_list.html',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
-      })
-      .when('/company_group', {
-        templateUrl: '/views/group_list.html',
-        controller: 'GroupListController',
-        controllerAs: 'group'
-      })
+       })
+      // .when('/company_group', {
+      //   templateUrl: '/views/group_list.html',
+      //   controller: 'GroupListController',
+      //   controllerAs: 'group'
+      // })
       .when('/company_campaign', {
         templateUrl: '/views/campaign_list.html',
         controller: 'CampaignListController',
@@ -48,66 +48,16 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         templateUrl: '/views/change_password.html',
         controller: 'PasswordFormController',
         controllerAs: 'password'
-      }).
-      otherwise({
+      })
+      .when('/addGroup',{
+        templateUrl: '/company/add_group',
+        controller: 'CompanyGroupFormController',
+        controllerAs: 'companyGroup'
+      })
+      .otherwise({
         redirectTo: '/company_message'
       });
   }]);
-
-
-tabViewCompany.controller('GroupListController', ['$http', '$scope',
- function ($http, $scope) {
-    $http.get('/group/getCompanyGroups').success(function(data, status) {
-      $scope.group_lists = data.group;
-      $scope.cid = data.cid;
-    });
-
-    $scope.setGroupId = function (gid) {
-        $scope.gid = gid;
-        try{
-            $http({
-                method: 'post',
-                url: '/search/user',
-                data:{
-                    cid: $scope.cid,
-                    gid: $scope.gid
-                }
-            }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
-                $scope.users = data;
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alert('数据发生错误！');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-    $scope.appointLeader = function (uid) {
-      try{
-            $http({
-                method: 'post',
-                url: '/company/appointLeader',
-                data:{
-                    cid: $scope.cid,
-                    gid: $scope.gid,
-                    uid: uid
-                }
-            }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
-                window.location.reload();
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alert('数据发生错误！');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-}]);
-
 
 tabViewCompany.controller('GroupMessageController', ['$http','$scope',
   function($http,$scope) {
@@ -274,6 +224,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
     $scope.accountButtonStatus = '编辑';
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
+    $scope.groupInfoButton = true;
+    $scope.groupInfoButtonStatus = '编辑'
     $scope.accountEditToggle = function() {
         $scope.accountUnEdit = !$scope.accountUnEdit;
         if($scope.accountUnEdit) {
@@ -336,6 +288,87 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             $scope.infoButtonStatus = '保存';
         }
     };
+    $scope.groupEditToggle = function() {
+        $scope.groupInfoButton = !$scope.groupInfoButton;
+        if($scope.groupInfoButton) {
+            try{
+                $http({
+                    method : 'post',
+                    url : '/company/saveGroupInfo',
+                    data : {
+                        info : $scope.info
+                    }
+                }).success(function(data, status) {
+                    //TODO:更改对话框
+                    if(data.result === 1)
+                        alert(data.msg);
+                    else
+                        alert(data.msg);
+                    window.location.reload();
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    alert('数据发生错误！');
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+            $scope.groupInfoButtonStatus = '编辑';
+        }
+        else {
+            $scope.groupInfoButtonStatus = '保存';
+        }
+    };
+        
+    $http.get('/group/getCompanyGroups').success(function(data, status) {
+        $scope.group_lists = data.group;
+        $scope.cid = data.cid;
+    });
+
+    $scope.setGroupId = function (gid) {
+        $scope.gid = gid;
+        try{
+            $http({
+                method: 'post',
+                url: '/search/user',
+                data:{
+                    cid: $scope.cid,
+                    gid: $scope.gid
+                }
+            }).success(function(data, status) {
+                //发布活动后跳转到显示活动列表页面
+                $scope.users = data;
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+    $scope.appointLeader = function (uid) {
+      try{
+            $http({
+                method: 'post',
+                url: '/company/appointLeader',
+                data:{
+                    cid: $scope.cid,
+                    gid: $scope.gid,
+                    uid: uid
+                }
+            }).success(function(data, status) {
+                //发布活动后跳转到显示活动列表页面
+                window.location.reload();
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
 }]);
 tabViewCompany.controller('PasswordFormController', ['$http','$scope', function($http,$scope) {
     $scope.nowpassword = '';
@@ -363,4 +396,9 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope', function(
             alert('数据发生错误！');
         });
     };
+}]);
+
+tabViewCompany.controller('CompanyGroupFormController',['$http','$scope', function($http, $scope){
+
+    //$scope.
 }]);
