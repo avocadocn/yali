@@ -29,8 +29,10 @@
         jcrop_img.Jcrop({
           setSelect: [0, 0, 128, 128],
           aspectRatio: 1,
+          onSelect: showPreview,
           onChange: showPreview
         });
+        $('.jcrop-holder img').attr('src', path);
       });
 
     });

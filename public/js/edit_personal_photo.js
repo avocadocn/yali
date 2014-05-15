@@ -31,6 +31,9 @@
           aspectRatio: 1,
           onChange: showPreview
         });
+
+        $('.jcrop-holder img').attr('src', path);
+
       });
 
     });
