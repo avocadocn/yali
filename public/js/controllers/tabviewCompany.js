@@ -313,10 +313,10 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             catch(e) {
                 console.log(e);
             }
-            $scope.groupInfoButtonStatus = '编辑';
+            $scope.groupInfoButtonStatus = '编辑队名';
         }
         else {
-            $scope.groupInfoButtonStatus = '保存';
+            $scope.groupInfoButtonStatus = '保存队名';
         }
     };
         

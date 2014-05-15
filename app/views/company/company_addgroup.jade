@@ -1,9 +1,14 @@
 .group_select
-  .text-center.h3.group_head='请选择要增加的' + group_head + '兴趣小组类型'
-  //todo
-  .groups.row
-    .group.col-xs-3(ng-repeat='group in groupModel.groups' ng-class="{'1': 'active', '0': 'inactive'}[group.select]")
-      input(type='checkbox' name='group' id='{{group.id}}' value='{{group.type}}' ng-model='group.select' ng-true-value='1' ng-false-value='0')
-      label(class='size_210 group_'+'{{group.id}}' for='{{group.id}}') {{group.type}}
-  .group_next.row
-    button.next.btn.btn-primary.btn-lg.center-block(ng-click='groupModel.group_next()') 保存
+	.text-center.h3.group_head='请选择要增加的' + group_head + '兴趣小组类型'
+	//todo
+.groups.row
+	.group.col-xs-3(ng-repeat='group in groupModel.groups' ng-class="{'1': 'active', '0': 'inactive'}[group.select]")
+		input(type='checkbox' name='group' id='{{group.id}}' value='{{group.type}}' ng-model='group.select' ng-true-value='1' ng-false-value='0')
+		label(class='size_210 group_'+'{{group.id}}' for='{{group.id}}') {{group.type}}
+	.group_next.row
+		.col-md-2
+		label.control-label 队名
+		//Todo
+		input.dl_input(type='text')
+	.group_next.row.margin_top_15
+		button.next.btn.btn-primary.btn-lg.center-block(ng-click='groupModel.group_next()') 保存

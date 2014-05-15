@@ -74,20 +74,22 @@ div
         .row
           .col-md-2
             label.control-label 队名
-          .col-md-10
+          .col-md-4
             input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="tname" ng-disabled="infoUnEdit")
-            if(role ==='HR')
-              button.dl_btn.pull-right(ng-click="groupEditToggle()" ng-bind="groupInfoButtonStatus")
+          if(role ==='HR')
+            button.dl_btn(ng-click="groupEditToggle()" ng-bind="groupInfoButtonStatus")
         .row
           .col-md-2
             label.control-label 队长
-          .col-md-5(ng-repeat="l in group.leader")
+          .col-md-4(ng-repeat="l in group.leader")
             label {{l.nickname}}
-          .col-md-5
-            if(role ==='HR')
-              a.btn.dl_btn(ng-click="setGroupId(group.gid)" data-toggle="modal" data-target="#appointLeaderModel") 任命组长
+          if(role ==='HR')
+            //todo group?
+            a.btn.dl_btn(ng-click="setGroupId(group.gid)" data-toggle="modal" data-target="#appointLeaderModel") 任命组长
         .row
           .col-md-2
             label.control-label 人数 
           .col-md-10
-            label {{group.member.length()}} //Todo
+            //Todo
+            label {{group.member.length}} 
+        
