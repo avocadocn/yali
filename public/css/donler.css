@@ -74,6 +74,10 @@ a {
   height: 210px;
   width: 210px;
 }
+.size_128 {
+  height: 128px;
+  width: 128px;
+}
 .size_80 {
   height: 80px;
   width: 80px;

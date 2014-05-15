@@ -23,6 +23,8 @@ div
       label.col-md-2.control-label 官方用户名
       .col-md-5
         input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
+      if(role ==='HR')
+        a.btn.dl_btn.pull-right(href="/company/editLogo") 修改图标
     .form-group
       label.col-md-2.control-label 企业全称
       .col-md-5

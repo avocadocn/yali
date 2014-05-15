@@ -90,7 +90,6 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
       $scope.show = false;
     });
 
-
     $scope.join = function(campaign_id) {
         try {
             $http({

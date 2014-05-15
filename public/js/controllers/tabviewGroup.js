@@ -192,7 +192,6 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         }
     };
 
-
     $scope.join = function(campaign_id) {
         try {
             $http({

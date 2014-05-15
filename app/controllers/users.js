@@ -490,7 +490,8 @@ exports.editInfo = function(req, res) {
           return res.render('users/editInfo',
             {'title': '编辑个人资料',
             'user': user,
-            'company': company
+            'company': company,
+            photo:user.photo
           });
         }
       });

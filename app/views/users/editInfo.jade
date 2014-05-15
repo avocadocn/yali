@@ -1,13 +1,23 @@
 div
   form.form-horizontal(name="accountForm")
     .infoHead.row
-      h1 基本信息
-      a.btn.dl_btn.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
+      .col-md-4
+         h1 基本信息
+      .col-md-8
+         a.btn.dl_btn.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
+    .form-group
+      .row
+        .col-md-3
+          img.img-responsive.size_128.img-thumbnail(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+        .col-md-9
+          .row
+            a.btn.btn.dl_btn.margin_top_15(href="/users/editPhoto") 修改头像
+          .row
+            a.btn.dl_btn.margin_top_15(href="#/changePassword") 修改密码
     .form-group
       label.col-md-2.control-label 登录邮箱
       .col-md-4
         label.info_label(ng-bind="user.email")
-      a.col-md-2.btn.dl_btn(href="#/changePassword") 修改密码
     .form-group
       label.col-md-2.control-label 昵称
       .col-md-4
@@ -18,7 +28,7 @@ div
         input.dl_input.form-control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
     .form-group
       label.col-md-2.control-label 公司
-      .col-md-4
+      .col-md-6
         label.info_label= company.info.name
     .form-group
       label.col-md-2.control-label 职位
@@ -58,8 +68,10 @@ div
         label.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
   form.form-horizontal(name="linkForm")
     .infoHead.row
-      h1 联系信息
-      a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
+      .col-md-4
+        h1 联系信息
+      .col-md-8
+        a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     .form-group
       label.col-md-2.control-label 手机
       .col-md-4
