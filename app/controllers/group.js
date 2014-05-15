@@ -913,38 +913,10 @@ exports.group = function(req, res, next, id) {
 
 
 
-exports.tempLogo = function(req, res) {
-
-  var fs = require('fs');
-  var temp_path = req.files.temp_photo.path;
-
-  var target_dir = meanConfig.root + '/public/img/group/logo/temp/';
-
-  var shasum = crypto.createHash('sha1');
-
-  shasum.update(req.session.gid + req.user.cid);
-  var target_img = shasum.digest('hex') + '.png';
-  var target_path = target_dir + target_img;
-
-  var gm = require('gm').subClass({ imageMagick: true });
-  gm(temp_path)
-  .write(target_path, function(err) {
-    if (err) console.log(err);
-    fs.unlink(temp_path, function(err) {
-      if (err) console.log(err);
-      res.send({ img: target_img });
-    });
-  });
-
-};
-
 exports.saveLogo = function(req, res) {
-  var fs = require('fs');
   var user = req.user;
 
   var logo_temp_path = req.files.logo.path;
-
-  var shasum = crypto.createHash('sha1');
 
   var shasum = crypto.createHash('sha1');
   shasum.update( Date.now().toString() + Math.random().toString() );
@@ -993,7 +965,7 @@ exports.saveLogo = function(req, res) {
                   console(err);
                   res.redirect('/group/editLogo');
                 }
-                var unlink_dir = path.join(meanConfig.root, '/public');
+                var unlink_dir = path.join(meanConfig.root, 'public');
                 if (ori_logo && ori_logo !== '/img/icons/default_group_logo.png') {
                   if (fs.existsSync(unlink_dir + ori_logo)) {
                     fs.unlinkSync(unlink_dir + ori_logo);

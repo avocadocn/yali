@@ -22,7 +22,7 @@ var mongoose = require('mongoose'),
 // 3rd
 var validator = require('validator'),
   async = require('async'),
-  gm = require('gm').subClass({ imageMagick: true });
+  gm = require('gm');
 
 // custom
 var encrypt = require('../middlewares/encrypt'),
@@ -852,43 +852,11 @@ exports.changePassword = function (req, res) {
     });
 };
 
-exports.tempPhoto = function(req, res) {
-
-  var temp_path = req.files.temp_photo.path;
-
-  var target_dir = meanConfig.root + '/public/img/user/photo/temp/';
-
-  var shasum = crypto.createHash('sha1');
-
-  // 临时图片，以加密的用户名命名，以避免将临时路径存入数据库。
-  shasum.update(req.user.username);
-  var target_img = shasum.digest('hex') + '.png';
-  var target_path = target_dir + target_img;
-
-  var gm = require('gm').subClass({ imageMagick: true });
-  try {
-    gm(temp_path)
-    .write(target_path, function(err) {
-      if (err) console.log(err);
-      fs.unlink(temp_path, function(err) {
-        if (err) console.log(err);
-        res.send({ img: target_img });
-      });
-    });
-  } catch (e) {
-    console.log(e);
-  }
-
-};
 
 exports.savePhoto = function(req, res) {
-  var fs = require('fs');
   var user = req.user;
 
-  var shasum = crypto.createHash('sha1');
-
-  shasum.update(req.user.username);
-  var temp_img = shasum.digest('hex') + '.png';
+  var photo_temp_path = req.files.photo.path;
 
   // 存入数据库的文件名，以当前时间的加密值命名
 
@@ -898,60 +866,67 @@ exports.savePhoto = function(req, res) {
 
 
   // 文件系统路径，供fs使用
-  var temp_path = meanConfig.root + '/public/img/user/photo/temp/' + temp_img;
-  var target_dir = meanConfig.root + '/public/img/user/photo/';
+  var target_dir = path.join(meanConfig.root, '/public/img/user/photo/');
 
   // uri路径，存入数据库的路径，供前端访问
   var uri_dir = '/img/user/photo/';
 
-  var gm = require('gm').subClass({ imageMagick: true });
+  try {
+    gm(photo_temp_path).size(function(err, value) {
+      if (err) console.log(err);
 
-  gm(temp_path).size(function(err, value) {
-    if (err) console.log(err);
+      // req.body参数均为百分比
+      var w = req.body.width * value.width;
+      var h = req.body.height * value.height;
+      var x = req.body.x * value.width;
+      var y = req.body.y * value.height;
 
-    // req.body参数均为百分比
-    var w = req.body.width * value.width;
-    var h = req.body.height * value.height;
-    var x = req.body.x * value.width;
-    var y = req.body.y * value.height;
+      // 在保存新路径前，将原路径取出，以便删除旧文件
+      var ori_photo = user.photo;
 
-    // 在保存新路径前，将原路径取出，以便删除旧文件
-    var ori_photo = user.photo;
 
-    gm(temp_path)
-    .crop(w, h, x, y)
-    .resize(150, 150)
-    .write(target_dir + photo, function(err) {
-      if (err) {
-        console.log(err);
-        res.redirect('/users/editPhoto');
-      }
-      else {
-        user.photo = uri_dir + photo;
-        user.save(function(err) {
+      try {
+        gm(photo_temp_path)
+        .crop(w, h, x, y)
+        .resize(150, 150)
+        .write(path.join(target_dir, photo), function(err) {
           if (err) {
             console.log(err);
             res.redirect('/users/editPhoto');
           }
-        });
+          else {
+            user.photo = path.join(uri_dir, photo);
+            user.save(function(err) {
+              if (err) {
+                console.log(err);
+                res.redirect('/users/editPhoto');
+              }
+            });
 
-        fs.unlink(temp_path, function(err) {
-          if (err) {
-            console(err);
-            res.redirect('/users/editPhoto');
+            fs.unlink(photo_temp_path, function(err) {
+              if (err) {
+                console(err);
+                res.redirect('/users/editPhoto');
+              }
+              var unlink_dir = path.join(meanConfig.root, 'public');
+              if (ori_photo !== '/img/icons/default_user_photo.png') {
+                if (fs.existsSync(unlink_dir + ori_photo)) {
+                  fs.unlinkSync(unlink_dir + ori_photo);
+                }
+              }
+              res.redirect('/users/editPhoto');
+            });
           }
-          var unlink_dir = meanConfig.root + '/public';
-          if (ori_photo !== '/img/icons/default_user_photo.png') {
-            if (fs.existsSync(unlink_dir + ori_photo)) {
-              fs.unlinkSync(unlink_dir + ori_photo);
-            }
-          }
-          res.redirect('/users/editPhoto');
         });
+      } catch (e) {
+        console.log(e);
       }
-    });
 
-  });
+    });
+  } catch (e) {
+    console.log(e);
+  }
+
 
 };
 

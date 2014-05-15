@@ -7,7 +7,7 @@ var express = require('express');
 var config = require('../../config/config');
 var photoBodyParser = express.bodyParser({
     uploadDir: config.root + '/temp_uploads/',
-    limit: 1024 * 500 });
+    limit: 1024 * 1024 * 2 });
 
 module.exports = function(app, passport) {
 
@@ -44,8 +44,7 @@ module.exports = function(app, passport) {
 
     app.post('/users/vote', authorization.requiresLogin, users.vote);
 
-    app.post('/users/tempPhoto', authorization.requiresLogin, photoBodyParser, users.tempPhoto);
-    app.post('/users/savePhoto', authorization.requiresLogin, users.savePhoto);
+    app.post('/users/savePhoto', authorization.requiresLogin, photoBodyParser, users.savePhoto);
 
     app.get('/users/editPhoto', authorization.requiresLogin, users.editPhoto);
 
