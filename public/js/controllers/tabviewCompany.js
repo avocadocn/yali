@@ -225,7 +225,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
     $scope.groupInfoButton = true;
-    $scope.groupInfoButtonStatus = '编辑'
+    $scope.groupInfoButtonStatus = '编辑队名'
     $scope.accountEditToggle = function() {
         $scope.accountUnEdit = !$scope.accountUnEdit;
         if($scope.accountUnEdit) {

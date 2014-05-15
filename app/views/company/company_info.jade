@@ -3,7 +3,7 @@ div
     .infoHead.row
       h4.pull-left 账户信息
       //编辑按钮
-      button.dl_btn.pull-right(ng-click="accountEditToggle()" ng-bind="accountButtonStatus") 
+      button.btn.dl_btn.pull-right(ng-click="accountEditToggle()" ng-bind="accountButtonStatus") 
     hr
     .form-group
       label.col-md-2.control-label 登录邮箱
@@ -17,7 +17,7 @@ div
   form.form-horizontal(name="infoForm")
     .infoHead.row
       h4.pull-left 企业信息
-      button.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
+      button.btn.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
     hr
     .form-group
       label.col-md-2.control-label 官方用户名
@@ -67,7 +67,7 @@ div
     .infoHead.row
       h4.pull-left 小组信息
       if(role ==='HR')
-        a.dl_btn.pull-right(href="#/addGroup") 增加小组
+        a.btn.dl_btn.pull-right(href="#/addGroup") 增加小组
     hr
     .row(ng-repeat="group in group_lists")
       .col-md-2
@@ -79,7 +79,7 @@ div
           .col-md-4
             input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="tname" ng-disabled="infoUnEdit")
           if(role ==='HR')
-            button.dl_btn(ng-click="groupEditToggle()" ng-bind="groupInfoButtonStatus")
+            button.btn.dl_btn(ng-click="groupEditToggle()" ng-bind="groupInfoButtonStatus")
         .row
           .col-md-2
             label.control-label 队长
@@ -87,7 +87,7 @@ div
             label {{l.nickname}}
           if(role ==='HR')
             //todo group?
-            a.btn.dl_btn(ng-click="setGroupId(group.gid)" data-toggle="modal" data-target="#appointLeaderModel") 任命组长
+            a.btn.button.dl_btn(ng-click="setGroupId(group.gid)" data-toggle="modal" data-target="#appointLeaderModel") 任命组长
         .row
           .col-md-2
             label.control-label 人数 
