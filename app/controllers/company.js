@@ -14,6 +14,11 @@ var mongoose = require('mongoose'),
     Config = mongoose.model('Config'),
     Campaign = mongoose.model('Campaign'),
     config = require('../config/config'),
+    crypto = require('crypto'),
+    path = require('path'),
+    meanConfig = require('../../config/config'),
+    gm = require('gm'),
+    fs = require('fs'),
     async = require('async');
 
 var mail = require('../services/mail');
@@ -418,6 +423,7 @@ exports.home = function(req, res) {
         return res.render('company/home', {
             title : '公司主页',
             role : req.role,
+            logo: req.user.info.logo,
             cname : req.user.info.name,
             sign : req.user.info.brief,
             groupnumber: req.user.group.length,
@@ -434,6 +440,7 @@ exports.home = function(req, res) {
                 return res.render('company/home', {
                     title : '公司主页',
                     role : req.role,
+                    logo: company.info.logo,
                     cname : company.info.name,
                     sign : company.info.brief,
                     groupnumber: company.team ? company.team.length : 0,
@@ -804,4 +811,92 @@ exports.changePassword = function(req, res){
             }
         }
     });
+};
+
+
+exports.saveLogo = function(req, res) {
+  var _company = req.user;
+
+  var logo_temp_path = req.files.logo.path;
+
+  var shasum = crypto.createHash('sha1');
+  shasum.update( Date.now().toString() + Math.random().toString() );
+  var logo = shasum.digest('hex') + '.png';
+
+
+  // 文件系统路径，供fs使用
+  var target_dir = path.join(meanConfig.root, '/public/img/company/logo/');
+
+  // uri路径，存入数据库的路径，供前端访问
+  var uri_dir = '/img/company/logo/';
+
+  try {
+    gm(logo_temp_path).size(function(err, value) {
+      if (err) {
+        console.log(err);
+        res.redirect('/company/editLogo');
+      }
+
+      var w = req.body.width * value.width;
+      var h = req.body.height * value.height;
+      var x = req.body.x * value.width;
+      var y = req.body.y * value.height;
+
+      Company.findOne({ _id: _company._id }).exec(function(err, company) {
+        var ori_logo = company.info.logo;
+
+        try {
+          gm(logo_temp_path)
+          .crop(w, h, x, y)
+          .resize(150, 150)
+          .write(path.join(target_dir, logo), function(err) {
+            if (err) {
+              console.log(err);
+              res.redirect('/company/editLogo');
+            } else {
+              company.info.logo = path.join(uri_dir, logo);
+              company.save(function(err) {
+                if (err) {
+                  console.log(err);
+                  res.redirect('/company/editLogo');
+                }
+              });
+              fs.unlink(logo_temp_path, function(err) {
+                if (err) {
+                  console(err);
+                  res.redirect('/company/editLogo');
+                }
+                var unlink_dir = path.join(meanConfig.root, 'public');
+                if (ori_logo && ori_logo !== '/img/icons/default_company_logo.png') {
+                  if (fs.existsSync(unlink_dir + ori_logo)) {
+                    fs.unlinkSync(unlink_dir + ori_logo);
+                  }
+                }
+
+              });
+            }
+            res.redirect('/company/editLogo');
+          });
+        } catch(e) {
+          console.log(e);
+        }
+
+      });
+    });
+  } catch(e) {
+    console.log(e);
+  }
+
+
+};
+
+exports.editLogo = function(req, res) {
+  var _company = req.user;
+  Company.findOne({ _id: _company._id }).exec(function(err, company) {
+    res.render('company/edit_logo', {
+      logo: company.info.logo,
+      id: company._id
+    });
+  });
+
 };

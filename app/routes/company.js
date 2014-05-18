@@ -3,6 +3,12 @@
 // Company routes use company controller
 var company = require('../controllers/company');
 var authorization = require('./middlewares/authorization');
+var config = require('../../config/config');
+var express = require('express');
+var fileBodyParser = express.bodyParser({
+  uploadDir: config.root + '/temp_uploads/',
+  limit: 1024 * 1024 * 2 });
+
 module.exports = function(app, passport) {
 
     //显示企业小组列表
@@ -55,6 +61,10 @@ module.exports = function(app, passport) {
     app.get('/company/home/:companyId', authorization.requiresLogin,company.authorize,company.home);
     // Setting up the companyId param
     app.param('companyId', company.company);
+
+    app.post('/company/saveLogo', fileBodyParser, company.saveLogo);
+
+    app.get('/company/editLogo', company.editLogo);
 
 
 };

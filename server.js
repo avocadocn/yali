@@ -89,9 +89,10 @@ exports = module.exports = app;
 
 
 // 创建被git排除的目录
-mkdirp.sync(path.join(__dirname, 'temp_uploads'));
-mkdirp.sync(path.join(__dirname, 'public/img/user/photo/temp/'));
-mkdirp.sync(path.join(__dirname, 'public/img/group/logo/temp/'));
+mkdirp.sync(path.join(__dirname, 'temp_uploads/'));
+mkdirp.sync(path.join(__dirname, 'public/img/user/photo/'));
+mkdirp.sync(path.join(__dirname, 'public/img/group/logo/'));
+mkdirp.sync(path.join(__dirname, 'public/img/company/logo/'));
 mkdirp.sync(path.join(__dirname, 'public/img/photo_album/'));
 
 
