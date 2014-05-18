@@ -328,7 +328,7 @@ exports.getGroupMessages = function(req, res) {
         team_ids.push(req.user.group[i].team[k].id);
       }
 
-      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i].gid]} }).populate({
+      GroupMessage.find({'cid' : {'$all':[req.user.cid.toString()]} , 'group.gid': {'$all': [req.user.group[i].gid]} }).populate({
             path : 'team',
             match : { _id: {'$in':team_ids}}
           }
@@ -404,7 +404,7 @@ exports.getCampaigns = function(req, res) {
       for(var k = 0; k < req.user.group[i].team.length; k ++){
         team_ids.push(req.user.group[i].team[k].id);
       }
-      Campaign.find({'cid' : {'$all':[req.user.cid]} , 'gid' : {'$all':[req.user.group[i].gid]}}).populate({
+      Campaign.find({'cid' : {'$all':[req.user.cid.toString()]} , 'gid' : {'$all':[req.user.group[i].gid]}}).populate({
             path : 'team',
             match : { _id: {'$in':team_ids}}
           }

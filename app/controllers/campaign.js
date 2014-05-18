@@ -346,8 +346,7 @@ function getUserCampaigns(req,res,_in) {
       team_ids.push(req.user.group[i].team[k].id);
     }
   }
-  console.log(typeof(req.user.cid));
-  Campaign.find({'cid' : {'$all':[req.user.cid.toString()]} }).exec(function(err, campaign) {
+  Campaign.find({'cid' : {'$all':[req.user.cid.toString()]}, 'gid':{'$ne':'0'} }).exec(function(err, campaign) {
     if(campaign.length > 0) {
       if (err) {
         return res.send([]);
@@ -355,6 +354,7 @@ function getUserCampaigns(req,res,_in) {
         var length = campaign.length;
         for(var j = 0; j < length; j ++) {
 
+          console.log(campaign[j].team);
           if(team_ids.in_array(campaign[j].team.toString()) == check){
             join = false;
             for(var k = 0;k < campaign[j].member.length; k ++) {
@@ -384,10 +384,8 @@ function getUserCampaigns(req,res,_in) {
           }
         }
       }
-      console.log(campaigns);
       return res.send({'data':campaigns});
     } else {
-      console.log('none',[]);
       return res.send({'data':[]});
     }
   });
