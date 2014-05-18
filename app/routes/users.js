@@ -19,8 +19,8 @@ module.exports = function(app, passport) {
         failureFlash: true
     }), users.loginSuccess);
 
-    app.get('/users/home', authorization.requiresLogin, users.home);
-
+    app.get('/users/home', authorization.requiresLogin,users.authorize, users.home);
+    app.get('/users/home/:userId', authorization.requiresLogin,users.authorize, users.home);
     // Active produce
     app.get('/users/invite', users.invite);
     app.post('/users/dealActive', users.dealActive);
@@ -30,7 +30,7 @@ module.exports = function(app, passport) {
     app.post('/users/dealSelectGroup', users.dealSelectGroup);
     app.get('/users/finishRegister', users.finishRegister);
 
-
+    app.get('/users/campaign', authorization.requiresLogin, users.renderCampaigns);
     app.get('/users/getGroupMessages', authorization.requiresLogin, users.getGroupMessages);
     app.get('/users/getCampaigns', authorization.requiresLogin, users.getCampaigns);
 
@@ -58,6 +58,7 @@ module.exports = function(app, passport) {
     }), users.appLoginSuccess);
 
     app.get('/users/schedules', authorization.requiresLogin, users.getSchedules);
+    app.param('userId', users.user);
 
 };
 

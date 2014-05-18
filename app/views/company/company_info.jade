@@ -16,7 +16,8 @@ div
   form.form-horizontal(name="infoForm")
     .infoHead.row
       h3.pull-left 企业信息
-      button.btn.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
+      if(role==='HR')
+        button.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
     hr
     .form-group
       label.info_label.col-md-2.control-label 官方用户名
@@ -85,7 +86,6 @@ div
           .col-md-4(ng-repeat="l in group.leader")
             label {{l.nickname}}
           if(role ==='HR')
-            //todo group?
             a.btn.button.dl_btn(ng-click="setGroupId(group.gid)" data-toggle="modal" data-target="#appointLeaderModel") 任命组长
         .row
           .col-md-2
@@ -93,4 +93,3 @@ div
           .col-md-10
             //Todo
             label.info_label {{group.member.length}} 
-        

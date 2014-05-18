@@ -14,7 +14,7 @@ var mongoose = require('mongoose'),
     meanConfig = require('../../config/config'),
     moment = require('moment');
 exports.home = function(req, res) {
-  Arena.find({'gid':req.session.gid},function(err,arenas){
+  Arena.find({'gid':req.session.nowgid},function(err,arenas){
       if (err) {
           console.log(err);
           return res.status(400).send([]);
@@ -69,12 +69,12 @@ exports.detail = function(req, res){
   }
 };
 exports.rob = function(req, res){
+  var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
   if(!req.arena.champion.cid){
-    console.log(req.arena.history);
     if(req.arena.history.length!==0 && req.arena.history[0].cid === req.session.cid){
       return res.send({'result':0,'msg':'您无法连续抢同一擂台！'});
     }
-    CompanyGroup.findOne({'cid':req.session.cid,'gid':req.session.gid},function(err,company_group){
+    CompanyGroup.findOne({'cid':cid,'gid':req.session.nowgid},function(err,company_group){
       if (err || !company_group) {
         return res.send({'result':0,'msg':'您没有权限抢擂'});
       }
@@ -91,7 +91,7 @@ exports.rob = function(req, res){
             return res.send({'result':0,'msg':'擂台查询失败！'});
           }
           if(arena){
-            Company.findOne({'id': req.session.cid},function(err, company){
+            Company.findOne({'id': cid},function(err, company){
               if (err) {
                 console.log(err);
                 return res.send({'result':0,'msg':'您没有权限抢擂'});
@@ -100,12 +100,12 @@ exports.rob = function(req, res){
                 var _end_time = new Date();
                 _end_time.setMinutes(new Date().getMinutes()+30);
                 arena.champion= {
-                  'cid': req.session.cid,
+                  'cid': cid,
                   'cname':company.username,
-                  'gid': req.session.companyGroup.gid,
-                  'uid': req.session.uid,
-                  'username':req.user.username,
-                  'tname':req.session.companyGroup.name,
+                  'gid': req.session.nowgid,
+                  'uid': req.user.cid ? req.user.id : '',
+                  'username':req.user.cid ? req.user.username :'',
+                  'tname':company_group.name,
                   'champion_type':'rob',
                   'active': false,
                   'start_time': new Date(),
@@ -144,7 +144,7 @@ exports.rob = function(req, res){
 };
 
 exports.addCampaignInfo = function(req, res){
-  if(req.arena.champion.uid===req.session.uid){
+  if(req.session.role ==='HR' && req.arena.champion.cid===req.user.id || req.session.role ==='LEADER' && req.arena.champion.uid===req.user.id){
     if(req.body.campaign_info.number===null || req.body.campaign_info.competition_date===null){
       return res.send({'result':0,'msg':'挑战信息不完整'});
     }
@@ -172,10 +172,10 @@ exports.addCampaignInfo = function(req, res){
   }
 };
 exports.challenge = function(req, res){
-  if(req.arena.champion.uid!==req.session.uid){
-    var uid = req.session.uid;
-    var username = req.session.username;
-    var cid =req.session.cid;
+  var nowcid = req.session.role ==='HR' ? req.user.id : req.user.cid;
+  if(req.arena.champion.cid!==nowcid){
+    var uid = req.user.cid ? req.user.id : '';
+    var username = req.user.cid ? req.user.nickname : '';
     var cid_opposite = req.arena.champion.cid;       //被约方公司id(如果是同一家公司那么cid_b = cid_a)
     var gid = req.session.gid;         //约战小组id
 
@@ -197,7 +197,7 @@ exports.challenge = function(req, res){
     competition.group_type = req.session.companyGroup.group_type;
 
     competition.camp.push({
-      'cid' : cid,
+      'cid' : nowcid,
       'start_confirm' : true,
       'tname' : team_a,
       'logo' : req.session.companyGroup.logo

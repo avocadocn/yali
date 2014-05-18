@@ -38,7 +38,7 @@ exports.getCompany = function (req, res) {
 //以后添加过滤规则
 exports.searchTeam = function(req, res) {
   var tname_part = req.body.tname_part;
-  var gid = req.session.gid;
+  var gid = req.session.nowgid;
 
   var tirm = '老虎-足球';
 
@@ -61,7 +61,7 @@ exports.searchTeam = function(req, res) {
 //返回该组件的队名和组长
 exports.getTeam = function(req, res) {
   var cid = req.body.cid;
-  var gid = req.session.gid;
+  var gid = req.session.nowgid;
   CompanyGroup.find({'cid':cid,'gid':gid},function(err, company_groups){
     if(err || !company_groups) {
       return res.send([]);

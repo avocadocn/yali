@@ -35,26 +35,27 @@ block panel
 block aside
   .infoHead.row
     h4.pull-left 活动简介
-    div(ng-app="group" ng-controller="resultController" ng-init="msg_show=#{msg_show};rst_content='#{rst_content}';score_a=#{score_a};score_b=#{score_b}" )
-      button(ng-if="#{rst_confirm_show}" data-toggle="modal" data-target="#resultModel") 结果确认
-      div(class="modal fade" id="resultModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        .modal-dialog
-          .modal-content
-            .modal-header
-              button(class="close" data-dismiss="modal" aria-hidden="true") x
-              h4(class="modal-title" id="myModalLabel") 比赛确认
-            .modal-body
-              .row
-                label 确认内容
-                  input(type="text" class="form-control" name="content" ng-model="rst_content")
-                label 我方比分
-                  input(type="text" class="form-control" name="score_a" ng-model="score_a")
-                label 对方比分
-                  input(type="text" class="form-control" name="score_b" ng-model="score_b")
-            .modal-footer
-              button(ng-if="!#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(false)' data-dismiss="modal") 确定
-              button(ng-if="#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(true)' data-dismiss="modal") 接受对方确认
-              button(ng-if="#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(false)' data-dismiss="modal") 发出异议
+    if(msg_show)
+      div(ng-app="group" ng-controller="resultController" ng-init="msg_show=#{msg_show};rst_content='#{rst_content}';score_a=#{score_a};score_b=#{score_b}" )
+        button(ng-if="#{rst_confirm_show}" data-toggle="modal" data-target="#resultModel") 结果确认
+        div(class="modal fade" id="resultModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+          .modal-dialog
+            .modal-content
+              .modal-header
+                button(class="close" data-dismiss="modal" aria-hidden="true") x
+                h4(class="modal-title" id="myModalLabel") 比赛确认
+              .modal-body
+                .row
+                  label 确认内容
+                    input(type="text" class="form-control" name="content" ng-model="rst_content")
+                  label 我方比分
+                    input(type="text" class="form-control" name="score_a" ng-model="score_a")
+                  label 对方比分
+                    input(type="text" class="form-control" name="score_b" ng-model="score_b")
+              .modal-footer
+                button(ng-if="!#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(false)' data-dismiss="modal") 确定
+                button(ng-if="#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(true)' data-dismiss="modal") 接受对方确认
+                button(ng-if="#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(false)' data-dismiss="modal") 发出异议
   hr
   .row
     label.col-xs-4.control-label 类型：
@@ -85,7 +86,8 @@ block aside
   hr
   .infoHead.row
     h4.pull-left 活动精彩照片
-    a(href="/group/competition/#{competition.id}/photoAlbum/#{competition.photo.pid}") 上传照片
+    if(role!=='PARTNER')
+      a(href="/group/competition/#{competition.id}/photoAlbum/#{competition.photo.pid}") 上传照片
     input#photo_album_id(type="hidden" name="photo_album_id" value="#{competition.photo.pid}")
     div#photo_list(ng-controller="PhotoListCtrl")
       div(ng-repeat="photo in photos")

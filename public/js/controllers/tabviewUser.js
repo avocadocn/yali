@@ -30,7 +30,7 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
         controllerAs: 'messages'
       })
       .when('/schedule', {
-        templateUrl: '/views/campaign_list.html',
+        templateUrl: '/users/campaign',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
@@ -52,9 +52,8 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
 tabViewUser.controller('GroupMessageController', ['$http','$scope',
   function ($http, $scope) {
     $http.get('/users/getGroupMessages').success(function(data, status) {
-      $scope.group_messages = data;
-      $scope.show = false;
-      $scope.voteFlag = true;
+      $scope.group_messages = data.group_messages;
+      $scope.role = data.role;
     });
 
     $scope.vote = function(provoke_message_id, status, index) {
@@ -87,7 +86,6 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
   function ($http, $scope) {
     $http.get('/users/getCampaigns').success(function(data, status) {
       $scope.campaigns = data.data;
-      $scope.show = false;
       $scope.company = false;
     });
 
@@ -100,9 +98,11 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
-                window.location.reload();
-                //TODO:更改对话框
-                alert('成功加入该活动!');
+                if(data.result===1){
+                    //TODO:更改对话框
+                    alert(data.msg);
+                    window.location.reload();
+                }
             }).error(function(data, status) {
                 alert('数据发生错误！');
             });
@@ -121,8 +121,10 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
+                if(data.result===1){
+                alert(data.msg);
                 window.location.reload();
-                alert('您已退出该活动!');
+                }
             }).error(function(data, status) {
                 alert('数据发生错误！');
             });

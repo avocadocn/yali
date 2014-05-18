@@ -12,13 +12,8 @@ var fileBodyParser = express.bodyParser({
 
 module.exports = function(app) {
   app.get('/group/getgroups', group.getGroups);
-
-  app.get('/group/getCompanyGroups/:id', group.getCompanyGroups);
-  app.get('/group/getCompanyGroups', group.getCompanyGroups);
-
-
-  app.get('/group/home/:teamId/:gid', authorization.requiresLogin, group.home);
-  app.get('/group/home', authorization.requiresLogin, group.home);
+  app.get('/group/getCompanyGroups', authorization.requiresLogin, group.getCompanyGroups);
+  app.get('/group/home/:teamId', authorization.requiresLogin,group.authorize, group.home);
 
   app.get('/group/info/:teamId', authorization.requiresLogin, group.info);
   app.get('/group/info', authorization.requiresLogin, group.info);
@@ -26,7 +21,7 @@ module.exports = function(app) {
   app.get('/group/renderInfo', authorization.requiresLogin, group.renderInfo);
 
   app.post('/group/saveInfo', authorization.requiresLogin, group.saveInfo);
-
+  app.get('/group/campaign', authorization.requiresLogin, group.renderCampaigns);
   app.get('/group/getCampaigns/:teamId', authorization.requiresLogin, group.getGroupCampaign);
   app.get('/group/getGroupMessages/:teamId', authorization.requiresLogin, group.getGroupMessage);
   app.get('/group/getGroupMembers/:teamId', authorization.requiresLogin, group.getGroupMember);

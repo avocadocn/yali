@@ -19,8 +19,9 @@ block baseInfo
 block panel
   div(ng-app="tabViewUser")
     ul.nav.nav-tabs
-      li(ng-class="{'active':nowTab=='group_message'}")
-        a.h5(href="#/group_message" ng-click="addactive('group_message')") 我的小组动态
+      if(role==='OWNER')
+        li(ng-class="{'active':nowTab=='group_message'}")
+          a.h5(href="#/group_message" ng-click="addactive('group_message')") 我的动态
       li(ng-class="{'active':nowTab=='schedule'}")
         a.h5(href="#/schedule" ng-click="addactive('schedule')") 日程列表
       li(ng-class="{'active':nowTab=='personal'}")
@@ -30,11 +31,10 @@ block panel
         div(ng-view)
 
 block aside
-  include ../partials/group_thumbnail
-
-  +group_thumbnail(selected_teams,'active','我的小队')
-  +group_thumbnail(unselected_teams,'inactive','我未添加的小队')
-
+  if（role!=='HR')
+    include ../partials/group_thumbnail
+    +group_thumbnail(selected_teams,'active','我的小队')
+    +group_thumbnail(unselected_teams,'inactive','我未添加的小队')
 
 append footExt
   script(src="/lib/angular-route/angular-route.min.js")

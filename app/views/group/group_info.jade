@@ -2,7 +2,8 @@ div(ng-app="tabViewGroup" ng-controller="infoController")
   form.form-horizontal(name="infoForm")
     .row
       h5.pull-left 基本信息
-      a.btn.dl_btn.pull-right(ng-click="editToggle()" ng-bind="buttonStatus")
+      if(role==='HR' ||role ==='LEADER')
+        a.btn.dl_btn.pull-right(ng-click="editToggle()" ng-bind="buttonStatus")
     hr
     .row
       label.info_label.col-md-2.control-label 队&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名
@@ -19,8 +20,8 @@ div(ng-app="tabViewGroup" ng-controller="infoController")
     .row
       label.info_label.col-md-2.control-label 小组队徽
       .col-md-5
-        //Todo组长权限      
-        a.btn.dl_btn(href="/group/editLogo") 修改
+        if(role==='HR' ||role ==='LEADER')
+          a.btn.dl_btn(href="/group/editLogo") 修改
     .row
       label.info_label.col-md-2.control-label 主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场
       .col-md-3

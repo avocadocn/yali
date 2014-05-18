@@ -12,11 +12,11 @@ var fileBodyParser = express.bodyParser({
 module.exports = function(app, passport) {
 
     //显示企业小组列表
-    app.get('/company/groupList', company.groupList);
     app.get('/company/signup', company.signup);
     app.get('/company/wait', company.wait);
 
     app.get('/company/signin', company.signin);
+    app.get('/company/signout',company.signout);
     app.post('/company/session', passport.authenticate('company', {
         failureRedirect: '/company/signin',
         failureFlash: true
@@ -38,19 +38,16 @@ module.exports = function(app, passport) {
 
     //公司信息查看和修改
     app.get('/company/getAccount', authorization.requiresLogin, company.getAccount);
-    app.get('/company/info', authorization.requiresLogin,company.authorize, company.Info);
+    app.get('/company/info', authorization.requiresLogin, company.Info);
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);
     app.post('/company/saveAccount', authorization.requiresCompany, company.saveAccount);
-
     //公司小组查看修改
     app.post('/company/saveGroupInfo',authorization.requiresCompany,company.saveGroupInfo);
-
+    app.get('/company/groupList', authorization.requiresLogin, company.renderGroupList);
     //企业发布活动
     app.post('/company/campaignSponsor', authorization.requiresCompany, company.sponsor);
-
-
-    app.get('/company/getCompanyMessages', company.getCompanyMessage);
-    app.get('/company/getCampaigns', company.getCompanyCampaign);
+    app.get('/company/campaigns', authorization.requiresLogin, company.renderCompanyCampaign);
+    app.get('/company/getCampaigns', authorization.requiresLogin, company.getCompanyCampaign);
 
     app.post('/company/campaignCancel', authorization.requiresCompany, company.campaignCancel);
 

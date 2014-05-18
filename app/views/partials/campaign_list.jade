@@ -1,0 +1,24 @@
+.campaigns_list
+  .margin_15(ng-repeat="campaign_item in campaigns")
+    .row
+      .col-md-2
+        span {{ campaign_item.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+      .col-md-8
+        .row
+          .col-md-10
+            span {{ campaign_item.content }}
+            if(role==='HR'&&provider==='company' || role==='LEADER'&& provider ==='group')
+              input.dl_btn.dl_btn_close(type = "button" value = "{{ campaign_item.active ? '关闭':'打开'}}" ng-click="cancel(campaign_item.id)")
+        .row.margin_top_15
+          span.message_label 类型: {{ campaign_item.group_type}}
+          span.message_label 参加活动人数：{{ campaign_item.member.length }}
+          span.message_label 赛制: {{ campaign_item.provoke.competition_format }}
+          span.message_label 地点: {{ campaign_item.location }}
+        .row.margin_top_15
+          span.message_label 截止时间: {{ campaign_item.end_time | date:'yyyy-MM-dd HH:mm:ss'}}
+      .col-md-2
+        if(role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER')
+          div(ng-if="campaign_item.active")
+            input.btn.dl_btn.margin_5(type = "button" value = "退出" ng-click="quit(campaign_item.id)" ng-if="campaign_item.join")
+            input.btn.dl_btn.margin_5(type = "button" value = "参加" ng-click="join(campaign_item.id)" ng-if="!campaign_item.join")
+        a.btn.dl_btn.margin_5(ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}") 详情

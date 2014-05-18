@@ -17,7 +17,7 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
         controllerAs: 'messages'
       })
       .when('/group_campaign', {
-        templateUrl: '/views/campaign_list.html',
+        templateUrl: '/group/campaign',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
@@ -38,22 +38,13 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
-
-    /*
-    $scope.$watch('teamId',function(){
-        alert(typeof($scope.teamId));
-    });
-    */
     var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
     //消除ajax缓存
-    $http.get('/group/getGroupMessages/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
-      $scope.group_messages = data;
-      $scope.show = true;
-      $scope.voteFlag = true;
+    $http.get('/group/getGroupMessages?' + Math.round(Math.random()*100)).success(function(data, status) {
+      $scope.group_messages = data.group_messages;
+      $scope.role = data.role;
     });
-
-
     $scope.vote = function(provoke_message_id, status, index) {
          try {
             $http({
@@ -109,8 +100,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     //消除ajax缓存
     $http.get('/group/getCampaigns/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
-      $scope.show = data.permission;    //只有改组的组长才可以操作活动(关闭、编辑等)
-      $scope.company = false;
+      $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
     });
 
     //TODO 发起活动或者挑战时搜索应约对象 暂时先放在这里
@@ -303,7 +293,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope',function($http, $sc
     $scope.buttonStatus = '编辑';
     var teamId = $('#team_content').attr('team-id');
     $http.get('/group/info/'+teamId).success(function(data, status) {
-        $scope.companyname = data.companyname;
+        $scope.companyname = data.companyGroup.cname;
         $scope.create_time = data.entity.create_date ? data.entity.create_date :'';
         $scope.name = data.companyGroup.name ? data.companyGroup.name : '';
         $scope.brief = data.companyGroup.brief ? data.companyGroup.brief : '';

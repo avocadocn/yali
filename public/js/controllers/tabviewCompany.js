@@ -2,13 +2,6 @@
 
 var tabViewCompany = angular.module('tabViewCompany', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
 
-tabViewCompany.run(['$rootScope', function( $rootScope) {
-    $rootScope.nowTab = window.location.hash.substr(2);
-    console.log($rootScope.nowTab);
-    $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
-    };
-}]);
 tabViewCompany.directive('match', function($parse) {
   return {
     require: 'ngModel',
@@ -30,7 +23,7 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controllerAs: 'members'
        })
       .when('/company_campaign', {
-        templateUrl: '/views/campaign_list.html',
+        templateUrl: '/company/campaigns',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
@@ -48,7 +41,13 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         redirectTo: '/company_campaign'
       });
   }]);
-
+tabViewCompany.run(['$rootScope', function( $rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    console.log($rootScope.nowTab);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
+}]);
 
 
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope',
@@ -65,6 +64,7 @@ tabViewCompany.controller('GroupListController', ['$http', '$scope',
     $http.get('/group/getCompanyGroups').success(function(data, status) {
       $scope.teams = data.teams;
       $scope.cid = data.cid;
+      $scope.role = data.role;
     });
 
     $scope.setGroupId = function (tid,gid) {
@@ -116,24 +116,11 @@ tabViewCompany.controller('GroupListController', ['$http', '$scope',
     };
 }]);
 
-tabViewCompany.controller('GroupMessageController', ['$http','$scope',
-  function($http,$scope) {
-    $http.get('/company/getCompanyMessages').success(function(data, status) {
-      $scope.group_messages = data;
-      $scope.show = false;
-      $scope.voteFlag = false;
-    });
-}]);
-
 tabViewCompany.controller('CampaignListController', ['$http','$scope',
   function($http,$scope) {
     $http.get('/company/getCampaigns').success(function(data, status) {
       $scope.campaigns = data.data;
-      $scope.show = data.role === 'EMPLOYEE';  //由于还未设置权限,目前普通员工也可以关闭活动  TODO
-      $scope.company = true;
     });
-
-
     $scope.selectCampaign = function (value) {
         var _url = "";
         var _selected = true;

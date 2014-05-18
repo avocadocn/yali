@@ -17,7 +17,7 @@
             .form-group
               .row
                 .col-md-6
-                  input.form-control(type="text" ng-model="start_time" name="date" data-autoclose="1" data-min-date="today" placeholder="Date" bs-datepicker)
+                  input.form-control(type="text" ng-model="start_time" name="date" data-autoclose="1" data-min-date="today" data-max-date="{{end_time}}" placeholder="Date" bs-datepicker)
                 .col-md-6
                   input.form-control(type="text" ng-model="start_time" name="time" data-autoclose="1" placeholder="Time" bs-timepicker)
         .col-md-6

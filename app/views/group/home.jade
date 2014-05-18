@@ -21,17 +21,20 @@ block baseInfo
         .col-md-2
           label.info_border  胜率
           label.info_border  100%
-        .col-md-4.col-md-offset-2
-          button(class="dl_btn" data-toggle="modal" data-target="#sponsorCampaignModel") 活动
-          button(class="dl_btn" data-toggle="modal" data-target="#sponsorProvokeModel") 挑战
-          button(class="dl_btn" onclick="{location.href='/arena/home'}") 擂台
+        if(role ==='HR' || role ==='LEADER')
+          .col-md-4.col-md-offset-2
+            button(class="dl_btn" data-toggle="modal" data-target="#sponsorCampaignModel") 活动
+            button(class="dl_btn" data-toggle="modal" data-target="#sponsorProvokeModel") 挑战
+            button(class="dl_btn" onclick="{location.href='/arena/home'}") 擂台
+
 block panel
   div(ng-app="tabViewGroup")
     ul.nav.nav-tabs
-      li(ng-class="{'active':nowTab=='group_message'}")
-        a.h5(href="#/group_message" ng-click="addactive('group_message')") 小组动态
-      li(ng-class="{'active':nowTab=='group_campaign'}")
-        a.h5(href="#/group_campaign" ng-click="addactive('group_campaign')") 小组活动
+      if(role !=='GUESTHR' && role !=='GUEST')
+        li(ng-class="{'active':nowTab=='group_message'}")
+          a.h5(href="#/group_message" ng-click="addactive('group_message')") 小组动态
+        li(ng-class="{'active':nowTab=='group_campaign'}")
+          a.h5(href="#/group_campaign" ng-click="addactive('group_campaign')") 小组活动
       li(ng-class="{'active':nowTab=='group_member'}")
         a.h5(href="#/group_member" ng-click="addactive('group_member')") 小组成员
       li(ng-class="{'active':nowTab=='group_info'}")
@@ -39,25 +42,29 @@ block panel
     .tab-content
       .tab-pane.active
         div(ng-view)
+    if(role ==='HR' || role ==='LEADER')
+      div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../partials/campaign_modal
 
-    div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../partials/campaign_modal
-
-    div(ng-controller="CampaignListController" class="modal fade" id="sponsorProvokeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../partials/provoke_modal
+      div(ng-controller="CampaignListController" class="modal fade" id="sponsorProvokeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../partials/provoke_modal
 
     div(ng-controller="GroupMessageController" id="team_content" team-id="#{teamId}")
 
 block aside
-  include ../partials/group_thumbnail
-  +group_thumbnail(selected_teams,'active','我的小队')
-  +group_thumbnail(unselected_teams,'inactive','我未添加的小队')
-  h5 小队相册
-  a.h5(href="/group/#{current_team._id}/managePhotoAlbum") 管理相册
-  each photo_album in photo_albums
-    p
-      img(src="/photoAlbum/#{photo_album.id}/preview")
-      a(href="/group/#{current_team._id}/photoAlbum/#{photo_album.id}")= photo_album.name
+
+  if(role !=='GUESTHR' && role !=='HR')
+    include ../partials/group_thumbnail
+    +group_thumbnail(groups,'active',role!=='HR'?'我的兴趣小组':'公司的兴趣小组')
+    +group_thumbnail(ugids,'inactive','未添加兴趣小组')
+  if(role !=='GUESTHR' && role !=='GUEST')
+    h4 小组相册
+    if(role==='LEADER')
+      a.h5(href="/group/#{group_id}/managePhotoAlbum") 管理相册
+    each photo_album in photo_albums
+      p
+        img(src="/photoAlbum/#{photo_album.id}/preview")
+        a.h5(href="/group/#{group_id}/photoAlbum/#{photo_album.id}")= photo_album.name
 
 append footExt
   script(src="/lib/angular-route/angular-route.min.js")

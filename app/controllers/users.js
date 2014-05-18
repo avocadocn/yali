@@ -59,11 +59,6 @@ exports.signout = function(req, res) {
  * Session
  */
 exports.loginSuccess = function(req, res) {
-  req.session.username = req.body.username;
-  req.session.cid = req.user.cid;
-  req.session.uid = req.user._id;
-  req.session.role = req.user.role;
-
   res.redirect('/users/home');
 };
 
@@ -77,11 +72,22 @@ exports.appLoginSuccess = function(req, res) {
 }
 
 exports.authorize = function(req, res, next) {
-  if (req.user) {
-    next();
-  } else {
-    res.redirect('/users/signin');
+  if(!req.params.userId || req.params.userId === req.user._id){
+    req.session.role = 'OWNER';
+    req.session.nowuid = req.user._id;
   }
+  else if(req.params.userId && req.user._id === req.profile.cid){
+    req.session.role = 'HR';
+    req.session.nowuid = req.params.userId;
+  }
+  else if(req.params.userId && req.profile.cid === req.user.cid){
+    req.session.role = 'PARTNER';
+    req.session.nowuid = req.params.userId;
+  }
+  else{
+    return res.send(403, 'forbidden!');
+  }
+  next();
 };
 
 
@@ -321,8 +327,10 @@ exports.finishRegister = function(req, res) {
 
 //列出该user加入的所有小组的动态
 exports.getGroupMessages = function(req, res) {
+  if(req.session.role!=='OWNER'){
+    return res.send(403,forbidden);
+  }
   var group_messages = [];
-  var flag = 0;
   var i = 0;
   async.whilst(
     function() { return i < req.user.group.length; },
@@ -350,7 +358,7 @@ exports.getGroupMessages = function(req, res) {
               var positive = 0;
               var negative = 0;
               for(var k = 0; k < group_message[j].provoke.camp.length; k ++) {
-                if(group_message[j].provoke.camp[k].tname === req.user.group[flag-1].tname){
+                if(group_message[j].provoke.camp[k].tname === req.user.group[i].tname){
                   positive = group_message[j].provoke.camp[k].vote.positive;
                   negative = group_message[j].provoke.camp[k].vote.negative;
                   break;
@@ -386,12 +394,18 @@ exports.getGroupMessages = function(req, res) {
         console.log(err);
         res.send([]);
       } else {
-        res.send(group_messages);
+        res.send({'group_messages':group_messages,'role':req.session.role});
       }
     }
   );
 };
 
+exports.renderCampaigns = function(req, res){
+  res.render('partials/campaign_list',{
+      'role':req.session.role,
+      'provider':'user'
+  });
+};
 
 //列出该user加入的所有小组的活动
 //这是在员工日程里的,不用判断权限,因为关闭活动等操作
@@ -468,92 +482,53 @@ exports.getCampaigns = function(req, res) {
 
 
 exports.home = function(req, res) {
-  if(req.user === null){
-    return res.redirect('/users/signin');
+  var _user = {};
+  if(req.session.role ==='OWNER'){
+    _user = req.user;
   }
   else{
-    var selected_teams = [];
-    var unselected_teams = [];
-    var current_team; //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
-    var user_teams = [];
-
-    Array.prototype.S=String.fromCharCode(2);
-    Array.prototype.in_array=function(e)
-    {
-      var r=new RegExp(this.S+e+this.S);
-      return (r.test(this.S+this.join(this.S)+this.S));
+    _user = req.profile;
+  }
+  var selected_teams = [];
+  var unselected_teams = [];
+  var user_teams = [];
+  for(var i = 0; i < req.user.group.length; i ++) {
+    for(var j = 0; j < req.user.group[i].team.length; j ++) {
+      user_teams.push(req.user.group[i].team[j].id);
     }
-
-    for(var i = 0; i < req.user.group.length; i ++) {
-      for(var j = 0; j < req.user.group[i].team.length; j ++) {
-        user_teams.push(req.user.group[i].team[j].id);
-      }
-    }
-    CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'photo':1,'name':1,'member':1,'score':1,'brief':1,'cname':1},function(err, company_groups) {
-      if(err || !company_groups) {
-        return res.send([]);
-      } else {
-        var find = false;
-        for(var i = 0; i < company_groups.length; i ++) {
-
-          //下面查找的是该成员加入和未加入的所有小队
-          if(company_groups[i].gid !=='0'){
-            if(user_teams.in_array(company_groups[i]._id.toString())) {
-              console.log('psh');
-              selected_teams.push(company_groups[i]);
-
-              //如果该成员没有点击任何小队进入了该页面就返回他所属的第一个小队
-              if(!find) {
-                current_team = company_groups[i];
-                find = true;
-              }
-
-            } else {
-              console.log('pso');
-              unselected_teams.push(company_groups[i]);
-            }
+  }
+  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1},function(err, company_groups) {
+    if(err || !company_groups) {
+      return res.send([]);
+    } else {
+      var _cg_length= company_groups.length;
+      for(var i = 0; i < _cg_length; i ++) {
+        //下面查找的是该成员加入和未加入的所有小队
+        if(company_groups[i].gid !=='0'){
+          if(user_teams.indexOf(company_groups[i]._id.toString())) {
+            selected_teams.push(company_groups[i]);
+          } else {
+            unselected_teams.push(company_groups[i]);
           }
         }
-        console.log(selected_teams,unselected_teams,current_team,user_teams);
-        res.render('users/home',{
-          'selected_teams' : selected_teams,
-          'unselected_teams' : unselected_teams,
-          'current_team' : current_team,        //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
-          'photo': req.user.photo,
-          'realname':req.user.realname,
-          'cname':req.user.cname,
-          'sign':req.user.introduce
-        });
       }
-    });
-  }
+      res.render('users/home',{
+        'selected_teams' : selected_teams,
+        'unselected_teams' : unselected_teams,
+        'photo': _user.photo,
+        'realname':_user.realname,
+        'cname':_user.cname,
+        'sign':_user.introduce,
+        'role':req.role
+      });
+    }
+  });
 };
 
 exports.editInfo = function(req, res) {
-  User.findOne({
-    _id: req.user.id
-  },
-  function (err, user) {
-    if(err) {
-      console.log(err);
-    } else if(user) {
-      Company.findOne({
-        _id: user.cid
-      },
-      function(err, company) {
-        if(err) {
-          console.log(err);
-        } else if(company) {
-          user.register_date = user.register_date.toLocaleString();
-          return res.render('users/editInfo',
-            {'title': '编辑个人资料',
-            'user': user,
-            'company': company,
-            photo:user.photo
-          });
-        }
-      });
-    }
+  return res.render('users/editInfo',{
+    'title': '个人资料',
+    'role': req.session.role
   });
 };
 
@@ -653,8 +628,11 @@ exports.vote = function (req, res) {
 //员工参加活动
 //TODO 加入competition
 exports.joinCampaign = function (req, res) {
-  var cid = req.session.cid;
-  var uid = req.session.uid;
+  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE'){
+    return res.send(403,forbidden);
+  }
+  var cid = req.user.cid;
+  var uid = req.user.id;
   var campaign_id = req.body.campaign_id; //该活动的id
 
   var tid = req.session.tid;              //该活动所属小队的id
@@ -671,7 +649,7 @@ exports.joinCampaign = function (req, res) {
         campaign.save(function (err) {
           if(err) {
             console.log(err);
-            res.send(err);
+            return res.send(err);
           } else {
             if(campaign.provoke.active === true) {
 
@@ -698,29 +676,33 @@ exports.joinCampaign = function (req, res) {
                       if(err) {
                         return res.send(err);
                       } else {
-                        return res.send('ok');
+                          res.send({ result: 1, msg: '参加活动成功'});
                       }
                     });
                   } else {
-                    return res.send('null');
+                    return res.send({ result: 0, msg: '没有此活动'});
                   }
                 }
               });
             }
+            else
+               res.send({ result: 1, msg: '参加活动成功'});
           }
         });
     } else {
-      console.log('没有此活动!');
+      return res.send({ result: 0, msg: '没有此活动'});
     }
   });
-  res.send("ok");
 };
 
 
 //员工退出活动
 exports.quitCampaign = function (req, res) {
-  var cid = req.session.cid;
-  var uid = req.session.uid;
+  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE'){
+    return res.send(403,'forbidden');
+  }
+  var cid = req.user.cid;
+  var uid = req.user.id;
   var campaign_id = req.body.campaign_id; //该活动的id
   Campaign.findOne({
         _id : campaign_id
@@ -771,22 +753,24 @@ exports.quitCampaign = function (req, res) {
                       if(err) {
                         return res.send(err);
                       } else {
-                        return res.send('ok');
+                        return res.send({ result: 1, msg: '退出活动成功'});
                       }
                     });
                   } else {
-                    return res.send('null');
+                    return res.send({ result: 0, msg: '没有此活动'});
                   }
                 }
               });
             }
+            else{
+              return res.send({ result: 1, msg: '退出活动成功'});
+            }
           }
         });
       } else {
-          console.log('没有此活动!');
+          return res.send({ result: 0, msg: '没有此活动'});
       }
     });
-  res.send("ok");
 };
 
 
@@ -829,49 +813,56 @@ exports.getSchedules = function(req, res) {
 
 //获取账户信息
 exports.getAccount = function (req, res) {
-    User.findOne({
-            _id : req.session.uid
-        },{'_id':0,'hashed_password':0,'salt':0}, function(err, user) {
-            if(err) {
-                console.log(err);
-                res.send({'result':0,'msg':'数据错误'});
-            }
-            else {
-                if (user) {
-                    res.send({'result':1,'msg':'用户查找成功','data': user});
-                } else {
-                    res.send({'result':0,'msg':'不存在该用户'});
-                }
-            }
-        });
+  if(req.session.role !=='HR'&& req.session.role!=='OWNER'&&req.session.role!=='PARTNER' ){
+    return res.send(403, 'forbidden!');
+  }
+  User.findOne({
+          _id : req.session.nowuid
+      },{'_id':0,'hashed_password':0,'salt':0}, function(err, user) {
+          if(err) {
+              console.log(err);
+              res.send({'result':0,'msg':'数据错误'});
+          }
+          else {
+              if (user) {
+                  res.send({'result':1,'msg':'用户查找成功','data': user});
+              } else {
+                  res.send({'result':0,'msg':'不存在该用户'});
+              }
+          }
+  });
 };
 
 //保存用户信息
 exports.saveAccount = function (req, res) {
-    User.findOneAndUpdate({
-            _id : req.session.uid
-        }, req.body.user,null,function(err, user) {
-            if(err) {
-                console.log(err);
-                res.send({'result':0,'msg':'数据错误'});
-            }
-            else {
-                if (user) {
-                    res.send({'result':1,'msg':'修改成功'});
-                } else {
-                    res.send({'result':0,'msg':'不存在该用户'});
-                }
-            }
-        });
+  if(req.session.role !=='HR'&& req.session.role!=='OWNER'){
+    return res.send(403, 'forbidden!');
+  }
+  User.findOneAndUpdate({
+          _id : req.session.nowuid
+      }, req.body.user,null,function(err, user) {
+          if(err) {
+              console.log(err);
+              res.send({'result':0,'msg':'数据错误'});
+          }
+          else {
+              if (user) {
+                  res.send({'result':1,'msg':'修改成功'});
+              } else {
+                  res.send({'result':0,'msg':'不存在该用户'});
+              }
+          }
+  });
 };
 
 //修改密码
 exports.changePassword = function (req, res) {
-  if(req.user._id==null){
-      return res.send({'result':0,'msg':'您没有登录'});
+  if(req.session.role !=='HR'&& req.session.role!=='OWNER'){
+    return res.send(403, 'forbidden!');
   }
   User.findOne({
-      _id : req.session.uid
+      _id : req.session.nowuid
+
     },function(err, user) {
       if(err) {
         console.log(err);
@@ -900,11 +891,13 @@ exports.changePassword = function (req, res) {
           res.send({'result':0,'msg':'您没有登录'});
         }
       }
-    });
+  });
 };
 
-
 exports.savePhoto = function(req, res) {
+  if(req.role ==='PARTNER'){
+    return res.send(403, 'forbidden!');
+  }
   var user = req.user;
 
   var photo_temp_path = req.files.photo.path;
@@ -982,6 +975,9 @@ exports.savePhoto = function(req, res) {
 };
 
 exports.editPhoto = function(req, res) {
+  if(req.role ==='PARTNER'){
+    return res.send(403, 'forbidden!');
+  }
   res.render('users/editPhoto', {
     photo: req.user.photo,
     uid: req.user._id
@@ -1022,3 +1018,16 @@ exports.getPhoto = function(req, res) {
     res.send({ result: 0, msg: '请求错误' });
   }
 }
+
+exports.user = function(req, res, next, id) {
+    User
+        .findOne({
+             _id: id
+        })
+        .exec(function(err, user) {
+            if (err) return next(err);
+            if (!user) return next(new Error('Failed to load User ' + id));
+            req.profile = user;
+            next();
+        });
+};

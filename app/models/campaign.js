@@ -74,9 +74,4 @@ var Campaign = new Schema({
 });
 
 
-Campaign.virtual('active_value').set(function(password) {
-    ;
-}).get(function() {
-    return this.active ? '关闭' : '开启';
-});
 mongoose.model('Campaign', Campaign);
