@@ -256,7 +256,7 @@ exports.dealSelectGroup = function(req, res) {
   if(req.body.selected == undefined) {
     return res.redirect('/users/selectGroup');
   } else {
-    console.log(req.body.selected[0].team[0].id);
+    ;
   }
   User.findOne({'username': req.session.username}, function(err, user) {
     if(user) {
@@ -268,6 +268,7 @@ exports.dealSelectGroup = function(req, res) {
 
           user.group = req.body.selected;
 
+
           user.active = true;
           user.save(function(err){
             if(err){
@@ -275,12 +276,12 @@ exports.dealSelectGroup = function(req, res) {
               res.render('users/message', message.dbError);
             }
 
+
             //其实只要根据team_id来查询即可,根本不需要 cid 和 gid, 但是
             //通过cid和gid来限制查询条件可以很大程度上提高查询的性能
-            for( var i = 0; i < user.group.length && user.group[i].gid != '0'; i ++) {
+            for( var i = 0; i < user.group.length && user.group[i]._id != '0'; i ++) {
               for( var j =0; j < user.group[i].team.length; j ++) {
-                CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i].gid ,'_id':user.group[i].team[j].id}, function(err, company_group) {
-                  console.log(user.cid,user.group[i].gid,user.group[i].team[j].id);
+                CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i]._id ,'_id':user.group[i].team[j].id}, function(err, company_group) {
                   company_group.member.push({
                     'uid':user._id,
                     'nickname':user.nickname,
@@ -328,7 +329,7 @@ exports.getGroupMessages = function(req, res) {
         team_ids.push(req.user.group[i].team[k].id);
       }
 
-      GroupMessage.find({'cid' : {'$all':[req.user.cid.toString()]} , 'group._id': {'$all': [req.user.group[i]._id]} }).populate({
+      GroupMessage.find({'cid' : {'$all':[req.user.cid.toString()]} , 'group.gid': {'$all': [req.user.group[i]._id]} }).populate({
             path : 'team',
             match : { _id: {'$in':team_ids}}
           }

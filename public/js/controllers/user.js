@@ -54,7 +54,7 @@ userApp.controller('GroupsController', ['$scope','$http', function($scope, $http
                         'leader' : false
                     }];
                     $scope.selected.push({
-                        'gid': $scope.teams[i].gid,
+                        '_id': $scope.teams[i].gid,
                         'group_type': $scope.teams[i].group_type,
                         'entity_type': $scope.teams[i].entity_type,
                         'team': team
@@ -80,7 +80,7 @@ userApp.controller('GroupsController', ['$scope','$http', function($scope, $http
         }];
 
         $scope.selected.push({
-            'gid': '0',
+            '_id': '0',
             'group_type':'virtual',
             'entity_type': 'virtual',
             'team': team_default
