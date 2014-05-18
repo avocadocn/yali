@@ -162,12 +162,12 @@ input[type="number"] {
 }
 .dl_nav {
   height: 70px;
-  background-color: #32afe0;
-  background: -ms-linear-gradient(top, #32afe0, #33b0e3);
-  background: -moz-linear-gradient(top, #32afe0, #33b0e3);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#32afe0), to(#33b0e3));
-  background: -webkit-linear-gradient(top, #32afe0, #33b0e3);
-  background: -o-linear-gradient(top, #32afe0, #33b0e3);
+  background-color: #3498db;
+  background: -ms-linear-gradient(top, #3498db, #3498db);
+  background: -moz-linear-gradient(top, #3498db, #3498db);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3498db), to(#3498db));
+  background: -webkit-linear-gradient(top, #3498db, #3498db);
+  background: -o-linear-gradient(top, #3498db, #3498db);
   border-color: #fff;
   color: #fff;
 }
@@ -212,4 +212,19 @@ input[type="number"] {
 .dl_doc .promo {
   width: 100%;
   height: 460px;
+  background: url("/img/dl_doc_promo_bg.jpg") center center no-repeat;
+}
+.dl_doc .overview {
+  background-image: url("/img/dl_doc_overview.png");
+  background-repeat: no-repeat;
+  height: 460px;
+}
+.dl_doc .overview .regbox {
+  height: 460px;
+}
+.dl_doc .overview .regbox .reginfo {
+  height: 160px;
+  display: block;
+  background: url("/img/dl_doc_reg.png") right top no-repeat;
+  text-indent: -9999em;
 }
