@@ -61,7 +61,7 @@ exports.info =function(req,res) {
   var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
   if(req.session.tid !== null ) {
     Entity.findOne({
-        'cid': req.companyGroup.cid,
+        'cid': req.companyGroup.cid.toString(),
         'gid': req.companyGroup.gid,
         'tid': req.session.tid
       },function(err, entity) {
@@ -69,6 +69,7 @@ exports.info =function(req,res) {
               console.log(err);
               return res.send(err);
           } else {
+              console.log(typeof req.companyGroup.cid,typeof req.companyGroup.gid,typeof req.session.tid,entity_type);
               return res.send({
                   'companyGroup': req.companyGroup,  //父小组信息
                   'entity': entity,                          //实体小组信息
@@ -659,7 +660,6 @@ exports.sponsor = function (req, res) {
   var gid = req.session.gid;     //组件id,组长一次对一个组发布活动
   var content = req.body.content;//活动内容
   var location = req.body.location;//活动地点
-  var cname = '';
   var tid = req.params.teamId;
 
   //生成活动
@@ -668,7 +668,7 @@ exports.sponsor = function (req, res) {
   campaign.gid.push(gid);
   campaign.group_type.push(group_type);
   campaign.cid.push(cid);//内部活动只有一个公司
-  campaign.poster.cname = cname;
+  campaign.poster.cname = req.companyGroup.cname;
   campaign.poster.cid = cid;
   campaign.poster.uid = uid;
   campaign.poster.role = 'LEADER';
@@ -704,7 +704,7 @@ exports.sponsor = function (req, res) {
     groupMessage.active = true;
     groupMessage.cid.push(cid);
 
-    groupMessage.poster.cname = cname;
+    groupMessage.poster.cname = req.companyGroup.cname;
     groupMessage.poster.cid = cid;
     groupMessage.poster.uid = uid;
     groupMessage.poster.role = 'LEADER';

@@ -6,8 +6,8 @@ var mongoose = require('mongoose'),
 
 
 var fishing = new Schema({
-	tid: String,
-    cid: String,
+	   tid: Schema.Types.ObjectId,
+    cid: Schema.Types.ObjectId,
     gid: String
 });
 
