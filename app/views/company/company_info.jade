@@ -1,7 +1,7 @@
 div
   form.form-horizontal(name="accountForm")
     .infoHead.row
-      h4.pull-left 账户信息
+      h5.pull-left 账户信息
     hr
     .form-group
       label.col-md-2.control-label 登录邮箱
@@ -14,7 +14,7 @@ div
         label.info_label {{company.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
   form.form-horizontal(name="infoForm")
     .infoHead.row
-      h4.pull-left 企业信息
+      h5.pull-left 企业信息
       button.btn.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
     hr
     .form-group
@@ -63,7 +63,7 @@ div
         input.dl_input.form-control.editToggle(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
   form.form-horizontal(name="companyGroup")
     .infoHead.row
-      h4.pull-left 小组信息
+      h5.pull-left 小组信息
       if(role ==='HR')
         a.btn.dl_btn.pull-right(href="#/addGroup") 增加小组
     hr
