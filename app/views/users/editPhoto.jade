@@ -7,29 +7,29 @@ block content
   .container
     .row
       .col-xs-12.col-sm-7
-        h3 添加或更改你的大头像
+        h5 添加或更改你的大头像
         .row
           .col-xs-4.col-sm-4
             .img_frame
               img#jcrop_img.img-responsive(src="#{photo}")
           .col-xs-8.col-sm-8
-            h5 从电脑中选择你喜欢的照片
+            p 从电脑中选择你喜欢的照片
             p 你可以上传JPG、JPEG、GIF、PNG或BMP文件
-              label.btn.dl_btn(for="photo") 选择头像
+            label.btn.dl_btn(for="photo") 选择头像
 
         .row
           .col-xs-12.col-sm-12
-            h5 这是你在动梨上的小头像图标
+            p.margin_top_50 这是你在动梨上的小头像图标
             p 随意拖拽或缩放大图中的方格，预览的小图即为保存后的小头像图标。
         .row
           .col-xs-4.col-sm-4
             div(style="width:150px; height:150px; overflow:hidden")
               img#preview_big(src="#{'/userPhoto/' + uid + '/150/150'}")
           .col-xs-2.col-sm-2
-            div(style="width:50px; height:50px; overflow:hidden")
+            div.margin_top_100(style="width:50px; height:50px; overflow:hidden")
               img#preview_middle(src="#{'/userPhoto/' + uid + '/50/50'}")
           .col-xs-2.col-sm-2
-            div(style="width:27px; height:27px; overflow:hidden")
+            div.margin_top_123(style="width:27px; height:27px; overflow:hidden")
               img#preview_small(src="#{'/userPhoto/' + uid + '/27/27'}")
           .col-xs-4.col-sm-4
         .row
@@ -40,8 +40,8 @@ block content
             input#y(type="hidden" name="y" value="0")
             input#photo.hidden(type="file" name="photo" accept="image/*")
             button#save_button.btn.btn-primary(type="submit" disabled) 保存头像设置
-      .col-xs-12.col-sm-5
-        h5 给你自己扮酷
+      .col-xs-12.col-sm-5.margin_top_100
+        p 给你自己扮酷
         p 照片尺寸需要大于150x150像素
         p 建议上传近距离的照片（比如大头照、特写），这样经过编辑后的头像会很清楚。
         p 保存成功后如果图标不更新，你可以用浏览器刷新几次。
