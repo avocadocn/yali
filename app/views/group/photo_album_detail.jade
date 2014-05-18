@@ -3,22 +3,22 @@ extends ../layouts/photo
 block content
   input#photo_album_id(type="hidden" value="#{photo_album.id}")
   input#group_id(type="hidden" value="#{gid}")
-  h1= photo_album.name
+  h3= photo_album.name
   p= '最后更新：' + photo_album.update_date
   a(href="/group/#{gid}/managePhotoAlbum") 返回小组相册列表
   hr
-  h2 上传照片
+  h5 上传照片
   form.js_ajax_form(action="/photoAlbum/#{photo_album.id}/photo" method="post" enctype="multipart/form-data")
     input(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
     button(type="submit") 上传照片
 
-  h2 修改相册名字
+  h5 修改相册名字
   form#edit_name(action="/photoAlbum/#{photo_album.id}" method="post")
     input(type="hidden" name="_method" value="put")
     input(type="text" name="name" value="#{photo_album.name}" required="required")
     button(type="submit") 修改相册名字
 
-  h2 删除该相册
+  h5 删除该相册
   form#delete(action="/photoAlbum/#{photo_album.id}" method="post")
     input(type="hidden" name="_method" value="delete")
     button(type="submit") 删除相册

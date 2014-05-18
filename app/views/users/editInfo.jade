@@ -2,7 +2,7 @@ div
   form.form-horizontal(name="accountForm")
     .infoHead.row
       .col-md-4
-         h1 基本信息
+         h3 基本信息
       .col-md-8
          a.btn.dl_btn.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
     .form-group
@@ -15,29 +15,29 @@ div
           .row
             a.btn.dl_btn.margin_top_15(href="#/changePassword") 修改密码
     .form-group
-      label.col-md-2.control-label 登录邮箱
+      label.info_label.col-md-2.control-label 登录邮箱
       .col-md-4
         label.info_label(ng-bind="user.email")
     .form-group
-      label.col-md-2.control-label 昵称
+      label.info_label.col-md-2.control-label 昵称
       .col-md-4
         input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-disabled="baseUnEdit")
     .form-group
-      label.col-md-2.control-label 真实姓名
+      label.info_label.col-md-2.control-label 真实姓名
       .col-md-4
         input.dl_input.form-control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
     .form-group
-      label.col-md-2.control-label 公司
+      label.info_label.col-md-2.control-label 公司
       .col-md-6
         label.info_label= company.info.name
     .form-group
-      label.col-md-2.control-label 职位
+      label.info_label.col-md-2.control-label 职位
       .col-md-4
         input.dl_input.form-control.editToggle(type="text" name="position" ng-model="user.position" ng-disabled="baseUnEdit")
     .form-group
-      label.col-md-2.control-label 所在地
+      label.info_label.col-md-2.control-label 所在地
     .form-group
-      label.col-md-2.control-label 性别
+      label.info_label.col-md-2.control-label 性别
       .col-md-1
         label.radio.info_radio
           input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
@@ -47,11 +47,11 @@ div
           input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
           | 女
     .form-group
-      label.col-md-2.control-label 生日
+      label.info_label.col-md-2.control-label 生日
       .col-md-2
         input.dl_input.form-control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-startView="-1" placeholder="Date" ng-disabled="baseUnEdit" bs-datepicker)
     .form-group
-      label.col-md-2.control-label 血型
+      label.info_label.col-md-2.control-label 血型
       .col-md-2
         select.dl_input.form-control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-disabled="baseUnEdit")
           option(ng-select="user.bloodType === 'A'") A
@@ -59,28 +59,28 @@ div
           option(ng-select="user.bloodType === 'O'") O
           option(ng-select="user.bloodType === 'AB'") AB
     .form-group
-      label.col-md-2.control-label 简介
+      label.info_label.col-md-2.control-label 简介
       .col-md-4
         input.dl_input.form-control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-disabled="baseUnEdit")
     .form-group
-      label.col-md-2.control-label 注册时间
+      label.info_label.col-md-2.control-label 注册时间
       .col-md-8
         label.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
   form.form-horizontal(name="linkForm")
     .infoHead.row
       .col-md-4
-        h1 联系信息
+        h3 联系信息
       .col-md-8
         a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     .form-group
-      label.col-md-2.control-label 手机
+      label.info_label.col-md-2.control-label 手机
       .col-md-4
         input.dl_input.form-control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
     .form-group
-      label.col-md-2.control-label 邮箱
+      label.info_label.col-md-2.control-label 邮箱
       .col-md-4
         input.dl_input.form-control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="linkUnEdit")
     .form-group
-      label.col-md-2.control-label QQ
+      label.info_label.col-md-2.control-label QQ
       .col-md-4
         input.dl_input.form-control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")

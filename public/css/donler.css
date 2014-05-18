@@ -62,6 +62,15 @@ a {
 .margin_top_15 {
   margin-top: 15px;
 }
+.margin_top_50 {
+  margin-top: 50px;
+}
+.margin-top_100 {
+  margin-top: 100px;
+}
+.margin-top_123 {
+  margin-top: 123px;
+}
 .size_family {
   height: 300px;
   width: 800px;
@@ -98,6 +107,7 @@ a {
 }
 .info_label {
   padding: 7px 12px;
+  font-size: 14px;
 }
 .info_radio {
   margin-left: 12px;

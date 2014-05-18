@@ -2,11 +2,11 @@ extends ../layouts/photo
 
 block content
   input#photo_album_id(type="hidden" name="photo_album_id" value="#{photo_album.id}")
-  h1 比赛相册
+  h3 比赛相册
   p= '最后更新：' + photo_album.update_date
   a(href="/group/competition/#{competition_id}") 返回比赛页面
   hr
-  h2 上传照片
+  h5 上传照片
   form.js_ajax_form(action="/photoAlbum/#{photo_album.id}/photo" method="post" enctype="multipart/form-data")
     input(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
     button(type="submit") 上传照片
