@@ -190,7 +190,7 @@ exports.groupSelect = function(req, res) {
                 });
 
                 company.team.push({
-                    'gid' : selected_groups[i].gid,
+                    'gid' : selected_groups[i]._id,
                     'group_type' : selected_groups[i].group_type,
                     'name' : tname,
                     'id' : companyGroup._id
@@ -201,7 +201,7 @@ exports.groupSelect = function(req, res) {
                 //增强组件目前只能存放这三个字段
                 entity.tid = companyGroup._id;        //小队id
                 entity.cid = req.session.company_id;  //组件类型id
-                entity.gid = selected_groups[i].gid;  //公司id
+                entity.gid = selected_groups[i]._id;  //公司id
 
                 entity.save(function (err){
                     if (err) {
