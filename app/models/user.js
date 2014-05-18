@@ -12,12 +12,13 @@ var mongoose = require('mongoose'),
 
 
 var _team = new Schema({
-    id : String,                  //即companyGroup的_id
+    id : Schema.Types.ObjectId,                  //即companyGroup的_id
     name : String,
     leader : {                    //该员工是不是这个小队的队长
         type : Boolean,
         default : false
-    }
+    },
+    logo: String
 });
 
 var _group = new Schema({
