@@ -453,9 +453,9 @@ exports.getCampaigns = function(req, res) {
                 'content': campaign[j].content,
                 'location': campaign[j].location,
                 'member': campaign[j].member,
-                'create_time': campaign[j].create_time ? campaign[j].create_time.toLocaleDateString() : '',
-                'start_time': campaign[j].start_time ? campaign[j].start_time.toLocaleDateString() : '',
-                'end_time': campaign[j].end_time ? campaign[j].end_time.toLocaleDateString() : '',
+                'create_time': campaign[j].create_time ? campaign[j].create_time : '',
+                'start_time': campaign[j].start_time ? campaign[j].start_time : '',
+                'end_time': campaign[j].end_time ? campaign[j].end_time : '',
                 'join':join,
                 'provoke':campaign[j].provoke
               });
@@ -472,6 +472,7 @@ exports.getCampaigns = function(req, res) {
         console.log(err);
         res.send([]);
       } else {
+        console.log(campaigns)
         res.send({
           'data':campaigns
         });

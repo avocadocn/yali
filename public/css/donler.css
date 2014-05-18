@@ -32,6 +32,9 @@ a {
   border-style: solid;
   line-height: 1;
 }
+.dl_btn_small {
+  padding: 5px 20px;
+}
 .dl_btn:hover {
   background-color: #3abde7;
   border-color: #3abde7;

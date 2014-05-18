@@ -49,6 +49,7 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
       });
   }]);
 
+
 tabViewUser.controller('GroupMessageController', ['$http','$scope',
   function ($http, $scope) {
     $http.get('/users/getGroupMessages').success(function(data, status) {
@@ -84,6 +85,7 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope',
 
 tabViewUser.controller('CampaignListController', ['$http','$scope',
   function ($http, $scope) {
+
     $http.get('/users/getCampaigns').success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.company = false;
