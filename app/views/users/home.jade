@@ -20,11 +20,11 @@ block panel
   div(ng-app="tabViewUser")
     ul.nav.nav-tabs
       li(ng-class="{'active':nowTab=='group_message'}")
-        a(href="#/group_message" ng-click="addactive('group_message')") 我的小组动态
+        a.h5(href="#/group_message" ng-click="addactive('group_message')") 我的小组动态
       li(ng-class="{'active':nowTab=='schedule'}")
-        a(href="#/schedule" ng-click="addactive('schedule')") 日程列表
+        a.h5(href="#/schedule" ng-click="addactive('schedule')") 日程列表
       li(ng-class="{'active':nowTab=='personal'}")
-        a(href="#/personal" ng-click="addactive('personal')") 个人资料
+        a.h5(href="#/personal" ng-click="addactive('personal')") 个人资料
     .tab-content
       .tab-pane.active
         div(ng-view)

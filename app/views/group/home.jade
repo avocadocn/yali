@@ -2,15 +2,15 @@ extends ../layouts/manager
 
 block baseInfo
   .row
-    .col-md-2
+    .col-md-3
       img.img-responsive.img-thumbnail.size_210.img_contain(src="#{current_team.logo}")
-    .col-md-10
+    .col-md-9
       .row
-        h1= current_team.name
+        h3= current_team.name
       .row
-        label= current_team.cname
+        label.info_label= current_team.cname
       .row.margin_top_15
-        label= current_team.brief
+        label.info_label= current_team.brief
       .row.margin_top_15
         .col-md-2
           label.info_border 队员
@@ -29,13 +29,13 @@ block panel
   div(ng-app="tabViewGroup")
     ul.nav.nav-tabs
       li(ng-class="{'active':nowTab=='group_message'}")
-        a(href="#/group_message" ng-click="addactive('group_message')") 小组动态
+        a.h5(href="#/group_message" ng-click="addactive('group_message')") 小组动态
       li(ng-class="{'active':nowTab=='group_campaign'}")
-        a(href="#/group_campaign" ng-click="addactive('group_campaign')") 小组活动
+        a.h5(href="#/group_campaign" ng-click="addactive('group_campaign')") 小组活动
       li(ng-class="{'active':nowTab=='group_member'}")
-        a(href="#/group_member" ng-click="addactive('group_member')") 小组成员
+        a.h5(href="#/group_member" ng-click="addactive('group_member')") 小组成员
       li(ng-class="{'active':nowTab=='group_info'}")
-        a(href="#/group_info" ng-click="addactive('group_info')") 小组资料
+        a.h5(href="#/group_info" ng-click="addactive('group_info')") 小组资料
     .tab-content
       .tab-pane.active
         div(ng-view)
@@ -52,8 +52,8 @@ block aside
   include ../partials/group_thumbnail
   +group_thumbnail(selected_teams,'active','我的小队')
   +group_thumbnail(unselected_teams,'inactive','我未添加的小队')
-  h4 小队相册
-  a(href="/group/#{current_team._id}/managePhotoAlbum") 管理相册
+  h5 小队相册
+  a.h5(href="/group/#{current_team._id}/managePhotoAlbum") 管理相册
   each photo_album in photo_albums
     p
       img(src="/photoAlbum/#{photo_album.id}/preview")
