@@ -329,7 +329,7 @@ exports.getGroupMessages = function(req, res) {
         team_ids.push(req.user.group[i].team[k].id);
       }
 
-      GroupMessage.find({'cid' : {'$all':[req.user.cid.toString()]} , 'group._id': {'$all': [req.user.group[i]._id]} }).populate({
+      GroupMessage.find({'cid' : {'$all':[req.user.cid.toString()]} , 'group.gid': {'$all': [req.user.group[i]._id]} }).populate({
             path : 'team',
             match : { _id: {'$in':team_ids}}
           }
