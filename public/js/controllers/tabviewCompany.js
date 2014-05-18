@@ -48,16 +48,68 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         templateUrl: '/views/change_password.html',
         controller: 'PasswordFormController',
         controllerAs: 'password'
-      })
-      .when('/addGroup',{
-        templateUrl: '/company/add_group',
-        controller: 'CompanyGroupFormController',
-        controllerAs: 'companyGroup'
-      })
-      .otherwise({
-        redirectTo: '/company_message'
+      }).
+      otherwise({
+        redirectTo: '/company_campaign'
       });
   }]);
+
+
+tabViewCompany.controller('GroupListController', ['$http', '$scope',
+ function ($http, $scope) {
+    $http.get('/group/getCompanyGroups').success(function(data, status) {
+      $scope.teams = data.teams;
+      $scope.cid = data.cid;
+    });
+
+    $scope.setGroupId = function (tid,gid) {
+        $scope.tid = tid;
+        $scope.gid = gid;
+        try{
+            $http({
+                method: 'post',
+                url: '/search/user',
+                data:{
+                    cid: $scope.cid,
+                    gid: $scope.gid,
+                    tid: $scope.tid
+                }
+            }).success(function(data, status) {
+                //发布活动后跳转到显示活动列表页面
+                $scope.users = data;
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+    $scope.appointLeader = function (uid) {
+      try{
+            $http({
+                method: 'post',
+                url: '/company/appointLeader',
+                data:{
+                    cid: $scope.cid,
+                    gid: $scope.gid,
+                    tid: $scope.tid,
+                    uid: uid
+                }
+            }).success(function(data, status) {
+                //发布活动后跳转到显示活动列表页面
+                window.location.reload();
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+}]);
 
 tabViewCompany.controller('GroupMessageController', ['$http','$scope',
   function($http,$scope) {
@@ -66,29 +118,6 @@ tabViewCompany.controller('GroupMessageController', ['$http','$scope',
       $scope.show = false;
       $scope.voteFlag = false;
     });
-
-    //TODO
-    //公司动态也需要投票吗?
-    /*
-    $scope.vote = function(provoke_message_id, status) {
-         try {
-            $http({
-                method: 'post',
-                url: '/users/vote',
-                data:{
-                    provoke_message_id : provoke_message_id,
-                    aOr : status
-                }
-            }).success(function(data, status) {
-            }).error(function(data, status) {
-                alert('数据发生错误！');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-    */
 }]);
 
 tabViewCompany.controller('CampaignListController', ['$http','$scope',
@@ -99,6 +128,41 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope',
     });
 
 
+    $scope.selectCampaign = function (value) {
+        var _url = "";
+        var _selected = true;
+        switch(value) {
+            case 0:
+                _url = "/campaign/company/getCampaigns";
+                break;
+            case 1:
+                _url = "/campaign/user/getCampaigns";
+                _selected = true;
+                break;
+            case 2:
+                _url = "/campaign/user/getCampaigns";
+                _selected = false;
+                break;
+            default:break;
+        }
+         try{
+            $http({
+                method: 'post',
+                url: _url,
+                data:{
+                    team_selected : _selected
+                }
+            }).success(function(data, status) {
+                $scope.campaigns = data.data;
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };
@@ -286,7 +350,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             $scope.groupInfoButtonStatus = '保存队名';
         }
     };
-        
     $http.get('/group/getCompanyGroups').success(function(data, status) {
         $scope.group_lists = data.group;
         $scope.cid = data.cid;
@@ -366,5 +429,6 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope', function(
 }]);
 
 tabViewCompany.controller('CompanyGroupFormController',['$http','$scope', function($http, $scope){
-    
+
+    //$scope.
 }]);

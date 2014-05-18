@@ -32,8 +32,8 @@ block panel
 block aside
   include ../partials/group_thumbnail
 
-  +group_thumbnail(groups,'active','我的兴趣小组')
-  +group_thumbnail(ugids,'inactive','未添加兴趣小组')
+  +group_thumbnail(selected_teams,'active','我的小队')
+  +group_thumbnail(unselected_teams,'inactive','我未添加的小队')
 
 
 append footExt

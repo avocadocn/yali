@@ -193,7 +193,6 @@ exports.challenge = function(req, res){
     var team_a = req.session.companyGroup.name;   //约战方队名
     var team_opposite = req.arena.champion.tname;   //被约方队名
 
-    competition.id = UUID.id();
     competition.gid = gid;
     competition.group_type = req.session.companyGroup.group_type;
 

@@ -8,21 +8,12 @@ var mongoose = require('mongoose'),
     crypto = require('crypto');
 
 
-var _member = new Schema({
-    _id : {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    nickname : String
-    //nickname略不合理吧？-M
-});
-
-var _group = new Schema({
-    _id: String,
+//小队信息
+var _team = new Schema({
+    gid : String,
     group_type: String,
-    entity_type: String,           //对应的增强组件名字
-    tname: String,                 //小队名称,这是很关键的关键字!
-    leader:[_member]
+    name: String,
+    id: String
 });
 /**
  * Company Schema
@@ -50,6 +41,7 @@ var CompanySchema = new Schema({
         date: Number
     },
 
+    team:[_team],
     //公司信息
     info: {
         name: {
@@ -87,16 +79,11 @@ var CompanySchema = new Schema({
         type: Date,
         default: Date.now()
     },
-    //公司内部组件
-    group: [_group],
     provider: {
         type: String,
         default: 'company'
     },
     salt: String,
-
-
-
     // 企业注册用的邀请码
     register_invite_code: [String]
 });

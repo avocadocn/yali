@@ -20,9 +20,9 @@ exports.getCompany = function (req, res) {
 
                 for(var i = 0; i < companies.length; i ++) {
                     companies_rst.push({
-                        'id' : companies[i].id,
+                        '_id' : companies[i]._id,
                         'name' : companies[i].info.name,
-                        'group' : companies[i].group
+                        'team' : companies[i].team
                     });
                 }
                 return res.send(companies_rst);
@@ -62,37 +62,25 @@ exports.searchTeam = function(req, res) {
 exports.getTeam = function(req, res) {
   var cid = req.body.cid;
   var gid = req.session.gid;
-  Company.findOne({'id':cid}, function (err, company) {
-    if(err) {
-      return res.send(err);
+  CompanyGroup.find({'cid':cid,'gid':gid},function(err, company_groups){
+    if(err || !company_groups) {
+      return res.send([]);
     } else {
-      if(company) {
-        var leader = [];
-        var tname = '';
-        for(var i = 0; i < company.group.length; i ++) {
-          if(company.group[i].gid === gid) {
-            leader = company.group[i].leader !== null && company.group[i].leader !== undefined ? company.group[i].leader : [];
-            tname = company.group[i].tname;
-          }
-        }
-        return res.send({
-          'tname' : tname,
-          'leader' : leader
-        });
-      } else {
-        return res.send('null');
-      }
+      return res.send(company_groups);
     }
   });
 }
 
 
 //TODO
-//根据公司id搜索成员(该成员不是该组的组长)
+//根据公司id搜索成员(该成员不是该队的队长)
 exports.getUser = function(req, res) {
   var cid = req.body.cid;   //根据公司名找它的员工
-  var _gid = req.body.gid;   //找选择了该组的员工
-  User.find({'cid': cid , 'group':{'$elemMatch':{'_id':_gid, 'leader':false}} },{'_id':1,'nickname':1,'username':1,'group':1}, function (err, users){
+
+  var _gid = req.body.gid;
+  var tid = req.body.tid;   //找选择了该队的员工
+  User.find({'cid': cid , 'group':{'$elemMatch':{'gid':_gid, 'team':{'$elemMatch':{'id':tid,'leader':false}}}} },{'_id':1,'nickname':1,'username':1,'group':1}, function (err, users){
+
     if(err || !users){
       console.log('ERROR');
       return res.send([]);

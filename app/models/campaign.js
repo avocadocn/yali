@@ -18,7 +18,12 @@ var _member = new Schema({
 /**
  * 活动
  */
+
 var Campaign = new Schema({
+    team:{
+        type: Schema.Types.ObjectId,
+        ref: 'CompanyGroup'
+    },
     id: String,
     active: {
         type: Boolean,

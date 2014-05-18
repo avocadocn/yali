@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 
 
 var ktv = new Schema({
+	tid: String,
     cid: String,
     gid: String
 });

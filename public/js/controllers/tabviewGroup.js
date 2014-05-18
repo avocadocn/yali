@@ -38,9 +38,16 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
+
+    /*
+    $scope.$watch('teamId',function(){
+        alert(typeof($scope.teamId));
+    });
+    */
+    var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
     //消除ajax缓存
-    $http.get('/group/getGroupMessages?' + Math.round(Math.random()*100)).success(function(data, status) {
+    $http.get('/group/getGroupMessages/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.group_messages = data;
       $scope.show = true;
       $scope.voteFlag = true;
@@ -77,7 +84,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
          try {
             $http({
                 method: 'post',
-                url: '/group/responseProvoke',
+                url: '/group/responseProvoke/'+teamId,
                 data:{
                     provoke_message_id : provoke_message_id
                 }
@@ -97,8 +104,10 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function($http, $scope,$rootScope) {
     $rootScope.nowTab = 'group_campaign';
+
+    var teamId = $('#team_content').attr('team-id');
     //消除ajax缓存
-    $http.get('/group/getCampaigns?' + Math.round(Math.random()*100)).success(function(data, status) {
+    $http.get('/group/getCampaigns/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.show = data.permission;    //只有改组的组长才可以操作活动(关闭、编辑等)
     });
@@ -109,12 +118,11 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     });
 
 
-    $scope.provoke_select = function( tname) {
-        $scope.team_opposite = tname;
-        alert($scope.team_opposite);
+    $scope.provoke_select = function (team) {
+        $scope.team_opposite = team;
+        alert("您将对"+team.cname+"的"+team.name+"发起挑战!");
     };
     $scope.getTeam = function (cid) {
-        $scope.cid_opposite = cid;
         try {
             $http({
                 method: 'post',
@@ -138,13 +146,11 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
          try {
             $http({
                 method: 'post',
-                url: '/group/provoke',
+                url: '/group/provoke/'+teamId,
                 data:{
                     provoke_model : 'against',
-                    cid_opposite : $scope.cid_opposite,
-                    content : $scope.content,
                     team_opposite : $scope.team_opposite,
-
+                    content : $scope.content,
                     location: $scope.location,
                     remark: $scope.remark,
                     competition_date: $scope.competition_date,
@@ -236,7 +242,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         try{
             $http({
                 method: 'post',
-                url: '/group/campaignSponsor',
+                url: '/group/campaignSponsor/'+teamId,
                 data:{
                     location: $scope.location,
                     content : $scope.content,
@@ -280,7 +286,9 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 
 tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'group_member';
-    $http.get('/group/getGroupMembers?' + Math.round(Math.random()*100)).success(function(data, status) {
+
+    var teamId = $('#team_content').attr('team-id');
+    $http.get('/group/getGroupMembers/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
       if(data.result==1){
         $scope.group_members = data.data.member;
         $scope.group_leaders = data.data.leader;
@@ -292,7 +300,8 @@ tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', 
 tabViewGroup.controller('infoController', ['$http', '$scope',function($http, $scope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
-    $http.get('/group/info').success(function(data, status) {
+    var teamId = $('#team_content').attr('team-id');
+    $http.get('/group/info/'+teamId).success(function(data, status) {
         $scope.companyname = data.companyname;
         $scope.create_time = data.entity.create_date ? data.entity.create_date :'';
         $scope.name = data.companyGroup.name ? data.companyGroup.name : '';

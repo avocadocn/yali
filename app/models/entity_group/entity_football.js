@@ -24,6 +24,7 @@ var _formation = new Schema({
  * 足球实体组件
  */
 var footBall = new Schema({
+    tid: String,
     cid: String,
     gid: String,
     main_force: [_member],   //主力

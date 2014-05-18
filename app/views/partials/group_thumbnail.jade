@@ -1,8 +1,8 @@
 
-mixin group_thumbnail(groups,group_class,group_head)
-  h3= group_head
+mixin group_thumbnail(teams,team_class,team_head)
+  h3= team_head
   .groups.row
-    each group in groups
-      div(class='group col-xs-3 '+group_class)
-        a(href="/group/home/#{(group_class == 'inactive' ? group : group._id)}")
-         label(class='group size_80 img_contain group_'+ (group_class == 'inactive' ? group : group._id) )
+    each team in teams
+      div(class='group col-xs-3 '+team_class)
+        a(href="/group/home/#{team._id}/#{team.gid}")
+         img(class='group size_80' src="#{team.logo}")

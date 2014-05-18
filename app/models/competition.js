@@ -32,6 +32,7 @@ var _formation = new Schema({
 
 
 var _camp = new Schema({
+  id : String,                             //小队id
   logo: String,                            //队徽路径
   cname: String,                           //公司名
   tname: String,

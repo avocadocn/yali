@@ -7,8 +7,8 @@ var config = require('../../config/config');
 
 module.exports = function(app) {
   app.get('/campaign/group/getCampaigns', campaign.getGroupCampaign);
-  app.get('/campaign/company/getCampaigns', campaign.getCompanyCampaign);
-  app.get('/campaign/user/getCampaigns', campaign.getUserCampaign);
+  app.post('/campaign/company/getCampaigns', campaign.getCompanyCampaign);
+  app.post('/campaign/user/getCampaigns', campaign.getUserCampaign);
 
   app.post('/campaign/company/sponsor', campaign.sponsorCompanyCampaign);
   app.post('/campaign/group/sponsor', campaign.sponsorGroupCampaign);

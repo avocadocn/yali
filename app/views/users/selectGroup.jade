@@ -6,9 +6,9 @@ block headExt
 block content
   .text-center.h3.group_head='请选择' + group_head + '兴趣小组组件'
   .groups.row(ng-app='user' ng-controller='GroupsController')
-    .group.col-xs-3(ng-repeat='group in groups' ng-class="{'1': 'active', '0': 'inactive'}[group.select]")
-      input(type='checkbox' name='group' id='{{group._id}}' value='{{group.group_type}}' ng-model='group.select' ng-true-value='1' ng-false-value='0')
-      label(class='size_210 group_'+'{{group._id}}' for='{{group._id}}') {{group.group_type}}
+    .group.col-xs-3(ng-repeat='team in teams' ng-class="{'1': 'active', '0': 'inactive'}[team.select]")
+      input(type='checkbox' name='team.name' id='{{team.id}}' value='{{team.group_type}}' ng-model='team.select' ng-true-value='1' ng-false-value='0')
+      label(class='size_210 group_'+'{{team.gid}}' for='{{team.id}}') 类型:{{team.group_type}}  队名:{{team.name}}
       span
     .group_next.row
       button.next.btn.btn-primary.btn-lg.center-block(ng-click='group_next()') 下一步

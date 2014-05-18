@@ -43,9 +43,9 @@
           hr
           p 公司id: {{company._id}}
           p 公司名: {{company.name}}
-          button.btn.dl_btn(ng-click="getTeam(company.id)") 列出小组
-        //Todo:此处有bug,应列在所点公司下方，而非所有公司下方，若将缩进增加则会所有公司都显示...  
-        a(ng-click="provoke_select(teams.tname)") {{teams.tname}}
+          button.btn.dl_btn(ng-click="getTeam(company._id)") 列出小组
+            li(ng-repeat="team in teams")
+              a(ng-click="provoke_select(team)") {{team.name}}
     .modal-footer
       button(class="btn dl_btn" data-dismiss="modal") 取消
       button(class="btn dl_btn" ng-click='provoke()' data-dismiss="modal") 确定

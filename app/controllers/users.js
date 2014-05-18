@@ -40,9 +40,9 @@ exports.signin = function(req, res) {
   if(req.user) {
     res.redirect('/users/home');
   } else {
+    console.log('no');
     res.render('users/signin', {
-      title: 'Signin',
-      message: req.flash('error')
+      title: 'Signin'
     });
   }
 };
@@ -90,13 +90,13 @@ exports.authorize = function(req, res, next) {
  */
 exports.invite = function(req, res) {
   var key = req.query.key;
-  var name = req.query.name;
-  if(key == undefined || name == undefined) {
+  var cid = req.query.cid;
+  if(key == undefined || cid == undefined) {
     res.render('users/message', {title: 'error', message: 'bad request'});
   } else {
-    if (encrypt.encrypt(name, config.SECRET) === key) {
+    if (encrypt.encrypt(cid, config.SECRET) === key) {
       req.session.key = key;
-      req.session.name = name;
+      req.session.key_id = cid;
       res.render('users/invite', {
         title: 'validate'
       });
@@ -109,7 +109,7 @@ exports.invite = function(req, res) {
  */
 exports.dealActive = function(req, res) {
   var key = req.session.key;
-  var name = req.session.name;
+  var cid = req.session.key_id;
 
   User.findOne({ username: req.body.host + '@' + req.body.domain }, function(err, user) {
     if(err) {
@@ -121,8 +121,8 @@ exports.dealActive = function(req, res) {
         res.render('users/message', message.actived);
       }
     } else {
-      if(encrypt.encrypt(name, config.SECRET) === key) {
-        Company.findOne({ 'info.official_name': name }).exec(function(err, company){
+      if(encrypt.encrypt(cid, config.SECRET) === key) {
+        Company.findOne({'_id': cid}).exec(function(err, company){
           if (company != null) {
             for(var i = 0; i < company.email.domain.length; i++) {
               if(req.body.domain === company.email.domain[i]) {
@@ -138,17 +138,19 @@ exports.dealActive = function(req, res) {
                   }
                 });
                 //系统再给员工发一封激活邮件
-                mail.sendStaffActiveMail(user.email, user._id, company._id, req.headers.host);
+                mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
                 res.render('users/message', message.wait);
                 return;
               }
             }
             res.render('users/message', message.emailError);
           } else {
+            console.log('bbbb');
             res.render('users/message', message.invalid);
           }
         });
       } else {
+        console.log('aaaa');
         res.render('users/message', message.invalid);
       }
     }
@@ -162,7 +164,7 @@ exports.dealActive = function(req, res) {
 exports.setProfile = function(req, res) {
   var key = req.query.key;
   var uid = req.query.uid;
-  User.findOne({ _id: uid }, function(err, user) {
+  User.findOne({_id: uid}, function(err, user) {
     if(err) {
       console.log(err);
       res.render('users/message', message.dbError);
@@ -192,7 +194,7 @@ exports.setProfile = function(req, res) {
  */
 exports.dealSetProfile = function(req, res) {
   User.findOne(
-    { _id : req.query.uid }
+    {_id : req.query.uid}
   , function(err, user) {
     if(err) {
       console.log(err);
@@ -253,6 +255,8 @@ exports.selectGroup = function(req, res) {
 exports.dealSelectGroup = function(req, res) {
   if(req.body.selected == undefined) {
     return res.redirect('/users/selectGroup');
+  } else {
+    console.log(req.body.selected[0].team[0].id);
   }
   User.findOne({'username': req.session.username}, function(err, user) {
     if(user) {
@@ -270,19 +274,24 @@ exports.dealSelectGroup = function(req, res) {
               console.log(err);
               res.render('users/message', message.dbError);
             }
-            for( var i = 0; i < user.group.length && user.group[i]._id != '0'; i ++) {
-              CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i]._id}, function(err, company_group) {
-                company_group.member.push({
-                  _id: user._id,
-                  nickname: user.nickname,
-                  photo: user.photo
+
+            //其实只要根据team_id来查询即可,根本不需要 cid 和 gid, 但是
+            //通过cid和gid来限制查询条件可以很大程度上提高查询的性能
+            for( var i = 0; i < user.group.length && user.group[i].gid != '0'; i ++) {
+              for( var j =0; j < user.group[i].team.length; j ++) {
+                CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i].gid ,'_id':user.group[i].team[j].id}, function(err, company_group) {
+                  company_group.member.push({
+                    'uid':user._id,
+                    'nickname':user.nickname,
+                    'photo':user.photo
+                  });
+                  company_group.save(function(err){
+                    if(err){
+                      console.log(err);
+                    }
+                  });
                 });
-                company_group.save(function(err){
-                  if(err){
-                    console.log(err);
-                  }
-                });
-              });
+              }
             }
           });
           res.redirect('/users/finishRegister');
@@ -313,8 +322,16 @@ exports.getGroupMessages = function(req, res) {
     function() { return i < req.user.group.length; },
 
     function(callback) {
-      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i]._id]} }, function(err, group_message) {
-        flag++;
+      var team_ids = [];
+      for(var k = 0; k < req.user.group[i].team.length; k ++){
+        team_ids.push(req.user.group[i].team[k].id);
+      }
+
+      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i].gid]} }).populate({
+            path : 'team',
+            match : { _id: {'$in':team_ids}}
+          }
+        ).exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
@@ -337,7 +354,7 @@ exports.getGroupMessages = function(req, res) {
                 'positive' : positive,
                 'negative' : negative,
                 'my_tname': req.user.group[i].tname,
-                'id': group_message[j].id,
+                '_id': group_message[j]._id,
                 'cid': group_message[j].cid,
                 'group': group_message[j].group,
                 'active': group_message[j].active,
@@ -347,8 +364,8 @@ exports.getGroupMessages = function(req, res) {
                 'location' : group_message[j].location,
                 'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
                 'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
-                'provoke': group_message[j].provoke,                  //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工公司id和被约公司id一致 3.约战没有确认 4.当前员工是该小队的队长
-                'provoke_accept': group_message[j].provoke.active && (group_message[j].group.gid[0] === req.user.group[flag-1].gid) && (!group_message[j].provoke.start_confirm) && req.user.group[flag-1].leader && (group_message[j].cid[1] === req.session.cid)
+                'provoke': group_message[j].provoke,
+                'provoke_accept': false
               });
             }
           }
@@ -382,7 +399,15 @@ exports.getCampaigns = function(req, res) {
     function() { return i < req.user.group.length; },
 
     function(callback) {
-      Campaign.find({'cid' : {'$all':[req.user.cid]} , 'gid' : {'$all':[req.user.group[i]._id]} }, function(err, campaign) {
+      var team_ids = [];
+      for(var k = 0; k < req.user.group[i].team.length; k ++){
+        team_ids.push(req.user.group[i].team[k].id);
+      }
+      Campaign.find({'cid' : {'$all':[req.user.cid]} , 'gid' : {'$all':[req.user.group[i].gid]}}).populate({
+            path : 'team',
+            match : { _id: {'$in':team_ids}}
+          }
+        ).exec(function(err, campaign) {
         if(campaign.length > 0) {
           if (err) {
             callback(err);
@@ -397,8 +422,9 @@ exports.getCampaigns = function(req, res) {
                 }
               }
               campaigns.push({
+                'selected': true,
                 'active':campaign[j].active,
-                'id': campaign[j].id,
+                '_id': campaign[j]._id,
                 'gid': campaign[j].gid,
                 'group_type': campaign[j].group_type,
                 'cid': campaign[j].cid,
@@ -440,40 +466,62 @@ exports.home = function(req, res) {
     return res.redirect('/users/signin');
   }
   else{
-    Group.find(null,function(err,group){
-      if (err) {
-        console.log(err);
-        return res.status(404).send();;
-      };
-      var _ugids = [];
-      var _glength = group.length;
-      var tmp_gid = [];
-      for(var j=0;j<req.user.group.length && req.user.group[j]._id != '0';j++){
-        tmp_gid.push(req.user.group[j]._id);
+    var selected_teams = [];
+    var unselected_teams = [];
+    var current_team; //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
+    var user_teams = [];
+
+    Array.prototype.S=String.fromCharCode(2);
+    Array.prototype.in_array=function(e)
+    {
+      var r=new RegExp(this.S+e+this.S);
+      return (r.test(this.S+this.join(this.S)+this.S));
+    }
+
+    for(var i = 0; i < req.user.group.length; i ++) {
+      for(var j = 0; j < req.user.group[i].team.length; j ++) {
+        user_teams.push(req.user.group[i].team[j].id);
       }
-      for(var i=0;i<_glength;i++){
-        if(group[i]._id != '0' && tmp_gid.indexOf(group[i]._id) == -1){
-          _ugids.push(group[i]._id);
+    }
+    CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'photo':1,'name':1,'member':1,'score':1,'brief':1,'cname':1},function(err, company_groups) {
+      if(err || !company_groups) {
+        return res.send([]);
+      } else {
+        var find = false;
+        for(var i = 0; i < company_groups.length; i ++) {
+
+          //下面查找的是该成员加入和未加入的所有小队
+          if(company_groups[i].gid !=='0'){
+            if(user_teams.in_array(company_groups[i]._id.toString())) {
+              console.log('psh');
+              selected_teams.push(company_groups[i]);
+
+              //如果该成员没有点击任何小队进入了该页面就返回他所属的第一个小队
+              if(!find) {
+                current_team = company_groups[i];
+                find = true;
+              }
+
+            } else {
+              console.log('pso');
+              unselected_teams.push(company_groups[i]);
+            }
+          }
         }
-      };
-
-
-      return res.render('users/home', {
-        'groups': req.user.group,
-        'ugids':_ugids,
-        'photo': req.user.photo,
-        'realname':req.user.realname,
-        'cname':req.user.cname,
-        'sign':req.user.introduce
-      });
+        console.log(selected_teams,unselected_teams,current_team,user_teams);
+        res.render('users/home',{
+          'selected_teams' : selected_teams,
+          'unselected_teams' : unselected_teams,
+          'current_team' : current_team        //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
+        });
+      }
     });
-
   }
 };
 
 exports.editInfo = function(req, res) {
   User.findOne({
-    _id: req.user._id
+    _id: req.user.id
   },
   function (err, user) {
     if(err) {
@@ -552,7 +600,7 @@ exports.vote = function (req, res) {
           return res.send('ERROR');
         } else {
           //由于异步方式下的多表操作有问题,所以只能在groupmessage里多添加positive和negative字段了
-          GroupMessage.findOne({'id' : provoke_message_id}, function (err, group_message) {
+          GroupMessage.findOne({'_id' : provoke_message_id}, function (err, group_message) {
             if (err || !group_message) {
               console.log(err);
               return res.send('ERROR');
@@ -598,8 +646,10 @@ exports.joinCampaign = function (req, res) {
   var cid = req.session.cid;
   var uid = req.session.uid;
   var campaign_id = req.body.campaign_id; //该活动的id
+
+  var tid = req.session.tid;              //该活动所属小队的id
   Campaign.findOne({
-    id : campaign_id
+    _id : campaign_id
   },
   function (err, campaign) {
     if (campaign) {
@@ -614,33 +664,23 @@ exports.joinCampaign = function (req, res) {
             res.send(err);
           } else {
             if(campaign.provoke.active === true) {
+
               //将员工信息存入competition,要根据他的队名判断属于哪一方
-              Competition.findOne({'id':campaign.provoke.competition_id}, function (err, competition) {
+              Competition.findOne({'_id':campaign.provoke.competition_id}, function (err, competition) {
                 if(err){
                   return res.send(err);
                 } else {
                   if(competition) {
-                    for(var i = 0;i < req.user.group.length; i ++) {
-                      if(competition.camp[0].tname === req.user.group[i].tname) {
-                          competition.camp[0].member.push({
-                             camp:'A',
-                             cid: cid,
-                             uid: uid,
-                             photo: req.user.photo,                 //队员头像路径
-                             username: req.user.username,
-                             number: 0                             //球队分配的个人号码
-                          });
-                        break;
-                      }
-                      if(competition.camp[1].tname === req.user.group[i].tname) {
-                          competition.camp[1].member.push({
-                              camp:'B',
-                              cid: cid,
-                              uid: uid,
-                              photo: req.user.photo,                //队员头像路径
-                              username: req.user.username,
-                              number: 0                             //球队分配的个人号码
-                          });
+                    for(var i = 0; i < competition.camp.length; i ++) {
+                      if(competition.camp[i].id == tid) {
+                        competition.camp[i].member.push({
+                           camp: i == 0 ? 'A' : 'B',
+                           cid: cid,
+                           uid: uid,
+                           photo: req.user.photo,                 //队员头像路径
+                           username: req.user.username,
+                           number: 0                             //球队分配的个人号码
+                        });
                         break;
                       }
                     }
@@ -673,7 +713,7 @@ exports.quitCampaign = function (req, res) {
   var uid = req.session.uid;
   var campaign_id = req.body.campaign_id; //该活动的id
   Campaign.findOne({
-        id : campaign_id
+        _id : campaign_id
     },
     function (err, campaign) {
       if (campaign) {
@@ -692,7 +732,7 @@ exports.quitCampaign = function (req, res) {
           } else {
             if(campaign.provoke.active === true) {
               //将员工信息从competition里删除
-              Competition.findOne({'id':campaign.provoke.competition_id}, function (err, competition) {
+              Competition.findOne({'_id':campaign.provoke.competition_id}, function (err, competition) {
                 if(err){
                   return res.send(err);
                 } else {
@@ -972,23 +1012,3 @@ exports.getPhoto = function(req, res) {
     res.send({ result: 0, msg: '请求错误' });
   }
 }
-
-//搜索成员
-//目前只是将所有记录都列出来
-//TODO
-exports.getUser = function(req, res, cid) {
-  var cid = cid;   //根据公司名找它的员工
-  User.find({'cid': cid}, function (err, users){
-    if(err){
-      return [];
-    }else{
-      if(users){
-        //数据量会不会太大?或许只需要员工的部分信息?
-        return users;
-      } else {
-        return [];
-      }
-    }
-  });
-};
-

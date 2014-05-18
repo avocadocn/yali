@@ -53,37 +53,41 @@ exports.renderInfo = function (req, res) {
 };
 
 
-//小队信息维护
+//小队信息维护 TODO
 exports.info =function(req,res) {
 
-  var entity_type = req.session.companyGroup.entity_type;
+  console.log(req.companyGroup);
+  var entity_type = req.companyGroup.entity_type;
   var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-  if(req.session.cpname !== null || req.session.username !== null ) {
-    var gid = req.params.groupId !== undefined ? req.params.groupId : req.session.gid;
+  if(req.session.tid !== null ) {
     Entity.findOne({
-        'cid': req.session.cid,
-        'gid': gid
+        'cid': req.companyGroup.cid,
+        'gid': req.companyGroup.gid,
+        'tid': req.session.tid
       },function(err, entity) {
           if (err) {
               console.log(err);
               return res.send(err);
           } else {
               return res.send({
-                  'companyGroup': req.session.companyGroup,  //父小组信息
-                  'entity': entity,                           //实体小组信息
-                  'companyname':req.session.cpname
+                  'companyGroup': req.companyGroup,  //父小组信息
+                  'entity': entity,                          //实体小组信息
+                  'companyname':req.companyGroup.cname
               });
           }
       });
   } else
-      res.redirect('/users/signin');
+    res.render('group/home',{
+      'msg' : '请选择一个小队'
+    });
 };
 
-exports.saveInfo =function(req,res) {
-    if(req.session.cid !== null) {
-      console.log('-----',req.session.gid);
 
-        CompanyGroup.findOne({cid : req.session.cid, gid : req.session.gid}, function(err, companyGroup) {
+//TODO
+exports.saveInfo =function(req,res,next,id) {
+    if(req.session.cid !== null) {
+
+        CompanyGroup.findOne({cid : req.companyGroup.cid, gid : req.companyGroup.gid, _id:req.session.tid}, function(err, companyGroup) {
             if (err) {
                 console.log('数据错误');
                 res.send({'result':0,'msg':'数据查询错误'});
@@ -98,12 +102,12 @@ exports.saveInfo =function(req,res) {
                         res.send({'result':0,'msg':'数据保存错误'});
                         return;
                     }
-                    var entity_type = req.session.companyGroup.entity_type;
+                    var entity_type = req.companyGroup.entity_type;
                     var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-                    var gid = req.params.groupId !== undefined ? req.params.groupId : req.session.gid;
                     Entity.findOne({
                         'cid': req.session.cid,
-                        'gid': gid
+                        'gid': req.session.gid,
+                        'tid': req.session.tid
                       },function(err, entity) {
                           if (err) {
                               console.log(err);
@@ -133,82 +137,107 @@ exports.saveInfo =function(req,res) {
 
 
 
-//返回组件页面
+//返回小队页面
 exports.home = function(req, res) {
 
-  if (req.params.groupId !== null) {
-    req.session.gid = req.params.groupId;
+  if (req.params.teamId !== null) {
+    req.session.tid = req.params.teamId;
+  }
+  if (req.params.gid !== null) {
+    req.session.gid = req.params.gid;
+  }
+  var selected_teams = [];
+  var unselected_teams = [];
+  var user_teams = [];
+  var photo_album_ids = [];
+  var current_team; //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
+
+  Array.prototype.S=String.fromCharCode(2);
+  Array.prototype.in_array=function(e)
+  {
+    var r=new RegExp(this.S+e+this.S);
+    return (r.test(this.S+this.join(this.S)+this.S));
   }
 
-  Group.find(null,function(err,group){
-    if (err) {
-      console.log(err);
-      return res.status(404).send();
+  for(var i = 0; i < req.user.group.length; i ++) {
+    for(var j = 0; j < req.user.group[i].team.length; j ++) {
+      user_teams.push(req.user.group[i].team[j].id);
     }
-    var _ugids = [];
-    var tmp_gid = [];
-    var _glength = group.length;
-    var _uglenth = req.user.group.length;
-    for(var j=0;j<_uglenth && req.user.group[j]._id != '0';j++){
-      tmp_gid.push(req.user.group[j]._id);
-    }
-    for(var i=0;i<_glength;i++){
-      if(group[i]._id != '0' && tmp_gid.indexOf(group[i]._id) === -1){
-        _ugids.push(group[i]._id);
-      }
-    }
-    CompanyGroup.findOne({ gid: req.session.gid, cid: req.user.cid }).exec(function(err, company_group) {
+  }
 
-    var photo_album_ids = [];
-    company_group.photo.forEach(function(photo_album) {
-      photo_album_ids.push(photo_album.pid);
-    });
-    PhotoAlbum.where('_id').in(photo_album_ids)
-      .exec(function(err, photo_albums) {
-        if (err) { console.log(err); }
-          else if(photo_albums) {
-            var visible_photo_albums = [];
-            photo_albums.forEach(function(photo_album) {
-              if (photo_album.hidden === false) {
-                visible_photo_albums.push(photo_album);
-              }
-            });
-            res.render('group/home', {
-              'groups': req.user.group,
-              'ugids':_ugids,
-              'tname': (req.companyGroup.name !== undefined && req.companyGroup.name !== null) ? req.companyGroup.name : '未命名',
-              'number': (req.companyGroup.member !== undefined && req.companyGroup.member !== null) ? req.companyGroup.member.length : 0,
-              'score': (req.companyGroup.score !== undefined && req.companyGroup.score !== null) ? req.companyGroup.score : 0,
-              'role': req.session.role === 'EMPLOYEE',  //等加入权限功能后再修改  TODO
-              'logo': company_group.logo,
-              'group_id': company_group._id,
-              'photo_albums': visible_photo_albums,
-              //'cname': company_group._cname,
-              //'sign': company_group.sign
-              'cname': company_group.cname,
-              'sign': company_group.brief
-            });
+  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'photo':1,'name':1,'member':1,'score':1,'brief':1,'cname':1},function(err, company_groups) {
+    if(err || !company_groups) {
+      return res.send([]);
+    } else {
+      var find = false;
+      for(var i = 0; i < company_groups.length; i ++) {
+
+        //成员点击了某个小队后进来获取该小队数据
+        if(company_groups[i]._id === req.params.teamId) {
+          current_team = company_groups[i];
+          find = true;
+        }
+
+        if(company_groups[i].gid !== '0'){
+          //下面查找的是该成员加入和未加入的所有小队
+          if(user_teams.in_array(company_groups[i]._id)) {
+            selected_teams.push(company_groups[i]);
+
+            //如果该成员没有点击任何小队进入了该页面就返回他所属的第一个小队
+            if(!find) {
+              current_team = company_groups[i];
+              find = true;
+            }
+
+          } else {
+            unselected_teams.push(company_groups[i]);
           }
-        });
+        }
+      }
+      current_team.photo.forEach(function(photo_album) {
+        photo_album_ids.push(photo_album.pid);
       });
+      PhotoAlbum.where('_id').in(photo_album_ids)
+        .exec(function(err, photo_albums) {
+           if (err) { console.log(err); }
+            else if(photo_albums) {
+              var visible_photo_albums = [];
+              photo_albums.forEach(function(photo_album) {
+                if (photo_album.hidden === false) {
+                  visible_photo_albums.push(photo_album);
+                }
+              });
+              console.log('已选',selected_teams);
+              console.log('未选',unselected_teams);
+              console.log('当前',current_team);
+              res.render('group/home',{
+                'selected_teams' : selected_teams,
+                'unselected_teams' : unselected_teams,
+                'current_team' : current_team,         //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
+                'photo_albums': visible_photo_albums,
+                'teamId' : req.params.teamId
+              });
+        }
+      }); 
+    }
   });
 };
 
-//返回公司组件的所有数据,待前台调用
+//返回公司小队的所有数据,待前台调用
 exports.getCompanyGroups = function(req, res) {
   var company_id = req.session.cid;
   var param_id = req.params.id;
   if(param_id) {
     company_id = param_id;
   }
-  //console.log(company_id);
-  Company.findOne({_id: company_id}, function(err, company) {
-    if (err) {
-      //console.log(err);
-      return res.status(404).send([]);
+
+  CompanyGroup.find({cid : company_id, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1}, function(err, teams) {
+    if(err || !teams) {
+      return res.send([]);
     } else {
+      console.log(teams);
       return res.send({
-        'group':company.group,
+        'teams':teams,
         'cid':company_id
       });
     }
@@ -217,33 +246,43 @@ exports.getCompanyGroups = function(req, res) {
 
 
 
-//返回小组动态消息
+//根据小队ID返回小组动态消息
 exports.getGroupMessage = function(req, res) {
 
   var cid = req.session.cid;
   var gid = req.session.gid;
+  var tid = req.params.teamId;    //小队的id
 
-  //有包含gid的消息都列出来
-  GroupMessage.find({'cid' : {'$all':[cid]}, 'group.gid' : {'$all':[gid]}}, function(err, group_message) {
+  GroupMessage.find({'cid' : {'$all':[cid]}, 'group.gid' : {'$all':[gid]}}).populate({
+        path : 'team',
+        match : { _id: tid}
+      }
+    ).exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
       return res.status(404).send([]);
     } else {
       var group_messages = [];
       var length = group_message.length;
-      for(var i = 0; i < length; i ++) {
 
-        var leader = false;
-        for(var j = 0; j < req.user.group.length; j ++) {
-          if(req.user.group[j].gid === gid) {
-            leader = req.user.group[j].leader;
+      var permission = false;
+      for(var j = 0; j < req.user.group.length; j ++) {
+        if(req.user.group[j].gid === gid) {
+          for(var k = 0; k < req.user.group[j].team.length; k ++) {
+            if(req.user.group[j].team[k].id == tid){
+              permission = req.user.group[j].leader;
+              break;
+            }
           }
         }
+      }
+
+      for(var i = 0; i < length; i ++) {
 
         var positive = 0;
         var negative = 0;
         for(var k = 0; k < group_message[i].provoke.camp.length; k ++) {
-          if(group_message[i].provoke.camp[k].tname === req.session.companyGroup.name){
+          if(group_message[i].provoke.camp[k].tname === req.companyGroup.name){
             positive = group_message[i].provoke.camp[k].vote.positive;
             negative = group_message[i].provoke.camp[k].vote.negative;
             break;
@@ -252,8 +291,8 @@ exports.getGroupMessage = function(req, res) {
         group_messages.push({
           'positive' : positive,
           'negative' : negative,
-          'my_tname' : req.session.companyGroup.name,
-          'id': group_message[i].id,
+          'my_tname' : req.companyGroup.name,
+          '_id': group_message[i]._id,
           'cid': group_message[i].cid,
           'group': group_message[i].group,
           'active': group_message[i].active,
@@ -264,7 +303,7 @@ exports.getGroupMessage = function(req, res) {
           'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
           'end_time' : group_message[i].end_time ? group_message[i] : '',
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-          'provoke_accept': group_message[i].provoke.active && (group_message[i].group.gid[0] === gid) && leader && (!group_message[i].provoke.start_confirm) && (group_message[i].cid[1] === req.session.cid)
+          'provoke_accept': group_message[i].provoke.active && permission && (!group_message[i].provoke.start_confirm) && (group_message[i].cid[1] === req.session.cid)
         });
       }
       return res.send(group_messages);
@@ -279,17 +318,39 @@ exports.getGroupCampaign = function(req, res) {
   var cid = req.session.cid;
   var gid = req.session.gid;
   var uid = req.session.uid;
+  var tid = req.params.teamId;
 
-  //有包含gid的活动都列出来
-  Campaign.find({'cid' : {'$all':[cid]}, 'gid' : {'$all':[gid]}}, function(err, campaign) {
+  //有包含tid的活动都列出来
+  Campaign.find({'cid' : {'$all':[cid]}, 'gid' : {'$all':[gid]}}).populate({
+        path : 'team',
+        match : { _id: tid}
+      }
+    ).exec(function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
     } else {
       var campaigns = [];
-      var join = false;
+      var join = true;
       var length = campaign.length;
       var permission = false;
+      var stop = false;
+
+      //只有这个小队的组长才可以操作活动,这有这个小队的员工可以参加这个活动
+      //判断这个组是不是员工所属的组,否则不能参加
+      for(var j = 0; j < req.user.group.length; j ++) {
+        if(req.user.group[j].gid === gid) {
+          for(var k = 0; k < req.user.group[j].team.length; k ++) {
+            if(req.user.group[j].team[k].id == tid){
+              stop = true;
+              join = false;
+              permission = req.user.group[j].leader;
+              break;
+            }
+          }
+        }
+      }
+
       for(var i = 0;i < length; i ++) {
         join = false;
 
@@ -301,24 +362,11 @@ exports.getGroupCampaign = function(req, res) {
           }
         }
 
-        //判断这个组是不是员工所属的组,否则不能参加
-        //这个逻辑暂时用不到(因为员工只能进入自己加入的兴趣小组),以后员工可能
-        //可以进入他没有加入的兴趣小组,所以先把逻辑功能留在这里
-        var stop = false;
-        for(j = 0; j < campaign[i].gid.length && !stop; j ++) {
-          for(var k = 0; k < req.user.group.length; k ++) {
-            if(req.user.group[k].gid === campaign[i].gid[j]) {
-              permission = (req.user.group[k].leader === true);     //只有这个组的组长才可以操作活动
-              stop = true;
-              break;
-            }
-          }
-        }
-
         campaigns.push({
+          'selected': true,
           'active':campaign[i].active && stop,              //如果该活动没有关闭并且该员工有这个活动的组,就显示参加按钮
           'active_value':campaign[i].active ? '关闭' : '打开',
-          'id': campaign[i].id,
+          '_id': campaign[i]._id,
           'gid': campaign[i].gid,
           'group_type': campaign[i].group_type,
           'cid': campaign[i].cid,
@@ -346,16 +394,19 @@ exports.campaignCancel = function (req, res) {
   var campaign_id = req.body.campaign_id;
   Campaign.findOne({id:campaign_id},function(err, campaign) {
         if(campaign) {
-            if (err) {
-                console.log('错误');
+          if (err) {
+              console.log('错误');
+          }
+
+          var active = campaign.active;
+          campaign.active = !active;
+          campaign.save(function (err){
+            if(err) {
+              return res.send(err);
+            } else {
+              return res.send('ok');
             }
-
-            var active = campaign.active;
-            campaign.active = !active;
-            campaign.save();
-
-            return res.send('ok');
-            //console.log('创建成功');
+          });
         } else {
             return res.send('not exist');
         }
@@ -369,6 +420,7 @@ exports.provoke = function (req, res) {
   var username = req.session.username;
 
   var gid = req.session.gid;         //约战小组id
+  var team_opposite = req.body.team_opposite;
 
   var content = req.body.content;
   var competition_format = req.body.competition_format;
@@ -376,19 +428,18 @@ exports.provoke = function (req, res) {
   var competition_date = req.body.competition_date;
   var deadline = req.body.deadline;
   var remark = req.body.remark;
-  var competition = new Competition();
   var number = req.body.number;
+  var competition = new Competition();
 
-
-  competition.id = UUID.id();
   competition.gid = gid;
-  competition.group_type = req.session.companyGroup.group_type;
+  competition.group_type = req.companyGroup.group_type;
 
   var camp_a = {
+    'id' : req.params.teamId,
     'cid' : req.session.cid,
     'start_confirm' : true,
-    'tname' : req.session.companyGroup.name,
-    'logo' : req.session.companyGroup.logo
+    'tname' : req.companyGroup.name,
+    'logo' : req.companyGroup.logo
   };
 
 
@@ -402,77 +453,65 @@ exports.provoke = function (req, res) {
     if (err) console.log(err);
   });
 
-  //这个查询就为了找对方小队的一个logo
-  //速度换空间
-  CompanyGroup.findOne({'cid':req.body.cid_opposite,'gid':gid},function(err, company_group){
-    if(err) {
+  var camp_b = {
+    'id' : req.body.team_opposite._id,
+    'cid' : req.body.team_opposite.cid,
+    'tname' : req.body.team_opposite.name,
+    'logo' : req.body.team_opposite.logo
+  };
+  competition.camp.push(camp_b);
+
+  competition.content = req.body.content;
+  competition.brief.remark = req.body.remark;
+  competition.brief.location.name = location;
+  competition.brief.competition_date = competition_date;
+  competition.brief.deadline = deadline;
+  competition.brief.competition_format = competition_format;
+  competition.brief.number = number;
+
+
+  var groupMessage = new GroupMessage();
+
+  groupMessage.group.gid.push(gid);
+  groupMessage.group.group_type.push(competition.group_type);
+  groupMessage.provoke.active = true;
+  groupMessage.provoke.competition_format = competition_format;
+
+  var a = {
+    'cid':req.session.cid,
+    'tname':req.companyGroup.name
+  };
+  var b = {
+    'cid':req.body.team_opposite.cid,
+    'tname':req.body.team_opposite.name
+  };
+
+  groupMessage.provoke.camp.push(a);
+  groupMessage.provoke.camp.push(b);
+
+  groupMessage.poster.cid = req.session.cid;
+  groupMessage.poster.uid = uid;
+  groupMessage.poster.role = 'LEADER';
+  groupMessage.poster.username = username;
+  groupMessage.cid.push(req.session.cid);
+  if(req.session.cid !== req.body.team_opposite.cid) {
+    groupMessage.cid.push(req.body.team_opposite.cid);
+  }
+  groupMessage.content = content;
+  groupMessage.location = location;
+  groupMessage.start_time = competition_date;
+  groupMessage.end_time = deadline;
+
+  groupMessage.save(function (err) {
+    if (err) {
+      console.log('保存约战动态时出错' + err);
       return res.send(err);
     } else {
-      if(company_group) {
-
-        var camp_b = {
-          'cid' : req.body.cid_opposite,
-          'tname' : req.body.team_opposite,
-          'logo' : company_group.logo
-        };
-        competition.camp.push(camp_b);
-
-        competition.content = req.body.content;
-        competition.brief.remark = req.body.remark;
-        competition.brief.location.name = location;
-        competition.brief.competition_date = competition_date;
-        competition.brief.deadline = deadline;
-        competition.brief.competition_format = competition_format;
-        competition.brief.number = number;
-
-
-        var groupMessage = new GroupMessage();
-        groupMessage.id = UUID.id();
-        groupMessage.group.gid.push(gid);
-        groupMessage.group.group_type.push(competition.group_type);
-        groupMessage.provoke.active = true;
-        groupMessage.provoke.competition_format = competition_format;
-
-        var a = {
-          'cid':req.session.cid,
-          'tname':req.session.companyGroup.name
-        };
-        var b = {
-          'cid':req.body.cid_opposite,
-          'tname':req.body.team_opposite
-        };
-
-        groupMessage.provoke.camp.push(a);
-        groupMessage.provoke.camp.push(b);
-
-        groupMessage.poster.cid = req.session.cid;
-        groupMessage.poster.uid = uid;
-        groupMessage.poster.role = 'LEADER';
-        groupMessage.poster.username = username;
-        groupMessage.cid.push(req.session.cid);
-        if(req.session.cid !== req.body.cid_opposite) {
-          groupMessage.cid.push(req.body.cid_opposite);
-        }
-        groupMessage.content = content;
-        groupMessage.location = location;
-        groupMessage.start_time = competition_date;
-        groupMessage.end_time = deadline;
-
-        groupMessage.save(function (err) {
-          if (err) {
-            console.log('保存约战动态时出错' + err);
-            return res.send(err);
-          } else {
-            competition.provoke_message_id = groupMessage.id;
-            competition.save();
-          }
-          return res.send({'result':1,'msg':'挑战成功！'});
-          //这里要注意一下,生成动态消息后还要向被约队长发一封私信
-        });
-      } else {
-        return res.send('null');
-      }
+      competition.provoke_message_id = groupMessage._id;
+      competition.save();
     }
+    return res.send({'result':1,'msg':'挑战成功！'});
+    //这里要注意一下,生成动态消息后还要向被约队长发一封私信
   });
 
 };
@@ -503,7 +542,6 @@ exports.responseProvoke = function (req, res) {
           campaign.cid.push(competition.camp[1].cid);
         }
         campaign.cid.push(competition.camp[0].cid);   //两家公司同时显示这一条活动
-        campaign.id = UUID.id();
 
         campaign.poster.cname = competition.camp[0].cname;
         campaign.poster.cid = competition.camp[0].cid;
@@ -517,7 +555,7 @@ exports.responseProvoke = function (req, res) {
 
         campaign.active = true;
         campaign.provoke.active = true;
-        campaign.provoke.competition_id = competition.id;
+        campaign.provoke.competition_id = competition._id;
         campaign.provoke.competition_format = competition.brief.competition_format;
         campaign.provoke.active = true;
 
@@ -536,7 +574,7 @@ exports.responseProvoke = function (req, res) {
             }
             return;
           }
-          GroupMessage.findOne({'id' : provoke_message_id}, function (err, group_message) {
+          GroupMessage.findOne({'_id' : provoke_message_id}, function (err, group_message) {
             if (err) {
               console.log(err);
             } else {
@@ -545,15 +583,15 @@ exports.responseProvoke = function (req, res) {
                 if(!err){
                   if(competition.arena_flag){
                     Arena.findOne({
-                      id: competition.arena_id
-                      },
+                      _id: competition.arena_id
+                    },
                     function(err,arena){
                       if(!err &&arena){
                         arena.champion.provoke_status = true;
                         if(!arena.champion.competition_id){
                           arena.champion.competition_id =[];
                         }
-                        arena.champion.competition_id.push(competition.id);
+                        arena.champion.competition_id.push(competition._id);
                         arena.save(function(err){
                           if(err){
                             console.log(err);
@@ -583,7 +621,7 @@ exports.campaignEdit = function (req, res) {
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
 
-  Campaign.findOne({'id':campaign_id}, function (err, campaign) {
+  Campaign.findOne({'_id':campaign_id}, function (err, campaign) {
     if(err) {
       return res.send(err);
     } else {
@@ -615,28 +653,21 @@ exports.campaignEdit = function (req, res) {
 exports.sponsor = function (req, res) {
 
   var username = req.session.username;
-  var group_type = req.session.companyGroup.group_type;
+  var group_type = req.companyGroup.group_type;
   var cid = req.session.cid;  //公司id
   var uid = req.session.uid;  //用户id
   var gid = req.session.gid;     //组件id,组长一次对一个组发布活动
   var content = req.body.content;//活动内容
   var location = req.body.location;//活动地点
   var cname = '';
+  var tid = req.params.teamId;
 
   //生成活动
   var campaign = new Campaign();
+  campaign.team = tid;         //ref
   campaign.gid.push(gid);
   campaign.group_type.push(group_type);
-  campaign.cid.push(cid);//其实只有一个公司
-
-  Company.findOne({
-      _id : cid
-    },
-    function (err, company) {
-      cname = company.info.name;
-  });
-
-  campaign.id = UUID.id();
+  campaign.cid.push(cid);//内部活动只有一个公司
   campaign.poster.cname = cname;
   campaign.poster.cid = cid;
   campaign.poster.uid = uid;
@@ -667,7 +698,7 @@ exports.sponsor = function (req, res) {
     //生成动态消息
     var groupMessage = new GroupMessage();
 
-    groupMessage.id = UUID.id();
+    groupMessage.team = tid;
     groupMessage.group.gid.push(gid);
     groupMessage.group.group_type.push(group_type);
     groupMessage.active = true;
@@ -691,7 +722,6 @@ exports.sponsor = function (req, res) {
       }
     });
   });
-
   res.send("ok");
 };
 
@@ -700,11 +730,13 @@ exports.getGroupMember = function(req,res){
 
   var cid = req.session.cid;
   var gid = req.session.gid;
+  var tid = req.params.teamId;
 
   CompanyGroup
     .findOne({
         'cid': cid,
-        'gid': gid
+        'gid': gid,
+        '_id': tid
     },function(err, companyGroup) {
         if(err){
           console.log(err);
@@ -786,7 +818,7 @@ exports.getCompetition = function(req, res){
 
 exports.updateFormation = function(req, res){
   Competition.findOne({
-    'id':req.params.competitionId
+    '_id':req.params.competitionId
   }).exec(function(err, competition){
     if(req.competition_team === req.body.competition_team){
       var _formation = [];
@@ -821,7 +853,7 @@ exports.competition = function(req, res, next, id){
   var first = false;
 
   Competition.findOne({
-      'id':id
+      '_id':id
     }).exec(function(err, competition){
       if (err) return next(err);
       req.competition = competition;
@@ -829,7 +861,7 @@ exports.competition = function(req, res, next, id){
       if(!first) {
         first = true;
         req.session.leader = false;
-        var leader = req.session.companyGroup.leader;
+        var leader = req.companyGroup.leader;
         for(var i = 0; i < leader.length; i ++) {
           if(leader[i].uid = req.session.uid) {
             req.session.leader = true;
@@ -862,7 +894,7 @@ exports.resultConfirm = function (req, res) {
   var score_b = req.body.score_b;
   var rst_content = req.body.rst_content;
 
-  Competition.findOne({'id' : competition_id}, function (err, competition) {
+  Competition.findOne({'_id' : competition_id}, function (err, competition) {
     if(err) {
       console.log(err);
       res.send(err);
@@ -891,21 +923,15 @@ exports.resultConfirm = function (req, res) {
 
 
 exports.group = function(req, res, next, id) {
-
-  console.log(req.session.gid);
   CompanyGroup
     .findOne({
         cid: req.session.cid,
-        gid: id
+        _id: id
     })
     .exec(function(err, companyGroup) {
         if (err) return next(err);
         if (!companyGroup) return next(new Error(req.session.cid+' Failed to load companyGroup ' + id));
         req.companyGroup = companyGroup;
-        //TODO session不能存太多东西
-        req.session.companyGroup = companyGroup;
-
-
         next();
     });
 };
@@ -1034,7 +1060,7 @@ exports.getLogo = function(req, res) {
 };
 
 exports.managePhotoAlbum = function(req, res) {
-  CompanyGroup.findOne({ _id: req.params.gid })
+  CompanyGroup.findOne({ cid : req.session.cid, gid: req.session.gid,_id: req.params.tid })
   .exec(function(err, company_group) {
     if (err) console.log(err);
     else if (company_group) {
@@ -1053,7 +1079,7 @@ exports.managePhotoAlbum = function(req, res) {
             }
           });
           res.render('group/manage_photo_album',
-            { owner_id : req.params.gid,
+            { owner_id : req.params.tid,
               photo_albums: visible_photo_albums
           });
         }
@@ -1068,7 +1094,7 @@ exports.groupPhotoAlbumDetail = function(req, res) {
     if (err) console.log(err);
     else {
       res.render('group/photo_album_detail', {
-        gid: req.params.gid,
+        tid: req.params.tid,
         photo_album: photo_album
       });
     }

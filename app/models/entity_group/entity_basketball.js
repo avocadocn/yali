@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 
 
 var basketball = new Schema({
+	tid: String,
     cid: String,
     gid: String
 });
