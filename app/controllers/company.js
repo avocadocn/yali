@@ -621,7 +621,7 @@ exports.appointLeader = function (req, res) {
 
             var s = true;
             for(var i =0; i< user.group.length && s; i ++) {
-                if(req.user.group[i].gid === gid){
+                if(req.user.group[i]._id === gid){
                     for(var k = 0; k < user.group.length; k ++){
                         if(req.user.group[i].team[k]._id == tid.toString()){
                             req.user.group[i].team[k].leader = true;

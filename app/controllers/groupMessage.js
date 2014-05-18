@@ -55,7 +55,7 @@ exports.getGroupMessage = function(req, res) {
 
       var permission = false;
       for(var j = 0; j < req.user.group.length; j ++) {
-        if(req.user.group[j].gid === gid) {
+        if(req.user.group[j]._id === gid) {
           for(var k = 0; k < req.user.group[j].team.length; k ++) {
             if(req.user.group[j].team[k].id == tid){
               permission = req.user.group[j].leader;
@@ -114,7 +114,7 @@ exports.getUserMessage = function(req, res) {
         team_ids.push(req.user.group[i].team[k].id);
       }
 
-      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group.gid': {'$all': [req.user.group[i].gid]} }).populate({
+      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group._id': {'$all': [req.user.group[i]._id]} }).populate({
             path : 'team',
             match : { _id: {'$in':team_ids}}
           }

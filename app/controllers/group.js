@@ -267,7 +267,7 @@ exports.getGroupMessage = function(req, res) {
 
       var permission = false;
       for(var j = 0; j < req.user.group.length; j ++) {
-        if(req.user.group[j].gid === gid) {
+        if(req.user.group[j]._id === gid) {
           for(var k = 0; k < req.user.group[j].team.length; k ++) {
             if(req.user.group[j].team[k].id == tid){
               permission = req.user.group[j].leader;
@@ -339,7 +339,7 @@ exports.getGroupCampaign = function(req, res) {
       //只有这个小队的组长才可以操作活动,这有这个小队的员工可以参加这个活动
       //判断这个组是不是员工所属的组,否则不能参加
       for(var j = 0; j < req.user.group.length; j ++) {
-        if(req.user.group[j].gid === gid) {
+        if(req.user.group[j]._id === gid) {
           for(var k = 0; k < req.user.group[j].team.length; k ++) {
             if(req.user.group[j].team[k].id == tid){
               stop = true;
@@ -761,7 +761,7 @@ exports.getCompetition = function(req, res){
 
   var is_leader = false;
   for(var i = 0; i < req.user.group.length; i ++) {
-    if(req.user.group[i].gid === req.competition.gid){
+    if(req.user.group[i]._id === req.competition.gid){
       is_leader = req.user.group[i].leader;
       break;
     }

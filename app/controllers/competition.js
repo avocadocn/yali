@@ -221,7 +221,7 @@ exports.getCompetition = function(req, res){
 
   var is_leader = false;
   for(var i = 0; i < req.user.group.length; i ++) {
-    if(req.user.group[i].gid === req.competition.gid){
+    if(req.user.group[i]._id === req.competition.gid){
       is_leader = req.user.group[i].leader;
       break;
     }
