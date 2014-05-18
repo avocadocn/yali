@@ -280,6 +280,7 @@ exports.dealSelectGroup = function(req, res) {
             for( var i = 0; i < user.group.length && user.group[i].gid != '0'; i ++) {
               for( var j =0; j < user.group[i].team.length; j ++) {
                 CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i].gid ,'_id':user.group[i].team[j].id}, function(err, company_group) {
+                  console.log(user.cid,user.group[i].gid,user.group[i].team[j].id);
                   company_group.member.push({
                     'uid':user._id,
                     'nickname':user.nickname,

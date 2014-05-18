@@ -74,6 +74,10 @@ a {
   height: 210px;
   width: 210px;
 }
+.size_128 {
+  height: 128px;
+  width: 128px;
+}
 .size_80 {
   height: 80px;
   width: 80px;
@@ -175,6 +179,12 @@ input[type="number"] {
 .dl_nav .logo {
   margin-top: 5px;
 }
+.navbar {
+  border: none;
+}
+.navbar-inverse .navbar-brand {
+  padding: 8px 0;
+}
 .wrap {
   min-height: 100%;
   height: auto;
@@ -192,6 +202,16 @@ input[type="number"] {
 }
 .dl_footer p {
   padding: 5px 0 12px 10px;
+}
+.dl_doc {
+  padding: 0;
+  background-image: url("/img/dl_doc_bg.png");
+  background-repeat: repeat-x;
+  width: 100%;
+}
+.dl_doc .promo {
+  width: 100%;
+  height: 460px;
 }
 .wrap {
   margin-top: 100px;
