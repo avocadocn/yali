@@ -215,16 +215,80 @@ input[type="number"] {
   background: url("/img/dl_doc_promo_bg.jpg") center center no-repeat;
 }
 .dl_doc .overview {
+  height: 460px;
   background-image: url("/img/dl_doc_overview.png");
   background-repeat: no-repeat;
+}
+.dl_doc .overview .regmomo {
   height: 460px;
 }
 .dl_doc .overview .regbox {
   height: 460px;
+  width: 547px;
 }
 .dl_doc .overview .regbox .reginfo {
   height: 160px;
+  width: 547px;
   display: block;
-  background: url("/img/dl_doc_reg.png") right top no-repeat;
+  background: url("/img/dl_doc_reg.png") no-repeat;
+  text-indent: -9999em;
+}
+.dl_doc .overview .regbox .btn_reg {
+  width: 367px;
+  height: 80px;
+  margin-left: 180px;
+  display: block;
+  background: url("/img/dl_doc_reg.png") -180px -160px no-repeat;
+  text-indent: -9999em;
+}
+.dl_doc .overview .regbox .appinfo {
+  width: 367px;
+  height: 192px;
+  margin-left: 180px;
+  display: block;
+  background: url("/img/dl_doc_reg.png") -180px -240px no-repeat;
+  text-indent: -9999em;
+}
+.dl_doc .about {
+  height: 239px;
+  background: url("/img/dl_doc_about_bg.png") top center;
+}
+.dl_doc .about .about_card {
+  padding: 0;
+}
+.dl_doc .about .about_card p {
+  display: block;
+  width: 230px;
+  height: 189px;
+}
+.dl_doc .about .about_card p .btn {
+  width: 160px;
+  margin-top: 140px;
+  margin-left: 141px;
+}
+.dl_doc .about .about_card .card_1 {
+  width: 354px;
+  background: url("/img/dl_doc_about_card1.gif");
+  margin-left: 20px;
+  margin-right: 0;
+}
+.dl_doc .about .about_card .card_2 {
+  width: 384px;
+  background: url("/img/dl_doc_about_card2.gif");
+}
+.dl_doc .about .about_card .card_3 {
+  width: 350px;
+  background: url("/img/dl_doc_about_card3.gif");
+  margin-left: 20px;
+}
+.dl_doc .function {
+  height: 340px;
+  background: url("/img/dl_doc_func_bg.gif") center center no-repeat;
+  background-color: #ecf0f1;
+}
+.dl_doc .function .container {
+  background: none;
+}
+.dl_doc .function .title {
   text-indent: -9999em;
 }
