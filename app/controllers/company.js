@@ -426,7 +426,7 @@ exports.home = function(req, res) {
             logo: req.user.info.logo,
             cname : req.user.info.name,
             sign : req.user.info.brief,
-            groupnumber: req.user.group.length,
+            groupnumber: req.user.team.length,
             membernumber: req.user.info.membernumber
         });
     }
