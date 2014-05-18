@@ -50,6 +50,7 @@ companyApp.controller('DetailController', ['$http', function($http) {
                 method: 'post',
                 url: '/company/createDetail',
                 data:{
+                    official_name : _this.official_name,
                     username : _this.username,
                     password : _this.password
                 }

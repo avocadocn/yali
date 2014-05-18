@@ -46,7 +46,6 @@ exports.signin = function(req, res) {
 };
 
 exports.loginSuccess = function(req, res) {
-    req.session.cpname = req.body.username;
     req.session.cid = req.user._id;
     req.session.role = 'HR';
     res.redirect('/company/home');
@@ -110,9 +109,6 @@ exports.select = function(req, res) {
 };
 //配合路由渲染邀请链接页面
 exports.invite = function(req, res) {
-    var name = req.session.cpname;
-
-    console.log('name',name,typeof(name));
     var inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.company_id, config.SECRET) + '&cid=' + req.session.company_id;
     req.session.company_id = null;
     res.render('company/validate/invite', {
@@ -393,24 +389,23 @@ exports.createDetail = function(req, res) {
 
 
     Company.findOne({_id: req.session.company_id}, function(err, company) {
-        if(company) {
-            if (err) {
-                console.log('错误');
-            }
-
-            company.info.official_name = req.body.username;
+        if(!company || err) {
+            res.render('company/validate/create_detail', {
+                tittle: '该公司不存在或者发生错误!'
+            });
+        } else {
+            company.info.official_name = req.body.official_name;
+            company.username = req.body.username;
             company.password = req.body.password;
             company.status.active = true;
 
-            company.save();
-            req.session.cpname = req.body.username;
-            req.session.role = 'HR';
-
-            res.send({'result':1,'msg':'创建成功！'});
-            //console.log('创建成功');
-        } else {
-            res.render('company/validate/create_detail', {
-                tittle: '该公司不存在!'
+            company.save(function (err) {
+                if(err) {
+                    res.send({'result':0,'msg':'创建失败！'});
+                } else {
+                    req.session.role = 'HR';
+                    res.send({'result':1,'msg':'创建成功！'});
+                }
             });
         }
     });
