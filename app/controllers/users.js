@@ -518,7 +518,11 @@ exports.home = function(req, res) {
         res.render('users/home',{
           'selected_teams' : selected_teams,
           'unselected_teams' : unselected_teams,
-          'current_team' : current_team        //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
+          'current_team' : current_team,        //当前小队的信息,如果用户没有点击任何小队就进入小队页面那么默认返回他所属的第一个小队,否则就返回他点击的小队
+          'photo': req.user.photo,
+          'realname':req.user.realname,
+          'cname':req.user.cname,
+          'sign':req.user.introduce
         });
       }
     });

@@ -890,7 +890,8 @@ exports.editLogo = function(req, res) {
   Company.findOne({ _id: _company._id }).exec(function(err, company) {
     res.render('company/edit_logo', {
       logo: company.info.logo,
-      id: company._id
+      id: company._id,
+      role: req.session.role
     });
   });
 
