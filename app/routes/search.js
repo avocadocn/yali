@@ -8,6 +8,6 @@ module.exports = function(app, passport) {
     app.post('/search/team', search.getTeam);
     app.post('/search/user', search.getUser);
 
-
+    app.get('/search/member', search.getMember);
     app.get('/search/search/team', search.searchTeam);
 };

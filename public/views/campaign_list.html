@@ -1,6 +1,6 @@
 <div>
   <div >
-    <div><a ng-click="selectCampaign(0)">公司活动</a>|<a ng-click="selectCampaign(1)">加入小队的活动</a>|<a ng-click="selectCampaign(2)">未加入小队的活动</a></div>
+    <div ng-if="company"><a ng-click="selectCampaign(0)">公司活动</a>|<a ng-click="selectCampaign(1)">加入小队的活动</a>|<a ng-click="selectCampaign(2)">未加入小队的活动</a></div>
     <div class="margin_15" ng-repeat="campaign_item in campaigns" >
       <div class="row">
         <div class="col-md-2">

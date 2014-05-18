@@ -88,6 +88,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
     $http.get('/users/getCampaigns').success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.show = false;
+      $scope.company = false;
     });
 
     $scope.join = function(campaign_id) {

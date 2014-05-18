@@ -24,16 +24,11 @@ tabViewCompany.directive('match', function($parse) {
 tabViewCompany.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/company_message', {
-        templateUrl: '/views/group_message_list.html',
-        controller: 'GroupMessageController',
-        controllerAs: 'messages'
+      .when('/company_member', {
+        templateUrl: '/views/member_list.html',
+        controller: 'CompanyMemberController',
+        controllerAs: 'members'
        })
-      // .when('/company_group', {
-      //   templateUrl: '/views/group_list.html',
-      //   controller: 'GroupListController',
-      //   controllerAs: 'group'
-      // })
       .when('/company_campaign', {
         templateUrl: '/views/campaign_list.html',
         controller: 'CampaignListController',
@@ -53,6 +48,16 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         redirectTo: '/company_campaign'
       });
   }]);
+
+
+
+tabViewCompany.controller('CompanyMemberController', ['$http', '$scope',
+ function ($http, $scope) {
+    $http.get('/search/member').success(function(data, status) {
+      $scope.members = data;
+      $scope.company = true;
+    });
+}]);
 
 
 tabViewCompany.controller('GroupListController', ['$http', '$scope',
@@ -125,6 +130,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope',
     $http.get('/company/getCampaigns').success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.show = data.role === 'EMPLOYEE';  //由于还未设置权限,目前普通员工也可以关闭活动  TODO
+      $scope.company = true;
     });
 
 

@@ -143,6 +143,10 @@ exports.dealActive = function(req, res) {
                 return;
               }
             }
+            company.info.membernumber = company.info.membernumber + 1;
+            company.save(function(err){
+              ;
+            });
             res.render('users/message', message.emailError);
           } else {
             console.log('bbbb');

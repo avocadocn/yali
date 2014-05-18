@@ -110,6 +110,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $http.get('/group/getCampaigns/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.show = data.permission;    //只有改组的组长才可以操作活动(关闭、编辑等)
+      $scope.company = false;
     });
 
     //TODO 发起活动或者挑战时搜索应约对象 暂时先放在这里
@@ -290,8 +291,8 @@ tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', 
     var teamId = $('#team_content').attr('team-id');
     $http.get('/group/getGroupMembers/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
       if(data.result==1){
-        $scope.group_members = data.data.member;
-        $scope.group_leaders = data.data.leader;
+        $scope.members = data.data.member;
+        $scope.leaders = data.data.leader;
       }
 
     });

@@ -90,3 +90,20 @@ exports.getUser = function(req, res) {
   });
 };
 
+
+
+
+
+exports.getMember = function(req, res) {
+  var cid = req.session.cid;
+  User.find({'cid': cid}, {'username':1,'nickname':1,'photo':1,'realname':1,'department':1,'position':1,'sex':1,'register_date':1,'group':1},function (err, users){
+
+    if(err || !users){
+      console.log('ERROR');
+      return res.send([]);
+    }else{
+      console.log(users);
+      return res.send(users);
+    }
+  });
+};

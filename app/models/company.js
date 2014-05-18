@@ -72,7 +72,10 @@ var CompanySchema = new Schema({
             default: '/img/icons/default_company_logo.png'
         },
 
-        membernumber: Number
+        membernumber: {
+            type: Number,
+            default: 0
+        }
     },
 
     register_date: {

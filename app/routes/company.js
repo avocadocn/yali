@@ -26,7 +26,6 @@ module.exports = function(app, passport) {
 
     app.get('/company/validate/error', company.validateError);
 
-
     app.get('/company/confirm', company.validateConfirm);//下面三个子页面当父页面
     app.get('/company/create_company_account', company.create_company_account);//创建公司账号
     app.get('/company/select', company.select);//选择组件
