@@ -63,12 +63,16 @@ exports.loginSuccess = function(req, res) {
 };
 
 exports.appLoginSuccess = function(req, res) {
-  req.session.username = req.body.username;
-  req.session.cid = req.user.cid;
-  req.session.uid = req.user._id;
-  req.session.role = req.user.role;
+  var data = {
+    _id: req.user._id,
+    nickname: req.user.nickname
+  };
+  res.send({ result: 1, msg: '登录成功', data: data });
+}
 
-  res.send({ result: 1, msg: '登录成功' });
+exports.appLogout = function(req, res) {
+  req.logout();
+  res.send({ result: 1, msg: '注销成功' });
 }
 
 exports.authorize = function(req, res, next) {

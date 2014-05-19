@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     })
 
     .state('app.login', {
-      url: "/login",
+      url: '/login',
       views: {
         'menuContent': {
           templateUrl: 'templates/login.html',
@@ -48,7 +48,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
-    .state('app.campaign_list', {
+    .state('app.campaignList', {
       url: '/campaign_list',
       views: {
         'menuContent': {
@@ -58,7 +58,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     })
 
-    .state('app.schedule_list', {
+    .state('app.scheduleList', {
       url: '/schedule_list',
       views: {
         'menuContent': {
@@ -82,7 +82,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
 })
 
-.factory('Authorize', function($state) {
+.factory('Authorize', function($state, $http) {
+
+
+  /**
+   * 是否经过授权
+   * @property authorize
+   * @type Boolean
+   * @default false
+   */
   var authorize = false;
 
   var Authorize = function() {
@@ -94,12 +102,33 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   }
 
-  var Login = function() {
-    authorize = true;
+  var Login = function(username, password) {
+    $http.post('/users/login', { username: username, password: password }).
+      success(function(data, status, headers, config) {
+        if (data.result === 1) {
+          firstLaunch = false;
+          authorize = true;
+          var userInfo = data.data;
+          if (userInfo) {
+            window.localStorage.setItem('nickname', userInfo.nickname);
+            window.localStorage.setItem('_id', userInfo._id);
+          }
+          $state.go('app.campaignList');
+        }
+      }
+    );
   }
 
   var Logout = function() {
-    authorize = false;
+    $http.get('/users/logout').
+      success(function(data, status, headers, config) {
+        if (data.result === 1) {
+          firstLaunch = true;
+          authorize = false;
+          $state.go('app.login');
+        }
+      }
+    );
   }
 
   return {

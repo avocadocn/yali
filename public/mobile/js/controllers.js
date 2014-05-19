@@ -1,13 +1,13 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope) {
-
+.controller('AppCtrl', function($scope, Authorize) {
+  $scope.logout = Authorize.Logout;
 })
 
-.controller('LoginCtrl', function($scope, $http, $rootScope, $state, Authorize) {
+.controller('LoginCtrl', function($scope, $http, $state, Authorize) {
 
   if (Authorize.Authorize() === true) {
-    $state.go('app.campaign_list');
+    $state.go('app.campaignList');
   }
 
   $scope.data = {
@@ -15,18 +15,10 @@ angular.module('starter.controllers', [])
     password: ''
   };
 
-  $scope.login = function() {
-    $http.post('/users/login', { username: $scope.data.username, password: $scope.data.password }).
-      success(function(data, status, headers, config) {
-        if (data.result === 1) {
-          Authorize.Login();
-          $state.go('app.campaign_list');
-        }
-      });
-  };
+  $scope.login = Authorize.Login;
 })
 
-.controller('CampaignListCtrl', function($scope, $http, Authorize, $state) {
+.controller('CampaignListCtrl', function($scope, $http, $state, Authorize) {
   Authorize.Authorize();
 
   $http.get('/users/getCampaigns').
@@ -41,7 +33,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ScheduleListCtrl', function($scope, $http, Authorize, $state) {
+.controller('ScheduleListCtrl', function($scope, $http, $state, Authorize) {
   Authorize.Authorize();
 
   $http.get('/users/schedules').

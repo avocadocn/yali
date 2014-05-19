@@ -52,10 +52,8 @@ module.exports = function(app, passport) {
 
 
     // for app
-    app.post('/users/login', passport.authenticate('user', {
-        failureRedirect: '/mobile/#app/login',
-        failureFlash: true
-    }), users.appLoginSuccess);
+    app.post('/users/login', passport.authenticate('user'), users.appLoginSuccess);
+    app.get('/users/logout', authorization.requiresLogin, users.appLogout);
 
     app.get('/users/schedules', authorization.requiresLogin, users.getSchedules);
     app.param('userId', users.user);
