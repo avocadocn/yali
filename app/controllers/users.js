@@ -1109,3 +1109,86 @@ exports.user = function(req, res, next, id) {
             next();
         });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+// for app
+
+exports.getCampaignsForApp = function(req, res) {
+
+  var user = req.user;
+
+  Campaign
+  .where('cid').all(user.cid)
+  .populate('gid')
+  .exec()
+  .then(function(campaigns) {
+
+    var responseData = [];
+
+    var userCompanyGroupIds = [];
+    user.group.forEach(function(group) {
+      group.team.forEach(function(team) {
+        userCompanyGroupIds.push(team.id.toString());
+      });
+    });
+
+    campaigns.forEach(function(campaign) {
+
+      // ref gid->CompanyGroup
+      var companyGroups = campaign.gid;
+
+      var responseCompanyGroupName = '';
+
+      // >_< 找用户所在小组名字
+      for (var i = 0; i < companyGroups.length; i++) {
+        var index = userCompanyGroupIds.indexOf(companyGroups[i]._id.toString());
+        if (index !== -1) {
+          responseCompanyGroupName = companyGroups.name;
+        }
+      }
+
+      var isJoin = false;
+      for (var i = 0; i < campaign.member.length; i++) {
+        if (user._id.toString() === campaign.member.uid.toString()) {
+          join = true;
+        }
+      }
+
+      responseData.push({
+        _id: campaign._id,
+        companyGroupName: responseCompanyGroupName,
+        content: campaign.content,
+        startTime: campaign.start_time,
+        memberCount: campaign.member.length,
+        isJoin: isJoin
+      });
+    });
+
+    res.send({ result: 1, msg: '获取活动列表成功', data: responseData });
+
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send({ result: 0, msg: '获取活动列表失败' });
+  });
+
+
+};
+
+
+
+
+
+
+

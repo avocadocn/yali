@@ -56,6 +56,8 @@ module.exports = function(app, passport) {
     app.post('/users/login', passport.authenticate('user'), users.appLoginSuccess);
     app.get('/users/logout', authorization.requiresLogin, users.appLogout);
 
+    app.get('/users/campaigns', authorization.requiresLogin, users.getCampaignsForApp);
+
     app.get('/users/schedules', authorization.requiresLogin, users.getSchedules);
     app.param('userId', users.user);
 

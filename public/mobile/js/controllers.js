@@ -2,6 +2,8 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, Authorize) {
   $scope.logout = Authorize.Logout;
+
+  $scope.nickname = window.localStorage.getItem('nickname');
 })
 
 .controller('LoginCtrl', function($scope, $http, $state, Authorize) {
@@ -21,9 +23,9 @@ angular.module('starter.controllers', [])
 .controller('CampaignListCtrl', function($scope, $http, $state, Authorize) {
   Authorize.Authorize();
 
-  $http.get('/users/getCampaigns').
+  $http.get('/users/campaigns').
     success(function(data, status, headers, config) {
-      $scope.campaign_list = data.data;
+      $scope.campaignList = data.data;
     });
 
   $scope.join = function(id) {

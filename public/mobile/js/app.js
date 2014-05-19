@@ -106,7 +106,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     $http.post('/users/login', { username: username, password: password }).
       success(function(data, status, headers, config) {
         if (data.result === 1) {
-          firstLaunch = false;
           authorize = true;
           var userInfo = data.data;
           if (userInfo) {
@@ -123,7 +122,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     $http.get('/users/logout').
       success(function(data, status, headers, config) {
         if (data.result === 1) {
-          firstLaunch = true;
           authorize = false;
           $state.go('app.login');
         }

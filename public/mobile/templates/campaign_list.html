@@ -4,9 +4,9 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="campaign in campaign_list" href="#">
+      <ion-item ng-repeat="campaign in campaignList" href="#">
         <p>{{ campaign.content }}</p>
-        <button class="button button-block" ng-click="join(campaign.id)">参加活动</button>
+        <button class="button button-block" ng-if="!campaign.isJoin" ng-click="join(campaign._id)">参加活动</button>
       </ion-item>
     </ion-list>
   </ion-content>
