@@ -71,7 +71,8 @@ div
     hr
     .row(ng-repeat="team in team_lists")
       .col-md-2
-        img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
+        a(href="/group/home/{{team._id}}")
+          img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
       .col-md-10
         .row
           .col-md-2
