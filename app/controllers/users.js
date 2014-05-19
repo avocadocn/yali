@@ -344,12 +344,9 @@ exports.getGroupMessages = function(req, res) {
       for(var k = 0; k < req.user.group[i].team.length; k ++){
         team_ids.push(req.user.group[i].team[k].id);
       }
-
-      GroupMessage.find({'cid' : {'$all':[req.user.cid.toString()]} , 'group.gid': {'$all': [req.user.group[i]._id]} }).populate({
-            path : 'team',
-            match : { _id: {'$in':team_ids}}
-          }
-        ).exec(function(err, group_message) {
+      console.log(team_ids);
+      GroupMessage.find({'team' :{'$in':team_ids}})
+      .exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
@@ -427,11 +424,8 @@ exports.getCampaigns = function(req, res) {
       for(var k = 0; k < req.user.group[i].team.length; k ++){
         team_ids.push(req.user.group[i].team[k].id);
       }
-      Campaign.find({'cid' : {'$all':[req.user.cid.toString()]} , 'gid' : {'$all':[req.user.group[i]._id]}}).populate({
-            path : 'team',
-            match : { _id: {'$in':team_ids}}
-          }
-        ).exec(function(err, campaign) {
+      Campaign.find({'team' : {'$in':team_ids}})
+      .exec(function(err, campaign) {
         if(campaign.length > 0) {
           if (err) {
             callback(err);
@@ -789,19 +783,17 @@ exports.timeLine = function(req,res){
       campaigns.forEach(function(campaign) {
         var _head;
         if(campaign.provoke.active){
-          _head = campaign.provoke.team +'对' + campaign.provoke.team +'的比赛';
+          _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
         }
         else{
-          _head = campaign.gid[0]==='0' ? '公司活动' : (campaign.team.name + '活动');
+          _head = campaign.gid[0]==='0' ? '公司活动' : (campaign.team[0].name + '活动');
         }
         var tempObj = {
           id: campaign._id,
           head: _head,
           content: campaign.content,
           location: campaign.location,
-          cname: campaign.cname,
           group_type: campaign.group_type,
-          team: campaign.team,
           date: campaign.start_time,
           provoke:campaign.provoke
         }

@@ -20,10 +20,10 @@ var _member = new Schema({
  */
 
 var Campaign = new Schema({
-    team:{
+    team:[{
         type: Schema.Types.ObjectId,
         ref: 'CompanyGroup'
-    },
+    }],
     active: {
         type: Boolean,
         default: false

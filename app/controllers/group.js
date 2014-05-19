@@ -163,7 +163,46 @@ exports.saveInfo =function(req,res,next,id) {
         res.send({'result':0,'msg':'未登录'});
 };
 //小队信息维护
-
+exports.timeLine = function(req, res){
+  Campaign
+  .find({ 'end_time':{'$lt':new Date()},'team': req.session.nowtid})
+  .sort('-start_time')
+  .populate('team')
+  .exec()
+  .then(function(campaigns) {
+    console.log(campaigns);
+    if (campaigns && campaigns.length>0) {
+      var timeLines = [];
+      campaigns.forEach(function(campaign) {
+        var _head;
+        if(campaign.provoke.active){
+          _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
+        }
+        else{
+          _head = campaign.gid[0]==='0' ? '公司活动' : (campaign.team[0].name + '活动');
+        }
+        var tempObj = {
+          id: campaign._id,
+          head: _head,
+          content: campaign.content,
+          location: campaign.location,
+          group_type: campaign.group_type,
+          date: campaign.start_time,
+          provoke:campaign.provoke
+        }
+        timeLines.push(tempObj);
+      });
+      res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
+    }
+    else{
+      res.render('partials/timeLine');
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.render('partials/timeLine');
+  });
+};
 
 
 //返回小队页面
@@ -281,11 +320,8 @@ exports.getGroupMessage = function(req, res) {
   }
   var tid = req.params.teamId;    //小队的id
 
-  GroupMessage.find({'cid' : {'$all':[req.companyGroup.cid.toString()]}, 'group.gid' : {'$all':[req.companyGroup.gid]}}).populate({
-        path : 'team',
-        match : { _id: tid}
-      }
-    ).exec(function(err, group_message) {
+  GroupMessage.find({'team' : tid})
+  .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
       return res.status(404).send([]);
@@ -339,7 +375,7 @@ exports.getGroupCampaign = function(req, res) {
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
-  Campaign.find({'cid' : {'$all':[req.companyGroup.cid.toString()]}, 'gid' : {'$all':[req.companyGroup.gid]}}, function(err, campaign) {
+  Campaign.find({'team' : tid}, function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
@@ -619,25 +655,22 @@ exports.sponsor = function (req, res) {
   }
   var content = req.body.content;//活动内容
   var location = req.body.location;//活动地点
-  var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
   var group_type = req.companyGroup.group_type;
   var tid = req.params.teamId;
+  var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
+  var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
   //生成活动
   var campaign = new Campaign();
-  campaign.team = tid;
+  campaign.team = [tid];
   campaign.gid.push(req.companyGroup.gid);
   campaign.group_type.push(group_type);
   campaign.cid.push(cid);//其实只有一个公司
-  if(req.session.role==='HR'){
-    campaign.poster.cname = req.user.info.name;
-    campaign.poster.cid = req.user._id;
-    campaign.poster.role = 'HR';
-  }
-  else{
-    campaign.poster.cname = req.user.cname;
-    campaign.poster.cid = req.user.cid;
+  campaign.cname.push(cname);
+  campaign.poster.cname = cname;
+  campaign.poster.cid = cid;
+  campaign.poster.role = req.session.role;
+  if(req.session.role==='LEADER'){
     campaign.poster.uid = req.user._id;
-    campaign.poster.role = 'LEADER';
     campaign.poster.username = req.user.username;
   }
 
@@ -671,16 +704,11 @@ exports.sponsor = function (req, res) {
     groupMessage.group.group_type.push(group_type);
     groupMessage.active = true;
     groupMessage.cid.push(cid);
-    if(req.session.role==='HR'){
-      groupMessage.poster.cname = req.user.info.name;
-      groupMessage.poster.cid = req.user.id;
-      groupMessage.poster.role = 'HR';
-    }
-    else{
-      groupMessage.poster.cname = req.user.cname;
-      groupMessage.poster.cid = req.user.cid;
+    groupMessage.poster.cname = cname;
+    groupMessage.poster.cid = cid;
+    groupMessage.poster.role = req.session.role;
+    if(req.session.role==='LEADER'){
       groupMessage.poster.uid = req.user.id;
-      groupMessage.poster.role = 'LEADER';
       groupMessage.poster.username = req.user.nickname;
     }
     groupMessage.content = content;

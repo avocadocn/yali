@@ -37,6 +37,7 @@ module.exports = function(app, passport) {
     app.post('/company/createDetail', company.createDetail);// 验证通过后进一步提交公司注册信息
 
     //公司信息查看和修改
+    app.get('/company/timeLine', authorization.requiresLogin, company.timeLine);
     app.get('/company/getAccount', authorization.requiresLogin, company.getAccount);
     app.get('/company/info', authorization.requiresLogin, company.Info);
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);

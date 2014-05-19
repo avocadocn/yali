@@ -18,8 +18,8 @@ module.exports = function(app) {
   app.get('/group/info/:teamId', authorization.requiresLogin, group.info);
 
   app.get('/group/renderInfo', authorization.requiresLogin, group.renderInfo);
-
   app.post('/group/saveInfo', authorization.requiresLogin, group.saveInfo);
+  app.get('/group/timeLine', authorization.requiresLogin, group.timeLine);
   app.get('/group/campaign', authorization.requiresLogin, group.renderCampaigns);
   app.get('/group/getCampaigns/:teamId', authorization.requiresLogin, group.getGroupCampaign);
   app.get('/group/getGroupMessages/:teamId', authorization.requiresLogin, group.getGroupMessage);

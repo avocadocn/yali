@@ -19,7 +19,8 @@ var mongoose = require('mongoose'),
     meanConfig = require('../../config/config'),
     gm = require('gm'),
     fs = require('fs'),
-    async = require('async');
+    async = require('async'),
+    moment = require('moment');
 
 var mail = require('../services/mail');
 var encrypt = require('../middlewares/encrypt');
@@ -519,6 +520,45 @@ exports.saveAccount = function(req, res) {
         }
     });
 };
+exports.timeLine = function(req, res){
+  Campaign
+  .find({ 'end_time':{'$lt':new Date()},'cid': req.session.nowcid})
+  .sort('-start_time')
+  .populate('team')
+  .exec()
+  .then(function(campaigns) {
+    if (campaigns && campaigns.length>0) {
+      var timeLines = [];
+      campaigns.forEach(function(campaign) {
+        var _head;
+        if(campaign.provoke.active){
+          _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
+        }
+        else{
+          _head = campaign.gid[0]==='0' ? '公司活动' : (campaign.team[0].name + '活动');
+        }
+        var tempObj = {
+          id: campaign._id,
+          head: _head,
+          content: campaign.content,
+          location: campaign.location,
+          group_type: campaign.group_type,
+          date: campaign.start_time,
+          provoke:campaign.provoke
+        }
+        timeLines.push(tempObj);
+      });
+      return res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
+    }
+    else{
+      return res.render('partials/timeLine');
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    return res.render('partials/timeLine');
+  });
+}
 /**
  * Find company by id
  */
@@ -550,7 +590,7 @@ exports.getCompanyCampaign = function(req, res) {
     }
     else if(req.session.role ==='EMPLOYEE'){
         //公司发布的活动都归在虚拟组 gid = 0 里
-        Campaign.find({'cid' : {'$all':[req.session.nowcid]}, 'gid' : {'$all':['0']}}, function(err, campaign) {
+        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}, function(err, campaign) {
             if (err) {
                 console.log(err);
                 return res.status(404).send([]);
@@ -584,7 +624,7 @@ exports.getCompanyCampaign = function(req, res) {
         });
     }
     else if(req.session.role ==='HR'){
-        Campaign.find({'cid' : {'$all':[req.session.nowcid]}, 'gid' : {'$all':['0']}}, function(err, campaigns) {
+        Campaign.find({'cid' : req.session.nowcid, 'gid' : '0'}, function(err, campaigns) {
             if (err) {
                 console.log(err);
                 return res.status(404).send([]);
@@ -684,7 +724,7 @@ exports.campaignCancel = function (req, res) {
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function (req, res) {
     var username = req.user.info.name;
-    var cid = req.user.id;    //公司id
+    var cid = req.user._id.toString();    //公司id
     var gid = '0';                  //HR发布的活动,全部归在虚拟组里,虚拟组的id默认是0
     var group_type = '虚拟组';
     var company_in_campaign = req.body.company_in_campaign;//公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是次hr所在的公司!
@@ -698,7 +738,7 @@ exports.sponsor = function (req, res) {
 
     campaign.gid.push(gid);
     campaign.group_type.push(group_type);
-
+    campaign.cname = username;
     campaign.cid = company_in_campaign; //参加活动的所有公司的id
     campaign.poster.cname = username;
     campaign.poster.cid = cid;

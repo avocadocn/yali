@@ -30,6 +30,11 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
         templateUrl: '/group/renderInfo',
         controller: 'infoController',
         controllerAs: 'account',
+      })
+      .when('/timeLine', {
+        templateUrl: '/group/timeLine',
+        //controller: 'infoController',
+        //controllerAs: 'account',
       }).
       otherwise({
         redirectTo: '/group_message'
