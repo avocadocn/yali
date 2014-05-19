@@ -27,7 +27,7 @@
             .form-group
               .row
                 .col-md-6
-                  input.form-control(type="text" ng-model="competition_date" name="date" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" bs-datepicker)
+                  input.form-control(type="text" ng-model="competition_date" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" bs-datepicker)
                 .col-md-6
                   input.form-control(type="text" ng-model="competition_date" name="time" data-autoclose="1" placeholder="Time" bs-timepicker)
         .col-md-6
@@ -35,7 +35,7 @@
             .form-group
               .row
                 .col-md-6
-                  input.form-control(type="text" ng-model="deadline" name="date" data-autoclose="1" data-min-date="{{competition_date}}" placeholder="Date" bs-datepicker)
+                  input.form-control(type="text" ng-model="deadline" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date}}" placeholder="Date" bs-datepicker)
                 .col-md-6
                   input.form-control(type="text" ng-model="deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker)
       .row

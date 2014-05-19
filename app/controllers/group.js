@@ -96,22 +96,19 @@ exports.renderInfo = function (req, res) {
 exports.info =function(req,res) {
   var entity_type = req.companyGroup.entity_type;
   var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-  if(req.session.tid !== null ) {
-    Entity.findOne({
-        'tid': req.session.tid
-      },function(err, entity) {
-          if (err) {
-              console.log(err);
-              return res.send(err);
-          } else {
-              return res.send({
-                  'companyGroup': req.companyGroup,  //父小组信息
-                  'entity': entity                   //实体小组信息
-              });
-          }
-      });
-  } else
-    res.status(404).send();
+  Entity.findOne({
+      'tid': req.companyGroup._id
+    },function(err, entity) {
+        if (err) {
+            console.log(err);
+            return res.send(err);
+        } else {
+            return res.send({
+                'companyGroup': req.companyGroup,  //父小组信息
+                'entity': entity                   //实体小组信息
+            });
+        }
+    });
 };
 
 

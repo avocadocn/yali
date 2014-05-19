@@ -27,7 +27,7 @@ var validator = require('validator'),
 // custom
 var encrypt = require('../middlewares/encrypt'),
   mail = require('../services/mail'),
-  UUID = require('../middlewares/uuid'),
+  moment = require('moment'),
   config = require('../config/config'),
   meanConfig = require('../../config/config'),
   message = require('../language/zh-cn/message');
@@ -777,7 +777,47 @@ exports.quitCampaign = function (req, res) {
       }
     });
 };
-
+exports.timeLine = function(req,res){
+  Campaign
+  .find({ 'end_time':{'$lt':new Date()},'member.uid': req.session.nowuid})
+  .sort('-start_time')
+  .populate('team')
+  .exec()
+  .then(function(campaigns) {
+    if (campaigns && campaigns.length>0) {
+      var timeLines = [];
+      campaigns.forEach(function(campaign) {
+        var _head;
+        if(campaign.provoke.active){
+          _head = campaign.provoke.team +'对' + campaign.provoke.team +'的比赛';
+        }
+        else{
+          _head = campaign.gid[0]==='0' ? '公司活动' : (campaign.team.name + '活动');
+        }
+        var tempObj = {
+          id: campaign._id,
+          head: _head,
+          content: campaign.content,
+          location: campaign.location,
+          cname: campaign.cname,
+          group_type: campaign.group_type,
+          team: campaign.team,
+          date: campaign.start_time,
+          provoke:campaign.provoke
+        }
+        timeLines.push(tempObj);
+      });
+      res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
+    }
+    else{
+      res.render('partials/timeLine');
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.render('partials/timeLine');
+  });
+}
 
 
 // 获取用户日程
@@ -806,7 +846,7 @@ exports.getSchedules = function(req, res) {
   .then(null, function(err) {
     console.log(err);
     res.send({ result: 0, msg: '获取日程列表失败' });
-  })
+  });
 };
 
 

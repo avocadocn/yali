@@ -18,6 +18,6 @@
       .col-xs-2.col-sm-3
         if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
           div(ng-if="campaign_item.active")
-            input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "退出" ng-click="quit(campaign_item.id)" ng-if="campaign_item.join")
-            input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "参加" ng-click="join(campaign_item.id)" ng-if="!campaign_item.join")
+            input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "退出" ng-click="quit(campaign_item.id,$index)" ng-if="campaign_item.join")
+            input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "参加" ng-click="join(campaign_item.id,$index)" ng-if="!campaign_item.join")
         a.btn.dl_btn.margin_5(ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}") 详情

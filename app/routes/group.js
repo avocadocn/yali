@@ -16,7 +16,6 @@ module.exports = function(app) {
   app.get('/group/home/:teamId', authorization.requiresLogin,group.authorize, group.home);
 
   app.get('/group/info/:teamId', authorization.requiresLogin, group.info);
-  app.get('/group/info', authorization.requiresLogin, group.info);
 
   app.get('/group/renderInfo', authorization.requiresLogin, group.renderInfo);
 

@@ -38,6 +38,7 @@ module.exports = function(app, passport) {
     app.post('/users/saveAccount', authorization.requiresLogin, users.saveAccount);
     app.post('/users/changePassword', authorization.requiresLogin, users.changePassword);
     app.get('/users/editInfo', authorization.requiresLogin, users.editInfo);
+    app.get('/users/timeline', authorization.requiresLogin, users.timeLine);
 
     app.post('/users/joinCampaign', authorization.requiresLogin, users.joinCampaign);
     app.post('/users/quitCampaign', authorization.requiresLogin, users.quitCampaign);

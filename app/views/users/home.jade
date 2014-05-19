@@ -26,6 +26,8 @@ block panel
         a.h5(href="#/schedule" ng-click="addactive('schedule')") 日程列表
       li(ng-class="{'active':nowTab=='personal'}")
         a.h5(href="#/personal" ng-click="addactive('personal')") 个人资料
+      li(ng-class="{'active':nowTab=='timeLine'}")
+        a.h5(href="#/timeLine" ng-click="addactive('timeLine')") timeLine
     .tab-content
       .tab-pane.active
         div(ng-view)

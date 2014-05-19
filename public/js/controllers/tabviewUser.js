@@ -39,6 +39,11 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
         controller: 'AccountFormController',
         controllerAs: 'account'
       })
+      .when('/timeLine', {
+        templateUrl: '/users/timeline',
+        //controller: 'timelineController',
+       // controllerAs: 'timeline'
+      })
       .when('/changePassword', {
         templateUrl: '/views/change_password.html',
         controller: 'PasswordFormController',
@@ -126,7 +131,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
-                  if(data.result===1){
+                if(data.result===1){
                     alert('您已退出该活动!');
                     $scope.campaigns[index].join = false;
                     $scope.campaigns[index].member_length--;

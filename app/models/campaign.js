@@ -24,7 +24,6 @@ var Campaign = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'CompanyGroup'
     },
-    id: String,
     active: {
         type: Boolean,
         default: false

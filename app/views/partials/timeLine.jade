@@ -1,0 +1,26 @@
+append block headExt
+  link(rel="stylesheet" href="/css/views/timeline.css")
+if(timeLines)
+  ul.timeline
+    each timeline in timeLines
+      li.timeline-blue
+        .timeline-time
+          span.date= moment(timeline.date).format('YY/MM/DD')
+          span.time= moment(timeline.date).format('HH:mm')
+        .timeline-icon
+          i.icon-facetime-video
+        .timeline-body
+          h2= timeline.head
+          .timeline-content
+            img.timeline-img.pull-left(src="#{timeline.logo ? timeline :'/img/icons/default_company_logo.png'}")
+            p= '地点：'+ timeline.location
+            p= '小组类型：' + timeline.group_type
+            p= '内容：' + timeline.content
+            if(timeline.provoke.active)
+              p= '赛制：' + timeline.provoke.competition_format
+          .timeline-footer
+            a.nav-link
+              详情
+              i.m-icon-swapright.m-icon-white
+else
+  span 目前还没有活动
