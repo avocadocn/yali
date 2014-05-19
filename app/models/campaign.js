@@ -28,10 +28,7 @@ var Campaign = new Schema({
         type: Boolean,
         default: false
     },
-    gid: [{
-        type: Schema.Types.ObjectId,
-        ref: 'CompanyGroup'
-    }],
+    gid: Array,
     group_type: Array,
     cid: Array,                        //参加该活动的所有公司
     cname: Array,

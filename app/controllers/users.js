@@ -1130,33 +1130,16 @@ exports.getCampaignsForApp = function(req, res) {
 
   Campaign
   .where('cid').all(user.cid)
-  .populate('gid')
+  .populate('team')
   .exec()
   .then(function(campaigns) {
 
     var responseData = [];
 
-    var userCompanyGroupIds = [];
-    user.group.forEach(function(group) {
-      group.team.forEach(function(team) {
-        userCompanyGroupIds.push(team.id.toString());
-      });
-    });
-
     campaigns.forEach(function(campaign) {
 
       // ref gid->CompanyGroup
       var companyGroups = campaign.gid;
-
-      var responseCompanyGroupName = '';
-
-      // >_< 找用户所在小组名字
-      for (var i = 0; i < companyGroups.length; i++) {
-        var index = userCompanyGroupIds.indexOf(companyGroups[i]._id.toString());
-        if (index !== -1) {
-          responseCompanyGroupName = companyGroups.name;
-        }
-      }
 
       var isJoin = false;
       for (var i = 0; i < campaign.member.length; i++) {
@@ -1167,7 +1150,7 @@ exports.getCampaignsForApp = function(req, res) {
 
       responseData.push({
         _id: campaign._id,
-        companyGroupName: responseCompanyGroupName,
+        companyGroupName: campaign.team.name,
         content: campaign.content,
         startTime: campaign.start_time,
         memberCount: campaign.member.length,
