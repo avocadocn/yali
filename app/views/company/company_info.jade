@@ -78,7 +78,7 @@ div
           .col-md-2
             label.info_label.control-label 队名
           .col-md-6
-            input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="team.name" ng-disabled="infoUnEdit")
+            input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="team.name" ng-disabled="groupInfoUnEdit")
           if(role ==='HR')
             button.btn.dl_btn(ng-click="groupEditToggle()" ng-bind="groupInfoButtonStatus")
         .row

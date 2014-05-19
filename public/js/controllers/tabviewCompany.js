@@ -287,7 +287,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
     });
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
-    $scope.groupInfoButton = true;
+    $scope.groupInfoUnEdit = true;
     $scope.groupInfoButtonStatus = '编辑队名'
     $scope.infoEditToggle = function() {
         $scope.infoUnEdit = !$scope.infoUnEdit;
@@ -321,8 +321,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         }
     };
     $scope.groupEditToggle = function() {
-        $scope.groupInfoButton = !$scope.groupInfoButton;
-        if($scope.groupInfoButton) {
+        $scope.groupInfoUnEdit = !$scope.groupInfoUnEdit;
+        if($scope.groupInfoUnEdit) {
             try{
                 $http({
                     method : 'post',
