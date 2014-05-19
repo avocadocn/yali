@@ -21,14 +21,10 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       controller: 'AppCtrl'
     })
 
-    .state('app.login', {
+    .state('login', {
       url: '/login',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/login.html',
-          controller: 'LoginCtrl'
-        }
-      }
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
     })
 
     .state('app.search', {
@@ -95,7 +91,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
   var Authorize = function() {
     if (authorize === false) {
-      $state.go('app.login');
+      $state.go('login');
       return false;
     } else {
       return true;
@@ -123,7 +119,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       success(function(data, status, headers, config) {
         if (data.result === 1) {
           authorize = false;
-          $state.go('app.login');
+          $state.go('login');
         }
       }
     );
