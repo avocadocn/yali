@@ -7,6 +7,7 @@
       <ion-item ng-repeat="campaign in campaignList" href="#">
         <p>{{ campaign.content }}</p>
         <button class="button button-block" ng-if="!campaign.isJoin" ng-click="join(campaign._id)">参加活动</button>
+        <button class="button button-block" ng-if="campaign.isJoin" ng-click="quit(campaign._id)">退出活动</button>
       </ion-item>
     </ion-list>
   </ion-content>

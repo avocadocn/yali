@@ -23,16 +23,32 @@ angular.module('starter.controllers', [])
 .controller('CampaignListCtrl', function($scope, $http, $state, Authorize) {
   Authorize.Authorize();
 
-  $http.get('/users/campaigns').
-    success(function(data, status, headers, config) {
-      $scope.campaignList = data.data;
-    });
+  var getCampaigns = function() {
+    $http.get('/users/campaigns').
+      success(function(data, status, headers, config) {
+        $scope.campaignList = data.data;
+      }
+    );
+  };
+
+  getCampaigns();
 
   $scope.join = function(id) {
     $http.post('/users/joinCampaign', { campaign_id: id }).
       success(function(data, status, headers, config) {
-      });
+        getCampaigns();
+      }
+    );
   };
+
+  $scope.quit = function(id) {
+    $http.post('/users/quitCampaign', { campaign_id: id }).
+      success(function(data, status, headers, config) {
+        getCampaigns();
+      }
+    );
+  }
+
 })
 
 .controller('ScheduleListCtrl', function($scope, $http, $state, Authorize) {

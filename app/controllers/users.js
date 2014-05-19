@@ -1143,8 +1143,8 @@ exports.getCampaignsForApp = function(req, res) {
 
       var isJoin = false;
       for (var i = 0; i < campaign.member.length; i++) {
-        if (user._id.toString() === campaign.member.uid.toString()) {
-          join = true;
+        if (user._id.toString() === campaign.member[i].uid.toString()) {
+          isJoin = true;
         }
       }
 
