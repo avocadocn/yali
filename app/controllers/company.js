@@ -474,7 +474,7 @@ exports.saveGroupInfo = function(req, res){
 };
 
 exports.getAccount = function(req, res) {
-    Company.findOne({'id': req.session.nowcid}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
+    Company.findOne({'_id': req.session.nowcid}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
         if (err) {
             console.log(err);
         }

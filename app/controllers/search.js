@@ -95,7 +95,7 @@ exports.getUser = function(req, res) {
 
 
 exports.getMember = function(req, res) {
-  var cid = req.session.cid;
+  var cid = req.session.nowcid;
   User.find({'cid': cid}, {'username':1,'nickname':1,'photo':1,'realname':1,'department':1,'position':1,'sex':1,'register_date':1,'group':1},function (err, users){
 
     if(err || !users){
