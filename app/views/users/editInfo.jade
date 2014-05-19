@@ -32,7 +32,7 @@ div
     .form-group
       label.info_label.col-md-2.control-label 公司
       .col-md-6
-        label.info_label= {{user.cname}}
+        label.info_label {{user.cname}}
     .form-group
       label.info_label.col-md-2.control-label 职位
       .col-md-4
@@ -40,15 +40,6 @@ div
     .form-group
       label.info_label.col-md-2.control-label 所在地
     .form-group
-      label.info_label.col-md-2.control-label 性别
-      .col-md-1
-        label.radio.info_radio
-          input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
-          | 男
-      .col-md-1
-        label.radio.info_radio
-          input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
-          | 女
       label.info_label.col-md-2.control-label 性别
       if(role!=='PARTNER')
         .col-md-1
