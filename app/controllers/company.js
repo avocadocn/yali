@@ -486,7 +486,8 @@ exports.getAccount = function(req, res) {
             return res.send({
                 'result': 1,
                 'company': _account,
-                'info': _company.info
+                'info': _company.info,
+                'team': _company.team
             });
         }
         else

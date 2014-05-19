@@ -32,6 +32,9 @@ a {
   border-style: solid;
   line-height: 1;
 }
+.dl_btn_small {
+  padding: 5px 20px;
+}
 .dl_btn:hover {
   background-color: #3abde7;
   border-color: #3abde7;
@@ -61,6 +64,15 @@ a {
 }
 .margin_top_15 {
   margin-top: 15px;
+}
+.margin_top_50 {
+  margin-top: 50px;
+}
+.margin_top_100 {
+  margin-top: 100px;
+}
+.margin_top_123 {
+  margin-top: 123px;
 }
 .size_family {
   height: 300px;
@@ -98,6 +110,7 @@ a {
 }
 .info_label {
   padding: 7px 12px;
+  font-size: 14px;
 }
 .info_radio {
   margin-left: 12px;
@@ -162,12 +175,12 @@ input[type="number"] {
 }
 .dl_nav {
   height: 70px;
-  background-color: #32afe0;
-  background: -ms-linear-gradient(top, #32afe0, #33b0e3);
-  background: -moz-linear-gradient(top, #32afe0, #33b0e3);
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#32afe0), to(#33b0e3));
-  background: -webkit-linear-gradient(top, #32afe0, #33b0e3);
-  background: -o-linear-gradient(top, #32afe0, #33b0e3);
+  background-color: #3498db;
+  background: -ms-linear-gradient(top, #3498db, #3498db);
+  background: -moz-linear-gradient(top, #3498db, #3498db);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3498db), to(#3498db));
+  background: -webkit-linear-gradient(top, #3498db, #3498db);
+  background: -o-linear-gradient(top, #3498db, #3498db);
   border-color: #fff;
   color: #fff;
 }
@@ -212,6 +225,85 @@ input[type="number"] {
 .dl_doc .promo {
   width: 100%;
   height: 460px;
+  background: url("/img/dl_doc_promo_bg.jpg") center center no-repeat;
+}
+.dl_doc .overview {
+  height: 460px;
+  background-image: url("/img/dl_doc_overview.png");
+  background-repeat: no-repeat;
+}
+.dl_doc .overview .regmomo {
+  height: 460px;
+}
+.dl_doc .overview .regbox {
+  height: 460px;
+  width: 547px;
+}
+.dl_doc .overview .regbox .reginfo {
+  height: 160px;
+  width: 547px;
+  display: block;
+  background: url("/img/dl_doc_reg.png") no-repeat;
+  text-indent: -9999em;
+}
+.dl_doc .overview .regbox .btn_reg {
+  width: 367px;
+  height: 80px;
+  margin-left: 180px;
+  display: block;
+  background: url("/img/dl_doc_reg.png") -180px -160px no-repeat;
+  text-indent: -9999em;
+}
+.dl_doc .overview .regbox .appinfo {
+  width: 367px;
+  height: 192px;
+  margin-left: 180px;
+  display: block;
+  background: url("/img/dl_doc_reg.png") -180px -240px no-repeat;
+  text-indent: -9999em;
+}
+.dl_doc .about {
+  height: 239px;
+  background: url("/img/dl_doc_about_bg.png") top center;
+}
+.dl_doc .about .about_card {
+  padding: 0;
+}
+.dl_doc .about .about_card p {
+  display: block;
+  width: 230px;
+  height: 189px;
+}
+.dl_doc .about .about_card p .btn {
+  width: 160px;
+  margin-top: 140px;
+  margin-left: 141px;
+}
+.dl_doc .about .about_card .card_1 {
+  width: 354px;
+  background: url("/img/dl_doc_about_card1.gif");
+  margin-left: 20px;
+  margin-right: 0;
+}
+.dl_doc .about .about_card .card_2 {
+  width: 384px;
+  background: url("/img/dl_doc_about_card2.gif");
+}
+.dl_doc .about .about_card .card_3 {
+  width: 350px;
+  background: url("/img/dl_doc_about_card3.gif");
+  margin-left: 20px;
+}
+.dl_doc .function {
+  height: 340px;
+  background: url("/img/dl_doc_func_bg.gif") center center no-repeat;
+  background-color: #ecf0f1;
+}
+.dl_doc .function .container {
+  background: none;
+}
+.dl_doc .function .title {
+  text-indent: -9999em;
 }
 .wrap {
   margin-top: 100px;

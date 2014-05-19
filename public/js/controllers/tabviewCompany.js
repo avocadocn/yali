@@ -36,6 +36,11 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         templateUrl: '/views/change_password.html',
         controller: 'PasswordFormController',
         controllerAs: 'password'
+      })
+      .when('/addGroup',{
+        templateUrl: '/company/add_group',
+        controller: 'CompanyGroupFormController',
+        controllerAs:'group'
       }).
       otherwise({
         redirectTo: '/company_campaign'
@@ -344,8 +349,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         }
     };
     $http.get('/group/getCompanyGroups').success(function(data, status) {
-        $scope.group_lists = data.group;
+        $scope.team_lists = data.teams;
         $scope.cid = data.cid;
+        $scope.tname= data.name;
     });
 
     $scope.setGroupId = function (gid) {
