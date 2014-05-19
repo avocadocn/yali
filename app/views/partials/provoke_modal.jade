@@ -14,17 +14,17 @@
         .col-md-4
           label 备注
           input(type="text" class="form-control" name="remark" ng-model="remark")
-      .row
+      .row.margin_top_15
         .col-md-4
           label 地点
           input(type="text" class="form-control" name="location" ng-model="location")
         .col-md-4
           label 人数
           input(type="text" class="form-control" name="number" ng-model="number")
-      .row
+      .row.margin_top_15
         .col-md-6
           label 开始时间
-            .form-group
+            .form-group.margin_top_5
               .row
                 .col-md-6
                   input.form-control(type="text" ng-model="competition_date" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" bs-datepicker)
@@ -32,16 +32,15 @@
                   input.form-control(type="text" ng-model="competition_date" name="time" data-autoclose="1" placeholder="Time" bs-timepicker)
         .col-md-6
           label 结束时间
-            .form-group
+            .form-group.margin_top_5
               .row
                 .col-md-6
                   input.form-control(type="text" ng-model="deadline" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date}}" placeholder="Date" bs-datepicker)
                 .col-md-6
                   input.form-control(type="text" ng-model="deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker)
-      .row
+      .row.margin_top_15
         li(ng-repeat="company in companies")
           hr
-          p 公司id: {{company._id}}
           p 公司名: {{company.name}}
           button.btn.dl_btn(ng-click="getTeam(company._id)") 列出小组
             li(ng-repeat="team in teams")

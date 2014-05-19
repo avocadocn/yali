@@ -1,0 +1,13 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      button(class="close" data-dismiss="modal" aria-hidden="true") X
+      h4.modal-title 任命组长
+    .modal-body
+      .row
+        .col-md-4
+          p 该小队的成员
+          li(ng-repeat= "user in users")
+            a(ng-click="appointLeader(user._id)" data-dismiss="modal") {{user.nickname}}
+    .modal-footer
+       button.dl_btn(data-dismiss="modal") 取消 
