@@ -91,7 +91,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
       $scope.company = false;
     });
 
-    $scope.join = function(campaign_id) {
+    $scope.join = function(campaign_id,index) {
         try {
             $http({
                 method: 'post',
@@ -101,9 +101,12 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    //TODO:更改对话框
+                    alert('成功加入该活动!');
+                    $scope.campaigns[index].join = true;
+                    $scope.campaigns[index].member_length++;
+                }
+                else{
                     alert(data.msg);
-                    window.location.reload();
                 }
             }).error(function(data, status) {
                 alert('数据发生错误！');
@@ -114,7 +117,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
         }
     };
 
-    $scope.quit = function(campaign_id) {
+    $scope.quit = function(campaign_id,index) {
         try {
             $http({
                 method: 'post',
@@ -123,9 +126,13 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
-                if(data.result===1){
-                alert(data.msg);
-                window.location.reload();
+                  if(data.result===1){
+                    alert('您已退出该活动!');
+                    $scope.campaigns[index].join = false;
+                    $scope.campaigns[index].member_length--;
+                }
+                else{
+                    alert(data.msg);
                 }
             }).error(function(data, status) {
                 alert('数据发生错误！');

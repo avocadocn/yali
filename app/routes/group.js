@@ -41,16 +41,16 @@ module.exports = function(app) {
 
   app.post('/group/resultConfirm/:competitionId', authorization.requiresLogin, group.resultConfirm);
 
-  app.post('/group/saveLogo', fileBodyParser, group.saveLogo);
+  app.post('/group/saveLogo', authorization.requiresLogin,fileBodyParser, group.saveLogo);
 
-  app.get('/group/editLogo', group.editLogo);
+  app.get('/group/editLogo', authorization.requiresLogin, group.editLogo);
 
-  app.get('/groupLogo/:id/:width/:height', group.getLogo);
+  app.get('/groupLogo/:id/:width/:height',authorization.requiresLogin, group.getLogo);
 
-  app.get('/group/:tid/managePhotoAlbum', group.managePhotoAlbum);
-  app.get('/group/:tid/photoAlbum/:photoAlbumId', group.groupPhotoAlbumDetail);
+  app.get('/group/:teamId/managePhotoAlbum', authorization.requiresLogin,group.managePhotoAlbum);
+  app.get('/group/:tid/photoAlbum/:photoAlbumId', authorization.requiresLogin, authorization.requiresLogin, group.groupPhotoAlbumDetail);
 
-  app.get('/group/competition/:competitionId/photoAlbum/:photoAlbumId', group.competitionPhotoAlbumDetail);
+  app.get('/group/competition/:competitionId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.competitionPhotoAlbumDetail);
 
 
 };

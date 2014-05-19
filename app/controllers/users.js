@@ -72,15 +72,15 @@ exports.appLoginSuccess = function(req, res) {
 }
 
 exports.authorize = function(req, res, next) {
-  if(!req.params.userId || req.params.userId === req.user._id){
+  if(!req.params.userId || req.params.userId === req.user._id.toString()){
     req.session.role = 'OWNER';
     req.session.nowuid = req.user._id;
   }
-  else if(req.params.userId && req.user._id === req.profile.cid){
+  else if(req.params.userId && req.user._id.toString() === req.profile.cid.toString()){
     req.session.role = 'HR';
     req.session.nowuid = req.params.userId;
   }
-  else if(req.params.userId && req.profile.cid === req.user.cid){
+  else if(req.params.userId && req.profile.cid.toString() === req.user.cid.toString()){
     req.session.role = 'PARTNER';
     req.session.nowuid = req.params.userId;
   }
@@ -328,7 +328,7 @@ exports.finishRegister = function(req, res) {
 //列出该user加入的所有小组的动态
 exports.getGroupMessages = function(req, res) {
   if(req.session.role!=='OWNER'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   var group_messages = [];
   var i = 0;
@@ -436,7 +436,7 @@ exports.getCampaigns = function(req, res) {
             for(var j = 0; j < length; j ++) {
               join = false;
               for(var k = 0;k < campaign[j].member.length; k ++) {
-                if(req.user._id === campaign[j].member[k].uid) {
+                if(req.user._id.toString() === campaign[j].member[k].uid) {
                   join = true;
                   break;
                 }
@@ -444,7 +444,7 @@ exports.getCampaigns = function(req, res) {
               campaigns.push({
                 'selected': true,
                 'active':campaign[j].active,
-                '_id': campaign[j]._id,
+                'id': campaign[j]._id.toString(),
                 'gid': campaign[j].gid,
                 'group_type': campaign[j].group_type,
                 'cid': campaign[j].cid,
@@ -452,7 +452,7 @@ exports.getCampaigns = function(req, res) {
                 'poster': campaign[j].poster,
                 'content': campaign[j].content,
                 'location': campaign[j].location,
-                'member': campaign[j].member,
+                'member_length': campaign[j].member.length,
                 'create_time': campaign[j].create_time ? campaign[j].create_time : '',
                 'start_time': campaign[j].start_time ? campaign[j].start_time : '',
                 'end_time': campaign[j].end_time ? campaign[j].end_time : '',
@@ -472,9 +472,9 @@ exports.getCampaigns = function(req, res) {
         console.log(err);
         res.send([]);
       } else {
-        console.log(campaigns)
         res.send({
-          'data':campaigns
+          'data':campaigns,
+          'role':req.session.role
         });
       }
     }
@@ -520,7 +520,7 @@ exports.home = function(req, res) {
         'realname':_user.realname,
         'cname':_user.cname,
         'sign':_user.introduce,
-        'role':req.role
+        'role':req.session.role
       });
     }
   });
@@ -629,11 +629,11 @@ exports.vote = function (req, res) {
 //员工参加活动
 //TODO 加入competition
 exports.joinCampaign = function (req, res) {
-  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE'){
-    return res.send(403,forbidden);
+  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE' && req.session.role!=='MEMBER' && req.session.role!=='LEADER'){
+    return res.send(403,'forbidden');
   }
-  var cid = req.user.cid;
-  var uid = req.user.id;
+  var cid = req.user.cid.toString();
+  var uid = req.user._id.toString();
   var campaign_id = req.body.campaign_id; //该活动的id
 
   var tid = req.session.tid;              //该活动所属小队的id
@@ -699,11 +699,11 @@ exports.joinCampaign = function (req, res) {
 
 //员工退出活动
 exports.quitCampaign = function (req, res) {
-  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE'){
+  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE' && req.session.role!=='MEMBER' && req.session.role!=='LEADER'){
     return res.send(403,'forbidden');
   }
-  var cid = req.user.cid;
-  var uid = req.user.id;
+  var cid = req.user.cid.toString();
+  var uid = req.user._id.toString();
   var campaign_id = req.body.campaign_id; //该活动的id
   Campaign.findOne({
         _id : campaign_id

@@ -41,7 +41,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
     //消除ajax缓存
-    $http.get('/group/getGroupMessages?' + Math.round(Math.random()*100)).success(function(data, status) {
+    $http.get('/group/getGroupMessages/'+teamId +'?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.group_messages = data.group_messages;
       $scope.role = data.role;
     });
@@ -189,7 +189,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         }
     };
 
-    $scope.join = function(campaign_id) {
+    $scope.join = function(campaign_id,index) {
         try {
             $http({
                 method: 'post',
@@ -198,8 +198,14 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
-                window.location.reload();
-                alert('成功加入该活动!');
+                if(data.result===1){
+                    alert('成功加入该活动!');
+                    $scope.campaigns[index].join = true;
+                    $scope.campaigns[index].member_length++;
+                }
+                else{
+                    alert(data.msg);
+                }
             }).error(function(data, status) {
                 alert('数据发生错误！');
             });
@@ -209,7 +215,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         }
     };
 
-    $scope.quit = function(campaign_id) {
+    $scope.quit = function(campaign_id,index) {
         try {
             $http({
                 method: 'post',
@@ -218,8 +224,14 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
-                window.location.reload();
-                alert('您已退出该活动!');
+                if(data.result===1){
+                    alert('您已退出该活动!');
+                    $scope.campaigns[index].join = false;
+                    $scope.campaigns[index].member_length--;
+                }
+                else{
+                    alert(data.msg);
+                }
             }).error(function(data, status) {
                 alert('数据发生错误！');
             });

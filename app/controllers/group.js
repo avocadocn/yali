@@ -23,37 +23,45 @@ var mongoose = require('mongoose'),
     gm = require('gm'),
     path = require('path'),
     moment = require('moment');
-
+function arrayObjectIndexOf(myArray, searchTerm, property) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+        if (myArray[i][property].toString() === searchTerm.toString()) return i;
+    }
+    return -1;
+}
 exports.authorize = function(req, res, next) {
   if(req.user.provider==="company"){
-    if(req.user.id ===req.companyGroup.cid){
+    if(req.user._id.toString() ===req.companyGroup.cid.toString()){
       req.session.role = 'HR';
     }
     else{
       req.session.role = 'GUESTHR';
     }
   }
-  else if(req.user.provider==="user" &&req.user.cid ===req.companyGroup.cid){
-    var _length = req.user.group.length;
-    for(var i = 0; i < _length; i++){
-      if(req.user.group[i].gid===req.params.groupId){
-        if(req.user.group[i].leader===true){
+  else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
+    var _groupIndex = arrayObjectIndexOf(req.user.group,req.companyGroup.gid,'_id');
+    if(_groupIndex>-1){
+      var _teamIndex = arrayObjectIndexOf(req.user.group[_groupIndex].team,req.companyGroup._id,'id');
+      if(_teamIndex>-1){
+        if(req.user.group[_groupIndex].team[_teamIndex].leader ===true){
           req.session.role = 'LEADER';
         }
         else{
           req.session.role = 'MEMBER';
         }
-        break;
       }
       else{
         req.session.role = 'PARTNER';
       }
     }
+    else{
+      req.session.role = 'PARTNER';
+    }
   }
   else{
     req.session.role = 'GUEST';
   }
-  req.session.nowgid = req.params.groupId;
+  req.session.nowtid = req.params.teamId;
   next();
 };
 //返回组件模型里的所有组件(除了虚拟组),待HR选择
@@ -274,10 +282,9 @@ exports.getGroupMessage = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
-  var cid = req.user.cid ? req.user.cid : req.user.id;
   var tid = req.params.teamId;    //小队的id
 
-  GroupMessage.find({'cid' : {'$all':[cid]}, 'group.gid' : {'$all':[req.companyGroup.gid]}}).populate({
+  GroupMessage.find({'cid' : {'$all':[req.companyGroup.cid.toString()]}, 'group.gid' : {'$all':[req.companyGroup.gid]}}).populate({
         path : 'team',
         match : { _id: tid}
       }
@@ -298,7 +305,6 @@ exports.getGroupMessage = function(req, res) {
             negative = group_message[i].provoke.camp[k].vote.negative;
             break;
           }
-          return res.send({'group_messages':group_messages,'role':req.session.role});
         }
         group_messages.push({
           'positive' : positive,
@@ -318,7 +324,7 @@ exports.getGroupMessage = function(req, res) {
           'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].cid[1] === cid)
         });
       }
-      return res.send(group_messages);
+      return res.send({'group_messages':group_messages,'role':req.session.role});
     }
   });
 };
@@ -336,7 +342,7 @@ exports.getGroupCampaign = function(req, res) {
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
-  Campaign.find({'cid' : {'$all':[req.companyGroup.cid]}, 'gid' : {'$all':[req.companyGroup.gid]}}, function(err, campaign) {
+  Campaign.find({'cid' : {'$all':[req.companyGroup.cid.toString()]}, 'gid' : {'$all':[req.companyGroup.gid]}}, function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
@@ -352,14 +358,14 @@ exports.getGroupCampaign = function(req, res) {
           join = false;
           //参加过的也不能参加
           for(var j = 0;j < campaign[i].member.length; j ++) {
-            if(uid === campaign[i].member[j].uid) {
+            if(req.user._id.toString() === campaign[i].member[j].uid) {
               join = true;
               break;
             }
           }
           campaigns.push({
             'active':campaign[i].active,
-            'id': campaign[i].id,
+            'id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
             'group_type': campaign[i].group_type,
             'cid': campaign[i].cid,
@@ -367,7 +373,7 @@ exports.getGroupCampaign = function(req, res) {
             'poster': campaign[i].poster,
             'content': campaign[i].content,
             'location': campaign[i].location,
-            'member': campaign[i].member,
+            'member_length': campaign[i].member.length,
             'start_time': campaign[i].start_time ? campaign[i].start_time : '',
             'end_time': campaign[i].end_time ? campaign[i].end_time : '',
             'join':join,
@@ -614,7 +620,6 @@ exports.sponsor = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
   }
-  var gid = req.session.nowgid;     //组件id,组长一次对一个组发布活动
   var content = req.body.content;//活动内容
   var location = req.body.location;//活动地点
   var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
@@ -623,7 +628,7 @@ exports.sponsor = function (req, res) {
   //生成活动
   var campaign = new Campaign();
   campaign.team = tid;
-  campaign.gid.push(gid);
+  campaign.gid.push(req.companyGroup.gid);
   campaign.group_type.push(group_type);
   campaign.cid.push(cid);//其实只有一个公司
   if(req.session.role==='HR'){
@@ -665,7 +670,7 @@ exports.sponsor = function (req, res) {
     var groupMessage = new GroupMessage();
 
     groupMessage.team = tid;
-    groupMessage.group.gid.push(gid);
+    groupMessage.group.gid.push(req.companyGroup.gid);
     groupMessage.group.group_type.push(group_type);
     groupMessage.active = true;
     groupMessage.cid.push(cid);
@@ -700,8 +705,8 @@ exports.sponsor = function (req, res) {
 
 
 exports.getGroupMember = function(req,res){
-  var  _member_list = companyGroup.member;
-  var _leader_list = companyGroup.leader;
+  var  _member_list = req.companyGroup.member;
+  var _leader_list = req.companyGroup.leader;
   return res.send({'result':1,data:{'member':_member_list,'leader':_leader_list}});
 
 };
@@ -753,7 +758,7 @@ exports.updateFormation = function(req, res){
       var _formation = [];
       var _tempFormation = req.body.formation;
       for (var member in _tempFormation){
-        _formation.push({'uid':member,
+        _formation.push({'uid':member_length,
                           'x':_tempFormation[member].x,
                           'y':_tempFormation[member].y
 
@@ -868,9 +873,7 @@ exports.saveLogo = function(req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
   }
-  var user = req.user;
   var logo_temp_path = req.files.logo.path;
-  var cid = req.user.cid ? req.user.cid : req.user.id;
   var shasum = crypto.createHash('sha1');
   shasum.update( Date.now().toString() + Math.random().toString() );
   var logo = shasum.digest('hex') + '.png';
@@ -894,7 +897,7 @@ exports.saveLogo = function(req, res) {
       var x = req.body.x * value.width;
       var y = req.body.y * value.height;
 
-      CompanyGroup.findOne({ gid: req.session.nowgid, cid: cid }).exec(function(err, company_group) {
+      CompanyGroup.findOne({ _id: req.session.nowtid  }).exec(function(err, company_group) {
         var ori_logo = company_group.logo;
 
         try {
@@ -946,7 +949,7 @@ exports.editLogo = function(req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
   }
-  CompanyGroup.findOne({ gid: req.session.gid, cid: req.user.cid }).exec(function(err, company_group) {
+  CompanyGroup.findOne({ _id: req.session.nowtid  }).exec(function(err, company_group) {
     res.render('group/editLogo', {
       logo: company_group.logo,
       id: company_group._id
@@ -990,29 +993,23 @@ exports.getLogo = function(req, res) {
 };
 
 exports.managePhotoAlbum = function(req, res) {
-  CompanyGroup.findOne({ cid : req.session.cid, gid: req.session.gid,_id: req.params.tid })
-  .exec(function(err, company_group) {
-    if (err) console.log(err);
-    else if (company_group) {
-      var photo_album_ids = [];
-      company_group.photo.forEach(function(photo_album) {
-        photo_album_ids.push(photo_album.pid);
-      })
-      PhotoAlbum.where('_id').in(photo_album_ids)
-      .exec(function(err, photo_albums) {
-        if (err) { console.log(err); }
-        else if(photo_albums) {
-          var visible_photo_albums = [];
-          photo_albums.forEach(function(photo_album) {
-            if (photo_album.hidden === false) {
-              visible_photo_albums.push(photo_album);
-            }
-          });
-          res.render('group/manage_photo_album',
-            { owner_id : req.params.tid,
-              photo_albums: visible_photo_albums
-          });
+  var photo_album_ids = [];
+  req.companyGroup.photo.forEach(function(photo_album) {
+    photo_album_ids.push(photo_album.pid);
+  })
+  PhotoAlbum.where('_id').in(photo_album_ids)
+  .exec(function(err, photo_albums) {
+    if (err) { console.log(err); }
+    else if(photo_albums) {
+      var visible_photo_albums = [];
+      photo_albums.forEach(function(photo_album) {
+        if (photo_album.hidden === false) {
+          visible_photo_albums.push(photo_album);
         }
+      });
+      res.render('group/manage_photo_album',
+        { owner_id : req.params.temaId,
+          photo_albums: visible_photo_albums
       });
     }
   });

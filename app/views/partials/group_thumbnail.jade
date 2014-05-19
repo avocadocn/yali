@@ -4,5 +4,5 @@ mixin group_thumbnail(teams,team_class,team_head)
   .groups.row
     each team in teams
       div(class='group col-xs-3 '+team_class title="#{team.name}")
-        a(href="/group/home/#{team._id}/#{team._id}")
+        a(href="/group/home/#{team._id}")
          img(class='group size_80' src="#{team.logo}")
