@@ -735,7 +735,7 @@ exports.sponsor = function (req, res) {
     var content = req.body.content;//活动内容
     var location = req.body.location;//活动地点
     var campaign = new Campaign();
-
+    campaign.team.push(cid);
     campaign.gid.push(gid);
     campaign.group_type.push(group_type);
     campaign.cname = username;
@@ -769,7 +769,7 @@ exports.sponsor = function (req, res) {
         //生成动态消息
 
         var groupMessage = new GroupMessage();
-
+        groupMessage.team.push(cid);
         groupMessage.group.gid.push(gid);
         groupMessage.group.group_type.push(group_type);
         groupMessage.active = true;

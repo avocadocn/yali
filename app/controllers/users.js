@@ -350,7 +350,7 @@ exports.getGroupMessages = function(req, res) {
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
-            return;
+            return res.send([]);
           } else {
 
             var length = group_message.length;

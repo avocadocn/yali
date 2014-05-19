@@ -113,54 +113,49 @@ exports.info =function(req,res) {
 
 
 //TODO
-exports.saveInfo =function(req,res,next,id) {
-    if(req.session.cid !== null) {
-
-        CompanyGroup.findOne({cid : req.companyGroup.cid, gid : req.companyGroup.gid, _id:req.session.tid}, function(err, companyGroup) {
-            if (err) {
-                console.log('数据错误');
-                res.send({'result':0,'msg':'数据查询错误'});
-                return;
-            }
-            if(companyGroup) {
-                companyGroup.name = req.body.name;
-                companyGroup.brief = req.body.brief;
-                companyGroup.save(function (s_err){
-                    if(s_err){
-                        console.log(s_err);
-                        res.send({'result':0,'msg':'数据保存错误'});
-                        return;
-                    }
-                    var entity_type = req.companyGroup.entity_type;
-                    var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-                    Entity.findOne({
-                        'cid': req.session.cid,
-                        'gid': req.session.gid,
-                        'tid': req.session.tid
-                      },function(err, entity) {
-                          if (err) {
-                              console.log(err);
-                              return res.send(err);
-                          } else if(entity){
-                            console.log(res.body);
-                            entity.home_court = req.body.homecourt;
-                            entity.save(function(err){
-                              if(err){
-                                console.log(err);
-                                return;
-                              }
-                              res.send({'result':1,'msg':'更新成功'});
-                            });
-                          }
+exports.saveInfo =function(req,res) {
+    if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+    return res.send(403,forbidden);
+  }
+  CompanyGroup.findOne({'_id' : req.session.nowtid}, function(err, companyGroup) {
+      if (err) {
+          console.log('数据错误');
+          res.send({'result':0,'msg':'数据查询错误'});
+          return;
+      }
+      if(companyGroup) {
+          companyGroup.name = req.body.name;
+          companyGroup.brief = req.body.brief;
+          companyGroup.save(function (s_err){
+              if(s_err){
+                  console.log(s_err);
+                  res.send({'result':0,'msg':'数据保存错误'});
+                  return;
+              }
+              var entity_type = companyGroup.entity_type;
+              var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
+              Entity.findOne({
+                  'tid': req.session.nowtid
+                },function(err, entity) {
+                    if (err) {
+                        console.log(err);
+                        return res.send(err);
+                    } else if(entity){
+                      entity.home_court = req.body.homecourt;
+                      entity.save(function(err){
+                        if(err){
+                          console.log(err);
+                          return res.send({'result':0,'msg':'不存在组件！'});;
+                        }
+                        res.send({'result':1,'msg':'更新成功'});
                       });
+                    }
                 });
-            } else {
-                res.send({'result':0,'msg':'不存在组件！'});
-            }
-        });
-    }
-    else
-        res.send({'result':0,'msg':'未登录'});
+          });
+      } else {
+          res.send({'result':0,'msg':'不存在组件！'});
+      }
+  });
 };
 //小队信息维护
 exports.timeLine = function(req, res){

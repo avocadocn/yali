@@ -1,7 +1,12 @@
 'use strict';
 
 var tabViewCompany = angular.module('tabViewCompany', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
-
+tabViewCompany.run(['$rootScope', function( $rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
+}]);
 tabViewCompany.directive('match', function($parse) {
   return {
     require: 'ngModel',
@@ -51,18 +56,11 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         redirectTo: '/company_campaign'
       });
   }]);
-tabViewCompany.run(['$rootScope', function( $rootScope) {
-    $rootScope.nowTab = window.location.hash.substr(2);
-    console.log($rootScope.nowTab);
-    $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
-    };
-}]);
 
-
-tabViewCompany.controller('CompanyMemberController', ['$http', '$scope',
- function ($http, $scope) {
-    $http.get('/search/member').success(function(data, status) {
+tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
+ function ($http, $scope,$rootScope) {
+    $rootScope.nowTab ='company_member';
+    $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
       $scope.company = true;
     });
@@ -128,7 +126,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope',
 
 tabViewCompany.controller('CampaignListController', ['$http','$scope',
   function($http,$scope) {
-    $http.get('/company/getCampaigns').success(function(data, status) {
+    $http.get('/company/getCampaigns?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
     });
     $scope.selectCampaign = function (value) {
@@ -280,7 +278,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope',
     };
 }]);
 tabViewCompany.controller('AccountFormController',['$scope','$http',function($scope, $http) {
-    $http.get('/company/getAccount').success(function(data,status){
+    $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
     }).error(function(data,status) {
