@@ -440,7 +440,7 @@ exports.campaignCancel = function (req, res) {
     return res.send(403,forbidden);
   }
   var campaign_id = req.body.campaign_id;
-  Campaign.findOne({id:campaign_id},function(err, campaign) {
+  Campaign.findOne({_id:campaign_id},function(err, campaign) {
       if(!err && campaign) {
         var active = campaign.active;
         campaign.active = !active;
@@ -842,10 +842,10 @@ exports.competition = function(req, res, next, id){
     }).exec(function(err, competition){
       if (err) return next(err);
       req.competition = competition;
-      if(cid ===competition.camp[0].cid){
+      if(cid.toString() ===competition.camp[0].cid.toString()){
         req.competition_team = 'A';
       }
-      else if(cid ===competition.camp[1].cid){
+      else if(cid.toString() ===competition.camp[1].cid.toString()){
         req.competition_team = 'B';
       }
       else

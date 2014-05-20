@@ -683,7 +683,7 @@ exports.joinCampaign = function (req, res) {
                 } else {
                   if(competition) {
                     for(var i = 0; i < competition.camp.length; i ++) {
-                      if(competition.camp[i].id == campaign.team.toString()) {
+                      if(competition.camp[i].id.toString() == tid.toString()) {
                         competition.camp[i].member.push({
                            camp: i == 0 ? 'A' : 'B',
                            cid: cid,
@@ -735,7 +735,7 @@ exports.quitCampaign = function (req, res) {
 
         //从campaign里删除该员工信息
         for( var i = 0; i < campaign.member.length; i ++) {
-          if (campaign.member[i].uid === uid) {
+          if (campaign.member[i].uid.toString() === uid.toString()) {
             campaign.member.splice(i,1);
             break;
           }
@@ -756,7 +756,7 @@ exports.quitCampaign = function (req, res) {
 
                     //看该员工是不是在camp[0]里面
                     for(var i = 0; i < competition.camp[0].member.length; i++) {
-                      if (competition.camp[0].member[i].uid === uid) {
+                      if (competition.camp[0].member[i].uid.toString() === uid.toString()) {
                         competition.camp[0].member.splice(i,1);
                         find = true;
                         break;
@@ -765,7 +765,7 @@ exports.quitCampaign = function (req, res) {
                     //如果不在camp[0]里面就一定在camp[1]里面
                     if(!find) {
                       for(var i = 0; i < competition.camp[1].member.length; i++) {
-                        if (competition.camp[1].member[i].uid === uid) {
+                        if (competition.camp[1].member[i].uid.toString() === uid.toString()) {
                           competition.camp[1].member.splice(i,1);
                           find = true;
                           break;
