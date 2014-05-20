@@ -53,7 +53,7 @@ module.exports = function(app, passport) {
 
 
     // for app
-    app.post('/users/login', passport.authenticate('user'), users.appLoginSuccess);
+    app.post('/users/login', passport.authenticate('user'), users.authorize, users.appLoginSuccess);
     app.get('/users/logout', authorization.requiresLogin, users.appLogout);
 
     app.get('/users/campaigns', authorization.requiresLogin, users.getCampaignsForApp);

@@ -1150,6 +1150,8 @@ exports.getCampaignsForApp = function(req, res) {
   .exec()
   .then(function(campaigns) {
 
+    console.log(campaigns);
+
     var responseData = [];
 
     campaigns.forEach(function(campaign) {
@@ -1164,9 +1166,20 @@ exports.getCampaignsForApp = function(req, res) {
         }
       }
 
+      for (var i = 0; i < campaign.gid; i++) {
+        var indexGroup = user.group.indexOf(campaign.gid[i]);
+        if (indexGroup > -1) {
+          for (var j = 0; j < campaign.team.length; j++)
+          var indexCompanyGroup = user.group[indexGroup].indexOf(campaign.team[j]);
+          if (indexCompanyGroup > -1) {
+            var companyGroupName = campaign.team[j].name;
+          }
+        }
+      }
+
       responseData.push({
         _id: campaign._id,
-        companyGroupName: campaign.team.name,
+        companyGroupName: companyGroupName,
         content: campaign.content,
         startTime: campaign.start_time,
         memberCount: campaign.member.length,
