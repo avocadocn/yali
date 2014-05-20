@@ -60,6 +60,9 @@
   text-align: center;
   font-size: 12px;
 }
+.login_body .login_modal .login_forget span {
+  color: #ffc0cb;
+}
 .login_body .login_modal .login_forget a {
   color: #aaa;
 }

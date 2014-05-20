@@ -17,7 +17,9 @@ angular.module('starter.controllers', [])
     password: ''
   };
 
-  $scope.login = Authorize.Login;
+  $scope.loginMsg = '';
+
+  $scope.login = Authorize.Login($scope);
 })
 
 .controller('CampaignListCtrl', function($scope, $http, $state, Authorize) {

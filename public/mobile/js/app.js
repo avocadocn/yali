@@ -78,6 +78,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
 })
 
+
 .factory('Authorize', function($state, $http) {
 
 
@@ -98,21 +99,28 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   }
 
-  var Login = function(username, password) {
-    $http.post('/users/login', { username: username, password: password }).
-      success(function(data, status, headers, config) {
-        if (data.result === 1) {
-          authorize = true;
-          var userInfo = data.data;
-          if (userInfo) {
-            window.localStorage.setItem('nickname', userInfo.nickname);
-            window.localStorage.setItem('_id', userInfo._id);
+  var Login = function($scope) {
+    return function(username, password) {
+      $http.post('/users/login', { username: username, password: password }).
+        success(function(data, status, headers, config) {
+          if (data.result === 1) {
+            console.log('r');
+            authorize = true;
+            var userInfo = data.data;
+            if (userInfo) {
+              window.localStorage.setItem('nickname', userInfo.nickname);
+              window.localStorage.setItem('_id', userInfo._id);
+            }
+            $state.go('app.campaignList');
           }
-          $state.go('app.campaignList');
-        }
-      }
-    );
-  }
+        }).
+        error(function(data, status, headers, config) {
+          if (status === 401) {
+            $scope.loginMsg = '用户名或密码错误';
+          }
+        });
+    };
+  };
 
   var Logout = function() {
     $http.get('/users/logout').
@@ -123,7 +131,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     );
-  }
+  };
 
   return {
     Authorize: Authorize,
