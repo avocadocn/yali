@@ -1,15 +1,37 @@
-<ion-view title="活动列表">
+<ion-view title="活动列表" class="campaign">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="campaign in campaignList" href="#">
-        <p>{{ campaign.content }}</p>
-        <p>参加人数：{{ campaign.memberCount }}</p>
-        <p>开始时间：{{ campaign.startTime }}</p>
-        <button class="button button-block" ng-if="!campaign.isJoin" ng-click="join(campaign._id)">参加活动</button>
-        <button class="button button-block" ng-if="campaign.isJoin" ng-click="quit(campaign._id)">退出活动</button>
+      <ion-item class="campaign_item" ng-repeat="campaign in campaignList" href="#">
+        <div class="row campaign_line">
+          <p class="campaign_team_info">
+            <img class="campaign_group_logo" src="/groupLogo/{{ campaign.teamId }}/35/35"/>
+            {{ campaign.teamName }}
+          </p>
+        </div>
+        <div class="row campaign_line campaign_content">
+          <p>{{ campaign.content }}</p>
+        </div>
+        <div class="row">
+          <p>开始时间：{{ campaign.startTime }}</p>
+        </div>
+        <div class="row campaign_line campaign_operate_bar">
+          <div class="col-3 col-30">
+            <p class="campaign_operate_text">
+              <i class="icon ion-ios7-person-outline"></i>
+              {{ campaign.memberCount }}人报名
+            </p>
+          </div>
+          <div class="col-33 col-40 campaign_operate_button_container">
+            <button class="campaign_operate_button" ng-if="!campaign.isJoin" ng-click="join(campaign._id)">参加活动</button>
+            <button class="campaign_operate_button" ng-if="campaign.isJoin" ng-click="quit(campaign._id)">退出活动</button>
+          </div>
+          <div class="col-33 col-30">
+            <p class="campaign_operate_text">share</p>
+          </div>
+        </div>
       </ion-item>
     </ion-list>
   </ion-content>

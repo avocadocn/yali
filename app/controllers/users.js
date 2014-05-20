@@ -33,6 +33,16 @@ var encrypt = require('../middlewares/encrypt'),
   message = require('../language/zh-cn/message');
 
 
+
+function arrayObjectIndexOf(myArray, searchTerm, property) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+        if (myArray[i][property].toString() === searchTerm.toString()) return i;
+    }
+    return -1;
+}
+
+
+
 /**
  * Show login form
  */
@@ -1168,20 +1178,21 @@ exports.getCampaignsForApp = function(req, res) {
         }
       }
 
-      for (var i = 0; i < campaign.gid; i++) {
-        var indexGroup = user.group.indexOf(campaign.gid[i]);
-        if (indexGroup > -1) {
-          for (var j = 0; j < campaign.team.length; j++)
-          var indexCompanyGroup = user.group[indexGroup].indexOf(campaign.team[j]);
-          if (indexCompanyGroup > -1) {
-            var companyGroupName = campaign.team[j].name;
+      var groupIndex = arrayObjectIndexOf(user.group, campaign.gid, '_id');
+      if (groupIndex > -1) {
+        for (var i = 0; i < campaign.team.length; i++) {
+          var teamIndex = arrayObjectIndexOf(user.group[groupIndex].team, campaign.team[i]._id, 'id')
+          if (teamIndex > -1) {
+            var teamName = campaign.team[i].name;
+            var teamId = campaign.team[i]._id;
           }
         }
       }
 
       responseData.push({
         _id: campaign._id,
-        companyGroupName: companyGroupName,
+        teamName: teamName,
+        teamId: teamId,
         content: campaign.content,
         startTime: campaign.start_time,
         memberCount: campaign.member.length,
