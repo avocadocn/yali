@@ -170,6 +170,55 @@ exports.campaignCancel = function (req, res) {
 };
 
 
+exports.getAllCampaign = function(req, res) {
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
+  Campaign.find({'cid' : {'$all':[req.user.cid.toString()]} }).exec(function(err, campaign) {
+    if(campaign.length > 0) {
+      var campaigns = [];
+      if (err) {
+        return res.send([]);
+      } else {
+        var length = campaign.length;
+        var join;
+        for(var j = 0; j < length; j ++) {
+
+
+          join = false;
+          for(var k = 0;k < campaign[j].member.length; k ++) {
+            if(req.user._id.toString() === campaign[j].member[k].uid.toString()) {
+              join = true;
+              break;
+            }
+          }
+          campaigns.push({
+            'active':campaign[j].active,
+            'id': campaign[j]._id,
+            'gid': campaign[j].gid,
+            'group_type': campaign[j].group_type,
+            'cid': campaign[j].cid,
+            'cname': campaign[j].cname,
+            'poster': campaign[j].poster,
+            'content': campaign[j].content,
+            'location': campaign[j].location,
+            'member': campaign[j].member,
+            'create_time': campaign[j].create_time ? campaign[j].create_time.toLocaleDateString() : '',
+            'start_time': campaign[j].start_time ? campaign[j].start_time.toLocaleDateString() : '',
+            'end_time': campaign[j].end_time ? campaign[j].end_time.toLocaleDateString() : '',
+            'join':join,
+            'provoke':campaign[j].provoke
+          });
+
+        }
+      }
+      return res.send({'data':campaigns});
+    } else {
+      return res.send({'data':[]});
+    }
+  });
+}
+
 //返回某一小组的活动,待前台调用
 exports.getGroupCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
@@ -323,7 +372,7 @@ function getUserCampaigns(req,res,_in) {
 
   for( var i = 0; i < req.user.group.length; i ++) {
     for ( var k = 0 ; k < req.user.group[i].team.length; k ++) {
-      team_ids.push(req.user.group[i].team[k].id);
+      team_ids.push(req.user.group[i].team[k].id.toString());
     }
   }
   Campaign.find({'cid' : {'$all':[req.user.cid.toString()]}, 'gid':{'$ne':'0'} }).exec(function(err, campaign) {
@@ -334,11 +383,16 @@ function getUserCampaigns(req,res,_in) {
         var length = campaign.length;
         for(var j = 0; j < length; j ++) {
 
-          console.log(campaign[j].team);
-          if(team_ids.in_array(campaign[j].team.toString()) == check){
+
+          var regular = false;
+          for(var k = 0;k < campaign[j].team.length; k ++) {
+            regular = regular || ((team_ids.in_array(campaign[j].team[k].toString()) == check) && (campaign[j].team[k].toString() !== ''));
+          }
+
+          if(regular){
             join = false;
             for(var k = 0;k < campaign[j].member.length; k ++) {
-              if(req.user.id === campaign[j].member[k].uid) {
+              if(req.user._id.toString() === campaign[j].member[k].uid.toString()) {
                 join = true;
                 break;
               }
@@ -346,7 +400,7 @@ function getUserCampaigns(req,res,_in) {
             campaigns.push({
               'selected':_in,
               'active':campaign[j].active,
-              '_id': campaign[j]._id,
+              'id': campaign[j]._id,
               'gid': campaign[j].gid,
               'group_type': campaign[j].group_type,
               'cid': campaign[j].cid,
@@ -364,6 +418,7 @@ function getUserCampaigns(req,res,_in) {
           }
         }
       }
+      console.log(campaigns);
       return res.send({'data':campaigns});
     } else {
       return res.send({'data':[]});

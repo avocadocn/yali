@@ -30,7 +30,9 @@ var Campaign = new Schema({
     },
     gid: Array,
     group_type: Array,
-    cid: Array,                        //参加该活动的所有公司
+    cid: [{
+        type: Schema.Types.ObjectId
+    }],                        //参加该活动的所有公司
     cname: Array,
     poster: {
         cid: String,                   //活动发起者所属的公司

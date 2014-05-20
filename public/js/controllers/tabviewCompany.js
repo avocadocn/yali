@@ -153,10 +153,11 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 
 tabViewCompany.controller('CampaignListController', ['$http','$scope',
   function($http,$scope) {
-    $http.get('/company/getCampaigns?' + Math.round(Math.random()*100)).success(function(data, status) {
+    $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.company = true;
     });
+
     $scope.selectCampaign = function (value) {
         var _url = "";
         var _selected = true;

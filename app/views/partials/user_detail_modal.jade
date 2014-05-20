@@ -4,32 +4,32 @@
       button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
       h4.modal-title#myModalLabel 员工信息
     .modal-body
-      .form-group
+      .row
         label.info_label.col-md-12.control-label 真实姓名
         .col-md-5
           input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="true")
-      .form-group
+      .row
         label.info_label.col-md-12.control-label 昵称
         .col-md-5
           input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="{{#{role}==EMPLOYEE}}")
-      .form-group
+      .row
         label.info_label.col-md-12.control-label 用户名
         .col-md-5
           input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="true")
-      .form-group
+      .row
         label.info_label.col-md-12.control-label 部门
         .col-md-5
           input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="{{#{role}==EMPLOYEE}}")
-      .form-group
+      .row
         label.info_label.col-md-12.control-label 职位
         .col-md-5
           input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="{{#{role}==EMPLOYEE}}")
-      .form-group
+      .row
         label.info_label.col-md-12.control-label 注册日期
         .col-md-5
           input.dl_input.form-control.editToggle(type="text" name ="register_date" ng-model="members[num].register_date" ng-disabled="true")
     .modal-footer
       button(class="btn dl_btn"  data-dismiss="modal") 确定
-      
-      button(ng-if="#{role}=='EMPLOYEE'" class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('delete')") 删除
-      button(ng-if="#{role}=='HR'" class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('change')") 编辑
+      if (role==='HR')
+        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('delete')") 删除
+        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('change')") 编辑

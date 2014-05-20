@@ -2,15 +2,19 @@ div
   h3 人数：{{members.length}}
   h3(ng-if="!company") 队长
   .row(ng-if="!company")
-    .col-xs-2(ng-repeat="leader in leaders")
+    .col-md-2(ng-repeat="leader in leaders")
       img.center-block.size_50(ng-src='{{leader.photo}}')
       p.text-center {{leader.realname}}
   h3 {{company ? '成' : '队'}} 员
-  .row(ng-repeat="member in members")
-    .row.col-md-2
-      img.center-block.size_50.pull-left(ng-if="company" ng-click="userDetail($index)" ng-src='{{member.photo}}' data-toggle="modal" data-target="#sponsorUserDetailModel")
-      a.text-left(ng-if="company" ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel") {{member.realname}}
-      img.center-block.size_50.pull-left(ng-if="!company" ng-src='{{member.photo}}')
-      a.text-left(ng-if="!company") {{member.nickname}}
+  .row
+    .col-md-2(ng-repeat="member in members")
+      span(ng-if="company")
+        img.center-block.size_50(ng-click="userDetail($index)" ng-src='{{member.photo}}' data-toggle="modal" data-target="#sponsorUserDetailModel")
+      span(ng-if="company")
+        a.center-block(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel") {{member.realname}}
+      span(ng-if="!company")
+        img.center-block.size_50(ng-src='{{member.photo}}')
+      span(ng-if="!company")
+        a.center-block {{member.nickname}}
 div(class="modal fade" id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   include user_detail_modal
