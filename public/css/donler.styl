@@ -7,7 +7,7 @@ html
   font-size 62.5%
 
 body
-  font-family "Microsoft YaHei"
+  font-family "Microsoft YaHei",STHeiti,MingLiu
   font-size 12px
   line-height 1
   color fontColor
@@ -217,14 +217,25 @@ input[type="number"]
     background url('/img/dl_doc_about_bg.png') top center
     .about_card
       padding 0
-      p 
+      .card 
         display block
         width 230px
         height 189px
+        .title
+          font-size 20px;
+          display inline-block
+          padding 38px 0 18px 46px
+          line-height 22px
+        p
+          line-height 18px
+          display inline-block
+          width 300px
+          color #b7b7b7
+          height 60px
         .btn 
           width 160px
-          margin-top 140px
-          margin-left 141px
+          margin-top 5px
+          margin-left 140px
       .card_1
         width 354px
         background url('/img/dl_doc_about_card1.gif')
@@ -233,11 +244,23 @@ input[type="number"]
 
       .card_2
         width 384px
-        background url('/img/dl_doc_about_card2.gif')
+        background url('/img/dl_doc_about_card2.gif') -10px 0px
+        .title
+          padding-left 36px
+        p
+          width 350px
+          padding-left 0px
+        .btn 
+          margin-left 180px
       .card_3
         width 350px
         background url('/img/dl_doc_about_card3.gif')
         margin-left 20px
+        p
+          width 350px
+          padding-left 10px
+        .btn 
+          margin-left 180px
   .function
     
     height 340px
@@ -245,8 +268,21 @@ input[type="number"]
     background-color #ecf0f1
     .container
       background none
-    .title
+    .func_title
       text-indent -9999em
+    .func_card
+      p 
+        display block
+        padding-top 188px
+        line-height 18px
+        color #b7b7b7
+        .title
+          display block
+          text-align center
+          font-size 20px
+          line-height 22px
+          width 90%
+          color #2c3e50
       
 
         
