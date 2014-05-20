@@ -174,7 +174,8 @@ exports.getAllCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
-  Campaign.find({'cid' : {'$all':[req.user.cid.toString()]} }).exec(function(err, campaign) {
+  var cid = req.session.role === 'HR' ? req.user._id : req.user.cid;
+  Campaign.find({'cid' : {'$all':[cid.toString()]} }).exec(function(err, campaign) {
     if(campaign.length > 0) {
       var campaigns = [];
       if (err) {
