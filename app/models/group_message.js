@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
 
 var _camp = new Schema({
     cid: String,
+    tid: String,
     tname: {
         type: String,
         default: 'unknown'

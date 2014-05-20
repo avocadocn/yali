@@ -659,7 +659,7 @@ exports.joinCampaign = function (req, res) {
                 } else {
                   if(competition) {
                     for(var i = 0; i < competition.camp.length; i ++) {
-                      if(competition.camp[i].id == tid) {
+                      if(competition.camp[i].id == campaign.team.toString()) {
                         competition.camp[i].member.push({
                            camp: i == 0 ? 'A' : 'B',
                            cid: cid,

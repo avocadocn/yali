@@ -67,7 +67,7 @@ var Campaign = new Schema({
             type: Boolean,
             default: false
         },                            //如果是true就显示为约战活动,否则为普通活动
-        team: Array,                  //双方队名
+        tid: Array,                   //双方小队id
         competition_id: String        //对应的比赛的id
     }
 });

@@ -27,7 +27,7 @@ block panel
 
   div(ng-app="tabViewCompany")
     ul.nav.nav-tabs
-      if(role==='HR' || role==='EMPLOYEE' )
+      if(role==='HR' || role==='EMPLOYEE' ) 
         li(ng-class="{'active':nowTab=='company_campaign'}")
           a.h5(href="#/company_campaign"  ng-click="addactive('company_campaign')") 公司活动
       li(ng-class="{'active':nowTab=='company_info'}")
@@ -39,6 +39,7 @@ block panel
     .tab-content
       .tab-pane.active
         div(ng-view)
+
     div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_modal
 block aside

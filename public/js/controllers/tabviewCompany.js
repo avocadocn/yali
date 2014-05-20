@@ -23,7 +23,7 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/company_member', {
-        templateUrl: '/views/member_list.html',
+        templateUrl: '/company/member',
         controller: 'CompanyMemberController',
         controllerAs: 'members'
        })
@@ -62,8 +62,35 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     $rootScope.nowTab ='company_member';
     $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
+      //按照员工真实姓名的拼音排序
+      $scope.members = $scope.members.sort(function (e,f){return e.realname.localeCompare(f.realname);});
       $scope.company = true;
     });
+
+    $scope.userDetail = function(index) {
+        $scope.num = index;
+    }
+
+    $scope.changeUserInfo = function(_operate) {
+        try{
+            $http({
+                method: 'post',
+                url: '/company/changeUser',
+                data:{
+                    operate : _operate,
+                    user : $scope.members[$scope.num]
+                }
+            }).success(function(data, status) {
+
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
 }]);
 
 //已移至AccountFormController
@@ -128,6 +155,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope',
   function($http,$scope) {
     $http.get('/company/getCampaigns?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
+      $scope.company = true;
     });
     $scope.selectCampaign = function (value) {
         var _url = "";

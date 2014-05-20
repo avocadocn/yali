@@ -22,7 +22,7 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
         controllerAs: 'campaign'
       })
       .when('/group_member', {
-        templateUrl: '/views/member_list.html',
+        templateUrl: '/group/getMembers',
         controller: 'MemberListController',
         controllerAs: 'member'
       })
@@ -101,6 +101,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
   function($http, $scope,$rootScope) {
     $rootScope.nowTab = 'group_campaign';
 
+
     var teamId = $('#team_content').attr('team-id');
     //消除ajax缓存
     $http.get('/group/getCampaigns/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
@@ -113,6 +114,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
       $scope.companies = data;
     });
 
+    $scope.company = false;
 
     $scope.provoke_select = function (team) {
         $scope.team_opposite = team;
@@ -300,8 +302,11 @@ tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', 
       if(data.result==1){
         $scope.members = data.data.member;
         $scope.leaders = data.data.leader;
+        $scope.company = false;
       }
-
+      $scope.userDetail = function(index) {
+        $scope.num = index;
+      }
     });
 }]);
 

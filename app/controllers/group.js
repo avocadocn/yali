@@ -87,6 +87,15 @@ exports.getGroups = function(req,res) {
 
 
 
+//显示企业成员列表
+exports.renderMember = function(req,res){
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
+  res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
+}
+
+
 exports.renderInfo = function (req, res) {
   res.render('group/group_info',{'role':req.session.role});
 };
@@ -447,6 +456,8 @@ exports.provoke = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
   }
+
+  var my_team_id = req.params.teamId;
   var team_opposite = req.body.team_opposite;
 
   var content = req.body.content;
@@ -462,7 +473,7 @@ exports.provoke = function (req, res) {
   competition.group_type = req.companyGroup.group_type;
 
   var camp_a = {
-    'id' : req.params.teamId,
+    'id' : my_team_id,
     'cid' : req.companyGroup.cid,
     'start_confirm' : true,
     'tname' : req.companyGroup.name,
@@ -505,10 +516,12 @@ exports.provoke = function (req, res) {
       groupMessage.provoke.competition_format = competition_format;
 
       var a = {
+        'tid':my_team_id.toString(),
         'cid':req.companyGroup.cid,
         'tname':req.companyGroup.name
       };
       var b = {
+        'tid':team_opposite._id.toString(),
         'cid':req.body.team_opposite.cid,
         'tname':req.body.team_opposite.name
       };
@@ -591,6 +604,8 @@ exports.responseProvoke = function (req, res) {
         campaign.provoke.competition_id = competition._id;
         campaign.provoke.competition_format = competition.brief.competition_format;
         campaign.provoke.active = true;
+        campaign.tid.push(competition.camp[0].id); //约战方小队id
+        campaign.tid.push(competition.camp[1].id); //应约方小队id
 
         campaign.save(function(err) {
           if (err) {

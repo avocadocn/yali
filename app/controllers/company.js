@@ -142,6 +142,13 @@ exports.renderGroupList = function(req, res) {
 };
 
 
+//显示企业成员列表
+exports.renderMembers = function(req,res){
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
+  res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
+}
 
 //注意,companyGroup,entity这两个模型的数据不一定要同时保存,异步进行也可以,只要最终确保
 //数据都存入两个模型即可
@@ -636,6 +643,42 @@ exports.getCompanyCampaign = function(req, res) {
     }
 };
 
+
+exports.changeUser = function (req, res) {
+    var _user = req.body.user;
+    var operate = req.body.operate;
+
+    switch(operate) {
+        case 'change':
+            User.findOne({'_id':_user._id},function (err, user) {
+                if(err || !user) {
+                    return res.send('ERROR');
+                } else {
+                    user.nickname = _user.nickname;
+                    user.department = _user.department;
+                    user.position = _user.position;
+                    user.save(function (err) {
+                        if(err) {
+                            return res.send('ERR');
+                        } else {
+                            return res.send('ok');
+                        }
+                    });
+                }
+            });
+            break;
+        case 'delete':
+            User.remove({'_id':_user._id},function (err, user) {
+                if(err || !user) {
+                    return res.send('ERROR');
+                } else {
+                    return res.send('OK');
+                }
+            });
+            break;
+        default:break;
+    }
+};
 
 //任命组长
 exports.appointLeader = function (req, res) {
