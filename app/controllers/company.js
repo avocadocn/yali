@@ -249,7 +249,7 @@ exports.validate = function(req, res) {
             //到底要不要限制验证邮件的时间呢?
             if(encrypt.encrypt(_id,config.SECRET) === key){
                 req.session.company_id = _id;
-                req.session.cid = _id;
+                req.session.nowcid = _id;
                 res.redirect('/company/confirm');
             } else {
                 res.render('company/company_validate_error', {
@@ -766,6 +766,9 @@ exports.campaignCancel = function (req, res) {
 
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function (req, res) {
+    if(req.session.role !=='HR'){
+      return res.send(403,forbidden);
+    }
     var username = req.user.info.name;
     var cid = req.user._id.toString();    //公司id
     var gid = '0';                  //HR发布的活动,全部归在虚拟组里,虚拟组的id默认是0

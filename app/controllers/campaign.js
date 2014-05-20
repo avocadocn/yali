@@ -17,55 +17,63 @@ exports.getGroupId = function(req, res) {
 };
 //返回公司发布的所有活动,待前台调用
 exports.getCompanyCampaign = function(req, res) {
-
-  var cid = req.session.cid;//根据公司id取出该公司的所有活动
-  var uid = req.session.uid;
-  var role = req.session.role;
-
-  //公司发布的活动都归在虚拟组 gid = 0 里
-  Campaign.find({'cid' : {'$all':[cid]}, 'gid' : {'$all':['0']}}, function(err, campaign) {
-      if (err) {
-          console.log(err);
-          return res.status(404).send([]);
-      } else {
-          var campaigns = [];
-          var join = false;
-          for(var i = 0;i < campaign.length; i ++) {
-              join = false;
-              for(var j = 0;j < campaign[i].member.length; j ++) {
-                  if(uid === campaign[i].member[j].uid) {
-                      join = true;
-                      break;
-                  }
-              }
-              campaigns.push({
-                  'active':campaign[i].active,
-                  'active_value':campaign[i].active ? '关闭' : '打开',
-                  '_id': campaign[i]._id,
-                  'gid': campaign[i].gid,
-                  'group_type': campaign[i].group_type,
-                  'cid': campaign[i].cid,
-                  'cname': campaign[i].cname,
-                  'poster': campaign[i].poster,
-                  'content': campaign[i].content,
-                  'location': campaign[i].location,
-                  'member': campaign[i].member,
-                  'create_time': campaign[i].create_time ? campaign[i].create_time.toLocaleDateString() : '',
-                  'start_time': campaign[i].start_time ? campaign[i].start_time.toLocaleDateString() : '',
-                  'end_time': campaign[i].end_time ? campaign[i].end_time.toLocaleDateString() : '',
-                  'join':join
-              });
-          }
-          return res.send({'data':campaigns,'role':role});
-      }
-  });
+    if(req.session.role==='GUEST'){
+        return res.send(403, 'forbidden!');
+    }
+    else if(req.session.role ==='EMPLOYEE'){
+        //公司发布的活动都归在虚拟组 gid = 0 里
+        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}, function(err, campaign) {
+            if (err) {
+                console.log(err);
+                return res.status(404).send([]);
+            } else {
+                var campaigns = [];
+                for(var i = 0;i < campaign.length; i ++) {
+                    campaigns.push({
+                        'active':campaign[i].active,
+                        'id': campaign[i].id,
+                        'gid': campaign[i].gid,
+                        'group_type': campaign[i].group_type,
+                        'cid': campaign[i].cid,
+                        'cname': campaign[i].cname,
+                        'poster': campaign[i].poster,
+                        'content': campaign[i].content,
+                        'location': campaign[i].location,
+                        'member': campaign[i].member,
+                        'create_time': campaign[i].create_time,
+                        'start_time': campaign[i].start_time,
+                        'end_time': campaign[i].end_time,
+                    });
+                    for(var j = 0;j < campaign[i].member.length; j ++) {
+                        if(req.user.id === campaign[i].member[j].uid) {
+                            campaigns[i].join = true;
+                            break;
+                        }
+                    }
+                }
+                return res.send({'data':campaigns,'role':req.session.role});
+            }
+        });
+    }
+    else if(req.session.role ==='HR'){
+        Campaign.find({'cid' : req.session.nowcid, 'gid' : '0'}, function(err, campaigns) {
+            if (err) {
+                console.log(err);
+                return res.status(404).send([]);
+            }
+            else {
+                return res.send({'data':campaigns,'role':req.session.role});
+            }
+        });
+    }
 };
 //HR发布一个活动(可能是多个企业)
 exports.sponsorCompanyCampaign = function (req, res) {
-
-    var username = req.session.username;
-    var cid = req.session.cid;    //公司id
-    var uid = req.session.uid;    //用户id
+    if(req.session.role !=='HR'){
+      return res.send(403,forbidden);
+    }
+    var username = req.user.info.name;
+    var cid = req.user._id.toString();    //公司id
     var gid = '0';                  //HR发布的活动,全部归在虚拟组里,虚拟组的id默认是0
     var group_type = '虚拟组';
     var company_in_campaign = req.body.company_in_campaign;//公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是次hr所在的公司!
@@ -75,31 +83,16 @@ exports.sponsorCompanyCampaign = function (req, res) {
     }
     var content = req.body.content;//活动内容
     var location = req.body.location;//活动地点
-
-    var cname = '';
-
-    Company.findOne({
-            _id : cid
-        },
-        function (err, company) {
-            cname = company.info.name;
-    });
-
     var campaign = new Campaign();
-
+    campaign.team.push(cid);
     campaign.gid.push(gid);
     campaign.group_type.push(group_type);
-
+    campaign.cname = username;
     campaign.cid = company_in_campaign; //参加活动的所有公司的id
-
-    campaign.poster.cname = cname;
+    campaign.poster.cname = username;
     campaign.poster.cid = cid;
-    campaign.poster.uid = uid;
     campaign.poster.role = 'HR';
     campaign.active = true;
-
-    campaign.poster.username = username;
-
     campaign.content = content;
     campaign.location = location;
 
@@ -125,17 +118,15 @@ exports.sponsorCompanyCampaign = function (req, res) {
         //生成动态消息
 
         var groupMessage = new GroupMessage();
-
+        groupMessage.team.push(cid);
         groupMessage.group.gid.push(gid);
         groupMessage.group.group_type.push(group_type);
         groupMessage.active = true;
         groupMessage.cid.push(cid);
 
-        groupMessage.poster.cname = cname;
+        groupMessage.poster.cname = username;
         groupMessage.poster.cid = cid;
-        groupMessage.poster.uid = uid;
         groupMessage.poster.role = 'HR';
-        groupMessage.poster.username = username;
 
         groupMessage.content = content;
         groupMessage.location = location;
@@ -144,106 +135,90 @@ exports.sponsorCompanyCampaign = function (req, res) {
 
         groupMessage.save(function(err) {
             if (err) {
-                res.send(err);
-                return;
+                return res.send({'result':0,'msg':'活动创建失败'});;
+            }
+            else{
+                res.send({'result':1,'msg':'活动创建成功'});
             }
         });
     });
-    res.send('ok');
 };
-//HR关闭企业活动/组长关闭活动
+
+
+//HR/组长关闭活动
 exports.campaignCancel = function (req, res) {
-    var campaign_id = req.body.campaign_id;
-    Campaign.findOne({_id:campaign_id},function(err, campaign) {
-        if(campaign) {
-            if (err) {
-                console.log('错误');
-            }
-
-            var active = campaign.active;
-            campaign.active = !active;
-            campaign.save();
-
-            return res.send('ok');
-            //console.log('创建成功');
-        } else {
-            return res.send('not exist');
-        }
-    });
+  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+    return res.send(403,forbidden);
+  }
+  var campaign_id = req.body.campaign_id;
+  Campaign.findOne({id:campaign_id},function(err, campaign) {
+      if(!err && campaign) {
+        var active = campaign.active;
+        campaign.active = !active;
+        campaign.save(function(err){
+          if(!err){
+             return res.send({'result':1,'msg':'关闭成功'});
+          }
+          else{
+            return res.send({'result':0,'msg':'关闭活动失败'});
+          }
+        });
+      } else {
+          return res.send({'result':0,'msg':'不存在该活动'});
+      }
+  });
 };
 
 
 //返回某一小组的活动,待前台调用
 exports.getGroupCampaign = function(req, res) {
-
-  var cid = req.session.cid;
-  var gid = req.session.gid;
-  var uid = req.session.uid;
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
   var tid = req.params.teamId;
-
-  //有包含tid的活动都列出来
-  Campaign.find({'cid' : {'$all':[cid]}, 'gid' : {'$all':[gid]}}).populate({
-        path : 'team',
-        match : { _id: tid}
-      }
-    ).exec(function(err, campaign) {
+  //有包含gid的活动都列出来
+  Campaign.find({'team' : tid}, function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
     } else {
       var campaigns = [];
-      var join = true;
+      var join = false;
       var length = campaign.length;
-      var permission = false;
-      var stop = false;
-
-      //只有这个小队的组长才可以操作活动,这有这个小队的员工可以参加这个活动
-      //判断这个组是不是员工所属的组,否则不能参加
-      for(var j = 0; j < req.user.group.length; j ++) {
-        if(req.user.group[j]._id === gid) {
-          for(var k = 0; k < req.user.group[j].team.length; k ++) {
-            if(req.user.group[j].team[k].id == tid){
-              stop = true;
-              join = false;
-              permission = req.user.group[j].leader;
+      if(req.session.role ==='HR'){
+        campaigns = campaign;
+      }
+      else{
+        for(var i = 0;i < length; i ++) {
+          join = false;
+          //参加过的也不能参加
+          for(var j = 0;j < campaign[i].member.length; j ++) {
+            if(req.user._id.toString() === campaign[i].member[j].uid) {
+              join = true;
               break;
             }
           }
+          campaigns.push({
+            'active':campaign[i].active,
+            'id': campaign[i]._id.toString(),
+            'gid': campaign[i].gid,
+            'group_type': campaign[i].group_type,
+            'cid': campaign[i].cid,
+            'cname': campaign[i].cname,
+            'poster': campaign[i].poster,
+            'content': campaign[i].content,
+            'location': campaign[i].location,
+            'member_length': campaign[i].member.length,
+            'start_time': campaign[i].start_time ? campaign[i].start_time : '',
+            'end_time': campaign[i].end_time ? campaign[i].end_time : '',
+            'join':join,
+            'provoke':campaign[i].provoke
+          });
         }
-      }
-
-      for(var i = 0;i < length; i ++) {
-        join = false;
-
-        //参加过的也不能参加
-        for(var j = 0;j < campaign[i].member.length; j ++) {
-          if(uid === campaign[i].member[j].uid) {
-            join = true;
-            break;
-          }
-        }
-
-        campaigns.push({
-          'active':campaign[i].active && stop,              //如果该活动没有关闭并且该员工有这个活动的组,就显示参加按钮
-          'active_value':campaign[i].active ? '关闭' : '打开',
-          '_id': campaign[i]._id,
-          'gid': campaign[i].gid,
-          'group_type': campaign[i].group_type,
-          'cid': campaign[i].cid,
-          'cname': campaign[i].cname,
-          'poster': campaign[i].poster,
-          'content': campaign[i].content,
-          'location': campaign[i].location,
-          'member': campaign[i].member,
-          'start_time': campaign[i].start_time ? campaign[i].start_time : '',
-          'end_time': campaign[i].end_time ? campaign[i].end_time : '',
-          'join':join,
-          'provoke':campaign[i].provoke
-        });
       }
       return res.send({
         'data':campaigns,
-        'permission':permission
+        'role':req.session.role
       });
     }
   });
@@ -251,27 +226,30 @@ exports.getGroupCampaign = function(req, res) {
 //组长发布一个活动(只能是一个企业)
 exports.sponsorGroupCampaign = function (req, res) {
 
-  var username = req.session.username;
-  var group_type = req.companyGroup.group_type;
-  var cid = req.session.cid;  //公司id
-  var uid = req.session.uid;  //用户id
-  var gid = req.session.gid;     //组件id,组长一次对一个组发布活动
+  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+    return res.send(403,forbidden);
+  }
   var content = req.body.content;//活动内容
   var location = req.body.location;//活动地点
-  var cname = '';
+  var group_type = req.companyGroup.group_type;
   var tid = req.params.teamId;
-
+  var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
+  var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
   //生成活动
   var campaign = new Campaign();
-  campaign.team = tid;         //ref
-  campaign.gid.push(gid);
+  campaign.team.push(tid);
+  campaign.gid.push(req.companyGroup.gid);
   campaign.group_type.push(group_type);
-  campaign.cid.push(cid);//内部活动只有一个公司
+  campaign.cid.push(cid);//其实只有一个公司
+  campaign.cname.push(cname);
   campaign.poster.cname = cname;
   campaign.poster.cid = cid;
-  campaign.poster.uid = uid;
-  campaign.poster.role = 'LEADER';
-  campaign.poster.username = username;
+  campaign.poster.role = req.session.role;
+  if(req.session.role==='LEADER'){
+    campaign.poster.uid = req.user._id;
+    campaign.poster.username = req.user.username;
+  }
+
   campaign.content = content;
   campaign.location = location;
   campaign.active = true;
@@ -297,18 +275,18 @@ exports.sponsorGroupCampaign = function (req, res) {
     //生成动态消息
     var groupMessage = new GroupMessage();
 
-    groupMessage.team = tid;
-    groupMessage.group.gid.push(gid);
+    groupMessage.team.push(tid);
+    groupMessage.group.gid.push(req.companyGroup.gid);
     groupMessage.group.group_type.push(group_type);
     groupMessage.active = true;
     groupMessage.cid.push(cid);
-
     groupMessage.poster.cname = cname;
     groupMessage.poster.cid = cid;
-    groupMessage.poster.uid = uid;
-    groupMessage.poster.role = 'LEADER';
-    groupMessage.poster.username = username;
-
+    groupMessage.poster.role = req.session.role;
+    if(req.session.role==='LEADER'){
+      groupMessage.poster.uid = req.user._id;
+      groupMessage.poster.username = req.user.nickname;
+    }
     groupMessage.content = content;
     groupMessage.location = location;
     groupMessage.start_time = req.body.start_time;
@@ -317,11 +295,13 @@ exports.sponsorGroupCampaign = function (req, res) {
     groupMessage.save(function (err) {
       if (err) {
         res.send(err);
-        return;
+        return {'result':0,'msg':'活动发起失败'};
+      }
+      else{
+        return res.send({'result':1,'msg':'活动发起成功'});
       }
     });
   });
-  res.send("ok");
 };
 
 
@@ -408,12 +388,12 @@ exports.getUserCampaign = function(req, res) {
 exports.group = function(req, res, next, id) {
   CompanyGroup
     .findOne({
-        cid: req.session.cid,
+        cid: req.session.nowcid,
         _id: id
     })
     .exec(function(err, companyGroup) {
         if (err) return next(err);
-        if (!companyGroup) return next(new Error(req.session.cid+' Failed to load companyGroup ' + id));
+        if (!companyGroup) return next(new Error(req.session.nowcid+' Failed to load companyGroup ' + id));
         req.companyGroup = companyGroup;
         next();
     });

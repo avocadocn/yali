@@ -32,7 +32,7 @@ var _formation = new Schema({
 
 
 var _camp = new Schema({
-  id : String,                             //小队id
+  id : Schema.Types.ObjectId,              //小队id
   logo: String,                            //队徽路径
   cname: String,                           //公司名
   tname: String,
@@ -72,7 +72,6 @@ var _camp = new Schema({
  * 比赛数据结构
  */
 var Competition = new Schema({
-    id: String,
     group_type: String,
     gid: String,
     brief: {
@@ -91,6 +90,17 @@ var Competition = new Schema({
       number: Number                           //人数
     },
     camp:[_camp],                              //阵营
+    poster: {
+        cid: String,                   //活动发起者所属的公司
+        cname: String,
+        uid: String,
+        realname: String,
+        username: String,
+        role: {
+            type: String,
+            enum: ['HR','LEADER']      //HR 组长
+        },
+    },
     photo: {
       pid: String,
       name: {
@@ -103,12 +113,12 @@ var Competition = new Schema({
         type: Boolean,
         default: false
     },
-    provoke_message_id: String,
+    provoke_message_id: Schema.Types.ObjectId,
     arena_flag: {
         type: Boolean,
         default: false
     },
-    arena_id: String
+    arena_id: Schema.Types.ObjectId
 });
 
 mongoose.model('Competition', Competition);

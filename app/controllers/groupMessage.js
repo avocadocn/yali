@@ -16,55 +16,24 @@ var mongoose = require('mongoose'),
 exports.getGroupId = function(req, res) {
 
 };
-//返回公司动态消息的所有数据,待前台调用
-exports.getCompanyMessage = function(req, res) {
-
-  var cid = req.session.cid;
-
-  //公司的动态消息都归在虚拟组里
-  GroupMessage.find({'cid' : {'$all':[cid]} , 'group.gid' : {'$all':['0']}}, function(err, group_messages) {
-    if (err) {
-      console.log(err);
-      return res.status(404).send([]);
-    } else {
-        return res.send(group_messages);
-    }
-  });
-
-};
 
 
-//返回小组动态消息
+
+//根据小队ID返回小组动态消息
 exports.getGroupMessage = function(req, res) {
-
- var cid = req.session.cid;
-  var gid = req.session.gid;
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
   var tid = req.params.teamId;    //小队的id
 
-  GroupMessage.find({'cid' : {'$all':[cid]}, 'group.gid' : {'$all':[gid]}}).populate({
-        path : 'team',
-        match : { _id: tid}
-      }
-    ).exec(function(err, group_message) {
+  GroupMessage.find({'team' : tid})
+  .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
       return res.status(404).send([]);
     } else {
       var group_messages = [];
       var length = group_message.length;
-
-      var permission = false;
-      for(var j = 0; j < req.user.group.length; j ++) {
-        if(req.user.group[j]._id === gid) {
-          for(var k = 0; k < req.user.group[j].team.length; k ++) {
-            if(req.user.group[j].team[k].id == tid){
-              permission = req.user.group[j].leader;
-              break;
-            }
-          }
-        }
-      }
-
       for(var i = 0; i < length; i ++) {
 
         var positive = 0;
@@ -91,10 +60,10 @@ exports.getGroupMessage = function(req, res) {
           'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
           'end_time' : group_message[i].end_time ? group_message[i] : '',
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-          'provoke_accept': group_message[i].provoke.active && permission && (!group_message[i].provoke.start_confirm) && (group_message[i].cid[1] === req.session.cid)
+          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString())
         });
       }
-      return res.send(group_messages);
+      return res.send({'group_messages':group_messages,'role':req.session.role});
     }
   });
 };
@@ -102,8 +71,10 @@ exports.getGroupMessage = function(req, res) {
 
 //列出该user加入的所有小组的动态
 exports.getUserMessage = function(req, res) {
+  if(req.session.role!=='OWNER'){
+    return res.send(403,'forbidden');
+  }
   var group_messages = [];
-  var flag = 0;
   var i = 0;
   async.whilst(
     function() { return i < req.user.group.length; },
@@ -113,16 +84,13 @@ exports.getUserMessage = function(req, res) {
       for(var k = 0; k < req.user.group[i].team.length; k ++){
         team_ids.push(req.user.group[i].team[k].id);
       }
-
-      GroupMessage.find({'cid' : {'$all':[req.user.cid]} , 'group._id': {'$all': [req.user.group[i]._id]} }).populate({
-            path : 'team',
-            match : { _id: {'$in':team_ids}}
-          }
-        ).exec(function(err, group_message) {
+      console.log(team_ids);
+      GroupMessage.find({'team' :{'$in':team_ids}})
+      .exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
-            return;
+            return res.send([]);
           } else {
 
             var length = group_message.length;
@@ -131,7 +99,7 @@ exports.getUserMessage = function(req, res) {
               var positive = 0;
               var negative = 0;
               for(var k = 0; k < group_message[j].provoke.camp.length; k ++) {
-                if(group_message[j].provoke.camp[k].tname === req.user.group[flag-1].tname){
+                if(group_message[j].provoke.camp[k].tname === req.user.group[i].tname){
                   positive = group_message[j].provoke.camp[k].vote.positive;
                   negative = group_message[j].provoke.camp[k].vote.negative;
                   break;
@@ -167,7 +135,7 @@ exports.getUserMessage = function(req, res) {
         console.log(err);
         res.send([]);
       } else {
-        res.send(group_messages);
+        res.send({'group_messages':group_messages,'role':req.session.role});
       }
     }
   );
@@ -178,12 +146,12 @@ exports.getUserMessage = function(req, res) {
 exports.group = function(req, res, next, id) {
    CompanyGroup
     .findOne({
-        cid: req.session.cid,
+        cid: req.session.nowcid,
         _id: id
     })
     .exec(function(err, companyGroup) {
         if (err) return next(err);
-        if (!companyGroup) return next(new Error(req.session.cid+' Failed to load companyGroup ' + id));
+        if (!companyGroup) return next(new Error(req.session.nowcid+' Failed to load companyGroup ' + id));
         req.companyGroup = companyGroup;
         next();
     });

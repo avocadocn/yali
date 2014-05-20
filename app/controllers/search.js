@@ -61,7 +61,9 @@ exports.searchTeam = function(req, res) {
 //返回该组件的队名和组长
 exports.getTeam = function(req, res) {
   var cid = req.body.cid;
-  var gid = req.session.nowgid;
+  var gid = req.body.gid;
+
+  console.log(cid,gid);
   CompanyGroup.find({'cid':cid,'gid':gid},function(err, company_groups){
     if(err || !company_groups) {
       return res.send([]);

@@ -50,7 +50,7 @@ block panel
       div(ng-controller="CampaignListController" class="modal fade" id="sponsorProvokeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/provoke_modal
 
-    div(ng-controller="GroupMessageController" id="team_content" team-id="#{teamId}")
+    div(ng-controller="GroupMessageController" id="team_content" team-id="#{teamId}" group-id="#{gid}" ng-init="_tid=#{teamId};_gid=#{gid}")
 
 block aside
 

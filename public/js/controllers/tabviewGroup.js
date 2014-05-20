@@ -103,6 +103,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 
 
     var teamId = $('#team_content').attr('team-id');
+    var groupId = $('#team_content').attr('group-id');
     //消除ajax缓存
     $http.get('/group/getCampaigns/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
@@ -126,7 +127,8 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 method: 'post',
                 url: '/search/team',
                 data:{
-                    cid : cid
+                    cid : cid,
+                    gid : groupId
                 }
             }).success(function(data, status) {
                 $scope.teams = data;

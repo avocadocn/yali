@@ -236,7 +236,8 @@ exports.home = function(req, res) {
               'logo': req.companyGroup.logo,
               'group_id': req.companyGroup._id,
               'cname': req.companyGroup.cname,
-              'sign': req.companyGroup.brief
+              'sign': req.companyGroup.brief,
+              'gid' : req.companyGroup.gid
             });
           }
         });
@@ -293,7 +294,8 @@ exports.home = function(req, res) {
             'logo': req.companyGroup.logo,
             'group_id': req.companyGroup._id,
             'cname': req.companyGroup.cname,
-            'sign': req.companyGroup.brief
+            'sign': req.companyGroup.brief,
+            'gid' : req.companyGroup.gid
           });
         });
       };
@@ -336,17 +338,23 @@ exports.getGroupMessage = function(req, res) {
 
         var positive = 0;
         var negative = 0;
-        for(var k = 0; k < group_message[i].provoke.camp.length; k ++) {
-          if(group_message[i].provoke.camp[k].tname === req.companyGroup.name){
-            positive = group_message[i].provoke.camp[k].vote.positive;
-            negative = group_message[i].provoke.camp[k].vote.negative;
-            break;
+        var host = false;
+        //如果是比赛动态
+        if(group_message[i].provoke.active) {
+          for(var k = 0; k < group_message[i].provoke.camp.length; k ++) {
+            if(group_message[i].provoke.camp[k].tid.toString() === req.companyGroup._id.toString()){
+              positive = group_message[i].provoke.camp[k].vote.positive;
+              negative = group_message[i].provoke.camp[k].vote.negative;
+              host = (k === 0);
+              break;
+            }
           }
         }
         group_messages.push({
           'positive' : positive,
           'negative' : negative,
-          'my_tname' : req.companyGroup.name,
+          'my_team_id' : req.companyGroup._id,
+          'host': host,                  //是不是发赛方
           '_id': group_message[i]._id,
           'cid': group_message[i].cid,
           'group': group_message[i].group,
@@ -358,7 +366,7 @@ exports.getGroupMessage = function(req, res) {
           'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
           'end_time' : group_message[i].end_time ? group_message[i] : '',
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].cid[1] === cid)
+          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString())
         });
       }
       return res.send({'group_messages':group_messages,'role':req.session.role});
@@ -508,8 +516,15 @@ exports.provoke = function (req, res) {
       competition.brief.number = number;
 
 
+      competition.poster.cname = req.user.cname;
+      competition.poster.cid = req.user.cid;
+      competition.poster.role = req.session.role;
+      competition.poster.uid = req.user._id;
+      competition.poster.username = req.user.username;
       var groupMessage = new GroupMessage();
 
+      groupMessage.team.push(my_team_id);         //发起挑战方小队id
+      groupMessage.team.push(team_opposite._id);  //应约方小队id
       groupMessage.group.gid.push(req.companyGroup.gid);
       groupMessage.group.group_type.push(competition.group_type);
       groupMessage.provoke.active = true;
@@ -590,10 +605,15 @@ exports.responseProvoke = function (req, res) {
         }
         campaign.cid.push(competition.camp[0].cid);   //两家公司同时显示这一条活动
 
-        campaign.poster.cname = competition.camp[0].cname;
-        campaign.poster.cid = competition.camp[0].cid;
-        campaign.poster.uid = competition.camp[0].uid;
+        campaign.team.push(competition.camp[0].id); //约战方小队id
+        campaign.team.push(competition.camp[1].id); //应约方小队id
+
+        campaign.poster.cname = competition.poster.cname;
+        campaign.poster.cid = competition.poster.cid;
+        campaign.poster.uid = competition.poster.uid;
         campaign.poster.role = 'LEADER';
+        campaign.poster.username = competition.poster.username;
+
         campaign.content = competition.camp[0].tname + ' VS ' + competition.camp[1].tname;
         campaign.location = competition.brief.location.name;
         campaign.start_time = competition.brief.competition_date;
@@ -604,8 +624,7 @@ exports.responseProvoke = function (req, res) {
         campaign.provoke.competition_id = competition._id;
         campaign.provoke.competition_format = competition.brief.competition_format;
         campaign.provoke.active = true;
-        campaign.tid.push(competition.camp[0].id); //约战方小队id
-        campaign.tid.push(competition.camp[1].id); //应约方小队id
+
 
         campaign.save(function(err) {
           if (err) {
@@ -671,7 +690,7 @@ exports.sponsor = function (req, res) {
   var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
   //生成活动
   var campaign = new Campaign();
-  campaign.team = [tid];
+  campaign.team.push(tid);
   campaign.gid.push(req.companyGroup.gid);
   campaign.group_type.push(group_type);
   campaign.cid.push(cid);//其实只有一个公司
@@ -709,7 +728,7 @@ exports.sponsor = function (req, res) {
     //生成动态消息
     var groupMessage = new GroupMessage();
 
-    groupMessage.team = tid;
+    groupMessage.team.push(tid);
     groupMessage.group.gid.push(req.companyGroup.gid);
     groupMessage.group.group_type.push(group_type);
     groupMessage.active = true;
@@ -718,7 +737,7 @@ exports.sponsor = function (req, res) {
     groupMessage.poster.cid = cid;
     groupMessage.poster.role = req.session.role;
     if(req.session.role==='LEADER'){
-      groupMessage.poster.uid = req.user.id;
+      groupMessage.poster.uid = req.user._id;
       groupMessage.poster.username = req.user.nickname;
     }
     groupMessage.content = content;
@@ -743,9 +762,7 @@ exports.getGroupMember = function(req,res){
   var  _member_list = req.companyGroup.member;
   var _leader_list = req.companyGroup.leader;
   return res.send({'result':1,data:{'member':_member_list,'leader':_leader_list}});
-
 };
-
 
 
 //比赛

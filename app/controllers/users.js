@@ -186,7 +186,7 @@ exports.setProfile = function(req, res) {
       if(user.active === true) {
         res.render('users/message', message.actived);
       } else {
-        req.session.cid = req.query.cid;
+        req.session.nowcid = req.query.cid;
         if(encrypt.encrypt(uid, config.SECRET) === key) {
           res.render('users/setProfile', {
             title: '设置个人信息',
@@ -358,17 +358,40 @@ exports.getGroupMessages = function(req, res) {
 
               var positive = 0;
               var negative = 0;
-              for(var k = 0; k < group_message[j].provoke.camp.length; k ++) {
-                if(group_message[j].provoke.camp[k].tname === req.user.group[i].tname){
-                  positive = group_message[j].provoke.camp[k].vote.positive;
-                  negative = group_message[j].provoke.camp[k].vote.negative;
-                  break;
+              var my_team_id;
+              var find = true;
+              var host = false;
+
+
+              //如果是比赛动态
+              if(group_message[j].provoke.active) {
+                for(var k = 0; k < group_message[j].team.length && find; k ++) {
+                  for(var l = 0; l < req.user.group[i].team.length; l ++) {
+                    if(group_message[j].team[k].toString() === req.user.group[i].team[l].id.toString()) {
+                      my_team_id = req.user.group[i].team[l].id;
+                      positive = group_message[j].provoke.camp[k].vote.positive;
+                      negative = group_message[j].provoke.camp[k].vote.negative;
+                      find = false;
+                      host = (k === 0);
+                      break;
+                    }
+                  }
+                }
+              } else {
+                //如果是普通活动动态
+                for(var l = 0; l < team_ids.length; l ++) {
+                  if(group_message[j].team[0].toString() === team_ids[l].toString()) {
+                    my_team_id = team_ids[l];
+                    break;
+                  }
                 }
               }
+
               group_messages.push({
                 'positive' : positive,
                 'negative' : negative,
-                'my_tname': req.user.group[i].tname,
+                'my_team_id': my_team_id,
+                'host': host,                  //是不是发赛方
                 '_id': group_message[j]._id,
                 'cid': group_message[j].cid,
                 'group': group_message[j].group,
@@ -536,8 +559,9 @@ exports.editInfo = function(req, res) {
 //记得要做重复投票检查 TODO
 exports.vote = function (req, res) {
 
-  var cid = req.session.cid;
-  var uid = req.session.uid;
+  var tid = req.body.tid;
+  var cid = req.session.nowcid ? req.session.nowcid : req.user.cid;
+  var uid = req.session.nowuid ? req.session.nowuid : req.user._id;
   var aOr = req.body.aOr;
   var provoke_message_id = req.body.provoke_message_id;
 
@@ -548,9 +572,9 @@ exports.vote = function (req, res) {
     if (competition) {
 
       for(var j = 0; j < competition.camp.length; j ++) {
-        if(competition.camp[j].cid === cid) {
+        if(competition.camp[j].id.toString() === tid.toString()) {
           for(var i = 0; i < competition.camp[j].vote.positive_member.length; i ++) {
-            if(competition.camp[j].vote.positive_member[i].uid === uid) {
+            if(competition.camp[j].vote.positive_member[i].uid.toString() === uid.toString()) {
               console.log('positive');
               return res.send({
                 'msg':'已经投过票!'
@@ -559,7 +583,7 @@ exports.vote = function (req, res) {
           }
 
           for(var i = 0; i < competition.camp[j].vote.negative_member.length; i ++) {
-            if(competition.camp[j].vote.negative_member[i].uid === uid) {
+            if(competition.camp[j].vote.negative_member[i].uid.toString() === uid.toString()) {
               console.log('negative');
               return res.send({
                 'msg':'已经投过票!'
@@ -592,7 +616,7 @@ exports.vote = function (req, res) {
 
               var positive,negative;
               for(var i = 0; i < group_message.provoke.camp.length; i ++) {
-                if(group_message.provoke.camp[i].cid === cid) {
+                if(group_message.provoke.camp[i].tid.toString() === tid.toString()) {
                   if (aOr) {
                     group_message.provoke.camp[i].vote.positive ++;
                     positive = group_message.provoke.camp[i].vote.positive;
@@ -634,7 +658,7 @@ exports.joinCampaign = function (req, res) {
   var uid = req.user._id.toString();
   var campaign_id = req.body.campaign_id; //该活动的id
 
-  var tid = req.session.tid;              //该活动所属小队的id
+  var tid = req.session.nowtid;              //该活动所属小队的id
   Campaign.findOne({
     _id : campaign_id
   },

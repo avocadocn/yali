@@ -60,18 +60,18 @@ exports.detail = function(req, res){
           'cname': competition.camp[0].cname,
           'tname': competition.camp[0].tname
         };
-        res.render('arena/arena_detail', {'title': '擂台详情','arena': req.arena,'challenger':challenger,'champion_flag': req.arena.champion.uid===req.session.uid,'alert_flag':req.arena.champion.cid!==null&&req.arena.champion.active===false && req.arena.champion.uid===req.session.uid});
+        res.render('arena/arena_detail', {'title': '擂台详情','arena': req.arena,'challenger':challenger,'champion_flag': req.arena.champion.uid===req.session.nowuid,'alert_flag':req.arena.champion.cid!==null&&req.arena.champion.active===false && req.arena.champion.uid===req.session.nowuid});
       }
     });
   }
   else{
-    res.render('arena/arena_detail', {'title': '擂台详情','moment':moment,'arena': req.arena,'champion_flag': req.arena.champion.uid===req.session.uid,'alert_flag':req.arena.champion.cid!==null&&req.arena.champion.active===false && req.arena.champion.uid===req.session.uid});
+    res.render('arena/arena_detail', {'title': '擂台详情','moment':moment,'arena': req.arena,'champion_flag': req.arena.champion.uid===req.session.nowuid,'alert_flag':req.arena.champion.cid!==null&&req.arena.champion.active===false && req.arena.champion.uid===req.session.nowuid});
   }
 };
 exports.rob = function(req, res){
   var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
   if(!req.arena.champion.cid){
-    if(req.arena.history.length!==0 && req.arena.history[0].cid === req.session.cid){
+    if(req.arena.history.length!==0 && req.arena.history[0].cid === req.session.nowcid){
       return res.send({'result':0,'msg':'您无法连续抢同一擂台！'});
     }
     CompanyGroup.findOne({'cid':cid,'gid':req.session.nowgid},function(err,company_group){
