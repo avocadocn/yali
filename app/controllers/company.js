@@ -537,12 +537,18 @@ exports.timeLine = function(req, res){
     if (campaigns && campaigns.length>0) {
       var timeLines = [];
       campaigns.forEach(function(campaign) {
-        var _head;
+        var _head,_type;
         if(campaign.provoke.active){
           _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
+          _type = 'provoke';
+        }
+        else if(campaign.gid[0]==='0'){
+          _head = '公司活动';
+          _type = 'company_campaign';
         }
         else{
-          _head = campaign.gid[0]==='0' ? '公司活动' : (campaign.team[0].name + '活动');
+          _head = campaign.team[0].name + '活动';
+          _type = 'group_campaign';
         }
         var tempObj = {
           id: campaign._id,
@@ -551,7 +557,8 @@ exports.timeLine = function(req, res){
           location: campaign.location,
           group_type: campaign.group_type,
           date: campaign.start_time,
-          provoke:campaign.provoke
+          provoke:campaign.provoke,
+          type:_type
         }
         timeLines.push(tempObj);
       });

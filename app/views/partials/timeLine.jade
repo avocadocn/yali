@@ -8,7 +8,7 @@ if(timeLines)
           span.date= moment(timeline.date).format('YY/MM/DD')
           span.time= moment(timeline.date).format('HH:mm')
         .timeline-icon
-          i.icon-facetime-video
+          i(class="icon_timeline_#{timeline.type}")
         .timeline-body
           h2= timeline.head
           .timeline-content

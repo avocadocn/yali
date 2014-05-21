@@ -319,4 +319,18 @@ Timeline UI Base
 		border-bottom-color: #555555;
 	}
 }
-
+/*.icon_timeline_company_campaign{
+	background-image: url('/img/icons/facebook.png');
+	width:auto;
+	height: auto;
+}
+.icon_timeline_group_campaign{
+	background-image: url('/img/icons/github.png');
+	width:auto;
+	height: auto;
+}
+.icon_timeline_provoke{
+	background-image: url('/img/icons/google.png');
+	width:auto;
+	height: auto;
+}*/

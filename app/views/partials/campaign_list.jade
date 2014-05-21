@@ -13,7 +13,7 @@
         .row.margin_top_15
           span.message_label 类型: {{ campaign_item.group_type[0] }}
           //- span.message_label 参加活动人数：{{ campaign_item.member_length }}
-          span.message_label 赛制: {{ campaign_item.provoke.competition_format }}
+          span.message_label(ng-if="campaign_item.provoke.active") 赛制: {{ campaign_item.provoke.competition_format }}
           span.message_label 地点: {{ campaign_item.location }}
           span.message_label 截止时间: {{ campaign_item.end_time | date:'yyyy-MM-dd'}}
       .col-xs-2.col-sm-3
