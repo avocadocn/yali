@@ -291,44 +291,13 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             $scope.infoButtonStatus = '保存';
         }
      };
-    // $scope.groupEditToggle = function() {
-    //     //$scope.groupInfoUnEdit = !$scope.groupInfoUnEdit;
-    //     //if($scope.groupInfoUnEdit) {
-    //         try{
-    //             $http({
-    //                 method : 'post',
-    //                 url : '/company/saveGroupInfo',
-    //                 data : {
-    //                     info : $scope.info
-    //                 }
-    //             }).success(function(data, status) {
-    //                 //TODO:更改对话框
-    //                 if(data.result === 1)
-    //                     alert(data.msg);
-    //                 else
-    //                     alert(data.msg);
-    //                 window.location.reload();
-    //             }).error(function(data, status) {
-    //                 //TODO:更改对话框
-    //                 alert('数据发生错误！');
-    //             });
-    //         }
-    //         catch(e) {
-    //             console.log(e);
-    //         }
-            //$scope.groupInfoButtonStatus = '编辑队名';
-        //}
-        // else {
-        //     $scope.groupInfoButtonStatus = '保存队名';
-        // }
-    //};
     $http.get('/group/getCompanyGroups').success(function(data, status) {
         $scope.team_lists = data.teams;
         $scope.cid = data.cid;
         $scope.tname= data.name;
         $scope.role = data.role;
     });
-    
+    //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid) {
         $scope.tid = tid;
         $scope.gid = gid;
@@ -342,8 +311,19 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                     tid: $scope.tid
                 }
             }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
                 $scope.users = data;
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+            $http({
+                method:'post',
+                url:'/search/oneTeam',
+                data:{
+                    tid: $scope.tid
+                }
+            }).success(function(data, status) {
+                $scope.team = data;
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alert('数据发生错误！');

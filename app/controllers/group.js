@@ -121,6 +121,18 @@ exports.info =function(req,res) {
 };
 
 
+exports.getOneTeam = function(req, res){
+  var tid = req.body.tid
+  CompanyGroup.findOne({'tid':tid},function(err, team){
+    if(err || !team){
+      console.log('cannot find team');
+      return res.send();
+    }else{
+      return res.send(team);
+    }  
+  });
+};
+
 //TODO
 exports.saveInfo =function(req,res) {
     if(req.session.role !=='HR' && req.session.role !=='LEADER'){

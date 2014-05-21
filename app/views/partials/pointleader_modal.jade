@@ -17,7 +17,7 @@
       hr
       .row
         .col-md-4
-          p 该小队的成员
+          label.info_label.control-label 指定队长
           li(ng-repeat= "user in users")
             a(ng-click="appointLeader(user._id)" data-dismiss="modal") {{user.nickname}}
     .modal-footer

@@ -79,12 +79,9 @@ div
             label.info_label.control-label 队名
           .col-md-8
             label.info_label.control-label {{team.name}}
-            //input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="team.name" ng-disabled="groupInfoUnEdit")
-           if(role ==='HR')
+          if(role ==='HR')
             a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
-           //if(role ==='HR')
-            button.btn.dl_btn.pull-right(ng-click="groupEditToggle()" ng-bind="groupInfoButtonStatus")
-        .row
+       .row
           .col-md-2
             label.info_label.control-label 类型
           .col-md-4
@@ -102,4 +99,4 @@ div
         hr
   if(role ==='HR' || role ==='LEADER')
     div(ng-controller="AccountFormController" class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../partials/pointleader_modal.jade.modal-dialog
+      include ../partials/pointleader_modal.jade
