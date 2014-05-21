@@ -44,7 +44,9 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
 
+    var teamId;
     $scope.$watch('teamId',function(tid){
+        teamId - tid;
         $http.get('/group/getGroupMessages/'+tid +'?' + Math.round(Math.random()*100)).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
@@ -106,9 +108,10 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $rootScope.nowTab = 'group_campaign';
 
 
-    var groupId;
+    var groupId,teamId;
     $scope.$watch('teamId',function(tid){
         //消除ajax缓存
+        teamId = tid;
         $http.get('/group/getCampaigns/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
             $scope.campaigns = data.data;
             $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
