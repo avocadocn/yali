@@ -4,11 +4,11 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item class="campaign_item" ng-repeat="campaign in campaignList" href="#">
+      <ion-item class="campaign_item" ng-repeat="campaign in campaign_list" href="#">
         <div class="row campaign_line">
           <p class="campaign_team_info">
-            <img class="campaign_group_logo" src="/groupLogo/{{ campaign.teamId }}/35/35"/>
-            {{ campaign.teamName }}
+            <img class="campaign_group_logo" src="/groupLogo/{{ campaign.team_id }}/35/35"/>
+            {{ campaign.team_name }}
           </p>
         </div>
         <div class="row campaign_line campaign_content">
@@ -18,7 +18,7 @@
           <div class="table_wrap campaign_time_shadow">
             <div class="table_cell">
               <p class="campaign_time_remind">距离活动开始</p>
-              <p class="campaign_time_count">{{ campaign.restTime | date:'hh:mm:ss' }}</p>
+              <p class="campaign_time_count">{{ campaign.rest_time | date:'hh:mm:ss' }}</p>
             </div>
           </div>
         </div>
@@ -26,15 +26,15 @@
           <div class="col-3 col-30">
             <p class="campaign_operate_text">
               <i class="icon ion-ios7-person-outline"></i>
-              {{ campaign.memberCount }}人报名
+              {{ campaign.member_count }}人报名
             </p>
           </div>
           <div class="col-33 col-40 campaign_operate_button_container">
-            <button class="campaign_operate_button" ng-if="!campaign.isJoin" ng-click="join(campaign._id)">
+            <button class="campaign_operate_button" ng-if="!campaign.is_join" ng-click="join(campaign._id)">
               <i class="icon ion-android-share"></i>
               参加活动
             </button>
-            <button class="campaign_operate_button" ng-if="campaign.isJoin" ng-click="quit(campaign._id)">
+            <button class="campaign_operate_button" ng-if="campaign.is_join" ng-click="quit(campaign._id)">
               <i class="icon ion-android-share"></i>
               退出活动
             </button>

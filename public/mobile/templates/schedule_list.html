@@ -4,7 +4,7 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="schedule in schedule_list" href="#">
+      <ion-item ng-repeat="schedule in schedule_list">
         <p>{{ schedule.content }}</p>
         <p>开始时间: {{ schedule.start_time }}</p>
         <p>截止时间: {{ schedule.end_time }}</p>

@@ -855,34 +855,7 @@ exports.timeLine = function(req,res){
 }
 
 
-// 获取用户日程
 
-exports.getSchedules = function(req, res) {
-  Campaign
-  .find({ 'member.uid': req.user._id })
-  .sort('-start_time')
-  .exec()
-  .then(function(campaigns) {
-    if (campaigns) {
-      var responseData = [];
-      campaigns.forEach(function(campaign) {
-        var tempObj = {
-          id: campaign.id,
-          content: campaign.content,
-          start_time: campaign.start_time,
-          end_time: campaign.end_time,
-          location: campaign.location
-        }
-        responseData.push(tempObj);
-      });
-    }
-    res.send({ result: 1, msg: '获取日程列表成功', data: responseData });
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send({ result: 0, msg: '获取日程列表失败' });
-  });
-};
 
 
 
@@ -1169,45 +1142,41 @@ exports.getCampaignsForApp = function(req, res) {
   .exec()
   .then(function(campaigns) {
 
-    console.log(campaigns);
-
-    var responseData = [];
+    var response_data = [];
 
     campaigns.forEach(function(campaign) {
 
-      // ref gid->CompanyGroup
-      var companyGroups = campaign.gid;
 
-      var isJoin = false;
+      var is_join = false;
       for (var i = 0; i < campaign.member.length; i++) {
         if (user._id.toString() === campaign.member[i].uid.toString()) {
-          isJoin = true;
+          is_join = true;
         }
       }
 
-      var groupIndex = arrayObjectIndexOf(user.group, campaign.gid, '_id');
-      if (groupIndex > -1) {
+      var group_index = arrayObjectIndexOf(user.group, campaign.gid, '_id');
+      if (group_index > -1) {
         for (var i = 0; i < campaign.team.length; i++) {
-          var teamIndex = arrayObjectIndexOf(user.group[groupIndex].team, campaign.team[i]._id, 'id')
-          if (teamIndex > -1) {
-            var teamName = campaign.team[i].name;
-            var teamId = campaign.team[i]._id;
+          var team_index = arrayObjectIndexOf(user.group[group_index].team, campaign.team[i]._id, 'id')
+          if (team_index > -1) {
+            var team_name = campaign.team[i].name;
+            var team_id = campaign.team[i]._id;
           }
         }
       }
 
-      responseData.push({
+      response_data.push({
         _id: campaign._id,
-        teamName: teamName,
-        teamId: teamId,
+        team_name: team_name,
+        team_id: team_id,
         content: campaign.content,
-        startTime: campaign.start_time,
-        memberCount: campaign.member.length,
-        isJoin: isJoin
+        start_time: campaign.start_time,
+        member_count: campaign.member.length,
+        is_join: is_join
       });
     });
 
-    res.send({ result: 1, msg: '获取活动列表成功', data: responseData });
+    res.send({ result: 1, msg: '获取活动列表成功', data: response_data });
 
   })
   .then(null, function(err) {
@@ -1220,6 +1189,34 @@ exports.getCampaignsForApp = function(req, res) {
 
 
 
+// 获取用户日程
+
+exports.getSchedules = function(req, res) {
+  Campaign
+  .find({ 'member.uid': req.user._id })
+  .sort('-start_time')
+  .exec()
+  .then(function(campaigns) {
+    if (campaigns) {
+      var responseData = [];
+      campaigns.forEach(function(campaign) {
+        var tempObj = {
+          id: campaign.id,
+          content: campaign.content,
+          start_time: campaign.start_time,
+          end_time: campaign.end_time,
+          location: campaign.location
+        }
+        responseData.push(tempObj);
+      });
+    }
+    res.send({ result: 1, msg: '获取日程列表成功', data: responseData });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send({ result: 0, msg: '获取日程列表失败' });
+  });
+};
 
 
 

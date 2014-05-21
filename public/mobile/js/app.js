@@ -27,23 +27,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       controller: 'LoginCtrl'
     })
 
-    .state('app.search', {
-      url: "/search",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/search.html"
-        }
-      }
-    })
-
-    .state('app.browse', {
-      url: "/browse",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/browse.html"
-        }
-      }
-    })
     .state('app.campaignList', {
       url: '/campaign_list',
       views: {
@@ -60,6 +43,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         'menuContent': {
           templateUrl: 'templates/schedule_list.html',
           controller: 'ScheduleListCtrl'
+        }
+      }
+    })
+
+    .state('app.dynamicList', {
+      url: "/dynamic_list",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/dynamic_list.html",
+          controller: 'DynamicListCtrl'
         }
       }
     })
@@ -107,7 +100,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       $http.post('/users/login', { username: username, password: password }).
         success(function(data, status, headers, config) {
           if (data.result === 1) {
-            console.log('r');
             authorize = true;
             var userInfo = data.data;
             if (userInfo) {
