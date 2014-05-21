@@ -90,7 +90,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
    */
   var authorize = false;
 
-  // TO DO: for debug
+  // TO DO: for test
   //authorize = true;
 
   var Authorize = function() {

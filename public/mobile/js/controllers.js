@@ -33,6 +33,19 @@ angular.module('starter.controllers', [])
     );
   };
 
+  $scope.$watch('campaignList', function(newValue, oldValue) {
+    if (newValue === oldValue) {
+      return;
+    }
+
+    for (var i = 0; i < $scope.campaignList.length; i++) {
+      var startTime = new Date($scope.campaignList[i].startTime);
+      var restTime = startTime - new Date();
+      $scope.campaignList[i].restTime = restTime;
+    }
+
+  });
+
   getCampaigns();
 
   $scope.join = function(id) {

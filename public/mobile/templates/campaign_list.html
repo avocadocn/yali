@@ -14,8 +14,13 @@
         <div class="row campaign_line campaign_content">
           <p>{{ campaign.content }}</p>
         </div>
-        <div class="row">
-          <p>开始时间：{{ campaign.startTime }}</p>
+        <div class="row campaign_time football">
+          <div class="table_wrap campaign_time_shadow">
+            <div class="table_cell">
+              <p class="campaign_time_remind">距离活动开始</p>
+              <p class="campaign_time_count">{{ campaign.restTime | date:'hh:mm:ss' }}</p>
+            </div>
+          </div>
         </div>
         <div class="row campaign_line campaign_operate_bar">
           <div class="col-3 col-30">
@@ -25,11 +30,20 @@
             </p>
           </div>
           <div class="col-33 col-40 campaign_operate_button_container">
-            <button class="campaign_operate_button" ng-if="!campaign.isJoin" ng-click="join(campaign._id)">参加活动</button>
-            <button class="campaign_operate_button" ng-if="campaign.isJoin" ng-click="quit(campaign._id)">退出活动</button>
+            <button class="campaign_operate_button" ng-if="!campaign.isJoin" ng-click="join(campaign._id)">
+              <i class="icon ion-android-share"></i>
+              参加活动
+            </button>
+            <button class="campaign_operate_button" ng-if="campaign.isJoin" ng-click="quit(campaign._id)">
+              <i class="icon ion-android-share"></i>
+              退出活动
+            </button>
           </div>
           <div class="col-33 col-30">
-            <p class="campaign_operate_text">share</p>
+            <p class="campaign_operate_text campaign_operate_share">
+              <i class="icon ion-android-share"></i>
+              share
+            </p>
           </div>
         </div>
       </ion-item>
