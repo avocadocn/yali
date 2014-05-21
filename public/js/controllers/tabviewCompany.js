@@ -93,64 +93,6 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     }
 }]);
 
-//已移至AccountFormController
-// tabViewCompany.controller('GroupListController', ['$http', '$scope',
-//  function ($http, $scope) {
-//     $http.get('/group/getCompanyGroups').success(function(data, status) {
-//       $scope.teams = data.teams;
-//       $scope.cid = data.cid;
-//       $scope.role = data.role;
-//     });
-
-//     $scope.setGroupId = function (tid,gid) {
-//         $scope.tid = tid;
-//         $scope.gid = gid;
-//         try{
-//             $http({
-//                 method: 'post',
-//                 url: '/search/user',
-//                 data:{
-//                     cid: $scope.cid,
-//                     gid: $scope.gid,
-//                     tid: $scope.tid
-//                 }
-//             }).success(function(data, status) {
-//                 //发布活动后跳转到显示活动列表页面
-//                 $scope.users = data;
-//             }).error(function(data, status) {
-//                 //TODO:更改对话框
-//                 alert('数据发生错误！');
-//             });
-//         }
-//         catch(e){
-//             console.log(e);
-//         }
-//     };
-//     $scope.appointLeader = function (uid) {
-//       try{
-//             $http({
-//                 method: 'post',
-//                 url: '/company/appointLeader',
-//                 data:{
-//                     cid: $scope.cid,
-//                     gid: $scope.gid,
-//                     tid: $scope.tid,
-//                     uid: uid
-//                 }
-//             }).success(function(data, status) {
-//                 //发布活动后跳转到显示活动列表页面
-//                 window.location.reload();
-//             }).error(function(data, status) {
-//                 //TODO:更改对话框
-//                 alert('数据发生错误！');
-//             });
-//         }
-//         catch(e){
-//             console.log(e);
-//         }
-//     };
-// }]);
-
 tabViewCompany.controller('CampaignListController', ['$http','$scope',
   function($http,$scope) {
     $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
