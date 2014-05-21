@@ -46,7 +46,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
     var teamId;
     $scope.$watch('teamId',function(tid){
-        teamId - tid;
+        teamId = tid;
         $http.get('/group/getGroupMessages/'+tid +'?' + Math.round(Math.random()*100)).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
