@@ -7,23 +7,38 @@
       .row
         label.info_label.col-md-12.control-label 真实姓名
         .col-md-5
-          input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="true")
+          if (role==='HR')
+            input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="false")
+          else
+            input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="true")
       .row
         label.info_label.col-md-12.control-label 昵称
         .col-md-5
-          input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="{{#{role}==EMPLOYEE}}")
+          if (role==='HR')
+            input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="false")
+          else
+            input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="true")
       .row
         label.info_label.col-md-12.control-label 用户名
         .col-md-5
-          input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="true")
+          if (role==='HR')
+            input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="false")
+          else
+            input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="true")
       .row
         label.info_label.col-md-12.control-label 部门
         .col-md-5
-          input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="{{#{role}==EMPLOYEE}}")
+          if (role==='HR')
+            input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="false")
+          else
+            input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="true")
       .row
         label.info_label.col-md-12.control-label 职位
         .col-md-5
-          input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="{{#{role}==EMPLOYEE}}")
+          if (role==='HR')
+            input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="false")
+          else
+            input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="true")
       .row
         label.info_label.col-md-12.control-label 注册日期
         .col-md-5

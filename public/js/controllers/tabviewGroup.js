@@ -43,13 +43,17 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
-    var teamId = $('#team_content').attr('team-id');
+
+    $scope.$watch('teamId',function(tid){
+        $http.get('/group/getGroupMessages/'+tid +'?' + Math.round(Math.random()*100)).success(function(data, status) {
+            $scope.group_messages = data.group_messages;
+            $scope.role = data.role;
+        });
+    });
+
+    //var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
     //消除ajax缓存
-    $http.get('/group/getGroupMessages/'+teamId +'?' + Math.round(Math.random()*100)).success(function(data, status) {
-      $scope.group_messages = data.group_messages;
-      $scope.role = data.role;
-    });
     $scope.vote = function(provoke_message_id, status, index) {
          try {
             $http({
@@ -102,18 +106,24 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $rootScope.nowTab = 'group_campaign';
 
 
-    var teamId = $('#team_content').attr('team-id');
-    var groupId = $('#team_content').attr('group-id');
-    //消除ajax缓存
-    $http.get('/group/getCampaigns/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
-      $scope.campaigns = data.data;
-      $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
+    var groupId;
+    $scope.$watch('teamId',function(tid){
+        //消除ajax缓存
+        $http.get('/group/getCampaigns/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
+            $scope.campaigns = data.data;
+            $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
+        });
+
+        //TODO 发起活动或者挑战时搜索应约对象 暂时先放在这里
+        $http.get('/search/company').success(function(data, status) {
+            $scope.companies = data;
+        });
     });
 
-    //TODO 发起活动或者挑战时搜索应约对象 暂时先放在这里
-    $http.get('/search/company').success(function(data, status) {
-      $scope.companies = data;
+    $scope.$watch('groupId',function(gid){
+        groupId = gid;
     });
+
 
     $scope.company = false;
 
@@ -299,35 +309,38 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'group_member';
 
-    var teamId = $('#team_content').attr('team-id');
-    $http.get('/group/getGroupMembers/'+teamId+'?' + Math.round(Math.random()*100)).success(function(data, status) {
-      if(data.result==1){
-        $scope.members = data.data.member;
-        $scope.leaders = data.data.leader;
-        $scope.company = false;
-      }
-      $scope.userDetail = function(index) {
-        $scope.num = index;
-      }
+    $scope.$watch('teamId',function(tid){
+        $http.get('/group/getGroupMembers/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
+            if(data.result==1){
+                $scope.members = data.data.member;
+                $scope.leaders = data.data.leader;
+                $scope.company = false;
+            }
+        });
     });
+
+    $scope.userDetail = function(index) {
+        $scope.num = index;
+    }
 }]);
 
 tabViewGroup.controller('infoController', ['$http', '$scope',function($http, $scope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
-    var teamId = $('#team_content').attr('team-id');
-    $http.get('/group/info/'+teamId).success(function(data, status) {
-        $scope.companyname = data.companyGroup.cname;
-        $scope.create_time = data.entity.create_date ? data.entity.create_date :'';
-        $scope.name = data.companyGroup.name ? data.companyGroup.name : '';
-        $scope.brief = data.companyGroup.brief ? data.companyGroup.brief : '';
-        $scope.leaders = data.companyGroup.leader.length > 0 ? data.companyGroup.leader : '';
-        $scope.main_forces = data.entity.main_force.length > 0 ? data.entity.main_force : '';
-        $scope.alternates = data.entity.alternate.length > 0 ? data.entity.alternate : '';
-        $scope.home_court_1 = data.entity.home_court[0] ? data.entity.home_court[0] : '';
-        $scope.home_court_2 = data.entity.home_court[1] ? data.entity.home_court[1] : '';
-        $scope.family = data.entity.family;
-        $scope.members = data.companyGroup.member;
+    $scope.$watch('teamId',function(tid){
+        $http.get('/group/info/'+tid).success(function(data, status) {
+            $scope.companyname = data.companyGroup.cname;
+            $scope.create_time = data.entity.create_date ? data.entity.create_date :'';
+            $scope.name = data.companyGroup.name ? data.companyGroup.name : '';
+            $scope.brief = data.companyGroup.brief ? data.companyGroup.brief : '';
+            $scope.leaders = data.companyGroup.leader.length > 0 ? data.companyGroup.leader : '';
+            $scope.main_forces = data.entity.main_force.length > 0 ? data.entity.main_force : '';
+            $scope.alternates = data.entity.alternate.length > 0 ? data.entity.alternate : '';
+            $scope.home_court_1 = data.entity.home_court[0] ? data.entity.home_court[0] : '';
+            $scope.home_court_2 = data.entity.home_court[1] ? data.entity.home_court[1] : '';
+            $scope.family = data.entity.family;
+            $scope.members = data.companyGroup.member;
+        });
     });
 
     $scope.editToggle = function() {

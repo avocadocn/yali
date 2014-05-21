@@ -81,6 +81,8 @@ exports.getUser = function(req, res) {
 
   var _gid = req.body.gid;
   var tid = req.body.tid;   //找选择了该队的员工
+
+  console.log(cid,_gid,tid);
   User.find({'cid': cid , 'group':{'$elemMatch':{'gid':_gid, 'team':{'$elemMatch':{'id':tid,'leader':false}}}} },{'_id':1,'nickname':1,'username':1,'group':1}, function (err, users){
 
     if(err || !users){

@@ -307,10 +307,11 @@ exports.home = function(req, res) {
 
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyGroups = function(req, res) {
-  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1,'leader':1}, function(err, teams) {
+  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1}, function(err, teams) {
     if(err || !teams) {
       return res.send([]);
     } else {
+      console.log(teams);
       return res.send({
         'teams':teams,
         'cid':req.session.nowcid

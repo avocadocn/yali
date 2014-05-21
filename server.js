@@ -8,7 +8,9 @@ var express = require('express'),
     path = require('path'),
     passport = require('passport'),
     mkdirp = require('mkdirp'),
-    logger = require('mean-logger');
+    logger = require('mean-logger'),
+    cluster = require('cluster'),
+    numCPUs = require('os').cpus().length;
 
 /**
  * Main application entry file.
@@ -74,8 +76,26 @@ walk(routes_path);
 
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
-app.listen(port);
-console.log('Express app started on port ' + port);
+
+if (cluster.isMaster) {
+    console.log('[master] ' + "start master...");
+
+    for (var i = 0; i < numCPUs; i++) {
+         cluster.fork();
+    }
+
+    cluster.on('listening', function (worker, address) {
+        console.log('[master] ' + 'listening: worker' + worker.id + ',pid:' + worker.process.pid + ', Address:' + address.address + ":" + address.port);
+    });
+
+} else if (cluster.isWorker) {
+    console.log('[worker] ' + "start worker ..." + cluster.worker.id);
+    app.listen(port);
+    console.log('Express app started on port ' + port);
+}
+
+
+
 
 // Initializing logger
 logger.init(app, passport, mongoose);
