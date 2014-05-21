@@ -3,6 +3,7 @@
 var tabViewCompany = angular.module('tabViewCompany', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
 tabViewCompany.run(['$rootScope', function( $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
+    console.log($rootScope.nowTab);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
@@ -22,16 +23,16 @@ tabViewCompany.directive('match', function($parse) {
 tabViewCompany.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/company_member', {
-        templateUrl: '/company/member',
-        controller: 'CompanyMemberController',
-        controllerAs: 'members'
-       })
       .when('/company_campaign', {
         templateUrl: '/company/campaigns',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
+      .when('/company_member', {
+        templateUrl: '/company/member',
+        controller: 'CompanyMemberController',
+        controllerAs: 'members'
+       })
       .when('/company_info', {
         templateUrl: '/company/Info',
         controller: 'AccountFormController',
@@ -58,8 +59,7 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
   }]);
 
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
- function ($http, $scope,$rootScope) {
-    $rootScope.nowTab ='company_member';
+ function ($http, $scope) {
     $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
       //按照员工真实姓名的拼音排序

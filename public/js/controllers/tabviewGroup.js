@@ -55,6 +55,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
     //var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
+    var teamId = $('#team_content').attr('team-id');
     //消除ajax缓存
     $scope.vote = function(provoke_message_id, status, index) {
          try {
@@ -104,10 +105,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
-  function($http, $scope,$rootScope) {
-    $rootScope.nowTab = 'group_campaign';
-
-
+  function($http, $scope) {
     var groupId,teamId;
     $scope.$watch('teamId',function(tid){
         //消除ajax缓存
@@ -309,8 +307,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     };
 }]);
 
-tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', function($http,$scope,$rootScope) {
-    $rootScope.nowTab = 'group_member';
+tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', function($http,$scope) {
 
     $scope.$watch('teamId',function(tid){
         $http.get('/group/getGroupMembers/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
@@ -320,6 +317,7 @@ tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', 
                 $scope.company = false;
             }
         });
+
     });
 
     $scope.userDetail = function(index) {
