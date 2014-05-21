@@ -2,12 +2,24 @@
   .modal-content
     .modal-header
       button(class="close" data-dismiss="modal" aria-hidden="true") X
-      h4.modal-title 任命组长
+      h4.modal-title 编辑小组信息
     .modal-body
+      .row
+        .col-md-2
+          label.info_label.control-label 队名
+        .col-md-8
+          input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="team.name")
+      .row.margin_top_15
+        .col-md-2
+          label.info_label.control-label 简介
+        .col-md-8
+          input.dl_input.form-control.editToggle(type="textarea" rows="10" name ="team.brief" ng-model="brief")
+      hr
       .row
         .col-md-4
           p 该小队的成员
           li(ng-repeat= "user in users")
             a(ng-click="appointLeader(user._id)" data-dismiss="modal") {{user.nickname}}
     .modal-footer
+       button.dl_btn(ng-click="saveGroupInfo()") 保存
        button.dl_btn(data-dismiss="modal") 取消 

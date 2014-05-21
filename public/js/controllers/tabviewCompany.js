@@ -258,8 +258,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
     });
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
-    $scope.groupInfoUnEdit = true;
-    $scope.groupInfoButtonStatus = '编辑队名'
+    // $scope.groupInfoUnEdit = true;
+    // $scope.groupInfoButtonStatus = '编辑队名'
     $scope.infoEditToggle = function() {
         $scope.infoUnEdit = !$scope.infoUnEdit;
         if($scope.infoUnEdit) {
@@ -290,38 +290,38 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         else {
             $scope.infoButtonStatus = '保存';
         }
-    };
-    $scope.groupEditToggle = function() {
-        $scope.groupInfoUnEdit = !$scope.groupInfoUnEdit;
-        if($scope.groupInfoUnEdit) {
-            try{
-                $http({
-                    method : 'post',
-                    url : '/company/saveGroupInfo',
-                    data : {
-                        info : $scope.info
-                    }
-                }).success(function(data, status) {
-                    //TODO:更改对话框
-                    if(data.result === 1)
-                        alert(data.msg);
-                    else
-                        alert(data.msg);
-                    window.location.reload();
-                }).error(function(data, status) {
-                    //TODO:更改对话框
-                    alert('数据发生错误！');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-            $scope.groupInfoButtonStatus = '编辑队名';
-        }
-        else {
-            $scope.groupInfoButtonStatus = '保存队名';
-        }
-    };
+     };
+    // $scope.groupEditToggle = function() {
+    //     //$scope.groupInfoUnEdit = !$scope.groupInfoUnEdit;
+    //     //if($scope.groupInfoUnEdit) {
+    //         try{
+    //             $http({
+    //                 method : 'post',
+    //                 url : '/company/saveGroupInfo',
+    //                 data : {
+    //                     info : $scope.info
+    //                 }
+    //             }).success(function(data, status) {
+    //                 //TODO:更改对话框
+    //                 if(data.result === 1)
+    //                     alert(data.msg);
+    //                 else
+    //                     alert(data.msg);
+    //                 window.location.reload();
+    //             }).error(function(data, status) {
+    //                 //TODO:更改对话框
+    //                 alert('数据发生错误！');
+    //             });
+    //         }
+    //         catch(e) {
+    //             console.log(e);
+    //         }
+            //$scope.groupInfoButtonStatus = '编辑队名';
+        //}
+        // else {
+        //     $scope.groupInfoButtonStatus = '保存队名';
+        // }
+    //};
     $http.get('/group/getCompanyGroups').success(function(data, status) {
         $scope.team_lists = data.teams;
         $scope.cid = data.cid;
@@ -353,6 +353,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             console.log(e);
         }
     };
+    //指定队长
     $scope.appointLeader = function (uid) {
       try{
             $http({
@@ -365,8 +366,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                     uid: uid
                 }
             }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
-                window.location.reload();
+                //指定完后不跳转，可继续编辑队名等
+                //window.location.reload();
+                alert('队长指定成功！');
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alert('数据发生错误！');
@@ -377,7 +379,31 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         }
     };
 
-
+    $scope.saveGroupInfo =function (){
+        try{
+            $http({
+                method:'post',
+                url: '/group/saveInfo',
+                data:{
+                    'name': $scope.team.name
+                }
+            }).success(function(data, status) {
+                    //TODO:更改对话框
+                    if(data.result === 1) {
+                        alert('信息修改成功！');
+                        window.location.reload();
+                    }
+                    else
+                        alert(data.msg);
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        } 
+        catch(e){
+            console.log(e);
+        }
+    };
 
 }]);
 tabViewCompany.controller('PasswordFormController', ['$http','$scope', function($http,$scope) {

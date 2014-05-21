@@ -45,7 +45,7 @@ module.exports = function(app, passport) {
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);
     app.post('/company/saveAccount', authorization.requiresCompany, company.saveAccount);
     //公司小组查看修改
-    app.post('/company/saveGroupInfo',authorization.requiresCompany,company.saveGroupInfo);
+    //app.post('/company/saveGroupInfo',authorization.requiresCompany,company.saveGroupInfo);
     app.get('/company/groupList', authorization.requiresLogin, company.renderGroupList);
     //企业发布活动
     app.post('/company/campaignSponsor', authorization.requiresCompany, company.sponsor);

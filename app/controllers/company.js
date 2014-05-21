@@ -471,15 +471,15 @@ exports.Info = function(req, res) {
         });
 };
 
-exports.saveGroupInfo = function(req, res){
-    if(req.session.gid !== undefined){
-        var _group ={};
-        if(req.body.group!==undefined){
-            _group = req.body.company;
-        }
+// exports.saveGroupInfo = function(req, res){
+//     if(req.session.gid !== undefined){
+//         var _group ={};
+//         if(req.body.group!==undefined){
+//             _group = req.body.company;
+//         }
 
-    }
-};
+//     }
+// };
 
 exports.getAccount = function(req, res) {
     Company.findOne({'_id': req.session.nowcid}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
