@@ -72,6 +72,10 @@
   color: #fff;
   background-color: #ea6060;
 }
+.login_button:hover {
+  color: #fff;
+  background-color: #e57272;
+}
 .login_forget {
   text-align: center;
   font-size: 12px;
