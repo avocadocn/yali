@@ -53,7 +53,6 @@ var UserSchema = new Schema({
         default: 'user'
     },
     salt: String,
-
     photo: {
         type: String,
         default: '/img/icons/default_user_photo.png'

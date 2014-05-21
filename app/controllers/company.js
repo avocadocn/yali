@@ -46,6 +46,78 @@ exports.authorize = function(req, res, next){
 
     next();
 };
+/*
+  忘记密码
+*/
+exports.renderForgetPwd = function(req, res){
+  res.render('company/forgetPwd',{
+    title:'忘记密码'
+  });
+}
+exports.forgetPwd = function(req, res){
+  Company.findOne({login_email: req.body.email}, function(err, company) {
+    if(err || !company) {
+      return  res.render('company/forgetPwd',{
+                title:'忘记密码',
+                err: '您输入的账号不存在'
+              });
+    } else {
+      mail.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host);
+      res.render('company/forgetPwd', {
+        title: '忘记密码',
+        success:'1'
+      });
+    }
+  });
+}
+exports.renderResetPwd = function(req, res){
+  var key = req.query.key;
+  var uid = req.query.uid;
+  var time = req.query.time;
+  time = new Date(encrypt.decrypt(time, config.SECRET));
+  var validTime = new Date();
+  validTime.setMinutes(new Date().getMinutes()-30);
+  if(time<validTime){
+    return  res.render('company/forgetPwd',{
+          title:'忘记密码',
+          err: '您的验证邮件已经失效，请重新申请'
+        });
+  }
+  else if(encrypt.encrypt(uid, config.SECRET) ===key){
+      res.render('company/resetPwd',{
+        title:'重设密码',
+        id: uid
+      });
+  }
+  else{
+      return  res.render('company/forgetPwd',{
+        title:'忘记密码',
+        err: '您的验证链接无效，请重新验证'
+      });
+  }
+
+}
+exports.resetPwd = function(req, res){
+    console.log(req.body.id);
+  Company.findOne({_id: req.body.id}, function(err, company) {
+    if(err || !company) {
+      return  res.render('company/resetPwd',{
+                title:'重设密码',
+                err: '您输入的账号不存在'
+              });
+    } else {
+      company.password = req.body.password;
+      company.save(function(err){
+        if(!err){
+          res.render('company/resetPwd', {
+            title: '重设密码',
+            success: '1'
+          });
+        }
+      });
+    }
+  });
+}
 exports.signin = function(req, res) {
     res.render('company/signin', {title: '公司登录'});
 };

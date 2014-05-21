@@ -4,14 +4,16 @@ block auth
   form.signin.form-horizontal(action="/users/session" method="post")
     .form-group
       label.col-md-4.control-label(for="email") Email
-      .col-md-8
+      .col-md-6
         input#email.form-control(type="email" name="username" placeholder="Email" required)
     .form-group
       label.col-md-4.control-label(for="password") Password
-      .col-md-8
+      .col-md-6
         input#password.form-control(type="password" name="password" placeholder="password" required)
     .form-group
       .col-md-offset-4.col-md-8
         button.btn.btn-primary(type="submit") Sign in
         | &nbsp;or&nbsp;
         a.show-signup(href="/users/signup") Sign up
+        | &nbsp;&nbsp;
+        a.reset-pwd(href="/users/forgetPwd")  忘记密码

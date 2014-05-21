@@ -56,7 +56,78 @@ exports.signin = function(req, res) {
     });
   }
 };
+/*
+  忘记密码
+*/
+exports.renderForgetPwd = function(req, res){
+  res.render('users/forgetPwd',{
+    title:'忘记密码'
+  });
+}
+exports.forgetPwd = function(req, res){
+  User.findOne({email: req.body.email}, function(err, user) {
+    if(err || !user) {
+      return  res.render('users/forgetPwd',{
+                title:'忘记密码',
+                err: '您输入的账号不存在'
+              });
+    } else {
+      mail.sendStaffResetPwdMail(user.email, user._id.toString(), req.headers.host);
+      res.render('users/forgetPwd', {
+        title: '忘记密码',
+        success:'1'
+      });
+    }
+  });
+}
+exports.renderResetPwd = function(req, res){
+  var key = req.query.key;
+  var uid = req.query.uid;
+  var time = req.query.time;
+  time = new Date(encrypt.decrypt(time, config.SECRET));
+  var validTime = new Date();
+  validTime.setMinutes(new Date().getMinutes()-30);
+  if(time<validTime){
+    return  res.render('users/forgetPwd',{
+          title:'忘记密码',
+          err: '您的验证邮件已经失效，请重新申请'
+        });
+  }
+  else if(encrypt.encrypt(uid, config.SECRET) ===key){
+      res.render('users/resetPwd',{
+        title:'重设密码',
+        id: uid
+      });
+  }
+  else{
+      return  res.render('users/forgetPwd',{
+        title:'忘记密码',
+        err: '您的验证链接无效，请重新验证'
+      });
+  }
 
+}
+exports.resetPwd = function(req, res){
+  User.findOne({_id: req.body.id}, function(err, user) {
+    if(err || !user) {
+      console.log('err');
+      return  res.render('users/resetPwd',{
+                title:'重设密码',
+                err: '您输入的账号不存在'
+              });
+    } else {
+      user.password = req.body.password;
+      user.save(function(err){
+        if(!err){
+          res.render('users/resetPwd', {
+            title: '重设密码',
+            success: '1'
+          });
+        }
+      });
+    }
+  });
+}
 /**
  * Logout
  */

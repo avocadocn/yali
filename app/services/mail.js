@@ -58,3 +58,35 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
     html: html
   });
 };
+exports.sendStaffResetPwdMail = function(who, uid, host) {
+  var from = '动梨无限<nicoJiang@55yali.com>';
+  var to = who;
+  var subject = '动梨社区员工密码重置';
+  var html = '<p>您好：<p/>' +
+    '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
+    '<a href="http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
+    '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+'">密码重置</a>';
+
+  sendMail({
+    from: from,
+    to: to,
+    subject: subject,
+    html: html
+  });
+};
+exports.sendCompanyResetPwdMail = function(who, uid, host) {
+  var from = '动梨无限<nicoJiang@55yali.com>';
+  var to = who;
+  var subject = '动梨社区公司密码重置';
+  var html = '<p>您好：<p/>' +
+    '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
+    '<a href="http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
+    '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+'">密码重置</a>';
+
+  sendMail({
+    from: from,
+    to: to,
+    subject: subject,
+    html: html
+  });
+};

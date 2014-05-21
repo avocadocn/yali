@@ -21,7 +21,11 @@ module.exports = function(app, passport) {
         failureRedirect: '/company/signin',
         failureFlash: true
     }), company.loginSuccess);
-
+    app.get('/company/forgetPwd', company.renderForgetPwd);
+    app.post('/company/forgetPassword', company.forgetPwd);
+    app.get('/company/resetPwd', company.renderResetPwd);
+    app.post('/company/resetPassword', company.resetPwd);
+    
     app.get('/company/validate', company.validate);//点击公司激活链接
 
     app.get('/company/validate/error', company.validateError);
