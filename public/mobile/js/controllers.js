@@ -154,11 +154,29 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, Authorize) {
+.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize) {
   Authorize.Authorize();
 
-
   $scope.group = $rootScope.show_list[$stateParams.group_index];
+
+  $scope.templates = ['templates/_group_info.html', 'templates/_campaigns.html'];
+
+  $scope.template = $scope.templates[0];
+
+  $scope.info = function() {
+    $scope.template = $scope.templates[0];
+  };
+
+  $scope.campaign = function() {
+    console.log('/group/' + $scope.group._id + '/campaigns');
+    $http.get('/group/' + $scope.group._id + '/campaigns').
+      success(function(data, status, headers, config) {
+        $scope.campaign_list = data.data;
+        $scope.template = $scope.templates[1];
+      }
+    );
+  };
+
 })
 
 

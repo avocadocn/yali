@@ -1109,3 +1109,66 @@ exports.competitionPhotoAlbumDetail = function(req, res) {
     }
   });
 };
+
+
+
+exports.getCampaignsForApp = function(req, res) {
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
+  var user = req.user;
+  var tid = req.params.teamId;
+
+  Campaign
+  .where('team').all(tid)
+  .populate('team')
+  .exec()
+  .then(function(campaigns) {
+
+    var response_data = [];
+
+    campaigns.forEach(function(campaign) {
+
+
+      var is_join = false;
+      for (var i = 0; i < campaign.member.length; i++) {
+        if (user._id.toString() === campaign.member[i].uid.toString()) {
+          is_join = true;
+        }
+      }
+
+      var group_index = arrayObjectIndexOf(user.group, campaign.gid, '_id');
+      if (group_index > -1) {
+        for (var i = 0; i < campaign.team.length; i++) {
+          var team_index = arrayObjectIndexOf(user.group[group_index].team, campaign.team[i]._id, 'id')
+          if (team_index > -1) {
+            var team_name = campaign.team[i].name;
+            var team_id = campaign.team[i]._id;
+          }
+        }
+      }
+
+      response_data.push({
+        _id: campaign._id,
+        team_name: team_name,
+        team_id: team_id,
+        content: campaign.content,
+        start_time: campaign.start_time,
+        member_count: campaign.member.length,
+        is_join: is_join
+      });
+    });
+
+    res.send({ result: 1, msg: '获取活动列表成功', data: response_data });
+
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send({ result: 0, msg: '获取活动列表失败' });
+  });
+
+
+
+};
+
+

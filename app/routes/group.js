@@ -53,4 +53,7 @@ module.exports = function(app) {
   app.get('/group/competition/:competitionId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.competitionPhotoAlbumDetail);
   app.post('/group/oneTeam',authorization.requiresLogin, group.getOneTeam);
 
+  // for app
+  app.get('/group/:teamId/campaigns', authorization.requiresLogin, group.getCampaignsForApp);
+
 };

@@ -98,7 +98,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   var authorize = false;
 
   // TO DO: for test
-  authorize = true;
+  //authorize = true;
 
   var Authorize = function() {
     if (authorize === false) {
