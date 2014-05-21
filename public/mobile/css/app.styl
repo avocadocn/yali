@@ -37,6 +37,86 @@ themeColor = #3abde8
   max-width 40%
 
 
+
+
+
+
+
+
+
+
+
+// menu
+
+oddItemBgcolor = #35add5
+evenItemBgcolor = #37b4dd
+
+
+.menu_wrap
+  background-color themeColor
+
+  .has-header
+    overflow visible
+
+  .menu_header
+    background-color themeColor
+    z-index 0
+    border-bottom none
+
+.menu_logo
+  margin-left auto
+  margin-right auto
+  margin-top 3px
+  width 75px
+  height 20px
+
+.menu_personal_info
+  color white
+
+.menu_photo
+  display block
+  margin-left auto
+  margin-right auto
+  margin-top -10px
+  border 2px solid white
+  border-radius 5px
+
+.menu_nickname
+  margin-top 10px
+  margin-bottom 10px
+  font-size 24px
+  text-align center
+
+
+.menu_list .list
+  .item
+    color white
+    border none
+
+    &:nth-child(2n+1)
+      background-color oddItemBgcolor
+      a
+        background-color oddItemBgcolor
+
+    &:nth-child(2n+2)
+      background-color evenItemBgcolor
+      a
+        background-color evenItemBgcolor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // login page
 
 loginButtonBgcolor = #ea6060
@@ -114,6 +194,11 @@ loginInfoBgcolor = #75d1ef
   font-size 12px
   color white
   background-color loginInfoBgcolor
+
+
+
+
+
 
 
 

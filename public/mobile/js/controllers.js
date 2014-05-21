@@ -4,6 +4,7 @@ angular.module('starter.controllers', [])
   $scope.logout = Authorize.Logout;
 
   $scope.nickname = window.localStorage.getItem('nickname');
+  $scope._id = window.localStorage.getItem('_id');
 })
 
 .controller('LoginCtrl', function($scope, $http, $state, Authorize) {

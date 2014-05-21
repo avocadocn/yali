@@ -6,12 +6,16 @@
     <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-pane>
 
-  <ion-side-menu side="left">
-    <header class="bar bar-header bar-stable">
-      <h1 class="title">{{ nickname }}</h1>
+  <ion-side-menu side="left" class="menu_wrap">
+    <header class="bar bar-header bar-stable menu_header">
+      <img class="menu_logo" src="img/logo_b.png"/>
     </header>
     <ion-content class="has-header">
-      <ion-list>
+      <div class="menu_personal_info">
+        <img class="menu_photo" src="/userPhoto/{{ _id }}/80/80"/>
+        <p class="menu_nickname">{{ nickname }}</p>
+      </div>
+      <ion-list class="menu_list">
         <ion-item nav-clear menu-close href="#/app">
           首页
         </ion-item>
