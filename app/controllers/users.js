@@ -1190,7 +1190,39 @@ exports.user = function(req, res, next, id) {
 };
 
 
+exports.getGroups = function(req, res) {
+  CompanyGroup
+  .find({ cid: req.user.cid })
+  .exec()
+  .then(function(company_groups) {
+    var joined_groups = [];
+    var unjoin_groups = [];
 
+    company_groups.forEach(function(company_group) {
+      for (var i = 0; i < company_group.member.length; i++) {
+        if (req.user._id.toString() === company_group.member[i]._id.toString()) {
+          joined_groups.push(company_group);
+          return;
+        }
+      }
+      unjoin_groups.push(company_group);
+    });
+
+    res.send({
+      result: 1,
+      msg: '获取小组列表成功',
+      joined_groups: joined_groups,
+      unjoin_groups: unjoin_groups
+    });
+
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.status(500).send('获取小组列表失败');
+  });
+
+
+};
 
 
 

@@ -77,7 +77,7 @@ walk(routes_path);
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
 app.listen(port);
-
+console.log('Express app started on port ' + port);
 
 //node cluster集群设置
 /*

@@ -61,8 +61,11 @@ module.exports = function(app, passport) {
     app.get('/users/logout', authorization.requiresLogin, users.appLogout);
 
     app.get('/users/campaigns', authorization.requiresLogin, users.getCampaignsForApp);
-
     app.get('/users/schedules', authorization.requiresLogin, users.getSchedules);
+    app.get('/users/groups', authorization.requiresLogin, users.getGroups);
+
+
+
     app.param('userId', users.user);
 
 };

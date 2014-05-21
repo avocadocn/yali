@@ -68,12 +68,6 @@ module.exports = function(app, passport, db) {
             })
         }));
 
-        // 创建上传文件临时目录
-        var uploadDir = config.root + '/temp_uploads/';
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir);
-        }
-
 
         //app.use(middleware.auth_user);
 

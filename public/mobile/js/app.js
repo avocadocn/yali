@@ -15,9 +15,9 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   $stateProvider
 
     .state('app', {
-      url: "/app",
+      url: '/app',
       abstract: true,
-      templateUrl: "templates/menu.html",
+      templateUrl: 'templates/menu.html',
       controller: 'AppCtrl'
     })
 
@@ -50,22 +50,36 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     .state('app.dynamicList', {
       url: "/dynamic_list",
       views: {
-        'menuContent' :{
-          templateUrl: "templates/dynamic_list.html",
+        'menuContent': {
+          templateUrl: 'templates/dynamic_list.html',
           controller: 'DynamicListCtrl'
         }
       }
     })
 
-    .state('app.single', {
-      url: "/playlists/:playlistId",
+    .state('app.groupList', {
+      url: '/group_list',
       views: {
-        'menuContent' :{
-          templateUrl: "templates/playlist.html",
-          controller: 'PlaylistCtrl'
+        'menuContent': {
+          templateUrl: 'templates/group_list.html',
+          controller: 'GroupListCtrl'
+        }
+      }
+    })
+
+
+    .state('app.groupDetail', {
+      url: '/group_detail/:group_index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/group_detail.html',
+          controller: 'GroupDetailCtrl'
         }
       }
     });
+
+
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/campaign_list');
 
@@ -84,7 +98,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   var authorize = false;
 
   // TO DO: for test
-  //authorize = true;
+  authorize = true;
 
   var Authorize = function() {
     if (authorize === false) {
