@@ -1,0 +1,11 @@
+<ion-list>
+  <ion-item ng-repeat="dynamic in dynamic_list">
+    <p>{{ dynamic.start_time | date:'yyyy-MM-dd hh:mm' }}</p>
+    <p>{{ dynamic.location }}</p>
+    <p>{{ dynamic.content }}</p>
+    <div ng-if="dynamic.provoke.active">
+      <button ng-if="!dynamic.provoke.start_confirm" value="赞成{{ dynamic.positive }}" ng-click="vote(dynamic._id, true, $index)">赞成{{ dynamic.positive }}</button>
+      <button ng-if="!dynamic.provoke.start_confirm" value="反对{{ dynamic.negative }}" ng-click="vote(dynamic._id, false, $index)">反对{{ dynamic.negative }}</button>
+    </div>
+  </ion-item>
+</ion-list>

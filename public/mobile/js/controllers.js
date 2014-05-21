@@ -159,7 +159,11 @@ angular.module('starter.controllers', [])
 
   $scope.group = $rootScope.show_list[$stateParams.group_index];
 
-  $scope.templates = ['templates/_group_info.html', 'templates/_campaigns.html'];
+  $scope.templates = [
+    'templates/_group_info.html',
+    'templates/_campaigns.html',
+    'templates/_dynamics.html'
+  ];
 
   $scope.template = $scope.templates[0];
 
@@ -168,11 +172,19 @@ angular.module('starter.controllers', [])
   };
 
   $scope.campaign = function() {
-    console.log('/group/' + $scope.group._id + '/campaigns');
     $http.get('/group/' + $scope.group._id + '/campaigns').
       success(function(data, status, headers, config) {
         $scope.campaign_list = data.data;
         $scope.template = $scope.templates[1];
+      }
+    );
+  };
+
+  $scope.dynamic = function() {
+    $http.get('/group/getGroupMessages/' + $scope.group._id).
+      success(function(data, status, headers, config) {
+        $scope.dynamic_list = data.group_messages;
+        $scope.template = $scope.templates[2];
       }
     );
   };
