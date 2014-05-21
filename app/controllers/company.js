@@ -471,15 +471,48 @@ exports.Info = function(req, res) {
         });
 };
 
-// exports.saveGroupInfo = function(req, res){
-//     if(req.session.gid !== undefined){
-//         var _group ={};
-//         if(req.body.group!==undefined){
-//             _group = req.body.company;
-//         }
-
-//     }
-// };
+exports.saveGroupInfo = function(req, res){
+    if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+        return res.send(403,forbidden);
+    }
+    CompanyGroup.findOne({'_id' : req.body.tid}, function(err, companyGroup) {
+        if (err) {
+          console.log('数据错误');
+          res.send({'result':0,'msg':'数据查询错误'});
+          return;
+        }
+        if(companyGroup) {
+            companyGroup.name = req.body.tname;
+            companyGroup.save(function (s_err){
+                if(s_err){
+                    console.log(s_err);
+                    res.send({'result':0,'msg':'数据保存错误'});
+                    return;
+                }
+                var entity_type = companyGroup.entity_type;
+                var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
+                Entity.findOne({
+                    'tid': req.body.tid
+                },function(err, entity) {
+                    if (err) {
+                        console.log(err);
+                        return res.send(err);
+                    } else if(entity){
+                        entity.save(function(err){
+                            if(err){
+                              console.log(err);
+                              return res.send({'result':0,'msg':'不存在小队！'});;
+                            }
+                            res.send({'result':1,'msg':'更新成功'});
+                        });
+                    }
+                });
+            });
+        } else {
+            res.send({'result':0,'msg':'不存在小组！'});
+        }
+    });
+};
 
 exports.getAccount = function(req, res) {
     Company.findOne({'_id': req.session.nowcid}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {

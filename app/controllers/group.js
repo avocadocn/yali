@@ -120,15 +120,17 @@ exports.info =function(req,res) {
     });
 };
 
-
-exports.getOneTeam = function(req, res){
-  var tid = req.body.tid
-  CompanyGroup.findOne({'tid':tid},function(err, team){
-    if(err || !team){
+//根据tid返回team
+exports.getOneTeam = function(req, res) {
+  var tid = req.body.tid;
+  CompanyGroup.findOne({
+    '_id':tid
+  },function(err, team){
+    if (err || !team) {
       console.log('cannot find team');
       return res.send();
-    }else{
-      return res.send(team);
+    } else{
+        return res.send(team);
     }  
   });
 };

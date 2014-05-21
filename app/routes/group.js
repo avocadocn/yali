@@ -51,6 +51,6 @@ module.exports = function(app) {
   app.get('/group/:tid/photoAlbum/:photoAlbumId', authorization.requiresLogin, authorization.requiresLogin, group.groupPhotoAlbumDetail);
 
   app.get('/group/competition/:competitionId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.competitionPhotoAlbumDetail);
-
+  app.post('/group/oneTeam',authorization.requiresLogin, group.getOneTeam);
 
 };

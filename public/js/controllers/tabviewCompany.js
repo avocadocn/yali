@@ -318,7 +318,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             });
             $http({
                 method:'post',
-                url:'/search/oneTeam',
+                url:'/group/oneTeam',
                 data:{
                     tid: $scope.tid
                 }
@@ -359,13 +359,14 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         }
     };
 
-    $scope.saveGroupInfo =function (){
+    $scope.saveGroupInfo =function (tid, tname){
         try{
             $http({
                 method:'post',
-                url: '/group/saveInfo',
+                url: '/company/saveGroupInfo',
                 data:{
-                    'name': $scope.team.name
+                    'tid': tid,
+                    'tname': tname
                 }
             }).success(function(data, status) {
                     //TODO:更改对话框
