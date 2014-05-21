@@ -41,32 +41,31 @@ div
       label.info_label.col-md-2.control-label 所在地
     .form-group
       label.info_label.col-md-2.control-label 性别
+      label.col-md-1.control-label(ng-if="baseUnEdit") {{user.sex}}
       if(role!=='PARTNER')
-        .col-md-1
+        .col-md-1(ng-if="!baseUnEdit")
           label.radio.info_radio
             input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
             | 男
-        .col-md-1
+        .col-md-1(ng-if="!baseUnEdit")
           label.radio.info_radio
             input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
             | 女
-      else
-        label.col-md-2.control-label {{user.sex}}
     .form-group
       label.info_label.col-md-2.control-label 生日
       .col-md-2
-        input.dl_input.form-control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-start-view="2" placeholder="Date" ng-disabled="baseUnEdit" bs-datepicker)
+        input.dl_input.form-control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-start-view="2" placeholder="Date" ng-if="!baseUnEdit" bs-datepicker)
+        label.info_label(ng-if="baseUnEdit") {{user.birthday |date:'yyyy-MM-dd'}}
     .form-group
       label.info_label.col-md-2.control-label 血型
       .col-md-2
+        label.col-md-2.control-label(ng-if="baseUnEdit") {{user.bloodType}}
         if(role!=='PARTNER')
-          select.dl_input.form-control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-disabled="baseUnEdit")
+          select.dl_input.form-control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-if="!baseUnEdit")
             option(ng-select="user.bloodType === 'A'") A
             option(ng-select="user.bloodType === 'B'") B
             option(ng-select="user.bloodType === 'O'") O
             option(ng-select="user.bloodType === 'AB'") AB
-        else
-          label.col-md-2.control-label {{user.bloodType}}
     .form-group
       label.info_label.col-md-2.control-label 简介
       .col-md-4
