@@ -3,6 +3,9 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-
+    <p>{{ campaign.content }}</p>
+    <p ng-repeat="opponent in campaign.opponent_list">
+      <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
+    </p>
   </ion-content>
 </ion-view>

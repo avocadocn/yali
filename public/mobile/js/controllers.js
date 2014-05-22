@@ -6,6 +6,11 @@ angular.module('starter.controllers', [])
 
 })
 
+
+
+
+
+
 .controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
 
   if (Authorize.authorize() === true) {
@@ -22,14 +27,21 @@ angular.module('starter.controllers', [])
   $scope.login = Authorize.login($scope, $rootScope);
 })
 
-.controller('CampaignListCtrl', function($scope, Authorize, Campaign) {
+
+
+
+
+
+
+
+.controller('CampaignListCtrl', function($scope, $rootScope, Authorize, Campaign) {
   Authorize.authorize();
 
-  $scope.campaign_list = [];
+  $rootScope.campaign_list = [];
 
   var getCampaigns = function() {
     Campaign.getCampaigns(function(campaign_list) {
-      $scope.campaign_list = campaign_list;
+      $rootScope.campaign_list = campaign_list;
     });
   };
   getCampaigns();
@@ -39,10 +51,10 @@ angular.module('starter.controllers', [])
       return;
     }
 
-    for (var i = 0; i < $scope.campaign_list.length; i++) {
+    for (var i = 0; i < $rootScope.campaign_list.length; i++) {
       var start_time = new Date(newValue[i].start_time);
       var rest_time = start_time - new Date();
-      $scope.campaign_list[i].rest_time = rest_time;
+      $rootScope.campaign_list[i].rest_time = rest_time;
     }
 
   });
@@ -51,6 +63,34 @@ angular.module('starter.controllers', [])
   $scope.quit = Campaign.quit(getCampaigns);
 
 })
+
+
+
+
+
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign) {
+  Authorize.authorize();
+
+  $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
+
+})
+
+
+
+
+
+
+.controller('OpponentDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign) {
+  Authorize.authorize();
+
+
+})
+
+
+
+
+
+
 
 .controller('ScheduleListCtrl', function($scope, Authorize, Schedule) {
   Authorize.authorize();
@@ -64,6 +104,14 @@ angular.module('starter.controllers', [])
 
   $scope.quit = Schedule.quit(getSchedules);
 })
+
+
+
+
+
+
+
+
 
 
 .controller('DynamicListCtrl', function($scope, Authorize, Dynamic) {
@@ -80,6 +128,17 @@ angular.module('starter.controllers', [])
   });
 
 })
+
+
+
+
+
+
+
+
+
+
+
 
 .controller('GroupListCtrl', function($scope, $rootScope, $http, Authorize, Group) {
   Authorize.authorize();
@@ -101,6 +160,16 @@ angular.module('starter.controllers', [])
   };
 
 })
+
+
+
+
+
+
+
+
+
+
 
 .controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize) {
   Authorize.authorize();
@@ -128,6 +197,19 @@ angular.module('starter.controllers', [])
     );
   };
 
+  $scope.$watch('campaign_list', function(newValue, oldValue) {
+    if (newValue === oldValue) {
+      return;
+    }
+
+    for (var i = 0; i < $scope.campaign_list.length; i++) {
+      var start_time = new Date(newValue[i].start_time);
+      var rest_time = start_time - new Date();
+      $scope.campaign_list[i].rest_time = rest_time;
+    }
+
+  });
+
   $scope.dynamic = function() {
     $http.get('/group/getGroupMessages/' + $scope.group._id).
       success(function(data, status, headers, config) {
@@ -138,6 +220,11 @@ angular.module('starter.controllers', [])
   };
 
 })
+
+
+
+
+
 
 .controller('UserInfoCtrl', function($scope, $rootScope, Authorize, GetUserInfo) {
   Authorize.authorize();

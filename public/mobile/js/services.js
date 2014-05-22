@@ -83,7 +83,8 @@ angular.module('starter.services', [])
 
 .factory('Campaign', function($http) {
 
-  var getCampaigns = function(callback) {
+
+  var getUserCampaigns = function(callback) {
     $http.get('/users/campaigns').
       success(function(data, status, headers, config) {
         callback(data.data);
@@ -112,7 +113,7 @@ angular.module('starter.services', [])
   };
 
   return {
-    getCampaigns: getCampaigns,
+    getUserCampaigns: getUserCampaigns,
     join: join,
     quit: quit
   };

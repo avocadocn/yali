@@ -30,16 +30,12 @@ var encrypt = require('../middlewares/encrypt'),
   moment = require('moment'),
   config = require('../config/config'),
   meanConfig = require('../../config/config'),
-  message = require('../language/zh-cn/message');
+  message = require('../language/zh-cn/message'),
+  model_helper = require('../helpers/model_helper');
 
 
 
-function arrayObjectIndexOf(myArray, searchTerm, property) {
-    for(var i = 0, len = myArray.length; i < len; i++) {
-        if (myArray[i][property].toString() === searchTerm.toString()) return i;
-    }
-    return -1;
-}
+
 
 
 
@@ -1248,43 +1244,7 @@ exports.getCampaignsForApp = function(req, res) {
   .populate('team')
   .exec()
   .then(function(campaigns) {
-
-    var response_data = [];
-
-    campaigns.forEach(function(campaign) {
-
-
-      var is_join = false;
-      for (var i = 0; i < campaign.member.length; i++) {
-        if (user._id.toString() === campaign.member[i].uid.toString()) {
-          is_join = true;
-        }
-      }
-
-      var group_index = arrayObjectIndexOf(user.group, campaign.gid, '_id');
-      if (group_index > -1) {
-        for (var i = 0; i < campaign.team.length; i++) {
-          var team_index = arrayObjectIndexOf(user.group[group_index].team, campaign.team[i]._id, 'id')
-          if (team_index > -1) {
-            var team_name = campaign.team[i].name;
-            var team_id = campaign.team[i]._id;
-          }
-        }
-      }
-
-      response_data.push({
-        _id: campaign._id,
-        team_name: team_name,
-        team_id: team_id,
-        content: campaign.content,
-        start_time: campaign.start_time,
-        member_count: campaign.member.length,
-        is_join: is_join
-      });
-    });
-
-    res.send({ result: 1, msg: '获取活动列表成功', data: response_data });
-
+    model_helper.sendCampaignsForApp(user, campaigns, res);
   })
   .then(null, function(err) {
     console.log(err);

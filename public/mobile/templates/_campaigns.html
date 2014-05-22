@@ -1,5 +1,5 @@
 <ion-list>
-  <ion-item class="campaign_item" ng-repeat="campaign in campaign_list" href="#">
+  <ion-item class="campaign_item" ng-repeat="campaign in campaign_list" href="#/app/campaign_detail/{{ $index }}">
     <div class="row campaign_line">
       <p class="campaign_team_info">
         <img class="campaign_group_logo" src="/groupLogo/{{ campaign.team_id }}/35/35"/>

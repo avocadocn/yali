@@ -42,7 +42,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
         'menuContent': {
           templateUrl: 'templates/campaign_detail.html',
-          controller: 'campaignDetailCtrl'
+          controller: 'CampaignDetailCtrl'
+        }
+      }
+    })
+
+    .state('app.opponentDetail', {
+      url: '/opponent_detail/:opponent_index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/opponent_detail.html',
+          controller: 'OpponentDetailCtrl'
         }
       }
     })
