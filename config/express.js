@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var express = require('express'),
-    //RedisStore = require('connect-redis')(express),   //用于nodejs cluster集群共享session
+    RedisStore = require('connect-redis')(express),   //用于nodejs cluster集群共享session
     consolidate = require('consolidate'),
     mongoStore = require('connect-mongo')(express),
     flash = require('connect-flash'),   //session operate
@@ -61,7 +61,12 @@ module.exports = function(app, passport, db) {
         // Express/Mongo session storage
         app.use(express.session({
             secret: config.sessionSecret,
-            //store: new RedisStore()
+            /*
+            store: new RedisStore({
+                db: db.connection.db,
+                port: config.port
+            })
+            */
             store: new mongoStore({
                 db: db.connection.db,
                 collection: config.sessionCollection

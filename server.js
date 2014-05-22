@@ -76,11 +76,12 @@ walk(routes_path);
 
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
-app.listen(port);
-console.log('Express app started on port ' + port);
+//console.log('Express app started on port ' + port);
+//app.listen(port);
+
 
 //node cluster集群设置
-/*
+
 if (cluster.isMaster) {
     console.log('[master] ' + "start master...");
 
@@ -90,14 +91,20 @@ if (cluster.isMaster) {
 
     cluster.on('listening', function (worker, address) {
         console.log('[master] ' + 'listening: worker' + worker.id + ',pid:' + worker.process.pid + ', Address:' + address.address + ":" + address.port);
+        console.log('我的cpu有'+numCPUs+'核哦~~');
     });
 
 } else if (cluster.isWorker) {
+
+    process.on('online', function(msg) {
+        console.log('[worker] '+ cluster.worker.id + 'online status:' + msg);
+    });
+
     console.log('[worker] ' + "start worker ..." + cluster.worker.id);
     app.listen(port);
     console.log('Express app started on port ' + port);
 }
-*/
+
 
 
 

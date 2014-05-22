@@ -861,7 +861,7 @@ exports.campaignCancel = function (req, res) {
             if (err) {
                 console.log('错误');
             }
-            if(campaign.poster.cid !== req.user._id){
+            if(campaign.poster.cid.toString() !== req.user._id.toString()){
                 return res.send(403, 'forbidden!');
             }
             var active = campaign.active;
