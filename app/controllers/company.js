@@ -11,6 +11,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     UUID = require('../middlewares/uuid'),
     GroupMessage = mongoose.model('GroupMessage'),
+    PhotoAlbum = mongoose.model('PhotoAlbum'),
     Config = mongoose.model('Config'),
     Campaign = mongoose.model('Campaign'),
     config = require('../config/config'),
@@ -970,47 +971,64 @@ exports.sponsor = function (req, res) {
     campaign.start_time = req.body.start_time;
     campaign.end_time = req.body.end_time;
 
-    campaign.save(function(err) {
+
+    var photo_album = new PhotoAlbum();
+
+    fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
         if (err) {
             console.log(err);
-            //检查信息是否重复
-            switch (err.code) {
-                case 11000:
-                break;
-            case 11001:
-                res.status(400).send('该活动已经存在!');
-                break;
-            default:
-                break;
-            }
-            return;
+            return res.send({'result':0,'msg':'活动创建失败'});
         }
 
-        //生成动态消息
-
-        var groupMessage = new GroupMessage();
-        groupMessage.team.push(cid);
-        groupMessage.group.gid.push(gid);
-        groupMessage.group.group_type.push(group_type);
-        groupMessage.active = true;
-        groupMessage.cid.push(cid);
-
-        groupMessage.poster.cname = username;
-        groupMessage.poster.cid = cid;
-        groupMessage.poster.role = 'HR';
-
-        groupMessage.content = content;
-        groupMessage.location = location;
-        groupMessage.start_time = req.body.start_time;
-        groupMessage.end_time = req.body.end_time;
-
-        groupMessage.save(function(err) {
+        photo_album.save(function(err) {
             if (err) {
-                return res.send({'result':0,'msg':'活动创建失败'});;
+                console.log(err);
+                return res.send({'result':0,'msg':'活动创建失败'});
             }
-            else{
-                res.send({'result':1,'msg':'活动创建成功'});
-            }
+            campaign.photo_album = { pid: photo_album._id, name: photo_album.name };
+            campaign.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    //检查信息是否重复
+                    switch (err.code) {
+                        case 11000:
+                        break;
+                    case 11001:
+                        res.status(400).send('该活动已经存在!');
+                        break;
+                    default:
+                        break;
+                    }
+                    return;
+                }
+
+                //生成动态消息
+
+                var groupMessage = new GroupMessage();
+                groupMessage.team.push(cid);
+                groupMessage.group.gid.push(gid);
+                groupMessage.group.group_type.push(group_type);
+                groupMessage.active = true;
+                groupMessage.cid.push(cid);
+
+                groupMessage.poster.cname = username;
+                groupMessage.poster.cid = cid;
+                groupMessage.poster.role = 'HR';
+
+                groupMessage.content = content;
+                groupMessage.location = location;
+                groupMessage.start_time = req.body.start_time;
+                groupMessage.end_time = req.body.end_time;
+
+                groupMessage.save(function(err) {
+                    if (err) {
+                        return res.send({'result':0,'msg':'活动创建失败'});
+                    }
+                    else{
+                        res.send({'result':1,'msg':'活动创建成功'});
+                    }
+                });
+            });
         });
     });
 };

@@ -55,6 +55,14 @@ var Campaign = new Schema({
         required: true
     },
 
+    photo_album: {
+        pid: Schema.Types.ObjectId,
+        name: {
+            type: String,
+            default: '活动相册'
+        }
+    },
+
     member: [_member],
 
     create_time: {

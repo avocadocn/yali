@@ -230,7 +230,7 @@ exports.timeLine = function(req, res){
 exports.home = function(req, res) {
   if(req.session.role==='HR' || req.session.role ==='GUESTHR'){
     var photo_album_ids = [];
-    req.companyGroup.photo.forEach(function(photo_album) {
+    req.companyGroup.photo_album.forEach(function(photo_album) {
       photo_album_ids.push(photo_album.pid);
     });
     PhotoAlbum.where('_id').in(photo_album_ids)
@@ -283,7 +283,7 @@ exports.home = function(req, res) {
             }
           }
         }
-        req.companyGroup.photo.forEach(function(photo_album) {
+        req.companyGroup.photo_album.forEach(function(photo_album) {
           photo_album_ids.push(photo_album.pid);
         });
         PhotoAlbum.where('_id').in(photo_album_ids)
@@ -727,50 +727,67 @@ exports.sponsor = function (req, res) {
 
   campaign.start_time = req.body.start_time;
   campaign.end_time = req.body.end_time;
-  campaign.save(function(err) {
+
+  var photo_album = new PhotoAlbum();
+
+  fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
     if (err) {
       console.log(err);
-      //检查信息是否重复
-      switch (err.code) {
-        case 11000:
-            break;
-        case 11001:
-            res.status(400).send('该活动已经存在!');
-            break;
-        default:
-            break;
-      }
-        return;
+      return res.send({'result':0,'msg':'活动创建失败'});
     }
 
-    //生成动态消息
-    var groupMessage = new GroupMessage();
-
-    groupMessage.team.push(tid);
-    groupMessage.group.gid.push(req.companyGroup.gid);
-    groupMessage.group.group_type.push(group_type);
-    groupMessage.active = true;
-    groupMessage.cid.push(cid);
-    groupMessage.poster.cname = cname;
-    groupMessage.poster.cid = cid;
-    groupMessage.poster.role = req.session.role;
-    if(req.session.role==='LEADER'){
-      groupMessage.poster.uid = req.user._id;
-      groupMessage.poster.username = req.user.nickname;
-    }
-    groupMessage.content = content;
-    groupMessage.location = location;
-    groupMessage.start_time = req.body.start_time;
-    groupMessage.end_time = req.body.end_time;
-
-    groupMessage.save(function (err) {
+    photo_album.save(function(err) {
       if (err) {
-        res.send(err);
-        return {'result':0,'msg':'活动发起失败'};
+        console.log(err);
+        return res.send({'result':0,'msg':'活动创建失败'});
       }
-      else{
-        return res.send({'result':1,'msg':'活动发起成功'});
-      }
+      campaign.photo_album = { pid: photo_album._id, name: photo_album.name };
+      campaign.save(function(err) {
+        if (err) {
+          console.log(err);
+          //检查信息是否重复
+          switch (err.code) {
+            case 11000:
+                break;
+            case 11001:
+                res.status(400).send('该活动已经存在!');
+                break;
+            default:
+                break;
+          }
+            return;
+        }
+
+        //生成动态消息
+        var groupMessage = new GroupMessage();
+
+        groupMessage.team.push(tid);
+        groupMessage.group.gid.push(req.companyGroup.gid);
+        groupMessage.group.group_type.push(group_type);
+        groupMessage.active = true;
+        groupMessage.cid.push(cid);
+        groupMessage.poster.cname = cname;
+        groupMessage.poster.cid = cid;
+        groupMessage.poster.role = req.session.role;
+        if(req.session.role==='LEADER'){
+          groupMessage.poster.uid = req.user._id;
+          groupMessage.poster.username = req.user.nickname;
+        }
+        groupMessage.content = content;
+        groupMessage.location = location;
+        groupMessage.start_time = req.body.start_time;
+        groupMessage.end_time = req.body.end_time;
+
+        groupMessage.save(function (err) {
+          if (err) {
+            res.send(err);
+            return {'result':0,'msg':'活动发起失败'};
+          }
+          else{
+            return res.send({'result':1,'msg':'活动发起成功'});
+          }
+        });
+      });
     });
   });
 };
@@ -1071,7 +1088,7 @@ exports.getLogo = function(req, res) {
 
 exports.managePhotoAlbum = function(req, res) {
   var photo_album_ids = [];
-  req.companyGroup.photo.forEach(function(photo_album) {
+  req.companyGroup.photo_album.forEach(function(photo_album) {
     photo_album_ids.push(photo_album.pid);
   })
   PhotoAlbum.where('_id').in(photo_album_ids)
@@ -1085,7 +1102,7 @@ exports.managePhotoAlbum = function(req, res) {
         }
       });
       res.render('group/manage_photo_album',
-        { owner_id : req.params.temaId,
+        { owner_id : req.params.teamId,
           photo_albums: visible_photo_albums
       });
     }
