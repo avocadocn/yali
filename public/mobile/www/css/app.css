@@ -161,10 +161,14 @@
 }
 .campaign_item {
   background-color: transparent;
+  padding: 0;
 }
 .campaign_item .item-content {
   padding: 0;
   background-color: transparent;
+}
+.campaign_link {
+  text-decoration: none;
 }
 .campaign_line {
   margin-top: 0 !important;
