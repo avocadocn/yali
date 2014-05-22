@@ -1,6 +1,6 @@
 // Ionic Starter App
 
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -33,6 +33,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         'menuContent': {
           templateUrl: 'templates/campaign_list.html',
           controller: 'CampaignListCtrl'
+        }
+      }
+    })
+
+    .state('app.campaignDetail', {
+      url: '/campaign_detail/:campaign_index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/campaign_detail.html',
+          controller: 'campaignDetailCtrl'
         }
       }
     })
@@ -95,81 +105,5 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   $urlRouterProvider.otherwise('/login');
 
 
-})
-
-
-.factory('Authorize', function($state, $http) {
-
-
-  /**
-   * 是否经过授权
-   * @property authorize
-   * @type Boolean
-   * @default false
-   */
-  var authorize = false;
-
-  // TO DO: for test
-  //authorize = true;
-
-  var Authorize = function() {
-    if (authorize === false) {
-      $state.go('login');
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  var Login = function($scope, $rootScope) {
-    return function(username, password) {
-      $http.post('/users/login', { username: username, password: password })
-      .success(function(data, status, headers, config) {
-        if (data.result === 1) {
-          authorize = true;
-          var user_info = data.data;
-          if (user_info) {
-            $rootScope._id = user_info._id;
-            $rootScope.nickname = user_info.nickname;
-          }
-          $state.go('app.campaignList');
-        }
-      })
-      .error(function(data, status, headers, config) {
-        if (status === 401) {
-          $scope.loginMsg = '用户名或密码错误';
-        }
-      });
-    };
-  };
-
-  var Logout = function() {
-    $http.get('/users/logout')
-    .success(function(data, status, headers, config) {
-      if (data.result === 1) {
-        authorize = false;
-        $state.go('login');
-      }
-    });
-  };
-
-  return {
-    Authorize: Authorize,
-    Login: Login,
-    Logout: Logout
-  };
-
-})
-
-
-.factory('GetUserInfo', function($http) {
-  return function(_id, callback) {
-    $http.post('/users/info', { _id: _id })
-    .success(function(data, status, headers, config) {
-      if (data.result === 1) {
-        callback(data.user);
-      }
-    });
-  };
 });
 

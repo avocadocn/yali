@@ -2,13 +2,13 @@ angular.module('starter.controllers', [])
 
 // html template get user info from $rootScope
 .controller('AppCtrl', function($scope, $rootScope, Authorize) {
-  $scope.logout = Authorize.Logout;
+  $scope.logout = Authorize.logout;
 
 })
 
 .controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
 
-  if (Authorize.Authorize() === true) {
+  if (Authorize.authorize() === true) {
     $state.go('app.campaignList');
   }
 
@@ -19,21 +19,20 @@ angular.module('starter.controllers', [])
 
   $scope.loginMsg = '';
 
-  $scope.login = Authorize.Login($scope, $rootScope);
+  $scope.login = Authorize.login($scope, $rootScope);
 })
 
-.controller('CampaignListCtrl', function($scope, $http, $state, Authorize) {
-  Authorize.Authorize();
+.controller('CampaignListCtrl', function($scope, Authorize, Campaign) {
+  Authorize.authorize();
 
   $scope.campaign_list = [];
 
   var getCampaigns = function() {
-    $http.get('/users/campaigns').
-      success(function(data, status, headers, config) {
-        $scope.campaign_list = data.data;
-      }
-    );
+    Campaign.getCampaigns(function(campaign_list) {
+      $scope.campaign_list = campaign_list;
+    });
   };
+  getCampaigns();
 
   $scope.$watch('campaign_list', function(newValue, oldValue) {
     if (newValue === oldValue) {
@@ -48,97 +47,50 @@ angular.module('starter.controllers', [])
 
   });
 
-  getCampaigns();
-
-  $scope.join = function(id) {
-    $http.post('/users/joinCampaign', { campaign_id: id }).
-      success(function(data, status, headers, config) {
-        getCampaigns();
-      }
-    );
-  };
-
-  $scope.quit = function(id) {
-    $http.post('/users/quitCampaign', { campaign_id: id }).
-      success(function(data, status, headers, config) {
-        getCampaigns();
-      }
-    );
-  }
+  $scope.join = Campaign.join(getCampaigns);
+  $scope.quit = Campaign.quit(getCampaigns);
 
 })
 
-.controller('ScheduleListCtrl', function($scope, $http, $state, Authorize) {
-  Authorize.Authorize();
+.controller('ScheduleListCtrl', function($scope, Authorize, Schedule) {
+  Authorize.authorize();
 
   var getSchedules = function() {
-    $http.get('/users/schedules').
-      success(function(data, status, headers, config) {
-        $scope.schedule_list = data.data;
-      }
-    );
-  };
-
-  getSchedules();
-
-
-  $scope.quit = function(id) {
-    $http.post('/users/quitCampaign', { campaign_id: id }).
-      success(function(data, status, headers, config) {
-        getSchedules();
-      }
-    );
-  };
-})
-
-
-.controller('DynamicListCtrl', function($scope, $http, $state, Authorize) {
-  Authorize.Authorize();
-
-  var getDynamics = function () {
-    $http.get('/users/getGroupMessages').
-      success(function(data, status, headers, config) {
-        $scope.dynamic_list = data.group_messages;
-      }
-    );
-  };
-
-  $scope.vote = function(provoke_dynamic_id, status, index) {
-    $http.post('/users/vote', {
-        provoke_message_id: provoke_dynamic_id,
-        aOr: status,
-        tid: $scope.dynamic_list[index].my_team_id
-      }
-    ).success(function(data, status) {
-      if(data.msg != undefined && data.msg != null) {
-
-      } else {
-        $scope.dynamic_list[index].positive = data.positive;
-        $scope.dynamic_list[index].negative = data.negative;
-      }
-    }).error(function(data, status) {
-
+    Schedule.getSchedules(function(schedule_list) {
+      $scope.schedule_list = schedule_list;
     });
   };
+  getSchedules();
 
-  getDynamics();
+  $scope.quit = Schedule.quit(getSchedules);
+})
+
+
+.controller('DynamicListCtrl', function($scope, Authorize, Dynamic) {
+  Authorize.authorize();
+
+  Dynamic.getDynamics(function(dynamic_list) {
+    $scope.dynamic_list = dynamic_list;
+  });
+
+
+  $scope.vote = Dynamic.vote($scope.dynamic_list, function(positive, negative) {
+    $scope.dynamic_list[index].positive = positive;
+    $scope.dynamic_list[index].negative = negative;
+  });
 
 })
 
-.controller('GroupListCtrl', function($scope, $rootScope, $http, $state, $stateParams, Authorize) {
-  Authorize.Authorize();
+.controller('GroupListCtrl', function($scope, $rootScope, $http, Authorize, Group) {
+  Authorize.authorize();
 
   $rootScope.show_list = [];
 
-  var getGroups = function() {
-    $http.get('/users/groups').
-      success(function(data, status, headers, config) {
-        $scope.joined_list = data.joined_groups;
-        $scope.unjoin_list = data.unjoin_groups;
-        $rootScope.show_list = $scope.joined_list;
-      }
-    );
-  };
+  Group.getGroups(function(joined_groups, unjoin_groups) {
+    $scope.joined_list = joined_groups;
+    $scope.unjoin_list = unjoin_groups;
+    $rootScope.show_list = $scope.joined_list;
+  });
 
   $scope.joinedList = function() {
     $rootScope.show_list = $scope.joined_list;
@@ -148,13 +100,10 @@ angular.module('starter.controllers', [])
     $rootScope.show_list = $scope.unjoin_list;
   };
 
-  getGroups();
-
-
 })
 
 .controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize) {
-  Authorize.Authorize();
+  Authorize.authorize();
 
   $scope.group = $rootScope.show_list[$stateParams.group_index];
 
@@ -191,7 +140,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('UserInfoCtrl', function($scope, $rootScope, Authorize, GetUserInfo) {
-  Authorize.Authorize();
+  Authorize.authorize();
 
   GetUserInfo($rootScope._id, function(user) {
     $scope.user = user;
