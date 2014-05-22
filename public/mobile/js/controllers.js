@@ -190,6 +190,15 @@ angular.module('starter.controllers', [])
 
 })
 
+.controller('UserInfoCtrl', function($scope, $rootScope, Authorize, GetUserInfo) {
+  Authorize.Authorize();
+
+  GetUserInfo($rootScope._id, function(user) {
+    $scope.user = user;
+  });
+
+})
+
 
 
 

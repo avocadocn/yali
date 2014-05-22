@@ -76,6 +76,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
           controller: 'GroupDetailCtrl'
         }
       }
+    })
+
+
+    .state('app.userInfo', {
+      url: '/user_info',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/user_info.html',
+          controller: 'UserInfoCtrl'
+        }
+      }
     });
 
 
@@ -112,35 +123,34 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
   var Login = function($scope, $rootScope) {
     return function(username, password) {
-      $http.post('/users/login', { username: username, password: password }).
-        success(function(data, status, headers, config) {
-          if (data.result === 1) {
-            authorize = true;
-            var user_info = data.data;
-            if (user_info) {
-              $rootScope._id = user_info._id;
-              $rootScope.nickname = user_info.nickname;
-            }
-            $state.go('app.campaignList');
+      $http.post('/users/login', { username: username, password: password })
+      .success(function(data, status, headers, config) {
+        if (data.result === 1) {
+          authorize = true;
+          var user_info = data.data;
+          if (user_info) {
+            $rootScope._id = user_info._id;
+            $rootScope.nickname = user_info.nickname;
           }
-        }).
-        error(function(data, status, headers, config) {
-          if (status === 401) {
-            $scope.loginMsg = '用户名或密码错误';
-          }
-        });
+          $state.go('app.campaignList');
+        }
+      })
+      .error(function(data, status, headers, config) {
+        if (status === 401) {
+          $scope.loginMsg = '用户名或密码错误';
+        }
+      });
     };
   };
 
   var Logout = function() {
-    $http.get('/users/logout').
-      success(function(data, status, headers, config) {
-        if (data.result === 1) {
-          authorize = false;
-          $state.go('login');
-        }
+    $http.get('/users/logout')
+    .success(function(data, status, headers, config) {
+      if (data.result === 1) {
+        authorize = false;
+        $state.go('login');
       }
-    );
+    });
   };
 
   return {
@@ -149,5 +159,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     Logout: Logout
   };
 
+})
+
+
+.factory('GetUserInfo', function($http) {
+  return function(_id, callback) {
+    $http.post('/users/info', { _id: _id })
+    .success(function(data, status, headers, config) {
+      if (data.result === 1) {
+        callback(data.user);
+      }
+    });
+  };
 });
 

@@ -1325,6 +1325,36 @@ exports.getSchedules = function(req, res) {
   });
 };
 
+exports.getUserInfo = function(req, res) {
+  User
+  .findOne({ _id: req.body._id })
+  .populate('cid')
+  .exec()
+  .then(function(user) {
+    if (user) {
+      res.send({
+        result: 1,
+        msg: '获取用户信息成功',
+        user: {
+          photo: user.photo,
+          email: user.email,
+          nickname: user.nickname,
+          realname: user.realname,
+          company: user.cid.info.name
+        }
+      });
+    } else {
+      throw 'not found';
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send({ result: 0, msg: '获取用户信息失败' });
+  });
+
+
+};
+
 
 
 
