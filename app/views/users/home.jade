@@ -1,31 +1,31 @@
 extends ../layouts/manager
 
 block baseInfo
-  .row
-    .col-md-3
+  .row.margin_top_15
+    .col-md-2
       //用户头像
-      img.size_210(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
-    .col-md-9
+      img.size_150.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+    .col-md-8.margin_left_20
       //人名
       .row
-        h3= realname
+        label.head= realname
       //公司名
-      .row
-        h5= cname
+      .row.margin_top_10
+        p.subtitle= cname
       //个性签名
       .row.margin_top_15
-        h5= sign
+        p.subtitle= sign
 
 block panel
   div(ng-app="tabViewUser")
     ul.nav.nav-tabs
       if(role==='OWNER')
         li(ng-class="{'active':nowTab=='group_message'}")
-          a.h5(href="#/group_message" ng-click="addactive('group_message')") 我的动态
+          a.subtitle(href="#/group_message" ng-click="addactive('group_message')") 我的动态
       li(ng-class="{'active':nowTab=='schedule'}")
-        a.h5(href="#/schedule" ng-click="addactive('schedule')") 日程列表
+        a.subtitle(href="#/schedule" ng-click="addactive('schedule')") 日程列表
       li(ng-class="{'active':nowTab=='timeLine'}")
-        a.h5(href="#/timeLine" ng-click="addactive('timeLine')") 活动足迹
+        a.subtitle(href="#/timeLine" ng-click="addactive('timeLine')") 活动足迹
     .tab-content
       .tab-pane.active
         div(ng-view)
