@@ -258,8 +258,12 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
     });
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
+    $scope.inviteUrlStatus= false;
     // $scope.groupInfoUnEdit = true;
     // $scope.groupInfoButtonStatus = '编辑队名'
+    $scope.inviteUrlToggle = function(){
+        $scope.inviteUrlStatus= !$scope.inviteUrlStatus;
+    };
     $scope.infoEditToggle = function() {
         $scope.infoUnEdit = !$scope.infoUnEdit;
         if($scope.infoUnEdit) {
