@@ -659,6 +659,9 @@ exports.getAccount = function(req, res) {
                 'login_email': _company.login_email,
                 'register_date': _company.register_date
             };
+            if(req.session.role==='HR'){
+                _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.nowcid, config.SECRET) + '&cid=' + req.session.nowcid;
+            }
             return res.send({
                 'result': 1,
                 'company': _account,

@@ -13,6 +13,12 @@ div
       label.info_label.col-md-2.control-label 注册时间
       .col-md-8
         label.info_label {{company.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
+    if(role==='HR')
+      .form-group
+        label.info_label.col-md-2.control-label 邀请链接
+        .col-md-8
+          button.dl_btn(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
+          label.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
   form.form-horizontal(name="infoForm")
     .infoHead.row
       h5.pull-left 企业信息
