@@ -241,9 +241,15 @@ input[type="number"] {
   margin-top: 0;
   margin-bottom: 15px;
 }
+<<<<<<< HEAD
 .dl_footer .text_icp {
   text-align: center;
   line-height: 60px;
+=======
+.dl_footer p {
+  padding: 5px 0 12px 10px;
+  display: block;
+>>>>>>> 改善时间显示
 }
 .dl_err {
   color: #f00;
