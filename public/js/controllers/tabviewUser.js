@@ -4,8 +4,10 @@ var tabViewUser = angular.module('tabViewUser', ['ngRoute','ngAnimate','mgcrea.n
 
 tabViewUser.run(['$rootScope', function( $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
+    console.log($rootScope.nowTab);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
+            console.log($rootScope.nowTab);
     };
 }]);
 tabViewUser.directive('match', function($parse) {
@@ -151,7 +153,8 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
     };
 }]);
 
-tabViewUser.controller('AccountFormController',['$scope','$http',function($scope, $http) {
+tabViewUser.controller('AccountFormController',['$scope','$http','$rootScope',function($scope, $http,$rootScope) {
+    $rootScope.nowTab ='personal';
     $http.get('/users/getAccount').success(function(data,status){
         if(data.result === 1){
             $scope.user = data.data;
