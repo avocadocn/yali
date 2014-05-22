@@ -11,7 +11,7 @@
       <img class="menu_logo" src="img/logo_b.png"/>
     </header>
     <ion-content class="has-header">
-      <div class="menu_personal_info">
+      <div class="menu_personal_info" ng-if="_id">
         <img class="menu_photo" src="/userPhoto/{{ _id }}/80/80"/>
         <p class="menu_nickname">{{ nickname }}</p>
       </div>

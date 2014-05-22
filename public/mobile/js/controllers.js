@@ -1,13 +1,12 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, Authorize) {
+// html template get user info from $rootScope
+.controller('AppCtrl', function($scope, $rootScope, Authorize) {
   $scope.logout = Authorize.Logout;
 
-  $scope.nickname = window.localStorage.getItem('nickname');
-  $scope._id = window.localStorage.getItem('_id');
 })
 
-.controller('LoginCtrl', function($scope, $http, $state, Authorize) {
+.controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
 
   if (Authorize.Authorize() === true) {
     $state.go('app.campaignList');
@@ -20,7 +19,7 @@ angular.module('starter.controllers', [])
 
   $scope.loginMsg = '';
 
-  $scope.login = Authorize.Login($scope);
+  $scope.login = Authorize.Login($scope, $rootScope);
 })
 
 .controller('CampaignListCtrl', function($scope, $http, $state, Authorize) {

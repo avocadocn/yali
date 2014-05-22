@@ -81,7 +81,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/campaign_list');
+  $urlRouterProvider.otherwise('/login');
+
 
 })
 
@@ -109,16 +110,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   }
 
-  var Login = function($scope) {
+  var Login = function($scope, $rootScope) {
     return function(username, password) {
       $http.post('/users/login', { username: username, password: password }).
         success(function(data, status, headers, config) {
           if (data.result === 1) {
             authorize = true;
-            var userInfo = data.data;
-            if (userInfo) {
-              window.localStorage.setItem('nickname', userInfo.nickname);
-              window.localStorage.setItem('_id', userInfo._id);
+            var user_info = data.data;
+            if (user_info) {
+              $rootScope._id = user_info._id;
+              $rootScope.nickname = user_info.nickname;
             }
             $state.go('app.campaignList');
           }

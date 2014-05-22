@@ -131,7 +131,7 @@ exports.getOneTeam = function(req, res) {
       return res.send();
     } else{
         return res.send(team);
-    }  
+    }
   });
 };
 
@@ -1037,7 +1037,11 @@ exports.getLogo = function(req, res) {
         CompanyGroup.findOne({ _id: id })
         .exec(function(err, company_group) {
           if (err) callback(err);
-          else callback(null, company_group.logo);
+          else if(company_group) {
+            callback(null, company_group.logo);
+          } else {
+            callback('not found');
+          }
         });
       },
       function(logo, callback) {
@@ -1053,7 +1057,10 @@ exports.getLogo = function(req, res) {
         });
       }
     ], function(err, result) {
-      if (err) res.send({ result: 0, msg: '获取小组logo失败' });
+      if (err) {
+        console.log(err);
+        res.send({ result: 0, msg: '获取小组logo失败' });
+      }
     });
 
   } else {

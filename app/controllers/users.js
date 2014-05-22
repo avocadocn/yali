@@ -1152,7 +1152,11 @@ exports.getPhoto = function(req, res) {
         User.findOne({ _id: uid })
         .exec(function(err, user) {
           if (err) callback(err);
-          else callback(null, user.photo);
+          else if (user) {
+            callback(null, user.photo);
+          } else {
+            callback('not found user');
+          }
         });
       },
       function(photo, callback) {
