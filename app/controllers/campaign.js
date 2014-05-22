@@ -10,7 +10,9 @@ var mongoose = require('mongoose'),
     Competition = mongoose.model('Competition'),
     Arena = mongoose.model('Arena'),
     Campaign = mongoose.model('Campaign'),
-    async = require('async');
+    async = require('async'),
+    PhotoAlbum = mongoose.model('PhotoAlbum'),
+    config = require('../../config/config');
 
 exports.getGroupId = function(req, res) {
 
@@ -83,6 +85,7 @@ exports.sponsorCompanyCampaign = function (req, res) {
     }
     var content = req.body.content;//活动内容
     var location = req.body.location;//活动地点
+
     var campaign = new Campaign();
     campaign.team.push(cid);
     campaign.gid.push(gid);
@@ -99,49 +102,57 @@ exports.sponsorCompanyCampaign = function (req, res) {
     campaign.start_time = req.body.start_time;
     campaign.end_time = req.body.end_time;
 
-    campaign.save(function(err) {
-        if (err) {
-            console.log(err);
-            //检查信息是否重复
-            switch (err.code) {
-                case 11000:
-                break;
-            case 11001:
-                res.status(400).send('该活动已经存在!');
-                break;
-            default:
-                break;
-            }
-            return;
-        }
+    var photo_album = new PhotoAlbum();
+    if (fs.mkdirSync(config.root + '/public/img/photo_album/' + photo_album._id)) {
+        photo_album.save(function(err) {
+            campaign.photo_album = { pid: photo_album._id, name: photo_album.name };
+            campaign.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    //检查信息是否重复
+                    switch (err.code) {
+                        case 11000:
+                        break;
+                    case 11001:
+                        res.status(400).send('该活动已经存在!');
+                        break;
+                    default:
+                        break;
+                    }
+                    return;
+                }
 
-        //生成动态消息
+                //生成动态消息
 
-        var groupMessage = new GroupMessage();
-        groupMessage.team.push(cid);
-        groupMessage.group.gid.push(gid);
-        groupMessage.group.group_type.push(group_type);
-        groupMessage.active = true;
-        groupMessage.cid.push(cid);
+                var groupMessage = new GroupMessage();
+                groupMessage.team.push(cid);
+                groupMessage.group.gid.push(gid);
+                groupMessage.group.group_type.push(group_type);
+                groupMessage.active = true;
+                groupMessage.cid.push(cid);
 
-        groupMessage.poster.cname = username;
-        groupMessage.poster.cid = cid;
-        groupMessage.poster.role = 'HR';
+                groupMessage.poster.cname = username;
+                groupMessage.poster.cid = cid;
+                groupMessage.poster.role = 'HR';
 
-        groupMessage.content = content;
-        groupMessage.location = location;
-        groupMessage.start_time = req.body.start_time;
-        groupMessage.end_time = req.body.end_time;
+                groupMessage.content = content;
+                groupMessage.location = location;
+                groupMessage.start_time = req.body.start_time;
+                groupMessage.end_time = req.body.end_time;
 
-        groupMessage.save(function(err) {
-            if (err) {
-                return res.send({'result':0,'msg':'活动创建失败'});;
-            }
-            else{
-                res.send({'result':1,'msg':'活动创建成功'});
-            }
+                groupMessage.save(function(err) {
+                    if (err) {
+                        return res.send({'result':0,'msg':'活动创建失败'});;
+                    }
+                    else{
+                        res.send({'result':1,'msg':'活动创建成功'});
+                    }
+                });
+            });
         });
-    });
+
+    }
+
 };
 
 

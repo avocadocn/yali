@@ -11,6 +11,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     UUID = require('../middlewares/uuid'),
     GroupMessage = mongoose.model('GroupMessage'),
+    PhotoAlbum = mongoose.model('PhotoAlbum'),
     Config = mongoose.model('Config'),
     Campaign = mongoose.model('Campaign'),
     config = require('../config/config'),
@@ -238,7 +239,6 @@ exports.groupSelect = function(req, res) {
             }
 
             var companyGroup = new CompanyGroup();
-            companyGroup._id = req.session.company_id;
             companyGroup.cid = req.session.company_id;
             companyGroup.cname = company.info.name;
             companyGroup.gid = '0';
@@ -302,7 +302,70 @@ exports.groupSelect = function(req, res) {
             });
             res.send({'result':1,'msg':'组件选择成功！'});
         } else {
-            concole.log(req.session.company_id);
+            console.log(req.session.company_id);
+            return res.send('err');
+        }
+    });
+};
+//HR增加小组
+exports.saveGroup = function(req, res) {
+    var selected_group = req.body.selected_group;
+    if(selected_group === undefined){
+        return  res.redirect('/company/add_group');
+    }
+
+    Company.findOne({_id : req.session.nowcid}, function(err, company) {
+        if(company) {
+            if (err) {
+                console.log('不存在公司');
+                return;
+            }
+
+            var companyGroup = new CompanyGroup();
+
+            companyGroup.cid = req.session.nowcid;
+            companyGroup.cname = company.info.name;
+            companyGroup.gid = selected_group._id;
+            companyGroup.group_type = selected_group.group_type;
+            companyGroup.entity_type = selected_group.entity_type;
+            companyGroup.name = req.body.tname;
+
+            companyGroup.save(function (err){
+                if (err) {
+                    console.log(err);
+                } else {
+                    ;
+                }
+            });
+
+            company.team.push({
+                'gid' : selected_group._id,
+                'group_type' : selected_group.group_type,
+                'name' : req.body.tname,
+                'id' : companyGroup._id
+            });
+            var Entity = mongoose.model(companyGroup.entity_type);//将增强组件模型引进来
+            var entity = new Entity();
+
+            //增强组件目前只能存放这三个字段
+            entity.tid = companyGroup._id;        //小队id
+            entity.cid = req.session.company_id;  //组件类型id
+            entity.gid = selected_group._id;  //公司id
+
+            entity.save(function (err){
+                if (err) {
+                    console.log(err);
+                }
+            });
+
+            company.save(function (s_err){
+                if(s_err){
+                    console.log(s_err);
+                }
+            });
+            res.send({'result':1,'msg':'组件添加成功！'});
+        } else {
+            console.log(req.session.company_id);
             return res.send('err');
         }
     });
@@ -861,7 +924,7 @@ exports.campaignCancel = function (req, res) {
             if (err) {
                 console.log('错误');
             }
-            if(campaign.poster.cid !== req.user._id){
+            if(campaign.poster.cid.toString() !== req.user._id.toString()){
                 return res.send(403, 'forbidden!');
             }
             var active = campaign.active;
@@ -908,47 +971,64 @@ exports.sponsor = function (req, res) {
     campaign.start_time = req.body.start_time;
     campaign.end_time = req.body.end_time;
 
-    campaign.save(function(err) {
+
+    var photo_album = new PhotoAlbum();
+
+    fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
         if (err) {
             console.log(err);
-            //检查信息是否重复
-            switch (err.code) {
-                case 11000:
-                break;
-            case 11001:
-                res.status(400).send('该活动已经存在!');
-                break;
-            default:
-                break;
-            }
-            return;
+            return res.send({'result':0,'msg':'活动创建失败'});
         }
 
-        //生成动态消息
-
-        var groupMessage = new GroupMessage();
-        groupMessage.team.push(cid);
-        groupMessage.group.gid.push(gid);
-        groupMessage.group.group_type.push(group_type);
-        groupMessage.active = true;
-        groupMessage.cid.push(cid);
-
-        groupMessage.poster.cname = username;
-        groupMessage.poster.cid = cid;
-        groupMessage.poster.role = 'HR';
-
-        groupMessage.content = content;
-        groupMessage.location = location;
-        groupMessage.start_time = req.body.start_time;
-        groupMessage.end_time = req.body.end_time;
-
-        groupMessage.save(function(err) {
+        photo_album.save(function(err) {
             if (err) {
-                return res.send({'result':0,'msg':'活动创建失败'});;
+                console.log(err);
+                return res.send({'result':0,'msg':'活动创建失败'});
             }
-            else{
-                res.send({'result':1,'msg':'活动创建成功'});
-            }
+            campaign.photo_album = { pid: photo_album._id, name: photo_album.name };
+            campaign.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    //检查信息是否重复
+                    switch (err.code) {
+                        case 11000:
+                        break;
+                    case 11001:
+                        res.status(400).send('该活动已经存在!');
+                        break;
+                    default:
+                        break;
+                    }
+                    return;
+                }
+
+                //生成动态消息
+
+                var groupMessage = new GroupMessage();
+                groupMessage.team.push(cid);
+                groupMessage.group.gid.push(gid);
+                groupMessage.group.group_type.push(group_type);
+                groupMessage.active = true;
+                groupMessage.cid.push(cid);
+
+                groupMessage.poster.cname = username;
+                groupMessage.poster.cid = cid;
+                groupMessage.poster.role = 'HR';
+
+                groupMessage.content = content;
+                groupMessage.location = location;
+                groupMessage.start_time = req.body.start_time;
+                groupMessage.end_time = req.body.end_time;
+
+                groupMessage.save(function(err) {
+                    if (err) {
+                        return res.send({'result':0,'msg':'活动创建失败'});
+                    }
+                    else{
+                        res.send({'result':1,'msg':'活动创建成功'});
+                    }
+                });
+            });
         });
     });
 };

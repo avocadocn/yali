@@ -22,7 +22,8 @@ var mongoose = require('mongoose'),
     fs = require('fs'),
     gm = require('gm'),
     path = require('path'),
-    moment = require('moment');
+    moment = require('moment'),
+    model_helper = require('../helpers/model_helper');
 function arrayObjectIndexOf(myArray, searchTerm, property) {
     for(var i = 0, len = myArray.length; i < len; i++) {
         if (myArray[i][property].toString() === searchTerm.toString()) return i;
@@ -131,7 +132,7 @@ exports.getOneTeam = function(req, res) {
       return res.send();
     } else{
         return res.send(team);
-    }  
+    }
   });
 };
 
@@ -229,7 +230,7 @@ exports.timeLine = function(req, res){
 exports.home = function(req, res) {
   if(req.session.role==='HR' || req.session.role ==='GUESTHR'){
     var photo_album_ids = [];
-    req.companyGroup.photo.forEach(function(photo_album) {
+    req.companyGroup.photo_album.forEach(function(photo_album) {
       photo_album_ids.push(photo_album.pid);
     });
     PhotoAlbum.where('_id').in(photo_album_ids)
@@ -282,7 +283,7 @@ exports.home = function(req, res) {
             }
           }
         }
-        req.companyGroup.photo.forEach(function(photo_album) {
+        req.companyGroup.photo_album.forEach(function(photo_album) {
           photo_album_ids.push(photo_album.pid);
         });
         PhotoAlbum.where('_id').in(photo_album_ids)
@@ -726,50 +727,67 @@ exports.sponsor = function (req, res) {
 
   campaign.start_time = req.body.start_time;
   campaign.end_time = req.body.end_time;
-  campaign.save(function(err) {
+
+  var photo_album = new PhotoAlbum();
+
+  fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
     if (err) {
       console.log(err);
-      //检查信息是否重复
-      switch (err.code) {
-        case 11000:
-            break;
-        case 11001:
-            res.status(400).send('该活动已经存在!');
-            break;
-        default:
-            break;
-      }
-        return;
+      return res.send({'result':0,'msg':'活动创建失败'});
     }
 
-    //生成动态消息
-    var groupMessage = new GroupMessage();
-
-    groupMessage.team.push(tid);
-    groupMessage.group.gid.push(req.companyGroup.gid);
-    groupMessage.group.group_type.push(group_type);
-    groupMessage.active = true;
-    groupMessage.cid.push(cid);
-    groupMessage.poster.cname = cname;
-    groupMessage.poster.cid = cid;
-    groupMessage.poster.role = req.session.role;
-    if(req.session.role==='LEADER'){
-      groupMessage.poster.uid = req.user._id;
-      groupMessage.poster.username = req.user.nickname;
-    }
-    groupMessage.content = content;
-    groupMessage.location = location;
-    groupMessage.start_time = req.body.start_time;
-    groupMessage.end_time = req.body.end_time;
-
-    groupMessage.save(function (err) {
+    photo_album.save(function(err) {
       if (err) {
-        res.send(err);
-        return {'result':0,'msg':'活动发起失败'};
+        console.log(err);
+        return res.send({'result':0,'msg':'活动创建失败'});
       }
-      else{
-        return res.send({'result':1,'msg':'活动发起成功'});
-      }
+      campaign.photo_album = { pid: photo_album._id, name: photo_album.name };
+      campaign.save(function(err) {
+        if (err) {
+          console.log(err);
+          //检查信息是否重复
+          switch (err.code) {
+            case 11000:
+                break;
+            case 11001:
+                res.status(400).send('该活动已经存在!');
+                break;
+            default:
+                break;
+          }
+            return;
+        }
+
+        //生成动态消息
+        var groupMessage = new GroupMessage();
+
+        groupMessage.team.push(tid);
+        groupMessage.group.gid.push(req.companyGroup.gid);
+        groupMessage.group.group_type.push(group_type);
+        groupMessage.active = true;
+        groupMessage.cid.push(cid);
+        groupMessage.poster.cname = cname;
+        groupMessage.poster.cid = cid;
+        groupMessage.poster.role = req.session.role;
+        if(req.session.role==='LEADER'){
+          groupMessage.poster.uid = req.user._id;
+          groupMessage.poster.username = req.user.nickname;
+        }
+        groupMessage.content = content;
+        groupMessage.location = location;
+        groupMessage.start_time = req.body.start_time;
+        groupMessage.end_time = req.body.end_time;
+
+        groupMessage.save(function (err) {
+          if (err) {
+            res.send(err);
+            return {'result':0,'msg':'活动发起失败'};
+          }
+          else{
+            return res.send({'result':1,'msg':'活动发起成功'});
+          }
+        });
+      });
     });
   });
 };
@@ -1037,7 +1055,11 @@ exports.getLogo = function(req, res) {
         CompanyGroup.findOne({ _id: id })
         .exec(function(err, company_group) {
           if (err) callback(err);
-          else callback(null, company_group.logo);
+          else if(company_group) {
+            callback(null, company_group.logo);
+          } else {
+            callback('not found');
+          }
         });
       },
       function(logo, callback) {
@@ -1053,7 +1075,10 @@ exports.getLogo = function(req, res) {
         });
       }
     ], function(err, result) {
-      if (err) res.send({ result: 0, msg: '获取小组logo失败' });
+      if (err) {
+        console.log(err);
+        res.send({ result: 0, msg: '获取小组logo失败' });
+      }
     });
 
   } else {
@@ -1063,7 +1088,7 @@ exports.getLogo = function(req, res) {
 
 exports.managePhotoAlbum = function(req, res) {
   var photo_album_ids = [];
-  req.companyGroup.photo.forEach(function(photo_album) {
+  req.companyGroup.photo_album.forEach(function(photo_album) {
     photo_album_ids.push(photo_album.pid);
   })
   PhotoAlbum.where('_id').in(photo_album_ids)
@@ -1077,7 +1102,7 @@ exports.managePhotoAlbum = function(req, res) {
         }
       });
       res.render('group/manage_photo_album',
-        { owner_id : req.params.temaId,
+        { owner_id : req.params.teamId,
           photo_albums: visible_photo_albums
       });
     }
@@ -1124,43 +1149,7 @@ exports.getCampaignsForApp = function(req, res) {
   .populate('team')
   .exec()
   .then(function(campaigns) {
-
-    var response_data = [];
-
-    campaigns.forEach(function(campaign) {
-
-
-      var is_join = false;
-      for (var i = 0; i < campaign.member.length; i++) {
-        if (user._id.toString() === campaign.member[i].uid.toString()) {
-          is_join = true;
-        }
-      }
-
-      var group_index = arrayObjectIndexOf(user.group, campaign.gid, '_id');
-      if (group_index > -1) {
-        for (var i = 0; i < campaign.team.length; i++) {
-          var team_index = arrayObjectIndexOf(user.group[group_index].team, campaign.team[i]._id, 'id')
-          if (team_index > -1) {
-            var team_name = campaign.team[i].name;
-            var team_id = campaign.team[i]._id;
-          }
-        }
-      }
-
-      response_data.push({
-        _id: campaign._id,
-        team_name: team_name,
-        team_id: team_id,
-        content: campaign.content,
-        start_time: campaign.start_time,
-        member_count: campaign.member.length,
-        is_join: is_join
-      });
-    });
-
-    res.send({ result: 1, msg: '获取活动列表成功', data: response_data });
-
+    model_helper.sendCampaignsForApp(user, campaigns, res);
   })
   .then(null, function(err) {
     console.log(err);

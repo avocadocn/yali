@@ -61,7 +61,7 @@ exports.createPhotoAlbum = function(req, res) {
         },
         function(callback) {
           var pushObj = { pid: photo_album._id, name: photo_album.name };
-          req.model.photo.push(pushObj);
+          req.model.photo_album.push(pushObj);
           req.model.save(function(err) {
             if (err) callback(err);
             else {

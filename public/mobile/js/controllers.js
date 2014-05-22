@@ -1,15 +1,19 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, Authorize) {
-  $scope.logout = Authorize.Logout;
+// html template get user info from $rootScope
+.controller('AppCtrl', function($scope, $rootScope, Authorize) {
+  $scope.logout = Authorize.logout;
 
-  $scope.nickname = window.localStorage.getItem('nickname');
-  $scope._id = window.localStorage.getItem('_id');
 })
 
-.controller('LoginCtrl', function($scope, $http, $state, Authorize) {
 
-  if (Authorize.Authorize() === true) {
+
+
+
+
+.controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
+
+  if (Authorize.authorize() === true) {
     $state.go('app.campaignList');
   }
 
@@ -20,18 +24,175 @@ angular.module('starter.controllers', [])
 
   $scope.loginMsg = '';
 
-  $scope.login = Authorize.Login($scope);
+  $scope.login = Authorize.login($scope, $rootScope);
 })
 
-.controller('CampaignListCtrl', function($scope, $http, $state, Authorize) {
-  Authorize.Authorize();
 
-  $scope.campaign_list = [];
+
+
+
+
+
+
+.controller('CampaignListCtrl', function($scope, $rootScope, Authorize, Campaign) {
+  Authorize.authorize();
+
+  $rootScope.campaign_list = [];
 
   var getCampaigns = function() {
-    $http.get('/users/campaigns').
+    Campaign.getCampaigns(function(campaign_list) {
+      $rootScope.campaign_list = campaign_list;
+    });
+  };
+  getCampaigns();
+
+  $scope.$watch('campaign_list', function(newValue, oldValue) {
+    if (newValue === oldValue) {
+      return;
+    }
+
+    for (var i = 0; i < $rootScope.campaign_list.length; i++) {
+      var start_time = new Date(newValue[i].start_time);
+      var rest_time = start_time - new Date();
+      $rootScope.campaign_list[i].rest_time = rest_time;
+    }
+
+  });
+
+  $scope.join = Campaign.join(getCampaigns);
+  $scope.quit = Campaign.quit(getCampaigns);
+
+})
+
+
+
+
+
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign) {
+  Authorize.authorize();
+
+  $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
+
+})
+
+
+
+
+
+
+.controller('OpponentDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign) {
+  Authorize.authorize();
+
+
+})
+
+
+
+
+
+
+
+.controller('ScheduleListCtrl', function($scope, Authorize, Schedule) {
+  Authorize.authorize();
+
+  var getSchedules = function() {
+    Schedule.getSchedules(function(schedule_list) {
+      $scope.schedule_list = schedule_list;
+    });
+  };
+  getSchedules();
+
+  $scope.quit = Schedule.quit(getSchedules);
+})
+
+
+
+
+
+
+
+
+
+
+.controller('DynamicListCtrl', function($scope, Authorize, Dynamic) {
+  Authorize.authorize();
+
+  Dynamic.getDynamics(function(dynamic_list) {
+    $scope.dynamic_list = dynamic_list;
+  });
+
+
+  $scope.vote = Dynamic.vote($scope.dynamic_list, function(positive, negative) {
+    $scope.dynamic_list[index].positive = positive;
+    $scope.dynamic_list[index].negative = negative;
+  });
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+.controller('GroupListCtrl', function($scope, $rootScope, $http, Authorize, Group) {
+  Authorize.authorize();
+
+  $rootScope.show_list = [];
+
+  Group.getGroups(function(joined_groups, unjoin_groups) {
+    $scope.joined_list = joined_groups;
+    $scope.unjoin_list = unjoin_groups;
+    $rootScope.show_list = $scope.joined_list;
+  });
+
+  $scope.joinedList = function() {
+    $rootScope.show_list = $scope.joined_list;
+  };
+
+  $scope.unjoinList = function() {
+    $rootScope.show_list = $scope.unjoin_list;
+  };
+
+})
+
+
+
+
+
+
+
+
+
+
+
+.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize) {
+  Authorize.authorize();
+
+  $scope.group = $rootScope.show_list[$stateParams.group_index];
+
+  $scope.templates = [
+    'templates/_group_info.html',
+    'templates/_campaigns.html',
+    'templates/_dynamics.html'
+  ];
+
+  $scope.template = $scope.templates[0];
+
+  $scope.info = function() {
+    $scope.template = $scope.templates[0];
+  };
+
+  $scope.campaign = function() {
+    $http.get('/group/' + $scope.group._id + '/campaigns').
       success(function(data, status, headers, config) {
         $scope.campaign_list = data.data;
+        $scope.template = $scope.templates[1];
       }
     );
   };
@@ -49,133 +210,28 @@ angular.module('starter.controllers', [])
 
   });
 
-  getCampaigns();
-
-  $scope.join = function(id) {
-    $http.post('/users/joinCampaign', { campaign_id: id }).
-      success(function(data, status, headers, config) {
-        getCampaigns();
-      }
-    );
-  };
-
-  $scope.quit = function(id) {
-    $http.post('/users/quitCampaign', { campaign_id: id }).
-      success(function(data, status, headers, config) {
-        getCampaigns();
-      }
-    );
-  }
-
-})
-
-.controller('ScheduleListCtrl', function($scope, $http, $state, Authorize) {
-  Authorize.Authorize();
-
-  var getSchedules = function() {
-    $http.get('/users/schedules').
-      success(function(data, status, headers, config) {
-        $scope.schedule_list = data.data;
-      }
-    );
-  };
-
-  getSchedules();
-
-
-  $scope.quit = function(id) {
-    $http.post('/users/quitCampaign', { campaign_id: id }).
-      success(function(data, status, headers, config) {
-        getSchedules();
-      }
-    );
-  };
-})
-
-
-.controller('DynamicListCtrl', function($scope, $http, $state, Authorize) {
-  Authorize.Authorize();
-
-  var getDynamics = function () {
-    $http.get('/users/getGroupMessages').
+  $scope.dynamic = function() {
+    $http.get('/group/getGroupMessages/' + $scope.group._id).
       success(function(data, status, headers, config) {
         $scope.dynamic_list = data.group_messages;
+        $scope.template = $scope.templates[2];
       }
     );
   };
-
-  $scope.vote = function(provoke_dynamic_id, status, index) {
-    $http.post('/users/vote', {
-        provoke_message_id: provoke_dynamic_id,
-        aOr: status,
-        tid: $scope.dynamic_list[index].my_team_id
-      }
-    ).success(function(data, status) {
-      if(data.msg != undefined && data.msg != null) {
-
-      } else {
-        $scope.dynamic_list[index].positive = data.positive;
-        $scope.dynamic_list[index].negative = data.negative;
-      }
-    }).error(function(data, status) {
-
-    });
-  };
-
-  getDynamics();
 
 })
 
-.controller('GroupListCtrl', function($scope, $rootScope, $http, $state, $stateParams, Authorize) {
-  Authorize.Authorize();
-
-  $rootScope.show_list = [];
-
-  var getGroups = function() {
-    $http.get('/users/groups').
-      success(function(data, status, headers, config) {
-        $scope.joined_list = data.joined_groups;
-        $scope.unjoin_list = data.unjoin_groups;
-        $rootScope.show_list = $scope.joined_list;
-      }
-    );
-  };
-
-  $scope.joinedList = function() {
-    $rootScope.show_list = $scope.joined_list;
-  };
-
-  $scope.unjoinList = function() {
-    $rootScope.show_list = $scope.unjoin_list;
-  };
-
-  getGroups();
 
 
-})
 
-.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize) {
-  Authorize.Authorize();
 
-  $scope.group = $rootScope.show_list[$stateParams.group_index];
 
-  $scope.templates = ['templates/_group_info.html', 'templates/_campaigns.html'];
+.controller('UserInfoCtrl', function($scope, $rootScope, Authorize, GetUserInfo) {
+  Authorize.authorize();
 
-  $scope.template = $scope.templates[0];
-
-  $scope.info = function() {
-    $scope.template = $scope.templates[0];
-  };
-
-  $scope.campaign = function() {
-    console.log('/group/' + $scope.group._id + '/campaigns');
-    $http.get('/group/' + $scope.group._id + '/campaigns').
-      success(function(data, status, headers, config) {
-        $scope.campaign_list = data.data;
-        $scope.template = $scope.templates[1];
-      }
-    );
-  };
+  GetUserInfo($rootScope._id, function(user) {
+    $scope.user = user;
+  });
 
 })
 

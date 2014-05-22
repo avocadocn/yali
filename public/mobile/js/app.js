@@ -1,6 +1,6 @@
 // Ionic Starter App
 
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -33,6 +33,26 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         'menuContent': {
           templateUrl: 'templates/campaign_list.html',
           controller: 'CampaignListCtrl'
+        }
+      }
+    })
+
+    .state('app.campaignDetail', {
+      url: '/campaign_detail/:campaign_index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/campaign_detail.html',
+          controller: 'CampaignDetailCtrl'
+        }
+      }
+    })
+
+    .state('app.opponentDetail', {
+      url: '/opponent_detail/:opponent_index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/opponent_detail.html',
+          controller: 'OpponentDetailCtrl'
         }
       }
     })
@@ -76,77 +96,24 @@ angular.module('starter', ['ionic', 'starter.controllers'])
           controller: 'GroupDetailCtrl'
         }
       }
+    })
+
+
+    .state('app.userInfo', {
+      url: '/user_info',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/user_info.html',
+          controller: 'UserInfoCtrl'
+        }
+      }
     });
 
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/campaign_list');
+  $urlRouterProvider.otherwise('/login');
 
-})
-
-
-.factory('Authorize', function($state, $http) {
-
-
-  /**
-   * 是否经过授权
-   * @property authorize
-   * @type Boolean
-   * @default false
-   */
-  var authorize = false;
-
-  // TO DO: for test
-  //authorize = true;
-
-  var Authorize = function() {
-    if (authorize === false) {
-      $state.go('login');
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  var Login = function($scope) {
-    return function(username, password) {
-      $http.post('/users/login', { username: username, password: password }).
-        success(function(data, status, headers, config) {
-          if (data.result === 1) {
-            authorize = true;
-            var userInfo = data.data;
-            if (userInfo) {
-              window.localStorage.setItem('nickname', userInfo.nickname);
-              window.localStorage.setItem('_id', userInfo._id);
-            }
-            $state.go('app.campaignList');
-          }
-        }).
-        error(function(data, status, headers, config) {
-          if (status === 401) {
-            $scope.loginMsg = '用户名或密码错误';
-          }
-        });
-    };
-  };
-
-  var Logout = function() {
-    $http.get('/users/logout').
-      success(function(data, status, headers, config) {
-        if (data.result === 1) {
-          authorize = false;
-          $state.go('login');
-        }
-      }
-    );
-  };
-
-  return {
-    Authorize: Authorize,
-    Login: Login,
-    Logout: Logout
-  };
 
 });
 

@@ -1,14 +1,20 @@
 .group_select
-	.text-center.h3.group_head='请选择要增加的' + group_head + '兴趣小组类型'
-	//todo
-.groups.row
-	.group.col-xs-3(ng-repeat='group in groupModel.groups' ng-class="{'1': 'active', '0': 'inactive'}[group.select]")
-		input(type='checkbox' name='group' id='{{group.id}}' value='{{group.type}}' ng-model='group.select' ng-true-value='1' ng-false-value='0')
-		label(class='size_210 group_'+'{{group.id}}' for='{{group.id}}') {{group.type}}
-	.group_next.row
-		.col-md-2
-		label.info_label.control-label 队名
-		//Todo
-		input.dl_input(type='text')
-	.group_next.row.margin_top_15
-		button.next.btn.btn-primary.btn-lg.center-block(ng-click='groupModel.group_next()') 保存
+  .groups.row
+      .text-center.h3.group_head='请选择要增加的' + group_head + '兴趣小组类型'
+      //todo
+  .groups.row
+    .group.col-xs-2(ng-repeat='group in groupModel.groups' ng-class="{'active':groupModel.selected==group.type, 'inactive':groupModel.selected!=group.type}")
+      input(type='radio' name='group' id='{{group._id}}' value='{{group.type}}' ng-model='groupModel.selected' ng-change='groupModel.select()')
+      label.img_contain(class='size_80 group_'+'{{group._id}}' for='{{group._id}}') {{group.type}}
+  .group_next.row.margin_top_15
+    .col-md-2
+      label.info_label.control-label 队名
+    .col-md-4
+      input.dl_input.form-control(type='text' name='name' ng-model='groupModel.tname')
+    //- 将来可考虑新建队时加简介
+    //- .group_next.row
+    //-   .col-md-2
+    //-     label.info_label.control-label 简介
+    //-       input.dl_input(type='text' name='name' ng-model='tbrief')
+  .group_next.row.margin_top_15
+     button.btn.dl_btn.btn-lg.center-block(ng-click='groupModel.save()') 保存

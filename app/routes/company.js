@@ -35,7 +35,7 @@ module.exports = function(app, passport) {
     app.get('/company/select', company.select);//选择组件
     app.get('/company/invite', company.invite);//发送邀请链接
     app.get('/company/add_group', company.add_company_group);//增加小组
-
+    app.post('/company/saveGroup', company.saveGroup);//保存新增小组信息
     app.post('/company/groupSelect', company.groupSelect);
     app.post('/company', company.create);// 提交公司申请信息
     app.post('/company/createDetail', company.createDetail);// 验证通过后进一步提交公司注册信息
