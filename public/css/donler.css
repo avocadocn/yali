@@ -15,6 +15,9 @@ body {
 a {
   color: #28689b;
 }
+li {
+  list-style: none;
+}
 .content {
   width: 100%;
   min-height: 100%;
@@ -216,8 +219,9 @@ input[type="number"] {
   margin-top: 0;
   margin-bottom: 15px;
 }
-.dl_footer p {
-  padding: 5px 0 12px 10px;
+.dl_footer .text_icp {
+  text-align: center;
+  line-height: 60px;
 }
 .dl_err {
   color: #f00;
@@ -357,5 +361,12 @@ input[type="number"] {
 }
 .dl_doc .contact {
   background-color: #ecf0f1;
-  height: 200px;
+  height: 100px;
+}
+.dl_doc .contact a {
+  color: #999;
+}
+.dl_doc .contact li {
+  line-height: 18px;
+  color: #999;
 }
