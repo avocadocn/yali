@@ -51,7 +51,7 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
       .when('/addGroup',{
         templateUrl: '/company/add_group',
         controller: 'CompanyGroupFormController',
-        controllerAs:'group'
+        controllerAs:'groupModel'
       }).
       otherwise({
         redirectTo: '/company_campaign'
@@ -414,8 +414,62 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope', function(
         });
     };
 }]);
-
+// HR增加小组 controller
 tabViewCompany.controller('CompanyGroupFormController',['$http','$scope', function($http, $scope){
+    var _this = this;
+    _this.selected = "";
+    _this.tname = "";
+    $http.get('/group/getgroups').success(function(data,status){
+        _this.groups = data;
+    }).error(function(data,status) {
+        //TODO:更改对话框
+        alert('组件获取失败！');
+    });
+    _this.selected_group ={};
+    this.save = function() {
+        angular.forEach(_this.groups, function(value, key) {
+            if(value.type === _this.selected) {
+                _this.selected_group = {
+                    '_id': value._id,
+                    'group_type': value.type,
+                    'entity_type': value.entity_type
+                };
+                console.log(_this.selected_group);
+            }
+        });
+        try{
+            $http({
+                method : 'post',
+                url : '/company/saveGroup',
+                data : {
+                    'selected_group' : _this.selected_group,
+                    'tname': _this.tname
+                }
+            }).success(function(data, status) {
+                //TODO:更改对话框
+                alert('添加组件成功！');
+                window.location.href='#/company_info';
 
-    //$scope.
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('添加组件错误！');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+    //自动显示默认队名
+    this.select = function(){
+        try{
+            $http.get('/company/getAccount').success(function(data,status){
+                _this.tname = data.info.name + '-' + _this.selected + '队';
+            }).error(function(data,status){
+                alert('公司信息获取错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
 }]);
