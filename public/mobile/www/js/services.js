@@ -287,8 +287,10 @@ angular.module('starter.services', [])
 
 
 
-.factory('GetUserInfo', function($http) {
-  return function(_id, callback) {
+.factory('User', function($http) {
+
+  // callback(user)
+  var getInfo = function(_id, callback) {
     $http.post('/users/info', { _id: _id })
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
@@ -296,6 +298,11 @@ angular.module('starter.services', [])
       }
     });
   };
+
+  return {
+    getInfo: getInfo
+  };
+
 });
 
 

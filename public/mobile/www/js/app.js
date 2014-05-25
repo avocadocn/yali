@@ -107,6 +107,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           controller: 'UserInfoCtrl'
         }
       }
+    })
+
+    .state('app.otherUserInfo', {
+      url: '/other_user_info/:uid',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/user_info.html',
+          controller: 'OtherUserInfoCtrl'
+        }
+      }
     });
 
 

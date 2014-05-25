@@ -4,6 +4,12 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <p>{{ campaign.content }}</p>
+    <p>参加人员</p>
+    <div>
+      <div ng-repeat="user in campaign.member">
+        <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
+      </div>
+    </div>
     <p ng-repeat="opponent in campaign.opponent_list">
       <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
     </p>
@@ -24,5 +30,7 @@
         </div>
       </div>
     </div>
+    <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
+    <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
   </ion-content>
 </ion-view>

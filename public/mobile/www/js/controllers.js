@@ -35,8 +35,10 @@ angular.module('starter.controllers', [])
 
 
 .controller('CampaignListCtrl', function($scope, $rootScope, Authorize, Campaign) {
+
   Authorize.authorize();
 
+  $rootScope.campaign_owner = 'user';
   $rootScope.campaign_list = [];
 
   var getUserCampaigns = function() {
@@ -74,7 +76,8 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign, PhotoAlbum) {
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Authorize, Campaign, PhotoAlbum) {
+
   Authorize.authorize();
 
   $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
@@ -95,6 +98,25 @@ angular.module('starter.controllers', [])
     getPhotoList();
   });
 
+  var getCampaigns = function() {
+    if ($rootScope.campaign_owner === 'user') {
+      Campaign.getUserCampaigns(function(campaign_list) {
+        $rootScope.campaign_list = campaign_list;
+        $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
+      });
+    } else if ($rootScope.campaign_owner === 'group') {
+      Campaign.getGroupCampaigns($rootScope.group_id ,function(campaign_list) {
+        $rootScope.campaign_list = campaign_list;
+        $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
+      });
+    }
+
+  };
+
+
+  $scope.join = Campaign.join(getCampaigns);
+  $scope.quit = Campaign.quit(getCampaigns);
+
 
 })
 
@@ -104,6 +126,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('OpponentDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign) {
+
   Authorize.authorize();
 
 
@@ -116,6 +139,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('ScheduleListCtrl', function($scope, Authorize, Schedule) {
+
   Authorize.authorize();
 
   var getSchedules = function() {
@@ -138,6 +162,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('DynamicListCtrl', function($scope, Authorize, Dynamic) {
+
   Authorize.authorize();
 
   Dynamic.getDynamics(function(dynamic_list) {
@@ -164,6 +189,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('GroupListCtrl', function($scope, $rootScope, $http, Authorize, Group) {
+
   Authorize.authorize();
 
   $rootScope.show_list = [];
@@ -195,9 +221,14 @@ angular.module('starter.controllers', [])
 
 
 .controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize, Campaign) {
+
   Authorize.authorize();
 
+  $rootScope.campaign_owner = 'group';
+
   $scope.group = $rootScope.show_list[$stateParams.group_index];
+
+  $rootScope.group_id = $scope.group._id;
 
   $scope.templates = [
     'templates/_group_info.html',
@@ -213,7 +244,7 @@ angular.module('starter.controllers', [])
 
   $scope.campaign = function() {
     Campaign.getGroupCampaigns($scope.group._id, function(campaign_list) {
-      $scope.campaign_list = campaign_list;
+      $rootScope.campaign_list = campaign_list;
       $scope.template = $scope.templates[1];
     });
   };
@@ -223,10 +254,10 @@ angular.module('starter.controllers', [])
       return;
     }
 
-    for (var i = 0; i < $scope.campaign_list.length; i++) {
+    for (var i = 0; i < $rootScope.campaign_list.length; i++) {
       var start_time = new Date(newValue[i].start_time);
       var rest_time = start_time - new Date();
-      $scope.campaign_list[i].rest_time = rest_time;
+      $rootScope.campaign_list[i].rest_time = rest_time;
     }
 
   });
@@ -247,12 +278,30 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('UserInfoCtrl', function($scope, $rootScope, Authorize, GetUserInfo) {
+.controller('UserInfoCtrl', function($scope, $rootScope, Authorize, User) {
+
   Authorize.authorize();
 
-  GetUserInfo($rootScope._id, function(user) {
+  User.getInfo($rootScope._id, function(user) {
     $scope.user = user;
   });
+
+})
+
+
+
+
+
+
+
+.controller('OtherUserInfoCtrl', function($scope, $stateParams, Authorize, User) {
+
+  Authorize.authorize();
+
+  User.getInfo($stateParams.uid, function(user) {
+    $scope.user = user;
+  });
+
 
 })
 
