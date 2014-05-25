@@ -39,12 +39,12 @@ angular.module('starter.controllers', [])
 
   $rootScope.campaign_list = [];
 
-  var getCampaigns = function() {
-    Campaign.getCampaigns(function(campaign_list) {
+  var getUserCampaigns = function() {
+    Campaign.getUserCampaigns(function(campaign_list) {
       $rootScope.campaign_list = campaign_list;
     });
   };
-  getCampaigns();
+  getUserCampaigns();
 
   $rootScope.$watch('campaign_list', function(newValue, oldValue) {
     if (newValue === oldValue) {
@@ -65,8 +65,8 @@ angular.module('starter.controllers', [])
 
   });
 
-  $scope.join = Campaign.join(getCampaigns);
-  $scope.quit = Campaign.quit(getCampaigns);
+  $scope.join = Campaign.join(getUserCampaigns);
+  $scope.quit = Campaign.quit(getUserCampaigns);
 
 })
 
@@ -74,10 +74,25 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign) {
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign, PhotoAlbum) {
   Authorize.authorize();
 
   $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
+
+  $scope.photo_album_id = $scope.campaign.photo_album.pid;
+
+  $scope.photos = [];
+
+  var getPhotoList = function() {
+    PhotoAlbum.getPhotoList($scope.photo_album_id, function(photos) {
+      $scope.photos = photos;
+    });
+  };
+  getPhotoList();
+
+  $scope.upload = PhotoAlbum.upload($scope.photo_album_id, function() {
+    getPhotoList();
+  });
 
 })
 
@@ -177,7 +192,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize) {
+.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize, Campaign) {
   Authorize.authorize();
 
   $scope.group = $rootScope.show_list[$stateParams.group_index];
@@ -195,12 +210,10 @@ angular.module('starter.controllers', [])
   };
 
   $scope.campaign = function() {
-    $http.get('/group/' + $scope.group._id + '/campaigns').
-      success(function(data, status, headers, config) {
-        $scope.campaign_list = data.data;
-        $scope.template = $scope.templates[1];
-      }
-    );
+    Campaign.getGroupCampaigns($scope.group._id, function(campaign_list) {
+      $scope.campaign_list = campaign_list;
+      $scope.template = $scope.templates[1];
+    });
   };
 
   $scope.$watch('campaign_list', function(newValue, oldValue) {

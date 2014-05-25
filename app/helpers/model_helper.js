@@ -53,7 +53,8 @@ exports.sendCampaignsForApp = function(user, campaigns, res) {
       content: campaign.content,
       start_time: campaign.start_time,
       member_count: campaign.member.length,
-      is_join: is_join
+      is_join: is_join,
+      photo_album: campaign.photo_album
     });
   });
 

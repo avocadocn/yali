@@ -7,5 +7,17 @@
     <p ng-repeat="opponent in campaign.opponent_list">
       <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
     </p>
+    <div>
+      <h4>活动精彩照片</h4>
+      <form id="upload_form" enctype="multipart/form-data">
+        <input type="file" name="photos" multiple="multiple" accept="image/*" required/>
+        <button type="button" ng-click="upload()">上传照片</button>
+      </div>
+      <div id="photo_list">
+        <div ng-repeat="photo in photos">
+          <img ng-src="{{ photo.uri }}"/>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

@@ -83,9 +83,18 @@ angular.module('starter.services', [])
 
 .factory('Campaign', function($http) {
 
-
-  var getCampaigns = function(callback) {
+  // callback(campaign_list)
+  var getUserCampaigns = function(callback) {
     $http.get('/users/campaigns').
+      success(function(data, status, headers, config) {
+        callback(data.data);
+      }
+    );
+  };
+
+  // callback(campaign_list)
+  var getGroupCampaigns = function(group_id, callback) {
+    $http.get('/group/' + group_id + '/campaigns').
       success(function(data, status, headers, config) {
         callback(data.data);
       }
@@ -113,7 +122,8 @@ angular.module('starter.services', [])
   };
 
   return {
-    getCampaigns: getCampaigns,
+    getUserCampaigns: getUserCampaigns,
+    getGroupCampaigns: getGroupCampaigns,
     join: join,
     quit: quit
   };
@@ -230,6 +240,55 @@ angular.module('starter.services', [])
 
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+.factory('PhotoAlbum', function($http) {
+
+  // callback(photos)
+  var getPhotoList = function(photo_album_id, callback) {
+    $http.get('/photoAlbum/' + photo_album_id + '/photolist')
+    .success(function(data, status) {
+      callback(data.data);
+    });
+  };
+
+  var upload = function(photo_album_id, callback) {
+    return function() {
+      var form = document.getElementById('upload_form');
+      var upload_data = new FormData(form);
+
+      $http.post('/photoAlbum/' + photo_album_id + '/photo', upload_data).
+        success(function(data, status, headers, config) {
+          callback();
+        }
+      );
+
+    };
+  };
+
+
+  return {
+    getPhotoList: getPhotoList,
+    upload: upload
+  };
+
+})
+
+
+
+
+
 
 
 
