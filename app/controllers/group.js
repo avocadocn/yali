@@ -282,7 +282,7 @@ exports.home = function(req, res) {
           }
         });
   }
-  else{
+  else{//个人侧栏
     var selected_teams = [];
     var unselected_teams = [];
     var user_teams = [];
@@ -292,13 +292,13 @@ exports.home = function(req, res) {
         user_teams.push(req.user.group[i].team[j].id);
       }
     }
-    CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1},function(err, company_groups) {
+    CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
       if(err || !company_groups) {
         return res.send([]);
       } else {
         for(var i = 0; i < company_groups.length; i ++) {
-          if(company_groups[i].gid !== '0'){
-            //下面查找的是该成员加入和未加入的所有小队
+          if(company_groups[i].gid !== '0' && company_groups[i].active === true){
+            //下面查找的是该成员加入和未加入的所有active小队
             if(user_teams.indexOf(company_groups[i]._id.toString())) {
               selected_teams.push(company_groups[i]);
             } else {
