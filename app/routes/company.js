@@ -7,7 +7,7 @@ var config = require('../../config/config');
 var express = require('express');
 var fileBodyParser = express.bodyParser({
   uploadDir: config.root + '/temp_uploads/',
-  limit: 1024 * 1024 * 2 });
+  limit: 1024 * 1024 * 5 });
 
 module.exports = function(app, passport) {
 

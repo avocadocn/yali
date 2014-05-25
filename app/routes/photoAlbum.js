@@ -6,7 +6,7 @@ var express = require('express');
 var config = require('../../config/config');
 var photoBodyParser = express.bodyParser({
   uploadDir: config.root + '/temp_uploads/',
-  limit: 1024 * 500 });
+  limit: 1024 * 1024 * 1 });
 
 module.exports = function(app) {
 

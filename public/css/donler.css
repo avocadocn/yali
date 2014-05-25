@@ -15,7 +15,12 @@ body {
 a {
   color: #28689b;
 }
-
+li {
+  list-style: none;
+}
+.dl_word_break {
+  word-break: break-all;
+}
 .content {
   width: 100%;
   min-height: 100%;
@@ -239,18 +244,9 @@ input[type="number"] {
   margin-top: 0;
   margin-bottom: 15px;
 }
-<<<<<<< HEAD
 .dl_footer .text_icp {
   text-align: center;
   line-height: 60px;
-=======
-.dl_footer p {
-  padding: 5px 0 12px 10px;
-  display: block;
-<<<<<<< HEAD
->>>>>>> 改善时间显示
-=======
->>>>>>> 增加企业邀请链接显示
 }
 .dl_err {
   color: #f00;

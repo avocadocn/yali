@@ -9,12 +9,18 @@
     var preview_middle = $('#preview_middle');
     var preview_small = $('#preview_small');
     var save_button = $('#save_button');
+    var remind = $('#remind');
 
     photo.change(function() {
       if (photo.val() === null) {
         save_button[0].disabled = true;
       } else {
-        save_button[0].disabled = false;
+        if (photo[0].files[0].size > 1024 * 1024 * 5) {
+          save_button[0].disabled = true;
+          remind.text('上传的文件大小不可以超过5M');
+        } else {
+          save_button[0].disabled = false;
+        }
       }
 
       FileHelper.getFilePath(photo[0], function(path) {
