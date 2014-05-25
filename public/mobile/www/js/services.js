@@ -38,6 +38,7 @@ angular.module('starter.services', [])
           if (user_info) {
             $rootScope._id = user_info._id;
             $rootScope.nickname = user_info.nickname;
+            $rootScope.role = user_info.role;
           }
           $state.go('app.campaignList');
         }
@@ -263,24 +264,10 @@ angular.module('starter.services', [])
     });
   };
 
-  var upload = function(photo_album_id, callback) {
-    return function() {
-      var form = document.getElementById('upload_form');
-      var upload_data = new FormData(form);
-
-      $http.post('/photoAlbum/' + photo_album_id + '/photo', upload_data).
-        success(function(data, status, headers, config) {
-          callback();
-        }
-      );
-
-    };
-  };
 
 
   return {
-    getPhotoList: getPhotoList,
-    upload: upload
+    getPhotoList: getPhotoList
   };
 
 })

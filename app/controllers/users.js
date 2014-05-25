@@ -142,7 +142,8 @@ exports.loginSuccess = function(req, res) {
 exports.appLoginSuccess = function(req, res) {
   var data = {
     _id: req.user._id,
-    nickname: req.user.nickname
+    nickname: req.user.nickname,
+    role: req.user.role
   };
   res.send({ result: 1, msg: '登录成功', data: data });
 }

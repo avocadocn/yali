@@ -350,7 +350,9 @@ exports.readPhotos = function(req, res) {
 
   if (validator.isAlphanumeric(_id)) {
 
-    PhotoAlbum.findOne({ _id: _id }).exec(function(err, photo_album) {
+    PhotoAlbum
+    .findOne({ _id: _id })
+    .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
         res.send({ result: 0, msg: '获取相册照片失败' });
@@ -363,6 +365,7 @@ exports.readPhotos = function(req, res) {
                 pid: photo._id,
                 uri: photo.uri,
                 comment: photo.comment,
+                publish_user_id: photo.publish_user.id,
                 publish_user: photo.publish_user.nickname
               };
               photos.push(temp_photo);

@@ -9,13 +9,18 @@
     </p>
     <div>
       <h4>活动精彩照片</h4>
-      <form id="upload_form" enctype="multipart/form-data">
+      <form id="upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
         <input type="file" name="photos" multiple="multiple" accept="image/*" required/>
-        <button type="button" ng-click="upload()">上传照片</button>
+        <button type="submit">上传照片</button>
+      </form>
       </div>
       <div id="photo_list">
-        <div ng-repeat="photo in photos">
+        <div ng-repeat="photo in photos" finish-repeat-directive>
           <img ng-src="{{ photo.uri }}"/>
+          <form class="js_delete_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo/' + photo.pid }}" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+            <button type="submit">删除照片</button>
+          </form>
         </div>
       </div>
     </div>

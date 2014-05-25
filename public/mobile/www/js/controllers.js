@@ -88,11 +88,13 @@ angular.module('starter.controllers', [])
       $scope.photos = photos;
     });
   };
+  $rootScope.getPhotoList = getPhotoList;
   getPhotoList();
 
-  $scope.upload = PhotoAlbum.upload($scope.photo_album_id, function() {
+  $('#upload_form').ajaxForm(function() {
     getPhotoList();
   });
+
 
 })
 
@@ -258,6 +260,18 @@ angular.module('starter.controllers', [])
 
 
 
+
+
+
+
+
+.directive('finishRepeatDirective', function($rootScope) {
+  return function(scope, element, attrs) {
+    $(element).find('.js_delete_form').ajaxForm(function() {
+      $rootScope.getPhotoList();
+    });
+  };
+})
 
 
 
