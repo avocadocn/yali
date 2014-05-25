@@ -111,6 +111,19 @@ Shortest transaction:         0.00
 
 ********单线程**********
 
+Transactions:          23985 hits
+Availability:          99.97 %
+Elapsed time:          59.11 secs
+Data transferred:        27.75 MB
+Response time:            1.87 secs
+Transaction rate:       405.77 trans/sec
+Throughput:           0.47 MB/sec
+Concurrency:          757.79
+Successful transactions:       23985
+Failed transactions:             7
+Longest transaction:         16.60
+Shortest transaction:         0.05
+
 ********多线程**********
 Transactions:          23947 hits
 Availability:          99.93 %

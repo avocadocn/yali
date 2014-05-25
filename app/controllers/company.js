@@ -380,22 +380,47 @@ exports.validate = function(req, res) {
     },
     function (err, user) {
         if (user) {
-
-            //到底要不要限制验证邮件的时间呢?
-            if(encrypt.encrypt(_id,config.SECRET) === key){
-                req.session.company_id = _id;
-                req.session.nowcid = _id;
-                res.redirect('/company/confirm');
+            console.log(user.status.active);
+            if(!user.status.active) {
+                //到底要不要限制验证邮件的时间呢?
+                //废话,当然要
+                if(encrypt.encrypt(_id,config.SECRET) === key){
+                    var time_limit = config.COMPANY_VALIDATE_TIMELIMIT;
+                    if(parseInt(new Date().getTime()) - parseInt(user.status.date) > time_limit){
+                        res.render('company/company_validate_error', {
+                            title: '验证失败',
+                            message: '注册链接已经过期!'
+                        });
+                    } else {
+                        req.session.company_id = _id;
+                        req.session.nowcid = _id;
+                        user.save(function(err){
+                            if(err){
+                                res.render('company/company_validate_error', {
+                                    title: '验证失败',
+                                    message: '未知错误!'
+                                });
+                            } else {
+                                res.redirect('/company/confirm');
+                            }
+                        });
+                    }
+                } else {
+                    res.render('company/company_validate_error', {
+                        title: '验证失败',
+                        message: '验证码不正确!'
+                    });
+                }
             } else {
                 res.render('company/company_validate_error', {
                     title: '验证失败',
-                    message: '验证码不正确!'
+                    message: '请不要重复注册!'
                 });
             }
         } else {
             res.render('company/company_validate_error', {
                 title: '验证失败',
-                message: '用户不存在!'
+                message: '该公司不存在!'
             });
         }
     });
@@ -519,6 +544,7 @@ exports.create = function(req, res) {
                             company: company
                         });
                     }
+                    //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
                     mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
                     res.redirect('/company/wait');
                 });
@@ -549,7 +575,7 @@ exports.createDetail = function(req, res) {
             company.info.official_name = req.body.official_name;
             company.username = req.body.username;
             company.password = req.body.password;
-            company.status.active = true;
+            user.status.active = true;
             company.save(function (err) {
                 if(err) {
                     res.send({'result':0,'msg':'创建失败！'});

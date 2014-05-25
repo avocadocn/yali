@@ -15,3 +15,5 @@ exports.BASE_URL = 'http://127.0.0.1:3000';
 exports.SECRET = '18801912891';
 
 exports.CONFIG_NAME = 'donler';
+
+exports.COMPANY_VALIDATE_TIMELIMIT = 72 * 3600 * 1000;
