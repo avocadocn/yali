@@ -395,3 +395,15 @@ input[type="number"] {
   line-height: 18px;
   color: #999;
 }
+.dl-top-login {
+  width: 480px;
+  padding: 17px 11px 0 0;
+}
+.dl-top-login .form-control {
+  width: 50%;
+  display: inline-block;
+  border-radius: 0px;
+}
+.dl-top-login .btn {
+  border-radius: 0px;
+}
