@@ -84,6 +84,7 @@ var port = process.env.PORT || config.port;
 
 
 if (cluster.isMaster) {
+    console.log('核心数',numCPUs);
     console.log('[master] ' + "start master...");
 
     for (var i = 0; i < numCPUs; i++) {
@@ -95,6 +96,7 @@ if (cluster.isMaster) {
     });
 
 } else if (cluster.isWorker) {
+    console.log('核心数',numCPUs);
 
     process.on('online', function(msg) {
         console.log('[worker] '+ cluster.worker.id + 'online status:' + msg);
