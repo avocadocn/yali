@@ -11,7 +11,7 @@
           if (role==='HR'&&provider==='company' || role==='LEADER'&& provider ==='group')
             button.dl_btn.dl_btn_close(ng-click="cancel(campaign_item.id)") {{ campaign_item.active ? '&times;&nbsp;关闭':'打开'}}
         .row.margin_top_15
-          span.message_label 类型: {{ campaign_item.group_type[0] }}
+          span.message_label 类型: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
           //- span.message_label 参加活动人数：{{ campaign_item.member_length }}
           span.message_label(ng-if="campaign_item.provoke.active") 赛制: {{ campaign_item.provoke.competition_format }}
           span.message_label 地点: {{ campaign_item.location }}

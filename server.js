@@ -82,6 +82,7 @@ var port = process.env.PORT || config.port;
 
 //node cluster集群设置
 
+
 if (cluster.isMaster) {
     console.log('[master] ' + "start master...");
 
@@ -91,7 +92,6 @@ if (cluster.isMaster) {
 
     cluster.on('listening', function (worker, address) {
         console.log('[master] ' + 'listening: worker' + worker.id + ',pid:' + worker.process.pid + ', Address:' + address.address + ":" + address.port);
-        console.log('我的cpu有'+numCPUs+'核哦~~');
     });
 
 } else if (cluster.isWorker) {

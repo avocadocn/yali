@@ -1,0 +1,111 @@
+
+测试对象
+1. CPU 单核 单线程
+2. CPU 四核 多线程
+
+
+----------------------------- 每秒 100 次请求, 连续测试 1 分钟 ---------------------------
+
+********单线程**********
+
+访问次数:          11638 hits
+Availability:         100.00 %
+Elapsed time:          59.82 secs
+Data transferred:        14.03 MB
+平均响应时间:            0.01 secs
+每秒处理事务:       194.55 trans/sec
+吞吐率:           0.23 MB/sec
+并发用户数:            2.29
+Successful transactions:       11638
+Failed transactions:             0
+Longest transaction:          0.49
+Shortest transaction:         0.00
+
+********多线程**********
+访问次数:          11749 hits
+Availability:         100.00 %
+Elapsed time:          59.56 secs
+Data transferred:        14.16 MB
+平均响应时间:            0.01 secs
+每秒处理事务:       197.26 trans/sec
+吞吐率:           0.24 MB/sec
+并发用户数:            1.92
+Successful transactions:       11749
+Failed transactions:             0
+Longest transaction:          0.68
+Shortest transaction:         0.00
+
+
+
+
+
+
+----------------------------- 每秒 200 次请求, 连续测试 1 分钟 ---------------------------
+
+********单线程**********
+
+访问次数:          22456 hits
+Availability:         100.00 %
+Elapsed time:          59.54 secsP
+Data transferred:        27.07 MB
+平均响应时间:            0.04 secs
+每秒处理事务:       377.16 trans/sec
+吞吐率:           0.45 MB/sec
+并发用户数:           14.61
+Successful transactions:       22456
+Failed transactions:             0
+Longest transaction:          0.83
+Shortest transaction:         0.00
+
+********多线程**********
+访问次数:          22792 hits
+Availability:         100.00 %
+Elapsed time:          59.88 secs
+Data transferred:        27.47 MB
+平均响应时间:            0.02 secs
+每秒处理事务:       380.63 trans/sec
+吞吐率:           0.46 MB/sec
+并发用户数:            8.48
+Successful transactions:       22792
+Failed transactions:             0
+Longest transaction:          0.26
+Shortest transaction:         0.00
+
+
+
+
+
+----------------------------- 每秒 200 次请求, 连续测试 5 分钟 ---------------------------
+
+********单线程**********
+
+访问次数:         109195 hits
+Availability:         100.00 %
+Elapsed time:         299.95 secs
+Data transferred:       131.63 MB
+平均响应时间:            0.05 secs
+每秒处理事务:       364.04 trans/sec
+吞吐率:           0.44 MB/sec
+并发用户数:           18.73
+Successful transactions:      109195
+Failed transactions:             0
+Longest transaction:          0.34
+Shortest transaction:         0.00
+
+********多线程**********
+访问次数:         111293 hits
+Availability:         100.00 %
+Elapsed time:         299.10 secs
+Data transferred:       134.16 MB
+平均响应时间:            0.03 secs
+每秒处理事务:       372.09 trans/sec
+吞吐率:           0.45 MB/sec
+并发用户数:           12.93
+Successful transactions:      111293
+Failed transactions:             0
+Longest transaction:          0.85
+Shortest transaction:         0.00
+
+
+----------------------------- 每秒 500 次请求, 连续测试 5 分钟 ---------------------------
+

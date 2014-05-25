@@ -14,6 +14,8 @@ var mongoose = require('mongoose'),
     PhotoAlbum = mongoose.model('PhotoAlbum'),
     config = require('../../config/config');
 
+
+
 exports.getGroupId = function(req, res) {
 
 };
@@ -186,7 +188,8 @@ exports.getAllCampaign = function(req, res) {
     return res.send(403,forbidden);
   }
   var cid = req.session.role === 'HR' ? req.user._id : req.user.cid;
-  Campaign.find({'cid' : {'$all':[cid.toString()]} }).exec(function(err, campaign) {
+  var query_regular = {'cid' : {'$all':[cid.toString()]} };
+  Campaign.find(query_regular).exec(function(err, campaign) {
     if(campaign.length > 0) {
       var campaigns = [];
       if (err) {
