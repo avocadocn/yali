@@ -94,11 +94,34 @@ exports.renderMember = function(req,res){
     return res.send(403,forbidden);
   }
   res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
-}
+};
 
 
 exports.renderInfo = function (req, res) {
   res.render('group/group_info',{'role':req.session.role});
+};
+
+//激活小组
+exports.activateGroup = function(req, res) {
+  var tid = req.body.tid;
+  var active = req.body.active;
+  CompanyGroup.findOne({
+    '_id':tid
+  },function(err,companyGroup){
+    if (err || !companyGroup){
+      console.log('cannot find team');
+      return res.send({'result':0,'msg':'小组查询错误'});
+    }else{
+      companyGroup.active = active;
+      companyGroup.save(function(s_err){
+        if(s_err){
+          console.log(s_err);
+          res.send({'result':0,'msg':'数据保存错误'});
+        }
+        return res.send({'result':1,'msg':'数据保存成功'});
+      });
+    }
+  });
 };
 
 
@@ -322,7 +345,7 @@ exports.home = function(req, res) {
 
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyGroups = function(req, res) {
-  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1}, function(err, teams) {
+  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1,'active':1}, function(err, teams) {
     if(err || !teams) {
       return res.send([]);
     } else {

@@ -295,6 +295,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             $scope.infoButtonStatus = '保存';
         }
      };
+     //获取
     $http.get('/group/getCompanyGroups').success(function(data, status) {
         $scope.team_lists = data.teams;
         $scope.cid = data.cid;
@@ -363,7 +364,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         }
     };
 
-    $scope.saveGroupInfo =function (tid, tname){
+    $scope.saveGroupInfo = function (tid, tname){
         try{
             $http({
                 method:'post',
@@ -384,13 +385,42 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                 //TODO:更改对话框
                 alert('数据发生错误！');
             });
-        } 
+        }
         catch(e){
             console.log(e);
         }
     };
 
+    //激活、关闭小组
+    $scope.activateGroup = function(active,tid){
+        try{
+            $http({
+                method:'post',
+                url: '/group/activateGroup',
+                data:{
+                    'tid':tid,
+                    'active':active
+                }
+            }).success(function(data,status){
+                console.log('关闭success');
+                if( active===true ){
+                    alert('小组激活成功');
+                    window.location.reload();
+                }
+                else{
+                    alert('小组关闭成功');
+                    window.location.reload();
+                }    
+            }).error(function(data, status){
+                alert('小组激活错误');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
 }]);
+
 tabViewCompany.controller('PasswordFormController', ['$http','$scope', function($http,$scope) {
     $scope.nowpassword = '';
     $scope.newpassword = '';

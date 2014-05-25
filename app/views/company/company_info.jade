@@ -17,13 +17,13 @@ div
       .form-group
         label.info_label.col-md-2.control-label 邀请链接
         .col-md-8
-          button.dl_btn(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
+          button.btn.dl_btn(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
           label.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
   form.form-horizontal(name="infoForm")
     .infoHead.row
       h5.pull-left 企业信息
       if(role==='HR')
-        button.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
+        button.btn.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
     hr
     .form-group
       label.info_label.col-md-2.control-label 官方用户名
@@ -75,34 +75,69 @@ div
       if(role ==='HR')
         a.btn.dl_btn.pull-right(href="#/addGroup") 增加小组
     hr
-    .row(ng-repeat="team in team_lists")
-      .col-md-2
-        a(href="/group/home/{{team._id}}")
-          img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
-      .col-md-10
-        .row
+    .form-group(ng-repeat="team in team_lists")
+      .form-group(ng-if="team.active")
+        //所有人可见active的team
+        .col-md-2
+          a(href="/group/home/{{team._id}}")
+            img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
+        .col-md-10
+          .row
+            .col-md-2
+              label.info_label.control-label 队名
+            .col-md-8
+              span.info_label.control-label {{team.name}}
+            if(role ==='HR')
+              a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑
+          .row
+            .col-md-2
+              label.info_label.control-label 类型
+            .col-md-4
+              span.info_label.control-label {{team.group_type}}
+          .row
+            .col-md-2
+              label.info_label.control-label 队长
+            .col-md-2(ng-repeat="l in team.leader")
+              span.info_label.control-label {{l.nickname}}
+          .row
+            .col-md-2
+              label.info_label.control-label 人数
+            .col-md-8
+              span.info_label.control-label {{team.member.length}}
+            if(role === 'HR')
+              button.btn.dl_btn.pull-right(ng-click="activateGroup(false,team._id)") 关闭
+          hr
+      //只有HR可见inactive的team 并可打开
+      .row(ng-if="!team.active")
+        if(role ==='HR')
           .col-md-2
-            label.info_label.control-label 队名
-          .col-md-8
-            label.info_label.control-label {{team.name}}
-          if(role ==='HR')
-            a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
-        .row
-          .col-md-2
-            label.info_label.control-label 类型
-          .col-md-4
-            label.info_label.control-label {{team.group_type}}
-        .row
-          .col-md-2
-            label.info_label.control-label 队长
-          .col-md-2(ng-repeat="l in team.leader")
-            label.info_label {{l.nickname}}
-        .row
-          .col-md-2
-            label.info_label.control-label 人数
+            a(href="/group/home/{{team._id}}")
+              img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
           .col-md-10
-            label.info_label {{team.member.length}}
-        hr
+            .row
+              .col-md-2
+                label.info_label.control-label 队名
+              .col-md-8
+                span.info_label.control-label {{team.name}}
+              if(role ==='HR')
+                a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
+            .row
+              .col-md-2
+                label.info_label.control-label 类型
+              .col-md-4
+                span.info_label.control-label {{team.group_type}}
+            .row
+              .col-md-2
+                label.info_label.control-label 队长
+              .col-md-2(ng-repeat="l in team.leader")
+                span.info_label.control-label {{l.nickname}}
+            .row
+              .col-md-2
+                label.info_label.control-label 人数
+              .col-md-8
+                span.info_label.control-label {{team.member.length}}
+              button.btn.dl_btn.pull-right(ng-click="activateGroup(true,team._id)") 重开
+            hr
   if(role ==='HR' || role ==='LEADER')
     div(ng-controller="AccountFormController" class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal.jade

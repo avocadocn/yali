@@ -48,7 +48,7 @@ var CompanyGroup = new Schema({
     arena_id: Schema.Types.ObjectId,
     active: {
         type: Boolean,
-        default: false
+        default: true
     }
 });
 

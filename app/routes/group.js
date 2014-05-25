@@ -25,6 +25,8 @@ module.exports = function(app) {
   app.get('/group/getGroupMessages/:teamId', authorization.requiresLogin, group.getGroupMessage);
   app.get('/group/getGroupMembers/:teamId', authorization.requiresLogin, group.getGroupMember);
   app.get('/group/getMembers', authorization.requiresLogin, group.renderMember);
+  //激活、关闭小组
+  app.post('/group/activateGroup', authorization.requiresLogin,group.activateGroup);
 
   app.post('/group/campaignCancel', authorization.requiresLogin, group.campaignCancel);
 

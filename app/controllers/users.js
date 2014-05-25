@@ -419,12 +419,35 @@ exports.getGroupMessages = function(req, res) {
 
     function(callback) {
       var team_ids = [];
+      var tid;
       for(var k = 0; k < req.user.group[i].team.length; k ++){
-        team_ids.push(req.user.group[i].team[k].id);
+        //如果team是active的，则push进去
+        tid=req.user.group[i].team[k].id;
+        //console.log(tid,req.user.group[i].team[k].id);
+        team_ids.push(tid);
+        //此处若加查询，异步会出错Todo M
+        /*
+        CompanyGroup.findOne({
+          '_id':tid
+        },function(err,companyGroup){
+          if(err){
+            console.log(err);
+            return res.send(err)
+          }else{
+            if(companyGroup.active === true)
+              team_ids.push(tid);
+          }
+        });
+        */
       }
-      console.log(team_ids);
       GroupMessage.find({'team' :{'$in':team_ids}})
+      // .populate({
+      //     path: 'team',
+      //     match: {'$eleMatch('active')':true}
+      //   }
+      // )
       .exec(function(err, group_message) {
+        //console.log(group_message);
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
@@ -597,14 +620,14 @@ exports.home = function(req, res) {
       user_teams.push(req.user.group[i].team[j].id);
     }
   }
-  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1},function(err, company_groups) {
+  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'active':1},function(err, company_groups) {
     if(err || !company_groups) {
       return res.send([]);
     } else {
       var _cg_length= company_groups.length;
       for(var i = 0; i < _cg_length; i ++) {
-        //下面查找的是该成员加入和未加入的所有小队
-        if(company_groups[i].gid !=='0'){
+        //下面查找的是该成员加入和未加入的所有active小队
+        if(company_groups[i].gid !=='0' && company_groups[i].active==true){
           if(user_teams.indexOf(company_groups[i]._id.toString())) {
             selected_teams.push(company_groups[i]);
           } else {
