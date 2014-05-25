@@ -13,54 +13,54 @@ block content
         p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
         p 我们会对每家申请加入的团体当然也包括您在内
         p 认真的核实资料，感谢您的配合
-    .col-xs-12.col-sm-7
-      form.block_right.form-horizontal.center-block(action="/company" method="post" name="signup_form")
+    .col-xs-12.col-sm-7(ng-app="companySignUp")
+      form.block_right.form-horizontal.center-block(ng-controller="signupController" action="/company" method="post" name="signup_form")
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="name") *公司全称
           .col-xs-9
-            input#name.form-control.dl_full_control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" required)
+            input#name.form-control.dl_full_control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" required)
         .form-group.dl_sm_group(data-role="linkage-selector" data-src="/region" data-select="province city")
           label.col-xs-3.control-label(for="province") *城市
           .col-xs-9
-            select#province.form-control.dl_form_control(type="text" name="province" required)
-            select#city.form-control.dl_form_control(type="text" name="city" required)
+            select#province.form-control.dl_form_control(type="text" name="province" ng-model= "province")
+            select#city.form-control.dl_form_control(type="text" name="city" ng-model= "city")
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="address") *地址
           .col-xs-9
-            input#address.form-control.dl_full_control(type="text" name="address" required)
+            input#address.form-control.dl_full_control(type="text" name="address" ng-model= "address" required)
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="contacts") *联系人
           .col-xs-9
-            input#contacts.form-control.dl_full_control(type="text" name="contacts" required)
+            input#contacts.form-control.dl_full_control(type="text" name="contacts" ng-model= "contacts" required)
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="lindline_areacode") *公司电话
           .col-xs-9
-            input#lindline_areacode.form-control.dl_form_control(type="number" name="areacode" placeholder="区号" required)
+            input#lindline_areacode.form-control.dl_form_control(type="number" name="areacode" placeholder="区号" ng-model= "areacode" required)
             label.control-label -
-            input#lindline_number.form-control.dl_form_control(type="number" name="number" placeholder="电话号码" required)
+            input#lindline_number.form-control.dl_form_control(type="number" name="number" placeholder="电话号码" ng-model= "number" required)
             label.control-label -
-            input#lindline_extension.form-control.dl_form_control(type="number" name="extension" placeholder="分机" required)
+            input#lindline_extension.form-control.dl_form_control(type="number" name="extension" placeholder="分机" ng-model= "extension" required)
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="phone") 手机号码
           .col-xs-9
-            input#phone.form-control.dl_full_control(type="number" name="phone")
+            input#phone.form-control.dl_full_control(type="number" name="phone" ng-minlength=11 ng-maxlength=11 ng-model= "phone")
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="email_host") *电子邮箱
           .col-xs-9
-            input#email.form-control.dl_form_control(type="email" name="email" required)
+            input#email.form-control.dl_form_control(type="email" name="email" ng-model= "email" required)
         if is_need_invite
           .form-group.dl_sm_group
             label.col-xs-3.control-label(for="invite_code") *邀请码
             .col-xs-9
-              input#invite_code.form-control.dl_full_control(type="text" name="invite_code" placeholder="请输入邀请码" required)
+              input#invite_code.form-control.dl_full_control(type="text" name="invite_code" placeholder="请输入邀请码" ng-model= "invite_code" required)
         .form-group.dl_sm_group
           .col-xs-offset-3.col-xs-9
             label.dl_checkbox
-              input(type="checkbox" required)
+              input(type="checkbox" ng-model= "checkbox" required)
               | 我已阅读并同意<a href="#">服务条款</a>
         .form-group.dl_sm_group
           .col-xs-offset-3.col-xs-9
             button.btn.btn-primary.dl_btn.btn_submit.dl_full_control(ng-disabled="signup_form.$invalid") 提交申请
-
 append footExt
+  script(src='/js/controllers/companySignUp.js')
   script(src='/lib/linkage-selector/linkage-selector.js')

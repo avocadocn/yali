@@ -98,7 +98,6 @@ companyApp.controller('GroupsController',['$http',function($http) {
                 }
             }).success(function(data, status) {
                 //TODO:更改对话框
-                alert('选择组件成功！');
                 window.location.href='#/invite';
 
             }).error(function(data, status) {
@@ -111,4 +110,3 @@ companyApp.controller('GroupsController',['$http',function($http) {
         }
     };
 }]);
-

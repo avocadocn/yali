@@ -194,6 +194,11 @@ li {
 input[type="number"] {
   padding-right: 0;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .dl_form_control,
 .dl_full_control {
   display: inline-block;
@@ -406,4 +411,7 @@ input[type="number"] {
 }
 .dl-top-login .btn {
   border-radius: 0px;
+}
+input.ng-invalid.ng-dirty {
+  border-color: #ffc0cb;
 }

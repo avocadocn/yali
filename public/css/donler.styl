@@ -147,7 +147,10 @@ li
 
 input[type="number"]
    padding-right 0
-
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+    -webkit-appearance none
+    margin 0
 .dl_form_control, .dl_full_control
   display inline-block
 
@@ -325,10 +328,7 @@ input[type="number"]
     width 50%
     display inline-block
     border-radius 0px
-  .btn 
+  .btn
     border-radius 0px
-
-    
-      
-
-        
+input.ng-invalid.ng-dirty
+  border-color pink
