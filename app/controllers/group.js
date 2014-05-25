@@ -832,6 +832,22 @@ exports.getCompetition = function(req, res){
   res.render('competition/football', options);
 };
 
+exports.getCampaign = function(req, res) {
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
+  Campaign
+  .findOne({ _id: req.params.campaignId })
+  .exec()
+  .then(function(campaign) {
+    res.render('users/campaign_detail', { campaign: campaign });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.status(500).send('error');
+  });
+};
+
 
 
 exports.updateFormation = function(req, res){
@@ -1132,6 +1148,26 @@ exports.competitionPhotoAlbumDetail = function(req, res) {
         photo_album: photo_album
       });
     }
+  });
+};
+
+exports.campaignPhotoAlbumDetail = function(req, res) {
+  PhotoAlbum
+  .findOne({ _id: req.params.photoAlbumId })
+  .exec()
+  .then(function(photo_album) {
+    if (!photo_album) {
+      throw 'Not Found';
+    } else {
+      res.render('group/campaign_photo_album_detail', {
+        campaign_id: req.params.campaignId,
+        photo_album: photo_album
+      });
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.status(500).send('Error');
   });
 };
 

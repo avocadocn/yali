@@ -29,6 +29,8 @@ module.exports = function(app) {
   app.post('/group/campaignCancel', authorization.requiresLogin, group.campaignCancel);
 
   app.get('/group/competition/:competitionId', authorization.requiresLogin, group.getCompetition);
+  app.get('/group/campaign/:campaignId', authorization.requiresLogin, group.getCampaign);
+
   app.post('/group/updateFormation/:competitionId', authorization.requiresLogin, group.updateFormation);
   //小组发布活动
   app.post('/group/campaignSponsor/:teamId', authorization.requiresLogin, group.sponsor);
@@ -51,6 +53,7 @@ module.exports = function(app) {
   app.get('/group/:tid/photoAlbum/:photoAlbumId', authorization.requiresLogin, authorization.requiresLogin, group.groupPhotoAlbumDetail);
 
   app.get('/group/competition/:competitionId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.competitionPhotoAlbumDetail);
+  app.get('/group/campaign/:campaignId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.campaignPhotoAlbumDetail);
   app.post('/group/oneTeam',authorization.requiresLogin, group.getOneTeam);
 
   // for app

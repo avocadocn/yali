@@ -22,6 +22,7 @@
             input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "退出" ng-click="quit(campaign_item.id,$index)" ng-if="campaign_item.join")
             input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "参加" ng-click="join(campaign_item.id,$index)" ng-if="!campaign_item.join")
         a.btn.dl_btn.dl_btn_small.margin_5(ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}") 详情
+        a.btn.dl_btn.dl_btn_small.margin_5(ng-if="!campaign_item.provoke.active" ng-href="/group/campaign/{{ campaign_item.id }}") 详情
 .margin_top_15.pull-right.row(ng-if="company")
   if (role!=='HR')
     button.btn.btn-default.dropdown-toggle(data-toggle="dropdown") 活动类型
