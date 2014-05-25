@@ -76,13 +76,13 @@ walk(routes_path);
 
 // Start the app by listening on <port>
 var port = process.env.PORT || config.port;
-//console.log('Express app started on port ' + port);
-//app.listen(port);
+console.log('Express app started on port ' + port);
+app.listen(port);
 
 
 //node cluster集群设置
 
-
+/*
 if (cluster.isMaster) {
     console.log('核心数',numCPUs);
     console.log('[master] ' + "start master...");
@@ -106,7 +106,7 @@ if (cluster.isMaster) {
     app.listen(port);
     console.log('Express app started on port ' + port);
 }
-
+*/
 
 
 

@@ -107,5 +107,21 @@ Longest transaction:          0.85
 Shortest transaction:         0.00
 
 
------------------------------ 每秒 500 次请求, 连续测试 5 分钟 ---------------------------
+----------------------------- 每秒 1000 次请求, 连续测试 1 分钟 ---------------------------
+
+********单线程**********
+
+********多线程**********
+Transactions:          23947 hits
+Availability:          99.93 %
+Elapsed time:          59.25 secs
+Data transferred:        27.70 MB
+Response time:            1.83 secs
+Transaction rate:       404.17 trans/sec
+Throughput:           0.47 MB/sec
+Concurrency:          738.61
+Successful transactions:       23947
+Failed transactions:            16
+Longest transaction:         17.00
+Shortest transaction:         0.04
 
