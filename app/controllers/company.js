@@ -191,16 +191,30 @@ exports.select = function(req, res) {
 //配合路由渲染邀请链接页面
 exports.invite = function(req, res) {
     var inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.company_id, config.SECRET) + '&cid=' + req.session.company_id;
-    res.render('company/validate/invite', {
-        title: '邀请链接',
-        inviteLink: inviteUrl
+    var companyId = req.session.company_id;
+    req.session.company_id =null;
+    Company.findOne({_id : companyId}, function(err, company) {
+            if (err || !company) {
+                console.log('不存在公司');
+                return res.status(404).send('不存在该公司');
+            }
+            res.render('company/validate/invite', {
+                title: '邀请链接',
+                inviteLink: inviteUrl,
+                companyId: companyId,
+                defaultDomain:company.email.domain[0]
+            });
     });
+
 };
 exports.addDomain = function(req,res){
-    Company.findOne({_id : req.session.company_id}, function(err, company) {
+    Company.findOne({_id : req.body.companyId}, function(err, company) {
             if (err || !company) {
                 console.log('不存在公司');
                 return res.send({'result':0,'msg':' 不存在该公司'});
+            }
+            if(company.email.domain.indexOf(req.body.domain)>-1){
+                return res.send({'result':0,'msg':'  该后缀已经存在'});
             }
             company.email.domain.push(req.body.domain);
             company.save(function(err){
@@ -504,7 +518,11 @@ exports.create = function(req, res) {
         company.info.phone = req.body.phone;
         company.provider = 'company';
         company.login_email = req.body.email;
-
+        var _email = req.body.email.split('@');
+        if(_email[1])
+            company.email.domain.push(_email[1]);
+        else
+            return res.status(400).send({'result':0,'msg':'您输入的邮箱不正确'});
 
         // 为该公司添加3个注册邀请码
         company.register_invite_code = [];
@@ -585,6 +603,7 @@ exports.createDetail = function(req, res) {
             company.username = req.body.username;
             company.password = req.body.password;
             company.status.active = true;
+
             company.save(function (err) {
                 if(err) {
                     res.send({'result':0,'msg':'创建失败！'});

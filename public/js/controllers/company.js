@@ -119,11 +119,15 @@ companyApp.controller('inviteController',['$http','$scope',function($http,$scope
                 method : 'post',
                 url : '/company/addDomain',
                 data : {
-                    'domain' : $scope.domains[index].domain
+                    'domain' : $scope.domains[index].domain,
+                    'companyId': $scope.companyId
                 }
             }).success(function(data, status) {
                 if(data.result===1){
                     $scope.domains[index].status=true;
+                }
+                else{
+                    alert(data.msg);
                 }
             }).error(function(data, status) {
                 //TODO:更改对话框
