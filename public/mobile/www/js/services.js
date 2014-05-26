@@ -1,5 +1,12 @@
 'use strict';
 
+
+
+var base_url = 'http://www.donler.com:3000';
+
+
+
+
 angular.module('starter.services', [])
 
 
@@ -30,7 +37,7 @@ angular.module('starter.services', [])
 
   var login = function($scope, $rootScope) {
     return function(username, password) {
-      $http.post('/users/login', { username: username, password: password })
+      $http.post(base_url + '/users/login', { username: username, password: password })
       .success(function(data, status, headers, config) {
         if (data.result === 1) {
           _authorize = true;
@@ -52,7 +59,7 @@ angular.module('starter.services', [])
   };
 
   var logout = function() {
-    $http.get('/users/logout')
+    $http.get(base_url + '/users/logout')
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
         _authorize = false;
@@ -86,7 +93,7 @@ angular.module('starter.services', [])
 
   // callback(campaign_list)
   var getUserCampaigns = function(callback) {
-    $http.get('/users/campaigns')
+    $http.get(base_url + '/users/campaigns')
     .success(function(data, status, headers, config) {
       callback(data.data);
     });
@@ -94,7 +101,7 @@ angular.module('starter.services', [])
 
   // callback(campaign_list)
   var getGroupCampaigns = function(group_id, callback) {
-    $http.get('/group/' + group_id + '/campaigns')
+    $http.get(base_url + '/group/' + group_id + '/campaigns')
     .success(function(data, status, headers, config) {
       callback(data.data);
     });
@@ -102,7 +109,7 @@ angular.module('starter.services', [])
 
   var join = function(callback) {
     return function(id) {
-      $http.post('/users/joinCampaign', { campaign_id: id })
+      $http.post(base_url + '/users/joinCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback();
       });
@@ -111,7 +118,7 @@ angular.module('starter.services', [])
 
   var quit = function(callback) {
     return function(id) {
-      $http.post('/users/quitCampaign', { campaign_id: id })
+      $http.post(base_url + '/users/quitCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback();
       });
@@ -142,7 +149,7 @@ angular.module('starter.services', [])
 
   // callback(schedule_list)
   var getSchedules = function(callback) {
-    $http.get('/users/schedules')
+    $http.get(base_url + '/users/schedules')
     .success(function(data, status, headers, config) {
       callback(data.data);
     });
@@ -150,7 +157,7 @@ angular.module('starter.services', [])
 
   var quit = function(callback) {
     return function(id) {
-      $http.post('/users/quitCampaign', { campaign_id: id })
+      $http.post(base_url + '/users/quitCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback();
       });
@@ -182,7 +189,7 @@ angular.module('starter.services', [])
 .factory('Dynamic', function($http) {
 
   var getDynamics = function(callback) {
-    $http.get('/users/getGroupMessages')
+    $http.get(base_url + '/users/getGroupMessages')
     .success(function(data, status, headers, config) {
       callback(data.group_messages);
     });
@@ -191,7 +198,7 @@ angular.module('starter.services', [])
   // callback(positiveCount, negativeCount)
   var vote = function(dynamic_list, callback) {
     return function(provoke_dynamic_id, status, index) {
-      $http.post('/users/vote', {
+      $http.post(base_url + '/users/vote', {
           provoke_message_id: provoke_dynamic_id,
           aOr: status,
           tid: dynamic_list[index].my_team_id
@@ -223,7 +230,7 @@ angular.module('starter.services', [])
 .factory('Group', function($http) {
 
   var getGroups = function(callback) {
-    $http.get('/users/groups')
+    $http.get(base_url + '/users/groups')
     .success(function(data, status, headers, config) {
       callback(data.joined_groups, data.unjoin_groups);
     });
@@ -252,7 +259,7 @@ angular.module('starter.services', [])
 
   // callback(photos)
   var getPhotoList = function(photo_album_id, callback) {
-    $http.get('/photoAlbum/' + photo_album_id + '/photolist')
+    $http.get(base_url + '/photoAlbum/' + photo_album_id + '/photolist')
     .success(function(data, status) {
       callback(data.data);
     });
@@ -261,7 +268,7 @@ angular.module('starter.services', [])
 
   var deletePhoto = function(photo_album_id, callback) {
     return function(photo_id) {
-      $http.delete('/photoAlbum/' + photo_album_id + '/photo/' + photo_id)
+      $http.delete(base_url + '/photoAlbum/' + photo_album_id + '/photo/' + photo_id)
       .success(function(data, status) {
         callback();
       });
@@ -270,7 +277,7 @@ angular.module('starter.services', [])
 
   var commentPhoto = function(photo_album_id, callback) {
     return function(photo_id, comment) {
-      $http.put('/photoAlbum/' + photo_album_id + '/photo/' + photo_id, {
+      $http.put(base_url + '/photoAlbum/' + photo_album_id + '/photo/' + photo_id, {
         comment: comment
       })
       .success(function(data, status) {
@@ -307,7 +314,7 @@ angular.module('starter.services', [])
 
   // callback(user)
   var getInfo = function(user_id, callback) {
-    $http.post('/users/info', { _id: user_id })
+    $http.post(base_url + '/users/info', { _id: user_id })
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
         callback(data.user);
@@ -382,7 +389,7 @@ angular.module('starter.services', [])
 
   // callback(time_lines)
   var getUserTimeline = function(callback) {
-    $http.get('/users/getTimelineForApp')
+    $http.get(base_url + '/users/getTimelineForApp')
     .success(function(data, status) {
       callback(data.time_lines);
     });

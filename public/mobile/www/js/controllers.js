@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
 // html template get user info from $rootScope
 .controller('AppCtrl', function($scope, $rootScope, Authorize) {
   $scope.logout = Authorize.logout;
-
+  $rootScope.base_url = 'http://www.donler.com:3000';
 })
 
 
@@ -327,7 +327,7 @@ angular.module('starter.controllers', [])
   });
 
   $scope.dynamic = function() {
-    $http.get('/group/getGroupMessages/' + $scope.group._id).
+    $http.get('http://www.donler.com:3000/group/getGroupMessages/' + $scope.group._id).
       success(function(data, status, headers, config) {
         $scope.dynamic_list = data.group_messages;
         $scope.template = $scope.templates[2];
