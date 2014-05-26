@@ -575,12 +575,11 @@ exports.createDetail = function(req, res) {
             company.info.official_name = req.body.official_name;
             company.username = req.body.username;
             company.password = req.body.password;
-            user.status.active = true;
+            company.status.active = true;
             company.save(function (err) {
                 if(err) {
                     res.send({'result':0,'msg':'创建失败！'});
                 } else {
-                    req.session.role = 'HR';
                     res.send({'result':1,'msg':'创建成功！'});
                 }
             });
