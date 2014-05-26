@@ -395,6 +395,7 @@ exports.getGroupMessage = function(req, res) {
           'positive' : positive,
           'negative' : negative,
           'my_team_id' : req.companyGroup._id,
+          'my_team_name' : req.companyGroup.name,
           'host': host,                  //是不是发赛方
           '_id': group_message[i]._id,
           'cid': group_message[i].cid,

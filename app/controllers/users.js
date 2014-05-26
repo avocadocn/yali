@@ -469,12 +469,16 @@ exports.getGroupMessages = function(req, res) {
 
     function(callback) {
       var team_ids = [];
-      var tid;
+      var tid,tname;
       for(var k = 0; k < req.user.group[i].team.length; k ++){
         //如果team是active的，则push进去
         tid=req.user.group[i].team[k].id;
+        tname = req.user.group[i].team[k].name;
         //console.log(tid,req.user.group[i].team[k].id);
-        team_ids.push(tid);
+        team_ids.push({
+          'tid':tid,
+          'tname':tname
+        });
         //此处若加查询，异步会出错Todo M
         /*
         CompanyGroup.findOne({
@@ -509,7 +513,7 @@ exports.getGroupMessages = function(req, res) {
 
               var positive = 0;
               var negative = 0;
-              var my_team_id;
+              var my_team_id,my_team_name;
               var find = true;
               var host = false;
 
@@ -520,6 +524,7 @@ exports.getGroupMessages = function(req, res) {
                   for(var l = 0; l < req.user.group[i].team.length; l ++) {
                     if(group_message[j].team[k].toString() === req.user.group[i].team[l].id.toString()) {
                       my_team_id = req.user.group[i].team[l].id;
+                      my_team_name = req.user.group[i].team[l].name;
                       positive = group_message[j].provoke.camp[k].vote.positive;
                       negative = group_message[j].provoke.camp[k].vote.negative;
                       find = false;
@@ -531,8 +536,9 @@ exports.getGroupMessages = function(req, res) {
               } else {
                 //如果是普通活动动态
                 for(var l = 0; l < team_ids.length; l ++) {
-                  if(group_message[j].team[0].toString() === team_ids[l].toString()) {
-                    my_team_id = team_ids[l];
+                  if(group_message[j].team[0].toString() === team_ids[l].tid.toString()) {
+                    my_team_id = team_ids[l].tid;
+                    my_team_name = team_ids[l].tname;
                     break;
                   }
                 }
@@ -541,6 +547,7 @@ exports.getGroupMessages = function(req, res) {
               group_messages.push({
                 'positive' : positive,
                 'negative' : negative,
+                'my_team_name' : my_team_name,
                 'my_team_id': my_team_id,
                 'host': host,                  //是不是发赛方
                 '_id': group_message[j]._id,
