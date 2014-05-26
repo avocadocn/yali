@@ -16,6 +16,9 @@ block content
     .col-xs-12.col-sm-7(ng-app="companySignUp")
       form.block_right.form-horizontal.center-block(ng-controller="signupController" action="/company" method="post" name="signup_form")
         .form-group.dl_sm_group
+          .col-xs-offset-3.col-xs-9
+            label {{msg}}
+        .form-group.dl_sm_group
           label.col-xs-3.control-label(for="name") *公司全称
           .col-xs-9
             input#name.form-control.dl_full_control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" required)

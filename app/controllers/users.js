@@ -206,13 +206,9 @@ exports.invite = function(req, res) {
   }
 };
 
-/**
- * 处理激活验证
- */
-exports.dealActive = function(req, res) {
-  var key = req.session.key;
-  var cid = req.session.key_id;
 
+
+function userOperate(cid, key, res, req) {
   User.findOne({ username: req.body.host + '@' + req.body.domain }, function(err, user) {
     if(err) {
       console.log(err);
@@ -226,28 +222,38 @@ exports.dealActive = function(req, res) {
       if(encrypt.encrypt(cid, config.SECRET) === key) {
         Company.findOne({'_id': cid}).exec(function(err, company){
           if (company != null) {
-            for(var i = 0; i < company.email.domain.length; i++) {
-              if(req.body.domain === company.email.domain[i]) {
-                var user = new User();
-                user.email = req.body.host + '@' + req.body.domain;
-                user.username = user.email;
-                user.cid = company._id;
-                user.cname = company.info.name;
-                user.save(function(err) {
-                  if (err) {
-                    console.log(err);
-                    res.render('users/message', message.dbError);
-                  }
-                });
-                //系统再给员工发一封激活邮件
-                mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
-                res.render('users/message', message.wait);
-                return;
+            var email = req.body.host + '@' + req.body.domain;
+            if(company.login_email !== email){
+              for(var i = 0; i < company.email.domain.length; i++) {
+                if(req.body.domain === company.email.domain[i]) {
+                  var user = new User();
+                  user.email = email;
+                  user.username = user.email;
+                  user.cid = company._id;
+                  user.cname = company.info.name;
+                  user.save(function(err) {
+                    if (err) {
+                      console.log(err);
+                      return res.render('users/message', message.dbError);
+                    } else {
+                       company.info.membernumber = company.info.membernumber + 1;
+                       company.save(function(err){
+                        if(err) {
+                          return res.render('users/message', message.emailError);
+                        } else {
+                          //系统再给员工发一封激活邮件
+                          mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
+                          return res.render('users/message', message.wait);
+                        }
+                      });
+                    }
+                  });
+                }
               }
+              return res.render('users/message', message.invalid);
+            } else {
+              return res.render('users/message', message.invalid);
             }
-            company.info.membernumber = company.info.membernumber + 1;
-            company.save(console.log);
-            res.render('users/message', message.emailError);
           } else {
             res.render('users/message', message.invalid);
           }
@@ -256,8 +262,15 @@ exports.dealActive = function(req, res) {
         res.render('users/message', message.invalid);
       }
     }
-
   });
+}
+/**
+ * 处理激活验证
+ */
+exports.dealActive = function(req, res) {
+  var key = req.session.key;
+  var cid = req.session.key_id;
+  userOperate(cid, key, res, req);
 };
 
 /**

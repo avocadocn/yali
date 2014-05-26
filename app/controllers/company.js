@@ -268,6 +268,7 @@ exports.groupSelect = function(req, res) {
             }
 
             var companyGroup = new CompanyGroup();
+            companyGroup._id = req.session.company_id;
             companyGroup.cid = req.session.company_id;
             companyGroup.cname = company.info.name;
             companyGroup.gid = '0';
@@ -458,6 +459,7 @@ exports.validate = function(req, res) {
 };
 
 
+
 /**
  * 创建公司基本信息
  */
@@ -563,9 +565,9 @@ exports.create = function(req, res) {
                         //检查信息是否重复
                         switch (err.code) {
                             case 11000:
+                                return res.status(400).send({'result':0,'msg':'该公司已经存在!'});
                                 break;
                             case 11001:
-                                res.status(400).send({'result':0,'msg':'该公司已经存在!'});
                                 break;
                             default:
                                 break;
