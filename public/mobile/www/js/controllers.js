@@ -77,8 +77,6 @@ angular.module('starter.controllers', [])
       }
 
     }
-
-
   });
 
   $scope.join = Campaign.join(getUserCampaigns);
@@ -311,7 +309,7 @@ angular.module('starter.controllers', [])
     });
   };
 
-  $scope.$watch('campaign_list', function(newValue, oldValue) {
+  $rootScope.$watch('campaign_list', function(newValue, oldValue) {
     if (newValue === oldValue) {
       return;
     }
@@ -319,9 +317,13 @@ angular.module('starter.controllers', [])
     for (var i = 0; i < $rootScope.campaign_list.length; i++) {
       var start_time = new Date(newValue[i].start_time);
       var rest_time = start_time - new Date();
-      $rootScope.campaign_list[i].rest_time = rest_time;
-    }
+      if (rest_time >= 0) {
+        $rootScope.campaign_list[i].rest_time = rest_time;
+      } else {
+        $rootScope.campaign_list[i].beyond_time = 0 - rest_time;
+      }
 
+    }
   });
 
   $scope.dynamic = function() {
