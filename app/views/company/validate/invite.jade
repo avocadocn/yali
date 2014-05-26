@@ -3,5 +3,12 @@
   h2 注册完成，现在将邀请链接分享给同事吧
   p= inviteLink
   btn.btn.btn-primary.dl_btn 复制邀请链接
-  | &nbsp;
-  a.btn.btn-primary.dl_btn(href="#") 进入公司主页
+  .add_domain
+    p 为保护贵公司隐私，请您将激活邮箱的后缀做限定。
+    p 企业邮箱后缀：
+    input(type="text")
+    btn.btn.btn-primary.dl_btn 添加后缀
+    .add_domain_button
+      a 添加企业邮箱后缀
+  .index_link
+    a.btn.btn-primary.dl_btn(href="/company/signin") 进入公司主页
