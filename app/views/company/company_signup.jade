@@ -22,11 +22,12 @@ block content
           label.col-xs-3.control-label(for="name") *公司全称
           .col-xs-9
             input#name.form-control.dl_full_control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" required)
-        .form-group.dl_sm_group(data-role="linkage-selector" data-src="/region" data-select="province city")
+        .form-group.dl_sm_group(data-role="linkage-selector" data-src="/region" data-select="province city region")
           label.col-xs-3.control-label(for="province") *城市
           .col-xs-9
             select#province.form-control.dl_form_control(type="text" name="province" ng-model= "province")
             select#city.form-control.dl_form_control(type="text" name="city" ng-model= "city")
+            select#region.form-control.dl_form_control(type="text" name="region" ng-model= "region")
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="address") *地址
           .col-xs-9
