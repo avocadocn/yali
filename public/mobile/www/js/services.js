@@ -86,39 +86,35 @@ angular.module('starter.services', [])
 
   // callback(campaign_list)
   var getUserCampaigns = function(callback) {
-    $http.get('/users/campaigns').
-      success(function(data, status, headers, config) {
-        callback(data.data);
-      }
-    );
+    $http.get('/users/campaigns')
+    .success(function(data, status, headers, config) {
+      callback(data.data);
+    });
   };
 
   // callback(campaign_list)
   var getGroupCampaigns = function(group_id, callback) {
-    $http.get('/group/' + group_id + '/campaigns').
-      success(function(data, status, headers, config) {
-        callback(data.data);
-      }
-    );
+    $http.get('/group/' + group_id + '/campaigns')
+    .success(function(data, status, headers, config) {
+      callback(data.data);
+    });
   };
 
   var join = function(callback) {
     return function(id) {
-      $http.post('/users/joinCampaign', { campaign_id: id }).
-        success(function(data, status, headers, config) {
-          callback();
-        }
-      );
+      $http.post('/users/joinCampaign', { campaign_id: id })
+      .success(function(data, status, headers, config) {
+        callback();
+      });
     };
   };
 
   var quit = function(callback) {
     return function(id) {
-      $http.post('/users/quitCampaign', { campaign_id: id }).
-        success(function(data, status, headers, config) {
-          callback();
-        }
-      );
+      $http.post('/users/quitCampaign', { campaign_id: id })
+      .success(function(data, status, headers, config) {
+        callback();
+      });
     };
   };
 
@@ -145,20 +141,18 @@ angular.module('starter.services', [])
 .factory('Schedule', function($http) {
 
   var getSchedules = function(callback) {
-    $http.get('/users/schedules').
-      success(function(data, status, headers, config) {
-        callback(data.data);
-      }
-    );
+    $http.get('/users/schedules')
+    .success(function(data, status, headers, config) {
+      callback(data.data);
+    });
   };
 
   var quit = function(callback) {
     return function(id) {
-      $http.post('/users/quitCampaign', { campaign_id: id }).
-        success(function(data, status, headers, config) {
-          callback();
-        }
-      );
+      $http.post('/users/quitCampaign', { campaign_id: id })
+      .success(function(data, status, headers, config) {
+        callback();
+      });
     };
   };
 
@@ -187,11 +181,10 @@ angular.module('starter.services', [])
 .factory('Dynamic', function($http) {
 
   var getDynamics = function(callback) {
-    $http.get('/users/getGroupMessages').
-      success(function(data, status, headers, config) {
-        callback(data.group_messages);
-      }
-    );
+    $http.get('/users/getGroupMessages')
+    .success(function(data, status, headers, config) {
+      callback(data.group_messages);
+    });
   };
 
   var vote = function(dynamic_list, callback) {
@@ -228,11 +221,10 @@ angular.module('starter.services', [])
 .factory('Group', function($http) {
 
   var getGroups = function(callback) {
-    $http.get('/users/groups').
-      success(function(data, status, headers, config) {
-        callback(data.joined_groups, data.unjoin_groups);
-      }
-    );
+    $http.get('/users/groups')
+    .success(function(data, status, headers, config) {
+      callback(data.joined_groups, data.unjoin_groups);
+    });
   };
 
   return {
@@ -265,9 +257,31 @@ angular.module('starter.services', [])
   };
 
 
+  var deletePhoto = function(photo_album_id, callback) {
+    return function(photo_id) {
+      $http.delete('/photoAlbum/' + photo_album_id + '/photo/' + photo_id)
+      .success(function(data, status) {
+        callback();
+      });
+    };
+  };
+
+  var commentPhoto = function(photo_album_id, callback) {
+    return function(photo_id, comment) {
+      $http.put('/photoAlbum/' + photo_album_id + '/photo/' + photo_id, {
+        comment: comment
+      })
+      .success(function(data, status) {
+        callback();
+      });
+    };
+  };
+
 
   return {
-    getPhotoList: getPhotoList
+    getPhotoList: getPhotoList,
+    deletePhoto: deletePhoto,
+    commentPhoto: commentPhoto
   };
 
 })

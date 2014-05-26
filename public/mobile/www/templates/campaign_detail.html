@@ -21,12 +21,13 @@
       </form>
       </div>
       <div id="photo_list">
-        <div ng-repeat="photo in photos" finish-repeat-directive>
+        <div ng-repeat="photo in photos">
           <img ng-src="{{ photo.uri }}"/>
-          <form ng-if="role === 'LEADER' || _id === photo.publish_user_id" class="js_delete_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo/' + photo.pid }}" method="post">
-            <input type="hidden" name="_method" value="delete"/>
-            <button type="submit">删除照片</button>
-          </form>
+          <p>上传者：{{ photo.publish_user }}</p>
+          <p>备注：{{ photo.comment }}</p>
+          <button ng-click="deletePhoto(photo.pid)">删除照片</button>
+          <input type="text" ng-model="comment"/>
+          <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button>
         </div>
       </div>
     </div>

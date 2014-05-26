@@ -11,6 +11,11 @@ angular.module('starter.controllers', [])
 
 
 
+
+
+
+
+
 .controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
 
   if (Authorize.authorize() === true) {
@@ -26,6 +31,15 @@ angular.module('starter.controllers', [])
 
   $scope.login = Authorize.login($scope, $rootScope);
 })
+
+
+
+
+
+
+
+
+
 
 
 
@@ -76,6 +90,23 @@ angular.module('starter.controllers', [])
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Authorize, Campaign, PhotoAlbum) {
 
   Authorize.authorize();
@@ -84,6 +115,8 @@ angular.module('starter.controllers', [])
 
   $scope.photo_album_id = $scope.campaign.photo_album.pid;
 
+  $scope.comment = '';
+
   $scope.photos = [];
 
   var getPhotoList = function() {
@@ -91,7 +124,6 @@ angular.module('starter.controllers', [])
       $scope.photos = photos;
     });
   };
-  $rootScope.getPhotoList = getPhotoList;
   getPhotoList();
 
   $('#upload_form').ajaxForm(function() {
@@ -117,8 +149,22 @@ angular.module('starter.controllers', [])
   $scope.join = Campaign.join(getCampaigns);
   $scope.quit = Campaign.quit(getCampaigns);
 
+  $scope.deletePhoto = PhotoAlbum.deletePhoto($scope.photo_album_id, getPhotoList);
+  $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
+
 
 })
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -131,6 +177,11 @@ angular.module('starter.controllers', [])
 
 
 })
+
+
+
+
+
 
 
 
@@ -161,6 +212,11 @@ angular.module('starter.controllers', [])
 
 
 
+
+
+
+
+
 .controller('DynamicListCtrl', function($scope, Authorize, Dynamic) {
 
   Authorize.authorize();
@@ -176,6 +232,10 @@ angular.module('starter.controllers', [])
   });
 
 })
+
+
+
+
 
 
 
@@ -278,6 +338,17 @@ angular.module('starter.controllers', [])
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 .controller('UserInfoCtrl', function($scope, $rootScope, Authorize, User) {
 
   Authorize.authorize();
@@ -287,6 +358,11 @@ angular.module('starter.controllers', [])
   });
 
 })
+
+
+
+
+
 
 
 
@@ -308,19 +384,6 @@ angular.module('starter.controllers', [])
 
 
 
-
-
-
-
-
-
-.directive('finishRepeatDirective', function($rootScope) {
-  return function(scope, element, attrs) {
-    $(element).find('.js_delete_form').ajaxForm(function() {
-      $rootScope.getPhotoList();
-    });
-  };
-})
 
 
 
