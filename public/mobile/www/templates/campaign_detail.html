@@ -4,8 +4,39 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <p>{{ campaign.content }}</p>
-    <p ng-repeat="opponent in campaign.opponent_list">
-      <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
-    </p>
+    <p>参加人员</p>
+    <div>
+      <div ng-repeat="user in campaign.member">
+        <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
+      </div>
+    </div>
+    <div ng-if="campaign.opponent_list.length > 0">
+      <p>对手</p>
+      <p ng-repeat="opponent in campaign.opponent_list">
+        <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
+      </p>
+    </div>
+    <p>活动地点</p>
+    <div id="location" style="width:320px; height:320px;"></div>
+    <div>
+      <h4>活动精彩照片</h4>
+      <form id="upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="photos" multiple="multiple" accept="image/*" required/>
+        <button type="submit">上传照片</button>
+      </form>
+      </div>
+      <div id="photo_list">
+        <div ng-repeat="photo in photos">
+          <img ng-src="{{ photo.uri }}"/>
+          <p>上传者：{{ photo.publish_user }}</p>
+          <p>备注：{{ photo.comment }}</p>
+          <button ng-click="deletePhoto(photo.pid)">删除照片</button>
+          <input type="text" ng-model="comment"/>
+          <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button>
+        </div>
+      </div>
+    </div>
+    <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
+    <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
   </ion-content>
 </ion-view>

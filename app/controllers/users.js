@@ -142,7 +142,8 @@ exports.loginSuccess = function(req, res) {
 exports.appLoginSuccess = function(req, res) {
   var data = {
     _id: req.user._id,
-    nickname: req.user.nickname
+    nickname: req.user.nickname,
+    role: req.user.role
   };
   res.send({ result: 1, msg: '登录成功', data: data });
 }
@@ -182,71 +183,121 @@ exports.invite = function(req, res) {
     res.render('users/message', {title: 'error', message: 'bad request'});
   } else {
     if (encrypt.encrypt(cid, config.SECRET) === key) {
-      req.session.key = key;
-      req.session.key_id = cid;
-      res.render('users/invite', {
-        title: 'validate'
+      Company
+      .findOne({ _id: cid })
+      .exec()
+      .then(function(company) {
+        if (!company) {
+          throw 'Not Found';
+        }
+        req.session.key = key;
+        req.session.key_id = cid;
+        res.render('users/invite', {
+          title: 'validate',
+          domains: company.email.domain
+        });
+      })
+      .then(null, function(err) {
+        console.log(err);
+        res.render('users/message', {title: 'error', message: 'bad request'});
       });
+
     }
   }
 };
 
+
+
+function userOperate(cid, key, res, req) {
+
+  if (encrypt.encrypt(cid, config.SECRET) === key) {
+
+    Company
+    .findOne({ _id: cid })
+    .exec()
+    .then(function(company) {
+      if (!company) {
+        throw 'Not found company';
+      }
+
+      User
+      .findOne({ username: req.body.host + '@' + req.body.domain })
+      .exec()
+      .then(function(user) {
+        if (user) {
+          return res.render('users/invite', {
+            title: 'validate',
+            domains: company.email.domain,
+            message: '该邮箱已被注册'
+          });
+        }
+
+        var email = req.body.host + '@' + req.body.domain;
+        if(company.login_email !== email) {
+          if (company.email.domain.indexOf(req.body.domain) > -1) {
+            var user = new User({
+              email: email,
+              username: email,
+              cid: company._id,
+              cname: company.info.name
+            });
+            user.save(function(err) {
+              if (err) {
+                console.log(err);
+              } else {
+                company.info.membernumber = company.info.membernumber + 1;
+                company.save(function(err){
+                  if(err) {
+                    console.log(err);
+                  } else {
+                    //系统再给员工发一封激活邮件
+                    mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
+                    res.render('users/message', message.wait);
+                  }
+                });
+              }
+            });
+          } else {
+            res.render('users/invite', {
+              title: 'validate',
+              domains: company.email.domain,
+              message: '请使用企业邮箱'
+            });
+          }
+
+        } else {
+          res.render('users/invite', {
+            title: 'validate',
+            domains: company.email.domain,
+            message: '员工邮箱与企业邮箱不能相同'
+          });
+        }
+
+      })
+      .then(null, function(err) {
+        console.log(err);
+        res.render('users/message', message.invalid);
+      });
+
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.render('users/message', message.invalid);
+    });
+
+  } else {
+    res.render('users/message', message.invalid);
+  }
+
+
+}
 /**
  * 处理激活验证
  */
 exports.dealActive = function(req, res) {
   var key = req.session.key;
   var cid = req.session.key_id;
-
-  User.findOne({ username: req.body.host + '@' + req.body.domain }, function(err, user) {
-    if(err) {
-      console.log(err);
-    } else if(user) {
-      if(user.active === false) {
-        res.render('users/message', message.registered);
-      } else {
-        res.render('users/message', message.actived);
-      }
-    } else {
-      if(encrypt.encrypt(cid, config.SECRET) === key) {
-        Company.findOne({'_id': cid}).exec(function(err, company){
-          if (company != null) {
-            for(var i = 0; i < company.email.domain.length; i++) {
-              if(req.body.domain === company.email.domain[i]) {
-                var user = new User();
-                user.email = req.body.host + '@' + req.body.domain;
-                user.username = user.email;
-                user.cid = company._id;
-                user.cname = company.info.name;
-                user.save(function(err) {
-                  if (err) {
-                    console.log(err);
-                    res.render('users/message', message.dbError);
-                  }
-                });
-                //系统再给员工发一封激活邮件
-                mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
-                res.render('users/message', message.wait);
-                return;
-              }
-            }
-            company.info.membernumber = company.info.membernumber + 1;
-            company.save(function(err){
-              ;
-            });
-            res.render('users/message', message.emailError);
-          } else {
-            console.log('bbbb');
-            res.render('users/message', message.invalid);
-          }
-        });
-      } else {
-        console.log('aaaa');
-        res.render('users/message', message.invalid);
-      }
-    }
-
-  });
+  userOperate(cid, key, res, req);
 };
 
 /**
@@ -418,12 +469,39 @@ exports.getGroupMessages = function(req, res) {
 
     function(callback) {
       var team_ids = [];
+      var tid,tname;
       for(var k = 0; k < req.user.group[i].team.length; k ++){
-        team_ids.push(req.user.group[i].team[k].id);
+        //如果team是active的，则push进去
+        tid=req.user.group[i].team[k].id;
+        tname = req.user.group[i].team[k].name;
+        //console.log(tid,req.user.group[i].team[k].id);
+        team_ids.push({
+          'tid':tid,
+          'tname':tname
+        });
+        //此处若加查询，异步会出错Todo M
+        /*
+        CompanyGroup.findOne({
+          '_id':tid
+        },function(err,companyGroup){
+          if(err){
+            console.log(err);
+            return res.send(err)
+          }else{
+            if(companyGroup.active === true)
+              team_ids.push(tid);
+          }
+        });
+        */
       }
-      console.log(team_ids);
       GroupMessage.find({'team' :{'$in':team_ids}})
+      // .populate({
+      //     path: 'team',
+      //     match: {'$eleMatch('active')':true}
+      //   }
+      // )
       .exec(function(err, group_message) {
+        //console.log(group_message);
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
@@ -435,7 +513,7 @@ exports.getGroupMessages = function(req, res) {
 
               var positive = 0;
               var negative = 0;
-              var my_team_id;
+              var my_team_id,my_team_name;
               var find = true;
               var host = false;
 
@@ -446,6 +524,7 @@ exports.getGroupMessages = function(req, res) {
                   for(var l = 0; l < req.user.group[i].team.length; l ++) {
                     if(group_message[j].team[k].toString() === req.user.group[i].team[l].id.toString()) {
                       my_team_id = req.user.group[i].team[l].id;
+                      my_team_name = req.user.group[i].team[l].name;
                       positive = group_message[j].provoke.camp[k].vote.positive;
                       negative = group_message[j].provoke.camp[k].vote.negative;
                       find = false;
@@ -457,8 +536,9 @@ exports.getGroupMessages = function(req, res) {
               } else {
                 //如果是普通活动动态
                 for(var l = 0; l < team_ids.length; l ++) {
-                  if(group_message[j].team[0].toString() === team_ids[l].toString()) {
-                    my_team_id = team_ids[l];
+                  if(group_message[j].team[0].toString() === team_ids[l].tid.toString()) {
+                    my_team_id = team_ids[l].tid;
+                    my_team_name = team_ids[l].tname;
                     break;
                   }
                 }
@@ -467,6 +547,7 @@ exports.getGroupMessages = function(req, res) {
               group_messages.push({
                 'positive' : positive,
                 'negative' : negative,
+                'my_team_name' : my_team_name,
                 'my_team_id': my_team_id,
                 'host': host,                  //是不是发赛方
                 '_id': group_message[j]._id,
@@ -596,14 +677,14 @@ exports.home = function(req, res) {
       user_teams.push(req.user.group[i].team[j].id);
     }
   }
-  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1},function(err, company_groups) {
+  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'active':1},function(err, company_groups) {
     if(err || !company_groups) {
       return res.send([]);
     } else {
       var _cg_length= company_groups.length;
       for(var i = 0; i < _cg_length; i ++) {
-        //下面查找的是该成员加入和未加入的所有小队
-        if(company_groups[i].gid !=='0'){
+        //下面查找的是该成员加入和未加入的所有active小队
+        if(company_groups[i].gid !=='0' && company_groups[i].active==true){
           if(user_teams.indexOf(company_groups[i]._id.toString())) {
             selected_teams.push(company_groups[i]);
           } else {
@@ -886,7 +967,7 @@ exports.timeLine = function(req,res){
       campaigns.forEach(function(campaign) {
         var _head,_type;
         if(campaign.provoke.active){
-          _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
+          _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
           _type = 'provoke';
         }
         else if(campaign.gid[0]==='0'){
@@ -1218,7 +1299,7 @@ exports.getGroups = function(req, res) {
   })
   .then(null, function(err) {
     console.log(err);
-    res.status(500).send('获取小组列表失败');
+    res.send('获取小组列表失败');
   });
 
 
@@ -1314,6 +1395,56 @@ exports.getUserInfo = function(req, res) {
 
 
 };
+
+
+
+exports.getTimelineForApp = function(req,res){
+  Campaign
+  .find({ 'member.uid': req.session.nowuid })
+  .where('end_time').lt(new Date())
+  .sort('-start_time')
+  .populate('team')
+  .exec()
+  .then(function(campaigns) {
+    if (campaigns && campaigns.length >= 0) {
+      var time_lines = [];
+      campaigns.forEach(function(campaign) {
+        var _head, _type;
+        if(campaign.provoke.active){
+          _head = campaign.team[0].name + '对' + campaign.team[1].name + '的比赛';
+          _type = 'provoke';
+        }
+        else if(campaign.gid[0] === '0'){
+          _head = '公司活动';
+          _type = 'company_campaign';
+        }
+        else {
+          _head = campaign.team[0].name + '活动';
+          _type = 'group_campaign';
+        }
+        var temp_obj = {
+          _id: campaign._id,
+          head: _head,
+          content: campaign.content,
+          location: campaign.location,
+          group_type: campaign.group_type,
+          start_time: campaign.start_time,
+          provoke: campaign.provoke,
+          type: _type
+        };
+        time_lines.push(temp_obj);
+      });
+      res.send({ result: 1, msg: '获取用户活动足迹成功', time_lines: time_lines });
+    }
+    else{
+      throw '没有找到活动';
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send({ result: 0, msg: '获取用户活动足迹失败' });
+  });
+}
 
 
 

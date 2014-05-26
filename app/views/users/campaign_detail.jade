@@ -1,0 +1,22 @@
+extends layouts/user_base
+
+block content
+  .container
+    h1 活动详情
+    p 活动内容：#{campaign.content}
+    p 活动地点：#{campaign.location}
+    p 开始时间：#{campaign.start_time}
+    p 发起者：#{campaign.poster.username}
+
+    hr
+    div
+      h4.pull-left 活动精彩照片
+      if(role!=='PARTNER')
+        a(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传照片
+      input#photo_album_id(type="hidden" name="photo_album_id" value="#{campaign.photo_album.pid}")
+      div#photo_list(ng-controller="PhotoListCtrl")
+        div(ng-repeat="photo in photos")
+          img(ng-src="{{ photo.uri }}")
+
+append footExt
+  script(src="/js/photo_thumbnail.js")

@@ -16,8 +16,8 @@
         <p class="menu_nickname">{{ nickname }}</p>
       </div>
       <ion-list class="menu_list">
-        <ion-item nav-clear menu-close href="#/app">
-          首页
+        <ion-item nav-clear menu-close href="#/app/campaign_list">
+          活动列表
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/schedule_list">
           我的日程
@@ -28,14 +28,11 @@
         <ion-item nav-clear menu-close href="#/app/group_list">
           小组列表
         </ion-item>
-        <ion-item nav-clear menu-close href="#" ng-if="false">
-          我的Timeline
+        <ion-item nav-clear menu-close href="#/app/timeline">
+          我的活动足迹
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/user_info">
           个人资料
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/campaign_list">
-          活动列表
         </ion-item>
         <ion-item nav-clear menu-close ng-click="logout()">
           退出

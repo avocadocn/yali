@@ -13,14 +13,13 @@ div
         .col-md-9
           .row
             a.btn.btn.dl_btn.margin_top_15(href="/users/editPhoto") 修改头像
-          .row
-            a.btn.dl_btn.margin_top_15(href="#/changePassword") 修改密码
+          if(role!=='PARTNER')
+            .row
+              a.btn.dl_btn.margin_top_15(href="#/changePassword") 修改密码
     .form-group
       label.info_label.col-md-2.control-label 登录邮箱
       .col-md-4
         label.info_label(ng-bind="user.email")
-      if(role!=='PARTNER')
-        a.col-md-2.btn.dl_btn(href="#/changePassword") 修改密码
     .form-group
       label.info_label.col-md-2.control-label 昵称
       .col-md-4

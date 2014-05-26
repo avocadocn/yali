@@ -94,11 +94,34 @@ exports.renderMember = function(req,res){
     return res.send(403,forbidden);
   }
   res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
-}
+};
 
 
 exports.renderInfo = function (req, res) {
   res.render('group/group_info',{'role':req.session.role});
+};
+
+//激活小组
+exports.activateGroup = function(req, res) {
+  var tid = req.body.tid;
+  var active = req.body.active;
+  CompanyGroup.findOne({
+    '_id':tid
+  },function(err,companyGroup){
+    if (err || !companyGroup){
+      console.log('cannot find team');
+      return res.send({'result':0,'msg':'小组查询错误'});
+    }else{
+      companyGroup.active = active;
+      companyGroup.save(function(s_err){
+        if(s_err){
+          console.log(s_err);
+          res.send({'result':0,'msg':'数据保存错误'});
+        }
+        return res.send({'result':1,'msg':'数据保存成功'});
+      });
+    }
+  });
 };
 
 
@@ -259,7 +282,7 @@ exports.home = function(req, res) {
           }
         });
   }
-  else{
+  else{//个人侧栏
     var selected_teams = [];
     var unselected_teams = [];
     var user_teams = [];
@@ -269,13 +292,13 @@ exports.home = function(req, res) {
         user_teams.push(req.user.group[i].team[j].id);
       }
     }
-    CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1},function(err, company_groups) {
+    CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
       if(err || !company_groups) {
         return res.send([]);
       } else {
         for(var i = 0; i < company_groups.length; i ++) {
-          if(company_groups[i].gid !== '0'){
-            //下面查找的是该成员加入和未加入的所有小队
+          if(company_groups[i].gid !== '0' && company_groups[i].active === true){
+            //下面查找的是该成员加入和未加入的所有active小队
             if(user_teams.indexOf(company_groups[i]._id.toString())) {
               selected_teams.push(company_groups[i]);
             } else {
@@ -322,7 +345,7 @@ exports.home = function(req, res) {
 
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyGroups = function(req, res) {
-  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1}, function(err, teams) {
+  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1,'active':1}, function(err, teams) {
     if(err || !teams) {
       return res.send([]);
     } else {
@@ -372,6 +395,7 @@ exports.getGroupMessage = function(req, res) {
           'positive' : positive,
           'negative' : negative,
           'my_team_id' : req.companyGroup._id,
+          'my_team_name' : req.companyGroup.name,
           'host': host,                  //是不是发赛方
           '_id': group_message[i]._id,
           'cid': group_message[i].cid,
@@ -832,6 +856,22 @@ exports.getCompetition = function(req, res){
   res.render('competition/football', options);
 };
 
+exports.getCampaign = function(req, res) {
+  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+    return res.send(403,forbidden);
+  }
+  Campaign
+  .findOne({ _id: req.params.campaignId })
+  .exec()
+  .then(function(campaign) {
+    res.render('users/campaign_detail', { campaign: campaign });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.status(500).send('error');
+  });
+};
+
 
 
 exports.updateFormation = function(req, res){
@@ -1132,6 +1172,26 @@ exports.competitionPhotoAlbumDetail = function(req, res) {
         photo_album: photo_album
       });
     }
+  });
+};
+
+exports.campaignPhotoAlbumDetail = function(req, res) {
+  PhotoAlbum
+  .findOne({ _id: req.params.photoAlbumId })
+  .exec()
+  .then(function(photo_album) {
+    if (!photo_album) {
+      throw 'Not Found';
+    } else {
+      res.render('group/campaign_photo_album_detail', {
+        campaign_id: req.params.campaignId,
+        photo_album: photo_album
+      });
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.status(500).send('Error');
   });
 };
 

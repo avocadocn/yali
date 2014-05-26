@@ -99,12 +99,33 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
 
+    .state('app.timeline', {
+      url: '/timeline',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/timeline.html',
+          controller: 'TimelineCtrl'
+        }
+      }
+    })
+
+
     .state('app.userInfo', {
       url: '/user_info',
       views: {
         'menuContent': {
           templateUrl: 'templates/user_info.html',
           controller: 'UserInfoCtrl'
+        }
+      }
+    })
+
+    .state('app.otherUserInfo', {
+      url: '/other_user_info/:uid',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/user_info.html',
+          controller: 'OtherUserInfoCtrl'
         }
       }
     });

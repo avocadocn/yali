@@ -118,16 +118,12 @@ var _group =[
 
 
 var _region = [{
-    "__v" : 2,
-    "_id" : ObjectId("53731162140754fe019189b5"),
     "city" : [
         {
-            "_id" : ObjectId("5373116a140754fe019189b6"),
             "district" : [
                 {
                     "id" : "C626229D-8A70-0001-C01A-1516270011CD",
-                    "name" : "黄浦",
-                    "_id" : ObjectId("53731175140754fe019189b7")
+                    "name" : "黄浦"
                 }
             ],
             "id" : "C626229A-A370-0001-C11B-1CD0B030181A",

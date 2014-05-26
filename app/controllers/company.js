@@ -99,7 +99,6 @@ exports.renderResetPwd = function(req, res){
 
 }
 exports.resetPwd = function(req, res){
-    console.log(req.body.id);
   Company.findOne({_id: req.body.id}, function(err, company) {
     if(err || !company) {
       return  res.render('company/resetPwd',{
@@ -192,12 +191,42 @@ exports.select = function(req, res) {
 //配合路由渲染邀请链接页面
 exports.invite = function(req, res) {
     var inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.company_id, config.SECRET) + '&cid=' + req.session.company_id;
-    req.session.company_id = null;
-    res.render('company/validate/invite', {
-        title: '邀请链接',
-        inviteLink: inviteUrl
+    var companyId = req.session.company_id;
+    req.session.company_id =null;
+    Company.findOne({_id : companyId}, function(err, company) {
+            if (err || !company) {
+                console.log('不存在公司');
+                return res.status(404).send('不存在该公司');
+            }
+            res.render('company/validate/invite', {
+                title: '邀请链接',
+                inviteLink: inviteUrl,
+                companyId: companyId,
+                defaultDomain:company.email.domain[0]
+            });
     });
+
 };
+exports.addDomain = function(req,res){
+    Company.findOne({_id : req.body.companyId}, function(err, company) {
+            if (err || !company) {
+                console.log('不存在公司');
+                return res.send({'result':0,'msg':' 不存在该公司'});
+            }
+            if(company.email.domain.indexOf(req.body.domain)>-1){
+                return res.send({'result':0,'msg':'  该后缀已经存在'});
+            }
+            company.email.domain.push(req.body.domain);
+            company.save(function(err){
+                if (!err) {
+                    return res.send({'result':1,'msg':' 邮箱后缀添加成功'});
+                }
+                else{
+                     return res.send({'result':0,'msg':' 邮箱后缀添加失败'});
+                }
+            })
+    });
+}
 //配合路由渲染增加小组列表Todo
 exports.add_company_group = function(req, res){
     res.render('company/company_addgroup', {
@@ -239,6 +268,7 @@ exports.groupSelect = function(req, res) {
             }
 
             var companyGroup = new CompanyGroup();
+            companyGroup._id = req.session.company_id;
             companyGroup.cid = req.session.company_id;
             companyGroup.cname = company.info.name;
             companyGroup.gid = '0';
@@ -265,6 +295,7 @@ exports.groupSelect = function(req, res) {
                 companyGroup.group_type = selected_groups[i].group_type;
                 companyGroup.entity_type = selected_groups[i].entity_type;
                 companyGroup.name = tname;
+                companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type +'_on.png';
 
                 companyGroup.save(function (err){
                     if (err) {
@@ -329,6 +360,8 @@ exports.saveGroup = function(req, res) {
             companyGroup.group_type = selected_group.group_type;
             companyGroup.entity_type = selected_group.entity_type;
             companyGroup.name = req.body.tname;
+            companyGroup.logo = '/img/icons/group/' + selected_group.entity_type +'_on.png';
+            console.log(companyGroup.logo);
 
             companyGroup.save(function (err){
                 if (err) {
@@ -380,26 +413,51 @@ exports.validate = function(req, res) {
     },
     function (err, user) {
         if (user) {
-
-            //到底要不要限制验证邮件的时间呢?
-            if(encrypt.encrypt(_id,config.SECRET) === key){
-                req.session.company_id = _id;
-                req.session.nowcid = _id;
-                res.redirect('/company/confirm');
+            console.log(user.status.active);
+            if(!user.status.active) {
+                //到底要不要限制验证邮件的时间呢?
+                //废话,当然要
+                if(encrypt.encrypt(_id,config.SECRET) === key){
+                    var time_limit = config.COMPANY_VALIDATE_TIMELIMIT;
+                    if(parseInt(new Date().getTime()) - parseInt(user.status.date) > time_limit){
+                        res.render('company/company_validate_error', {
+                            title: '验证失败',
+                            message: '注册链接已经过期!'
+                        });
+                    } else {
+                        req.session.company_id = _id;
+                        user.save(function(err){
+                            if(err){
+                                res.render('company/company_validate_error', {
+                                    title: '验证失败',
+                                    message: '未知错误!'
+                                });
+                            } else {
+                                res.redirect('/company/confirm');
+                            }
+                        });
+                    }
+                } else {
+                    res.render('company/company_validate_error', {
+                        title: '验证失败',
+                        message: '验证码不正确!'
+                    });
+                }
             } else {
                 res.render('company/company_validate_error', {
                     title: '验证失败',
-                    message: '验证码不正确!'
+                    message: '请不要重复注册!'
                 });
             }
         } else {
             res.render('company/company_validate_error', {
                 title: '验证失败',
-                message: '用户不存在!'
+                message: '该公司不存在!'
             });
         }
     });
 };
+
 
 
 /**
@@ -471,7 +529,6 @@ exports.create = function(req, res) {
         else
             return res.status(400).send({'result':0,'msg':'您输入的邮箱不正确'});
 
-
         // 为该公司添加3个注册邀请码
         company.register_invite_code = [];
         var code_count = 0;
@@ -508,9 +565,9 @@ exports.create = function(req, res) {
                         //检查信息是否重复
                         switch (err.code) {
                             case 11000:
+                                return res.status(400).send({'result':0,'msg':'该公司已经存在!'});
                                 break;
                             case 11001:
-                                res.status(400).send({'result':0,'msg':'该公司已经存在!'});
                                 break;
                             default:
                                 break;
@@ -519,6 +576,7 @@ exports.create = function(req, res) {
                             company: company
                         });
                     }
+                    //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
                     mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
                     res.redirect('/company/wait');
                 });
@@ -550,11 +608,11 @@ exports.createDetail = function(req, res) {
             company.username = req.body.username;
             company.password = req.body.password;
             company.status.active = true;
+
             company.save(function (err) {
                 if(err) {
                     res.send({'result':0,'msg':'创建失败！'});
                 } else {
-                    req.session.role = 'HR';
                     res.send({'result':1,'msg':'创建成功！'});
                 }
             });

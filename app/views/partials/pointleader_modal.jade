@@ -16,6 +16,4 @@
           li(ng-repeat= "user in users")
             a(ng-click="appointLeader(user._id)" data-dismiss="modal") {{user.nickname}}
     .modal-footer
-       button.dl_btn(ng-click="saveGroupInfo(team._id,team.name)") 保存
-       //todo
-         button.dl_btn() 关闭小组
+      button.dl_btn(ng-click="saveGroupInfo(team._id,team.name)") 保存

@@ -98,7 +98,6 @@ companyApp.controller('GroupsController',['$http',function($http) {
                 }
             }).success(function(data, status) {
                 //TODO:更改对话框
-                alert('选择组件成功！');
                 window.location.href='#/invite';
 
             }).error(function(data, status) {
@@ -111,4 +110,35 @@ companyApp.controller('GroupsController',['$http',function($http) {
         }
     };
 }]);
-
+companyApp.controller('inviteController',['$http','$scope',function($http,$scope){
+    $scope.domains = [{'index':0,'domain':'','status':false}];
+    $scope.addDomain = function(index){
+        console.log($scope.domains[index].domain);
+        try{
+            $http({
+                method : 'post',
+                url : '/company/addDomain',
+                data : {
+                    'domain' : $scope.domains[index].domain,
+                    'companyId': $scope.companyId
+                }
+            }).success(function(data, status) {
+                if(data.result===1){
+                    $scope.domains[index].status=true;
+                }
+                else{
+                    alert(data.msg);
+                }
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+    $scope.addNewDomain = function(){
+        $scope.domains.push({'index':$scope.domains.length,'domain':'','status':false});
+    }
+}]);

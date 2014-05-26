@@ -10,18 +10,19 @@ html
     link(rel="stylesheet" href="/lib/angular-motion/dist/angular-motion.min.css")
     link(rel="stylesheet" href="/css/donler.css")
     link(rel="stylesheet" href="/css/views/group_select.css")
-    block headExt
   body
-    include ../partials/user_nav
-
-    .container
-      .row
-        block baseInfo
-      .row.margin_top_30
-        .col-xs-12.col-sm-8.col-md-8.col-lg-8
-          block panel
-        .col-xs-12.col-sm-4.col-md-4.col-lg-4
-          block aside
+    .wrap
+      block headExt
+      include ../partials/user_nav
+      .row.baseInfo
+        .container
+          block baseInfo
+      .container
+        .row.margin_top_30
+          .col-xs-12.col-sm-8.col-md-8.col-lg-8
+            block panel
+          .col-xs-12.col-sm-4.col-md-4.col-lg-4
+            block aside
 
     include ../partials/footer
     script(src="/lib/angular/angular.min.js")

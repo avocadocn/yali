@@ -52,8 +52,9 @@ exports.sendCampaignsForApp = function(user, campaigns, res) {
       opponent_list: opponent_list,
       content: campaign.content,
       start_time: campaign.start_time,
-      member_count: campaign.member.length,
-      is_join: is_join
+      member: campaign.member,
+      is_join: is_join,
+      photo_album: campaign.photo_album
     });
   });
 

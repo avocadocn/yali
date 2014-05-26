@@ -19,6 +19,13 @@ li
   list-style none
 .dl_word_break
   word-break: break-all;
+.dl_message
+  border-left 2px solid #f7f7f7
+  margin-left 25px
+  background-color #f7f7f7
+.dl_message_container
+  padding 5px 0
+  margin 10px auto
 .content
   width 100%
   min-height 100%
@@ -28,7 +35,6 @@ li
   padding-bottom footerHeight
 .head
   font-size 24px
-  margin-top 10px
 .subtitle
   font-size 14px
 .dl_btn
@@ -57,6 +63,10 @@ li
   border-style solid
   border-width 1px
   border-color buttonColor
+.baseInfo
+  padding-top 30px
+  padding-bottom 15px
+  background-color rgb(248,248,243)
 .margin_5
   margin 5px
 .margin_15
@@ -86,18 +96,21 @@ li
 .size_210
   height 210px
   width 210px
-.size_150
-  height 150px
-  width 150px
+.size_140
+  height 140px
+  width 140px
 .size_128
   height 128px
   width 128px
+.size_90
+  height 90px
+  width 90px
 .size_80
   height 80px
   width 80px
-.size_50
-  height 50px
-  width 50px
+.size_56
+  height 56px
+  width 56px
 .height_400
   height 400px
 .img_contain
@@ -148,7 +161,10 @@ li
 
 input[type="number"]
    padding-right 0
-
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+    -webkit-appearance none
+    margin 0
 .dl_form_control, .dl_full_control
   display inline-block
 
@@ -326,10 +342,7 @@ input[type="number"]
     width 50%
     display inline-block
     border-radius 0px
-  .btn 
+  .btn
     border-radius 0px
-
-    
-      
-
-        
+input.ng-invalid.ng-dirty
+  border-color pink

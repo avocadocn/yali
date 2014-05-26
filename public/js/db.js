@@ -45,7 +45,7 @@ var _group =[
             {
                 '_id':'5',
                 'group_type':'台球',
-                'entity_type':'TableTennis',
+                'entity_type':'Billiards',
                 'icon':'default',
                 'active':true,
                 'group_rule':'default'
@@ -117,19 +117,13 @@ var _group =[
         };
 
 
-
-
 var _region = [{
-    "__v" : 2,
-    "_id" : ObjectId("53731162140754fe019189b5"),
     "city" : [
         {
-            "_id" : ObjectId("5373116a140754fe019189b6"),
             "district" : [
                 {
                     "id" : "C626229D-8A70-0001-C01A-1516270011CD",
-                    "name" : "黄浦",
-                    "_id" : ObjectId("53731175140754fe019189b7")
+                    "name" : "黄浦"
                 }
             ],
             "id" : "C626229A-A370-0001-C11B-1CD0B030181A",
@@ -138,8 +132,41 @@ var _region = [{
     ],
     "id" : "C6262298-B770-0001-AEE9-42B07510B040",
     "name" : "上海"
+},
+{
+    "city" : [
+        {
+            "district" : [
+                {
+                    "id" : "C626229D-8A70-0001-C0QA-1516270YT44D",
+                    "name" : "西城"
+                }
+            ],
+            "id" : "C626229A-A370-0001-C11B-1CD0T530181A",
+            "name" : "北京"
+        }
+    ],
+    "id" : "C6262298-B770-0001-ARE9-42B07510B040",
+    "name" : "北京"
+},
+{
+    "city" : [
+        {
+            "district" : [
+                {
+                    "id" : "C62655RT-8A70-0701-C01A-151627HHJ6CD",
+                    "name" : "吴江"
+                }
+            ],
+            "id" : "C62628HA-A370-002S-C11B-1CD0B03B6T1A",
+            "name" : "苏州"
+        }
+    ],
+    "id" : "C626TT2Q-BT90-0001-AEE9-42B07BBPB0C0",
+    "name" : "江苏"
 }
 ];
+
 
 try{
     _region.forEach(function (value) {

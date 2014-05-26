@@ -12,7 +12,7 @@ var fileBodyParser = express.bodyParser({
 
 module.exports = function(app) {
   app.get('/group/getgroups', group.getGroups);
-  app.get('/group/getCompanyGroups', authorization.requiresLogin, group.getCompanyGroups);
+  app.get('/group/getCompanyGroups', group.getCompanyGroups);
   app.get('/group/home/:teamId', authorization.requiresLogin,group.authorize, group.home);
 
   app.get('/group/info/:teamId', authorization.requiresLogin, group.info);
@@ -25,10 +25,14 @@ module.exports = function(app) {
   app.get('/group/getGroupMessages/:teamId', authorization.requiresLogin, group.getGroupMessage);
   app.get('/group/getGroupMembers/:teamId', authorization.requiresLogin, group.getGroupMember);
   app.get('/group/getMembers', authorization.requiresLogin, group.renderMember);
+  //激活、关闭小组
+  app.post('/group/activateGroup', authorization.requiresLogin,group.activateGroup);
 
   app.post('/group/campaignCancel', authorization.requiresLogin, group.campaignCancel);
 
   app.get('/group/competition/:competitionId', authorization.requiresLogin, group.getCompetition);
+  app.get('/group/campaign/:campaignId', authorization.requiresLogin, group.getCampaign);
+
   app.post('/group/updateFormation/:competitionId', authorization.requiresLogin, group.updateFormation);
   //小组发布活动
   app.post('/group/campaignSponsor/:teamId', authorization.requiresLogin, group.sponsor);
@@ -51,6 +55,7 @@ module.exports = function(app) {
   app.get('/group/:tid/photoAlbum/:photoAlbumId', authorization.requiresLogin, authorization.requiresLogin, group.groupPhotoAlbumDetail);
 
   app.get('/group/competition/:competitionId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.competitionPhotoAlbumDetail);
+  app.get('/group/campaign/:campaignId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.campaignPhotoAlbumDetail);
   app.post('/group/oneTeam',authorization.requiresLogin, group.getOneTeam);
 
   // for app

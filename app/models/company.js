@@ -24,7 +24,10 @@ var CompanySchema = new Schema({
         type: String,
         unique: true
     },
-    login_email: String,
+    login_email: {
+        type: String,
+        unique: true
+    },
     hashed_password: String,
 
     email: {
