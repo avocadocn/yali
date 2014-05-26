@@ -209,60 +209,87 @@ exports.invite = function(req, res) {
 
 
 function userOperate(cid, key, res, req) {
-  User.findOne({ username: req.body.host + '@' + req.body.domain }, function(err, user) {
-    if(err) {
-      console.log(err);
-    } else if(user) {
-      if(user.active === false) {
-        res.render('users/message', message.registered);
-      } else {
-        res.render('users/message', message.actived);
+
+  if (encrypt.encrypt(cid, config.SECRET) === key) {
+
+    Company
+    .findOne({ _id: cid })
+    .exec()
+    .then(function(company) {
+      if (!company) {
+        throw 'Not found company';
       }
-    } else {
-      if(encrypt.encrypt(cid, config.SECRET) === key) {
-        Company.findOne({'_id': cid}).exec(function(err, company){
-          if (company != null) {
-            var email = req.body.host + '@' + req.body.domain;
-            if(company.login_email !== email){
-              for(var i = 0; i < company.email.domain.length; i++) {
-                if(req.body.domain === company.email.domain[i]) {
-                  var user = new User();
-                  user.email = email;
-                  user.username = user.email;
-                  user.cid = company._id;
-                  user.cname = company.info.name;
-                  user.save(function(err) {
-                    if (err) {
-                      console.log(err);
-                      return res.render('users/message', message.dbError);
-                    } else {
-                       company.info.membernumber = company.info.membernumber + 1;
-                       company.save(function(err){
-                        if(err) {
-                          return res.render('users/message', message.emailError);
-                        } else {
-                          //系统再给员工发一封激活邮件
-                          mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
-                          return res.render('users/message', message.wait);
-                        }
-                      });
-                    }
-                  });
-                }
+
+      User
+      .findOne({ username: req.body.host + '@' + req.body.domain })
+      .exec()
+      .then(function(user) {
+        if (user) {
+          return res.render('users/invite', {
+            title: 'validate',
+            domains: company.email.domain,
+            message: '该邮箱已被注册'
+          });
+        }
+
+        var email = req.body.host + '@' + req.body.domain;
+        if(company.login_email !== email) {
+          if (company.email.domain.indexOf(req.body.domain) > -1) {
+            var user = new User({
+              email: email,
+              username: email,
+              cid: company._id,
+              cname: company.info.name
+            });
+            user.save(function(err) {
+              if (err) {
+                console.log(err);
+              } else {
+                company.info.membernumber = company.info.membernumber + 1;
+                company.save(function(err){
+                  if(err) {
+                    console.log(err);
+                  } else {
+                    //系统再给员工发一封激活邮件
+                    mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
+                    res.render('users/message', message.wait);
+                  }
+                });
               }
-              return res.render('users/message', message.invalid);
-            } else {
-              return res.render('users/message', message.invalid);
-            }
+            });
           } else {
-            res.render('users/message', message.invalid);
+            res.render('users/invite', {
+              title: 'validate',
+              domains: company.email.domain,
+              message: '请使用企业邮箱'
+            });
           }
-        });
-      } else {
+
+        } else {
+          res.render('users/invite', {
+            title: 'validate',
+            domains: company.email.domain,
+            message: '员工邮箱与企业邮箱不能相同'
+          });
+        }
+
+      })
+      .then(null, function(err) {
+        console.log(err);
         res.render('users/message', message.invalid);
-      }
-    }
-  });
+      });
+
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.render('users/message', message.invalid);
+    });
+
+  } else {
+    res.render('users/message', message.invalid);
+  }
+
+
 }
 /**
  * 处理激活验证

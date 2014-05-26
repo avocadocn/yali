@@ -38,10 +38,8 @@ exports.sendCompanyActiveMail = function (who, name, id, host) {
 
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
-        console.log(data);
         var fn = jade.compile(data);
         var html = fn({'title':'注册激活','host':siteProtocol+host,'who':who,'content':content});
-        console.log(html);
         sendMail({
           from: from,
           to: to,
@@ -62,10 +60,8 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
 
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
-        console.log(data);
         var fn = jade.compile(data);
         var html = fn({'title':'注册激活','host':siteProtocol+host,'who':who,'content':content});
-        console.log(html);
         sendMail({
           from: from,
           to: to,
@@ -86,10 +82,8 @@ exports.sendStaffResetPwdMail = function(who, uid, host) {
 
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
-        console.log(data);
         var fn = jade.compile(data);
         var html = fn({'title':'重置密码','host':siteProtocol+host,'who':who,'content':content});
-        console.log(html);
         sendMail({
           from: from,
           to: to,
@@ -109,10 +103,8 @@ exports.sendCompanyResetPwdMail = function(who, uid, host) {
     '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+'</a>';
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
-        console.log(data);
         var fn = jade.compile(data);
         var html = fn({'title':'重置密码','host':siteProtocol+host,'who':who,'content':content});
-        console.log(html);
         sendMail({
           from: from,
           to: to,
