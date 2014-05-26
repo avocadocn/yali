@@ -9,5 +9,11 @@ block content
     | @
     .form-group
       label.sr-only Email Domain
-      input.form-control(type="text" name="domain")
+      if domains.length === 1
+        input(type="hidden" name="domain" value="#{domains[0]}")
+        input.form-control(type="text" value="#{domains[0]}" disabled="true")
+      if domains.length > 1
+        select.form-control(name="domain")
+          each domain in domains
+            option(value="#{domain}")= domain
     button.btn.btn-success(type="submit") 激活

@@ -183,11 +183,25 @@ exports.invite = function(req, res) {
     res.render('users/message', {title: 'error', message: 'bad request'});
   } else {
     if (encrypt.encrypt(cid, config.SECRET) === key) {
-      req.session.key = key;
-      req.session.key_id = cid;
-      res.render('users/invite', {
-        title: 'validate'
+      Company
+      .findOne({ _id: cid })
+      .exec()
+      .then(function(company) {
+        if (!company) {
+          throw 'Not Found';
+        }
+        req.session.key = key;
+        req.session.key_id = cid;
+        res.render('users/invite', {
+          title: 'validate',
+          domains: company.email.domain
+        });
+      })
+      .then(null, function(err) {
+        console.log(err);
+        res.render('users/message', {title: 'error', message: 'bad request'});
       });
+
     }
   }
 };
@@ -232,17 +246,13 @@ exports.dealActive = function(req, res) {
               }
             }
             company.info.membernumber = company.info.membernumber + 1;
-            company.save(function(err){
-              ;
-            });
+            company.save(console.log);
             res.render('users/message', message.emailError);
           } else {
-            console.log('bbbb');
             res.render('users/message', message.invalid);
           }
         });
       } else {
-        console.log('aaaa');
         res.render('users/message', message.invalid);
       }
     }
