@@ -99,7 +99,6 @@ exports.renderResetPwd = function(req, res){
 
 }
 exports.resetPwd = function(req, res){
-    console.log(req.body.id);
   Company.findOne({_id: req.body.id}, function(err, company) {
     if(err || !company) {
       return  res.render('company/resetPwd',{
@@ -192,12 +191,28 @@ exports.select = function(req, res) {
 //配合路由渲染邀请链接页面
 exports.invite = function(req, res) {
     var inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.company_id, config.SECRET) + '&cid=' + req.session.company_id;
-    req.session.company_id = null;
     res.render('company/validate/invite', {
         title: '邀请链接',
         inviteLink: inviteUrl
     });
 };
+exports.addDomain = function(req,res){
+    Company.findOne({_id : req.session.company_id}, function(err, company) {
+            if (err || !company) {
+                console.log('不存在公司');
+                return res.send({'result':0,'msg':' 不存在该公司'});
+            }
+            company.email.domain.push(req.body.domain);
+            company.save(function(err){
+                if (!err) {
+                    return res.send({'result':1,'msg':' 邮箱后缀添加成功'});
+                }
+                else{
+                     return res.send({'result':0,'msg':' 邮箱后缀添加失败'});
+                }
+            })
+    });
+}
 //配合路由渲染增加小组列表Todo
 exports.add_company_group = function(req, res){
     res.render('company/company_addgroup', {
@@ -393,7 +408,6 @@ exports.validate = function(req, res) {
                         });
                     } else {
                         req.session.company_id = _id;
-                        req.session.nowcid = _id;
                         user.save(function(err){
                             if(err){
                                 res.render('company/company_validate_error', {
@@ -490,11 +504,6 @@ exports.create = function(req, res) {
         company.info.phone = req.body.phone;
         company.provider = 'company';
         company.login_email = req.body.email;
-        var _email = req.body.email.split('@');
-        if(_email[1])
-            company.email.domain.push(_email[1]);
-        else
-            return res.status(400).send({'result':0,'msg':'您输入的邮箱不正确'});
 
 
         // 为该公司添加3个注册邀请码
