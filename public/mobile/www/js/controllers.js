@@ -107,7 +107,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Authorize, Campaign, PhotoAlbum) {
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Authorize, Campaign, PhotoAlbum, Map) {
 
   Authorize.authorize();
 
@@ -152,6 +152,8 @@ angular.module('starter.controllers', [])
   $scope.deletePhoto = PhotoAlbum.deletePhoto($scope.photo_album_id, getPhotoList);
   $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
 
+
+  Map.map('location', $scope.campaign.location);
 
 })
 

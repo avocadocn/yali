@@ -140,6 +140,7 @@ angular.module('starter.services', [])
 
 .factory('Schedule', function($http) {
 
+  // callback(schedule_list)
   var getSchedules = function(callback) {
     $http.get('/users/schedules')
     .success(function(data, status, headers, config) {
@@ -187,6 +188,7 @@ angular.module('starter.services', [])
     });
   };
 
+  // callback(positiveCount, negativeCount)
   var vote = function(dynamic_list, callback) {
     return function(provoke_dynamic_id, status, index) {
       $http.post('/users/vote', {
@@ -304,8 +306,8 @@ angular.module('starter.services', [])
 .factory('User', function($http) {
 
   // callback(user)
-  var getInfo = function(_id, callback) {
-    $http.post('/users/info', { _id: _id })
+  var getInfo = function(user_id, callback) {
+    $http.post('/users/info', { _id: user_id })
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
         callback(data.user);
@@ -317,6 +319,58 @@ angular.module('starter.services', [])
     getInfo: getInfo
   };
 
-});
+})
+
+
+
+
+
+
+
+
+
+
+
+.factory('Map', function() {
+
+  var map = function(element_id, location) {
+
+    var map = new BMap.Map(element_id);            // 创建Map实例
+    var _address = location || '';
+    var _title = location;
+    var _longitude = 116.404 ;
+    var _latitude = 39.915;
+    var point = new BMap.Point(_longitude, _latitude);    // 创建点坐标
+    map.centerAndZoom(point, 15);                     // 初始化地图,设置中心点坐标和地图级别。
+    map.enableScrollWheelZoom();
+    map.addControl(new BMap.NavigationControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM }));
+    var marker = new BMap.Marker(point);  // 创建标注
+    map.addOverlay(marker);              // 将标注添加到地图中
+    function showInfo(e){
+      var opts = {
+        width : 200,     // 信息窗口宽度
+        height: 60,     // 信息窗口高度
+        title : _title, // 信息窗口标题
+      };
+      var infoWindow = new BMap.InfoWindow(_address, opts);  // 创建信息窗口对象
+      map.openInfoWindow(infoWindow,point); //开启信息窗口
+    }
+    map.addEventListener("click", showInfo);
+
+
+  };
+
+  return {
+    map: map
+  };
+
+
+})
+
+
+
+
+
+
 
 

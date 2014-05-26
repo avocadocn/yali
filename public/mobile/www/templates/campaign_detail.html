@@ -10,9 +10,14 @@
         <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
       </div>
     </div>
-    <p ng-repeat="opponent in campaign.opponent_list">
-      <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
-    </p>
+    <div ng-if="campaign.opponent_list.length > 0">
+      <p>对手</p>
+      <p ng-repeat="opponent in campaign.opponent_list">
+        <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
+      </p>
+    </div>
+    <p>活动地点</p>
+    <div id="location" style="width:320px; height:320px;"></div>
     <div>
       <h4>活动精彩照片</h4>
       <form id="upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
