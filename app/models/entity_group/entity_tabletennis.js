@@ -5,10 +5,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
-var tabletennis = new Schema({
+var billiards = new Schema({
 	tid: String,
     cid: String,
     gid: String
 });
 
-mongoose.model('TableTennis', tabletennis);
+mongoose.model('Billiards', billiards);

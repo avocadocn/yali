@@ -45,7 +45,7 @@ var _group =[
             {
                 '_id':'5',
                 'group_type':'台球',
-                'entity_type':'TableTennis',
+                'entity_type':'Billiards',
                 'icon':'default',
                 'active':true,
                 'group_rule':'default'
