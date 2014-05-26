@@ -920,7 +920,7 @@ exports.timeLine = function(req,res){
       campaigns.forEach(function(campaign) {
         var _head,_type;
         if(campaign.provoke.active){
-          _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
+          _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
           _type = 'provoke';
         }
         else if(campaign.gid[0]==='0'){
@@ -1252,7 +1252,7 @@ exports.getGroups = function(req, res) {
   })
   .then(null, function(err) {
     console.log(err);
-    res.status(500).send('获取小组列表失败');
+    res.send('获取小组列表失败');
   });
 
 
@@ -1348,6 +1348,56 @@ exports.getUserInfo = function(req, res) {
 
 
 };
+
+
+
+exports.getTimelineForApp = function(req,res){
+  Campaign
+  .find({ 'member.uid': req.session.nowuid })
+  .where('end_time').lt(new Date())
+  .sort('-start_time')
+  .populate('team')
+  .exec()
+  .then(function(campaigns) {
+    if (campaigns && campaigns.length >= 0) {
+      var time_lines = [];
+      campaigns.forEach(function(campaign) {
+        var _head, _type;
+        if(campaign.provoke.active){
+          _head = campaign.team[0].name + '对' + campaign.team[1].name + '的比赛';
+          _type = 'provoke';
+        }
+        else if(campaign.gid[0] === '0'){
+          _head = '公司活动';
+          _type = 'company_campaign';
+        }
+        else {
+          _head = campaign.team[0].name + '活动';
+          _type = 'group_campaign';
+        }
+        var temp_obj = {
+          _id: campaign._id,
+          head: _head,
+          content: campaign.content,
+          location: campaign.location,
+          group_type: campaign.group_type,
+          start_time: campaign.start_time,
+          provoke: campaign.provoke,
+          type: _type
+        };
+        time_lines.push(temp_obj);
+      });
+      res.send({ result: 1, msg: '获取用户活动足迹成功', time_lines: time_lines });
+    }
+    else{
+      throw '没有找到活动';
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send({ result: 0, msg: '获取用户活动足迹失败' });
+  });
+}
 
 
 

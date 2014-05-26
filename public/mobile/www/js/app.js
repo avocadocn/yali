@@ -99,6 +99,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
 
+    .state('app.timeline', {
+      url: '/timeline',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/timeline.html',
+          controller: 'TimelineCtrl'
+        }
+      }
+    })
+
+
     .state('app.userInfo', {
       url: '/user_info',
       views: {

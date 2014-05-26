@@ -347,6 +347,21 @@ angular.module('starter.controllers', [])
 
 
 
+.controller('TimelineCtrl', function($scope, $rootScope, Authorize, Timeline) {
+
+  Authorize.authorize();
+
+  Timeline.getUserTimeline(function(time_lines) {
+    $rootScope.time_lines = time_lines;
+  });
+
+})
+
+
+
+
+
+
 
 
 

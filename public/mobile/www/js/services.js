@@ -374,3 +374,34 @@ angular.module('starter.services', [])
 
 
 
+
+
+
+
+.factory('Timeline', function($http) {
+
+  // callback(time_lines)
+  var getUserTimeline = function(callback) {
+    $http.get('/users/getTimelineForApp')
+    .success(function(data, status) {
+      callback(data.time_lines);
+    });
+  };
+
+
+  return {
+    getUserTimeline: getUserTimeline
+  };
+
+
+
+})
+
+
+
+
+
+
+
+
+
