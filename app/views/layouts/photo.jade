@@ -9,11 +9,12 @@ html
     link(rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css")
     link(rel="stylesheet" href="/css/views/group_select.css")
     link(rel="stylesheet" href="/css/donler.css")
-    block headExt
   body
-    include ../partials/user_nav
+    .wrap
+      block headExt        
+      include ../partials/user_nav
 
-    block content
+      block content
 
     include ../partials/footer
 

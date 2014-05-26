@@ -1,6 +1,6 @@
 
 mixin group_thumbnail(teams,team_class,team_head)
-  h5= team_head
+  p.subtitle.margin_top_15= team_head
   .groups.row
     each team in teams
       div.center-block(class='group col-xs-3 '+team_class title="#{team.name}")

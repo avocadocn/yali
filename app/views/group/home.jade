@@ -34,15 +34,15 @@ block panel
     ul.nav.nav-tabs
       if(role !=='GUESTHR' && role !=='GUEST')
         li(ng-class="{'active':nowTab=='group_message'}")
-          a.h5(href="#/group_message" ng-click="addactive('group_message')") 小组动态
+          a.subtitle(href="#/group_message" ng-click="addactive('group_message')") 小组动态
         li(ng-class="{'active':nowTab=='group_campaign'}")
-          a.h5(href="#/group_campaign" ng-click="addactive('group_campaign')") 小组活动
+          a.subtitle(href="#/group_campaign" ng-click="addactive('group_campaign')") 小组活动
       li(ng-class="{'active':nowTab=='group_member'}")
-        a.h5(href="#/group_member" ng-click="addactive('group_member')") 小组成员
+        a.subtitle(href="#/group_member" ng-click="addactive('group_member')") 小组成员
       li(ng-class="{'active':nowTab=='group_info'}")
-        a.h5(href="#/group_info" ng-click="addactive('group_info')") 小组资料
+        a.subtitle(href="#/group_info" ng-click="addactive('group_info')") 小组资料
       li(ng-class="{'active':nowTab=='timeLine'}")
-        a.h5(href="#/timeLine" ng-click="addactive('timeLine')") 活动足迹
+        a.subtitle(href="#/timeLine" ng-click="addactive('timeLine')") 活动足迹
     .tab-content
       .tab-pane.active
         div(ng-view)
@@ -61,13 +61,13 @@ block aside
     +group_thumbnail(selected_teams,'active',role!=='HR'?'我的兴趣小组':'公司的兴趣小组')
     +group_thumbnail(unselected_teams,'inactive','未添加兴趣小组')
   if(role !=='GUESTHR' && role !=='GUEST')
-    h4 小组相册
+    span.subtitle.margin_top_15 小组相册
     if(role==='LEADER')
-      a.h5(href="/group/#{group_id}/managePhotoAlbum") 管理相册
+      a.pull-right(href="/group/#{group_id}/managePhotoAlbum") 管理相册
     each photo_album in photo_albums
       p
-        img(src="/photoAlbum/#{photo_album.id}/preview")
-        a.h5(href="/group/#{group_id}/photoAlbum/#{photo_album.id}")= photo_album.name
+        img.size_140.img_contain(src="/photoAlbum/#{photo_album.id}/preview")
+        a(href="/group/#{group_id}/photoAlbum/#{photo_album.id}")= photo_album.name
 
 append footExt
   script(src="/lib/angular-route/angular-route.min.js")
