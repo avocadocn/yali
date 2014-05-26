@@ -294,6 +294,7 @@ exports.groupSelect = function(req, res) {
                 companyGroup.group_type = selected_groups[i].group_type;
                 companyGroup.entity_type = selected_groups[i].entity_type;
                 companyGroup.name = tname;
+                companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type +'_on.png';
 
                 companyGroup.save(function (err){
                     if (err) {

@@ -80,7 +80,7 @@ div
         //所有人可见active的team
         .col-md-2
           a(href="/group/home/{{team._id}}")
-            img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
+            img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
         .col-md-10
           .row
             .col-md-2
@@ -112,7 +112,7 @@ div
         if(role ==='HR')
           .col-md-2
             a(href="/group/home/{{team._id}}")
-              img.img-responsive.img-thumbnail.img_contain(src="#{logo ? logo :'/img/icons/default_group_logo.png'}" width="128px")
+              img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
           .col-md-10
             .row
               .col-md-2
