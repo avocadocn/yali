@@ -54,7 +54,8 @@ var CompanySchema = new Schema({
 
         city: {
             province: String,
-            city: String
+            city: String,
+            district: String
         },
         address: String,
         phone: String,

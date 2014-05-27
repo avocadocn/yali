@@ -515,6 +515,7 @@ exports.create = function(req, res) {
         company.info.name = req.body.name;
         company.info.city.province = req.body.province;
         company.info.city.city = req.body.city;
+        company.info.city.district = req.body.district;
         company.info.address = req.body.address;
         company.info.linkman = req.body.contacts;
         company.info.lindline.areacode = req.body.areacode;
