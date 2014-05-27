@@ -27,6 +27,7 @@ var validator = require('validator'),
 // custom
 var encrypt = require('../middlewares/encrypt'),
   mail = require('../services/mail'),
+  schedule = require('../services/schedule'),
   moment = require('moment'),
   config = require('../config/config'),
   meanConfig = require('../../config/config'),
@@ -827,7 +828,7 @@ exports.joinCampaign = function (req, res) {
         campaign.member.push({
           'cid':cid,
           'uid':uid,
-          'username':req.user.username
+          'nickname':req.user.nickname
         });
         campaign.save(function (err) {
           if(err) {
@@ -849,7 +850,7 @@ exports.joinCampaign = function (req, res) {
                            cid: cid,
                            uid: uid,
                            photo: req.user.photo,                 //队员头像路径
-                           username: req.user.username,
+                           nickname: req.user.nickname,
                            number: 0                             //球队分配的个人号码
                         });
                         break;
@@ -1040,19 +1041,23 @@ exports.saveAccount = function (req, res) {
     return res.send(403, 'forbidden!');
   }
   User.findOneAndUpdate({
-          _id : req.session.nowuid
-      }, req.body.user,null,function(err, user) {
-          if(err) {
-              console.log(err);
-              res.send({'result':0,'msg':'数据错误'});
-          }
-          else {
-              if (user) {
-                  res.send({'result':1,'msg':'修改成功'});
-              } else {
-                  res.send({'result':0,'msg':'不存在该用户'});
-              }
-          }
+    _id : req.session.nowuid
+  }, req.body.user,{new:false},function(err, user) {
+    if(err) {
+        console.log(err);
+        res.send({'result':0,'msg':'数据错误'});
+    }
+    else {
+      if (user) {
+        console.log(req.body.user.nickname , user.nickname);
+        if(req.body.user.nickname !== user.nickname){
+          schedule.updateUname(user._id);
+        }
+        res.send({'result':1,'msg':'修改成功'});
+      } else {
+        res.send({'result':0,'msg':'不存在该用户'});
+      }
+    }
   });
 };
 

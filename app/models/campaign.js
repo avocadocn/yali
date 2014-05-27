@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 var _member = new Schema({
     cid: String,
     uid: String,
-    username: String
+    nickname: String
 });
 
 /**
@@ -38,8 +38,7 @@ var Campaign = new Schema({
         cid: String,                   //活动发起者所属的公司
         cname: String,
         uid: String,
-        realname: String,
-        username: String,
+        nickname: String,
         role: {
             type: String,
             enum: ['HR','LEADER']      //HR 组长

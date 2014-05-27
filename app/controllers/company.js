@@ -21,7 +21,8 @@ var mongoose = require('mongoose'),
     gm = require('gm'),
     fs = require('fs'),
     async = require('async'),
-    moment = require('moment');
+    moment = require('moment'),
+    schedule = require('../services/schedule');
 
 var mail = require('../services/mail');
 var encrypt = require('../middlewares/encrypt');
@@ -333,7 +334,6 @@ exports.groupSelect = function(req, res) {
             });
             res.send({'result':1,'msg':'组件选择成功！'});
         } else {
-            console.log(req.session.company_id);
             return res.send('err');
         }
     });
@@ -361,7 +361,6 @@ exports.saveGroup = function(req, res) {
             companyGroup.entity_type = selected_group.entity_type;
             companyGroup.name = req.body.tname;
             companyGroup.logo = '/img/icons/group/' + selected_group.entity_type +'_on.png';
-            console.log(companyGroup.logo);
 
             companyGroup.save(function (err){
                 if (err) {
@@ -413,7 +412,6 @@ exports.validate = function(req, res) {
     },
     function (err, user) {
         if (user) {
-            console.log(user.status.active);
             if(!user.status.active) {
                 //到底要不要限制验证邮件的时间呢?
                 //废话,当然要
@@ -512,7 +510,10 @@ exports.create = function(req, res) {
         }
     })
     .then(function(company) {
-        company.info.name = req.body.name;
+        if(req.body.name.length>8)
+            company.info.name = req.body.name;
+        else
+            return res.status(400).send({'result':0,'msg':'您输入的企业名过短'});
         company.info.city.province = req.body.province;
         company.info.city.city = req.body.city;
         company.info.city.district = req.body.district;
@@ -605,7 +606,11 @@ exports.createDetail = function(req, res) {
                 tittle: '该公司不存在或者发生错误!'
             });
         } else {
-            company.info.official_name = req.body.official_name;
+            if(req.body.official_name.length>8)
+                company.info.official_name = req.body.official_name;
+            else
+                return res.status(400).send({'result':0,'msg':'您输入的企业名过短'});
+
             company.username = req.body.username;
             company.password = req.body.password;
             company.status.active = true;
@@ -676,32 +681,22 @@ exports.saveGroupInfo = function(req, res){
           return;
         }
         if(companyGroup) {
-            companyGroup.name = req.body.tname;
-            companyGroup.save(function (s_err){
-                if(s_err){
-                    console.log(s_err);
-                    res.send({'result':0,'msg':'数据保存错误'});
-                    return;
-                }
-                var entity_type = companyGroup.entity_type;
-                var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-                Entity.findOne({
-                    'tid': req.body.tid
-                },function(err, entity) {
-                    if (err) {
-                        console.log(err);
-                        return res.send(err);
-                    } else if(entity){
-                        entity.save(function(err){
-                            if(err){
-                              console.log(err);
-                              return res.send({'result':0,'msg':'不存在小队！'});;
-                            }
-                            res.send({'result':1,'msg':'更新成功'});
-                        });
+            if(req.body.tname!==companyGroup.name){
+                companyGroup.name = req.body.tname;
+                companyGroup.save(function (s_err){
+                    if(s_err){
+                        console.log(s_err);
+                        res.send({'result':0,'msg':'数据保存错误'});
+                        return;
                     }
+                    schedule.updateTname(req.body.tid);
+                    res.send({'result':1,'msg':'更新成功'});
                 });
-            });
+            }
+            else{
+                res.send({'result':0,'msg':'您没进行修改'});
+            }
+            
         } else {
             res.send({'result':0,'msg':'不存在小组！'});
         }
@@ -744,13 +739,18 @@ exports.saveAccount = function(req, res) {
     else if(req.body.info!==undefined){
         _company.info = req.body.info;
     }
-    Company.findOneAndUpdate({'_id': req.user._id}, _company,null, function(err, company) {
+    // 保存公司资料，返回之前的公司资料（new为false）
+    Company.findOneAndUpdate({'_id': req.user._id}, _company,{new:false}, function(err, company) {
         if (err) {
             console.log('数据错误');
             res.send({'result':0,'msg':'数据查询错误'});
             return;
         }
         if(company) {
+            if(req.body.info!==undefined && company.info.name!==_company.info.name){
+                schedule.updateCname(req.user._id);
+            }
+
             res.send({'result':1,'msg':'更新成功'});
         } else {
             res.send({'result':0,'msg':'不存在该公司'});

@@ -19,7 +19,7 @@ var _member = new Schema({
     cid: String,
     uid: String,
     photo: String,         //队员头像路径
-    username: String,
+    nickname: String,
     number: Number         //球队分配的个人号码
 });
 
@@ -34,7 +34,6 @@ var _formation = new Schema({
 var _camp = new Schema({
   id : Schema.Types.ObjectId,              //小队id
   logo: String,                            //队徽路径
-  cname: String,                           //公司名
   tname: String,
   member:[_member],
   cid: String,
@@ -94,8 +93,7 @@ var Competition = new Schema({
         cid: String,                   //活动发起者所属的公司
         cname: String,
         uid: String,
-        realname: String,
-        username: String,
+        nickname: String,
         role: {
             type: String,
             enum: ['HR','LEADER']      //HR 组长

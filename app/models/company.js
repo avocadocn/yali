@@ -13,7 +13,9 @@ var _team = new Schema({
     gid : String,
     group_type: String,
     name: String,
-    id: String
+    id: {
+        type: Schema.Types.ObjectId
+    }
 });
 /**
  * Company Schema

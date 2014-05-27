@@ -21,7 +21,7 @@ block content
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="name") *公司全称
           .col-xs-9
-            input#name.form-control.dl_full_control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" required)
+            input#name.form-control.dl_full_control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" ng-minlength=8 required)
         .form-group.dl_sm_group(data-role="linkage-selector" data-src="/region" data-select="province city region")
           label.col-xs-3.control-label(for="province") *城市
           .col-xs-9

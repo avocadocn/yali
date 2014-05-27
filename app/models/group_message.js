@@ -53,8 +53,7 @@ var GroupMessage = new Schema({
         cid: String,                  //消息发布者所属的公司
         uid: String,
         cname: String,
-        realname: String,
-        username: String,
+        nickname: String,
         role: {
             type: String,
             enum: ['HR','LEADER']     //HR 组长

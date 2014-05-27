@@ -758,7 +758,7 @@ db.companies.update({ "_id": company_yali._id }, company_yali);
 
 company_apple.group = [
             {
-                "_id" : "7",
+                "gid" : "7",
                 "group_type" : "足球",
                 "name":"上海苹果信息技术有限公司-足球队",
                 "id":company_group_apple._id
@@ -768,7 +768,7 @@ db.companies.update({ "_id": company_apple._id }, company_apple);
 
 company_banana.group = [
             {
-                "_id" : "7",
+                "gid" : "7",
                 "group_type" : "足球",
                 "name":"上海香蕉信息技术有限公司-足球队",
                 "id":company_group_banana._id

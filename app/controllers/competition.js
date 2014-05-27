@@ -77,7 +77,7 @@ exports.provoke = function (req, res) {
       competition.poster.cid = req.user.cid;
       competition.poster.role = req.session.role;
       competition.poster.uid = req.user._id;
-      competition.poster.username = req.user.username;
+      competition.poster.nickname = req.user.nickname;
       var groupMessage = new GroupMessage();
 
       groupMessage.team.push(my_team_id);         //发起挑战方小队id
@@ -105,7 +105,7 @@ exports.provoke = function (req, res) {
       if(req.session.role ==='LEADER'){
         groupMessage.poster.uid = req.user._id;
         groupMessage.poster.role = 'LEADER';
-        groupMessage.poster.username = req.user.nickname;
+        groupMessage.poster.nickname = req.user.nickname;
       }
       groupMessage.cid.push(req.companyGroup.cid);
       if(req.companyGroup.cid !== req.body.team_opposite.cid) {
@@ -169,7 +169,7 @@ exports.responseProvoke = function (req, res) {
         campaign.poster.cid = competition.poster.cid;
         campaign.poster.uid = competition.poster.uid;
         campaign.poster.role = 'LEADER';
-        campaign.poster.username = competition.poster.username;
+        campaign.poster.nickname = competition.poster.nickname;
 
         campaign.content = competition.camp[0].tname + ' VS ' + competition.camp[1].tname;
         campaign.location = competition.brief.location.name;

@@ -13,7 +13,7 @@
       .form-group.dl_sm_group
         label.col-xs-4.control-label(for="official_name" ) *企业官方名称：
         .col-xs-8
-          input#official_name.form-control.dl_full_control(type="text" name="official_name" ng-model="detail.official_name" placeholder="请参考企业名称/品牌名称" required)
+          input#official_name.form-control.dl_full_control(type="text" name="official_name" ng-model="detail.official_name" placeholder="请参考企业名称/品牌名称" ng-minlength=8 required)
       .form-group.dl_sm_group
         label.col-xs-4.control-label(for="username") *用户名：
         .col-xs-8
@@ -21,11 +21,11 @@
       .form-group.dl_sm_group
         label.col-xs-4.control-label(for="password") *密码：
         .col-xs-8
-          input#password.form-control.dl_full_control(type="password" name="password" ng-model="detail.password" required)
+          input#password.form-control.dl_full_control(type="password" name="password" ng-model="detail.password" ng-minlength=6 required)
       .form-group.dl_sm_group
         label.col-xs-4.control-label(for="password") *密码确认：
         .col-xs-8
-          input#password.form-control.dl_full_control(type="password" name="confirmPassword" ng-model="detail.confirmPassword" match="detail.password" required)
+          input#password.form-control.dl_full_control(type="password" name="confirmPassword" ng-model="detail.confirmPassword" ng-minlength=6 match="detail.password" required)
       .form-group.dl_sm_group
         .col-xs-offset-4.col-xs-8
           button.btn.btn-primary.dl_btn.dl_full_control(ng-disabled="createForm.$invalid" ng-click="detail.create_detail()") 创建

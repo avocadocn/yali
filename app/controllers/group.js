@@ -23,7 +23,8 @@ var mongoose = require('mongoose'),
     gm = require('gm'),
     path = require('path'),
     moment = require('moment'),
-    model_helper = require('../helpers/model_helper');
+    model_helper = require('../helpers/model_helper'),
+    schedule = require('../services/schedule');
 function arrayObjectIndexOf(myArray, searchTerm, property) {
     for(var i = 0, len = myArray.length; i < len; i++) {
         if (myArray[i][property].toString() === searchTerm.toString()) return i;
@@ -170,14 +171,21 @@ exports.saveInfo =function(req,res) {
           res.send({'result':0,'msg':'数据查询错误'});
           return;
       }
+      var newNameFlag = false;
       if(companyGroup) {
-          companyGroup.name = req.body.name;
+          if(companyGroup.name !== req.body.name){
+            companyGroup.name = req.body.name;
+            newNameFlag =true;
+          }
+
           companyGroup.brief = req.body.brief;
           companyGroup.save(function (s_err){
               if(s_err){
                   console.log(s_err);
-                  res.send({'result':0,'msg':'数据保存错误'});
-                  return;
+                  return res.send({'result':0,'msg':'数据保存错误'});
+              }
+              if(newNameFlag){
+                schedule.updateTname(req.session.nowtid);
               }
               var entity_type = companyGroup.entity_type;
               var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
@@ -349,7 +357,6 @@ exports.getCompanyGroups = function(req, res) {
     if(err || !teams) {
       return res.send([]);
     } else {
-      console.log(teams);
       return res.send({
         'teams':teams,
         'cid':req.session.nowcid
@@ -570,7 +577,7 @@ exports.provoke = function (req, res) {
       competition.poster.cid = req.user.cid;
       competition.poster.role = req.session.role;
       competition.poster.uid = req.user._id;
-      competition.poster.username = req.user.username;
+      competition.poster.nickname = req.user.nickname;
       var groupMessage = new GroupMessage();
 
       groupMessage.team.push(my_team_id);         //发起挑战方小队id
@@ -598,7 +605,7 @@ exports.provoke = function (req, res) {
       if(req.session.role ==='LEADER'){
         groupMessage.poster.uid = req.user._id;
         groupMessage.poster.role = 'LEADER';
-        groupMessage.poster.username = req.user.nickname;
+        groupMessage.poster.nickname = req.user.nickname;
       }
       groupMessage.cid.push(req.companyGroup.cid);
       if(req.companyGroup.cid !== req.body.team_opposite.cid) {
@@ -662,7 +669,7 @@ exports.responseProvoke = function (req, res) {
         campaign.poster.cid = competition.poster.cid;
         campaign.poster.uid = competition.poster.uid;
         campaign.poster.role = 'LEADER';
-        campaign.poster.username = competition.poster.username;
+        campaign.poster.nickname = competition.poster.nickname;
 
         campaign.content = competition.camp[0].tname + ' VS ' + competition.camp[1].tname;
         campaign.location = competition.brief.location.name;
@@ -750,7 +757,7 @@ exports.sponsor = function (req, res) {
   campaign.poster.role = req.session.role;
   if(req.session.role==='LEADER'){
     campaign.poster.uid = req.user._id;
-    campaign.poster.username = req.user.username;
+    campaign.poster.nickname = req.user.nickname;
   }
 
   campaign.content = content;
@@ -803,7 +810,7 @@ exports.sponsor = function (req, res) {
         groupMessage.poster.role = req.session.role;
         if(req.session.role==='LEADER'){
           groupMessage.poster.uid = req.user._id;
-          groupMessage.poster.username = req.user.nickname;
+          groupMessage.poster.nickname = req.user.nickname;
         }
         groupMessage.content = content;
         groupMessage.location = location;
