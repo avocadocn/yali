@@ -953,7 +953,7 @@ for(var i = 0;i<50;i++){
         "end_time" : ISODate("2014-05-29T16:00:00Z"),
         "start_time" : ISODate("2014-05-26T16:00:00Z"),
         "location" : my_campaigns[i].location,
-        "content" : my_campaigns[i].location,
+        "content" : my_campaigns[i].content,
         "active" : true,
         "provoke" : { "start_confirm" : false, "camp" : [ ], "active" : false },
         "poster" : {
