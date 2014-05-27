@@ -1151,38 +1151,39 @@ exports.savePhoto = function(req, res) {
                 console.log(err);
                 res.redirect('/users/editPhoto');
               } else {
-                CompanyGroup.find({'cid':req.user.cid},function (err,company_groups){
-                  if(err || !company_groups) {
-                    console.log(err,!company_groups);
-                  } else {
-                    for(var i = 0; i < company_groups.length; i ++) {
-                      for(var j = 0; j < company_groups[i].member.length; j ++) {
-                        if(company_groups[i].member[j]._id.toString() == req.user._id.toString()) {
-                          console.log('find you!');
-                          company_groups[i].member[j].photo = user.photo;
-                          company_groups[i].save(function (err){
-                            if(err) {
-                              console.log(err);
-                            }
-                          });
-                        }
-                      }
+                schedule.updateUlogo(req.user._id);
+                // CompanyGroup.find({'cid':req.user.cid},function (err,company_groups){
+                //   if(err || !company_groups) {
+                //     console.log(err,!company_groups);
+                //   } else {
+                //     for(var i = 0; i < company_groups.length; i ++) {
+                //       for(var j = 0; j < company_groups[i].member.length; j ++) {
+                //         if(company_groups[i].member[j]._id.toString() == req.user._id.toString()) {
+                //           console.log('find you!');
+                //           company_groups[i].member[j].photo = user.photo;
+                //           company_groups[i].save(function (err){
+                //             if(err) {
+                //               console.log(err);
+                //             }
+                //           });
+                //         }
+                //       }
 
-                      for(var j = 0; j < company_groups[i].leader.length; j ++) {
-                        if(company_groups[i].leader[j]._id.toString() == req.user._id.toString()) {
-                          console.log('find you!');
-                          company_groups[i].leader[j].photo = user.photo;
-                          company_groups[i].save(function (err){
-                            if(err) {
-                              console.log(err);
-                            }
-                          });
-                        }
-                      }
+                //       for(var j = 0; j < company_groups[i].leader.length; j ++) {
+                //         if(company_groups[i].leader[j]._id.toString() == req.user._id.toString()) {
+                //           console.log('find you!');
+                //           company_groups[i].leader[j].photo = user.photo;
+                //           company_groups[i].save(function (err){
+                //             if(err) {
+                //               console.log(err);
+                //             }
+                //           });
+                //         }
+                //       }
 
-                    }
-                  }
-                });
+                //     }
+                //   }
+                // });
               }
             });
 

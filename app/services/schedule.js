@@ -18,6 +18,7 @@ var schedule = require('node-schedule'),
 //       console.log(num++,new Date());
 //   });
 // }
+//同步公司名
 exports.updateCname =function (cid){
   Company.findOne({_id: cid}).exec().then(function(company){
     User.update({cid: cid},{$set:{cname:company.info.name}},{multi: true},function(err,num){
@@ -76,9 +77,12 @@ exports.updateCname =function (cid){
     });
   }).then(null,console.log);
 }
+//同步公司logo
 exports.updateCompanyLogo =function (cid){
 
 }
+
+//同步用户昵称
 exports.updateUname =function (uid){
   console.log(uid);
   User.findOne({_id: uid}).exec().then(function(user){
@@ -157,6 +161,7 @@ exports.updateUname =function (uid){
     });
   }).then(null,console.log);
 }
+//同步小组名称
 exports.updateTname =function (tid){
   console.log(tid);
   CompanyGroup.findOne({_id: tid}).exec().then(function(companyGroup){
@@ -209,6 +214,90 @@ exports.updateTname =function (tid){
       }
       else{
         console.log(num);
+      }
+    });
+  }).then(null,console.log);
+}
+
+//同步用户logo
+exports.updateUlogo =function (uid){
+  console.log(uid);
+  User.findOne({_id: uid}).exec().then(function(user){
+    CompanyGroup.update({'leader._id': uid},{$set:{'leader.$.photo':user.photo}},{multi: true},function(err,num){
+      console.log('CompanyGroupleader');
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log(num);
+      }
+    });
+    CompanyGroup.update({'member._id': uid},{$set:{'member.$.photo':user.photo}},{multi: true},function(err,num){
+      console.log('CompanyGroupmember');
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log(num);
+      }
+    });
+    //目前无法进行嵌套数组的定位，所以分别进行camp A和 camp B的查找
+    Competition.update({'camp.0.member.uid': uid},{$set:{'camp.0.member.$.photo':user.nickname}},{multi: true},function(err,num){
+      console.log('Competitioncamp0.member');
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log(num);
+      }
+    });
+    Competition.update({'camp.1.member.uid': uid},{$set:{'camp.1.member.$.photo':user.nickname}},{multi: true},function(err,num){
+      console.log('Competitioncamp1.member');
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log(num);
+      }
+    });
+  }).then(null,console.log);
+}
+
+//同步小组logo
+exports.updateTlogo =function (tid){
+  console.log(tid);
+  CompanyGroup.findOne({_id: tid}).exec().then(function(companyGroup){
+    Competition.update({'camp.id': tid},{$set:{'camp.$.logo':companyGroup.logo}},{multi: true},function(err,num){
+      console.log('Competitionlogo');
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log(num);
+      }
+    });
+    User.find({'group.team.id': tid},function(err,users){
+      console.log('users');
+      if(err){
+        console.log(err);
+      }
+      else{
+        users.forEach(function(value){
+          for(var i=0;i<value.group.length;i++){
+            if(value.group[i]._id ==companyGroup.gid){
+              for(var j= 0; j<value.group[i].team.length;j++){
+                if(value.group[i].team[j].id==tid){
+                  value.group[i].team[j].photo = companyGroup.logo;
+                  value.save(function(err){
+                    if(!err){
+                      console.log('userslogosuccess');
+                    }
+                  });
+                }
+              }
+            }
+          }
+        });
       }
     });
   }).then(null,console.log);

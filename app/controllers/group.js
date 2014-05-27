@@ -1057,6 +1057,7 @@ exports.saveLogo = function(req, res) {
                   console.log(err);
                   res.redirect('/group/editLogo');
                 }
+                schedule.updateTlogo(req.session.nowtid);
               });
               fs.unlink(logo_temp_path, function(err) {
                 if (err) {
