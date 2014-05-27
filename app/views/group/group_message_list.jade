@@ -9,7 +9,6 @@ div.margin_15(ng-repeat="group_message in group_messages")
             .triangle
             div.dl_message_container.margin_top_15
               span.message_label 类型: 公司活动
-              span.message_label 赛制: {{group_message.provoke.competition_format}}
               span.message_label 地点: {{group_message.location}}
               span.message_label 时间: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
               p.message_label {{group_message.content}}
@@ -19,13 +18,32 @@ div.margin_15(ng-repeat="group_message in group_messages")
             .triangle
             div.dl_message_container.margin_top_15
               span.message_label 类型: {{group_message.group.group_type[0]}}
+              span.message_label 地点: {{group_message.location}}
+              span.message_label 时间: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+              p.message_label {{group_message.content}}
+        //若是挑战
+        span(ng-if="group_message.provoke.active")
+          span(ng-if="!group_message.host")
+            a {{group_message.provoke.camp[0].tname}}
+            span 对您的小组
+            a {{group_message.provoke.camp[1].tname}}
+            span 发起{{group_message.provoke.start_confirm ? '的挑战已经生效' : '了挑战'}}
+          span(ng-if="group_message.host") 您的小组
+            a {{group_message.provoke.camp[0].tname}}
+            span 对
+            a {{group_message.provoke.camp[1].tname}}
+            span 发起 {{group_message.provoke.start_confirm ? '的挑战已经生效' : '了挑战'}}
+          div.dl_message
+            .triangle
+            div.dl_message_container.margin_top_15
+              span.message_label 类型: {{group_message.group.group_type[0]}}
               span.message_label 赛制: {{group_message.provoke.competition_format}}
               span.message_label 地点: {{group_message.location}}
               span.message_label 时间: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
               p.message_label {{group_message.content}}
-              div.message_label.pull-right(ng-if="group_message.provoke.active && role=='OWNER'")
-                div(ng-if="!group_message.provoke.start_confirm")
+              span.message_label.pull-right(ng-if="group_message.provoke.active && role=='OWNER'")
+                span(ng-if="!group_message.provoke.start_confirm")
                   button.btn(ng-click="vote(group_message._id,true,$index)") 赞成{{group_message.positive}}
-                  button.btn(ng-click="vote(group_message._id,false,$index)") 反对{{group_message.positive}}
-              div.message_label.pull-right(ng-if="group_message.provoke_accept")
+                  button.btn(ng-click="vote(group_message._id,false,$index)") 反对{{group_message.negative}}
+              span.message_label.pull-right(ng-if="group_message.provoke_accept")
                 button.btn(ng-click="responseProvoke(group_message._id)") 应战
