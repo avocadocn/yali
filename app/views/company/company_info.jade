@@ -37,10 +37,12 @@ div
         input.dl_input.form-control.editToggle(type="text" name ="infoname" ng-model="info.name" ng-disabled="infoUnEdit")
     .form-group
       label.info_label.col-md-2.control-label 所在地
-      .col-md-5
+      .col-md-2
         input.dl_input.form-control.editToggle(type="text" name ="province" ng-model="info.city.province" ng-disabled="infoUnEdit")
-      .col-md-5
+      .col-md-2
         input.dl_input.form-control.editToggle(type="text" name ="city" ng-model="info.city.city" ng-disabled="infoUnEdit")
+      .col-md-2
+        input.dl_input.form-control.editToggle(type="text" name ="district" ng-model="info.city.district" ng-disabled="infoUnEdit")
     .form-group
       label.info_label.col-md-2.control-label 地址
       .col-md-5
