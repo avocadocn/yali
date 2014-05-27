@@ -422,6 +422,14 @@ exports.renderCampaigns = function(req,res){
   }
   res.render('partials/campaign_list',{'role':req.session.role,'provider':'group'});
 }
+
+//
+exports.renderGroupMessageList =function(req,res){
+  res.render('group/group_message_list',{
+      'role':req.session.role
+  });
+};
+
 //返回某一小组的活动,待前台调用
 exports.getGroupCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){

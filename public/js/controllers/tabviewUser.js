@@ -27,7 +27,7 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/group_message', {
-        templateUrl: '/views/group_message_list.html',
+        templateUrl: '/group/group_message_list',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
@@ -89,6 +89,10 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
         catch(e) {
             console.log(e);
         }
+    };
+
+    $scope.getPhoto = function(){
+
     };
 }]);
 

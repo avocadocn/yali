@@ -21,6 +21,8 @@ module.exports = function(app) {
   app.post('/group/saveInfo', authorization.requiresLogin, group.saveInfo);
   app.get('/group/timeLine', authorization.requiresLogin, group.timeLine);
   app.get('/group/campaign', authorization.requiresLogin, group.renderCampaigns);
+
+  app.get('/group/group_message_list', authorization.requiresLogin, group.renderGroupMessageList)
   app.get('/group/getCampaigns/:teamId', authorization.requiresLogin, group.getGroupCampaign);
   app.get('/group/getGroupMessages/:teamId', authorization.requiresLogin, group.getGroupMessage);
   app.get('/group/getGroupMembers/:teamId', authorization.requiresLogin, group.getGroupMember);

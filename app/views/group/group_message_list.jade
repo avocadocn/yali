@@ -1,0 +1,31 @@
+div.margin_15(ng-repeat="group_message in group_messages")
+    .row
+      .col-md-2
+        img.size_90(ng-src='/img/icons/default_group_logo.png')
+      .col-md-10
+        //若是公司动态
+        span(ng-if="!group_message.provoke.active && group_message.group.gid[0] =='0'") 您的公司 有了新动态
+          div.dl_message
+            .triangle
+            div.dl_message_container.margin_top_15
+              span.message_label 类型: 公司活动
+              span.message_label 赛制: {{group_message.provoke.competition_format}}
+              span.message_label 地点: {{group_message.location}}
+              span.message_label 时间: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+              p.message_label {{group_message.content}}
+        //若是小组动态
+        span(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'") 您的小组 有了新动态
+          div.dl_message
+            .triangle
+            div.dl_message_container.margin_top_15
+              span.message_label 类型: {{group_message.group.group_type[0]}}
+              span.message_label 赛制: {{group_message.provoke.competition_format}}
+              span.message_label 地点: {{group_message.location}}
+              span.message_label 时间: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+              p.message_label {{group_message.content}}
+              div.message_label.pull-right(ng-if="group_message.provoke.active && role=='OWNER'")
+                div(ng-if="!group_message.provoke.start_confirm")
+                  button.btn(ng-click="vote(group_message._id,true,$index)") 赞成{{group_message.positive}}
+                  button.btn(ng-click="vote(group_message._id,false,$index)") 反对{{group_message.positive}}
+              div.message_label.pull-right(ng-if="group_message.provoke_accept")
+                button.btn(ng-click="responseProvoke(group_message._id)") 应战
