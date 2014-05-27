@@ -33,11 +33,13 @@ var _camp = new Schema({
 
 var GroupMessage = new Schema({
     team:[{
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'CompanyGroup'
     }],
     id: String,
-    cid: Array,                      //如果是约战消息,要在两家公司的主页同时显示
+    cid: [{                            //如果是约战消息,要在两家公司的主页同时显示
+        type: Schema.Types.ObjectId
+    }],
     group: {
         gid: Array,
         group_type: Array

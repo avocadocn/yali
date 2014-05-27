@@ -891,3 +891,86 @@ try{
     print(e);
 };
 //@arena*/
+
+
+
+
+var _campaign = [];
+for(var i = 0;i < 50; i ++) {
+    _campaign.push({
+        "end_time" : ISODate("2014-05-29T16:00:00Z"),
+        "start_time" : ISODate("2014-05-26T16:00:00Z"),
+        "location" : "你猜",
+        "content" : "足球测试活动"+i,
+        "provoke" : {"active" : false},
+        "create_time" : ISODate("2014-05-27T03:10:46.492Z"),
+        "member" : [],
+        "poster" : {
+            "username" : user_eric.username,
+            "uid" : user_eric._id,
+            "role" : "LEADER",
+            "cid" : user_eric.cid,
+            "cname" : user_eric.cname
+        },
+        "photo_album":{
+            'pid':0,
+            'name':0
+        },
+         "cname" : [  user_eric.cname ],
+        "cid" : [  user_eric.cid ],
+        "group_type" : [  "足球" ],
+        "gid" : [  "7" ],
+        "active" : true,
+        "team" : [  user_eric.group[0].team[0].id ]
+    });
+}
+_campaign.forEach(function (value) {
+    db.campaigns.insert(value);
+});
+
+var my_campaigns = db.campaigns.find();
+var _photo_album = [];
+for(var i =0; i < 50; i ++) {
+    _photo_album.push({
+        "photos" : [],
+    });
+}
+_photo_album.forEach(function (value) {
+    db.photoalbums.insert(value);
+});
+var my_photoalbums = db.photoalbums.find();
+for(var i = 0; i < 50; i ++) {
+    my_campaigns[i].photo_album = {
+        'pid' : my_photoalbums[i]._id,
+        'name' : my_photoalbums[i].name
+    };
+    db.campaigns.update({ "_id": my_campaigns[i]._id }, my_campaigns[i]);
+}
+
+var _group_message = [];
+for(var i = 0;i<50;i++){
+    _group_message.push({
+        "end_time" : ISODate("2014-05-29T16:00:00Z"),
+        "start_time" : ISODate("2014-05-26T16:00:00Z"),
+        "location" : my_campaigns[i].location,
+        "content" : my_campaigns[i].location,
+        "active" : true,
+        "provoke" : { "start_confirm" : false, "camp" : [ ], "active" : false },
+        "poster" : {
+            "username" : user_eric.username,
+            "uid" : user_eric._id,
+            "role" : "LEADER",
+            "cid" : user_eric.cid,
+            "cname" : user_eric.cname
+        },
+        "group" :{
+            "group_type" : [  "足球" ],
+            "gid" : [  "7" ]
+        },
+        "cid" : [user_eric.cid],
+        "team" : [  user_eric.group[0].team[0].id ]
+    });
+}
+_group_message.forEach(function (value) {
+    db.groupmessages.insert(value);
+});
