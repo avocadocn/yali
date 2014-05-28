@@ -63,6 +63,7 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
     $http.get('/users/getGroupMessages').success(function(data, status) {
       $scope.group_messages = data.group_messages;
       $scope.role = data.role;
+      $scope.companyLogo = data.companyLogo;
     });
 
     $scope.vote = function(provoke_message_id, status, index) {
@@ -89,10 +90,6 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
         catch(e) {
             console.log(e);
         }
-    };
-
-    $scope.getPhoto = function(){
-
     };
 }]);
 

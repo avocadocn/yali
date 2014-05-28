@@ -346,9 +346,31 @@ var _company_groups =[
     "brief":"足球队"
 },
 {
+    "_id" : company_donler._id,
+    "cid" : company_donler._id,
+    "cname":"上海动梨信息技术有限公司",
+    "gid" : "0",
+    "group_type" : "足球",
+    "name" : "上海动梨信息技术有限公司-足球队",
+    "logo":"/img/icons/default_group_logo.png",
+    "entity_type":"FootBall",
+    "brief":"足球队"
+},
+{
     "cid" : company_yali._id,
     "cname":"上海鸭梨信息技术有限公司",
     "gid" : "7",
+    "group_type" : "足球",
+    "name" : "上海鸭梨信息技术有限公司-足球队",
+    "logo":"/img/icons/default_group_logo.png",
+    "entity_type":"FootBall",
+    "brief":"足球队"
+},
+{
+    "_id" : company_yali._id,
+    "cid" : company_yali._id,
+    "cname":"上海鸭梨信息技术有限公司",
+    "gid" : "0",
     "group_type" : "足球",
     "name" : "上海鸭梨信息技术有限公司-足球队",
     "logo":"/img/icons/default_group_logo.png",
@@ -366,6 +388,28 @@ var _company_groups =[
     "brief":"足球队"
 },
 {
+    "_id" : company_apple._id,
+    "cid" : company_apple._id,
+    "cname":"上海苹果信息技术有限公司",
+    "gid" : "0",
+    "group_type" : "足球",
+    "name" : "上海苹果信息技术有限公司-足球队",
+    "logo":"/img/icons/default_group_logo.png",
+    "entity_type":"FootBall",
+    "brief":"足球队"
+},
+{
+    "cid" : company_banana._id,
+    "cname":"上海香蕉信息技术有限公司",
+    "gid" : "7",
+    "group_type" : "足球",
+    "name" : "上海香蕉信息技术有限公司-足球队",
+    "logo":"/img/icons/default_group_logo.png",
+    "entity_type":"FootBall",
+    "brief":"足球队"
+},
+{
+    "_id" : company_banana._id,
     "cid" : company_banana._id,
     "cname":"上海香蕉信息技术有限公司",
     "gid" : "7",

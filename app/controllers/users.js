@@ -465,6 +465,7 @@ exports.getGroupMessages = function(req, res) {
   }
   var group_messages = [];
   var i = 0;
+  var companyLogo;
   async.whilst(
     function() { return i < req.user.group.length; },
 
@@ -495,13 +496,8 @@ exports.getGroupMessages = function(req, res) {
         */
       }
       GroupMessage.find({'team' :{'$in':team_ids}})
-      // .populate({
-      //     path: 'team',
-      //     match: {'$eleMatch('active')':true}
-      //   }
-      // )
+      .populate('team')
       .exec(function(err, group_message) {
-        //console.log(group_message);
         if (group_message.length > 0) {
           if (err) {
             console.log(err);
@@ -516,13 +512,15 @@ exports.getGroupMessages = function(req, res) {
               var my_team_id,my_team_name;
               var find = true;
               var host = false;
+              var logo;
 
+              
 
               //如果是比赛动态
               if(group_message[j].provoke.active) {
                 for(var k = 0; k < group_message[j].team.length && find; k ++) {
                   for(var l = 0; l < req.user.group[i].team.length; l ++) {
-                    if(group_message[j].team[k].toString() === req.user.group[i].team[l].id.toString()) {
+                    if(group_message[j].team[k]._id.toString() === req.user.group[i].team[l].id.toString()) {
                       my_team_id = req.user.group[i].team[l].id;
                       my_team_name = req.user.group[i].team[l].name;
                       positive = group_message[j].provoke.camp[k].vote.positive;
@@ -533,17 +531,18 @@ exports.getGroupMessages = function(req, res) {
                     }
                   }
                 }
+
               } else {
                 //如果是普通活动动态
                 for(var l = 0; l < team_ids.length; l ++) {
-                  if(group_message[j].team[0].toString() === team_ids[l].toString()) {
+                  if(group_message[j].team[0]._id.toString() === team_ids[l].toString()) {
                     my_team_id = team_ids[l];
                     my_team_name = team_names[l];
                     break;
                   }
                 }
               }
-
+              console.log(group_message[j].team[0]);
               group_messages.push({
                 'positive' : positive,
                 'negative' : negative,
@@ -561,6 +560,7 @@ exports.getGroupMessages = function(req, res) {
                 'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
                 'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
                 'provoke': group_message[j].provoke,
+                'logo':group_message[j].host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
                 'provoke_accept': false
               });
             }
@@ -569,14 +569,18 @@ exports.getGroupMessages = function(req, res) {
         i++;
         callback();
       });
+      Company.findOne({'_id':req.user.cid}).exec(function(err,company){
+        companyLogo = company.info.logo;
+      });
     },
+
 
     function(err) {
       if (err) {
         console.log(err);
         res.send([]);
       } else {
-        res.send({'group_messages':group_messages,'role':req.session.role});
+        res.send({'group_messages':group_messages,'role':req.session.role,'companyLogo':companyLogo});
       }
     }
   );

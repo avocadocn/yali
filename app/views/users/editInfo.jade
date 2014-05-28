@@ -2,7 +2,7 @@ div
   form.form-horizontal(name="accountForm")
     .infoHead.row
       .col-md-4
-        h3 基本信息
+        h5 基本信息
       if(role!=='PARTNER')
         .col-md-8
            a.btn.dl_btn.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
@@ -76,7 +76,7 @@ div
   form.form-horizontal(name="linkForm")
     .infoHead.row
       .col-md-4
-        h3 联系信息
+        h5 联系信息
       if(role!=='PARTNER')
         .col-md-8
           a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
