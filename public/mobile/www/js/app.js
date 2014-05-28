@@ -47,15 +47,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-    .state('app.opponentDetail', {
-      url: '/opponent_detail/:opponent_index',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/opponent_detail.html',
-          controller: 'OpponentDetailCtrl'
-        }
-      }
-    })
+
 
     .state('app.scheduleList', {
       url: '/schedule_list',

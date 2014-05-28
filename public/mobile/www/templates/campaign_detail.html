@@ -1,24 +1,31 @@
-<ion-view title="详细信息" class="campaign">
+<ion-view title="活动详情" class="campaign">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-    <p>{{ campaign.content }}</p>
-    <p>参加人员</p>
+
     <div>
-      <div ng-repeat="user in campaign.member">
-        <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
+      <p>{{ campaign.content }}</p>
+    </div>
+
+    <!-- 参加人员 -->
+    <div ng-show="tab === 'member'">
+      <p>参加人员</p>
+      <div>
+        <div ng-repeat="user in campaign.member">
+          <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
+        </div>
       </div>
     </div>
-    <div ng-if="campaign.opponent_list.length > 0">
-      <p>对手</p>
-      <p ng-repeat="opponent in campaign.opponent_list">
-        <a href="#/app/opponent_detail/{{ $index }}">{{ opponent.name }}</a>
-      </p>
+
+    <!-- 评论 -->
+    <div ng-show="tab === 'comment'">
+      <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
+      <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
     </div>
-    <p>活动地点</p>
-    <div id="location" style="width:320px; height:320px;"></div>
-    <div>
+
+    <!-- 活动照片 -->
+    <div ng-show="tab === 'photo'">
       <h4>活动精彩照片</h4>
       <form id="upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
         <input type="file" name="photos" multiple="multiple" accept="image/*" required/>
@@ -36,7 +43,44 @@
         </div>
       </div>
     </div>
-    <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
-    <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
+
+    <!-- 活动地点 -->
+    <div ng-show="tab === 'location'">
+      <p>活动地点</p>
+      <div id="location" style="width:320px; height:320px;"></div>
+    </div>
+
+    <!-- 分享 -->
+    <div ng-show="tab === 'share'">
+      
+    </div>
+
+
+
+    <div class="tabs tabs-icon-top">
+      <a class="tab-item" ng-click="changeTab('member')">
+        <i class="icon ion-home"></i>
+        参加人员
+      </a>
+      <a class="tab-item" ng-click="changeTab('comment')">
+        <i class="icon ion-star"></i>
+        评论
+      </a>
+      <a class="tab-item" ng-click="changeTab('photo')">
+        <i class="icon ion-gear-a"></i>
+        活动照片
+      </a>
+      <a class="tab-item" ng-click="changeTab('location')">
+        <i class="icon ion-star"></i>
+        活动地点
+      </a>
+      <a class="tab-item" ng-click="changeTab('share')">
+        <i class="icon ion-gear-a"></i>
+        分享
+      </a>
+    </div>
   </ion-content>
 </ion-view>
+
+
+

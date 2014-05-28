@@ -1,7 +1,6 @@
 'use strict';
 
-var schedule = require('node-schedule'),
-    mongoose = require('mongoose'),
+var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup'),

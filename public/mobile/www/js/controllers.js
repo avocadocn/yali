@@ -153,30 +153,29 @@ angular.module('starter.controllers', [])
 
   Map.map('location', $scope.campaign.location);
 
-})
+  // after all data be inited
+  $scope.tab = 'comment';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.controller('OpponentDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign) {
-
-  Authorize.authorize();
-
+  $scope.changeTab = function(tab) {
+    $scope.tab = tab;
+  };
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

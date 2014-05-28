@@ -40,6 +40,17 @@ body {
   z-index: 0;
   border-bottom: none;
 }
+.menu_bar {
+  background-color: #3abde8 !important;
+  border: none !important;
+  color: #fff !important;
+}
+.menu_bar .button {
+  color: #fff !important;
+}
+.menu_bar .title {
+  color: #fff !important;
+}
 .menu_logo {
   margin-left: auto;
   margin-right: auto;
@@ -259,4 +270,7 @@ body {
 }
 .campaign_operate_share {
   text-align: right;
+}
+.scroll-content .scroll {
+  height: 100%;
 }
