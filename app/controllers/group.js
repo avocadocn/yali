@@ -373,7 +373,11 @@ exports.getGroupMessage = function(req, res) {
     return res.send(403,forbidden);
   }
   var tid = req.params.teamId;    //小队的id
-
+  var logo;
+  CompanyGroup.findOne({'_id':tid}).exec(function(err,companyGroup){
+    logo=companyGroup.logo;
+    console.log(logo);
+  });
   GroupMessage.find({'team' : tid})
   .exec(function(err, group_message) {
     if (err || !group_message) {
@@ -386,7 +390,7 @@ exports.getGroupMessage = function(req, res) {
 
         var positive = 0;
         var negative = 0;
-        var host = false;
+        var host = true;
         //如果是比赛动态
         if(group_message[i].provoke.active) {
           for(var k = 0; k < group_message[i].provoke.camp.length; k ++) {
@@ -414,9 +418,10 @@ exports.getGroupMessage = function(req, res) {
           'location' : group_message[i].location,
           'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
           'end_time' : group_message[i].end_time ? group_message[i] : '',
+          'logo':logo,
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
           'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString())
-        });
+        }); 
       }
       return res.send({'group_messages':group_messages,'role':req.session.role});
     }

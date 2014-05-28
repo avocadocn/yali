@@ -27,14 +27,14 @@ module.exports = function(grunt) {
                 }
             }
         },
-        jshint: {
-            all: {
-                src: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js', '!test/coverage/**/*.js'],
-                options: {
-                    jshintrc: true
-                }
-            }
-        },
+        // jshint: {
+        //     all: {
+        //         src: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/js/**', 'test/**/*.js', '!test/coverage/**/*.js'],
+        //         options: {
+        //             jshintrc: true
+        //         }
+        //     }
+        // },
         nodemon: {
             dev: {
                 script: 'server.js',
@@ -89,7 +89,9 @@ module.exports = function(grunt) {
     grunt.option('force', true);
 
     //Default task(s).
-    grunt.registerTask('default', ['jshint', 'concurrent']);
+    //grunt.registerTask('default', ['jshint', 'concurrent']);
+
+    grunt.registerTask('default', ['concurrent']);
 
     //Test task.
     grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);

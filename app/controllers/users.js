@@ -511,8 +511,7 @@ exports.getGroupMessages = function(req, res) {
               var negative = 0;
               var my_team_id,my_team_name;
               var find = true;
-              var host = false;
-              var logo;
+              var host = true;
 
               
 
@@ -542,7 +541,8 @@ exports.getGroupMessages = function(req, res) {
                   }
                 }
               }
-              console.log(group_message[j].team[0]);
+              //console.log('logo'+ j +':' + group_message[j].team[0].logo,host);
+              //console.log('group_message_id'+ j +':' + group_message[j]._id);
               group_messages.push({
                 'positive' : positive,
                 'negative' : negative,
@@ -560,7 +560,7 @@ exports.getGroupMessages = function(req, res) {
                 'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
                 'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
                 'provoke': group_message[j].provoke,
-                'logo':group_message[j].host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
+                'logo':host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
                 'provoke_accept': false
               });
             }
