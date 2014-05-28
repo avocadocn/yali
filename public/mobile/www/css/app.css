@@ -29,6 +29,11 @@ body {
   flex: 0 0 40%;
   max-width: 40%;
 }
+.donler_tabs {
+  background-color: #3abde8;
+  color: #fff;
+  position: fixed;
+}
 .menu_wrap {
   background-color: #3abde8;
 }
@@ -41,6 +46,8 @@ body {
   border-bottom: none;
 }
 .menu_bar {
+  background-image: none !important;
+  background-size: 0 0 !important;
   background-color: #3abde8 !important;
   border: none !important;
   color: #fff !important;

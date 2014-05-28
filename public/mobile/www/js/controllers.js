@@ -151,14 +151,22 @@ angular.module('starter.controllers', [])
   $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
 
 
-  Map.map('location', $scope.campaign.location);
+  //Map.map('location', $scope.campaign.location);
+
+
+  $scope.leftButtons = [{
+    type: 'button-icon icon ion-navicon',
+    tap: function(e) {
+      $scope.toggleMenu();
+    }
+  }];
 
   // after all data be inited
-  $scope.tab = 'comment';
+  // $scope.tab = 'comment';
 
-  $scope.changeTab = function(tab) {
-    $scope.tab = tab;
-  };
+  // $scope.changeTab = function(tab) {
+  //   $scope.tab = tab;
+  // };
 
 })
 

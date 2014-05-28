@@ -1,86 +1,64 @@
-<ion-view title="活动详情" class="campaign">
-  <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-  </ion-nav-buttons>
-  <ion-content class="has-header">
+<ion-view title="活动详情" left-buttons="leftButtons">
 
-    <div>
-      <p>{{ campaign.content }}</p>
-    </div>
-
-    <!-- 参加人员 -->
-    <div ng-show="tab === 'member'">
-      <p>参加人员</p>
-      <div>
-        <div ng-repeat="user in campaign.member">
-          <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
+  <ion-tabs tabs-type="tabs-icon-top tabs-positive">
+    <ion-tab title="参加人员" icon="ion-ios7-person-outline">
+      <ion-content has-header="true" padding="true">
+        <p>参加人员</p>
+        <div>
+          <div ng-repeat="user in campaign.member">
+            <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
+          </div>
         </div>
-      </div>
-    </div>
+      </ion-content>
+    </ion-tab>
 
-    <!-- 评论 -->
-    <div ng-show="tab === 'comment'">
-      <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
-      <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
-    </div>
+    <ion-tab title="评论" icon="ion-chatbubble">
+      <ion-content has-header="true" padding="true">
+        <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
+        <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
+      </ion-content>
+    </ion-tab>
 
-    <!-- 活动照片 -->
-    <div ng-show="tab === 'photo'">
-      <h4>活动精彩照片</h4>
-      <form id="upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
-        <input type="file" name="photos" multiple="multiple" accept="image/*" required/>
-        <button type="submit">上传照片</button>
-      </form>
-      </div>
-      <div id="photo_list">
-        <div ng-repeat="photo in photos">
-          <img ng-src="{{ photo.uri }}"/>
-          <p>上传者：{{ photo.publish_user }}</p>
-          <p>备注：{{ photo.comment }}</p>
-          <button ng-click="deletePhoto(photo.pid)">删除照片</button>
-          <input type="text" ng-model="comment"/>
-          <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button>
+    <ion-tab title="活动照片" icon="ion-camera">
+      <ion-content has-header="true" padding="true">
+        <h4>活动精彩照片</h4>
+        <form id="upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
+          <input type="file" name="photos" multiple="multiple" accept="image/*" required/>
+          <button type="submit">上传照片</button>
+        </form>
         </div>
-      </div>
-    </div>
+        <div id="photo_list">
+          <div ng-repeat="photo in photos">
+            <img ng-src="{{ base_url + photo.uri }}"/>
+            <p>上传者：{{ photo.publish_user }}</p>
+            <p>备注：{{ photo.comment }}</p>
+            <button ng-click="deletePhoto(photo.pid)">删除照片</button>
+            <input type="text" ng-model="comment"/>
+            <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button>
+          </div>
+        </div>
+      </ion-content>
+    </ion-tab>
 
-    <!-- 活动地点 -->
-    <div ng-show="tab === 'location'">
-      <p>活动地点</p>
-      <div id="location" style="width:320px; height:320px;"></div>
-    </div>
+    <ion-tab title="活动地点" icon="ion-ios7-location-outline">
+      <ion-content has-header="true" padding="true">
+        <p>活动地点</p>
+        <div id="location" style="width:320px; height:320px;"></div>
+      </ion-content>
+    </ion-tab>
 
-    <!-- 分享 -->
-    <div ng-show="tab === 'share'">
-      
-    </div>
+    <ion-tab title="分享" icon="ion-ios7-paperplane-outline">
+      <ion-content has-header="true" padding="true">
+        <h2>share</h2>
+      </ion-content>
+    </ion-tab>
+
+  </ion-tabs>
 
 
-
-    <div class="tabs tabs-icon-top">
-      <a class="tab-item" ng-click="changeTab('member')">
-        <i class="icon ion-home"></i>
-        参加人员
-      </a>
-      <a class="tab-item" ng-click="changeTab('comment')">
-        <i class="icon ion-star"></i>
-        评论
-      </a>
-      <a class="tab-item" ng-click="changeTab('photo')">
-        <i class="icon ion-gear-a"></i>
-        活动照片
-      </a>
-      <a class="tab-item" ng-click="changeTab('location')">
-        <i class="icon ion-star"></i>
-        活动地点
-      </a>
-      <a class="tab-item" ng-click="changeTab('share')">
-        <i class="icon ion-gear-a"></i>
-        分享
-      </a>
-    </div>
-  </ion-content>
 </ion-view>
+
+
 
 
 
