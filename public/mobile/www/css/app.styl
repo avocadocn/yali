@@ -8,6 +8,11 @@ themeColor = #3abde8
 
 // common style or css tools
 
+
+body
+  background-color themeColor
+
+
 .table_wrap
   display table
   width 100%
@@ -151,10 +156,18 @@ loginInfoBgcolor = #75d1ef
 .login_line
   margin 10px
 
-  input
-    margin-left 10px
-    height 17px
-    color #bbb
+  .item-input
+    padding-top 0
+    padding-bottom 0
+
+    input
+      margin-left 10px
+      padding 5px 0
+      height 30px
+      flex 1 0 0
+      line-height 20px
+      font-size 14px
+      color #bbb
 
   button
     padding-top 0

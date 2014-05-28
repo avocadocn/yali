@@ -1,3 +1,6 @@
+body {
+  background-color: #3abde8;
+}
 .table_wrap {
   display: table;
   width: 100%;
@@ -104,9 +107,17 @@
 .login_line {
   margin: 10px;
 }
-.login_line input {
+.login_line .item-input {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.login_line .item-input input {
   margin-left: 10px;
-  height: 17px;
+  padding: 5px 0;
+  height: 30px;
+  flex: 1 0 0;
+  line-height: 20px;
+  font-size: 14px;
   color: #bbb;
 }
 .login_line button {
