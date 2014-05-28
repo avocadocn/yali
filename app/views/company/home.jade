@@ -2,23 +2,23 @@ extends ../layouts/manager
 
 block baseInfo
   .row.margin_top_15
-    .col-md-2
+    .col-md-2.col-sm-3.col-xs-4
       img.size_140.img_contain(src="#{logo ? logo :'/img/icons/default_company_logo.png'}")
-    .col-md-8.margin_left_20
+    .col-md-9.col-sm-8.col-xs-7.margin_left_20
       .row
         label.head= cname
       .row.margin_top_15
         p.subtitle= sign
       .row.margin_top_30
-        .col-md-2(class = "text-center")
+        .col-md-2.col-sm-2.col-xs-4.padding_0
           span.info_border 员工
           span.info_border  #{membernumber>0? membernumber : 0 }
-        .col-md-2(class = "text-center")
-          span.info_border  兴趣小组
+        .col-md-2.col-sm-2.col-xs-4.padding_0
+          span.info_border 小组
           span.info_border= groupnumber
-        .col-md-2(class = "text-center")
-          span.info_border  胜率
-          span.info_border  100%
+        .col-md-2.col-sm-2.col-xs-4.padding_0
+          span.info_border 胜率
+          span.info_border 100%
       if(role === 'HR')
         .margin_top_15
           button.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") 活动

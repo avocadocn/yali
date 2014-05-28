@@ -44,31 +44,61 @@ li {
 .subtitle {
   font-size: 14px;
 }
+.padding_0 {
+  padding-left: 0;
+  padding-right: 0;
+}
 .dl_btn {
-  border-radius: 0px !important;
-  box-shadow: none !important;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px #0e88af;
   color: #fff;
   background-color: #3bbee8;
   border-color: #3bbee8;
   border-style: solid;
   line-height: 1;
+  position: relative;
+  font-size: 12px;
+  border-radius: 2px;
 }
 .dl_btn_small {
-  padding: 5px 20px;
+  padding: 1px 10px;
 }
 .dl_btn:hover {
-  background-color: #3abde7;
-  border-color: #3abde7;
+  background-color: #3bbee8;
+  border-color: #0e88af;
+  top: 1px;
+}
+.dl_btn:active {
+  box-shadow: 0 0 #0e88af;
+  top: 2px;
+}
+.close_btn {
+  background-color: #ff8c00;
+  border-color: #ff8c00;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 4px #ce760a;
+  color: #fff;
+  border-style: solid;
+  line-height: 1;
+  position: relative;
+  padding: 1px 2px;
+  font-size: 12px;
+  border-radius: 1px;
+}
+.close_btn:hover {
+  background-color: #ff8c00;
+  border-color: #ce760a;
+  top: 1px;
+}
+.close_btn:active {
+  box-shadow: 0 0 #ce760a;
+  top: 2px;
 }
 .dl_input.editToggle[disabled='disabled'] {
   background-color: inherit;
   border: 0px solid;
   box-shadow: none;
   cursor: default;
-}
-.dl_btn_close {
-  background-color: #ff8c00;
-  border-color: #ff8c00;
 }
 .info_border {
   padding: 5px;

@@ -37,30 +37,57 @@ li
   font-size 24px
 .subtitle
   font-size 14px
+.padding_0
+  padding-left 0
+  padding-right 0
 .dl_btn
-  border-radius 0px !important
-  box-shadow none !important
+  border-radius 0 0 5px 5px
+  box-shadow 0 2px buttonHoverColor
   color #fff
   background-color buttonColor
   border-color buttonColor
   border-style solid
   line-height 1
+  position relative
+  font-size 12px
+  border-radius 2px
 .dl_btn_small
-  padding 5px 20px
+  padding 1px 10px
 .dl_btn:hover
-  background-color buttonHoverColor
+  background-color buttonColor
   border-color buttonHoverColor
+  top 1px
+.dl_btn:active
+  box-shadow 0 0 buttonHoverColor
+  top 2px
+.close_btn
+  background-color closeButtonColor
+  border-color closeButtonColor
+  border-radius 0 0 5px 5px
+  box-shadow 0 4px closeButtonHoverColor
+  color #fff
+  border-style solid
+  line-height 1
+  position relative
+  padding 1px 2px
+  font-size 12px
+  border-radius 1px
+.close_btn:hover
+  background-color closeButtonColor
+  border-color closeButtonHoverColor
+  top 1px
+.close_btn:active
+  box-shadow 0 0 closeButtonHoverColor
+  top 2px
+
 .dl_input.editToggle[disabled='disabled']
   background-color inherit
   border 0px solid
   box-shadow none
   cursor default
-.dl_btn_close
-  background-color #FF8C00
-  border-color #FF8C00
 .info_border
   padding 5px
-  border-style solid
+  border-style solid  
   border-width 1px
   border-color buttonColor
 .baseInfo

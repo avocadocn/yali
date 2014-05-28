@@ -2,9 +2,9 @@ div.margin_15(ng-repeat="group_message in group_messages")
   //若是公司动态
   div(ng-if="!group_message.provoke.active && group_message.group.gid[0] =='0'") 
     .row
-      .col-md-2
+      .col-md-2.col-sm-3.col-xs-3
         img.size_90(ng-src='{{companyLogo}}')
-      .col-md-10
+      .col-md-10.col-sm-9.col-xs-8
         span 您的公司 有了新动态
         div.dl_message
           .triangle
@@ -16,10 +16,10 @@ div.margin_15(ng-repeat="group_message in group_messages")
 
   div(ng-if="group_message.group.gid[0] !='0'") 
     .row
-      .col-md-2
+      .col-md-2.col-sm-3.col-xs-3
         img.size_90(ng-src='{{group_message.logo}}')
       //若是小组动态
-      .col-md-10(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
+      .col-md-10.col-sm-9.col-xs-8(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
         span 您的小组 有了新动态
         div.dl_message
           .triangle
@@ -29,7 +29,7 @@ div.margin_15(ng-repeat="group_message in group_messages")
             span.message_label 时间: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
             p.message_label {{group_message.content}}
       //若是挑战
-      .col-md-10(ng-if="group_message.provoke.active")
+      .col-md-10.col-sm-9.col-xs-8(ng-if="group_message.provoke.active")
         div(ng-if="!group_message.host")
           a {{group_message.provoke.camp[0].tname}}
           span 对您的小组
@@ -67,3 +67,4 @@ div.margin_15(ng-repeat="group_message in group_messages")
                     .row(ng-if="!group_message.provoke.start_confirm")
                       button.dl_btn(ng-click="vote(group_message._id,true,$index)") 赞成{{group_message.positive}}
                       button.dl_btn(ng-click="vote(group_message._id,false,$index)") 反对{{group_message.negative}}
+  hr
