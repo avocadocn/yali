@@ -43,11 +43,19 @@ body
 
 
 .donler_tabs
-  background-color themeColor
-  color white
-  position fixed
+  .tab-item
+    background-color themeColor
+    color white
 
+.donler_tabs_bottom
+  .tabs
+    height 60px
+    line-height 1
+    background-image none
 
+    .tab-item
+      padding-top 5px
+      padding-bottom 5px
 
 
 
@@ -68,12 +76,12 @@ evenItemBgcolor = #37b4dd
 
   .menu_header
     background-color themeColor
+    background-image none
     z-index 0
     border-bottom none
 
 .menu_bar
   background-image none !important
-  background-size 0 0 !important
   background-color themeColor !important
   border none !important
   color white !important
@@ -364,6 +372,48 @@ campaignLineHeight = 45px
 .scroll-content
   .scroll
     height 100%
+
+
+
+.campaign_photo_panel
+  float left
+  width 50%
+  height 160px
+  padding-left 10px
+  margin-top 7px
+  &:nth-child(2n+2)
+    padding-right 10px
+
+  .campaign_photo_border
+    height 100%
+    border 1px solid #ddd
+
+  .campaign_photo_img_wrap
+    height 110px
+    text-align center
+    overflow hidden
+
+  p
+    text-align center
+
+  .campaign_upload_user
+    margin-top 10px
+    margin-bottom 0
+    line-height 1
+
+  .campaign_upload_date
+    margin-top 5px
+    font-size 7px
+    line-height 1
+    color #bbb
+
+.campaign_photo
+  max-width 100%
+
+
+
+
+
 
 
 

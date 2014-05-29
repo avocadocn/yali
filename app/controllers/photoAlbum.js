@@ -366,7 +366,8 @@ exports.readPhotos = function(req, res) {
                 uri: photo.uri,
                 comment: photo.comment,
                 publish_user_id: photo.publish_user.id,
-                publish_user: photo.publish_user.nickname
+                publish_user: photo.publish_user.nickname,
+                publish_date: photo.publish_date
               };
               photos.push(temp_photo);
             }

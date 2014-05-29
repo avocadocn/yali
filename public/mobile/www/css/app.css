@@ -29,10 +29,18 @@ body {
   flex: 0 0 40%;
   max-width: 40%;
 }
-.donler_tabs {
+.donler_tabs .tab-item {
   background-color: #3abde8;
   color: #fff;
-  position: fixed;
+}
+.donler_tabs_bottom .tabs {
+  height: 60px;
+  line-height: 1;
+  background-image: none;
+}
+.donler_tabs_bottom .tabs .tab-item {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .menu_wrap {
   background-color: #3abde8;
@@ -42,12 +50,12 @@ body {
 }
 .menu_wrap .menu_header {
   background-color: #3abde8;
+  background-image: none;
   z-index: 0;
   border-bottom: none;
 }
 .menu_bar {
   background-image: none !important;
-  background-size: 0 0 !important;
   background-color: #3abde8 !important;
   border: none !important;
   color: #fff !important;
@@ -280,4 +288,40 @@ body {
 }
 .scroll-content .scroll {
   height: 100%;
+}
+.campaign_photo_panel {
+  float: left;
+  width: 50%;
+  height: 160px;
+  padding-left: 10px;
+  margin-top: 7px;
+}
+.campaign_photo_panel:nth-child(2n+2) {
+  padding-right: 10px;
+}
+.campaign_photo_panel .campaign_photo_border {
+  height: 100%;
+  border: 1px solid #ddd;
+}
+.campaign_photo_panel .campaign_photo_img_wrap {
+  height: 110px;
+  text-align: center;
+  overflow: hidden;
+}
+.campaign_photo_panel p {
+  text-align: center;
+}
+.campaign_photo_panel .campaign_upload_user {
+  margin-top: 10px;
+  margin-bottom: 0;
+  line-height: 1;
+}
+.campaign_photo_panel .campaign_upload_date {
+  margin-top: 5px;
+  font-size: 7px;
+  line-height: 1;
+  color: #bbb;
+}
+.campaign_photo {
+  max-width: 100%;
 }

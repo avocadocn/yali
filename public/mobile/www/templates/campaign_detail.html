@@ -1,6 +1,6 @@
 <ion-view title="活动详情" left-buttons="leftButtons">
 
-  <ion-tabs tabs-type="tabs-icon-top tabs-positive">
+  <ion-tabs tabs-type="tabs-icon-top tabs-positive" class="donler_tabs donler_tabs_bottom">
     <ion-tab title="参加人员" icon="ion-ios7-person-outline">
       <ion-content has-header="true" padding="true">
         <p>参加人员</p>
@@ -21,22 +21,25 @@
 
     <ion-tab title="活动照片" icon="ion-camera">
       <ion-content has-header="true" padding="true">
-        <h4>活动精彩照片</h4>
-        <form id="upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
-          <input type="file" name="photos" multiple="multiple" accept="image/*" required/>
-          <button type="submit">上传照片</button>
-        </form>
         </div>
-        <div id="photo_list">
-          <div ng-repeat="photo in photos">
-            <img ng-src="{{ base_url + photo.uri }}"/>
-            <p>上传者：{{ photo.publish_user }}</p>
-            <p>备注：{{ photo.comment }}</p>
-            <button ng-click="deletePhoto(photo.pid)">删除照片</button>
-            <input type="text" ng-model="comment"/>
-            <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button>
+        <div id="photo_list" class="campaign_photos_wrap">
+          <div class="campaign_photo_panel" ng-repeat="photo in photos">
+            <div class="campaign_photo_border">
+              <div class="campaign_photo_img_wrap">
+                <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}"/>
+              </div>
+              <p class="campaign_upload_user">{{ photo.publish_user }}</p>
+              <p class="campaign_upload_date">上传于：{{ photo.publish_date | date:'yyyy-M-dd hh:mm' }}</p>
+  <!--             <button ng-click="deletePhoto(photo.pid)">删除照片</button>
+              <input type="text" ng-model="comment"/>
+              <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->
+            </div>
           </div>
         </div>
+        <form id="upload_form" class="campaing_upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
+          <input class="" type="file" name="photos" multiple="multiple" accept="image/*" required/>
+          <button type="submit">上传照片</button>
+        </form>
       </ion-content>
     </ion-tab>
 
