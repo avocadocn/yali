@@ -10,7 +10,7 @@ div
     .form-group
       .row
         .col-md-3
-          img.img-responsive.size_128.img-thumbnail(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+          img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
         .col-md-9
           .row
             a.btn.btn.dl_btn.margin_top_15(href="/users/editPhoto") 修改头像

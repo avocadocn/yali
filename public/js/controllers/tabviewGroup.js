@@ -130,7 +130,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 
     $scope.provoke_select = function (team) {
         $scope.team_opposite = team;
-        alert("您将对"+team.cname+"的"+team.name+"发起挑战!");
+       // alert("您将对"+team.cname+"的"+team.name+"发起挑战!");
     };
     $scope.getTeam = function (cid) {
         try {
@@ -184,31 +184,6 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };
-    $scope.editCampaign = function() {
-        try{
-            $http({
-                method: 'post',
-                url: '/group/campaignEdit',
-                data:{
-                    campaign_id : $scope.campaign_id,
-                    content : $scope.content,
-                    start_time : $scope.start_time,
-                    end_time : $scope.end_time
-                }
-            }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
-                window.location.reload();
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alert('数据发生错误！');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-
     $scope.join = function(campaign_id,index) {
         try {
             $http({
