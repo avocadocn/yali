@@ -247,7 +247,7 @@ loginInfoBgcolor = #75d1ef
 
 
 
-// campaign page
+// campaign list page
 
 campaignContentBgcolor = #a3cbe2
 campaignContentRadialColor = #cfe0eb
@@ -367,6 +367,20 @@ campaignLineHeight = 45px
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // campaign detail page
 
 .scroll-content
@@ -376,6 +390,7 @@ campaignLineHeight = 45px
 
 
 .campaign_photo_panel
+
   float left
   width 50%
   height 160px
@@ -385,6 +400,7 @@ campaignLineHeight = 45px
     padding-right 10px
 
   .campaign_photo_border
+    position relative
     height 100%
     border 1px solid #ddd
 
@@ -394,11 +410,30 @@ campaignLineHeight = 45px
     vertical-align middle
     overflow hidden
 
+  .campaign_photo_ori_button_wrap
+    position absolute
+    bottom 37px
+    width 100%
+    text-align center
+
+    .campaign_photo_ori_button
+      min-width 0
+      min-height 0
+      padding 0
+      width 22px
+      height 22px
+      border none
+      text-align center
+      font-size 12px
+      border-radius 30px
+      color white
+      background-color rgb(91, 201, 213)
+
   p
     text-align center
 
   .campaign_upload_user
-    margin-top 10px
+    margin-top 12px
     margin-bottom 0
     line-height 1
 
@@ -410,8 +445,38 @@ campaignLineHeight = 45px
 
 
 
+.campaign_members_wrap
+  position relative
+  padding 5px
+
+  .campaign_member_panel
+    float left
+    display block
+    padding 5px
+    width 33.333333%
+    text-decoration none
+    text-align center
+    line-height 1
 
 
+    .campaign_member_wrap
+      position relative
+      overflow hidden
+
+
+      .campaign_member_photo
+        max-width 100%
+
+      .campaign_member_name
+        position absolute
+
+        // 本该是0，不知道什么原因底部多了1px空隙，暂且将bottom设为1px
+        bottom 1px
+        margin 0
+        width 100%
+        line-height 20px
+        color white
+        background-color rgba(0, 0, 0, 0.4)
 
 
 

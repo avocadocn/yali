@@ -1,13 +1,19 @@
-<ion-view title="活动详情" left-buttons="leftButtons">
+<ion-view title="活动详情">
+
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
 
   <ion-tabs tabs-type="tabs-icon-top tabs-positive" class="donler_tabs donler_tabs_bottom">
     <ion-tab title="参加人员" icon="ion-ios7-person-outline">
       <ion-content has-header="true" padding="true">
-        <p>参加人员</p>
-        <div>
-          <div ng-repeat="user in campaign.member">
-            <a href="#/app/other_user_info/{{ user.uid }}">{{ user.username }}</a>
-          </div>
+        <div class="campaign_members_wrap">
+          <a href="#/app/other_user_info/{{ user.uid }}" class="campaign_member_panel" ng-repeat="user in campaign.member">
+            <div class="campaign_member_wrap">
+              <img class="campaign_member_photo" ng-src="{{ base_url + '/userPhoto/' + user.uid + '/100/100' }}"/>
+              <p class="campaign_member_name">{{ user.nickname }}</p>
+            </div>
+          </a>
         </div>
       </ion-content>
     </ion-tab>
@@ -27,6 +33,9 @@
             <div class="campaign_photo_border">
               <div class="campaign_photo_img_wrap">
                 <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
+              </div>
+              <div class="campaign_photo_ori_button_wrap">
+                <button class="icon ion-search campaign_photo_ori_button"></button>
               </div>
               <p class="campaign_upload_user">{{ photo.publish_user }}</p>
               <p class="campaign_upload_date">上传于：{{ photo.publish_date | date:'yyyy-M-dd hh:mm' }}</p>
