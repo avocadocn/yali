@@ -415,7 +415,7 @@ input::-webkit-inner-spin-button {
 }
 .dl_doc .function {
   height: 340px;
-  background: url("/img/dl_doc_func_bg.gif") center center no-repeat;
+  background: url("/img/dl_doc_func_bg.png") center center no-repeat;
   background-color: #ecf0f1;
 }
 .dl_doc .function .container {
