@@ -225,6 +225,8 @@ li {
 .dl_sm_group input[type="number"],
 .dl_sm_group input[type="email"] {
   height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .dl_lg_group .control-label {
   line-height: 35px;
