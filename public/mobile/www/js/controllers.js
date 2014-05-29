@@ -154,19 +154,6 @@ angular.module('starter.controllers', [])
   //Map.map('location', $scope.campaign.location);
 
 
-  $scope.leftButtons = [{
-    type: 'button-icon icon ion-navicon',
-    tap: function(e) {
-      $scope.toggleMenu();
-    }
-  }];
-
-  // after all data be inited
-  // $scope.tab = 'comment';
-
-  // $scope.changeTab = function(tab) {
-  //   $scope.tab = tab;
-  // };
 
 })
 

@@ -300,6 +300,7 @@ body {
   padding-right: 10px;
 }
 .campaign_photo_panel .campaign_photo_border {
+  position: relative;
   height: 100%;
   border: 1px solid #ddd;
 }
@@ -309,11 +310,30 @@ body {
   vertical-align: middle;
   overflow: hidden;
 }
+.campaign_photo_panel .campaign_photo_ori_button_wrap {
+  position: absolute;
+  bottom: 37px;
+  width: 100%;
+  text-align: center;
+}
+.campaign_photo_panel .campaign_photo_ori_button_wrap .campaign_photo_ori_button {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  width: 22px;
+  height: 22px;
+  border: none;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 30px;
+  color: #fff;
+  background-color: #5bc9d5;
+}
 .campaign_photo_panel p {
   text-align: center;
 }
 .campaign_photo_panel .campaign_upload_user {
-  margin-top: 10px;
+  margin-top: 12px;
   margin-bottom: 0;
   line-height: 1;
 }
@@ -322,4 +342,33 @@ body {
   font-size: 7px;
   line-height: 1;
   color: #bbb;
+}
+.campaign_members_wrap {
+  position: relative;
+  padding: 5px;
+}
+.campaign_members_wrap .campaign_member_panel {
+  float: left;
+  display: block;
+  padding: 5px;
+  width: 33.333333%;
+  text-decoration: none;
+  text-align: center;
+  line-height: 1;
+}
+.campaign_members_wrap .campaign_member_panel .campaign_member_wrap {
+  position: relative;
+  overflow: hidden;
+}
+.campaign_members_wrap .campaign_member_panel .campaign_member_wrap .campaign_member_photo {
+  max-width: 100%;
+}
+.campaign_members_wrap .campaign_member_panel .campaign_member_wrap .campaign_member_name {
+  position: absolute;
+  bottom: 1px;
+  margin: 0;
+  width: 100%;
+  line-height: 20px;
+  color: #fff;
+  background-color: rgba(0,0,0,0.4);
 }
