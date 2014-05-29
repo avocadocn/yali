@@ -464,3 +464,12 @@ input::-webkit-inner-spin-button {
 input.ng-invalid.ng-dirty {
   border-color: #ffc0cb;
 }
+.tooltip.right {
+  width: 100px;
+}
+.tooltip.right .tooltip-inner {
+  background-color: #ba5a5c;
+}
+.tooltip.right .tooltip-arrow {
+  border-right-color: #ba5a5c;
+}
