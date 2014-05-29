@@ -4,7 +4,6 @@ var tabViewUser = angular.module('tabViewUser', ['ngRoute','ngAnimate','mgcrea.n
 
 tabViewUser.run(['$rootScope', function( $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
-    console.log($rootScope.nowTab);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
             console.log($rootScope.nowTab);
