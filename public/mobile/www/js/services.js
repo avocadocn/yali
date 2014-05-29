@@ -2,7 +2,7 @@
 
 
 
-var base_url = 'http://www.donler.com:3000';
+var base_url = 'http://www.donler.cn:3000';
 
 
 
