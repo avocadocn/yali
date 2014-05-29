@@ -26,7 +26,7 @@
           <div class="campaign_photo_panel" ng-repeat="photo in photos">
             <div class="campaign_photo_border">
               <div class="campaign_photo_img_wrap">
-                <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}"/>
+                <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
               </div>
               <p class="campaign_upload_user">{{ photo.publish_user }}</p>
               <p class="campaign_upload_date">上传于：{{ photo.publish_date | date:'yyyy-M-dd hh:mm' }}</p>

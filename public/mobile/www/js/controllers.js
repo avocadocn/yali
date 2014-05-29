@@ -413,7 +413,33 @@ angular.module('starter.controllers', [])
 
 
 
+.directive('thumbnailPhotoDirective', function() {
+  return function(scope, element, attrs) {
 
+    var thumbnail = function(img) {
+      if (img.width * 110 > img.height * 138) {
+        element[0].style.height = '100%';
+      } else {
+        element[0].style.width = '100%';
+      }
+    };
+
+    var img = new Image();
+    img.src = attrs.ngSrc;
+
+    if (img.complete) {
+      thumbnail(img);
+      img = null;
+    } else {
+      img.onload = function() {
+        thumbnail(img);
+        img = null;
+      };
+    }
+
+
+  };
+})
 
 
 

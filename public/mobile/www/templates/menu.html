@@ -12,7 +12,7 @@
     </header>
     <ion-content class="has-header">
       <div class="menu_personal_info" ng-if="_id">
-        <img class="menu_photo" src="{{ base_url }}/userPhoto/{{ _id }}/80/80"/>
+        <img class="menu_photo" ng-src="{{ base_url }}/userPhoto/{{ _id }}/80/80"/>
         <p class="menu_nickname">{{ nickname }}</p>
       </div>
       <ion-list class="menu_list">

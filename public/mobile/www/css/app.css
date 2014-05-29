@@ -306,6 +306,7 @@ body {
 .campaign_photo_panel .campaign_photo_img_wrap {
   height: 110px;
   text-align: center;
+  vertical-align: middle;
   overflow: hidden;
 }
 .campaign_photo_panel p {
@@ -321,7 +322,4 @@ body {
   font-size: 7px;
   line-height: 1;
   color: #bbb;
-}
-.campaign_photo {
-  max-width: 100%;
 }
