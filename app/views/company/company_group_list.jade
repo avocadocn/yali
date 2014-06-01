@@ -4,12 +4,12 @@
       label(class="group_{{ group.gid }}")
     .row
       label id：{{ group.gid }}
-    .row
+    .row 
       label {{ group.name }}
     .row
-      label 组件类型：{{ group.group_type }}
+      label {{ "TYPE"|translate }}：{{ group.group_type }}
     .row
-      label.pull-left 组件组长:
+      label.pull-left {{ "TEAM_LEADER"|translate }}:
       .col-md-2(ng-repeat="leader in group.leader")
         a(ng-href='/users/home/{{leader.uid}}')
           p.text-center {{leader.nickname}}
@@ -23,11 +23,11 @@
     .modal-content
       .modal-header
         button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
-        h4.modal-title#myModalLabel 搜索成员
+        h4.modal-title#myModalLabel {{ "SEARCH"|translate }}
       .modal-body
         .row
-          p 该小组的成员
+          p {{ "TEAM_MEMBER"|translate }}
           li(ng-repeat="user in users")
             a(ng-click="appointLeader(user.id)" data-dismiss="modal") {{user.nickname}}
       .modal-footer
-        button(type="button" class="btn btn-default" data-dismiss="modal") 取消
+        button(type="button" class="btn btn-default" data-dismiss="modal") {{ "CANCEL"|translate }}

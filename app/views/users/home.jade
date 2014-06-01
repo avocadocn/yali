@@ -17,18 +17,17 @@ block baseInfo
         p.subtitle= sign
 
 block panel
-  div(ng-app="tabViewUser")
-    ul.nav.nav-tabs
-      if(role==='OWNER')
-        li(ng-class="{'active':nowTab=='group_message'}")
-          a.subtitle(href="#/group_message" ng-click="addactive('group_message')") 我的动态
-      li(ng-class="{'active':nowTab=='schedule'}")
-        a.subtitle(href="#/schedule" ng-click="addactive('schedule')") 日程列表
-      li(ng-class="{'active':nowTab=='timeLine'}")
-        a.subtitle(href="#/timeLine" ng-click="addactive('timeLine')") 活动足迹
-    .tab-content
-      .tab-pane.active
-        div(ng-view)
+  ul.nav.nav-tabs
+    if(role==='OWNER')
+      li(ng-class="{'active':nowTab=='group_message'}")
+        a.subtitle(href="#/group_message" ng-click="addactive('group_message')") {{"PERSONAL_MESSAGE"|translate}}
+    li(ng-class="{'active':nowTab=='schedule'}")
+      a.subtitle(href="#/schedule" ng-click="addactive('schedule')") {{"CAMPAIGN"|translate}}
+    li(ng-class="{'active':nowTab=='timeLine'}")
+      a.subtitle(href="#/timeLine" ng-click="addactive('timeLine')") {{"TIME_LINE"|translate}}
+  .tab-content
+    .tab-pane.active
+      div(ng-view)
 
 block aside
   if role !== 'HR'
@@ -37,5 +36,4 @@ block aside
     +group_thumbnail(unselected_teams,'inactive','我未添加的小队')
 
 append footExt
-  script(src="/lib/angular-route/angular-route.min.js")
   script(src="/js/controllers/tabviewUser.js")

@@ -1,15 +1,9 @@
 'use strict';
 
-var tabViewGroup = angular.module('tabViewGroup', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
+var tabViewGroup = angular.module('mean.main');
 
-tabViewGroup.run(['$rootScope', function( $rootScope) {
-    $rootScope.nowTab = window.location.hash.substr(2);
-    $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
-    };
-}]);
-tabViewGroup.config(['$routeProvider', '$locationProvider',
-  function($routeProvider, $locationProvider) {
+tabViewGroup.config(['$routeProvider', '$locationProvider','$translateProvider',
+  function ($routeProvider, $locationProvider,$translateProvider) {
     $routeProvider
       .when('/group_message', {
         templateUrl: '/group/group_message_list',
@@ -39,7 +33,23 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
       otherwise({
         redirectTo: '/group_message'
       });
-  }]);
+
+    $translateProvider.useStaticFilesLoader({
+        prefix : '../../language/locale-',
+        suffix : '.json'
+    });
+    $translateProvider.preferredLanguage('zh');
+}]);
+
+tabViewGroup.run(['$translate','$rootScope', function ($translate, $rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
+    $rootScope.changeLanguage = function (langKey) {
+        $translate.use(langKey);
+    };
+}]);
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {

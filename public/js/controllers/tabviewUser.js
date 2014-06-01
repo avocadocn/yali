@@ -1,14 +1,8 @@
 'use strict';
 
-var tabViewUser = angular.module('tabViewUser', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker']);
+var tabViewUser = angular.module('mean.main');
 
-tabViewUser.run(['$rootScope', function( $rootScope) {
-    $rootScope.nowTab = window.location.hash.substr(2);
-    $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
-            console.log($rootScope.nowTab);
-    };
-}]);
+
 tabViewUser.directive('match', function($parse) {
   return {
     require: 'ngModel',
@@ -22,8 +16,8 @@ tabViewUser.directive('match', function($parse) {
   };
 });
 
-tabViewUser.config(['$routeProvider', '$locationProvider',
-  function($routeProvider, $locationProvider) {
+tabViewUser.config(['$routeProvider', '$locationProvider','$translateProvider',
+  function ($routeProvider, $locationProvider,$translateProvider) {
     $routeProvider
       .when('/group_message', {
         templateUrl: '/group/group_message_list',
@@ -53,8 +47,22 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
       otherwise({
         redirectTo: '/group_message'
       });
+     $translateProvider.useStaticFilesLoader({
+        prefix : '../../language/locale-',
+        suffix : '.json'
+    });
+    $translateProvider.preferredLanguage('zh');
   }]);
 
+tabViewUser.run(['$translate','$rootScope', function ($translate, $rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
+    $rootScope.changeLanguage = function (langKey) {
+        $translate.use(langKey);
+    };
+}]);
 
 tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {

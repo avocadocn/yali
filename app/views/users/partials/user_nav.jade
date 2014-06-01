@@ -7,19 +7,19 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
       .collapse.navbar-collapse#personal_nav
         ul.nav.navbar-nav.pull-right
           li
-            a(href="/company/home") 公司主页
+            a(href="/company/home") {{"COMPANY_HOME"|translate}}
           li
-            a(href="/users/home") 个人主页
+            a(href="/users/home") {{"PERSONAL_HOME"|translate}}
           li
-            a(href="/users/home#/personal") 个人资料
+            a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
           li
-            a(href="/users/signout") 注销
+            a(href="/users/signout") {{"LOGOUT"|translate}}
     else
       .collapse.navbar-collapse#HR_nav
         ul.nav.navbar-nav.pull-right
           li
-            a(href="/company/home") 公司主页
+            a(href="/company/home") {{"COMPANY_HOME"|translate}}
           li
-            a(href="/company/home#/company_info") 公司资料
+            a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
           li
-            a(href="/company/signout") 注销
+            a(href="/company/signout") {{"LOGOUT"|translate}}

@@ -2,49 +2,49 @@
   .modal-content
     .modal-header
       button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
-      h4.modal-title#myModalLabel 员工信息
+      h4.modal-title#myModalLabel {{"STAFF"|translate}}{{"INFO"|translate}}
     .modal-body
       .row
-        label.info_label.col-md-12.control-label 真实姓名
+        label.info_label.col-md-12.control-label {{"REALNAME"|translate}}
         .col-md-5
           if (role==='HR')
             input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="false")
           else
             input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="true")
       .row
-        label.info_label.col-md-12.control-label 昵称
+        label.info_label.col-md-12.control-label {{"NICKNAME"|translate}}
         .col-md-5
           if (role==='HR')
             input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="false")
           else
             input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="true")
       .row
-        label.info_label.col-md-12.control-label 用户名
+        label.info_label.col-md-12.control-label {{"USERNAME"|translate}}
         .col-md-5
           if (role==='HR')
             input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="false")
           else
             input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="true")
       .row
-        label.info_label.col-md-12.control-label 部门
+        label.info_label.col-md-12.control-label {{"DEPARTMENT"|translate}}
         .col-md-5
           if (role==='HR')
             input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="false")
           else
             input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="true")
       .row
-        label.info_label.col-md-12.control-label 职位
+        label.info_label.col-md-12.control-label {{"POSITION"|translate}}
         .col-md-5
           if (role==='HR')
             input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="false")
           else
             input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="true")
       .row
-        label.info_label.col-md-12.control-label 注册日期
+        label.info_label.col-md-12.control-label {{"REGISTER_DATE"|translate}}
         .col-md-5
           input.dl_input.form-control.editToggle(type="text" name ="register_date" ng-model="members[num].register_date" ng-disabled="true")
     .modal-footer
-      button(class="btn dl_btn"  data-dismiss="modal") 确定
+      button(class="btn dl_btn"  data-dismiss="modal") {{"CONFIRM"|translate}}
       if (role==='HR')
-        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('delete')") 删除
-        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('change')") 编辑
+        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('delete')") {{"DELETE"|translate}}
+        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('change')") {{"EDIT"|translate}}

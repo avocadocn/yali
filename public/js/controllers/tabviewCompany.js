@@ -1,13 +1,7 @@
 'use strict';
 
-var tabViewCompany = angular.module('tabViewCompany', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker']);
-tabViewCompany.run(['$rootScope', function( $rootScope) {
-    $rootScope.nowTab = window.location.hash.substr(2);
-    console.log($rootScope.nowTab);
-    $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
-    };
-}]);
+var tabViewCompany = angular.module('mean.main');
+
 tabViewCompany.directive('match', function($parse) {
   return {
     require: 'ngModel',
@@ -20,8 +14,8 @@ tabViewCompany.directive('match', function($parse) {
     }
   };
 });
-tabViewCompany.config(['$routeProvider', '$locationProvider',
-  function($routeProvider, $locationProvider) {
+tabViewCompany.config(['$routeProvider', '$locationProvider','$translateProvider',
+  function ($routeProvider, $locationProvider, $translateProvider) {
     $routeProvider
       .when('/company_campaign', {
         templateUrl: '/company/campaigns',
@@ -56,7 +50,24 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
       otherwise({
         redirectTo: '/company_campaign'
       });
+
+    $translateProvider.useStaticFilesLoader({
+        prefix : '../../language/locale-',
+        suffix : '.json'
+    });
+    $translateProvider.preferredLanguage('zh');
   }]);
+
+tabViewCompany.run(['$translate','$rootScope', function ($translate, $rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    console.log($rootScope.nowTab);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
+    $rootScope.changeLanguage = function (langKey) {
+        $translate.use(langKey);
+    };
+}]);
 
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
  function ($http, $scope) {

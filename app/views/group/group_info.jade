@@ -1,29 +1,29 @@
 div(ng-app="tabViewGroup" ng-controller="infoController")
   form.form-horizontal(name="infoForm")
     .row
-      h5.pull-left 基本信息
+      h5.pull-left {{"INFO" | translate}}
       if(role==='HR' ||role ==='LEADER')
         a.btn.dl_btn.pull-right(ng-click="editToggle()" ng-bind="buttonStatus")
     hr
     .row
-      label.info_label.col-md-2.control-label 队&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名
+      label.info_label.col-md-2.control-label {{"TEAM_NAME" | translate}}
       .col-md-5
         input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="name"  ng-disabled="unEdit")
     .row
-      label.info_label.col-md-2.control-label 所属公司
+      label.info_label.col-md-2.control-label {{"COMPANY" | translate}}
       .col-md-5
         label.info_label {{companyname}}
     .row
-      label.info_label.col-md-2.control-label 队员人数
+      label.info_label.col-md-2.control-label {{"SUM" | translate}}
       .col-md-5
         label.info_label {{members.length}}
     .row
-      label.info_label.col-md-2.control-label 小组队徽
+      label.info_label.col-md-2.control-label {{"TEAM_LOGO" | translate}}
       .col-md-5
         if(role==='HR' ||role ==='LEADER')
-          a.btn.dl_btn(href="/group/editLogo") 修改
+          a.btn.dl_btn(href="/group/editLogo") {{"EDIT" | translate}}
     .row
-      label.info_label.col-md-2.control-label 主&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场
+      label.info_label.col-md-2.control-label {{"HOME_COURT" | translate}}
       .col-md-3
         input.dl_input.form-control.editToggle(type="text" name ="home_court_1" ng-model="home_court_1" ng-disabled="unEdit")
     .row
@@ -31,33 +31,33 @@ div(ng-app="tabViewGroup" ng-controller="infoController")
       .col-md-3
         input.dl_input.form-control.editToggle(type="text" name ="home_court_2" ng-model="home_court_2" ng-disabled="unEdit")
     .row
-      label.info_label.col-md-2.control-label 简&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;介
+      label.info_label.col-md-2.control-label {{"BRIEF" | translate}}
       .col-md-5
           input.dl_input.form-control.editToggle(type="textarea" rows="10" name ="brief" ng-model="brief" ng-disabled="unEdit")
     .row
-      label.info_label.col-md-2.control-label 成立时间
+      label.info_label.col-md-2.control-label {{"BUILD_TIME" | translate}}
       .col-md-5
         label.info_label {{create_time | date:'yyyy-MM-dd HH:mm:ss'}}
     .row
-      h5.pull-left 比赛信息
+      h5.pull-left {{"COMPETITION_INFO" | translate}}
     hr
     .row
-      label.info_label.col-md-2.control-label 比赛场次
+      label.info_label.col-md-2.control-label {{"COMPETITION_SEQ" | translate}}
       .col-md-5
         label.info_label 0
     .row
-      label.info_label.col-md-2.control-label 胜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率
+      label.info_label.col-md-2.control-label {{"WIN_RATE" | translate}}
       .col-md-5
         label.info_label 0
     .row
-      label.info_label.col-md-2.control-label 积&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分
+      label.info_label.col-md-2.control-label {{"SCORE" | translate}}
       .col-md-5
         label.info_label 0
     .row
-      label.info_label.col-md-2.control-label 排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名
+      label.info_label.col-md-2.control-label {{"RATE" | translate}}
       .col-md-5
         label.info_label 0
     .row
-      h5.pull-left 小组全家福
+      h5.pull-left {{"FAMILY" | translate}}
     hr
     img.img-responsive.img-thumbnail.size_family.img_contain(src="")

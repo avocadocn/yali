@@ -13,14 +13,13 @@ if(timeLines)
           h2= timeline.head
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline :'/img/icons/default_company_logo.png'}")
-            p= '地点：'+ timeline.location
-            p= '小组类型：' + timeline.group_type
-            p= '内容：' + timeline.content
+            p= "地点" +":"+ timeline.location
+            p= "类型" +":"+ timeline.group_type
+            p= "内容" +":"+ timeline.content
             if(timeline.provoke.active)
-              p= '赛制：' + timeline.provoke.competition_format
+              p= "赛制" +":"+ timeline.provoke.competition_format
           .timeline-footer
-            a.nav-link
-              详情
+            a.nav-link {{"DETAIL"|translate}}
               i.m-icon-swapright.m-icon-white
 else
-  span 目前还没有活动
+  span {{"NO_CAMPAIGN"|translate}}

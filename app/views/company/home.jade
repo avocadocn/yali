@@ -11,31 +11,29 @@ block baseInfo
         p.subtitle= sign
       .row.margin_top_30
         .col-md-2.col-sm-2.col-xs-4.padding_0
-          span.info_border 员工
+          span.info_border {{ 'STAFF' | translate }}
           span.info_border  #{membernumber>0? membernumber : 0 }
         .col-md-2.col-sm-2.col-xs-4.padding_0
-          span.info_border 小组
+          span.info_border {{ 'TEAM' | translate }}
           span.info_border= groupnumber
         .col-md-2.col-sm-2.col-xs-4.padding_0
-          span.info_border 胜率
+          span.info_border {{ 'WIN_RATE' | translate }}
           span.info_border 100%
       if(role === 'HR')
         .margin_top_15
-          button.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") 活动
+          button.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") {{ 'CAMPAIGN' | translate }}
 
 block panel
-
-  div(ng-app="tabViewCompany")
-    ul.nav.nav-tabs
-      if(role==='HR' || role==='EMPLOYEE' )
-        li(ng-class="{'active':nowTab=='company_campaign'}")
-          a.subtitle(href="#/company_campaign"  ng-click="addactive('company_campaign')") 公司活动
-      li(ng-class="{'active':nowTab=='company_info'}")
-        a.subtitle(href="#/company_info"  ng-click="addactive('company_info')") 公司资料
-      li(ng-class="{'active':nowTab=='company_member'}")
-        a.subtitle(href="#/company_member"  ng-click="addactive('company_member')") 公司员工
-      li(ng-class="{'active':nowTab=='timeLine'}")
-        a.subtitle(href="#/timeLine"  ng-click="addactive('timeLine')") 活动足迹
+  ul.nav.nav-tabs
+    if(role==='HR' || role==='EMPLOYEE' )
+      li(ng-class="{'active':nowTab=='company_campaign'}")
+        a.subtitle(href="#/company_campaign"  ng-click="addactive('company_campaign')") {{ 'COMPANY_CAMPAIGN' | translate }}
+    li(ng-class="{'active':nowTab=='company_info'}")
+      a.subtitle(href="#/company_info"  ng-click="addactive('company_info')") {{ 'COMPANY_INFO' | translate }}
+    li(ng-class="{'active':nowTab=='company_member'}")
+      a.subtitle(href="#/company_member"  ng-click="addactive('company_member')") {{ 'STAFF' | translate }}
+    li(ng-class="{'active':nowTab=='timeLine'}")
+      a.subtitle(href="#/timeLine"  ng-click="addactive('timeLine')") {{ 'TIME_LINE' | translate }}
     //- div.margin_top_15.pull-right(ng-controller="CampaignListController")
     //-   button.btn.btn-default.dropdown-toggle(data-toggle="dropdown") 活动类型
     //-   ul.dropdown-menu(role="menu")
@@ -54,5 +52,4 @@ block panel
 block aside
   待定区域
 append footExt
-  script(src="/lib/angular-route/angular-route.min.js")
   script(src="/js/controllers/tabviewCompany.js")

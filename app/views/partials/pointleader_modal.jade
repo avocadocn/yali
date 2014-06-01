@@ -2,18 +2,18 @@
   .modal-content
     .modal-header
       button(class="close" data-dismiss="modal" aria-hidden="true") X
-      h4.modal-title 编辑小组信息
+      h4.modal-title {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
     .modal-body
       .row
         .col-md-2
-          label.info_label.control-label 队名
+          label.info_label.control-label {{"TEAM_NAME"|translate}}
         .col-md-8
           input.dl_input.form-control.editToggle(type="text" name ="name" ng-model="team.name")
       hr
       .row
         .col-md-4
-          label.info_label.control-label 指定队长
+          label.info_label.control-label {{"APPOINT_LEADER"|translate}}
           li(ng-repeat= "user in users")
             a(ng-click="appointLeader(user._id)" data-dismiss="modal") {{user.nickname}}
     .modal-footer
-      button.dl_btn(ng-click="saveGroupInfo(team._id,team.name)") 保存
+      button.dl_btn(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}

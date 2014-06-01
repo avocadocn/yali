@@ -3,28 +3,28 @@
     form(name="provoke_form")
       .modal-header
         button(class="close" data-dismiss="modal" aria-hidden="true") X
-        h4.modal-title#myModalLabel 发起挑战
+        h4.modal-title#myModalLabel {{"SPONSOR"|translate}}{{"PROVOKE"|translate}}
       .modal-body
         .row
           .col-md-4
-            label 内容
+            label {{"CONTENT"|translate}}
             input(type="text" class="form-control" name="content" ng-model="content" required)
           .col-md-4
-            label 赛制
+            label {{"FORMATION"|translate}}
             input(type="text" class="form-control" name="competition_format" ng-model="competition_format" required)
           .col-md-4
-            label 备注
+            label {{"REMARK"|translate}}
             input(type="text" class="form-control" name="remark" ng-model="remark" required)
         .row.margin_top_15
           .col-md-4
-            label 地点
+            label {{"LOCATION"|translate}}
             input(type="text" class="form-control" name="location" ng-model="location" required)
           .col-md-4
-            label 人数
+            label {{"SUM"|translate}}
             input(type="number" class="form-control" name="number" ng-model="number" required)
         .row.margin_top_15
           .col-md-6
-            label 开始时间
+            label {{"START_TIME"|translate}}
               .form-group.margin_top_5
                 .row
                   .col-md-6
@@ -32,7 +32,7 @@
                   .col-md-6
                     input.form-control(type="text" ng-model="competition_date" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
           .col-md-6
-            label 结束时间
+            label {{"END_TIME"|translate}}
               .form-group.margin_top_5
                 .row
                   .col-md-6
@@ -41,9 +41,9 @@
                     input.form-control(type="text" ng-model="deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
         .row.margin_top_15
           select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getTeam(company_selected._id)" required)
-            option(value="") 请选择公司
+            option(value="") {{"SELECT"|translate}} {{"COMPANY"|translate}}
           select(data-placeholder="Choose a Team..." class="form-control chzn-select" tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams" ng-change="provoke_select(team_selected)" required)
-            option(value="") 请选择小队
+            option(value="") {{"SELECT"|translate}} {{"TEAM"|translate}}
           //- li(ng-repeat="company in companies")
           //-   hr
           //-   p 公司名: {{company.name}}
@@ -51,5 +51,5 @@
           //-   li(ng-repeat="team in teams")
           //-     a(ng-click="provoke_select(team)") {{team.name}}
       .modal-footer
-        button(class="btn dl_btn" data-dismiss="modal") 取消
-        button(class="btn dl_btn" ng-click='provoke()' ng-disabled="provoke_form.$invalid" data-dismiss="modal") 确定
+        button(class="btn dl_btn" data-dismiss="modal") {{"CANCEL"|translate}}
+        button(class="btn dl_btn" ng-click='provoke()' ng-disabled="provoke_form.$invalid" data-dismiss="modal") {{"CONFIRM"|translate}}

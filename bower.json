@@ -16,6 +16,8 @@
     "angular-strap": "2.0.2",
     "angular-motion": "~0.3.2",
     "momentjs": "~2.6.0",
-    "ionic": "1.0.0-beta.4"
+    "ionic": "1.0.0-beta.4",
+    "angular-translate-loader-url": "~2.1.0",
+    "angular-translate-loader-static-files": "~2.1.0"
   }
 }

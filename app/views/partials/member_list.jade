@@ -1,6 +1,6 @@
 div
-  p.subtitle 人数：{{members.length}}
-  span.subtitle(ng-if="!company") 队长
+  p.subtitle {{"SUM"|translate}}：{{members.length}}
+  span.subtitle(ng-if="!company") {{"TEAM_LEADER"|translate}}
   .row(ng-if="!company")
     .col-md-2(ng-repeat="leader in leaders")
       img.center-block.size_56(ng-src='{{leader.photo}}')

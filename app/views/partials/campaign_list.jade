@@ -2,14 +2,14 @@
 .row.margin_top_15(ng-if="company")
   if (role!=='HR')
     .btn-group.pull-right
-      button.btn.dl_btn.dropdown-toggle(data-toggle="dropdown") 活动类型
+      button.btn.dl_btn.dropdown-toggle(data-toggle="dropdown") {{"CAMPAIGN_SELECT"|translate}}
       ul.dropdown-menu(role="menu")
         li
-          a(ng-click="selectCampaign(0)") 公司活动
+          a(ng-click="selectCampaign(0)") {{"COMPANY_CAMPAIGN"|translate}}
         li
-          a(ng-click="selectCampaign(1)") 已加入小队的活动
+          a(ng-click="selectCampaign(1)") {{"SELECTED_TEAM"|translate}}
         li
-          a(ng-click="selectCampaign(2)") 未加入小队的活动
+          a(ng-click="selectCampaign(2)") {{"UNSELECTED_TEAM"|translate}}
 .row.campaigns_list
   .margin_15(ng-repeat="campaign_item in campaigns")
     .row
@@ -22,16 +22,16 @@
           if (role==='HR'&&provider==='company' || role==='LEADER'&& provider ==='group')
             button.btn.close_btn(ng-click="cancel(campaign_item.id)") {{ campaign_item.active ? '&times;&nbsp;关闭':'打开'}}
         .row.margin_top_15
-          span.message_label 类型: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
+          span.message_label {{"TYPE"|translate}}: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
           //- span.message_label 参加活动人数：{{ campaign_item.member_length }}
-          span.message_label(ng-if="campaign_item.provoke.active") 赛制: {{ campaign_item.provoke.competition_format }}
-          span.message_label 地点: {{ campaign_item.location }}
-          span.message_label 截止时间: {{ campaign_item.end_time | date:'yyyy-MM-dd'}}
+          span.message_label(ng-if="campaign_item.provoke.active") {{"FORMATION"|translate}}: {{ campaign_item.provoke.competition_format }}
+          span.message_label {{"LOCATION"|translate}}: {{ campaign_item.location }}
+          span.message_label {{"DEADLINE"|translate}}: {{ campaign_item.end_time | date:'yyyy-MM-dd'}}
       .col-xs-3.col-sm-3.col-md-2
         if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
           div(ng-if="campaign_item.active")
             input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "退出" ng-click="quit(campaign_item.id,$index)" ng-if="campaign_item.join")
             input.btn.dl_btn.dl_btn_small.margin_5(type = "button" value = "参加" ng-click="join(campaign_item.id,$index)" ng-if="!campaign_item.join")
-        a.btn.dl_btn.dl_btn_small.margin_5(ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}") 详情
-        a.btn.dl_btn.dl_btn_small.margin_5(ng-if="!campaign_item.provoke.active" ng-href="/group/campaign/{{ campaign_item.id }}") 详情
+        a.btn.dl_btn.dl_btn_small.margin_5(ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}") {{"DETAIL"|translate}}
+        a.btn.dl_btn.dl_btn_small.margin_5(ng-if="!campaign_item.provoke.active" ng-href="/group/campaign/{{ campaign_item.id }}") {{"DETAIL"|translate}}
     hr
