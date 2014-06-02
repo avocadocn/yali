@@ -1,12 +1,12 @@
 div
   form.form-horizontal(name="accountForm")
+    .row
     .infoHead.row
       h5.pull-left {{"ACCOUNT"|translate}}
     hr
     .form-group
-      label.info_label.col-md-2.control-label {{"REGISTER_DATE"|translate}}
       .col-md-2.col-sm-2.col-xs-4
-        label.info_label.col-md-2.control-label {{"LOGIN_EMAIL"|translate}}
+        label.info_label.control-label {{"LOGIN_EMAIL"|translate}}
       .col-md-5.col-sm-4.col-xs-4
         label.info_label(ng-bind="company.login_email")
       if(role ==='HR')
@@ -33,10 +33,10 @@ div
     .form-group
       .col-md-2.col-sm-2.col-xs-4
         label.info_label.control-label {{"OFFICIAL_NAME"|translate}}
-      .col-md-5.col-sm-8.col-xs-6
+      .col-md-5.col-sm-6.col-xs-6
         input.dl_input.editToggle.dl_form-Control(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
       if(role ==='HR')
-        .col-md-5.col-sm-4.col-xs-2
+        .col-md-5.col-sm-4.col-xs-2.padding_0
           a.btn.dl_btn.pull-right(href="/company/editLogo") {{"CHANGE_LOGO"|translate}}
     .form-group
       .col-md-2.col-sm-2.col-xs-4
@@ -93,68 +93,71 @@ div
         a.btn.dl_btn.pull-right(href="#/addGroup") {{"ADD_TEAM"|translate}}
     hr
     .form-group(ng-repeat="team in team_lists")
-      .form-group(ng-if="team.active")
+      .row(ng-if="team.active")
         //所有人可见active的team
         .col-md-2.col-sm-2.col-xs-3
           a(href="/group/home/{{team._id}}")
             img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
-        .col-md-10
-          .row
+        .col-md-10.col-sm-10.col-xs-9
+          .row.dl_row
             .col-md-2.col-sm-2.col-xs-2.padding_0
-              label.info_label.control-label {{"TEAM_NAME"|translate}}
+              span.info_label.control-label {{"TEAM_NAME"|translate}}
             .col-md-8.col-sm-8.col-xs-4.padding_0
               span.info_label.control-label {{team.name}}
             if(role ==='HR')
-              .col-md-2.col-sm-2.col-xs-4
-              a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑
-          .row
-            .col-md-2.col-sm-2.col-xs-2
-              label.info_label.control-label {{"TYPE"|translate}}
-            .col-md-8.col-sm-8.col-xs-8
+              .col-md-2.col-sm-2.col-xs-4.padding_0
+                a.btn.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
+          .row.dl_row
+            .col-md-2.col-sm-2.col-xs-2.padding_0
+              span.info_label.control-label {{"TYPE"|translate}}
+            .col-md-8.col-sm-8.col-xs-8.padding_0
               span.info_label.control-label {{team.group_type}}
-          .row
-            .col-md-2.col-sm-2.col-xs-2
-              label.info_label.control-label {{"TEAM_LEADER"|translate}}
-            .col-md-2.col-sm-2.col-xs-2(ng-repeat="l in team.leader")
+          .row.dl_row
+            .col-md-2.col-sm-2.col-xs-2.padding_0
+              span.info_label.control-label {{"TEAM_LEADER"|translate}}
+            .col-md-2.col-sm-2.col-xs-2.padding_0(ng-repeat="l in team.leader")
               span.info_label.control-label {{l.nickname}}
-          .row
-            .col-md-2.col-sm-2.col-xs-2
-              label.info_label.control-label {{"SUM"|translate}}
-            .col-md-8.col-sm-8.col-xs-8
+          .row.dl_row
+            .col-md-2.col-sm-2.col-xs-2.padding_0
+              span.info_label.control-label {{"SUM"|translate}}
+            .col-md-8.col-sm-8.col-xs-8.padding_0
               span.info_label.control-label {{team.member.length}}
             if(role === 'HR')
-              button.btn.dl_btn.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
+              .col-md-2.col-sm-2.col-xs-2.padding_0
+                button.btn.dl_btn.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
           hr
       //只有HR可见inactive的team 并可打开
-      .row(ng-if="!team.active")
+      .form-group(ng-if="!team.active")
         if(role ==='HR')
           .col-md-2.col-sm-2.col-xs-3
             a(href="/group/home/{{team._id}}")
               img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
-          .col-md-10.col-sm-8.col-xs-9
-            .row
+          .col-md-10.col-sm-10.col-xs-9
+            .row.dl_row
               .col-md-2.col-sm-2.col-xs-4.padding_0
-                label.info_label.control-label {{"TEAM_NAME"|translate}}
-              .col-md-8.col-sm-8.col-xs-4
+                span.info_label.control-label {{"TEAM_NAME"|translate}}
+              .col-md-8.col-sm-7.col-xs-4.padding_0
                 span.info_label.control-label {{team.name}}
               if(role ==='HR')
-                a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
-            .row
-              .col-md-2.col-sm-2.col-xs-4
-                label.info_label.control-label {{"TYPE"|translate}}
-              .col-md-4.col-sm-8.col-xs-8
+                .col-md-2.col-sm-2.col-xs-4.padding_0
+                  a.btn.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
+            .row.dl_row
+              .col-md-2.col-sm-2.col-xs-4.padding_0
+                span.info_label.control-label {{"TYPE"|translate}}
+              .col-md-4.col-sm-8.col-xs-8.padding_0
                 span.info_label.control-label {{team.group_type}}
-            .row
-              .col-md-2.col-sm-2.col-xs-4
-                label.info_label.control-label {{"TEAM_LEADER"|translate}}
-              .col-md-2.col-sm-2.col-xs-4(ng-repeat="l in team.leader")
+            .row.dl_row
+              .col-md-2.col-sm-2.col-xs-4.padding_0
+                span.info_label.control-label {{"TEAM_LEADER"|translate}}
+              .col-md-2.col-sm-2.col-xs-4.padding_0(ng-repeat="l in team.leader")
                 span.info_label.control-label {{l.nickname}}
-            .row
-              .col-md-2.col-sm-2.col-xs-4
-                label.info_label.control-label {{"SUM"|translate}}
-              .col-md-8.col-sm-8.col-xs-8
+            .row.dl_row
+              .col-md-2.col-sm-2.col-xs-4.padding_0
+                span.info_label.control-label {{"SUM"|translate}}
+              .col-md-8.col-sm-8.col-xs-8.padding_0
                 span.info_label.control-label {{team.member.length}}
-              button.btn.dl_btn.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
+              .col-md-2.col-sm-2.col-xs-2.padding_0
+                button.btn.dl_btn.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
             hr
   if(role ==='HR' || role ==='LEADER')
     div(ng-controller="AccountFormController" class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")

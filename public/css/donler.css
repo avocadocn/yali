@@ -32,6 +32,7 @@ li {
 }
 .dl_row {
   min-height: 34px;
+  padding: 5px 0;
 }
 .content {
   width: 100%;
@@ -188,7 +189,7 @@ li {
   width: 100%;
 }
 .info_label {
-  padding: 7px 12px;
+  padding: 7px 7px;
   font-size: 12px;
 }
 .info_radio {
