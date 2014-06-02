@@ -106,6 +106,7 @@
   "DEPARTMENT" : "部门",
   "DELETE" : "删除",
   "NO_CAMPAIGN" : "目前还没有活动",
+  "L_CHANGE" : "语言",
   "L_ZH":"中文",
   "L_JP":"日本语"
 }
