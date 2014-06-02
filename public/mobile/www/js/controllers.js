@@ -55,6 +55,8 @@ angular.module('starter.controllers', [])
   $rootScope.campaign_owner = 'user';
   $rootScope.campaign_list = [];
 
+  $rootScope.campaignReturnUri = '#/app/campaign_list';
+
   var getUserCampaigns = function() {
     Campaign.getUserCampaigns(function(campaign_list) {
       $rootScope.campaign_list = campaign_list;
@@ -284,6 +286,8 @@ angular.module('starter.controllers', [])
 
   $rootScope.group_id = $scope.group._id;
 
+  $rootScope.campaignReturnUri = '#/app/group_detail/' + $stateParams.group_index;
+
   $scope.templates = [
     'templates/_group_info.html',
     'templates/_campaigns.html',
@@ -321,7 +325,7 @@ angular.module('starter.controllers', [])
   });
 
   $scope.dynamic = function() {
-    $http.get('http://www.donler.com:3000/group/getGroupMessages/' + $scope.group._id).
+    $http.get($rootScope.base_url + '/group/getGroupMessages/' + $scope.group._id).
       success(function(data, status, headers, config) {
         $scope.dynamic_list = data.group_messages;
         $scope.template = $scope.templates[2];

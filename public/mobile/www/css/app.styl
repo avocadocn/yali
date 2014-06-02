@@ -3,6 +3,16 @@
 
 themeColor = #3abde8
 
+// 页面用于衬托内容的背景色
+wrapBgColor = #f6f6f6
+
+// 页面内容背景色
+contentBgColor = #ffffff
+
+// 页面内部标题的背景颜色
+headBgColor = #ededed
+
+
 
 
 
@@ -12,6 +22,30 @@ themeColor = #3abde8
 body
   background-color themeColor
 
+
+.wrap
+  background-color wrapBgColor
+
+.content
+  background-color contentBgColor
+
+.head_title
+  background-color headBgColor
+  height 40px
+  text-align center
+
+  .title
+    display inline-block
+    box-sizing border-box
+    margin 5px 0
+    padding 0 20px
+    font-size 14px
+    line-height 30px
+    border-width 1px
+    border-style solid
+    border-color #dcdcdc #e9e9e9 #f6f6f6 #e9e9e9
+    border-radius 7px
+    background-color headBgColor
 
 .table_wrap
   display table
@@ -41,6 +75,8 @@ body
   flex 0 0 40%
   max-width 40%
 
+.padding
+  padding 10px
 
 .donler_tabs
   .tab-item
@@ -58,7 +94,8 @@ body
       padding-bottom 5px
 
 
-
+.clearfix
+  clear both
 
 
 
@@ -287,15 +324,14 @@ campaignLineHeight = 45px
   height campaignLineHeight
 
 .campaign_team_info
-  padding 5px 0
-  line-height campaignLineHeight - 10px
+  line-height campaignLineHeight
   color #3abde8 !important
 
 .campaign_group_logo
-  width 35px
-  height 35px
+  width 36px
+  height 36px
   vertical-align middle
-  border 1.5px solid white
+  border 1px solid white
   border-radius 5px
 
 .campaign_content
@@ -386,8 +422,6 @@ campaignLineHeight = 45px
 .scroll-content
   .scroll
     height 100%
-
-
 
 .campaign_photo_panel
 

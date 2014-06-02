@@ -1,47 +1,61 @@
 <ion-view title="活动详情">
 
   <ion-nav-buttons side="left">
-    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    <a class="button icon-left ion-chevron-left button-clear button-dark" href="{{ campaignReturnUri }}">返回</a>
   </ion-nav-buttons>
+
 
   <ion-tabs tabs-type="tabs-icon-top tabs-positive" class="donler_tabs donler_tabs_bottom">
     <ion-tab title="参加人员" icon="ion-ios7-person-outline">
-      <ion-content has-header="true" padding="true">
-        <div class="campaign_members_wrap">
-          <a href="#/app/other_user_info/{{ user.uid }}" class="campaign_member_panel" ng-repeat="user in campaign.member">
-            <div class="campaign_member_wrap">
-              <img class="campaign_member_photo" ng-src="{{ base_url + '/userPhoto/' + user.uid + '/100/100' }}"/>
-              <p class="campaign_member_name">{{ user.nickname }}</p>
-            </div>
-          </a>
+      <ion-content has-header="true" class="wrap">
+        <div class="head_title">
+          <div class="title">{{ campaign.content }}</div>
+        </div>
+        <div class="padding">
+          <div class="campaign_members_wrap content">
+            <a href="#/app/other_user_info/{{ user.uid }}" class="campaign_member_panel" ng-repeat="user in campaign.member">
+              <div class="campaign_member_wrap">
+                <img class="campaign_member_photo" ng-src="{{ base_url + '/userPhoto/' + user.uid + '/100/100' }}"/>
+                <p class="campaign_member_name">{{ user.nickname }}</p>
+              </div>
+            </a>
+            <div class="clearfix"></div>
+          </div>
         </div>
       </ion-content>
     </ion-tab>
 
     <ion-tab title="评论" icon="ion-chatbubble">
-      <ion-content has-header="true" padding="true">
+      <ion-content has-header="true" class="wrap">
+        <div class="head_title">
+          <div class="title">{{ campaign.content }}</div>
+        </div>
         <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
         <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
       </ion-content>
     </ion-tab>
 
     <ion-tab title="活动照片" icon="ion-camera">
-      <ion-content has-header="true" padding="true">
+      <ion-content has-header="true" class="wrap">
+        <div class="head_title">
+          <div class="title">{{ campaign.content }}</div>
         </div>
-        <div id="photo_list" class="campaign_photos_wrap">
-          <div class="campaign_photo_panel" ng-repeat="photo in photos">
-            <div class="campaign_photo_border">
-              <div class="campaign_photo_img_wrap">
-                <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
+        <div class="padding">
+          <div id="photo_list" class="campaign_photos_wrap">
+            <div class="campaign_photo_panel" ng-repeat="photo in photos">
+              <div class="campaign_photo_border">
+                <div class="campaign_photo_img_wrap">
+                  <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
+                </div>
+                <div class="campaign_photo_ori_button_wrap">
+                  <button class="icon ion-search campaign_photo_ori_button"></button>
+                </div>
+                <p class="campaign_upload_user">{{ photo.publish_user }}</p>
+                <p class="campaign_upload_date">上传于：{{ photo.publish_date | date:'yyyy-M-dd hh:mm' }}</p>
+    <!--             <button ng-click="deletePhoto(photo.pid)">删除照片</button>
+                <input type="text" ng-model="comment"/>
+                <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->
               </div>
-              <div class="campaign_photo_ori_button_wrap">
-                <button class="icon ion-search campaign_photo_ori_button"></button>
-              </div>
-              <p class="campaign_upload_user">{{ photo.publish_user }}</p>
-              <p class="campaign_upload_date">上传于：{{ photo.publish_date | date:'yyyy-M-dd hh:mm' }}</p>
-  <!--             <button ng-click="deletePhoto(photo.pid)">删除照片</button>
-              <input type="text" ng-model="comment"/>
-              <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->
             </div>
           </div>
         </div>
@@ -53,15 +67,25 @@
     </ion-tab>
 
     <ion-tab title="活动地点" icon="ion-ios7-location-outline">
-      <ion-content has-header="true" padding="true">
-        <p>活动地点</p>
-        <div id="location" style="width:320px; height:320px;"></div>
+      <ion-content has-header="true" class="wrap">
+        <div class="head_title">
+          <div class="title">{{ campaign.content }}</div>
+        </div>
+        <div class="padding">
+          <p>活动地点</p>
+          <div id="location" style="width:320px; height:320px;"></div>
+        </div>
       </ion-content>
     </ion-tab>
 
     <ion-tab title="分享" icon="ion-ios7-paperplane-outline">
-      <ion-content has-header="true" padding="true">
-        <h2>share</h2>
+      <ion-content has-header="true" class="wrap">
+        <div class="head_title">
+          <div class="title">{{ campaign.content }}</div>
+        </div>
+        <div class="padding">
+          <h2>share</h2>
+        </div>
       </ion-content>
     </ion-tab>
 
