@@ -4,19 +4,25 @@ div
       h5.pull-left {{"ACCOUNT"|translate}}
     hr
     .form-group
-      label.info_label.col-md-2.control-label {{"LOGIN_EMAIL"|translate}}
-      .col-md-4
+      label.info_label.col-md-2.control-label {{"REGISTER_DATE"|translate}}
+=======
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.col-md-2.control-label {{"LOGIN_EMAIL"|translate}}
+      .col-md-5.col-sm-4.col-xs-4
         label.info_label(ng-bind="company.login_email")
       if(role ==='HR')
-        a.col-md-2(href="#/changePassword") {{"CHANGE_PASS"|translate}}
+        .col-md-2.col-sm-2.col-xs-4
+          a(href="#/changePassword") {{"CHANGE_PASS"|translate}}
     .form-group
-      label.info_label.col-md-2.control-label {{"REGISTER_DATE"|translate}}
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"REGISTER_DATE"|translate}}
       .col-md-8
         label.info_label {{company.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
     if(role==='HR')
       .form-group
-        label.info_label.col-md-2.control-label {{"INVATE_LINK"|translate}}
-        .col-md-8
+        .col-md-2.col-sm-2.col-xs-4
+          label.info_label.control-label {{"INVATE_LINK"|translate}}
+        .col-md-5.col-sm-10.col-xs-6
           button.btn.dl_btn(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
           label.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
   form.form-horizontal(name="infoForm")
@@ -26,51 +32,61 @@ div
         button.btn.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
     hr
     .form-group
-      label.info_label.col-md-2.control-label {{"OFFICIAL_NAME"|translate}}
-      .col-md-5
-        input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"OFFICIAL_NAME"|translate}}
+      .col-md-5.col-sm-8.col-xs-6
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
       if(role ==='HR')
-        a.btn.dl_btn.pull-right(href="/company/editLogo") {{"CHANGE_LOGO"|translate}}
+        .col-md-5.col-sm-4.col-xs-2
+          a.btn.dl_btn.pull-right(href="/company/editLogo") {{"CHANGE_LOGO"|translate}}
     .form-group
-      label.info_label.col-md-2.control-label {{"ENTERPRISE_FULL_NAME"|translate}}
-      .col-md-5
-        input.dl_input.editToggle.form-control(type="text" name ="infoname" ng-model="info.name" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"ENTERPRISE_FULL_NAME"|translate}}
+      .col-md-5.col-sm-8.col-xs-6
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="infoname" ng-model="info.name" ng-disabled="infoUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"LOCATION"|translate}}
-      .col-md-2
-        input.dl_input.editToggle.form-control(type="text" name ="province" ng-model="info.city.province" ng-disabled="infoUnEdit")
-      .col-md-2
-        input.dl_input.editToggle.form-control(type="text" name ="city" ng-model="info.city.city" ng-disabled="infoUnEdit")
-      .col-md-2
-        input.dl_input.editToggle.form-control(type="text" name ="district" ng-model="info.city.district" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"LOCATION"|translate}}
+      .col-md-2.col-sm-2.col-xs-2
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="province" ng-model="info.city.province" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-2
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="city" ng-model="info.city.city" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-2
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="district" ng-model="info.city.district" ng-disabled="infoUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"ADDRESS"|translate}}
-      .col-md-5
-        input.dl_input.editToggle.form-control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"ADDRESS"|translate}}
+      .col-md-5.col-sm-8.col-xs-6
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"LINK_MAN"|translate}}
-      .col-md-5
-        input.dl_input.editToggle.form-control(type="text" name ="linkman" ng-model="info.linkman" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"LINK_MAN"|translate}}
+      .col-md-5.col-sm-8.col-xs-6
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="linkman" ng-model="info.linkman" ng-disabled="infoUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"ENTERPRISE_PHONE"|translate}}
-      .col-md-2
-        input.dl_input.editToggle.form-control(type="number" name ="areacode" ng-model="info.lindline.areacode" ng-disabled="infoUnEdit")
-      .col-md-6
-        input.dl_input.editToggle.form-control(type="number" name ="number" ng-model="info.lindline.number" ng-disabled="infoUnEdit")
-      .col-md-2
-        input.dl_input.editToggle.form-control(type="number" name ="extension" ng-model="info.lindline.extension" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"ENTERPRISE_PHONE"|translate}}
+      .col-md-2.col-sm-2.col-xs-8
+        input.dl_input.editToggle.dl_form-Control(type="number" name ="areacode" ng-model="info.lindline.areacode" ng-disabled="infoUnEdit")
+      .col-md-6.col-sm-6.col-xs-6.col-xs-offset-2
+        input.dl_input.editToggle.dl_form-Control(type="number" name ="number" ng-model="info.lindline.number" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        input.dl_input.editToggle.dl_form-Control(type="number" name ="extension" ng-model="info.lindline.extension" ng-disabled="infoUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"PHONE"|translate}}
-      .col-md-5
-        input.dl_input.editToggle.form-control(type="number" name ="phone" ng-model="info.phone" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"PHONE"|translate}}
+      .col-md-5.col-sm-8.col-xs-8
+        input.dl_input.editToggle.dl_form-Control(type="number" name ="phone" ng-model="info.phone" ng-disabled="infoUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"EMAIL"|translate}}
-      .col-md-5
-        input.dl_input.editToggle.form-control(type="email" name ="email" ng-model="info.email" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"EMAIL"|translate}}
+      .col-md-5.col-sm-8.col-xs-8
+        input.dl_input.editToggle.dl_form-Control(type="email" name ="email" ng-model="info.email" ng-disabled="infoUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"BRIEF"|translate}}
-      .col-md-5
-        input.dl_input.editToggle.form-control(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
+      .col-md-2.col-sm-2.col-xs-4
+        label.info_label.control-label {{"BRIEF"|translate}}
+      .col-md-5.col-sm-8.col-xs-8
+        input.dl_input.editToggle.dl_form-Control(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
   form.form-horizontal(name="companyGroup")
     .infoHead.row
       h5.pull-left {{"TEAM_INFO"|translate}}
@@ -80,31 +96,32 @@ div
     .form-group(ng-repeat="team in team_lists")
       .form-group(ng-if="team.active")
         //所有人可见active的team
-        .col-md-2
+        .col-md-2.col-sm-2.col-xs-3
           a(href="/group/home/{{team._id}}")
             img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
         .col-md-10
           .row
-            .col-md-2
+            .col-md-2.col-sm-2.col-xs-2.padding_0
               label.info_label.control-label {{"TEAM_NAME"|translate}}
-            .col-md-8
+            .col-md-8.col-sm-8.col-xs-4.padding_0
               span.info_label.control-label {{team.name}}
             if(role ==='HR')
+              .col-md-2.col-sm-2.col-xs-4
               a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑
           .row
-            .col-md-2
+            .col-md-2.col-sm-2.col-xs-2
               label.info_label.control-label {{"TYPE"|translate}}
-            .col-md-4
+            .col-md-8.col-sm-8.col-xs-8
               span.info_label.control-label {{team.group_type}}
           .row
-            .col-md-2
+            .col-md-2.col-sm-2.col-xs-2
               label.info_label.control-label {{"TEAM_LEADER"|translate}}
-            .col-md-2(ng-repeat="l in team.leader")
+            .col-md-2.col-sm-2.col-xs-2(ng-repeat="l in team.leader")
               span.info_label.control-label {{l.nickname}}
           .row
-            .col-md-2
+            .col-md-2.col-sm-2.col-xs-2
               label.info_label.control-label {{"SUM"|translate}}
-            .col-md-8
+            .col-md-8.col-sm-8.col-xs-8
               span.info_label.control-label {{team.member.length}}
             if(role === 'HR')
               button.btn.dl_btn.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
@@ -112,31 +129,31 @@ div
       //只有HR可见inactive的team 并可打开
       .row(ng-if="!team.active")
         if(role ==='HR')
-          .col-md-2
+          .col-md-2.col-sm-2.col-xs-3
             a(href="/group/home/{{team._id}}")
               img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
-          .col-md-10
+          .col-md-10.col-sm-8.col-xs-9
             .row
-              .col-md-2
+              .col-md-2.col-sm-2.col-xs-4.padding_0
                 label.info_label.control-label {{"TEAM_NAME"|translate}}
-              .col-md-8
+              .col-md-8.col-sm-8.col-xs-4
                 span.info_label.control-label {{team.name}}
               if(role ==='HR')
                 a.btn.button.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
             .row
-              .col-md-2
+              .col-md-2.col-sm-2.col-xs-4
                 label.info_label.control-label {{"TYPE"|translate}}
-              .col-md-4
+              .col-md-4.col-sm-8.col-xs-8
                 span.info_label.control-label {{team.group_type}}
             .row
-              .col-md-2
+              .col-md-2.col-sm-2.col-xs-4
                 label.info_label.control-label {{"TEAM_LEADER"|translate}}
-              .col-md-2(ng-repeat="l in team.leader")
+              .col-md-2.col-sm-2.col-xs-4(ng-repeat="l in team.leader")
                 span.info_label.control-label {{l.nickname}}
             .row
-              .col-md-2
+              .col-md-2.col-sm-2.col-xs-4
                 label.info_label.control-label {{"SUM"|translate}}
-              .col-md-8
+              .col-md-8.col-sm-8.col-xs-8
                 span.info_label.control-label {{team.member.length}}
               button.btn.dl_btn.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
             hr

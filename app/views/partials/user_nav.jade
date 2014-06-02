@@ -1,11 +1,16 @@
 nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
   .container
-    .navbar-header
-      a.navbar-brand(href="/")
-        img.logo(src="/img/logo_w.png")
-    if(role !== 'HR')
-      .collapse.navbar-collapse#personal_nav
-        ul.nav.navbar-nav.pull-right
+    if role !== 'HR'
+      .navbar-header
+        a.navbar-brand(href="/")
+          img.logo(src="/img/logo_w.png")
+        button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#personal_nav")
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+      .navbar-collapse.in#personal_nav
+        ul.nav.navbar-nav.navbar-right
           li
             a(href="/company/home") {{"COMPANY_HOME"|translate}}
           li
@@ -21,9 +26,17 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
                 a(href="#" ng-click="changeLanguage('zh')") {{"L_ZH"|translate}}
               li
                 a(href="#" ng-click="changeLanguage('jp')") {{"L_JP"|translate}}
-    else
-      .collapse.navbar-collapse#HR_nav
-        ul.nav.navbar-nav.pull-right
+    if role === 'HR'
+      .navbar-header  
+        a.navbar-brand(href="/")
+          img.logo(src="/img/logo_w.png")
+        button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav") 
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+      .navbar-collapse.in#HR_nav
+        ul.nav.navbar-nav.navbar-right
           li
             a(href="/company/home") {{"COMPANY_HOME"|translate}}
           li

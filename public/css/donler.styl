@@ -28,6 +28,8 @@ li
 .dl_message_container
   padding 5px 0
   margin 10px auto
+.dl_row
+  min-height 34px
 .content
   width 100%
   min-height 100%
@@ -81,12 +83,12 @@ li
 .close_btn:active
   box-shadow 0 0 closeButtonHoverColor
   top 2px
-
 .dl_input.editToggle[disabled='disabled']
   background-color inherit
   border 0px solid
   box-shadow none
   cursor default
+  font-size 12px
 .info_border
   padding 5px
   border-style solid  
@@ -143,7 +145,7 @@ li
 .height_400
   height 400px
 .img_contain
-    background-size contain
+  background-size contain
 .full_parent
   height 100%
   width 100%
@@ -202,7 +204,7 @@ input::-webkit-inner-spin-button
 .dl_full_control
   width 100%
 .dl_nav
-  height 70px
+  min-height 70px
   background-color themeColor
   background -ms-linear-gradient(top, themeColor, navbarLinearColor)
   background -moz-linear-gradient(top, themeColor, navbarLinearColor)
@@ -224,6 +226,28 @@ input::-webkit-inner-spin-button
 .navbar-inverse 
   .navbar-brand
     padding 8px 0
+.dl_navbar-toggle
+  position relative
+  float right
+  margin-right 15px
+  margin-top 8px
+  margin-bottom 8px
+  padding 9px 10px
+  background-color transparent
+  background-image none
+  border 1px solid transparent
+  border-radius 2px
+  .icon-bar
+    display block
+    width 22px
+    height 2px
+    border-radius 1px
+    background-color #FFFFFF
+  .icon-bar + .icon-bar
+    margin-top 4px
+@media (min-width: 768px)
+  .dl_navbar-toggle 
+    display none
 .wrap
   min-height: 100%
   height auto
@@ -243,7 +267,23 @@ input::-webkit-inner-spin-button
   .text_icp
     text-align center
     line-height footerHeight
-
+.dl_form-Control
+  display block
+  width 100%
+  min-height 34px
+  height auto
+  padding 6px 5px
+  font-size 12px
+  line-height 1.42857143
+  color #FFFFF
+  background-color #FFFFFF
+  background-image none
+  border 1px solid #CCCCCC
+  border-radius 2px
+  -webkit-box-shadow inset 0 1px 1px rgba(0, 0, 0, .075)
+          box-shadow inset 0 1px 1px rgba(0, 0, 0, .075)
+  -webkit-transition border-color ease-in-out .15s, box-shadow ease-in-out .15s
+          transition border-color ease-in-out .15s, box-shadow ease-in-out .15s
 
 .dl_err
   color red

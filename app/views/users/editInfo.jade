@@ -9,70 +9,82 @@ div
     hr
     .form-group
       .row
-        .col-md-3
+        .col-md-3.col-sm-4.col-xs-5
           img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
-        .col-md-9
-          .row
-            a.btn.btn.dl_btn.margin_top_15(href="/users/editPhoto") {{"CHANGE_LOGO" | translate}}
+        .col-md-9.col-sm-8.col-xs-7
           if(role!=='PARTNER')
+            .row
+              a.btn.btn.dl_btn.margin_top_15(href="/users/editPhoto") {{"CHANGE_LOGO" | translate}}          
             .row
               a.btn.dl_btn.margin_top_15(href="#/changePassword") {{"CHANGE_PASS" | translate}}
     .form-group
-      label.info_label.col-md-2.control-label {{"LOGIN_EMAIL" | translate}}
-      .col-md-4
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"LOGIN_EMAIL" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
         label.info_label(ng-bind="user.email")
     .form-group
-      label.info_label.col-md-2.control-label {{"NICKNAME" | translate}}
-      .col-md-4
-        input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-disabled="baseUnEdit")
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"NICKNAME" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-disabled="baseUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"REALNAME" | translate}}
-      .col-md-4
-        input.dl_input.form-control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"REALNAME" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"COMPANY" | translate}}
-      .col-md-6
+      .col-md-2.col-sm-4.col-xs-4  
+        label.info_label.control-label {{"COMPANY" | translate}}
+      .col-md-6.col-sm-8.col-xs-8
         label.info_label {{user.cname}}
     .form-group
-      label.info_label.col-md-2.control-label {{"POSITION" | translate}}
-      .col-md-4
-        input.dl_input.form-control.editToggle(type="text" name="position" ng-model="user.position" ng-disabled="baseUnEdit")
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"POSITION" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="user.position" ng-disabled="baseUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"LOCATION" | translate}}
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"LOCATION" | translate}}
     .form-group
-      label.info_label.col-md-2.control-label {{"GENDER" | translate}}
-      label.col-md-1.control-label(ng-if="baseUnEdit") {{user.sex}}
-      if(role!=='PARTNER')
-        .col-md-1(ng-if="!baseUnEdit")
-          label.radio.info_radio
-            input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
-            | {{"MALE" | translate}}
-        .col-md-1(ng-if="!baseUnEdit")
-          label.radio.info_radio
-            input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
-            | {{"FEMALE" | translate}}
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"GENDER" | translate}}
+      .col-md-1.col-sm-1.col-xs-1
+        label.control-label(ng-if="baseUnEdit") {{user.sex}}
+        if(role!=='PARTNER')
+          .col-md-1(ng-if="!baseUnEdit")
+            label.radio.info_radio
+              input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
+              | {{"MALE" | translate}}
+          .col-md-1(ng-if="!baseUnEdit")
+            label.radio.info_radio
+              input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
+              | {{"FEMALE" | translate}}
     .form-group
-      label.info_label.col-md-2.control-label {{"BIRTHDAY" | translate}}
-      .col-md-2
-        input.dl_input.form-control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-start-view="2" placeholder="Date" ng-if="!baseUnEdit" bs-datepicker)
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.col-md-2.control-label {{"BIRTHDAY" | translate}}
+      .col-md-2.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-start-view="2" placeholder="Date" ng-if="!baseUnEdit" bs-datepicker)
         label.info_label(ng-if="baseUnEdit") {{user.birthday |date:'yyyy-MM-dd'}}
     .form-group
-      label.info_label.col-md-2.control-label {{"BLOODTYPE" | translate}}
-      .col-md-2
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.col-md-2.control-label {{"BLOODTYPE" | translate}}
+      .col-md-2.col-sm-8.col-xs-8
         label.col-md-2.control-label(ng-if="baseUnEdit") {{user.bloodType}}
         if(role!=='PARTNER')
-          select.dl_input.form-control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-if="!baseUnEdit")
+          select.dl_input.dl_form-Control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-if="!baseUnEdit")
             option(ng-select="user.bloodType === 'A'") A
             option(ng-select="user.bloodType === 'B'") B
             option(ng-select="user.bloodType === 'O'") O
             option(ng-select="user.bloodType === 'AB'") AB
     .form-group
-      label.info_label.col-md-2.control-label {{"BRIEF" | translate}}
-      .col-md-4
-        input.dl_input.form-control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-disabled="baseUnEdit")
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"BRIEF" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-disabled="baseUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"REGISTER_DATE" | translate}}
-      .col-md-8
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"REGISTER_DATE" | translate}}
+      .col-md-8.col-sm-8.col-xs-8
         label.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
   form.form-horizontal(name="linkForm")
     .infoHead.row
@@ -83,14 +95,17 @@ div
           a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     hr
     .form-group
-      label.info_label.col-md-2.control-label {{"PHONE" | translate}}
-      .col-md-4
-        input.dl_input.form-control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.col-md-2.control-label {{"PHONE" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"EMAIL" | translate}}
-      .col-md-4
-        input.dl_input.form-control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="linkUnEdit")
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"EMAIL" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="linkUnEdit")
     .form-group
-      label.info_label.col-md-2.control-label {{"QQ" | translate}}
-      .col-md-4
-        input.dl_input.form-control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")
+      .col-md-2.col-sm-4.col-xs-4
+        label.info_label.control-label {{"QQ" | translate}}
+      .col-md-4.col-sm-8.col-xs-8
+        input.dl_input.dl_form-Control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")
