@@ -9,7 +9,7 @@
       input(type="text" ng-disabled="true" ng-model="defaultDomain")
       btn.btn.btn-primary.dl_btn(ng-disabled="true") 添加后缀
     .add_domain_div.margin_5(ng-repeat="domain in domains")
-      input(type="text" ng-model="domain.domain")
+      input(type="text" ng-model="domain.domain" ng-disabled="domain.status")
       btn.btn.btn-primary.dl_btn(ng-click="addDomain(domain.index)" ng-disabled="domain.status || domain.domain.length<=0") 添加后缀
     .add_domain_button
       a(ng-click="addNewDomain()") 添加企业邮箱后缀

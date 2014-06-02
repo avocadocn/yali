@@ -30,6 +30,10 @@ li {
   padding: 5px 0;
   margin: 10px auto;
 }
+.dl_row {
+  min-height: 34px;
+  padding: 5px 0;
+}
 .content {
   width: 100%;
   min-height: 100%;
@@ -99,6 +103,7 @@ li {
   border: 0px solid;
   box-shadow: none;
   cursor: default;
+  font-size: 12px;
 }
 .info_border {
   padding: 5px;
@@ -184,7 +189,7 @@ li {
   width: 100%;
 }
 .info_label {
-  padding: 7px 12px;
+  padding: 7px 7px;
   font-size: 12px;
 }
 .info_radio {
@@ -256,7 +261,7 @@ input::-webkit-inner-spin-button {
   width: 100%;
 }
 .dl_nav {
-  height: 70px;
+  min-height: 70px;
   background-color: #3498db;
   background: -ms-linear-gradient(top, #3498db, #3498db);
   background: -moz-linear-gradient(top, #3498db, #3498db);
@@ -282,6 +287,33 @@ input::-webkit-inner-spin-button {
 .navbar-inverse .navbar-brand {
   padding: 8px 0;
 }
+.dl_navbar-toggle {
+  position: relative;
+  float: right;
+  margin-right: 15px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 9px 10px;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+.dl_navbar-toggle .icon-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: #fff;
+}
+.dl_navbar-toggle .icon-bar + .icon-bar {
+  margin-top: 4px;
+}
+@media (min-width: 768px) {
+  .dl_navbar-toggle {
+    display: none;
+  }
+}
 .wrap {
   min-height: 100%;
   height: auto;
@@ -301,6 +333,29 @@ input::-webkit-inner-spin-button {
 .dl_footer .text_icp {
   text-align: center;
   line-height: 60px;
+}
+.dl_form-Control {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  height: auto;
+  padding: 6px 5px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #fff F;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+.dl_form-Control -webkit-box-shadow inset 0 1px 1px rgba(0,
+.dl_form-Control 0,
+.dl_form-Control .075) {
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+}
+.dl_form-Control -webkit-transition border-color ease-in-out .15s,
+.dl_form-Control box-shadow ease-in-out .15s {
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .dl_err {
   color: #f00;
@@ -415,7 +470,7 @@ input::-webkit-inner-spin-button {
 }
 .dl_doc .function {
   height: 340px;
-  background: url("/img/dl_doc_func_bg.gif") center center no-repeat;
+  background: url("/img/dl_doc_func_bg.png") center center no-repeat;
   background-color: #ecf0f1;
 }
 .dl_doc .function .container {

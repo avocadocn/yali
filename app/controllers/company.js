@@ -510,7 +510,7 @@ exports.create = function(req, res) {
         }
     })
     .then(function(company) {
-        if(req.body.name.length>8)
+        if(req.body.name.length>=8)
             company.info.name = req.body.name;
         else
             return res.status(400).send({'result':0,'msg':'您输入的企业名过短'});
