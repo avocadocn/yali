@@ -53,33 +53,16 @@ angular.module('starter.controllers', [])
   Authorize.authorize();
 
   $rootScope.campaign_owner = 'user';
-  $rootScope.campaign_list = [];
 
   $rootScope.campaignReturnUri = '#/app/campaign_list';
 
   var getUserCampaigns = function() {
     Campaign.getUserCampaigns(function(campaign_list) {
-      $rootScope.campaign_list = campaign_list;
+      $scope.campaign_list = campaign_list;
     });
   };
   getUserCampaigns();
 
-  $rootScope.$watch('campaign_list', function(newValue, oldValue) {
-    if (newValue === oldValue) {
-      return;
-    }
-
-    for (var i = 0; i < $rootScope.campaign_list.length; i++) {
-      var start_time = new Date(newValue[i].start_time);
-      var rest_time = start_time - new Date();
-      if (rest_time >= 0) {
-        $rootScope.campaign_list[i].rest_time = rest_time;
-      } else {
-        $rootScope.campaign_list[i].beyond_time = 0 - rest_time;
-      }
-
-    }
-  });
 
   $scope.join = Campaign.join(getUserCampaigns);
   $scope.quit = Campaign.quit(getUserCampaigns);
@@ -111,7 +94,9 @@ angular.module('starter.controllers', [])
 
   Authorize.authorize();
 
-  $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
+  var campaigns = Campaign.getCampaignList();
+
+  $scope.campaign = campaigns[$stateParams.campaign_index];
 
   $scope.photo_album_id = $scope.campaign.photo_album.pid;
 
@@ -300,29 +285,17 @@ angular.module('starter.controllers', [])
     $scope.template = $scope.templates[0];
   };
 
-  $scope.campaign = function() {
+  var getGroupCampaigns = function() {
     Campaign.getGroupCampaigns($scope.group._id, function(campaign_list) {
-      $rootScope.campaign_list = campaign_list;
+      $scope.campaign_list = campaign_list;
       $scope.template = $scope.templates[1];
     });
+  }
+
+  $scope.campaign = function() {
+    getGroupCampaigns();
   };
 
-  $rootScope.$watch('campaign_list', function(newValue, oldValue) {
-    if (newValue === oldValue) {
-      return;
-    }
-
-    for (var i = 0; i < $rootScope.campaign_list.length; i++) {
-      var start_time = new Date(newValue[i].start_time);
-      var rest_time = start_time - new Date();
-      if (rest_time >= 0) {
-        $rootScope.campaign_list[i].rest_time = rest_time;
-      } else {
-        $rootScope.campaign_list[i].beyond_time = 0 - rest_time;
-      }
-
-    }
-  });
 
   $scope.dynamic = function() {
     $http.get($rootScope.base_url + '/group/getGroupMessages/' + $scope.group._id).
@@ -332,6 +305,9 @@ angular.module('starter.controllers', [])
       }
     );
   };
+
+  $scope.join = Campaign.join(getGroupCampaigns);
+  $scope.quit = Campaign.quit(getGroupCampaigns);
 
 })
 

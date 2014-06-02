@@ -91,11 +91,32 @@ angular.module('starter.services', [])
 
 .factory('Campaign', function($http) {
 
+  var campaign_list = [];
+
+  var getCampaignList = function() {
+    return campaign_list;
+  };
+
+  var setTime = function() {
+    for (var i = 0; i < campaign_list.length; i++) {
+      var start_time = new Date(campaign_list[i].start_time);
+      var rest_time = start_time - new Date();
+      if (rest_time >= 0) {
+        campaign_list[i].rest_time = rest_time;
+      } else {
+        campaign_list[i].beyond_time = 0 - rest_time;
+      }
+
+    }
+  };
+
   // callback(campaign_list)
   var getUserCampaigns = function(callback) {
     $http.get(base_url + '/users/campaigns')
     .success(function(data, status, headers, config) {
-      callback(data.data);
+      campaign_list = data.data;
+      setTime();
+      callback(campaign_list);
     });
   };
 
@@ -103,7 +124,9 @@ angular.module('starter.services', [])
   var getGroupCampaigns = function(group_id, callback) {
     $http.get(base_url + '/group/' + group_id + '/campaigns')
     .success(function(data, status, headers, config) {
-      callback(data.data);
+      campaign_list = data.data;
+      setTime();
+      callback(campaign_list);
     });
   };
 
@@ -126,6 +149,7 @@ angular.module('starter.services', [])
   };
 
   return {
+    getCampaignList: getCampaignList,
     getUserCampaigns: getUserCampaigns,
     getGroupCampaigns: getGroupCampaigns,
     join: join,
