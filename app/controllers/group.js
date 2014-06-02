@@ -297,7 +297,7 @@ exports.home = function(req, res) {
     var photo_album_ids = [];
     for(var i = 0; i < req.user.group.length; i ++) {
       for(var j = 0; j < req.user.group[i].team.length; j ++) {
-        user_teams.push(req.user.group[i].team[j].id);
+        user_teams.push(req.user.group[i].team[j].id.toString());
       }
     }
     CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
@@ -307,7 +307,7 @@ exports.home = function(req, res) {
         for(var i = 0; i < company_groups.length; i ++) {
           if(company_groups[i].gid !== '0' && company_groups[i].active === true){
             //下面查找的是该成员加入和未加入的所有active小队
-            if(user_teams.indexOf(company_groups[i]._id.toString())) {
+            if(!user_teams.indexOf(company_groups[i]._id.toString())) {
               selected_teams.push(company_groups[i]);
             } else {
               unselected_teams.push(company_groups[i]);
