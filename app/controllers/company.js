@@ -917,29 +917,29 @@ exports.changeUser = function (req, res) {
     }
 };
 
-//任命组长
+//任命/罢免组长
 exports.appointLeader = function (req, res) {
   var uid = req.body.uid;
   var gid = req.body.gid;
   var cid = req.body.cid;
   var tid = req.body.tid;
-  if(cid !==req.user._id){
+  var operate = req.body.operate;
+  if(cid.toString() !==req.user._id.toString()){
     return res.send(403, 'forbidden!');
   }
   User.findOne({
         _id : uid
     },function (err, user) {
-
         if (err || !user) {
             return res.send('ERROR');
         } else {
 
             var s = true;
             for(var i =0; i< user.group.length && s; i ++) {
-                if(req.user.group[i]._id === gid){
+                if(user.group[i]._id === gid){
                     for(var k = 0; k < user.group.length; k ++){
-                        if(req.user.group[i].team[k]._id == tid.toString()){
-                            req.user.group[i].team[k].leader = true;
+                        if(user.group[i].team[k].id.toString() == tid.toString()){
+                            user.group[i].team[k].leader = operate;
                             s = false;
                             break;
                         }
@@ -949,22 +949,33 @@ exports.appointLeader = function (req, res) {
             user.role = 'LEADER';
             user.save(function(err) {
                 if(err) {
-                    return res.send('ERROR');
+                    return res.send('USR_ERROR');
                 } else {
+
                     CompanyGroup.findOne({_id : tid},function (err, company_group) {
                         if (err || !company_group) {
+                            console.log(company_group);
                             //这里需要回滚User的操作
-                            return res.send('ERROR');
+                            return res.send('N_ERROR');
                         } else {
-                            company_group.leader.push({
-                                '_id' : uid,
-                                'nickname' : user.nickname,
-                                'photo': user.photo
-                            });
+                            if(operate){
+                                company_group.leader.push({
+                                    '_id' : uid,
+                                    'nickname' : user.nickname,
+                                    'photo': user.photo
+                                });
+                            } else {
+                                for(var i = 0; i < company_group.leader.length; i ++) {
+                                    if(company_group.leader[i]._id.toString() === uid.toString()) {
+                                        company_group.leader.splice(i,1);
+                                        break;
+                                    }
+                                }
+                            }
                             company_group.save(function(err){
                                 if(err){
                                     //这里需要回滚User的操作
-                                    return res.send('ERROR');
+                                    return res.send('G_ERROR');
                                 } else {
                                     return res.send('OK');
                                 }
@@ -976,6 +987,7 @@ exports.appointLeader = function (req, res) {
         }
     });
 };
+
 
 
 //关闭企业活动

@@ -74,23 +74,44 @@ exports.getTeam = function(req, res) {
 }
 
 
-//TODO
-//根据公司id搜索成员(该成员不是该队的队长)
-exports.getUser = function(req, res) {
-  var cid = req.body.cid;   //根据公司名找它的员工
 
-  var _gid = req.body.gid;
-  var tid = req.body.tid;   //找选择了该队的员工
+function findUser()
+{
 
-  console.log(cid,_gid,tid);
-  User.find({'cid': cid , 'group':{'$elemMatch':{'_id':_gid, 'team':{'$elemMatch':{'_id':tid,'leader':false}}}} },{'_id':1,'nickname':1,'username':1,'group':1}, function (err, users){
-    if(err || !users){
-      console.log('ERROR');
+}
+
+function findComapnyGroup(condition,req,res)
+{
+  CompanyGroup.findOne(condition,{'member':1,'leader':1},function (err,cg) {
+    if(err || !cg) {
       return res.send([]);
-    }else{
+    } else {
+      var users = [];
+      var members = cg.member;
+      var leaders = cg.leader;
+      var flag = false;
+      for(var i = 0; i < members.length; i ++) {
+        for(var j = 0 ;j < leaders.length; j ++) {
+          if(members[i]._id.toString() === leaders[j]._id.toString()){
+            flag = true;
+          }
+        }
+        if(!flag){
+          users.push(members[i]);
+        }
+        flag = false;
+      }
       return res.send(users);
     }
   });
+}
+
+
+//TODO
+//根据公司id搜索成员(该成员不是该队的队长)
+exports.getUser = function(req, res) {
+  var tid = req.body.tid;   //找选择了该队的员工
+  findComapnyGroup({'_id':tid},req,res);
 };
 
 

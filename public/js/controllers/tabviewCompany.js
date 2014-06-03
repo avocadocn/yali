@@ -314,7 +314,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
         $scope.role = data.role;
     });
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
-    $scope.setGroupId = function (tid,gid) {
+    $scope.setGroupId = function (tid,gid,index) {
+        $scope.team_index = index;
         $scope.tid = tid;
         $scope.gid = gid;
         try{
@@ -349,8 +350,35 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             console.log(e);
         }
     };
+
+    $scope.dismissLeader = function (tid,gid,uid,index) {
+        $scope.tid = tid;
+        $scope.gid = gid;
+        try{
+            $http({
+                method: 'post',
+                url: '/company/appointLeader',
+                data:{
+                    cid: $scope.cid,
+                    gid: $scope.gid,
+                    tid: $scope.tid,
+                    uid: uid,
+                    operate:false
+                }
+            }).success(function(data, status) {
+                //指定完后不跳转，可继续编辑队名等
+                $scope.team_lists[$scope.team_index].leader.splice(index,1);
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alert('数据发生错误！');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
     //指定队长
-    $scope.appointLeader = function (uid) {
+    $scope.appointLeader = function (uid,nickname,photo) {
       try{
             $http({
                 method: 'post',
@@ -359,12 +387,17 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                     cid: $scope.cid,
                     gid: $scope.gid,
                     tid: $scope.tid,
-                    uid: uid
+                    uid: uid,
+                    operate:true
                 }
             }).success(function(data, status) {
                 //指定完后不跳转，可继续编辑队名等
                 //window.location.reload();
-                alert('队长指定成功！');
+                $scope.team_lists[$scope.team_index].leader.push({
+                    '_id':uid,
+                    'nickname':nickname,
+                    'photo':photo
+                });
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alert('数据发生错误！');
@@ -421,7 +454,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                 else{
                     alert('小组关闭成功');
                     window.location.reload();
-                }    
+                }
             }).error(function(data, status){
                 alert('小组激活错误');
             });

@@ -106,7 +106,7 @@ div
               span.info_label.control-label {{team.name}}
             if(role ==='HR')
               .col-md-2.col-sm-2.col-xs-4.padding_0
-                a.btn.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
+                a.btn.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
           .row.dl_row
             .col-md-2.col-sm-2.col-xs-2.padding_0
               span.info_label.control-label {{"TYPE"|translate}}
@@ -116,7 +116,11 @@ div
             .col-md-2.col-sm-2.col-xs-2.padding_0
               span.info_label.control-label {{"TEAM_LEADER"|translate}}
             .col-md-2.col-sm-2.col-xs-2.padding_0(ng-repeat="l in team.leader")
-              span.info_label.control-label {{l.nickname}}
+              .btn-group
+                span.info_label.control-label(data-toggle="dropdown") {{l.nickname}}
+                ul.dropdown-menu(role="menu")
+                  li
+                    a(href="#" ng-click="dismissLeader(team._id,team.gid,l._id,$index)") 罢免
           .row.dl_row
             .col-md-2.col-sm-2.col-xs-2.padding_0
               span.info_label.control-label {{"SUM"|translate}}

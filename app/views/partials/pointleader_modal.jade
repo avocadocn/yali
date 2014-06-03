@@ -14,6 +14,6 @@
         .col-md-4
           label.info_label.control-label {{"APPOINT_LEADER"|translate}}
           li(ng-repeat= "user in users")
-            a(ng-click="appointLeader(user._id)" data-dismiss="modal") {{user.nickname}}
+            a(ng-click="appointLeader(user._id,user.nickname,user.photo)" data-dismiss="modal") {{user.nickname}}
     .modal-footer
       button.dl_btn(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}
