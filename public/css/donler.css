@@ -509,6 +509,9 @@ input::-webkit-inner-spin-button {
 .dl-top-login .btn-signin-link {
   color: #28689b;
 }
+.dl-top-login .input-group-btn>.btn+.btn-submit {
+  margin-left: 14px;
+}
 input.ng-invalid.ng-dirty {
   border-color: #ffc0cb;
 }
