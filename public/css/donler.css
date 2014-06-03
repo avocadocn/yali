@@ -503,7 +503,7 @@ input::-webkit-inner-spin-button {
 }
 .dl-top-login {
   width: 480px;
-  padding: 17px 11px 0 0;
+  padding: 20px 11px 0 0;
 }
 .dl-top-login .form-control {
   width: 50%;
@@ -512,6 +512,9 @@ input::-webkit-inner-spin-button {
 }
 .dl-top-login .btn {
   border-radius: 0px;
+}
+.dl-top-login .btn-signin-link {
+  color: #28689b;
 }
 input.ng-invalid.ng-dirty {
   border-color: #ffc0cb;
