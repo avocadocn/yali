@@ -2,6 +2,19 @@
 
 var tabViewGroup = angular.module('mean.main');
 
+
+function tirm(arraies,str) {
+    var rst = [];
+    for(var i = 0; i < arraies.length; i++) {
+        if(arraies[i].name.indexOf(str) > -1) {
+            console.log(arraies[i].name,str);
+            rst.push(arraies[i])
+        } else {
+            console.log('no',arraies[i].name,str);
+        }
+    }
+    return rst;
+}
 tabViewGroup.config(['$routeProvider', '$locationProvider','$translateProvider',
   function ($routeProvider, $locationProvider,$translateProvider) {
     $routeProvider
@@ -41,22 +54,174 @@ tabViewGroup.config(['$routeProvider', '$locationProvider','$translateProvider',
     $translateProvider.preferredLanguage('zh');
 }]);
 
-tabViewGroup.run(['$translate','$rootScope', function ($translate, $rootScope) {
+tabViewGroup.run(['$http','$translate','$rootScope', function ($http,$translate, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
+    $rootScope.companies = -1;
+    $rootScope.teams_for_company = -1;
+    $rootScope.teams_for_team = -1;
+
+    $rootScope.company_first = false;
+    $rootScope.team_first = false;
+
+    $rootScope.s_company = "";
+    $rootScope.s_team = "";
+
+
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
     $rootScope.changeLanguage = function (langKey) {
         $translate.use(langKey);
     };
+
+
+
+    $rootScope.showProvoke = function() {
+        $("#sponsorProvokeModel").modal();
+    }
+
+    //约战
+    $rootScope.provoke = function() {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/provoke/'+$rootScope.teamId,
+                data:{
+                    provoke_model : 'against',
+                    team_opposite : $rootScope.team_opposite,
+                    content : $rootScope.content,
+                    location: $rootScope.location,
+                    remark: $rootScope.remark,
+                    competition_date: $rootScope.competition_date,
+                    deadline: $rootScope.deadline,
+                    competition_format: $rootScope.competition_format,
+                    number: $rootScope.number
+
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                alert('数据发生错误！');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+
+    //应战
+    $rootScope.responseProvoke = function(provoke_message_id) {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/responseProvoke/'+$rootScope.teamId,
+                data:{
+                    provoke_message_id : provoke_message_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                alert('数据发生错误！');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+    $rootScope.getCompany =function(_tirm) {
+
+        if(!$rootScope.company_first) {
+            //第一次获取所有公司信息
+            $http.get('/search/company').success(function(data, status) {
+                $rootScope.companies_orign = data;
+                var temp = tirm($rootScope.companies_orign,_tirm);
+                if(temp.length > 0) {
+                    $rootScope.companies = temp;
+                }
+            });
+            $rootScope.company_first = true;
+        } else {
+            //过滤
+            var temp = tirm($rootScope.companies_orign,_tirm);
+            if(temp.length > 0) {
+                $rootScope.companies = temp;
+            } else {
+                $rootScope.companies = [];
+            }
+        }
+    }
+    $rootScope.getSelectTeam = function(cid) {
+        try {
+            $http({
+                method: 'post',
+                url: '/search/team',
+                data:{
+                    cid : cid,
+                    gid : $rootScope.groupId,
+                    operate:'part'
+                }
+            }).success(function(data, status) {
+                $rootScope.teams_for_company = data;
+            }).error(function(data, status) {
+                alert('数据发生错误！');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+
+    $rootScope.getTeam = function (_tirm) {
+        if(!$rootScope.team_first) {
+            try {
+                $http({
+                    method: 'post',
+                    url: '/search/team',
+                    data:{
+                        gid : $rootScope.groupId,
+                        operate:'all'
+                    }
+                }).success(function(data, status) {
+                    $rootScope.teams_for_team_orign = data;
+                    var temp = tirm($rootScope.teams_for_team_orign,_tirm);
+                    if(temp.length > 0) {
+                        $rootScope.teams_for_team = temp;
+                    }
+                }).error(function(data, status) {
+                    alert('数据发生错误！');
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+            $rootScope.team_first = true;
+        } else {
+            //过滤
+            var temp = tirm($rootScope.teams_for_team_orign,_tirm);
+            if(temp.length > 0) {
+                $rootScope.teams_for_team = temp;
+            } else {
+                $rootScope.teams_for_team = [];
+            }
+        }
+    };
+
+    $rootScope.provoke_select = function (team) {
+        $rootScope.team_opposite = team;
+    };
+
 }]);
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
 
+
     var teamId;
     $scope.$watch('teamId',function(tid){
         teamId = tid;
+        $rootScope.teamId = tid;
         $http.get('/group/getGroupMessages/'+tid +'?' + Math.round(Math.random()*100)).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
@@ -65,7 +230,6 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
     //var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
-    var teamId = $('#team_content').attr('team-id');
     //消除ajax缓存
     $scope.vote = function(provoke_message_id, status, index) {
          try {
@@ -92,104 +256,33 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     };
 
-    //应战
-    $scope.responseProvoke = function(provoke_message_id) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/responseProvoke/'+teamId,
-                data:{
-                    provoke_message_id : provoke_message_id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alert('数据发生错误！');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
 }]);
 
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
-  function($http, $scope) {
+  function ($http, $scope, $rootScope) {
+
+
     var groupId,teamId;
     $scope.$watch('teamId',function(tid){
         //消除ajax缓存
         teamId = tid;
+        $rootScope.teamId = tid;
         $http.get('/group/getCampaigns/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
             $scope.campaigns = data.data;
             $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
         });
 
-        //TODO 发起活动或者挑战时搜索应约对象 暂时先放在这里
-        $http.get('/search/company').success(function(data, status) {
-            $scope.companies = data;
-        });
     });
 
     $scope.$watch('groupId',function(gid){
         groupId = gid;
+        $rootScope.groupId = gid;
     });
 
 
     $scope.company = false;
 
-    $scope.provoke_select = function (team) {
-        $scope.team_opposite = team;
-       // alert("您将对"+team.cname+"的"+team.name+"发起挑战!");
-    };
-    $scope.getTeam = function (cid) {
-        try {
-            $http({
-                method: 'post',
-                url: '/search/team',
-                data:{
-                    cid : cid,
-                    gid : groupId
-                }
-            }).success(function(data, status) {
-                $scope.teams = data;
-            }).error(function(data, status) {
-                alert('数据发生错误！');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-
-    //约战
-    $scope.provoke = function() {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/provoke/'+teamId,
-                data:{
-                    provoke_model : 'against',
-                    team_opposite : $scope.team_opposite,
-                    content : $scope.content,
-                    location: $scope.location,
-                    remark: $scope.remark,
-                    competition_date: $scope.competition_date,
-                    deadline: $scope.deadline,
-                    competition_format: $scope.competition_format,
-                    number: $scope.number
-
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alert('数据发生错误！');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
 
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;

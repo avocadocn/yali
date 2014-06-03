@@ -366,8 +366,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                     operate:false
                 }
             }).success(function(data, status) {
-                //指定完后不跳转，可继续编辑队名等
-                $scope.team_lists[$scope.team_index].leader.splice(index,1);
+                window.location.href="/company/home#/company_info";
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alert('数据发生错误！');
@@ -392,12 +391,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
                 }
             }).success(function(data, status) {
                 //指定完后不跳转，可继续编辑队名等
-                //window.location.reload();
-                $scope.team_lists[$scope.team_index].leader.push({
-                    '_id':uid,
-                    'nickname':nickname,
-                    'photo':photo
-                });
+                window.location.reload();
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alert('数据发生错误！');

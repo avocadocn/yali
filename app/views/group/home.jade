@@ -27,7 +27,7 @@ block baseInfo
         if(role ==='HR' || role ==='LEADER')
           .col-md-4.col-sm-4.col-xs-10.padding_0
             button.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}
-            button.dl_btn(data-toggle="modal" data-target="#sponsorProvokeModel") {{"PROVOKE"|translate}}
+            button.dl_btn(data-toggle="modal" data-target="#sponsorSearchModel") {{"PROVOKE"|translate}}
             button.dl_btn(onclick="{location.href='/arena/home'}") {{"ARENA"|translate}}
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
@@ -47,13 +47,12 @@ block panel
       .tab-pane.active
         div(ng-view)
     if(role ==='HR' || role ==='LEADER')
-      //-这里如果不绑定控制器就无法运行了
-      div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      div.modal.fade#sponsorCampaignModel(ng-controller="CampaignListController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/campaign_modal
-      //-这里如果不绑定控制器就无法运行了
-      div(ng-controller="CampaignListController" class="modal fade" id="sponsorProvokeModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/provoke_modal
-        
+      div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../partials/search_modal
 block aside
 
   if(role !=='GUESTHR' && role !=='HR')

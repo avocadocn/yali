@@ -60,11 +60,18 @@ exports.searchTeam = function(req, res) {
 //根据公司和组件类型搜索小队
 //返回该组件的队名和组长
 exports.getTeam = function(req, res) {
-  var cid = req.body.cid;
+  var cid,condition;
   var gid = req.body.gid;
 
-  console.log(cid,gid);
-  CompanyGroup.find({'cid':cid,'gid':gid},function(err, company_groups){
+  if(req.body.operate === 'part') {
+    //返回某公司某类型的所有小队
+    cid = req.body.cid;
+    condition = {'cid':cid,'gid':gid}
+  } else {
+    //返回某类型的所有小队
+    condition = {'gid':gid}
+  }
+  CompanyGroup.find(condition,function(err, company_groups){
     if(err || !company_groups) {
       return res.send([]);
     } else {

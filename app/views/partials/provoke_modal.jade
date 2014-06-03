@@ -3,7 +3,7 @@
     form(name="provoke_form")
       .modal-header
         button(class="close" data-dismiss="modal" aria-hidden="true") X
-        h4.modal-title#myModalLabel {{"SPONSOR"|translate}}{{"PROVOKE"|translate}}
+        h4.modal-title#myModalLabel 第二步: {{"SPONSOR"|translate}}{{"PROVOKE"|translate}}
       .modal-body
         .row
           .col-md-4
@@ -39,17 +39,6 @@
                     input.form-control(type="text" ng-model="deadline" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date || 'today'}}" placeholder="Date" bs-datepicker required)
                   .col-md-6
                     input.form-control(type="text" ng-model="deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
-        .row.margin_top_15
-          select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getTeam(company_selected._id)" required)
-            option(value="") {{"SELECT"|translate}} {{"COMPANY"|translate}}
-          select(data-placeholder="Choose a Team..." class="form-control chzn-select" tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams" ng-change="provoke_select(team_selected)" required)
-            option(value="") {{"SELECT"|translate}} {{"TEAM"|translate}}
-          //- li(ng-repeat="company in companies")
-          //-   hr
-          //-   p 公司名: {{company.name}}
-          //-   button.btn.dl_btn(ng-click="getTeam(company._id)") 列出小组
-          //-   li(ng-repeat="team in teams")
-          //-     a(ng-click="provoke_select(team)") {{team.name}}
       .modal-footer
         button(class="btn dl_btn" data-dismiss="modal") {{"CANCEL"|translate}}
         button(class="btn dl_btn" ng-click='provoke()' ng-disabled="provoke_form.$invalid" data-dismiss="modal") {{"CONFIRM"|translate}}
