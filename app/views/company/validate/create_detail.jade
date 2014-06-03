@@ -10,14 +10,14 @@
       .form-group.dl_sm_group
         .col-xs-offset-4.col-xs-8
           p 现在可以完成注册，加入动梨啦！
-      .form-group.dl_sm_group
+      .form-group.dl_sm_group(ng-class="{'has-error':createForm.official_name.$invalid && createForm.official_name.$dirty}")
         label.col-xs-4.control-label(for="official_name" ) *企业官方名称：
         .col-xs-8
-          input#official_name.form-control.dl_full_control(type="text" name="official_name" ng-model="detail.official_name" placeholder="请参考企业名称/品牌名称" ng-minlength=8 required)
-      .form-group.dl_sm_group
+          input#official_name.form-control.dl_full_control(type="text" name="official_name" ng-model="detail.official_name" placeholder="请参考企业名称/品牌名称" tooltip-placement="right" tooltip="{{createForm.official_name.$invalid && createForm.official_name.$dirty ? '您企业的简称或者品牌名称，便于识别' : ''}}" ng-minlength=1 required)
+      .form-group.dl_sm_group(ng-class="{'has-error':createForm.username.$invalid && createForm.username.$dirty}")
         label.col-xs-4.control-label(for="username") *用户名：
         .col-xs-8
-          input#username.form-control.dl_full_control(type="text" name="username" ng-model="detail.username" placeholder="公司登录时的账号" required)
+          input#username.form-control.dl_full_control(type="text" name="username" ng-model="detail.username" placeholder="公司登录时的账号" ng-minlength=4 tooltip-placement="right" tooltip="{{createForm.username.$invalid && createForm.username.$dirty ? '请使用4-20位英文和数字组合及“_”' : ''}}" required)
       .form-group.dl_sm_group
         label.col-xs-4.control-label(for="password") *密码：
         .col-xs-8

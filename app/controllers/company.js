@@ -457,7 +457,7 @@ exports.validate = function(req, res) {
 };
 
 
-
+//这段代码的err处理有问题-M
 /**
  * 创建公司基本信息
  */
@@ -485,6 +485,7 @@ exports.create = function(req, res) {
                     code.remove(function(err) {
                         if (err) {
                             console.log(err);
+                            console.log('remove出错');
                             throw err;
                         }
                     });
@@ -510,10 +511,7 @@ exports.create = function(req, res) {
         }
     })
     .then(function(company) {
-        if(req.body.name.length>=8)
-            company.info.name = req.body.name;
-        else
-            return res.status(400).send({'result':0,'msg':'您输入的企业名过短'});
+        company.info.name = req.body.name;
         company.info.city.province = req.body.province;
         company.info.city.city = req.body.city;
         company.info.city.district = req.body.district;
@@ -570,6 +568,7 @@ exports.create = function(req, res) {
                                 return res.status(400).send({'result':0,'msg':'该公司已经存在!'});
                                 break;
                             case 11001:
+                                return res.status(400).send({'result':0,'msg':'该邮箱已经存在!'});
                                 break;
                             default:
                                 break;
@@ -606,11 +605,7 @@ exports.createDetail = function(req, res) {
                 tittle: '该公司不存在或者发生错误!'
             });
         } else {
-            if(req.body.official_name.length>8)
-                company.info.official_name = req.body.official_name;
-            else
-                return res.status(400).send({'result':0,'msg':'您输入的企业名过短'});
-
+            company.info.official_name = req.body.official_name;
             company.username = req.body.username;
             company.password = req.body.password;
             company.status.active = true;

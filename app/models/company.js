@@ -22,10 +22,8 @@ var _team = new Schema({
  */
 var CompanySchema = new Schema({
 
-    username: {
-        type: String,
-        unique: true
-    },
+    username: String,               //公司全称
+
     login_email: {
         type: String,
         unique: true
