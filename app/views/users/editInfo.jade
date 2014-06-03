@@ -61,13 +61,13 @@ div
               | {{"FEMALE" | translate}}
     .form-group
       .col-md-2.col-sm-4.col-xs-4
-        label.info_label.col-md-2.control-label {{"BIRTHDAY" | translate}}
+        label.info_label.control-label {{"BIRTHDAY" | translate}}
       .col-md-2.col-sm-8.col-xs-8
         input.dl_input.dl_form-Control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-start-view="2" placeholder="Date" ng-if="!baseUnEdit" bs-datepicker)
         label.info_label(ng-if="baseUnEdit") {{user.birthday |date:'yyyy-MM-dd'}}
     .form-group
       .col-md-2.col-sm-4.col-xs-4
-        label.info_label.col-md-2.control-label {{"BLOODTYPE" | translate}}
+        label.info_label.control-label {{"BLOODTYPE" | translate}}
       .col-md-2.col-sm-8.col-xs-8
         label.col-md-2.control-label(ng-if="baseUnEdit") {{user.bloodType}}
         if(role!=='PARTNER')
@@ -96,7 +96,7 @@ div
     hr
     .form-group
       .col-md-2.col-sm-4.col-xs-4
-        label.info_label.col-md-2.control-label {{"PHONE" | translate}}
+        label.info_label.control-label {{"PHONE" | translate}}
       .col-md-4.col-sm-8.col-xs-8
         input.dl_input.dl_form-Control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
     .form-group

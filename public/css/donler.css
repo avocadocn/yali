@@ -76,8 +76,6 @@ li {
 .close_btn {
   background-color: #ff8c00;
   border-color: #ff8c00;
-  border-radius: 0 0 5px 5px;
-  box-shadow: 0 4px #ce760a;
   color: #fff;
   border-style: solid;
   line-height: 1;
@@ -87,13 +85,8 @@ li {
   border-radius: 1px;
 }
 .close_btn:hover {
-  background-color: #ff8c00;
+  background-color: #2980b9;
   border-color: #ce760a;
-  top: 1px;
-}
-.close_btn:active {
-  box-shadow: 0 0 #ce760a;
-  top: 2px;
 }
 .dl_input.editToggle[disabled='disabled'] {
   background-color: inherit;
@@ -517,7 +510,7 @@ input.ng-invalid.ng-dirty {
   border-color: #ffc0cb;
 }
 .tooltip.right {
-  width: 100px;
+  width: 300px;
 }
 .tooltip.right .tooltip-inner {
   background-color: #ba5a5c;

@@ -65,8 +65,6 @@ li
 .close_btn
   background-color closeButtonColor
   border-color closeButtonColor
-  border-radius 0 0 5px 5px
-  box-shadow 0 4px closeButtonHoverColor
   color #fff
   border-style solid
   line-height 1
@@ -75,12 +73,8 @@ li
   font-size 12px
   border-radius 1px
   &:hover
-    background-color closeButtonColor
+    background-color buttonHoverColor
     border-color closeButtonHoverColor
-    top 1px
-  &:active
-    box-shadow 0 0 closeButtonHoverColor
-    top 2px
 .dl_input.editToggle[disabled='disabled']
   background-color inherit
   border 0px solid
@@ -416,7 +410,7 @@ input::-webkit-inner-spin-button
 input.ng-invalid.ng-dirty
   border-color pink
 .tooltip.right
-  width 100px
+  width 300px
   .tooltip-inner
     background-color #ba5a5c
   .tooltip-arrow
