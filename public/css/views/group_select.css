@@ -11,6 +11,10 @@
 .group input {
   display: none;
 }
+.select_div {
+  background-color: #fff;
+  margin: 80px 80px;
+}
 .field {
   padding: 0;
   margin: 0;

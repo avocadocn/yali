@@ -1,4 +1,3 @@
-
 .row.margin_top_15(ng-if="company")
   if (role!=='HR')
     .btn-group.pull-right
@@ -18,15 +17,15 @@
         p.text-right {{ campaign_item.start_time | date:'EEEE' }}
       .col-xs-6.col-sm-6.col-md-6.col-md-offset-1
         .row
-          a.message_label(href="#") {{ campaign_item.content }}
+          a.dl_message_label(href="#") {{ campaign_item.content }}
           if (role==='HR'&&provider==='company' || role==='LEADER'&& provider ==='group')
             button.btn.close_btn(ng-click="cancel(campaign_item.id)") {{ campaign_item.active ? '&times;&nbsp;关闭':'打开'}}
         .row.margin_top_15
-          span.message_label {{"TYPE"|translate}}: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
+          span.dl_message_label {{"TYPE"|translate}}: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
           //- span.message_label 参加活动人数：{{ campaign_item.member_length }}
-          span.message_label(ng-if="campaign_item.provoke.active") {{"FORMATION"|translate}}: {{ campaign_item.provoke.competition_format }}
-          span.message_label {{"LOCATION"|translate}}: {{ campaign_item.location }}
-          span.message_label {{"DEADLINE"|translate}}: {{ campaign_item.end_time | date:'yyyy-MM-dd'}}
+          span.dl_message_label(ng-if="campaign_item.provoke.active") {{"FORMATION"|translate}}: {{ campaign_item.provoke.competition_format }}
+          span.dl_message_label {{"LOCATION"|translate}}: {{ campaign_item.location }}
+          span.dl_message_label {{"DEADLINE"|translate}}: {{ campaign_item.end_time | date:'yyyy-MM-dd'}}
       .col-xs-3.col-sm-3.col-md-2
         if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
           div(ng-if="campaign_item.active")

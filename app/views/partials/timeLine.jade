@@ -1,5 +1,6 @@
 append block headExt
   link(rel="stylesheet" href="/css/views/timeline.css")
+.row
 if(timeLines)
   ul.timeline
     each timeline in timeLines
@@ -10,11 +11,12 @@ if(timeLines)
         .timeline-icon
           i(class="icon_timeline_#{timeline.type}")
         .timeline-body
-          h2= timeline.head
+          p.subtitle= timeline.head
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline :'/img/icons/default_company_logo.png'}")
             p= "地点" +":"+ timeline.location
-            p= "类型" +":"+ timeline.group_type
+            if (timeline.group_type !== '虚拟组')
+              p= "类型" +":"+ timeline.group_type
             p= "内容" +":"+ timeline.content
             if(timeline.provoke.active)
               p= "赛制" +":"+ timeline.provoke.competition_format

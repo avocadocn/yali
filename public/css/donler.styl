@@ -28,6 +28,9 @@ li
 .dl_message_container
   padding 5px 0
   margin 10px auto
+.dl_message_label
+  padding 5px 0
+  margin 10px 10px
 .dl_row
   min-height 34px
   padding 5px 0
@@ -46,8 +49,6 @@ li
   padding-left 0
   padding-right 0
 .dl_btn
-  border-radius 0 0 5px 5px
-  box-shadow 0 2px buttonHoverColor
   color #fff
   background-color buttonColor
   border-color buttonColor
@@ -56,15 +57,11 @@ li
   position relative
   font-size 12px
   border-radius 2px
+  &:hover
+    background-color buttonHoverColor
+    border-color buttonHoverColor
 .dl_btn_small
-  padding 1px 10px
-.dl_btn:hover
-  background-color buttonColor
-  border-color buttonHoverColor
-  top 1px
-.dl_btn:active
-  box-shadow 0 0 buttonHoverColor
-  top 2px
+  padding 5px 19px
 .close_btn
   background-color closeButtonColor
   border-color closeButtonColor
@@ -77,13 +74,13 @@ li
   padding 1px 2px
   font-size 12px
   border-radius 1px
-.close_btn:hover
-  background-color closeButtonColor
-  border-color closeButtonHoverColor
-  top 1px
-.close_btn:active
-  box-shadow 0 0 closeButtonHoverColor
-  top 2px
+  &:hover
+    background-color closeButtonColor
+    border-color closeButtonHoverColor
+    top 1px
+  &:active
+    box-shadow 0 0 closeButtonHoverColor
+    top 2px
 .dl_input.editToggle[disabled='disabled']
   background-color inherit
   border 0px solid

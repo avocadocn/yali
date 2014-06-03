@@ -56,7 +56,7 @@ Timeline UI Base
 	margin: 0 0 15px 25%;
 	color: #fff;
 	padding: 10px;
-	font-weight: 300;
+	font-weight: 100;
 	position: relative;
 	border-radius: 5px;
 }
@@ -69,7 +69,7 @@ Timeline UI Base
 }
 
 .timeline > li .timeline-content { 
-	font-size: 14px;
+	font-size: 12px;
 }
 
 .ie8 .timeline > li .timeline-body h2 { 
