@@ -14,6 +14,13 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
             a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
           li
             a(href="/users/signout") {{"LOGOUT"|translate}}
+          li
+            a(href="#" data-toggle="dropdown") {{"L_CHANGE"|translate}}
+            ul.dropdown-menu(role="menu")
+              li
+                a(href="#" ng-click="changeLanguage('zh-CN')") {{"L_ZH"|translate}}
+              li
+                a(href="#" ng-click="changeLanguage('jp-JP')") {{"L_JP"|translate}}
     else
       .collapse.navbar-collapse#HR_nav
         ul.nav.navbar-nav.pull-right
@@ -23,3 +30,10 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
             a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
           li
             a(href="/company/signout") {{"LOGOUT"|translate}}
+          li
+            a(href="#" data-toggle="dropdown") {{"L_CHANGE"|translate}}
+            ul.dropdown-menu(role="menu")
+              li
+                a(href="#" ng-click="changeLanguage('zh-CN')") {{"L_ZH"|translate}}
+              li
+                a(href="#" ng-click="changeLanguage('jp-JP')") {{"L_JP"|translate}}

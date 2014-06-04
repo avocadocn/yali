@@ -15,8 +15,8 @@ function tirm(arraies,str) {
     }
     return rst;
 }
-tabViewGroup.config(['$routeProvider', '$locationProvider','$translateProvider',
-  function ($routeProvider, $locationProvider,$translateProvider) {
+tabViewGroup.config(['$routeProvider', '$locationProvider',
+  function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/group_message', {
         templateUrl: '/group/group_message_list',
@@ -46,15 +46,9 @@ tabViewGroup.config(['$routeProvider', '$locationProvider','$translateProvider',
       otherwise({
         redirectTo: '/group_message'
       });
-
-    $translateProvider.useStaticFilesLoader({
-        prefix : '../../language/locale-',
-        suffix : '.json'
-    });
-    $translateProvider.preferredLanguage('zh');
 }]);
 
-tabViewGroup.run(['$http','$translate','$rootScope', function ($http,$translate, $rootScope) {
+tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.companies = -1;
     $rootScope.teams_for_company = -1;
@@ -70,11 +64,6 @@ tabViewGroup.run(['$http','$translate','$rootScope', function ($http,$translate,
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
-    $rootScope.changeLanguage = function (langKey) {
-        $translate.use(langKey);
-    };
-
-
 
     $rootScope.showProvoke = function() {
         $("#sponsorProvokeModel").modal();

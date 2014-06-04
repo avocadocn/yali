@@ -14,8 +14,8 @@ tabViewCompany.directive('match', function($parse) {
     }
   };
 });
-tabViewCompany.config(['$routeProvider', '$locationProvider','$translateProvider',
-  function ($routeProvider, $locationProvider, $translateProvider) {
+tabViewCompany.config(['$routeProvider', '$locationProvider',
+  function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/company_campaign', {
         templateUrl: '/company/campaigns',
@@ -50,22 +50,13 @@ tabViewCompany.config(['$routeProvider', '$locationProvider','$translateProvider
       otherwise({
         redirectTo: '/company_campaign'
       });
-
-    $translateProvider.useStaticFilesLoader({
-        prefix : '../../language/locale-',
-        suffix : '.json'
-    });
-    $translateProvider.preferredLanguage('zh');
   }]);
 
-tabViewCompany.run(['$translate','$rootScope', function ($translate, $rootScope) {
+tabViewCompany.run(['$rootScope', function ($rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     console.log($rootScope.nowTab);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
-    };
-    $rootScope.changeLanguage = function (langKey) {
-        $translate.use(langKey);
     };
 }]);
 

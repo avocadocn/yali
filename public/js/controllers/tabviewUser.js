@@ -16,8 +16,8 @@ tabViewUser.directive('match', function($parse) {
   };
 });
 
-tabViewUser.config(['$routeProvider', '$locationProvider','$translateProvider',
-  function ($routeProvider, $locationProvider,$translateProvider) {
+tabViewUser.config(['$routeProvider', '$locationProvider',
+  function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/group_message', {
         templateUrl: '/group/group_message_list',
@@ -47,20 +47,12 @@ tabViewUser.config(['$routeProvider', '$locationProvider','$translateProvider',
       otherwise({
         redirectTo: '/group_message'
       });
-     $translateProvider.useStaticFilesLoader({
-        prefix : '../../language/locale-',
-        suffix : '.json'
-    });
-    $translateProvider.preferredLanguage('zh');
   }]);
 
-tabViewUser.run(['$translate','$rootScope', function ($translate, $rootScope) {
+tabViewUser.run(['$rootScope', function ($rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
-    };
-    $rootScope.changeLanguage = function (langKey) {
-        $translate.use(langKey);
     };
 }]);
 

@@ -7,7 +7,6 @@
   "PERSONAL_INFO": "个人资料",
   "LOGOUT": "注销",
   "STAFF": "员工",
-  "TEAM" : "兴趣小组",
   "TEAM_MEMBER": "队员",
   "MEMBER" : "成员",
   "SCORE" : "积分",
@@ -64,7 +63,6 @@
   "CAMPAIGN_ALBUM" : "活动相册",
   "MANAGER_ALBUM" : "管理相册",
   "SEARCH" : "搜索",
-  "TEAM_MEMBER" : "该小队成员",
   "CONFIRM" : "确定",
   "CANCEL" : "取消",
   "INVATE_LINK" : "邀请链接",
@@ -108,5 +106,5 @@
   "NO_CAMPAIGN" : "目前还没有活动",
   "L_CHANGE" : "语言",
   "L_ZH":"中文",
-  "L_JP":"日本语"
+  "L_JP":"日语"
 }
