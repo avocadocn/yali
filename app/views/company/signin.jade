@@ -16,16 +16,16 @@ block content
     .col-xs-12.col-sm-7
       form.signin.form-horizontal.center-block(action="/company/session" method="post")
         .form-group
-          label.col-md-4.control-label(for="username") Username
+          label.col-md-4.control-label(for="username") {{ 'Username' | translate}}
           .col-md-8
             input#username.form-control(type="text" name="username" placeholder="Username" required)
         .form-group
-          label.col-md-4.control-label(for="password") Password
+          label.col-md-4.control-label(for="password") {{ 'Password' | translate}}
           .col-md-8
             input#password.form-control(type="password" name="password" placeholder="password" required)
         .form-group
           .col-md-offset-4.col-md-8
-            button.btn.btn-primary(type="submit") Sign in
+            button.btn.btn-primary(type="submit") {{ 'Sign in' | translate}}
             | &nbsp;or&nbsp;
-            a.show-signup(href="/company/signup") Sign up
-            a.reset-pwd(href="/company/forgetPwd")  忘记密码
+            a.show-signup(href="/company/signup") {{ 'Sign up' | translate}}
+            a.reset-pwd(href="/company/forgetPwd")  {{ 'ForgetPassword' | translate}}
