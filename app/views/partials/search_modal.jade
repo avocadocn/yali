@@ -8,25 +8,34 @@
         .row 按公司名搜索
           hr
         .row
-          label {{"COMPANY"|translate}}
-          input(type="text" class="form-control" name="s_company" ng-model="s_company" ng-change="getCompany(s_company)" required)
+          label.col-md-2 {{"COMPANY"|translate}}
+          .col-md-7
+            input.form-control(type="text" name="s_company" ng-model="s_company" required)
+          a.btn.btn-default.col-md-2(ng-click="getCompany(s_company)") 搜索公司
         .row.margin_top_15
-          select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getSelectTeam(company_selected._id)" required)
-            option(value="") 没有符合条件的公司
-          select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_company" ng-change="provoke_select(team_selected)" required)
-            option(value="") 该公司的所有小队
-          hr
-          hr
-          hr
-          hr
+        .row
+          .col-md-2
+          .col-md-7
+            select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getSelectTeam(company_selected._id)" required)
+              option(value="") 没有符合条件的公司
+        .row
+          .col-md-2
+          .col-md-7
+            select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_company" ng-change="provoke_select(team_selected)" required)
+              option(value="") 该公司的所有小队
+
         .row 按小队搜索
           hr
         .row
-          label {{"TEAM"|translate}}
-          input(type="text" class="form-control" name="s_team" ng-model="s_team" ng-change="getTeam(s_team)" required)
+          label.col-md-2 {{"TEAM"|translate}}
+          .col-md-7
+            input(type="text" class="form-control" name="s_team" ng-model="s_team" required)
+          a.btn.btn-default.col-md-2(ng-click="getTeam(s_team)") 搜索小队
         .row.margin_top_15
-          select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_team" ng-change="provoke_select(team_selected)" required)
-            option(value="") 没有符合条件的所有小队
+          .col-md-2
+          .col-md-7
+            select(data-placeholder="Choose a Company..." class="form-control chzn-select" tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_team" ng-change="provoke_select(team_selected)" required)
+              option(value="") 没有符合条件的所有小队
       .modal-body
         .row(ng-if="team_selected")
           .col-md-2.col-sm-2.col-xs-3

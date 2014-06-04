@@ -19,6 +19,23 @@ html
     include ../../partials/footer
 
     script(src="/lib/angular/angular.min.js")
+    script(src="/lib/angular-route/angular-route.min.js")
     script(src="/lib/jquery/dist/jquery.min.js")
     script(src="/lib/bootstrap/dist/js/bootstrap.min.js")
+    script(src="/lib/angular-animate/angular-animate.min.js")
+    //script(src="//code.angularjs.org/1.2.16/angular-sanitize.min.js")
+    script(src="/lib/angular-strap/dist/angular-strap.min.js")
+    script(src="/lib/angular-strap/dist/angular-strap.tpl.min.js")
+    script(src="/lib/angular-translate/angular-translate.min.js")
+    script(src="/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js")
+    script(src="/js/main.js")
     block footExt
+
+    script.
+      angular.element(document).ready(function() {
+        //Fixing facebook bug with redirect
+        if (window.location.hash === '#_=_') window.location.hash = '#!';
+
+        //Then init the app
+        angular.bootstrap(document, ['mean.main']);
+      });

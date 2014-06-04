@@ -121,6 +121,23 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 
     $rootScope.getCompany =function(_tirm) {
 
+        try {
+            $http({
+                method: 'post',
+                url: '/search/company',
+                data:{
+                    regx : _tirm
+                }
+            }).success(function(data, status) {
+                $rootScope.companies = data;
+            }).error(function(data, status) {
+                alert('数据发生错误！');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+        /*
         if(!$rootScope.company_first) {
             //第一次获取所有公司信息
             $http.get('/search/company').success(function(data, status) {
@@ -140,6 +157,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.companies = [];
             }
         }
+        */
     }
     $rootScope.getSelectTeam = function(cid) {
         try {
@@ -163,37 +181,23 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     }
 
     $rootScope.getTeam = function (_tirm) {
-        if(!$rootScope.team_first) {
-            try {
-                $http({
-                    method: 'post',
-                    url: '/search/team',
-                    data:{
-                        gid : $rootScope.groupId,
-                        operate:'all'
-                    }
-                }).success(function(data, status) {
-                    $rootScope.teams_for_team_orign = data;
-                    var temp = tirm($rootScope.teams_for_team_orign,_tirm);
-                    if(temp.length > 0) {
-                        $rootScope.teams_for_team = temp;
-                    }
-                }).error(function(data, status) {
-                    alert('数据发生错误！');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-            $rootScope.team_first = true;
-        } else {
-            //过滤
-            var temp = tirm($rootScope.teams_for_team_orign,_tirm);
-            if(temp.length > 0) {
-                $rootScope.teams_for_team = temp;
-            } else {
-                $rootScope.teams_for_team = [];
-            }
+        try {
+            $http({
+                method: 'post',
+                url: '/search/team',
+                data:{
+                    regx : _tirm,
+                    gid : $rootScope.groupId,
+                    operate:'all'
+                }
+            }).success(function(data, status) {
+                $rootScope.teams_for_team = data;
+            }).error(function(data, status) {
+                alert('数据发生错误！');
+            });
+        }
+        catch(e) {
+            console.log(e);
         }
     };
 

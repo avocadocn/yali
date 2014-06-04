@@ -1,7 +1,7 @@
 'use strict';
 
 
-var app = angular.module('photo_list', []);
+var app = angular.module('mean.main');
 var photo_album_id = $('#photo_album_id').val();
 app.controller('PhotoListCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.photos = [];
@@ -12,4 +12,4 @@ app.controller('PhotoListCtrl', ['$scope', '$http', function($scope, $http) {
 
 }]);
 
-angular.bootstrap($('#photo_list'), ['photo_list']);
+//angular.bootstrap($('#photo_list'), ['photo_list']);

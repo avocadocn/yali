@@ -2,11 +2,11 @@ extends layouts/user_base
 
 block content
   .container
-    h1 活动详情
-    p 活动内容：#{campaign.content}
-    p 活动地点：#{campaign.location}
-    p 开始时间：#{campaign.start_time}
-    p 发起者：#{campaign.poster.username}
+    h1 {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
+    p {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：#{campaign.content}
+    p {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：#{campaign.location}
+    p {{"START_TIME"|translate}} ：#{campaign.start_time}
+    p {{"POSTER"|translate}}：#{campaign.poster.username}
 
     hr
     div
