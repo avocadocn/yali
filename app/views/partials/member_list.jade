@@ -5,7 +5,7 @@ div
     .col-md-2(ng-repeat="leader in leaders")
       img.center-block.size_56(ng-src='{{leader.photo}}')
       p.text-center {{leader.realname}}
-  span.subtitle {{company ? '成' : '队'}} 员
+  span.subtitle {{"MEMBER"|translate}}
   .row
     .col-md-2(ng-repeat="member in members")
       span(ng-if="company")

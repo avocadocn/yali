@@ -5,27 +5,30 @@
         button(class="close" data-dismiss="modal" aria-hidden="true") X
         h4.modal-title#myModalLabel 第二步: {{"SPONSOR"|translate}}{{"PROVOKE"|translate}}
       .modal-body
-        .row
-          .col-md-4
+        .row.margin_top_20
+          .col-md-12
             label {{"CONTENT"|translate}}
             input(type="text" class="form-control" name="content" ng-model="content" required)
-          .col-md-4
+        .row.margin_top_20
+          .col-md-12
             label {{"FORMATION"|translate}}
             input(type="text" class="form-control" name="competition_format" ng-model="competition_format" required)
-          .col-md-4
+        .row.margin_top_20
+          .col-md-12
             label {{"REMARK"|translate}}
             input(type="text" class="form-control" name="remark" ng-model="remark" required)
-        .row.margin_top_15
-          .col-md-4
+        .row.margin_top_20
+          .col-md-12
             label {{"LOCATION"|translate}}
             input(type="text" class="form-control" name="location" ng-model="location" required)
-          .col-md-4
+        .row.margin_top_20
+          .col-md-12
             label {{"SUM"|translate}}
             input(type="number" class="form-control" name="number" ng-model="number" required)
-        .row.margin_top_15
+        .row.margin_top_20
           .col-md-6
             label {{"START_TIME"|translate}}
-              .form-group.margin_top_5
+              .form-group.margin_top_20
                 .row
                   .col-md-6
                     input.form-control(type="text" ng-model="competition_date" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" bs-datepicker required)
@@ -33,7 +36,7 @@
                     input.form-control(type="text" ng-model="competition_date" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
           .col-md-6
             label {{"END_TIME"|translate}}
-              .form-group.margin_top_5
+              .form-group.margin_top_20
                 .row
                   .col-md-6
                     input.form-control(type="text" ng-model="deadline" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date || 'today'}}" placeholder="Date" bs-datepicker required)

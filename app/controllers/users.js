@@ -454,7 +454,7 @@ exports.dealSelectGroup = function(req, res) {
  * 完成注册
  */
 exports.finishRegister = function(req, res) {
-  res.render('users/message', {title: '激活成功', message: '激活成功'});
+  res.render('users/signin', {title: '激活成功,请登录!', message: '激活成功,请登录!'});
 };
 
 

@@ -1,19 +1,33 @@
-extends layouts/auth
+extends layouts/register
 
-block auth
-  form.signin.form-horizontal(action="/users/session" method="post")
-    .form-group
-      label.col-md-4.control-label(for="email") Email
-      .col-md-6
-        input#email.form-control(type="email" name="username" placeholder="Email" required)
-    .form-group
-      label.col-md-4.control-label(for="password") Password
-      .col-md-6
-        input#password.form-control(type="password" name="password" placeholder="password" required)
-    .form-group
-      .col-md-offset-4.col-md-8
-        button.btn.btn-primary(type="submit") Sign in
-        | &nbsp;or&nbsp;
-        a.show-signup(href="/users/signup") Sign up
-        | &nbsp;&nbsp;
-        a.reset-pwd(href="/users/forgetPwd")  忘记密码
+block content
+  .row.signup_row.margin_top_100
+    .col-xs-12.col-sm-5.text-right
+      div
+        h1.text-right
+          small 登入
+          | 动梨
+        p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
+        p 我们会对每家申请加入的团体当然也包括您在内
+        p 认真的核实资料，感谢您的配合
+    .col-xs-12.col-sm-7
+      form.signin.form-horizontal(action="/users/session" method="post")
+        .form-group
+          .col-md-4
+          .col-md-6
+            label #{msg}
+        .form-group
+          label.col-md-4.control-label(for="email") {{"EMAIL"|translate}}
+          .col-md-6
+            input#email.form-control(type="email" name="username" placeholder="Email" required)
+        .form-group
+          label.col-md-4.control-label(for="password") {{"PASSWORD"|translate}}
+          .col-md-6
+            input#password.form-control(type="password" name="password" placeholder="password" required)
+        .form-group
+          .col-md-offset-4.col-md-8
+            button.btn.btn-primary(type="submit") {{"SIGNIN"|translate}}
+            | &nbsp;or&nbsp;
+            a.show-signup(href="/users/signup") {{"SIGNUP"|translate}}
+            | &nbsp;&nbsp;
+            a.reset-pwd(href="/users/forgetPwd")  {{"FORGET"|translate}}{{"PASSWORD"|translate}}

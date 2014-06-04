@@ -9,39 +9,39 @@ block content
           small 加入
           | 动梨
     .col-xs-12.col-sm-7
-      form.form-horizontal.center-block.block_right(ng-controller="signupController" action="/users/dealSetProfile?key=#{key}&uid=#{uid}" method="post" name="user_signup_form" novalidate)
+      form.form-horizontal.center-block.block_right(ng-controller="signupController" action="/users/dealSetProfile?key=#{key}&uid=#{uid}" method="post" name="signup_form" novalidate)
         .col-xs-offset-3.col-xs-9
           h2 激活成功！
           p 现在可以完成注册，加入动梨啦！
-        .form-group.dl_sm_group
-          label.col-xs-3.control-label(ng-class="{'has-error':user_signup_form.nickname.$invalid && user_signup_form.nickname.$dirty}" for="nickname") ＊{{"NICKNAME"|translate}}
+        .form-group.dl_sm_group(ng-class="{'has-error':signup_form.nickname.$invalid && signup_form.nickname.$dirty}")
+          label.col-xs-3.control-label(for="nickname") ＊{{"NICKNAME"|translate}}
           .col-xs-9
-            input#nickname.form-control.dl_full_control(type="text" name="nickname" ng-minlength=1 tooltip-placement="right" tooltip="{{user_signup_form.nickname.$invalid && user_signup_form.nickname.$dirty ? '请填写昵称':''}}" required)
-        .form-group.dl_sm_group
+            input#nickname.form-control.dl_full_control(type="text" name="nickname" ng-model="nickname" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.nickname.$invalid && signup_form.nickname.$dirty ? '请填写昵称':''}}" required)
+        .form-group.dl_sm_group(ng-class="{'has-error':signup_form.password.$invalid && signup_form.password.$dirty}")
           label.col-xs-3.control-label(for="password") ＊密码
           .col-xs-9
-            input#password.form-control.dl_full_control(type="password" name="password" required)
-        .form-group.dl_sm_group
+            input#password.form-control.dl_full_control(type="password" name="password" ng-model="password" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.password.$invalid && signup_form.password.$dirty ? '请输入密码':''}}" required)
+        .form-group.dl_sm_group(ng-class="{'has-error':signup_form.passconf.$invalid && signup_form.passconf.$dirty}")
           label.col-xs-3.control-label(for="passconf") ＊密码确认
           .col-xs-9
-            input#passconf.form-control.dl_full_control(type="password" name="passconf" required)
-        .form-group.dl_sm_group
+            input#passconf.form-control.dl_full_control(type="password" name="passconf" ng-model="passconf" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.passconf.$invalid && signup_form.passconf.$dirty ? '请输入确认密码':''}}" required)
+        .form-group.dl_sm_group(ng-class="{'has-error':signup_form.realName.$invalid && signup_form.realName.$dirty}")
           label.col-xs-3.control-label(for="realName") ＊{{"REALNAME"|translate}}
           .col-xs-9
-            input#realName.form-control.dl_full_control(type="text" placeholder="仅公司成员可见" name="realName" required)
+            input#realName.form-control.dl_full_control(type="text" placeholder="仅公司成员可见" name="realName" ng-model="realName" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.realName.$invalid && signup_form.realName.$dirty ? '请输入真实姓名':''}}" required)
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="department") {{"DEPARTMENT"|translate}}
           .col-xs-9
-            input#department.form-control.dl_full_control(type="text" name="department")
+            input#department.form-control.dl_full_control(type="text" name="department" ng-model="department")
         .form-group.dl_sm_group
           label.col-xs-3.control-label(for="phone") {{"PHONE"|translate}}
           .col-xs-9
-            input#phone.form-control.dl_full_control(type="text" name="phone")
+            input#phone.form-control.dl_full_control(type="text" name="phone" ng-model="phone")
         .form-group.dl_sm_group
           .col-xs-offset-3.col-xs-9
             label.dl_checkbox
-              input(type="checkbox" required)
+              input(type="checkbox" ng-model= "checkbox" required)
               | 我已阅读并同意<a href="#">服务条款</a>
         .form-group.dl_sm_group
           .col-xs-offset-3.col-xs-9
-            button.btn.btn-primary.dl_btn.btn_submit(type="submit" ng-disabled="user_signup_form.$invalid") 下一步
+            button.btn.btn-primary.dl_btn.btn_submit(type="submit" ng-disabled="signup_form.$invalid") 下一步
