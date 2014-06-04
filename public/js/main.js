@@ -9,7 +9,7 @@ app.config(['$translateProvider',
   function ($translateProvider) {
 
     //直接内置语言文件
-    $translateProvider.translations('zh-CN', {
+    $translateProvider.translations('zh-cn', {
       COMPANY : "公司",
       TEAM : "小队",
       COMPANY_HOME: "公司主页",
@@ -119,7 +119,7 @@ app.config(['$translateProvider',
       L_ZH:"中文",
       L_JP:"日语"
     });
-    $translateProvider.translations('jp-JP', {
+    $translateProvider.translations('jp-jp', {
       COMPANY : "会社",
       TEAM : "チーム",
       COMPANY_HOME : "ホームページ",
@@ -239,13 +239,13 @@ app.config(['$translateProvider',
     var pre_language;
     switch(window.navigator.appName.toLowerCase()) {
       case "netscape":
-        pre_language = window.navigator.language;
+        pre_language = window.navigator.language.toLowerCase();
         break;
       case "microsoft.ie":
-        pre_language = window.navigator.userLanguage;
+        pre_language = window.navigator.userLanguage.toLowerCase();
         break;
       default:
-        pre_language="zh-CN";
+        pre_language="zh-cn";
         break;
     }
     $translateProvider.preferredLanguage(pre_language);

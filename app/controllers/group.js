@@ -378,7 +378,7 @@ exports.getGroupMessage = function(req, res) {
     logo=companyGroup.logo;
     console.log(logo);
   });
-  GroupMessage.find({'team' : tid})
+  GroupMessage.find({'team' : tid}).sort({'_id':-1})
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -449,7 +449,7 @@ exports.getGroupCampaign = function(req, res) {
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
-  Campaign.find({'team' : tid}, function(err, campaign) {
+  Campaign.find({'team' : tid}).sort({'_id':-1}).exec(function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);

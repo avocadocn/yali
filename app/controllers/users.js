@@ -496,7 +496,7 @@ exports.getGroupMessages = function(req, res) {
         */
       }
       GroupMessage.find({'team' :{'$in':team_ids}})
-      .populate('team')
+      .populate('team').sort({'_id':-1})
       .exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {
@@ -610,7 +610,7 @@ exports.getCampaigns = function(req, res) {
       for(var k = 0; k < req.user.group[i].team.length; k ++){
         team_ids.push(req.user.group[i].team[k].id);
       }
-      Campaign.find({'team' : {'$in':team_ids}})
+      Campaign.find({'team' : {'$in':team_ids}}).sort({'_id':-1})
       .exec(function(err, campaign) {
         if(campaign.length > 0) {
           if (err) {

@@ -26,7 +26,7 @@ exports.getGroupMessage = function(req, res) {
   }
   var tid = req.params.teamId;    //小队的id
 
-  GroupMessage.find({'team' : tid})
+  GroupMessage.find({'team' : tid}).sort({'_id':-1})
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -85,7 +85,7 @@ exports.getUserMessage = function(req, res) {
         team_ids.push(req.user.group[i].team[k].id);
       }
       console.log(team_ids);
-      GroupMessage.find({'team' :{'$in':team_ids}})
+      GroupMessage.find({'team' :{'$in':team_ids}}).sort({'_id':-1})
       .exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {

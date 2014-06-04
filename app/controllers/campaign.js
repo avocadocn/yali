@@ -26,7 +26,7 @@ exports.getCompanyCampaign = function(req, res) {
     }
     else if(req.session.role ==='EMPLOYEE'){
         //公司发布的活动都归在虚拟组 gid = 0 里
-        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}, function(err, campaign) {
+        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'_id':-1}).exec(function(err, campaign) {
             if (err) {
                 console.log(err);
                 return res.status(404).send([]);
@@ -189,7 +189,7 @@ exports.getAllCampaign = function(req, res) {
   }
   var cid = req.session.role === 'HR' ? req.user._id : req.user.cid;
   var query_regular = {'cid' : {'$all':[cid.toString()]} };
-  Campaign.find(query_regular).exec(function(err, campaign) {
+  Campaign.find(query_regular).sort({'_id':-1}).exec(function(err, campaign) {
     if(campaign.length > 0) {
       var campaigns = [];
       if (err) {
@@ -241,7 +241,7 @@ exports.getGroupCampaign = function(req, res) {
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
-  Campaign.find({'team' : tid}, function(err, campaign) {
+  Campaign.find({'team' : tid}).sort({'_id':-1}).exec(function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
@@ -390,7 +390,7 @@ function getUserCampaigns(req,res,_in) {
       team_ids.push(req.user.group[i].team[k].id.toString());
     }
   }
-  Campaign.find({'cid' : {'$all':[req.user.cid.toString()]}, 'gid':{'$ne':'0'} }).exec(function(err, campaign) {
+  Campaign.find({'cid' : {'$all':[req.user.cid.toString()]}, 'gid':{'$ne':'0'} }).sort({'_id':-1}).exec(function(err, campaign) {
     if(campaign.length > 0) {
       if (err) {
         return res.send([]);
