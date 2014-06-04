@@ -1,5 +1,5 @@
 .modal-dialog
-  .modal-content
+  .dl-modal
     form(name="search_form")
       .modal-header
         button(class="close" data-dismiss="modal" aria-hidden="true") X
@@ -8,7 +8,7 @@
         .row 按公司名搜索
           hr
         .row
-          label.col-md-2 {{"COMPANY"|translate}}
+          label.col-md-2 请输入{{"COMPANY"|translate}}名:
           .col-md-7
             input.form-control(type="text" name="s_company" ng-model="s_company" required)
           a.btn.btn-default.col-md-2(ng-click="getCompany(s_company)") 搜索公司
@@ -27,7 +27,7 @@
         .row 按小队搜索
           hr
         .row
-          label.col-md-2 {{"TEAM"|translate}}
+          label.col-md-2 请输入{{"TEAM"|translate}}名:
           .col-md-7
             input(type="text" class="form-control" name="s_team" ng-model="s_team" required)
           a.btn.btn-default.col-md-2(ng-click="getTeam(s_team)") 搜索小队
