@@ -3,32 +3,33 @@
     form(name="campaign_form")
       .modal-header
         button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
-        h4.modal-title#myModalLabel {{"SPONSOR"|translate}}
+        h4.modal-title#myModalLabel {{"SPONSOR"|translate}}{{"CAMPAIGN"|translate}}
       .modal-body
           .row
-            .col-md-6
-              label {{"CONTENT"|translate}}
-              input(type="text" class="form-control" name="content" ng-model="content" ng-change="judge()" required)
-            .col-md-6
+            .col-md-12
               label {{"LOCATION"|translate}}
               input(type="text" class="form-control" name="location" ng-model="location" required)
-          .row
+          .row(style="margin-top:20px")
+            .col-md-12
+              label {{"CONTENT"|translate}}
+              textarea.form-control(rows="5" name="content" ng-model="content" ng-change="judge()" required)
+          .row(style="margin-top:20px")
             .col-md-6
               label {{"START_TIME"|translate}}
-                .form-group
+                .form-group(style="margin-top:20px")
                   .row
                     .col-md-6
-                      input.form-control(type="text" ng-model="start_time" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{end_time}}" placeholder="Date" bs-datepicker required)
+                      input.form-control(type="text" ng-model="start_time" name="date" date-format="yy/MM/dd" data-autoclose="0" data-min-date="today" data-max-date="{{end_time}}" placeholder="Date" bs-datepicker required)
                     .col-md-6
-                      input.form-control(type="text" ng-model="start_time" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
+                      input.form-control(type="text" ng-model="start_time" name="time" data-autoclose="0" placeholder="Time" bs-timepicker required)
             .col-md-6
               label {{"END_TIME"|translate}}
-                .form-group
+                .form-group(style="margin-top:20px")
                   .row
                     .col-md-6
-                      input.form-control(type="text" ng-model="end_time" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{start_time || 'today'}}" placeholder="Date" bs-datepicker required)
+                      input.form-control(type="text" ng-model="end_time" name="date" date-format="yy/MM/dd" data-autoclose="0" data-min-date="{{start_time || 'today'}}" placeholder="Date" bs-datepicker required)
                     .col-md-6
-                      input.form-control(type="text" ng-model="end_time" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
+                      input.form-control(type="text" ng-model="end_time" name="time" data-autoclose="0" placeholder="Time" bs-timepicker required)
       .modal-footer
         button(class="btn dl_btn"  data-dismiss="modal") {{"CANCEL"|translate}}
-        button(class="btn dl_btn" ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") {{"CONFIRM"|translate}}
+        button(class="btn dl_btn" ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") {{"SPONSOR"|translate}}
