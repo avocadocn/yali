@@ -57,8 +57,8 @@ block aside
 
   if(role !=='GUESTHR' && role !=='HR')
     include ../partials/group_thumbnail
-    +group_thumbnail(selected_teams,'active',role!=='HR'?'我的兴趣小组':'公司的兴趣小组')
-    +group_thumbnail(unselected_teams,'inactive','未添加兴趣小组')
+    +group_thumbnail(selected_teams,'active',role!=='HR'?"{{'MY'|translate}}{{'TEAM'|translate}}":"{{'COMPANY'|translate}}{{'TEAM'|translate}}")
+    +group_thumbnail(unselected_teams,'inactive',"{{'UNSELECTED_TEAM'|translate}}")
   if(role !=='GUESTHR' && role !=='GUEST')
     span.subtitle.margin_top_15 {{"TEAM_ALBUM"|translate}}
     if(role==='LEADER')

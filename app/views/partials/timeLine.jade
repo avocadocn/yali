@@ -14,12 +14,12 @@ if(timeLines)
           p.subtitle= timeline.head
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline :'/img/icons/default_company_logo.png'}")
-            p= "地点" +":"+ timeline.location
+            p= "{{'LOCATION'|translate}}" +":"+ timeline.location
             if (timeline.group_type !== '虚拟组')
-              p= "类型" +":"+ timeline.group_type
-            p= "内容" +":"+ timeline.content
+              p= "{{'TYPE'|translate}}" +":"+ timeline.group_type
+            p= "{{'CONTENT'|translate}}" +":"+ timeline.content
             if(timeline.provoke.active)
-              p= "赛制" +":"+ timeline.provoke.competition_format
+              p= "{{'FORMATION'|translate}}" +":"+ timeline.provoke.competition_format
           .timeline-footer
             a.nav-link {{"DETAIL"|translate}}
               i.m-icon-swapright.m-icon-white
