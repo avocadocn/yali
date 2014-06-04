@@ -690,7 +690,7 @@ exports.home = function(req, res) {
       for(var i = 0; i < _cg_length; i ++) {
         //下面查找的是该成员加入和未加入的所有active小队
         if(company_groups[i].gid !=='0' && company_groups[i].active==true){
-          if(!user_teams.indexOf(company_groups[i]._id.toString())) {
+          if(user_teams.indexOf(company_groups[i]._id.toString()) > -1) {
             selected_teams.push(company_groups[i]);
           } else {
             unselected_teams.push(company_groups[i]);
