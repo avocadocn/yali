@@ -426,7 +426,7 @@ exports.dealSelectGroup = function(req, res) {
               for( var j =0; j < user.group[i].team.length; j ++) {
                 CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i]._id ,'_id':user.group[i].team[j].id}, function(err, company_group) {
                   company_group.member.push({
-                    'uid':user._id,
+                    '_id':user._id,
                     'nickname':user.nickname,
                     'photo':user.photo
                   });
@@ -1005,17 +1005,132 @@ exports.timeLine = function(req,res){
     console.log(err);
     res.render('partials/timeLine');
   });
-}
+};
 
+//用户加入小组
+exports.joinGroup = function (req, res){
+  var uid = req.user._id.toString();
+  var tid = req.body.tid;
+  User.findOne({
+    _id: uid
+  },
+  function (err, user){
+    if(err)
+      return res.send(err);
+    if(user){
+      CompanyGroup.findOne({
+        _id : tid
+        },
+        function (err,companyGroup) {
+          if(err)
+            return res.send(err);
+          if(companyGroup){
+            //先把个人资料先放入组员中
+            companyGroup.member.push({
+              '_id':user._id,
+              'nickname':user.nickname,
+              'photo':user.photo
+            });
+            //再去找此人是否加过此组件 找到则find为true，并在此组中加入此team
+            var find = false;
+            var team ={'id':companyGroup._id, 'name':companyGroup.name, 'leader': false, 'logo':companyGroup.logo};
+            for(var i=0;i<user.group.length;i++){
+              if(companyGroup.gid=== user.group[i]._id){
+                user.group[i].team.push(team);
+                find=true;
+                break;
+              }
+            }
+            //如果没找到，新建一个带此team的组push到用户的group里
+            if(find===false){
+              user.group.push({
+                '_id': companyGroup.gid,
+                'group_type': companyGroup.group_type,
+                'entity_type': companyGroup.entity_type,
+                'team': team
+              });
+            }
+            //保存小组
+            companyGroup.save(function (err){
+              if(err){
+                console.log(err);
+                return res.send({result: 0, msg:'保存出错'});
+              }
+            });
+          }
+        });
+      //保存用户
+      user.save(function (err){
+        if(err){
+          console.log(err);
+          return res.send({result: 0, msg:'保存出错'});
+        }
+      });
+    }
+    return res.send({result: 1, msg:'保存用户成功'});
+  });
+};
 
-
-
-
-
-
-
-
-
+//用户退出小组
+exports.quitGroup = function (req, res){
+  var uid = req.user._id.toString();
+  var tid = req.body.tid;
+  CompanyGroup.findOne({
+    _id: tid
+    },
+    function (err, companyGroup){
+      if (err)
+        return res.send(err);
+      if(companyGroup){
+         //从companyGroup的memeber里删除此人
+        for(var i =0; i<companyGroup.member.length; i++){
+          if(companyGroup.member[i]._id.toString() === uid){
+            companyGroup.member.splice(i,1);
+            break;
+          }
+        }
+        //从companyGroup的leader里删除此人
+        for(var i =0; i<companyGroup.leader.length; i++){
+          if(companyGroup.leader[i]._id.toString() === uid){
+            companyGroup.leader.splice(i,1);
+            break;
+          }
+        }
+        companyGroup.save(function (err) {
+          if(err){
+            return res.send(err);
+          } 
+          else{
+            User.findOne({_id: uid},
+              function (err, user){
+                if(user){
+                  //从user的group的team中删除此小组
+                  for(var j=0;j<user.group.length;j++){
+                    for(var k=0; k<user.group[j].team.length;k++){
+                      if(user.group[j].team[k].id.toString() === tid){
+                        user.group[j].team.splice(k,1);
+                        break;
+                      }
+                    }
+                  }
+                  user.save(function (err) {
+                    if(err){
+                      return res.send(err);
+                    }
+                    else
+                      return res.send({result:1, msg: '退出小组成功！'});
+                  });
+                }
+                else
+                  return res.send({result: 0, msg:'查无此人'});
+            });
+          }
+        });
+      }
+      else
+        return res.send({result: 0, msg:'无此小组'});
+    });
+};
 
 //获取账户信息
 exports.getAccount = function (req, res) {

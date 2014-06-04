@@ -205,6 +205,26 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         $rootScope.team_opposite = team;
     };
 
+    //加入小队
+    $rootScope.joinGroup = function(){
+        try{
+            $http({
+                method:'post',
+                url: '/users/joinGroup',
+                data:{
+                    tid : $rootScope.teamId
+                }
+            }).success(function(data,status){
+                window.location.reload();
+            }).error(function(data,status){
+                alert('加入小队失败.');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+
 }]);
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
@@ -393,7 +413,28 @@ tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', 
 
     $scope.userDetail = function(index) {
         $scope.num = index;
-    }
+    };
+
+
+    //退出小队
+    $scope.quitGroup = function(){
+        try{
+            $http({
+                method:'post',
+                url: '/users/quitGroup',
+                data:{
+                    tid : $scope.teamId
+                }
+            }).success(function(data,status){
+                window.location.reload();
+            }).error(function(data,status){
+                alert('退出失败.');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
 }]);
 
 tabViewGroup.controller('infoController', ['$http', '$scope',function($http, $scope) {

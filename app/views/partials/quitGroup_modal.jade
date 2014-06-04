@@ -1,0 +1,11 @@
+.modal-dialog
+  .modal-content
+    form(name="quit_form")
+      .modal-header
+        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
+        h4.modal-title#myModalLabel {{"CONFIRM"|translate}}
+      .modal-body
+        span= '您确定要退出' +tname +'吗？'
+      .modal-footer
+        button(class="btn dl_btn"  data-dismiss="modal") {{"CANCEL"|translate}}
+        button(class="btn dl_btn" ng-click='quitGroup()' data-dismiss="modal" ng-disabled="quit_form.$invalid") {{"CONFIRM"|translate}}
