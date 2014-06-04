@@ -253,7 +253,7 @@ app.config(['$translateProvider',
 ]);
 
 app.run(['$translate','$rootScope', function ($translate,$rootScope) {
-    $rootScope.languages = [{'language':'中文','key':'zh-CN'},{'language':'日本语','key':'jp-JP'}];
+    $rootScope.languages = [{'language':'中文','key':'zh-cn'},{'language':'日本语','key':'jp-jp'}];
     $rootScope.changeLanguage = function (langKey) {
         $translate.use(langKey);
     };
