@@ -88,12 +88,11 @@ li {
   border-style: solid;
   line-height: 1;
   position: relative;
-  padding: 1px 2px;
   font-size: 12px;
   border-radius: 1px;
 }
 .close_btn:hover {
-  background-color: #2980b9;
+  background-color: #ce760a;
   border-color: #ce760a;
 }
 .dl_input.editToggle[disabled='disabled'] {

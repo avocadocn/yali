@@ -3,8 +3,9 @@ div
   span.subtitle(ng-if="!company") {{"TEAM_LEADER"|translate}}
   .row(ng-if="!company")
     .col-md-2(ng-repeat="leader in leaders")
-      img.center-block.size_56(ng-src='{{leader.photo}}')
-      p.text-center {{leader.realname}}
+      a(href="/users/home/{{leader._id}}")
+        img.center-block.size_56(ng-src='{{leader.photo}}')
+      a(href="/users/home/{{leader._id}}").text-center {{leader.nickname}}
   span.subtitle {{"MEMBER"|translate}}
   .row
     .col-md-2(ng-repeat="member in members")
@@ -13,8 +14,9 @@ div
       span(ng-if="company")
         a.center-block(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel") {{member.realname}}
       span(ng-if="!company")
-        img.center-block.size_56(ng-src='{{member.photo}}')
+        a(href="/users/home/{{member._id}}")
+          img.center-block.size_56(ng-src='{{member.photo}}')
       span(ng-if="!company")
-        a.center-block {{member.nickname}}
+        a.center-block(href="/users/home/{{member._id}}") {{member.nickname}}
 div(class="modal fade" id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   include user_detail_modal
