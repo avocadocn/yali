@@ -12,9 +12,14 @@ html
     link(rel="stylesheet" href="/css/views/group_select.css")
     block headExt
   body
-    include ../partials/user_nav
-
-    block content
+    .wrap
+      include ../partials/user_nav
+      .dl_container
+        .row.margin_top_30
+          .main
+            block content
+          .side
+            block side
 
     include ../../partials/footer
 
