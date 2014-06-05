@@ -297,12 +297,34 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             $scope.infoButtonStatus = '保存';
         }
      };
-     //获取
+     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
     $http.get('/group/getCompanyGroups').success(function(data, status) {
-        $scope.team_lists = data.teams;
+        $scope.team_lists = data.teams;//公司的所有team
         $scope.cid = data.cid;
         $scope.tname= data.name;
         $scope.role = data.role;
+        $scope.group = data.group;//用户的group
+        if($scope.role === 'EMPLOYEE'){
+            for(var i = 0; i < $scope.team_lists.length; i ++) {
+                $scope.team_lists[i].belong = false;
+                for(var j=0; j< $scope.group.length; j++){
+                    //如果已找到则跳出此循环标记下一个team
+                    if($scope.team_lists[i].belong === true)
+                        break;
+                    //如果此team的gid与此group的_id不同 则找下一个group
+                    if($scope.team_lists[i].gid !== $scope.group[j]._id)
+                        continue;
+                    else{
+                        for (var k = 0; k < $scope.group[j].team.length; k++) {
+                            if($scope.team_lists[i]._id === $scope.group[j].team[k].id.toString()){
+                                $scope.team_lists[i].belong = true;
+                                break;
+                            }
+                        };
+                    }
+                }
+            }
+        }
     });
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
@@ -448,6 +470,47 @@ tabViewCompany.controller('AccountFormController',['$scope','$http',function($sc
             console.log(e);
         }
     };
+    //加入小队
+    $scope.joinGroup = function(tid){
+        try{
+            $http({
+                method:'post',
+                url:'/users/joinGroup',
+                data:{
+                    'tid':tid
+                }
+            }).success(function(data,status){
+                alert('加入小组成功');
+                window.location.reload();
+            }).error(function(data,status){
+                alert('加入小组失败');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+    //退出小队
+    $scope.quitGroup = function(tid){
+        try{
+            $http({
+                method:'post',
+                url: '/users/quitGroup',
+                data:{
+                    tid : tid
+                }
+            }).success(function(data,status){
+                alert('退出小队成功');
+                window.location.reload();
+            }).error(function(data,status){
+                alert('退出失败.');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+
 }]);
 
 tabViewCompany.controller('PasswordFormController', ['$http','$scope', function($http,$scope) {

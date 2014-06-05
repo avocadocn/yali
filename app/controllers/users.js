@@ -847,9 +847,6 @@ exports.joinCampaign = function (req, res) {
   var cid = req.user.cid.toString();
   var uid = req.user._id.toString();
   var campaign_id = req.body.campaign_id; //该活动的id
-
-  console.log(cid,uid,campaign_id);
-
   var tid = req.session.nowtid;              //该活动所属小队的id
   Campaign.findOne({
     _id : campaign_id

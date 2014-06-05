@@ -129,6 +129,13 @@ div
             if(role === 'HR')
               .col-md-2.col-sm-2.col-xs-2.padding_0
                 button.btn.dl_btn.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
+            if(role === 'EMPLOYEE')
+              //不属于显示加组按钮
+              .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='!team.belong')
+                button.btn.dl_btn.pull-right(ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
+              //属于则显示退组按钮
+              .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='team.belong')
+                button.btn.dl_btn.pull-right(ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}  
           hr
       //只有HR可见inactive的team 并可打开
       .form-group(ng-if="!team.active")

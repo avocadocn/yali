@@ -359,7 +359,9 @@ exports.getCompanyGroups = function(req, res) {
     } else {
       return res.send({
         'teams':teams,
-        'cid':req.session.nowcid
+        'group' : req.user.group,
+        'cid':req.session.nowcid,
+        'role':req.session.role
       });
     }
   });
