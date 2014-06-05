@@ -1034,9 +1034,11 @@ exports.joinGroup = function (req, res){
             //再去找此人是否加过此组件 找到则find为true，并在此组中加入此team
             var find = false;
             var team ={'id':companyGroup._id, 'name':companyGroup.name, 'leader': false, 'logo':companyGroup.logo};
+            console.log(team);
             for(var i=0;i<user.group.length;i++){
               if(companyGroup.gid=== user.group[i]._id){
                 user.group[i].team.push(team);
+                console.log(user.group[i])
                 find=true;
                 break;
               }
@@ -1054,20 +1056,20 @@ exports.joinGroup = function (req, res){
             companyGroup.save(function (err){
               if(err){
                 console.log(err);
-                return res.send({result: 0, msg:'保存出错'});
+                return res.send({result: 0, msg:'保存小组出错'});
               }
             });
+            //保存用户
+            user.save(function (err){
+              if(err){
+                console.log(err);
+                return res.send({result: 0, msg:'保存用户出错'});
+              }
+              return res.send({result: 1, msg:'保存用户成功'})
+            });
           }
-        });
-      //保存用户
-      user.save(function (err){
-        if(err){
-          console.log(err);
-          return res.send({result: 0, msg:'保存出错'});
-        }
       });
     }
-    return res.send({result: 1, msg:'保存用户成功'});
   });
 };
 
