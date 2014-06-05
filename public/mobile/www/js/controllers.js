@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
 // html template get user info from $rootScope
 .controller('AppCtrl', function($scope, $rootScope, Authorize) {
   $scope.logout = Authorize.logout;
-  $rootScope.base_url = 'http://www.donler.cn:3000';
+  $rootScope.base_url = 'http://www.donler.cn';
 })
 
 
