@@ -64,8 +64,10 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
       $scope.role = data.role;
       $scope.companyLogo = data.companyLogo;
     });
-
+    var toggle = false;
     $scope.vote = function(provoke_message_id, status, index) {
+        toggle = !toggle;
+        console.log(toggle);
          try {
             $http({
                 method: 'post',

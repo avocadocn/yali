@@ -1,6 +1,6 @@
 div.margin_15(ng-repeat="group_message in group_messages")
   //若是公司动态
-  div(ng-if="!group_message.provoke.active && group_message.group.gid[0] =='0'") 
+  div(ng-if="!group_message.provoke.active && group_message.group.gid[0] =='0'")
     .row
       .col-md-2.col-sm-3.col-xs-3
         img.size_90(ng-src='{{companyLogo}}')
@@ -14,7 +14,7 @@ div.margin_15(ng-repeat="group_message in group_messages")
             span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
             p.message_label {{group_message.content}}
 
-  div(ng-if="group_message.group.gid[0] !='0'") 
+  div(ng-if="group_message.group.gid[0] !='0'")
     .row
       .col-md-2.col-sm-3.col-xs-3
         img.size_90(ng-src='{{group_message.logo}}')
@@ -48,7 +48,7 @@ div.margin_15(ng-repeat="group_message in group_messages")
                   button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{"NEGATIVE"|translate}} {{group_message.negative}}
               div.message_label(ng-if="group_message.provoke_accept")
                 .row
-                  button.dl_btn(ng-click="responseProvoke(group_message._id)") {{"FACE"|translate}}        
+                  button.dl_btn(ng-click="responseProvoke(group_message._id)") {{"FACE"|translate}}
          div(ng-if="group_message.host")
           span {{"OWN_TEAM"|translate}}
           a {{group_message.provoke.camp[0].tname}}
@@ -69,6 +69,6 @@ div.margin_15(ng-repeat="group_message in group_messages")
                 .col-md-3
                   div.message_label(ng-if="group_message.provoke.active && role=='OWNER'")
                     .row(ng-if="!group_message.provoke.start_confirm")
-                      button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{"POSITIVE"|translate}} {{group_message.positive}}
-                      button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{"NEGATIVE"|translate}} {{group_message.negative}}
+                      button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{group_message.positive == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.positive}}
+                      button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{group_message.negative == 1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.negative}}
   hr

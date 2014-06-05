@@ -753,7 +753,10 @@ exports.vote = function (req, res) {
   var cid = req.session.nowcid ? req.session.nowcid : req.user.cid;
   var uid = req.session.nowuid ? req.session.nowuid : req.user._id;
   var aOr = req.body.aOr;
+  var value = 1;
   var provoke_message_id = req.body.provoke_message_id;
+  var positive_already = false;
+  var negative_already = false;
 
   Competition.findOne({
     'provoke_message_id' : provoke_message_id
@@ -766,28 +769,37 @@ exports.vote = function (req, res) {
           for(var i = 0; i < competition.camp[j].vote.positive_member.length; i ++) {
             if(competition.camp[j].vote.positive_member[i].uid.toString() === uid.toString()) {
               console.log('positive');
-              return res.send({
-                'msg':'已经投过票!'
-              });
+              positive_already = true;
+              value = -1;
+              if(aOr) competition.camp[j].vote.positive_member.splice(i,1);
+              break;
             }
           }
-
           for(var i = 0; i < competition.camp[j].vote.negative_member.length; i ++) {
             if(competition.camp[j].vote.negative_member[i].uid.toString() === uid.toString()) {
               console.log('negative');
-              return res.send({
-                'msg':'已经投过票!'
-              });
+              negative_already = true;
+              value = -1;
+              if(!aOr) competition.camp[j].vote.negative_member.splice(i,1);
+              break;
             }
           }
-
-
           if (aOr) {
-            competition.camp[j].vote.positive ++;
-            competition.camp[j].vote.positive_member.push({'cid':cid,'uid':uid});
+            if(negative_already){
+              return res.send({"msg":"你已经反对过啦!"});
+            }
+            competition.camp[j].vote.positive +=value;
+            if(value===1){
+              competition.camp[j].vote.positive_member.push({'cid':cid,'uid':uid});
+            }
           } else {
-            competition.camp[j].vote.negative ++;
-            competition.camp[j].vote.negative_member.push({'cid':cid,'uid':uid});
+            if(positive_already) {
+              return res.send({"msg":"你已经赞过啦!"});
+            }
+            competition.camp[j].vote.negative +=value;
+            if(value===1){
+              competition.camp[j].vote.negative_member.push({'cid':cid,'uid':uid});
+            }
           }
           break;
         }
@@ -808,12 +820,12 @@ exports.vote = function (req, res) {
               for(var i = 0; i < group_message.provoke.camp.length; i ++) {
                 if(group_message.provoke.camp[i].tid.toString() === tid.toString()) {
                   if (aOr) {
-                    group_message.provoke.camp[i].vote.positive ++;
-                    positive = group_message.provoke.camp[i].vote.positive;
+                    group_message.provoke.camp[i].vote.positive +=value;
                   } else {
-                    group_message.provoke.camp[i].vote.negative ++;
-                    negative = group_message.provoke.camp[i].vote.negative;
+                    group_message.provoke.camp[i].vote.negative +=value;
                   }
+                  positive = group_message.provoke.camp[i].vote.positive;
+                  negative = group_message.provoke.camp[i].vote.negative;
                   break;
                 }
               }
@@ -856,7 +868,8 @@ exports.joinCampaign = function (req, res) {
         campaign.member.push({
           'cid':cid,
           'uid':uid,
-          'nickname':req.user.nickname
+          'nickname':req.user.nickname,
+          'photo':req.user.photo
         });
         campaign.save(function (err) {
           if(err) {
