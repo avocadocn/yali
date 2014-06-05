@@ -12,6 +12,7 @@ var photoBodyParser = express.bodyParser({
 module.exports = function(app, passport) {
 
     app.get('/users/signin', users.signin);
+    app.get('/users/signin/:status', users.signin);
     app.get('/users/signout', authorization.requiresLogin, users.signout);
     app.get('/users/forgetPwd', users.renderForgetPwd);
     app.post('/users/forgetPassword', users.forgetPwd);
@@ -19,7 +20,7 @@ module.exports = function(app, passport) {
     app.post('/users/resetPassword', users.resetPwd);
     // Setting the local strategy route
     app.post('/users/session', passport.authenticate('user', {
-        failureRedirect: '/users/signin',
+        failureRedirect: '/users/signin/failure',
         failureFlash: true
     }), users.loginSuccess);
 

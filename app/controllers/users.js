@@ -44,13 +44,21 @@ var encrypt = require('../middlewares/encrypt'),
  * Show login form
  */
 exports.signin = function(req, res) {
+  var msg = {
+    title : "用户登录"
+  };
+  if(req.params.status){
+    switch(req.params.status){
+      case 'failure':
+        msg.msg = "用户名不存在或者密码错误!";
+        break;
+      default:break;
+    }
+  }
   if(req.user) {
     res.redirect('/users/home');
   } else {
-    console.log('no');
-    res.render('users/signin', {
-      title: 'Signin'
-    });
+    res.render('users/signin', msg);
   }
 };
 /*
@@ -166,8 +174,7 @@ exports.authorize = function(req, res, next) {
   else if(req.params.userId && req.profile.cid.toString() === req.user.cid.toString()){
     req.session.role = 'PARTNER';
     req.session.nowuid = req.params.userId;
-  }
-  else{
+  }else{
     return res.send(403, 'forbidden!');
   }
   next();
