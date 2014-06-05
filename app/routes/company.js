@@ -25,7 +25,9 @@ module.exports = function(app, passport) {
     app.post('/company/forgetPassword', company.forgetPwd);
     app.get('/company/resetPwd', company.renderResetPwd);
     app.post('/company/resetPassword', company.resetPwd);
-    
+    app.post('/company/mailCheck', company.mailCheck);
+
+
     app.get('/company/validate', company.validate);//点击公司激活链接
 
     app.get('/company/validate/error', company.validateError);

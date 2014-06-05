@@ -18,6 +18,14 @@ a {
 li {
   list-style: none;
 }
+.dl_tip {
+  float: left;
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 8px;
+  height: 10px;
+  width: 200px;
+}
 .dl-modal {
   position: relative;
   background-color: #fff;

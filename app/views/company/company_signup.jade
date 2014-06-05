@@ -28,7 +28,7 @@ block content
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.address.$invalid && signup_form.address.$dirty}")
           label.col-xs-3.control-label(for="address") *地址
           .col-xs-9
-            input#address.form-control.dl_full_control(type="text" name="address" ng-model= "address" tooltip-placement="right" tooltip="{{signup_form.address.$invalid && signup_form.address.$dirty ? '请输入地址' : ''}}" required)
+            input#address.form-control.dl_full_control(type="text" name="address" ng-model= "address" tooltip-placement="right"  required)
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.contacts.$invalid && signup_form.contacts.$dirty}")
           label.col-xs-3.control-label(for="contacts") *联系人
           .col-xs-9
@@ -45,15 +45,16 @@ block content
           label.col-xs-3.control-label(for="phone") 手机号码
           .col-xs-9
             input#phone.form-control.dl_full_control(type="number" name="phone" ng-minlength=11 ng-maxlength=11 tooltip-placement="right" tooltip="{{signup_form.phone.$invalid && signup_form.phone.$dirty ? '请填写您11位的手机号码，我们的工作人员可能与您联系':''}}" ng-model= "phone")
-        .form-group.dl_sm_group(ng-class="{'has-error':signup_form.email.$invalid && signup_form.email.$dirty}")
+        .form-group.dl_sm_group(ng-class="{'has-error':!reg}")
           label.col-xs-3.control-label(for="email_host") *电子邮箱
           .col-xs-9
-            input#email.form-control.dl_form_control(type="email" name="email" ng-model= "email" tooltip-placement="right" tooltip="{{signup_form.email.$invalid && signup_form.email.$dirty ? '请保证您的邮箱填写正确，动梨的激活链接将发送到您的信箱':''}}" required)
+            input#email.form-control.dl_form_control(type="text" name="email" ng-minlength=3 ng-model= "email" ng-blur="mailCheck()" ng-change="mailRegCheck()" required)
+            span#check.dl_tip(ng-if="ok") {{check_value}}
         if is_need_invite
           .form-group.dl_sm_group(ng-class="{'has-error':signup_form.invite_code.$invalid && signup_form.invite_code.$dirty}")
             label.col-xs-3.control-label(for="invite_code") *邀请码
             .col-xs-9
-              input#invite_code.form-control.dl_full_control(type="text" name="invite_code" placeholder="请输入邀请码" ng-model= "invite_code" tooltip-placement="right" tooltip="{{signup_form.invite_code.$invalid && signup_form.invite_code.$dirty ? '请输入正确的邀请码':''}}" required)
+              input#invite_code.form-control.dl_full_control(type="text" name="invite_code" placeholder="请输入邀请码" ng-model= "invite_code" tooltip-placement="right"  required)
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.checkbox.$invalid && signup_form.checkbox.$dirty}")
           .col-xs-offset-3.col-xs-9
             label.dl_checkbox
@@ -61,7 +62,7 @@ block content
               | 我已阅读并同意<a href="#">服务条款</a>
         .form-group.dl_sm_group
           .col-xs-offset-3.col-xs-9
-            button.btn.btn-primary.dl_btn.btn_submit.dl_full_control(ng-disabled="signup_form.$invalid") 提交申请
+            button#submit.btn.btn-primary.dl_btn.btn_submit.dl_full_control(ng-disabled="!check || !reg || signup_form.$invalid") 提交申请
 append footExt
   script(src='/js/controllers/companySignUp.js')
   script(src='/lib/linkage-selector/linkage-selector.js')

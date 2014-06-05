@@ -457,6 +457,21 @@ exports.validate = function(req, res) {
 };
 
 
+///防止邮箱重复注册
+exports.mailCheck = function(req, res) {
+    var login_email = req.body.login_email;
+    Company.findOne({'login_email':login_email}, function(err, company) {
+        if(err || company) {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+    });
+}
+
+
+
+
 //这段代码的err处理有问题-M
 /**
  * 创建公司基本信息
