@@ -1,17 +1,10 @@
 angular.module('starter.controllers', [])
 
 // html template get user info from $rootScope
-.controller('AppCtrl', function($scope, Authorize) {
+.controller('AppCtrl', function($scope, Authorize, Global) {
   $scope.logout = Authorize.logout;
+  $scope.base_url = Global.base_url;
 })
-
-
-
-
-
-
-
-
 
 
 
@@ -33,23 +26,11 @@ angular.module('starter.controllers', [])
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.controller('CampaignListCtrl', function($scope, $rootScope, Authorize, Campaign) {
+.controller('CampaignListCtrl', function($scope, $rootScope, Authorize, Campaign, Global) {
 
   Authorize.authorize();
+
+  $scope.base_url = Global.base_url;
 
   $rootScope.campaign_owner = 'user';
 
@@ -69,29 +50,11 @@ angular.module('starter.controllers', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Authorize, Campaign, PhotoAlbum, Map) {
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Authorize, Campaign, PhotoAlbum, Map, Global) {
 
   Authorize.authorize();
+
+  $scope.base_url = Global.base_url;
 
   var campaigns = Campaign.getCampaignList();
 
@@ -145,30 +108,6 @@ angular.module('starter.controllers', [])
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .controller('ScheduleListCtrl', function($scope, Authorize, Schedule) {
 
   Authorize.authorize();
@@ -182,19 +121,6 @@ angular.module('starter.controllers', [])
 
   $scope.quit = Schedule.quit(getSchedules);
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .controller('DynamicListCtrl', function($scope, Authorize, Dynamic) {
@@ -212,20 +138,6 @@ angular.module('starter.controllers', [])
   });
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .controller('GroupListCtrl', function($scope, $rootScope, $http, Authorize, Group) {
@@ -251,18 +163,11 @@ angular.module('starter.controllers', [])
 })
 
 
-
-
-
-
-
-
-
-
-
 .controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize, Campaign, Global) {
 
   Authorize.authorize();
+
+  $scope.base_url = Global.base_url;
 
   $rootScope.campaign_owner = 'group';
 
@@ -311,15 +216,6 @@ angular.module('starter.controllers', [])
 })
 
 
-
-
-
-
-
-
-
-
-
 .controller('TimelineCtrl', function($scope, $rootScope, Authorize, Timeline) {
 
   Authorize.authorize();
@@ -331,19 +227,11 @@ angular.module('starter.controllers', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-.controller('UserInfoCtrl', function($scope, $rootScope, Authorize, User) {
+.controller('UserInfoCtrl', function($scope, $rootScope, Authorize, User, Global) {
 
   Authorize.authorize();
+
+  $scope.base_url = Global.base_url;
 
   User.getInfo($rootScope._id, function(user) {
     $scope.user = user;
@@ -352,19 +240,11 @@ angular.module('starter.controllers', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-.controller('OtherUserInfoCtrl', function($scope, $stateParams, Authorize, User) {
+.controller('OtherUserInfoCtrl', function($scope, $stateParams, Authorize, User, Global) {
 
   Authorize.authorize();
+
+  $scope.base_url = Global.base_url;
 
   User.getInfo($stateParams.uid, function(user) {
     $scope.user = user;
@@ -372,11 +252,6 @@ angular.module('starter.controllers', [])
 
 
 })
-
-
-
-
-
 
 
 .directive('thumbnailPhotoDirective', function() {
