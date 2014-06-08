@@ -1,9 +1,8 @@
 angular.module('starter.controllers', [])
 
 // html template get user info from $rootScope
-.controller('AppCtrl', function($scope, $rootScope, Authorize) {
+.controller('AppCtrl', function($scope, Authorize) {
   $scope.logout = Authorize.logout;
-  $rootScope.base_url = 'http://www.donler.cn';
 })
 
 
@@ -261,7 +260,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize, Campaign) {
+.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize, Campaign, Global) {
 
   Authorize.authorize();
 
@@ -298,7 +297,7 @@ angular.module('starter.controllers', [])
 
 
   $scope.dynamic = function() {
-    $http.get($rootScope.base_url + '/group/getGroupMessages/' + $scope.group._id).
+    $http.get(Global.base_url + '/group/getGroupMessages/' + $scope.group._id).
       success(function(data, status, headers, config) {
         $scope.dynamic_list = data.group_messages;
         $scope.template = $scope.templates[2];
