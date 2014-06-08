@@ -2,19 +2,18 @@
 
 
 
-var base_url = 'http://www.donler.cn:3000';
-
-
-
-
 angular.module('starter.services', [])
 
 
+.factory('Global', function() {
+  var base_url = 'http://www.donler.cn:3000';
 
+  return {
+    base_url: base_url
+  };
+})
 
-
-
-.factory('Authorize', function($state, $http) {
+.factory('Authorize', function($state, $http, Global) {
 
 
   /**
@@ -37,7 +36,7 @@ angular.module('starter.services', [])
 
   var login = function($scope, $rootScope) {
     return function(username, password) {
-      $http.post(base_url + '/users/login', { username: username, password: password })
+      $http.post(Global.base_url + '/users/login', { username: username, password: password })
       .success(function(data, status, headers, config) {
         if (data.result === 1) {
           _authorize = true;
@@ -59,7 +58,7 @@ angular.module('starter.services', [])
   };
 
   var logout = function() {
-    $http.get(base_url + '/users/logout')
+    $http.get(Global.base_url + '/users/logout')
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
         _authorize = false;
@@ -77,19 +76,7 @@ angular.module('starter.services', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-.factory('Campaign', function($http) {
+.factory('Campaign', function($http, Global) {
 
   var campaign_list = [];
 
@@ -112,7 +99,7 @@ angular.module('starter.services', [])
 
   // callback(campaign_list)
   var getUserCampaigns = function(callback) {
-    $http.get(base_url + '/users/campaigns')
+    $http.get(Global.base_url + '/users/campaigns')
     .success(function(data, status, headers, config) {
       campaign_list = data.data;
       setTime();
@@ -122,7 +109,7 @@ angular.module('starter.services', [])
 
   // callback(campaign_list)
   var getGroupCampaigns = function(group_id, callback) {
-    $http.get(base_url + '/group/' + group_id + '/campaigns')
+    $http.get(Global.base_url + '/group/' + group_id + '/campaigns')
     .success(function(data, status, headers, config) {
       campaign_list = data.data;
       setTime();
@@ -132,7 +119,7 @@ angular.module('starter.services', [])
 
   var join = function(callback) {
     return function(id) {
-      $http.post(base_url + '/users/joinCampaign', { campaign_id: id })
+      $http.post(Global.base_url + '/users/joinCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback();
       });
@@ -141,7 +128,7 @@ angular.module('starter.services', [])
 
   var quit = function(callback) {
     return function(id) {
-      $http.post(base_url + '/users/quitCampaign', { campaign_id: id })
+      $http.post(Global.base_url + '/users/quitCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback();
       });
@@ -159,21 +146,11 @@ angular.module('starter.services', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-.factory('Schedule', function($http) {
+.factory('Schedule', function($http, Global) {
 
   // callback(schedule_list)
   var getSchedules = function(callback) {
-    $http.get(base_url + '/users/schedules')
+    $http.get(Global.base_url + '/users/schedules')
     .success(function(data, status, headers, config) {
       callback(data.data);
     });
@@ -181,7 +158,7 @@ angular.module('starter.services', [])
 
   var quit = function(callback) {
     return function(id) {
-      $http.post(base_url + '/users/quitCampaign', { campaign_id: id })
+      $http.post(Global.base_url + '/users/quitCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback();
       });
@@ -196,24 +173,10 @@ angular.module('starter.services', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.factory('Dynamic', function($http) {
+.factory('Dynamic', function($http, Global) {
 
   var getDynamics = function(callback) {
-    $http.get(base_url + '/users/getGroupMessages')
+    $http.get(Global.base_url + '/users/getGroupMessages')
     .success(function(data, status, headers, config) {
       callback(data.group_messages);
     });
@@ -222,7 +185,7 @@ angular.module('starter.services', [])
   // callback(positiveCount, negativeCount)
   var vote = function(dynamic_list, callback) {
     return function(provoke_dynamic_id, status, index) {
-      $http.post(base_url + '/users/vote', {
+      $http.post(Global.base_url + '/users/vote', {
           provoke_message_id: provoke_dynamic_id,
           aOr: status,
           tid: dynamic_list[index].my_team_id
@@ -241,20 +204,10 @@ angular.module('starter.services', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-.factory('Group', function($http) {
+.factory('Group', function($http, Global) {
 
   var getGroups = function(callback) {
-    $http.get(base_url + '/users/groups')
+    $http.get(Global.base_url + '/users/groups')
     .success(function(data, status, headers, config) {
       callback(data.joined_groups, data.unjoin_groups);
     });
@@ -268,22 +221,11 @@ angular.module('starter.services', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-.factory('PhotoAlbum', function($http) {
+.factory('PhotoAlbum', function($http, Global) {
 
   // callback(photos)
   var getPhotoList = function(photo_album_id, callback) {
-    $http.get(base_url + '/photoAlbum/' + photo_album_id + '/photolist')
+    $http.get(Global.base_url + '/photoAlbum/' + photo_album_id + '/photolist')
     .success(function(data, status) {
       callback(data.data);
     });
@@ -292,7 +234,7 @@ angular.module('starter.services', [])
 
   var deletePhoto = function(photo_album_id, callback) {
     return function(photo_id) {
-      $http.delete(base_url + '/photoAlbum/' + photo_album_id + '/photo/' + photo_id)
+      $http.delete(Global.base_url + '/photoAlbum/' + photo_album_id + '/photo/' + photo_id)
       .success(function(data, status) {
         callback();
       });
@@ -301,7 +243,7 @@ angular.module('starter.services', [])
 
   var commentPhoto = function(photo_album_id, callback) {
     return function(photo_id, comment) {
-      $http.put(base_url + '/photoAlbum/' + photo_album_id + '/photo/' + photo_id, {
+      $http.put(Global.base_url + '/photoAlbum/' + photo_album_id + '/photo/' + photo_id, {
         comment: comment
       })
       .success(function(data, status) {
@@ -320,25 +262,11 @@ angular.module('starter.services', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.factory('User', function($http) {
+.factory('User', function($http, Global) {
 
   // callback(user)
   var getInfo = function(user_id, callback) {
-    $http.post(base_url + '/users/info', { _id: user_id })
+    $http.post(Global.base_url + '/users/info', { _id: user_id })
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
         callback(data.user);
@@ -351,15 +279,6 @@ angular.module('starter.services', [])
   };
 
 })
-
-
-
-
-
-
-
-
-
 
 
 .factory('Map', function() {
@@ -399,21 +318,11 @@ angular.module('starter.services', [])
 })
 
 
-
-
-
-
-
-
-
-
-
-
-.factory('Timeline', function($http) {
+.factory('Timeline', function($http, Global) {
 
   // callback(time_lines)
   var getUserTimeline = function(callback) {
-    $http.get(base_url + '/users/getTimelineForApp')
+    $http.get(Global.base_url + '/users/getTimelineForApp')
     .success(function(data, status) {
       callback(data.time_lines);
     });

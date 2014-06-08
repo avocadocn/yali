@@ -1,12 +1,15 @@
 extends layouts/user_base
 
 block content
+  div(ng-app="campaignApp")
     p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
     p {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：#{campaign.content}
     p {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：#{campaign.location}
-    p {{"START_TIME"|translate}} ：#{campaign.start_time}
-    p {{"CAMPAIGN"|translate}}{{"MEMBER"|translate}}：
+    p {{"START_TIME"|translate}}：#{campaign.start_time}
+    //button.dl_btn.dl_btn_small(ng-controller="campaignController" ng-click="joinCampaign(#{campaign._id})") {{"JOIN"|translate}}
+    //button.dl_btn.dl_btn_small(ng-controller="campaignController" ng-click="quitCampaign(#{campaign._id})") {{"QUIT"|translate}}
     .row
+      p {{"CAMPAIGN"|translate}}{{"MEMBER"|translate}}：
       if(campaign.member.length>0)
         - for(var i = 0; i < campaign.member.length; i ++)
           .col-xs-2
@@ -15,9 +18,10 @@ block content
       else
         p.subtitle 该活动还没有人参加哦!
 block side
-  p.subtitle.pull-left 活动精彩照片
+  span.subtitle.pull-left 活动精彩照片
   if(role!=='PARTNER')
-    a(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传照片
+    a.dl_btn.dl_btn_medium(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传活动照片
+
   input#photo_album_id(type="hidden" name="photo_album_id" value="#{campaign.photo_album.pid}")
   div#photo_list(ng-controller="PhotoListCtrl")
     div(ng-repeat="photo in photos")
@@ -25,3 +29,4 @@ block side
 
 append footExt
   script(src="/js/photo_thumbnail.js")
+  script(src="/js/controllers/campaign.js")

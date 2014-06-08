@@ -37,12 +37,15 @@ li {
 .dl_container {
   width: 960px;
   margin: auto;
+  padding-top: 15px;
 }
 .dl_container .main {
   width: 720px;
+  float: left;
 }
 .dl_container .side {
   width: 240px;
+  float: left;
 }
 .dl_word_break {
   word-break: break-all;
@@ -95,6 +98,10 @@ li {
 .dl_btn:hover {
   background-color: #2980b9;
   border-color: #2980b9;
+}
+.dl_btn_medium {
+  width: 120px;
+  height: 40px;
 }
 .dl_btn_small {
   padding: 5px 19px;
