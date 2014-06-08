@@ -1,4 +1,4 @@
-div.margin_15(ng-repeat="group_message in group_messages")
+.dl_messagebox(ng-repeat="group_message in group_messages")
   //若是公司动态
   div(ng-if="!group_message.provoke.active && group_message.group.gid[0] =='0'")
     .row
@@ -16,10 +16,10 @@ div.margin_15(ng-repeat="group_message in group_messages")
 
   div(ng-if="group_message.group.gid[0] !='0'")
     .row
-      .col-md-2.col-sm-3.col-xs-3
+      .aside
         img.size_90(ng-src='{{group_message.logo}}')
       //若是小组动态
-      .col-md-10.col-sm-9.col-xs-8(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
+      .content(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
         span {{"OWN_TEAM"|translate}} {{"NEW_MESSAGE"|translate}}
         div.dl_message
           .triangle

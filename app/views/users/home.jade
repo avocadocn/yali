@@ -1,20 +1,20 @@
 extends ../layouts/manager
 
 block baseInfo
-  .row.margin_top_15
-    .col-md-2.col-sm-3.col-xs-4
+ .dl_container.clearfix
+    .aside
       //用户头像
       img.size_140.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
-    .col-md-8.col-sm-6.col-xs-6.margin_left_20
+    .main
       //人名
-      .row
+      .dl_row
         label.head= realname
       //公司名
-      .row.margin_top_10
+      .dl_row
         p.subtitle= cname
       //个性签名
-      .row.margin_top_15
-        p.subtitle= sign
+      .dl_row
+        p.subtitle= sign 
 
 block panel
   ul.nav.nav-tabs
