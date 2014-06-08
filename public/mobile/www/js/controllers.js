@@ -100,10 +100,6 @@ angular.module('starter.controllers', [])
   $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
 
 
-  //Map.map('location', $scope.campaign.location);
-
-
-
 })
 
 
@@ -279,6 +275,12 @@ angular.module('starter.controllers', [])
     }
 
 
+  };
+})
+
+.directive('mapDirective', function(Map) {
+  return function(scope, element, attrs) {
+    Map.init(attrs.id, attrs.location);
   };
 })
 

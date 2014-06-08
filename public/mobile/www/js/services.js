@@ -283,12 +283,11 @@ angular.module('starter.services', [])
 
 .factory('Map', function() {
 
-  var map = function(element_id, location) {
-
+  var init = function(element_id, location) {
     var map = new BMap.Map(element_id);            // 创建Map实例
     var _address = location || '';
     var _title = location;
-    var _longitude = 116.404 ;
+    var _longitude = 116.404;
     var _latitude = 39.915;
     var point = new BMap.Point(_longitude, _latitude);    // 创建点坐标
     map.centerAndZoom(point, 15);                     // 初始化地图,设置中心点坐标和地图级别。
@@ -311,7 +310,7 @@ angular.module('starter.services', [])
   };
 
   return {
-    map: map
+    init: init
   };
 
 
