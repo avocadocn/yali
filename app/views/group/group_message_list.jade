@@ -1,74 +1,68 @@
-.dl_messagebox(ng-repeat="group_message in group_messages")
+.dl_messagebox.clearfix(ng-repeat="group_message in group_messages")
   //若是公司动态
-  div(ng-if="!group_message.provoke.active && group_message.group.gid[0] =='0'")
-    .row
-      .col-md-2.col-sm-3.col-xs-3
-        img.size_90(ng-src='{{companyLogo}}')
-      .col-md-10.col-sm-9.col-xs-8
-        span {{"OWN_COMPANY"|translate}} {{"NEW_MESSAGE"|translate}}
-        div.dl_message
-          .triangle
-          div.dl_message_container.margin_top_15
+  div.clearfix(ng-if="!group_message.provoke.active && group_message.group.gid[0] =='0'")
+    .message_side
+      img.size_90(ng-src='{{companyLogo}}')
+    .messagebox_content
+      span {{"OWN_COMPANY"|translate}} {{"NEW_MESSAGE"|translate}}
+      .dl_message
+        .triangle
+        .dl_message_container
+          .message_row
             span.message_label {{"TYPE"|translate}}: {{"COMPANY_CAMPAIGN"|translate}}
             span.message_label {{"LOCATION"|translate}}: {{group_message.location}}
             span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+          .message_row
             p.message_label {{group_message.content}}
 
-  div(ng-if="group_message.group.gid[0] !='0'")
-    .row
-      .aside
-        img.size_90(ng-src='{{group_message.logo}}')
-      //若是小组动态
-      .content(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
-        span {{"OWN_TEAM"|translate}} {{"NEW_MESSAGE"|translate}}
-        div.dl_message
+  div.clearfix(ng-if="group_message.group.gid[0] !='0'")
+    .message_side
+      img.size_90(ng-src='{{group_message.logo}}')
+    //若是小组动态
+    .messagebox_content(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
+      span {{"OWN_TEAM"|translate}} {{"NEW_MESSAGE"|translate}}
+      .dl_message
+        .triangle
+        .dl_message_container
+          .message_row
+            span.message_label {{"TYPE"|translate}}: {{group_message.group.group_type[0]}}
+            span.message_label {{"LOCATION"|translate}}: {{group_message.location}}
+            span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+          .message_row
+            p.message_label {{group_message.content}}
+    //若是挑战
+    .messagebox_content(ng-if="group_message.provoke.active")
+      div.clearfix(ng-if="!group_message.host")
+        a {{group_message.provoke.camp[0].tname}}
+        span {{"OPPOSITE_FOR_TEAM"|translate}}
+        a {{group_message.provoke.camp[1].tname}}
+        span {{"SPONSOR"|translate}} {{group_message.provoke.start_confirm ? '的挑战已经生效' : '了挑战'}}
+        .message_row
+          p.message_label {{group_message.content}}
+          div.message_label(ng-if="group_message.provoke.active && role=='OWNER'")
+            .message_row(ng-if="!group_message.provoke.start_confirm")
+              button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{"POSITIVE"|translate}} {{group_message.positive}}
+              button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{"NEGATIVE"|translate}} {{group_message.negative}}
+          div.message_label(ng-if="group_message.provoke_accept")
+            .message_row
+              button.dl_btn(ng-click="responseProvoke(group_message._id)") {{"FACE"|translate}}
+       div.clearfix(ng-if="group_message.host")
+        span {{"OWN_TEAM"|translate}}
+        a {{group_message.provoke.camp[0].tname}}
+        span {{"TOWARDS"|translate}}
+        a {{group_message.provoke.camp[1].tname}}
+        span {{"SPONSOR"|translate}} {{group_message.provoke.start_confirm ? '的挑战已经生效' : '了挑战'}}
+        .dl_message
           .triangle
-          div.dl_message_container.margin_top_15
-            .row.col-md-12
+          .dl_message_container
+            .message_row
               span.message_label {{"TYPE"|translate}}: {{group_message.group.group_type[0]}}
+              span.message_label {{"FORMATION"|translate}}: {{group_message.provoke.competition_format}}
               span.message_label {{"LOCATION"|translate}}: {{group_message.location}}
               span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
-            .row
-              .col-md-9
-                p.message_label {{group_message.content}}
-      //若是挑战
-      .col-md-10.col-sm-9.col-xs-8(ng-if="group_message.provoke.active")
-        div(ng-if="!group_message.host")
-          a {{group_message.provoke.camp[0].tname}}
-          span {{"OPPOSITE_FOR_TEAM"|translate}}
-          a {{group_message.provoke.camp[1].tname}}
-          span {{"SPONSOR"|translate}} {{group_message.provoke.start_confirm ? '的挑战已经生效' : '了挑战'}}
-          .row
-            .col-md-9
-              p.message_label {{group_message.content}}
-            .col-md-3
-              div.message_label(ng-if="group_message.provoke.active && role=='OWNER'")
-                .row(ng-if="!group_message.provoke.start_confirm")
-                  button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{"POSITIVE"|translate}} {{group_message.positive}}
-                  button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{"NEGATIVE"|translate}} {{group_message.negative}}
-              div.message_label(ng-if="group_message.provoke_accept")
-                .row
-                  button.dl_btn(ng-click="responseProvoke(group_message._id)") {{"FACE"|translate}}
-         div(ng-if="group_message.host")
-          span {{"OWN_TEAM"|translate}}
-          a {{group_message.provoke.camp[0].tname}}
-          span {{"TOWARDS"|translate}}
-          a {{group_message.provoke.camp[1].tname}}
-          span {{"SPONSOR"|translate}} {{group_message.provoke.start_confirm ? '的挑战已经生效' : '了挑战'}}
-          div.dl_message
-            .triangle
-            div.dl_message_container.margin_top_15
-              .row.col-md-12
-                span.message_label {{"TYPE"|translate}}: {{group_message.group.group_type[0]}}
-                span.message_label {{"FORMATION"|translate}}: {{group_message.provoke.competition_format}}
-                span.message_label {{"LOCATION"|translate}}: {{group_message.location}}
-                span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
-              .row
-                .col-md-9
-                  p.message_label {{group_message.content}}
-                .col-md-3
-                  div.message_label(ng-if="group_message.provoke.active && role=='OWNER'")
-                    .row(ng-if="!group_message.provoke.start_confirm")
-                      button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{group_message.positive == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.positive}}
-                      button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{group_message.negative == 1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.negative}}
+            .message_row
+              span.message_label {{group_message.content}}
+              span.pull-right(ng-if="group_message.provoke.active && role=='OWNER' && !group_message.provoke.start_confirm")
+                button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{group_message.positive == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.positive}}
+                button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{group_message.negative == 1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.negative}}
   hr

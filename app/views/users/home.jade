@@ -19,13 +19,15 @@ block baseInfo
 block panel
   ul.nav.nav-tabs
     if(role==='OWNER')
-      li(ng-class="{'active':nowTab=='group_message'}")
-        a.subtitle(href="#/group_message" ng-click="addactive('group_message')") {{"PERSONAL_MESSAGE"|translate}}
-    li(ng-class="{'active':nowTab=='schedule'}")
-      a.subtitle(href="#/schedule" ng-click="addactive('schedule')") {{"CAMPAIGN"|translate}}
-    li(ng-class="{'active':nowTab=='timeLine'}")
+      li.tab_style(ng-class="{'active':nowTab=='group_message'}")
+        a.subtitle(href="#/group_message" ng-click="addactive('group_message')") {{"LATEST_MESSAGE"|translate}}
+    li.tab_style(ng-class="{'active':nowTab=='campaign'}")
+      a.subtitle(href="#/campaign" ng-click="addactive('campaign')") {{"CAMPAIGN"|translate}}{{"LIST"|translate}}
+    li.tab_style(ng-class="{'active':nowTab=='schedule'}")
+      a.subtitle(href="#/schedule" ng-click="addactive('schedule')") {{"MY"|translate}}{{"SCHEDULE"|translate}}
+    li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
       a.subtitle(href="#/timeLine" ng-click="addactive('timeLine')") {{"TIME_LINE"|translate}}
-  .tab-content
+  .tab-content.margin_top_20
     .tab-pane.active
       div(ng-view)
 

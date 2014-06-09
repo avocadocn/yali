@@ -24,7 +24,7 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
-      .when('/schedule', {
+      .when('/campaign', {
         templateUrl: '/users/campaign',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
@@ -38,6 +38,11 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
         templateUrl: '/users/timeline',
         //controller: 'timelineController',
        // controllerAs: 'timeline'
+      })
+      .when('/schedule', {
+        templateUrl: '/users/campaign',
+        controller: 'CampaignListController',
+        controllerAs: 'campaign'
       })
       .when('/changePassword', {
         templateUrl: '/views/change_password.html',
