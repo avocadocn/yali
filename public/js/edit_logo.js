@@ -1,6 +1,6 @@
 'use strict';
 
-(function($, FileHelper) {
+(function($) {
   $(function() {
 
     var logo = $('#logo');
@@ -9,17 +9,30 @@
     var preview_middle = $('#preview_middle');
     var preview_small = $('#preview_small');
     var save_button = $('#save_button');
+    var remind = $('#remind');
 
-
+    var getFilePath = function(input, callback) {
+      var file = input.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function(e) {
+        callback(this.result);
+      };
+    };
 
     logo.change(function() {
       if (logo.val() === null) {
         save_button[0].disabled = true;
       } else {
-        save_button[0].disabled = false;
+        if (logo[0].files[0].size > 1024 * 1024 * 5) {
+          save_button[0].disabled = true;
+          remind.text('上传的文件大小不可以超过5M');
+        } else {
+          save_button[0].disabled = false;
+        }
       }
 
-      FileHelper.getFilePath(logo[0], function(path) {
+      getFilePath(logo[0], function(path) {
 
         jcrop_img.attr('src', path);
         preview_big.attr('src', path);
@@ -32,7 +45,9 @@
           onSelect: showPreview,
           onChange: showPreview
         });
+
         $('.jcrop-holder img').attr('src', path);
+
       });
 
     });
@@ -65,7 +80,14 @@
 
     }
 
+    $('#edit_logo_form').ajaxForm(function(data, status) {
+      if (status === 'success' && data.result === 1) {
+        alert('修改成功');
+        window.location.reload();
+      }
+    });
+
 
   });
 
-}(jQuery, FileHelper));
+}(jQuery));

@@ -3,11 +3,8 @@
 // group routes use group controller
 var group = require('../controllers/group');
 var authorization = require('./middlewares/authorization');
-var express = require('express');
 var config = require('../../config/config');
-var fileBodyParser = express.bodyParser({
-  uploadDir: config.root + '/temp_uploads/',
-  limit: 1024 * 1024 * 5 });
+
 
 
 module.exports = function(app) {
@@ -47,11 +44,8 @@ module.exports = function(app) {
 
   app.post('/group/resultConfirm/:competitionId', authorization.requiresLogin, group.resultConfirm);
 
-  app.post('/group/saveLogo', authorization.requiresLogin,fileBodyParser, group.saveLogo);
-
   app.get('/group/editLogo', authorization.requiresLogin, group.editLogo);
 
-  app.get('/groupLogo/:id/:width/:height',authorization.requiresLogin, group.getLogo);
 
   app.get('/group/:teamId/managePhotoAlbum', authorization.requiresLogin,group.managePhotoAlbum);
   app.get('/group/:tid/photoAlbum/:photoAlbumId', authorization.requiresLogin, authorization.requiresLogin, group.groupPhotoAlbumDetail);

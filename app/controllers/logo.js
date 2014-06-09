@@ -1,0 +1,218 @@
+'use strict';
+
+// node system
+var fs = require('fs'),
+  crypto = require('crypto'),
+  path = require('path');
+
+// 3rd
+var mongoose = require('mongoose'),
+  validator = require('validator'),
+  async = require('async'),
+  gm = require('gm');
+
+// mongoose model
+var User = mongoose.model('User'),
+  CompanyGroup = mongoose.model('CompanyGroup'),
+  Company = mongoose.model('Company');
+
+// custom
+var schedule = require('../services/schedule'),
+  config = require('../../config/config');
+
+
+exports.updateLogo = function(req, res) {
+  if(req.role ==='PARTNER'){
+    return res.send(403, 'forbidden!');
+  }
+
+
+  var target_model = null;
+  var logo_model = null;  // 数据库设计不够扁平化，只能用它当对象引用了，用于company.info.logo
+  var logo_property = 'logo';
+  var default_logo_uri = null;
+  var target_dir = null;  // 文件系统路径，供fs使用
+  var uri_dir = null;  // uri路径，存入数据库的路径，供前端访问
+
+  async.waterfall([
+    function(callback) {
+      switch (req.body.target) {
+      case 'u':
+        target_model = req.user;
+        logo_model = target_model;
+        logo_property = 'photo';
+        target_dir = path.join(config.root, '/public/img/user/photo/');
+        uri_dir = '/img/user/photo/';
+        default_logo_uri = '/img/icons/default_user_photo.png';
+        callback(null);
+        break;
+      case 'g':
+        target_dir = path.join(config.root, '/public/img/group/logo/');
+        uri_dir = '/img/group/logo/';
+        default_logo_uri = '/img/icons/default_group_logo.png';
+        CompanyGroup
+        .findOne({ _id: req.session.nowtid })
+        .exec()
+        .then(function(company_group) {
+          if (company_group) {
+            target_model = company_group;
+            logo_model = target_model;
+            callback(null);
+          } else {
+            callback('not found company_group');
+          }
+        })
+        .then(null, callback);
+        break;
+      case 'c':
+        target_model = req.user;
+        logo_model = target_model.info;
+        target_dir = path.join(config.root, '/public/img/company/logo/');
+        uri_dir = '/img/company/logo/';
+        default_logo_uri = '/img/icons/default_company_logo.png';
+        callback(null);
+        break;
+      default:
+        callback('bad request');
+        break;
+      }
+    },
+    function(callback) {
+      var logo_temp_path = req.files.logo.path;
+
+      // 存入数据库的文件名，以当前时间的加密值命名
+      var shasum = crypto.createHash('sha1');
+      shasum.update( Date.now().toString() + Math.random().toString() );
+      var logo_file_name = shasum.digest('hex') + '.png';
+
+      try {
+        gm(logo_temp_path).size(function(err, value) {
+          if (err) callback(err);
+
+          // req.body参数均为百分比
+          var w = req.body.width * value.width;
+          var h = req.body.height * value.height;
+          var x = req.body.x * value.width;
+          var y = req.body.y * value.height;
+
+          // 在保存新路径前，将原路径取出，以便删除旧文件
+          var ori_logo = logo_model[logo_property];
+
+
+          try {
+            gm(logo_temp_path)
+            .crop(w, h, x, y)
+            .resize(150, 150)
+            .write(path.join(target_dir, logo_file_name), function(err) {
+              if (err) {
+                callback(err);
+              }
+              else {
+                logo_model[logo_property] = path.join(uri_dir, logo_file_name);
+                target_model.save(function(err) {
+                  if (err) {
+                    callback(err);
+                  } else {
+                    //schedule.updateUlogo(req.user._id);
+                  }
+                });
+
+                fs.unlink(logo_temp_path, function(err) {
+                  if (err) {
+                    callback(err);
+                  }
+                  var unlink_dir = path.join(config.root, 'public');
+                  if (ori_logo !== default_logo_uri) {
+                    if (fs.existsSync(unlink_dir + ori_logo)) {
+                      fs.unlinkSync(unlink_dir + ori_logo);
+                    }
+                  }
+                  //success
+                  res.send({ result: 1 });
+                  //res.redirect('/users/editPhoto');
+                });
+              }
+            });
+          } catch (e) {
+            callback(e);
+          }
+
+        });
+      } catch (e) {
+        callback(e);
+      }
+    }
+  ], function(err, result) {
+    console.log(err);
+    // TO DO: temp
+    res.send(500, 'error');
+  });
+
+
+};
+
+
+exports.readLogo = function(req, res) {
+  var target_model = null;
+  switch (req.params.target) {
+  case 'user':
+    target_model = User;
+    break;
+  case 'group':
+    target_model = CompanyGroup;
+    break;
+  case 'company':
+    target_model = Company;
+    break;
+  default:
+    return res.send(400);
+  }
+
+  var width = req.params.width;
+  var height = req.params.height;
+  if (!validator.isNumeric(width + height)) {
+    return res.send(400);
+  }
+
+  target_model
+  .findOne({ _id: req.params.id })
+  .exec()
+  .then(function(model) {
+    if (!model) {
+      throw 'not found';
+    }
+
+    var logo = null;
+    switch (req.params.target) {
+    case 'user':
+      logo = model.photo;
+      break;
+    case 'group':
+      logo = model.logo;
+      break;
+    case 'company':
+      logo = model.info.logo;
+      break;
+    }
+
+    gm(path.join(config.root, 'public', logo))
+    .resize(width, height, '!')
+    .stream(function(err, stdout, stderr) {
+      if (err) {
+        console.log(err);
+        res.send(500);
+      }
+      else {
+        stdout.pipe(res);
+      }
+    });
+  })
+  .then(null, function(err) {
+    console.log(err);
+
+    // TO DO: 可区分错误类型
+    res.send(404);
+  });
+
+};
+

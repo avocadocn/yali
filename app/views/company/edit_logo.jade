@@ -17,6 +17,7 @@ block content
             label 从电脑中选择你喜欢的照片
             p 你可以上传JPG、JPEG、GIF、PNG或BMP文件
             label.btn.dl_btn(for="logo") 选择logo
+            p#remind
         .row
           .col-xs-12.col-sm-12
             p.margin_top_50 这是你在动梨上的logo小图标
@@ -24,16 +25,17 @@ block content
         .row
           .col-xs-4.col-sm-4
             div(style="width:150px; height:150px; overflow:hidden")
-              img#preview_big(src="")
+              img#preview_big(src="#{'/logo/company/' + id + '/150/150'}")
           .col-xs-2.col-sm-2
             div.margin_top_100(style="width:50px; height:50px; bottom:0px; overflow:hidden")
-              img#preview_middle(src="")
+              img#preview_middle(src="#{'/logo/company/' + id + '/50/50'}")
           .col-xs-2.col-sm-2
             div.margin_top_123(style="width:27px; height:27px; bottom:0px; overflow:hidden")
-              img#preview_small(src="")
+              img#preview_small(src="#{'/logo/company/' + id + '/27/27'}")
           .col-xs-4
         .row
-          form(action="/company/saveLogo" method="post" enctype="multipart/form-data")
+          form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
+            input(type="hidden" name="target" value="c")
             input#w(type="hidden" name="width" value="128")
             input#h(type="hidden" name="height" value="128")
             input#x(type="hidden" name="x" value="0")
@@ -47,5 +49,5 @@ block content
 
 append footExt
   script(src="/js/jquery.Jcrop.min.js")
-  script(src="/js/file_helper.js")
-  script(src="/js/edit_company_logo.js")
+  script(src="/lib/jquery-form/jquery.form.js")
+  script(src="/js/edit_logo.js")

@@ -1260,119 +1260,7 @@ exports.changePassword = function (req, res) {
   });
 };
 
-exports.savePhoto = function(req, res) {
-  if(req.role ==='PARTNER'){
-    return res.send(403, 'forbidden!');
-  }
-  var user = req.user;
 
-  var photo_temp_path = req.files.photo.path;
-
-  // 存入数据库的文件名，以当前时间的加密值命名
-
-  var shasum = crypto.createHash('sha1');
-  shasum.update( Date.now().toString() + Math.random().toString() );
-  var photo = shasum.digest('hex') + '.png';
-
-
-  // 文件系统路径，供fs使用
-  var target_dir = path.join(meanConfig.root, '/public/img/user/photo/');
-
-  // uri路径，存入数据库的路径，供前端访问
-  var uri_dir = '/img/user/photo/';
-
-  try {
-    gm(photo_temp_path).size(function(err, value) {
-      if (err) console.log(err);
-
-      // req.body参数均为百分比
-      var w = req.body.width * value.width;
-      var h = req.body.height * value.height;
-      var x = req.body.x * value.width;
-      var y = req.body.y * value.height;
-
-      // 在保存新路径前，将原路径取出，以便删除旧文件
-      var ori_photo = user.photo;
-
-
-      try {
-        gm(photo_temp_path)
-        .crop(w, h, x, y)
-        .resize(150, 150)
-        .write(path.join(target_dir, photo), function(err) {
-          if (err) {
-            console.log(err);
-            res.redirect('/users/editPhoto');
-          }
-          else {
-            user.photo = path.join(uri_dir, photo);
-            user.save(function(err) {
-              if (err) {
-                console.log(err);
-                res.redirect('/users/editPhoto');
-              } else {
-                schedule.updateUlogo(req.user._id);
-                // CompanyGroup.find({'cid':req.user.cid},function (err,company_groups){
-                //   if(err || !company_groups) {
-                //     console.log(err,!company_groups);
-                //   } else {
-                //     for(var i = 0; i < company_groups.length; i ++) {
-                //       for(var j = 0; j < company_groups[i].member.length; j ++) {
-                //         if(company_groups[i].member[j]._id.toString() == req.user._id.toString()) {
-                //           console.log('find you!');
-                //           company_groups[i].member[j].photo = user.photo;
-                //           company_groups[i].save(function (err){
-                //             if(err) {
-                //               console.log(err);
-                //             }
-                //           });
-                //         }
-                //       }
-
-                //       for(var j = 0; j < company_groups[i].leader.length; j ++) {
-                //         if(company_groups[i].leader[j]._id.toString() == req.user._id.toString()) {
-                //           console.log('find you!');
-                //           company_groups[i].leader[j].photo = user.photo;
-                //           company_groups[i].save(function (err){
-                //             if(err) {
-                //               console.log(err);
-                //             }
-                //           });
-                //         }
-                //       }
-
-                //     }
-                //   }
-                // });
-              }
-            });
-
-            fs.unlink(photo_temp_path, function(err) {
-              if (err) {
-                console(err);
-                res.redirect('/users/editPhoto');
-              }
-              var unlink_dir = path.join(meanConfig.root, 'public');
-              if (ori_photo !== '/img/icons/default_user_photo.png') {
-                if (fs.existsSync(unlink_dir + ori_photo)) {
-                  fs.unlinkSync(unlink_dir + ori_photo);
-                }
-              }
-              res.redirect('/users/editPhoto');
-            });
-          }
-        });
-      } catch (e) {
-        console.log(e);
-      }
-
-    });
-  } catch (e) {
-    console.log(e);
-  }
-
-
-};
 
 exports.editPhoto = function(req, res) {
   if(req.role ==='PARTNER'){
@@ -1385,43 +1273,7 @@ exports.editPhoto = function(req, res) {
 };
 
 
-exports.getPhoto = function(req, res) {
-  var uid = req.params.id;
-  var width = req.params.width;
-  var height = req.params.height;
-  if (validator.isNumeric(width + height)) {
-    async.waterfall([
-      function(callback) {
-        User.findOne({ _id: uid })
-        .exec(function(err, user) {
-          if (err) callback(err);
-          else if (user) {
-            callback(null, user.photo);
-          } else {
-            callback('not found user');
-          }
-        });
-      },
-      function(photo, callback) {
-        res.set('Content-Type', 'image/png');
-        gm(meanConfig.root + '/public' + photo)
-        .resize(width, height, '!')
-        .stream(function(err, stdout, stderr) {
-          if (err) callback(err);
-          else {
-            stdout.pipe(res);
-            callback(null);
-          }
-        });
-      }
-    ], function(err, result) {
-      if (err) res.send({ result: 0, msg: '获取用户头像失败' });
-    });
 
-  } else {
-    res.send({ result: 0, msg: '请求错误' });
-  }
-}
 
 exports.user = function(req, res, next, id) {
     User
@@ -1515,7 +1367,7 @@ exports.getSchedules = function(req, res) {
       var responseData = [];
       campaigns.forEach(function(campaign) {
         var tempObj = {
-          id: campaign.id,
+          id: campaign._id,
           content: campaign.content,
           start_time: campaign.start_time,
           end_time: campaign.end_time,

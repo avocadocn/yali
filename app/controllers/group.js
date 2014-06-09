@@ -1029,83 +1029,6 @@ exports.group = function(req, res, next, id) {
 
 
 
-exports.saveLogo = function(req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
-  }
-  var logo_temp_path = req.files.logo.path;
-  var shasum = crypto.createHash('sha1');
-  shasum.update( Date.now().toString() + Math.random().toString() );
-  var logo = shasum.digest('hex') + '.png';
-
-
-  // 文件系统路径，供fs使用
-  var target_dir = path.join(meanConfig.root, '/public/img/group/logo/');
-
-  // uri路径，存入数据库的路径，供前端访问
-  var uri_dir = '/img/group/logo/';
-
-  try {
-    gm(logo_temp_path).size(function(err, value) {
-      if (err) {
-        console.log(err);
-        res.redirect('/group/editLogo');
-      }
-
-      var w = req.body.width * value.width;
-      var h = req.body.height * value.height;
-      var x = req.body.x * value.width;
-      var y = req.body.y * value.height;
-
-      CompanyGroup.findOne({ _id: req.session.nowtid  }).exec(function(err, company_group) {
-        var ori_logo = company_group.logo;
-
-        try {
-          gm(logo_temp_path)
-          .crop(w, h, x, y)
-          .resize(150, 150)
-          .write(path.join(target_dir, logo), function(err) {
-            if (err) {
-              console.log(err);
-              res.redirect('/group/editLogo');
-            } else {
-              company_group.logo = path.join(uri_dir, logo);
-              company_group.save(function(err) {
-                if (err) {
-                  console.log(err);
-                  res.redirect('/group/editLogo');
-                }
-                schedule.updateTlogo(req.session.nowtid);
-              });
-              fs.unlink(logo_temp_path, function(err) {
-                if (err) {
-                  console(err);
-                  res.redirect('/group/editLogo');
-                }
-                var unlink_dir = path.join(meanConfig.root, 'public');
-                if (ori_logo && ori_logo !== '/img/icons/default_group_logo.png') {
-                  if (fs.existsSync(unlink_dir + ori_logo)) {
-                    fs.unlinkSync(unlink_dir + ori_logo);
-                  }
-                }
-
-              });
-            }
-            res.redirect('/group/editLogo');
-          });
-        } catch(e) {
-          console.log(e);
-        }
-
-      });
-    });
-  } catch(e) {
-    console.log(e);
-  }
-
-
-};
-
 exports.editLogo = function(req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
@@ -1119,46 +1042,7 @@ exports.editLogo = function(req, res) {
 
 };
 
-exports.getLogo = function(req, res) {
-  var id = req.params.id;
-  var width = req.params.width;
-  var height = req.params.height;
-  if (validator.isNumeric(width + height)) {
-    async.waterfall([
-      function(callback) {
-        CompanyGroup.findOne({ _id: id })
-        .exec(function(err, company_group) {
-          if (err) callback(err);
-          else if(company_group) {
-            callback(null, company_group.logo);
-          } else {
-            callback('not found');
-          }
-        });
-      },
-      function(logo, callback) {
-        res.set('Content-Type', 'image/png');
-        gm(meanConfig.root + '/public' + logo)
-        .resize(width, height, '!')
-        .stream(function(err, stdout, stderr) {
-          if (err) callback(err);
-          else {
-            stdout.pipe(res);
-            callback(null);
-          }
-        });
-      }
-    ], function(err, result) {
-      if (err) {
-        console.log(err);
-        res.send({ result: 0, msg: '获取小组logo失败' });
-      }
-    });
 
-  } else {
-    res.send({ result: 0, msg: '请求错误' });
-  }
-};
 
 exports.managePhotoAlbum = function(req, res) {
   var photo_album_ids = [];

@@ -15,7 +15,7 @@ block content
           .col-xs-8.col-sm-8
             p 从电脑中选择你喜欢的照片
             p 你可以上传JPG、JPEG、GIF、PNG或BMP文件
-            label.btn.dl_btn(for="photo") 选择头像
+            label.btn.dl_btn(for="logo") 选择头像
             p#remind
 
         .row
@@ -25,21 +25,22 @@ block content
         .row
           .col-xs-4.col-sm-4
             div(style="width:150px; height:150px; overflow:hidden")
-              img#preview_big(src="#{'/userPhoto/' + uid + '/150/150'}")
+              img#preview_big(src="#{'/logo/user/' + uid + '/150/150'}")
           .col-xs-2.col-sm-2
             div.margin_top_100(style="width:50px; height:50px; overflow:hidden")
-              img#preview_middle(src="#{'/userPhoto/' + uid + '/50/50'}")
+              img#preview_middle(src="#{'/logo/user/' + uid + '/50/50'}")
           .col-xs-2.col-sm-2
             div.margin_top_123(style="width:27px; height:27px; overflow:hidden")
-              img#preview_small(src="#{'/userPhoto/' + uid + '/27/27'}")
+              img#preview_small(src="#{'/logo/user/' + uid + '/27/27'}")
           .col-xs-4.col-sm-4
         .row
-          form(action="/users/savePhoto" method="post" enctype="multipart/form-data")
+          form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
+            input(type="hidden" name="target" value="u")
             input#w(type="hidden" name="width" value="128")
             input#h(type="hidden" name="height" value="128")
             input#x(type="hidden" name="x" value="0")
             input#y(type="hidden" name="y" value="0")
-            input#photo.hidden(type="file" name="photo" accept="image/*")
+            input#logo.hidden(type="file" name="logo" accept="image/*")
             button#save_button.btn.btn-primary(type="submit" disabled) 保存头像设置
       .col-xs-12.col-sm-5.margin_top_100
         p 给你自己扮酷
@@ -49,5 +50,5 @@ block content
 
 append footExt
   script(src="/js/jquery.Jcrop.min.js")
-  script(src="/js/file_helper.js")
-  script(src="/js/edit_personal_photo.js")
+  script(src="/lib/jquery-form/jquery.form.js")
+  script(src="/js/edit_logo.js")
