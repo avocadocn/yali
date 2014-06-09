@@ -1077,7 +1077,6 @@ exports.joinGroup = function (req, res){
             for(var i=0;i<user.group.length;i++){
               if(companyGroup.gid=== user.group[i]._id){
                 user.group[i].team.push(team);
-                console.log(user.group[i])
                 find=true;
                 break;
               }
@@ -1088,7 +1087,7 @@ exports.joinGroup = function (req, res){
                 '_id': companyGroup.gid,
                 'group_type': companyGroup.group_type,
                 'entity_type': companyGroup.entity_type,
-                'team': team
+                'team': [team]
               });
             }
             //保存小组
@@ -1104,8 +1103,9 @@ exports.joinGroup = function (req, res){
                 console.log(err);
                 return res.send({result: 0, msg:'保存用户出错'});
               }
-              return res.send({result: 1, msg:'保存用户成功'})
+              console.log('保存用户成功');
             });
+            return res.send({result: 1, msg:'保存用户成功'});
           }
       });
     }
