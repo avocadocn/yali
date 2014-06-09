@@ -4,7 +4,7 @@
     .message_side
       img.size_90(ng-src='{{companyLogo}}')
     .messagebox_content
-      span {{"OWN_COMPANY"|translate}} {{"NEW_MESSAGE"|translate}}
+      span {{"OWN_COMPANY"|translate}}{{group_message.poster.cname}} {{"NEW_MESSAGE"|translate}}
       .dl_message
         .triangle
         .dl_message_container
@@ -20,7 +20,7 @@
       img.size_90(ng-src='{{group_message.logo}}')
     //若是小组动态
     .messagebox_content(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
-      span {{"OWN_TEAM"|translate}} {{"NEW_MESSAGE"|translate}}
+      span {{"OWN_TEAM"|translate}}{{group_message.poster.tname}} {{"NEW_MESSAGE"|translate}}
       .dl_message
         .triangle
         .dl_message_container

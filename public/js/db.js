@@ -962,7 +962,8 @@ for(var i = 0;i < 50; i ++) {
             "uid" : user_eric._id,
             "role" : "LEADER",
             "cid" : user_eric.cid,
-            "cname" : user_eric.cname
+            "cname" : user_eric.cname,
+            "tname" : company_donler.team[0].name
         },
         "photo_album":{
             'pid':0,
@@ -1013,7 +1014,8 @@ for(var i = 0;i<50;i++){
             "uid" : user_eric._id,
             "role" : "LEADER",
             "cid" : user_eric.cid,
-            "cname" : user_eric.cname
+            "cname" : user_eric.cname,
+            "tname" : company_donler.team[0].name,
         },
         "group" :{
             "group_type" : [  "足球" ],

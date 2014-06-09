@@ -53,6 +53,7 @@ var GroupMessage = new Schema({
         cid: String,                  //消息发布者所属的公司
         uid: String,
         cname: String,
+        tname: String,                //哪个小组发布的
         nickname: String,
         role: {
             type: String,

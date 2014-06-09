@@ -38,6 +38,7 @@ var Campaign = new Schema({
     poster: {
         cid: String,                   //活动发起者所属的公司
         cname: String,
+        tname: String,
         uid: String,
         nickname: String,
         role: {

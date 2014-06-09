@@ -752,6 +752,15 @@ exports.sponsor = function (req, res) {
   var tid = req.params.teamId;
   var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
   var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
+  var tname;
+  CompanyGroup.findOne({'_id' : tid},function (err, companyGroup){
+    if(err){
+      return ({'result':0,'msg':'发布错误，无此小队。'});
+    }else{
+      tname = companyGroup.name;
+      console.log(tname);
+    }
+  });
   //生成活动
   var campaign = new Campaign();
   campaign.team.push(tid);
@@ -762,6 +771,7 @@ exports.sponsor = function (req, res) {
   campaign.poster.cname = cname;
   campaign.poster.cid = cid;
   campaign.poster.role = req.session.role;
+  campaign.poster.tname = tname;
   if(req.session.role==='LEADER'){
     campaign.poster.uid = req.user._id;
     campaign.poster.nickname = req.user.nickname;
@@ -815,6 +825,7 @@ exports.sponsor = function (req, res) {
         groupMessage.poster.cname = cname;
         groupMessage.poster.cid = cid;
         groupMessage.poster.role = req.session.role;
+        groupMessage.poster.tname = tname;
         if(req.session.role==='LEADER'){
           groupMessage.poster.uid = req.user._id;
           groupMessage.poster.nickname = req.user.nickname;
