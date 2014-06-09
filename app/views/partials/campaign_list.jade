@@ -17,7 +17,8 @@
         p.text-right {{ campaign_item.start_time | date:'EEEE' }}
       .col-xs-6.col-sm-6.col-md-6.col-md-offset-1
         .row
-          a.dl_message_label(href="#") {{ campaign_item.content }}
+          a.dl_message_label(ng-if="!campaign_item.provoke.active" ng-href="/group/campaign/{{ campaign_item.id }}") {{ campaign_item.content }}
+          a.dl_message_label(ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}") {{ campaign_item.content }}
           if (role==='HR'&&provider==='company' || role==='LEADER'&& provider ==='group')
             button.btn.close_btn(ng-click="cancel(campaign_item.id)") {{ campaign_item.active ? '&times;&nbsp;关闭':'打开'}}
         .row.margin_top_15
