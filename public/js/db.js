@@ -953,6 +953,7 @@ for(var i = 0;i < 50; i ++) {
         "end_time" : ISODate("2014-05-29T16:00:00Z"),
         "start_time" : ISODate("2014-05-26T16:00:00Z"),
         "location" : "你猜",
+        "theme": "是啥",
         "content" : "足球测试活动"+i,
         "provoke" : {"active" : false},
         "create_time" : ISODate("2014-05-27T03:10:46.492Z"),
@@ -1015,7 +1016,7 @@ for(var i = 0;i<50;i++){
             "role" : "LEADER",
             "cid" : user_eric.cid,
             "cname" : user_eric.cname,
-            "tname" : company_donler.team[0].name,
+            "tname" : company_donler.team[0].name
         },
         "group" :{
             "group_type" : [  "足球" ],

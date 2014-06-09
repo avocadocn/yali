@@ -46,7 +46,11 @@ var Campaign = new Schema({
             enum: ['HR','LEADER']      //HR 组长
         },
     },
-    content: {
+    theme:{//主题
+        type:String,
+        required: true
+    },
+    content: {//简介
         type: String,
         required: true
     },
