@@ -1,5 +1,6 @@
 'use strict';
 
+var logo = "/img/icons/group/FootBall_on.png";
 //组件脚本
 var _group =[
             {
@@ -336,7 +337,6 @@ var company_apple = db.companies.findOne({ 'username': 'apple' });
 var company_banana = db.companies.findOne({ 'username': 'banana' });
 
 
-
 // 公司小队
 var _company_groups =[
 {
@@ -345,7 +345,7 @@ var _company_groups =[
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海动梨信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -356,7 +356,7 @@ var _company_groups =[
     "gid" : "0",
     "group_type" : "足球",
     "name" : "上海动梨信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -366,7 +366,7 @@ var _company_groups =[
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海鸭梨信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -377,7 +377,7 @@ var _company_groups =[
     "gid" : "0",
     "group_type" : "足球",
     "name" : "上海鸭梨信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -387,7 +387,7 @@ var _company_groups =[
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海苹果信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -398,7 +398,7 @@ var _company_groups =[
     "gid" : "0",
     "group_type" : "足球",
     "name" : "上海苹果信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -408,7 +408,7 @@ var _company_groups =[
     "gid" : "7",
     "group_type" : "足球",
     "name" : "上海香蕉信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 },
@@ -419,7 +419,7 @@ var _company_groups =[
     "gid" : "0",
     "group_type" : "足球",
     "name" : "上海香蕉信息技术有限公司-足球队",
-    "logo":"/img/icons/default_group_logo.png",
+    "logo":logo,
     "entity_type":"FootBall",
     "brief":"足球队"
 }
@@ -459,7 +459,7 @@ var _users =[
         "entity_type" : "FootBall",
         "team" : [
             {
-                'logo':'/img/icons/default_group_logo.png',
+                'logo':logo,
                 'id':company_group_donler._id,
                 'name':company_group_donler.name,
                 'leader':true
@@ -504,6 +504,7 @@ var _users =[
         "entity_type" : "FootBall",
         "team" : [
             {
+                'logo':logo,
                 'id':company_group_yali._id,
                 'name':company_group_yali.name,
                 'leader':true
@@ -548,7 +549,7 @@ var _users =[
         "entity_type" : "FootBall",
         "team" : [
             {
-                'logo':'/img/icons/default_group_logo.png',
+                'logo':logo,
                 'id':company_group_yali._id,
                 'name':company_group_yali.name,
                 'leader':false
@@ -593,7 +594,7 @@ var _users =[
         "entity_type" : "FootBall",
         "team" : [
             {
-                'logo':'/img/icons/default_group_logo.png',
+                'logo':logo,
                 'id':company_group_apple._id,
                 'name':company_group_apple.name,
                 'leader':true
@@ -638,7 +639,7 @@ var _users =[
         "entity_type" : "FootBall",
         "team" : [
             {
-                'logo':'/img/icons/default_group_logo.png',
+                'logo':logo,
                 'id':company_group_banana._id,
                 'name':company_group_banana.name,
                 'leader':true
@@ -683,7 +684,7 @@ var _users =[
         "entity_type" : "FootBall",
         "team" : [
             {
-                'logo':'/img/icons/default_group_logo.png',
+                'logo':logo,
                 'id':company_group_banana._id,
                 'name':company_group_banana.name,
                 'leader':false
@@ -789,7 +790,8 @@ company_donler.team = [
                 "gid" : "7",
                 "group_type" : "足球",
                 "name":"上海动梨信息技术有限公司-足球队",
-                "id":company_group_donler._id
+                "id":company_group_donler._id,
+                "logo": logo
             }
         ];
 db.companies.update({ "_id": company_donler._id }, company_donler);
@@ -799,7 +801,8 @@ company_yali.group = [
                 "gid" : "7",
                 "group_type" : "足球",
                 "name":"上海鸭梨信息技术有限公司-足球队",
-                "id":company_group_yali._id
+                "id":company_group_yali._id,
+                "logo": logo
             }
         ];
 db.companies.update({ "_id": company_yali._id }, company_yali);
@@ -809,7 +812,8 @@ company_apple.group = [
                 "gid" : "7",
                 "group_type" : "足球",
                 "name":"上海苹果信息技术有限公司-足球队",
-                "id":company_group_apple._id
+                "id":company_group_apple._id,
+                "logo": logo
             }
         ];
 db.companies.update({ "_id": company_apple._id }, company_apple);
@@ -819,7 +823,8 @@ company_banana.group = [
                 "gid" : "7",
                 "group_type" : "足球",
                 "name":"上海香蕉信息技术有限公司-足球队",
-                "id":company_group_banana._id
+                "id":company_group_banana._id,
+                "logo": logo
             }
         ];
 db.companies.update({ "_id": company_banana._id }, company_banana);
