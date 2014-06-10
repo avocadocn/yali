@@ -7,8 +7,8 @@ var mongoose = require('mongoose'),
 
 var ktv = new Schema({
 	tid: String,
-    cid: String,
-    gid: String
+  cid: String,
+  gid: String
 });
 
-mongoose.model('KTV', ktv);
+mongoose.model('Ktv', ktv);

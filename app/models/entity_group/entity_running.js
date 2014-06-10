@@ -7,8 +7,8 @@ var mongoose = require('mongoose'),
 
 var running = new Schema({
 	tid: String,
-    cid: String,
-    gid: String
+  cid: String,
+  gid: String
 });
 
 mongoose.model('Running', running);

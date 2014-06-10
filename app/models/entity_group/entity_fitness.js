@@ -5,10 +5,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
-var billiards = new Schema({
+var fitness = new Schema({
 	tid: String,
-    cid: String,
-    gid: String
+  cid: String,
+  gid: String
 });
 
-mongoose.model('Billiards', billiards);
+mongoose.model('Fitness', fitness);

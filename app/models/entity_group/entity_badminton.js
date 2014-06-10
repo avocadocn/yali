@@ -7,8 +7,8 @@ var mongoose = require('mongoose'),
 
 var badminton = new Schema({
 	tid: String,
-    cid: String,
-    gid: String
+  cid: String,
+  gid: String
 });
 
 mongoose.model('Badminton', badminton);

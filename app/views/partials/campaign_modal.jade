@@ -18,7 +18,7 @@
             .dl_modal_quarter_container
               input.dl_modal_input.form-control(type="text" ng-model="start_time" name="date" date-format="yy/MM/dd" data-autoclose="0" data-min-date="today" data-max-date="{{end_time}}" placeholder="Date" bs-datepicker required)
             .dl_modal_quarter_container
-              input.dl_modal_input.form-control(type="text" ng-model="start_time" name="time" data-autoclose="0" placeholder="Time" bs-timepicker required)
+              input.dl_modal_input.form-control(type="text" ng-model="start_time" name="time" data-autoclose="0" placeholder="Time" data-min-time="now" bs-timepicker required)
           .dl_modal_half_container
             .dl_modal_container
               label.subtitle {{"CAMPAIGN"|translate}}{{"END_TIME"|translate}}
