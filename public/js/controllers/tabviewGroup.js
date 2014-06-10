@@ -358,6 +358,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 method: 'post',
                 url: '/group/campaignSponsor/'+teamId,
                 data:{
+                    theme: $scope.theme,
                     location: $scope.location,
                     content : $scope.content,
                     start_time : $scope.start_time,

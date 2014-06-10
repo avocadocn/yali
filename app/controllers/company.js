@@ -1039,6 +1039,8 @@ exports.sponsor = function (req, res) {
     }
     var content = req.body.content;//活动内容
     var location = req.body.location;//活动地点
+    var theme = req.body.theme;
+
     var campaign = new Campaign();
     campaign.team.push(cid);
     campaign.gid.push(gid);
@@ -1051,6 +1053,7 @@ exports.sponsor = function (req, res) {
     campaign.active = true;
     campaign.content = content;
     campaign.location = location;
+    campaign.theme = theme;
 
     campaign.start_time = req.body.start_time;
     campaign.end_time = req.body.end_time;

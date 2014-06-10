@@ -746,6 +746,7 @@ exports.sponsor = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
   }
+  var theme = req.body.theme;
   var content = req.body.content;//活动内容
   var location = req.body.location;//活动地点
   var group_type = req.companyGroup.group_type;
@@ -779,6 +780,7 @@ exports.sponsor = function (req, res) {
 
   campaign.content = content;
   campaign.location = location;
+  campaign.theme = theme;
   campaign.active = true;
 
   campaign.start_time = req.body.start_time;
