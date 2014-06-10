@@ -724,6 +724,8 @@ exports.home = function(req, res) {
           }
         }
       }
+      console.log(selected_teams);
+      console.log(unselected_teams);
       res.render('users/home',{
         'selected_teams' : selected_teams,
         'unselected_teams' : unselected_teams,

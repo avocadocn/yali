@@ -416,7 +416,7 @@ var _company_groups =[
     "_id" : company_banana._id,
     "cid" : company_banana._id,
     "cname":"上海香蕉信息技术有限公司",
-    "gid" : "7",
+    "gid" : "0",
     "group_type" : "足球",
     "name" : "上海香蕉信息技术有限公司-足球队",
     "logo":"/img/icons/default_group_logo.png",

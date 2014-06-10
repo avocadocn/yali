@@ -8,40 +8,40 @@
         .row.margin_top_20
           .col-md-12
             label {{"CONTENT"|translate}}
-            input(type="text" class="form-control" name="content" ng-model="content" required)
+            input.dl_form-control(type="text" name="content" ng-model="content" required)
         .row.margin_top_20
           .col-md-12
             label {{"FORMATION"|translate}}
-            input(type="text" class="form-control" name="competition_format" ng-model="competition_format" required)
+            input.dl_form-control(type="text" name="competition_format" ng-model="competition_format" required)
         .row.margin_top_20
           .col-md-12
             label {{"REMARK"|translate}}
-            input(type="text" class="form-control" name="remark" ng-model="remark" required)
+            input.dl_form-control(type="text" name="remark" ng-model="remark" required)
         .row.margin_top_20
           .col-md-12
             label {{"LOCATION"|translate}}
-            input(type="text" class="form-control" name="location" ng-model="location" required)
+            input.dl_form-control(type="text" name="location" ng-model="location" required)
         .row.margin_top_20
           .col-md-12
             label {{"SUM"|translate}}
-            input(type="number" class="form-control" name="number" ng-model="number" required)
+            input.dl_form-control(type="number" name="number" ng-model="number" required)
         .row.margin_top_20
           .col-md-6
             label {{"START_TIME"|translate}}
               .form-group.margin_top_20
                 .row
                   .col-md-6
-                    input.form-control(type="text" ng-model="competition_date" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" bs-datepicker required)
+                    input.dl_form-control(type="text" ng-model="competition_date" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" bs-datepicker required)
                   .col-md-6
-                    input.form-control(type="text" ng-model="competition_date" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
+                    input.dl_form-control(type="text" ng-model="competition_date" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
           .col-md-6
             label {{"END_TIME"|translate}}
               .form-group.margin_top_20
                 .row
                   .col-md-6
-                    input.form-control(type="text" ng-model="deadline" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date || 'today'}}" placeholder="Date" bs-datepicker required)
+                    input.dl_form-control(type="text" ng-model="deadline" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date || 'today'}}" placeholder="Date" bs-datepicker required)
                   .col-md-6
-                    input.form-control(type="text" ng-model="deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
+                    input.dl_form-control(type="text" ng-model="deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
       .modal-footer
         button(class="btn dl_btn" data-dismiss="modal") {{"CANCEL"|translate}}
         button(class="btn dl_btn" ng-click='provoke()' ng-disabled="provoke_form.$invalid" data-dismiss="modal") {{"CONFIRM"|translate}}
