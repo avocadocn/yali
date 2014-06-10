@@ -121,7 +121,7 @@
   background-image: url("/img/icons/group/BoardGame_off.png");
 }
 .group.inactive .group_17 {
-  background-image: url("/img/icons/group/Others_off.png");
+  background-image: url("/img/icons/group/Other_off.png");
 }
 .group.active .group_1 {
   background-image: url("/img/icons/group/Badminton_on.png");
@@ -172,5 +172,5 @@
   background-image: url("/img/icons/group/BoardGame_on.png");
 }
 .group.active .group_17 {
-  background-image: url("/img/icons/group/Others_on.png");
+  background-image: url("/img/icons/group/Other_on.png");
 }

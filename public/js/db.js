@@ -113,7 +113,7 @@ var _group =[
             {
                 '_id':'17',
                 'group_type':'其他',
-                'entity_type':'Others',
+                'entity_type':'Other',
                 'active':true
             }
 
