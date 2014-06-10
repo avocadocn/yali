@@ -280,7 +280,7 @@ app.config(['$translateProvider',
         pre_language="zh-cn";
         break;
     }
-    $translateProvider.preferredLanguage(pre_language);
+    $translateProvider.preferredLanguage("zh-cn");
   }
 ]);
 

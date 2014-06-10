@@ -212,6 +212,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope',
                 method: 'post',
                 url: '/company/campaignSponsor',
                 data:{
+                    theme: $scope.theme,
                     location: $scope.location,
                     content : $scope.content,
                     start_time : $scope.start_time,

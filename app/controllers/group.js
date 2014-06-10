@@ -272,6 +272,8 @@ exports.home = function(req, res) {
                 visible_photo_albums.push(photo_album);
               }
             });
+            var cid = req.companyGroup.cid.toString();
+            console.log('cid',cid);
             res.render('group/home', {
               'role': req.session.role,
               'photo_albums': visible_photo_albums,
@@ -283,7 +285,8 @@ exports.home = function(req, res) {
               'group_id': req.companyGroup._id,
               'cname': req.companyGroup.cname,
               'sign': req.companyGroup.brief,
-              'gid' : req.companyGroup.gid
+              'gid' : req.companyGroup.gid,
+              'cid' : cid
             });
           }
         });
@@ -328,6 +331,8 @@ exports.home = function(req, res) {
               }
             });
           }
+          var cid = req.companyGroup.cid.toString();
+          console.log('cid',cid);
           res.render('group/home',{
             'selected_teams' : selected_teams,
             'unselected_teams' : unselected_teams,
@@ -341,7 +346,8 @@ exports.home = function(req, res) {
             'group_id': req.companyGroup._id,
             'cname': req.companyGroup.cname,
             'sign': req.companyGroup.brief,
-            'gid' : req.companyGroup.gid
+            'gid' : req.companyGroup.gid,
+            'cid' : cid
           });
         });
       };

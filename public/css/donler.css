@@ -162,15 +162,13 @@ li {
   position: relative;
 }
 .dl_messagebox .message_row {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 5px 0;
 }
 .dl_word_break {
   word-break: break-all;
 }
 .dl_message {
   border-left: 2px solid #f7f7f7;
-  margin-left: 25px;
   background-color: #f7f7f7;
 }
 .dl_message_container {
