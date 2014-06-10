@@ -2,7 +2,7 @@
 Timeline UI Base
 ***/
 .timeline {
-	margin: 0 0 0 0;
+	margin: 20px 0 0 0;
 	padding: 0;
 	list-style: none;
 	position: relative;
@@ -17,7 +17,7 @@ Timeline UI Base
 	width: 10px;
 	background: #ccc;
 	left: 20%;
-	margin-left: -10px;
+	margin-left: 5px;
 }
 
 .timeline > li {
@@ -37,7 +37,7 @@ Timeline UI Base
 }
 
 .timeline > li .timeline-time span.date {
-	font-size: 18px;
+	font-size: 11px;
 	color: #2c3e50;
 	display: block;
 	margin-bottom: 5px;
@@ -46,7 +46,7 @@ Timeline UI Base
 
 .timeline > li .timeline-time span.time {
 	font-weight: 300;
-	font-size: 24px;
+	font-size: 20px;
 	color: #2c3e50; 
 }
 
@@ -54,7 +54,7 @@ Timeline UI Base
 
 .timeline > li .timeline-body {
  	background: #f6f6f6;
-	margin: 0 0 15px 25%;
+	margin: 0 0 15px 28%;
 	padding: 10px;
 	font-weight: 100;
 	position: relative;
@@ -63,17 +63,16 @@ Timeline UI Base
 .timeline li.timeline .timeline-body:after {
 	border-right-color: #f6f6f6;
 }
-.timeline > li .timeline-body h2 { 
-	margin-top: 0px;
-	padding: 0 0 5px 0;
-	border-bottom: 1px solid rgba(255,255,255,0.3);
-	font-size: 24px;
+.timeline > li .timeline-body .subtitle { 
+	margin-top: 8px;
+	padding: 0 0 10px 0;
+	border-bottom: 1px solid #eee;
 }
 
 .timeline > li .timeline-content { 
 	font-size: 12px;
 }
-.ie8 .timeline > li .timeline-body h2 { 
+.ie8 .timeline > li .timeline-body .subtitle { 
 	border-bottom: 1px solid #eee;
 }
 
@@ -162,7 +161,7 @@ Timeline UI Base
 	text-align: center;
 	left: 20%;
 	top: 0;
-	margin: 5px 0 0 -20px;
+	margin: 5px 0 0 -5px;
 	padding-bottom: 3px; 
 	padding-right: 1px;
 	padding-left: 2px;

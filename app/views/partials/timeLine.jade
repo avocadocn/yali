@@ -9,10 +9,9 @@ if(timeLines)
           span.date= moment(timeline.date).format('YY/MM/DD')
           span.time= moment(timeline.date).format('HH:mm')
         .timeline-icon
-          i(class="icon_timeline_#{timeline.type}")
         .timeline-body
-          p.subtitle= timeline.head
-          hr
+          a(href="/group/#{timeline.provoke.active ? 'competition': 'campaign'}/#{timeline.id}")
+            p.subtitle= timeline.head
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline :'/img/icons/default_company_logo.png'}")
             p= "{{'LOCATION'|translate}}" +":"+ timeline.location
@@ -21,8 +20,5 @@ if(timeLines)
             p= "{{'CONTENT'|translate}}" +":"+ timeline.content
             if(timeline.provoke.active)
               p= "{{'FORMATION'|translate}}" +":"+ timeline.provoke.competition_format
-          .timeline-footer
-            a.nav-link.pull-right {{"DETAIL"|translate}}
-              i.m-icon-swapright.m-icon-white
 else
   span {{"NO_CAMPAIGN"|translate}}

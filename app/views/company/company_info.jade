@@ -97,7 +97,7 @@ div
         //所有人可见active的team
         .col-md-2.col-sm-2.col-xs-3
           a(href="/group/home/{{team._id}}")
-            img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
+            img.img-responsive.img-thumbnail.img_contain(ng-src="{{team.logo}}" width="128px")
         .col-md-10.col-sm-10.col-xs-9
           .row.dl_row
             .col-md-2.col-sm-2.col-xs-2.padding_0
@@ -142,7 +142,7 @@ div
         if(role ==='HR')
           .col-md-2.col-sm-2.col-xs-3
             a(href="/group/home/{{team._id}}")
-              img.img-responsive.img-thumbnail.img_contain(src="{{team.logo}}" width="128px")
+              img.img-responsive.img-thumbnail.img_contain(ng-src="{{team.logo}}" width="128px")
           .col-md-10.col-sm-10.col-xs-9
             .row.dl_row
               .col-md-2.col-sm-2.col-xs-4.padding_0

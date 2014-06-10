@@ -227,11 +227,9 @@ exports.timeLine = function(req, res){
         var _head;
         if(campaign.provoke.active){
           _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
-          _type = 'provoke';
         }
         else{
           _head = campaign.team[0].name + '活动';
-          _type = 'group_campaign';
         }
         var tempObj = {
           id: campaign._id,
