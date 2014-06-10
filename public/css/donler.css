@@ -23,6 +23,9 @@ li {
   padding: 0 15px;
   width: 960px;
 }
+.dl_block {
+  display: block;
+}
 .dl_form-control {
   display: block;
   width: 100%;
