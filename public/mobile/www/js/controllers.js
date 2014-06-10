@@ -151,7 +151,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, $http, Authorize, Campaign, Global) {
+.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign, Dynamic, Global) {
 
   Authorize.authorize();
 
@@ -196,12 +196,10 @@ angular.module('starter.controllers', [])
 
 
   $scope.dynamic = function() {
-    $http.get(Global.base_url + '/group/getGroupMessages/' + $scope.group._id).
-      success(function(data, status, headers, config) {
-        $scope.dynamic_list = data.group_messages;
-        $scope.template = $scope.templates[2];
-      }
-    );
+    Dynamic.getGroupDynamics($scope.group._id, function(dynamics) {
+      $scope.dynamic_list = dynamics;
+      $scope.template = $scope.templates[2];
+    })
   };
 
   $scope.join = Campaign.join(getGroupCampaigns);

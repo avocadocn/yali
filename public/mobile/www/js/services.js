@@ -207,6 +207,15 @@ angular.module('starter.services', [])
     });
   };
 
+  var getGroupDynamics = function(group_id, callback) {
+    $http.get(Global.base_url + '/group/getGroupMessages/' + group_id)
+    .success(function(data, status, headers, config) {
+      if (callback) {
+        callback(data.group_messages);
+      }
+    });
+  };
+
   // callback(positiveCount, negativeCount)
   var vote = function(dynamic_list, callback) {
     return function(provoke_dynamic_id, status, index) {
@@ -223,6 +232,7 @@ angular.module('starter.services', [])
 
   return {
     getDynamics: getDynamics,
+    getGroupDynamics: getGroupDynamics,
     vote: vote
   };
 
