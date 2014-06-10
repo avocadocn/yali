@@ -12,11 +12,15 @@
         </ul>
         <div class="navbar-nav nav pull-right dl-top-login" data-ng-hide="global.authenticated">
             <form action="/users/session" method="post" class="signin form-horizontal ng-pristine ng-valid">
-                <div class="input-group">
-                    <input id="email" type="email" name="username" placeholder="Email地址" required="" class="form-control input-sm email">
-                    <input id="password" type="password" name="password" placeholder="密码" required="" class="form-control input-sm password">
+                <div class="input-group input-group-sm">
                     <div class="input-group-btn">
-                        <a href="/users/forgetPwd" class="btn btn-default btn-sm">?</a>
+                        <input id="email" type="email" name="username" placeholder="Email地址" required="" class="form-control input-sm email">
+                    </div>
+                    <div class="input-group-btn">
+                        <input id="password" type="password" name="password" placeholder="密码" required="" class="form-control input-sm password">
+                    </div>
+                    <div class="input-group-btn">
+                        <a href="/users/forgetPwd" class="btn btn-default btn-sm" title="忘记密码">?</a>
                         <button type="submit" class="btn btn-primary btn-sm btn-submit">登录动梨</button>
                         <a href="/company/signin" class="btn btn-link btn-sm btn-signin-link">企业登录</a>
                     </div>
