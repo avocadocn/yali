@@ -84,17 +84,39 @@ angular.module('starter.services', [])
     return campaign_list;
   };
 
+  var setCampaignTime = function(campaign) {
+    var start_time = new Date(campaign.start_time);
+    var rest_time = start_time - new Date();
+    if (rest_time >= 0) {
+      campaign.rest_time = rest_time;
+    } else {
+      campaign.beyond_time = 0 - rest_time;
+    }
+  }
+
   var setTime = function() {
     for (var i = 0; i < campaign_list.length; i++) {
-      var start_time = new Date(campaign_list[i].start_time);
-      var rest_time = start_time - new Date();
-      if (rest_time >= 0) {
-        campaign_list[i].rest_time = rest_time;
-      } else {
-        campaign_list[i].beyond_time = 0 - rest_time;
-      }
+      setCampaignTime(campaign_list[i]);
 
     }
+  };
+
+  // callback(campaign)
+  var getCampaign = function(id, callback) {
+    $http.get(Global.base_url + '/campaign/' + id)
+    .success(function(data, status) {
+      var campaign = data.campaign;
+      setCampaignTime(campaign);
+      for (var i = 0; i < campaign_list.length; i++) {
+        if (campaign_list[i]._id === id) {
+          campaign_list[i] = campaign;
+          break;
+        }
+      }
+      if (callback) {
+        callback(campaign);
+      }
+    });
   };
 
   // callback(campaign_list)
@@ -117,25 +139,28 @@ angular.module('starter.services', [])
     });
   };
 
+  // callback(id)
   var join = function(callback) {
     return function(id) {
       $http.post(Global.base_url + '/users/joinCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
-        callback();
+        callback(id);
       });
     };
   };
 
+  // callback(id)
   var quit = function(callback) {
     return function(id) {
       $http.post(Global.base_url + '/users/quitCampaign', { campaign_id: id })
       .success(function(data, status, headers, config) {
-        callback();
+        callback(id);
       });
     };
   };
 
   return {
+    getCampaign: getCampaign,
     getCampaignList: getCampaignList,
     getUserCampaigns: getUserCampaigns,
     getGroupCampaigns: getGroupCampaigns,

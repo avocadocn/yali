@@ -32,20 +32,15 @@ angular.module('starter.controllers', [])
 
   $scope.base_url = Global.base_url;
 
-  $rootScope.campaign_owner = 'user';
-
   $rootScope.campaignReturnUri = '#/app/campaign_list';
 
-  var getUserCampaigns = function() {
-    Campaign.getUserCampaigns(function(campaign_list) {
-      $scope.campaign_list = campaign_list;
-    });
-  };
-  getUserCampaigns();
+  Campaign.getUserCampaigns(function(campaign_list) {
+    $scope.campaign_list = campaign_list;
+  });
 
 
-  $scope.join = Campaign.join(getUserCampaigns);
-  $scope.quit = Campaign.quit(getUserCampaigns);
+  $scope.join = Campaign.join(Campaign.getCampaign);
+  $scope.quit = Campaign.quit(Campaign.getCampaign);
 
 })
 
@@ -58,7 +53,14 @@ angular.module('starter.controllers', [])
 
   var campaigns = Campaign.getCampaignList();
 
-  $scope.campaign = campaigns[$stateParams.campaign_index];
+  var index;
+  for (var i = 0; i < campaigns.length; i++) {
+    if (campaigns[i]._id === $stateParams.id) {
+      index = i;
+      $scope.campaign = campaigns[i];
+      break;
+    }
+  }
 
   $scope.photo_album_id = $scope.campaign.photo_album.pid;
 
@@ -77,24 +79,14 @@ angular.module('starter.controllers', [])
     getPhotoList();
   });
 
-  var getCampaigns = function() {
-    if ($rootScope.campaign_owner === 'user') {
-      Campaign.getUserCampaigns(function(campaign_list) {
-        $rootScope.campaign_list = campaign_list;
-        $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
-      });
-    } else if ($rootScope.campaign_owner === 'group') {
-      Campaign.getGroupCampaigns($rootScope.group_id ,function(campaign_list) {
-        $rootScope.campaign_list = campaign_list;
-        $scope.campaign = $rootScope.campaign_list[$stateParams.campaign_index];
-      });
-    }
+  var updateCampaign = function(id) {
+    Campaign.getCampaign(id, function(campaign) {
+      $scope.campaign = campaign;
+    });
+  }
 
-  };
-
-
-  $scope.join = Campaign.join(getCampaigns);
-  $scope.quit = Campaign.quit(getCampaigns);
+  $scope.join = Campaign.join(updateCampaign);
+  $scope.quit = Campaign.quit(updateCampaign);
 
   $scope.deletePhoto = PhotoAlbum.deletePhoto($scope.photo_album_id, getPhotoList);
   $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
@@ -167,16 +159,22 @@ angular.module('starter.controllers', [])
 
   $rootScope.campaign_owner = 'group';
 
-  $scope.group = $rootScope.show_list[$stateParams.group_index];
+  for (var i = 0; i < $rootScope.show_list.length; i++) {
+    if ($rootScope.show_list[i]._id === $stateParams.id) {
+      var index = i;
+      break;
+    }
+  }
+  $scope.group = $rootScope.show_list[index];
 
   $rootScope.group_id = $scope.group._id;
 
   $rootScope.campaignReturnUri = '#/app/group_detail/' + $stateParams.group_index;
 
   $scope.templates = [
-    'templates/_group_info.html',
-    'templates/_campaigns.html',
-    'templates/_dynamics.html'
+    'templates/partials/group_info.html',
+    'templates/partials/campaigns.html',
+    'templates/partials/dynamics.html'
   ];
 
   $scope.template = $scope.templates[0];

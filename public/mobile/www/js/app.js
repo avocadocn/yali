@@ -38,7 +38,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
     .state('app.campaignDetail', {
-      url: '/campaign_detail/:campaign_index',
+      url: '/campaign_detail/:id',
       views: {
         'menuContent': {
           templateUrl: 'templates/campaign_detail.html',
@@ -81,7 +81,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 
     .state('app.groupDetail', {
-      url: '/group_detail/:group_index',
+      url: '/group_detail/:id',
       views: {
         'menuContent': {
           templateUrl: 'templates/group_detail.html',

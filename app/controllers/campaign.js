@@ -12,7 +12,8 @@ var mongoose = require('mongoose'),
     Campaign = mongoose.model('Campaign'),
     async = require('async'),
     PhotoAlbum = mongoose.model('PhotoAlbum'),
-    config = require('../../config/config');
+    config = require('../../config/config'),
+    model_helper = require('../helpers/model_helper');
 
 
 
@@ -468,4 +469,21 @@ exports.group = function(req, res, next, id) {
         next();
     });
 };
+
+
+exports.getCampaign = function(req, res) {
+  Campaign
+  .findOne({ _id: req.params.id })
+  .populate('team')
+  .exec()
+  .then(function(campaign) {
+    var output_campaign = model_helper.formatCampaign(req.user, campaign);
+    res.send({ result: 1, campaign: output_campaign });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(400);
+  })
+}
+
 
