@@ -4,7 +4,7 @@ append block headExt
 if(timeLines)
   ul.timeline
     each timeline in timeLines
-      li.timeline-blue
+      li.timeline
         .timeline-time
           span.date= moment(timeline.date).format('YY/MM/DD')
           span.time= moment(timeline.date).format('HH:mm')
@@ -12,6 +12,7 @@ if(timeLines)
           i(class="icon_timeline_#{timeline.type}")
         .timeline-body
           p.subtitle= timeline.head
+          hr
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline :'/img/icons/default_company_logo.png'}")
             p= "{{'LOCATION'|translate}}" +":"+ timeline.location
@@ -21,7 +22,7 @@ if(timeLines)
             if(timeline.provoke.active)
               p= "{{'FORMATION'|translate}}" +":"+ timeline.provoke.competition_format
           .timeline-footer
-            a.nav-link {{"DETAIL"|translate}}
+            a.nav-link.pull-right {{"DETAIL"|translate}}
               i.m-icon-swapright.m-icon-white
 else
   span {{"NO_CAMPAIGN"|translate}}
