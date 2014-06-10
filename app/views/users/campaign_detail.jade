@@ -1,13 +1,13 @@
 extends layouts/user_base
 
 block content
-  div(ng-app="campaign")
+  div(ng-init="campaignId='#{campaign._id}'")
     p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
     p {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：#{campaign.content}
     p {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：#{campaign.location}
     p {{"START_TIME"|translate}}：#{campaign.start_time}
-    //button.dl_btn.dl_btn_small(ng-controller="campaignController" ng-click="joinCampaign(#{campaign._id})") {{"JOIN"|translate}}
-    //button.dl_btn.dl_btn_small(ng-controller="campaignController" ng-click="quitCampaign(#{campaign._id})") {{"QUIT"|translate}}
+    button.dl_btn.dl_btn_small(ng-if="!#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="joinCampaign()") {{"JOIN"|translate}}
+    button.dl_btn.dl_btn_small(ng-if="#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="quitCampaign()") {{"QUIT"|translate}}
     .row
       p {{"CAMPAIGN"|translate}}{{"MEMBER"|translate}}：
       if(campaign.member.length>0)

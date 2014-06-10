@@ -94,7 +94,8 @@ li
   padding 4px 0 4px 10px
 
 .dl_container
-  width 980px
+  width 960px
+  min-width 960px
   margin 0 auto
   padding-top 15px
   .main
@@ -102,12 +103,24 @@ li
     float left
     margin-right 40px
   .side
-    width 280px
+    width 260px
     float left
   .aside
     width 140px
     margin-right 20px
     float left
+.dl_detail_container
+  width 1170px
+  margin 0 auto
+  min-width 960px
+  padding-top 30px
+  .dl_detail_main
+    width 770px
+    float left
+    margin-right 30px
+.dl_detail_side
+  min-width 370px
+  float right
 .tab_style
   min-width 145px
   text-align center
@@ -381,7 +394,7 @@ input::-webkit-inner-spin-button
   margin 0 auto -(footerHeight)
   padding-bottom footerHeight
   min-width 960px
-
+  position relative
 .dl_footer
   background-color #2c3e50
   height footerHeight

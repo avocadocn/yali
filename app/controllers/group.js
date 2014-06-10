@@ -893,11 +893,25 @@ exports.getCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
+  var join = false;
   Campaign
   .findOne({ _id: req.params.campaignId })
   .exec()
   .then(function(campaign) {
-    res.render('users/campaign_detail', { campaign: campaign });
+    //增加返回值是否加入
+    if(req.session.role === 'MEMBER'|| req.session.role === 'OWNER'){
+      for(var j = 0;j < campaign.member.length; j ++) {
+        if(req.user._id.toString() === campaign.member[j].uid) {
+          join = true;
+          break;
+        }
+      }
+    }
+    res.render('users/campaign_detail', {
+      campaign: campaign,
+      role: req.session.role, 
+      join: join
+    });
   })
   .then(null, function(err) {
     console.log(err);
