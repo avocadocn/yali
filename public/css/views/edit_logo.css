@@ -1,0 +1,26 @@
+.logo_panel {
+  float: left;
+}
+.logo_big {
+  width: 150px;
+}
+.logo_middle {
+  margin-left: 40px;
+  padding-top: 100px;
+  width: 70px;
+}
+.logo_small {
+  margin-left: 30px;
+  padding-top: 123px;
+  width: 70px;
+}
+.high_light_title {
+  color: #5d5d75;
+  font-size: 16px;
+}
+.text {
+  color: #9a9a9a;
+}
+.size_text {
+  margin-top: 10px;
+}
