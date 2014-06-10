@@ -640,7 +640,8 @@ function fetchCampaign(req,res,team_ids,role) {
           'start_time': campaign[j].start_time ? campaign[j].start_time : '',
           'end_time': campaign[j].end_time ? campaign[j].end_time : '',
           'join':join,
-          'provoke':campaign[j].provoke
+          'provoke':campaign[j].provoke,
+          'index':j
         });
       }
       return res.send({

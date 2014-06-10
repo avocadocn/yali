@@ -664,7 +664,9 @@ exports.home = function(req, res) {
                     cname : company.info.name,
                     sign : company.info.brief,
                     groupnumber: company.team ? company.team.length : 0,
-                    membernumber: company.info.membernumber
+                    membernumber: company.info.membernumber,
+                    photo: req.user.photo,
+                    realname:req.user.realname
                 });
             }
             else
@@ -861,6 +863,7 @@ exports.getCompanyCampaign = function(req, res) {
                         'create_time': campaign[i].create_time,
                         'start_time': campaign[i].start_time,
                         'end_time': campaign[i].end_time,
+                        'index':i
                     });
                     for(var j = 0;j < campaign[i].member.length; j ++) {
                         if(req.user.id === campaign[i].member[j].uid) {

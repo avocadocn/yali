@@ -117,7 +117,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert('成功加入该活动!');
+                    alert("您已参加该活动!")
                     $scope.campaigns[index].join = true;
                     $scope.campaigns[index].member_length++;
                 }
@@ -143,7 +143,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert('您已退出该活动!');
+                    alert("您已退出该活动!")
                     $scope.campaigns[index].join = false;
                     $scope.campaigns[index].member_length--;
                 }

@@ -310,7 +310,8 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert('成功加入该活动!');
+                    //alert('成功加入该活动!');
+                    $(".alert").alert();
                     $scope.campaigns[index].join = true;
                     $scope.campaigns[index].member_length++;
                 }
@@ -336,7 +337,8 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert('您已退出该活动!');
+                    $(".alert").alert();
+                    //alert('您已退出该活动!');
                     $scope.campaigns[index].join = false;
                     $scope.campaigns[index].member_length--;
                 }

@@ -18,6 +18,7 @@
     "momentjs": "~2.6.0",
     "ionic": "1.0.0-beta.4",
     "angular-translate-loader-url": "~2.1.0",
-    "angular-translate-loader-static-files": "~2.1.0"
+    "angular-translate-loader-static-files": "~2.1.0",
+    "alertify.js":"latest"
   }
 }

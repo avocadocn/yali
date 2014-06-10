@@ -16,21 +16,23 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
           li
             a(href="/users/home") {{"PERSONAL_HOME"|translate}}
           li
-            a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
-          li
-            a(href="/users/signout") {{"LOGOUT"|translate}}
-          li
-            a(href="#" data-toggle="dropdown") {{"L_CHANGE"|translate}}
-            ul.dropdown-menu(role="menu")
+            a.dl_nav(href="#" data-toggle="dropdown")
+              span
+                img.size_20(ng-src="#{photo}")
+              span.m_l_5 #{realname}
+            ul.dropdown-menu.dl_menu(role="menu")
               li
-                a(href="#" ng-click="changeLanguage('zh-cn')") {{"L_ZH"|translate}}
+                a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
               li
-                a(href="#" ng-click="changeLanguage('jp-jp')") {{"L_JP"|translate}}
+                a(href="/users/signout") {{"LOGOUT"|translate}}
+          li
+            select.dl_form-control.chzn-select.dl_nav_padding(tabindex="2" ng-model="team_selected" ng-options="item.language for item in languages" ng-change="changeLanguage(team_selected.key)" required)
+              option(value="") {{"L_CHANGE"|translate}}
     if role === 'HR'
-        //.navbar-header  
+        //.navbar-header
         a.navbar-brand(href="/")
           img.logo(src="/img/logo_w.png")
-        //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav") 
+        //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav")
           span.sr-only Toggle navigation
           span.icon-bar
           span.icon-bar
@@ -40,13 +42,15 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
           li
             a(href="/company/home") {{"COMPANY_HOME"|translate}}
           li
-            a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
-          li
-            a(href="/company/signout") {{"LOGOUT"|translate}}
-          li
-            a(href="#" data-toggle="dropdown") {{"L_CHANGE"|translate}}
-            ul.dropdown-menu(role="menu")
+            a.dl_nav(href="#" data-toggle="dropdown")
+              span
+                img.size_20(ng-src="#{logo}")
+              span.m_l_5 #{cname}
+            ul.dropdown-menu.dl_menu(role="menu")
               li
-                a(href="#" ng-click="changeLanguage('zh-cn')") {{"L_ZH"|translate}}
+                a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
               li
-                a(href="#" ng-click="changeLanguage('jp-jp')") {{"L_JP"|translate}}
+                a(href="/company/signout") {{"LOGOUT"|translate}}
+          li
+            select.dl_form-control.chzn-select.dl_nav_padding(tabindex="2" ng-model="team_selected" ng-options="item.language for item in languages" ng-change="changeLanguage(team_selected.key)" required)
+              option(value="") {{"L_CHANGE"|translate}}

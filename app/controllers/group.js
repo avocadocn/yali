@@ -347,7 +347,10 @@ exports.home = function(req, res) {
             'cname': req.companyGroup.cname,
             'sign': req.companyGroup.brief,
             'gid' : req.companyGroup.gid,
-            'cid' : cid
+            'cid' : cid,
+            'photo': req.user.photo,
+            'realname':req.user.realname
+
           });
         });
       };
@@ -490,7 +493,8 @@ exports.getGroupCampaign = function(req, res) {
             'start_time': campaign[i].start_time ? campaign[i].start_time : '',
             'end_time': campaign[i].end_time ? campaign[i].end_time : '',
             'join':join,
-            'provoke':campaign[i].provoke
+            'provoke':campaign[i].provoke,
+            'index':i
           });
         }
       }
