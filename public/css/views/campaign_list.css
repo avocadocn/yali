@@ -1,0 +1,13 @@
+.campaign_panel {
+  position: relative;
+}
+.invisible_link {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: translate;
+  z-index: 1;
+}
+.operator_btn {
+  z-index: 2;
+}
