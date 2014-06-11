@@ -1062,7 +1062,9 @@ exports.editLogo = function(req, res) {
   CompanyGroup.findOne({ _id: req.session.nowtid  }).exec(function(err, company_group) {
     res.render('group/editLogo', {
       logo: company_group.logo,
-      id: company_group._id
+      id: company_group._id,
+      realname : req.user.realname,
+      photo : req.user.photo
     });
   });
 

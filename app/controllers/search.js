@@ -63,15 +63,16 @@ exports.searchTeam = function(req, res) {
 exports.getTeam = function(req, res) {
   var cid,condition;
   var gid = req.body.gid;
+  var tid = req.body.tid;
   var regx = new RegExp(req.body.regx);
 
   if(req.body.operate === 'part') {
     //返回某公司某类型的所有小队
     cid = req.body.cid;
-    condition = {'cid':cid,'gid':gid}
+    condition = {'cid':cid,'gid':gid , '_id':{'$ne': tid}}
   } else {
     //根据队名部分关键字匹配小队
-    condition = {'gid':gid,'name':regx}
+    condition = {'gid':gid,'name':regx , '_id':{'$ne': tid}}
   }
   CompanyGroup.find(condition,function(err, company_groups){
     if(err || !company_groups) {

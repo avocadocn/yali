@@ -167,6 +167,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 data:{
                     cid : cid,
                     gid : $rootScope.groupId,
+                    tid : $rootScope.teamId,
                     operate:'part'
                 }
             }).success(function(data, status) {
@@ -188,6 +189,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 data:{
                     regx : _tirm,
                     gid : $rootScope.groupId,
+                    tid : $rootScope.teamId,
                     operate:'all'
                 }
             }).success(function(data, status) {
@@ -442,7 +444,7 @@ tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', 
 
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
-    $scope.buttonStatus = rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+    $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
     $scope.$watch('teamId',function(tid){
         $http.get('/group/info/'+tid).success(function(data, status) {
             $scope.companyname = data.companyGroup.cname;
@@ -487,10 +489,10 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             catch(e) {
                 console.log(e);
             }
-            $scope.buttonStatus = rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;;
+            $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;;
         }
         else {
-            $scope.buttonStatus = rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;;
+            $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;;
         }
   };
 }]);
