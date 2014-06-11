@@ -59,7 +59,7 @@ companyApp.controller('DetailController', ['$http', function($http) {
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                alert('数据发生错误！');
+                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -75,7 +75,7 @@ companyApp.controller('GroupsController',['$http',function($http) {
         _this.groups = data;
     }).error(function(data,status) {
         //TODO:更改对话框
-        alert('组件获取失败！');
+        $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH_TYPE_FAILURE);
     });
     this.selected_groups =[];
     this.group_next = function() {
@@ -102,7 +102,7 @@ companyApp.controller('GroupsController',['$http',function($http) {
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                alert('数据发生错误！');
+                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -127,11 +127,11 @@ companyApp.controller('inviteController',['$http','$scope',function($http,$scope
                     $scope.domains[index].status=true;
                 }
                 else{
-                    alert(data.msg);
+                    $rootScope.donlerAlert(data.msg);
                 }
             }).error(function(data, status) {
                 //TODO:更改对话框
-                alert('数据发生错误！');
+                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {

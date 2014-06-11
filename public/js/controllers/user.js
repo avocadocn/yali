@@ -15,7 +15,7 @@ userApp.directive('match', function($parse) {
   };
 });
 //员工注册后在公司组件列表里选择组件
-userApp.controller('GroupsController', ['$scope','$http', function($scope, $http) {
+userApp.controller('GroupsController', ['$scope','$http','$rootScope', function($scope, $http,$rootScope) {
     $http.get('/group/getCompanyGroups').success(function(data, status) {
         $scope.cid = data.cid;
         $scope.groups = data.teams;
@@ -34,7 +34,9 @@ userApp.controller('GroupsController', ['$scope','$http', function($scope, $http
             });
         }
     }).error(function(data,status) {
-        alert('组件获取失败');
+        $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
+                                                        rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                            rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
     });
     $scope.selected = [];
 
@@ -93,10 +95,12 @@ userApp.controller('GroupsController', ['$scope','$http', function($scope, $http
                     selected : $scope.selected
                 }
             }).success(function(data, status) {
-                alert('选择组件成功！');
+                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.SELECT +
+                                                        rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                            rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                 window.location.href = "/users/finishRegister";
             }).error(function(data, status) {
-                alert('数据发生错误！');
+                rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {

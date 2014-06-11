@@ -1,11 +1,11 @@
-var companySignUpApp = angular.module('companySignUp',['ui.bootstrap','ngRoute']);
+var companySignUpApp = angular.module('mean.main');
 
-companySignUpApp.controller('signupController',['$http','$scope',function($http,$scope) {
+companySignUpApp.controller('signupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
   var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
   $scope.reg = false;
   $scope.check = false;
   $scope.ok = false;
-  $scope.check_value = "正在检查邮箱是否存在...";
+  $scope.check_value = rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_EXIST_CHECK;
 
   $scope.mailRegCheck = function() {
      $scope.reg = (pattern.test($scope.email));
@@ -15,7 +15,7 @@ companySignUpApp.controller('signupController',['$http','$scope',function($http,
         $scope.ok = false;
         $("#email").tooltip({
           "trigger":"hover",
-          "title":"请输入正确的邮箱地址!",
+          "title":rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_REGEX,
           "placement" : "right"
         });
       } else {
@@ -34,16 +34,22 @@ companySignUpApp.controller('signupController',['$http','$scope',function($http,
             }
         }).success(function(data, status) {
             if(data === "false") {
-              $scope.check_value = "该邮箱尚未注册!";
+              $scope.check_value = rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
+                                      + rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
+                                          + rootScope.lang_for_msg[$rootScope.lang_key].value.HAVENOT
+                                              + rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
               $scope.check = true;
             } else {
               $scope.check = false;
-              $scope.check_value = "该邮箱已经注册!";
+              $scope.check_value = rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
+                                      + rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
+                                          + rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
+                                              + rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
             }
 
         }).error(function(data, status) {
             //TODO:更改对话框
-            alert('数据发生错误！');
+            $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
         });
       }
       catch(e){

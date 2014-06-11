@@ -26,7 +26,7 @@ groupApp.controller('resultController', ['$http', '$scope',function ($http, $sco
         }).success(function(data, status) {
           window.location.reload();
         }).error(function(data, status) {
-            alert('数据发生错误！');
+            $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
         });
       }
       catch(e) {
@@ -119,7 +119,33 @@ groupApp.controller('resultController', ['$http', '$scope',function ($http, $sco
       $.post('/group/updateFormation/'+competition_id,{'formation':competition_format,'competition_team':competition_team},function(data,status){
         if(data.result===0){
           //TODO
-          alert(data.msg);
+          //能不能把这个闭包和AngularJS绑定?
+          alertify.alert(data.msg);
+          var body = {
+            'border': '1px',
+            'border-radius': '0px',
+            'top' : '50px',
+            'left' : '55%',
+            'width' : '350px'
+        };
+
+        var buttons = {
+            'border-top' : '0px',
+            'background' : '#fff',
+            'text-align' : 'center'
+        }
+
+        var button = {
+            'margin-left' : '0px',
+            'padding' : '6px 15px',
+            'box-shadow' : '0px 0px 0px #ffffff',
+            'background-color' : '#3498db'
+        }
+
+        $(".alertify-buttons").css(buttons);
+        $(".alertify").css(body);
+        $(".alertify-button").css(button);
+
         }
       });
     };

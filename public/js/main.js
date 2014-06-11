@@ -139,7 +139,11 @@ app.config(['$translateProvider',
       NO_CAMPAIGN : "目前还没有活动",
       L_CHANGE : "语言",
       L_ZH:"中文",
-      L_JP:"日语"
+      L_JP:"日语",
+      YOU : "您",
+      ALREADY : "已经",
+      SUCCESS : "成功",
+      THIS : "该"
     });
     $translateProvider.translations('jp-jp', {
       I:"私",
@@ -297,14 +301,60 @@ app.config(['$translateProvider',
 ]);
 
 app.run(['$translate','$rootScope', function ($translate,$rootScope) {
+
+    $rootScope.lang_for_msg = [];
+    $rootScope.lang_key = 0;
+
+    $rootScope.lang_for_msg.push({
+      'lang':"zh-cn",
+      'value':{
+        'JOIN_CAMPAIGN_SUCCESS' : "您已经成功加入该活动!",
+        'QUIT_CAMPAIGN_SUCCESS' : "您已经成功退出该活动!",
+        'DATA_ERROR' : "数据发生错误!",
+        'ACCOUNT_FAILURE' : "账号获取失败!",
+        'MSG_UPDATE_SUCCESS' : '信息修改成功!',
+        'EDIT' : '编辑',
+        'SAVE' : '保存',
+        'THIS' : '该',
+        'SIGNUP' : '注册',
+        'MAIL' : '邮箱',
+        'ALREADY' : '已经',
+        'HAVENOT' : '还未',
+        'JOIN_TEAM_FAILURE' : '加入小队失败!',
+        'QUIT_TEAM_FAILURE' : '退出小队失败!',
+        'FETCH_TYPE_FAILURE' : '获取类型失败!',
+        'MAIL_EXIST_CHECK' : '正在检查邮箱是否存在...',
+        'MAIL_REGEX' : '请输入正确的邮箱地址',
+        'COMPANY' : '企业',
+        'SUCCESS' : '成功',
+        'FAILURE' : '失败',
+        'ACTIVE' : '激活',
+        'TEAM' : '小组',
+        'CLOSE' : '关闭',
+        'JOIN' : '加入',
+        'QUIT' : '退出',
+        'FETCH' : '获取',
+        'TYPE' : '类型',
+        'ADD' : '添加',
+        'DELETE' : '删除',
+        'ERROR' : '错误',
+        'INFO' : '信息',
+        'SELECT' : '选择'
+      }
+    })
+
     $rootScope.languages = [{'language':'L_ZH','key':'zh-cn'},{'language':'L_JP','key':'jp-jp'}];
     $rootScope.changeLanguage = function (langKey) {
         $translate.use(langKey);
+        $rootScope.language_key = langKey;
     };
     $rootScope.initAlertCss = function(){
-       var divcss = {
+       var body = {
             'border': '1px',
-            'border-radius': '0px'
+            'border-radius': '0px',
+            'top' : '50px',
+            'left' : '55%',
+            'width' : '350px'
         };
 
         var buttons = {
@@ -312,7 +362,20 @@ app.run(['$translate','$rootScope', function ($translate,$rootScope) {
             'background' : '#fff',
             'text-align' : 'center'
         }
-        $("#alertify").css(divcss);
+
+        var button = {
+            'margin-left' : '0px',
+            'padding' : '6px 15px',
+            'box-shadow' : '0px 0px 0px #ffffff',
+            'background-color' : '#3498db'
+        }
+
         $(".alertify-buttons").css(buttons);
+        $(".alertify").css(body);
+        $(".alertify-button").css(button);
+    }
+    $rootScope.donlerAlert = function(msg) {
+      alertify.alert(msg);
+      $rootScope.initAlertCss();
     }
 }]);

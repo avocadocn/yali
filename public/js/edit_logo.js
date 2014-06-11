@@ -82,7 +82,31 @@
 
     $('#edit_logo_form').ajaxForm(function(data, status) {
       if (status === 'success' && data.result === 1) {
-        alert('修改成功');
+        alertify.alert("修改成功!");
+        var body = {
+            'border': '1px',
+            'border-radius': '0px',
+            'top' : '50px',
+            'left' : '55%',
+            'width' : '350px'
+        };
+
+        var buttons = {
+            'border-top' : '0px',
+            'background' : '#fff',
+            'text-align' : 'center'
+        }
+
+        var button = {
+            'margin-left' : '0px',
+            'padding' : '6px 15px',
+            'box-shadow' : '0px 0px 0px #ffffff',
+            'background-color' : '#3498db'
+        }
+
+        $(".alertify-buttons").css(buttons);
+        $(".alertify").css(body);
+        $(".alertify-button").css(button);
         window.location.reload();
       }
     });

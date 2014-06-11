@@ -2,7 +2,7 @@
 
 var campaignApp = angular.module('mean.main');
 
-campaignApp.controller('campaignController', ['$scope', '$http', function($scope, $http) {
+campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
 
     $scope.campaign_id = "";
     $scope.$watch('campaignId',function(campaign_id){
@@ -19,7 +19,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', function($scope
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert('成功加入该活动!');
+                    $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.join = true;
                     window.location.reload();
                 }
@@ -27,7 +27,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', function($scope
                     alert(data.msg);
                 }
             }).error(function(data, status) {
-                alert('数据发生错误！');
+                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -45,7 +45,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', function($scope
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert('您已退出该活动!');
+                    $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     $scope.join = false;
                     window.location.reload();
                 }
@@ -53,7 +53,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', function($scope
                     alert(data.msg);
                 }
             }).error(function(data, status) {
-                alert('数据发生错误！');
+                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {

@@ -90,7 +90,7 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
                     $scope.group_messages[index].negative = data.negative;
                 }
             }).error(function(data, status) {
-                alert('数据发生错误！');
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -117,8 +117,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alertify.alert("您已参加该活动!");
-                    $rootScope.initAlertCss();
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.campaigns[index].join = true;
                     $scope.campaigns[index].member_length++;
                 }
@@ -126,7 +125,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
                     alert(data.msg);
                 }
             }).error(function(data, status) {
-                alert('数据发生错误！');
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -144,8 +143,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alertify.alert("您已退出该活动!");
-                    $rootScope.initAlertCss();
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     $scope.campaigns[index].join = false;
                     $scope.campaigns[index].member_length--;
                 }
@@ -153,7 +151,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
                     alert(data.msg);
                 }
             }).error(function(data, status) {
-                alert('数据发生错误！');
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -173,12 +171,12 @@ tabViewUser.controller('AccountFormController',['$scope','$http','$rootScope',fu
         }
     }).error(function(data,status) {
         //TODO:更改对话框
-        console.log('个人账号信息获取失败！');
+        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
     });
     $scope.baseUnEdit = true;
-    $scope.baseButtonStatus = '编辑';
+    $scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
     $scope.linkUnEdit = true;
-    $scope.linkButtonStatus = '编辑';
+    $scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
     $scope.baseEditToggle = function() {
         $scope.baseUnEdit = !$scope.baseUnEdit;
         if($scope.baseUnEdit) {
@@ -202,24 +200,24 @@ tabViewUser.controller('AccountFormController',['$scope','$http','$rootScope',fu
                 }).success(function(data, status) {
                     //TODO:更改对话框
                     if(data.result === 1){
-                        alert('信息修改成功！');
+                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
                         //重新刷新页面
                         window.location.reload();
                     }
                     else
-                        alert(data.msg);
+                        $rootScope.donlerAlert(data.msg);
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    alert('数据发生错误！');
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
             }
             catch(e) {
                 console.log(e);
             }
-            $scope.baseButtonStatus = '编辑';
+            $scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
         }
         else {
-            $scope.baseButtonStatus = '保存';
+            $scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
         }
     };
     $scope.linkEditToggle = function() {
@@ -241,27 +239,27 @@ tabViewUser.controller('AccountFormController',['$scope','$http','$rootScope',fu
                     console.log(data);
                     //TODO:更改对话框
                     if(data.result === 1)
-                        alert('信息修改成功！');
+                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
                     else
-                        alert(data.msg);
+                        $rootScope.donlerAlert(data.msg);
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    alert('数据发生错误！');
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
             }
             catch(e) {
                 console.log(e);
             }
-            $scope.linkButtonStatus = '编辑';
+            $scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
         }
         else {
-            $scope.linkButtonStatus = '保存';
+            $scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
         }
     };
 
 }]);
 
-tabViewUser.controller('PasswordFormController', ['$http','$scope', function($http, $scope) {
+tabViewUser.controller('PasswordFormController', ['$http','$scope','$rootScope', function($http, $scope, $rootScope) {
     $scope.nowpassword = '';
     $scope.newpassword = '';
     $scope.confirmpassword = '';
@@ -276,14 +274,14 @@ tabViewUser.controller('PasswordFormController', ['$http','$scope', function($ht
         }).success(function(data, status) {
             //TODO:更改对话框
             if(data.result === 1){
-                alert(data.msg);
+                $rootScope.donlerAlert(data.msg);
                 window.location.href = '#/personal';
             }
             else
-                alert(data.msg);
+                $rootScope.donlerAlert(data.msg);
         }).error(function(data, status) {
             //TODO:更改对话框
-            alert('数据发生错误！');
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
         });
     };
 }]);

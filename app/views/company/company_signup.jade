@@ -13,7 +13,7 @@ block contentExt
         p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
         p 我们会对每家申请加入的团体当然也包括您在内
         p 认真的核实资料，感谢您的配合
-    .col-xs-12.col-sm-7(ng-app="companySignUp")
+    .col-xs-12.col-sm-7
       form.block_right.form-horizontal.center-block(ng-controller="signupController" action="/company" method="post" name="signup_form" novalidate)
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.name.$invalid && signup_form.name.$dirty}")
           label.col-xs-3.control-label(for="name") *公司全称
