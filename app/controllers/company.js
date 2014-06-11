@@ -665,8 +665,8 @@ exports.home = function(req, res) {
                     sign : company.info.brief,
                     groupnumber: company.team ? company.team.length : 0,
                     membernumber: company.info.membernumber,
-                    photo: req.user.photo,
-                    realname:req.user.realname
+                    head_photo: req.user.photo,
+                    head_nickname:req.user.nickname
                 });
             }
             else

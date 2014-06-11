@@ -725,8 +725,6 @@ exports.home = function(req, res) {
           }
         }
       }
-      console.log(selected_teams);
-      console.log(unselected_teams);
       res.render('users/home',{
         'selected_teams' : selected_teams,
         'unselected_teams' : unselected_teams,
@@ -734,7 +732,9 @@ exports.home = function(req, res) {
         'realname':_user.realname,
         'cname':_user.cname,
         'sign':_user.introduce,
-        'role':req.session.role
+        'role':req.session.role,
+        'head_nickname' : req.user.nickname,   //显示在页头的用户名
+        'head_photo' : req.user.photo          //显示在页头的用户头像
       });
     }
   });
@@ -1267,7 +1267,9 @@ exports.editPhoto = function(req, res) {
   }
   res.render('users/editPhoto', {
     photo: req.user.photo,
-    uid: req.user._id
+    uid: req.user._id,
+    head_nickname : req.user.nickname,
+    head_photo : req.user.photo
   });
 };
 

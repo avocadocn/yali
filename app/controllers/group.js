@@ -348,8 +348,8 @@ exports.home = function(req, res) {
             'sign': req.companyGroup.brief,
             'gid' : req.companyGroup.gid,
             'cid' : cid,
-            'photo': req.user.photo,
-            'realname':req.user.realname
+            'head_photo': req.user.photo,
+            'head_nickname':req.user.nickname
 
           });
         });
@@ -921,8 +921,8 @@ exports.getCampaign = function(req, res) {
       campaign: campaign,
       role: req.session.role,
       join: join,
-      realname : req.user.realname,
-      photo : req.user.photo
+      head_nickname : req.user.nickname,
+      head_photo : req.user.photo
     });
   })
   .then(null, function(err) {
@@ -1063,8 +1063,8 @@ exports.editLogo = function(req, res) {
     res.render('group/editLogo', {
       logo: company_group.logo,
       id: company_group._id,
-      realname : req.user.realname,
-      photo : req.user.photo
+      head_nickname : req.user.nickname,
+      head_photo : req.user.photo
     });
   });
 
