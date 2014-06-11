@@ -59,44 +59,9 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
         $rootScope.nowTab = value;
     };
 }]);
-
-tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
- function ($http, $scope, $rootScope) {
-    $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
-      $scope.members = data;
-      //按照员工真实姓名的拼音排序
-      $scope.members = $scope.members.sort(function (e,f){return e.realname.localeCompare(f.realname);});
-      $scope.company = true;
-    });
-
-    $scope.userDetail = function(index) {
-        $scope.num = index;
-    }
-
-    $scope.changeUserInfo = function(_operate) {
-        try{
-            $http({
-                method: 'post',
-                url: '/company/changeUser',
-                data:{
-                    operate : _operate,
-                    user : $scope.members[$scope.num]
-                }
-            }).success(function(data, status) {
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    }
-}]);
-
 tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope',
   function($http,$scope,$rootScope) {
+    $rootScope.nowTab = 'company_campaign';
     $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.company = true;
@@ -136,7 +101,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
         catch(e){
             console.log(e);
         }
-    }
+    };
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };
@@ -250,6 +215,42 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
         }
     };
 }]);
+tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
+ function ($http, $scope, $rootScope) {
+    $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
+      $scope.members = data;
+      //按照员工真实姓名的拼音排序
+      $scope.members = $scope.members.sort(function (e,f){return e.realname.localeCompare(f.realname);});
+      $scope.company = true;
+    });
+
+    $scope.userDetail = function(index) {
+        $scope.num = index;
+    }
+
+    $scope.changeUserInfo = function(_operate) {
+        try{
+            $http({
+                method: 'post',
+                url: '/company/changeUser',
+                data:{
+                    operate : _operate,
+                    user : $scope.members[$scope.num]
+                }
+            }).success(function(data, status) {
+
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+}]);
+
+
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
