@@ -86,7 +86,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -130,7 +130,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
                 $scope.campaigns = data.data;
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -157,7 +157,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -175,9 +175,9 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
                 }
             }).success(function(data, status) {
                 window.location.reload();
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
             }).error(function(data, status) {
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -195,9 +195,9 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
                 }
             }).success(function(data, status) {
                 window.location.reload();
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
             }).error(function(data, status) {
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -223,7 +223,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -242,7 +242,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -256,7 +256,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         $scope.info = data.info;
     }).error(function(data,status) {
         //TODO:更改对话框
-        $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
     });
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
@@ -285,7 +285,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     window.location.reload();
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
             }
             catch(e) {
@@ -344,7 +344,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 $scope.users = data;
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
             $http({
                 method:'post',
@@ -356,7 +356,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 $scope.team = data;
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -382,7 +382,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 window.location.href="/company/home#/company_info";
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -407,7 +407,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 window.location.reload();
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -427,14 +427,14 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             }).success(function(data, status) {
                     //TODO:更改对话框
                     if(data.result === 1) {
-                        $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
                         window.location.reload();
                     }
                     else
                         $rootScope.donlerAlert(data.msg);
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -454,19 +454,19 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }).success(function(data,status){
                 if( active===true ){
-                    $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.ACTIVE +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.ACTIVE +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                     window.location.reload();
                 }
                 else{
-                    $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.CLOSE +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.CLOSE +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                     window.location.reload();
                 }
             }).error(function(data, status){
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -483,14 +483,14 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     'tid':tid
                 }
             }).success(function(data,status){
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                 window.location.reload();
             }).error(function(data,status){
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
             });
         }
         catch(e){
@@ -507,14 +507,14 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     tid : tid
                 }
             }).success(function(data,status){
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                 window.location.reload();
             }).error(function(data,status){
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
             });
         }
         catch(e){
@@ -547,7 +547,7 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScop
                 $rootScope.donlerAlert(data.msg);
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
         });
     };
 }]);
@@ -560,9 +560,9 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
         _this.groups = data;
     }).error(function(data,status) {
         //TODO:更改对话框
-        $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.TYPE +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
+        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TYPE +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
     });
     _this.selected_group ={};
     this.save = function() {
@@ -586,16 +586,16 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
                 }
             }).success(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.ADD +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ADD +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                 window.location.href='#/company_info';
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.ADD +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ADD +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
             });
         }
         catch(e) {
@@ -608,10 +608,10 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
             $http.get('/company/getAccount').success(function(data,status){
                 _this.tname = data.info.official_name + '-' + _this.selected + '队';
             }).error(function(data,status){
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY +
-                                                rootScope.lang_for_msg[$rootScope.lang_key].value.INFO +
-                                                    rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
-                                                         rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY +
+                                                $rootScope.lang_for_msg[$rootScope.lang_key].value.INFO +
+                                                    $rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
+                                                         $rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
             });
         }
         catch(e){

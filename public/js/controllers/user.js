@@ -34,9 +34,9 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
             });
         }
     }).error(function(data,status) {
-        $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
-                                                        rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                            rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
+        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
+                                                        $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                            $rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
     });
     $scope.selected = [];
 
@@ -95,12 +95,12 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
                     selected : $scope.selected
                 }
             }).success(function(data, status) {
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.SELECT +
-                                                        rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                            rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.SELECT +
+                                                        $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
+                                                            $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                 window.location.href = "/users/finishRegister";
             }).error(function(data, status) {
-                rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {

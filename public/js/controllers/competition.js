@@ -26,7 +26,7 @@ groupApp.controller('resultController', ['$http', '$scope',function ($http, $sco
         }).success(function(data, status) {
           window.location.reload();
         }).error(function(data, status) {
-            $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
         });
       }
       catch(e) {

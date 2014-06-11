@@ -10,6 +10,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
     });
 
     $scope.joinCampaign = function () {
+        //$rootScope.donlerAlert($scope.campaign_id);
         try {
             $http({
                 method: 'post',
@@ -19,15 +20,15 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.join = true;
                     window.location.reload();
                 }
                 else{
-                    alert(data.msg);
+                    $rootScope.donlerAlert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -45,15 +46,15 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     $scope.join = false;
                     window.location.reload();
                 }
                 else{
-                    alert(data.msg);
+                    $rootScope.donlerAlert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {

@@ -5,7 +5,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
   $scope.reg = false;
   $scope.check = false;
   $scope.ok = false;
-  $scope.check_value = rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_EXIST_CHECK;
+  $scope.check_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_EXIST_CHECK;
 
   $scope.mailRegCheck = function() {
      $scope.reg = (pattern.test($scope.email));
@@ -15,7 +15,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
         $scope.ok = false;
         $("#email").tooltip({
           "trigger":"hover",
-          "title":rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_REGEX,
+          "title":$rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_REGEX,
           "placement" : "right"
         });
       } else {
@@ -34,22 +34,22 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
             }
         }).success(function(data, status) {
             if(data === "false") {
-              $scope.check_value = rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
-                                      + rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
-                                          + rootScope.lang_for_msg[$rootScope.lang_key].value.HAVENOT
-                                              + rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+              $scope.check_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
+                                      + $rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
+                                          + $rootScope.lang_for_msg[$rootScope.lang_key].value.HAVENOT
+                                              + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
               $scope.check = true;
             } else {
               $scope.check = false;
-              $scope.check_value = rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
-                                      + rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
-                                          + rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
-                                              + rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+              $scope.check_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
+                                      + $rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
+                                          + $rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
+                                              + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
             }
 
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
         });
       }
       catch(e){

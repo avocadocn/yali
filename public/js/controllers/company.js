@@ -59,7 +59,7 @@ companyApp.controller('DetailController', ['$http', function($http) {
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
@@ -75,7 +75,7 @@ companyApp.controller('GroupsController',['$http',function($http) {
         _this.groups = data;
     }).error(function(data,status) {
         //TODO:更改对话框
-        $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH_TYPE_FAILURE);
+        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH_TYPE_FAILURE);
     });
     this.selected_groups =[];
     this.group_next = function() {
@@ -102,7 +102,7 @@ companyApp.controller('GroupsController',['$http',function($http) {
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -131,7 +131,7 @@ companyApp.controller('inviteController',['$http','$scope',function($http,$scope
                 }
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert(rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
