@@ -1,31 +1,40 @@
 extends ../layouts/user_base
 
 block contentExt
-  div(ng-init="campaignId='#{campaign._id}'")
-    p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
-    p {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：#{campaign.content}
-    p {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：#{campaign.location}
-    p {{"START_TIME"|translate}}：#{campaign.start_time}
-    button.dl_btn.dl_btn_small(ng-if="!#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="joinCampaign()") {{"JOIN"|translate}}
-    button.dl_btn.dl_btn_small(ng-if="#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="quitCampaign()") {{"QUIT"|translate}}
-    .row
-      p {{"CAMPAIGN"|translate}}{{"MEMBER"|translate}}：
-      if(campaign.member.length>0)
-        - for(var i = 0; i < campaign.member.length; i ++)
-          .col-xs-2
-            a(href="/users/home/#{campaign.member[i].uid}") #{campaign.member[i].nickname}
-              img.img_contain.size_90.center-block(ng-src="#{campaign.member[i].photo}")
-      else
-        p.subtitle 该活动还没有人参加哦!
-  aside
-    span.subtitle.pull-left 活动精彩照片
-    if role !== 'PARTNER'
-      a.dl_btn.dl_btn_medium(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传活动照片
-
-    input#photo_album_id(type="hidden" name="photo_album_id" value="#{campaign.photo_album.pid}")
-    div#photo_list(ng-controller="PhotoListCtrl")
-      div(ng-repeat="photo in photos")
-        img(ng-src="{{ photo.uri }}")
+  .dl_detail_container.clearfix
+    .dl_detail_main
+      .dl_detail_content(ng-init="campaignId='#{campaign._id}'")
+        p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
+        p.subtitle {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：#{campaign.content}
+        p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：#{campaign.location}
+        p.subtitle {{"START_TIME"|translate}}：#{campaign.start_time}
+        button.dl_btn.dl_btn_detail(ng-if="!#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="joinCampaign()") {{"JOIN"|translate}}{{"CAMPAIGN"|translate}}
+        button.dl_btn.dl_btn_detail(ng-if="#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="quitCampaign()") {{"QUIT"|translate}}{{"CAMPAIGN"|translate}}
+      .dl_detail_aside
+        img.img_contain.size_128
+      .dl_detail_photo
+        p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}：
+        if(campaign.member.length>0)
+          - for(var i = 0; i < campaign.member.length; i ++)
+              a(href="/users/home/#{campaign.member[i].uid}")
+                img.img_contain.detail_photo(ng-src="#{campaign.member[i].photo" title="#{campaign.member[i].nickname}")
+        else
+          p.subtitle 该活动还没有人参加哦!
+    .dl_detail_main
+      p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}
+      textarea.dl_modal_input.form-control(rows="4" name="content" ng-model="content" ng-change="judge()" required)
+      button.dl_btn.pull-right.dl_btn_submit {{"SUBMIT"|translate}}{{"LEAVEMESSAGE"|translate}}
+    .dl_detail_side
+      p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
+        img.img_contain.size_map
+      p.subtitle {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
+      if(role!=='PARTNER')
+        .dl_row
+          a.dl_btn.dl_btn_upload(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传活动照片
+        input#photo_album_id(type="hidden" name="photo_album_id" value="#{campaign.photo_album.pid}")
+        div#photo_list(ng-controller="PhotoListCtrl")
+          div(ng-repeat="photo in photos")
+            img(ng-src="{{ photo.uri }}")
 
 append footExt
   script(src="/js/photo_thumbnail.js")
