@@ -1,55 +1,56 @@
 extends ../layouts/manager
 
 block baseInfo
-  .row.margin_top_15
-    .col-md-2.col-sm-3.col-xs-4
+  .dl_container.clearfix
+    .aside
       img.size_140.img_contain(src="#{logo}")
-    .col-md-9.col-sm-8.col-xs-7.margin_left_20
-      .row
+    .main
+      .dl_row
         //小队名
         label.head= tname
-      .row.margin_top_10
+      .dl_row
         //公司名
         a.subtitle(href="/company/home/#{cid}")= cname
-      .row.margin_top_15
+      .dl_row
         //签名
         p.subtitle= sign
-      .row.margin_top_15
-        .col-md-2.col-sm-2.col-xs-4.padding_0
+      .dl_row
+        .score_container.margin_top_5
           span.info_border {{"TEAM_MEMBER"|translate}}
           span.info_border= number
-        .col-md-2.col-sm-2.col-xs-4.padding_0
+        .score_container.margin_top_5
           span.info_border {{"SCORE"|translate}}
           span.info_border= score
-        .col-md-2.col-sm-2.col-xs-4.padding_0
+        .score_container.margin_top_5
           span.info_border {{"WIN_RATE"|translate}}
           span.info_border 100%
         if(role ==='HR' || role ==='LEADER')
-          .col-md-4.col-sm-4.col-xs-9.padding_0
+          .score_container(style="margin-left:30px")
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorSearchModel") {{"PROVOKE"|translate}}
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") {{"ARENA"|translate}}
         if(role === 'MEMBER' || role ==='LEADER')
-          .col-md-2.col-sm-2.col-xs-3.padding_0
-            button.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") {{"QUIT_GROUP"|translate}}
+          .score_container
+            button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") {{"QUIT_GROUP"|translate}}
         if(role ==='PARTNER')
-          .col-md-2.col-sm-2.col-xs-3.padding_0
-            button.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
+          .score_container
+            button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
     ul.nav.nav-tabs
       if(role !=='GUESTHR' && role !=='GUEST')
-        li(ng-class="{'active':nowTab=='group_message'}")
+        li.tab_style(ng-class="{'active':nowTab=='group_message'}")
           a.subtitle(href="#/group_message" ng-click="addactive('group_message')") {{"TEAM_MESSAGE"|translate}}
-        li(ng-class="{'active':nowTab=='group_campaign'}")
+        li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
           a.subtitle(href="#/group_campaign" ng-click="addactive('group_campaign')") {{"TEAM_CAMPAIGN"|translate}}
-      li(ng-class="{'active':nowTab=='group_member'}")
+      //移到INFO里去 Todo M
+      //li.tab_style(ng-class="{'active':nowTab=='group_member'}")
         a.subtitle(href="#/group_member" ng-click="addactive('group_member')") {{"TEAM_MEMBER"|translate}}
-      li(ng-class="{'active':nowTab=='group_info'}")
+      li.tab_style(ng-class="{'active':nowTab=='group_info'}")
         a.subtitle(href="#/group_info" ng-click="addactive('group_info')") {{"TEAM_INFO"|translate}}
-      li(ng-class="{'active':nowTab=='timeLine'}")
+      li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
         a.subtitle(href="#/timeLine" ng-click="addactive('timeLine')") {{"TIME_LINE"|translate}}
-    .tab-content
+    .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
     if(role ==='HR' || role ==='LEADER')

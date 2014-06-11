@@ -111,6 +111,10 @@ li {
   float: left;
   margin-right: 40px;
 }
+.dl_container .main .score_container {
+  margin-right: 20px;
+  float: left;
+}
 .dl_container .side {
   width: 260px;
   float: left;
@@ -310,7 +314,10 @@ li {
 .margin_15 {
   margin: 15px;
 }
-.margin-top_10 {
+.margin_top_5 {
+  margin-top: 5px;
+}
+.margin_top_10 {
   margin-top: 10px;
 }
 .margin_top_15 {
@@ -497,8 +504,8 @@ input::-webkit-inner-spin-button {
   background-color: #558cb1 !important;
 }
 .dl_nav ul li a {
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   color: #fff !important;
 }
 .dl_nav .logo {

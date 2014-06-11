@@ -1,22 +1,22 @@
 extends ../layouts/manager
 
 block baseInfo
-  .row.margin_top_15
-    .col-md-2.col-sm-3.col-xs-4
+  .dl_container.clearfix
+    .aside
       img.size_140.img_contain(ng-src="#{logo ? logo :'/img/icons/default_company_logo.png'}")
-    .col-md-9.col-sm-8.col-xs-7.margin_left_20
-      .row
+    .main
+      .dl_row
         label.head= cname
-      .row.margin_top_15
+      .dl_row(style="height:60px")
         p.subtitle= sign
-      .row.margin_top_30
-        .col-md-2.col-sm-2.col-xs-4.padding_0
+      .dl_row
+        .score_container.margin_top_5
           span.info_border {{ 'STAFF' | translate }}
           span.info_border  #{membernumber>0? membernumber : 0 }
-        .col-md-2.col-sm-2.col-xs-4.padding_0
+        .score_container.margin_top_5
           span.info_border {{ 'TEAM' | translate }}
           span.info_border= groupnumber
-        .col-md-2.col-sm-2.col-xs-4.padding_0
+        .score_container.margin_top_5
           span.info_border {{ 'WIN_RATE' | translate }}
           span.info_border 100%
         if(role === 'HR')
@@ -25,13 +25,13 @@ block baseInfo
 block panel
   ul.nav.nav-tabs
     if(role==='HR' || role==='EMPLOYEE' )
-      li(ng-class="{'active':nowTab=='company_campaign'}")
+      li.tab_style(ng-class="{'active':nowTab=='company_campaign'}")
         a.subtitle(href="#/company_campaign"  ng-click="addactive('company_campaign')") {{ 'COMPANY_CAMPAIGN' | translate }}
-    li(ng-class="{'active':nowTab=='company_info'}")
+    li.tab_style(ng-class="{'active':nowTab=='company_info'}")
       a.subtitle(href="#/company_info"  ng-click="addactive('company_info')") {{ 'COMPANY_INFO' | translate }}
-    li(ng-class="{'active':nowTab=='company_member'}")
+    li.tab_style(ng-class="{'active':nowTab=='company_member'}")
       a.subtitle(href="#/company_member"  ng-click="addactive('company_member')") {{ 'STAFF' | translate }}
-    li(ng-class="{'active':nowTab=='timeLine'}")
+    li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
       a.subtitle(href="#/timeLine"  ng-click="addactive('timeLine')") {{ 'TIME_LINE' | translate }}
     //- div.margin_top_15.pull-right(ng-controller="CampaignListController")
     //-   button.btn.btn-default.dropdown-toggle(data-toggle="dropdown") 活动类型
