@@ -11,9 +11,9 @@ html
     link(rel="stylesheet" href="/css/donler.css")
     link(rel="stylesheet" href="/css/views/group_select.css")
     link(rel="stylesheet" href="/css/views/campaign_list.css")
-    //- link(rel="stylesheet" href="/lib/alertify.js/themes/alertify.bootstrap.css")
-    //- link(rel="stylesheet" href="/lib/alertify.js/themes/alertify.core.css")
-    //- link(rel="stylesheet" href="/lib/alertify.js/themes/alertify.default.css")
+    link(rel="stylesheet" href="/lib/alertify.js/themes/alertify.bootstrap.css")
+    link(rel="stylesheet" href="/lib/alertify.js/themes/alertify.core.css")
+    link(rel="stylesheet" href="/lib/alertify.js/themes/alertify.default.css")
   body
     .wrap
       block headExt
@@ -28,7 +28,7 @@ html
           block aside
 
     include ../partials/footer
-    //script(src="/lib/alertify.js/lib/alertify.min.js")
+    script(src="/lib/alertify.js/lib/alertify.min.js")
     script(src="/lib/angular/angular.min.js")
     script(src="/lib/angular-route/angular-route.min.js")
     script(src="/lib/jquery/dist/jquery.min.js")
@@ -52,3 +52,5 @@ html
         //Then init the app
         angular.bootstrap(document, ['mean.main']);
       });
+
+

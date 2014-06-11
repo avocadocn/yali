@@ -285,10 +285,25 @@ app.config(['$translateProvider',
 ]);
 
 app.run(['$translate','$rootScope', function ($translate,$rootScope) {
-    $rootScope.languages = [{'language':'中文','key':'zh-cn'},{'language':'日本语','key':'jp-jp'}];
+    $rootScope.languages = [{'language':'L_ZH','key':'zh-cn'},{'language':'L_JP','key':'jp-jp'}];
     $rootScope.changeLanguage = function (langKey) {
         $translate.use(langKey);
     };
+
+    $rootScope.initAlertCss = function(){
+       var divcss = {
+            'border': '1px',
+            'border-radius': '0px'
+        };
+
+        var buttons = {
+            'border-top' : '0px',
+            'background' : '#fff',
+            'text-align' : 'center'
+        }
+        $("#alertify").css(divcss);
+        $(".alertify-buttons").css(buttons);
+    }
 }]);
 
 app.controller('signupController',['$http',function($http) {

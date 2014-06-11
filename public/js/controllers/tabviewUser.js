@@ -99,8 +99,8 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
     };
 }]);
 
-tabViewUser.controller('CampaignListController', ['$http','$scope',
-  function ($http, $scope) {
+tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
+  function ($http, $scope,$rootScope) {
 
     $http.get('/users/getCampaigns').success(function(data, status) {
       $scope.campaigns = data.data;
@@ -117,7 +117,8 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert("您已参加该活动!")
+                    alertify.alert("您已参加该活动!");
+                    $rootScope.initAlertCss();
                     $scope.campaigns[index].join = true;
                     $scope.campaigns[index].member_length++;
                 }
@@ -143,7 +144,8 @@ tabViewUser.controller('CampaignListController', ['$http','$scope',
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alert("您已退出该活动!")
+                    alertify.alert("您已退出该活动!");
+                    $rootScope.initAlertCss();
                     $scope.campaigns[index].join = false;
                     $scope.campaigns[index].member_length--;
                 }

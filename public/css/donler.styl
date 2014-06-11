@@ -175,13 +175,6 @@ li
 
   padding-bottom 0
 
-.dl_menu
-  background #3498DB
-  padding-top 0
-  padding-bottom 0
-  li a:hover
-    background-color #CAC6C6
-
 .dl_btn
   color #fff
   background-color buttonColor
@@ -357,8 +350,16 @@ input::-webkit-inner-spin-button
 .dl_full_control
   width 100%
 
-.dl_nav_padding
-  margin-top 25px
+.dl_menu
+  background #3498DB
+  padding-top 0
+  padding-bottom 0
+  .dl_menu_a
+    &:hover
+      background-color:#558CB1
+    padding-top 5px
+    padding-bottom 5px
+    color #fff !important
 
 .dl_nav
   min-height 70px
@@ -372,15 +373,19 @@ input::-webkit-inner-spin-button
   color navbarFontColor
   border-radius 0px
   margin-bottom 0px
+  ul li
+    a:focus
+      background-color #558CB1 !important
   ul li a
     padding-top 25px
     padding-bottom 25px
     color #fff !important
   .logo
     margin-top 5px
+
 .navbar
   border none
-.navbar-inverse 
+.navbar-inverse
   .navbar-brand
     padding 8px 0
 .dl_navbar-toggle

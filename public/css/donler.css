@@ -202,14 +202,6 @@ li {
   padding-right: 0;
   padding-bottom: 0;
 }
-.dl_menu {
-  background: #3498db;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.dl_menu li a:hover {
-  background-color: #cac6c6;
-}
 .dl_btn {
   color: #fff;
   background-color: #3498db;
@@ -438,8 +430,18 @@ input::-webkit-inner-spin-button {
 .dl_full_control {
   width: 100%;
 }
-.dl_nav_padding {
-  margin-top: 25px;
+.dl_menu {
+  background: #3498db;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.dl_menu .dl_menu_a {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #fff !important;
+}
+.dl_menu .dl_menu_a:hover {
+  background-color: #558cb1;
 }
 .dl_nav {
   min-height: 70px;
@@ -453,6 +455,9 @@ input::-webkit-inner-spin-button {
   color: #fff;
   border-radius: 0px;
   margin-bottom: 0px;
+}
+.dl_nav ul li a:focus {
+  background-color: #558cb1 !important;
 }
 .dl_nav ul li a {
   padding-top: 25px;
