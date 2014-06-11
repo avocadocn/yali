@@ -919,8 +919,10 @@ exports.getCampaign = function(req, res) {
     }
     res.render('users/campaign_detail', {
       campaign: campaign,
-      role: req.session.role, 
-      join: join
+      role: req.session.role,
+      join: join,
+      realname : req.user.realname,
+      photo : req.user.photo
     });
   })
   .then(null, function(err) {
