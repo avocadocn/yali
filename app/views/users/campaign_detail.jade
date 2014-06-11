@@ -30,7 +30,7 @@ block contentExt
       p.subtitle {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
       if(role!=='PARTNER')
         .dl_row
-          a.dl_btn.dl_btn_upload(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传活动照片
+          a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传活动照片
         input#photo_album_id(type="hidden" name="photo_album_id" value="#{campaign.photo_album.pid}")
         div#photo_list(ng-controller="PhotoListCtrl")
           div(ng-repeat="photo in photos")

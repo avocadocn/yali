@@ -5,7 +5,7 @@ div
         h5 {{"INFO" | translate}}
       if(role!=='PARTNER')
         .col-md-8
-           a.btn.dl_btn.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
+           button.dl_btn.dl_btn_small.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
     hr
     .form-group
       .row
@@ -13,10 +13,11 @@ div
           img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
         .col-md-9.col-sm-8.col-xs-7
           if(role!=='PARTNER')
-            .row
-              a.btn.btn.dl_btn.margin_top_15(href="/users/editPhoto") {{"CHANGE_LOGO" | translate}}          
-            .row
-              a.btn.dl_btn.margin_top_15(href="#/changePassword") {{"CHANGE_PASS" | translate}}
+            .dl_row
+              a.clearLinkUnderline.dl_btn.dl_btn_medium.margin_top_15(href="/users/editPhoto"){{"CHANGE_LOGO" | translate}}
+            .dl_row
+              a(href="#/changePassword")
+                button.dl_btn.dl_btn_medium.margin_top_15 {{"CHANGE_PASS" | translate}}
     .form-group
       .col-md-2.col-sm-4.col-xs-4
         label.info_label.control-label {{"LOGIN_EMAIL" | translate}}
@@ -92,7 +93,7 @@ div
         h5 {{"CONTACT" | translate}}
       if(role!=='PARTNER')
         .col-md-8
-          a.btn.dl_btn.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
+          button.dl_btn.dl_btn_small.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     hr
     .form-group
       .col-md-2.col-sm-4.col-xs-4

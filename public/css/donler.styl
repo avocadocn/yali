@@ -182,8 +182,6 @@ li
 .padding_0
   padding-left 0
   padding-right 0
-
-
   padding-bottom 0
 
 .dl_btn
@@ -194,13 +192,18 @@ li
   line-height 1
   position relative
   font-size 12px
+  text-align center
   vertical-align middle
+  padding 5px 0
+  display inline-block
   &:hover
     background-color buttonHoverColor
     border-color buttonHoverColor
+  &:disabled
+    opacity .65
 .dl_btn_medium
   width 120px
-  height 40px
+  height 30px
 .dl_btn_small
   padding 5px 19px
 .dl_btn_large
@@ -212,9 +215,6 @@ li
 .dl_btn_submit
   width 80px
   height 25px
-.dl_btn_upload
-  width 120px
-  height 30px
 .map_btn
   background-color #cd270d
   border-color #cd270d
@@ -622,3 +622,7 @@ input.ng-invalid.ng-dirty
     background-color #ba5a5c
   .tooltip-arrow
     border-top-color #ba5a5c
+.clearLinkUnderline
+  &:hover
+    text-decoration none
+    color white

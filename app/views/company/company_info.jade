@@ -22,13 +22,14 @@ div
         .col-md-2.col-sm-2.col-xs-4
           label.info_label.control-label {{"INVATE_LINK"|translate}}
         .col-md-5.col-sm-10.col-xs-6
-          button.btn.dl_btn(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
+          button.dl_btn.dl_btn_small(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
           label.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
+    hr
   form.form-horizontal(name="infoForm")
     .infoHead.row
       h5.pull-left {{"ENTERPRISE_INFO"|translate}}
       if(role==='HR')
-        button.btn.dl_btn.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
+        button.dl_btn.dl_btn_small.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
     hr
     .form-group
       .col-md-2.col-sm-2.col-xs-4
@@ -37,7 +38,7 @@ div
         input.dl_input.editToggle.dl_form-Control(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
       if(role ==='HR')
         .col-md-5.col-sm-4.col-xs-2.padding_0
-          a.btn.dl_btn.pull-right(href="/company/editLogo") {{"CHANGE_LOGO"|translate}}
+          a.clearLinkUnderline.dl_btn.dl_btn_small.pull-right(href="/company/editLogo") {{"CHANGE_LOGO"|translate}}
     .form-group
       .col-md-2.col-sm-2.col-xs-4
         label.info_label.control-label {{"ENTERPRISE_FULL_NAME"|translate}}
@@ -86,11 +87,12 @@ div
         label.info_label.control-label {{"BRIEF"|translate}}
       .col-md-5.col-sm-8.col-xs-8
         input.dl_input.editToggle.dl_form-Control(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
+    hr
   form.form-horizontal(name="companyGroup")
     .infoHead.row
       h5.pull-left {{"TEAM_INFO"|translate}}
       if(role ==='HR')
-        a.btn.dl_btn.pull-right(href="#/addGroup") {{"ADD_TEAM"|translate}}
+        a.dl_btn.dl_btn_small.pull-right(href="#/addGroup") {{"ADD_TEAM"|translate}}
     hr
     .form-group(ng-repeat="team in team_lists")
       .row(ng-if="team.active")
@@ -106,7 +108,7 @@ div
               span.info_label.control-label {{team.name}}
             if(role ==='HR')
               .col-md-2.col-sm-2.col-xs-4.padding_0
-                a.btn.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
+                button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
           .row.dl_row
             .col-md-2.col-sm-2.col-xs-2.padding_0
               span.info_label.control-label {{"TYPE"|translate}}
@@ -128,14 +130,14 @@ div
               span.info_label.control-label {{team.member.length}}
             if(role === 'HR')
               .col-md-2.col-sm-2.col-xs-2.padding_0
-                button.btn.dl_btn.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
+                button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
             if(role === 'EMPLOYEE')
               //不属于显示加组按钮
               .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='!team.belong')
-                button.btn.dl_btn.pull-right(ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
+                button.dl_btn.dl_btn_small.pull-right(ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
               //属于则显示退组按钮
               .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='team.belong')
-                button.btn.dl_btn.pull-right(ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}  
+                button.dl_btn.dl_btn_small.pull-right(ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}  
           hr
       //只有HR可见inactive的team 并可打开
       .form-group(ng-if="!team.active")
@@ -151,7 +153,7 @@ div
                 span.info_label.control-label {{team.name}}
               if(role ==='HR')
                 .col-md-2.col-sm-2.col-xs-4.padding_0
-                  a.btn.dl_btn.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") 编辑小组
+                  button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
             .row.dl_row
               .col-md-2.col-sm-2.col-xs-4.padding_0
                 span.info_label.control-label {{"TYPE"|translate}}
@@ -168,7 +170,7 @@ div
               .col-md-8.col-sm-8.col-xs-8.padding_0
                 span.info_label.control-label {{team.member.length}}
               .col-md-2.col-sm-2.col-xs-2.padding_0
-                button.btn.dl_btn.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
+                button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
             hr
   if(role ==='HR' || role ==='LEADER')
     div(ng-controller="AccountFormController" class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")

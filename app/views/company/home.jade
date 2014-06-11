@@ -19,9 +19,8 @@ block baseInfo
         .col-md-2.col-sm-2.col-xs-4.padding_0
           span.info_border {{ 'WIN_RATE' | translate }}
           span.info_border 100%
-      if(role === 'HR')
-        .margin_top_15
-          button.dl_btn(data-toggle="modal" data-target="#sponsorCampaignModel") {{'SPONSOR'|translate}}{{'COMPANY'|translate}}{{ 'CAMPAIGN' | translate }}
+        if(role === 'HR')
+            button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") {{'SPONSOR'|translate}}{{'COMPANY'|translate}}{{ 'CAMPAIGN' | translate }}
 
 block panel
   ul.nav.nav-tabs
