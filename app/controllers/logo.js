@@ -47,13 +47,11 @@ exports.updateLogo = function(req, res) {
         logo_property = 'photo';
         target_dir = path.join(config.root, '/public/img/user/photo/');
         uri_dir = '/img/user/photo/';
-        default_logo_uri = '/img/icons/default_user_photo.png';
         callback(null);
         break;
       case 'g':
         target_dir = path.join(config.root, '/public/img/group/logo/');
         uri_dir = '/img/group/logo/';
-        default_logo_uri = '/img/icons/default_group_logo.png';
         CompanyGroup
         .findOne({ _id: req.session.nowtid })
         .exec()
@@ -77,7 +75,6 @@ exports.updateLogo = function(req, res) {
         logo_model = target_model.info;
         target_dir = path.join(config.root, '/public/img/company/logo/');
         uri_dir = '/img/company/logo/';
-        default_logo_uri = '/img/icons/default_company_logo.png';
         callback(null);
         break;
       default:
@@ -130,14 +127,13 @@ exports.updateLogo = function(req, res) {
                     callback(err);
                   }
                   var unlink_dir = path.join(config.root, 'public');
-                  if (ori_logo !== default_logo_uri) {
+                  if (ori_logo.indexOf('/img/icons/') === -1) {
                     if (fs.existsSync(unlink_dir + ori_logo)) {
                       fs.unlinkSync(unlink_dir + ori_logo);
                     }
                   }
                   //success
                   res.send({ result: 1 });
-                  //res.redirect('/users/editPhoto');
                 });
               }
             });
