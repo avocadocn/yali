@@ -20,7 +20,6 @@ li {
 }
 .dl_head {
   margin: auto;
-  padding: 0 15px;
   width: 960px;
 }
 .dl_block {
@@ -149,7 +148,7 @@ li {
 }
 .dl_detail_container .dl_detail_side {
   width: 290px;
-  float: left;
+  float: right;
 }
 .tab_style {
   min-width: 145px;
@@ -368,11 +367,10 @@ li {
   height: 56px;
   width: 56px;
 }
-<<<<<<< HEAD
 .size_20 {
   height: 20px;
   width: 20px;
-=======
+}
 .size_map {
   width: 265px;
   height: 140px;
@@ -381,7 +379,6 @@ li {
   height: 50px;
   width: 50px;
   border-top: 5px;
->>>>>>> 修改活动详情页样式
 }
 .height_400 {
   height: 400px;
