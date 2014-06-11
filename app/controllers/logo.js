@@ -27,18 +27,22 @@ exports.updateLogo = function(req, res) {
   }
 
 
-  var target_model = null;
-  var logo_model = null;  // 数据库设计不够扁平化，只能用它当对象引用了，用于company.info.logo
+  var target_model;
+  var logo_model;  // 数据库设计不够扁平化，只能用它当对象引用了，用于company.info.logo
   var logo_property = 'logo';
-  var default_logo_uri = null;
-  var target_dir = null;  // 文件系统路径，供fs使用
-  var uri_dir = null;  // uri路径，存入数据库的路径，供前端访问
+  var default_logo_uri;
+  var target_dir;  // 文件系统路径，供fs使用
+  var uri_dir;  // uri路径，存入数据库的路径，供前端访问
+  var updateLogo;
+  var this_id;
 
   async.waterfall([
     function(callback) {
       switch (req.body.target) {
       case 'u':
         target_model = req.user;
+        this_id = req.user._id;
+        updateLogo = schedule.updateUlogo;
         logo_model = target_model;
         logo_property = 'photo';
         target_dir = path.join(config.root, '/public/img/user/photo/');
@@ -56,6 +60,8 @@ exports.updateLogo = function(req, res) {
         .then(function(company_group) {
           if (company_group) {
             target_model = company_group;
+            this_id = company_group._id;
+            updateLogo = schedule.updateTlogo;
             logo_model = target_model;
             callback(null);
           } else {
@@ -66,6 +72,8 @@ exports.updateLogo = function(req, res) {
         break;
       case 'c':
         target_model = req.user;
+        this_id = req.user._id;
+        updateLogo = schedule.updateCompanyLogo;
         logo_model = target_model.info;
         target_dir = path.join(config.root, '/public/img/company/logo/');
         uri_dir = '/img/company/logo/';
@@ -113,7 +121,7 @@ exports.updateLogo = function(req, res) {
                   if (err) {
                     callback(err);
                   } else {
-                    //schedule.updateUlogo(req.user._id);
+                    updateLogo(this_id);
                   }
                 });
 
