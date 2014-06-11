@@ -2,49 +2,52 @@ extends ../layouts/user_base
 
 append headExt
   link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
+  link(rel="stylesheet" href="/css/views/edit_logo.css")
 
 block contentExt
-  .container
+  .dl_container
     .row
       .col-xs-12.col-sm-7
-        h5 添加或更改小组logo
-        .row
+        h3 添加或更改小组logo
+        .row.margin_top_20
           .col-xs-4.col-sm-4
             .img_frame
               img#jcrop_img.img-responsive(src="#{logo}")
           .col-xs-8.col-sm-8
-            p 从电脑中选择你喜欢的照片
-            p 你可以上传JPG、JPEG、GIF、PNG或BMP文件
-            label.btn.bl_btn(for="logo") 选择logo
+            p.high_light_title.margin_top_20 从电脑中选择你喜欢的照片
+            p.text 你可以上传JPG、JPEG、GIF、PNG或BMP文件
+            form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
+              input(type="hidden" name="target" value="g")
+              input#w(type="hidden" name="width" value="128")
+              input#h(type="hidden" name="height" value="128")
+              input#x(type="hidden" name="x" value="0")
+              input#y(type="hidden" name="y" value="0")
+              input#logo.hidden(type="file" name="logo" accept="image/*")
+              label.dl_btn(for="logo") 选择logo
+              button#save_button.dl_btn(type="submit" disabled) 保存
             p#remind
         .row
           .col-xs-12.col-sm-12
-            p.margin_top_50 这是你在动梨上的logo小图标
-            p 随意拖拽或缩放大图中的方格，预览的小图即为保存后的logo小图标。
+            p.high_light_title.margin_top_50 这是你在动梨上的logo小图标
+            p.text 随意拖拽或缩放大图中的方格，预览的小图即为保存后的logo小图标。
         .row
-          .col-xs-4.col-sm-4
-            div(style="width:150px; height:150px; overflow:hidden")
-              img#preview_big(src="#{'/logo/group/' + id + '/150/150'}")
-          .col-xs-2.col-sm-2
-            div.margin_top_100(style="width:50px; height:50px; overflow:hidden")
-              img#preview_middle(src="#{'/logo/group/' + id + '/50/50'}")
-          .col-xs-2.col-sm-2
-            div.margin_top_123(style="width:27px; height:27px; overflow:hidden")
-              img#preview_small(src="#{'/logo/group/' + id + '/27/27'}")
-          .col-xs-4.col-sm-4
-        .row
-          form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
-            input(type="hidden" name="target" value="g")
-            input#w(type="hidden" name="width" value="128")
-            input#h(type="hidden" name="height" value="128")
-            input#x(type="hidden" name="x" value="0")
-            input#y(type="hidden" name="y" value="0")
-            input#logo.hidden(type="file" name="logo" accept="image/*")
-            button#save_button.btn.btn-primary(type="submit" disabled) 保存logo设置
-      .col-xs-12.col-sm-5.margin_top_100
-        p 给你的小队自己扮酷
-        p logo尺寸需要大于150x150像素
-        p 保存成功后如果图标不更新，你可以用浏览器刷新几次。
+          .col-xs-12.col-sm-12
+            .logo_panel.logo_big
+              div.center-block(style="width:150px; height:150px; overflow:hidden")
+                img#preview_big(src="#{'/logo/group/' + id + '/150/150'}")
+              p.text.size_text.text-center 150x150像素
+            .logo_panel.logo_middle
+              div.center-block(style="width:50px; height:50px; overflow:hidden")
+                img#preview_middle(src="#{'/logo/group/' + id + '/50/50'}")
+              p.text.size_text.text-center 50x50像素
+            .logo_panel.logo_small
+              div.center-block(style="width:27px; height:27px; overflow:hidden")
+                img#preview_small(src="#{'/logo/group/' + id + '/27/27'}")
+              p.text.size_text.text-center 17x17像素
+      .col-xs-12.col-sm-5.right_aside
+        p.high_light_title 给你的小队自己扮酷
+        p.text logo尺寸需要大于150x150像素
+        p.text 保存成功后如果图标不更新，你可以用浏览器刷新几次。
 
 append footExt
   script(src="/js/jquery.Jcrop.min.js")

@@ -4,28 +4,29 @@ append headExt
   link(rel="stylesheet" href="/css/views/company_signup.css")
 
 block contentExt
-  .row.signup_row
-    .col-xs-12.col-sm-5.text-right
-      div
-        h1.text-right
-          small 加入
-          | 动梨
-        p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
-        p 我们会对每家申请加入的团体当然也包括您在内
-        p 认真的核实资料，感谢您的配合
-    .col-xs-12.col-sm-7
-      form.signin.form-horizontal.center-block(action="/company/session" method="post")
-        .form-group
-          label.col-md-4.control-label(for="username") {{ 'USERNAME' | translate}}
-          .col-md-8
-            input#username.form-control(type="text" name="username" placeholder="Username" required)
-        .form-group
-          label.col-md-4.control-label(for="password") {{ 'PASSWORD' | translate}}
-          .col-md-8
-            input#password.form-control(type="password" name="password" placeholder="password" required)
-        .form-group
-          .col-md-offset-4.col-md-8
-            button.btn.btn-primary(type="submit") {{ 'SIGNIN' | translate}}
-            | &nbsp;or&nbsp;
-            a.show-signup(href="/company/signup") {{ 'SIGNUP' | translate}}
-            a.reset-pwd(href="/company/forgetPwd")  {{ 'FORGET' | translate}}{{ 'PASSWORD' | translate}}
+  .dl_container
+    .row.signup_row
+      .col-xs-12.col-sm-5.text-right
+        div
+          h1.text-right
+            small 加入
+            | 动梨
+          p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
+          p 我们会对每家申请加入的团体当然也包括您在内
+          p 认真的核实资料，感谢您的配合
+      .col-xs-12.col-sm-7
+        form.signin.form-horizontal.center-block(action="/company/session" method="post")
+          .form-group
+            label.col-md-4.control-label(for="username") {{ 'USERNAME' | translate}}
+            .col-md-8
+              input#username.form-control(type="text" name="username" placeholder="Username" required)
+          .form-group
+            label.col-md-4.control-label(for="password") {{ 'PASSWORD' | translate}}
+            .col-md-8
+              input#password.form-control(type="password" name="password" placeholder="password" required)
+          .form-group
+            .col-md-offset-4.col-md-8
+              button.btn.btn-primary(type="submit") {{ 'SIGNIN' | translate}}
+              | &nbsp;or&nbsp;
+              a.show-signup(href="/company/signup") {{ 'SIGNUP' | translate}}
+              a.reset-pwd(href="/company/forgetPwd")  {{ 'FORGET' | translate}}{{ 'PASSWORD' | translate}}

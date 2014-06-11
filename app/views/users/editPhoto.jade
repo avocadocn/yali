@@ -5,7 +5,7 @@ append headExt
   link(rel="stylesheet" href="/css/views/edit_logo.css")
 
 block contentExt
-  .container
+  .dl_container
     .row
       .col-xs-12.col-sm-7
         h3 添加或更改你的大头像
@@ -16,7 +16,15 @@ block contentExt
           .col-xs-8.col-sm-8
             p.high_light_title.margin_top_20 从电脑中选择你喜欢的照片
             p.text 你可以上传JPG、JPEG、GIF、PNG或BMP文件
-            label.btn.dl_btn(for="logo") 选择头像
+            form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
+              input(type="hidden" name="target" value="u")
+              input#w(type="hidden" name="width" value="128")
+              input#h(type="hidden" name="height" value="128")
+              input#x(type="hidden" name="x" value="0")
+              input#y(type="hidden" name="y" value="0")
+              input#logo.hidden(type="file" name="logo" accept="image/*")
+              label.dl_btn(for="logo") 选择头像
+              button#save_button.dl_btn(type="submit" disabled) 保存
             p#remind
 
         .row
@@ -37,16 +45,7 @@ block contentExt
               div.center-block(style="width:27px; height:27px; overflow:hidden")
                 img#preview_small(src="#{'/logo/user/' + uid + '/27/27'}")
               p.text.size_text.text-center 17x17像素
-        .row
-          form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
-            input(type="hidden" name="target" value="u")
-            input#w(type="hidden" name="width" value="128")
-            input#h(type="hidden" name="height" value="128")
-            input#x(type="hidden" name="x" value="0")
-            input#y(type="hidden" name="y" value="0")
-            input#logo.hidden(type="file" name="logo" accept="image/*")
-            button#save_button.btn.dl_btn(type="submit" disabled) 保存头像设置
-      .col-xs-12.col-sm-5.margin_top_100
+      .col-xs-12.col-sm-5.right_aside
         p.high_light_title 给你自己扮酷
         p.text 照片尺寸需要大于150x150像素
         p.text 建议上传近距离的照片（比如大头照、特写），这样经过编辑后的头像会很清楚。
