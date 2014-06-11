@@ -50,7 +50,7 @@ var CompanySchema = new Schema({
         name: {
             type: String,
             unique: true
-        },                           //公司名
+        },                           //公司全称
 
         city: {
             province: String,
@@ -69,7 +69,7 @@ var CompanySchema = new Schema({
         linkman: String,              //联系人
         email: String,
         brief: String,
-        official_name: String,
+        official_name: String,        //公司官方用户名
 
         logo:{
             type:String,

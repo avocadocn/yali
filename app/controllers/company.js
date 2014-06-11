@@ -285,7 +285,7 @@ exports.groupSelect = function(req, res) {
                 }
             });
             for (var i = 0, length = selected_groups.length; i < length; i++) {
-                var tname = company.info.name + '-'+ selected_groups[i].group_type + '队'; //默认的小队名
+                var tname = company.info.official_name + '-'+ selected_groups[i].group_type + '队'; //默认的小队名
 
 
                 var companyGroup = new CompanyGroup();

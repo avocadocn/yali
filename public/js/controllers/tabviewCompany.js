@@ -590,7 +590,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope', functi
     this.select = function(){
         try{
             $http.get('/company/getAccount').success(function(data,status){
-                _this.tname = data.info.name + '-' + _this.selected + '队';
+                _this.tname = data.info.official_name + '-' + _this.selected + '队';
             }).error(function(data,status){
                 alert('公司信息获取错误！');
             });
