@@ -1,6 +1,6 @@
-extends ../layouts/photo
+extends ../layouts/user_base
 
-block content
+block contentExt
   input#photo_album_id(type="hidden" name="photo_album_id" value="#{photo_album.id}")
   h3 活动相册
   p= '最后更新：' + photo_album.update_date

@@ -1,6 +1,6 @@
-extends ../layouts/photo
+extends ../layouts/user_base
 
-block content
+block contentExt
   input#photo_album_id(type="hidden" value="#{photo_album.id}")
   input#group_id(type="hidden" value="#{gid}")
   h3= photo_album.name

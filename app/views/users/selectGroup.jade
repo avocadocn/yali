@@ -1,9 +1,9 @@
-extends ../layouts/default
+extends ../layouts/register
 
 block headExt
   link(rel="stylesheet" href="/css/views/group_select.css")
 
-block content
+block contentExt
   .text-center.h3.group_head='请选择' + group_head + '兴趣小组组件'
   .groups.row(ng-app='user' ng-controller='GroupsController')
     .group.col-xs-3(ng-repeat='team in teams' ng-class="{'1': 'active', '0': 'inactive'}[team.select]")

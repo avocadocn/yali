@@ -1,10 +1,10 @@
 
-extends ../layouts/register
+extends ../../layouts/register
 append headExt
   link(rel="stylesheet" href="/css/views/group_select.css")
   link(rel="stylesheet" href="/css/views/company_signup.css")
 
-block content
+block contentExt
   div(ng-app='company' id='confirm' ng-view)
 
 append footExt
