@@ -3,39 +3,39 @@
     form(name="search_form")
       .modal-header
         button(class="close" data-dismiss="modal" aria-hidden="true") X
-        h4.modal-title#myModalLabel 第一步: {{"SEARCH"|translate}}
+        h4.modal-title#myModalLabel 第一步: {{"SEARCH"|translate}} {{is_company}}
       .modal-body
         .row 按公司名搜索
           hr
         .row
           label.col-md-2 请输入{{"COMPANY"|translate}}名:
           .col-md-7
-            input.dl_form-control(type="text" name="s_company" ng-model="s_company" required)
-          a.btn.btn-success.col-md-2(ng-click="getCompany(s_company)") 搜索公司
+            input.dl_form-control(type="text" name="s_company" ng-model="s_company" )
+          a.btn.btn-success.col-md-2(ng-click="getCompany(s_company)" ng-disabled="s_company == '' || s_company == undefined") 搜索公司
         .row.margin_top_15
         .row
           .col-md-2
           .col-md-7
             select.dl_form-control.chzn-select(data-placeholder="Choose a Company..." tabindex="2" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getSelectTeam(company_selected._id)" required)
-              option(value="") 符合条件的公司
+              option(value="") {{company_available}}
         .row
           .col-md-2
           .col-md-7
             select.dl_form-control.chzn-select(data-placeholder="Choose a Company..." tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_company" ng-change="provoke_select(team_selected)" required)
-              option(value="") 该公司的所有小队
+              option(value="") {{team_available_A}}
 
         .row 按小队搜索
           hr
         .row
           label.col-md-2 请输入{{"TEAM"|translate}}名:
           .col-md-7
-            input.dl_form-control(type="text" name="s_team" ng-model="s_team" required)
-          a.btn.btn-success.col-md-2(ng-click="getTeam(s_team)") 搜索小队
+            input.dl_form-control(type="text" name="s_team" ng-model="s_team" )
+          a.btn.btn-success.col-md-2(ng-click="getTeam(s_team)" ng-disabled="s_team == '' || s_team == undefined") 搜索小队
         .row.margin_top_15
           .col-md-2
           .col-md-7
             select.dl_form-control.chzn-select(data-placeholder="Choose a Company..." tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_team" ng-change="provoke_select(team_selected)" required)
-              option(value="") 符合条件的小队
+              option(value="") {{team_available_B}}
       .modal-body
         .row(ng-if="team_selected")
           .col-md-2.col-sm-2.col-xs-3

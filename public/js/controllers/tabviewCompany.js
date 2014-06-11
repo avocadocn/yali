@@ -299,7 +299,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
      };
      //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-    $http.get('/group/getCompanyGroups').success(function(data, status) {
+    $http.get('/group/getCompanyGroups' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.team_lists = data.teams;//公司的所有team
         $scope.cid = data.cid;
         $scope.tname= data.name;

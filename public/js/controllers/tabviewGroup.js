@@ -60,6 +60,11 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.s_company = "";
     $rootScope.s_team = "";
 
+    $rootScope.company_available = "请输入公司名搜索!";
+
+    $rootScope.team_available_A = "请输入公司名搜索!";
+
+    $rootScope.team_available_B = "请输入小队名进行搜索!";
 
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
@@ -130,6 +135,13 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 }
             }).success(function(data, status) {
                 $rootScope.companies = data;
+                var len = $rootScope.companies.length;
+                if(len > 0) {
+                    $rootScope.company_available = "找到符合条件的" + len + "个公司!";
+                    $rootScope.team_available_A = "请点击一个公司获取它的小队!";
+                } else {
+                    $rootScope.company_available = "没有找到符合条件的公司!";
+                }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
@@ -172,6 +184,12 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 }
             }).success(function(data, status) {
                 $rootScope.teams_for_company = data;
+                var len = $rootScope.teams_for_company.length;
+                if(len > 0 ) {
+                    $rootScope.team_available_A = "该公司一共有同类型的" + len + "个小队!";
+                } else {
+                    $rootScope.team_available_A = "该公司没有符合条件的小队!";
+                }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
@@ -194,6 +212,12 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 }
             }).success(function(data, status) {
                 $rootScope.teams_for_team = data;
+                var len = $rootScope.teams_for_team.length;
+                if(len > 0) {
+                    $rootScope.team_available_B = "一共找到符合条件的"+ len +"个小队!";
+                } else {
+                    $rootScope.team_available_B = "没有符合条件的小队!";
+                }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
@@ -237,7 +261,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.$watch('teamId',function(tid){
         teamId = tid;
         $rootScope.teamId = tid;
-        $http.get('/group/getGroupMessages/'+tid +'?' + Math.round(Math.random()*100)).success(function(data, status) {
+        $http.get('/group/getGroupMessages/'+tid +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
         });
@@ -283,7 +307,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         //消除ajax缓存
         teamId = tid;
         $rootScope.teamId = tid;
-        $http.get('/group/getCampaigns/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
+        $http.get('/group/getCampaigns/'+tid+'?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.data;
             $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
         });
