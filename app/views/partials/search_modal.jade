@@ -62,5 +62,5 @@
               .col-md-8.col-sm-8.col-xs-8.padding_0
                 span.info_label.control-label {{team_selected.member.length}}
       .modal-footer
-        button(class="btn dl_btn" data-dismiss="modal") {{"CANCEL"|translate}}
-        button(class="btn dl_btn" ng-click='showProvoke()' ng-disabled="!team_selected" data-dismiss="modal") {{"CONFIRM"|translate}}
+        button.btn.dl_btn.dl_btn_large(ng-click='showProvoke()' ng-disabled="!team_selected" data-dismiss="modal") {{"CONFIRM"|translate}}
+        button.btn.dl_btn.cancel_btn.dl_btn_large(data-dismiss="modal") {{"CANCEL"|translate}}

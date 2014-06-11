@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.main', ['ui.bootstrap','ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker','pascalprecht.translate']);
+angular.module('mean.main', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker','ui.bootstrap','pascalprecht.translate']);
 
 
 var app = angular.module('mean.main');
@@ -301,7 +301,6 @@ app.run(['$translate','$rootScope', function ($translate,$rootScope) {
     $rootScope.changeLanguage = function (langKey) {
         $translate.use(langKey);
     };
-
     $rootScope.initAlertCss = function(){
        var divcss = {
             'border': '1px',
@@ -316,7 +315,4 @@ app.run(['$translate','$rootScope', function ($translate,$rootScope) {
         $("#alertify").css(divcss);
         $(".alertify-buttons").css(buttons);
     }
-}]);
-
-app.controller('signupController',['$http',function($http) {
 }]);

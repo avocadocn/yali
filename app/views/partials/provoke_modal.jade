@@ -8,40 +8,40 @@
         .row.margin_top_20
           .col-md-12
             label {{"CONTENT"|translate}}
-            input.dl_form-control(type="text" name="content" ng-model="content" required)
+            input.dl_form-control(type="text" name="content" ng-model="content"  tooltip="{{provoke_form.content.$invalid? '请输入挑战内容':''}}" required)
         .row.margin_top_20
           .col-md-12
             label {{"FORMATION"|translate}}
-            input.dl_form-control(type="text" name="competition_format" ng-model="competition_format" required)
+            input.dl_form-control(type="text" name="competition_format" ng-model="competition_format" tooltip="{{provoke_form.competition_format.$invalid? '请输入赛制':''}}" provoke_formrequired)
         .row.margin_top_20
           .col-md-12
             label {{"REMARK"|translate}}
-            input.dl_form-control(type="text" name="remark" ng-model="remark" required)
+            input.dl_form-control(type="text" name="remark" ng-model="remark" tooltip="{{provoke_form.remark.$invalid? '请输入备注':''}}" required)
         .row.margin_top_20
           .col-md-12
             label {{"LOCATION"|translate}}
-            input.dl_form-control(type="text" name="location" ng-model="location" required)
+            input.dl_form-control(type="text" name="location" ng-model="location" tooltip="{{provoke_form.location.$invalid? '请输入比赛地点':''}}" required)
         .row.margin_top_20
           .col-md-12
             label {{"SUM"|translate}}
-            input.dl_form-control(type="number" name="number" ng-model="number" required)
+            input.dl_form-control(type="number" name="number" ng-model="number" tooltip="{{provoke_form.number.$invalid? '请输入比赛人数':''}}" required)
         .row.margin_top_20
           .col-md-6
             label {{"START_TIME"|translate}}
               .form-group.margin_top_20
                 .row
                   .col-md-6
-                    input.dl_form-control(type="text" ng-model="competition_date" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" bs-datepicker required)
+                    input.dl_form-control(type="text" ng-model="competition_date" name="startdate" date-format="yy/MM/dd" data-autoclose="1" data-min-date="today" data-max-date="{{deadline}}" placeholder="Date" tooltip="{{provoke_form.startdate.$invalid? '请输入比赛开始日期':''}}" bs-datepicker required)
                   .col-md-6
-                    input.dl_form-control(type="text" ng-model="competition_date" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
+                    input.form-control.dl_form-control(type="text" ng-model="competition_date" name="starttime" data-autoclose="1" placeholder="Time" ng-disabled="provoke_form.startdate.$invalid" tooltip="{{provoke_form.starttime.$invalid? '请输入比赛开始时间':''}}" bs-timepicker required)
           .col-md-6
             label {{"END_TIME"|translate}}
               .form-group.margin_top_20
                 .row
                   .col-md-6
-                    input.dl_form-control(type="text" ng-model="deadline" name="date" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date || 'today'}}" placeholder="Date" bs-datepicker required)
+                    input.dl_form-control(type="text" ng-model="deadline" name="enddate" date-format="yy/MM/dd" data-autoclose="1" data-min-date="{{competition_date || 'today'}}" placeholder="Date" tooltip="{{provoke_form.enddate.$invalid? '请输入比赛结束日期':''}}" bs-datepicker required)
                   .col-md-6
-                    input.dl_form-control(type="text" ng-model="deadline" name="time" data-autoclose="1" placeholder="Time" bs-timepicker required)
+                    input.form-control.dl_form-control(type="text" ng-model="deadline" name="endtime" data-autoclose="1" placeholder="Time" ng-disabled="provoke_form.enddate.$invalid" tooltip="{{provoke_form.endtime.$invalid? '请输入比赛结束时间':''}}" bs-timepicker required)
       .modal-footer
-        button(class="btn dl_btn" data-dismiss="modal") {{"CANCEL"|translate}}
-        button(class="btn dl_btn" ng-click='provoke()' ng-disabled="provoke_form.$invalid" data-dismiss="modal") {{"CONFIRM"|translate}}
+        button.btn.dl_btn.dl_btn_large(ng-click='provoke()' ng-disabled="provoke_form.$invalid" data-dismiss="modal") {{"CONFIRM"|translate}}
+        button.btn.dl_btn.cancel_btn.dl_btn_large(data-dismiss="modal") {{"CANCEL"|translate}}
