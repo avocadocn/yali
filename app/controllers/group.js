@@ -868,12 +868,26 @@ exports.getCompetition = function(req, res){
 
 exports.renderCampaignDetail = function(req, res) {
   req.session.nowcampaignid = req.params.campaignId;
-  res.render('users/campaign_detail', {
-    role: req.session.role,
-    head_nickname : req.user.nickname,
-    head_photo : req.user.photo
+  Campaign
+  .findById(req.params.campaignId)
+  .exec()
+  .then(function(campaign) {
+    if (!campaign) {
+      throw 'not found';
+    }
+    res.render('users/campaign_detail', {
+      campaign: campaign,
+      role: req.session.role,
+      head_nickname : req.user.nickname,
+      head_photo : req.user.photo
+    });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(404);
   });
-}
+
+};
 
 exports.getCampaignDetail = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
