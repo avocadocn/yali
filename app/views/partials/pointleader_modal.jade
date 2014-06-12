@@ -4,11 +4,10 @@
       button(class="close" data-dismiss="modal" aria-hidden="true") 
         img(ng-src='/img/icons/icon_close.png')
       .head {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
-    .modal-body
-      .row
-        .col-md-2
-          label.info_label.control-label {{"TEAM_NAME"|translate}}
-        .col-md-8
+    .dl-modal-body
+      .info_side
+          span.info_label {{"TEAM_NAME"|translate}}
+      .info_detail
           input.dl_input.dl_form-control.editToggle(type="text" name ="name" ng-model="team.name")
       hr
       .row
