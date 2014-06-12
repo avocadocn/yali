@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.main', ['ngRoute','ngAnimate','mgcrea.ngStrap.datepicker','mgcrea.ngStrap.timepicker','ui.bootstrap','pascalprecht.translate']);
+angular.module('mean.main', ['ngRoute','ui.bootstrap','pascalprecht.translate']);
 
 
 var app = angular.module('mean.main');

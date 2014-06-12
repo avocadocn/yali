@@ -66,6 +66,14 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 
     $rootScope.team_available_B = "请输入小队名进行搜索!";
 
+    $("#competition_start_time").on("dp.change",function (e) {
+        $rootScope.competition_date = moment(e.date).format("YYYY-MM-DD HH:mm");
+        $('#competition_end_time').data("DateTimePicker").setMinDate(e.date);
+    });
+    $("#competition_end_time").on("dp.change",function (e) {
+        $rootScope.deadline = moment(e.date).format("YYYY-MM-DD HH:mm");
+        $('#competition_start_time').data("DateTimePicker").setMaxDate(e.date);
+    });
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
@@ -321,7 +329,14 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 
 
     $scope.company = false;
-
+    $("#start_time").on("dp.change",function (e) {
+        $scope.start_time = moment(e.date).format("YYYY-MM-DD HH:mm");
+        $('#end_time').data("DateTimePicker").setMinDate(e.date);
+    });
+    $("#end_time").on("dp.change",function (e) {
+        $scope.end_time = moment(e.date).format("YYYY-MM-DD HH:mm");
+        $('#start_time').data("DateTimePicker").setMaxDate(e.date);
+    });
 
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;

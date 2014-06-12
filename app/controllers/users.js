@@ -1026,6 +1026,7 @@ exports.timeLine = function(req,res){
         var tempObj = {
           id: campaign._id,
           head: _head,
+          logo:campaign.team[0].logo,
           content: campaign.content,
           location: campaign.location,
           group_type: campaign.group_type,
