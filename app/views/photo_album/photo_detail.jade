@@ -1,0 +1,23 @@
+extend ../layouts/user_base
+
+block contentExt
+  .dl_container
+    h1= photo_album.name
+    hr
+    a(href="/photoView/#{photo_album._id}/#{photo_detail.pre_id}") 上一张
+    a(href="/photoView/#{photo_album._id}/#{photo_detail.next_id}") 下一张
+    img(src="#{photo_detail.uri}")
+    p
+      each tag in photo_detail.tags
+        = tag
+    h3 我要留言
+    form(action="/photo_album/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
+      input(type="hidden" name="_method" value="put")
+      input(type="text" name="text" required)
+      button(type="submit") 提交留言
+    section
+      each comment in photo_detail.comments
+        div
+          p= comment.publish_user.nickname
+          p= comment.content
+          p= comment.publish_date

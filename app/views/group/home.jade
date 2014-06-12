@@ -24,21 +24,21 @@ block baseInfo
         .score_container.margin_top_5
           span.info_border {{"WIN_RATE"|translate}}
           span.info_border 100%
-        if(role ==='HR' || role ==='LEADER')
+        if (role ==='HR' || role ==='LEADER')
           .score_container(style="margin-left:30px")
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorSearchModel") {{"PROVOKE"|translate}}
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") {{"ARENA"|translate}}
-        if(role === 'MEMBER' || role ==='LEADER')
+        if (role === 'MEMBER' || role ==='LEADER')
           .score_container
             button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") {{"QUIT_GROUP"|translate}}
-        if(role ==='PARTNER')
+        if (role ==='PARTNER')
           .score_container
             button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
     ul.nav.nav-tabs
-      if(role !=='GUESTHR' && role !=='GUEST')
+      if (role !=='GUESTHR' && role !=='GUEST')
         li.tab_style(ng-class="{'active':nowTab=='group_message'}")
           a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"TEAM_MESSAGE"|translate}}
         li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
@@ -53,30 +53,25 @@ block panel
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
-    if(role ==='HR' || role ==='LEADER')
+    if (role ==='HR' || role ==='LEADER')
       div.modal.fade#sponsorCampaignModel(ng-controller="CampaignListController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/campaign_modal
       div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/provoke_modal
       div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/search_modal
-    if(role ==='MEMBER' || role ==='LEADER')
+    if (role ==='MEMBER' || role ==='LEADER')
       div.modal.fade#quitGroupModel(ng-controller="MemberListController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
 block aside
 
-  if(role !=='GUESTHR' && role !=='HR')
+  if (role !=='GUESTHR' && role !=='HR')
     include ../partials/group_thumbnail
     +group_thumbnail(selected_teams,'active',role!=='HR'?"{{'MY'|translate}}{{'TEAM'|translate}}":"{{'COMPANY'|translate}}{{'TEAM'|translate}}")
     +group_thumbnail(unselected_teams,'inactive',"{{'UNSELECTED_TEAM'|translate}}")
-  if(role !=='GUESTHR' && role !=='GUEST')
+  if (role !=='GUESTHR' && role !=='GUEST')
     span.subtitle.margin_top_15 {{"TEAM_ALBUM"|translate}}
-    if(role==='LEADER')
-      a.pull-right(href="/group/#{group_id}/managePhotoAlbum") {{"MANAGER_ALBUM"|translate}}
-    each photo_album in photo_albums
-      p
-        img.size_140.img_contain(src="/photoAlbum/#{photo_album.id}/preview")
-        a(href="/group/#{group_id}/photoAlbum/#{photo_album.id}")= photo_album.name
+    a(href="/#{group_id}/photoAlbumListView") 更多
 
 append footExt
   script(src="/js/controllers/tabviewGroup.js")

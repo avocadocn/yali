@@ -9,7 +9,8 @@ var Schema = mongoose.Schema;
 
 var Photo = new Schema({
   uri: String,
-  publish_date: {
+  thumbnail_uri: String,
+  upload_date: {
     type: Date,
     default: Date.now
   },
@@ -17,9 +18,21 @@ var Photo = new Schema({
     type: Boolean,
     default: false
   },
-  comment: String,
-  publish_user: {
-    id: String,
+  name: String,
+  tags: [String],
+  comments: [{
+    content: String,
+    publish_user: {
+      _id: Schema.Types.ObjectId,
+      nickname: String
+    },
+    publish_date: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  upload_user: {
+    _id: Schema.Types.ObjectId,
     nickname: String
   }
 });
@@ -35,11 +48,18 @@ var PhotoAlbum = new Schema({
     type: String,
     default: Date.now().toString()
   },
-  publish_date: {
+  create_date: {
     type: Date,
     default: Date.now
   },
-  update_user: String,                    // 最后更新相册的用户昵称
+  create_user: {
+    _id: Schema.Types.ObjectId,
+    nickname: String
+  },
+  update_user: {
+    _id: Schema.Types.ObjectId,
+    nickname: String
+  },
   update_date: {
     type: Date,
     default: Date.now

@@ -33,7 +33,7 @@ block contentExt
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         img.img_contain.size_map
       p.subtitle {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
-      if(role!=='PARTNER')
+      if (role!=='PARTNER')
         .dl_row
           a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/group/campaign/campaign._id/photoAlbum/campaign.photo_album.pid") 上传活动照片
         input#photo_album_id(type="hidden" name="photo_album_id" value="campaign.photo_album.pid")

@@ -61,11 +61,8 @@ var Campaign = new Schema({
     },
 
     photo_album: {
-        pid: Schema.Types.ObjectId,
-        name: {
-            type: String,
-            default: '活动相册'
-        }
+        type: Schema.Types.ObjectId,
+        ref: 'PhotoAlbum'
     },
 
     member: [_member],

@@ -99,13 +99,6 @@ var Competition = new Schema({
             enum: ['HR','LEADER']      //HR 组长
         },
     },
-    photo: {
-      pid: String,
-      name: {
-        type: String,
-        default: '比赛相册'
-      }
-    },
     content: String,
     convert_to_campaign: {
         type: Boolean,

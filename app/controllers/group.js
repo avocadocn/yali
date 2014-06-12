@@ -258,39 +258,21 @@ exports.timeLine = function(req, res){
 
 //返回小队页面
 exports.home = function(req, res) {
+  var cid = req.companyGroup.cid.toString();
   if(req.session.role==='HR' || req.session.role ==='GUESTHR'){
-    var photo_album_ids = [];
-    req.companyGroup.photo_album.forEach(function(photo_album) {
-      photo_album_ids.push(photo_album.pid);
+    res.render('group/home', {
+      'role': req.session.role,
+      'teamId' : req.params.teamId,
+      'tname': req.companyGroup.name,
+      'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
+      'score': req.companyGroup.score ? req.companyGroup.score : 0,
+      'logo': req.companyGroup.logo,
+      'group_id': req.companyGroup._id,
+      'cname': req.companyGroup.cname,
+      'sign': req.companyGroup.brief,
+      'gid' : req.companyGroup.gid,
+      'cid' : cid
     });
-    PhotoAlbum.where('_id').in(photo_album_ids)
-      .exec(function(err, photo_albums) {
-        if (err) { console.log(err); }
-          else if(photo_albums) {
-            var visible_photo_albums = [];
-            photo_albums.forEach(function(photo_album) {
-              if (photo_album.hidden === false) {
-                visible_photo_albums.push(photo_album);
-              }
-            });
-            var cid = req.companyGroup.cid.toString();
-            console.log('cid',cid);
-            res.render('group/home', {
-              'role': req.session.role,
-              'photo_albums': visible_photo_albums,
-              'teamId' : req.params.teamId,
-              'tname': req.companyGroup.name,
-              'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-              'score': req.companyGroup.score ? req.companyGroup.score : 0,
-              'logo': req.companyGroup.logo,
-              'group_id': req.companyGroup._id,
-              'cname': req.companyGroup.cname,
-              'sign': req.companyGroup.brief,
-              'gid' : req.companyGroup.gid,
-              'cid' : cid
-            });
-          }
-        });
   }
   else{//个人侧栏
     var selected_teams = [];
@@ -316,43 +298,24 @@ exports.home = function(req, res) {
             }
           }
         }
-        req.companyGroup.photo_album.forEach(function(photo_album) {
-          photo_album_ids.push(photo_album.pid);
-        });
-        PhotoAlbum.where('_id').in(photo_album_ids)
-        .exec(function(err, photo_albums) {
-          if (err) {
-            console.log(err);
-          }
-          else if(photo_albums) {
-            var visible_photo_albums = [];
-            photo_albums.forEach(function(photo_album) {
-              if (photo_album.hidden === false) {
-                visible_photo_albums.push(photo_album);
-              }
-            });
-          }
-          var cid = req.companyGroup.cid.toString();
-          console.log('cid',cid);
-          res.render('group/home',{
-            'selected_teams' : selected_teams,
-            'unselected_teams' : unselected_teams,
-            'photo_albums': visible_photo_albums,
-            'teamId' : req.params.teamId,
-            'tname': req.companyGroup.name,
-            'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-            'score': req.companyGroup.score ? req.companyGroup.score : 0,
-            'role': req.session.role,
-            'logo': req.companyGroup.logo,
-            'group_id': req.companyGroup._id,
-            'cname': req.companyGroup.cname,
-            'sign': req.companyGroup.brief,
-            'gid' : req.companyGroup.gid,
-            'cid' : cid,
-            'head_photo': req.user.photo,
-            'head_nickname':req.user.nickname
 
-          });
+        res.render('group/home',{
+          'selected_teams' : selected_teams,
+          'unselected_teams' : unselected_teams,
+          'teamId' : req.params.teamId,
+          'tname': req.companyGroup.name,
+          'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
+          'score': req.companyGroup.score ? req.companyGroup.score : 0,
+          'role': req.session.role,
+          'logo': req.companyGroup.logo,
+          'group_id': req.companyGroup._id,
+          'cname': req.companyGroup.cname,
+          'sign': req.companyGroup.brief,
+          'gid' : req.companyGroup.gid,
+          'cid' : cid,
+          'photo': req.user.photo,
+          'realname':req.user.realname
+
         });
       };
     });

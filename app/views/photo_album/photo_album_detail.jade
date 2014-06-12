@@ -1,0 +1,19 @@
+extend ../layouts/user_base
+
+block contentExt
+  .dl_container
+    header
+      h1= photo_album.name
+      p 照片数: #{photo_album.photos.length}
+      p 最后更新: #{photo_album.update_date}
+      form(action="/photoAlbum/#{photo_album._id}/photo" method="post" enctype="multipart/form-data")
+        input(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
+        button(type="submit") 上传照片
+      hr
+    div
+      each photo in photo_album.photos
+        div
+          a(href="/photoView/#{photo_album._id}/#{photo._id}") 详情
+          img(src="#{photo.thumbnail_uri}")
+          p= photo.name
+

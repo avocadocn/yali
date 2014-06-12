@@ -1,0 +1,29 @@
+extend ../layouts/user_base
+
+block contentExt
+  .dl_container
+    header
+      h1 所有相册
+      form(action="/photoAlbum" method="post")
+        input(type="hidden" name="owner" value="company_group")
+        input(type="hidden" name="owner_id" value="#{owner_id}")
+        input(type="text" name="name" required)
+        button(type="submit") 新建相册
+      hr
+      h4 #{owner_name} 所有相册
+    .row
+      each photo_album in photo_album_list
+        .col-sm-4.col-xs-4
+          div
+            a(href="/photoAlbumDetailView/#{photo_album._id}") 相册详情
+            img(src="#{photo_album.thumbnail}")
+            p
+              =photo_album.name
+              if !photo_album.photos
+                small 0
+              else
+                small= photo_album.photos.length
+          div
+            img(src="/logo/user/#{photo_album.update_user._id}/50/50")
+            p= photo_album.update_user.nickname
+            p #{photo_album.update_date} 最后更新
