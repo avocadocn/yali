@@ -14,7 +14,25 @@
       .row
         .col-md-4
           label.info_label.control-label {{"APPOINT_LEADER"|translate}}
-          li(ng-repeat= "user in users")
-            a(ng-click="appointLeader(user._id,user.nickname,user.photo)" data-dismiss="modal") {{user.nickname}}
+          .row
+            label 该小队非队长成员
+            select.form-control.dl_form-control.chzn-select(data-placeholder="选择一个成员" tabindex="2" ng-model="user_selected" ng-options="user.nickname for user in users" ng-change="select(true)" required)
+              option(value="") {{user_selected.nickname}}
+          .row
+            label 该小队组长
+            select.form-control.dl_form-control.chzn-select(data-placeholder="选择一个队长" tabindex="2" ng-model="leader_select" ng-options="leader.name for leader in leaders" ng-change="select(false)" required)
+              option(value="") {{user_selected.nickname}}
+          .row(ng-if="select_user || select_leader")
+          .col-md-2.col-sm-2.col-xs-3
+            img.img-responsive.img-thumbnail.img_contain(ng-src="{{select_user ? user_selected.photo : leader_select.photo}}" width="128px")
+          .col-md-10.col-sm-10.col-xs-9
+            .row.dl_row
+              .col-md-2.col-sm-2.col-xs-2.padding_0
+                span.info_label.control-label {{"NICKNAME"|translate}}
+              .col-md-8.col-sm-8.col-xs-4.padding_0
+                span.info_label.control-label {{select_user ? user_selected.nickname : leader_select.nickname}}
+            .row.dl_row
+              button.dl_btn(ng-click="appointLeader(user_selected._id,user_selected.nickname,user_selected.photo)" ng-if="select_user") 任免
+              button.dl_btn(ng-click="dismissLeader(leader_selected._id)" ng-if="select_leader") 罢免
     .modal-footer
       button.dl_btn.dl_btn_small(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}

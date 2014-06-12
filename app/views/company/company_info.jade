@@ -98,35 +98,46 @@ div
         //所有人可见active的team
         .aside
           a(href="/group/home/{{team._id}}")
-            img.size_128.img-thumbnail.img_contain(ng-src="{{team.logo}}")
-        .dl_row
-          span.info_label {{"TEAM_NAME"|translate}}
-          span.info_label {{team.name}}
-          if(role ==='HR')
-            button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
-        .dl_row
-          span.info_label {{"TYPE"|translate}}
-          span.info_label {{team.group_type}}
-        .dl_row
-          span.info_label {{"TEAM_LEADER"|translate}}
-          span(ng-repeat="l in team.leader")
-            span.info_label {{l.nickname}}
-            //- .btn-group
-            //-   span.info_label(data-toggle="dropdown") {{l.nickname}}
-            //-   ul.dropdown-menu(role="menu")
-            //-     li
-            //-       a(href="#" ng-click="dismissLeader(team._id,team.gid,l._id,$index)") 罢免
-        .dl_row
-          span.info_label {{"SUM"|translate}}
-          span.info_label {{team.member.length}}
-          if(role === 'HR')
-            button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
-          if(role === 'EMPLOYEE')
-            //不属于显示加组按钮
-            button.dl_btn.dl_btn_small.pull-right(ng-if='!team.belong' ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
-            //属于则显示退组按钮
-            button.dl_btn.dl_btn_small.pull-right(ng-if='team.belong' ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}  
-        hr
+            img.img-responsive.img-thumbnail.img_contain(ng-src="{{team.logo}}" width="128px")
+        .col-md-10.col-sm-10.col-xs-9
+          .row.dl_row
+            .col-md-2.col-sm-2.col-xs-2.padding_0
+              span.info_label.control-label {{"TEAM_NAME"|translate}}
+            .col-md-8.col-sm-8.col-xs-4.padding_0
+              span.info_label.control-label {{team.name}}
+            if(role ==='HR')
+              .col-md-2.col-sm-2.col-xs-4.padding_0
+                button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
+          .row.dl_row
+            .col-md-2.col-sm-2.col-xs-2.padding_0
+              span.info_label.control-label {{"TYPE"|translate}}
+            .col-md-8.col-sm-8.col-xs-8.padding_0
+              span.info_label.control-label {{team.group_type}}
+          .row.dl_row
+            .col-md-2.col-sm-2.col-xs-2.padding_0
+              span.info_label.control-label {{"TEAM_LEADER"|translate}}
+            .col-md-2.col-sm-2.col-xs-2.padding_0(ng-repeat="l in team.leader")
+              .btn-group
+                span.info_label.control-label(data-toggle="dropdown") {{l.nickname}}
+                ul.dropdown-menu(role="menu")
+                  li
+                    a(href="#" ng-click="dismissLeader(l._id") 罢免
+          .row.dl_row
+            .col-md-2.col-sm-2.col-xs-2.padding_0
+              span.info_label.control-label {{"SUM"|translate}}
+            .col-md-8.col-sm-8.col-xs-8.padding_0
+              span.info_label.control-label {{team.member.length}}
+            if(role === 'HR')
+              .col-md-2.col-sm-2.col-xs-2.padding_0
+                button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
+            if(role === 'EMPLOYEE')
+              //不属于显示加组按钮
+              .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='!team.belong')
+                button.dl_btn.dl_btn_small.pull-right(ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
+              //属于则显示退组按钮
+              .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='team.belong')
+                button.dl_btn.dl_btn_small.pull-right(ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}
+          hr
       //只有HR可见inactive的team 并可打开
       .dl_row.clearfix(ng-if="!team.active")
         if(role ==='HR')

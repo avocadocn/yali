@@ -92,6 +92,8 @@ function findUser()
 
 function findComapnyGroup(condition,req,res)
 {
+  var users = [];
+  var leaders = [];
   CompanyGroup.findOne(condition,{'member':1,'leader':1},function (err,cg) {
     if(err || !cg) {
       return res.send([]);
@@ -108,17 +110,22 @@ function findComapnyGroup(condition,req,res)
         }
         if(!flag){
           users.push(members[i]);
+        } else {
+          leaders.push(members[i]);
         }
         flag = false;
       }
-      return res.send(users);
+      return res.send({
+        'users':users,
+        'leaders':leaders
+      });
     }
   });
 }
 
 
 //TODO
-//根据公司id搜索成员(该成员不是该队的队长)
+//根据公司id搜索成员
 exports.getUser = function(req, res) {
   var tid = req.body.tid;   //找选择了该队的员工
   findComapnyGroup({'_id':tid},req,res);

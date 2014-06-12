@@ -61,9 +61,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.s_team = "";
 
     $rootScope.company_available = "请输入公司名搜索!";
-
     $rootScope.team_available_A = "请输入公司名搜索!";
-
     $rootScope.team_available_B = "请输入小队名进行搜索!";
 
     $("#competition_start_time").on("dp.change",function (e) {
@@ -280,6 +278,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     };
 
 }]);
+
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {

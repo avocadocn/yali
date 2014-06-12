@@ -283,8 +283,15 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.infoUnEdit = true;
     $scope.infoButtonStatus = '编辑';
     $scope.inviteUrlStatus= false;
+    $scope.select_user = false;
+    $scope.select_leader = false;
     // $scope.groupInfoUnEdit = true;
     // $scope.groupInfoButtonStatus = '编辑队名'
+
+    $scope.select = function(value) {
+        $scope.select_user = value;
+        $scope.select_leader = !value;
+    }
     $scope.inviteUrlToggle = function(){
         $scope.inviteUrlStatus= !$scope.inviteUrlStatus;
     };
@@ -363,7 +370,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     tid: $scope.tid
                 }
             }).success(function(data, status) {
-                $scope.users = data;
+                $scope.users = data.users;
+                $scope.leaders = data.leaders;
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -386,9 +394,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
-    $scope.dismissLeader = function (tid,gid,uid,index) {
-        $scope.tid = tid;
-        $scope.gid = gid;
+    $scope.dismissLeader = function (uid) {
         try{
             $http({
                 method: 'post',
@@ -426,7 +432,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }).success(function(data, status) {
                 //指定完后不跳转，可继续编辑队名等
-                window.location.reload();
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -450,7 +455,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     //TODO:更改对话框
                     if(data.result === 1) {
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
-                        window.location.reload();
                     }
                     else
                         $rootScope.donlerAlert(data.msg);
