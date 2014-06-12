@@ -1,8 +1,9 @@
 .modal-dialog
   .dl-modal
-    .modal-header
-      button(class="close" data-dismiss="modal" aria-hidden="true") X
-      h4.modal-title {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
+    .dl-modal-header
+      button(class="close" data-dismiss="modal" aria-hidden="true") 
+        img(ng-src='/img/icons/icon_close.png')
+      .head {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
     .modal-body
       .row
         .col-md-2
@@ -16,4 +17,4 @@
           li(ng-repeat= "user in users")
             a(ng-click="appointLeader(user._id,user.nickname,user.photo)" data-dismiss="modal") {{user.nickname}}
     .modal-footer
-      button.dl_btn(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}
+      button.dl_btn.dl_btn_small(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}

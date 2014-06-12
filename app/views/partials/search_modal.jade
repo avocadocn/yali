@@ -1,17 +1,17 @@
 .modal-dialog
   .dl-modal
     form(name="search_form")
-      .modal-header
-        button(class="close" data-dismiss="modal" aria-hidden="true") X
-        h4.modal-title#myModalLabel 第一步: {{"SEARCH"|translate}} {{is_company}}
-      .modal-body
-        .row 按公司名搜索
-          hr
-        .row
-          label.col-md-2 请输入{{"COMPANY"|translate}}名:
-          .col-md-7
-            input.dl_form-control(type="text" name="s_company" ng-model="s_company" )
-          a.btn.btn-success.col-md-2(ng-click="getCompany(s_company)" ng-disabled="s_company == '' || s_company == undefined") 搜索公司
+      .dl-modal-header
+        button(class="close" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+        .head#myModalLabel {{"STEPONE"|translate}} {{"SEARCH"|translate}} {{is_company}}
+      .dl-modal-body
+        .dl_row
+          span.subtitle 按公司名搜索
+        .dl_row.clearfix
+          span.info_label 请输入{{"COMPANY"|translate}}名:
+          a.btn.btn-success.pull-right(ng-click="getCompany(s_company)" ng-disabled="s_company == '' || s_company == undefined") 搜索公司
+          input.dl_form-control(type="text" name="s_company" ng-model="s_company" )
         .row.margin_top_15
         .row
           .col-md-2

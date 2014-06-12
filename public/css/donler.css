@@ -77,14 +77,16 @@ li {
 .dl_modal_input {
   border-radius: 0;
   margin-bottom: 25px;
+  font-size: 12px;
 }
 .dl_modal_container {
   width: 600px;
   float: left;
 }
 .dl_modal_half_container {
-  width: 300px;
+  width: 280px;
   float: left;
+  margin-right: 20px;
 }
 .dl_modal_quarter_container {
   width: 150px;
@@ -98,7 +100,7 @@ li {
   width: 70px;
   height: 33px;
   float: right;
-  padding: 4px 0 4px 10px;
+  padding: 8px 0 4px 2px;
 }
 .dl_container {
   width: 960px;
@@ -254,6 +256,7 @@ li {
 .dl_btn_large {
   width: 150px;
   height: 30px;
+  font-size: 14px;
 }
 .dl_btn_detail {
   width: 180px;
@@ -280,7 +283,6 @@ li {
   border-style: solid;
   line-height: 1;
   position: relative;
-  font-size: 12px;
 }
 .close_btn {
   background-color: #ff8c00;

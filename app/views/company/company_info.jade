@@ -109,12 +109,13 @@ div
           span.info_label {{team.group_type}}
         .dl_row
           span.info_label {{"TEAM_LEADER"|translate}}
-          .info_side(ng-repeat="l in team.leader")
-            .btn-group
-              span.info_label(data-toggle="dropdown") {{l.nickname}}
-              ul.dropdown-menu(role="menu")
-                li
-                  a(href="#" ng-click="dismissLeader(team._id,team.gid,l._id,$index)") 罢免
+          span(ng-repeat="l in team.leader")
+            span.info_label {{l.nickname}}
+            //- .btn-group
+            //-   span.info_label(data-toggle="dropdown") {{l.nickname}}
+            //-   ul.dropdown-menu(role="menu")
+            //-     li
+            //-       a(href="#" ng-click="dismissLeader(team._id,team.gid,l._id,$index)") 罢免
         .dl_row
           span.info_label {{"SUM"|translate}}
           span.info_label {{team.member.length}}
