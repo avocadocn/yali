@@ -35,7 +35,7 @@ exports.getCompanyCampaign = function(req, res) {
                 var campaigns = [];
                 for(var i = 0;i < campaign.length; i ++) {
                     campaigns.push({
-                        'active':campaign[i].active && (Date.now() - campaign[i].end_time <= 0), //截止时间到了活动就无效了,
+                        'active':campaign[i].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了,
                         'id': campaign[i].id,
                         'gid': campaign[i].gid,
                         'group_type': campaign[i].group_type,
@@ -209,7 +209,7 @@ exports.getAllCampaign = function(req, res) {
             }
           }
           campaigns.push({
-            'active':campaign[j].active && (Date.now() - campaign[j].end_time <= 0), //截止时间到了活动就无效了,
+            'active':campaign[j].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了,
             'id': campaign[j]._id,
             'gid': campaign[j].gid,
             'group_type': campaign[j].group_type,
@@ -264,7 +264,7 @@ exports.getGroupCampaign = function(req, res) {
             }
           }
           campaigns.push({
-            'active':campaign[i].active && (Date.now() - campaign[i].end_time <= 0), //截止时间到了活动就无效了,
+            'active':campaign[i].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了,
             'id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
             'group_type': campaign[i].group_type,
@@ -415,7 +415,7 @@ function getUserCampaigns(req,res,_in) {
             }
             campaigns.push({
               'selected':_in,
-              'active':campaign[j].active && (Date.now() - campaign[j].end_time <= 0), //截止时间到了活动就无效了,
+              'active':campaign[j].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了,
               'id': campaign[j]._id,
               'gid': campaign[j].gid,
               'group_type': campaign[j].group_type,

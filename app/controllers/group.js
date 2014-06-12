@@ -480,7 +480,7 @@ exports.getGroupCampaign = function(req, res) {
             }
           }
           campaigns.push({
-            'active':campaign[i].active && (Date.now() - campaign[i].end_time <= 0), //截止时间到了活动就无效了
+            'active':campaign[i].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了
             'id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
             'group_type': campaign[i].group_type,

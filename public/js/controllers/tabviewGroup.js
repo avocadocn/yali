@@ -411,7 +411,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         try {
             $http({
                 method: 'post',
-                url: '/group/campaignCancel',
+                url: '/campaign/cancel',
                 data:{
                     campaign_id : _id
                 }

@@ -850,7 +850,7 @@ exports.getCompanyCampaign = function(req, res) {
                 var campaigns = [];
                 for(var i = 0;i < campaign.length; i ++) {
                     campaigns.push({
-                        'active':campaign[i].active && (Date.now() - campaign[i].end_time <= 0), //截止时间到了活动就无效了
+                        'active':campaign[i].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了
                         'id': campaign[i].id,
                         'gid': campaign[i].gid,
                         'group_type': campaign[i].group_type,
@@ -1001,6 +1001,9 @@ exports.appointLeader = function (req, res) {
 
 //关闭企业活动
 exports.campaignCancel = function (req, res) {
+    if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+        return res.send(403,forbidden);
+    }
     var campaign_id = req.body.campaign_id;
     Campaign.findOne({_id:campaign_id},function(err, campaign) {
         if(campaign) {
