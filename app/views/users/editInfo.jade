@@ -1,112 +1,107 @@
 div
   form.form-horizontal(name="accountForm")
-    .infoHead.row
-      .col-md-4
-        h5 {{"INFO" | translate}}
+    .dl_row
+      h5.pull-left {{"INFO" | translate}}
       if(role!=='PARTNER')
-        .col-md-8
-           button.dl_btn.dl_btn_small.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
-    hr
-    .form-group
-      .row
-        .col-md-3.col-sm-4.col-xs-5
-          img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
-        .col-md-9.col-sm-8.col-xs-7
-          if(role!=='PARTNER')
-            .dl_row
-              a.clearLinkUnderline.dl_btn.dl_btn_medium.margin_top_15(href="/users/editPhoto"){{"CHANGE_LOGO" | translate}}
-            .dl_row
-              a(href="#/changePassword")
-                button.dl_btn.dl_btn_medium.margin_top_15 {{"CHANGE_PASS" | translate}}
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"LOGIN_EMAIL" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
-        label.info_label(ng-bind="user.email")
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"NICKNAME" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
+        button.dl_btn.dl_btn_small.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
+    hr.margin_top_6
+    .aside
+      img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
+    if(role!=='PARTNER')
+      .dl_row
+        a.clearLinkUnderline.dl_btn.dl_btn_medium.margin_top_15(href="/users/editPhoto"){{"CHANGE" | translate}}{{"AVATAR"|translate}}
+      .dl_row
+        a(href="#/changePassword")
+          button.dl_btn.dl_btn_medium.margin_top_15 {{"CHANGE_PASS" | translate}}
+    .dl_row
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"LOGIN_EMAIL" | translate}}
+      .info_side
+        span.info_label(ng-bind="user.email")
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"NICKNAME" | translate}}
+      .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-disabled="baseUnEdit")
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"REALNAME" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"REALNAME" | translate}}
+      .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4  
-        label.info_label.control-label {{"COMPANY" | translate}}
-      .col-md-6.col-sm-8.col-xs-8
-        label.info_label {{user.cname}}
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"POSITION" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side  
+        span.info_label {{"COMPANY" | translate}}
+      .info_side
+        span.info_label {{user.cname}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"POSITION" | translate}}
+      .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="user.position" ng-disabled="baseUnEdit")
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"LOCATION" | translate}}
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"GENDER" | translate}}
-      .col-md-1.col-sm-1.col-xs-1
-        label.control-label(ng-if="baseUnEdit") {{user.sex}}
-        if(role!=='PARTNER')
-          .col-md-1(ng-if="!baseUnEdit")
-            label.radio.info_radio
-              input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
-              | {{"MALE" | translate}}
-          .col-md-1(ng-if="!baseUnEdit")
-            label.radio.info_radio
-              input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
-              | {{"FEMALE" | translate}}
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"BIRTHDAY" | translate}}
-      .col-md-2.col-sm-8.col-xs-8
-        input.dl_input.dl_form-Control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-start-view="2" placeholder="Date" ng-if="!baseUnEdit" bs-datepicker)
-        label.info_label(ng-if="baseUnEdit") {{user.birthday |date:'yyyy-MM-dd'}}
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"BLOODTYPE" | translate}}
-      .col-md-2.col-sm-8.col-xs-8
-        label.col-md-2.control-label(ng-if="baseUnEdit") {{user.bloodType}}
-        if(role!=='PARTNER')
-          select.dl_input.dl_form-Control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" ng-if="!baseUnEdit")
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"LOCATION" | translate}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"GENDER" | translate}}
+      .info_side(ng-if="baseUnEdit")
+        span.info_label {{user.sex}}
+      if(role!=='PARTNER')
+        .info_detail(ng-if="!baseUnEdit")
+          span.radio.info_radio.info_label
+            input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
+            | {{"MALE" | translate}}
+          span.radio.info_radio.info_label
+            input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
+            | {{"FEMALE" | translate}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"BIRTHDAY" | translate}}
+      .info_detail(ng-if="!baseUnEdit" )
+        input.dl_input.dl_form-Control.editToggle(type="text" ng-model="user.birthday" name="date" data-autoclose="1" data-max-date="today" data-start-view="2" placeholder="Date" bs-datepicker)
+      .info_side(ng-if="baseUnEdit")  
+        span.info_label {{user.birthday |date:'yyyy-MM-dd'}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"BLOODTYPE" | translate}}
+      .info_side(ng-if="baseUnEdit")
+        span.info_label {{user.bloodType}}
+      if(role!=='PARTNER')
+        .info_detail(ng-if="!baseUnEdit")
+          select.dl_input.dl_form-Control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" style="height:34px")
             option(ng-select="user.bloodType === 'A'") A
             option(ng-select="user.bloodType === 'B'") B
             option(ng-select="user.bloodType === 'O'") O
             option(ng-select="user.bloodType === 'AB'") AB
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"BRIEF" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"BRIEF" | translate}}
+      .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-disabled="baseUnEdit")
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"REGISTER_DATE" | translate}}
-      .col-md-8.col-sm-8.col-xs-8
-        label.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"REGISTER_DATE" | translate}}
+      .info_side
+        span.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
   form.form-horizontal(name="linkForm")
-    .infoHead.row
-      .col-md-4
-        h5 {{"CONTACT" | translate}}
+    .dl_row
+      h5.pull-left {{"CONTACT" | translate}}
       if(role!=='PARTNER')
-        .col-md-8
-          button.dl_btn.dl_btn_small.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
-    hr
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"PHONE" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
+        button.dl_btn.dl_btn_small.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
+    hr.margin_top_6
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"PHONE" | translate}}
+      .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"EMAIL" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"EMAIL" | translate}}
+      .info_detail
         input.dl_input.dl_form-Control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="linkUnEdit")
-    .form-group
-      .col-md-2.col-sm-4.col-xs-4
-        label.info_label.control-label {{"QQ" | translate}}
-      .col-md-4.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"QQ" | translate}}
+      .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")

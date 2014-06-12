@@ -1,177 +1,154 @@
 div
   form.form-horizontal(name="accountForm")
-    .row
-    .infoHead.row
+    .dl_row
       h5.pull-left {{"ACCOUNT"|translate}}
-    hr
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"LOGIN_EMAIL"|translate}}
-      .col-md-5.col-sm-4.col-xs-4
-        label.info_label(ng-bind="company.login_email")
+    hr.margin_top_6
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"LOGIN_EMAIL"|translate}}
+      .info_side
+        span.info_label(ng-bind="company.login_email")
       if(role ==='HR')
-        .col-md-2.col-sm-2.col-xs-4
+        .info_side
           a(href="#/changePassword") {{"CHANGE_PASS"|translate}}
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"REGISTER_DATE"|translate}}
-      .col-md-8
-        label.info_label {{company.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"REGISTER_DATE"|translate}}
+      .info_side
+        span.info_label {{company.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
     if(role==='HR')
-      .form-group
-        .col-md-2.col-sm-2.col-xs-4
-          label.info_label.control-label {{"INVATE_LINK"|translate}}
-        .col-md-5.col-sm-10.col-xs-6
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"INVATE_LINK"|translate}}
+        .info_side
           button.dl_btn.dl_btn_small(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
-          label.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
-    hr
+        .info_side
+          span.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
   form.form-horizontal(name="infoForm")
-    .infoHead.row
+    .dl_row.clearfix
       h5.pull-left {{"ENTERPRISE_INFO"|translate}}
       if(role==='HR')
         button.dl_btn.dl_btn_small.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
-    hr
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"OFFICIAL_NAME"|translate}}
-      .col-md-5.col-sm-6.col-xs-6
+    hr.margin_top_6
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"OFFICIAL_NAME"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
       if(role ==='HR')
-        .col-md-5.col-sm-4.col-xs-2.padding_0
+        .info_side
           a.clearLinkUnderline.dl_btn.dl_btn_small.pull-right(href="/company/editLogo") {{"CHANGE_LOGO"|translate}}
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"ENTERPRISE_FULL_NAME"|translate}}
-      .col-md-5.col-sm-8.col-xs-6
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"ENTERPRISE_FULL_NAME"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="infoname" ng-model="info.name" ng-disabled="infoUnEdit")
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"LOCATION"|translate}}
-      .col-md-2.col-sm-2.col-xs-2
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"LOCATION"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="province" ng-model="info.city.province" ng-disabled="infoUnEdit")
-      .col-md-2.col-sm-2.col-xs-2
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="city" ng-model="info.city.city" ng-disabled="infoUnEdit")
-      .col-md-2.col-sm-2.col-xs-2
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="district" ng-model="info.city.district" ng-disabled="infoUnEdit")
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"ADDRESS"|translate}}
-      .col-md-5.col-sm-8.col-xs-6
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"LINK_MAN"|translate}}
-      .col-md-5.col-sm-8.col-xs-6
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"ADDRESS"|translate}}
+      .info_side
+        span.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"LINK_MAN"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="linkman" ng-model="info.linkman" ng-disabled="infoUnEdit")
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"ENTERPRISE_PHONE"|translate}}
-      .col-md-2.col-sm-2.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"ENTERPRISE_PHONE"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="number" name ="areacode" ng-model="info.lindline.areacode" ng-disabled="infoUnEdit")
-      .col-md-6.col-sm-6.col-xs-6.col-xs-offset-2
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="number" name ="number" ng-model="info.lindline.number" ng-disabled="infoUnEdit")
-      .col-md-2.col-sm-2.col-xs-4
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="number" name ="extension" ng-model="info.lindline.extension" ng-disabled="infoUnEdit")
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"PHONE"|translate}}
-      .col-md-5.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label {{"PHONE"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="number" name ="phone" ng-model="info.phone" ng-disabled="infoUnEdit")
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"EMAIL"|translate}}
-      .col-md-5.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label.control-label {{"EMAIL"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="email" name ="email" ng-model="info.email" ng-disabled="infoUnEdit")
-    .form-group
-      .col-md-2.col-sm-2.col-xs-4
-        label.info_label.control-label {{"BRIEF"|translate}}
-      .col-md-5.col-sm-8.col-xs-8
+    .dl_row.clearfix
+      .info_side
+        span.info_label.control-label {{"BRIEF"|translate}}
+      .info_detail
         input.dl_input.editToggle.dl_form-Control(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
-    hr
+  //-小组信息
   form.form-horizontal(name="companyGroup")
-    .infoHead.row
+    .dl_row.clearfix
       h5.pull-left {{"TEAM_INFO"|translate}}
       if(role ==='HR')
         a.dl_btn.dl_btn_small.pull-right(href="#/addGroup") {{"ADD_TEAM"|translate}}
-    hr
-    .form-group(ng-repeat="team in team_lists")
-      .row(ng-if="team.active")
+    hr.margin_top_6
+    .dl_row(ng-repeat="team in team_lists")
+      .dl_row.clearfix(ng-if="team.active")
         //所有人可见active的team
-        .col-md-2.col-sm-2.col-xs-3
+        .aside
           a(href="/group/home/{{team._id}}")
-            img.img-responsive.img-thumbnail.img_contain(ng-src="{{team.logo}}" width="128px")
-        .col-md-10.col-sm-10.col-xs-9
-          .row.dl_row
-            .col-md-2.col-sm-2.col-xs-2.padding_0
-              span.info_label.control-label {{"TEAM_NAME"|translate}}
-            .col-md-8.col-sm-8.col-xs-4.padding_0
-              span.info_label.control-label {{team.name}}
-            if(role ==='HR')
-              .col-md-2.col-sm-2.col-xs-4.padding_0
-                button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
-          .row.dl_row
-            .col-md-2.col-sm-2.col-xs-2.padding_0
-              span.info_label.control-label {{"TYPE"|translate}}
-            .col-md-8.col-sm-8.col-xs-8.padding_0
-              span.info_label.control-label {{team.group_type}}
-          .row.dl_row
-            .col-md-2.col-sm-2.col-xs-2.padding_0
-              span.info_label.control-label {{"TEAM_LEADER"|translate}}
-            .col-md-2.col-sm-2.col-xs-2.padding_0(ng-repeat="l in team.leader")
-              .btn-group
-                span.info_label.control-label(data-toggle="dropdown") {{l.nickname}}
-                ul.dropdown-menu(role="menu")
-                  li
-                    a(href="#" ng-click="dismissLeader(team._id,team.gid,l._id,$index)") 罢免
-          .row.dl_row
-            .col-md-2.col-sm-2.col-xs-2.padding_0
-              span.info_label.control-label {{"SUM"|translate}}
-            .col-md-8.col-sm-8.col-xs-8.padding_0
-              span.info_label.control-label {{team.member.length}}
-            if(role === 'HR')
-              .col-md-2.col-sm-2.col-xs-2.padding_0
-                button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
-            if(role === 'EMPLOYEE')
-              //不属于显示加组按钮
-              .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='!team.belong')
-                button.dl_btn.dl_btn_small.pull-right(ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
-              //属于则显示退组按钮
-              .col-md-2.col-sm-2.col-xs-2.padding_0(ng-if='team.belong')
-                button.dl_btn.dl_btn_small.pull-right(ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}  
-          hr
+            img.size_128.img-thumbnail.img_contain(ng-src="{{team.logo}}")
+        .dl_row
+          span.info_label {{"TEAM_NAME"|translate}}
+          span.info_label {{team.name}}
+          if(role ==='HR')
+            button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
+        .dl_row
+          span.info_label {{"TYPE"|translate}}
+          span.info_label {{team.group_type}}
+        .dl_row
+          span.info_label {{"TEAM_LEADER"|translate}}
+          .info_side(ng-repeat="l in team.leader")
+            .btn-group
+              span.info_label(data-toggle="dropdown") {{l.nickname}}
+              ul.dropdown-menu(role="menu")
+                li
+                  a(href="#" ng-click="dismissLeader(team._id,team.gid,l._id,$index)") 罢免
+        .dl_row
+          span.info_label {{"SUM"|translate}}
+          span.info_label {{team.member.length}}
+          if(role === 'HR')
+            button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(false,team._id)") {{"CLOSE"|translate}}
+          if(role === 'EMPLOYEE')
+            //不属于显示加组按钮
+            button.dl_btn.dl_btn_small.pull-right(ng-if='!team.belong' ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
+            //属于则显示退组按钮
+            button.dl_btn.dl_btn_small.pull-right(ng-if='team.belong' ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}  
+        hr
       //只有HR可见inactive的team 并可打开
-      .form-group(ng-if="!team.active")
+      .dl_row.clearfix(ng-if="!team.active")
         if(role ==='HR')
-          .col-md-2.col-sm-2.col-xs-3
+          .aside
             a(href="/group/home/{{team._id}}")
-              img.img-responsive.img-thumbnail.img_contain(ng-src="{{team.logo}}" width="128px")
-          .col-md-10.col-sm-10.col-xs-9
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-4.padding_0
-                span.info_label.control-label {{"TEAM_NAME"|translate}}
-              .col-md-8.col-sm-7.col-xs-4.padding_0
-                span.info_label.control-label {{team.name}}
-              if(role ==='HR')
-                .col-md-2.col-sm-2.col-xs-4.padding_0
-                  button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-4.padding_0
-                span.info_label.control-label {{"TYPE"|translate}}
-              .col-md-4.col-sm-8.col-xs-8.padding_0
-                span.info_label.control-label {{team.group_type}}
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-4.padding_0
-                span.info_label.control-label {{"TEAM_LEADER"|translate}}
-              .col-md-2.col-sm-2.col-xs-4.padding_0(ng-repeat="l in team.leader")
-                span.info_label.control-label {{l.nickname}}
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-4.padding_0
-                span.info_label.control-label {{"SUM"|translate}}
-              .col-md-8.col-sm-8.col-xs-8.padding_0
-                span.info_label.control-label {{team.member.length}}
-              .col-md-2.col-sm-2.col-xs-2.padding_0
-                button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
-            hr
+              img.size_128.img-thumbnail.img_contain(ng-src="{{team.logo}}")
+          .dl_row
+            span.info_label {{"TEAM_NAME"|translate}}
+            span.info_label {{team.name}}
+            if(role ==='HR')
+              button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
+          .dl_row
+            span.info_label {{"TYPE"|translate}}
+            span.info_label {{team.group_type}}
+          .dl_row
+            span.info_label {{"TEAM_LEADER"|translate}}
+            .info_side(ng-repeat="l in team.leader")
+              span.info_label {{l.nickname}}
+          .dl_row
+            span.info_label {{"SUM"|translate}}
+            span.info_label {{team.member.length}}
+            button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
+          hr
   if(role ==='HR' || role ==='LEADER')
     div(ng-controller="AccountFormController" class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal.jade

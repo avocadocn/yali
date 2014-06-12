@@ -259,6 +259,26 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         }
     };
 
+    //退出小队
+    $rootScope.quitGroup = function(){
+        try{
+            $http({
+                method:'post',
+                url: '/users/quitGroup',
+                data:{
+                    tid : $rootScope.teamId
+                }
+            }).success(function(data,status){
+                window.location.reload();
+            }).error(function(data,status){
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+
 }]);
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
@@ -460,25 +480,7 @@ tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', 
     };
 
 
-    //退出小队
-    $scope.quitGroup = function(){
-        try{
-            $http({
-                method:'post',
-                url: '/users/quitGroup',
-                data:{
-                    tid : $scope.teamId
-                }
-            }).success(function(data,status){
-                window.location.reload();
-            }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
+
 }]);
 
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
@@ -499,6 +501,18 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.members = data.companyGroup.member;
         });
     });
+
+    $scope.$watch('teamId',function(tid){
+        $http.get('/group/getGroupMembers/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
+            if(data.result==1){
+                $scope.members = data.data.member;
+                $scope.leaders = data.data.leader;
+                $scope.company = false;
+            }
+        });
+
+    });
+
 
     $scope.editToggle = function() {
         $scope.unEdit = !$scope.unEdit;
