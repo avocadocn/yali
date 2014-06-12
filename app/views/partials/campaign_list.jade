@@ -14,8 +14,8 @@
     .row.campaign_panel
       a.invisible_link(ng-href="/group/{{ !campaign_item.provoke.active ? 'campaign/'+campaign_item.id : 'competition/'+campaign_item.provoke.competition_id }}")
       .col-xs-3.col-sm-2.col-md-3
-        p.text-right {{ campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
-        p.text-right {{ campaign_item.start_time | date:'EEEE' }}
+        p.text-right {{ campaign_item.start_time  | date:'yyyy-MM-dd HH:mm' | dateView}}
+        p.text-right {{ campaign_item.start_time | week }}
       .col-xs-6.col-sm-6.col-md-6.col-md-offset-1
         .row
           a.dl_message_label(ng-if="!campaign_item.provoke.active" ng-href="/group/campaign/{{ campaign_item.id }}") {{ campaign_item.content }}
