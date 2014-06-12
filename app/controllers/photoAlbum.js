@@ -34,7 +34,7 @@ function photoAlbumThumbnail(photo_album) {
     }
   }
   if (first_photo) {
-    return first_photo.uri;
+    return first_photo.thumbnail_uri;
   } else {
     return '/img/icons/default_photo_album.png';
   }
@@ -397,11 +397,22 @@ exports.updatePhoto = function(req, res) {
 
   photoProcess(res, pa_id, p_id, function(photo_album, photo) {
     if (photo.hidden === false) {
-      if (req.body.comment) {
-        photo.comments.push(req.body.comment);
+      if (req.body.text) {
+        photo.comments.push({
+          content: req.body.text,
+          publish_user: {
+            _id: req.user._id,
+            nickname: req.user.nickname,
+            photo: req.user.photo
+          }
+        });
       }
       if (req.body.tags) {
-        photo.tags.push(req.body.tags);
+        var tags = req.body.tags.split(' ');
+        if (!photo.tags) {
+          photo.tags = [];
+        }
+        photo.tags = photo.tags.concat(tags);
       }
       photo_album.save(function(err) {
         if (err) {
@@ -523,7 +534,7 @@ exports.renderPhotoAlbumDetail = function(req, res) {
       photo: req.user.photo,
       realname: req.user.realname,
       role: req.session.role,
-    })
+    });
   })
   .then(null, function(err) {
     console.log(err);

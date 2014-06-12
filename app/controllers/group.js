@@ -773,7 +773,7 @@ exports.sponsor = function (req, res) {
         console.log(err);
         return res.send({'result':0,'msg':'活动创建失败'});
       }
-      campaign.photo_album = { pid: photo_album._id, name: photo_album.name };
+      campaign.photo_album = photo_album._id;
       campaign.save(function(err) {
         if (err) {
           console.log(err);

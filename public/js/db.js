@@ -981,11 +981,7 @@ for(var i = 0;i < 50; i ++) {
             "cname" : user_eric.cname,
             "tname" : company_donler.team[0].name
         },
-        "photo_album":{
-            'pid':0,
-            'name':0
-        },
-         "cname" : [  user_eric.cname ],
+        "cname" : [  user_eric.cname ],
         "cid" : [  user_eric.cid ],
         "group_type" : [  "足球" ],
         "gid" : [  "7" ],
@@ -1009,10 +1005,7 @@ _photo_album.forEach(function (value) {
 });
 var my_photoalbums = db.photoalbums.find();
 for(var i = 0; i < 50; i ++) {
-    my_campaigns[i].photo_album = {
-        'pid' : my_photoalbums[i]._id,
-        'name' : my_photoalbums[i].name
-    };
+    my_campaigns[i].photo_album = my_photoalbums[i]._id;
     db.campaigns.update({ "_id": my_campaigns[i]._id }, my_campaigns[i]);
 }
 

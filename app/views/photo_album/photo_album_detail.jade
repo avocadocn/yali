@@ -6,7 +6,7 @@ block contentExt
       h1= photo_album.name
       p 照片数: #{photo_album.photos.length}
       p 最后更新: #{photo_album.update_date}
-      form(action="/photoAlbum/#{photo_album._id}/photo" method="post" enctype="multipart/form-data")
+      form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo" method="post" enctype="multipart/form-data")
         input(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
         button(type="submit") 上传照片
       hr
@@ -17,3 +17,11 @@ block contentExt
           img(src="#{photo.thumbnail_uri}")
           p= photo.name
 
+append footExt
+  script(src="/lib/jquery-form/jquery.form.js")
+  script.
+    $('.js_ajax_form').ajaxForm(function(data, status) {
+      if (status === 'success') {
+        window.location.reload();
+      }
+    });

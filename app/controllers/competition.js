@@ -48,90 +48,82 @@ exports.provoke = function (req, res) {
 
   competition.camp.push(camp_a);
 
-  var photo_album = new PhotoAlbum();
-  photo_album.save(function(err){
-    if(!err){
-      competition.photo = { pid: photo_album._id, name: photo_album.name };
-      fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
-        if (err) console.log(err);
-      });
 
-      var camp_b = {
-        'id' : req.body.team_opposite._id,
-        'cid' : req.body.team_opposite.cid,
-        'tname' : req.body.team_opposite.name,
-        'logo' : req.body.team_opposite.logo
-      };
-      competition.camp.push(camp_b);
+  var camp_b = {
+    'id' : req.body.team_opposite._id,
+    'cid' : req.body.team_opposite.cid,
+    'tname' : req.body.team_opposite.name,
+    'logo' : req.body.team_opposite.logo
+  };
+  competition.camp.push(camp_b);
 
-      competition.content = req.body.content;
-      competition.brief.remark = req.body.remark;
-      competition.brief.location.name = location;
-      competition.brief.competition_date = competition_date;
-      competition.brief.deadline = deadline;
-      competition.brief.competition_format = competition_format;
-      competition.brief.number = number;
+  competition.content = req.body.content;
+  competition.brief.remark = req.body.remark;
+  competition.brief.location.name = location;
+  competition.brief.competition_date = competition_date;
+  competition.brief.deadline = deadline;
+  competition.brief.competition_format = competition_format;
+  competition.brief.number = number;
 
 
-      competition.poster.cname = req.user.cname;
-      competition.poster.cid = req.user.cid;
-      competition.poster.role = req.session.role;
-      competition.poster.uid = req.user._id;
-      competition.poster.nickname = req.user.nickname;
-      var groupMessage = new GroupMessage();
+  competition.poster.cname = req.user.cname;
+  competition.poster.cid = req.user.cid;
+  competition.poster.role = req.session.role;
+  competition.poster.uid = req.user._id;
+  competition.poster.nickname = req.user.nickname;
+  var groupMessage = new GroupMessage();
 
-      groupMessage.team.push(my_team_id);         //发起挑战方小队id
-      groupMessage.team.push(team_opposite._id);  //应约方小队id
-      groupMessage.group.gid.push(req.companyGroup.gid);
-      groupMessage.group.group_type.push(competition.group_type);
-      groupMessage.provoke.active = true;
-      groupMessage.provoke.competition_format = competition_format;
+  groupMessage.team.push(my_team_id);         //发起挑战方小队id
+  groupMessage.team.push(team_opposite._id);  //应约方小队id
+  groupMessage.group.gid.push(req.companyGroup.gid);
+  groupMessage.group.group_type.push(competition.group_type);
+  groupMessage.provoke.active = true;
+  groupMessage.provoke.competition_format = competition_format;
 
-      var a = {
-        'tid':my_team_id.toString(),
-        'cid':req.companyGroup.cid,
-        'tname':req.companyGroup.name
-      };
-      var b = {
-        'tid':team_opposite._id.toString(),
-        'cid':req.body.team_opposite.cid,
-        'tname':req.body.team_opposite.name
-      };
+  var a = {
+    'tid':my_team_id.toString(),
+    'cid':req.companyGroup.cid,
+    'tname':req.companyGroup.name
+  };
+  var b = {
+    'tid':team_opposite._id.toString(),
+    'cid':req.body.team_opposite.cid,
+    'tname':req.body.team_opposite.name
+  };
 
-      groupMessage.provoke.camp.push(a);
-      groupMessage.provoke.camp.push(b);
+  groupMessage.provoke.camp.push(a);
+  groupMessage.provoke.camp.push(b);
 
-      groupMessage.poster.cid = req.companyGroup.cid;
-      if(req.session.role ==='LEADER'){
-        groupMessage.poster.uid = req.user._id;
-        groupMessage.poster.role = 'LEADER';
-        groupMessage.poster.nickname = req.user.nickname;
-      }
-      groupMessage.cid.push(req.companyGroup.cid);
-      if(req.companyGroup.cid !== req.body.team_opposite.cid) {
-        groupMessage.cid.push(req.body.team_opposite.cid);
-      }
-      groupMessage.content = content;
-      groupMessage.location = location;
-      groupMessage.start_time = competition_date;
-      groupMessage.end_time = deadline;
+  groupMessage.poster.cid = req.companyGroup.cid;
+  if(req.session.role ==='LEADER'){
+    groupMessage.poster.uid = req.user._id;
+    groupMessage.poster.role = 'LEADER';
+    groupMessage.poster.nickname = req.user.nickname;
+  }
+  groupMessage.cid.push(req.companyGroup.cid);
+  if(req.companyGroup.cid !== req.body.team_opposite.cid) {
+    groupMessage.cid.push(req.body.team_opposite.cid);
+  }
+  groupMessage.content = content;
+  groupMessage.location = location;
+  groupMessage.start_time = competition_date;
+  groupMessage.end_time = deadline;
 
-      groupMessage.save(function (err) {
-        if (err) {
-          console.log('保存约战动态时出错' + err);
-          return res.send(err);
-        } else {
-          competition.provoke_message_id = groupMessage._id;
-          competition.save(function(err){
-            if(!err){
-               return res.send({'result':1,'msg':'挑战成功！'});
-            }
-          });
+  groupMessage.save(function (err) {
+    if (err) {
+      console.log('保存约战动态时出错' + err);
+      return res.send(err);
+    } else {
+      competition.provoke_message_id = groupMessage._id;
+      competition.save(function(err){
+        if(!err){
+           return res.send({'result':1,'msg':'挑战成功！'});
         }
-        //这里要注意一下,生成动态消息后还要向被约队长发一封私信
       });
     }
+    //这里要注意一下,生成动态消息后还要向被约队长发一封私信
   });
+
 };
 
 

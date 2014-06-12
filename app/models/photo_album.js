@@ -24,7 +24,8 @@ var Photo = new Schema({
     content: String,
     publish_user: {
       _id: Schema.Types.ObjectId,
-      nickname: String
+      nickname: String,
+      photo: String
     },
     publish_date: {
       type: Date,
@@ -46,7 +47,7 @@ Photo.pre('save', function(next) {
 var PhotoAlbum = new Schema({
   name: {
     type: String,
-    default: Date.now().toString()
+    default: '相册'
   },
   create_date: {
     type: Date,

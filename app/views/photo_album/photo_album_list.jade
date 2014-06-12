@@ -4,7 +4,8 @@ block contentExt
   .dl_container
     header
       h1 所有相册
-      form(action="/photoAlbum" method="post")
+      a(href="/group/home/#{owner_id}") 返回
+      form.js_ajax_form(action="/photoAlbum" method="post")
         input(type="hidden" name="owner" value="company_group")
         input(type="hidden" name="owner_id" value="#{owner_id}")
         input(type="text" name="name" required)
@@ -27,3 +28,12 @@ block contentExt
             img(src="/logo/user/#{photo_album.update_user._id}/50/50")
             p= photo_album.update_user.nickname
             p #{photo_album.update_date} 最后更新
+
+append footExt
+  script(src="/lib/jquery-form/jquery.form.js")
+  script.
+    $('.js_ajax_form').ajaxForm(function(data, status) {
+      if (status === 'success') {
+        window.location.reload();
+      }
+    });

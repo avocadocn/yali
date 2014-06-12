@@ -35,7 +35,7 @@ block panel
 block aside
   .row
     h4.pull-left 活动简介
-    if(msg_show)
+    if (msg_show)
       div(ng-app="group" ng-controller="resultController" ng-init="msg_show=#{msg_show};rst_content='#{rst_content}';score_a=#{score_a};score_b=#{score_b}" )
         button(ng-if="#{rst_confirm_show}" data-toggle="modal" data-target="#resultModel") 结果确认
         div(class="modal fade" id="resultModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
@@ -86,19 +86,14 @@ block aside
   hr
   .row
     h4.pull-left 活动精彩照片
-    if(role!=='PARTNER')
-      a(href="/group/competition/#{competition.id}/photoAlbum/#{competition.photo.pid}") 上传照片
-    input#photo_album_id(type="hidden" name="photo_album_id" value="#{competition.photo.pid}")
-    div#photo_list(ng-controller="PhotoListCtrl")
-      div(ng-repeat="photo in photos")
-        img(ng-src="{{ photo.uri }}")
+    if (role!=='PARTNER')
+      a(href="#") 上传照片
 
   script.
     var competition_location = !{JSON.stringify(competition.brief.location)}
 
 append footExt
   script(src="/js/controllers/competition.js")
-  script(src="/js/photo_thumbnail.js")
   script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")
 
 
