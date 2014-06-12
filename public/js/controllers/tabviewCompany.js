@@ -130,7 +130,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         }
     };
 
-    $scope.join = function(campaign_id) {
+    $scope.join = function(campaign_id,index) {
         try {
             $http({
                 method: 'post',
@@ -139,8 +139,15 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
-                window.location.reload();
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                if(data.result===1){
+                    //alert('成功加入该活动!');
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    $scope.campaigns[index].join = true;
+                    $scope.campaigns[index].member_length++;
+                }
+                else{
+                    $rootScope.donlerAlert(data.msg);
+                }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
@@ -150,7 +157,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         }
     };
 
-    $scope.quit = function(campaign_id) {
+    $scope.quit = function(campaign_id,index) {
         try {
             $http({
                 method: 'post',
@@ -159,8 +166,15 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
-                window.location.reload();
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                 if(data.result===1){
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    //alert('您已退出该活动!');
+                    $scope.campaigns[index].join = false;
+                    $scope.campaigns[index].member_length--;
+                }
+                else{
+                    $rootScope.donlerAlert(data.msg);
+                }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
