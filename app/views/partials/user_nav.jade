@@ -56,6 +56,7 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
                 a.dl_menu_a(href="/company/signout") {{"LOGOUT"|translate}}
           li
             a(href="#" data-toggle="dropdown") {{"L_CHANGE"|translate}}
+              span.glyphicon.glyphicon-globe.m_l_5
             ul.dl_menu.dropdown-menu(role="menu")
               li(ng-repeat="language in languages")
                 a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}

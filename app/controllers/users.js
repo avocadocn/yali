@@ -626,7 +626,7 @@ function fetchCampaign(req,res,team_ids,role) {
         }
         campaigns.push({
           'selected': true,
-          'active':campaign[j].active,
+          'active':campaign[j].active && (Date.now() - campaign[j].end_time <= 0), //截止时间到了活动就无效了
           'id': campaign[j]._id.toString(),
           'gid': campaign[j].gid,
           'group_type': campaign[j].group_type,

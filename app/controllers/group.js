@@ -480,7 +480,7 @@ exports.getGroupCampaign = function(req, res) {
             }
           }
           campaigns.push({
-            'active':campaign[i].active,
+            'active':campaign[i].active && (Date.now() - campaign[i].end_time <= 0), //截止时间到了活动就无效了
             'id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
             'group_type': campaign[i].group_type,
@@ -686,6 +686,7 @@ exports.responseProvoke = function (req, res) {
         campaign.poster.role = 'LEADER';
         campaign.poster.nickname = competition.poster.nickname;
 
+        campaign.theme = competition.content;
         campaign.content = competition.camp[0].tname + ' VS ' + competition.camp[1].tname;
         campaign.location = competition.brief.location.name;
         campaign.start_time = competition.brief.competition_date;

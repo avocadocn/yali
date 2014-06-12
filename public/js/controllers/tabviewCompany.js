@@ -59,7 +59,7 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
         $rootScope.nowTab = value;
     };
 }]);
-tabViewCompany.controller('CampaignListController', ['$http','$scope','rootScope',
+tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'company_campaign';
     $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
