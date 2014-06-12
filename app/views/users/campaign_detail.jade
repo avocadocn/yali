@@ -1,25 +1,30 @@
 extends ../layouts/user_base
 
 block contentExt
-  .dl_detail_container.clearfix
+  .dl_detail_container.clearfix(ng-controller="campaignController")
     .dl_detail_main
-      .dl_detail_content(ng-init="campaignId='#{campaign._id}'")
+      .dl_detail_content
         p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
-        p.subtitle {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：#{campaign.content}
-        p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：#{campaign.location}
-        p.subtitle {{"START_TIME"|translate}}：#{campaign.start_time}
-        button.dl_btn.dl_btn_detail(ng-if="!#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="joinCampaign()") {{"JOIN"|translate}}{{"CAMPAIGN"|translate}}
-        button.dl_btn.dl_btn_detail(ng-if="#{join} && (#{role} === MEMBER|| #{role} === OWNER)" ng-controller="campaignController" ng-click="quitCampaign()") {{"QUIT"|translate}}{{"CAMPAIGN"|translate}}
+        p.subtitle {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：{{campaign.content}}
+        p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：{{campaign.location}}
+        p.subtitle {{"START_TIME"|translate}}：{{campaign.start_time}}
+        if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
+          div(ng-if="campaign.active && !campaign.over")
+            input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}" ng-click="quitCampaign()" ng-if="join")
+            input.dl_btn.dl_btn_detail(type = "button" value = "{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="!join")
       .dl_detail_aside
         img.img_contain.size_128
       .dl_detail_photo
-        p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}：
-        if(campaign.member.length>0)
-          - for(var i = 0; i < campaign.member.length; i ++)
-              a(href="/users/home/#{campaign.member[i].uid}")
-                img.img_contain.detail_photo(ng-src="#{campaign.member[i].photo" title="#{campaign.member[i].nickname}")
-        else
-          p.subtitle 该活动还没有人参加哦!
+        p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}:
+        div(ng-repeat = "_member in campaign.member")
+          a(href="/users/home/{{_member.uid}}")
+            img.img_contain.detail_photo(ng-src="{{_member.photo}}" title="{{_member.nickname}}")
+        //- if (campaign.member.length>0)
+        //-   - for(var i = 0; i < campaign.member.length; i ++)
+        //-       a(href="/users/home/#{campaign.member[i].uid}")
+        //-         img.img_contain.detail_photo(ng-src="#{campaign.member[i].photo" title="#{campaign.member[i].nickname}")
+        //- else
+        //-   p.subtitle 该活动还没有人参加哦!
       .dl_detail_main
         p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}
         textarea.dl_modal_input.form-control(rows="4" name="content" ng-model="content" ng-change="judge()" required)
@@ -30,13 +35,13 @@ block contentExt
       p.subtitle {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
       if(role!=='PARTNER')
         .dl_row
-          a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/group/campaign/#{campaign._id}/photoAlbum/#{campaign.photo_album.pid}") 上传活动照片
-        input#photo_album_id(type="hidden" name="photo_album_id" value="#{campaign.photo_album.pid}")
+          a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/group/campaign/campaign._id/photoAlbum/campaign.photo_album.pid") 上传活动照片
+        input#photo_album_id(type="hidden" name="photo_album_id" value="campaign.photo_album.pid")
         div#photo_list(ng-controller="PhotoListCtrl")
           div(ng-repeat="photo in photos")
             img(ng-src="{{ photo.uri }}")
 
 
 append footExt
-  script(src="/js/photo_thumbnail.js")
   script(src="/js/controllers/campaign.js")
+  script(src="/js/photo_thumbnail.js")

@@ -850,7 +850,8 @@ exports.getCompanyCampaign = function(req, res) {
                 var campaigns = [];
                 for(var i = 0;i < campaign.length; i ++) {
                     campaigns.push({
-                        'active':campaign[i].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了
+                        'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+                        'active':campaign[i].active, //截止时间到了活动就无效了
                         'id': campaign[i].id,
                         'gid': campaign[i].gid,
                         'group_type': campaign[i].group_type,

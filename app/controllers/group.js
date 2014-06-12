@@ -480,7 +480,8 @@ exports.getGroupCampaign = function(req, res) {
             }
           }
           campaigns.push({
-            'active':campaign[i].active && (Date.now() - campaign[j].end_time.valueOf() <= 0), //截止时间到了活动就无效了
+            'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+            'active':campaign[i].active, //截止时间到了活动就无效了
             'id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
             'group_type': campaign[i].group_type,
@@ -900,13 +901,26 @@ exports.getCompetition = function(req, res){
   res.render('competition/football', options);
 };
 
-exports.getCampaign = function(req, res) {
+
+exports.renderCampaignDetail = function(req, res) {
+  req.session.nowcampaignid = req.params.campaignId;
+  res.render('users/campaign_detail', {
+    role: req.session.role,
+    head_nickname : req.user.nickname,
+    head_photo : req.user.photo
+  });
+}
+
+exports.getCampaignDetail = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
+  if(req.session.nowcampaignid == null || req.session.nowcampaignid == undefined){
+    return res.send(404);
+  }
   var join = false;
   Campaign
-  .findOne({ _id: req.params.campaignId })
+  .findOne({ _id: req.session.nowcampaignid })
   .exec()
   .then(function(campaign) {
     //增加返回值是否加入
@@ -918,17 +932,18 @@ exports.getCampaign = function(req, res) {
         }
       }
     }
-    res.render('users/campaign_detail', {
+    console.log(campaign);
+    return res.send({
+      over : !(Date.now() - campaign.end_time.valueOf() <= 0),
       campaign: campaign,
-      role: req.session.role,
       join: join,
-      head_nickname : req.user.nickname,
-      head_photo : req.user.photo
+      nickname : req.user.nickname,
+      photo : req.user.photo
     });
   })
   .then(null, function(err) {
     console.log(err);
-    res.status(500).send('error');
+    return res.status(500).send('error');
   });
 };
 

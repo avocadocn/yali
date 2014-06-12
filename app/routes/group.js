@@ -30,7 +30,10 @@ module.exports = function(app) {
   app.post('/group/campaignCancel', authorization.requiresLogin, group.campaignCancel);
 
   app.get('/group/competition/:competitionId', authorization.requiresLogin, group.getCompetition);
-  app.get('/group/campaign/:campaignId', authorization.requiresLogin,group.getCampaign);
+
+  app.get('/group/campaign/:campaignId', authorization.requiresLogin,group.renderCampaignDetail);
+  app.get('/group/campaignData', authorization.requiresLogin,group.getCampaignDetail);
+
 
   app.post('/group/updateFormation/:competitionId', authorization.requiresLogin, group.updateFormation);
   //小组发布活动
