@@ -1,8 +1,6 @@
-nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
-  .index_container
-    ul.navbar-nav.navbar-brand.nav
-      li
-        a.navbar-brand(href="/"): img.logo(src="/img/logo_w.png")
+nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation" style="min-width:1280px")
+  .header_container
+    a.navbar-brand(href="/"): img.logo(src="/img/logo_w.png" style="margin-left:20px")
     .navbar-nav.nav.pull-right.dl-top-login
       form.signin.form-horizontal.ng-pristine.ng-valid(action="/users/session" method="post")
         .input-group.input-group-sm

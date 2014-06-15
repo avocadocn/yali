@@ -47,16 +47,16 @@ div
       .info_side
         span.info_label {{"LOCATION"|translate}}
       .info_detail
-        select.dl_input.editToggle.dl_form-Control(type="text" name ="province" ng-model="info.city.province" ng-disabled="infoUnEdit")
+        select.dl_input.editToggle.dl_form-Control.no_radius(type="text" name ="province" ng-model="info.city.province" ng-disabled="infoUnEdit" style="height:34px")
       .info_detail
-        select.dl_input.editToggle.dl_form-Control(type="text" name ="city" ng-model="info.city.city" ng-disabled="infoUnEdit")
+        select.dl_input.editToggle.dl_form-Control.no_radius(type="text" name ="city" ng-model="info.city.city" ng-disabled="infoUnEdit" style="height:34px")
       .info_detail
-        select.dl_input.editToggle.dl_form-Control(type="text" name ="district" ng-model="info.city.district" ng-disabled="infoUnEdit")
+        select.dl_input.editToggle.dl_form-Control.no_radius(type="text" name ="district" ng-model="info.city.district" ng-disabled="infoUnEdit" style="height:34px")
     .dl_row.clearfix
       .info_side
         span.info_label {{"ADDRESS"|translate}}
-      .info_side
-        span.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
+      .info_detail
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
     .dl_row.clearfix
       .info_side
         span.info_label {{"LINK_MAN"|translate}}
