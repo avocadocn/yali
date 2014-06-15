@@ -47,11 +47,7 @@ var CompanySchema = new Schema({
     team:[_team],
     //公司信息
     info: {
-        name: {
-            type: String,
-            unique: true
-        },                           //公司全称
-
+        name: String,
         city: {
             province: String,
             city: String,
