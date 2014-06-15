@@ -10,12 +10,12 @@
           .dl_md_1.dl_vertical
             label.subtitle 小组名称
           .dl_md_10
-            input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="活动简单描述，请控制在14字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在14字以内':''}}" required)
+            input.dl_modal_input.form-control(type="text" name="cname" ng-model="team_lists[team_index].name" value="{{team_lists[team_index].name}}")
           .dl_md_1
-            a.dl_btn.dl_btn_right 保存
+            a.dl_btn.dl_btn_right(ng-click="saveGroupInfo()") 保存
         .dl_modal_container
           .dl_md_1.dl_vertical
-            label.subtitle 现任族长
+            label.subtitle 现任组长
           .dl_md_1
             input.dl_modal_input.form-control(type="text" value="{{leaders[0].nickname}}" ng-disabled="true")
         .dl_modal_container
@@ -39,8 +39,7 @@
               .dl_row(style="width:80px;text-align:center")
                 label {{user.nickname}}
       .dl-modal-footer
-        button.dl_btn.dl_btn_large(ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") {{"IMMEDIATE"|translate}}{{"SPONSOR"|translate}}
-        button.cancel_btn.dl_btn_large(data-dismiss="modal" style="margin-left:30px") {{"CANCEL"|translate}}
+        button.dl_btn.dl_btn_large(data-dismiss="modal") {{"SAVE"|translate}}
 //- .modal-dialog
 //-   .dl-modal
 //-     .dl-modal-header

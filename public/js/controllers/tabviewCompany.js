@@ -507,14 +507,14 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
-    $scope.saveGroupInfo = function (tid, tname){
+    $scope.saveGroupInfo = function(){
         try{
             $http({
                 method:'post',
                 url: '/company/saveGroupInfo',
                 data:{
-                    'tid': tid,
-                    'tname': tname
+                    'tid': $scope.tid,
+                    'tname': $scope.team_lists[$scope.team_index].name
                 }
             }).success(function(data, status) {
                     //TODO:更改对话框
