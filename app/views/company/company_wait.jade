@@ -4,14 +4,15 @@ append headExt
   link(rel="stylesheet" href="/css/views/company_signup.css")
 
 block contentExt
-  .row.signup_row
-    .col-xs-5.text-right
-      .block_left
-        h1.text-right
-          small 加入
-          | 动梨
-    .col-xs-7
-      div.block_right.form-horizontal.center-block.apply_info
-        h2 提交成功！
-        p 感谢您申请加入动梨，我们将在2个工作日内与您联系，谢谢配合。
-        a.btn.btn-primary.dl_btn.btn_return(href="/") 返回首页
+  .dl_container.clearfix
+    .signup_row
+      .block_left.text-right
+        .block_left
+          h1.text-right
+            small 加入
+            | 动梨
+      .block_right
+        .form-horizontal.center-block.apply_info
+          h2 提交成功！
+          p 感谢您申请加入动梨，我们将在2个工作日内与您联系，谢谢配合。
+          a.btn.btn-primary.dl_btn.btn_return(href="/") 返回首页

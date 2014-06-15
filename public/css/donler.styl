@@ -17,6 +17,8 @@ a
   color linkColor
 li
   list-style none
+select
+  border-radius 0 !important
 .dl_head
   margin auto
   width 960px
@@ -39,7 +41,7 @@ li
   background-color #fff
   background-image none
   border 1px solid #ccc
-  border-radius 0px
+  border-radius 0
   -webkit-box-shadow inset 0 1px 1px rgba(0,0,0,.075)
   box-shadow inset 0 1px 1px rgba(0,0,0,.075)
   -webkit-transition border-color ease-in-out .15s,box-shadow ease-in-out .15s
@@ -143,13 +145,6 @@ li
     width 140px
     margin-right 20px
     float left
-.index_container
-  width 100%
-  min-width 1280px
-  margin 0 auto
-.header_container
-  width 1280px
-  margin auto
 .dl_detail_container
   width 960px
   min-width 960px
@@ -528,8 +523,7 @@ input::-webkit-inner-spin-button
 
   .text_icp
     line-height footerHeight
-.index_footer
-  min-width 1280px
+
 .dl_form-Control
   display block
   width 100%
@@ -542,8 +536,9 @@ input::-webkit-inner-spin-button
   background-color #FFFFFF
   background-image none
   border 1px solid #CCCCCC
-  border-radius 2px
+  border-radius 0 !important
   color #999999
+  float left
   -webkit-box-shadow inset 0 1px 1px rgba(0, 0, 0, .075)
           box-shadow inset 0 1px 1px rgba(0, 0, 0, .075)
   -webkit-transition border-color ease-in-out .15s, box-shadow ease-in-out .15s
@@ -551,147 +546,7 @@ input::-webkit-inner-spin-button
 
 .dl_err
   color red
-.dl_doc
-  padding 0
-  background-image url('/img/dl_doc_bg.png')
-  background-repeat repeat-x
-  width 100%
-  min-width 1280px
-  .promo
-    width 1280px
-    height 460px
-    margin 0 auto
-    background url('/img/dl_doc_promo_bg.jpg') center center no-repeat
-   .overview
-     height 460px
-     background-image url('/img/dl_doc_overview.png')
-     background-repeat no-repeat
-     .regmomo
-       height 460px
-     .regbox
-      height 460px
-      width 547px
-      .reginfo
-        height 160px
-        width 547px
-        display block
-        background url('/img/dl_doc_reg.png') no-repeat
-        text-indent -9999em
-      .btn_reg
-        width 367px
-        height 80px
-        margin-left 180px
-        display block
-        background url('/img/dl_doc_reg.png') -180px -160px no-repeat
-        text-indent -9999em
-      .appinfo
-        width 367px
-        height 192px
-        margin-left 180px
-        display block
-        background url('/img/dl_doc_reg.png') -180px -240px no-repeat
-        text-indent -9999em
-  .about
-    width 1280px
-    margin auto
-    height 239px
-    background url('/img/dl_doc_about_bg.png') top center
-    .about_card
-      padding 0
-      float left
-      .card 
-        display block
-        width 230px
-        height 189px
-        .title
-          font-size 20px;
-          display inline-block
-          padding 38px 0 18px 46px
-          line-height 22px
-        p
-          line-height 18px
-          display inline-block
-          width 300px
-          color #b7b7b7
-          height 60px
-        .btn 
-          width 160px
-          margin-top 5px
-          margin-left 140px
-      .card_1
-        width 354px
-        background url('/img/dl_doc_about_card1.gif')
-        margin-left 20px
-        margin-right 0
 
-      .card_2
-        width 384px
-        background url('/img/dl_doc_about_card2.gif') -10px 0px
-        .title
-          padding-left 36px
-        p
-          width 350px
-          padding-left 0px
-        .btn 
-          margin-left 180px
-      .card_3
-        width 350px
-        background url('/img/dl_doc_about_card3.gif')
-        margin-left 20px
-        p
-          width 350px
-          padding-left 10px
-        .btn 
-          margin-left 180px
-  .function
-    width 1280px
-    margin auto
-    height 340px
-    background url('/img/dl_doc_func_bg.png') center center no-repeat
-    background-color #ecf0f1
-    .container
-      background none
-    .func_title
-      text-indent -9999em
-    .func_card
-      width 320px
-      float left
-      p 
-        display block
-        padding-top 188px
-        line-height 18px
-        color #b7b7b7
-        .title
-          display block
-          text-align center
-          font-size 20px
-          line-height 22px
-          width 90%
-          color #2c3e50
-          padding-bottom 10px
-  .contact
-    width 1280px
-    margin auto
-    background-color #ecf0f1
-    height 50px
-    a
-      color footerFontColor
-    li 
-      line-height 18px
-      color footerFontColor
-
-.dl-top-login 
-  width 480px
-  padding 15px 0 0 0
-  .form-control
-    display inline-block
-    border-radius 0px
-  .btn
-    border-radius 0px
-  .btn-signin-link
-    color linkColor
-  .input-group-btn>.btn+.btn-submit
-    margin-left 14px
 input.ng-invalid.ng-dirty
   border-color pink
 .tooltip.right
