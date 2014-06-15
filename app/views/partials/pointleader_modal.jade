@@ -5,10 +5,11 @@
         img(ng-src='/img/icons/icon_close.png')
       .head {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
     .dl-modal-body
-      .info_side
-          span.info_label {{"TEAM_NAME"|translate}}
-      .info_detail
-          input.dl_input.dl_form-control.editToggle(type="text" name ="name" ng-model="team.name")
+      .dl_row
+        .info_side
+            span.info_label {{"TEAM_NAME"|translate}}
+        .info_detail
+            input.dl_input.dl_form-control.editToggle(type="text" name ="name" ng-model="team.name")
       hr
       .row
         .col-md-4
