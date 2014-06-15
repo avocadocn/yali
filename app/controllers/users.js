@@ -698,12 +698,23 @@ exports.home = function(req, res) {
     req.session.otheruid = null;
   }
   var _user = {};
+  var _nickname,_logo;
   if(req.session.role ==='OWNER'){
     _user = req.user;
+
   }
   else{
     _user = req.profile;
   }
+  if(req.session.role ==='HR'){
+    _nickname = req.user.info.name,   //显示在页头的用户名
+    _logo = _user.user.info.logo
+  }
+  else{
+    _nickname = _user.nickname,   //显示在页头的用户名
+    _logo = _user.photo
+  }
+
   var selected_teams = [];
   var unselected_teams = [];
   var user_teams = [];
@@ -735,8 +746,8 @@ exports.home = function(req, res) {
         'cname':_user.cname,
         'sign':_user.introduce,
         'role':req.session.role,
-        'head_nickname' : req.user.nickname,   //显示在页头的用户名
-        'head_photo' : req.user.photo          //显示在页头的用户头像
+        'nav_name' : _nickname,   //显示在页头的用户名
+        'nav_logo' : _logo          //显示在页头的用户头像
       });
     }
   });

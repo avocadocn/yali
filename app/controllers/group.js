@@ -272,7 +272,9 @@ exports.home = function(req, res) {
       'cname': req.companyGroup.cname,
       'sign': req.companyGroup.brief,
       'gid' : req.companyGroup.gid,
-      'cid' : cid
+      'cid' : cid,
+      'nav_logo':req.info.logo,
+      'nav_name':req.info.name
     });
   }
   else{//个人侧栏
@@ -316,8 +318,8 @@ exports.home = function(req, res) {
           'cid' : cid,
           'photo': req.user.photo,
           'realname':req.user.realname,
-          'head_photo': req.user.photo,
-          'head_nickname':req.user.nickname
+          'nav_logo': req.user.photo,
+          'nav_name':req.user.nickname
 
         });
       };
@@ -881,8 +883,8 @@ exports.renderCampaignDetail = function(req, res) {
     res.render('users/campaign_detail', {
       campaign: campaign,
       role: req.session.role,
-      head_nickname : req.user.nickname,
-      head_photo : req.user.photo
+      nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
+      nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo
     });
   })
   .then(null, function(err) {

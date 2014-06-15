@@ -658,7 +658,9 @@ exports.home = function(req, res) {
             cname : req.user.info.name,
             sign : req.user.info.brief,
             groupnumber: req.user.team.length,
-            membernumber: req.user.info.membernumber
+            membernumber: req.user.info.membernumber,
+            nav_logo: req.user.info.logo,
+            nav_name:req.user.info.name
         });
     }
     else{
@@ -676,8 +678,8 @@ exports.home = function(req, res) {
                     sign : company.info.brief,
                     groupnumber: company.team ? company.team.length : 0,
                     membernumber: company.info.membernumber,
-                    head_photo: req.user.photo,
-                    head_nickname:req.user.nickname
+                    nav_logo: req.user.photo,
+                    nav_name:req.user.nickname
                 });
             }
             else
