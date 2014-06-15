@@ -348,15 +348,16 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 
 
     $scope.company = false;
-    $("#start_time").on("dp.change",function (e) {
-        $scope.start_time = moment(e.date).format("YYYY-MM-DD HH:mm");
-        $('#end_time').data("DateTimePicker").setMinDate(e.date);
+    $("#start_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setStartDate', dateUTC);
     });
-    $("#end_time").on("dp.change",function (e) {
-        $scope.end_time = moment(e.date).format("YYYY-MM-DD HH:mm");
-        $('#start_time').data("DateTimePicker").setMaxDate(e.date);
+    $("#end_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#start_time').datetimepicker('setEndDate', dateUTC);
     });
-
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };

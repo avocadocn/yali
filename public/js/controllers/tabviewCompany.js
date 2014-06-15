@@ -66,14 +66,14 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
       $scope.campaigns = data.data;
       $scope.company = true;
     });
-    $("#start_time").on("dp.change",function (e) {
-        $scope.start_time = moment(e.date).format("YYYY-MM-DD HH:mm");
-        $('#end_time').data("DateTimePicker").setMinDate(e.date);
-    });
-    $("#end_time").on("dp.change",function (e) {
-        $scope.end_time = moment(e.date).format("YYYY-MM-DD HH:mm");
-        $('#start_time').data("DateTimePicker").setMaxDate(e.date);
-    });
+    // $("#start_time").on("dp.change",function (e) {
+    //     $scope.start_time = moment(e.date).format("YYYY-MM-DD HH:mm");
+    //     $('#end_time').data("DateTimePicker").setMinDate(e.date);
+    // });
+    // $("#end_time").on("dp.change",function (e) {
+    //     $scope.end_time = moment(e.date).format("YYYY-MM-DD HH:mm");
+    //     $('#start_time').data("DateTimePicker").setMaxDate(e.date);
+    // });
     $scope.selectCampaign = function (value) {
         var _url = "";
         var _selected = true;

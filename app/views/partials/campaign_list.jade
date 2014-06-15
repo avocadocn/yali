@@ -27,10 +27,10 @@
           //- span.message_label 参加活动人数：{{ campaign_item.member_length }}
           span.dl_message_label(ng-if="campaign_item.provoke.active") {{"FORMATION"|translate}}: {{ campaign_item.provoke.competition_format }}
           span.dl_message_label {{"LOCATION"|translate}}: {{ campaign_item.location }}
-          span.dl_message_label {{"DEADLINE"|translate}}: {{ campaign_item.end_time | date:'yyyy-MM-dd'}}
+          span.dl_message_label {{"DEADLINE"|translate}}: {{ campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
       .col-xs-3.col-sm-3.col-md-2
         if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
           div(ng-if="campaign_item.active && !campaign_item.over")
-            input.dl_btn.dl_btn_small.margin_5.operator_btn(type = "button" value = "退出" ng-click="quit(campaign_item.id,$index)" ng-if="campaign_item.join")
-            input.dl_btn.dl_btn_small.margin_5.operator_btn(type = "button" value = "参加" ng-click="join(campaign_item.id,$index)" ng-if="!campaign_item.join")
+            input.dl_btn.dl_btn_small.margin_5.operator_btn(type = "button" value = "退出" ng-click="quit(campaign_item._id,$index)" ng-if="campaign_item.join")
+            input.dl_btn.dl_btn_small.margin_5.operator_btn(type = "button" value = "参加" ng-click="join(campaign_item._id,$index)" ng-if="!campaign_item.join")
     hr

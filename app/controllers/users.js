@@ -998,7 +998,7 @@ exports.quitCampaign = function (req, res) {
                       }
                     });
                   } else {
-                    return res.send({ result: 0, msg: '没有此活动'});
+                    return res.send({ result: 0, msg: '没有此比赛'});
                   }
                 }
               });

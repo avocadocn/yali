@@ -7,7 +7,8 @@ block contentExt
         p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
         p.subtitle {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：{{campaign.content}}
         p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：{{campaign.location}}
-        p.subtitle {{"START_TIME"|translate}}：{{campaign.start_time}}
+        p.subtitle {{"START_TIME"|translate}}：{{campaign.start_time | date:'yyyy-MM-dd HH:mm'}}
+          {{campaign.start_time | week }}
         if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
           div(ng-if="campaign.active && !campaign.over")
             input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}" ng-click="quitCampaign()" ng-if="join")

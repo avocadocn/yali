@@ -8,7 +8,7 @@
       .dl-modal-body
         .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"THEME"|translate}}
-            input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="活动简单描述，请控制在14字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在14字以内':''}}" required)
+            input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="活动简单描述，请控制在14字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在14字以内':''}}" maxlength=14 required)
         .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"BRIEF"|translate}}
             textarea.dl_modal_input.form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在40字以内。" tooltip="{{campaign_form.content.$invalid ? '请输入活动内容':''}}" maxlength=40 required)
@@ -16,17 +16,19 @@
           .dl_modal_half_container
             .dl_modal_half_container
               label.subtitle {{"CAMPAIGN"|translate}}{{"START_TIME"|translate}}
-            .input-group.date.dl_modal_input#start_time(data-date-format="YYYY-MM-DD HH:mm" )
+            .input-group.date.form_datetime.dl_modal_input#start_time
               span.input-group-addon.no_radius
-                img(ng-src='/img/icons/icon_date.png')
-              input.dl_form-Control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" tooltip="{{campaign_form.startTime.$invalid ? '请选择活动活动开始时间':''}}" required)
+                //img(ng-src='/img/icons/icon_date.png')
+                span.glyphicon.glyphicon-th
+              input.dl_form-Control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.startTime.$invalid ? '请选择活动活动开始时间':''}}" readonly required)
           .dl_modal_half_container(ng-class="{'has-error':start_time >= end_time}")
             .dl_modal_half_container
               label.subtitle {{"CAMPAIGN"|translate}}{{"END_TIME"|translate}}
-            .input-group.date.dl_modal_input#end_time(data-date-format="YYYY-MM-DD HH:mm" )
+            .input-group.date.form_datetime.dl_modal_input#end_time
+              //img(ng-src='/img/icons/icon_date.png')
               span.input-group-addon.no_radius
-                img(ng-src='/img/icons/icon_date.png')
-              input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" tooltip="{{campaign_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" required)
+                span.glyphicon.glyphicon-th
+              input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-startdate="" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
         .dl_modal_container
           .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
@@ -40,9 +42,11 @@
   script.
     $(function() {
       $('#start_time').datetimepicker({
-        pickSeconds: false
+        autoclose: true,
+        startDate: new Date()
       });
       $('#end_time').datetimepicker({
-        pickSeconds: false
+        autoclose: true,
+        startDate: new Date()
       });
     });
