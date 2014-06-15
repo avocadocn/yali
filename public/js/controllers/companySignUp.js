@@ -2,7 +2,7 @@ var companySignUpApp = angular.module('mean.main');
 
 companySignUpApp.controller('signupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
   var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-  $scope.reg = false;
+  $scope.reg = true;
   $scope.check = false;
   $scope.ok = false;
   $scope.check_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_EXIST_CHECK;
@@ -34,10 +34,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
             }
         }).success(function(data, status) {
             if(data === "false") {
-              $scope.check_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
-                                      + $rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
-                                          + $rootScope.lang_for_msg[$rootScope.lang_key].value.HAVENOT
-                                              + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+              $scope.check_value = "";
               $scope.check = true;
             } else {
               $scope.check = false;

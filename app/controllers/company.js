@@ -256,6 +256,13 @@ exports.renderMembers = function(req,res){
 //注意,companyGroup,entity这两个模型的数据不一定要同时保存,异步进行也可以,只要最终确保
 //数据都存入两个模型即可
 exports.groupSelect = function(req, res) {
+
+    if(req.session.selected != undefined && req.session.selected !=null){
+        return res.send('already selected!');
+    } else {
+        req.session.selected = true;
+    }
+
     var selected_groups = req.body.selected_groups;
     if(selected_groups === undefined){
         return  res.redirect('/company/signup');
@@ -268,6 +275,7 @@ exports.groupSelect = function(req, res) {
                 return;
             }
 
+            //先创建一个虚拟小队
             var companyGroup = new CompanyGroup();
             companyGroup._id = req.session.company_id;
             companyGroup.cid = req.session.company_id;
@@ -280,59 +288,62 @@ exports.groupSelect = function(req, res) {
             companyGroup.save(function (err){
                 if (err) {
                     console.log(err);
+                    return res.send('err');
                 } else {
-                    ;
+                    for (var i = 0, length = selected_groups.length; i < length; i++) {
+                        var tname = company.info.official_name + '-'+ selected_groups[i].group_type + '队'; //默认的小队名
+
+
+                        var companyGroup = new CompanyGroup();
+
+                        companyGroup.cid = req.session.company_id;
+                        companyGroup.cname = company.info.name;
+                        companyGroup.gid = selected_groups[i]._id;
+                        companyGroup.group_type = selected_groups[i].group_type;
+                        companyGroup.entity_type = selected_groups[i].entity_type;
+                        companyGroup.name = tname;
+                        companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type.toLowerCase() +'_on.png';
+
+                        companyGroup.save(function (err){
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                ;
+                            }
+                        });
+
+                        company.team.push({
+                            'gid' : selected_groups[i]._id,
+                            'group_type' : selected_groups[i].group_type,
+                            'name' : tname,
+                            'id' : companyGroup._id
+                        });
+                        var Entity = mongoose.model(companyGroup.entity_type);//将增强组件模型引进来
+                        var entity = new Entity();
+
+                        //增强组件目前只能存放这三个字段
+                        entity.tid = companyGroup._id;        //小队id
+                        entity.cid = req.session.company_id;  //组件类型id
+                        entity.gid = selected_groups[i]._id;  //公司id
+
+                        entity.save(function (err){
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+
+                    company.save(function (s_err){
+                        if(req.session.selected != undefined && req.session.selected !=null){
+                            delete req.session.selected;
+                        }
+                        if(s_err){
+                            return res.send('err');
+                        }
+                    });
+                    res.send({'result':1,'msg':'组件选择成功！'});
                 }
             });
-            for (var i = 0, length = selected_groups.length; i < length; i++) {
-                var tname = company.info.official_name + '-'+ selected_groups[i].group_type + '队'; //默认的小队名
-
-
-                var companyGroup = new CompanyGroup();
-
-                companyGroup.cid = req.session.company_id;
-                companyGroup.cname = company.info.name;
-                companyGroup.gid = selected_groups[i]._id;
-                companyGroup.group_type = selected_groups[i].group_type;
-                companyGroup.entity_type = selected_groups[i].entity_type;
-                companyGroup.name = tname;
-                companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type.toLowerCase() +'_on.png';
-
-                companyGroup.save(function (err){
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        ;
-                    }
-                });
-
-                company.team.push({
-                    'gid' : selected_groups[i]._id,
-                    'group_type' : selected_groups[i].group_type,
-                    'name' : tname,
-                    'id' : companyGroup._id
-                });
-                var Entity = mongoose.model(companyGroup.entity_type);//将增强组件模型引进来
-                var entity = new Entity();
-
-                //增强组件目前只能存放这三个字段
-                entity.tid = companyGroup._id;        //小队id
-                entity.cid = req.session.company_id;  //组件类型id
-                entity.gid = selected_groups[i]._id;  //公司id
-
-                entity.save(function (err){
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-            }
-
-            company.save(function (s_err){
-                if(s_err){
-                    console.log(s_err);
-                }
-            });
-            res.send({'result':1,'msg':'组件选择成功！'});
         } else {
             return res.send('err');
         }
