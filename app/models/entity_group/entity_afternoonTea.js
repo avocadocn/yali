@@ -11,4 +11,4 @@ var afeternoonTea = new Schema({
   gid: String
 });
 
-mongoose.model('AfeternoonTea', afeternoonTea);
+mongoose.model('AfternoonTea', afeternoonTea);
