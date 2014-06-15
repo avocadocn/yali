@@ -259,6 +259,7 @@ exports.timeLine = function(req, res){
 //返回小队页面
 exports.home = function(req, res) {
   var cid = req.companyGroup.cid.toString();
+  console.log(req.companyGroup);
   if(req.session.role==='HR' || req.session.role ==='GUESTHR'){
     res.render('group/home', {
       'role': req.session.role,
@@ -314,7 +315,9 @@ exports.home = function(req, res) {
           'gid' : req.companyGroup.gid,
           'cid' : cid,
           'photo': req.user.photo,
-          'realname':req.user.realname
+          'realname':req.user.realname,
+          'head_photo': req.user.photo,
+          'head_nickname':req.user.nickname
 
         });
       };
@@ -446,7 +449,7 @@ exports.getGroupCampaign = function(req, res) {
           campaigns.push({
             'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
             'active':campaign[i].active, //截止时间到了活动就无效了
-            'id': campaign[i]._id.toString(),
+            '_id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
             'group_type': campaign[i].group_type,
             'cid': campaign[i].cid,

@@ -1,6 +1,6 @@
 'use strict';
 
-var logo = "/img/icons/group/FootBall_on.png";
+var logo = "/img/icons/group/football_on.png";
 //组件脚本
 var _group =[
             {
