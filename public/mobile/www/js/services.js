@@ -6,7 +6,7 @@ angular.module('starter.services', [])
 
 
 .factory('Global', function() {
-  var base_url = 'http://www.donler.cn:3000';
+  var base_url = 'http://www.donler.cn';
 
   return {
     base_url: base_url
