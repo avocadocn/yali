@@ -548,6 +548,11 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
+
+    var seletor = new LinkageSelector(document.getElementById('location'));
+
+
+
 }]);
 
 tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScope', function ($http,$scope, $rootScope) {
