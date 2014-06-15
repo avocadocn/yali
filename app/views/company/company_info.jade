@@ -43,7 +43,7 @@ div
         span.info_label {{"ENTERPRISE_FULL_NAME"|translate}}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="infoname" ng-model="info.name" ng-disabled="infoUnEdit")
-    .dl_row.clearfix#location(data-src="/region" data-select="province city district" data-init="{{info.city.province}} {{info.city.city}} {{info.city.district}}")
+    .dl_row.clearfix#location(data-src="/region" data-select="province city district" data-init="{{linkage_init_location.province}} {{linkage_init_location.city}} {{linkage_init_location.district}}")
       .info_side
         span.info_label {{"LOCATION"|translate}}
       .info_detail

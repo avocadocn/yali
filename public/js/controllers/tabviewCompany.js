@@ -306,6 +306,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }
         });
+        $scope.linkage_init_location = data.info.city;
     }).error(function(data,status) {
         //TODO:更改对话框
         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
