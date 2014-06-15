@@ -605,6 +605,9 @@ input::-webkit-inner-spin-button {
 .dl_footer .text_icp {
   line-height: 60px;
 }
+.index_footer {
+  min-width: 1280px;
+}
 .dl_form-Control {
   display: block;
   width: 100%;

@@ -1,57 +1,71 @@
-extends layouts/default
+extends layouts/base
 
-block contentExt
-  .dl_doc(data-ng-controller="IndexController")
-    section#promo.promo
-      .index_container
-        .overview
-              .regbox(style="margin-left:650px")
-                p.reginfo
-                  | Donler 企业员工活动互联网工具
-                  | 企业员工哦活动领域里的颠覆者，我们改变传动的组织方式，让活动简单友好，更高效！
-                a.btn_reg(href="/company/signup" title="企业免费注册") 企业免费注册
-                p.appinfo
-                  a.btn_app Available on the App Store
-                  | 或直接扫描二维码下载动梨IOS应用
-    section#about.about.section
-      .index_container
-        .dl_row.clearfix
-          .about_card
-            .card.card_1
-              span.title 关于动梨
-              p Donler是企业员工活动领域里的颠覆者，我们致力于提升员工的活动体验，使活动信息直观详尽，发起、参与、管理、统计都简单有序。
-              a.btn.btn-default(href="/about") 关于动梨
-          .about_card
-            .card.card_2
-              span.title 如何注册
-              p Donler是一个免费的企业管理工具，企业注册成功后，能够获得特定的员工注册邀请邮件，员工使用企业邮箱完成注册。
-              button.btn.btn-default(type="button") 激活个人账户
-          .about_card
-            .card.card_3
-              span.title 告诉朋友
-              p 是否可以分享到微博、朋友圈？发送邀请邮件给HR？
-              button.btn.btn-default(type="button") 推荐给公司HR
-    section#function.function.section
-      .index_container
-        .dl_row.clearfix
-          p.func_title 动梨可以帮你做些什么？
+block content
+  include partials/home_nav
+  section.content
+    .dl_doc(data-ng-controller="IndexController")
+      section#promo.promo
+        .index_container
+          .overview
+                .regbox(style="margin-left:650px")
+                  p.reginfo
+                    | Donler 企业员工活动互联网工具
+                    | 企业员工哦活动领域里的颠覆者，我们改变传动的组织方式，让活动简单友好，更高效！
+                  a.btn_reg(href="/company/signup" title="企业免费注册") 企业免费注册
+                  p.appinfo
+                    a.btn_app Available on the App Store
+                    | 或直接扫描二维码下载动梨IOS应用
+      section#about.about.section
+        .index_container
           .dl_row.clearfix
-            .func_card
-              p.card_1
-                span.title 构建员工活动体系
-                | 企业用户通过建立活动小组，任命组长，快速的构建员工活动体系；员工根据自己的兴趣爱好，方便的加入小组。
-            .func_card
-              p.card_2
-                span.title 日程化的活动管理
-                | Donler将个人参与的活动用日历形式记录，方便查看和提醒；同时还可以显示参与小组的活动和动态。
-            .func_card
-              p.card_3
-                span.title 更多的活动和对手
-                | 通过Donler，小组队长可方便地发起活动，并可通过搜索、擂台等功能找到其他公司的同类小组，发起活动。
-            .func_card
-              p.card_4
-                span.title 分享记录活动历史
-                | Donler可以详尽记录公司、小组、个人的活动历史，支持图片的保存，记录大家开心的每个点滴。
-
+            .about_card
+              .card.card_1
+                span.title 关于动梨
+                p Donler是企业员工活动领域里的颠覆者，我们致力于提升员工的活动体验，使活动信息直观详尽，发起、参与、管理、统计都简单有序。
+                a.btn.btn-default(href="/about") 关于动梨
+            .about_card
+              .card.card_2
+                span.title 如何注册
+                p Donler是一个免费的企业管理工具，企业注册成功后，能够获得特定的员工注册邀请邮件，员工使用企业邮箱完成注册。
+                button.btn.btn-default(type="button") 激活个人账户
+            .about_card
+              .card.card_3
+                span.title 告诉朋友
+                p 是否可以分享到微博、朋友圈？发送邀请邮件给HR？
+                button.btn.btn-default(type="button") 推荐给公司HR
+      section#function.function.section
+        .index_container
+          .dl_row.clearfix
+            p.func_title 动梨可以帮你做些什么？
+            .dl_row.clearfix
+              .func_card
+                p.card_1
+                  span.title 构建员工活动体系
+                  | 企业用户通过建立活动小组，任命组长，快速的构建员工活动体系；员工根据自己的兴趣爱好，方便的加入小组。
+              .func_card
+                p.card_2
+                  span.title 日程化的活动管理
+                  | Donler将个人参与的活动用日历形式记录，方便查看和提醒；同时还可以显示参与小组的活动和动态。
+              .func_card
+                p.card_3
+                  span.title 更多的活动和对手
+                  | 通过Donler，小组队长可方便地发起活动，并可通过搜索、擂台等功能找到其他公司的同类小组，发起活动。
+              .func_card
+                p.card_4
+                  span.title 分享记录活动历史
+                  | Donler可以详尽记录公司、小组、个人的活动历史，支持图片的保存，记录大家开心的每个点滴。
+  footer.dl_footer.index_footer
+    .dl_container(style="padding-top:0")
+      .dl_row(style="padding-top:0")
+        .text_icp
+          span 沪ICP备14016548号
+          span  Copyright &copy; Donler 2004. All Rights Reserved
+          a.margin_left_50(href="/about") 关于我们
+          a.margin_left_50(href="/law") 法律声明
+          a.margin_left_50(href="/privacy") 隐私政策
+          a.margin_left_50(href="/question") 问题反馈
+          //-li: a(href="/plan") 商务合作
+          a.margin_left_50(href="/contact") 联系我们
+          span.margin_left_50.yun_icon
 
 
