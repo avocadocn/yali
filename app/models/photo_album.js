@@ -45,6 +45,10 @@ Photo.pre('save', function(next) {
 
 
 var PhotoAlbum = new Schema({
+  owner: {
+    _id: Schema.Types.ObjectId,
+    model: String
+  },
   name: {
     type: String,
     default: '相册'

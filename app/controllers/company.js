@@ -1076,7 +1076,13 @@ exports.sponsor = function (req, res) {
     campaign.end_time = req.body.end_time;
 
 
-    var photo_album = new PhotoAlbum();
+    var photo_album = new PhotoAlbum({
+        owner: {
+            _id: campaign._id,
+            model: 'Campaign'
+        },
+        name: campaign.theme
+    });
 
     fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
         if (err) {

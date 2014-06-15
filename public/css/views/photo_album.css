@@ -1,0 +1,36 @@
+.relative {
+  position: relative;
+}
+.right_down {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.text {
+  color: #9a9a9a;
+}
+.photo_panel {
+  margin-top: -35px;
+}
+.photo {
+  position: relative;
+  float: left;
+  margin-left: 53px;
+  margin-top: 53px;
+  width: 200px;
+  height: 200px;
+}
+.photo:nth-child(4n+1) {
+  margin-left: 0;
+}
+.photo_name {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  line-height: 2;
+  padding: 0 7px;
+  width: 100%;
+  background-color: rgba(0,0,0,0.4);
+  color: #fff;
+  text-decoration: none;
+}

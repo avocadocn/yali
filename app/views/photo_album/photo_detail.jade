@@ -1,5 +1,8 @@
 extend ../layouts/user_base
 
+append headExt
+  link(rel="stylesheet" href="/css/views/photo_album.css")
+
 block contentExt
   .dl_container
     h1= photo_album.name

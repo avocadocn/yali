@@ -146,6 +146,10 @@ exports.ownerFilter = function(req, res, next) {
       .findOne({ _id: req.body.owner_id })
       .exec(function(err, company_group) {
         req.model = company_group;
+        req.owner = {
+          _id: req.body.owner_id,
+          model: 'CompanyGroup'
+        };
         next();
       });
       break;
@@ -158,6 +162,7 @@ exports.ownerFilter = function(req, res, next) {
 
 exports.createPhotoAlbum = function(req, res) {
   var photo_album = new PhotoAlbum({
+    owner: req.owner,
     name: req.body.name,
     create_user: {
       _id: req.user._id,
@@ -189,6 +194,7 @@ exports.createPhotoAlbum = function(req, res) {
             if (err) callback(err);
             else {
               delete req.model;
+              delete req.owner;
               return res.send({ result: 1, msg: '创建相册成功' });
             }
           });
@@ -279,6 +285,7 @@ exports.createPhoto = function(req, res) {
     if (photos.size) {
       photos = [photos];
     }
+    console.log(photos)
 
     PhotoAlbum.findOne({ _id: pa_id }).exec(function(err, photo_album) {
 
