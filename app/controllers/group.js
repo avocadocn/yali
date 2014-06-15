@@ -273,8 +273,8 @@ exports.home = function(req, res) {
       'sign': req.companyGroup.brief,
       'gid' : req.companyGroup.gid,
       'cid' : cid,
-      'nav_logo':req.info.logo,
-      'nav_name':req.info.name
+      'nav_logo':req.user.info.logo,
+      'nav_name':req.user.info.name
     });
   }
   else{//个人侧栏
