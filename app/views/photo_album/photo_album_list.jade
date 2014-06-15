@@ -1,33 +1,37 @@
 extend ../layouts/user_base
 
+append headExt
+  link(rel="stylesheet" href="/css/views/photo_album.css")
+
 block contentExt
   .dl_container
-    header
-      h1 所有相册
-      a(href="/group/home/#{owner_id}") 返回
-      form.js_ajax_form(action="/photoAlbum" method="post")
+    header.clearfix
+      h1
+        | #{owner_name} 相册集
+        | &nbsp;
+        a.small(href="/group/home/#{owner_id}") 返回
+      form.js_ajax_form.pull-right(action="/photoAlbum" method="post")
         input(type="hidden" name="owner" value="company_group")
         input(type="hidden" name="owner_id" value="#{owner_id}")
         input(type="text" name="name" required)
-        button(type="submit") 新建相册
+        button.dl_btn.btn_create(type="submit") 新建相册
+      .clearfix
       hr
-      h4 #{owner_name} 所有相册
-    .row
+    .row.margin_top_20
       each photo_album in photo_album_list
-        .col-sm-4.col-xs-4
-          div
-            a(href="/photoAlbumDetailView/#{photo_album._id}") 相册详情
-            img(src="#{photo_album.thumbnail}")
-            p
+        .col-sm-3.col-xs-3.photo_album_container
+          a(href="/photoAlbumDetailView/#{photo_album._id}").photo_album_panel.center-block
+            img.img-responsive(src="#{photo_album.thumbnail}")
+            h4.text-center
               =photo_album.name
-              if !photo_album.photos
-                small 0
-              else
-                small= photo_album.photos.length
-          div
-            img(src="/logo/user/#{photo_album.update_user._id}/50/50")
-            p= photo_album.update_user.nickname
-            p #{photo_album.update_date} 最后更新
+              | &nbsp;
+              small (#{photo_album.photo_count})
+          div.update_info.center-block.margin_top_10
+            img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36")
+            .pull-left
+              a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.nickname
+              - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
+              p.text #{year}.#{month}.#{day} 最后更新
 
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")

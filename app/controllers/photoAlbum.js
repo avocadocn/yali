@@ -112,7 +112,7 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
         _id: photo_album._id,
         thumbnail: photoAlbumThumbnail(photo_album),
         name: photo_album.name,
-        photo_count: photo_album.photos.length,
+        photo_count: photo_album.photos.length || 0,
         update_user: photo_album.update_user,
         update_date: photo_album.update_date
       });
