@@ -276,6 +276,36 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
+
+         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
+        $http.get('/group/getCompanyGroups' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $scope.team_lists = data.teams;//公司的所有team
+            $scope.cid = data.cid;
+            $scope.tname= data.name;
+            $scope.role = data.role;
+            $scope.group = data.group;//用户的group
+            if($scope.role === 'EMPLOYEE'){
+                for(var i = 0; i < $scope.team_lists.length; i ++) {
+                    $scope.team_lists[i].belong = false;
+                    for(var j=0; j< $scope.group.length; j++){
+                        //如果已找到则跳出此循环标记下一个team
+                        if($scope.team_lists[i].belong === true)
+                            break;
+                        //如果此team的gid与此group的_id不同 则找下一个group
+                        if($scope.team_lists[i].gid !== $scope.group[j]._id)
+                            continue;
+                        else{
+                            for (var k = 0; k < $scope.group[j].team.length; k++) {
+                                if($scope.team_lists[i]._id === $scope.group[j].team[k].id.toString()){
+                                    $scope.team_lists[i].belong = true;
+                                    break;
+                                }
+                            };
+                        }
+                    }
+                }
+            }
+        });
     }).error(function(data,status) {
         //TODO:更改对话框
         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
@@ -326,35 +356,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             $scope.infoButtonStatus = '保存';
         }
      };
-     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-    $http.get('/group/getCompanyGroups' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-        $scope.team_lists = data.teams;//公司的所有team
-        $scope.cid = data.cid;
-        $scope.tname= data.name;
-        $scope.role = data.role;
-        $scope.group = data.group;//用户的group
-        if($scope.role === 'EMPLOYEE'){
-            for(var i = 0; i < $scope.team_lists.length; i ++) {
-                $scope.team_lists[i].belong = false;
-                for(var j=0; j< $scope.group.length; j++){
-                    //如果已找到则跳出此循环标记下一个team
-                    if($scope.team_lists[i].belong === true)
-                        break;
-                    //如果此team的gid与此group的_id不同 则找下一个group
-                    if($scope.team_lists[i].gid !== $scope.group[j]._id)
-                        continue;
-                    else{
-                        for (var k = 0; k < $scope.group[j].team.length; k++) {
-                            if($scope.team_lists[i]._id === $scope.group[j].team[k].id.toString()){
-                                $scope.team_lists[i].belong = true;
-                                break;
-                            }
-                        };
-                    }
-                }
-            }
-        }
-    });
+
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
         $scope.team_index = index;
@@ -371,7 +373,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }).success(function(data, status) {
                 $scope.users = data.users;
-                $scope.leaders = data.leaders;
+                $scope.leaders = data.leaders.length > 0 ? data.leaders : ['null'];
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -394,7 +396,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
-    $scope.dismissLeader = function (uid) {
+    $scope.dismissLeader = function (leader) {
         try{
             $http({
                 method: 'post',
@@ -403,11 +405,21 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     cid: $scope.cid,
                     gid: $scope.gid,
                     tid: $scope.tid,
-                    uid: uid,
+                    uid: leader._id,
                     operate:false
                 }
             }).success(function(data, status) {
-                window.location.href="/company/home#/company_info";
+                // for(var i = 0; i < $scope.leaders.length; i ++) {
+                //     if($scope.leaders[i]._id == uid) {
+                //         $scope.leaders.splice(i,1);
+                //     }
+                // }
+                // $scope.users.push({
+                //     '_id':uid,
+                //     'nickname':nickname,
+                //     'photo':photo
+                // });
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -418,7 +430,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     }
     //指定队长
-    $scope.appointLeader = function (uid,nickname,photo) {
+    $scope.appointLeader = function (user,leader) {
       try{
             $http({
                 method: 'post',
@@ -427,11 +439,64 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     cid: $scope.cid,
                     gid: $scope.gid,
                     tid: $scope.tid,
-                    uid: uid,
+                    uid: user._id,
                     operate:true
                 }
             }).success(function(data, status) {
-                //指定完后不跳转，可继续编辑队名等
+
+                var _member = $scope.team_lists[$scope.team_index].member;
+                for(var i = 0; i < _member.length; i++){
+                    if(_member[i]._id == user._id) {
+                        _member.splice(i,1);
+                    }
+                }
+
+                if(leader!='null'){
+                    var _leader = $scope.team_lists[$scope.team_index].leader;
+                    for(var i = 0; i < _leader.length; i++){
+                        if(_leader[i]._id == leader._id) {
+                            _leader.splice(i,1);
+                        }
+                    }
+                    $scope.team_lists[$scope.team_index].member.push({
+                        '_id':leader._id,
+                        'nickname':leader.nickname,
+                        'photo':leader.photo
+                    });
+                }
+                $scope.team_lists[$scope.team_index].leader.push({
+                    '_id':user._id,
+                    'nickname':user.nickname,
+                    'photo':user.photo
+                });
+
+
+
+                if(leader!='null'){
+                    for(var i = 0; i < $scope.leaders.length; i ++) {
+                        if($scope.leaders[i]._id == leader._id) {
+                            $scope.leaders.splice(i,1);
+                        }
+                    }
+                    $scope.users.push({
+                        '_id':leader._id,
+                        'nickname':leader.nickname,
+                        'photo':leader.photo
+                    });
+                }
+                for(var i = 0; i < $scope.users.length; i ++) {
+                    if($scope.users[i]._id == user._id) {
+                        $scope.users.splice(i,1);
+                    }
+                }
+                $scope.leaders.push({
+                    '_id':user._id,
+                    'nickname':user.nickname,
+                    'photo':user.photo
+                });
+                if(leader!='null'){
+                    $scope.dismissLeader(leader);
+                }
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);

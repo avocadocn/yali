@@ -25,6 +25,10 @@ li {
 .dl_block {
   display: block;
 }
+.dl_label {
+  color: #cc847f;
+  font-size: 12px !important;
+}
 .dl_form-control {
   display: block;
   width: 100%;
@@ -101,6 +105,29 @@ li {
   height: 33px;
   float: right;
   padding: 8px 0 4px 2px;
+}
+.dl_btn_right {
+  width: 75px;
+  margin-top: 3px;
+  background-color: #f20;
+}
+.dl_vertical {
+  line-height: 250%;
+}
+.dl_md_1 {
+  width: 12%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_md_12 {
+  width: 83%;
+  float: left;
+  margin-left: 5px;
+}
+.dl_md_10 {
+  width: 70%;
+  margin-left: 5px;
+  float: left;
 }
 .dl_container {
   width: 960px;
@@ -236,6 +263,10 @@ li {
   padding-right: 0;
   padding-bottom: 0;
 }
+.padding_20 {
+  padding-left: 20px !important;
+  padding-bottom: 20px !important;
+}
 .dl_btn {
   color: #fff;
   background-color: #3498db;
@@ -329,6 +360,9 @@ li {
 }
 .margin_0 {
   margin: 0;
+}
+.margin_left_5 {
+  margin-left: 5px;
 }
 .margin_5 {
   margin: 5px;

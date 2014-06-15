@@ -99,6 +99,7 @@ function findComapnyGroup(condition,req,res)
       return res.send([]);
     } else {
       var users = [];
+      var ls = [];
       var members = cg.member;
       var leaders = cg.leader;
       var flag = false;
@@ -110,14 +111,15 @@ function findComapnyGroup(condition,req,res)
         }
         if(!flag){
           users.push(members[i]);
-        } else {
-          leaders.push(members[i]);
+        }else{
+          ls.push(members[i]);
         }
         flag = false;
       }
+      console.log(ls);
       return res.send({
         'users':users,
-        'leaders':leaders
+        'leaders':ls
       });
     }
   });

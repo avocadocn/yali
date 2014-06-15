@@ -110,12 +110,7 @@ div
         .dl_row
           span.info_label {{"TEAM_LEADER"|translate}}
           span(ng-repeat="l in team.leader")
-            //- span.info_label {{l.nickname}}
-            //-   .btn-group
-            //-     span.info_label(data-toggle="dropdown") {{l.nickname}}
-            //-     ul.dropdown-menu(role="menu")
-            //-       li
-            //-         a(href="#" ng-click="dismissLeader(l._id") 罢免
+            span.info_label {{l.nickname}}
         .dl_row
           span.info_label {{"SUM"|translate}}
           span.info_label {{team.member.length}}
@@ -125,7 +120,7 @@ div
               //不属于显示加组按钮
               button.dl_btn.dl_btn_small.pull-right(ng-if='!team.belong' ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
               //属于则显示退组按钮
-              button.dl_btn.dl_btn_small.pull-right(ng-if='team.belong' ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}  
+              button.dl_btn.dl_btn_small.pull-right(ng-if='team.belong' ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}
         hr
       //只有HR可见inactive的team 并可打开
       .dl_row.clearfix(ng-if="!team.active")
@@ -137,7 +132,7 @@ div
             span.info_label {{"TEAM_NAME"|translate}}
             span.info_label {{team.name}}
             if(role ==='HR')
-              button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
+              button.dl_btn.dl_btn_small.pull-right(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") {{"EDIT"|translate}}{{"TEAM"|translate}}
           .dl_row
             span.info_label {{"TYPE"|translate}}
             span.info_label {{team.group_type}}
@@ -151,5 +146,5 @@ div
             button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
           hr
   if(role ==='HR' || role ==='LEADER')
-    div(ng-controller="AccountFormController" class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal.jade

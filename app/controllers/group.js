@@ -333,6 +333,7 @@ exports.getCompanyGroups = function(req, res) {
     if(err || !teams) {
       return res.send([]);
     } else {
+      console.log(teams);
       return res.send({
         'teams':teams,
         'group' : req.user.group,
@@ -449,7 +450,7 @@ exports.getGroupCampaign = function(req, res) {
             }
           }
           campaigns.push({
-            'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+            'over' : !(Date.now() - campaign[i].end_time.valueOf() <= 0),
             'active':campaign[i].active, //截止时间到了活动就无效了
             '_id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,

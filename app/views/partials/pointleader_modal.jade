@@ -1,38 +1,85 @@
 .modal-dialog
   .dl-modal
-    .dl-modal-header
-      button(class="close" data-dismiss="modal" aria-hidden="true")
-        img(ng-src='/img/icons/icon_close.png')
-      .head {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
-    .dl-modal-body
-      .dl_row
-        .info_side
-            span.info_label {{"TEAM_NAME"|translate}}
-        .info_detail
-            input.dl_input.dl_form-control.editToggle(type="text" name ="name" ng-model="team.name")
-      hr
-      .row
-        .col-md-4
-          label.info_label.control-label {{"APPOINT_LEADER"|translate}}
-          .row
-            label 该小队非队长成员 {{users.length}}
-            select.form-control.dl_form-control.chzn-select(data-placeholder="选择一个成员" tabindex="2" ng-model="user_selected" ng-options="user.nickname for user in users" ng-change="select(true)" required)
-              option(value="") {{user_selected.nickname}}
-          .row
-            label 该小队组长 {{leaders.length}}
-            select.form-control.dl_form-control.chzn-select(data-placeholder="选择一个队长" tabindex="2" ng-model="leader_select" ng-options="leader.name for leader in leaders" ng-change="select(false)" required)
-              option(value="") {{leader_select.nickname}}
-          .row(ng-if="select_user || select_leader")
-          .col-md-2.col-sm-2.col-xs-3
-            img.img-responsive.img-thumbnail.img_contain(ng-src="{{select_user ? user_selected.photo : leader_select.photo}}" width="128px")
-          .col-md-10.col-sm-10.col-xs-9
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-2.padding_0
-                span.info_label.control-label {{"NICKNAME"|translate}}
-              .col-md-8.col-sm-8.col-xs-4.padding_0
-                span.info_label.control-label {{select_user ? user_selected.nickname : leader_select.nickname}}
-            .row.dl_row
-              button.dl_btn(ng-click="appointLeader(user_selected._id,user_selected.nickname,user_selected.photo)" ng-if="select_user") 任免
-              button.dl_btn(ng-click="dismissLeader(leader_selected._id)" ng-if="select_leader") 罢免
-    .modal-footer
-      button.dl_btn.dl_btn_small(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}
+    form.margin_left_5(name="campaign_form" novalidate)
+      .dl-modal-header
+        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+        .head#myModalLabel 编辑小组信息
+      .dl-modal-body
+        .dl_modal_container
+          .dl_md_1.dl_vertical
+            label.subtitle 小组名称
+          .dl_md_10
+            input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="活动简单描述，请控制在14字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在14字以内':''}}" required)
+          .dl_md_1
+            a.dl_btn.dl_btn_right 保存
+        .dl_modal_container
+          .dl_md_1.dl_vertical
+            label.subtitle 现任族长
+          .dl_md_1
+            input.dl_modal_input.form-control(type="text" value="{{leaders[0].nickname}}" ng-disabled="true")
+        .dl_modal_container
+          .dl_row
+            .dl_md_1.dl_vertical
+              label.subtitle 任命新组长
+            .dl_md_10.dl_vertical
+              label.subtitle.dl_label 点选新成员任命组长后,现任组长自动解职
+        .dl_modal_container
+          .dl_row
+            .dl_md_12
+              input.dl_modal_input.form-control(type="text")
+            .dl_md_1
+              a.dl_btn.dl_btn_right 搜索
+        .dl_modal_container
+          .groups.row
+            .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="user in users")
+              .dl_row
+                a(ng-click="appointLeader(user,leaders[0])")
+                  img.size_80(ng-src="{{user.photo}}")
+              .dl_row(style="width:80px;text-align:center")
+                label {{user.nickname}}
+      .dl-modal-footer
+        button.dl_btn.dl_btn_large(ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") {{"IMMEDIATE"|translate}}{{"SPONSOR"|translate}}
+        button.cancel_btn.dl_btn_large(data-dismiss="modal" style="margin-left:30px") {{"CANCEL"|translate}}
+//- .modal-dialog
+//-   .dl-modal
+//-     .dl-modal-header
+//-       button(class="close" data-dismiss="modal" aria-hidden="true")
+//-         img(ng-src='/img/icons/icon_close.png')
+//-       .head {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
+//-     .dl-modal-body
+//-       .row
+//-         .col-md-2.dl_md_2
+//-             span.info_label {{"TEAM_NAME"|translate}}
+//-         .col-md-2.dl_md_10
+//-             input.dl_input.dl_form-control.editToggle(type="text" name ="name" ng-model="team.name")
+//-       hr
+//-       .row
+//-         .col-md-4
+//-           label.info_label.control-label {{"APPOINT_LEADER"|translate}}
+//-           .row
+//-             .col-md-4
+//-               label.info_label.control-label 成员
+//-             .col-md-8
+//-               select.dl_modal_input.form-control(tabindex="1" ng-model="user_selected" ng-options="user.nickname for user in users" ng-change="select(true)" ng-click="select(true)" required)
+//-           .row
+//-             .col-md-4
+//-               label.info_label.control-label 队长
+//-             .col-md-8
+//-               select.dl_modal_input.form-control(tabindex="1" ng-model="leader_selected" ng-options="leader.nickname for leader in leaders" ng-change="select(false)" ng-click="select(false)" required)
+//-           br
+//-           br
+//-           .dl_row.clearfix(ng-if="select_user || select_leader")
+//-             .col-md-6
+//-               a(href="/group/home/{{team._id}}")
+//-                 img.size_56.img-thumbnail.img_contain(ng-src="{{select_user ? user_selected.photo : leader_selected.photo}}")
+//-             .col-md-6
+//-               .row
+//-                 label.info_label.control-label {{select_user ? user_selected.nickname : leader_selected.nickname}}
+//-               .row
+//-                 if(role ==='HR')
+//-                   button.dl_btn.dl_btn_small(ng-click="appointLeader(user_selected._id,user_selected.nickname,user_selected.photo)" ng-if="select_user") 任命
+//-                   button.dl_btn.dl_btn_small(ng-click="dismissLeader(leader_selected._id,leader_selected.nickname,leader_selected.photo)" ng-if="select_leader") 罢免
+
+//-     .modal-footer
+//-       button.dl_btn.dl_btn_small(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}
