@@ -1,3 +1,6 @@
+contentBgColor = #fbfbfb
+contentBdColor = #ededed
+
 .relative
   position relative
 
@@ -32,3 +35,84 @@
   background-color rgba(0, 0, 0, 0.4)
   color white
   text-decoration none
+
+.left
+  position absolute
+  top 0
+  left 0
+
+.right
+  position absolute
+  top 0
+  right 0
+
+.tag
+  &:after
+    content '、'
+  &:last-child
+    &:after
+      content ''
+
+.btn_padding
+  padding-left 20px
+  padding-right 20px
+
+.comment_textarea
+  height 60px
+  background-color contentBgColor
+  border-color contentBdColor
+  border-radius 0
+
+
+.comment
+  position relative
+  margin-top 20px
+
+  .comment_user_info
+    float left
+
+    .user_photo
+      width 50px
+      height 50px
+
+    .user_name
+      text-decoration none
+
+  .comment_content_panel
+    float left
+    margin-left 20px
+
+    .comment_content
+      padding 10px
+      background-color contentBgColor
+      border solid 1px contentBdColor
+      width 450px
+      min-height 50px
+
+.triangle
+  position absolute
+  top 16px
+  height 0px
+  width 0px
+  margin-left -19px
+  border-width 10px
+  border-style solid
+  border-color transparent contentBgColor transparent transparent
+
+.triangle_border
+  position absolute
+  top 15px
+  height 0px
+  width 0px
+  margin-left -21px
+  border-width 11px
+  border-style solid
+  border-color transparent contentBdColor transparent transparent
+
+.tags_input
+  background-color contentBgColor
+  border-color contentBdColor
+  border-radius 0
+
+.photo_detail_container
+  margin-bottom 30px

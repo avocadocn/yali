@@ -585,7 +585,9 @@ exports.renderPhotoDetail = function(req, res) {
           },
           photo_album: {
             _id: photo_album._id,
-            name: photo_album.name
+            name: photo_album.name,
+            update_date: photo_album.update_date,
+            photo_count: photo_album.photos.length
           },
           photo: req.user.photo,
           realname: req.user.realname,

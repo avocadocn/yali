@@ -34,3 +34,82 @@
   color: #fff;
   text-decoration: none;
 }
+.left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.tag:after {
+  content: '、';
+}
+.tag:last-child:after {
+  content: '';
+}
+.btn_padding {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.comment_textarea {
+  height: 60px;
+  background-color: #fbfbfb;
+  border-color: #ededed;
+  border-radius: 0;
+}
+.comment {
+  position: relative;
+  margin-top: 20px;
+}
+.comment .comment_user_info {
+  float: left;
+}
+.comment .comment_user_info .user_photo {
+  width: 50px;
+  height: 50px;
+}
+.comment .comment_user_info .user_name {
+  text-decoration: none;
+}
+.comment .comment_content_panel {
+  float: left;
+  margin-left: 20px;
+}
+.comment .comment_content_panel .comment_content {
+  padding: 10px;
+  background-color: #fbfbfb;
+  border: solid 1px #ededed;
+  width: 450px;
+  min-height: 50px;
+}
+.triangle {
+  position: absolute;
+  top: 16px;
+  height: 0px;
+  width: 0px;
+  margin-left: -19px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent #fbfbfb transparent transparent;
+}
+.triangle_border {
+  position: absolute;
+  top: 15px;
+  height: 0px;
+  width: 0px;
+  margin-left: -21px;
+  border-width: 11px;
+  border-style: solid;
+  border-color: transparent #ededed transparent transparent;
+}
+.tags_input {
+  background-color: #fbfbfb;
+  border-color: #ededed;
+  border-radius: 0;
+}
+.photo_detail_container {
+  margin-bottom: 30px;
+}
