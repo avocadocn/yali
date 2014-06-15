@@ -692,16 +692,6 @@ exports.getCampaigns = function(req, res) {
 
 exports.home = function(req, res) {
 
-  if(req.session.selected != undefined && req.session.selected !=null){
-      console.log('1',req.session.selected);
-  } else {
-      req.session.selected = true;
-  }
-  console.log('2',req.session.selected);
-
-  delete req.session.selected;
-  console.log('3',req.session.selected);
-
   if(req.params.userId) {
     req.session.otheruid = req.params.userId;
   } else {
