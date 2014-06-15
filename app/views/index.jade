@@ -3,10 +3,8 @@ extends layouts/default
 block contentExt
   .dl_doc(data-ng-controller="IndexController")
     section#promo.promo
-      .container
-        .row
-          .col-md-12.col-sm-12.col-xs-12.overview
-            .row
+      .index_container
+        .overview
               .regbox.col-md-6.col-md-offset-6.col-sm-6.col-xs-12
                 p.reginfo
                   | Donler 企业员工活动互联网工具
@@ -16,7 +14,7 @@ block contentExt
                   a.btn_app Available on the App Store
                   | 或直接扫描二维码下载动梨IOS应用
     section#about.about.section
-      .container
+      .index_container
         .row
           .col-md-4.col-sm-12.col-xs-12.about_card
             .card.card_1

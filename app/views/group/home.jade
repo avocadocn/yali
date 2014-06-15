@@ -17,13 +17,13 @@ block baseInfo
       .dl_row
         .score_container.margin_top_5
           span.info_border {{"TEAM_MEMBER"|translate}}
-          span.info_border= number
+          span.info_right_border= number
         .score_container.margin_top_5
           span.info_border {{"SCORE"|translate}}
-          span.info_border= score
+          span.info_right_border= score
         .score_container.margin_top_5
           span.info_border {{"WIN_RATE"|translate}}
-          span.info_border 100%
+          span.info_right_border 100%
         if (role ==='HR' || role ==='LEADER')
           .score_container(style="margin-left:30px")
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}
