@@ -4,14 +4,15 @@
       .dl-modal-header
         button(class="close" data-dismiss="modal" aria-hidden="true")
           img(ng-src='/img/icons/icon_close.png')
-        .head#myModalLabel {{"STEPONE"|translate}} {{"SEARCH"|translate}} {{is_company}}
+        .head#myModalLabel {{"SEARCH"|translate}}{{"COMPETITOR"|translate}}
       .dl-modal-body
         .dl_row
           span.subtitle 按公司名搜索
         .dl_row.clearfix
-          span.info_label 请输入{{"COMPANY"|translate}}名:
-          a.btn.btn-success.pull-right(ng-click="getCompany(s_company)" ng-disabled="s_company == '' || s_company == undefined") 搜索公司
+          .dl_modal_input_container
           input.dl_form-control(type="text" name="s_company" ng-model="s_company" )
+          a.btn.btn-success.pull-right(ng-click="getCompany(s_company)" ng-disabled="s_company == '' || s_company == undefined") {{"SEARCH"|translate}}
+ 
         .row.margin_top_15
         .row
           .col-md-2
@@ -30,7 +31,7 @@
           label.col-md-2 请输入{{"TEAM"|translate}}名:
           .col-md-7
             input.dl_form-control(type="text" name="s_team" ng-model="s_team" )
-          a.btn.btn-success.col-md-2(ng-click="getTeam(s_team)" ng-disabled="s_team == '' || s_team == undefined") 搜索小队
+          a.btn.btn-success.col-md-2(ng-click="getTeam(s_team)" ng-disabled="s_team == '' || s_team == undefined") {{"SEARCH"|translate}}{{"TEAM"|translate}}
         .row.margin_top_15
           .col-md-2
           .col-md-7

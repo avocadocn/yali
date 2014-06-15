@@ -30,7 +30,7 @@
         .dl_modal_container
           .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
-          .dl_modal_map_container
+          .dl_modal_input_container
             input.dl_modal_input(type="text" class="form-control" name="location" ng-model="$parent.location" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" tooltip="{{campaign_form.location.$invalid? '请输入活动地点':''}}" required)
           .dl_modal_button_container
             a.clearLinkUnderline.map_btn.dl_btn_small {{"MAP"|translate}}
