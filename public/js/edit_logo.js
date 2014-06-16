@@ -4,13 +4,15 @@
   $(function() {
 
     var logo = $('#logo');
-    var jcrop_img = $('#jcrop_img');
     var preview_big = $('#preview_big');
     var preview_middle = $('#preview_middle');
     var preview_small = $('#preview_small');
     var save_button = $('#save_button');
     var remind = $('#remind');
     var return_uri = $('#return_uri').val();
+
+    var jcrop_container = $('#jcrop_container');
+    var clone_img = jcrop_container.find('img').clone();
 
     var getFilePath = function(input, callback) {
       var file = input.files[0];
@@ -22,7 +24,7 @@
     };
 
     logo.change(function() {
-      if (logo.val() === null) {
+      if (logo.val() === null || logo.val() === '') {
         save_button[0].disabled = true;
       } else {
         if (logo[0].files[0].size > 1024 * 1024 * 5) {
@@ -35,10 +37,46 @@
 
       getFilePath(logo[0], function(path) {
 
+        jcrop_container.html(clone_img.clone());
+        var jcrop_img = jcrop_container.find('img');
+
+        var showPreview = function(coords) {
+          var imgx = jcrop_img.width();
+          var imgy = jcrop_img.height();
+
+          // 裁剪参数，单位为百分比
+          $('#w').val(coords.w / imgx);
+          $('#h').val(coords.h / imgy);
+          $('#x').val(coords.x / imgx);
+          $('#y').val(coords.y / imgy);
+
+          var thumbnails = [preview_big, preview_middle, preview_small];
+          var sizes = [150, 50, 27]; // size.x = size.y
+
+          for(var i = 0; i < thumbnails.length; i++) {
+
+            var rx = sizes[i] / coords.w;
+            var ry = sizes[i] / coords.h;
+            thumbnails[i].css({
+              width: Math.round(rx * imgx) + 'px',
+              height: Math.round(ry * imgy) + 'px',
+              marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+              marginTop: '-' + Math.round(ry * coords.y) + 'px'
+            });
+          }
+        };
+
         jcrop_img.attr('src', path);
         preview_big.attr('src', path);
         preview_middle.attr('src', path);
         preview_small.attr('src', path);
+
+        var width = jcrop_img.width();
+        var height = jcrop_img.height();
+
+        preview_big.width(width).height(height);
+        preview_middle.width(width).height(height);
+        preview_small.width(width).height(height);
 
         jcrop_img.Jcrop({
           setSelect: [0, 0, 128, 128],
@@ -53,33 +91,6 @@
 
     });
 
-    function showPreview(coords)
-    {
-      var imgx = jcrop_img.width();
-      var imgy = jcrop_img.height();
-
-      // 裁剪参数，单位为百分比
-      $('#w').val(coords.w / imgx);
-      $('#h').val(coords.h / imgy);
-      $('#x').val(coords.x / imgx);
-      $('#y').val(coords.y / imgy);
-
-      var thumbnails = [preview_big, preview_middle, preview_small];
-      var sizes = [150, 50, 27]; // size.x = size.y
-
-      for(var i = 0; i < thumbnails.length; i++) {
-
-        var rx = sizes[i] / coords.w;
-        var ry = sizes[i] / coords.h;
-        thumbnails[i].css({
-          width: Math.round(rx * imgx) + 'px',
-          height: Math.round(ry * imgy) + 'px',
-          marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-          marginTop: '-' + Math.round(ry * coords.y) + 'px'
-        });
-      }
-
-    }
 
     $('#edit_logo_form').ajaxForm(function(data, status) {
       if (status === 'success' && data.result === 1) {
