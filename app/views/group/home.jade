@@ -1,5 +1,8 @@
 extends ../layouts/manager
 
+append headExt
+  link(rel="stylesheet" href="/css/views/photo_album.css")
+
 block baseInfo
   .dl_container.clearfix
     .aside
@@ -70,8 +73,15 @@ block aside
     +group_thumbnail(selected_teams,'active',role!=='HR'?"{{'MY'|translate}}{{'TEAM'|translate}}":"{{'COMPANY'|translate}}{{'TEAM'|translate}}")
     +group_thumbnail(unselected_teams,'inactive',"{{'UNSELECTED_TEAM'|translate}}")
   if (role !=='GUESTHR' && role !=='GUEST')
-    span.subtitle.margin_top_15 {{"TEAM_ALBUM"|translate}}
-    a(href="/#{group_id}/photoAlbumListView") 更多
+    .photo_album
+      p
+        span.subtitle.margin_top_15 {{"TEAM_ALBUM"|translate}}
+        a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+      div
+        each photo_album in photo_album_thumbnails
+          a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+            img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
+            p.text-center= photo_album.name
 
 append footExt
   script(src="/js/controllers/tabviewGroup.js")
