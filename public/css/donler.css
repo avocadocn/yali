@@ -402,7 +402,7 @@ select {
   border-color: #3498db;
 }
 .info_right_border {
-  padding: 5px;
+  padding: 8px 5px;
   border-style: solid;
   border-width: 1px 1px 1px 0;
   border-color: #3498db;

@@ -371,7 +371,7 @@ exports.saveGroup = function(req, res) {
             companyGroup.group_type = selected_group.group_type;
             companyGroup.entity_type = selected_group.entity_type;
             companyGroup.name = req.body.tname;
-            companyGroup.logo = '/img/icons/group/' + selected_group.entity_type +'_on.png';
+            companyGroup.logo = '/img/icons/group/' + selected_group.entity_type.toLowerCase() +'_on.png';
 
             companyGroup.save(function (err){
                 if (err) {
