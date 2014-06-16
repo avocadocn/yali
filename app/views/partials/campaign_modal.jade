@@ -33,9 +33,42 @@
           .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
           .dl_modal_input_container
-            input.dl_modal_input(type="text" class="form-control" name="location" ng-model="$parent.location" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" tooltip="{{campaign_form.location.$invalid? '请输入活动地点':''}}" required)
-          .dl_modal_button_container
+            input.dl_modal_input.dl_form-Control(type="text" name="location" ng-model="$parent.location" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" tooltip="{{campaign_form.location.$invalid? '请输入活动地点':''}}" required)
+          .dl_modal_button
             a.clearLinkUnderline.map_btn.dl_btn_small {{"MAP"|translate}}
+        .dl_modal_container
+          .dl_modal_container
+            label.subtitle {{"CAMPAIGN"|translate}}{{"OTHER"|translate}}{{"OPTION"|translate}}
+          .dl_modal_option_container
+            .dl_row.clearfix
+              .dl_modal_label_container
+                span.info_label 最少报名人数:
+              .dl_modal_other_container
+                input.dl_form-Control(type="text" name="leastNumber")
+              .dl_modal_people_container
+                span.info_label(style="padding:7px") 人
+              .dl_modal_label_container
+                span.info_label 若报名截止前未达最少人数,您将收到提示。
+            .dl_row.clearfix
+              .dl_modal_label_container
+                span.info_label 报名截止时间:
+              .dl_modal_time_container
+                .input-group.date.form_datetime#due_time
+                  //img(ng-src='/img/icons/icon_date.png')
+                  input.dl_form-Control(type="text" style="width:120px" ng-model="$parent.due_Time" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly required)
+                  span.input-group-addon.no_radius
+                    span.glyphicon.glyphicon-th
+              .dl_modal_label_container
+                span.info_label 若不填则默认为活动开始时间截止。
+            .dl_row.clearfix
+              .dl_modal_label_container
+                span.info_label 报名人数上限:
+              .dl_modal_other_container
+                input.dl_form-Control(type="text" name="leastNumber")
+              .dl_modal_people_container
+                span.info_label 人
+              .dl_modal_label_container
+                span.info_label 若活动有人数限定，请填写此项。人数到达后则停止报名。
       .dl-modal-footer
         button.dl_btn.dl_btn_large(ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") {{"IMMEDIATE"|translate}}{{"SPONSOR"|translate}}
         button.cancel_btn.dl_btn_large(data-dismiss="modal" style="margin-left:30px") {{"CANCEL"|translate}}
@@ -46,6 +79,10 @@
         startDate: new Date()
       });
       $('#end_time').datetimepicker({
+        autoclose: true,
+        startDate: new Date()
+      });
+      $('#due_time').datetimepicker({
         autoclose: true,
         startDate: new Date()
       });
