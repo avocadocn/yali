@@ -86,6 +86,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.getCompany();
             //按队名搜索
             } else {
+                $rootScope.company_first = false;
                 $rootScope.getTeam();
             }
         } else {
