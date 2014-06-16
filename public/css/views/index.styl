@@ -1,9 +1,12 @@
+@require('../variables')
+miniPageWidth = 960px
+
 .index_container
-  width 100%
-  min-width 1280px
+  width 80%
+  min-width miniPageWidth
   margin 0 auto
 .header_container
-  width 1280px
+  width miniPageWidth
   margin auto
 
 .dl_doc
@@ -11,21 +14,22 @@
   background-image url('/img/dl_doc_bg.png')
   background-repeat repeat-x
   width 100%
-  min-width 1280px
+  min-width miniPageWidth
   .promo
-    width 1280px
+    width 100%
     height 460px
     margin 0 auto
     background url('/img/dl_doc_promo_bg.jpg') center center no-repeat
    .overview
      height 460px
-     background-image url('/img/dl_doc_overview.png')
+     background url('/img/dl_doc_overview.png') -17px 0
      background-repeat no-repeat
      .regmomo
        height 460px
      .regbox
       height 460px
       width 547px
+      padding-left 46%
       .reginfo
         height 160px
         width 547px
@@ -47,16 +51,19 @@
         background url('/img/dl_doc_reg.png') -180px -240px no-repeat
         text-indent -9999em
   .about
-    width 1280px
+    width 100%
     margin auto
     height 239px
     background url('/img/dl_doc_about_bg.png') top center
+    .index_container
+      width miniPageWidth
     .about_card
       padding 0
       float left
+      width 33%
       .card 
         display block
-        width 230px
+        width 90%
         height 189px
         .title
           font-size 20px;
@@ -66,54 +73,53 @@
         p
           line-height 18px
           display inline-block
-          width 300px
+          width 90%
           color #b7b7b7
           height 60px
         .btn 
           width 160px
           margin-top 5px
-          margin-left 140px
+          margin-left 100px
       .card_1
-        width 354px
+
         background url('/img/dl_doc_about_card1.gif')
         margin-left 20px
         margin-right 0
 
       .card_2
-        width 384px
+
         background url('/img/dl_doc_about_card2.gif') -10px 0px
         .title
           padding-left 36px
         p
-          width 350px
+          width 90%
           padding-left 0px
         .btn 
-          margin-left 180px
+          margin-left 100px
       .card_3
-        width 350px
         background url('/img/dl_doc_about_card3.gif')
         margin-left 20px
         p
-          width 350px
+          width 90%
           padding-left 10px
         .btn 
-          margin-left 180px
+          margin-left 100px
   .function
-    width 1280px
+    width 100%
     margin auto
     height 340px
-    background url('/img/dl_doc_func_bg.png') center center no-repeat
+    background url('/img/dl_doc_func_bg.png') center top no-repeat
     background-color #ecf0f1
     .container
       background none
     .func_title
       text-indent -9999em
     .func_card
-      width 320px
+      width 24%
       float left
       p 
         display block
-        padding-top 188px
+        padding 188px 8px 0
         line-height 18px
         color #b7b7b7
         .title
@@ -124,8 +130,16 @@
           width 90%
           color #2c3e50
           padding-bottom 10px
+      .card_1
+        background url('/img/dl_doc_func_01.png') center 40px no-repeat
+      .card_2
+        background url('/img/dl_doc_func_02.png') center 40px no-repeat
+      .card_3
+        background url('/img/dl_doc_func_03.png') center 40px no-repeat
+      .card_4
+        background url('/img/dl_doc_func_04.png') center 40px no-repeat
   .contact
-    width 1280px
+    width miniPageWidth
     margin auto
     background-color #ecf0f1
     height 50px
@@ -135,7 +149,9 @@
       line-height 18px
       color footerFontColor
 .index_footer
-  min-width 1280px
+  min-width miniPageWidth
+  a 
+    color footerFontColor
 .dl-top-login
   width 480px
   padding 15px 0 0 0
@@ -148,6 +164,8 @@
     color linkColor
   .input-group-btn>.btn+.btn-submit
     margin-left 14px
+  .pull-right
+    width 160px
 
 
 
