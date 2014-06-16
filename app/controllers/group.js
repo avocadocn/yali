@@ -922,7 +922,7 @@ exports.renderCampaignDetail = function(req, res) {
     if (!campaign) {
       throw 'not found';
     }
-    res.render('users/campaign_detail', {
+    res.render('campaign/campaign_detail', {
       campaign: campaign,
       role: req.session.role,
       nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
