@@ -10,6 +10,7 @@
     var preview_small = $('#preview_small');
     var save_button = $('#save_button');
     var remind = $('#remind');
+    var return_uri = $('#return_uri').val();
 
     var getFilePath = function(input, callback) {
       var file = input.files[0];
@@ -82,7 +83,6 @@
 
     $('#edit_logo_form').ajaxForm(function(data, status) {
       if (status === 'success' && data.result === 1) {
-        alertify.alert("修改成功!");
         var body = {
             'border': '1px',
             'border-radius': '0px',
@@ -107,7 +107,9 @@
         $(".alertify-buttons").css(buttons);
         $(".alertify").css(body);
         $(".alertify-button").css(button);
-        window.location.reload();
+        window.location = return_uri;
+      } else {
+        alertify.alert("修改失败，请重试!");
       }
     });
 

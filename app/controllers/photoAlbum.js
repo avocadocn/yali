@@ -25,7 +25,7 @@ var config = require('../../config/config');
 
 
 
-function photoAlbumThumbnail(photo_album) {
+var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   var first_photo;
   for (var i = 0; i < photo_album.photos.length; i++) {
     if (photo_album.photos[i].hidden === false) {
@@ -38,7 +38,7 @@ function photoAlbumThumbnail(photo_album) {
   } else {
     return '/img/icons/default_photo_album.png';
   }
-}
+};
 
 function getShowPhotos(photo_album) {
   var photos = [];
