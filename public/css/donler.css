@@ -651,6 +651,9 @@ input::-webkit-inner-spin-button {
 .dl_footer .text_icp {
   line-height: 60px;
 }
+.dl_footer .dl_row {
+  padding: 5px 0 0;
+}
 .dl_form-Control {
   display: block;
   width: 100%;
