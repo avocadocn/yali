@@ -149,6 +149,7 @@ app.config(['$translateProvider',
       SUCCESS : "成功",
       THIS : "该",
       OTHER :"其他",
+      OPTIONAL:"可选",
       OPTION :"选项"
     });
     $translateProvider.translations('jp-jp', {
@@ -287,6 +288,7 @@ app.config(['$translateProvider',
       L_ZH :"中国語",
       L_JP :"日本語",
       OTHER :"その他",
+      OPTIONAL:"オプショナル",
       OPTION :"オプション"
     });
 
