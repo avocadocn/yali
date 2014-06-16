@@ -71,7 +71,7 @@ select
   padding 20px
 .dl-modal-header 
   min-height 16.42857143px
-  margin-bottom 40px
+  margin-bottom 30px
   &:close
     margin-top -2px
 .dl-modal-body
@@ -80,7 +80,7 @@ select
   text-align left
 .dl_modal_input
   border-radius 0
-  margin-bottom 15px
+  margin-bottom 25px
   font-size 12px
 .dl_modal_container
   width 600px
@@ -95,13 +95,32 @@ select
 .dl_modal_input_container
   width 530px
   float left
-.dl_modal_button_container
+.dl_modal_button
   width 70px
   height 33px
   float right
   padding 8px 0 4px 2px
-
-
+.dl_modal_label_container
+  float left
+  min-width 100px
+  padding 7px 0
+.dl_modal_other_container
+  float left
+  width 120px
+.dl_modal_time_container
+  float left
+  width 159px
+.dl_modal_option_container
+  background-color #f6f6f6
+  padding 10px 0
+  margin-bottom 15px
+  float left
+  width 600px
+.dl_modal_people_container
+  float left
+  width 39px
+  padding 7px 0
+  text-align center
 .dl_btn_right
   width 75px
   margin-top 3px
@@ -123,13 +142,21 @@ select
   &:disabled
     opacity .55
 
-
 .dl_vertical
   line-height 250%
 
+.dl_md_3
+  width 24%
+  margin-left 5px
+  float left
 
 .dl_md_1
   width 12%
+  margin-left 5px
+  float left
+
+.dl_md_2
+  width 14%
   margin-left 5px
   float left
 
@@ -224,7 +251,7 @@ select
   margin 10px 10px
 .dl_row
   min-height 34px
-  padding 5px 0
+  padding 2px 0
 .content
   width 100%
   min-height 100%
@@ -250,6 +277,7 @@ select
   background-color buttonColor
   border-color buttonColor
   border-style solid
+  border-width 2px
   line-height 1
   position relative
   font-size 12px
@@ -317,7 +345,7 @@ select
   border-width 1px
   border-color buttonColor
 .info_right_border
-  padding 5px
+  padding 8px 5px
   border-style solid
   border-width 1px 1px 1px 0
   border-color buttonColor
@@ -347,6 +375,10 @@ select
   margin-top 100px
 .margin_top_123
   margin-top 123px
+.margin_left_10
+  margin-left 10px
+.margin_left_15
+  margin-left 15px
 .margin_left_20
   margin-left 20px
 .margin_left_50

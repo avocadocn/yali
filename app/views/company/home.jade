@@ -8,18 +8,19 @@ block baseInfo
       .dl_row
         label.head= cname
       .dl_row(style="height:60px")
-        p.subtitle= sign
+        p= sign
       .dl_row
         .score_container.margin_top_5
-          span.info_border {{ 'STAFF' | translate }}
+          label.info_border {{ 'STAFF' | translate }}
           span.info_right_border  #{membernumber>0? membernumber : 0 }
         .score_container.margin_top_5
-          span.info_border {{ 'TEAM' | translate }}
+          label.info_border {{ 'TEAM' | translate }}
           span.info_right_border= groupnumber
         .score_container.margin_top_5
-          span.info_border {{ 'WIN_RATE' | translate }}
+          label.info_border {{ 'WIN_RATE' | translate }}
           span.info_right_border 100%
         if(role === 'HR')
+          .score_container.margin_top_5
             button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") {{'SPONSOR'|translate}}{{'COMPANY'|translate}}{{ 'CAMPAIGN' | translate }}
 
 block panel

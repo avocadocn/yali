@@ -1282,8 +1282,9 @@ exports.editPhoto = function(req, res) {
   res.render('users/editPhoto', {
     photo: req.user.photo,
     uid: req.user._id,
-    head_nickname : req.user.nickname,
-    head_photo : req.user.photo
+    role: req.session.role,
+    nav_name : req.user.nickname,
+    nav_logo : req.user.photo
   });
 };
 

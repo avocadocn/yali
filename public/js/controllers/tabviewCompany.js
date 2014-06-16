@@ -359,27 +359,27 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
      };
 
     $scope.search = function () {
-        $scope.member_backup = $scope.team_lists[$scope.team_index].member;
+        $scope.member_backup = $scope.users;
         var find = false;
-        $scope.team_lists[$scope.team_index].member = [];
+        $scope.users = [];
         for(var i = 0; i < $scope.member_backup.length; i ++) {
             if($scope.member_backup[i].nickname.indexOf($scope.member_search) > -1){
-                $scope.team_lists[$scope.team_index].member.push($scope.member_backup[i]);
+                $scope.users.push($scope.member_backup[i]);
                 find = true;
             }
         }
         if(!find){
-            $scope.team_lists[$scope.team_index].member = $scope.member_backup;
+            $scope.users = $scope.member_backup;
             $scope.member_backup = [];
             $rootScope.donlerAlert("未找到组员!");
         }else{
-            $rootScope.donlerAlert("找到"+$scope.team_lists[$scope.team_index].member.length+"名组员!");
+            $rootScope.donlerAlert("找到"+$scope.users.length+"名组员!");
         }
     }
     $scope.recover = function(){
         if($scope.member_backup){
             if($scope.member_backup.length > 0){
-                $scope.team_lists[$scope.team_index].member = $scope.member_backup;
+                $scope.users = $scope.member_backup;
             }
         }
     }
@@ -422,6 +422,11 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             console.log(e);
         }
     };
+
+
+    $scope.tip = function() {
+        alert($scope.team_lists[$scope.team_index].member.length);
+    }
 
     $scope.dismissLeader = function (leader) {
         try{
@@ -474,7 +479,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 var _member = $scope.team_lists[$scope.team_index].member;
                 for(var i = 0; i < _member.length; i++){
                     if(_member[i]._id == user._id) {
-                        _member.splice(i,1);
+                        $scope.team_lists[$scope.team_index].member.splice(i,1);
                     }
                 }
 
@@ -482,7 +487,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     var _leader = $scope.team_lists[$scope.team_index].leader;
                     for(var i = 0; i < _leader.length; i++){
                         if(_leader[i]._id == leader._id) {
-                            _leader.splice(i,1);
+                            $scope.team_lists[$scope.team_index].leader.splice(i,1);
                         }
                     }
                     $scope.team_lists[$scope.team_index].member.push({

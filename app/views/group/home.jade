@@ -1,5 +1,8 @@
 extends ../layouts/manager
 
+append headExt
+  link(rel="stylesheet" href="/css/views/photo_album.css")
+
 block baseInfo
   .dl_container.clearfix
     .aside
@@ -13,27 +16,27 @@ block baseInfo
         a.subtitle(href="/company/home/#{cid}")= cname
       .dl_row
         //签名
-        p.subtitle= sign
+        p= sign
       .dl_row
         .score_container.margin_top_5
-          span.info_border {{"TEAM_MEMBER"|translate}}
+          label.info_border {{"TEAM_MEMBER"|translate}}
           span.info_right_border= number
         .score_container.margin_top_5
-          span.info_border {{"SCORE"|translate}}
+          label.info_border {{"SCORE"|translate}}
           span.info_right_border= score
         .score_container.margin_top_5
-          span.info_border {{"WIN_RATE"|translate}}
+          label.info_border {{"WIN_RATE"|translate}}
           span.info_right_border 100%
         if (role ==='HR' || role ==='LEADER')
-          .score_container(style="margin-left:30px")
+          .score_container.margin_top_5(style="margin-left:30px")
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorSearchModel") {{"PROVOKE"|translate}}
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") {{"ARENA"|translate}}
         if (role === 'MEMBER' || role ==='LEADER')
-          .score_container
+          .score_container.margin_top_5
             button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") {{"QUIT_GROUP"|translate}}
         if (role ==='PARTNER')
-          .score_container
+          .score_container.margin_top_5
             button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
@@ -43,9 +46,6 @@ block panel
           a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"TEAM_MESSAGE"|translate}}
         li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
           a.subtitle.no_radius(href="#/group_campaign" ng-click="addactive('group_campaign')") {{"TEAM_CAMPAIGN"|translate}}
-      //移到INFO里去 Todo M
-      li.tab_style(ng-class="{'active':nowTab=='group_member'}")
-        a.subtitle.no_radius(href="#/group_member" ng-click="addactive('group_member')") {{"TEAM_MEMBER"|translate}}
       li.tab_style(ng-class="{'active':nowTab=='group_info'}")
         a.subtitle.no_radius(href="#/group_info" ng-click="addactive('group_info')") {{"TEAM_INFO"|translate}}
       li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
@@ -61,7 +61,7 @@ block panel
       div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/search_modal
     if (role ==='MEMBER' || role ==='LEADER')
-      div.modal.fade#quitGroupModel(ng-controller="MemberListController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
 block aside
 
@@ -70,8 +70,15 @@ block aside
     +group_thumbnail(selected_teams,'active',role!=='HR'?"{{'MY'|translate}}{{'TEAM'|translate}}":"{{'COMPANY'|translate}}{{'TEAM'|translate}}")
     +group_thumbnail(unselected_teams,'inactive',"{{'UNSELECTED_TEAM'|translate}}")
   if (role !=='GUESTHR' && role !=='GUEST')
-    span.subtitle.margin_top_15 {{"TEAM_ALBUM"|translate}}
-    a(href="/#{group_id}/photoAlbumListView") 更多
+    .photo_album
+      p
+        span.subtitle.margin_top_15 {{"TEAM_ALBUM"|translate}}
+        a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+      div
+        each photo_album in photo_album_thumbnails
+          a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+            img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
+            p.thumbnail_name.text-center= photo_album.name
 
 append footExt
   script(src="/js/controllers/tabviewGroup.js")

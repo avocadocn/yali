@@ -1,18 +1,18 @@
-.relative {
+.photo_album .relative {
   position: relative;
 }
-.right_down {
+.photo_album .right_down {
   position: absolute;
   right: 0;
   bottom: 0;
 }
-.text {
+.photo_album .text {
   color: #9a9a9a;
 }
-.photo_panel {
+.photo_album .photo_panel {
   margin-top: -35px;
 }
-.photo {
+.photo_album .photo {
   position: relative;
   float: left;
   margin-left: 53px;
@@ -20,10 +20,10 @@
   width: 200px;
   height: 200px;
 }
-.photo:nth-child(4n+1) {
+.photo_album .photo:nth-child(4n+1) {
   margin-left: 0;
 }
-.photo_name {
+.photo_album .photo_name {
   position: absolute;
   bottom: 0;
   margin: 0;
@@ -34,58 +34,58 @@
   color: #fff;
   text-decoration: none;
 }
-.left {
+.photo_album .left {
   position: absolute;
   top: 0;
   left: 0;
 }
-.right {
+.photo_album .right {
   position: absolute;
   top: 0;
   right: 0;
 }
-.tag:after {
+.photo_album .tag:after {
   content: '、';
 }
-.tag:last-child:after {
+.photo_album .tag:last-child:after {
   content: '';
 }
-.btn_padding {
+.photo_album .btn_padding {
   padding-left: 20px;
   padding-right: 20px;
 }
-.comment_textarea {
+.photo_album .comment_textarea {
   height: 60px;
   background-color: #fbfbfb;
   border-color: #ededed;
   border-radius: 0;
 }
-.comment {
+.photo_album .comment {
   position: relative;
   margin-top: 20px;
 }
-.comment .comment_user_info {
+.photo_album .comment .comment_user_info {
   float: left;
 }
-.comment .comment_user_info .user_photo {
+.photo_album .comment .comment_user_info .user_photo {
   width: 50px;
   height: 50px;
 }
-.comment .comment_user_info .user_name {
+.photo_album .comment .comment_user_info .user_name {
   text-decoration: none;
 }
-.comment .comment_content_panel {
+.photo_album .comment .comment_content_panel {
   float: left;
   margin-left: 20px;
 }
-.comment .comment_content_panel .comment_content {
+.photo_album .comment .comment_content_panel .comment_content {
   padding: 10px;
   background-color: #fbfbfb;
   border: solid 1px #ededed;
   width: 450px;
   min-height: 50px;
 }
-.triangle {
+.photo_album .triangle {
   position: absolute;
   top: 16px;
   height: 0px;
@@ -95,7 +95,7 @@
   border-style: solid;
   border-color: transparent #fbfbfb transparent transparent;
 }
-.triangle_border {
+.photo_album .triangle_border {
   position: absolute;
   top: 15px;
   height: 0px;
@@ -105,38 +105,55 @@
   border-style: solid;
   border-color: transparent #ededed transparent transparent;
 }
-.tags_input {
+.photo_album .tags_input {
   background-color: #fbfbfb;
   border-color: #ededed;
   border-radius: 0;
 }
-.photo_detail_container {
+.photo_album .photo_detail_container {
   margin-bottom: 30px;
 }
-.btn_create {
+.photo_album .btn_create {
   padding-left: 10px;
   padding-right: 10px;
 }
-.photo_album_panel {
+.photo_album .photo_album_panel {
   display: block;
   width: 202px;
   border: solid 1px #ededed;
 }
-.update_info {
+.photo_album .update_info {
   width: 202px;
 }
-.update_info .update_user_photo {
+.photo_album .update_info .update_user_photo {
   float: left;
   width: 36px;
   height: 36px;
   margin-left: 5px;
   margin-right: 10px;
 }
-.update_info .update_user_name {
+.photo_album .update_info .update_user_name {
   display: block;
   color: #5b6272;
   margin-bottom: 1px;
 }
-.photo_album_container {
+.photo_album .photo_album_container {
   margin-bottom: 40px;
+}
+.photo_album .thumbnail_cell {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+}
+.photo_album .thumbnail_cell:nth-child(2n) {
+  margin-left: 20px;
+}
+.photo_album .thumbnail_cell .thumbnail_img {
+  width: 120px;
+  height: 120px;
+}
+.photo_album .thumbnail_cell .thumbnail_name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -371,7 +371,7 @@ exports.saveGroup = function(req, res) {
             companyGroup.group_type = selected_group.group_type;
             companyGroup.entity_type = selected_group.entity_type;
             companyGroup.name = req.body.tname;
-            companyGroup.logo = '/img/icons/group/' + selected_group.entity_type +'_on.png';
+            companyGroup.logo = '/img/icons/group/' + selected_group.entity_type.toLowerCase() +'_on.png';
 
             companyGroup.save(function (err){
                 if (err) {
@@ -1184,9 +1184,10 @@ exports.editLogo = function(req, res) {
   var _company = req.user;
   Company.findOne({ _id: _company._id }).exec(function(err, company) {
     res.render('company/edit_logo', {
-      logo: company.info.logo,
-      id: company._id,
-      role: req.session.role
+        logo: company.info.logo,
+        id: company._id,
+        nav_logo: req.user.info.logo,
+        nav_name:req.user.info.name
     });
   });
 

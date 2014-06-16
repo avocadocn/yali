@@ -51,15 +51,21 @@ var Campaign = new Schema({
         required: true
     },
     content: {//简介
-        type: String,
-        required: true
+        type: String
     },
 
     location: {//地点
         type: String,
         required: true
     },
-
+    min_number: {//最少人数
+        type:Number,
+        default: 0
+    },
+    max_number: {//人数上限
+        type:Number,
+        default: 0
+    },
     photo_album: {
         type: Schema.Types.ObjectId,
         ref: 'PhotoAlbum'
@@ -71,8 +77,9 @@ var Campaign = new Schema({
         type: Date,
         default: Date.now()
     },
-    start_time: Date,
-    end_time: Date,
+    start_time: Date,   //活动开始开始时间
+    end_time: Date，     //结束时间
+    due_time:Date,      //报名截止时间 默认为活动开始时间
     provoke: {                        //约战活动
         competition_format: String,   //赛制
         active: {

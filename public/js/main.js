@@ -147,7 +147,10 @@ app.config(['$translateProvider',
       YOU : "您",
       ALREADY : "已经",
       SUCCESS : "成功",
-      THIS : "该"
+      THIS : "该",
+      OTHER :"其他",
+      OPTIONAL:"可选",
+      OPTION :"选项"
     });
     $translateProvider.translations('jp-jp', {
       I:"私",
@@ -283,7 +286,10 @@ app.config(['$translateProvider',
       NO_CAMPAIGN : "現在まだ活動",
       L_CHANGE : "言語",
       L_ZH :"中国語",
-      L_JP :"日本語"
+      L_JP :"日本語",
+      OTHER :"その他",
+      OPTIONAL:"オプショナル",
+      OPTION :"オプション"
     });
 
     /*通过文件调用语言文件

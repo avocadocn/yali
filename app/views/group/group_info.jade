@@ -50,24 +50,20 @@ div(ng-controller="infoController")
       h5.pull-left 成员信息
     hr.margin_top_6
 
-    //- span.subtitle(ng-if="!company") {{"TEAM_LEADER"|translate}}
-    //- .dl_row(ng-if="!company")
-    //-   .col-md-2(ng-repeat="leader in leaders")
-    //-     a(href="/users/home/{{leader._id}}")
-    //-       img.center-block.size_56(ng-src='{{leader.photo}}')
-    //-     a(href="/users/home/{{leader._id}}").text-center {{leader.nickname}}
-    //- span.subtitle {{"MEMBER"|translate}}
-    //- .dl_row
-    //-   .col-md-2(ng-repeat="member in members")
-    //-     span(ng-if="company")
-    //-       img.center-block.size_56(ng-click="userDetail($index)" ng-src='{{member.photo}}' data-toggle="modal" data-target="#sponsorUserDetailModel")
-    //-     span(ng-if="company")
-    //-       a.center-block(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel") {{member.realname}}
-    //-     span(ng-if="!company")
-    //-       a(href="/users/home/{{member._id}}")
-    //-         img.center-block.size_56(ng-src='{{member.photo}}')
-    //-     span(ng-if="!company")
-    //-       a.center-block(href="/users/home/{{member._id}}") {{member.nickname}}
+    span.subtitle {{"TEAM_LEADER"|translate}}
+    .dl_row.clearfix
+      .col-md-2(ng-repeat="leader in leaders")
+        a(href="/users/home/{{leader._id}}")
+          img.center-block.size_56(ng-src='{{leader.photo}}')
+        a(href="/users/home/{{leader._id}}").text-center {{leader.nickname}}
+    span.subtitle {{"MEMBER"|translate}}
+    .dl_row.clearfix
+      .col-md-2(ng-repeat="member in members")
+        span
+          a(href="/users/home/{{member._id}}")
+            img.center-block.size_56(ng-src='{{member.photo}}')
+        span
+          a.center-block(href="/users/home/{{member._id}}") {{member.nickname}}
 
     //- 此部分逻辑未做 暂时隐藏
     //- .row.dl_row
@@ -93,7 +89,7 @@ div(ng-controller="infoController")
     //-     span.info_label.control-label {{"RATE" | translate}}
     //-   .col-md-5.col-sm-10.col-xs-10
     //-     span.info_label 0
-    .dl_row
+    .dl_row.clearfix
       h5.pull-left {{"FAMILY" | translate}}
     hr.margin_top_6
     img.img-responsive.img-thumbnail.size_family.img_contain(src="")
