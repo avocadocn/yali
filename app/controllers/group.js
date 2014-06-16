@@ -1105,11 +1105,21 @@ exports.editLogo = function(req, res) {
     return res.send(403,forbidden);
   }
   CompanyGroup.findOne({ _id: req.session.nowtid  }).exec(function(err, company_group) {
+    var nav_logo, nav_name;
+    if (req.session.role === 'HR' || req.session.role === 'GUESTHR') {
+      nav_logo = req.user.info.logo;
+      nav_name = req.user.info.name;
+    } else {
+      nav_logo = req.user.photo;
+      nav_name = req.user.nickname;
+    }
+
     res.render('group/editLogo', {
       logo: company_group.logo,
+      nav_logo: nav_logo,
+      nav_name: nav_name,
       id: company_group._id,
-      head_nickname : req.user.nickname,
-      head_photo : req.user.photo
+      role: req.session.role
     });
   });
 

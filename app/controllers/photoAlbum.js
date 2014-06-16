@@ -21,10 +21,6 @@ var config = require('../../config/config');
 
 
 
-
-
-
-
 var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   var first_photo;
   for (var i = 0; i < photo_album.photos.length; i++) {
