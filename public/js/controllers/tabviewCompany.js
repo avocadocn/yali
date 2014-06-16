@@ -358,6 +358,32 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
      };
 
+    $scope.search = function () {
+        $scope.member_backup = $scope.team_lists[$scope.team_index].member;
+        var find = false;
+        $scope.team_lists[$scope.team_index].member = [];
+        for(var i = 0; i < $scope.member_backup.length; i ++) {
+            if($scope.member_backup[i].nickname.indexOf($scope.member_search) > -1){
+                $scope.team_lists[$scope.team_index].member.push($scope.member_backup[i]);
+                find = true;
+            }
+        }
+        if(!find){
+            $scope.team_lists[$scope.team_index].member = $scope.member_backup;
+            $scope.member_backup = [];
+            $rootScope.donlerAlert("未找到组员!");
+        }else{
+            $rootScope.donlerAlert("找到"+$scope.team_lists[$scope.team_index].member.length+"名组员!");
+        }
+    }
+    $scope.recover = function(){
+        if($scope.member_backup){
+            if($scope.member_backup.length > 0){
+                $scope.team_lists[$scope.team_index].member = $scope.member_backup;
+            }
+        }
+    }
+
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
         $scope.team_index = index;

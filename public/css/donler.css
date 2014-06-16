@@ -112,7 +112,25 @@ select {
 .dl_btn_right {
   width: 75px;
   margin-top: 3px;
+  color: #fff;
+  border-style: solid;
+  line-height: 1;
+  position: relative;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px 0;
+  display: inline-block;
   background-color: #f20;
+  border-color: #f20;
+  cursor: pointer;
+}
+.dl_btn_right:hover {
+  background-color: #8f5248;
+  border-color: #8f5248;
+}
+.dl_btn_right:disabled {
+  opacity: 0.55;
 }
 .dl_vertical {
   line-height: 250%;
