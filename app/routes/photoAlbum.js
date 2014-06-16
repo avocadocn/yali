@@ -12,7 +12,7 @@ module.exports = function(app) {
 
   var authorize = photoAlbum.authorize;
 
-  app.post('/photoAlbum', authorize, photoAlbum.ownerFilter, photoAlbum.createPhotoAlbum);
+  app.post('/photoAlbum', authorize, photoAlbum.createAuth, photoAlbum.ownerFilter, photoAlbum.createPhotoAlbum);
   app.get('/photoAlbum/:photoAlbumId', photoAlbum.readPhotoAlbum);
   app.put('/photoAlbum/:photoAlbumId', authorize, photoAlbum.updatePhotoAlbum)
   app.delete('/photoAlbum/:photoAlbumId', authorize, photoAlbum.deletePhotoAlbum);

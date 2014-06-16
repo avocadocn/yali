@@ -8,6 +8,7 @@ var crypto = require('crypto');
 // mongoose and models
 var mongoose = require('mongoose');
 var PhotoAlbum = mongoose.model('PhotoAlbum');
+var Company = mongoose.model('Company');
 var CompanyGroup = mongoose.model('CompanyGroup');
 
 // 3rd
@@ -17,6 +18,67 @@ var async = require('async');
 
 // custom
 var config = require('../../config/config');
+
+
+// photo_album need populate owner_company_group
+function photoEditAuth(user, photo_album, photo) {
+  // 照片的上传者
+  if (user._id.toString() === photo.upload_user._id.toString()) {
+    return true;
+  }
+
+  // 该照片所属组的组长
+  var leaders = photo_album.owner_company_group.leader;
+  for (var i = 0; i < leaders.length; i++) {
+    if (user._id.toString() === leaders[i]._id.toString()) {
+      return true;
+    }
+  }
+
+  // 该照片所属公司的HR
+  if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+    return true;
+  }
+
+  return false;
+
+}
+
+// photo_album need populate owner_company_group
+function photoAlbumEditAuth(user, photo_album) {
+  // 该照片所属组的组长
+  var leaders = photo_album.owner_company_group.leader;
+  for (var i = 0; i < leaders.length; i++) {
+    if (user._id.toString() === leaders[i]._id.toString()) {
+      return true;
+    }
+  }
+
+  // 该照片所属公司的HR
+  if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+    return true;
+  }
+
+  return false;
+}
+
+// photo_album need populate owner_company_group
+function photoUploadAuth(user, photo_album) {
+  // 该照片所属组的成员
+  var members = photo_album.owner_company_group.member;
+  for (var i = 0; i < members.length; i++) {
+    if (user._id.toString() === members[i]._id.toString()) {
+      return true;
+    }
+  }
+
+  // 该照片所属公司的HR
+  if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+    return true;
+  }
+
+  return false;
+}
 
 
 
@@ -64,7 +126,10 @@ function getShowPhotos(photo_album) {
 function photoAlbumProcess(res, _id, process) {
   if (validator.isAlphanumeric(_id)) {
 
-    PhotoAlbum.findOne({ _id: _id }).exec(function(err, photo_album) {
+    PhotoAlbum
+    .findOne({ _id: _id })
+    .populate('owner_company_group')
+    .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
         res.send({ result: 0, msg: '获取相册信息失败' });
@@ -85,7 +150,10 @@ function photoAlbumProcess(res, _id, process) {
 function photoProcess(res, pa_id, p_id, process) {
   if (validator.isAlphanumeric(pa_id) && validator.isAlphanumeric(p_id)) {
 
-    PhotoAlbum.findOne({ _id: pa_id }).exec(function(err, photo_album) {
+    PhotoAlbum
+    .findOne({ _id: pa_id })
+    .populate('owner_company_group')
+    .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
         res.send({ result: 0, msg: '获取照片失败' });
@@ -151,7 +219,7 @@ exports.authorize = function(req, res, next) {
 };
 
 exports.ownerFilter = function(req, res, next) {
-  switch (req.body.owner) {
+  switch (req.body.owner_model) {
     case 'company_group':
       mongoose.model('CompanyGroup')
       .findOne({ _id: req.body.owner_id })
@@ -170,10 +238,70 @@ exports.ownerFilter = function(req, res, next) {
   }
 };
 
+exports.createAuth = function(req, res, next) {
+  Company
+  .findById(req.body.cid)
+  .exec()
+  .then(function(company) {
+    if (!company) {
+      res.send(403);
+    }
+
+    var gids = [];
+    company.team.forEach(function(team) {
+      gids.push(team.id.toString());
+    });
+    var index = gids.indexOf(req.body.gid);
+    if (index === -1) {
+      res.send(403);
+    }
+
+    var auth = false;
+    if (req.user.provider === 'company' && req.user._id.toString() === company._id.toString()) {
+      auth = true;
+    }
+
+
+    CompanyGroup
+    .findById(gids[index])
+    .exec()
+    .then(function(company_group) {
+      if (!company_group) {
+        res.send(403);
+      }
+      var leaders = company_group.leader;
+      for (var i = 0; i < leaders.length; i++) {
+        if (req.user._id.toString() === leaders[i]._id.toString()) {
+          auth = true;
+        }
+      }
+      if (auth === false) {
+        res.send(403);
+      } else {
+        next();
+      }
+
+
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.send(500);
+    });
+
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
 
 exports.createPhotoAlbum = function(req, res) {
+
   var photo_album = new PhotoAlbum({
     owner: req.owner,
+    owner_company: req.body.cid,
+    owner_company_group: req.body.gid,
     name: req.body.name,
     create_user: {
       _id: req.user._id,
@@ -184,36 +312,26 @@ exports.createPhotoAlbum = function(req, res) {
       nickname: req.user.nickname
     }
   });
+  if (!fs.mkdirSync(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()))) {
+    res.send({ result: 0, msg: '创建相册失败' });
+  }
+
   photo_album.save(function(err) {
     if (err) {
       console.log(err);
       res.send({ result: 0, msg: '创建相册失败' });
     } else {
 
-      async.waterfall([
-        function(callback) {
-          fs.mkdir(config.root + '/public/img/photo_album/' + photo_album._id, function(err) {
-            if (err) callback(err);
-            else {
-              callback(null);
-            }
-          });
-        },
-        function(callback) {
-          req.model.photo_album_list.push(photo_album._id);
-          req.model.save(function(err) {
-            if (err) callback(err);
-            else {
-              delete req.model;
-              delete req.owner;
-              return res.send({ result: 1, msg: '创建相册成功' });
-            }
-          });
-        }
-      ], function(err, result) {
+      req.model.photo_album_list.push(photo_album._id);
+      req.model.save(function(err) {
         if (err) {
           console.log(err);
           res.send({ result: 0, msg: '创建相册失败' });
+        }
+        else {
+          delete req.model;
+          delete req.owner;
+          return res.send({ result: 1, msg: '创建相册成功' });
         }
       });
 
@@ -249,6 +367,9 @@ exports.updatePhotoAlbum = function(req, res) {
   var new_name = req.body.name;
 
   photoAlbumProcess(res, _id, function(photo_album) {
+    if (photoAlbumEditAuth(req.user, photo_album) === false) {
+      res.send(403);
+    }
     if (photo_album.hidden === false) {
       photo_album.name = new_name;
       photo_album.save(function(err) {
@@ -267,10 +388,16 @@ exports.updatePhotoAlbum = function(req, res) {
 exports.deletePhotoAlbum = function(req, res) {
   var _id = req.params.photoAlbumId;
   if (validator.isAlphanumeric(_id)) {
-    PhotoAlbum.findOne({ _id: _id }).exec(function(err, photo_album) {
+    PhotoAlbum.findOne({ _id: _id })
+    .populate('owner_company_group')
+    .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
       } else if(photo_album) {
+
+        if (photoAlbumEditAuth(req.user, photo_album) === false) {
+          res.send(403);
+        }
         photo_album.hidden = true;
         photo_album.save(function(err) {
           if (err) { console.log(err); }
@@ -296,9 +423,15 @@ exports.createPhoto = function(req, res) {
     if (photos.size) {
       photos = [photos];
     }
-    console.log(photos)
 
-    PhotoAlbum.findOne({ _id: pa_id }).exec(function(err, photo_album) {
+    PhotoAlbum
+    .findOne({ _id: pa_id })
+    .populate('owner_company_group')
+    .exec(function(err, photo_album) {
+
+      if (photoUploadAuth(req.user, photo_album) === false) {
+        return res.send(403);
+      }
 
       var i = 0;
 
@@ -414,6 +547,11 @@ exports.updatePhoto = function(req, res) {
   var p_id = req.params.photoId;
 
   photoProcess(res, pa_id, p_id, function(photo_album, photo) {
+
+    if (photoEditAuth(req.user, photo_album, photo) === false) {
+      res.send(403);
+    }
+
     if (photo.hidden === false) {
       if (req.body.text) {
         photo.comments.push({
@@ -452,7 +590,10 @@ exports.deletePhoto = function(req, res) {
 
   if (validator.isAlphanumeric(pa_id) && validator.isAlphanumeric(p_id)) {
 
-    PhotoAlbum.findOne({ _id: pa_id }).exec(function(err, photo_album) {
+    PhotoAlbum
+    .findOne({ _id: pa_id })
+    .populate('owner_company_group')
+    .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
         res.send({ result: 0, msg: '删除照片失败' });
@@ -461,6 +602,11 @@ exports.deletePhoto = function(req, res) {
         for (var i = 0; i < photos.length; i++) {
           // 此处需要类型转换后再比较, p_id:String, photos[i]._id:Object
           if (p_id == photos[i]._id) {
+
+            if (photoEditAuth(req.user, photo_album, photos[i]) === false) {
+              res.send(403);
+            }
+
             photos[i].hidden = true;
             photo_album.save(function(err) {
               if (err) {
@@ -518,7 +664,8 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
           realname: req.user.realname,
           role: req.session.role,
           owner_id: company_group._id,
-          owner_name: company_group.name
+          owner_name: company_group.name,
+          cid: company_group.cid
         });
       })
       .then(null, function(err) {

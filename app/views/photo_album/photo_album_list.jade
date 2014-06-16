@@ -11,8 +11,10 @@ block contentExt
         | &nbsp;
         a.small(href="/group/home/#{owner_id}") 返回
       form.js_ajax_form.pull-right(action="/photoAlbum" method="post")
-        input(type="hidden" name="owner" value="company_group")
+        input(type="hidden" name="owner_model" value="company_group")
         input(type="hidden" name="owner_id" value="#{owner_id}")
+        input(type="hidden" name="cid" value="#{cid}")
+        input(type="hidden" name="gid" value="#{owner_id}")
         input(type="text" name="name" required)
         button.dl_btn.btn_create(type="submit") 新建相册
       .clearfix

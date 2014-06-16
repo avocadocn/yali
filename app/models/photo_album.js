@@ -49,6 +49,14 @@ var PhotoAlbum = new Schema({
     _id: Schema.Types.ObjectId,
     model: String
   },
+  owner_company: {
+    type: Schema.Types.ObjectId,
+    ref: 'Company'
+  },
+  owner_company_group: {
+    type: Schema.Types.ObjectId,
+    ref: 'CompanyGroup'
+  },
   name: {
     type: String,
     default: '相册'
