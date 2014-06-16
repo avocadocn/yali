@@ -1,5 +1,8 @@
 extends ../layouts/user_base
 
+append headExt
+  link(rel="stylesheet" href="/css/views/photo_album.css")
+
 block contentExt
   .dl_detail_container.clearfix(ng-controller="campaignController")
     .dl_detail_main
@@ -33,11 +36,14 @@ block contentExt
     .dl_detail_side
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         img.img_contain.size_map
-      p.subtitle {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
+      p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
+        a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
       if (role!=='PARTNER')
-        .dl_row
-          a.dl_btn.dl_btn_upload(href="/photoAlbumDetailView/#{campaign.photo_album}") 上传活动照片
-
+        .photo_album
+          each photo in photo_thumbnails
+            a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")
+              img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
+              p.thumbnail_name.text-center= photo.name
 
 append footExt
   script(src="/js/controllers/campaign.js")

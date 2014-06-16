@@ -40,6 +40,21 @@ var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   }
 };
 
+// 一个相册的照片缩略图
+var photoThumbnailList = exports.photoThumbnailList = function(photo_album) {
+  var photo_list = [];
+  for (var i = 0; i < photo_album.photos.length; i++) {
+    if (photo_album.photos[i].hidden === false) {
+      photo_list.push(photo_album.photos[i]);
+      if (photo_list.length === 4) {
+        break;
+      }
+    }
+  }
+  return photo_list;
+};
+
+
 function getShowPhotos(photo_album) {
   var photos = [];
   for (var i = 0; i < photo_album.photos.length; i++) {

@@ -64,6 +64,7 @@
 .dl_doc .about .about_card {
   padding: 0;
   float: left;
+  width: 426px;
 }
 .dl_doc .about .about_card .card {
   display: block;

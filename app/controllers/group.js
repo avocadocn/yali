@@ -918,16 +918,19 @@ exports.renderCampaignDetail = function(req, res) {
   req.session.nowcampaignid = req.params.campaignId;
   Campaign
   .findById(req.params.campaignId)
+  .populate('photo_album')
   .exec()
   .then(function(campaign) {
     if (!campaign) {
       throw 'not found';
     }
+
     res.render('campaign/campaign_detail', {
       campaign: campaign,
       role: req.session.role,
       nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
-      nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo
+      nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo,
+      photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album),
     });
   })
   .then(null, function(err) {

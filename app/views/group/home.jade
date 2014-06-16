@@ -81,7 +81,7 @@ block aside
         each photo_album in photo_album_thumbnails
           a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
             img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
-            p.text-center= photo_album.name
+            p.thumbnail_name.text-center= photo_album.name
 
 append footExt
   script(src="/js/controllers/tabviewGroup.js")
