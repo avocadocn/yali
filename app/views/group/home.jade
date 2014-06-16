@@ -46,9 +46,6 @@ block panel
           a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"TEAM_MESSAGE"|translate}}
         li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
           a.subtitle.no_radius(href="#/group_campaign" ng-click="addactive('group_campaign')") {{"TEAM_CAMPAIGN"|translate}}
-      //移到INFO里去 Todo M
-      li.tab_style(ng-class="{'active':nowTab=='group_member'}")
-        a.subtitle.no_radius(href="#/group_member" ng-click="addactive('group_member')") {{"TEAM_MEMBER"|translate}}
       li.tab_style(ng-class="{'active':nowTab=='group_info'}")
         a.subtitle.no_radius(href="#/group_info" ng-click="addactive('group_info')") {{"TEAM_INFO"|translate}}
       li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
@@ -64,7 +61,7 @@ block panel
       div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/search_modal
     if (role ==='MEMBER' || role ==='LEADER')
-      div.modal.fade#quitGroupModel(ng-controller="MemberListController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
 block aside
 

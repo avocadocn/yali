@@ -28,11 +28,6 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
-      .when('/group_member', {
-        templateUrl: '/group/getMembers',
-        controller: 'MemberListController',
-        controllerAs: 'member'
-      })
       .when('/group_info', {
         templateUrl: '/group/renderInfo',
         controller: 'infoController',
@@ -479,27 +474,6 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     };
 }]);
 
-tabViewGroup.controller('MemberListController', ['$http','$scope','$rootScope', function($http,$scope,$rootScope) {
-
-    $scope.$watch('teamId',function(tid){
-        $http.get('/group/getGroupMembers/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
-            if(data.result==1){
-                $scope.members = data.data.member;
-                $scope.leaders = data.data.leader;
-                $scope.company = false;
-            }
-        });
-
-    });
-
-    $scope.userDetail = function(index) {
-        $scope.num = index;
-    };
-
-
-
-}]);
-
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
@@ -518,18 +492,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.members = data.companyGroup.member;
         });
     });
-
-    $scope.$watch('teamId',function(tid){
-        $http.get('/group/getGroupMembers/'+tid+'?' + Math.round(Math.random()*100)).success(function(data, status) {
-            if(data.result==1){
-                $scope.members = data.data.member;
-                $scope.leaders = data.data.leader;
-                $scope.company = false;
-            }
-        });
-
-    });
-
 
     $scope.editToggle = function() {
         $scope.unEdit = !$scope.unEdit;
