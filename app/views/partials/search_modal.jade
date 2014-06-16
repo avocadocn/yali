@@ -6,62 +6,44 @@
           img(ng-src='/img/icons/icon_close.png')
         .head#myModalLabel {{"SEARCH"|translate}}{{"COMPETITOR"|translate}}
       .dl-modal-body
-        .dl_row
-          span.subtitle 按公司名搜索
-        .dl_row.clearfix
-          .dl_modal_input_container
-          input.dl_form-control(type="text" name="s_company" ng-model="s_company" )
-          a.btn.btn-success.pull-right(ng-click="getCompany(s_company)" ng-disabled="s_company == '' || s_company == undefined") {{"SEARCH"|translate}}
- 
-        .row.margin_top_15
-        .row
-          .col-md-2
-          .col-md-7
-            select.dl_form-control.chzn-select(data-placeholder="Choose a Company..." tabindex="2" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getSelectTeam(company_selected._id)" required)
-              option(value="") {{company_available}}
-        .row
-          .col-md-2
-          .col-md-7
-            select.dl_form-control.chzn-select(data-placeholder="Choose a Company..." tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_company" ng-change="provoke_select(team_selected)" required)
-              option(value="") {{team_available_A}}
-
-        .row 按小队搜索
-          hr
-        .row
-          label.col-md-2 请输入{{"TEAM"|translate}}名:
-          .col-md-7
-            input.dl_form-control(type="text" name="s_team" ng-model="s_team" )
-          a.btn.btn-success.col-md-2(ng-click="getTeam(s_team)" ng-disabled="s_team == '' || s_team == undefined") {{"SEARCH"|translate}}{{"TEAM"|translate}}
-        .row.margin_top_15
-          .col-md-2
-          .col-md-7
-            select.dl_form-control.chzn-select(data-placeholder="Choose a Company..." tabindex="2" ng-model="team_selected" ng-options="team.name for team in teams_for_team" ng-change="provoke_select(team_selected)" required)
-              option(value="") {{team_available_B}}
-      .modal-body
-        .row(ng-if="team_selected")
-          .col-md-2.col-sm-2.col-xs-3
-            img.img-responsive.img-thumbnail.img_contain(ng-src="{{team_selected.logo}}" width="128px")
-          .col-md-10.col-sm-10.col-xs-9
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-2.padding_0
-                span.info_label.control-label {{"TEAM_NAME"|translate}}
-              .col-md-8.col-sm-8.col-xs-4.padding_0
-                span.info_label.control-label {{team_selected.name}}
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-2.padding_0
-                span.info_label.control-label {{"TYPE"|translate}}
-              .col-md-8.col-sm-8.col-xs-8.padding_0
-                span.info_label.control-label {{team_selected.group_type}}
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-2.padding_0
-                span.info_label.control-label {{"SCORE"|translate}}
-              .col-md-8.col-sm-8.col-xs-8.padding_0
-                span.info_label.control-label {{team_selected.score}}
-            .row.dl_row
-              .col-md-2.col-sm-2.col-xs-2.padding_0
-                span.info_label.control-label {{"SUM"|translate}}
-              .col-md-8.col-sm-8.col-xs-8.padding_0
-                span.info_label.control-label {{team_selected.member.length}}
-      .modal-footer
-        button.btn.dl_btn.dl_btn_large(ng-click='showProvoke()' ng-disabled="!team_selected" data-dismiss="modal") {{"CONFIRM"|translate}}
-        button.btn.dl_btn.cancel_btn.dl_btn_large(data-dismiss="modal") {{"CANCEL"|translate}}
+        br
+        .dl_modal_container
+          .dl_row
+            .dl_md_12
+              input.dl_modal_input.form-control(type="text" ng-model="s_value" required)
+            .dl_md_1
+              button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="search_form.$invalid") 搜索
+        .dl_modal_container
+          .dl_row
+            .dl_md_1
+              input(type="radio" name="search_type" ng-model="search_type" value="company")
+              a 按公司搜索
+            .dl_md_1
+              input(type="radio" name="search_type" ng-model="search_type" value="team")
+              a 按小队搜索
+        .dl_modal_container.margin_top_15
+          .dl_row
+            h4 搜索结果
+        .dl_modal_container(ng-if="company_first")
+          .dl_row
+            .dl_md_1
+              h5 公司
+            .dl_md_12
+              select.dl_modal_input.form-control(type="text" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getSelectTeam(company_selected._id)")
+        .dl_modal_container(ng-if="team_find")
+          .dl_row(style="height:93px" ng-repeat="team in teams")
+            .dl_md_1
+              img.size_80(ng-src="{{team.logo}}")
+            .dl_md_10.margin_left_5
+              .row.margin_left_15
+                h5 {{team.name}}
+              .row.margin_left_10
+                .dl_md_3
+                  h5 队员人数:{{team.member.length}}
+                .dl_md_3
+            .dl_md_1
+              a.clearLinkUnderline.dl_btn_right(ng-click="provoke_select(team)") 挑衅
+      br
+      br
+      .dl-modal-footer.margin_top_20
+        button.dl_btn.dl_btn_large(data-dismiss="modal") {{"CANCEL"|translate}}

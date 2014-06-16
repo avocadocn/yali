@@ -161,8 +161,18 @@ select {
 .dl_vertical {
   line-height: 250%;
 }
+.dl_md_3 {
+  width: 24%;
+  margin-left: 5px;
+  float: left;
+}
 .dl_md_1 {
   width: 12%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_md_2 {
+  width: 14%;
   margin-left: 5px;
   float: left;
 }
@@ -434,6 +444,12 @@ select {
 }
 .margin_top_123 {
   margin-top: 123px;
+}
+.margin_left_10 {
+  margin-left: 10px;
+}
+.margin_left_15 {
+  margin-left: 15px;
 }
 .margin_left_20 {
   margin-left: 20px;

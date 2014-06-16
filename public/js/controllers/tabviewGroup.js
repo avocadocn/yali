@@ -51,14 +51,16 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
 tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.companies = -1;
-    $rootScope.teams_for_company = -1;
-    $rootScope.teams_for_team = -1;
+    $rootScope.teams = -1;
 
     $rootScope.company_first = false;
     $rootScope.team_first = false;
 
-    $rootScope.s_company = "";
-    $rootScope.s_team = "";
+    $rootScope.team_find = false;
+
+    $rootScope.s_value = "";
+
+    $rootScope.search_type="";
 
     $rootScope.company_available = "请输入公司名搜索!";
     $rootScope.team_available_A = "请输入公司名搜索!";
@@ -76,10 +78,20 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         $rootScope.nowTab = value;
     };
 
-    $rootScope.showProvoke = function() {
-        $("#sponsorProvokeModel").modal();
-    }
 
+    $rootScope.search = function() {
+        if($rootScope.search_type != "") {
+            //按公司搜索
+            if($rootScope.search_type == "company"){
+                $rootScope.getCompany();
+            //按队名搜索
+            } else {
+                $rootScope.getTeam();
+            }
+        } else {
+            $rootScope.donlerAlert('请选择一种搜索方式!');
+        }
+    }
     //约战
     $rootScope.provoke = function() {
          try {
@@ -130,23 +142,24 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         }
     };
 
-    $rootScope.getCompany =function(_tirm) {
+    $rootScope.getCompany =function() {
 
         try {
             $http({
                 method: 'post',
                 url: '/search/company',
                 data:{
-                    regx : _tirm
+                    regx : $rootScope.s_value
                 }
             }).success(function(data, status) {
                 $rootScope.companies = data;
                 var len = $rootScope.companies.length;
                 if(len > 0) {
-                    $rootScope.company_available = "找到符合条件的" + len + "个公司!";
-                    $rootScope.team_available_A = "请点击一个公司获取它的小队!";
+                    $rootScope.donlerAlert("找到符合条件的" + len + "个公司!");
+                    $rootScope.company_first = true;
+                    $rootScope.team_first = false;
                 } else {
-                    $rootScope.company_available = "没有找到符合条件的公司!";
+                    $rootScope.donlerAlert("没有找到符合条件的公司!");
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -189,12 +202,12 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                     operate:'part'
                 }
             }).success(function(data, status) {
-                $rootScope.teams_for_company = data;
-                var len = $rootScope.teams_for_company.length;
+                $rootScope.teams = data;
+                var len = $rootScope.teams.length;
                 if(len > 0 ) {
-                    $rootScope.team_available_A = "该公司一共有同类型的" + len + "个小队!";
+                    $rootScope.team_find = true;
                 } else {
-                    $rootScope.team_available_A = "该公司没有符合条件的小队!";
+                    $rootScope.team_find = false;
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -205,24 +218,25 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         }
     }
 
-    $rootScope.getTeam = function (_tirm) {
+    $rootScope.getTeam = function () {
         try {
             $http({
                 method: 'post',
                 url: '/search/team',
                 data:{
-                    regx : _tirm,
+                    regx : $rootScope.s_value,
                     gid : $rootScope.groupId,
                     tid : $rootScope.teamId,
                     operate:'all'
                 }
             }).success(function(data, status) {
-                $rootScope.teams_for_team = data;
-                var len = $rootScope.teams_for_team.length;
+                $rootScope.teams = data;
+                var len = $rootScope.teams.length;
                 if(len > 0) {
-                    $rootScope.team_available_B = "一共找到符合条件的"+ len +"个小队!";
+                    $rootScope.team_find = true;
                 } else {
-                    $rootScope.team_available_B = "没有符合条件的小队!";
+                    $rootScope.team_find = false;
+                    $rootScope.donlerAlert("没有找到符合条件的小组!");
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -235,6 +249,8 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 
     $rootScope.provoke_select = function (team) {
         $rootScope.team_opposite = team;
+        $("#sponsorSearchModel").modal('hide');
+        $("#sponsorProvokeModel").modal('show');
     };
 
     //加入小队
