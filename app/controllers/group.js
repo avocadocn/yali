@@ -63,9 +63,14 @@ exports.authorize = function(req, res, next) {
     }
   }
   else{
-    req.session.role = 'GUEST';
+    if(req.user.role == 'LEADER'){
+      req.session.role = 'GUESTLEADER';
+    }else{
+      req.session.role = 'GUEST';
+    }
   }
   req.session.nowtid = req.params.teamId;
+  req.session.nowgid = req.companyGroup.gid;
   next();
 };
 //返回组件模型里的所有组件(除了虚拟组),待HR选择
@@ -364,16 +369,26 @@ exports.home = function(req, res) {
 
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyGroups = function(req, res) {
-  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1,'active':1}, function(err, teams) {
+  var provoke_gid = '-1';
+  var provoke_tid = '-1';
+  if(req.session.nowgid != undefined && req.session.nowgid != null){
+    provoke_gid = req.session.nowgid;
+  }
+  if(req.session.nowtid != undefined && req.session.nowtid != null){
+    provoke_tid = req.session.nowtid;
+  }
+  console.log(provoke_tid,provoke_gid);
+  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'cid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1,'active':1}, function(err, teams) {
     if(err || !teams) {
       return res.send([]);
     } else {
-      console.log(teams);
       return res.send({
         'teams':teams,
         'group' : req.user.group,
         'cid':req.session.nowcid,
-        'role':req.session.role
+        'role':req.session.role,
+        'provoke_gid' : provoke_gid,   //进对方公司资料对其小队进行挑战时判断小队类型
+        'provoke_tid' : provoke_tid
       });
     }
   });
@@ -539,8 +554,9 @@ exports.campaignCancel = function (req, res) {
 
 //约战
 exports.provoke = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
+  if(req.session.role !=='HR' && req.session.role !=='LEADER' && req.session.role !=='GUESTLEADER' && req.session.role !=='GUESTLEADER'){
+    console.log(req.session.role);
+    return res.send(403,'forbidden');
   }
 
   console.log('嘿嘿');
@@ -1089,7 +1105,6 @@ exports.resultConfirm = function (req, res) {
 
 
 exports.group = function(req, res, next, id) {
-  //TODO: 目前使用cid+gid获取companyGroup，需用id查询
   CompanyGroup
     .findOne({
       _id: id

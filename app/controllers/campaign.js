@@ -189,7 +189,7 @@ exports.campaignCancel = function (req, res) {
 
 exports.getAllCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
-    return res.send(403,forbidden);
+    return res.send(403);
   }
   var cid = req.session.role === 'HR' ? req.user._id : req.user.cid;
   var query_regular = {'cid' : {'$all':[cid.toString()]} };

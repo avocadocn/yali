@@ -42,10 +42,14 @@ exports.authorize = function(req, res, next){
         req.session.nowcid = req.user.cid;
     }
     else{
-        req.session.role = 'GUEST';
+        if(req.user.role == 'LEADER'){
+          req.session.role = 'GUESTLEADER';
+        }else{
+          req.session.role = 'GUEST';
+        }
         req.session.nowcid = req.params.companyId;
     }
-
+    console.log(req.user._id);
     next();
 };
 /*
@@ -721,7 +725,6 @@ exports.saveGroupInfo = function(req, res){
             else{
                 res.send({'result':0,'msg':'您没进行修改'});
             }
-            
         } else {
             res.send({'result':0,'msg':'不存在小组！'});
         }
@@ -958,10 +961,14 @@ exports.appointLeader = function (req, res) {
             return res.send('ERROR');
         } else {
 
+            var l = false;
+
+            //这段代码性能很高
+            /*
             var s = true;
             for(var i =0; i< user.group.length && s; i ++) {
                 if(user.group[i]._id === gid){
-                    for(var k = 0; k < user.group.length; k ++){
+                    for(var k = 0; k < user.group[i].team.length; k ++){
                         if(user.group[i].team[k].id.toString() == tid.toString()){
                             user.group[i].team[k].leader = operate;
                             s = false;
@@ -970,7 +977,22 @@ exports.appointLeader = function (req, res) {
                     }
                 }
             }
-            user.role = 'LEADER';
+            */
+
+            //这段代码性能很低
+            for(var i =0; i< user.group.length; i ++) {
+                for(var k = 0; k < user.group[i].team.length; k ++){
+                    if(user.group[i].team[k].id.toString() == tid.toString()){
+                        user.group[i].team[k].leader = operate;
+                        l = user.group[i].team[k].leader;
+                        break;
+                    }
+                }
+            }
+
+
+            user.role = l ? 'LEADER' : 'MEMBER';
+
             user.save(function(err) {
                 if(err) {
                     return res.send('USR_ERROR');

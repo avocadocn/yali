@@ -52,6 +52,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.team_first = false;
 
     $rootScope.team_find = false;
+    $rootScope.company_find = false;
 
     $rootScope.s_value = "";
 
@@ -155,9 +156,11 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.companies = data;
                 var len = $rootScope.companies.length;
                 if(len > 0) {
-                    $rootScope.donlerAlert("找到符合条件的" + len + "个公司!");
                     $rootScope.company_first = true;
                     $rootScope.team_first = false;
+
+                    $rootScope.team_find = false;
+                    $rootScope.company_find = true;
                 } else {
                     $rootScope.donlerAlert("没有找到符合条件的公司!");
                 }
@@ -234,6 +237,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 var len = $rootScope.teams.length;
                 if(len > 0) {
                     $rootScope.team_find = true;
+                    $rootScope.company_find = false;
                 } else {
                     $rootScope.team_find = false;
                     $rootScope.donlerAlert("没有找到符合条件的小组!");

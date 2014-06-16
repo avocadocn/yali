@@ -23,7 +23,8 @@ exports.getCompany = function (req, res) {
                     companies_rst.push({
                         '_id' : companies[i]._id,
                         'name' : companies[i].info.name,
-                        'team' : companies[i].team
+                        'team' : companies[i].team,
+                        'logo' : companies[i].info.logo
                     });
                 }
                 return res.send(companies_rst);
