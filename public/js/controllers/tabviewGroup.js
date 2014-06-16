@@ -69,6 +69,10 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         $rootScope.deadline = moment(e.date).format("YYYY-MM-DD HH:mm");
         $('#competition_start_time').data("DateTimePicker").setMaxDate(e.date);
     });
+    $("#competition_due_time").on("dp.change",function (e) {
+        $rootScope.competition_date = moment(e.date).format("YYYY-MM-DD HH:mm");
+        $('#competition_due_time').data("DateTimePicker").setMinDate(e.date);
+    });
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
@@ -437,7 +441,10 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                     location: $scope.location,
                     content : $scope.content,
                     start_time : $scope.start_time,
-                    end_time : $scope.end_time
+                    end_time : $scope.end_time,
+                    min_number: $scope.min_number,
+                    max_number: $scope.max_number,
+                    due_time: $scope.due_time
                 }
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面

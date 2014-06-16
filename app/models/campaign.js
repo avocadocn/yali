@@ -78,7 +78,7 @@ var Campaign = new Schema({
         default: Date.now()
     },
     start_time: Date,   //活动开始开始时间
-    end_time: Date，     //结束时间
+    end_time: Date,     //结束时间
     due_time:Date,      //报名截止时间 默认为活动开始时间
     provoke: {                        //约战活动
         competition_format: String,   //赛制

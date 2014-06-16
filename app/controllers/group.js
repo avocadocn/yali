@@ -770,6 +770,9 @@ exports.sponsor = function (req, res) {
   var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
   var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
   var tname;
+  var min_number = req.body.min_number !== '' ? req.body.min_number : 0;
+  var max_number = req.body.max_number !== '' ? req.body.max_number : 0;
+  var due_time = req.body.due_time !== '' ? req.body.due_time : req.body.start_time;
   CompanyGroup.findOne({'_id' : tid},function (err, companyGroup){
     if(err){
       return ({'result':0,'msg':'发布错误，无此小队。'});
@@ -793,6 +796,8 @@ exports.sponsor = function (req, res) {
     campaign.poster.uid = req.user._id;
     campaign.poster.nickname = req.user.nickname;
   }
+  campaign.min_number = min_number;
+  campaign.max_number = max_number;
 
   campaign.content = content;
   campaign.location = location;
@@ -801,7 +806,7 @@ exports.sponsor = function (req, res) {
 
   campaign.start_time = req.body.start_time;
   campaign.end_time = req.body.end_time;
-
+  campaign.due_time = req.body.due_time;
   var photo_album = new PhotoAlbum({
     owner: {
       _id: campaign._id,
