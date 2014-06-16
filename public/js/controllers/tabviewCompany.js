@@ -379,7 +379,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.recover = function(){
         if($scope.member_backup){
             if($scope.member_backup.length > 0){
-                $scope.team_lists[$scope.team_index].member = $scope.member_backup;
+                $scope.users = $scope.member_backup;
             }
         }
     }
