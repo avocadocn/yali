@@ -788,11 +788,11 @@ exports.sponsor = function (req, res) {
   var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
   var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
   var tname = req.companyGroup.name;
-  var member_min = req.body.member_min !== '' ? req.body.member_min : 0;
-  var member_max = req.body.member_max !== '' ? req.body.member_max : 0;
+  var member_min = req.body.member_min ? req.body.member_min : 0;
+  var member_max = req.body.member_max ? req.body.member_max : 0;
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
-  var deadline = req.body.deadline !== '' ? req.body.deadline : start_time;
+  var deadline = req.body.deadline ? req.body.deadline : start_time;
 
   //生成活动
   var campaign = new Campaign();
