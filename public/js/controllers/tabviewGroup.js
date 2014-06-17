@@ -511,6 +511,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 }
             }).success(function(data, status) {
                 $scope.teams = data;
+                $scope.companies=[];
                 if($scope.teams.length <= 0) {
                     $rootScope.donlerAlert("没有找到符合条件的小组!");
                 }
