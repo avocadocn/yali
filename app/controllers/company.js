@@ -76,6 +76,12 @@ exports.forgetPwd = function(req, res){
     }
   });
 }
+
+//渲染修改资料页
+exports.renderChangePassword = function(req,res){
+  res.render('partials/change_passowrd');
+}
+
 exports.renderResetPwd = function(req, res){
   var key = req.query.key;
   var uid = req.query.uid;

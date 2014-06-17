@@ -69,6 +69,12 @@ exports.renderForgetPwd = function(req, res){
     title:'忘记密码'
   });
 }
+//渲染修改资料页
+exports.renderChangePassword = function(req,res){
+  res.render('partials/change_passowrd');
+}
+
+
 exports.forgetPwd = function(req, res){
   User.findOne({email: req.body.email}, function(err, user) {
     if(err || !user) {

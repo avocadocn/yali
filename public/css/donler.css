@@ -161,6 +161,17 @@ select {
 .dl_vertical {
   line-height: 250%;
 }
+.dl_pass_label {
+  width: 120px;
+  font-size: 14px;
+  color: #666;
+  float: left;
+  padding: 7px 14px;
+}
+.dl_pass_input {
+  width: 250px;
+  float: left;
+}
 .dl_height {
   height: 93px;
 }

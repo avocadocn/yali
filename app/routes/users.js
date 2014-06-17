@@ -36,6 +36,7 @@ module.exports = function(app, passport) {
     app.get('/users/getGroupMessages', authorization.requiresLogin, users.getGroupMessages);
     app.get('/users/getCampaigns', authorization.requiresLogin, users.getCampaigns);
 
+    app.get('/users/change_password',authorization.requiresLogin, users.renderChangePassword);
     app.get('/users/getAccount', authorization.requiresLogin, users.getAccount);
     app.post('/users/saveAccount', authorization.requiresLogin, users.saveAccount);
     app.post('/users/changePassword', authorization.requiresLogin, users.changePassword);

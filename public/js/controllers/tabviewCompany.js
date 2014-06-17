@@ -38,7 +38,7 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         //controllerAs: 'account'
       })
       .when('/changePassword', {
-        templateUrl: '/views/change_password.html',
+        templateUrl: '/company/change_password',
         controller: 'PasswordFormController',
         controllerAs: 'password'
       })
@@ -363,8 +363,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     }
                 }
             }
-            console.log($scope.team_lists[0].gid,$scope.provoke_gid);
-            console.log($scope.team_lists[0]._id,$scope.provoke_tid);
         });
         $scope.linkage_init_location = data.info.city;
     }).error(function(data,status) {
