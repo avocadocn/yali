@@ -31,17 +31,17 @@ block contentExt
             .dl_detail_label
               span {{"LEAST"|translate}}{{"ENTRY"|translate}}{{"SUM"|translate}}:
             .dl_detail_detail
-              span {{campaign.min_number}}
+              span {{campaign.member_min}}
           .dl_detail_row
             .dl_detail_label
               span {{"ENTRY"|translate}}{{"SUM"|translate}}{{"LIMIT"|translate}}:
             .dl_detail_detail
-              span {{campaign.max_number}}
+              span {{campaign.member_max}}
           .dl_detail_row
             .dl_detail_label
               span {{"ENTRY"|translate}}{{"DEADLINE"|translate}}:
             .dl_detail_detail
-              span {{campaign.due_time| date:'yyyy-MM-dd HH:mm'}} {{campaign.due_time | week }}
+              span {{campaign.deadline| date:'yyyy-MM-dd HH:mm'}} {{campaign.deadline | week }}
         .dl_detail_aside
             img.img_contain.size_128(ng-src="{{campaignLogo}}")
         .dl_detail_content2

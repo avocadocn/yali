@@ -345,8 +345,8 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
                     content : $scope.content,
                     start_time : $scope.start_time,
                     end_time : $scope.end_time,
-                    min_number: $scope.min_number,
-                    max_number: $scope.max_number,
+                    member_min: $scope.member_min,
+                    member_max: $scope.member_max,
                     deadline: $scope.deadline
                 }
             }).success(function(data, status) {

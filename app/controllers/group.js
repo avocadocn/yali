@@ -809,8 +809,8 @@ exports.sponsor = function (req, res) {
     campaign.poster.uid = req.user._id;
     campaign.poster.nickname = req.user.nickname;
   }
-  campaign.min_number = member_min;
-  campaign.max_number = member_max;
+  campaign.member_min = member_min;
+  campaign.member_max = member_max;
 
   campaign.content = content;
   campaign.location = location;
