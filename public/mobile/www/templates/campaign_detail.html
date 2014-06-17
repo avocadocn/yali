@@ -50,8 +50,8 @@
                 <div class="campaign_photo_ori_button_wrap">
                   <button class="icon ion-search campaign_photo_ori_button"></button>
                 </div>
-                <p class="campaign_upload_user">{{ photo.publish_user }}</p>
-                <p class="campaign_upload_date">上传于：{{ photo.publish_date | date:'yyyy-M-dd hh:mm' }}</p>
+                <p class="campaign_upload_user">{{ photo.upload_user.nickname }}</p>
+                <p class="campaign_upload_date">上传于：{{ photo.upload_date | date:'yyyy-M-dd hh:mm' }}</p>
     <!--             <button ng-click="deletePhoto(photo.pid)">删除照片</button>
                 <input type="text" ng-model="comment"/>
                 <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->

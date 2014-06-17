@@ -62,7 +62,7 @@ angular.module('starter.controllers', [])
     }
   }
 
-  $scope.photo_album_id = $scope.campaign.photo_album.pid;
+  $scope.photo_album_id = $scope.campaign.photo_album;
 
   $scope.comment = '';
 

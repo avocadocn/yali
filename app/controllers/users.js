@@ -1367,6 +1367,7 @@ exports.getCampaignsForApp = function(req, res) {
   Campaign
   .where('cid').all(user.cid)
   .populate('team')
+  .sort('-start_time')
   .exec()
   .then(function(campaigns) {
     model_helper.sendCampaignsForApp(user, campaigns, res);
