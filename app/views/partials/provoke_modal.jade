@@ -1,50 +1,79 @@
 .modal-dialog
   .dl-modal
-    form(name="provoke_form")
-      .modal-header
-        button(class="close" data-dismiss="modal" aria-hidden="true") X
-        h4.modal-title#myModalLabel 第二步: {{"SPONSOR"|translate}}{{"PROVOKE"|translate}}
-      .modal-body
-        .row.margin_top_20
-          .col-md-12
-            label 主题
-            input.dl_form-control(type="text" name="theme" ng-model="theme"  tooltip="{{provoke_form.theme.$invalid ? '请输入挑战主题':''}}" required)
-        .row.margin_top_20
-          .col-md-12
-            label {{"CONTENT"|translate}}
-            input.dl_form-control(type="text" name="content" ng-model="content"  tooltip="{{provoke_form.content.$invalid ? '请输入挑战内容':''}}")
-        .row.margin_top_20
-          .col-md-12
-            label {{"FORMATION"|translate}}
-            input.dl_form-control(type="text" name="competition_format" ng-model="competition_format" tooltip="{{provoke_form.competition_format.$invalid ? '请输入赛制':''}}" provoke_formrequired)
-        .row.margin_top_20
-          .col-md-12
-            label {{"SUM"|translate}}
-            input.dl_form-control(type="number" name="number" ng-model="number" tooltip="{{provoke_form.number.$invalid ? '请输入比赛人数':''}}" required)
-        .row.margin_top_20
-          .col-md-6
-            label {{"START_TIME"|translate}}
-            .input-group.date.form-group.margin_top_20#competition_start_time
-              input.dl_modal_input.form-control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" data-date-format="YYYY-MM-DD HH:mm"  tooltip="{{provoke_form.startTime.$invalid ? '请输入比赛开始时间':''}}" readonly required)
-              span.input-group-addon
-                span.glyphicon.glyphicon-calendar
-          .col-md-6
-            label {{"END_TIME"|translate}}
-            .input-group.date.form-group.margin_top_20#competition_end_time
-              input.dl_modal_input.form-control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-date-format="YYYY-MM-DD HH:mm"  tooltip="{{provoke_form.endTime.$invalid ? '请输入比赛结束时间':''}}" readonly required)
-              span.input-group-addon
-                span.glyphicon.glyphicon-calendar
-        .row.margin_top_20
-          .col-md-10
-            label {{"LOCATION"|translate}}
-            input.dl_form-control(type="text" name="location" ng-model="$parent.location.name" tooltip="{{provoke_form.location.name.$invalid ? '请输入比赛地点':''}}" required)
-          .col-md-2
+    form(name="provoke_form" novalidate)
+      .dl-modal-header
+        button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+        .head#myModalLabel 发起{{"PROVOKE"|translate}}
+      .dl-modal-body
+        .dl_modal_container
+            label.subtitle {{"PROVOKE"|translate}}词
+            input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在14字以内。" tooltip="{{provoke_form.theme.$invalid ? '挑战简单描述，请控制在14字以内':''}}" maxlength=14 required)
+        .dl_modal_container
+            label.subtitle 备注内容
+            textarea.dl_modal_input.form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在40字以内。" tooltip="{{provoke_form.content.$invalid ? '请输入活动内容':''}}" maxlength=40)
+        .dl_modal_container
+          .dl_modal_half_container
+            .dl_modal_half_container
+              label.subtitle {{"PROVOKE"|translate}}{{"START_TIME"|translate}}
+            .input-group.date.form_datetime.dl_modal_input#competition_start_time
+              span.input-group-addon.no_radius
+                //img(ng-src='/img/icons/icon_date.png')
+                span.glyphicon.glyphicon-th
+              input.dl_form-Control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{provoke_form.startTime.$invalid ? '请选择活动活动开始时间':''}}" readonly required)
+          .dl_modal_half_container(ng-class="{'has-error':start_time >= end_time}")
+            .dl_modal_half_container
+              label.subtitle {{"PROVOKE"|translate}}{{"END_TIME"|translate}}
+            .input-group.date.form_datetime.dl_modal_input#competition_end_time
+              //img(ng-src='/img/icons/icon_date.png')
+              span.input-group-addon.no_radius
+                span.glyphicon.glyphicon-th
+              input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{provoke_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
+        .dl_modal_container
+          .dl_modal_container
+            label.subtitle {{"PROVOKE"|translate}}{{"LOCATION"|translate}}
+          .dl_modal_input_container
+            input.dl_modal_input(type="text" class="form-control" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" tooltip="{{provoke_form.location.$invalid? '请输入活动地点':''}}" required)
+          .dl_modal_button
             a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap(1)") {{"MAP"|translate}}
-        .row.margin_top_20
-          #mapDetail.height_200(ng-show="showMapFlag")
-      .modal-footer
-        button.btn.dl_btn.dl_btn_large(ng-click='provoke()' ng-disabled="provoke_form.$invalid" data-dismiss="modal") {{"CONFIRM"|translate}}
-        button.btn.dl_btn.cancel_btn.dl_btn_large(data-dismiss="modal") {{"CANCEL"|translate}}
+        .dl_modal_container
+              #competitionMapDetail.height_200(ng-show="showMapFlag")
+        .dl_modal_container
+          .dl_modal_container
+            label.subtitle {{"PROVOKE"|translate}}{{"OPTIONAL"|translate}}{{"OPTION"|translate}}
+          .dl_modal_option_container
+            .dl_row.clearfix
+              .dl_modal_label_container
+                span.info_label 最少报名人数:
+              .dl_modal_other_container
+                input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.member_min")
+              .dl_modal_people_container
+                span.info_label(style="padding:7px") 人
+              .dl_modal_label_container
+                span.info_label 报名截止前未达最少人数,您将收到提醒。不填默认为不提醒。
+            .dl_row.clearfix
+              .dl_modal_label_container
+                span.info_label 报名截止时间:
+              .dl_modal_time_container
+                .input-group.date.form_datetime#competition_deadline
+                  //img(ng-src='/img/icons/icon_date.png')
+                  input.dl_form-Control(type="text" style="width:120px" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                  span.input-group-addon.no_radius
+                    span.glyphicon.glyphicon-th
+              .dl_modal_label_container
+                span.info_label 如果不选，默认为活动开始停止报名。
+            .dl_row.clearfix
+              .dl_modal_label_container
+                span.info_label 报名人数上限:
+              .dl_modal_other_container
+                input.dl_form-Control(type="number" name="maxNumber" ng-model="$parent.member_max")
+              .dl_modal_people_container
+                span.info_label 人
+              .dl_modal_label_container
+                span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
+      .dl-modal-footer
+        button.dl_btn.dl_btn_large(ng-click='provoke()' data-dismiss="modal" ng-disabled="provoke_form.$invalid") {{"IMMEDIATE"|translate}}{{"SPONSOR"|translate}}
+        button.cancel_btn.dl_btn_large(data-dismiss="modal" style="margin-left:30px") {{"CANCEL"|translate}}
   script.
     $(function() {
       $('#competition_start_time').datetimepicker({
@@ -54,5 +83,10 @@
       $('#competition_end_time').datetimepicker({
         autoclose: true,
         startDate: new Date()
+      });
+      $('#competition_deadline').datetimepicker({
+        autoclose: true,
+        startDate: new Date(),
+        pickerPosition: "top-left"
       });
     });

@@ -54,12 +54,13 @@ block panel
       .tab-pane.active
         div(ng-view)
     if role ==='HR' || role ==='LEADER'
-      div.modal.fade#sponsorCampaignModel(ng-controller="CampaignListController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/campaign_modal
-      div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        include ../partials/provoke_modal
-      div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        include ../partials/search_modal
+      div(ng-controller="ProvokeController" )
+        div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+          include ../partials/provoke_modal
+        div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+          include ../partials/search_modal
     if (role ==='MEMBER' || role ==='LEADER')
       div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal

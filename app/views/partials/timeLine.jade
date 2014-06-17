@@ -14,7 +14,7 @@ if(timeLines)
             p.subtitle= timeline.head
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline.logo :'/img/icons/default_company_logo.png'}")
-            p= "{{'LOCATION'|translate}}" +":"+ timeline.location
+            p= "{{'LOCATION'|translate}}" +":"+ timeline.location.name
             if (timeline.group_type !== '虚拟组')
               p= "{{'TYPE'|translate}}" +":"+ timeline.group_type
             p= "{{'CONTENT'|translate}}" +":"+ timeline.content

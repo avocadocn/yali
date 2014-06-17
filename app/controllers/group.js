@@ -564,13 +564,11 @@ exports.provoke = function (req, res) {
   var my_team_id = req.params.teamId;
   var team_opposite = req.body.team_opposite;
   var theme = req.body.theme;
-  var competition_format = req.body.competition_format;
   var location = req.body.location;
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
-  var deadline = req.body.deadline;
+  var deadline = req.body.deadline ? req.body.deadline : start_time;
   var content = req.body.content;
-  var number = req.body.number;
   var member_min = req.body.member_min;
   var member_max = req.body.member_max;
   var competition = new Competition();
@@ -610,8 +608,6 @@ exports.provoke = function (req, res) {
       competition.brief.start_time = start_time;
       competition.brief.end_time = end_time;
       competition.brief.deadline = deadline;
-      competition.brief.competition_format = competition_format;
-      competition.brief.number = number;
       competition.brief.member_min = member_min;
       competition.brief.member_max = member_max;
 
@@ -628,7 +624,6 @@ exports.provoke = function (req, res) {
       groupMessage.group.gid.push(req.companyGroup.gid);
       groupMessage.group.group_type.push(competition.group_type);
       groupMessage.provoke.active = true;
-      groupMessage.provoke.competition_format = competition_format;
 
       var a = {
         'tid':my_team_id.toString(),
@@ -726,7 +721,6 @@ exports.responseProvoke = function (req, res) {
         campaign.active = true;
         campaign.provoke.active = true;
         campaign.provoke.competition_id = competition._id;
-        campaign.provoke.competition_format = competition.brief.competition_format;
         campaign.provoke.active = true;
 
 

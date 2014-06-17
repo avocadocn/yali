@@ -16,15 +16,15 @@
         .dl_modal_container
           .dl_row
             .dl_md_3
-              input(type="radio" name="searchRadio"  checked value="true" ng-click="check(true)")
-              label 按小队搜索
+              input(type="radio" name="searchRadio"  ng-model="search_type" value="team" id="searchRadio_team")
+              span(for="searchRadio_team") 按小队搜索
             .dl_md_3
-              input(type="radio" name="searchRadio"  value="false" ng-click="check(false)")
-              label 按公司搜索
+              input(type="radio" name="searchRadio"  ng-model="search_type" value="company" id="searchRadio_company")
+              span(for="searchRadio_company") 按公司搜索
         .dl_modal_container.margin_top_15
           .dl_row
             h4 搜索结果
-        .dl_modal_container(ng-if="company_find")
+        .dl_modal_container(ng-if="companies")
           .dl_row(style="height:93px" ng-repeat="company in companies")
             .dl_md_1
               img.size_80(ng-src="{{company.logo}}")
@@ -38,7 +38,7 @@
                 .dl_md_3
             .dl_md_1
               a.clearLinkUnderline.dl_btn_right(href="/company/home/{{company._id}}/#/company_info") 进入
-        .dl_modal_container(ng-if="team_find")
+        .dl_modal_container(ng-if="teams")
           .dl_row.dl_height(ng-repeat="team in teams")
             .dl_md_1
               img.size_80(ng-src="{{team.logo}}")
