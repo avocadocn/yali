@@ -137,6 +137,18 @@ exports.resetPwd = function(req, res){
  * Logout
  */
 exports.signout = function(req, res) {
+  if(req.session.nowtid != null || req.session.nowtid != undefined){
+    delete req.session.nowtid;
+  }
+  if(req.session.nowgid != null || req.session.nowgid != undefined){
+    delete req.session.nowgid;
+  }
+  if(req.session.nowuid != null || req.session.nowuid != undefined){
+    delete req.session.nowuid;
+  }
+  if(req.session.role != null || req.session.role != undefined){
+    delete req.session.role;
+  }
   req.logout();
   res.redirect('/');
 };

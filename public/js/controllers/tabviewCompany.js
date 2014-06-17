@@ -117,7 +117,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
         $('#start_time').datetimepicker('setEndDate', dateUTC);
     });
-    
+
     $scope.selectCampaign = function (value) {
         var _url = "";
         var _selected = true;
@@ -356,6 +356,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     }
                 }
             }
+            console.log($scope.team_lists[0].gid,$scope.provoke_gid);
+            console.log($scope.team_lists[0]._id,$scope.provoke_tid);
         });
         $scope.linkage_init_location = data.info.city;
     }).error(function(data,status) {

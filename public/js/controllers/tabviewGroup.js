@@ -57,9 +57,6 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.s_value = "";
     $rootScope.search_type=true;
 
-    $rootScope.company_available = "请输入公司名搜索!";
-    $rootScope.team_available_A = "请输入公司名搜索!";
-    $rootScope.team_available_B = "请输入小队名进行搜索!";
     $rootScope.showMapFlag=false;
     $rootScope.location={name:'',coordinates:[]};
     $rootScope.$watch('location.name',function(name){
