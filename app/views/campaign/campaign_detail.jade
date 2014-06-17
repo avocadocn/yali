@@ -6,6 +6,9 @@ append headExt
 block contentExt
   .dl_detail_container.clearfix(ng-controller="campaignController")
     .dl_detail_main
+      ul.nav.nav-tabs
+        li.tab_style(ng-class="{'active':nowTab=='campaign'}")
+          a.subtitle.no_radius {{campaign.theme}}
       .dl_detail_content
         p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
         p.subtitle {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：{{campaign.content}}
@@ -22,7 +25,7 @@ block contentExt
         p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}:
         div(ng-repeat = "_member in campaign.member")
           a(href="/users/home/{{_member.uid}}")
-            img.img_contain.detail_photo(ng-src="{{_member.photo}}" title="{{_member.nickname}}")
+            img.img_contain.detail_member(ng-src="{{_member.photo}}" title="{{_member.nickname}}")
         //- if (campaign.member.length>0)
         //-   - for(var i = 0; i < campaign.member.length; i ++)
         //-       a(href="/users/home/#{campaign.member[i].uid}")

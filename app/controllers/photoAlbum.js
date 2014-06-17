@@ -28,7 +28,10 @@ function photoEditAuth(user, photo_album, photo) {
   }
 
   // 该照片所属组的组长
-  var leaders = photo_album.owner_company_group.leader;
+  var leaders = [];
+  if (photo_album.owner_company_group) {
+    leaders = photo_album.owner_company_group.leader || [];
+  }
   for (var i = 0; i < leaders.length; i++) {
     if (user._id.toString() === leaders[i]._id.toString()) {
       return true;
@@ -36,8 +39,10 @@ function photoEditAuth(user, photo_album, photo) {
   }
 
   // 该照片所属公司的HR
-  if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
-    return true;
+  if (photo_album.owner_company) {
+    if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+      return true;
+    }
   }
 
   return false;
@@ -47,7 +52,10 @@ function photoEditAuth(user, photo_album, photo) {
 // photo_album need populate owner_company_group
 function photoAlbumEditAuth(user, photo_album) {
   // 该照片所属组的组长
-  var leaders = photo_album.owner_company_group.leader;
+  var leaders = [];
+  if (photo_album.owner_company_group) {
+    leaders = photo_album.owner_company_group.leader || [];
+  }
   for (var i = 0; i < leaders.length; i++) {
     if (user._id.toString() === leaders[i]._id.toString()) {
       return true;
@@ -55,8 +63,10 @@ function photoAlbumEditAuth(user, photo_album) {
   }
 
   // 该照片所属公司的HR
-  if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
-    return true;
+  if (photo_album.owner_company) {
+    if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+      return true;
+    }
   }
 
   return false;
@@ -65,7 +75,10 @@ function photoAlbumEditAuth(user, photo_album) {
 // photo_album need populate owner_company_group
 function photoUploadAuth(user, photo_album) {
   // 该照片所属组的成员
-  var members = photo_album.owner_company_group.member;
+  var members = [];
+  if (photo_album.owner_company_group) {
+    members = photo_album.owner_company_group.member || [];
+  }
   for (var i = 0; i < members.length; i++) {
     if (user._id.toString() === members[i]._id.toString()) {
       return true;
@@ -73,8 +86,10 @@ function photoUploadAuth(user, photo_album) {
   }
 
   // 该照片所属公司的HR
-  if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
-    return true;
+  if (photo_album.owner_company) {
+    if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+      return true;
+    }
   }
 
   return false;
@@ -269,7 +284,7 @@ exports.createAuth = function(req, res, next) {
       if (!company_group) {
         res.send(403);
       }
-      var leaders = company_group.leader;
+      var leaders = company_group.leader || [];
       for (var i = 0; i < leaders.length; i++) {
         if (req.user._id.toString() === leaders[i]._id.toString()) {
           auth = true;
@@ -714,7 +729,7 @@ exports.renderPhotoDetail = function(req, res) {
   .exec()
   .then(function(photo_album) {
     var pre_id, next_id;
-    var photos = photo_album.photos;
+    var photos = photo_album.photos || [];
     for (var i = 0; i < photos.length; i++) {
       if (req.params.photoId === photos[i]._id.toString()) {
         if (i === 0) {

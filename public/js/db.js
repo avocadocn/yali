@@ -528,7 +528,7 @@ var _users =[
 "photo" : "/img/icons/default_user_photo.png",
 "provider" : "user",
 "register_date" : new Date(),
-"role" : "EMPLOYEE",
+"role" : "LEADER",
 "salt" : "oGn/YzIa2UdFMCyju42JWA==",
 "username" : "eric@55yali.com"
 },
@@ -618,7 +618,7 @@ var _users =[
 "photo" : "/img/icons/default_user_photo.png",
 "provider" : "user",
 "register_date" : new Date(),
-"role" : "EMPLOYEE",
+"role" : "LEADER",
 "salt" : "oGn/YzIa2UdFMCyju42JWA==",
 "username" : "yali_yg2@163.com"
 },
@@ -663,7 +663,7 @@ var _users =[
 "photo" : "/img/icons/default_user_photo.png",
 "provider" : "user",
 "register_date" : new Date(),
-"role" : "EMPLOYEE",
+"role" : "LEADER",
 "salt" : "oGn/YzIa2UdFMCyju42JWA==",
 "username" : "pingguo_yg1@sina.com"
 },
@@ -753,7 +753,7 @@ var _users =[
 "photo" : "/img/icons/default_user_photo.png",
 "provider" : "user",
 "register_date" : new Date(),
-"role" : "EMPLOYEE",
+"role" : "LEADER",
 "salt" : "oGn/YzIa2UdFMCyju42JWA==",
 "username" : "xiangjiao_yg2@sohu.com"
 }

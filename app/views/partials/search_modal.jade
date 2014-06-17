@@ -10,26 +10,34 @@
         .dl_modal_container
           .dl_row
             .dl_md_12
-              input.dl_modal_input.form-control(type="text" ng-model="s_value" required)
+              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,可以是公司名或者小组名" type="text" ng-model="s_value" required)
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="search_form.$invalid") 搜索
         .dl_modal_container
           .dl_row
-            .dl_md_1
+            .dl_md_2
+              input(type="radio" name="search_type" ng-model="search_type" checked value="team")
+              a 按小队搜索
+            .dl_md_2
               input(type="radio" name="search_type" ng-model="search_type" value="company")
               a 按公司搜索
-            .dl_md_1
-              input(type="radio" name="search_type" ng-model="search_type" value="team")
-              a 按小队搜索
         .dl_modal_container.margin_top_15
           .dl_row
             h4 搜索结果
-        .dl_modal_container(ng-if="company_first")
-          .dl_row
+        .dl_modal_container(ng-if="company_find")
+          .dl_row(style="height:93px" ng-repeat="company in companies")
             .dl_md_1
-              h5 公司
-            .dl_md_12
-              select.dl_modal_input.form-control(type="text" ng-model="company_selected" ng-options="company.name for company in companies" ng-change="getSelectTeam(company_selected._id)")
+              img.size_80(ng-src="{{company.logo}}")
+            .dl_md_10.margin_left_5
+              .row.margin_left_15
+                a(href="/company/home/{{company._id}}/#/company_info")
+                  h5 {{company.name}}
+              .row.margin_left_10
+                .dl_md_3
+                  h5 公司小组数:{{company.team.length}}
+                .dl_md_3
+            .dl_md_1
+              a.clearLinkUnderline.dl_btn_right(href="/company/home/{{company._id}}/#/company_info") 进入
         .dl_modal_container(ng-if="team_find")
           .dl_row(style="height:93px" ng-repeat="team in teams")
             .dl_md_1
@@ -42,7 +50,7 @@
                   h5 队员人数:{{team.member.length}}
                 .dl_md_3
             .dl_md_1
-              a.clearLinkUnderline.dl_btn_right(ng-click="provoke_select(team)") 挑衅
+              a.clearLinkUnderline.dl_btn_right(ng-click="provoke_select(team)") 挑战
       br
       br
       .dl-modal-footer.margin_top_20

@@ -224,12 +224,14 @@ select {
 .dl_detail_container .dl_detail_main .dl_detail_content {
   width: 500px;
   float: left;
+  margin-top: 20px;
 }
 .dl_detail_container .dl_detail_main .dl_detail_aside {
   width: 140px;
   float: right;
+  margin-top: 20px;
 }
-.dl_detail_container .dl_detail_main .dl_detail_photo {
+.dl_detail_container .dl_detail_main .dl_detail_member {
   width: 660px;
   float: left;
   background-color: #fbfbfb;
@@ -454,6 +456,9 @@ select {
 }
 .margin_left_20 {
   margin-left: 20px;
+}
+.margin_left_30 {
+  margin-left: 30px;
 }
 .margin_left_50 {
   margin-left: 50px;

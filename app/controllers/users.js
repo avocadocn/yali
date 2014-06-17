@@ -774,6 +774,8 @@ exports.vote = function (req, res) {
   var positive_already = false;
   var negative_already = false;
 
+  console.log(provoke_message_id);
+
   Competition.findOne({
     'provoke_message_id' : provoke_message_id
   },

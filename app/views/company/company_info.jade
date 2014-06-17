@@ -121,10 +121,12 @@ div
               button.dl_btn.dl_btn_small.pull-right(ng-if='!team.belong' ng-click="joinGroup(team._id)") {{"JOIN_GROUP"|translate}}
               //属于则显示退组按钮
               button.dl_btn.dl_btn_small.pull-right(ng-if='team.belong' ng-click="quitGroup(team._id)") {{"QUIT_GROUP"|translate}}
+          if(role === 'HR' || role === 'LEADER' || role === 'GUESTLEADER')
+            button.dl_btn.dl_btn_small.pull-right(ng-if="team.provoke" ng-click="preProvoke(team)") {{"PROVOKE"|translate}}
         hr
       //只有HR可见inactive的team 并可打开
       .dl_row.clearfix(ng-if="!team.active")
-        if(role ==='HR')
+        if(role ==='HR' || role ==='LEADER')
           .aside
             a(href="/group/home/{{team._id}}")
               img.size_128.img-thumbnail.img_contain(ng-src="{{team.logo}}")
@@ -143,8 +145,13 @@ div
           .dl_row
             span.info_label {{"SUM"|translate}}
             span.info_label {{team.member.length}}
-            button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
+            if(role ==='HR')
+              button.dl_btn.dl_btn_small.pull-right(ng-click="activateGroup(true,team._id)") {{"OPEN"|translate}}
+            if(role === 'HR' || role === 'LEADER' || role === 'GUESTLEADER')
+              button.dl_btn.dl_btn_small.pull-right(ng-if="team.provoke" ng-click="preProvoke(team)") {{"PROVOKE"|translate}}
           hr
-  if(role ==='HR' || role ==='LEADER')
+  if(role ==='HR' || role ==='LEADER' || role === 'GUESTLEADER')
     div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../partials/pointleader_modal.jade
+      include ../partials/pointleader_modal
+    div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../partials/provoke_modal

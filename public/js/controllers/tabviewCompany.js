@@ -284,8 +284,11 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             $scope.tname= data.name;
             $scope.role = data.role;
             $scope.group = data.group;//用户的group
-            if($scope.role === 'EMPLOYEE'){
-                for(var i = 0; i < $scope.team_lists.length; i ++) {
+            $scope.provoke_gid = data.provoke_gid;  //挑战时的小组类型
+            $scope.provoke_tid = data.provoke_tid;
+            for(var i = 0; i < $scope.team_lists.length; i ++) {
+                $scope.team_lists[i].provoke = ($scope.team_lists[i].gid == $scope.provoke_gid && $scope.team_lists[i]._id != $scope.provoke_tid);//是否可以对此组发起挑战
+                if($scope.role === 'EMPLOYEE'){
                     $scope.team_lists[i].belong = false;
                     for(var j=0; j< $scope.group.length; j++){
                         //如果已找到则跳出此循环标记下一个team
@@ -318,6 +321,40 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.select_leader = false;
     // $scope.groupInfoUnEdit = true;
     // $scope.groupInfoButtonStatus = '编辑队名'
+
+
+    $scope.preProvoke = function(team) {
+        $scope.team_opposite = team;
+        $('#sponsorProvokeModel').modal();
+    }
+    //约战
+    $scope.provoke = function() {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/provoke/'+$scope.provoke_tid,
+                data:{
+                    provoke_model : 'against',
+                    team_opposite : $scope.team_opposite,
+                    content : $scope.content,
+                    location: $scope.location,
+                    remark: $scope.remark,
+                    competition_date: $scope.competition_date,
+                    deadline: $scope.deadline,
+                    competition_format: $scope.competition_format,
+                    number: $scope.number
+
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
 
     $scope.select = function(value) {
         $scope.select_user = value;

@@ -27,7 +27,7 @@
         .dl_modal_container
           .dl_row
             .dl_md_12
-              input.dl_modal_input.form-control(type="text" ng-model="member_search" required)
+              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索小组成员" type="text" ng-model="member_search" required)
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-blur="recover()" ng-disabled="leader_form.$invalid") 搜索
         .dl_modal_container
