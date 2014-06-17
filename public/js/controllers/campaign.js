@@ -3,7 +3,7 @@
 var campaignApp = angular.module('mean.main');
 
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-
+    $rootScope.nowTab = 'campaign';
 
     $http.get('/group/campaignData').success(function(data, status) {
         $scope.campaign = data.campaign;
