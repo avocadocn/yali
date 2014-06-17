@@ -56,11 +56,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 
     $rootScope.s_value = "";
 
-    $rootScope.search_type="";
-
-    $rootScope.company_available = "请输入公司名搜索!";
-    $rootScope.team_available_A = "请输入公司名搜索!";
-    $rootScope.team_available_B = "请输入小队名进行搜索!";
+    $rootScope.search_type=true;
 
     $("#competition_start_time").on("dp.change",function (e) {
         $rootScope.competition_date = moment(e.date).format("YYYY-MM-DD HH:mm");
@@ -78,19 +74,21 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         $rootScope.nowTab = value;
     };
 
+    $rootScope.check = function(value){
+        $rootScope.search_type = value;
+    }
 
     $rootScope.search = function() {
-        if($rootScope.search_type != "") {
-            //按公司搜索
-            if($rootScope.search_type == "company"){
-                $rootScope.getCompany();
-            //按队名搜索
-            } else {
-                $rootScope.company_first = false;
-                $rootScope.getTeam();
-            }
+        //按公司搜索
+        if(!$rootScope.search_type){
+            $rootScope.company_first = true;
+            $rootScope.team_first = false;
+            $rootScope.getCompany();
+        //按队名搜索
         } else {
-            $rootScope.donlerAlert('请选择一种搜索方式!');
+            $rootScope.team_first = true;
+            $rootScope.company_first = false;
+            $rootScope.getTeam();
         }
     }
     //约战

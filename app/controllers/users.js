@@ -473,7 +473,7 @@ exports.getGroupMessages = function(req, res) {
   var group_messages = [];
   var i = 0;
   var companyLogo;
-
+  console.log('really?');
 
 
   async.whilst(
@@ -506,7 +506,7 @@ exports.getGroupMessages = function(req, res) {
         */
       }
       GroupMessage.find({'team' :{'$in':team_ids}})
-      .populate('team').sort({'_id':-1})
+      .populate('team').sort({'date':-1})
       .exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {

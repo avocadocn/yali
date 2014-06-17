@@ -16,10 +16,10 @@
         .dl_modal_container
           .dl_row
             .dl_md_2
-              input(type="radio" name="search_type" ng-model="search_type" checked value="team")
+              input(type="radio" name="searchRadio"  checked value="true" ng-click="check(true)")
               a 按小队搜索
             .dl_md_2
-              input(type="radio" name="search_type" ng-model="search_type" value="company")
+              input(type="radio" name="searchRadio"  value="false" ng-click="check(false)")
               a 按公司搜索
         .dl_modal_container.margin_top_15
           .dl_row
@@ -44,7 +44,8 @@
               img.size_80(ng-src="{{team.logo}}")
             .dl_md_10.margin_left_5
               .row.margin_left_15
-                h5 {{team.name}}
+                a(href="/group/home/{{team._id}}")
+                  h5 {{team.name}}
               .row.margin_left_10
                 .dl_md_3
                   h5 队员人数:{{team.member.length}}
