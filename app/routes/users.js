@@ -19,7 +19,7 @@ module.exports = function(app, passport) {
     app.post('/users/session', passport.authenticate('user', {
         failureRedirect: '/users/signin/failure',
         failureFlash: true
-    }), users.loginSuccess);
+    }), users.authorize, users.loginSuccess);
 
     app.get('/users/home', authorization.requiresLogin,users.authorize, users.home);
     app.get('/users/home/:userId', authorization.requiresLogin,users.authorize, users.home);

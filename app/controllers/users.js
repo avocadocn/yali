@@ -150,6 +150,9 @@ exports.signout = function(req, res) {
     delete req.session.role;
   }
   req.logout();
+  delete req.session.role;
+  delete req.session.nav_name;
+  delete req.session.nav_logo;
   res.redirect('/');
 };
 
@@ -157,6 +160,8 @@ exports.signout = function(req, res) {
  * Session
  */
 exports.loginSuccess = function(req, res) {
+  req.session.nav_name = req.user.nickname;
+  req.session.nav_logo = req.user.photo;
   res.redirect('/users/home');
 };
 
@@ -608,7 +613,6 @@ exports.getGroupMessages = function(req, res) {
 
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{
-      'role':req.session.role,
       'provider':'user'
   });
 };
@@ -703,7 +707,6 @@ exports.getCampaigns = function(req, res) {
 
 
 exports.home = function(req, res) {
-
   if(req.params.userId) {
     req.session.otheruid = req.params.userId;
   } else {
@@ -756,10 +759,7 @@ exports.home = function(req, res) {
         'photo': _user.photo,
         'realname':_user.realname,
         'cname':_user.cname,
-        'sign':_user.introduce,
-        'role':req.session.role,
-        'nav_name' : _nickname,   //显示在页头的用户名
-        'nav_logo' : _logo          //显示在页头的用户头像
+        'sign':_user.introduce
       });
     }
   });
@@ -767,8 +767,7 @@ exports.home = function(req, res) {
 
 exports.editInfo = function(req, res) {
   return res.render('users/editInfo',{
-    'title': '个人资料',
-    'role': req.session.role
+    'title': '个人资料'
   });
 };
 
@@ -1295,10 +1294,7 @@ exports.editPhoto = function(req, res) {
   }
   res.render('users/editPhoto', {
     photo: req.user.photo,
-    uid: req.user._id,
-    role: req.session.role,
-    nav_name : req.user.nickname,
-    nav_logo : req.user.photo
+    uid: req.user._id
   });
 };
 

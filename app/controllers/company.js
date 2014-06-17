@@ -131,9 +131,14 @@ exports.signin = function(req, res) {
  */
 exports.signout = function(req, res) {
   req.logout();
+  delete req.session.role;
+  delete req.session.nav_name;
+  delete req.session.nav_logo;
   res.redirect('/');
 };
 exports.loginSuccess = function(req, res) {
+    req.session.nav_logo = req.user.info.logo;
+    req.session.nav_name = req.user.info.name;
     res.redirect('/company/home');
 };
 
@@ -658,13 +663,10 @@ exports.home = function(req, res) {
         return res.render('company/home', {
             title : '公司主页',
             logo: req.user.info.logo,
-            role : req.session.role,
             cname : req.user.info.name,
             sign : req.user.info.brief,
             groupnumber: req.user.team.length,
             membernumber: req.user.info.membernumber,
-            nav_logo: req.user.info.logo,
-            nav_name:req.user.info.name
         });
     }
     else{
@@ -677,13 +679,10 @@ exports.home = function(req, res) {
                 return res.render('company/home', {
                     title : '公司主页',
                     logo: company.info.logo,
-                    role : req.session.role,
                     cname : company.info.name,
                     sign : company.info.brief,
                     groupnumber: company.team ? company.team.length : 0,
-                    membernumber: company.info.membernumber,
-                    nav_logo: req.user.photo,
-                    nav_name:req.user.nickname
+                    membernumber: company.info.membernumber
                 });
             }
             else
@@ -1214,9 +1213,7 @@ exports.editLogo = function(req, res) {
   Company.findOne({ _id: _company._id }).exec(function(err, company) {
     res.render('company/edit_logo', {
         logo: company.info.logo,
-        id: company._id,
-        nav_logo: req.user.info.logo,
-        nav_name:req.user.info.name
+        id: company._id
     });
   });
 

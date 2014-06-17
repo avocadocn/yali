@@ -16,7 +16,7 @@ module.exports = function(app, passport) {
     app.post('/company/session', passport.authenticate('company', {
         failureRedirect: '/company/signin',
         failureFlash: true
-    }), company.loginSuccess);
+    }), company.authorize, company.loginSuccess);
     app.get('/company/forgetPwd', company.renderForgetPwd);
     app.post('/company/forgetPassword', company.forgetPwd);
     app.get('/company/resetPwd', company.renderResetPwd);
