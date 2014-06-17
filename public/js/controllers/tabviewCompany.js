@@ -61,6 +61,7 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
+    $scope.company = true;
     $rootScope.nowTab = 'company_campaign';
     $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
@@ -528,16 +529,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     operate:false
                 }
             }).success(function(data, status) {
-                // for(var i = 0; i < $scope.leaders.length; i ++) {
-                //     if($scope.leaders[i]._id == uid) {
-                //         $scope.leaders.splice(i,1);
-                //     }
-                // }
-                // $scope.users.push({
-                //     '_id':uid,
-                //     'nickname':nickname,
-                //     'photo':photo
-                // });
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
             }).error(function(data, status) {
                 //TODO:更改对话框

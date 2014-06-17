@@ -101,7 +101,7 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
 
 tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
-
+    $scope.company = false;
     $http.get('/users/getCampaigns').success(function(data, status) {
       $scope.campaigns = data.data;
       $scope.company = false;

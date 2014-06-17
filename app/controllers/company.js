@@ -990,10 +990,11 @@ exports.appointLeader = function (req, res) {
             }
 
 
-            user.role = l ? 'LEADER' : 'MEMBER';
+            user.role = l ? 'LEADER' : 'EMPLOYEE';
 
             user.save(function(err) {
                 if(err) {
+                    console.log('错误',err);
                     return res.send('USR_ERROR');
                 } else {
 
@@ -1019,9 +1020,11 @@ exports.appointLeader = function (req, res) {
                             }
                             company_group.save(function(err){
                                 if(err){
+                                    console.log('错误',err);
                                     //这里需要回滚User的操作
                                     return res.send('G_ERROR');
                                 } else {
+                                    console.log(operate);
                                     return res.send('OK');
                                 }
                             });

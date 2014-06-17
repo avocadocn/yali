@@ -388,7 +388,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
 
-
+    $scope.company = false;
     var groupId,teamId;
     $scope.company = false;
     $scope.showMapFlag=false;
