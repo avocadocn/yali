@@ -661,7 +661,10 @@ exports.provoke = function (req, res) {
           competition.provoke_message_id = groupMessage._id;
           competition.save(function(err){
             if(!err){
-               return res.send({'result':1,'msg':'挑战成功！'});
+              console.log('保存比赛成功!');
+              return res.send({'result':1,'msg':'挑战成功！'});
+            }else{
+              console.log('保存比赛',err);
             }
           });
         }

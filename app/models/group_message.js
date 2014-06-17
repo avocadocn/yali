@@ -57,7 +57,7 @@ var GroupMessage = new Schema({
         nickname: String,
         role: {
             type: String,
-            enum: ['HR','LEADER']     //HR 组长
+            enum: ['HR','LEADER','GUESTLEADER','GUESTHR']     //HR 组长
         },
     },
     content: String,
