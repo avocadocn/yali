@@ -194,6 +194,7 @@ exports.authorize = function(req, res, next) {
   }else{
     return res.send(403, 'forbidden!');
   }
+  console.log(req.session.role, res.locals.role,'home');
   next();
 };
 
@@ -523,7 +524,7 @@ exports.getGroupMessages = function(req, res) {
         */
       }
       GroupMessage.find({'team' :{'$in':team_ids}})
-      .populate('team').sort({'date':-1})
+      .populate('team').sort({'create_time':-1})
       .exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {
@@ -623,7 +624,7 @@ exports.renderCampaigns = function(req, res){
 function fetchCampaign(req,res,team_ids,role) {
   var campaigns = [];
   var join = false;
-  Campaign.find({'team' : {'$in':team_ids}}).sort({'_id':-1})
+  Campaign.find({'team' : {'$in':team_ids}}).sort({'create_time':-1})
   .exec(function(err, campaign) {
     if (err || !campaign) {
       return res.send({
