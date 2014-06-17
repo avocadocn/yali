@@ -293,6 +293,7 @@ exports.groupSelect = function(req, res) {
             companyGroup.group_type = 'virtual';
             companyGroup.entity_type = 'virtual';
             companyGroup.name = 'virtual';
+            companyGroup.logo = company.info.logo;
 
             companyGroup.save(function (err){
                 if (err) {

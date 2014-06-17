@@ -198,32 +198,6 @@ select
     width 140px
     margin-right 20px
     float left
-.dl_detail_container
-  width 960px
-  min-width 960px
-  margin 0 auto
-  padding-top 30px
-  .dl_detail_main
-    width 640px
-    float left
-    margin-right 30px
-    .dl_detail_content
-      width 500px
-      float left
-      margin-top 20px
-    .dl_detail_aside
-      width 140px
-      float right
-      margin-top 20px
-    .dl_detail_member
-      width 660px
-      float left
-      background-color #fbfbfb
-      margin 20px -20px
-      padding 10px 20px
-  .dl_detail_side
-    width 290px
-    float right
 .tab_style
   min-width 145px
   text-align center
@@ -282,7 +256,8 @@ select
 .padding_20
   padding-left 20px !important
   padding-bottom 20px !important
-
+.padding_top_0
+  padding-top 0
 .dl_btn
   color #fff
   background-color buttonColor
@@ -313,6 +288,12 @@ select
 .dl_btn_detail
   width 180px
   height 40px
+.dl_btn_red
+  background-color ＃ea6060
+  border-color #ea6060
+  &:hover
+    background-color #a83737
+    border-color #a83737
 .dl_btn_submit
   width 80px
   height 25px
@@ -436,8 +417,14 @@ select
   border-top 5px
 .height_200
   height 200px
+.height_60
+  height 60px
 .height_400
   height 400px
+.width_120
+  width 120px
+.height_34
+  height 34px
 .img_contain
   background-size contain
 .full_parent
@@ -582,7 +569,7 @@ input::-webkit-inner-spin-button
   min-height 100%
   height auto
   margin 0 auto -(footerHeight)
-  padding-bottom footerHeight
+  padding-bottom 80px
   min-width 960px
   position relative
 .dl_footer
@@ -590,7 +577,6 @@ input::-webkit-inner-spin-button
   height footerHeight
   min-width 960px
   color footerFontColor
-
   hr
     margin-top 0
     margin-bottom 15px

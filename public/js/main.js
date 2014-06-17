@@ -74,8 +74,13 @@ app.config(['$translateProvider',
       WONDERFUL:"精彩",
       PHOTO:"照片",
       DEADLINE : "截止时间",
+      LEAST: "最少",
+      ENTRY: "报名",
       JOIN : "参加",
       QUIT : "退出",
+      LIMIT : "上限",
+      SIMPLE : "简单",
+      INTRODUCTION: "介绍",
       POSITIVE : "赞成",
       NEGATIVE : "反对",
       OPEN : "打开",
@@ -150,7 +155,8 @@ app.config(['$translateProvider',
       THIS : "该",
       OTHER :"其他",
       OPTIONAL:"可选",
-      OPTION :"选项"
+      OPTION :"选项",
+      PLACE :"场所"
     });
     $translateProvider.translations('jp-jp', {
       I:"私",
@@ -217,8 +223,13 @@ app.config(['$translateProvider',
       WONDERFUL:"素晴らしい",
       PHOTO:"写真",
       DEADLINE : "締め切り",
+      ENTRY: "サインアップ",
+      LEAST: "最小",
       JOIN : "参加する",
       QUIT : "やめる",
+      LIMIT : "キャップ",
+      SIMPLE : "簡単",
+      INTRODUCTION: "紹介",
       POSITIVE : "承認",
       NEGATIVE : "反対",
       OPEN : "オープン",
@@ -289,7 +300,8 @@ app.config(['$translateProvider',
       L_JP :"日本語",
       OTHER :"その他",
       OPTIONAL:"オプショナル",
-      OPTION :"オプション"
+      OPTION :"オプション",
+      PLACE :"場所"
     });
 
     /*通过文件调用语言文件

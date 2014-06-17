@@ -44,11 +44,11 @@
           .dl_modal_option_container
             .dl_row.clearfix
               .dl_modal_label_container
-                span.info_label 最少报名人数:
+                span.info_label {{"LEAST"|translate}}{{"ENTRY"|translate}}{{"SUM"|translate}}:
               .dl_modal_other_container
                 input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.member_min")
               .dl_modal_people_container
-                span.info_label(style="padding:7px") 人
+                span.info_label 人
               .dl_modal_label_container
                 span.info_label 报名截止前未达最少人数,您将收到提醒。不填默认为不提醒。
             .dl_row.clearfix
@@ -57,7 +57,7 @@
               .dl_modal_time_container
                 .input-group.date.form_datetime#deadline
                   //img(ng-src='/img/icons/icon_date.png')
-                  input.dl_form-Control(type="text" style="width:120px" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                  input.dl_form-Control.width_120(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
               .dl_modal_label_container
@@ -73,7 +73,7 @@
                 span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
       .dl-modal-footer
         button.dl_btn.dl_btn_large(ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") {{"IMMEDIATE"|translate}}{{"SPONSOR"|translate}}
-        button.cancel_btn.dl_btn_large(data-dismiss="modal" style="margin-left:30px") {{"CANCEL"|translate}}
+        button.cancel_btn.dl_btn_large.margin_left_30(data-dismiss="modal") {{"CANCEL"|translate}}
   script.
     $(function() {
       $('#start_time').datetimepicker({

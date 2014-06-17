@@ -2,42 +2,68 @@ extends ../layouts/user_base
 
 append headExt
   link(rel="stylesheet" href="/css/views/photo_album.css")
+  link(rel="stylesheet" href="/css/views/campaign_detail.css")
 
 block contentExt
   .dl_detail_container.clearfix(ng-controller="campaignController")
     .dl_detail_main
       ul.nav.nav-tabs
         li.tab_style(ng-class="{'active':nowTab=='campaign'}")
-          a.subtitle.no_radius {{campaign.theme}}
-      .dl_detail_content
-        p.head {{"CAMPAIGN"|translate}}{{"DETAIL"|translate}}
-        p.subtitle 主题：{{campaign.theme}}
-        p.subtitle {{"CAMPAIGN"|translate}}{{"CONTENT"|translate}}：{{campaign.content}}
-        p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}：{{campaign.location.name}}
-        p.subtitle {{"START_TIME"|translate}}：{{campaign.start_time | date:'yyyy-MM-dd HH:mm'}}
-          {{campaign.start_time | week }}
-        p.subtitle 结束时间：{{campaign.end_time | date:'yyyy-MM-dd HH:mm'}}
-        p.subtitle 报名截止时间：{{campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
-        if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
-          div(ng-if="campaign.active && !campaign.over")
-            input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}" ng-click="quitCampaign()" ng-if="join")
-            input.dl_btn.dl_btn_detail(type = "button" value = "{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="!join")
-      .dl_detail_aside
-        img.img_contain.size_128
-      .dl_detail_photo
+          a.subtitle.no_radius.border_red {{campaign.theme}}
+      .dl_detail_border.clearfix
+        .dl_detail_content
+          .dl_detail_row
+            .dl_detail_label 
+              span {{"CAMPAIGN"|translate}}{{"PLACE"|translate}}{{"LOCATION"|translate}}:
+            .dl_detail_detail
+              span {{campaign.location.name}}
+          .dl_detail_row
+            .dl_detail_label 
+              span {{"CAMPAIGN"|translate}}{{"START_TIME"|translate}}:
+            .dl_detail_detail
+              span {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}} {{campaign.start_time | week }}
+          .dl_detail_row
+            .dl_detail_label
+              span {{"CAMPAIGN"|translate}}{{"END_TIME"|translate}}:
+            .dl_detail_detail
+              span {{campaign.end_time | date:'yyyy-MM-dd HH:mm'}} {{campaign.end_time | week }}
+          .dl_detail_row
+            .dl_detail_label
+              span {{"LEAST"|translate}}{{"ENTRY"|translate}}{{"SUM"|translate}}:
+            .dl_detail_detail
+              span {{campaign.min_number}}
+          .dl_detail_row
+            .dl_detail_label
+              span {{"ENTRY"|translate}}{{"SUM"|translate}}{{"LIMIT"|translate}}:
+            .dl_detail_detail
+              span {{campaign.max_number}}
+          .dl_detail_row
+            .dl_detail_label
+              span {{"ENTRY"|translate}}{{"DEADLINE"|translate}}:
+            .dl_detail_detail
+              span {{campaign.due_time| date:'yyyy-MM-dd HH:mm'}} {{campaign.due_time | week }}
+        .dl_detail_aside
+            img.img_contain.size_128(ng-src="{{campaignLogo}}")
+        .dl_detail_content2
+          .dl_detail_row
+            .dl_detail_label
+              span {{"CAMPAIGN"|translate}}{{"SIMPLE"|translate}}{{"INTRODUCTION"|translate}}:
+            .dl_detail_detail
+              span.dl_word_break {{campaign.content}}
+           if ((role==='EMPLOYEE' &&  campaign.gid === 0) || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
+            div.margin_top_30(ng-if="campaign.active && !campaign.over")
+              input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}{{'CAMPAIGN'|translate}}" ng-click="quitCampaign()" ng-if="join")
+              input.dl_btn.dl_btn_detail(type = "button" value = "{{'ENTRY'|translate}}{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="!join")
+      //-成员     
+      .dl_detail_member
         p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}:
         div(ng-repeat = "_member in campaign.member")
           a(href="/users/home/{{_member.uid}}")
-            img.img_contain.detail_member(ng-src="{{_member.photo}}" title="{{_member.nickname}}")
-        //- if (campaign.member.length>0)
-        //-   - for(var i = 0; i < campaign.member.length; i ++)
-        //-       a(href="/users/home/#{campaign.member[i].uid}")
-        //-         img.img_contain.detail_photo(ng-src="#{campaign.member[i].photo" title="#{campaign.member[i].nickname}")
-        //- else
-        //-   p.subtitle 该活动还没有人参加哦!
+            img.img_contain.detail_photo(ng-src="{{_member.photo}}" title="{{_member.nickname}}")
+        span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
       .dl_detail_main
         p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}
-        textarea.dl_modal_input.form-control(rows="4" name="content" ng-model="content" ng-change="judge()" required)
+        textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="content" ng-change="judge()" required)
         button.dl_btn.pull-right.dl_btn_submit {{"SUBMIT"|translate}}{{"LEAVEMESSAGE"|translate}}
     .dl_detail_side
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}

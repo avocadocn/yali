@@ -978,6 +978,7 @@ exports.getCampaignDetail = function(req, res) {
   var join = false;
   Campaign
   .findOne({ _id: req.session.nowcampaignid })
+  .populate('team')
   .exec()
   .then(function(campaign) {
     //增加返回值是否加入
@@ -989,13 +990,13 @@ exports.getCampaignDetail = function(req, res) {
         }
       }
     }
-    console.log(campaign);
     return res.send({
       over : !(Date.now() - campaign.end_time.valueOf() <= 0),
       campaign: campaign,
       join: join,
       nickname : req.user.nickname,
-      photo : req.user.photo
+      photo : req.user.photo,
+      campaignLogo: campaign.team[0].logo
     });
   })
   .then(null, function(err) {

@@ -9,8 +9,9 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         $scope.campaign = data.campaign;
         $scope.join = data.join;
         $scope.over = data.over;
-        $scope.nickname = data.nickname,
-        $scope.photo = data.photo
+        $scope.nickname = data.nickname;
+        $scope.photo = data.photo;
+        $scope.campaignLogo = data.campaignLogo;
     });
     $scope.joinCampaign = function () {
         //$rootScope.donlerAlert($scope.campaign_id);
