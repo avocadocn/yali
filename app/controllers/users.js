@@ -200,7 +200,6 @@ exports.authorize = function(req, res, next) {
   }else{
     return res.send(403, 'forbidden!');
   }
-  console.log(req.session.role, res.locals.role,'home');
   next();
 };
 
@@ -620,7 +619,8 @@ exports.getGroupMessages = function(req, res) {
 
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{
-      'provider':'user'
+      'provider':'user',
+      'role':req.session.role
   });
 };
 

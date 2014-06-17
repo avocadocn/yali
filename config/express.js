@@ -82,7 +82,6 @@ module.exports = function(app, passport, db) {
             res.locals.nav_name = req.session.nav_name;
             res.locals.nav_logo = req.session.nav_logo;
             res.locals.role = req.session.role;
-            console.log(req.session.role,'express');
             next();
         });
 

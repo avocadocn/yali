@@ -79,6 +79,33 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                 locationmap.centerAndZoom('上海',12);
                 locationmap.enableScrollWheelZoom(true);
                 locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+                var getCity =function (result){
+                    var cityName = result.name;
+                    locationmap.setCenter(cityName);
+                    var options = {
+                        renderOptions:{map: locationmap},
+                        onSearchComplete: function(results){
+                            // 判断状态是否正确
+                            if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                                var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                                var marker = new BMap.Marker(results.getPoi(0).point.lng,results.getPoi(0).point.lat);  // 创建标注
+                                locationmap.addOverlay(marker);              // 将标注添加到地图中
+                                marker.enableDragging();    //可拖拽
+                                $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                                marker.addEventListener("dragend", function changePoint(){
+                                    var p = marker.getPosition();
+                                    $scope.location.coordinates=[p.lng , p.lat];
+                                });
+                            }
+                        }
+                    };
+                    var local = new BMap.LocalSearch(locationmap,options);
+                    local.search($scope.location.name );
+                }
+                var myCity = new BMap.LocalCity();
+                myCity.get(getCity);
+            }
+            else{
                 var options = {
                     renderOptions:{map: locationmap},
                     onSearchComplete: function(results){
@@ -97,18 +124,8 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                     }
                 };
                 var local = new BMap.LocalSearch(locationmap,options);
-                var getCity =function (result){
-                    var cityName = result.name;
-                    locationmap.setCenter(cityName);
-                    local.search($scope.location.name );
-                }
-                var myCity = new BMap.LocalCity();
-                myCity.get(getCity);
-            }
-            else{
                 local.search($scope.location.name );
             }
-
             $scope.showMapFlag = true;
         };
       }
