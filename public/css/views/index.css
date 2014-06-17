@@ -60,8 +60,8 @@
 .dl_doc .about {
   width: 100%;
   margin: auto;
-  height: 239px;
-  background: url("/img/dl_doc_about_bg.png") top center;
+  height: 205px;
+  background: url("/img/dl_doc_about_bg.png") bottom center;
 }
 .dl_doc .about .index_container {
   width: auto;
@@ -101,11 +101,18 @@
   margin-left: 20px;
   margin-right: 0;
 }
-.dl_doc .about .about_card .card_1 :after {
+.dl_doc .about .about_card .card_1:before {
   width: 1px;
+  background-color: #eaeaea;
+  display: block;
+  height: 140px;
+  content: " ";
+  float: right;
+  margin-top: 20px;
 }
 .dl_doc .about .about_card .card_2 {
   background: url("/img/dl_doc_about_card2.gif") -10px 0px no-repeat;
+  margin-left: 20px;
 }
 .dl_doc .about .about_card .card_2 .title {
   padding-left: 36px;
@@ -117,8 +124,14 @@
 .dl_doc .about .about_card .card_2 .btn {
   margin-left: 100px;
 }
-.dl_doc .about .about_card .card_2 :after {
+.dl_doc .about .about_card .card_2:before {
   width: 1px;
+  background-color: #eaeaea;
+  display: block;
+  height: 140px;
+  content: " ";
+  float: right;
+  margin-top: 20px;
 }
 .dl_doc .about .about_card .card_3 {
   background: url("/img/dl_doc_about_card3.gif") no-repeat;

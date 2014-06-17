@@ -54,8 +54,8 @@
   .about
     width 100%
     margin auto
-    height 239px
-    background url('/img/dl_doc_about_bg.png') top center
+    height 205px
+    background url('/img/dl_doc_about_bg.png') bottom center
     .index_container
       width auto
       min-width miniPageWidth
@@ -89,12 +89,19 @@
         background url('/img/dl_doc_about_card1.gif') no-repeat
         margin-left 20px
         margin-right 0
-        :after
+        &:before
           width 1px
+          background-color #eaeaea
+          display block
+          height 140px
+          content " "
+          float right
+          margin-top 20px
 
       .card_2
 
         background url('/img/dl_doc_about_card2.gif') -10px 0px no-repeat
+        margin-left 20px
         .title
           padding-left 36px
         p
@@ -102,8 +109,14 @@
           padding-left 0px
         .btn 
           margin-left 100px
-        :after
+        &:before
           width 1px
+          background-color #eaeaea
+          display block
+          height 140px
+          content " "
+          float right
+          margin-top 20px
       .card_3
         background url('/img/dl_doc_about_card3.gif') no-repeat
         margin-left 20px
