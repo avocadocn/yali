@@ -668,6 +668,7 @@ exports.home = function(req, res) {
             sign : req.user.info.brief,
             groupnumber: req.user.team.length,
             membernumber: req.user.info.membernumber,
+            role: req.session.role
         });
     }
     else{
@@ -683,7 +684,8 @@ exports.home = function(req, res) {
                     cname : company.info.name,
                     sign : company.info.brief,
                     groupnumber: company.team ? company.team.length : 0,
-                    membernumber: company.info.membernumber
+                    membernumber: company.info.membernumber,
+                    role: req.session.role
                 });
             }
             else
