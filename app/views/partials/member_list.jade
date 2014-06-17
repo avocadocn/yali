@@ -8,15 +8,13 @@ div
       a(href="/users/home/{{leader._id}}").text-center {{leader.nickname}}
   span.subtitle {{"MEMBER"|translate}}
   .row
-    .col-md-2(ng-repeat="member in members")
-      span(ng-if="company")
-        img.center-block.size_56(ng-click="userDetail($index)" ng-src='{{member.photo}}' data-toggle="modal" data-target="#sponsorUserDetailModel")
-      span(ng-if="company")
-        a.center-block(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel") {{member.realname}}
-      span(ng-if="!company")
-        a(href="/users/home/{{member._id}}")
-          img.center-block.size_56(ng-src='{{member.photo}}')
-      span(ng-if="!company")
-        a.center-block(href="/users/home/{{member._id}}") {{member.nickname}}
+    .dl_modal_container.margin_left_10
+      .groups.row
+        .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="member in members")
+          .dl_row
+            a(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel")
+              img.size_80(ng-src="{{member.photo}}")
+          .dl_row(style="width:80px;text-align:center")
+            label {{member.nickname}}
 div(class="modal fade" id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   include user_detail_modal

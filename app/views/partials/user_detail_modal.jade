@@ -4,47 +4,77 @@
       button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
       h4.modal-title#myModalLabel {{"STAFF"|translate}}{{"INFO"|translate}}
     .modal-body
-      .row
-        label.info_label.col-md-12.control-label {{"REALNAME"|translate}}
-        .col-md-5
-          if (role==='HR')
-            input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="false")
-          else
-            input.dl_input.form-control.editToggle(type="text" name ="realname" ng-model="members[num].realname" ng-disabled="true")
-      .row
-        label.info_label.col-md-12.control-label {{"NICKNAME"|translate}}
-        .col-md-5
-          if (role==='HR')
-            input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="false")
-          else
-            input.dl_input.form-control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="true")
-      .row
-        label.info_label.col-md-12.control-label {{"USERNAME"|translate}}
-        .col-md-5
-          if (role==='HR')
-            input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="false")
-          else
-            input.dl_input.form-control.editToggle(type="text" name ="username" ng-model="members[num].username" ng-disabled="true")
-      .row
-        label.info_label.col-md-12.control-label {{"DEPARTMENT"|translate}}
-        .col-md-5
-          if (role==='HR')
-            input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="false")
-          else
-            input.dl_input.form-control.editToggle(type="text" name ="department" ng-model="members[num].department" ng-disabled="true")
-      .row
-        label.info_label.col-md-12.control-label {{"POSITION"|translate}}
-        .col-md-5
-          if (role==='HR')
-            input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="false")
-          else
-            input.dl_input.form-control.editToggle(type="text" name ="position" ng-model="members[num].position" ng-disabled="true")
-      .row
-        label.info_label.col-md-12.control-label {{"REGISTER_DATE"|translate}}
-        .col-md-5
-          input.dl_input.form-control.editToggle(type="text" name ="register_date" ng-model="members[num].register_date" ng-disabled="true")
-    .modal-footer
-      button(class="btn dl_btn"  data-dismiss="modal") {{"CONFIRM"|translate}}
-      if (role==='HR')
-        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('delete')") {{"DELETE"|translate}}
-        button(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('change')") {{"EDIT"|translate}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"NICKNAME" | translate}}
+        .info_detail
+          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="#{role}!='HR'")
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"REALNAME" | translate}}
+        .info_detail
+          span.info_label {{members[num].realname}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"COMPANY" | translate}}
+        .info_side
+          span.info_label {{members[num].cname}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"POSITION" | translate}}
+        .info_detail
+          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].position" ng-disabled="#{role}!='HR'")
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"DEPARTMENT" | translate}}
+        .info_detail
+          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].department" ng-disabled="#{role}!='HR'")
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"GENDER" | translate}}
+        .info_side
+          span.info_label {{members[num].sex}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"BIRTHDAY" | translate}}
+        .info_side
+          span.info_label {{members[num].birthday |date:'yyyy-MM-dd'}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"BLOODTYPE" | translate}}
+        .info_side
+          span.info_label {{members[num].bloodType}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"BRIEF" | translate}}
+        .info_side
+          span.info_label {{members[num].brief}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label {{"REGISTER_DATE" | translate}}
+        .info_side
+          span.info_label {{members[num].register_date | date:'yyyy-MM-dd HH:mm:ss'}}
+      form.form-horizontal(name="linkForm")
+        .dl_row
+          h5.pull-left {{"CONTACT" | translate}}
+        hr.margin_top_6
+        .dl_row.clearfix
+          .info_side
+            span.info_label {{"PHONE" | translate}}
+          .info_side
+          span.info_label {{members[num].phone}}
+        .dl_row.clearfix
+          .info_side
+            span.info_label {{"EMAIL" | translate}}
+          .info_side
+          span.info_label {{members[num].email}}
+        .dl_row.clearfix
+          .info_side
+            span.info_label {{"QQ" | translate}}
+          .info_side
+          span.info_label {{members[num].qq}}
+      .modal-footer
+      button.dl_btn.dl_btn_large(class="btn dl_btn"  data-dismiss="modal") {{"CONFIRM"|translate}}
+      if (role==='HR' || role==='OWNER')
+        button.dl_btn.dl_btn_large(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('delete')") {{"DELETE"|translate}}
+        button.dl_btn.dl_btn_large(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('change')") {{"EDIT"|translate}}
