@@ -2,7 +2,7 @@ div(ng-controller="infoController")
   form.form-horizontal(name="infoForm")
     .dl_row
       h5.pull-left {{"INFO" | translate}}
-      if(role==='HR' ||role ==='LEADER')
+      if (Global.role ==='HR' || Global.role === 'LEADER')
         button.dl_btn.dl_btn_small.pull-right(ng-click="editToggle()" ng-bind="buttonStatus")
     hr.margin_top_6
     .dl_row.clearfix
@@ -24,7 +24,7 @@ div(ng-controller="infoController")
       .info_side
         span.info_label {{"TEAM_LOGO" | translate}}
       .info_side
-        if(role==='HR' ||role ==='LEADER')
+        if (Global.role=== 'HR' || Global.role ==='LEADER')
           a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") {{"CHANGE" | translate}}LOGO
     .dl_row.clearfix
       .info_side

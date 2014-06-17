@@ -114,6 +114,7 @@ exports.updateLogo = function(req, res) {
               }
               else {
                 logo_model[logo_property] = path.join(uri_dir, logo_file_name);
+                req.session.Global.logo = logo_model[logo_property];
                 target_model.save(function(err) {
                   if (err) {
                     callback(err);

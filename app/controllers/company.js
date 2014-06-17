@@ -130,15 +130,18 @@ exports.signin = function(req, res) {
  * Logout
  */
 exports.signout = function(req, res) {
+  if (req.session.Global) {
+    delete req.session.Global;
+  }
   req.logout();
-  delete req.session.role;
-  delete req.session.nav_name;
-  delete req.session.nav_logo;
   res.redirect('/');
 };
 exports.loginSuccess = function(req, res) {
-    req.session.nav_logo = req.user.info.logo;
-    req.session.nav_name = req.user.info.name;
+    req.session.Global = {
+        name: req.user.info.name,
+        logo: req.user.info.logo,
+        role: req.session.role
+    };
     res.redirect('/company/home');
 };
 

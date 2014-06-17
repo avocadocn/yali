@@ -149,10 +149,10 @@ exports.signout = function(req, res) {
   if(req.session.role != null || req.session.role != undefined){
     delete req.session.role;
   }
+  if (req.session.Global) {
+    delete req.session.Global;
+  }
   req.logout();
-  delete req.session.role;
-  delete req.session.nav_name;
-  delete req.session.nav_logo;
   res.redirect('/');
 };
 
@@ -160,8 +160,11 @@ exports.signout = function(req, res) {
  * Session
  */
 exports.loginSuccess = function(req, res) {
-  req.session.nav_name = req.user.nickname;
-  req.session.nav_logo = req.user.photo;
+  req.session.Global = {
+    name: req.user.nickname,
+    logo: req.user.photo,
+    role: req.session.role
+  }
   res.redirect('/users/home');
 };
 

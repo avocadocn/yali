@@ -8,7 +8,7 @@
         .info_side
           span.info_label {{"NICKNAME" | translate}}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="#{role!='HR'}")
+          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="#{Global.role!='HR'}")
       .dl_row.clearfix
         .info_side
           span.info_label {{"REALNAME" | translate}}
@@ -18,12 +18,12 @@
         .info_side
           span.info_label {{"POSITION" | translate}}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].position" ng-disabled="#{role!='HR'}")
+          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].position" ng-disabled="#{Global.role!='HR'}")
       .dl_row.clearfix
         .info_side
           span.info_label {{"DEPARTMENT" | translate}}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].department" ng-disabled="#{role!='HR'}")
+          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].department" ng-disabled="#{Global.role!='HR'}")
       .dl_row.clearfix
         .info_side
           span.info_label {{"GENDER" | translate}}
@@ -70,6 +70,6 @@
       //-     span.info_label {{members[num].qq}}
       .modal-footer
       button.dl_btn.dl_btn_large(class="btn dl_btn"  data-dismiss="modal") {{"CONFIRM"|translate}}
-      if (role==='HR' || role==='OWNER')
+      if (Global.role==='HR' || Global.role==='OWNER')
         button.dl_btn.dl_btn_large(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('delete')") {{"DELETE"|translate}}
         button.dl_btn.dl_btn_large(class="btn dl_btn"  data-dismiss="modal" ng-click="changeUserInfo('change')") {{"EDIT"|translate}}

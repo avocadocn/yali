@@ -1,5 +1,5 @@
 .row.margin_top_15(ng-if="company")
-  if (role!=='HR')
+  if (Global.role!=='HR')
     .btn-group.pull-right
       button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{"CAMPAIGN_SELECT"|translate}}
       ul.dropdown-menu(role="menu")
@@ -20,7 +20,7 @@
         .row
           a.dl_message_label(ng-if="!campaign_item.provoke.active" ng-href="/group/campaign/{{ campaign_item._id }}") {{ campaign_item.content }}
           a.dl_message_label(ng-if="campaign_item.provoke.active" ng-href="/group/competition/{{campaign_item.provoke.competition_id}}") {{ campaign_item.content }}
-          if (role==='HR'&&provider==='company' || role==='LEADER'&& provider ==='group')
+          if (Global.role==='HR'&&provider==='company' || Global.role==='LEADER'&& provider ==='group')
             button.close_btn.operator_btn(ng-if="!campaign_item.over" ng-click="cancel(campaign_item._id)") {{ campaign_item.active ? '&times;&nbsp;关闭':'打开'}}
         .row.margin_top_15
           span.dl_message_label {{"TYPE"|translate}}: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
@@ -31,7 +31,7 @@
           span.dl_message_label 结束时间: {{ campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
           span.dl_message_label 报名截止时间: {{ campaign_item.deadline | date:'yyyy-MM-dd HH:mm'}}
       .col-xs-3.col-sm-3.col-md-2
-        if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
+        if (Global.role==='EMPLOYEE' || Global.role==='OWNER' || Global.role ==='LEADER' || Global.role ==='MEMBER')
           div(ng-if="campaign_item.active && !campaign_item.over")
             input.dl_btn_small.margin_5.operator_btn.cancel_btn(type = "button" value = "退出" ng-click="quit(campaign_item._id,$index)" ng-if="campaign_item.join")
             input.dl_btn.dl_btn_small.margin_5.operator_btn(type = "button" value = "参加" ng-click="join(campaign_item._id,$index)" ng-if="!campaign_item.join")

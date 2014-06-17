@@ -27,21 +27,21 @@ block baseInfo
         .score_container
           label.info_border {{"WIN_RATE"|translate}}
           span.info_right_border 100%
-        if (role ==='HR' || role ==='LEADER')
+        if (Global.role ==='HR' || Global.role ==='LEADER')
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorSearchModel") {{"PROVOKE"|translate}}
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") {{"ARENA"|translate}}
-        if (role === 'MEMBER' || role ==='LEADER')
+        if (Global.role === 'MEMBER' || Global.role ==='LEADER')
           .score_container
             button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") {{"QUIT_GROUP"|translate}}
-        if (role ==='PARTNER')
+        if (Global.role ==='PARTNER')
           .score_container
             button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
     ul.nav.nav-tabs
-      if (role !=='GUESTHR' && role !=='GUEST')
+      if (Global.role !=='GUESTHR' && Global.role !=='GUEST')
         li.tab_style(ng-class="{'active':nowTab=='group_message'}")
           a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"TEAM_MESSAGE"|translate}}
         li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
@@ -53,7 +53,7 @@ block panel
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
-    if role ==='HR' || role ==='LEADER'
+    if Global.role ==='HR' || Global.role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/campaign_modal
       div(ng-controller="ProvokeController" )
@@ -61,16 +61,16 @@ block panel
           include ../partials/provoke_modal
         div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           include ../partials/search_modal
-    if (role ==='MEMBER' || role ==='LEADER')
+    if (Global.role ==='MEMBER' || Global.role ==='LEADER')
       div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
 block aside
 
-  if (role !=='GUESTHR' && role !=='HR')
+  if (Global.role !=='GUESTHR' && Global.role !=='HR')
     include ../partials/group_thumbnail
     +group_thumbnail(selected_teams,'active',role!=='HR'?"{{'MY'|translate}}{{'TEAM'|translate}}":"{{'COMPANY'|translate}}{{'TEAM'|translate}}")
     +group_thumbnail(unselected_teams,'inactive',"{{'UNSELECTED_TEAM'|translate}}")
-  if (role !=='GUESTHR' && role !=='GUEST')
+  if (Global.role !=='GUESTHR' && Global.role !=='GUEST')
     .photo_album
       p
         span.subtitle.margin_top_15 {{"TEAM_ALBUM"|translate}}
@@ -83,6 +83,6 @@ block aside
 
 append footExt
   script(src="/js/controllers/tabviewGroup.js")
-if role ==='HR' || role ==='LEADER'
+if Global.role ==='HR' || Global.role ==='LEADER'
   append bottomExt
     script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")

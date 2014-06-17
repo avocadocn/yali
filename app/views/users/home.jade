@@ -14,11 +14,11 @@ block baseInfo
         a.subtitle(href='/company/home') #{cname}
       //个性签名
       .dl_row
-        p.subtitle= sign 
+        p.subtitle= sign
 
 block panel
   ul.nav.nav-tabs
-    if(role==='OWNER')
+    if (Global.role==='OWNER')
       li.tab_style(ng-class="{'active':nowTab=='group_message'}")
         a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"LATEST_MESSAGE"|translate}}
     li.tab_style(ng-class="{'active':nowTab=='campaign'}")
@@ -32,7 +32,7 @@ block panel
       div(ng-view)
 
 block aside
-  if role !== 'HR'
+  if Global.role !== 'HR'
     include ../partials/group_thumbnail
     +group_thumbnail(selected_teams,'active',"{{'MY'|translate}}{{'TEAM'|translate}}")
     +group_thumbnail(unselected_teams,'inactive',"{{'UNSELECTED_TEAM'|translate}}")
