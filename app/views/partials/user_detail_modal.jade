@@ -8,7 +8,7 @@
         .info_side
           span.info_label {{"NICKNAME" | translate}}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="#{role}!='HR'")
+          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="#{role!='HR'}")
       .dl_row.clearfix
         .info_side
           span.info_label {{"REALNAME" | translate}}
@@ -16,19 +16,14 @@
           span.info_label {{members[num].realname}}
       .dl_row.clearfix
         .info_side
-          span.info_label {{"COMPANY" | translate}}
-        .info_side
-          span.info_label {{members[num].cname}}
-      .dl_row.clearfix
-        .info_side
           span.info_label {{"POSITION" | translate}}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].position" ng-disabled="#{role}!='HR'")
+          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].position" ng-disabled="#{role!='HR'}")
       .dl_row.clearfix
         .info_side
           span.info_label {{"DEPARTMENT" | translate}}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].department" ng-disabled="#{role}!='HR'")
+          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].department" ng-disabled="#{role!='HR'}")
       .dl_row.clearfix
         .info_side
           span.info_label {{"GENDER" | translate}}
@@ -48,31 +43,31 @@
         .info_side
           span.info_label {{"BRIEF" | translate}}
         .info_side
-          span.info_label {{members[num].brief}}
+          span.info_label {{members[num].introduce}}
       .dl_row.clearfix
         .info_side
           span.info_label {{"REGISTER_DATE" | translate}}
         .info_side
           span.info_label {{members[num].register_date | date:'yyyy-MM-dd HH:mm:ss'}}
-      form.form-horizontal(name="linkForm")
-        .dl_row
-          h5.pull-left {{"CONTACT" | translate}}
-        hr.margin_top_6
-        .dl_row.clearfix
-          .info_side
-            span.info_label {{"PHONE" | translate}}
-          .info_side
-          span.info_label {{members[num].phone}}
-        .dl_row.clearfix
-          .info_side
-            span.info_label {{"EMAIL" | translate}}
-          .info_side
-          span.info_label {{members[num].email}}
-        .dl_row.clearfix
-          .info_side
-            span.info_label {{"QQ" | translate}}
-          .info_side
-          span.info_label {{members[num].qq}}
+      //- form.form-horizontal(name="linkForm")
+      //-   .dl_row
+      //-     h5.pull-left {{"CONTACT" | translate}}
+      //-   hr.margin_top_6
+      //-   .dl_row.clearfix
+      //-     .info_side
+      //-       span.info_label {{"PHONE" | translate}}
+      //-     .info_side
+      //-     span.info_label {{members[num].phone}}
+      //-   .dl_row.clearfix
+      //-     .info_side
+      //-       span.info_label {{"EMAIL" | translate}}
+      //-     .info_side
+      //-     span.info_label {{members[num].email}}
+      //-   .dl_row.clearfix
+      //-     .info_side
+      //-       span.info_label {{"QQ" | translate}}
+      //-     .info_side
+      //-     span.info_label {{members[num].qq}}
       .modal-footer
       button.dl_btn.dl_btn_large(class="btn dl_btn"  data-dismiss="modal") {{"CONFIRM"|translate}}
       if (role==='HR' || role==='OWNER')

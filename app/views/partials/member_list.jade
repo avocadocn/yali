@@ -1,12 +1,6 @@
 div
-  p.subtitle {{"SUM"|translate}}：{{members.length}}
-  span.subtitle(ng-if="!company") {{"TEAM_LEADER"|translate}}
-  .row(ng-if="!company")
-    .col-md-2(ng-repeat="leader in leaders")
-      a(href="/users/home/{{leader._id}}")
-        img.center-block.size_56(ng-src='{{leader.photo}}')
-      a(href="/users/home/{{leader._id}}").text-center {{leader.nickname}}
   span.subtitle {{"MEMBER"|translate}}
+  hr
   .row
     .dl_modal_container.margin_left_10
       .groups.row

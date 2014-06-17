@@ -35,27 +35,6 @@ exports.getCompany = function (req, res) {
     });
 };
 
-//TODO
-//根据队名在所有公司里搜索同类型小队
-//以后添加过滤规则
-exports.searchTeam = function(req, res) {
-  var tname_part = req.body.tname_part;
-  var gid = req.session.nowgid;
-
-  var tirm = '老虎-足球';
-
-  Company.find({'group.tname': {'$all':[/老虎-足球/]}}, function (err, companies) {
-    if(err) {
-      return res.send(err);
-    } else {
-      if(companies) {
-        return res.send(companies);
-      } else {
-        return res.send('none');
-      }
-    }
-  });
-};
 
 
 //TODO
@@ -140,7 +119,7 @@ exports.getUser = function(req, res) {
 
 exports.getMember = function(req, res) {
   var cid = req.session.nowcid;
-  User.find({'cid': cid}, {'_id':1,'username':1,'nickname':1,'photo':1,'realname':1,'department':1,'position':1,'sex':1,'register_date':1,'group':1},function (err, users){
+  User.find({'cid': cid}, {'_id':1,'username':1,'nickname':1,'photo':1,'realname':1,'department':1,'position':1,'sex':1,'register_date':1,'group':1,'birthday':1,'bloodType':1,'phone':1,'qq':1,'introduce':1},function (err, users){
 
     if(err || !users){
       console.log('ERROR');

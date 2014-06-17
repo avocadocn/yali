@@ -502,8 +502,17 @@ select {
 .height_200 {
   height: 200px;
 }
+.height_60 {
+  height: 60px;
+}
 .height_400 {
   height: 400px;
+}
+.width_120 {
+  width: 120px;
+}
+.height_34 {
+  height: 34px;
 }
 .img_contain {
   background-size: contain;
