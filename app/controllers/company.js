@@ -1103,7 +1103,8 @@ exports.sponsor = function (req, res) {
             _id: campaign._id,
             model: 'Campaign'
         },
-        name: campaign.theme
+        name: campaign.theme,
+        owner_company: req.user._id
     });
 
     fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {

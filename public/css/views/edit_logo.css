@@ -19,15 +19,30 @@
 .logo_big {
   width: 150px;
 }
+.logo_big .preview {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+}
 .logo_middle {
   margin-left: 40px;
   padding-top: 100px;
   width: 70px;
 }
+.logo_middle .preview {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+}
 .logo_small {
   margin-left: 30px;
   padding-top: 123px;
   width: 70px;
+}
+.logo_small .preview {
+  width: 27px;
+  height: 27px;
+  overflow: hidden;
 }
 .high_light_title {
   color: #5d5d75;

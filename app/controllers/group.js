@@ -784,18 +784,11 @@ exports.sponsor = function (req, res) {
   var tid = req.params.teamId;
   var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
   var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
-  var tname;
+  var tname = req.companyGroup.name;
   var min_number = req.body.min_number !== '' ? req.body.min_number : 0;
   var max_number = req.body.max_number !== '' ? req.body.max_number : 0;
   var due_time = req.body.due_time !== '' ? req.body.due_time : req.body.start_time;
-  CompanyGroup.findOne({'_id' : tid},function (err, companyGroup){
-    if(err){
-      return ({'result':0,'msg':'发布错误，无此小队。'});
-    }else{
-      tname = companyGroup.name;
-      console.log(tname);
-    }
-  });
+
   //生成活动
   var campaign = new Campaign();
   campaign.team.push(tid);
@@ -827,7 +820,9 @@ exports.sponsor = function (req, res) {
       _id: campaign._id,
       model: 'Campaign'
     },
-    name: campaign.theme
+    name: campaign.theme,
+    owner_company: cid,
+    owner_company_group: req.companyGroup._id
   });
 
   fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
