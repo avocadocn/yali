@@ -1,0 +1,12 @@
+extends ./layouts/base
+
+block content
+  section.content
+    div#mapDetail.size_400
+    script.
+      $(function(){
+        var map = new BMap.Map("mapDetail");            // 创建Map实例
+        map.centerAndZoom('上海', 11);
+      });
+append footExt
+  script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")

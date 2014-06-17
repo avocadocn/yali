@@ -399,9 +399,9 @@ return function(input) {
   var date = new Date(input);
   if(date.getFullYear()===today.getFullYear()&&date.getMonth()===today.getMonth()){
     if(date.getDate()===today.getDate())
-      return '今天';
+      return '今天' + date.getHours()+':'+date.getMinutes();
     else if(date.getDate()===today.getDate()+1)
-      return '明天';
+      return '明天'+ date.getHours()+':'+date.getMinutes();
   }
     return input;
 }

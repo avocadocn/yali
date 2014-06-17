@@ -10,8 +10,10 @@
         .dl_message_container
           .message_row
             span.message_label {{"TYPE"|translate}}: {{"COMPANY_CAMPAIGN"|translate}}
-            span.message_label {{"LOCATION"|translate}}: {{group_message.location}}
-            span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+            span.message_label {{"LOCATION"|translate}}: {{group_message.location.name}}
+            span.message_label 开始{{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label 结束{{"TIME"|translate}}: {{group_message.end_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label 报名截止{{"TIME"|translate}}: {{group_message.deadline | date:'yyyy-MM-dd HH:mm'}}
           .message_row
             p.message_label {{group_message.content}}
 
@@ -26,8 +28,10 @@
         .dl_message_container
           .message_row
             span.message_label {{"TYPE"|translate}}: {{group_message.group.group_type[0]}}
-            span.message_label {{"LOCATION"|translate}}: {{group_message.location}}
-            span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+            span.message_label {{"LOCATION"|translate}}: {{group_message.location.name}}
+            span.message_label 开始{{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label 结束{{"TIME"|translate}}: {{group_message.end_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label 报名截止{{"TIME"|translate}}: {{group_message.deadline | date:'yyyy-MM-dd HH:mm'}}
           .message_row
             p.message_label {{group_message.content}}
     //若是挑战
@@ -49,8 +53,10 @@
           .message_row
             span.message_label {{"TYPE"|translate}}: {{group_message.group.group_type[0]}}
             span.message_label {{"FORMATION"|translate}}: {{group_message.provoke.competition_format}}
-            span.message_label {{"LOCATION"|translate}}: {{group_message.location}}
-            span.message_label {{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm:ss'}}
+            span.message_label {{"LOCATION"|translate}}: {{group_message.location.name}}
+            span.message_label 开始{{"TIME"|translate}}: {{group_message.start_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label 结束{{"TIME"|translate}}: {{group_message.end_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label 报名截止{{"TIME"|translate}}: {{group_message.deadline | date:'yyyy-MM-dd HH:mm'}}
           .message_row
             span.message_label {{group_message.content}}
             span.pull-right(ng-if="group_message.provoke.active && role=='OWNER' && !group_message.provoke.start_confirm")

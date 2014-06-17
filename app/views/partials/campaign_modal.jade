@@ -2,7 +2,7 @@
   .dl-modal
     form(name="campaign_form" novalidate)
       .dl-modal-header
-        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+        button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
           img(ng-src='/img/icons/icon_close.png')
         .head#myModalLabel {{"SPONSOR"|translate}}{{"CAMPAIGN"|translate}}
       .dl-modal-body
@@ -28,14 +28,16 @@
               //img(ng-src='/img/icons/icon_date.png')
               span.input-group-addon.no_radius
                 span.glyphicon.glyphicon-th
-              input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-startdate="" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
+              input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
         .dl_modal_container
           .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
           .dl_modal_input_container
-            input.dl_modal_input.dl_form-Control(type="text" name="location" ng-model="$parent.location" placeholder="请输入活动的具体地址，可以点击后方的“地图”进行地点标注" tooltip="{{campaign_form.location.$invalid? '请输入活动地点':''}}" required)
+            input.dl_modal_input(type="text" class="form-control" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" tooltip="{{campaign_form.location.$invalid? '请输入活动地点':''}}" required)
           .dl_modal_button
-            a.clearLinkUnderline.map_btn.dl_btn_small {{"MAP"|translate}}
+            a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap(1)") {{"MAP"|translate}}
+        .dl_modal_container
+              #mapDetail.height_200(ng-show="showMapFlag")
         .dl_modal_container
           .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"OPTIONAL"|translate}}{{"OPTION"|translate}}
@@ -44,7 +46,7 @@
               .dl_modal_label_container
                 span.info_label 最少报名人数:
               .dl_modal_other_container
-                input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.min_number")
+                input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.member_min")
               .dl_modal_people_container
                 span.info_label(style="padding:7px") 人
               .dl_modal_label_container
@@ -53,9 +55,9 @@
               .dl_modal_label_container
                 span.info_label 报名截止时间:
               .dl_modal_time_container
-                .input-group.date.form_datetime#due_time
+                .input-group.date.form_datetime#deadline
                   //img(ng-src='/img/icons/icon_date.png')
-                  input.dl_form-Control(type="text" style="width:120px" ng-model="$parent.due_time" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                  input.dl_form-Control(type="text" style="width:120px" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
               .dl_modal_label_container
@@ -64,7 +66,7 @@
               .dl_modal_label_container
                 span.info_label 报名人数上限:
               .dl_modal_other_container
-                input.dl_form-Control(type="number" name="maxNumber" ng-model="$parent.max_number")
+                input.dl_form-Control(type="number" name="maxNumber" ng-model="$parent.member_max")
               .dl_modal_people_container
                 span.info_label 人
               .dl_modal_label_container
@@ -82,8 +84,9 @@
         autoclose: true,
         startDate: new Date()
       });
-      $('#due_time').datetimepicker({
+      $('#deadline').datetimepicker({
         autoclose: true,
-        startDate: new Date()
+        startDate: new Date(),
+        pickerPosition: "top-left"
       });
     });

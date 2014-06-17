@@ -26,3 +26,6 @@ exports.question = function(req, res) {
 exports.contact = function(req, res) {
   res.render('contact');
 };
+exports.test = function(req, res) {
+  res.render('test');
+};

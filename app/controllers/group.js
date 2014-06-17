@@ -266,7 +266,6 @@ exports.timeLine = function(req, res){
 //返回小队页面
 exports.home = function(req, res) {
   var cid = req.companyGroup.cid.toString();
-
   async.waterfall([
     function(callback) {
       PhotoAlbum
@@ -445,8 +444,9 @@ exports.getGroupMessage = function(req, res) {
           'poster': group_message[i].poster,
           'content': group_message[i].content,
           'location' : group_message[i].location,
-          'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
-          'end_time' : group_message[i].end_time ? group_message[i] : '',
+          'start_time' : group_message[i].start_time,
+          'end_time' : group_message[i].end_time,
+          'deadline':group_message[i].deadline,
           'logo':logo,
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
           'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString())
@@ -508,11 +508,13 @@ exports.getGroupCampaign = function(req, res) {
             'cid': campaign[i].cid,
             'cname': campaign[i].cname,
             'poster': campaign[i].poster,
+            'theme':campaign[i].theme,
             'content': campaign[i].content,
             'location': campaign[i].location,
             'member_length': campaign[i].member.length,
-            'start_time': campaign[i].start_time ? campaign[i].start_time : '',
-            'end_time': campaign[i].end_time ? campaign[i].end_time : '',
+            'start_time': campaign[i].start_time ,
+            'end_time': campaign[i].end_time ,
+            'deadline':campaign[i].deadline,
             'join':join,
             'provoke':campaign[i].provoke,
             'index':i
@@ -561,14 +563,16 @@ exports.provoke = function (req, res) {
 
   var my_team_id = req.params.teamId;
   var team_opposite = req.body.team_opposite;
-
-  var content = req.body.content;
+  var theme = req.body.theme;
   var competition_format = req.body.competition_format;
   var location = req.body.location;
-  var competition_date = req.body.competition_date;
+  var start_time = req.body.start_time;
+  var end_time = req.body.end_time;
   var deadline = req.body.deadline;
-  var remark = req.body.remark;
+  var content = req.body.content;
   var number = req.body.number;
+  var member_min = req.body.member_min;
+  var member_max = req.body.member_max;
   var competition = new Competition();
 
   competition.gid = req.companyGroup.gid;
@@ -600,14 +604,16 @@ exports.provoke = function (req, res) {
         'logo' : req.body.team_opposite.logo
       };
       competition.camp.push(camp_b);
-
-      competition.content = req.body.content;
-      competition.brief.remark = req.body.remark;
-      competition.brief.location.name = location;
-      competition.brief.competition_date = competition_date;
+      competition.brief.theme = theme;
+      competition.brief.content = content;
+      competition.brief.location = location;
+      competition.brief.start_time = start_time;
+      competition.brief.end_time = end_time;
       competition.brief.deadline = deadline;
       competition.brief.competition_format = competition_format;
       competition.brief.number = number;
+      competition.brief.member_min = member_min;
+      competition.brief.member_max = member_max;
 
 
       competition.poster.cname = req.user.cname;
@@ -648,11 +654,11 @@ exports.provoke = function (req, res) {
       if(req.companyGroup.cid !== req.body.team_opposite.cid) {
         groupMessage.cid.push(req.body.team_opposite.cid);
       }
-      groupMessage.content = content;
+      groupMessage.theme = theme;
       groupMessage.location = location;
-      groupMessage.start_time = competition_date;
-      groupMessage.end_time = deadline;
-
+      groupMessage.start_time = start_time;
+      groupMessage.end_time = end_time;
+      groupMessage.deadline = deadline;
       groupMessage.save(function (err) {
         if (err) {
           console.log('保存约战动态时出错' + err);
@@ -711,12 +717,12 @@ exports.responseProvoke = function (req, res) {
         campaign.poster.role = 'LEADER';
         campaign.poster.nickname = competition.poster.nickname;
 
-        campaign.theme = competition.content;
-        campaign.content = competition.camp[0].tname + ' VS ' + competition.camp[1].tname;
-        campaign.location = competition.brief.location.name;
-        campaign.start_time = competition.brief.competition_date;
-        campaign.end_time = competition.brief.deadline;
-
+        campaign.theme = competition.theme;
+        campaign.content = competition.content;
+        campaign.location = competition.brief.location;
+        campaign.start_time = competition.brief.start_time;
+        campaign.end_time = competition.brief.end_time;
+        campaign.deadline = competition.brief.deadline;
         campaign.active = true;
         campaign.provoke.active = true;
         campaign.provoke.competition_id = competition._id;
@@ -788,9 +794,11 @@ exports.sponsor = function (req, res) {
   var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
   var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
   var tname = req.companyGroup.name;
-  var min_number = req.body.min_number !== '' ? req.body.min_number : 0;
-  var max_number = req.body.max_number !== '' ? req.body.max_number : 0;
-  var due_time = req.body.due_time !== '' ? req.body.due_time : req.body.start_time;
+  var member_min = req.body.member_min !== '' ? req.body.member_min : 0;
+  var member_max = req.body.member_max !== '' ? req.body.member_max : 0;
+  var start_time = req.body.start_time;
+  var end_time = req.body.end_time;
+  var deadline = req.body.deadline !== '' ? req.body.deadline : start_time;
 
   //生成活动
   var campaign = new Campaign();
@@ -807,17 +815,17 @@ exports.sponsor = function (req, res) {
     campaign.poster.uid = req.user._id;
     campaign.poster.nickname = req.user.nickname;
   }
-  campaign.min_number = min_number;
-  campaign.max_number = max_number;
+  campaign.min_number = member_min;
+  campaign.max_number = member_max;
 
   campaign.content = content;
   campaign.location = location;
   campaign.theme = theme;
   campaign.active = true;
 
-  campaign.start_time = req.body.start_time;
-  campaign.end_time = req.body.end_time;
-  campaign.due_time = req.body.due_time;
+  campaign.start_time = start_time;
+  campaign.end_time = end_time;
+  campaign.deadline = deadline;
   var photo_album = new PhotoAlbum({
     owner: {
       _id: campaign._id,
@@ -872,10 +880,12 @@ exports.sponsor = function (req, res) {
           groupMessage.poster.uid = req.user._id;
           groupMessage.poster.nickname = req.user.nickname;
         }
+        groupMessage.theme = theme;
         groupMessage.content = content;
         groupMessage.location = location;
-        groupMessage.start_time = req.body.start_time;
-        groupMessage.end_time = req.body.end_time;
+        groupMessage.start_time = start_time;
+        groupMessage.end_time = end_time;
+        groupMessage.deadline = deadline;
 
         groupMessage.save(function (err) {
           if (err) {

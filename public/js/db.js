@@ -998,7 +998,9 @@ for(var i = 0;i < 50; i ++) {
     _campaign.push({
         "end_time" : ISODate("2014-05-29T16:00:00Z"),
         "start_time" : ISODate("2014-05-26T16:00:00Z"),
-        "location" : "你猜",
+        "location" : {
+            "name":"你猜"
+        },
         "theme": "是啥",
         "content" : "足球测试活动"+i,
         "provoke" : {"active" : false},

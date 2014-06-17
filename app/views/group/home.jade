@@ -53,7 +53,7 @@ block panel
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
-    if (role ==='HR' || role ==='LEADER')
+    if role ==='HR' || role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="CampaignListController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/campaign_modal
       div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
@@ -82,3 +82,6 @@ block aside
 
 append footExt
   script(src="/js/controllers/tabviewGroup.js")
+if role ==='HR' || role ==='LEADER'
+  append bottomExt
+    script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")

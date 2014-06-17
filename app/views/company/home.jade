@@ -25,7 +25,7 @@ block baseInfo
 
 block panel
   ul.nav.nav-tabs
-    if(role==='HR' || role==='EMPLOYEE' )
+    if role==='HR' || role==='EMPLOYEE'
       li.tab_style(ng-class="{'active':nowTab=='company_campaign'}")
         a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") {{ 'COMPANY_CAMPAIGN' | translate }}
     li.tab_style(ng-class="{'active':nowTab=='company_info'}")
@@ -46,10 +46,13 @@ block panel
   .tab-content.margin_top_20
     .tab-pane.active
       div(ng-view)
-
-  div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-    include ../partials/campaign_modal
+  if role==='HR'
+    div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../partials/campaign_modal
 block aside
 append footExt
   script(src="/lib/linkage-selector/linkage-selector.js")
   script(src="/js/controllers/tabviewCompany.js")
+if role ==='HR'
+  append bottomExt
+    script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")

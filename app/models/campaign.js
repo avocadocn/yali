@@ -53,33 +53,34 @@ var Campaign = new Schema({
     content: {//简介
         type: String
     },
-
-    location: {//地点
-        type: String,
-        required: true
-    },
-    min_number: {//最少人数
+    member_min: {//最少人数
         type:Number,
         default: 0
     },
-    max_number: {//人数上限
+    member_max: {//人数上限
         type:Number,
         default: 0
     },
+    location: {
+        type: {
+          type:String
+        },
+        coordinates: [],
+        name: String
+      },
+    start_time: Date,
+    end_time: Date,
+    deadline: Date,
     photo_album: {
         type: Schema.Types.ObjectId,
         ref: 'PhotoAlbum'
     },
-
     member: [_member],
 
     create_time: {
         type: Date,
         default: Date.now()
     },
-    start_time: Date,   //活动开始开始时间
-    end_time: Date,     //结束时间
-    due_time:Date,      //报名截止时间 默认为活动开始时间
     provoke: {                        //约战活动
         competition_format: String,   //赛制
         active: {

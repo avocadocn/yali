@@ -32,6 +32,10 @@ var _camp = new Schema({
 });
 
 var GroupMessage = new Schema({
+    type: {
+        type: String,
+        enum: ['competition','ampaign']     //动态类型
+    },
     team:[{
         type: Schema.Types.ObjectId,
         ref: 'CompanyGroup'
@@ -44,8 +48,8 @@ var GroupMessage = new Schema({
         gid: Array,
         group_type: Array
     },
-    active: Boolean,
-    date: {
+    active: Boolean, //
+    create_time: {
         type: Date,
         default: Date.now()
     },
@@ -60,11 +64,18 @@ var GroupMessage = new Schema({
             enum: ['HR','LEADER','GUESTLEADER','GUESTHR']     //HR 组长
         },
     },
+    theme: String,
     content: String,
-    location: String,                 //地点
+    location: {
+        type: {
+          type:String
+        },
+        coordinates: [],
+        name: String
+    },                 //地点
     start_time: Date,                 //活动开始时间(或者比赛时间)
     end_time: Date,                   //活动结束时间(或者比赛截止时间)
-
+    deadline:Date,
     provoke: {                        //约战动态
         active: {
             type: Boolean,

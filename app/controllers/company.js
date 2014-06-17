@@ -1079,7 +1079,11 @@ exports.sponsor = function (req, res) {
     var content = req.body.content;//活动内容
     var location = req.body.location;//活动地点
     var theme = req.body.theme;
-
+    var start_time = req.body.start_time;
+    var end_time = req.body.end_time;
+    var deadline = req.body.deadline ? req.body.deadline :req.body.start_time;
+    var member_min = req.body.member_min;
+    var member_max = req.body.member_max;
     var campaign = new Campaign();
     campaign.team.push(cid);
     campaign.gid.push(gid);
@@ -1094,9 +1098,11 @@ exports.sponsor = function (req, res) {
     campaign.location = location;
     campaign.theme = theme;
 
-    campaign.start_time = req.body.start_time;
-    campaign.end_time = req.body.end_time;
-
+    campaign.start_time = start_time;
+    campaign.end_time = end_time;
+    campaign.deadline = deadline;
+    campaign.member_min = member_min;
+    campaign.member_max = member_max;
 
     var photo_album = new PhotoAlbum({
         owner: {
@@ -1150,9 +1156,9 @@ exports.sponsor = function (req, res) {
 
                 groupMessage.content = content;
                 groupMessage.location = location;
-                groupMessage.start_time = req.body.start_time;
-                groupMessage.end_time = req.body.end_time;
-
+                groupMessage.start_time = start_time;
+                groupMessage.end_time = end_time;
+                groupMessage.deadline = deadline;
                 groupMessage.save(function(err) {
                     if (err) {
                         return res.send({'result':0,'msg':'活动创建失败'});

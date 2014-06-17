@@ -79,13 +79,22 @@ var Competition = new Schema({
           type:String
         },
         coordinates: [],
-        name: String,
-        address : String
+        name: String
       },
-      competition_date: Date,
+      start_time: Date,
+      end_time: Date,
       deadline: Date,
+      member_min: {//最少人数
+        type:Number,
+        default: 0
+      },
+      member_max: {//人数上限
+          type:Number,
+          default: 0
+      },
+      theme: String,
       competition_format: String,              //赛制
-      remark: String,                          //备注
+      content: String,                          //备注内容
       number: Number                           //人数
     },
     camp:[_camp],                              //阵营
@@ -99,7 +108,6 @@ var Competition = new Schema({
             enum: ['HR','LEADER','GUESTLEADER','GUESTHR']      //HR 组长
         },
     },
-    content: String,
     convert_to_campaign: {
         type: Boolean,
         default: false

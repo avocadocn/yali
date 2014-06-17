@@ -26,8 +26,10 @@
           span.dl_message_label {{"TYPE"|translate}}: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
           //- span.message_label 参加活动人数：{{ campaign_item.member_length }}
           span.dl_message_label(ng-if="campaign_item.provoke.active") {{"FORMATION"|translate}}: {{ campaign_item.provoke.competition_format }}
-          span.dl_message_label {{"LOCATION"|translate}}: {{ campaign_item.location }}
-          span.dl_message_label {{"DEADLINE"|translate}}: {{ campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
+          span.dl_message_label {{"LOCATION"|translate}}: {{ campaign_item.location.name }}
+          span.dl_message_label 开始时间: {{ campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
+          span.dl_message_label 结束时间: {{ campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
+          span.dl_message_label 报名截止时间: {{ campaign_item.deadline | date:'yyyy-MM-dd HH:mm'}}
       .col-xs-3.col-sm-3.col-md-2
         if (role==='EMPLOYEE' || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
           div(ng-if="campaign_item.active && !campaign_item.over")

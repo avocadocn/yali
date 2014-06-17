@@ -226,13 +226,14 @@ exports.getAllCampaign = function(req, res) {
             'create_time': campaign[j].create_time,
             'start_time': campaign[j].start_time,
             'end_time': campaign[j].end_time,
+            'deadline':campaign[j].deadline,
             'join':join,
             'provoke':campaign[j].provoke
           });
 
         }
       }
-      return res.send({'data':campaigns});
+      return res.send({'data':campaigns,role:req.session.role});
     } else {
       return res.send({'data':[]});
     }

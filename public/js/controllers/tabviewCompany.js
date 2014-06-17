@@ -64,16 +64,60 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $rootScope.nowTab = 'company_campaign';
     $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
-      $scope.company = true;
+      $scope.role = data.role;
+      if(data.role==="HR"){
+        $scope.showMapFlag=false;
+        $scope.location={name:'',coordinates:[]};
+        $scope.$watch('location.name',function(name){
+            $scope.showMap(0);
+        });
+        $scope.showMap = function(type){
+            if(type===1&&($scope.location==undefined || $scope.location.name==undefined)){
+                $rootScope.donlerAlert('请输入地点');
+                return false;
+            }
+            if(type===1){
+                $scope.showMapFlag = true;
+            }
+
+            var locationmap = new BMap.Map("mapDetail");            // 创建Map实例
+            locationmap.centerAndZoom('上海',12);
+            locationmap.enableScrollWheelZoom(true);
+            locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+            var options = {
+                renderOptions:{map: locationmap},
+                onSearchComplete: function(results){
+                    // 判断状态是否正确
+                    if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                        var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                        var marker = new BMap.Marker(locationmap.getCenter());  // 创建标注
+                        locationmap.addOverlay(marker);              // 将标注添加到地图中
+                        locationmap.enableDragging();    //可拖拽
+                        $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                        marker.addEventListener("dragend", function changePoint(){
+                            var p = marker.getPosition();
+                            $scope.location.coordinates=[p.lng , p.lat];
+                        });
+                    }
+                }
+            };
+            var local = new BMap.LocalSearch(locationmap,options);
+            local.search($scope.location.name );
+        };
+      }
     });
-    // $("#start_time").on("dp.change",function (e) {
-    //     $scope.start_time = moment(e.date).format("YYYY-MM-DD HH:mm");
-    //     $('#end_time').data("DateTimePicker").setMinDate(e.date);
-    // });
-    // $("#end_time").on("dp.change",function (e) {
-    //     $scope.end_time = moment(e.date).format("YYYY-MM-DD HH:mm");
-    //     $('#start_time').data("DateTimePicker").setMaxDate(e.date);
-    // });
+    $("#start_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setStartDate', dateUTC);
+        $('#deadline').datetimepicker('setEndDate', dateUTC);
+    });
+    $("#end_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#start_time').datetimepicker('setEndDate', dateUTC);
+    });
+    
     $scope.selectCampaign = function (value) {
         var _url = "";
         var _selected = true;
@@ -201,7 +245,11 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                     location: $scope.location,
                     content : $scope.content,
                     start_time : $scope.start_time,
-                    end_time : $scope.end_time
+                    end_time : $scope.end_time,
+                    deadline : $scope.deadline,
+                    member_min : $scope.member_min,
+                    member_max : $scope.member_max
+
                 }
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面
