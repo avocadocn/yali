@@ -559,7 +559,6 @@ exports.provoke = function (req, res) {
     return res.send(403,'forbidden');
   }
 
-  console.log('嘿嘿');
   var my_team_id = req.params.teamId;
   var team_opposite = req.body.team_opposite;
 
