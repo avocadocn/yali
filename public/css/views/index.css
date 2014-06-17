@@ -1,6 +1,7 @@
 .index_container {
-  width: 80%;
+  width: 100%;
   min-width: 960px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 .header_container {
@@ -63,7 +64,9 @@
   background: url("/img/dl_doc_about_bg.png") top center;
 }
 .dl_doc .about .index_container {
-  width: 960px;
+  width: auto;
+  min-width: 960px;
+  max-width: 1280px;
 }
 .dl_doc .about .about_card {
   padding: 0;
@@ -94,12 +97,15 @@
   margin-left: 100px;
 }
 .dl_doc .about .about_card .card_1 {
-  background: url("/img/dl_doc_about_card1.gif");
+  background: url("/img/dl_doc_about_card1.gif") no-repeat;
   margin-left: 20px;
   margin-right: 0;
 }
+.dl_doc .about .about_card .card_1 :after {
+  width: 1px;
+}
 .dl_doc .about .about_card .card_2 {
-  background: url("/img/dl_doc_about_card2.gif") -10px 0px;
+  background: url("/img/dl_doc_about_card2.gif") -10px 0px no-repeat;
 }
 .dl_doc .about .about_card .card_2 .title {
   padding-left: 36px;
@@ -111,8 +117,11 @@
 .dl_doc .about .about_card .card_2 .btn {
   margin-left: 100px;
 }
+.dl_doc .about .about_card .card_2 :after {
+  width: 1px;
+}
 .dl_doc .about .about_card .card_3 {
-  background: url("/img/dl_doc_about_card3.gif");
+  background: url("/img/dl_doc_about_card3.gif") no-repeat;
   margin-left: 20px;
 }
 .dl_doc .about .about_card .card_3 p {
@@ -187,7 +196,7 @@
 }
 .dl-top-login {
   width: 480px;
-  padding: 15px 0 0 0;
+  padding: 22px 0 0 0;
 }
 .dl-top-login .form-control {
   display: inline-block;

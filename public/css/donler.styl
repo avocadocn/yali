@@ -505,7 +505,7 @@ input::-webkit-inner-spin-button
     color #fff !important
 
 .dl_nav
-  min-height 60px
+  min-height 73px
   background-color themeColor
   background -ms-linear-gradient(top, themeColor, navbarLinearColor)
   background -moz-linear-gradient(top, themeColor, navbarLinearColor)
@@ -516,6 +516,13 @@ input::-webkit-inner-spin-button
   color navbarFontColor
   border-radius 0px
   margin-bottom 0px
+  min-width miniPageWidth
+  
+  .header_container
+    max-width maxPageWidth
+    width auto
+    min-width miniPageWidth
+    padding 0 50px
   ul li
     a:focus
       background-color #558CB1 !important
@@ -525,6 +532,7 @@ input::-webkit-inner-spin-button
     color #fff !important
   .logo
     margin-top 5px
+    margin-left 10px
 
 .navbar
   border none

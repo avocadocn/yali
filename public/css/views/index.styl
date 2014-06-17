@@ -1,9 +1,10 @@
 @require('../variables')
-miniPageWidth = 960px
+
 
 .index_container
-  width 80%
+  width 100%
   min-width miniPageWidth
+  max-width maxPageWidth
   margin 0 auto
 .header_container
   width miniPageWidth
@@ -56,7 +57,10 @@ miniPageWidth = 960px
     height 239px
     background url('/img/dl_doc_about_bg.png') top center
     .index_container
-      width miniPageWidth
+      width auto
+      min-width miniPageWidth
+      max-width maxPageWidth
+
     .about_card
       padding 0
       float left
@@ -82,13 +86,15 @@ miniPageWidth = 960px
           margin-left 100px
       .card_1
 
-        background url('/img/dl_doc_about_card1.gif')
+        background url('/img/dl_doc_about_card1.gif') no-repeat
         margin-left 20px
         margin-right 0
+        :after
+          width 1px
 
       .card_2
 
-        background url('/img/dl_doc_about_card2.gif') -10px 0px
+        background url('/img/dl_doc_about_card2.gif') -10px 0px no-repeat
         .title
           padding-left 36px
         p
@@ -96,8 +102,10 @@ miniPageWidth = 960px
           padding-left 0px
         .btn 
           margin-left 100px
+        :after
+          width 1px
       .card_3
-        background url('/img/dl_doc_about_card3.gif')
+        background url('/img/dl_doc_about_card3.gif') no-repeat
         margin-left 20px
         p
           width 90%
@@ -154,7 +162,7 @@ miniPageWidth = 960px
     color footerFontColor
 .dl-top-login
   width 480px
-  padding 15px 0 0 0
+  padding 22px 0 0 0
   .form-control
     display inline-block
     border-radius 0px
