@@ -759,7 +759,8 @@ exports.home = function(req, res) {
         'photo': _user.photo,
         'realname':_user.realname,
         'cname':_user.cname,
-        'sign':_user.introduce
+        'sign':_user.introduce,
+        'role': req.session.role
       });
     }
   });
