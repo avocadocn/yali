@@ -150,6 +150,7 @@ div
             if(role === 'HR' || role === 'LEADER' || role === 'GUESTLEADER')
               button.dl_btn.dl_btn_small.pull-right(ng-if="team.provoke" ng-click="preProvoke(team)") {{"PROVOKE"|translate}}
           hr
+
   if(role ==='HR' || role ==='LEADER' || role === 'GUESTLEADER')
     div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal

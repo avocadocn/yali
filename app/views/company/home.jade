@@ -46,9 +46,11 @@ block panel
   .tab-content.margin_top_20
     .tab-pane.active
       div(ng-view)
+
   if role==='HR'
     div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_modal
+  #bottom
 block aside
 append footExt
   script(src="/lib/linkage-selector/linkage-selector.js")
