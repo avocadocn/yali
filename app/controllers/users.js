@@ -591,8 +591,8 @@ exports.getGroupMessages = function(req, res) {
                 'poster': group_message[j].poster,
                 'content': group_message[j].content,
                 'location' : group_message[j].location,
-                'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
-                'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
+                'start_time' : group_message[j].start_time,
+                'end_time' : group_message[j].end_time,
                 'provoke': group_message[j].provoke,
                 'logo':host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
                 'provoke_accept': false
@@ -633,7 +633,7 @@ exports.renderCampaigns = function(req, res){
 function fetchCampaign(req,res,team_ids,role) {
   var campaigns = [];
   var join = false;
-  Campaign.find({'team' : {'$in':team_ids}}).sort({'create_time':-1})
+  Campaign.find({'team' : {'$in':team_ids}}).sort({'start_time':-1})
   .exec(function(err, campaign) {
     if (err || !campaign) {
       return res.send({
@@ -663,9 +663,10 @@ function fetchCampaign(req,res,team_ids,role) {
           'content': campaign[j].content,
           'location': campaign[j].location,
           'member_length': campaign[j].member.length,
-          'create_time': campaign[j].create_time ? campaign[j].create_time : '',
-          'start_time': campaign[j].start_time ? campaign[j].start_time : '',
-          'end_time': campaign[j].end_time ? campaign[j].end_time : '',
+          'create_time': campaign[j].create_time,
+          'start_time': campaign[j].start_time,
+          'end_time': campaign[j].end_time,
+          'deadline':campaign[j].deadline,
           'join':join,
           'provoke':campaign[j].provoke,
           'index':j

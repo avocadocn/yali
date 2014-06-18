@@ -871,7 +871,7 @@ exports.getCompanyCampaign = function(req, res) {
     }
     else if(req.session.role ==='EMPLOYEE'){
         //公司发布的活动都归在虚拟组 gid = 0 里
-        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'_id':-1}).exec(function(err, campaign) {
+        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'start_time':-1}).exec(function(err, campaign) {
             if (err) {
                 console.log(err);
                 return res.status(404).send([]);
@@ -893,6 +893,7 @@ exports.getCompanyCampaign = function(req, res) {
                         'create_time': campaign[i].create_time,
                         'start_time': campaign[i].start_time,
                         'end_time': campaign[i].end_time,
+                        'deadline':campaign[i].deadline,
                         'index':i
                     });
                     for(var j = 0;j < campaign[i].member.length; j ++) {

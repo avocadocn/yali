@@ -491,7 +491,7 @@ exports.getGroupCampaign = function(req, res) {
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
-  Campaign.find({'team' : tid}).sort({'_id':-1}).exec(function(err, campaign) {
+  Campaign.find({'team' : tid}).sort({'start_time':-1}).exec(function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);

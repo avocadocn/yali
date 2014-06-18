@@ -27,7 +27,7 @@ exports.getCompanyCampaign = function(req, res) {
     }
     else if(req.session.role ==='EMPLOYEE'){
         //公司发布的活动都归在虚拟组 gid = 0 里
-        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'create_time':-1}).exec(function(err, campaign) {
+        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'start_time':-1}).exec(function(err, campaign) {
             if (err) {
                 console.log(err);
                 return res.status(404).send([]);
@@ -49,6 +49,7 @@ exports.getCompanyCampaign = function(req, res) {
                         'create_time': campaign[i].create_time,
                         'start_time': campaign[i].start_time,
                         'end_time': campaign[i].end_time,
+                        'deadline':campaign[i].deadline
                     });
                     for(var j = 0;j < campaign[i].member.length; j ++) {
                         if(req.user.id === campaign[i].member[j].uid) {
@@ -193,7 +194,7 @@ exports.getAllCampaign = function(req, res) {
   }
   var cid = req.session.role === 'HR' ? req.user._id : req.user.cid;
   var query_regular = {'cid' : {'$all':[cid.toString()]} };
-  Campaign.find(query_regular).sort({'create_time':-1}).exec(function(err, campaign) {
+  Campaign.find(query_regular).sort({'start_time':-1}).exec(function(err, campaign) {
     if(campaign.length > 0) {
       var campaigns = [];
       if (err) {
