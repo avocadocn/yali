@@ -138,7 +138,7 @@ div
       .dl_row.clearfix 
         if (Global.role ==='HR')
           //-关组
-          button.dl_btn.dl_btn_small.pull-right(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") {{"OPEN"|translate}}
+          button.dl_btn.dl_btn_small.cancel_btn.pull-right(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") {{"OPEN"|translate}}
           //-开组
           button.dl_btn.dl_btn_small.pull-right(ng-if="team.active" ng-click="activateGroup(false,team._id,$index)") {{"CLOSE"|translate}}
         if (Global.role === 'HR' || Global.role === 'LEADER' || Global.role === 'GUESTLEADER')
@@ -147,7 +147,7 @@ div
           //-不属于显示加组按钮
           button.dl_btn.dl_btn_small.pull-right(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") {{"JOIN_GROUP"|translate}}
           //-属于则显示退组按钮
-          button.dl_btn.dl_btn_small.pull-right(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") {{"QUIT_GROUP"|translate}}
+          button.dl_btn.dl_btn_small.cancel_btn.pull-right(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") {{"QUIT_GROUP"|translate}}
       hr.margin_top_6
 
   if (Global.role ==='HR' || Global.role ==='LEADER' || Global.role === 'GUESTLEADER')
