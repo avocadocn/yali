@@ -7,6 +7,23 @@ exports.render = function(req, res) {
 };
 
 
+exports.header = function(req,res){
+  var authenticated = false;
+  if(req.Global){
+    authenticated = true;
+    res.send({
+      'nav_name':Global.nav_name,
+      'nav_logo':Global.nav_logo,
+      'authenticated':authenticated,
+      'role':Global.role
+    });
+  } else {
+    res.send({
+      'authenticated':authenticated
+    });
+  }
+}
+
 exports.about = function(req, res) {
   res.render('about');
 };

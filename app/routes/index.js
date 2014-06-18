@@ -10,4 +10,6 @@ module.exports = function(app) {
     app.get('/question', index.question);
     app.get('/contact', index.contact);
     app.get('/test',index.test);
+
+    app.get('/index/header',index.header);
 };
