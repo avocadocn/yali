@@ -284,9 +284,9 @@ select {
   width: 100%;
   min-height: 100%;
   height: auto;
-  margin: 0 auto -60px;
+  margin: 0 auto 0;
   padding-top: 0px;
-  padding-bottom: 60px;
+  padding-bottom: 0;
 }
 .head {
   font-size: 24px;
@@ -700,7 +700,7 @@ input::-webkit-inner-spin-button {
 .wrap {
   min-height: 100%;
   height: auto;
-  margin: 0 auto -60px;
+  margin: 0 auto 0;
   padding-bottom: 0px;
   min-width: 960px;
   position: relative;

@@ -1,18 +1,46 @@
 extends layouts/default
 
-append headExt
-  link(rel="stylesheet" href="/css/views/company_signup.css")
-
 block title
   -var title = '关于我们'
 
 block contentExt
   .container
-    h1 1、关于动梨
-    p 上海动梨信息技术有限公司（简称“动梨”）致力于企业生活服务，帮助用户企业用更低的成本为员工提供更全面周到的生活服务。
-    p 正直、热情、为客户创造价值是动梨的核心理念。
+    p 
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title 关于动梨
+        .panel-body
+          p 上海动梨信息技术有限公司（简称“动梨”）致力于企业生活服务，帮助用户企业用更低的成本为员工提供更全面周到的生活服务。
+          p 正直、热情、为客户创造价值是动梨的核心理念。
+          
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title 关于Donler
+        .panel-body
+          p “Donler”指由动梨运营的网站，域名为donler.com，以及APP软件，名称为Donler。
+          p Donler作为动梨的第一项服务产品，担当的是企业员工活动管理领域里的颠覆者角色。Donler让企业员工活动体系的构建以及活动管理快速简便，活动信息直观详尽，活动发起、参与、管理、统计简单有序，让员工的活动体验得到提升。
 
-    h2 2、关于Donler
-    p “Donler”指由动梨运营的网站，域名为donler.com，以及APP软件，名称为Donler。
-    p Donler作为动梨的第一项服务产品，担当的是企业员工活动管理领域里的颠覆者角色。Donler让企业员工活动体系的构建以及活动管理快速简便，活动信息直观详尽
-，活动发起、参与、管理、统计简单有序，让员工的活动体验得到提升。
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title 法律声明
+        .panel-body
+          p 动梨提醒您：在使用Donler服务前，请您务必阅读并理解本声明，如果您使用Donle服务，您的使用行为将被视为对本声明全部内容的认可。“Donler”指由上海动梨信息技术有限公司（简称“动梨”）运营的网站，域名为donler.com，以及APP软件，名称为Donler。
+          p Donler上关于Donler会员或其发布的相关信息（包括但不限于用户名称、公司名称、 联系人及联络信息，活动信息、场地信息、相关图片、视讯等）的信息均是由会员自行提供，会员依法应对其提供的任何信息承担全部责任。
+          p 任何单位或个人认为Donler的内容（包括但不限于Donler会员发布的信息）可能涉嫌侵犯其合法权益，应该及时向动梨提出书面权利通知，并提供身份证明、权属证明、具体链接（URL）及详细侵权情况证明，动梨在收到上述法律文件后，将会依法尽快移除相关涉嫌侵权的内容。
+          p Donler转载内容（包括论坛内容）出于传递更多信息之目的，并不意味动梨赞同其观点或证实其内容的真实性。
+          p 动梨保留随时修正本服务条款的权利。
+
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title 知识产权声明
+        .panel-body
+          p 动梨拥有Donler内所有信息内容的版权。
+          p 任何被授权的浏览、复制、打印和传播属于Donler内信息内容都不得用于商业目的且所有信息内容及其任何部分的使用都必须包括此版权声明；
+          p Donler所有的产品、技术与所有程序均属于动梨的知识产权。未经动梨许可，任何人不得擅自（包括但不限于：以非法的方式复制、传播、展示、镜像、上载、下载）使用。否则，动梨将依法追究法律责任。
+
+    .panel.panel-default
+      .panel-heading
+        h4.panel-title 联系我们
+        .panel-body
+          p 除使用问题外，您有建议或者其他的想法，请发邮件至 info@donler.com
+
