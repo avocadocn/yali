@@ -513,8 +513,9 @@ exports.getGroupCampaign = function(req, res) {
               break;
             }
           }
+          var judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
           campaigns.push({
-            'over' : !(Date.now() - campaign[i].end_time.valueOf() <= 0),
+            'over' : judge,
             'active':campaign[i].active, //截止时间到了活动就无效了
             '_id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,

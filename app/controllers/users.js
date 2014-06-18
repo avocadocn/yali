@@ -651,8 +651,9 @@ function fetchCampaign(req,res,team_ids,role) {
             break;
           }
         }
+        var judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[i].member_max);
         campaigns.push({
-          'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+          'over' : judge,
           'selected': true,
           'active':campaign[j].active, //截止时间到了活动就无效了
           '_id': campaign[j]._id.toString(),
