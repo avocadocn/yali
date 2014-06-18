@@ -38,7 +38,7 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         //controllerAs: 'account'
       })
       .when('/changePassword', {
-        templateUrl: '/views/change_password.html',
+        templateUrl: '/company/change_password',
         controller: 'PasswordFormController',
         controllerAs: 'password'
       })
@@ -69,41 +69,64 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
       if(data.role==="HR"){
         $scope.showMapFlag=false;
         $scope.location={name:'',coordinates:[]};
-        $scope.$watch('location.name',function(name){
-            $scope.showMap(0);
-        });
         $scope.showMap = function(type){
-            if(type===1&&($scope.location==undefined || $scope.location.name==undefined)){
+            if($scope.location.name==''){
                 $rootScope.donlerAlert('请输入地点');
                 return false;
             }
-            if(type===1){
-                $scope.showMapFlag = true;
-            }
-
-            var locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-            locationmap.centerAndZoom('上海',12);
-            locationmap.enableScrollWheelZoom(true);
-            locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-            var options = {
-                renderOptions:{map: locationmap},
-                onSearchComplete: function(results){
-                    // 判断状态是否正确
-                    if (local.getStatus() == BMAP_STATUS_SUCCESS){
-                        var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                        var marker = new BMap.Marker(locationmap.getCenter());  // 创建标注
-                        locationmap.addOverlay(marker);              // 将标注添加到地图中
-                        locationmap.enableDragging();    //可拖拽
-                        $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                        marker.addEventListener("dragend", function changePoint(){
-                            var p = marker.getPosition();
-                            $scope.location.coordinates=[p.lng , p.lat];
-                        });
-                    }
+            if(!$scope.showMapFlag){
+                var locationmap = new BMap.Map("mapDetail");            // 创建Map实例
+                locationmap.centerAndZoom('上海',12);
+                locationmap.enableScrollWheelZoom(true);
+                locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+                var getCity =function (result){
+                    var cityName = result.name;
+                    locationmap.setCenter(cityName);
+                    var options = {
+                        renderOptions:{map: locationmap},
+                        onSearchComplete: function(results){
+                            // 判断状态是否正确
+                            if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                                var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                                var marker = new BMap.Marker(results.getPoi(0).point.lng,results.getPoi(0).point.lat);  // 创建标注
+                                locationmap.addOverlay(marker);              // 将标注添加到地图中
+                                marker.enableDragging();    //可拖拽
+                                $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                                marker.addEventListener("dragend", function changePoint(){
+                                    var p = marker.getPosition();
+                                    $scope.location.coordinates=[p.lng , p.lat];
+                                });
+                            }
+                        }
+                    };
+                    var local = new BMap.LocalSearch(locationmap,options);
+                    local.search($scope.location.name );
                 }
-            };
-            var local = new BMap.LocalSearch(locationmap,options);
-            local.search($scope.location.name );
+                var myCity = new BMap.LocalCity();
+                myCity.get(getCity);
+            }
+            else{
+                var options = {
+                    renderOptions:{map: locationmap},
+                    onSearchComplete: function(results){
+                        // 判断状态是否正确
+                        if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                            var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                            var marker = new BMap.Marker(results.getPoi(0).point.lng,results.getPoi(0).point.lat);  // 创建标注
+                            locationmap.addOverlay(marker);              // 将标注添加到地图中
+                            marker.enableDragging();    //可拖拽
+                            $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                            marker.addEventListener("dragend", function changePoint(){
+                                var p = marker.getPosition();
+                                $scope.location.coordinates=[p.lng , p.lat];
+                            });
+                        }
+                    }
+                };
+                var local = new BMap.LocalSearch(locationmap,options);
+                local.search($scope.location.name );
+            }
+            $scope.showMapFlag = true;
         };
       }
     });
@@ -357,8 +380,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     }
                 }
             }
-            console.log($scope.team_lists[0].gid,$scope.provoke_gid);
-            console.log($scope.team_lists[0]._id,$scope.provoke_tid);
         });
         $scope.linkage_init_location = data.info.city;
     }).error(function(data,status) {

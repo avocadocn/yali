@@ -45,6 +45,7 @@ module.exports = function(app, passport) {
     app.get('/company/member', authorization.requiresLogin, company.renderMembers);
     app.get('/company/getAccount', authorization.requiresLogin, company.getAccount);
     app.get('/company/info', authorization.requiresLogin, company.Info);
+    app.get('/company/change_password', authorization.requiresLogin, company.renderChangePassword);
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);
     app.post('/company/saveAccount', authorization.requiresCompany, company.saveAccount);
     //公司小组信息保存

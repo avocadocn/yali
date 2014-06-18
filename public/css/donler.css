@@ -161,6 +161,17 @@ select {
 .dl_vertical {
   line-height: 250%;
 }
+.dl_pass_label {
+  width: 120px;
+  font-size: 14px;
+  color: #666;
+  float: left;
+  padding: 7px 14px;
+}
+.dl_pass_input {
+  width: 250px;
+  float: left;
+}
 .dl_height {
   height: 93px;
 }
@@ -690,9 +701,10 @@ input::-webkit-inner-spin-button {
   min-height: 100%;
   height: auto;
   margin: 0 auto -60px;
-  padding-bottom: 80px;
+  padding-bottom: 0px;
   min-width: 960px;
   position: relative;
+  margin-bottom: 0px;
 }
 .dl_footer {
   background-color: #2c3e50;
@@ -708,7 +720,13 @@ input::-webkit-inner-spin-button {
   line-height: 60px;
 }
 .dl_footer .dl_row {
-  padding: 5px 0 0;
+  padding: 0;
+}
+.dl_user_footer {
+  background-color: #f8f8f3;
+}
+.dl_user_footer a {
+  color: #999;
 }
 .dl_form-Control {
   display: block;

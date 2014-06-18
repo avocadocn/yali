@@ -69,6 +69,12 @@ exports.renderForgetPwd = function(req, res){
     title:'忘记密码'
   });
 }
+//渲染修改资料页
+exports.renderChangePassword = function(req,res){
+  res.render('partials/change_passowrd');
+}
+
+
 exports.forgetPwd = function(req, res){
   User.findOne({email: req.body.email}, function(err, user) {
     if(err || !user) {
@@ -526,7 +532,7 @@ exports.getGroupMessages = function(req, res) {
         */
       }
       GroupMessage.find({'team' :{'$in':team_ids}})
-      .populate('team').sort({'date':-1})
+      .populate('team').sort({'create_time':-1})
       .exec(function(err, group_message) {
         if (group_message.length > 0) {
           if (err) {
@@ -616,7 +622,8 @@ exports.getGroupMessages = function(req, res) {
 
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{
-      'provider':'user'
+      'provider':'user',
+      'role':req.session.role
   });
 };
 
@@ -626,7 +633,7 @@ exports.renderCampaigns = function(req, res){
 function fetchCampaign(req,res,team_ids,role) {
   var campaigns = [];
   var join = false;
-  Campaign.find({'team' : {'$in':team_ids}}).sort({'_id':-1})
+  Campaign.find({'team' : {'$in':team_ids}}).sort({'create_time':-1})
   .exec(function(err, campaign) {
     if (err || !campaign) {
       return res.send({

@@ -45,7 +45,7 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
         controllerAs: 'campaign'
       })
       .when('/changePassword', {
-        templateUrl: '/views/change_password.html',
+        templateUrl: '/users/change_password',
         controller: 'PasswordFormController',
         controllerAs: 'password'
       }).

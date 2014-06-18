@@ -144,8 +144,16 @@ select
 
 .dl_vertical
   line-height 250%
-
-
+  
+.dl_pass_label
+  width 120px
+  font-size 14px
+  color #666
+  float left
+  padding 7px 14px
+.dl_pass_input
+  width 250px
+  float left
 .dl_height
   height:93px
 
@@ -207,7 +215,7 @@ select
 .baseInfo
   padding-top 30px
   padding-bottom 30px
-  background-color rgb(248,248,243)
+  background-color #f8f8f3
   width 100%
   height 240px
   margin 0 auto
@@ -224,7 +232,7 @@ select
   .message_row
     padding 5px 0
 .dl_word_break
-  word-break: break-all;
+  word-break break-all
 .dl_message
   border-left 2px solid #f7f7f7
   background-color #f7f7f7
@@ -569,9 +577,10 @@ input::-webkit-inner-spin-button
   min-height 100%
   height auto
   margin 0 auto -(footerHeight)
-  padding-bottom 80px
+  padding-bottom 0px
   min-width 960px
   position relative
+  margin-bottom 0px
 .dl_footer
   background-color #2c3e50
   height footerHeight
@@ -580,12 +589,14 @@ input::-webkit-inner-spin-button
   hr
     margin-top 0
     margin-bottom 15px
-
   .text_icp
     line-height footerHeight
   .dl_row
-   padding 5px 0 0
-
+   padding 0
+.dl_user_footer
+  background-color #f8f8f3
+  a
+    color #999
 .dl_form-Control
   display block
   width 100%
