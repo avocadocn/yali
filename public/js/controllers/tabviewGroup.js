@@ -397,7 +397,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
 
     });
     var locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-    locationmap.centerAndZoom('上海',12);
+    locationmap.centerAndZoom('上海',15);
     locationmap.enableScrollWheelZoom(true);
     locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
     var options = {
@@ -408,11 +408,9 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
                 var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
                 //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
                 var marker = new BMap.Marker(nowPoint);  // 创建标注
-                var label = new BMap.Label('<p>'+results.getPoi(0).title +'</p><p>地址： ' + results.getPoi(0).address+'</p>',{offset:new BMap.Size(20,-10)});
-                marker.setLabel(label);
                 locationmap.addOverlay(marker);              // 将标注添加到地图中
                 marker.enableDragging();    //可拖拽
-                locationmap.centerAndZoom(nowPoint,12);
+                locationmap.centerAndZoom(nowPoint,15);
 
                 $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
                 marker.addEventListener("dragend", function changePoint(){
@@ -425,7 +423,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
     var local = new BMap.LocalSearch(locationmap,options);
     var getCity =function (result){
         var cityName = result.name;
-        locationmap.centerAndZoom(cityName,12);
+        locationmap.centerAndZoom(cityName,15);
     }
     var myCity = new BMap.LocalCity();
     myCity.get(getCity);    
@@ -491,7 +489,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
     var locationmap = new BMap.Map("competitionMapDetail");            // 创建Map实例
-    locationmap.centerAndZoom('上海',12);
+    locationmap.centerAndZoom('上海',15);
     locationmap.enableScrollWheelZoom(true);
     locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
     var options = {
@@ -502,11 +500,9 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
                 var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
                 var marker = new BMap.Marker(nowPoint);  // 创建标注
-                var label = new BMap.Label('<p>'+results.getPoi(0).title +'</p><p>地址： ' + results.getPoi(0).address+'</p>',{offset:new BMap.Size(20,-10)});
-                marker.setLabel(label);
                 marker.enableDragging();    //可拖拽
                 locationmap.addOverlay(marker);              // 将标注添加到地图中
-                locationmap.centerAndZoom(nowPoint,12);
+                locationmap.centerAndZoom(nowPoint,15);
                 $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
                 marker.addEventListener("dragend", function changePoint(){
                     var p = marker.getPosition();
@@ -518,7 +514,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     var local = new BMap.LocalSearch(locationmap,options);
     var getCity =function (result){
         var cityName = result.name;
-        locationmap.centerAndZoom(cityName,12);
+        locationmap.centerAndZoom(cityName,15);
     }
     var myCity = new BMap.LocalCity();
     myCity.get(getCity);

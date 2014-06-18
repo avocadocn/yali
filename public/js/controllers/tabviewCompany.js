@@ -61,7 +61,6 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
-    $scope.company = true;
     $rootScope.nowTab = 'company_campaign';
     $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
@@ -562,7 +561,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
     //激活、关闭小组
-    $scope.activateGroup = function(active,tid,index){
+    $scope.activateGroup = function(active,tid){
         try{
             $http({
                 method:'post',
@@ -573,20 +572,16 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }).success(function(data,status){
                 if( active===true ){
-                    $scope.team_lists[index].active = true;
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.ACTIVE +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                    //window.location.reload();
-                    
+                    window.location.reload();
                 }
                 else{
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.CLOSE +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                    //window.location.reload();
-                    $scope.team_lists[index].active = false;
-                    //window.location.reload();
+                    window.location.reload();
                 }
             }).error(function(data, status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -597,7 +592,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
     //加入小队
-    $scope.joinGroup = function(tid,index){
+    $scope.joinGroup = function(tid){
         try{
             $http({
                 method:'post',
@@ -609,8 +604,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                //window.location.reload();
-                $scope.team_lists[index].belong=true;
+                window.location.reload();
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
@@ -622,7 +616,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
     //退出小队
-    $scope.quitGroup = function(tid,index){
+    $scope.quitGroup = function(tid){
         try{
             $http({
                 method:'post',
@@ -634,8 +628,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                //window.location.reload();
-                $scope.team_lists[index].belong=false;
+                window.location.reload();
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
@@ -765,7 +758,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     var locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-    locationmap.centerAndZoom('上海',12);
+    locationmap.centerAndZoom('上海',15);
     locationmap.enableScrollWheelZoom(true);
     locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
     var options = {
@@ -776,11 +769,9 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
                 var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
                 //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
                 var marker = new BMap.Marker(nowPoint);  // 创建标注
-                var label = new BMap.Label('<p>'+results.getPoi(0).title +'</p><p>地址： ' + results.getPoi(0).address+'</p>',{offset:new BMap.Size(20,-10)});
-                marker.setLabel(label);
                 locationmap.addOverlay(marker);              // 将标注添加到地图中
                 marker.enableDragging();    //可拖拽
-                locationmap.centerAndZoom(nowPoint,12);
+                locationmap.centerAndZoom(nowPoint,15);
                 $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
                 marker.addEventListener("dragend", function changePoint(){
                     var p = marker.getPosition();
@@ -792,7 +783,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     var local = new BMap.LocalSearch(locationmap,options);
     var getCity =function (result){
         var cityName = result.name;
-        locationmap.centerAndZoom(cityName,12);
+        locationmap.centerAndZoom(cityName,15);
     }
     var myCity = new BMap.LocalCity();
     myCity.get(getCity);
