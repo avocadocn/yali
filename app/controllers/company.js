@@ -36,16 +36,20 @@ exports.authorize = function(req, res, next){
     if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id)){
         req.session.nowcid = req.user._id;
         req.session.role = 'HR';
+        req.session.Global.role = 'HR';
     }
     else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid)){
         req.session.role = 'EMPLOYEE';
+        req.session.Global.role = 'EMPLOYEE';
         req.session.nowcid = req.user.cid;
     }
     else{
         if(req.user.role == 'LEADER'){
           req.session.role = 'GUESTLEADER';
+          req.session.Global.role = 'GUESTLEADER';
         }else{
           req.session.role = 'GUEST';
+          req.session.Global.role = 'GUEST';
         }
         req.session.nowcid = req.params.companyId;
     }
@@ -137,11 +141,8 @@ exports.signout = function(req, res) {
   res.redirect('/');
 };
 exports.loginSuccess = function(req, res) {
-    req.session.Global = {
-        name: req.user.info.name,
-        logo: req.user.info.logo,
-        role: req.session.role
-    };
+    req.session.Global.nav_name = req.user.info.name;
+    req.session.Global.nav_logo = req.user.info.logo;
     res.redirect('/company/home');
 };
 

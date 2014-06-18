@@ -226,6 +226,25 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             console.log(e);
         }
     };
+
+    $scope.cancel = function (_id) {
+        try {
+            $http({
+                method: 'post',
+                url: '/campaign/cancel',
+                data:{
+                    campaign_id : _id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
 }]);
 
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
@@ -363,24 +382,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
-    $scope.cancel = function (_id) {
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/cancel',
-                data:{
-                    campaign_id : _id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    
 }]);
 tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.search_type="team";

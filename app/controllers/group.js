@@ -37,9 +37,11 @@ exports.authorize = function(req, res, next) {
   if(req.user.provider==="company"){
     if(req.user._id.toString() ===req.companyGroup.cid.toString()){
       req.session.role = 'HR';
+      req.session.Global.role = 'HR';
     }
     else{
       req.session.role = 'GUESTHR';
+      req.session.Global.role = 'GUESTHR';
     }
   }
   else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
@@ -49,24 +51,30 @@ exports.authorize = function(req, res, next) {
       if(_teamIndex>-1){
         if(req.user.group[_groupIndex].team[_teamIndex].leader ===true){
           req.session.role = 'LEADER';
+          req.session.Global.role = 'LEADER';
         }
         else{
           req.session.role = 'MEMBER';
+          req.session.Global.role = 'MEMBER';
         }
       }
       else{
         req.session.role = 'PARTNER';
+        req.session.Global.role = 'PARTNER';
       }
     }
     else{
       req.session.role = 'PARTNER';
+      req.session.Global.role = 'PARTNER';
     }
   }
   else{
     if(req.user.role == 'LEADER'){
       req.session.role = 'GUESTLEADER';
+      req.session.Global.role = 'GUESTLEADER';
     }else{
       req.session.role = 'GUEST';
+      req.session.Global.role = 'GUEST';
     }
   }
   req.session.nowtid = req.params.teamId;

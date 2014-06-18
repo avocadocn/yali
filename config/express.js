@@ -81,8 +81,8 @@ module.exports = function(app, passport, db) {
         app.use(function(req, res, next) {
             if (!req.session.Global) {
                 req.session.Global = {
-                    name: '',
-                    logo: '',
+                    nav_name: '',
+                    nav_logo: '',
                     role: ''
                 };
             }

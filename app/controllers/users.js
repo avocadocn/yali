@@ -160,11 +160,8 @@ exports.signout = function(req, res) {
  * Session
  */
 exports.loginSuccess = function(req, res) {
-  req.session.Global = {
-    name: req.user.nickname,
-    logo: req.user.photo,
-    role: req.session.role
-  }
+  req.session.Global.nav_name = req.user.nickname;
+  req.session.Global.nav_logo = req.user.photo;
   res.redirect('/users/home');
 };
 
@@ -185,14 +182,17 @@ exports.appLogout = function(req, res) {
 exports.authorize = function(req, res, next) {
   if(!req.params.userId || req.params.userId === req.user._id.toString()){
     req.session.role = 'OWNER';
+    req.session.Global.role = 'OWNER';
     req.session.nowuid = req.user._id;
   }
   else if(req.params.userId && req.user._id.toString() === req.profile.cid.toString()){
     req.session.role = 'HR';
+    req.session.Global.role = 'HR';
     req.session.nowuid = req.params.userId;
   }
   else if(req.params.userId && req.profile.cid.toString() === req.user.cid.toString()){
     req.session.role = 'PARTNER';
+    req.session.Global.role = 'PARTNER';
     req.session.nowuid = req.params.userId;
   }else{
     return res.send(403, 'forbidden!');

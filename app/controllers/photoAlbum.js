@@ -258,19 +258,22 @@ exports.createAuth = function(req, res, next) {
   .findById(req.body.cid)
   .exec()
   .then(function(company) {
+    // 找不到相册所属公司
     if (!company) {
-      res.send(403);
+      return res.send(403);
     }
 
+    // 相册所属的组不在所属公司里
     var gids = [];
     company.team.forEach(function(team) {
       gids.push(team.id.toString());
     });
     var index = gids.indexOf(req.body.gid);
     if (index === -1) {
-      res.send(403);
+      return res.send(403);
     }
 
+    // 该公司的HR
     var auth = false;
     if (req.user.provider === 'company' && req.user._id.toString() === company._id.toString()) {
       auth = true;
@@ -281,13 +284,12 @@ exports.createAuth = function(req, res, next) {
     .findById(gids[index])
     .exec()
     .then(function(company_group) {
-      if (!company_group) {
-        res.send(403);
-      }
-      var leaders = company_group.leader || [];
-      for (var i = 0; i < leaders.length; i++) {
-        if (req.user._id.toString() === leaders[i]._id.toString()) {
-          auth = true;
+      if (company_group) {
+        var leaders = company_group.leader || [];
+        for (var i = 0; i < leaders.length; i++) {
+          if (req.user._id.toString() === leaders[i]._id.toString()) {
+            auth = true;
+          }
         }
       }
       if (auth === false) {
