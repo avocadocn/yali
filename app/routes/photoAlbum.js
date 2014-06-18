@@ -14,7 +14,7 @@ module.exports = function(app) {
 
   app.post('/photoAlbum', authorize, photoAlbum.createAuth, photoAlbum.ownerFilter, photoAlbum.createPhotoAlbum);
   app.get('/photoAlbum/:photoAlbumId', photoAlbum.readPhotoAlbum);
-  app.put('/photoAlbum/:photoAlbumId', authorize, photoAlbum.updatePhotoAlbum)
+  app.put('/photoAlbum/:photoAlbumId', authorize, photoAlbum.updatePhotoAlbum);
   app.delete('/photoAlbum/:photoAlbumId', authorize, photoAlbum.deletePhotoAlbum);
 
   app.post('/photoAlbum/:photoAlbumId/photo', authorize, photoBodyParser, photoAlbum.createPhoto);

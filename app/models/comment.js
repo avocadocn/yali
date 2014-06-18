@@ -23,7 +23,7 @@ var Comment = new Schema({
   },
   host_type:{
     type: String,
-    enum: ['message', 'album', 'campaign', 'competition']
+    enum: ['message', 'album', 'campaign', 'competition', 'campaign_detail']
   }
 });
 

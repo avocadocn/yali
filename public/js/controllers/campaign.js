@@ -11,6 +11,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         $scope.nickname = data.nickname;
         $scope.photo = data.photo;
         $scope.campaignLogo = data.campaignLogo;
+        $scope.comments = [];
         $(function(){
             var locationmap = new BMap.Map("mapContainer");            // 创建Map实例
             var nowPoint = new BMap.Point(data.campaign.location.coordinates[0],data.campaign.location.coordinates[1]);
@@ -21,9 +22,72 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             locationmap.addOverlay(marker);              // 将标注添加到地图中
             var label = new BMap.Label(data.campaign.location.name,{offset:new BMap.Size(20,-10)});
             marker.setLabel(label);
-        })
-
+        });
+        $scope.getComment(); //获取留言
+        $scope.new_comment = {
+            text:''
+        };
     });
+
+    $scope.getComment = function(){
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/pull',
+                data:{
+                    host_id : $scope.campaign._id
+                }
+            }).success(function(data, status) {
+                if(data.length > 0){
+                    $scope.comments = data;
+                    for(var i = 0; i < $scope.comments.length; i ++) {
+                        $scope.comments[i].index = i+1;
+                    }
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+
+    $scope.comment = function(){
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/push',
+                data:{
+                    host_id : $scope.campaign._id,
+                    content : $scope.new_comment.text,
+                    host_type : 'campaign_detail'
+                }
+            }).success(function(data, status) {
+                if(data === 'SUCCESS'){
+                    var poster={
+                        'nickname' : $scope.nickname,
+                        'photo' : $scope.photo
+                    };
+                    $scope.comments.push({
+                        'host_id' : $scope.campaign._id,
+                        'content' : $scope.new_comment.text,
+                        'create_date' : Date.now(),
+                        'poster' : poster,
+                        'host_type' : 'campaign_detail',
+                        'index' : $scope.comments.length + 1
+                    });
+                } else {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
     $scope.joinCampaign = function () {
         //$rootScope.donlerAlert($scope.campaign_id);
         try {

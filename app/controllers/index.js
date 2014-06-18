@@ -1,9 +1,17 @@
 'use strict';
 
 exports.render = function(req, res) {
-  res.render('index', {
-      user: req.user ? JSON.stringify(req.user) : 'null'
-  });
+  if(req.session.Global){
+    if(req.session.Global.role==="HR"){
+      res.redirect('/company/home');
+    }else{
+      res.redirect('/users/home');
+    }
+  }else{
+    res.render('index', {
+        user: req.user ? JSON.stringify(req.user) : 'null'
+    });
+  }
 };
 
 

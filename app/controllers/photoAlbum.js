@@ -51,6 +51,7 @@ function photoEditAuth(user, photo_album, photo) {
 
 // photo_album need populate owner_company_group
 function photoAlbumEditAuth(user, photo_album) {
+
   // 该照片所属组的组长
   var leaders = [];
   if (photo_album.owner_company_group) {
@@ -317,7 +318,6 @@ exports.createAuth = function(req, res, next) {
 
 
 exports.createPhotoAlbum = function(req, res) {
-
   var photo_album = new PhotoAlbum({
     owner: req.owner,
     owner_company: req.body.cid,

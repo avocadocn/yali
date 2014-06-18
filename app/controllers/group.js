@@ -1000,6 +1000,7 @@ exports.getCampaignDetail = function(req, res) {
     return res.send(404);
   }
   var join = false;
+  console.log(req.session.nowcampaignid);
   Campaign
   .findOne({ _id: req.session.nowcampaignid })
   .populate('team')
@@ -1014,8 +1015,12 @@ exports.getCampaignDetail = function(req, res) {
         }
       }
     }
+    var judge = false;
+    if(campaign.deadline != undefined && campaign.member_max != undefined){
+      judge = !(Date.now() - campaign.end_time.valueOf() <= 0 || Date.now() - campaign.deadline.valueOf() <= 0 || campaign.member.length >= campaign.member_max);
+    }
     return res.send({
-      over : !(Date.now() - campaign.end_time.valueOf() <= 0),
+      over : judge,
       campaign: campaign,
       join: join,
       nickname : req.user.nickname,
@@ -1024,11 +1029,9 @@ exports.getCampaignDetail = function(req, res) {
     });
   })
   .then(null, function(err) {
-    console.log(err);
     return res.status(500).send('error');
   });
 };
-
 
 
 exports.updateFormation = function(req, res){

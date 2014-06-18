@@ -14,13 +14,13 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
         li
           a(href="/company/home") {{"COMPANY_HOME"|translate}}
         li
-          a(href="/users/home") {{"PERSONAL_HOME"|translate}}
-        li
           a(href="#" data-toggle="dropdown")
             span
               img.size_20(ng-src="#{Global.nav_logo}")
             span.m_l_5 #{Global.nav_name}
           ul.dl_menu.dropdown-menu(role="menu")
+            li
+              a.dl_menu_a(href="/users/home") {{"PERSONAL_HOME"|translate}}
             li
               a.dl_menu_a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
             li
