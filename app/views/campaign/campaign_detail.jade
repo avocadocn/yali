@@ -50,7 +50,7 @@ block contentExt
               span {{"CAMPAIGN"|translate}}{{"SIMPLE"|translate}}{{"INTRODUCTION"|translate}}:
             .dl_detail_detail
               span.dl_word_break {{campaign.content}}
-           if ((role==='EMPLOYEE' &&  campaign.gid === 0) || role==='OWNER' || role ==='LEADER' || role ==='MEMBER')
+           if ((Global.role==='EMPLOYEE' &&  campaign.gid === 0) || Global.role==='OWNER' || Global.role ==='LEADER' || Global.role ==='MEMBER')
             div.margin_top_30(ng-if="campaign.active && !campaign.over")
               input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}{{'CAMPAIGN'|translate}}" ng-click="quitCampaign()" ng-if="join")
               input.dl_btn.dl_btn_detail(type = "button" value = "{{'ENTRY'|translate}}{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="!join")
@@ -67,10 +67,10 @@ block contentExt
         button.dl_btn.pull-right.dl_btn_submit {{"SUBMIT"|translate}}{{"LEAVEMESSAGE"|translate}}
     .dl_detail_side
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
-        img.img_contain.size_map
+        #mapContainer.size_400
       p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
         a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
-      if (role!=='PARTNER')
+      if (Global.role!=='PARTNER')
         .photo_album
           each photo in photo_thumbnails
             a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")
@@ -79,4 +79,6 @@ block contentExt
 
 append footExt
   script(src="/js/controllers/campaign.js")
+append bottomExt
+  script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")
 

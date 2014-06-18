@@ -79,9 +79,14 @@ module.exports = function(app, passport, db) {
         app.use(helpers(config.app.name));
 
         app.use(function(req, res, next) {
-            res.locals.nav_name = req.session.nav_name;
-            res.locals.nav_logo = req.session.nav_logo;
-            res.locals.role = req.session.role;
+            if (!req.session.Global) {
+                req.session.Global = {
+                    nav_name: '',
+                    nav_logo: '',
+                    role: ''
+                };
+            }
+            res.locals.Global = req.session.Global;
             next();
         });
 

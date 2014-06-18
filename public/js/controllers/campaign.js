@@ -3,7 +3,6 @@
 var campaignApp = angular.module('mean.main');
 
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-    $rootScope.nowTab = 'campaign';
 
     $http.get('/group/campaignData').success(function(data, status) {
         $scope.campaign = data.campaign;
@@ -12,6 +11,18 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         $scope.nickname = data.nickname;
         $scope.photo = data.photo;
         $scope.campaignLogo = data.campaignLogo;
+        $(function(){
+            var locationmap = new BMap.Map("mapContainer");            // 创建Map实例
+            var nowPoint = new BMap.Point(data.campaign.location.coordinates[0],data.campaign.location.coordinates[1]);
+            locationmap.centerAndZoom(nowPoint,15);
+            locationmap.enableScrollWheelZoom(true);
+            locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+            var marker = new BMap.Marker(nowPoint);  // 创建标注
+            locationmap.addOverlay(marker);              // 将标注添加到地图中
+            var label = new BMap.Label(data.campaign.location.name,{offset:new BMap.Size(20,-10)});
+            marker.setLabel(label);
+        })
+
     });
     $scope.joinCampaign = function () {
         //$rootScope.donlerAlert($scope.campaign_id);

@@ -155,10 +155,10 @@ exports.signout = function(req, res) {
   if(req.session.role != null || req.session.role != undefined){
     delete req.session.role;
   }
+  if (req.session.Global) {
+    delete req.session.Global;
+  }
   req.logout();
-  delete req.session.role;
-  delete req.session.nav_name;
-  delete req.session.nav_logo;
   res.redirect('/');
 };
 
@@ -166,8 +166,8 @@ exports.signout = function(req, res) {
  * Session
  */
 exports.loginSuccess = function(req, res) {
-  req.session.nav_name = req.user.nickname;
-  req.session.nav_logo = req.user.photo;
+  req.session.Global.nav_name = req.user.nickname;
+  req.session.Global.nav_logo = req.user.photo;
   res.redirect('/users/home');
 };
 
@@ -188,14 +188,17 @@ exports.appLogout = function(req, res) {
 exports.authorize = function(req, res, next) {
   if(!req.params.userId || req.params.userId === req.user._id.toString()){
     req.session.role = 'OWNER';
+    req.session.Global.role = 'OWNER';
     req.session.nowuid = req.user._id;
   }
   else if(req.params.userId && req.user._id.toString() === req.profile.cid.toString()){
     req.session.role = 'HR';
+    req.session.Global.role = 'HR';
     req.session.nowuid = req.params.userId;
   }
   else if(req.params.userId && req.profile.cid.toString() === req.user.cid.toString()){
     req.session.role = 'PARTNER';
+    req.session.Global.role = 'PARTNER';
     req.session.nowuid = req.params.userId;
   }else{
     return res.send(403, 'forbidden!');
@@ -588,11 +591,12 @@ exports.getGroupMessages = function(req, res) {
                 'poster': group_message[j].poster,
                 'content': group_message[j].content,
                 'location' : group_message[j].location,
-                'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
-                'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
+                'start_time' : group_message[j].start_time,
+                'end_time' : group_message[j].end_time,
                 'provoke': group_message[j].provoke,
                 'logo':host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
-                'provoke_accept': false
+                'provoke_accept': false,
+                'comment_sum':group_message[j].comment_sum
               });
             }
           }
@@ -630,7 +634,7 @@ exports.renderCampaigns = function(req, res){
 function fetchCampaign(req,res,team_ids,role) {
   var campaigns = [];
   var join = false;
-  Campaign.find({'team' : {'$in':team_ids}}).sort({'create_time':-1})
+  Campaign.find({'team' : {'$in':team_ids}}).sort({'start_time':-1})
   .exec(function(err, campaign) {
     if (err || !campaign) {
       return res.send({
@@ -647,8 +651,12 @@ function fetchCampaign(req,res,team_ids,role) {
             break;
           }
         }
+        var judge = false;
+        if(campaign[j].deadline && campaign[j].member_max){
+            judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+        }
         campaigns.push({
-          'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+          'over' : judge,
           'selected': true,
           'active':campaign[j].active, //截止时间到了活动就无效了
           '_id': campaign[j]._id.toString(),
@@ -660,9 +668,10 @@ function fetchCampaign(req,res,team_ids,role) {
           'content': campaign[j].content,
           'location': campaign[j].location,
           'member_length': campaign[j].member.length,
-          'create_time': campaign[j].create_time ? campaign[j].create_time : '',
-          'start_time': campaign[j].start_time ? campaign[j].start_time : '',
-          'end_time': campaign[j].end_time ? campaign[j].end_time : '',
+          'create_time': campaign[j].create_time,
+          'start_time': campaign[j].start_time,
+          'end_time': campaign[j].end_time,
+          'deadline':campaign[j].deadline,
           'join':join,
           'provoke':campaign[j].provoke,
           'index':j

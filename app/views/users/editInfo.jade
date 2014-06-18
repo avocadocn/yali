@@ -2,12 +2,12 @@ div
   form.form-horizontal(name="accountForm")
     .dl_row
       h5.pull-left {{"INFO" | translate}}
-      if(role!=='PARTNER')
+      if (Global.role!=='PARTNER')
         button.dl_btn.dl_btn_small.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
     hr.margin_top_6
     .aside
       img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
-    if(role!=='PARTNER')
+    if (Global.role!=='PARTNER')
       .dl_row
         a.clearLinkUnderline.dl_btn.dl_btn_medium.margin_top_15(href="/users/editPhoto"){{"CHANGE" | translate}}{{"AVATAR"|translate}}
       .dl_row
@@ -47,7 +47,7 @@ div
         span.info_label {{"GENDER" | translate}}
       .info_side(ng-if="baseUnEdit")
         span.info_label {{user.sex}}
-      if(role!=='PARTNER')
+      if (Global.role!=='PARTNER')
         .info_detail(ng-if="!baseUnEdit")
           span.radio.info_radio.info_label
             input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
@@ -67,7 +67,7 @@ div
         span.info_label {{"BLOODTYPE" | translate}}
       .info_side(ng-if="baseUnEdit")
         span.info_label {{user.bloodType}}
-      if(role!=='PARTNER')
+      if (Global.role!=='PARTNER')
         .info_detail(ng-if="!baseUnEdit")
           select.dl_input.dl_form-Control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" style="height:34px")
             option(ng-select="user.bloodType === 'A'") A
@@ -87,7 +87,7 @@ div
   form.form-horizontal(name="linkForm")
     .dl_row
       h5.pull-left {{"CONTACT" | translate}}
-      if(role!=='PARTNER')
+      if (Global.role!=='PARTNER')
         button.dl_btn.dl_btn_small.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     hr.margin_top_6
     .dl_row.clearfix

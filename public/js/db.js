@@ -837,7 +837,7 @@ company_donler.team = [
         ];
 db.companies.update({ "_id": company_donler._id }, company_donler);
 
-company_yali.group = [
+company_yali.team = [
             {
                 "gid" : "7",
                 "group_type" : "足球",
@@ -848,7 +848,7 @@ company_yali.group = [
         ];
 db.companies.update({ "_id": company_yali._id }, company_yali);
 
-company_apple.group = [
+company_apple.team = [
             {
                 "gid" : "7",
                 "group_type" : "足球",
@@ -859,7 +859,7 @@ company_apple.group = [
         ];
 db.companies.update({ "_id": company_apple._id }, company_apple);
 
-company_banana.group = [
+company_banana.team = [
             {
                 "gid" : "7",
                 "group_type" : "足球",

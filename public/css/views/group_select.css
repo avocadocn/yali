@@ -118,7 +118,7 @@
   background-image: url("/img/icons/group/travel_off.png");
 }
 .group.inactive .group_16 {
-  background-image: url("/img/icons/group/boardGame_off.png");
+  background-image: url("/img/icons/group/boardgame_off.png");
 }
 .group.inactive .group_17 {
   background-image: url("/img/icons/group/other_off.png");
@@ -169,7 +169,7 @@
   background-image: url("/img/icons/group/travel_on.png");
 }
 .group.active .group_16 {
-  background-image: url("/img/icons/group/boardGame_on.png");
+  background-image: url("/img/icons/group/boardgame_on.png");
 }
 .group.active .group_17 {
   background-image: url("/img/icons/group/other_on.png");

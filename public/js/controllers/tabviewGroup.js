@@ -93,17 +93,91 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
-
-
+    $scope.message_role = "group";
+    $scope.toggle = [];
+    $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/getGroupMessages/'+tid +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
+            for(var i = 0;i < $scope.group_messages.length; i ++) {
+                $scope.group_messages[i].comments = [];
+                $scope.toggle.push(false);
+                $scope.new_comment.push({
+                    text: ''
+                });
+            }
         });
     });
 
     //var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
+
+
+    $scope.toggleOperate = function(index){
+        $scope.toggle[index] = !$scope.toggle[index];
+    }
+    $scope.getComment = function(index){
+        if($scope.toggle){
+            try {
+                $http({
+                    method: 'post',
+                    url: '/comment/pull',
+                    data:{
+                        host_id : $scope.group_messages[index]._id
+                    }
+                }).success(function(data, status) {
+                    if(data.length > 0){
+                        $scope.group_messages[index].comments = data;
+                        for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
+                            $scope.group_messages[index].comments[i].index = i+1;
+                        }
+                    }
+                }).error(function(data, status) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+    }
+
+    $scope.comment = function(index){
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/push',
+                data:{
+                    host_id : $scope.group_messages[index]._id,
+                    content : $scope.new_comment[index].text,
+                    host_type : 'message'
+                }
+            }).success(function(data, status) {
+                if(data === 'SUCCESS'){
+                    var poster={
+                        'nickname' : '我自己'
+                    };
+                    $scope.group_messages[index].comment_sum ++;
+                    $scope.group_messages[index].comments.push({
+                        'host_id' : $scope.group_messages[index]._id,
+                        'content' : $scope.new_comment[index].text,
+                        'create_date' : Date.now(),
+                        'poster' : poster,
+                        'host_type' : 'message',
+                        'index' : $scope.group_messages[index].comment_sum
+                    });
+                } else {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
     //消除ajax缓存
     $scope.vote = function(provoke_message_id, status, index) {
          try {
@@ -129,27 +203,19 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             console.log(e);
         }
     };
-
 }]);
 
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
-
     $scope.company = false;
     var groupId,teamId;
-    $scope.company = false;
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/getCampaigns/'+tid+'?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.data;
             $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
         });
 
-    });
-
-    $scope.$watch('groupId',function(gid){
-        groupId = gid;
-        $rootScope.groupId = gid;
     });
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
@@ -226,13 +292,33 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             console.log(e);
         }
     };
+
+    $scope.cancel = function (_id) {
+        try {
+            $http({
+                method: 'post',
+                url: '/campaign/cancel',
+                data:{
+                    campaign_id : _id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
 }]);
 
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
-    $scope.$watch('teamId',function(tid){
+    $rootScope.$watch('teamId',function(tid){
         $http.get('/group/info/'+tid).success(function(data, status) {
+            $scope.members = [];
             $scope.companyname = data.companyGroup.cname;
             $scope.create_time = data.entity.create_date ? data.entity.create_date :'';
             $scope.name = data.companyGroup.name ? data.companyGroup.name : '';
@@ -243,7 +329,19 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.home_court_1 = data.entity.home_court[0] ? data.entity.home_court[0] : '';
             $scope.home_court_2 = data.entity.home_court[1] ? data.entity.home_court[1] : '';
             $scope.family = data.entity.family;
-            $scope.members = data.companyGroup.member;
+            var judge = true;
+            for(var i = 0; i < data.companyGroup.member.length; i ++) {
+                for(var j = 0; j < $scope.leaders.length; j ++) {
+                    if($scope.leaders[j]._id === data.companyGroup.member[i]._id){
+                        judge = false;
+                        break;
+                    }
+                }
+                if(judge){
+                    $scope.members.push(data.companyGroup.member[i]);
+                }
+                judge = true;
+            }
         });
     });
 
@@ -297,65 +395,44 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         $('#start_time').datetimepicker('setEndDate', dateUTC);
 
     });
+    var locationmap = new BMap.Map("mapDetail");            // 创建Map实例
+    locationmap.centerAndZoom('上海',15);
+    locationmap.enableScrollWheelZoom(true);
+    locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+    var options = {
+        onSearchComplete: function(results){
+            // 判断状态是否正确
+            if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                locationmap.clearOverlays();
+                var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
+                //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                var marker = new BMap.Marker(nowPoint);  // 创建标注
+                locationmap.addOverlay(marker);              // 将标注添加到地图中
+                marker.enableDragging();    //可拖拽
+                locationmap.centerAndZoom(nowPoint,15);
+
+                $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                marker.addEventListener("dragend", function changePoint(){
+                    var p = marker.getPosition();
+                    $scope.location.coordinates=[p.lng , p.lat];
+                });
+            }
+        }
+    };
+    var local = new BMap.LocalSearch(locationmap,options);
+    var getCity =function (result){
+        var cityName = result.name;
+        locationmap.centerAndZoom(cityName,15);
+    }
+    var myCity = new BMap.LocalCity();
+    myCity.get(getCity);
     $scope.showMap = function(type){
         if($scope.location.name==''){
             $rootScope.donlerAlert('请输入地点');
             return false;
         }
-        if(!$scope.showMapFlag){
-            var locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-            locationmap.centerAndZoom('上海',12);
-            locationmap.enableScrollWheelZoom(true);
-            locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-            var getCity =function (result){
-                var cityName = result.name;
-                locationmap.centerAndZoom(cityName,12);
-                var options = {
-                    renderOptions:{map: locationmap},
-                    onSearchComplete: function(results){
-                        // 判断状态是否正确
-                        if (local.getStatus() == BMAP_STATUS_SUCCESS){
-                            var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                            var marker = new BMap.Marker(new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat),{icon:myIcon});  // 创建标注
-                            locationmap.addOverlay(marker);              // 将标注添加到地图中
-                            marker.enableDragging();    //可拖拽
-                            $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                            marker.addEventListener("dragend", function changePoint(){
-                                var p = marker.getPosition();
-                                $scope.location.coordinates=[p.lng , p.lat];
-                            });
-                        }
-                    }
-                };
-                var local = new BMap.LocalSearch(locationmap,options);
-                local.search($scope.location.name );
-            }
-            var myCity = new BMap.LocalCity();
-            myCity.get(getCity);
-        }
-        else{
-            var options = {
-                renderOptions:{map: locationmap},
-                onSearchComplete: function(results){
-                    // 判断状态是否正确
-                    if (local.getStatus() == BMAP_STATUS_SUCCESS){
-                        var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                        var marker = new BMap.Marker(new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat),{icon:myIcon});  // 创建标注
-                        locationmap.addOverlay(marker);              // 将标注添加到地图中
-                        marker.enableDragging();    //可拖拽
-                        $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                        marker.addEventListener("dragend", function changePoint(){
-                            var p = marker.getPosition();
-                            $scope.location.coordinates=[p.lng , p.lat];
-                        });
-                    }
-                }
-            };
-            var local = new BMap.LocalSearch(locationmap,options);
-            local.search($scope.location.name );
-        }
+        local.search($scope.location.name );
         $scope.showMapFlag = true;
-
     };
 
     $scope.sponsor = function() {
@@ -387,24 +464,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
-    $scope.cancel = function (_id) {
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/cancel',
-                data:{
-                    campaign_id : _id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
 }]);
 tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.search_type="team";
@@ -412,7 +471,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.teams = [];
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
-
     $("#competition_start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.competition_date = moment(dateUTC).format("YYYY-MM-DD HH:mm");
@@ -428,6 +486,36 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
+    var locationmap = new BMap.Map("competitionMapDetail");            // 创建Map实例
+    locationmap.centerAndZoom('上海',15);
+    locationmap.enableScrollWheelZoom(true);
+    locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+    var options = {
+        onSearchComplete: function(results){
+            // 判断状态是否正确
+            if (local.getStatus() == BMAP_STATUS_SUCCESS){
+                locationmap.clearOverlays();
+                //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
+                var marker = new BMap.Marker(nowPoint);  // 创建标注
+                marker.enableDragging();    //可拖拽
+                locationmap.addOverlay(marker);              // 将标注添加到地图中
+                locationmap.centerAndZoom(nowPoint,15);
+                $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                marker.addEventListener("dragend", function changePoint(){
+                    var p = marker.getPosition();
+                    $scope.location.coordinates=[p.lng , p.lat];
+                });
+            }
+        }
+    };
+    var local = new BMap.LocalSearch(locationmap,options);
+    var getCity =function (result){
+        var cityName = result.name;
+        locationmap.centerAndZoom(cityName,15);
+    }
+    var myCity = new BMap.LocalCity();
+    myCity.get(getCity);
     $scope.search = function() {
         //按公司搜索
         if($scope.search_type==='company'){
@@ -442,61 +530,10 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     }
     $scope.showMap = function(){
         if($scope.location.name==''){
-            $scope.donlerAlert('请输入地点');
+            $rootScope.donlerAlert('请输入地点');
             return false;
         }
-        if(!$scope.showMapFlag){
-            var locationmap = new BMap.Map("competitionMapDetail");            // 创建Map实例
-            locationmap.centerAndZoom('上海',12);
-            locationmap.enableScrollWheelZoom(true);
-            locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-            var getCity =function (result){
-                var cityName = result.name;
-                locationmap.setCenter(cityName);
-                var options = {
-                    renderOptions:{map: locationmap},
-                    onSearchComplete: function(results){
-                        // 判断状态是否正确
-                        if (local.getStatus() == BMAP_STATUS_SUCCESS){
-                            var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                            var marker = new BMap.Marker(results.getPoi(0).point.lng,results.getPoi(0).point.lat);  // 创建标注
-                            locationmap.addOverlay(marker);              // 将标注添加到地图中
-                            marker.enableDragging();    //可拖拽
-                            $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                            marker.addEventListener("dragend", function changePoint(){
-                                var p = marker.getPosition();
-                                $scope.location.coordinates=[p.lng , p.lat];
-                            });
-                        }
-                    }
-                };
-                var local = new BMap.LocalSearch(locationmap,options);
-                local.search($scope.location.name );
-            }
-            var myCity = new BMap.LocalCity();
-            myCity.get(getCity);
-        }
-        else{
-            var options = {
-                renderOptions:{map: locationmap},
-                onSearchComplete: function(results){
-                    // 判断状态是否正确
-                    if (local.getStatus() == BMAP_STATUS_SUCCESS){
-                        var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                        var marker = new BMap.Marker(results.getPoi(0).point.lng,results.getPoi(0).point.lat);  // 创建标注
-                        locationmap.addOverlay(marker);              // 将标注添加到地图中
-                        marker.enableDragging();    //可拖拽
-                        $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                        marker.addEventListener("dragend", function changePoint(){
-                            var p = marker.getPosition();
-                            $scope.location.coordinates=[p.lng , p.lat];
-                        });
-                    }
-                }
-            };
-            var local = new BMap.LocalSearch(locationmap,options);
-            local.search($scope.location.name );
-        }
+        local.search($scope.location.name );
         $scope.showMapFlag = true;
     };
     $scope.getCompany =function() {

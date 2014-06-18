@@ -2,7 +2,7 @@ div(ng-controller="infoController")
   form.form-horizontal(name="infoForm")
     .dl_row
       h5.pull-left {{"INFO" | translate}}
-      if(role==='HR' ||role ==='LEADER')
+      if (Global.role ==='HR' || Global.role === 'LEADER')
         button.dl_btn.dl_btn_small.pull-right(ng-click="editToggle()" ng-bind="buttonStatus")
     hr.margin_top_6
     .dl_row.clearfix
@@ -24,7 +24,7 @@ div(ng-controller="infoController")
       .info_side
         span.info_label {{"TEAM_LOGO" | translate}}
       .info_side
-        if(role==='HR' ||role ==='LEADER')
+        if (Global.role=== 'HR' || Global.role ==='LEADER')
           a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") {{"CHANGE" | translate}}LOGO
     .dl_row.clearfix
       .info_side
@@ -50,21 +50,28 @@ div(ng-controller="infoController")
       h5.pull-left 成员信息
     hr.margin_top_6
 
-    span.subtitle {{"TEAM_LEADER"|translate}}
-    .dl_row.clearfix
-      .col-md-2(ng-repeat="leader in leaders")
-        a(href="/users/home/{{leader._id}}")
-          img.center-block.size_56(ng-src='{{leader.photo}}')
-        a(href="/users/home/{{leader._id}}").text-center {{leader.nickname}}
-    span.subtitle {{"MEMBER"|translate}}
-    .dl_row.clearfix
-      .col-md-2(ng-repeat="member in members")
-        span
-          a(href="/users/home/{{member._id}}")
-            img.center-block.size_56(ng-src='{{member.photo}}')
-        span
-          a.center-block(href="/users/home/{{member._id}}") {{member.nickname}}
-
+    .row
+      span.subtitle.margin_left_15 {{"TEAM_LEADER"|translate}}
+    .row
+      .dl_modal_container.margin_left_10
+        .groups.row
+          .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="leader in leaders")
+            .dl_row
+              a(href="/users/home/{{leader._id}}")
+                img.size_80(ng-src="{{leader.photo}}")
+            .dl_row(style="width:80px;text-align:center")
+              label {{leader.nickname}}
+    .row
+      span.subtitle.margin_left_15 {{"MEMBER"|translate}}
+    .row
+      .dl_modal_container.margin_left_10
+        .groups.row
+          .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="member in members")
+            .dl_row
+              a(href="/users/home/{{member._id}}")
+                img.size_80(ng-src="{{member.photo}}")
+            .dl_row(style="width:80px;text-align:center")
+              label {{member.nickname}}
     //- 此部分逻辑未做 暂时隐藏
     //- .row.dl_row
     //-   h5.pull-left {{"COMPETITION_INFO" | translate}}

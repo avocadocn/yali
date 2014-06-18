@@ -37,9 +37,11 @@ exports.authorize = function(req, res, next) {
   if(req.user.provider==="company"){
     if(req.user._id.toString() ===req.companyGroup.cid.toString()){
       req.session.role = 'HR';
+      req.session.Global.role = 'HR';
     }
     else{
       req.session.role = 'GUESTHR';
+      req.session.Global.role = 'GUESTHR';
     }
   }
   else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
@@ -49,24 +51,30 @@ exports.authorize = function(req, res, next) {
       if(_teamIndex>-1){
         if(req.user.group[_groupIndex].team[_teamIndex].leader ===true){
           req.session.role = 'LEADER';
+          req.session.Global.role = 'LEADER';
         }
         else{
           req.session.role = 'MEMBER';
+          req.session.Global.role = 'MEMBER';
         }
       }
       else{
         req.session.role = 'PARTNER';
+        req.session.Global.role = 'PARTNER';
       }
     }
     else{
       req.session.role = 'PARTNER';
+      req.session.Global.role = 'PARTNER';
     }
   }
   else{
     if(req.user.role == 'LEADER'){
       req.session.role = 'GUESTLEADER';
+      req.session.Global.role = 'GUESTLEADER';
     }else{
       req.session.role = 'GUEST';
+      req.session.Global.role = 'GUEST';
     }
   }
   req.session.nowtid = req.params.teamId;
@@ -276,14 +284,19 @@ exports.home = function(req, res) {
           callback('not found');
         }
         var photo_album_thumbnails = [];
-        photo_albums.forEach(function(photo_album) {
-          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_album);
+
+        for (var i = 0; i < photo_albums.length; i++) {
+          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
           photo_album_thumbnails.push({
             uri: thumbnail_uri,
-            name: photo_album.name,
-            _id: photo_album._id
+            name: photo_albums[i].name,
+            _id: photo_albums[i]._id
           });
-        })
+          if (photo_album_thumbnails.length === 4) {
+            break;
+          }
+        }
+
         callback(null, photo_album_thumbnails);
       })
       .then(null, function(err) {
@@ -406,7 +419,7 @@ exports.getGroupMessage = function(req, res) {
     logo=companyGroup.logo;
     console.log(logo);
   });
-  GroupMessage.find({'team' : tid}).sort({'_id':-1})
+  GroupMessage.find({'team' : tid}).sort({'create_time':-1})
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -449,7 +462,8 @@ exports.getGroupMessage = function(req, res) {
           'deadline':group_message[i].deadline,
           'logo':logo,
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString())
+          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
+          'comment_sum':group_message[i].comment_sum
         });
       }
       return res.send({'group_messages':group_messages,'role':req.session.role});
@@ -478,7 +492,7 @@ exports.getGroupCampaign = function(req, res) {
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
-  Campaign.find({'team' : tid}).sort({'_id':-1}).exec(function(err, campaign) {
+  Campaign.find({'team' : tid}).sort({'start_time':-1}).exec(function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
@@ -499,8 +513,12 @@ exports.getGroupCampaign = function(req, res) {
               break;
             }
           }
+          var judge = false;
+          if(campaign[i].deadline && campaign[i].member_max){
+              judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
+          }
           campaigns.push({
-            'over' : !(Date.now() - campaign[i].end_time.valueOf() <= 0),
+            'over' : judge,
             'active':campaign[i].active, //截止时间到了活动就无效了
             '_id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
@@ -827,7 +845,11 @@ exports.sponsor = function (req, res) {
     },
     name: campaign.theme,
     owner_company: cid,
-    owner_company_group: req.companyGroup._id
+    owner_company_group: req.companyGroup._id,
+    update_user: {
+      _id: req.user._id,
+      nickname: req.user.nickname
+    }
   });
 
   fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
@@ -887,7 +909,15 @@ exports.sponsor = function (req, res) {
             return {'result':0,'msg':'活动发起失败'};
           }
           else{
-            return res.send({'result':1,'msg':'活动发起成功'});
+            req.companyGroup.photo_album_list.push(photo_album._id);
+            req.companyGroup.save(function(err) {
+              if (err) {
+                res.send(500);
+                return {'result':0,'msg':'活动发起失败'};
+              } else {
+                return res.send({'result':1,'msg':'活动发起成功'});
+              }
+            });
           }
         });
       });
@@ -952,7 +982,7 @@ exports.renderCampaignDetail = function(req, res) {
       role: req.session.role,
       nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
       nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo,
-      photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album),
+      photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4),
     });
   })
   .then(null, function(err) {

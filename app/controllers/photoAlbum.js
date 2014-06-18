@@ -135,6 +135,9 @@ function getShowPhotos(photo_album) {
       photos.push(photo_album.photos[i]);
     }
   }
+  photos.sort(function(a, b) {
+    return b.upload_date - a.upload_date;
+  });
   return photos;
 }
 
@@ -258,19 +261,22 @@ exports.createAuth = function(req, res, next) {
   .findById(req.body.cid)
   .exec()
   .then(function(company) {
+    // 找不到相册所属公司
     if (!company) {
-      res.send(403);
+      return res.send(403);
     }
 
+    // 相册所属的组不在所属公司里
     var gids = [];
     company.team.forEach(function(team) {
       gids.push(team.id.toString());
     });
     var index = gids.indexOf(req.body.gid);
     if (index === -1) {
-      res.send(403);
+      return res.send(403);
     }
 
+    // 该公司的HR
     var auth = false;
     if (req.user.provider === 'company' && req.user._id.toString() === company._id.toString()) {
       auth = true;
@@ -281,13 +287,12 @@ exports.createAuth = function(req, res, next) {
     .findById(gids[index])
     .exec()
     .then(function(company_group) {
-      if (!company_group) {
-        res.send(403);
-      }
-      var leaders = company_group.leader || [];
-      for (var i = 0; i < leaders.length; i++) {
-        if (req.user._id.toString() === leaders[i]._id.toString()) {
-          auth = true;
+      if (company_group) {
+        var leaders = company_group.leader || [];
+        for (var i = 0; i < leaders.length; i++) {
+          if (req.user._id.toString() === leaders[i]._id.toString()) {
+            auth = true;
+          }
         }
       }
       if (auth === false) {
@@ -490,6 +495,10 @@ exports.createPhoto = function(req, res) {
                             }
                           };
                           photo_album.photos.push(photo);
+                          photo_album.update_user = {
+                            _id: req.user._id,
+                            nickname: req.user.nickname
+                          };
                           photo_album.save(function(err) {
                             if (err) callback(err);
                             else {
@@ -585,6 +594,10 @@ exports.updatePhoto = function(req, res) {
         }
         photo.tags = photo.tags.concat(tags);
       }
+      photo_album.update_user = {
+        _id: req.user._id,
+        nickname: req.user.nickname
+      };
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
@@ -729,17 +742,19 @@ exports.renderPhotoDetail = function(req, res) {
   .exec()
   .then(function(photo_album) {
     var pre_id, next_id;
-    var photos = photo_album.photos || [];
+    var photos = getShowPhotos(photo_album);
     for (var i = 0; i < photos.length; i++) {
       if (req.params.photoId === photos[i]._id.toString()) {
         if (i === 0) {
-          pre_id = photos[photos.length - 1]._id;
+          //pre_id = photos[photos.length - 1]._id;
+          pre_id = null;
         } else {
           pre_id = photos[i - 1]._id;
         }
 
         if (i === photos.length - 1) {
-          next_id = photos[0]._id;
+          //next_id = photos[0]._id;
+          next_id = null;
         } else {
           next_id = photos[i + 1]._id;
         }

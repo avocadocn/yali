@@ -27,15 +27,19 @@ exports.getCompanyCampaign = function(req, res) {
     }
     else if(req.session.role ==='EMPLOYEE'){
         //公司发布的活动都归在虚拟组 gid = 0 里
-        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'create_time':-1}).exec(function(err, campaign) {
+        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'start_time':-1}).exec(function(err, campaign) {
             if (err) {
                 console.log(err);
                 return res.status(404).send([]);
             } else {
                 var campaigns = [];
                 for(var i = 0;i < campaign.length; i ++) {
+                    var judge = false;
+                    if(campaign[i].deadline && campaign[i].member_max){
+                        judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
+                    }
                     campaigns.push({
-                        'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+                        'over' : judge,
                         'active':campaign[i].active, //截止时间到了活动就无效了,
                         '_id': campaign[i]._id,
                         'gid': campaign[i].gid,
@@ -49,6 +53,7 @@ exports.getCompanyCampaign = function(req, res) {
                         'create_time': campaign[i].create_time,
                         'start_time': campaign[i].start_time,
                         'end_time': campaign[i].end_time,
+                        'deadline':campaign[i].deadline
                     });
                     for(var j = 0;j < campaign[i].member.length; j ++) {
                         if(req.user.id === campaign[i].member[j].uid) {
@@ -193,7 +198,7 @@ exports.getAllCampaign = function(req, res) {
   }
   var cid = req.session.role === 'HR' ? req.user._id : req.user.cid;
   var query_regular = {'cid' : {'$all':[cid.toString()]} };
-  Campaign.find(query_regular).sort({'create_time':-1}).exec(function(err, campaign) {
+  Campaign.find(query_regular).sort({'start_time':-1}).exec(function(err, campaign) {
     if(campaign.length > 0) {
       var campaigns = [];
       if (err) {
@@ -211,8 +216,12 @@ exports.getAllCampaign = function(req, res) {
               break;
             }
           }
+          var judge = false;
+          if(campaign[j].deadline && campaign[j].member_max){
+              judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+          }
           campaigns.push({
-            'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+            'over' : judge,
             'active':campaign[j].active, //截止时间到了活动就无效了,
             '_id': campaign[j]._id,
             'gid': campaign[j].gid,
@@ -268,8 +277,12 @@ exports.getGroupCampaign = function(req, res) {
               break;
             }
           }
+          var judge = false;
+          if(campaign[i].deadline && campaign[i].member_max){
+              judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
+          }
           campaigns.push({
-            'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+            'over' : judge,
             'active':campaign[i].active, //截止时间到了活动就无效了,
             '_id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
@@ -419,8 +432,12 @@ function getUserCampaigns(req,res,_in) {
                 break;
               }
             }
+            var judge = false;
+            if(campaign[j].deadline && campaign[j].member_max){
+                judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+            }
             campaigns.push({
-              'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+              'over' : judge,
               'selected':_in,
               'active':campaign[j].active, //截止时间到了活动就无效了,
               '_id': campaign[j]._id,

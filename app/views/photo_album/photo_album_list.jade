@@ -25,7 +25,7 @@ block contentExt
           a(href="/photoAlbumDetailView/#{photo_album._id}").photo_album_panel.center-block
             img.img-responsive(src="#{photo_album.thumbnail}")
             h4.text-center
-              =photo_album.name
+              span.photo_album_name= photo_album.name
               | &nbsp;
               small (#{photo_album.photo_count})
           div.update_info.center-block.margin_top_10

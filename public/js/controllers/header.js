@@ -13,6 +13,6 @@ angular.module('mean.system').controller('HeaderController', ['$scope', 'Global'
     	'title': 'lalala',
     	'link': 'http://nodejs.org'
     }];
-    
+
     $scope.isCollapsed = false;
 }]);

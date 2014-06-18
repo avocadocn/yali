@@ -36,16 +36,20 @@ exports.authorize = function(req, res, next){
     if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id)){
         req.session.nowcid = req.user._id;
         req.session.role = 'HR';
+        req.session.Global.role = 'HR';
     }
     else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid)){
         req.session.role = 'EMPLOYEE';
+        req.session.Global.role = 'EMPLOYEE';
         req.session.nowcid = req.user.cid;
     }
     else{
         if(req.user.role == 'LEADER'){
           req.session.role = 'GUESTLEADER';
+          req.session.Global.role = 'GUESTLEADER';
         }else{
           req.session.role = 'GUEST';
+          req.session.Global.role = 'GUEST';
         }
         req.session.nowcid = req.params.companyId;
     }
@@ -136,15 +140,15 @@ exports.signin = function(req, res) {
  * Logout
  */
 exports.signout = function(req, res) {
+  if (req.session.Global) {
+    delete req.session.Global;
+  }
   req.logout();
-  delete req.session.role;
-  delete req.session.nav_name;
-  delete req.session.nav_logo;
   res.redirect('/');
 };
 exports.loginSuccess = function(req, res) {
-    req.session.nav_logo = req.user.info.logo;
-    req.session.nav_name = req.user.info.name;
+    req.session.Global.nav_name = req.user.info.name;
+    req.session.Global.nav_logo = req.user.info.logo;
     res.redirect('/company/home');
 };
 
@@ -867,15 +871,19 @@ exports.getCompanyCampaign = function(req, res) {
     }
     else if(req.session.role ==='EMPLOYEE'){
         //公司发布的活动都归在虚拟组 gid = 0 里
-        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'_id':-1}).exec(function(err, campaign) {
+        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'start_time':-1}).exec(function(err, campaign) {
             if (err) {
                 console.log(err);
                 return res.status(404).send([]);
             } else {
                 var campaigns = [];
                 for(var i = 0;i < campaign.length; i ++) {
+                    var judge = false;
+                    if(campaign[i].deadline && campaign[i].member_max){
+                        judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
+                    }
                     campaigns.push({
-                        'over' : !(Date.now() - campaign[i].end_time.valueOf() <= 0),
+                        'over' : judge,
                         'active':campaign[i].active, //截止时间到了活动就无效了
                         '_id': campaign[i]._id,
                         'gid': campaign[i].gid,
@@ -889,6 +897,7 @@ exports.getCompanyCampaign = function(req, res) {
                         'create_time': campaign[i].create_time,
                         'start_time': campaign[i].start_time,
                         'end_time': campaign[i].end_time,
+                        'deadline':campaign[i].deadline,
                         'index':i
                     });
                     for(var j = 0;j < campaign[i].member.length; j ++) {

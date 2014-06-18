@@ -32,6 +32,15 @@ select {
   color: #cc847f;
   font-size: 12px !important;
 }
+.dl_comment_area {
+  float: right;
+  width: 450px;
+  height: 100%;
+  background-color: #f8f8f8;
+}
+.dl_area {
+  margin-right: 15px;
+}
 .dl_form-control {
   display: block;
   width: 100%;
@@ -200,8 +209,38 @@ select {
   float: left;
   margin-left: 5px;
 }
+.dl_md_8 {
+  width: 60%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_md_7 {
+  width: 50%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_md_5 {
+  width: 30%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_md_time {
+  width: 29%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_md_name {
+  width: 68%;
+  margin-left: 5px;
+  float: left;
+}
 .dl_md_10 {
   width: 70%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_md_12 {
+  width: 73.4%;
   margin-left: 5px;
   float: left;
 }
@@ -375,6 +414,10 @@ select {
   line-height: 1;
   position: relative;
 }
+.cancel_btn:hover {
+  background-color: #e5e5e5;
+  border-color: #e5e5e5;
+}
 .close_btn {
   background-color: #ff8c00;
   border-color: #ff8c00;
@@ -464,6 +507,9 @@ select {
 }
 .margin_bottom_20 {
   margin-bottom: 20px;
+}
+.margin_right_20 {
+  margin-right: 20px;
 }
 .size_family {
   height: 300px;

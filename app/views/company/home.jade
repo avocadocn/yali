@@ -19,13 +19,13 @@ block baseInfo
         .score_container.margin_top_5
           label.info_border {{ 'WIN_RATE' | translate }}
           span.info_right_border 100%
-        if(role === 'HR')
+        if (Global.role === 'HR')
           .score_container.margin_top_5
             button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") {{'SPONSOR'|translate}}{{'COMPANY'|translate}}{{ 'CAMPAIGN' | translate }}
 
 block panel
   ul.nav.nav-tabs
-    if role==='HR' || role==='EMPLOYEE'
+    if Global.role==='HR' || Global.role==='EMPLOYEE'
       li.tab_style(ng-class="{'active':nowTab=='company_campaign'}")
         a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") {{ 'COMPANY_CAMPAIGN' | translate }}
     li.tab_style(ng-class="{'active':nowTab=='company_info'}")
@@ -47,8 +47,8 @@ block panel
     .tab-pane.active
       div(ng-view)
 
-  if role==='HR'
-    div(ng-controller="CampaignListController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  if Global.role==='HR'
+    div(ng-controller="SponsorController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_modal
   #bottom
 block aside

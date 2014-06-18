@@ -76,6 +76,10 @@ var GroupMessage = new Schema({
     start_time: Date,                 //活动开始时间(或者比赛时间)
     end_time: Date,                   //活动结束时间(或者比赛截止时间)
     deadline:Date,
+    comment_sum:{                     //该动态的留言数量
+        type:Number,
+        default:0
+    },
     provoke: {                        //约战动态
         active: {
             type: Boolean,
