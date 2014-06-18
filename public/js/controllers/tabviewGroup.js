@@ -319,6 +319,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/info/'+tid).success(function(data, status) {
+            $scope.members = [];
             $scope.companyname = data.companyGroup.cname;
             $scope.create_time = data.entity.create_date ? data.entity.create_date :'';
             $scope.name = data.companyGroup.name ? data.companyGroup.name : '';
@@ -329,7 +330,19 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.home_court_1 = data.entity.home_court[0] ? data.entity.home_court[0] : '';
             $scope.home_court_2 = data.entity.home_court[1] ? data.entity.home_court[1] : '';
             $scope.family = data.entity.family;
-            $scope.members = data.companyGroup.member;
+            var judge = true;
+            for(var i = 0; i < data.companyGroup.member.length; i ++) {
+                for(var j = 0; j < $scope.leaders.length; j ++) {
+                    if($scope.leaders[j]._id === data.companyGroup.member[i]._id){
+                        judge = false;
+                        break;
+                    }
+                }
+                if(judge){
+                    $scope.members.push(data.companyGroup.member[i]);
+                }
+                judge = true;
+            }
         });
     });
 
