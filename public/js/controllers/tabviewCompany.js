@@ -665,7 +665,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
     //激活、关闭小组
-    $scope.activateGroup = function(active,tid){
+    $scope.activateGroup = function(active,tid,index){
         try{
             $http({
                 method:'post',
@@ -676,16 +676,20 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }).success(function(data,status){
                 if( active===true ){
+                    $scope.team_lists[index].active = true;
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.ACTIVE +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                    window.location.reload();
+                    //window.location.reload();
+                    
                 }
                 else{
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.CLOSE +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                    window.location.reload();
+                    //window.location.reload();
+                    $scope.team_lists[index].active = false;
+                    //window.location.reload();
                 }
             }).error(function(data, status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -696,7 +700,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
     //加入小队
-    $scope.joinGroup = function(tid){
+    $scope.joinGroup = function(tid,index){
         try{
             $http({
                 method:'post',
@@ -708,7 +712,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                window.location.reload();
+                //window.location.reload();
+                $scope.team_lists[index].belong=true;
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
@@ -720,7 +725,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
     //退出小队
-    $scope.quitGroup = function(tid){
+    $scope.quitGroup = function(tid,index){
         try{
             $http({
                 method:'post',
@@ -732,7 +737,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                window.location.reload();
+                //window.location.reload();
+                $scope.team_lists[index].belong=false;
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
