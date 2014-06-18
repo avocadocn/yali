@@ -121,6 +121,7 @@
   display: block;
   width: 202px;
   border: solid 1px #ededed;
+  text-decoration: none;
 }
 .photo_album .update_info {
   width: 202px;
@@ -139,6 +140,14 @@
 }
 .photo_album .photo_album_container {
   margin-bottom: 40px;
+}
+.photo_album .photo_album_container .photo_album_name {
+  max-width: 120px;
+  line-height: 1;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .photo_album .thumbnail_cell {
   display: inline-block;

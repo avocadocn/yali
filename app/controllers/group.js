@@ -845,7 +845,11 @@ exports.sponsor = function (req, res) {
     },
     name: campaign.theme,
     owner_company: cid,
-    owner_company_group: req.companyGroup._id
+    owner_company_group: req.companyGroup._id,
+    update_user: {
+      _id: req.user._id,
+      nickname: req.user.nickname
+    }
   });
 
   fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
@@ -905,7 +909,15 @@ exports.sponsor = function (req, res) {
             return {'result':0,'msg':'活动发起失败'};
           }
           else{
-            return res.send({'result':1,'msg':'活动发起成功'});
+            req.companyGroup.photo_album_list.push(photo_album._id);
+            req.companyGroup.save(function(err) {
+              if (err) {
+                res.send(500);
+                return {'result':0,'msg':'活动发起失败'};
+              } else {
+                return res.send({'result':1,'msg':'活动发起成功'});
+              }
+            });
           }
         });
       });
