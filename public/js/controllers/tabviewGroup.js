@@ -93,7 +93,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
-
+    $scope.message_role = "group";
     $scope.toggle = [];
     $scope.new_comment = {
         text: ''

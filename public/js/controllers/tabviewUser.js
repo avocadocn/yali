@@ -63,6 +63,7 @@ tabViewUser.run(['$rootScope', function ($rootScope) {
 
 tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
+    $scope.message_role = "user";
     $rootScope.nowTab='group_message';
     $http.get('/users/getGroupMessages').success(function(data, status) {
         $scope.group_messages = data.group_messages;
