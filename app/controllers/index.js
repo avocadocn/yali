@@ -1,7 +1,7 @@
 'use strict';
 
 exports.render = function(req, res) {
-  if(req.session.Global){
+  if(req.session.Global.role !== ""){
     if(req.session.Global.role==="HR"){
       res.redirect('/company/home');
     }else{
