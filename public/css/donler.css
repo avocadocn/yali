@@ -747,11 +747,11 @@ input::-webkit-inner-spin-button {
 .wrap {
   min-height: 100%;
   height: auto;
-  margin: -60px auto -60px auto;
-  padding-top: 60px;
+  margin-top: -73px;
+  margin-bottom: 13px;
+  padding-top: 73px;
   min-width: 960px;
   position: relative;
-  margin-bottom: 0px;
 }
 .dl_footer {
   background-color: #f8f8f3;
