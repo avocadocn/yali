@@ -46,15 +46,19 @@ div
     .dl_row.clearfix#location(data-src="/region" data-select="province city district" data-init="{{linkage_init_location.province}} {{linkage_init_location.city}} {{linkage_init_location.district}}")
       .info_side
         span.info_label {{"LOCATION"|translate}}
-      .info_detail
-        select.dl_input.editToggle.dl_form-Control.no_radius.height_34(type="text" name ="province" ng-model="info.city.province" ng-disabled="infoUnEdit")
-      .info_detail
-        select.dl_input.editToggle.dl_form-Control.no_radius.height_34(type="text" name ="city" ng-model="info.city.city" ng-disabled="infoUnEdit")
-      .info_detail
-        select.dl_input.editToggle.dl_form-Control.no_radius.height_34(type="text" name ="district" ng-model="info.city.district" ng-disabled="infoUnEdit")
+      .info_side(ng-if="infoUnEdit")
+        span.info_label {{linkage_init_location.province}} {{linkage_init_location.city}} {{linkage_init_location.district}}
+      .info_detail(ng-show="!infoUnEdit")
+        select.dl_input.editToggle.dl_form-Control.no_radius.height_34(type="text" name ="province" ng-disabled="infoUnEdit")
+      .info_detail(ng-show="!infoUnEdit")
+        select#select_city.dl_input.editToggle.dl_form-Control.no_radius.height_34(type="text" name ="city" ng-disabled="infoUnEdit")
+      .info_detail(ng-show="!infoUnEdit")
+        select#select_district.dl_input.editToggle.dl_form-Control.no_radius.height_34(type="text" name ="district" ng-disabled="infoUnEdit")
     .dl_row.clearfix
       .info_side
         span.info_label {{"ADDRESS"|translate}}
+      .info_side(ng-if="!infoUnEdit")
+        span.info_label {{ info.city.province }} {{ info.city.city }} {{ info.city.district }}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
     .dl_row.clearfix
