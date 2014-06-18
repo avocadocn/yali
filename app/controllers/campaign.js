@@ -34,8 +34,12 @@ exports.getCompanyCampaign = function(req, res) {
             } else {
                 var campaigns = [];
                 for(var i = 0;i < campaign.length; i ++) {
+                    var judge = false;
+                    if(campaign[i].deadline && campaign[i].member_max){
+                        judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
+                    }
                     campaigns.push({
-                        'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+                        'over' : judge,
                         'active':campaign[i].active, //截止时间到了活动就无效了,
                         '_id': campaign[i]._id,
                         'gid': campaign[i].gid,
@@ -212,8 +216,12 @@ exports.getAllCampaign = function(req, res) {
               break;
             }
           }
+          var judge = false;
+          if(campaign[j].deadline && campaign[j].member_max){
+              judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+          }
           campaigns.push({
-            'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+            'over' : judge,
             'active':campaign[j].active, //截止时间到了活动就无效了,
             '_id': campaign[j]._id,
             'gid': campaign[j].gid,
@@ -269,8 +277,12 @@ exports.getGroupCampaign = function(req, res) {
               break;
             }
           }
+          var judge = false;
+          if(campaign[i].deadline && campaign[i].member_max){
+              judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
+          }
           campaigns.push({
-            'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+            'over' : judge,
             'active':campaign[i].active, //截止时间到了活动就无效了,
             '_id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
@@ -420,8 +432,12 @@ function getUserCampaigns(req,res,_in) {
                 break;
               }
             }
+            var judge = false;
+            if(campaign[j].deadline && campaign[j].member_max){
+                judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+            }
             campaigns.push({
-              'over' : !(Date.now() - campaign[j].end_time.valueOf() <= 0),
+              'over' : judge,
               'selected':_in,
               'active':campaign[j].active, //截止时间到了活动就无效了,
               '_id': campaign[j]._id,
