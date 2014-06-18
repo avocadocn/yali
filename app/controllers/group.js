@@ -419,7 +419,7 @@ exports.getGroupMessage = function(req, res) {
     logo=companyGroup.logo;
     console.log(logo);
   });
-  GroupMessage.find({'team' : tid}).sort({'_id':-1})
+  GroupMessage.find({'team' : tid}).sort({'create_time':-1})
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -462,7 +462,8 @@ exports.getGroupMessage = function(req, res) {
           'deadline':group_message[i].deadline,
           'logo':logo,
           'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString())
+          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
+          'comment_sum':group_message[i].comment_sum
         });
       }
       return res.send({'group_messages':group_messages,'role':req.session.role});

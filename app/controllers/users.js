@@ -595,7 +595,8 @@ exports.getGroupMessages = function(req, res) {
                 'end_time' : group_message[j].end_time,
                 'provoke': group_message[j].provoke,
                 'logo':host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
-                'provoke_accept': false
+                'provoke_accept': false,
+                'comment_sum':group_message[j].comment_sum
               });
             }
           }

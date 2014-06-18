@@ -63,5 +63,31 @@
               button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{group_message.positive == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.positive}}
               button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{group_message.negative == 1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.negative}}
               button.dl_btn(ng-click="responseProvoke(group_message._id)" ng-if="!group_message.host") {{"FACE"|translate}}
-
+    .dl_area
+      .row
+        label.pull-right
+          a(ng-click="toggleOperate($index);getComment($index)") 留言 {{group_message.comment_sum}}
+      .row(ng-if="toggle[$index]")
+        .dl_comment_area
+          .dl_modal_container.margin_top_5
+            .dl_md_8
+              input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment.text")
+            .dl_md_1
+              a.clearLinkUnderline.dl_btn_right(ng-click="comment($index)") 发表
+          hr
+          .dl_modal_container(ng-if="group_message.comments.length > 0")
+            .dl_row(style="height:93px" ng-repeat="comment in group_message.comments")
+              .dl_md_1
+                img.size_56(ng-src="{{comment.poster.photo}}")
+              .dl_md_8.margin_left_5
+                .row
+                  .dl_md_name
+                    h7 {{comment.poster.nickname}}
+                  .dl_md_time
+                    h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+                .row
+                  .dl_md_12
+                    h5 {{comment.content}}
+                  .dl_md_3.pull-right
+                    h5.pull-right.margin_right_20 # {{comment.index}}
   hr

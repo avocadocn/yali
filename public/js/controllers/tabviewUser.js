@@ -65,14 +65,14 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $rootScope.nowTab='group_message';
     $http.get('/users/getGroupMessages').success(function(data, status) {
-      $scope.group_messages = data.group_messages;
-      $scope.role = data.role;
-      $scope.companyLogo = data.companyLogo;
+        $scope.group_messages = data.group_messages;
+        $scope.role = data.role;
+        $scope.companyLogo = data.companyLogo;
     });
-    var toggle = false;
+    var t = false;
     $scope.vote = function(provoke_message_id, status, index) {
-        toggle = !toggle;
-        console.log(toggle);
+        t = !t;
+        console.log(t);
          try {
             $http({
                 method: 'post',

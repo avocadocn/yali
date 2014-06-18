@@ -94,16 +94,91 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
 
-
+    $scope.toggle = [];
+    $scope.new_comment = {
+        text: ''
+    };
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/getGroupMessages/'+tid +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
+            for(var i = 0;i < $scope.group_messages.length; i ++) {
+                $scope.group_messages[i].comments = [];
+                $scope.toggle.push(false);
+            }
         });
     });
 
     //var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
+
+
+    $scope.toggleOperate = function(index){
+        $scope.toggle[index] = !$scope.toggle[index];
+    }
+    $scope.getComment = function(index){
+        if($scope.toggle){
+            try {
+                $http({
+                    method: 'post',
+                    url: '/comment/pull',
+                    data:{
+                        host_id : $scope.group_messages[index]._id
+                    }
+                }).success(function(data, status) {
+                    if(data.length > 0){
+                        $scope.group_messages[index].comments = data;
+                        for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
+                            $scope.group_messages[index].comments[i].index = i+1;
+                        }
+                    } else {
+                        $rootScope.donlerAlert("没有留言!");
+                    }
+                }).error(function(data, status) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+    }
+
+    $scope.comment = function(index){
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/push',
+                data:{
+                    host_id : $scope.group_messages[index]._id,
+                    content : $scope.new_comment.text,
+                    host_type : 'message'
+                }
+            }).success(function(data, status) {
+                if(data === 'SUCCESS'){
+                    var poster={
+                        'nickname' : '我自己'
+                    };
+                    $scope.group_messages[index].comment_sum ++;
+                    $scope.group_messages[index].comments.push({
+                        'host_id' : $scope.group_messages[index]._id,
+                        'content' : $scope.new_comment.text,
+                        'create_date' : Date.now(),
+                        'poster' : poster,
+                        'host_type' : 'message',
+                        'index' : $scope.group_messages[index].comment_sum
+                    });
+                } else {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
     //消除ajax缓存
     $scope.vote = function(provoke_message_id, status, index) {
          try {
@@ -129,12 +204,13 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             console.log(e);
         }
     };
-
 }]);
 
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
+    $scope.company = false;
+    var groupId,teamId;
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/getCampaigns/'+tid+'?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.data;
