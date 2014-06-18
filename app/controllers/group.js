@@ -284,14 +284,19 @@ exports.home = function(req, res) {
           callback('not found');
         }
         var photo_album_thumbnails = [];
-        photo_albums.forEach(function(photo_album) {
-          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_album);
+
+        for (var i = 0; i < photo_albums.length; i++) {
+          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
           photo_album_thumbnails.push({
             uri: thumbnail_uri,
-            name: photo_album.name,
-            _id: photo_album._id
+            name: photo_albums[i].name,
+            _id: photo_albums[i]._id
           });
-        })
+          if (photo_album_thumbnails.length === 4) {
+            break;
+          }
+        }
+
         callback(null, photo_album_thumbnails);
       })
       .then(null, function(err) {
@@ -960,7 +965,7 @@ exports.renderCampaignDetail = function(req, res) {
       role: req.session.role,
       nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
       nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo,
-      photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album),
+      photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4),
     });
   })
   .then(null, function(err) {

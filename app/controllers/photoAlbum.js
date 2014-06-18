@@ -135,6 +135,9 @@ function getShowPhotos(photo_album) {
       photos.push(photo_album.photos[i]);
     }
   }
+  photos.sort(function(a, b) {
+    return b.upload_date - a.upload_date;
+  });
   return photos;
 }
 
@@ -492,6 +495,10 @@ exports.createPhoto = function(req, res) {
                             }
                           };
                           photo_album.photos.push(photo);
+                          photo_album.update_user = {
+                            _id: req.user._id,
+                            nickname: req.user.nickname
+                          };
                           photo_album.save(function(err) {
                             if (err) callback(err);
                             else {
@@ -587,6 +594,10 @@ exports.updatePhoto = function(req, res) {
         }
         photo.tags = photo.tags.concat(tags);
       }
+      photo_album.update_user = {
+        _id: req.user._id,
+        nickname: req.user.nickname
+      };
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
@@ -731,17 +742,19 @@ exports.renderPhotoDetail = function(req, res) {
   .exec()
   .then(function(photo_album) {
     var pre_id, next_id;
-    var photos = photo_album.photos || [];
+    var photos = getShowPhotos(photo_album);
     for (var i = 0; i < photos.length; i++) {
       if (req.params.photoId === photos[i]._id.toString()) {
         if (i === 0) {
-          pre_id = photos[photos.length - 1]._id;
+          //pre_id = photos[photos.length - 1]._id;
+          pre_id = null;
         } else {
           pre_id = photos[i - 1]._id;
         }
 
         if (i === photos.length - 1) {
-          next_id = photos[0]._id;
+          //next_id = photos[0]._id;
+          next_id = null;
         } else {
           next_id = photos[i + 1]._id;
         }
