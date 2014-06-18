@@ -499,11 +499,32 @@ exports.mailCheck = function(req, res) {
         }
     });
 }
+//企业官方名验证
+exports.officialNameCheck = function(req, res) {
+    var official_name = req.body.official_name;
+    Company.findOne({'info.official_name':official_name},function(err,company){
+        if(err || company){
+            console.log(company);
+            res.send(true);
+        }
+        else{
+            res.send(false);
+        }
+    });
+}
+//企业用户名验证
+exports.usernameCheck = function(req, res) {
+    var username = req.body.username;
+    Company.findOne({'username':username},function(err,company){
+        if(err || company){
+            res.send(true);
+        }
+        else{
+            res.send(false);
+        }
+    });
+}
 
-
-
-
-//这段代码的err处理有问题-M
 /**
  * 创建公司基本信息
  */

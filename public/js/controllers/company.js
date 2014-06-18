@@ -1,6 +1,6 @@
 'use strict';
 
-var companyApp = angular.module('company', ['ngRoute']);
+var companyApp = angular.module('mean.main');
 
 //路由管理
 companyApp.config(['$routeProvider',function ($routeProvider) {
@@ -33,17 +33,10 @@ companyApp.directive('match', function($parse) {
   };
 });
 
-
-companyApp.controller('AppointLeaderController', ['$scope', '$http', function($scope, $http) {
-    $scope.appointLeader = function (gid) {
-        alert(gid);
-    }
-}]);
-
-
 //企业激活后注册企业用户名和密码
-companyApp.controller('DetailController', ['$http', function($http) {
+companyApp.controller('DetailController', ['$http','$scope','$rootScope', function($http,$scope,$rootScope) {
     var _this = this;
+    //$rootScope.lang_key=0;
     this.create_detail = function() {
         try{
             $http({
@@ -60,6 +53,71 @@ companyApp.controller('DetailController', ['$http', function($http) {
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+
+    var check_name = false;
+    var check_username = false;
+    var check_name_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.OFFICICAL_NAME_EXIST_CHECK;
+    var check_username_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.USERNAME_EXIST_CHECK;
+    this.officialNameCheck = function() {
+        try{
+            $http({
+                method: 'post',
+                url: '/company/officialNameCheck',
+                data:{
+                  official_name: _this.official_name
+                }
+            }).success(function(data, status) {
+                console.log('data:'+data);
+                if(data === "false") {
+                    _this.check_name_value = "";
+                    _this.check_name = true;
+                } else {
+                    _this.check_name = false;
+                    _this.check_name_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
+                                              + $rootScope.lang_for_msg[$rootScope.lang_key].value.OFFICICAL_NAME
+                                                  + $rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
+                                                      + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+                }
+                console.log('check_name:'+_this.check_username);
+            }).error(function(data, status) {
+              //TODO:更改对话框
+              $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+    this.usernameCheck = function() {
+        try{
+            $http({
+                method: 'post',
+                url: '/company/usernameCheck',
+                data:{
+                  username: _this.username
+                }
+            }).success(function(data, status) {
+                console.log('data:'+data);
+                if(data === "false") {
+                    _this.check_username_value = "";
+                    _this.check_username = true;
+                } else {
+                    _this.check_username = false;
+                    _this.check_username_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
+                                                    + $rootScope.lang_for_msg[$rootScope.lang_key].value.USERNAME
+                                                        + $rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
+                                                            + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+                }
+                console.log('check_username:'+_this.check_username);
+            }).error(function(data, status) {
+              //TODO:更改对话框
+              $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e){
