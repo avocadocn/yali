@@ -22,7 +22,7 @@ var _team = new Schema({
  */
 var CompanySchema = new Schema({
 
-    username: String,               //公司全称
+    username: String,               //用户名，登录用
 
     login_email: {
         type: String,
@@ -47,7 +47,7 @@ var CompanySchema = new Schema({
     team:[_team],
     //公司信息
     info: {
-        name: String,
+        name: String,               //公司全称
         city: {
             province: String,
             city: String,
@@ -65,7 +65,7 @@ var CompanySchema = new Schema({
         linkman: String,              //联系人
         email: String,
         brief: String,
-        official_name: String,        //公司官方用户名
+        official_name: String,        //公司官方用户名（简称）
 
         logo:{
             type:String,

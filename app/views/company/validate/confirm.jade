@@ -5,11 +5,7 @@ append headExt
   link(rel="stylesheet" href="/css/views/company_signup.css")
 
 block contentExt
-  div(ng-app='company' id='confirm' ng-view)
+  div(id='confirm' ng-view)
 
 append footExt
-  script(type="text/javascript" src="/lib/angular-cookies/angular-cookies.min.js")
-  script(type="text/javascript" src="/lib/angular-resource/angular-resource.min.js")
-  script(type="text/javascript" src="/lib/angular-ui-router/release/angular-ui-router.js")
-  script(type="text/javascript" src="/lib/angular-route/angular-route.min.js")
   script(src="/js/controllers/company.js")

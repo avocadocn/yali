@@ -30,8 +30,6 @@ html
     script(src="/lib/angular-bootstrap/ui-bootstrap-tpls.js")
     script(src="/lib/alertify.js/lib/alertify.min.js")
     script(src="/js/main.js")
-    block footExt
-
     script.
       angular.element(document).ready(function() {
         //Fixing facebook bug with redirect
@@ -40,4 +38,6 @@ html
         //Then init the app
         angular.bootstrap(document, ['mean.main']);
       });
+    block footExt
+
     block bottomExt

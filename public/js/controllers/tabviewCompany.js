@@ -244,6 +244,19 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
+        $scope.linkage_init_location = {
+            province: data.info.city.province,
+            city: data.info.city.city,
+            district: data.info.city.district
+        };
+
+        var seletor = new LinkageSelector(document.getElementById('location'), function(selectValues) {
+            $scope.info.city.province = selectValues[0];
+            $scope.info.city.city = selectValues[1];
+            $scope.info.city.district = selectValues[2];
+            $scope.$digest();
+        });
+
 
          //获取公司小组，若是此成员在此小组则标记此team的belong值为true
         $http.get('/group/getCompanyGroups' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
@@ -277,7 +290,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }
         });
-        $scope.linkage_init_location = data.info.city;
     }).error(function(data,status) {
         //TODO:更改对话框
         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
@@ -639,9 +651,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             console.log(e);
         }
     };
-
-
-    var seletor = new LinkageSelector(document.getElementById('location'));
 
 
 
