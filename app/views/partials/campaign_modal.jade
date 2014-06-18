@@ -8,10 +8,10 @@
       .dl-modal-body
         .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"THEME"|translate}}
-            input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在14字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在14字以内':''}}" maxlength=14 required)
+            input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
         .dl_modal_container
             label.subtitle {{"CAMPAIGN"|translate}}{{"BRIEF"|translate}}
-            textarea.dl_modal_input.form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在40字以内。" tooltip="{{campaign_form.content.$invalid ? '请输入活动内容':''}}" maxlength=40)
+            textarea.dl_modal_input.form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在140字以内。" tooltip="{{campaign_form.content.$invalid ? '请输入活动内容':''}}" maxlength=140)
         .dl_modal_container
           .dl_modal_half_container
             .dl_modal_half_container
