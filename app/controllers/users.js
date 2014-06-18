@@ -651,7 +651,10 @@ function fetchCampaign(req,res,team_ids,role) {
             break;
           }
         }
-        var judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[i].member_max);
+        var judge = false;
+        if(campaign[j].deadline && campaign[j].member_max){
+            judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+        }
         campaigns.push({
           'over' : judge,
           'selected': true,
