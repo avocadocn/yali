@@ -71,7 +71,7 @@
         .dl_comment_area
           .dl_modal_container.margin_top_5
             .dl_md_8
-              input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment.text")
+              input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text")
             .dl_md_1
               a.clearLinkUnderline.dl_btn_right(ng-click="comment($index)") 发表
           hr

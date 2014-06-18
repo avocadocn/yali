@@ -95,9 +95,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
   function ($http, $scope,$rootScope) {
     $scope.message_role = "group";
     $scope.toggle = [];
-    $scope.new_comment = {
-        text: ''
-    };
+    $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/getGroupMessages/'+tid +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
@@ -105,6 +103,9 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             for(var i = 0;i < $scope.group_messages.length; i ++) {
                 $scope.group_messages[i].comments = [];
                 $scope.toggle.push(false);
+                $scope.new_comment.push({
+                    text: ''
+                });
             }
         });
     });
@@ -131,8 +132,6 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                         for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
                             $scope.group_messages[index].comments[i].index = i+1;
                         }
-                    } else {
-                        $rootScope.donlerAlert("没有留言!");
                     }
                 }).error(function(data, status) {
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -151,7 +150,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 url: '/comment/push',
                 data:{
                     host_id : $scope.group_messages[index]._id,
-                    content : $scope.new_comment.text,
+                    content : $scope.new_comment[index].text,
                     host_type : 'message'
                 }
             }).success(function(data, status) {
@@ -162,7 +161,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     $scope.group_messages[index].comment_sum ++;
                     $scope.group_messages[index].comments.push({
                         'host_id' : $scope.group_messages[index]._id,
-                        'content' : $scope.new_comment.text,
+                        'content' : $scope.new_comment[index].text,
                         'create_date' : Date.now(),
                         'poster' : poster,
                         'host_type' : 'message',
@@ -426,7 +425,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         locationmap.centerAndZoom(cityName,15);
     }
     var myCity = new BMap.LocalCity();
-    myCity.get(getCity);    
+    myCity.get(getCity);
     $scope.showMap = function(type){
         if($scope.location.name==''){
             $rootScope.donlerAlert('请输入地点');
@@ -465,7 +464,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
-    
 }]);
 tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.search_type="team";
