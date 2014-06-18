@@ -32,10 +32,6 @@ var _camp = new Schema({
 });
 
 var GroupMessage = new Schema({
-    type: {
-        type: String,
-        enum: ['competition','ampaign']     //动态类型
-    },
     team:[{
         type: Schema.Types.ObjectId,
         ref: 'CompanyGroup'
@@ -89,9 +85,7 @@ var GroupMessage = new Schema({
         start_confirm: {
             type: Boolean,
             default: false
-        },                            //双方确认后才能变为true,此时不再显示"投票"按钮
-
-        competition_format: String    //赛制
+        }                           //双方确认后才能变为true,此时不再显示"投票"按钮
     }
 });
 

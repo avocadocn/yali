@@ -19,7 +19,6 @@
     "angular-translate-loader-url": "~2.1.0",
     "angular-translate-loader-static-files": "~2.1.0",
     "alertify.js": "latest",
-    "eonasdan-bootstrap-datetimepicker": "~3.0.0",
     "smalot-bootstrap-datetimepicker": "latest"
   }
 }
