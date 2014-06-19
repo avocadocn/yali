@@ -34,7 +34,11 @@ var Photo = new Schema({
   }],
   upload_user: {
     _id: Schema.Types.ObjectId,
-    nickname: String
+    name: String,
+    type: {
+      type: String,
+      enum: ['user', 'hr']
+    }
   }
 });
 
@@ -67,11 +71,19 @@ var PhotoAlbum = new Schema({
   },
   create_user: {
     _id: Schema.Types.ObjectId,
-    nickname: String
+    name: String,
+    type: {
+      type: String,
+      enum: ['user', 'hr']
+    }
   },
   update_user: {
     _id: Schema.Types.ObjectId,
-    nickname: String
+    name: String,
+    type: {
+      type: String,
+      enum: ['user', 'hr']
+    }
   },
   update_date: {
     type: Date,

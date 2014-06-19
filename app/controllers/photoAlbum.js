@@ -322,16 +322,23 @@ exports.createPhotoAlbum = function(req, res) {
     owner: req.owner,
     owner_company: req.body.cid,
     owner_company_group: req.body.gid,
-    name: req.body.name,
-    create_user: {
-      _id: req.user._id,
-      nickname: req.user.nickname
-    },
-    update_user: {
-      _id: req.user._id,
-      nickname: req.user.nickname
-    }
+    name: req.body.name
   });
+  if (req.user.provider === 'company') {
+    photo_album.create_user = {
+      _id: req.user._id,
+      name: req.user.info.name,
+      type: 'hr'
+    };
+    photo_album.update_user = photo_album.create_user;
+  } else if (req.user.provider === 'user' ) {
+    photo_album.create_user = {
+      _id: req.user._id,
+      name: req.user.nickname,
+      type: 'user'
+    };
+    photo_album.update_user = photo_album.create_user;
+  }
   if (!fs.mkdirSync(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()))) {
     res.send({ result: 0, msg: '创建相册失败' });
   }
@@ -488,20 +495,27 @@ exports.createPhoto = function(req, res) {
                           var photo = {
                             uri: path.join(uri_dir, photo_name),
                             thumbnail_uri: path.join(uri_dir, 'thumbnail' + photo_name),
-                            name: photos[i].name,
-                            upload_user: {
+                            name: photos[i].name
+                          };
+                          if (req.user.provider === 'company') {
+                            photo.upload_user = {
                               _id: req.user._id,
-                              nickname: req.user.nickname
-                            }
-                          };
+                              name: req.user.info.name,
+                              type: 'hr'
+                            };
+                          } else if (req.user.provider === 'user' ) {
+                            photo.upload_user = {
+                              _id: req.user._id,
+                              name: req.user.nickname,
+                              type: 'user'
+                            };
+                          }
                           photo_album.photos.push(photo);
-                          photo_album.update_user = {
-                            _id: req.user._id,
-                            nickname: req.user.nickname
-                          };
+                          photo_album.update_user = photo.upload_user;
                           photo_album.save(function(err) {
                             if (err) callback(err);
                             else {
+                              console.log(photo_album)
                               fs.unlink(photos[i].path, function(err) {
                                 if (err) callback(err);
                                 else {
@@ -578,6 +592,9 @@ exports.updatePhoto = function(req, res) {
 
     if (photo.hidden === false) {
       if (req.body.text) {
+        if (req.user.provider === 'company') {
+          return res.send(403);
+        }
         photo.comments.push({
           content: req.body.text,
           publish_user: {
@@ -594,10 +611,19 @@ exports.updatePhoto = function(req, res) {
         }
         photo.tags = photo.tags.concat(tags);
       }
-      photo_album.update_user = {
-        _id: req.user._id,
-        nickname: req.user.nickname
-      };
+      if (req.user.provider === 'company') {
+        photo_album.update_user = {
+          _id: req.user._id,
+          name: req.user.info.name,
+          type: 'hr'
+        };
+      } else if (req.user.provider === 'user' ) {
+        photo_album.update_user = {
+          _id: req.user._id,
+          name: req.user.nickname,
+          type: 'user'
+        };
+      }
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
