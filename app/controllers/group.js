@@ -696,7 +696,7 @@ exports.provoke = function (req, res) {
 
 //应约
 exports.responseProvoke = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+  if(req.session.role !=='HR' && req.session.role !=='LEADER' && req.session.role !== 'OWNER'){
     return res.send(403,forbidden);
   }
   var provoke_message_id = req.body.provoke_message_id;
