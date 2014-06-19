@@ -1347,6 +1347,7 @@ exports.saveAccount = function (req, res) {
         console.log(req.body.user.nickname , user.nickname);
         if(req.body.user.nickname !== user.nickname){
           schedule.updateUname(user._id);
+          req.session.Global.nav_name = req.body.user.nickname;
         }
         res.send({'result':1,'msg':'修改成功'});
       } else {

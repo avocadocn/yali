@@ -810,6 +810,7 @@ exports.saveAccount = function(req, res) {
         if(company) {
             if(req.body.info!==undefined && company.info.name!==_company.info.name){
                 schedule.updateCname(req.user._id);
+                req.session.Global.nav_name = _company.info.name;
             }
 
             res.send({'result':1,'msg':'更新成功'});
