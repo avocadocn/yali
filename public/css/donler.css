@@ -602,10 +602,6 @@ select {
   width: 960px;
   margin: auto;
 }
-.dl-top-login {
-  width: 480px;
-  padding: 22px 0 0 0;
-}
 .dl_little_hr {
   width: 86%;
   margin-left: 0px;
@@ -779,7 +775,7 @@ input::-webkit-inner-spin-button {
   background-color: #558cb1;
 }
 .dl_nav {
-  min-height: 66px;
+  height: 50px;
   background-color: #3498db;
   background: -ms-linear-gradient(top, #3498db, #3498db);
   background: -moz-linear-gradient(top, #3498db, #3498db);
@@ -802,7 +798,7 @@ input::-webkit-inner-spin-button {
   background-color: #558cb1 !important;
 }
 .dl_nav ul li a {
-  padding-top: 26px;
+  padding-top: 17px;
   padding-bottom: 20px;
   color: #fff !important;
 }
@@ -814,7 +810,7 @@ input::-webkit-inner-spin-button {
   border: none;
 }
 .navbar-inverse .navbar-brand {
-  padding: 8px 0;
+  padding: 6px 0;
 }
 .dl_navbar-toggle {
   position: relative;
@@ -923,7 +919,7 @@ input.ng-invalid.ng-dirty {
 }
 .dl-top-login {
   width: 480px;
-  padding: 18px 0 0 0;
+  padding: 11px 0 0 0;
 }
 .dl-top-login .form-control {
   display: inline-block;
