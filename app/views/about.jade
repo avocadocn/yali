@@ -110,23 +110,7 @@ block contentExt
             p 除使用问题外，您有建议或者其他的想法，请发邮件至 info@donler.com
 append footExt
   script.
-    var $window = $(window)
-    var $body   = $('.about-doc')
-
-    var navHeight = $('#slider-bar').outerHeight(true) + 10
-
-    $body.scrollspy({
-      target: '#slider-bar',
-      offset: navHeight
-    })
-
-    $window.on('load', function () {
-      $body.scrollspy('refresh')
-    })
-
-    $('.dl_slider [href=#]').click(function (e) {
-      e.preventDefault()
-    })
+    $('.container').scrollspy({ target: '#slider-bar' })
 
 
 
