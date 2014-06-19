@@ -186,7 +186,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 url: '/users/vote',
                 data:{
                     provoke_message_id : provoke_message_id,
-                    aOr : status
+                    aOr : status,
+                    tid : $scope.group_messages[index].my_team_id
                 }
             }).success(function(data, status) {
                 if(data.msg != undefined && data.msg != null) {
