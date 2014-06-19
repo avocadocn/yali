@@ -722,95 +722,97 @@ exports.getCampaigns = function(req, res) {
 };
 
 
+function getUserSchedule(uid, callback) {
+  Campaign
+  .find({ 'member.uid': uid })
+  .exec()
+  .then(function(campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function(err) {
+    console.log(err);
+    callback([]);
+  });
+}
+
 exports.renderScheduleList = function(req, res) {
-  // Campaign
-  // //.where('member.$.uid').all(req.user._id.toString())
-  // .exec()
-  // .then(function(campaigns) {
-  //   res.send(campaigns);
-  // })
-  // .then(null, console.log);
   res.render('partials/schedule_list');
 };
 
 
-exports.scheduleData = function(req, res) {
-  res.send({
-    "success": 1,
-    "result": [
-      {
-        "id": "293",
-        "title": "This is warning class event with very long title to check how it fits to evet in day view",
-        "url": "http://www.example.com/",
-        "class": "event-warning",
-        "start": "1362938400000",
-        "end":   "1363197686300"
-      },
-      {
-        "id": "256",
-        "title": "Event that ends on timeline",
-        "url": "http://www.example.com/",
-        "class": "event-warning",
-        "start": "1363155300000",
-        "end":   "1363227600000"
-      },
-      {
-        "id": "276",
-        "title": "Short day event",
-        "url": "http://www.example.com/",
-        "class": "event-success",
-        "start": "1363245600000",
-        "end":   "1363252200000"
-      },
-      {
-        "id": "294",
-        "title": "This is information class ",
-        "url": "http://www.example.com/",
-        "class": "event-info",
-        "start": "1363111200000",
-        "end":   "1363284086400"
-      },
-      {
-        "id": "297",
-        "title": "This is success event",
-        "url": "http://www.example.com/",
-        "class": "event-success",
-        "start": "1363234500000",
-        "end":   "1363284062400"
-      },
-      {
-        "id": "54",
-        "title": "This is simple event",
-        "url": "http://www.example.com/",
-        "class": "",
-        "start": "1363712400000",
-        "end":   "1363716086400"
-      },
-      {
-        "id": "532",
-        "title": "This is inverse event",
-        "url": "http://www.example.com/",
-        "class": "event-inverse",
-        "start": "1364407200000",
-        "end":   "1364493686400"
-      },
-      {
-        "id": "548",
-        "title": "This is special event",
-        "url": "http://www.example.com/",
-        "class": "event-special",
-        "start": "1363197600000",
-        "end":   "1363629686400"
-      },
-      {
-        "id": "295",
-        "title": "Event 3",
-        "url": "http://www.example.com/",
-        "class": "event-important",
-        "start": "1364320800000",
-        "end":   "1364407286400"
+exports.scheduleListData = function(req, res) {
+  getUserSchedule(req.user._id.toString(), function(campaigns) {
+
+    var campaignListData = [];
+    var join = false;
+
+    if (!campaigns) {
+      return res.send({
+        'data':[],
+        'role': req.session.role
+      });
+    } else {
+      var length = campaigns.length;
+      for(var j = 0; j < length; j ++) {
+        join = false;
+        for(var k = 0;k < campaigns[j].member.length; k ++) {
+          if(req.user._id.toString() === campaigns[j].member[k].uid) {
+            join = true;
+            break;
+          }
+        }
+        var judge = false;
+        if(campaigns[j].deadline && campaigns[j].member_max){
+            judge = !(Date.now() - campaigns[j].end_time.valueOf() <= 0 || Date.now() - campaigns[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+        }
+        campaignListData.push({
+          'over' : judge,
+          'selected': true,
+          'active':campaigns[j].active, //截止时间到了活动就无效了
+          '_id': campaigns[j]._id.toString(),
+          'gid': campaigns[j].gid,
+          'group_type': campaigns[j].group_type,
+          'cid': campaigns[j].cid,
+          'cname': campaigns[j].cname,
+          'poster': campaigns[j].poster,
+          'content': campaigns[j].content,
+          'location': campaigns[j].location,
+          'member_length': campaigns[j].member.length,
+          'create_time': campaigns[j].create_time,
+          'start_time': campaigns[j].start_time,
+          'end_time': campaigns[j].end_time,
+          'deadline':campaigns[j].deadline,
+          'join':join,
+          'provoke':campaigns[j].provoke,
+          'index':j
+        });
       }
-    ]
+      return res.send({
+        'data': campaignListData,
+        'role': req.session.role
+      });
+    }
+
+  });
+};
+
+exports.scheduleCalendarData = function(req, res) {
+  getUserSchedule(req.user._id.toString(), function(campaigns) {
+    var calendarCampaigns = [];
+    campaigns.forEach(function(campaign) {
+      calendarCampaigns.push({
+        'id': campaign._id,
+        'title': campaign.theme,
+        'url': '/group/campaign/' + campaign._id.toString(),
+        'class': 'event-info',
+        'start': campaign.start_time.valueOf(),
+        'end': campaign.end_time.valueOf()
+      });
+    });
+    res.send({
+      'success': 1,
+      'result': calendarCampaigns
+    });
   });
 };
 
@@ -1555,7 +1557,7 @@ exports.getUserInfo = function(req, res) {
 
 exports.getTimelineForApp = function(req,res){
   Campaign
-  .find({ 'member.uid': req.session.nowuid })
+  .find({ 'member.uid': req.user._id.toString() })
   .where('end_time').lt(new Date())
   .sort('-start_time')
   .populate('team')

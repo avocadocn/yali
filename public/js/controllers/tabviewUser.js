@@ -181,10 +181,49 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
 }]);
 
 
-tabViewUser.controller('ScheduleListController', ['$scope', '$http', function($scope, $http) {
+tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
+
+  $scope.isCalendar = true;
+  $scope.prev = '上个月';
+  $scope.next = '下个月';
+  var btn_calendar = $('#btn_calendar');
+  var btn_list = $('#btn_list');
+
+  $scope.calendar = function(isCalendar) {
+    $scope.isCalendar = isCalendar;
+    if (isCalendar === true) {
+      btn_calendar.addClass('active');
+      btn_list.removeClass('active');
+    } else {
+      btn_calendar.removeClass('active');
+      btn_list.addClass('active');
+    }
+  };
+
+  $scope.setText = function(textType) {
+    switch (textType) {
+    case 'month':
+      $scope.prev = '上个月';
+      $scope.next = '下个月';
+      break;
+    case 'week':
+      $scope.prev = '上一周';
+      $scope.next = '下一周';
+      break;
+    case 'day':
+      $scope.prev = '前一天';
+      $scope.next = '后一天';
+      break;
+    default:
+      $scope.prev = '上个月';
+      $scope.next = '下个月';
+      break;
+    }
+  }
+
 
   var options = {
-    events_source: '/users/getScheduleData',
+    events_source: '/users/getScheduleCalendarData',
     view: 'month',
     tmpl_path: '/tmpls/',
     tmpl_cache: false,
@@ -193,14 +232,6 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', function($s
       if(!events) {
         return;
       }
-      // var list = $('#eventlist');
-      // list.html('');
-
-      // $.each(events, function(key, val) {
-      //   $(document.createElement('li'))
-      //     .html('<a href="' + val.url + '">' + val.title + '</a>')
-      //     .appendTo(list);
-      // });
     },
     onAfterViewLoad: function(view) {
       $('#calendar_title').text(this.getTitle());
@@ -230,26 +261,66 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', function($s
     });
   });
 
-  // $('#first_day').change(function(){
-  //   var value = $(this).val();
-  //   value = value.length ? parseInt(value) : null;
-  //   calendar.setOptions({first_day: value});
-  //   calendar.view();
-  // });
 
-  // $('#language').change(function(){
-  //   calendar.setLanguage($(this).val());
-  //   calendar.view();
-  // });
+    $scope.company = false;
+    $http.get('/users/getScheduleListData').success(function(data, status) {
+        console.log(data.data)
+      $scope.campaigns = data.data;
+      $scope.company = false;
+    });
 
-  // $('#events-in-modal').change(function(){
-  //   var val = $(this).is(':checked') ? $(this).val() : null;
-  //   calendar.setOptions({modal: val});
-  // });
-  // $('#events-modal .modal-header, #events-modal .modal-footer').click(function(e){
-  //   //e.preventDefault();
-  //   //e.stopPropagation();
-  // });
+    $scope.join = function(campaign_id,index) {
+        try {
+            $http({
+                method: 'post',
+                url: '/users/joinCampaign',
+                data:{
+                    campaign_id : campaign_id
+                }
+            }).success(function(data, status) {
+                if(data.result===1){
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    $scope.campaigns[index].join = true;
+                    $scope.campaigns[index].member_length++;
+                }
+                else{
+                    alert(data.msg);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+    $scope.quit = function(campaign_id,index) {
+        try {
+            $http({
+                method: 'post',
+                url: '/users/quitCampaign',
+                data:{
+                    campaign_id : campaign_id
+                }
+            }).success(function(data, status) {
+                if(data.result===1){
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    $scope.campaigns[index].join = false;
+                    $scope.campaigns[index].member_length--;
+                }
+                else{
+                    alert(data.msg);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
 
 }]);
 
