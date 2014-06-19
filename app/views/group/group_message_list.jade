@@ -62,7 +62,7 @@
             span.pull-right(ng-if="group_message.provoke.active && ( role=='OWNER'||role=='LEADER' ) && !group_message.provoke.start_confirm")
               button.dl_btn(ng-click="vote(group_message._id,true,$index)") {{group_message.positive == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.positive}}
               button.dl_btn(ng-click="vote(group_message._id,false,$index)") {{group_message.negative == 1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.negative}}
-              button.dl_btn(ng-click="responseProvoke(group_message._id)" ng-if="!group_message.host") {{"FACE"|translate}}
+              button.dl_btn(ng-click="responseProvoke(group_message.provoke.camp[1].tid,group_message._id)" ng-if="!group_message.host") {{"FACE"|translate}}
     .dl_area(ng-if="message_role==='group'")
       .row
         label.pull-right

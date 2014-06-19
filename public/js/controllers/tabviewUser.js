@@ -99,11 +99,11 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
         }
     };
     //应战
-    $scope.responseProvoke = function(provoke_message_id) {
+    $scope.responseProvoke = function(tid,provoke_message_id) {
          try {
             $http({
                 method: 'post',
-                url: '/group/responseProvoke/'+$rootScope.teamId,
+                url: '/group/responseProvoke/'+tid,
                 data:{
                     provoke_message_id : provoke_message_id
                 }
