@@ -693,6 +693,7 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
           role: req.session.role,
           owner_id: company_group._id,
           owner_name: company_group.name,
+          owner_logo: company_group.logo,
           cid: company_group.cid
         });
       })
@@ -711,6 +712,7 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
 exports.renderPhotoAlbumDetail = function(req, res) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
+  .populate('owner_company_group')
   .exec()
   .then(function(photo_album) {
     if (!photo_album) {
@@ -722,11 +724,9 @@ exports.renderPhotoAlbumDetail = function(req, res) {
         _id: photo_album._id,
         name: photo_album.name,
         update_date: photo_album.update_date,
-        photos: photos
-      },
-      photo: req.user.photo,
-      realname: req.user.realname,
-      role: req.session.role,
+        photos: photos,
+        owner: photo_album.owner_company_group
+      }
     });
   })
   .then(null, function(err) {
@@ -739,6 +739,7 @@ exports.renderPhotoAlbumDetail = function(req, res) {
 exports.renderPhotoDetail = function(req, res) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
+  .populate('owner_company_group')
   .exec()
   .then(function(photo_album) {
     var pre_id, next_id;
@@ -775,11 +776,9 @@ exports.renderPhotoDetail = function(req, res) {
             _id: photo_album._id,
             name: photo_album.name,
             update_date: photo_album.update_date,
-            photo_count: photo_album.photos.length
-          },
-          photo: req.user.photo,
-          realname: req.user.realname,
-          role: req.session.role
+            photo_count: photo_album.photos.length,
+            owner: photo_album.owner_company_group
+          }
         });
 
       }
