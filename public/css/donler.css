@@ -598,6 +598,14 @@ select {
 .margin_right_20 {
   margin-right: 20px;
 }
+.header_container {
+  width: 960px;
+  margin: auto;
+}
+.dl-top-login {
+  width: 480px;
+  padding: 22px 0 0 0;
+}
 .dl_little_hr {
   width: 86%;
   margin-left: 0px;
