@@ -97,7 +97,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
-        $http.get('/group/getGroupMessages/'+tid +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
             for(var i = 0;i < $scope.group_messages.length; i ++) {
@@ -274,13 +274,13 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         }
     };
     //应战
-    $scope.responseProvoke = function(provoke_message_id) {
+    $scope.responseProvoke = function(competition_id) {
          try {
             $http({
                 method: 'post',
-                url: '/group/responseProvoke/'+$rootScope.teamId,
+                url: '/group/responseProvoke',
                 data:{
-                    provoke_message_id : provoke_message_id
+                    competition_id : competition_id
                 }
             }).success(function(data, status) {
                 window.location.reload();

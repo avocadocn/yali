@@ -332,6 +332,8 @@ exports.dealActive = function(req, res) {
   var key = req.session.key;
   var cid = req.session.key_id;
   userOperate(cid, key, res, req);
+  delete req.session.key;
+  delete req.session.key_id;
 };
 
 /**
@@ -385,14 +387,24 @@ exports.dealSetProfile = function(req, res) {
           user.department = req.body.department;
           user.phone = req.body.phone;
           user.role = 'EMPLOYEE';
-
+          user.active = true;
           user.save(function(err) {
             if(err) {
               console.log(err);
-              res.render('users/message', message.dbError);
+              return res.render('users/message', message.dbError);
             }
-            req.session.username = user.username;
-            res.redirect('/users/selectGroup');
+            eles{
+              var groupMessage = new GroupMessage();
+              groupMessage.message_type = 6;
+              groupMessage.company.cid = user.cid;
+              groupMessage.company.name = user.cname;
+              groupMessage.user.user_id = user._id;
+              groupMessage.user.name = user.nickname;
+              groupMessage.save();
+              req.session.username = user.username;
+              res.redirect('/users/selectGroup');
+            }
+
           });
         } else {
           res.render('users/message', message.actived);
@@ -414,7 +426,7 @@ exports.selectGroup = function(req, res) {
       console.log(err);
       res.render('users/message', message.dbError);
     } else if(user) {
-      if(user.active === true) {
+      if(req.session.username != undefined) {
         res.render('users/message', message.actived);
       } else {
         res.render('users/selectGroup', { title: '选择你的兴趣小组', group_head: '个人' });
@@ -440,12 +452,9 @@ exports.dealSelectGroup = function(req, res) {
         res.status(400).send('用户不存在!');
         return;
       } else if(user) {
-        if(user.active === false) {
+        if(req.session.username == undefined) {
 
           user.group = req.body.selected;
-
-
-          user.active = true;
           user.save(function(err){
             if(err){
               console.log(err);
@@ -457,7 +466,7 @@ exports.dealSelectGroup = function(req, res) {
             //通过cid和gid来限制查询条件可以很大程度上提高查询的性能
             for( var i = 0; i < user.group.length && user.group[i]._id != '0'; i ++) {
               for( var j =0; j < user.group[i].team.length; j ++) {
-                CompanyGroup.findOne({'cid':user.cid,'gid':user.group[i]._id ,'_id':user.group[i].team[j].id}, function(err, company_group) {
+                CompanyGroup.findOne({'_id':user.group[i].team[j].id}, function(err, company_group) {
                   company_group.member.push({
                     '_id':user._id,
                     'nickname':user.nickname,
@@ -466,6 +475,17 @@ exports.dealSelectGroup = function(req, res) {
                   company_group.save(function(err){
                     if(err){
                       console.log(err);
+                    }
+                    else{
+                    var groupMessage = new GroupMessage();
+                    groupMessage.message_type = 6;
+                    groupMessage.company.cid = user.cid;
+                    groupMessage.company.name = user.cname;
+                    groupMessage.team.teamid = company_group._id;
+                    groupMessage.team.name = company_group.name;
+                    groupMessage.user.user_id = user._id;
+                    groupMessage.user.name = user.nickname;
+                    groupMessage.save();
                     }
                   });
                 });
@@ -487,139 +507,10 @@ exports.dealSelectGroup = function(req, res) {
  * 完成注册
  */
 exports.finishRegister = function(req, res) {
+  delete req.session.username;
   res.render('users/signin', {title: '激活成功,请登录!', message: '激活成功,请登录!'});
 };
 
-
-//列出该user加入的所有小组的动态
-exports.getGroupMessages = function(req, res) {
-  if(req.session.role!=='OWNER'){
-    return res.send(403,'forbidden');
-  }
-  var group_messages = [];
-  var i = 0;
-  var companyLogo;
-  console.log('really?');
-
-
-  async.whilst(
-    function() { return i < req.user.group.length; },
-
-    function(callback) {
-      var team_ids = [];
-      var team_names = [];
-      var tid,tname;
-      for(var k = 0; k < req.user.group[i].team.length; k ++){
-        //如果team是active的，则push进去
-        tid=req.user.group[i].team[k].id;
-        tname = req.user.group[i].team[k].name;
-        //console.log(tid,req.user.group[i].team[k].id);
-        team_ids.push(tid);
-        team_names.push(tname);
-        //此处若加查询，异步会出错Todo M
-        /*
-        CompanyGroup.findOne({
-          '_id':tid
-        },function(err,companyGroup){
-          if(err){
-            console.log(err);
-            return res.send(err)
-          }else{
-            if(companyGroup.active === true)
-              team_ids.push(tid);
-          }
-        });
-        */
-      }
-      GroupMessage.find({'team' :{'$in':team_ids}})
-      .populate('team').sort({'create_time':-1})
-      .exec(function(err, group_message) {
-        if (group_message.length > 0) {
-          if (err) {
-            console.log(err);
-            return res.send([]);
-          } else {
-
-            var length = group_message.length;
-            for(var j = 0; j < length; j ++) {
-
-              var positive = 0;
-              var negative = 0;
-              var my_team_id,my_team_name;
-              var find = true;
-              var host = true;
-
-              //如果是比赛动态
-              if(group_message[j].provoke.active) {
-                for(var k = 0; k < group_message[j].team.length && find; k ++) {
-                  for(var l = 0; l < req.user.group[i].team.length; l ++) {
-                    if(group_message[j].team[k]._id.toString() === req.user.group[i].team[l].id.toString()) {
-                      my_team_id = req.user.group[i].team[l].id;
-                      my_team_name = req.user.group[i].team[l].name;
-                      positive = group_message[j].provoke.camp[k].vote.positive;
-                      negative = group_message[j].provoke.camp[k].vote.negative;
-                      find = false;
-                      host = (k === 0);
-                      break;
-                    }
-                  }
-                }
-
-              } else {
-                //如果是普通活动动态
-                for(var l = 0; l < team_ids.length; l ++) {
-                  if(group_message[j].team[0]._id.toString() === team_ids[l].toString()) {
-                    my_team_id = team_ids[l];
-                    my_team_name = team_names[l];
-                    break;
-                  }
-                }
-              }
-              //console.log('logo'+ j +':' + group_message[j].team[0].logo,host);
-              //console.log('group_message_id'+ j +':' + group_message[j]._id);
-              group_messages.push({
-                'positive' : positive,
-                'negative' : negative,
-                'my_team_name' : my_team_name,
-                'my_team_id': my_team_id,
-                'host': host,                  //是不是发赛方
-                '_id': group_message[j]._id,
-                'cid': group_message[j].cid,
-                'group': group_message[j].group,
-                'active': group_message[j].active,
-                'date': group_message[j].date,
-                'poster': group_message[j].poster,
-                'content': group_message[j].content,
-                'location' : group_message[j].location,
-                'start_time' : group_message[j].start_time,
-                'end_time' : group_message[j].end_time,
-                'provoke': group_message[j].provoke,
-                'logo':host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
-                'provoke_accept': false,
-                'comment_sum':group_message[j].comment_sum
-              });
-            }
-          }
-        }
-        i++;
-        callback();
-      });
-      Company.findOne({'_id':req.user.cid}).exec(function(err,company){
-        companyLogo = company.info.logo;
-      });
-    },
-
-
-    function(err) {
-      if (err) {
-        console.log(err);
-        res.send([]);
-      } else {
-        res.send({'group_messages':group_messages,'role':req.session.role,'companyLogo':companyLogo});
-      }
-    }
-  );
-};
 
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{
@@ -1145,8 +1036,17 @@ exports.joinGroup = function (req, res){
               if(err){
                 console.log(err);
                 return res.send({result: 0, msg:'保存用户出错'});
+              }else{
+                console.log('保存用户成功');
+                var groupMessage = new GroupMessage();
+                groupMessage.message_type = 6;
+                groupMessage.team.teamid = companyGroup._id;
+                groupMessage.team.name = companyGroup.name;
+                groupMessage.user.user_id = user._id;
+                groupMessage.user.name = user.nickname;
+                groupMessage.save();
               }
-              console.log('保存用户成功');
+
             });
             return res.send({result: 1, msg:'保存用户成功'});
           }

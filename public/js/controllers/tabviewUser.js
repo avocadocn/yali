@@ -70,10 +70,7 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
         $scope.role = data.role;
         $scope.companyLogo = data.companyLogo;
     });
-    var t = false;
     $scope.vote = function(provoke_message_id, status, index) {
-        t = !t;
-        console.log(t);
          try {
             $http({
                 method: 'post',

@@ -1,32 +1,38 @@
 'use strict';
 var mongoose = require('mongoose'),
-    encrypt = require('../middlewares/encrypt'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup'),
     User = mongoose.model('User'),
-    UUID = require('../middlewares/uuid'),
-    GroupMessage = mongoose.model('GroupMessage'),
     Group = mongoose.model('Group'),
     Competition = mongoose.model('Competition'),
-    Arena = mongoose.model('Arena'),
     Campaign = mongoose.model('Campaign');
 
 
 
-exports.getGroupId = function(req, res) {
-
-};
-
-
 
 //根据小队ID返回小组动态消息
-exports.getGroupMessage = function(req, res) {
-  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+exports.getMessage = function(req, res) {
+  if(req.params.type==='team' && (req.session.role ==='GUESTHR' || req.session.role ==='GUEST') || req.params.type==='user' && req.session.role !=='OWNER'){
     return res.send(403,forbidden);
   }
-  var tid = req.params.teamId;    //小队的id
-
-  GroupMessage.find({'team' : tid}).sort({'_id':-1})
+  var option = {};
+  if (req.params.type==='team') {
+    option = {
+      'team' : req.session.nowtid
+    }
+  }
+  else{
+    var team_ids = [];
+    req.user.group.forEach(function(group){
+      group.forEach(function(team){
+        team_ids.push(team.id);
+      });
+    })
+    option = {
+      'team.teamid' : {'$in':team_ids}
+    }
+  };
+  GroupMessage.find(option).sort({'creat_time':-1}).populate('campaign').populate('competition')
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -35,15 +41,39 @@ exports.getGroupMessage = function(req, res) {
       var group_messages = [];
       var length = group_message.length;
       for(var i = 0; i < length; i ++) {
-
-        var positive = 0;
-        var negative = 0;
-        for(var k = 0; k < group_message[i].provoke.camp.length; k ++) {
-          if(group_message[i].provoke.camp[k].tname === req.companyGroup.name){
-            positive = group_message[i].provoke.camp[k].vote.positive;
-            negative = group_message[i].provoke.camp[k].vote.negative;
-            break;
-          }
+        var _group_message = {};
+        switch( group_message.message_type){
+          case 1:
+          _group_message ={
+            'message_type':group_message.message_type,
+            'companyFlag' : group_message.team,
+            '_id': group_message[i]._id,
+            'cid': group_message[i].cid,
+            'group': group_message[i].group,
+            'active': group_message[i].active,
+            'date': group_message[i].date,
+            'poster': group_message[i].poster,
+            'content': group_message[i].content,
+            'location' : group_message[i].location,
+            'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
+            'end_time' : group_message[i].end_time ? group_message[i] : '',
+            'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
+            'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
+            'comment_sum':group_message[i].comment_sum
+          };
+          break;
+          case 2:
+          break;
+          case: 3:
+          break;
+          case 4:
+          break;
+          case 5:
+          break;
+          case 6: 
+          break;
+          default:
+          break;
         }
         group_messages.push({
           'positive' : positive,
@@ -70,7 +100,6 @@ exports.getGroupMessage = function(req, res) {
 };
 
 
-//列出该user加入的所有小组的动态
 exports.getUserMessage = function(req, res) {
   if(req.session.role!=='OWNER'){
     return res.send(403,'forbidden');
@@ -85,7 +114,6 @@ exports.getUserMessage = function(req, res) {
       for(var k = 0; k < req.user.group[i].team.length; k ++){
         team_ids.push(req.user.group[i].team[k].id);
       }
-      console.log(team_ids);
       GroupMessage.find({'team' :{'$in':team_ids}}).sort({'_id':-1})
       .exec(function(err, group_message) {
         if (group_message.length > 0) {

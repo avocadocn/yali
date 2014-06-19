@@ -43,7 +43,7 @@ var Campaign = new Schema({
         nickname: String,
         role: {
             type: String,
-            enum: ['HR','LEADER','GUESTLEADER','GUESTHR']     //HR 组长
+            enum: ['HR','LEADER']     //HR 组长
         },
     },
     theme:{//主题
@@ -81,14 +81,7 @@ var Campaign = new Schema({
         type: Date,
         default: Date.now()
     },
-    provoke: {                        //约战活动
-        competition_format: String,   //赛制
-        active: {
-            type: Boolean,
-            default: false
-        },                            //如果是true就显示为约战活动,否则为普通活动
-        competition_id: Schema.Types.ObjectId     //对应的比赛的id
-    }
+    close_time: Date
 });
 
 
