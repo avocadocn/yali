@@ -18,7 +18,6 @@ exports.getCompany = function (req, res) {
             return res.send([]);
         } else {
             if(companies) {
-
                 for(var i = 0; i < companies.length; i ++) {
                     companies_rst.push({
                         '_id' : companies[i]._id,
