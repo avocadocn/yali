@@ -944,6 +944,9 @@ exports.getCompetition = function(req, res){
     'team': req.competition_team,
     'role': req.session.role,
     'msg_show': false,
+    'score_a': "",
+    'score_b': "",
+    'rst_content': "",
     'moment':moment,
     'confirm_btn_show':false
   };
@@ -963,7 +966,6 @@ exports.getCompetition = function(req, res){
     options.rst_content = req.competition.camp[otherTeamIndex].result.content;
     options.date = req.competition.camp[otherTeamIndex].result.start_date;
   }
-  console.log(req.competition.camp[otherTeamIndex].result.confirm,req.competition.camp[nowTeamIndex].result.confirm,options.msg_show);
   options.confirm_btn_show = !(req.competition.camp[otherTeamIndex].result.confirm && req.competition.camp[nowTeamIndex].result.confirm);
   res.render('competition/football', options);
 };
