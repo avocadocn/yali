@@ -429,7 +429,6 @@ select {
   font-size: 12px;
   text-align: center;
   vertical-align: middle;
-  padding: 5px 0;
   display: inline-block;
 }
 .dl_btn:hover {
@@ -483,8 +482,12 @@ select {
   background-color: #e5e5e5;
   border-color: #e5e5e5;
   border-style: solid;
+  border-width: 2px;
   line-height: 1;
   position: relative;
+  color: #000;
+  vertical-align: middle;
+  display: inline-block;
 }
 .cancel_btn:hover {
   background-color: #e5e5e5;
@@ -864,11 +867,18 @@ input::-webkit-inner-spin-button {
 .dl_footer .text_icp {
   line-height: 60px;
 }
+.dl_footer .text_icp a {
+  margin-left: 50px;
+}
+.dl_footer .dl_container {
+  padding-top: 0;
+}
 .dl_footer .dl_row {
   padding: 0;
 }
 .dl_footer a {
   color: #999;
+  margin-left: 50px;
 }
 .dl_form-Control {
   display: block;

@@ -11,3 +11,6 @@
 .operator_btn {
   z-index: 2;
 }
+.campaigns_list .operator_btn {
+  margin: 5px;
+}

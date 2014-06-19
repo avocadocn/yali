@@ -15,6 +15,9 @@
   background-color: #fff;
   margin: 80px 80px;
 }
+.select_div row {
+  margin: 0;
+}
 .field {
   padding: 0;
   margin: 0;
