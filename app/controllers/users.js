@@ -653,7 +653,7 @@ function fetchCampaign(req,res,team_ids,role) {
         }
         var judge = false;
         if(campaign[j].deadline && campaign[j].member_max){
-            judge = !(Date.now() - campaign[j].end_time.valueOf() <= 0 || Date.now() - campaign[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+            judge = (Date.now() - campaign[j].deadline.valueOf() > 0 || (campaign[j].member.length >= campaign[j].member_max) && campaign[j].member_max > 0 );
         }
         campaigns.push({
           'over' : judge,

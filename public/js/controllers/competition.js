@@ -2,7 +2,7 @@
 'use strict';
 
 
-var groupApp = angular.module('group', []);
+var groupApp = angular.module('mean.main');
 
 groupApp.controller('resultController', ['$http', '$scope',function ($http, $scope) {
 
