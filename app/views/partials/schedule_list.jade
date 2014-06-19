@@ -1,0 +1,13 @@
+.clearfix
+  h3#calendar_title.pull-left
+  .pull-right#calendar_operator
+    .btn-group
+      button.btn.btn-primary(data-calendar-nav="prev") &lt;&lt;&nbsp;上个月
+      button.btn.btn-default(data-calendar-nav="today") 今天
+      button.btn.btn-primary(data-calendar-nav="next") 下个月&nbsp;&gt;&gt;
+    .btn-group
+      button.btn.btn-primary.active(data-calendar-view="month") 月
+      button.btn.btn-primary(data-calendar-view="week") 周
+      button.btn.btn-primary(data-calendar-view="day") 日
+
+#calendar
