@@ -52,15 +52,15 @@ select {
 }
 .comment .comment_content_panel .comment_content {
   padding: 10px;
-  background-color: contentBgColor;
-  border: solid 1px contentBdColor;
+  background-color: #fbfbfb;
+  border: solid 1px #ededed;
   width: 450px;
   min-height: 50px;
 }
 .comment_textarea {
   height: 60px;
-  background-color: contentBgColor;
-  border-color: contentBdColor;
+  background-color: #fbfbfb;
+  border-color: #ededed;
   border-radius: 0;
 }
 .triangle {
@@ -71,7 +71,7 @@ select {
   margin-left: -19px;
   border-width: 10px;
   border-style: solid;
-  border-color: transparent contentBgColor transparent transparent;
+  border-color: transparent #fbfbfb transparent transparent;
 }
 .triangle_border {
   position: absolute;
@@ -81,7 +81,7 @@ select {
   margin-left: -21px;
   border-width: 11px;
   border-style: solid;
-  border-color: transparent contentBdColor transparent transparent;
+  border-color: transparent #ededed transparent transparent;
 }
 .dl_comment_area {
   float: right;
@@ -805,6 +805,9 @@ input::-webkit-inner-spin-button {
 .dl_nav .logo {
   margin-top: 5px;
   margin-left: 10px;
+}
+.relative {
+  position: relative;
 }
 .navbar {
   border: none;
