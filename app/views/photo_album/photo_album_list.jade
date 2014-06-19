@@ -32,9 +32,12 @@ block contentExt
               | &nbsp;
               small (#{photo_album.photo_count})
           div.update_info.center-block.margin_top_10
-            img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36")
+            if photo_album.update_user.type === 'user'
+              img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36")
+            if photo_album.update_user.type === 'hr'
+              img.update_user_photo(src="/logo/company/#{photo_album.update_user._id}/36/36")
             .pull-left
-              a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.nickname
+              a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
               - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
               p.text #{year}.#{month}.#{day} 最后更新
 
