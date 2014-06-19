@@ -203,6 +203,25 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             console.log(e);
         }
     };
+    //应战
+    $scope.responseProvoke = function(provoke_message_id) {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/responseProvoke/'+$rootScope.teamId,
+                data:{
+                    provoke_message_id : provoke_message_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
 }]);
 
 
@@ -273,25 +292,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             console.log(e);
         }
     };
-    //应战
-    $scope.responseProvoke = function(provoke_message_id) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/responseProvoke/'+$rootScope.teamId,
-                data:{
-                    provoke_message_id : provoke_message_id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+
 
     $scope.cancel = function (_id) {
         try {

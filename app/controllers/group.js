@@ -730,8 +730,8 @@ exports.responseProvoke = function (req, res) {
         campaign.poster.role = 'LEADER';
         campaign.poster.nickname = competition.poster.nickname;
 
-        campaign.theme = competition.theme;
-        campaign.content = competition.content;
+        campaign.theme = competition.brief.theme;
+        campaign.content = competition.brief.content;
         campaign.location = competition.brief.location;
         campaign.start_time = competition.brief.start_time;
         campaign.end_time = competition.brief.end_time;
