@@ -592,6 +592,9 @@ exports.updatePhoto = function(req, res) {
 
     if (photo.hidden === false) {
       if (req.body.text) {
+        if (req.user.provider === 'company') {
+          return res.send(403);
+        }
         photo.comments.push({
           content: req.body.text,
           publish_user: {
