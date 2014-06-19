@@ -32,6 +32,57 @@ select {
   color: #cc847f;
   font-size: 12px !important;
 }
+.comment {
+  position: relative;
+  margin-top: 20px;
+}
+.comment .comment_user_info {
+  float: left;
+}
+.comment .comment_user_info .user_photo {
+  width: 50px;
+  height: 50px;
+}
+.comment .comment_user_info .user_name {
+  text-decoration: none;
+}
+.comment .comment_content_panel {
+  float: left;
+  margin-left: 20px;
+}
+.comment .comment_content_panel .comment_content {
+  padding: 10px;
+  background-color: contentBgColor;
+  border: solid 1px contentBdColor;
+  width: 450px;
+  min-height: 50px;
+}
+.comment_textarea {
+  height: 60px;
+  background-color: contentBgColor;
+  border-color: contentBdColor;
+  border-radius: 0;
+}
+.triangle {
+  position: absolute;
+  top: 16px;
+  height: 0px;
+  width: 0px;
+  margin-left: -19px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent contentBgColor transparent transparent;
+}
+.triangle_border {
+  position: absolute;
+  top: 15px;
+  height: 0px;
+  width: 0px;
+  margin-left: -21px;
+  border-width: 11px;
+  border-style: solid;
+  border-color: transparent contentBdColor transparent transparent;
+}
 .dl_comment_area {
   float: right;
   width: 450px;
@@ -670,6 +721,7 @@ input::-webkit-inner-spin-button {
   background: #3498db;
   padding-top: 0;
   padding-bottom: 0;
+  min-width: 100px !important;
 }
 .dl_menu .dl_menu_a {
   padding-top: 5px;

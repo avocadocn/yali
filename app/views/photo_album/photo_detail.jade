@@ -30,9 +30,7 @@ block contentExt
             textarea.comment_textarea.form-control(type="text" name="text" required)
             .clearfix
               button.dl_btn.btn_padding.pull-right.margin_top_5(type="submit") 提交留言
-          br
-          br
-          section.margin_top_20
+          section
             each comment in photo_detail.comments
               div.comment.clearfix
                 .comment_user_info
