@@ -944,16 +944,17 @@ exports.getCompetition = function(req, res){
     'team': req.competition_team,
     'role': req.session.role,
     'msg_show': false,
-    'moment':moment
+    'moment':moment,
+    'confirm_btn_show':false
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.session.role==='HR'){
-    nowTeamIndex = req.competition.camp[0].cid === req.user.id ? 0:1;
-    otherTeamIndex = req.competition.camp[0].cid === req.user.id ? 1:0;
+    nowTeamIndex = req.competition.camp[0].cid.toString() === req.user._id.toString() ? 0:1;
+    otherTeamIndex = req.competition.camp[0].cid.toString() === req.user._id.toString() ? 1:0;
   }
   else{
-    nowTeamIndex = req.competition.camp[0].cid === req.user.cid ? 0:1;
-    otherTeamIndex = req.competition.camp[0].cid === req.user.cid ? 1:0;
+    nowTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 0:1;
+    otherTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 1:0;
   }
   if((req.session.role==='HR' || req.session.role ==='LEADER') && req.competition.camp[otherTeamIndex].result.confirm && !req.competition.camp[nowTeamIndex].result.confirm) {
     options.msg_show = true;
@@ -962,6 +963,8 @@ exports.getCompetition = function(req, res){
     options.rst_content = req.competition.camp[otherTeamIndex].result.content;
     options.date = req.competition.camp[otherTeamIndex].result.start_date;
   }
+  console.log(req.competition.camp[otherTeamIndex].result.confirm,req.competition.camp[nowTeamIndex].result.confirm,options.msg_show);
+  options.confirm_btn_show = !(req.competition.camp[otherTeamIndex].result.confirm && req.competition.camp[nowTeamIndex].result.confirm);
   res.render('competition/football', options);
 };
 
@@ -1105,6 +1108,7 @@ exports.resultConfirm = function (req, res) {
   var rst_content = req.body.rst_content;
 
   Competition.findOne({'_id' : competition_id}, function (err, competition) {
+    console.log(competition);
     if(err) {
       console.log(err);
       res.send(err);
@@ -1112,12 +1116,12 @@ exports.resultConfirm = function (req, res) {
       //本组的index
       var _campFlag,_otherCampFlag;
       if(req.session.role ==='HR'){
-        _campFlag = req.user.id === competition.camp[0].cid ? 0 : 1;
-        _otherCampFlag = req.user.id === competition.camp[0].cid ? 1 : 0;
+        _campFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 0 : 1;
+        _otherCampFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 1 : 0;
       }
       else{
-        _campFlag = req.user.cid === competition.camp[0].cid ? 0 : 1;
-        _otherCampFlag = req.user.cid === competition.camp[0].cid ? 1 : 0;
+        _campFlag = req.user.cid.toString() === competition.camp[0].cid.toString() ? 0 : 1;
+        _otherCampFlag = req.user.cid.toString() === competition.camp[0].cid.toString() ? 1 : 0;
       }
       competition.camp[_campFlag].result.confirm = true;
       if(!rst_accept) {

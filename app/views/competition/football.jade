@@ -1,7 +1,7 @@
 extends ../layouts/manager
 
 block panel
-  #competition_content(data-nowteam="#{team}" data-id='#{competition.id}')
+  #competition_content(data-nowteam="#{team}" data-id='#{competition._id}' data-msg-show='#{msg_show}' data-rst-content='#{rst_content}' data-score-a='#{score_a}' data-score-b='#{score_b}')
     .row
       .teamInfo.col-xs-4
         img.size_210.teamLogo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
@@ -35,9 +35,10 @@ block panel
 block aside
   .row
     h4.pull-left 活动简介
-    if (msg_show)
-      div(ng-controller="resultController" ng-init="msg_show=#{msg_show};rst_content='#{rst_content}';score_a=#{score_a};score_b=#{score_b}" )
-        button(ng-if="#{rst_confirm_show}" data-toggle="modal" data-target="#resultModel") 结果确认
+    if (role === 'HR' || role === 'LEADER')
+      //- div(ng-controller="resultController" ng-init="msg_show=#{msg_show};rst_content=#{rst_content};score_a=#{score_a};score_b=#{score_b}" )
+      #competition_data(ng-controller="resultController" data-msg-show='#{msg_show}' data-rst-content='#{rst_content}' data-score-a='#{score_a}' data-score-b='#{score_b}')
+        button(ng-if="#{confirm_btn_show}" data-toggle="modal" data-target="#resultModel") 结果确认
         div(class="modal fade" id="resultModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           .modal-dialog
             .modal-content
