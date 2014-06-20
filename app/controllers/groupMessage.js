@@ -15,12 +15,39 @@ exports.renderMessageList =function(req,res){
   });
 };
 //根据小队ID返回小组动态消息
+<<<<<<< HEAD
 exports.getTeamMessage = function(req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER' && req.session.role !=='MEMBER' && req.session.role !=='PARTNER'){
     return res.send(403,'forbidden');
   }
   GroupMessage.find({'team.teamid' : req.session.nowtid,
       'active':true}).sort({'create_time':-1}).populate('campaign')
+=======
+exports.getMessage = function(req, res) {
+  if(req.params.type==='team' && (req.session.role ==='GUESTHR' || req.session.role ==='GUEST') || req.params.type==='user' && req.session.role !=='OWNER'){
+    return res.send(403,forbidden);
+  }
+  var option = {};
+  if (req.params.type==='team') {
+    option = {
+      'team.teamid' : req.session.nowtid,
+      'active':true
+    }
+  }
+  else{
+    var team_ids = [];
+    req.user.group.forEach(function(group){
+      group.team.forEach(function(team){
+        team_ids.push(team.id);
+      });
+    })
+    option = {
+      'team.teamid' : {'$in':team_ids},
+      'active':true
+    }
+  };
+  GroupMessage.find(option).sort({'creat_time':-1}).populate('campaign')
+>>>>>>> 修改动态信息数据
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -64,6 +91,7 @@ exports.getTeamMessage = function(req, res) {
             }
             if(req.session.role === 'HR' || req.session.role ==='LEADER'){
               if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false)
+<<<<<<< HEAD
                 _group_message.response_flag = true;
             }
 
@@ -215,5 +243,4 @@ exports.getUserMessage = function(req, res) {
       return res.send({'group_messages':group_messages,'role':req.session.role});
      }
   });
-
 };
