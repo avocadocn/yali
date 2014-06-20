@@ -15,7 +15,7 @@
         span 关闭了活动
       span(ng-switch-when="3") 您的小队
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-        span 关闭了活动
+        span 关闭了活动示
       span(ng-switch-when="4") {{!group_message.camp_flag ? "您的小队":""}}
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
         {{!group_message.camp_flag ? "向" :"向您的小队"}}
