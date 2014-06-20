@@ -564,10 +564,11 @@ exports.provoke = function (req, res) {
       competition.deadline = deadline;
       competition.member_min = member_min;
       competition.member_max = member_max;
-      competition.cname=req.user.cname;
-      competition.cid=req.user.cid;
+      competition.cname=[cname];
+      competition.cid=[req.user.cid];
       competition.team=[my_team_id,team_opposite._Id];
-      competition.poster.cname = req.user.cname;
+
+      competition.poster.cname = cname;
       competition.poster.cid = req.user.cid;
       competition.poster.role = req.session.role;
       competition.poster.uid = req.user._id;
