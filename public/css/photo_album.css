@@ -18,14 +18,14 @@
 .photo_album .text {
   color: #9a9a9a;
 }
-.photo_album .photo_panel {
-  margin-top: -35px;
+.photo_album .operator {
+  padding-top: 15px;
 }
 .photo_album .photo {
   position: relative;
   float: left;
   margin-left: 53px;
-  margin-top: 53px;
+  margin-bottom: 53px;
   width: 200px;
   height: 200px;
 }
@@ -58,10 +58,6 @@
 }
 .photo_album .tag:last-child:after {
   content: '';
-}
-.photo_album .btn_padding {
-  padding-left: 20px;
-  padding-right: 20px;
 }
 .photo_album .comment_panel {
   margin-top: 20px;
@@ -127,10 +123,6 @@
 }
 .photo_album .photo_ori {
   max-height: 500px;
-}
-.photo_album .btn_create {
-  padding-left: 10px;
-  padding-right: 10px;
 }
 .photo_album .photo_album_panel {
   display: block;

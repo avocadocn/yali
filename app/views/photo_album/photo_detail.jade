@@ -30,7 +30,7 @@ block contentExt
             input(type="hidden" name="_method" value="put")
             textarea.comment_textarea.form-control(type="text" name="text" required)
             .clearfix
-              button.dl_btn.btn_padding.pull-right.margin_top_5(type="submit") 提交留言
+              button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
           section
             each comment in photo_detail.comments
               div.comment.clearfix
@@ -59,7 +59,7 @@ block contentExt
           h4 给照片添加标签
           p.text 输入照片中人名/队名/企业名/
           input.form-control.tags_input(type="text" name="tags" required)
-          button.dl_btn.btn_padding.margin_top_5(type="submit") 添加标签
+          button.dl_btn.dl_btn_small.margin_top_5(type="submit") 添加标签
 
 
 append footExt
