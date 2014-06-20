@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Group = mongoose.model('Group'),
     Competition = mongoose.model('Competition'),
-    Campaign = mongoose.model('Campaign');
+    Campaign = mongoose.model('Campaign'),
+    GroupMessage = mongoose.model('GroupMessage');
 
 
 
@@ -18,13 +19,13 @@ exports.getMessage = function(req, res) {
   var option = {};
   if (req.params.type==='team') {
     option = {
-      'team' : req.session.nowtid
+      'team.teamid' : req.session.nowtid
     }
   }
   else{
     var team_ids = [];
     req.user.group.forEach(function(group){
-      group.forEach(function(team){
+      group.team.forEach(function(team){
         team_ids.push(team.id);
       });
     })
@@ -32,70 +33,72 @@ exports.getMessage = function(req, res) {
       'team.teamid' : {'$in':team_ids}
     }
   };
+  console.log(option);
   GroupMessage.find(option).sort({'creat_time':-1}).populate('campaign').populate('competition')
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
       return res.status(404).send([]);
     } else {
-      var group_messages = [];
-      var length = group_message.length;
-      for(var i = 0; i < length; i ++) {
-        var _group_message = {};
-        switch( group_message.message_type){
-          case 1:
-          _group_message ={
-            'message_type':group_message.message_type,
-            'companyFlag' : group_message.team,
-            '_id': group_message[i]._id,
-            'cid': group_message[i].cid,
-            'group': group_message[i].group,
-            'active': group_message[i].active,
-            'date': group_message[i].date,
-            'poster': group_message[i].poster,
-            'content': group_message[i].content,
-            'location' : group_message[i].location,
-            'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
-            'end_time' : group_message[i].end_time ? group_message[i] : '',
-            'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-            'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
-            'comment_sum':group_message[i].comment_sum
-          };
-          break;
-          case 2:
-          break;
-          case: 3:
-          break;
-          case 4:
-          break;
-          case 5:
-          break;
-          case 6: 
-          break;
-          default:
-          break;
-        }
-        group_messages.push({
-          'positive' : positive,
-          'negative' : negative,
-          'my_tname' : req.companyGroup.name,
-          '_id': group_message[i]._id,
-          'cid': group_message[i].cid,
-          'group': group_message[i].group,
-          'active': group_message[i].active,
-          'date': group_message[i].date,
-          'poster': group_message[i].poster,
-          'content': group_message[i].content,
-          'location' : group_message[i].location,
-          'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
-          'end_time' : group_message[i].end_time ? group_message[i] : '',
-          'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-          'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
-          'comment_sum':group_message[i].comment_sum
-        });
-      }
-      return res.send({'group_messages':group_messages,'role':req.session.role});
-    }
+      return res.send({'group_messages':group_message,'role':req.session.role});
+      // var group_messages = [];
+      // var length = group_message.length;
+      // for(var i = 0; i < length; i ++) {
+      //   var _group_message = {};
+      //   switch( group_message.message_type){
+      //     case 1:
+      //     _group_message ={
+      //       'message_type':group_message.message_type,
+      //       '_id': group_message[i]._id,
+      //       'team' : group_message.team,
+      //       'company': group_message[i].company,
+      //       'group': group_message[i].group,
+      //       'active': group_message[i].active,
+      //       'date': group_message[i].date,
+      //       'poster': group_message[i].poster,
+      //       'content': group_message[i].content,
+      //       'location' : group_message[i].location,
+      //       'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
+      //       'end_time' : group_message[i].end_time ? group_message[i] : '',
+      //       'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
+      //       'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
+      //       'comment_sum':group_message[i].comment_sum
+      //     };
+      //     break;
+      //     case 2:
+      //     break;
+      //     case 3:
+      //     break;
+      //     case 4:
+      //     break;
+      //     case 5:
+      //     break;
+      //     case 6: 
+      //     break;
+      //     default:
+      //     break;
+      //   }
+      //   group_messages.push({
+      //     'positive' : positive,
+      //     'negative' : negative,
+      //     'my_tname' : req.companyGroup.name,
+      //     '_id': group_message[i]._id,
+      //     'cid': group_message[i].cid,
+      //     'group': group_message[i].group,
+      //     'active': group_message[i].active,
+      //     'date': group_message[i].date,
+      //     'poster': group_message[i].poster,
+      //     'content': group_message[i].content,
+      //     'location' : group_message[i].location,
+      //     'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
+      //     'end_time' : group_message[i].end_time ? group_message[i] : '',
+      //     'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
+      //     'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
+      //     'comment_sum':group_message[i].comment_sum
+      //   });
+      // }
+      //return res.send({'group_messages':group_messages,'role':req.session.role});
+     }
   });
 };
 

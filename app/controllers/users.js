@@ -374,43 +374,38 @@ exports.dealSetProfile = function(req, res) {
   User.findOne(
     {_id : req.query.uid}
   , function(err, user) {
-    if(err) {
+    if(err || !user) {
       console.log(err);
       res.render('users/message', message.dbError);
     }
     else {
-      if(user) {
-        if(user.active === false) {
-          user.nickname = req.body.nickname;
-          user.password = req.body.password;
-          user.realName = req.body.realName;
-          user.department = req.body.department;
-          user.phone = req.body.phone;
-          user.role = 'EMPLOYEE';
-          user.active = true;
-          user.save(function(err) {
-            if(err) {
-              console.log(err);
-              return res.render('users/message', message.dbError);
-            }
-            eles{
-              var groupMessage = new GroupMessage();
-              groupMessage.message_type = 6;
-              groupMessage.company.cid = user.cid;
-              groupMessage.company.name = user.cname;
-              groupMessage.user.user_id = user._id;
-              groupMessage.user.name = user.nickname;
-              groupMessage.save();
-              req.session.username = user.username;
-              res.redirect('/users/selectGroup');
-            }
-
-          });
-        } else {
-          res.render('users/message', message.actived);
-        }
+      if(user.active === false) {
+        user.nickname = req.body.nickname;
+        user.password = req.body.password;
+        user.realName = req.body.realName;
+        user.department = req.body.department;
+        user.phone = req.body.phone;
+        user.role = 'EMPLOYEE';
+        user.active = true;
+        user.save(function(err) {
+          if(err) {
+            console.log(err);
+            return res.render('users/message', message.dbError);
+          }
+          else {
+            var groupMessage = new GroupMessage();
+            groupMessage.message_type = 6;
+            groupMessage.company.cid = user.cid;
+            groupMessage.company.name = user.cname;
+            groupMessage.user.user_id = user._id;
+            groupMessage.user.name = user.nickname;
+            groupMessage.save();
+            req.session.username = user.username;
+            res.redirect('/users/selectGroup');
+          }
+        });
       } else {
-        res.render('users/message', message.unregister);
+        res.render('users/message', message.actived);
       }
     }
   });

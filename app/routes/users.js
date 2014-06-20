@@ -33,7 +33,6 @@ module.exports = function(app, passport) {
     app.get('/users/finishRegister', users.finishRegister);
 
     app.get('/users/campaign', authorization.requiresLogin, users.renderCampaigns);
-    app.get('/users/getGroupMessages', authorization.requiresLogin, users.getGroupMessages);
     app.get('/users/getCampaigns', authorization.requiresLogin, users.getCampaigns);
     app.get('/users/getScheduleList', authorization.requiresLogin, users.renderScheduleList);
     app.get('/users/getScheduleCalendarData', authorization.requiresLogin, users.scheduleCalendarData);

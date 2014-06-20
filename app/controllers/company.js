@@ -1176,9 +1176,11 @@ exports.sponsor = function (req, res) {
                 //生成动态消息
 
                 var groupMessage = new GroupMessage();
-                groupMessage.message_type =1;
-                groupMessage.company.cid = cid;
-                groupMessage.company.name = cname;
+                groupMessage.message_type = 1;
+                groupMessage.company = {
+                    cid : cid,
+                    name: cname
+                };
                 groupMessage.campaign = campaign._id;
                 groupMessage.save(function(err) {
                     if (err) {
