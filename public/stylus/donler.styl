@@ -12,7 +12,10 @@ body
   line-height 18px
   color fontColor
   background-color backgroundColor
-
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+  font-family "Microsoft YaHei",STHeiti,MingLiu
+*
+  font-family "Microsoft YaHei",STHeiti,MingLiu
 a
   color linkColor
 li
@@ -20,8 +23,11 @@ li
 select
   border-radius 0 !important
 .dl_head
-  margin auto
-  width 960px
+    max-width 70%
+    width auto
+    min-width miniPageWidth
+    margin 0 auto
+    padding 0 2rem
 
 .dl_block
   display block
@@ -668,7 +674,7 @@ input::-webkit-inner-spin-button
   min-width miniPageWidth
   
   .header_container
-    max-width maxPageWidth
+    max-width 90%
     width auto
     min-width miniPageWidth
     padding 0 50px
@@ -797,7 +803,7 @@ input.ng-invalid.ng-dirty
 .dl_slider
   .slider
     position fixed
-    top: 77px
+    top: 60px
     padding 10px 40px
     background-color #f5f5f5
     border-radius 5px
