@@ -206,14 +206,16 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
 
     var photo_album_list = [];
     company_group.photo_album_list.forEach(function(photo_album) {
-      photo_album_list.push({
-        _id: photo_album._id,
-        thumbnail: photoAlbumThumbnail(photo_album),
-        name: photo_album.name,
-        photo_count: photo_album.photos.length || 0,
-        update_user: photo_album.update_user,
-        update_date: photo_album.update_date
-      });
+      if (photo_album.hidden === false) {
+        photo_album_list.push({
+          _id: photo_album._id,
+          thumbnail: photoAlbumThumbnail(photo_album),
+          name: photo_album.name,
+          photo_count: photo_album.photos.length || 0,
+          update_user: photo_album.update_user,
+          update_date: photo_album.update_date
+        });
+      }
     });
     callback(photo_album_list);
   })

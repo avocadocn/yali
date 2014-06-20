@@ -439,11 +439,10 @@ select {
   padding-top: 0;
 }
 .dl_btn {
+  margin: 0;
   color: #fff;
   background-color: #3498db;
-  border-color: #3498db;
-  border-style: solid;
-  border-width: 2px;
+  border: none;
   line-height: 1;
   position: relative;
   font-size: 12px;
@@ -463,7 +462,7 @@ select {
   height: 30px;
 }
 .dl_btn_small {
-  padding: 5px 19px;
+  padding: 7px 21px;
 }
 .dl_btn_large {
   width: 150px;
@@ -474,8 +473,18 @@ select {
   width: 180px;
   height: 40px;
 }
-.dl_btn_red background-color ＃ea6060,
-.dl_btn_red border-color #ea6060,
+.dl_btn_danger {
+  color: #000;
+  background-color: #e5e5e5;
+}
+.dl_btn_danger:hover {
+  color: #fff;
+  background-color: #ea6060;
+}
+.dl_btn_red {
+  background-color: #ea6060;
+  border-color: #ea6060;
+}
 .dl_btn_red:hover {
   background-color: #a83737;
   border-color: #a83737;
@@ -500,9 +509,6 @@ select {
 }
 .cancel_btn {
   background-color: #e5e5e5;
-  border-color: #e5e5e5;
-  border-style: solid;
-  border-width: 2px;
   line-height: 1;
   position: relative;
   color: #000;
@@ -515,9 +521,8 @@ select {
 }
 .close_btn {
   background-color: #ff8c00;
-  border-color: #ff8c00;
   color: #fff;
-  border-style: solid;
+  border: none;
   line-height: 1;
   position: relative;
   font-size: 12px;

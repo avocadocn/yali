@@ -381,11 +381,10 @@ select
 .padding_top_0
   padding-top 0
 .dl_btn
+  margin 0
   color #fff
   background-color buttonColor
-  border-color buttonColor
-  border-style solid
-  border-width 2px
+  border none
   line-height 1
   position relative
   font-size 12px
@@ -401,7 +400,7 @@ select
   width 120px
   height 30px
 .dl_btn_small
-  padding 5px 19px
+  padding 7px 21px
 .dl_btn_large
   width 150px
   height 30px
@@ -409,8 +408,14 @@ select
 .dl_btn_detail
   width 180px
   height 40px
+.dl_btn_danger
+  color black
+  background-color #e5e5e5
+  &:hover
+    color white
+    background-color #ea6060
 .dl_btn_red
-  background-color ＃ea6060
+  background-color #ea6060
   border-color #ea6060
   &:hover
     background-color #a83737
@@ -432,9 +437,6 @@ select
   color white
 .cancel_btn
   background-color #e5e5e5
-  border-color #e5e5e5
-  border-style solid
-  border-width 2px
   line-height 1
   position relative
   color #000
@@ -445,9 +447,8 @@ select
     border-color #e5e5e5
 .close_btn
   background-color closeButtonColor
-  border-color closeButtonColor
   color #fff
-  border-style solid
+  border none
   line-height 1
   position relative
   font-size 12px
@@ -463,7 +464,7 @@ select
   font-size 12px
 .info_border
   padding 5px
-  border-style solid  
+  border-style solid
   border-width 1px
   border-color buttonColor
 .info_right_border
