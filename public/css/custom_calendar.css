@@ -11,6 +11,10 @@
 .cal-cell1 small span {
   margin-right: 0;
 }
+.events-list {
+  max-height: 60px;
+  overflow: hidden;
+}
 .events-list .event.event-info {
   background: none;
   width: 27px;
