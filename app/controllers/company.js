@@ -1061,7 +1061,7 @@ exports.campaignCancel = function (req, res) {
             campaign.save(function(err){
                 if(!err){
                     var groupMessage = new GroupMessage();
-                    groupMessage.message_type = 3;
+                    groupMessage.message_type = 2;
                     groupMessage.company ={
                         cid : campaign.cid[0],
                         name : campaign.cname[0],
