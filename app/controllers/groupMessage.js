@@ -33,7 +33,6 @@ exports.getMessage = function(req, res) {
       'team.teamid' : {'$in':team_ids}
     }
   };
-  console.log(option);
   GroupMessage.find(option).sort({'creat_time':-1}).populate('campaign').populate('competition')
   .exec(function(err, group_message) {
     if (err || !group_message) {

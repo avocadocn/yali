@@ -397,8 +397,14 @@ exports.dealSetProfile = function(req, res) {
             groupMessage.message_type = 6;
             groupMessage.company.cid = user.cid;
             groupMessage.company.name = user.cname;
-            groupMessage.user.user_id = user._id;
-            groupMessage.user.name = user.nickname;
+            groupMessage.company={
+              cid : user.cid,
+              name : user.cname
+            };
+            groupMessage.user={
+              user_id : user._id,
+              name : user.nickname
+            };
             groupMessage.save();
             req.session.username = user.username;
             res.redirect('/users/selectGroup');
@@ -474,10 +480,14 @@ exports.dealSelectGroup = function(req, res) {
                     else{
                     var groupMessage = new GroupMessage();
                     groupMessage.message_type = 6;
-                    groupMessage.company.cid = user.cid;
-                    groupMessage.company.name = user.cname;
-                    groupMessage.team.teamid = company_group._id;
-                    groupMessage.team.name = company_group.name;
+                    groupMessage.company={
+                      cid : user.cid,
+                      name : user.cname
+                    };
+                    groupMessage.team = {
+                      teamid : company_group._id,
+                      name : company_group.name
+                    };
                     groupMessage.user.user_id = user._id;
                     groupMessage.user.name = user.nickname;
                     groupMessage.save();
@@ -1129,10 +1139,14 @@ exports.joinGroup = function (req, res){
                 console.log('保存用户成功');
                 var groupMessage = new GroupMessage();
                 groupMessage.message_type = 6;
-                groupMessage.team.teamid = companyGroup._id;
-                groupMessage.team.name = companyGroup.name;
-                groupMessage.user.user_id = user._id;
-                groupMessage.user.name = user.nickname;
+                groupMessage.team = {
+                  teamid : companyGroup._id,
+                  name : companyGroup.name
+                };
+                groupMessage.user ={
+                  user_id : user._id,
+                  name : user.nickname
+                };
                 groupMessage.save();
               }
 
