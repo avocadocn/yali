@@ -113,7 +113,11 @@
   border-style: solid;
   border-color: transparent #ededed transparent transparent;
 }
-.photo_album .tags_input {
+.photo_album .photo_operator_form {
+  margin-bottom: 5px;
+}
+.photo_album .photo_operator_form .edit_photo_input {
+  margin-bottom: 5px;
   background-color: #fbfbfb;
   border-color: #ededed;
   border-radius: 0;

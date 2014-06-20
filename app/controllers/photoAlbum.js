@@ -211,9 +211,9 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
           _id: photo_album._id,
           thumbnail: photoAlbumThumbnail(photo_album),
           name: photo_album.name,
-          photo_count: photo_album.photos.length || 0,
+          photo_count: photo_album.photo_count,
           update_user: photo_album.update_user,
-          update_date: photo_album.update_date
+          update_date: photo_album.update_date,
         });
       }
     });
@@ -513,11 +513,11 @@ exports.createPhoto = function(req, res) {
                             };
                           }
                           photo_album.photos.push(photo);
+                          photo_album.photo_count += 1;
                           photo_album.update_user = photo.upload_user;
                           photo_album.save(function(err) {
                             if (err) callback(err);
                             else {
-                              console.log(photo_album)
                               fs.unlink(photos[i].path, function(err) {
                                 if (err) callback(err);
                                 else {
@@ -613,6 +613,9 @@ exports.updatePhoto = function(req, res) {
         }
         photo.tags = photo.tags.concat(tags);
       }
+      if (req.body.name) {
+        photo.name = req.body.name;
+      }
       if (req.user.provider === 'company') {
         photo_album.update_user = {
           _id: req.user._id,
@@ -664,6 +667,7 @@ exports.deletePhoto = function(req, res) {
             }
 
             photos[i].hidden = true;
+            photo_album.photo_count -= 1;
             photo_album.save(function(err) {
               if (err) {
                 console.log(err);
@@ -753,7 +757,8 @@ exports.renderPhotoAlbumDetail = function(req, res) {
         name: photo_album.name,
         update_date: photo_album.update_date,
         photos: photos,
-        owner: photo_album.owner_company_group
+        owner: photo_album.owner_company_group,
+        photo_count: photo_album.photo_count
       }
     });
   })
