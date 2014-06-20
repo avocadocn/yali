@@ -800,13 +800,29 @@ exports.scheduleCalendarData = function(req, res) {
   getUserSchedule(req.user._id.toString(), function(campaigns) {
     var calendarCampaigns = [];
     campaigns.forEach(function(campaign) {
+      var company_group_id;
+      for (var i = 0, groups = req.user.group; i < groups.length; i++) {
+        for (var j = 0, teams = groups[i].team; j < teams.length; j++) {
+          if (campaign.team.indexOf(teams[j].id) !== -1) {
+            company_group_id = teams[j].id;
+          }
+        }
+      }
+
+      var count = 0;
+      if (campaign.member) {
+        count = campaign.member.length;
+      }
+
       calendarCampaigns.push({
         'id': campaign._id,
+        'company_group_id': company_group_id,
         'title': campaign.theme,
         'url': '/group/campaign/' + campaign._id.toString(),
         'class': 'event-info',
         'start': campaign.start_time.valueOf(),
-        'end': campaign.end_time.valueOf()
+        'end': campaign.end_time.valueOf(),
+        'count': count
       });
     });
     res.send({
