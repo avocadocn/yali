@@ -77,7 +77,6 @@ var Campaign = new Schema({
         type: Boolean,
         default: false
     },
-    gid: Array,
     group_type: Array,
     cid: [{
         type: Schema.Types.ObjectId

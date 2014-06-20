@@ -535,7 +535,11 @@ exports.renderCampaigns = function(req, res){
 function fetchCampaign(req,res,team_ids,role) {
   var campaigns = [];
   var join = false;
+  var logo ='';
+  var link ='';
   Campaign.find({'team' : {'$in':team_ids}}).sort({'start_time':-1})
+  .populate('team')
+  .populate('cid')
   .exec(function(err, campaign) {
     if (err || !campaign) {
       return res.send({
@@ -556,26 +560,46 @@ function fetchCampaign(req,res,team_ids,role) {
         if(campaign[j].deadline && campaign[j].member_max){
             judge = (Date.now() - campaign[j].deadline.valueOf() > 0 || (campaign[j].member.length >= campaign[j].member_max) && campaign[j].member_max > 0 );
         }
+        if(campaign[j].team.length === 0){//公司活动
+          logo = campaign[j].cid[0].logo;
+          link = '/company/home';
+        }    
+        else{
+          if(campaign[j].team.length === 1){//小队活动
+            logo = campaign[j].team[0].logo;
+            link = '/group/home/'+campaign[j].team[0]._id;
+          }  
+          else{                              //小队挑战
+            if(team_ids.indexOf(campaign[j].team[0]._id)!== -1){ //是主办方
+              logo = campaign[j].team[0].logo;
+              link = '/group/home/'+campaign[j].team[0]._id;
+            }
+            else{                             //不是主办方
+              logo = campaign[j].team[1].logo;
+              link = '/group/home/'+campaign[j].team[1]._id;
+            }
+          }
+        }
+
         campaigns.push({
           'over' : judge,
-          'selected': true,
-          'active':campaign[j].active, //截止时间到了活动就无效了
+          'active':campaign[j].active, //截止时间到了活动就无效了//逻辑不对-M
           '_id': campaign[j]._id.toString(),
           'gid': campaign[j].gid,
           'group_type': campaign[j].group_type,
-          'cid': campaign[j].cid,
           'cname': campaign[j].cname,
-          'poster': campaign[j].poster,
           'content': campaign[j].content,
           'location': campaign[j].location,
           'member_length': campaign[j].member.length,
-          'create_time': campaign[j].create_time,
           'start_time': campaign[j].start_time,
           'end_time': campaign[j].end_time,
           'deadline':campaign[j].deadline,
           'join':join,
-          'provoke':campaign[j].provoke,
-          'index':j
+          'index':j,
+          'theme':campaign[j].theme,
+          'team':campaign[j].team,
+          'logo':logo,
+          'link':link
         });
       }
       return res.send({

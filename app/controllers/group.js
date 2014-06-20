@@ -420,7 +420,9 @@ exports.getGroupCampaign = function(req, res) {
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
-  Campaign.find({'team' : tid}).sort({'start_time':-1}).exec(function(err, campaign) {
+  Campaign.find({'team' : tid}).sort({'start_time':-1})
+  .populate('team')
+  .exec(function(err, campaign) {
     if (err) {
       console.log(err);
       return res.status(404).send([]);
@@ -463,7 +465,9 @@ exports.getGroupCampaign = function(req, res) {
             'deadline':campaign[i].deadline,
             'join':join,
             'provoke':campaign[i].provoke,
-            'index':i
+            'index':i,
+            'logo':campaign[i].team[0].logo,
+            'link':''
           });
         }
       }
@@ -574,9 +578,10 @@ exports.provoke = function (req, res) {
       competition.deadline = deadline;
       competition.member_min = member_min;
       competition.member_max = member_max;
-
-
-      competition.poster.cname = cname;
+      competition.cname=req.user.cname;
+      competition.cid=req.user.cid;
+      competition.team=[my_team_id,team_opposite._Id];
+      competition.poster.cname = req.user.cname;
       competition.poster.cid = req.user.cid;
       competition.poster.role = req.session.role;
       competition.poster.uid = req.user._id;
@@ -631,6 +636,7 @@ exports.responseProvoke = function (req, res) {
     },
   function (err, campaign) {
     campaign.camp[1].start_confirm = true;
+    campaign.active = true;
     //还要存入应约方的公司名、队长用户名、真实姓名等
     campaign.save(function (err) {
       if (err) {
