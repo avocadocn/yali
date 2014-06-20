@@ -13,21 +13,32 @@ var mongoose = require('mongoose'),
 
 
 var GroupMessage = new Schema({
-    //动态类型，分别为1:发起活动，2:关闭活动，3:发起挑战，4:接受挑战应战，5:比赛确认，6:新成员加入
+    //动态类型
+    //0:发起公司活动，
+    // 1:发起小队活动，
+    // 2:关闭公司活动，
+    // 3:关闭小组活动，
+    // 4：发起挑战，
+    // 5:接受挑战应战，
+    // 6:比赛确认，
+    // 7:公司新成员加入，
+    // 8:小组新成员加人
     message_type: Number,
     company: [{//如果是约战消息,要在两家公司的主页同时显示
         cid:{
             type: Schema.Types.ObjectId,
             ref:'Company'
         },
-        name: String
+        name: String,
+        logo:String
     }],
     team:[{
         teamid:{
             type: Schema.Types.ObjectId,
             ref: 'CompanyGroup'
         },
-        name: String
+        name: String,
+        logo:String
     }],
     campaign:{
         type: Schema.Types.ObjectId,
@@ -39,7 +50,8 @@ var GroupMessage = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'User'
         },
-        name: String
+        name: String,
+        logo:String
     },
     active: {
         type: Boolean, //

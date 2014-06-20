@@ -20,7 +20,7 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/group_message', {
-        templateUrl: '/group/group_message_list',
+        templateUrl: '/group/message_list',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
@@ -65,7 +65,7 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.message_role = "user";
     $rootScope.nowTab='group_message';
-    $http.get('/groupMessage/users?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+    $http.get('/groupMessage/user?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         console.log(data.group_messages);
         $scope.group_messages = data.group_messages;
         $scope.role = data.role;

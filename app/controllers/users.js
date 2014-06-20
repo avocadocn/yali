@@ -394,7 +394,7 @@ exports.dealSetProfile = function(req, res) {
           }
           else {
             var groupMessage = new GroupMessage();
-            groupMessage.message_type = 6;
+            groupMessage.message_type = 7;
             groupMessage.company.cid = user.cid;
             groupMessage.company.name = user.cname;
             groupMessage.company={
@@ -403,7 +403,8 @@ exports.dealSetProfile = function(req, res) {
             };
             groupMessage.user={
               user_id : user._id,
-              name : user.nickname
+              name : user.nickname,
+              logo : user.photo
             };
             groupMessage.save();
             req.session.username = user.username;
@@ -479,17 +480,21 @@ exports.dealSelectGroup = function(req, res) {
                     }
                     else{
                     var groupMessage = new GroupMessage();
-                    groupMessage.message_type = 6;
+                    groupMessage.message_type = 8;
                     groupMessage.company={
                       cid : user.cid,
                       name : user.cname
                     };
                     groupMessage.team = {
                       teamid : company_group._id,
-                      name : company_group.name
+                      name : company_group.name,
+                      logo : company_group.logo
                     };
-                    groupMessage.user.user_id = user._id;
-                    groupMessage.user.name = user.nickname;
+                    groupMessage.user= {
+                      user_id : user._id,
+                      name : user.nickname,
+                      logo : user.photo
+                    };
                     groupMessage.save();
                     }
                   });
@@ -1138,14 +1143,15 @@ exports.joinGroup = function (req, res){
               }else{
                 console.log('保存用户成功');
                 var groupMessage = new GroupMessage();
-                groupMessage.message_type = 6;
+                groupMessage.message_type = 8;
                 groupMessage.team = {
                   teamid : companyGroup._id,
                   name : companyGroup.name
                 };
                 groupMessage.user ={
                   user_id : user._id,
-                  name : user.nickname
+                  name : user.nickname,
+                  logo : user.photo
                 };
                 groupMessage.save();
               }

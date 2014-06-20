@@ -1079,10 +1079,11 @@ exports.campaignCancel = function (req, res) {
             campaign.save(function(err){
                 if(!err){
                     var groupMessage = new GroupMessage();
-                    groupMessage.message_type = 2;
+                    groupMessage.message_type = 3;
                     groupMessage.company ={
                         cid : campaign.cid[0],
-                        name : campaign.cname[0]
+                        name : campaign.cname[0],
+                        logo : req.user.info.logo
                     };
                     groupMessage.campaign = campaign._id;
                     groupMessage.save(function(err){
@@ -1178,10 +1179,11 @@ exports.sponsor = function (req, res) {
                 //生成动态消息
 
                 var groupMessage = new GroupMessage();
-                groupMessage.message_type = 1;
+                groupMessage.message_type = 0;
                 groupMessage.company = {
                     cid : cid,
-                    name: cname
+                    name: cname,
+                    logo: req.user.info.logo
                 };
                 groupMessage.campaign = campaign._id;
                 groupMessage.save(function(err) {

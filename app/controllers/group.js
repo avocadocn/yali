@@ -413,13 +413,6 @@ exports.renderCampaigns = function(req,res){
   res.render('partials/campaign_list',{'role':req.session.role,'provider':'group'});
 }
 
-//
-exports.renderGroupMessageList =function(req,res){
-  res.render('group/group_message_list',{
-      'role':req.session.role
-  });
-};
-
 //返回某一小组的活动,待前台调用
 exports.getGroupCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
@@ -488,12 +481,29 @@ exports.campaignCancel = function (req, res) {
     return res.send(403,forbidden);
   }
   var campaign_id = req.body.campaign_id;
-  Campaign.findOne({_id:campaign_id},function(err, campaign) {
+  Campaign.findOne({_id:campaign_id}).populate('team').exec(function(err, campaign) {
       if(!err && campaign) {
         var active = campaign.active;
         campaign.active = !active;
         campaign.save(function(err){
           if(!err){
+            var groupMessage = new GroupMessage();
+            groupMessage.message_type = 3;
+            groupMessage.company = {
+              cid : campaign.team[0].cid,
+              name : campaign.team[0].cname
+            };
+            groupMessage.team= {
+              teamid : campaign.team[0]._id,
+              name : campaign.team[0].name,
+              logo : campaign.team[0].logo
+            };
+            groupMessage.campaign = campaign._id;
+            groupMessage.save(function(err){
+                if(!err){
+                    return res.send({'result':1,'msg':'活动关闭成功'});
+                }
+            });
              return res.send({'result':1,'msg':'关闭成功'});
           }
           else{
@@ -573,16 +583,17 @@ exports.provoke = function (req, res) {
       competition.poster.nickname = req.user.nickname;
       competition.save(function(err){
         if(!err){
-          console.log('保存比赛成功!');
           var groupMessage = new GroupMessage();
-          groupMessage.message_type = 3;
+          groupMessage.message_type = 4;
           groupMessage.team.push({
             teamid: my_team_id,
-            name: req.companyGroup.name
+            name: req.companyGroup.name,
+            logo: req.companyGroup.logo
           });         //发起挑战方小队信息
           groupMessage.team.push({
             teamid: team_opposite._id,
-            name: team_opposite.name
+            name: team_opposite.name,
+            logo: team_opposite.logo
           });  //应约方小队信息
 
           groupMessage.company.push({
@@ -628,14 +639,16 @@ exports.responseProvoke = function (req, res) {
       }
       else{
         var groupMessage = new GroupMessage();
-        group_message.message_type = 4;
+        group_message.message_type = 5;
         groupMessage.team.push({
           teamid: campaign.camp[0].id,
-          name: campaign.camp[0].tname
+          name: campaign.camp[0].tname,
+          logo: campaign.camp[0].logo
         });         //发起挑战方小队信息
         groupMessage.team.push({
           teamid: campaign.camp[1].id,
-          name: campaign.camp[1].tname
+          name: campaign.camp[1].tname,
+          logo: campaign.camp[0].logo
         });  //应约方小队信息
         groupMessage.company.push({
           cid: campaign.camp[0].cid
@@ -758,7 +771,8 @@ exports.sponsor = function (req, res) {
           };
           groupMessage.team= {
             teamid : tid,
-            name : tname
+            name : tname,
+            logo : req.companyGroup.logo
           };
           groupMessage.campaign = campaign._id;
           groupMessage.save(function (err) {

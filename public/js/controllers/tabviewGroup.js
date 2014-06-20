@@ -19,7 +19,7 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/group_message', {
-        templateUrl: '/group/group_message_list',
+        templateUrl: '/group/message_list',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
