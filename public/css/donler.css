@@ -706,6 +706,7 @@ select {
   min-height: 34px;
   padding: 7px 0;
   float: left;
+  text-align: right;
 }
 .info_detail {
   min-width: 100px;

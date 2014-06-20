@@ -20,7 +20,7 @@
   div.clearfix(ng-if="group_message.group.gid[0] !='0'")
     .message_side
       img.size_90(ng-src='{{group_message.logo}}')
-    //若是小组动态
+    //若是小队动态
     .messagebox_content(ng-if="!group_message.provoke.active && group_message.group.gid[0] !='0'")
       span {{"OWN_TEAM"|translate}}{{group_message.poster.tname}} {{"NEW_MESSAGE"|translate}}
       .dl_message

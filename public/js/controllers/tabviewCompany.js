@@ -259,14 +259,14 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         });
 
 
-         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
+         //获取公司小队，若是此成员在此小队则标记此team的belong值为true
         $http.get('/group/getCompanyGroups' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.team_lists = data.teams;//公司的所有team
             $scope.cid = data.cid;
             $scope.tname= data.name;
             $scope.role = data.role;
             $scope.group = data.group;//用户的group
-            $scope.provoke_gid = data.provoke_gid;  //挑战时的小组类型
+            $scope.provoke_gid = data.provoke_gid;  //挑战时的小队类型
             $scope.provoke_tid = data.provoke_tid;
             for(var i = 0; i < $scope.team_lists.length; i ++) {
                 $scope.team_lists[i].provoke = ($scope.team_lists[i].gid == $scope.provoke_gid && $scope.team_lists[i]._id != $scope.provoke_tid);//是否可以对此组发起挑战
@@ -573,7 +573,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
-    //激活、关闭小组
+    //激活、关闭小队
     $scope.activateGroup = function(active,tid){
         try{
             $http({
@@ -684,7 +684,7 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScop
         });
     };
 }]);
-// HR增加小组 controller
+// HR增加小队 controller
 tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootScope', function($http, $scope, $rootScope){
     var _this = this;
     _this.selected = "";
@@ -752,7 +752,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
         }
     };
 }]);
-// HR增加小组 controller
+// HR增加小队 controller
 tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', function($http, $scope, $rootScope){
     $("#start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));

@@ -24,7 +24,7 @@ module.exports = function(app) {
   app.get('/group/getGroupMessages/:teamId', authorization.requiresLogin, group.getGroupMessage);
   app.get('/group/getGroupMembers/:teamId', authorization.requiresLogin, group.getGroupMember);
   //app.get('/group/getMembers', authorization.requiresLogin, group.renderMember);
-  //激活、关闭小组
+  //激活、关闭小队
   app.post('/group/activateGroup', authorization.requiresLogin,group.activateGroup);
 
   app.post('/group/campaignCancel', authorization.requiresLogin, group.campaignCancel);
@@ -36,7 +36,7 @@ module.exports = function(app) {
 
 
   app.post('/group/updateFormation/:competitionId', authorization.requiresLogin, group.updateFormation);
-  //小组发布活动
+  //小队发布活动
   app.post('/group/campaignSponsor/:teamId', authorization.requiresLogin, group.sponsor);
   app.param('teamId',group.group);
   app.param('competitionId',group.competition);

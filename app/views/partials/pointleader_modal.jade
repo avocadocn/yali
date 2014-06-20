@@ -4,30 +4,30 @@
       .dl-modal-header
         button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
           img(ng-src='/img/icons/icon_close.png')
-        .head#myModalLabel 编辑小组信息
+        .head#myModalLabel 编辑小队信息
       .dl-modal-body
         .dl_modal_container
           .dl_md_1.dl_vertical
-            label.subtitle 小组名称
+            label.subtitle 小队名称
           .dl_md_10
             input.dl_modal_input.form-control(type="text" name="cname" ng-model="team_lists[team_index].name" value="{{team_lists[team_index].name}}")
           .dl_md_1
             a.clearLinkUnderline.dl_btn_right(ng-click="saveGroupInfo()") 保存
         .dl_modal_container
           .dl_md_1.dl_vertical
-            label.subtitle 现任组长
+            label.subtitle 现任队长
           .dl_md_1
             input.dl_modal_input.form-control(type="text" value="{{leaders[0].nickname}}" ng-disabled="true")
         .dl_modal_container
           .dl_row
             .dl_md_1.dl_vertical
-              label.subtitle 任命新组长
+              label.subtitle 任命新队长
             .dl_md_10.dl_vertical
-              label.subtitle.dl_label 点选新成员任命组长后,现任组长自动解职
+              label.subtitle.dl_label 点选新成员任命队长后,现任队长自动解职
         .dl_modal_container
           .dl_row
             .dl_md_12
-              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索小组成员" type="text" ng-model="member_search" required)
+              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索小队成员" type="text" ng-model="member_search" required)
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-blur="recover()" ng-disabled="leader_form.$invalid") 搜索
         .dl_modal_container

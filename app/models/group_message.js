@@ -53,11 +53,11 @@ var GroupMessage = new Schema({
         cid: String,                  //消息发布者所属的公司
         uid: String,
         cname: String,
-        tname: String,                //哪个小组发布的
+        tname: String,                //哪个小队发布的
         nickname: String,
         role: {
             type: String,
-            enum: ['HR','LEADER','GUESTLEADER','GUESTHR']     //HR 组长
+            enum: ['HR','LEADER','GUESTLEADER','GUESTHR']     //HR 队长
         },
     },
     theme: String,

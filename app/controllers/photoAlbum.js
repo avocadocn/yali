@@ -27,7 +27,7 @@ function photoEditAuth(user, photo_album, photo) {
     return true;
   }
 
-  // 该照片所属组的组长
+  // 该照片所属组的队长
   var leaders = [];
   if (photo_album.owner_company_group) {
     leaders = photo_album.owner_company_group.leader || [];
@@ -52,7 +52,7 @@ function photoEditAuth(user, photo_album, photo) {
 // photo_album need populate owner_company_group
 function photoAlbumEditAuth(user, photo_album) {
 
-  // 该照片所属组的组长
+  // 该照片所属组的队长
   var leaders = [];
   if (photo_album.owner_company_group) {
     leaders = photo_album.owner_company_group.leader || [];

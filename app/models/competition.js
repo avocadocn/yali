@@ -38,7 +38,7 @@ var _camp = new Schema({
   member:[_member],
   cid: String,
   gid: String,
-  start_confirm: {                         //双方组长都确认后才能开战
+  start_confirm: {                         //双方队长都确认后才能开战
     type: Boolean,
     default: false
   },
@@ -105,7 +105,7 @@ var Competition = new Schema({
         nickname: String,
         role: {
             type: String,
-            enum: ['HR','LEADER','GUESTLEADER','GUESTHR']      //HR 组长
+            enum: ['HR','LEADER','GUESTLEADER','GUESTHR']      //HR 队长
         },
     },
     convert_to_campaign: {

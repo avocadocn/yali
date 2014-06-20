@@ -19,7 +19,7 @@ exports.getGroupId = function(req, res) {
 
 
 
-//根据小队ID返回小组动态消息
+//根据小队ID返回小队动态消息
 exports.getGroupMessage = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
@@ -70,7 +70,7 @@ exports.getGroupMessage = function(req, res) {
 };
 
 
-//列出该user加入的所有小组的动态
+//列出该user加入的所有小队的动态
 exports.getUserMessage = function(req, res) {
   if(req.session.role!=='OWNER'){
     return res.send(403,'forbidden');

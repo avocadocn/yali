@@ -117,7 +117,7 @@ exports.renderInfo = function (req, res) {
   res.render('group/group_info',{'role':req.session.role});
 };
 
-//激活小组
+//激活小队
 exports.activateGroup = function(req, res) {
   var tid = req.body.tid;
   var active = req.body.active;
@@ -126,7 +126,7 @@ exports.activateGroup = function(req, res) {
   },function(err,companyGroup){
     if (err || !companyGroup){
       console.log('cannot find team');
-      return res.send({'result':0,'msg':'小组查询错误'});
+      return res.send({'result':0,'msg':'小队查询错误'});
     }else{
       companyGroup.active = active;
       companyGroup.save(function(s_err){
@@ -153,8 +153,8 @@ exports.info =function(req,res) {
             return res.send(err);
         } else {
             return res.send({
-                'companyGroup': req.companyGroup,  //父小组信息
-                'entity': entity                   //实体小组信息
+                'companyGroup': req.companyGroup,  //父小队信息
+                'entity': entity                   //实体小队信息
             });
         }
     });
@@ -408,7 +408,7 @@ exports.getCompanyGroups = function(req, res) {
 
 
 
-//根据小队ID返回小组动态消息
+//根据小队ID返回小队动态消息
 exports.getGroupMessage = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
@@ -485,7 +485,7 @@ exports.renderGroupMessageList =function(req,res){
   });
 };
 
-//返回某一小组的活动,待前台调用
+//返回某一小队的活动,待前台调用
 exports.getGroupCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
@@ -547,7 +547,7 @@ exports.getGroupCampaign = function(req, res) {
   });
 };
 
-//组长关闭活动
+//队长关闭活动
 exports.campaignCancel = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
@@ -793,7 +793,7 @@ exports.responseProvoke = function (req, res) {
   });
 };
 
-//组长发布一个活动(只能是一个企业)
+//队长发布一个活动(只能是一个企业)
 exports.sponsor = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
