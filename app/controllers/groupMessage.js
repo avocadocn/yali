@@ -45,6 +45,7 @@ exports.getTeamMessage = function(req, res) {
           if(group_message[i].message_type === 4){
             if(req.user.provider==='user'){
               //0：未投票，1：赞成，-1反对
+
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
                 group_message[i].campaign.camp[camp_flag].vote.positive_member.forEach(function(member){
@@ -64,6 +65,7 @@ exports.getTeamMessage = function(req, res) {
             }
             if(req.session.role === 'HR' || req.session.role ==='LEADER'){
               if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false)
+<<<<<<< HEAD
                 _group_message.response_flag = true;
             }
 
@@ -172,6 +174,22 @@ exports.getUserMessage = function(req, res) {
                   join_flag = true;
                 }
               });
+                _group_message.provoke_accept = true;
+            }
+
+          }
+          else if(group_message[i].message_type === 3) {
+            if(req.user.provider==='user'){
+              var join_flag = false;
+              if(group_message[i].campaign.camp[camp_flag].member.length>0){
+                group_message[i].campaign.camp[camp_flag].member.forEach(function(member){
+                  if(member.uid === req.user._id){
+                    join_flag = true;
+                  }
+                });
+              }
+
+              _group_message.join_flag = join_flag;
             }
             _group_message.join_flag = join_flag;
           }
