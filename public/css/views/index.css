@@ -208,23 +208,3 @@
 .index_footer a {
   color: #999;
 }
-.dl-top-login {
-  width: 480px;
-  padding: 22px 0 0 0;
-}
-.dl-top-login .form-control {
-  display: inline-block;
-  border-radius: 0px;
-}
-.dl-top-login .btn {
-  border-radius: 0px;
-}
-.dl-top-login .btn-signin-link {
-  color: #28689b;
-}
-.dl-top-login .input-group-btn>.btn+.btn-submit {
-  margin-left: 14px;
-}
-.dl-top-login .pull-right {
-  width: 160px;
-}

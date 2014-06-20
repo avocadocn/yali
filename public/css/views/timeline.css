@@ -14,10 +14,10 @@ Timeline UI Base
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	width: 10px;
+	width: 4px;
 	background: #ccc;
 	left: 20%;
-	margin-left: 5px;
+	margin-left: 8px;
 }
 
 .timeline > li {
@@ -54,8 +54,8 @@ Timeline UI Base
 
 .timeline > li .timeline-body {
  	background: #f6f6f6;
-	margin: 0 0 15px 28%;
-	padding: 10px;
+	margin: 0 0 15px 25%;
+	padding: 10px 10px 10px 20px;
 	font-weight: 100;
 	position: relative;
 }
@@ -143,8 +143,8 @@ Timeline UI Base
 
 /* The icons */
 .timeline > li .timeline-icon {
-	width: 30px;
-	height: 30px;
+	width: 12px;
+	height: 12px;
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -157,11 +157,11 @@ Timeline UI Base
 	color: #fff;
 	background: #aaa;  
 	border-radius: 50%;
-	box-shadow: 0 0 0 8px #ccc;
+	box-shadow: 0 0 0 5px #ccc;
 	text-align: center;
 	left: 20%;
 	top: 0;
-	margin: 5px 0 0 -5px;
+	margin: 23px 0 0 4px;
 	padding-bottom: 3px; 
 	padding-right: 1px;
 	padding-left: 2px;

@@ -6,20 +6,23 @@ append headExt
 block contentExt
   .dl_container.photo_album
     header.clearfix
-      h1
-        | #{owner_name} 相册集
-        | &nbsp;
-        a.small(href="/group/home/#{owner_id}") 返回
-      form.js_ajax_form.pull-right(action="/photoAlbum" method="post")
-        input(type="hidden" name="owner_model" value="company_group")
-        input(type="hidden" name="owner_id" value="#{owner_id}")
-        input(type="hidden" name="cid" value="#{cid}")
-        input(type="hidden" name="gid" value="#{owner_id}")
-        input(type="text" name="name" required)
-        button.dl_btn.btn_create(type="submit") 新建相册
-      .clearfix
+      ol.breadcrumb
+        li: a(href="/group/home/#{owner_id}")= owner_name
+        li.active 相册集
+      div.clearfix
+        .pull-left
+          p
+            img.header_logo.img-thumbnail(src="#{owner_logo}")
+            = owner_name
+        form.js_ajax_form.create_form.pull-right(action="/photoAlbum" method="post")
+          input(type="hidden" name="owner_model" value="company_group")
+          input(type="hidden" name="owner_id" value="#{owner_id}")
+          input(type="hidden" name="cid" value="#{cid}")
+          input(type="hidden" name="gid" value="#{owner_id}")
+          input(type="text" name="name" required)
+          button.dl_btn.btn_create(type="submit") 新建相册
       hr
-    .row.margin_top_20
+    .row.photo_album_list_wrap
       each photo_album in photo_album_list
         .col-sm-3.col-xs-3.photo_album_container
           a(href="/photoAlbumDetailView/#{photo_album._id}").photo_album_panel.center-block
@@ -29,9 +32,12 @@ block contentExt
               | &nbsp;
               small (#{photo_album.photo_count})
           div.update_info.center-block.margin_top_10
-            img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36")
+            if photo_album.update_user.type === 'user'
+              img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36")
+            if photo_album.update_user.type === 'hr'
+              img.update_user_photo(src="/logo/company/#{photo_album.update_user._id}/36/36")
             .pull-left
-              a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.nickname
+              a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
               - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
               p.text #{year}.#{month}.#{day} 最后更新
 

@@ -2,16 +2,24 @@
 'use strict';
 
 
-var groupApp = angular.module('group', []);
+var groupApp = angular.module('mean.main');
 
-groupApp.controller('resultController', ['$http', '$scope',function ($http, $scope) {
+groupApp.controller('resultController', ['$http', '$scope','$rootScope',function ($http, $scope,$rootScope) {
+    // $scope.$watch('msg_show',function(){
+    //   if($scope.msg_show){
+    //     $('#resultModel').modal();
+    //   }
+    // });
 
-    $scope.$watch('msg_show',function(){
-      if($scope.msg_show){
-        $('#resultModel').modal();
-      }
-    });
+    $scope.msg_show = $('#competition_data').attr('data-msg-show');
+    $scope.rst_content = $('#competition_data').attr('data-rst-content');
+    $scope.score_a = $('#competition_data').attr('data-score-a');
+    $scope.score_b = $('#competition_data').attr('data-score-b');
+
     var competition_id = $('#competition_content').attr('data-id');
+    if($scope.msg_show === 'true'){
+      $('#resultModel').modal();
+    }
     $scope.confirm = function (confirm) {
       try {
         $http({

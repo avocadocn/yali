@@ -593,7 +593,7 @@ var _users =[
                 'logo':logo,
                 'id':company_group_yali._id,
                 'name':company_group_yali.name,
-                'leader':false
+                'leader':true
             }
         ]
     },
@@ -638,7 +638,7 @@ var _users =[
                 'logo':logo,
                 'id':company_group_apple._id,
                 'name':company_group_apple.name,
-                'leader':true
+                'leader':false
             }
         ]
     },

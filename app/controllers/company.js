@@ -792,6 +792,7 @@ exports.saveAccount = function(req, res) {
         if(company) {
             if(req.body.info!==undefined && company.info.name!==_company.info.name){
                 schedule.updateCname(req.user._id);
+                req.session.Global.nav_name = _company.info.name;
             }
 
             res.send({'result':1,'msg':'更新成功'});
@@ -883,7 +884,7 @@ exports.getCompanyCampaign = function(req, res) {
                 for(var i = 0;i < campaign.length; i ++) {
                     var judge = false;
                     if(campaign[i].deadline && campaign[i].member_max){
-                        judge = !(Date.now() - campaign[i].end_time.valueOf() <= 0 || Date.now() - campaign[i].deadline.valueOf() <= 0 || campaign[i].member.length >= campaign[i].member_max);
+                        judge = (Date.now() - campaign[i].deadline.valueOf() > 0 || (campaign[i].member.length >= campaign[i].member_max) && campaign[i].member_max > 0 );
                     }
                     campaigns.push({
                         'over' : judge,

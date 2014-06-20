@@ -26,19 +26,34 @@
             h4 搜索结果
         .dl_modal_container(ng-if="companies")
           .dl_row(style="height:93px" ng-repeat="company in companies")
-            .dl_md_1
-              img.size_80(ng-src="{{company.logo}}")
-            .dl_md_10.margin_left_5
-              .row.margin_left_15
-                a(href="/company/home/{{company._id}}/#/company_info")
-                  h5 {{company.name}}
-              .row.margin_left_10
-                .dl_md_3
-                  h5 公司小组数:{{company.team.length}}
-                .dl_md_3
-            .dl_md_1
-              a.clearLinkUnderline.dl_btn_right(href="/company/home/{{company._id}}/#/company_info") 进入
-        .dl_modal_container(ng-if="teams")
+            .dl_modal_container
+              .dl_md_1
+                img.size_80(ng-src="{{company.logo}}")
+              .dl_md_10.margin_left_5
+                .row.margin_left_15
+                  a(href="/company/home/{{company._id}}/#/company_info")
+                    h5 {{company.name}}
+                .row.margin_left_10
+                  .dl_md_3
+                    h5 公司小组数:{{company.team.length}}
+                  .dl_md_3
+              .dl_md_1
+                a.clearLinkUnderline.dl_btn_right(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小组
+                a.clearLinkUnderline.dl_btn_right(ng-if="show_team[$index]" ng-click="toggleTeam(company._id,$index)") 收起
+            .dl_modal_container
+              hr
+            .dl_modal_container.margin_left_80(ng-if="show_team[$index]")
+              .dl_row.margin_left_10(ng-repeat="team in teams")
+                .dl_md_little_logo
+                  img.size_20(ng-src="{{team.logo}}")
+                .dl_md_large
+                  .row
+                    .dl_md_name
+                      h7 {{team.name}}
+                    .dl_md_right
+                      a(ng-click="provoke_select(team)") 挑战
+                hr.dl_little_hr
+        .dl_modal_container(ng-if="companies.length == 0")
           .dl_row.dl_height(ng-repeat="team in teams")
             .dl_md_1
               img.size_80(ng-src="{{team.logo}}")

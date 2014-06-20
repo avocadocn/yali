@@ -11,7 +11,7 @@
     "bootstrap": "3.0.3",
     "angular-bootstrap": "0.10.0",
     "angular-ui-router": "#master",
-    "linkage-selector": "0.1.3",
+    "linkage-selector": "0.1.4",
     "jquery-form": "3.46.0",
     "angular-motion": "~0.3.2",
     "momentjs": "~2.6.0",

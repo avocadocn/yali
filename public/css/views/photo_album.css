@@ -1,3 +1,12 @@
+.photo_album .breadcrumb {
+  background-color: #fff;
+}
+.photo_album .header_logo {
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
 .photo_album .relative {
   position: relative;
 }
@@ -53,6 +62,9 @@
 .photo_album .btn_padding {
   padding-left: 20px;
   padding-right: 20px;
+}
+.photo_album .comment_panel {
+  margin-top: 20px;
 }
 .photo_album .comment_textarea {
   height: 60px;
@@ -113,6 +125,9 @@
 .photo_album .photo_detail_container {
   margin-bottom: 30px;
 }
+.photo_album .photo_ori {
+  max-height: 500px;
+}
 .photo_album .btn_create {
   padding-left: 10px;
   padding-right: 10px;
@@ -137,6 +152,12 @@
   display: block;
   color: #5b6272;
   margin-bottom: 1px;
+}
+.photo_album .create_form {
+  margin-top: 30px;
+}
+.photo_album .photo_album_list_wrap {
+  margin-top: 20px;
 }
 .photo_album .photo_album_container {
   margin-bottom: 40px;

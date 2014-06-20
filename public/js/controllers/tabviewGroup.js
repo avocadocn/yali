@@ -186,7 +186,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 url: '/users/vote',
                 data:{
                     provoke_message_id : provoke_message_id,
-                    aOr : status
+                    aOr : status,
+                    tid : $scope.group_messages[index].my_team_id
                 }
             }).success(function(data, status) {
                 if(data.msg != undefined && data.msg != null) {
@@ -195,6 +196,25 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     $scope.group_messages[index].positive = data.positive;
                     $scope.group_messages[index].negative = data.negative;
                 }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+    //应战
+    $scope.responseProvoke = function(tid,provoke_message_id) {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/responseProvoke/'+$rootScope.teamId,
+                data:{
+                    provoke_message_id : provoke_message_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
@@ -539,6 +559,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.getCompany =function() {
 
         try {
+            $scope.show_team = [];
             $http({
                 method: 'post',
                 url: '/search/company',
@@ -550,6 +571,10 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 $scope.teams=[];
                 if($scope.companies.length <= 0) {
                     $scope.donlerAlert("没有找到符合条件的公司!");
+                }else{
+                    for(var i = 0; i < $scope.companies.length; i ++) {
+                        $scope.show_team.push(false);
+                    }
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -559,8 +584,23 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     }
+
+
+    $scope.toggleTeam = function(cid,index){
+        for(var i = 0; i < $scope.companies.length; i ++){
+            if(i !== index){
+                $scope.show_team[i] = false;
+            }
+        }
+        $scope.show_team[index] = !$scope.show_team[index];
+        if($scope.show_team[index]){
+            $scope.getSelectTeam(cid);
+        }
+    }
+
     $scope.getSelectTeam = function(cid) {
         try {
+            $scope.teams=[];
             $http({
                 method: 'post',
                 url: '/search/team',
@@ -607,6 +647,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
+
     $scope.provoke_select = function (team) {
         $scope.team_opposite = team;
         $("#sponsorSearchModel").modal('hide');

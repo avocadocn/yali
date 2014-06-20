@@ -1,7 +1,7 @@
 nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
-  .header_container
+  .header_container(ng-if="#{Global.role==''}")
     a.navbar-brand(href="/"): img.logo(src="/img/logo_w.png")
-    .navbar-nav.nav.pull-right.dl-top-login(ng-if="#{Global.role==''}")
+    .navbar-nav.nav.pull-right.dl-top-login
       form.signin.form-horizontal.ng-pristine.ng-valid(action="/users/session" method="post")
         .input-group.input-group-sm
           .input-group-btn
@@ -12,46 +12,60 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
             a.btn.btn-default.btn-sm(href="/users/forgetPwd" title="忘记密码") ?
             button.btn.btn-primary.btn-sm.btn-submit(type="submit") 登录动梨
             a.btn.btn-link.btn-sm.btn-signin-link(href="/company/signin") 企业登录
-    .dl_head(ng-if="#{Global.role!=''}")
-      if Global.role !== 'HR'
-        ul.nav.navbar-nav.pull-right
-          li
-            a(href="/company/home") {{"COMPANY_HOME"|translate}}
-          li
-            a(href="#" data-toggle="dropdown")
-              span
-                img.size_20(ng-src="#{Global.nav_logo}")
-              span.m_l_5 #{Global.nav_name}
-            ul.dl_menu.dropdown-menu(role="menu")
-              li
-                a.dl_menu_a(href="/users/home") {{"PERSONAL_HOME"|translate}}
-              li
-                a.dl_menu_a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
-              li
-                a.dl_menu_a(href="/users/signout") {{"LOGOUT"|translate}}
-          li
-            a(href="#" data-toggle="dropdown") {{"L_CHANGE"|translate}}
-              span.glyphicon.glyphicon-globe.m_l_5
-            ul.dl_menu.dropdown-menu(role="menu")
-              li(ng-repeat="language in languages")
-                a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
-      if Global.role === 'HR'
-        ul.nav.navbar-nav.pull-right
-          li
-            a(href="/company/home") {{"COMPANY_HOME"|translate}}
-          li
-            a(href="#" data-toggle="dropdown")
-              span
-                img.size_20(ng-src="#{Global.nav_logo}")
-              span.m_l_5 #{Global.nav_name}
-            ul.dl_menu.dropdown-menu(role="menu")
-              li
-                a.dl_menu_a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
-              li
-                a.dl_menu_a(href="/company/signout") {{"LOGOUT"|translate}}
-          li
-            a(href="#" data-toggle="dropdown") {{"L_CHANGE"|translate}}
-              span.glyphicon.glyphicon-globe.m_l_5
-            ul.dl_menu.dropdown-menu(role="menu")
-              li(ng-repeat="language in languages")
-                a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
+  .dl_head(ng-if="#{Global.role!=''}")
+    if Global.role !== 'HR'
+      //.navbar-header
+      a.navbar-brand(href="/")
+        img.logo(src="/img/logo_w.png")
+      //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#personal_nav")
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      //.collapse.navbar-collapse#personal_nav
+      ul.nav.navbar-nav.pull-right
+        li
+          a(href="/company/home") {{"COMPANY_HOME"|translate}}
+        li
+          a(href="/users/home")
+            span
+              img.size_20(ng-src="#{Global.nav_logo}")
+            span.m_l_5 #{Global.nav_name}
+        li
+          a(href="#" data-toggle="dropdown")
+            span.glyphicon.glyphicon-cog.m_l_5
+          ul.dl_menu.dropdown-menu(role="menu")
+            li
+              a.dl_menu_a(href="/users/home") {{"PERSONAL_HOME"|translate}}
+            li
+              a.dl_menu_a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
+            li
+              a.dl_menu_a(href="/users/signout") {{"LOGOUT"|translate}}
+            //- li(ng-repeat="language in languages")
+            //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
+    if Global.role === 'HR'
+      //.navbar-header
+      a.navbar-brand(href="/")
+        img.logo(src="/img/logo_w.png")
+      //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav")
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      //.collapse.navbar-collapse#HR_nav
+      ul.nav.navbar-nav.pull-right
+        li
+          a(href="/company/home")
+            span
+              img.size_20(ng-src="#{Global.nav_logo}")
+            span.m_l_5 #{Global.nav_name}
+        li
+          a(href="#" data-toggle="dropdown")
+            span.glyphicon.glyphicon-cog.m_l_5
+          ul.dl_menu.dropdown-menu(role="menu")
+            li
+              a.dl_menu_a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
+            li
+              a.dl_menu_a(href="/company/signout") {{"LOGOUT"|translate}}
+            //- li(ng-repeat="language in languages")
+            //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}

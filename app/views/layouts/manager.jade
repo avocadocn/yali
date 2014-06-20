@@ -4,6 +4,7 @@ extends base
 append headExt
   link(rel="stylesheet" href="/css/views/group_select.css")
   link(rel="stylesheet" href="/css/views/campaign_list.css")
+  link(rel="stylesheet" href="/css/calendar.css")
 
 block content
   .wrap
@@ -18,4 +19,9 @@ block content
         block aside
   include ../partials/user_footer
 
-
+append footExt
+  script(src="/js/underscore-min.js")
+  script(src="/js/jstz.min.js")
+  script(src="/js/language/zh-CN.js")
+  script(src="/js/calendar.min.js")
+  //-script(src="/js/schedule-calendar.js")

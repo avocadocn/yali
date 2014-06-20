@@ -31,6 +31,56 @@ select
   color #cc847f
   font-size 12px !important
 
+.comment
+  position relative
+  margin-top 20px
+
+  .comment_user_info
+    float left
+
+    .user_photo
+      width 50px
+      height 50px
+
+    .user_name
+      text-decoration none
+
+  .comment_content_panel
+    float left
+    margin-left 20px
+
+    .comment_content
+      padding 10px
+      background-color contentBgColor
+      border solid 1px contentBdColor
+      width 450px
+      min-height 50px
+
+.comment_textarea
+    height 60px
+    background-color contentBgColor
+    border-color contentBdColor
+    border-radius 0
+
+.triangle
+    position absolute
+    top 16px
+    height 0px
+    width 0px
+    margin-left -19px
+    border-width 10px
+    border-style solid
+    border-color transparent contentBgColor transparent transparent
+
+.triangle_border
+  position absolute
+  top 15px
+  height 0px
+  width 0px
+  margin-left -21px
+  border-width 11px
+  border-style solid
+  border-color transparent contentBdColor transparent transparent
 
 .dl_comment_area
   float right
@@ -176,6 +226,11 @@ select
   margin-left 5px
   float left
 
+.dl_md_little_logo
+  width 6%
+  margin-left 5px
+  float left
+
 .dl_md_1
   width 12%
   margin-left 5px
@@ -196,6 +251,11 @@ select
   margin-left 5px
   float left
 
+.dl_md_large
+  width 90%
+  margin-left 5px
+  float left
+
 .dl_md_7
   width 50%
   margin-left 5px
@@ -213,6 +273,15 @@ select
 
 .dl_md_name
   width 68%
+  margin-left 5px
+  float left
+
+.dl_md_left
+  width 78%
+  margin-left 5px
+  float left
+.dl_md_right
+  width 18%
   margin-left 5px
   float left
 
@@ -316,7 +385,6 @@ select
   font-size 12px
   text-align center
   vertical-align middle
-  padding 5px 0
   display inline-block
   &:hover
     background-color buttonHoverColor
@@ -360,9 +428,12 @@ select
   background-color #e5e5e5
   border-color #e5e5e5
   border-style solid
+  border-width 2px
   line-height 1
   position relative
-  //-color #353535
+  color #000
+  vertical-align middle
+  display inline-block
   &:hover
     background-color #e5e5e5
     border-color #e5e5e5
@@ -416,6 +487,10 @@ select
   margin-top 30px
 .margin_top_50
   margin-top 50px
+.margin_top_60
+  margin-top 60px
+.margin_top_70
+  margin-top 70px
 .margin_top_100
   margin-top 100px
 .margin_top_123
@@ -430,10 +505,25 @@ select
   margin-left 30px
 .margin_left_50
   margin-left 50px
+.margin_left_60
+  margin-left 60px
+.margin_left_70
+  margin-left 70px
+.margin_left_80
+  margin-left 80px
 .margin_bottom_20
   margin-bottom 20px
 .margin_right_20
   margin-right 20px
+
+.header_container
+  width 960px
+  margin auto
+
+
+.dl_little_hr
+  width 86%
+  margin-left 0px
 
 .size_family
   height 300px
@@ -555,6 +645,7 @@ input::-webkit-inner-spin-button
   background #3498DB
   padding-top 0
   padding-bottom 0
+  min-width 100px !important
   .dl_menu_a
     &:hover
       background-color:#558CB1
@@ -563,7 +654,7 @@ input::-webkit-inner-spin-button
     color #fff !important
 
 .dl_nav
-  min-height 73px
+  height 50px
   background-color themeColor
   background -ms-linear-gradient(top, themeColor, navbarLinearColor)
   background -moz-linear-gradient(top, themeColor, navbarLinearColor)
@@ -585,18 +676,19 @@ input::-webkit-inner-spin-button
     a:focus
       background-color #558CB1 !important
   ul li a
-    padding-top 20px
-    padding-bottom 20px
+    padding-top 17px
+    padding-bottom 13px
     color #fff !important
   .logo
     margin-top 5px
     margin-left 10px
-
+.relative
+    position relative
 .navbar
   border none
 .navbar-inverse
   .navbar-brand
-    padding 8px 0
+    padding 6px 0
 .dl_navbar-toggle
   position relative
   float right
@@ -637,10 +729,15 @@ input::-webkit-inner-spin-button
     margin-bottom 15px
   .text_icp
     line-height footerHeight
+    a
+      margin-left 50px
+  .dl_container
+    padding-top 0
   .dl_row
    padding 0
   a
     color #999
+    margin-left 50px
 .dl_form-Control
   display block
   width 100%
@@ -681,3 +778,31 @@ input.ng-invalid.ng-dirty
   &:hover
     text-decoration none
     color white
+
+.dl-top-login
+  width 480px
+  padding 11px 0 0 0
+  .form-control
+    display inline-block
+    border-radius 0px
+  .btn
+    border-radius 0px
+  .btn-signin-link
+    color linkColor
+  .input-group-btn>.btn+.btn-submit
+    margin-left 14px
+  .pull-right
+    width 160px
+
+.dl_slider
+  .slider
+    position fixed
+    top: 77px
+    padding 10px 40px
+    background-color #f5f5f5
+    border-radius 5px
+    a 
+      display block
+      color #716b7a
+      padding 5px 20px
+      font-size 120%
