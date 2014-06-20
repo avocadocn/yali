@@ -22,7 +22,6 @@ var GroupMessage = new Schema({
         },
         name: String
     }],
-    gid: String,
     team:[{
         teamid:{
             type: Schema.Types.ObjectId,
@@ -33,10 +32,6 @@ var GroupMessage = new Schema({
     campaign:{
         type: Schema.Types.ObjectId,
         ref: 'Campaign'
-    },
-    competition:{
-        type: Schema.Types.ObjectId,
-        ref: 'Competition'
     },
     //可做成数组合并多个成员加入
     user:{

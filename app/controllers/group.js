@@ -526,6 +526,7 @@ exports.provoke = function (req, res) {
   var member_max = req.body.member_max;
   var competition = new Campaign();
 
+  var cname = req.user.provider==="company" ? req.user.info.name : req.user.cname;
   competition.gid = req.companyGroup.gid;
   competition.group_type = req.companyGroup.group_type;
 
@@ -565,7 +566,7 @@ exports.provoke = function (req, res) {
       competition.member_max = member_max;
 
 
-      competition.poster.cname = req.user.cname;
+      competition.poster.cname = cname;
       competition.poster.cid = req.user.cid;
       competition.poster.role = req.session.role;
       competition.poster.uid = req.user._id;
@@ -583,17 +584,16 @@ exports.provoke = function (req, res) {
             teamid: team_opposite._id,
             name: team_opposite.name
           });  //应约方小队信息
-          groupMessage.gid = req.companyGroup.gid;
 
           groupMessage.company.push({
             cid: req.companyGroup.cid,
-            name: req.user.cname
+            name: cname
           });
           groupMessage.company.push({
             cid: team_opposite.cid,
             name: team_opposite.cname
           });
-          groupMessage.competition = competition._id;
+          groupMessage.campaign = competition._id;
           groupMessage.save(function (err) {
             if (err) {
               console.log('保存约战动态时出错' + err);
@@ -637,15 +637,13 @@ exports.responseProvoke = function (req, res) {
           teamid: campaign.camp[1].id,
           name: campaign.camp[1].tname
         });  //应约方小队信息
-        groupMessage.gid =campaign.gid;
-
         groupMessage.company.push({
           cid: campaign.camp[0].cid
         });
         groupMessage.company.push({
           cid: campaign.camp[1].cid
         });
-        groupMessage.competition = competition._id;
+        groupMessage.campaign = campaign._id;
         groupMessage.save(function (err) {
           if (err) {
             console.log('保存约战动态时出错' + err);

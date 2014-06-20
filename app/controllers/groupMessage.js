@@ -4,7 +4,6 @@ var mongoose = require('mongoose'),
     CompanyGroup = mongoose.model('CompanyGroup'),
     User = mongoose.model('User'),
     Group = mongoose.model('Group'),
-    Competition = mongoose.model('Competition'),
     Campaign = mongoose.model('Campaign'),
     GroupMessage = mongoose.model('GroupMessage');
 
@@ -19,7 +18,8 @@ exports.getMessage = function(req, res) {
   var option = {};
   if (req.params.type==='team') {
     option = {
-      'team.teamid' : req.session.nowtid
+      'team.teamid' : req.session.nowtid,
+      'active':true
     }
   }
   else{
@@ -30,161 +30,94 @@ exports.getMessage = function(req, res) {
       });
     })
     option = {
-      'team.teamid' : {'$in':team_ids}
+      'team.teamid' : {'$in':team_ids},
+      'active':true
     }
   };
-  GroupMessage.find(option).sort({'creat_time':-1}).populate('campaign').populate('competition')
+  GroupMessage.find(option).sort({'creat_time':-1}).populate('campaign')
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
       return res.status(404).send([]);
     } else {
-      return res.send({'group_messages':group_message,'role':req.session.role});
-      // var group_messages = [];
-      // var length = group_message.length;
-      // for(var i = 0; i < length; i ++) {
-      //   var _group_message = {};
-      //   switch( group_message.message_type){
-      //     case 1:
-      //     _group_message ={
-      //       'message_type':group_message.message_type,
-      //       '_id': group_message[i]._id,
-      //       'team' : group_message.team,
-      //       'company': group_message[i].company,
-      //       'group': group_message[i].group,
-      //       'active': group_message[i].active,
-      //       'date': group_message[i].date,
-      //       'poster': group_message[i].poster,
-      //       'content': group_message[i].content,
-      //       'location' : group_message[i].location,
-      //       'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
-      //       'end_time' : group_message[i].end_time ? group_message[i] : '',
-      //       'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-      //       'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
-      //       'comment_sum':group_message[i].comment_sum
-      //     };
-      //     break;
-      //     case 2:
-      //     break;
-      //     case 3:
-      //     break;
-      //     case 4:
-      //     break;
-      //     case 5:
-      //     break;
-      //     case 6: 
-      //     break;
-      //     default:
-      //     break;
-      //   }
-      //   group_messages.push({
-      //     'positive' : positive,
-      //     'negative' : negative,
-      //     'my_tname' : req.companyGroup.name,
-      //     '_id': group_message[i]._id,
-      //     'cid': group_message[i].cid,
-      //     'group': group_message[i].group,
-      //     'active': group_message[i].active,
-      //     'date': group_message[i].date,
-      //     'poster': group_message[i].poster,
-      //     'content': group_message[i].content,
-      //     'location' : group_message[i].location,
-      //     'start_time' : group_message[i].start_time ? group_message[i].start_time : '',
-      //     'end_time' : group_message[i].end_time ? group_message[i] : '',
-      //     'provoke': group_message[i].provoke,                   //应约按钮显示要有四个条件:1.该约战没有关闭 2.当前员工所属组件id和被约组件id一致 3.约战没有确认 4.当前员工是该小队的队长
-      //     'provoke_accept': group_message[i].provoke.active && (req.session.role==='HR' || req.session.role ==='LEADER') && (!group_message[i].provoke.start_confirm) && (group_message[i].team[1].toString() === tid.toString()),
-      //     'comment_sum':group_message[i].comment_sum
-      //   });
-      // }
-      //return res.send({'group_messages':group_messages,'role':req.session.role});
-     }
-  });
-};
-
-
-exports.getUserMessage = function(req, res) {
-  if(req.session.role!=='OWNER'){
-    return res.send(403,'forbidden');
-  }
-  var group_messages = [];
-  var i = 0;
-  async.whilst(
-    function() { return i < req.user.group.length; },
-
-    function(callback) {
-      var team_ids = [];
-      for(var k = 0; k < req.user.group[i].team.length; k ++){
-        team_ids.push(req.user.group[i].team[k].id);
-      }
-      GroupMessage.find({'team' :{'$in':team_ids}}).sort({'_id':-1})
-      .exec(function(err, group_message) {
-        if (group_message.length > 0) {
-          if (err) {
-            console.log(err);
-            return res.send([]);
-          } else {
-
-            var length = group_message.length;
-            for(var j = 0; j < length; j ++) {
-
-              var positive = 0;
-              var negative = 0;
-              for(var k = 0; k < group_message[j].provoke.camp.length; k ++) {
-                if(group_message[j].provoke.camp[k].tname === req.user.group[i].tname){
-                  positive = group_message[j].provoke.camp[k].vote.positive;
-                  negative = group_message[j].provoke.camp[k].vote.negative;
-                  break;
-                }
+      var group_messages = [];
+      var length = group_message.length;
+      for(var i = 0; i < length; i ++) {
+        var _group_message ={};
+        if(group_message[i].message_type === 3 || group_message[i].message_type === 4){
+          var camp_flag = group_message[i].campaign.camp[0].id===group_message[i].team.teamid ? 0 : 1;
+          _group_message = {
+            'message_type' : group_message[i].message_type,
+            'company' : group_message[i].company,
+            'team' : group_message[i].team,
+            'campaign' : group_message[i].campaign,
+            'creat_time' : group_message[i].creat_time,
+            'camp_flag':camp_flag
+          };
+          if(group_message[i].message_type === 3){
+            if(req.user.provider==='user'){
+              var vote_flag = 0;
+              if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
+                group_message[i].campaign.camp[camp_flag].vote.positive_member.forEach(function(member){
+                  if(member.uid === req.user._id){
+                    vote_flag = 1;
+                  }
+                });
               }
-              group_messages.push({
-                'positive' : positive,
-                'negative' : negative,
-                'my_tname': req.user.group[i].tname,
-                '_id': group_message[j]._id,
-                'cid': group_message[j].cid,
-                'group': group_message[j].group,
-                'active': group_message[j].active,
-                'date': group_message[j].date,
-                'poster': group_message[j].poster,
-                'content': group_message[j].content,
-                'location' : group_message[j].location,
-                'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
-                'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
-                'provoke': group_message[j].provoke,
-                'provoke_accept': false,
-                'comment_sum':group_message[j].comment_sum
-              });
+              if(group_message[i].campaign.camp[camp_flag].vote.negatuve>0 ){
+                group_message[i].campaign.camp[camp_flag].vote.negatuve_member.forEach(function(member){
+                  if(member.uid === req.user._id){
+                    vote_flag = -1;
+                  }
+                });
+              }
+              _group_message.vote_flag = vote_flag;
+            }
+            if(req.session.role === 'HR' || req.session.role ==='LEADER'){
+              if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false)
+                _group_message.provoke_accept = true;
+            }
+
+          }
+          else if(group_message[i].message_type === 3) {
+            if(req.user.provider==='user'){
+              var join_flag = false;
+              if(group_message[i].campaign.camp[camp_flag].member.length>0){
+                group_message[i].campaign.camp[camp_flag].member.forEach(function(member){
+                  if(member.uid === req.user._id){
+                    join_flag = true;
+                  }
+                });
+              }
+
+              _group_message.join_flag = join_flag;
             }
           }
         }
-        i++;
-        callback();
-      });
-    },
-
-    function(err) {
-      if (err) {
-        console.log(err);
-        res.send([]);
-      } else {
-        res.send({'group_messages':group_messages,'role':req.session.role});
+        else if(group_message[i].message_type === 1){
+          _group_message = {
+            'message_type' : group_message[i].message_type,
+            'company' : group_message[i].company,
+            'team' : group_message[i].team,
+            'campaign' : group_message[i].campaign,
+            'creat_time' : group_message[i].creat_time
+          };
+          if(req.user.provider==='user'){
+            var join_flag = false;
+            group_message[i].campaign.member.forEach(function(member){
+              if(member.uid === req.user._id){
+                join_flag = true;
+              }
+            });
+            _group_message.join_flag = join_flag;
+          }
+        }
+        else{
+          _group_message = group_message[i];
+        }
+        group_messages.push(_group_message);
       }
-    }
-  );
-};
-
-
-
-exports.group = function(req, res, next, id) {
-   CompanyGroup
-    .findOne({
-        cid: req.session.nowcid,
-        _id: id
-    })
-    .exec(function(err, companyGroup) {
-        if (err) return next(err);
-        if (!companyGroup) return next(new Error(req.session.nowcid+' Failed to load companyGroup ' + id));
-        req.companyGroup = companyGroup;
-        next();
-    });
+      return res.send({'group_messages':group_messages,'role':req.session.role});
+     }
+  });
 };
