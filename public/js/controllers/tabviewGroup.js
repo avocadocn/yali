@@ -655,7 +655,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     };
         //约战
     $scope.provoke = function() {
-        console.log($scope.team_opposite);
          try {
             $http({
                 method: 'post',

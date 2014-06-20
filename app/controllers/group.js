@@ -454,7 +454,7 @@ exports.getGroupCampaign = function(req, res) {
           }
           campaigns.push({
             'over' : judge,
-            'active':campaign[i].active, //截止时间到了活动就无效了
+            'active':campaign[i].active, //截止时间到了活动就无效了//这个有问题啊！－M
             '_id': campaign[i]._id.toString(),
             'gid': campaign[i].gid,
             'group_type': campaign[i].group_type,
@@ -524,7 +524,7 @@ exports.provoke = function (req, res) {
   var content = req.body.content;
   var member_min = req.body.member_min;
   var member_max = req.body.member_max;
-  var competition = new Competition();
+  var competition = new Campaign();
 
   competition.gid = req.companyGroup.gid;
   competition.group_type = req.companyGroup.group_type;
@@ -555,14 +555,14 @@ exports.provoke = function (req, res) {
         'logo' : team_opposite.logo
       };
       competition.camp.push(camp_b);
-      competition.brief.theme = theme;
-      competition.brief.content = content;
-      competition.brief.location = location;
-      competition.brief.start_time = start_time;
-      competition.brief.end_time = end_time;
-      competition.brief.deadline = deadline;
-      competition.brief.member_min = member_min;
-      competition.brief.member_max = member_max;
+      competition.theme = theme;
+      competition.content = content;
+      competition.location = location;
+      competition.start_time = start_time;
+      competition.end_time = end_time;
+      competition.deadline = deadline;
+      competition.member_min = member_min;
+      competition.member_max = member_max;
 
 
       competition.poster.cname = req.user.cname;
@@ -574,7 +574,7 @@ exports.provoke = function (req, res) {
         if(!err){
           console.log('保存比赛成功!');
           var groupMessage = new GroupMessage();
-          group_message.message_type = 3;
+          groupMessage.message_type = 3;
           groupMessage.team.push({
             teamid: my_team_id,
             name: req.companyGroup.name
@@ -587,7 +587,7 @@ exports.provoke = function (req, res) {
 
           groupMessage.company.push({
             cid: req.companyGroup.cid,
-            name: req.company.cname
+            name: req.user.cname
           });
           groupMessage.company.push({
             cid: team_opposite.cid,
@@ -615,13 +615,13 @@ exports.responseProvoke = function (req, res) {
     return res.send(403,forbidden);
   }
   var competition_id = req.body.competition_id;
-  Competition.findOne({
+  Campaign.findOne({
       '_id' : competition_id
     },
-  function (err, competition) {
-    competition.camp[1].start_confirm = true;
+  function (err, campaign) {
+    campaign.camp[1].start_confirm = true;
     //还要存入应约方的公司名、队长用户名、真实姓名等
-    competition.save(function (err) {
+    campaign.save(function (err) {
       if (err) {
         res.send(err);
         return res.send({'result':0,'msg':'应战失败！'});
@@ -630,20 +630,20 @@ exports.responseProvoke = function (req, res) {
         var groupMessage = new GroupMessage();
         group_message.message_type = 4;
         groupMessage.team.push({
-          teamid: competition.camp[0].id,
-          name: competition.camp[0].tname
+          teamid: campaign.camp[0].id,
+          name: campaign.camp[0].tname
         });         //发起挑战方小队信息
         groupMessage.team.push({
-          teamid: competition.camp[1].id,
-          name: competition.camp[1].tname
+          teamid: campaign.camp[1].id,
+          name: campaign.camp[1].tname
         });  //应约方小队信息
-        groupMessage.gid =competition.gid;
+        groupMessage.gid =campaign.gid;
 
         groupMessage.company.push({
-          cid: competition.camp[0].cid
+          cid: campaign.camp[0].cid
         });
         groupMessage.company.push({
-          cid: competition.camp[1].cid
+          cid: campaign.camp[1].cid
         });
         groupMessage.competition = competition._id;
         groupMessage.save(function (err) {
