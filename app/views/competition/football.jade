@@ -38,7 +38,7 @@ block aside
     if (role === 'HR' || role === 'LEADER')
       //- div(ng-controller="resultController" ng-init="msg_show=#{msg_show};rst_content=#{rst_content};score_a=#{score_a};score_b=#{score_b}" )
       #competition_data(ng-controller="resultController" data-msg-show='#{msg_show}' data-rst-content='#{rst_content}' data-score-a='#{score_a}' data-score-b='#{score_b}')
-        button(ng-if="#{confirm_btn_show}" data-toggle="modal" data-target="#resultModel") 结果确认
+        button.margin_left_20.margin_top_5.dl_btn_right(ng-if="#{confirm_btn_show}" data-toggle="modal" data-target="#resultModel") 结果确认
         div(class="modal fade" id="resultModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           .modal-dialog
             .modal-content

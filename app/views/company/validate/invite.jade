@@ -1,14 +1,14 @@
 .center-block.invite_block(ng-controller="inviteController" ng-init="companyId='#{companyId}';defaultDomain='#{defaultDomain}'")
   h4 注册完成，现在将邀请链接分享给同事吧
   p= inviteLink
-  .add_domain.margin_top_50
+  .add_domain
     p 为保护贵公司隐私，请您将激活邮箱的后缀做限定。
     p 企业邮箱后缀：
-    .add_domain_div.margin_5
+    .add_domain_div
       input(type="text" ng-disabled="true" ng-model="defaultDomain")
-      btn.btn.btn-primary.dl_btn(ng-disabled="true") 添加后缀
-    .add_domain_div.margin_5(ng-repeat="domain in domains")
+      btn.dl_btn.dl_btn_small(ng-disabled="true") 添加后缀
+    .add_domain_div(ng-repeat="domain in domains")
       input(type="text" ng-model="domain.domain" ng-disabled="domain.status")
-      btn.btn.btn-primary.dl_btn(ng-click="addDomain(domain.index)" ng-disabled="domain.status || domain.domain.length<=0") 添加后缀
-  .index_link.margin_15
-    a.btn.btn-primary.dl_btn(href="/company/signin") 进入公司主页
+      btn.dl_btn.dl_btn_small(ng-click="addDomain(domain.index)" ng-disabled="domain.status || domain.domain.length<=0") 添加后缀
+  .index_link
+    a.dl_btn.dl_btn_small(href="/company/signin") 进入公司主页

@@ -78,15 +78,15 @@ select
     border-style solid
     border-color transparent contentBgColor transparent transparent
 
-  .triangle_border
-    position absolute
-    top 15px
-    height 0px
-    width 0px
-    margin-left -21px
-    border-width 11px
-    border-style solid
-    border-color transparent contentBdColor transparent transparent
+.triangle_border
+  position absolute
+  top 15px
+  height 0px
+  width 0px
+  margin-left -21px
+  border-width 11px
+  border-style solid
+  border-color transparent contentBdColor transparent transparent
 
 .dl_comment_area
   float right
@@ -391,7 +391,6 @@ select
   font-size 12px
   text-align center
   vertical-align middle
-  padding 5px 0
   display inline-block
   &:hover
     background-color buttonHoverColor
@@ -435,9 +434,12 @@ select
   background-color #e5e5e5
   border-color #e5e5e5
   border-style solid
+  border-width 2px
   line-height 1
   position relative
-  //-color #353535
+  color #000
+  vertical-align middle
+  display inline-block
   &:hover
     background-color #e5e5e5
     border-color #e5e5e5
@@ -686,7 +688,8 @@ input::-webkit-inner-spin-button
   .logo
     margin-top 5px
     margin-left 10px
-
+.relative
+    position relative
 .navbar
   border none
 .navbar-inverse
@@ -732,10 +735,15 @@ input::-webkit-inner-spin-button
     margin-bottom 15px
   .text_icp
     line-height footerHeight
+    a
+      margin-left 50px
+  .dl_container
+    padding-top 0
   .dl_row
    padding 0
   a
     color #999
+    margin-left 50px
 .dl_form-Control
   display block
   width 100%
