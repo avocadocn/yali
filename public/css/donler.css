@@ -36,7 +36,7 @@ li {
   list-style: none;
 }
 select {
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 button {
   border: none;
@@ -987,4 +987,12 @@ input.ng-invalid.ng-dirty {
   color: #716b7a;
   padding: 5px 20px;
   font-size: 120%;
+}
+.signup_row .select_box {
+  width: 85px;
+  float: left;
+  margin-right: 3px;
+}
+.signup_row .select_right {
+  width: 266px;
 }

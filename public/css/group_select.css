@@ -75,105 +75,152 @@
 .timepicker.dropdown-menu tbody button {
   padding: 6px;
 }
+.group.inactive {
+  cursor: pointer;
+}
 .group.inactive .group_1 {
   background-image: url("/img/icons/group/badminton_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_2 {
   background-image: url("/img/icons/group/basketball_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_3 {
   background-image: url("/img/icons/group/reading_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_4 {
   background-image: url("/img/icons/group/bicycle_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_5 {
   background-image: url("/img/icons/group/afternoontea_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_6 {
   background-image: url("/img/icons/group/chess_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_7 {
   background-image: url("/img/icons/group/football_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_8 {
   background-image: url("/img/icons/group/ktv_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_9 {
   background-image: url("/img/icons/group/fitness_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_10 {
   background-image: url("/img/icons/group/food_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_11 {
   background-image: url("/img/icons/group/running_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_12 {
   background-image: url("/img/icons/group/kids_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_13 {
   background-image: url("/img/icons/group/movie_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_14 {
   background-image: url("/img/icons/group/photography_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_15 {
   background-image: url("/img/icons/group/travel_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_16 {
   background-image: url("/img/icons/group/boardgame_off.png");
+  background-repeat: no-repeat;
 }
 .group.inactive .group_17 {
   background-image: url("/img/icons/group/other_off.png");
+  background-repeat: no-repeat;
+}
+.group.active {
+  cursor: default;
+  color: #3498db;
 }
 .group.active .group_1 {
   background-image: url("/img/icons/group/badminton_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_2 {
   background-image: url("/img/icons/group/basketball_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_3 {
   background-image: url("/img/icons/group/reading_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_4 {
   background-image: url("/img/icons/group/bicycle_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_5 {
   background-image: url("/img/icons/group/afternoontea_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_6 {
   background-image: url("/img/icons/group/chess_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_7 {
   background-image: url("/img/icons/group/football_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_8 {
   background-image: url("/img/icons/group/ktv_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_9 {
   background-image: url("/img/icons/group/fitness_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_10 {
   background-image: url("/img/icons/group/food_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_11 {
   background-image: url("/img/icons/group/running_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_12 {
   background-image: url("/img/icons/group/kids_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_13 {
   background-image: url("/img/icons/group/movie_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_14 {
   background-image: url("/img/icons/group/photography_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_15 {
   background-image: url("/img/icons/group/travel_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_16 {
   background-image: url("/img/icons/group/boardgame_on.png");
+  background-repeat: no-repeat;
 }
 .group.active .group_17 {
   background-image: url("/img/icons/group/other_on.png");
+  background-repeat: no-repeat;
+}
+.group_select .img_contain {
+  padding: 80px 0 10px;
+  background-repeat: no-repeat;
+  text-align: center;
+  cursor: pointer;
 }
