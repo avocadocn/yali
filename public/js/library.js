@@ -34279,8 +34279,6 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 			var zIndex = index_highest + 10;
 
 			var offset, top, left, containerOffset;
-
-
 			if (this.container instanceof $) {
 				containerOffset = this.container.offset();
 			} else {
@@ -34297,7 +34295,7 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 				offset = this.element.offset();
 				left = offset.left;
 			}
-
+			
 			if(left+220 > document.body.clientWidth){
             			left = document.body.clientWidth-220;
           		}
@@ -34310,15 +34308,6 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 
 			top = top - containerOffset.top;
 			left = left - containerOffset.left;
-
-
-			//todo
-
-			console.log(top);
-			console.log(this.picker);
-			console.log("offset.top:" + offset.top + ",this.height:" + this.height + ",this.picker.outerHeight():" + this.picker.outerHeight() + ",this.pickerPosition :" + this.pickerPosition + ",containerOffset.top:" + containerOffset.top);
-			console.log($(this.container).offset());
-			console.log($("body").offset());
 
 			this.picker.css({
 				top:    top,
