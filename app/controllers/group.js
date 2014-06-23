@@ -27,12 +27,6 @@ var mongoose = require('mongoose'),
     schedule = require('../services/schedule'),
     photo_album_controller = require('./photoAlbum');
 
-function arrayObjectIndexOf(myArray, searchTerm, property) {
-    for(var i = 0, len = myArray.length; i < len; i++) {
-        if (myArray[i][property].toString() === searchTerm.toString()) return i;
-    }
-    return -1;
-}
 exports.authorize = function(req, res, next) {
   if(req.user.provider==="company"){
     if(req.user._id.toString() ===req.companyGroup.cid.toString()){
@@ -45,9 +39,9 @@ exports.authorize = function(req, res, next) {
     }
   }
   else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
-    var _groupIndex = arrayObjectIndexOf(req.user.group,req.companyGroup.gid,'_id');
+    var _groupIndex = model_helper.arrayObjectIndexOf(req.user.group,req.companyGroup.gid,'_id');
     if(_groupIndex>-1){
-      var _teamIndex = arrayObjectIndexOf(req.user.group[_groupIndex].team,req.companyGroup._id,'id');
+      var _teamIndex = model_helper.arrayObjectIndexOf(req.user.group[_groupIndex].team,req.companyGroup._id,'id');
       if(_teamIndex>-1){
         if(req.user.group[_groupIndex].team[_teamIndex].leader ===true){
           req.session.role = 'LEADER';
@@ -645,7 +639,7 @@ exports.responseProvoke = function (req, res) {
       }
       else{
         var groupMessage = new GroupMessage();
-        group_message.message_type = 5;
+        groupMessage.message_type = 5;
         groupMessage.team.push({
           teamid: campaign.camp[0].id,
           name: campaign.camp[0].tname,
@@ -666,6 +660,9 @@ exports.responseProvoke = function (req, res) {
         groupMessage.save(function (err) {
           if (err) {
             console.log('保存约战动态时出错' + err);
+          }
+          else{
+            return res.send({'result':1,'msg':'应战成功！'});
           }
         });
       }

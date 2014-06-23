@@ -179,22 +179,23 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     }
     //消除ajax缓存
-    $scope.vote = function(provoke_message_id, status, index) {
+    $scope.vote = function(competition_id, vote_status, index) {
          try {
             $http({
                 method: 'post',
                 url: '/users/vote',
                 data:{
-                    provoke_message_id : provoke_message_id,
-                    aOr : status,
-                    tid : $scope.group_messages[index].my_team_id
+                    competition_id : competition_id,
+                    aOr : vote_status,
+                    tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
                 }
             }).success(function(data, status) {
-                if(data.msg != undefined && data.msg != null) {
+                if(data.result===0) {
                     $rootScope.donlerAlert(data.msg);
                 } else {
-                    $scope.group_messages[index].positive = data.positive;
-                    $scope.group_messages[index].negative = data.negative;
+                    $scope.group_messages[index].vote_flag = vote_status + data.data.quit -1;
+                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
+                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -205,13 +206,13 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     };
     //应战
-    $scope.responseProvoke = function(tid,provoke_message_id) {
+    $scope.responseProvoke = function(tid,competition_id) {
          try {
             $http({
                 method: 'post',
                 url: '/group/responseProvoke/'+$rootScope.teamId,
                 data:{
-                    provoke_message_id : provoke_message_id
+                    competition_id : competition_id
                 }
             }).success(function(data, status) {
                 window.location.reload();

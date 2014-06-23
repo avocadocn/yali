@@ -813,104 +813,49 @@ exports.editInfo = function(req, res) {
 exports.vote = function (req, res) {
 
   var tid = req.body.tid;
-  var cid = req.session.nowcid ? req.session.nowcid : req.user.cid;
-  var uid = req.session.nowuid ? req.session.nowuid : req.user._id;
+  var cid = req.user.cid;
+  var uid = req.user._id;
   var aOr = req.body.aOr;
   var value = 1;
-  var provoke_message_id = req.body.provoke_message_id;
-  var positive_already = false;
-  var negative_already = false;
+  var competition_id = req.body.competition_id;
 
-  console.log(provoke_message_id);
-
-  Competition.findOne({
-    'provoke_message_id' : provoke_message_id
+  Campaign.findOne({
+    '_id' : competition_id
   },
-  function (err, competition) {
-    if (competition) {
+  function (err, campaign) {
+    if (campaign) {
 
-      for(var j = 0; j < competition.camp.length; j ++) {
-        if(competition.camp[j].id.toString() === tid.toString()) {
-          for(var i = 0; i < competition.camp[j].vote.positive_member.length; i ++) {
-            if(competition.camp[j].vote.positive_member[i].uid.toString() === uid.toString()) {
-              console.log('positive');
-              positive_already = true;
-              value = -1;
-              if(aOr) competition.camp[j].vote.positive_member.splice(i,1);
-              break;
-            }
-          }
-          for(var i = 0; i < competition.camp[j].vote.negative_member.length; i ++) {
-            if(competition.camp[j].vote.negative_member[i].uid.toString() === uid.toString()) {
-              console.log('negative');
-              negative_already = true;
-              value = -1;
-              if(!aOr) competition.camp[j].vote.negative_member.splice(i,1);
-              break;
-            }
-          }
-          if (aOr) {
-            if(negative_already){
-              return res.send({"msg":"你已经反对过啦!"});
-            }
-            competition.camp[j].vote.positive +=value;
-            if(value===1){
-              competition.camp[j].vote.positive_member.push({'cid':cid,'uid':uid});
-            }
-          } else {
-            if(positive_already) {
-              return res.send({"msg":"你已经赞过啦!"});
-            }
-            competition.camp[j].vote.negative +=value;
-            if(value===1){
-              competition.camp[j].vote.negative_member.push({'cid':cid,'uid':uid});
-            }
-          }
-          break;
-        }
+      var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
+      var positive_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.positive_member,uid,'uid');
+      var negative_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.negative_member,uid,'uid');
+      if(aOr && negative_index > -1 || !aOr && positive_index > -1){
+        return res.send({result: 0, msg:'您已经投过票，无法再次投票'});
+      }
+      else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
+        campaign.camp[camp_index].vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
+        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']-1;
+      }
+      else if(aOr && positive_index <0 || !aOr && negative_index <0){
+        campaign.camp[camp_index].vote[aOr?'positive_member':'negative_member'].push({'cid':cid,'uid':uid});
+        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']+1;
       }
 
-      competition.save(function (err) {
+      campaign.save(function (err) {
         if(err) {
-          return res.send('ERROR');
-        } else {
-          //由于异步方式下的多表操作有问题,所以只能在groupmessage里多添加positive和negative字段了
-          GroupMessage.findOne({'_id' : provoke_message_id}, function (err, group_message) {
-            if (err || !group_message) {
-              console.log(err);
-              return res.send('ERROR');
-            } else {
-
-              var positive,negative;
-              for(var i = 0; i < group_message.provoke.camp.length; i ++) {
-                if(group_message.provoke.camp[i].tid.toString() === tid.toString()) {
-                  if (aOr) {
-                    group_message.provoke.camp[i].vote.positive +=value;
-                  } else {
-                    group_message.provoke.camp[i].vote.negative +=value;
-                  }
-                  positive = group_message.provoke.camp[i].vote.positive;
-                  negative = group_message.provoke.camp[i].vote.negative;
-                  break;
-                }
-              }
-              group_message.save(function (err){
-                if(err) {
-                  return res.send('ERROR');
-                } else {
-                  return res.send({
-                    'positive' : positive,
-                    'negative' : negative
-                  });
-                }
-              });
+          return res.send({result: 0, msg:'投票发生错误'});
+        }
+        else{
+          return res.send({result: 1, msg:'成功',data:{
+              quit: aOr && positive_index <0 || !aOr && negative_index <0,
+              positive : campaign.camp[camp_index].vote.positive,
+              negative : campaign.camp[camp_index].vote.negative
             }
           });
         }
       });
     } else {
       console.log('没有此约战!');
-      return res.send('NULL');
+      return res.send({result: 0, msg:'没有此约战'});
     }
   });
 };
