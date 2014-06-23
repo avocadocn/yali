@@ -69,12 +69,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-    .state('app.groupList', {
-      url: '/group_list',
+    .state('app.groupJoinedList', {
+      url: '/group_list/joined',
       views: {
         'menuContent': {
           templateUrl: 'templates/group_list.html',
-          controller: 'GroupListCtrl'
+          controller: 'GroupJoinedListCtrl'
+        }
+      }
+    })
+
+    .state('app.groupUnjoinList', {
+      url: '/group_list/unjoin',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/group_list.html',
+          controller: 'GroupUnjoinListCtrl'
         }
       }
     })

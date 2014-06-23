@@ -128,25 +128,37 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('GroupListCtrl', function($scope, $rootScope, $http, Authorize, Group) {
+.controller('GroupJoinedListCtrl', function($scope, Authorize, Group) {
 
   Authorize.authorize();
 
-  $rootScope.show_list = [];
+  $scope.show_list = [];
 
-  Group.getGroups(function(joined_groups, unjoin_groups) {
-    $scope.joined_list = joined_groups;
-    $scope.unjoin_list = unjoin_groups;
-    $rootScope.show_list = $scope.joined_list;
-  });
+  var joined_list = Group.getJoinedGroups();
+  if (joined_list === null) {
+    Group.getGroups(function(joined_groups, unjoin_groups) {
+      $scope.show_list = joined_groups;
+    });
+  } else {
+    $scope.show_list = joined_list;
+  }
 
-  $scope.joinedList = function() {
-    $rootScope.show_list = $scope.joined_list;
-  };
+})
 
-  $scope.unjoinList = function() {
-    $rootScope.show_list = $scope.unjoin_list;
-  };
+.controller('GroupUnjoinListCtrl', function($scope, Authorize, Group) {
+
+  Authorize.authorize();
+
+  $scope.show_list = [];
+
+  var unjoin_list = Group.getUnjoinGroups();
+  if (unjoin_list === null) {
+    Group.getGroups(function(joined_groups, unjoin_groups) {
+      $scope.show_list = unjoin_groups;
+    });
+  } else {
+    $scope.show_list = unjoin_list;
+  }
 
 })
 

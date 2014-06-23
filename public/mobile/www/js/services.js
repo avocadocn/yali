@@ -241,15 +241,30 @@ angular.module('starter.services', [])
 
 .factory('Group', function($http, Global) {
 
+  var joined_group_list = null,
+    unjoin_group_list = null;
+
   var getGroups = function(callback) {
     $http.get(Global.base_url + '/users/groups')
     .success(function(data, status, headers, config) {
+      joined_group_list = data.joined_groups;
+      unjoin_group_list = data.unjoin_groups;
       callback(data.joined_groups, data.unjoin_groups);
     });
   };
 
+  var getJoinedGroups = function() {
+    return joined_group_list;
+  };
+
+  var getUnjoinGroups = function() {
+    return unjoin_group_list;
+  }
+
   return {
-    getGroups: getGroups
+    getGroups: getGroups,
+    getJoinedGroups: getJoinedGroups,
+    getUnjoinGroups: getUnjoinGroups
   };
 
 
