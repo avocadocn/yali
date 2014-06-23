@@ -405,10 +405,8 @@ function getUserCampaigns(req,res,_in) {
 
   var team_ids = [];
 
-  for( var i = 0; i < req.user.group.length; i ++) {
-    for ( var k = 0 ; k < req.user.group[i].team.length; k ++) {
-      team_ids.push(req.user.group[i].team[k].id.toString());
-    }
+  for( var i = 0; i < req.user.team.length; i ++) {
+    team_ids.push(req.user.team[i]._id.toString());
   }
   Campaign.find({'cid' : {'$all':[req.user.cid.toString()]}, 'gid':{'$ne':'0'} }).sort({'_id':-1}).exec(function(err, campaign) {
     if(campaign.length > 0) {

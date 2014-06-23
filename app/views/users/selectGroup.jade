@@ -5,7 +5,7 @@ block headExt
 
 block contentExt
   .text-center.h3.group_head='请选择' + group_head + '兴趣小队组件'
-  .groups.row(ng-app='user' ng-controller='GroupsController')
+  .groups.row(ng-controller='GroupsController')
     .group.col-xs-3(ng-repeat='team in teams' ng-class="{'1': 'active', '0': 'inactive'}[team.select]")
       input(type='checkbox' name='team.name' id='{{team.id}}' value='{{team.group_type}}' ng-model='team.select' ng-true-value='1' ng-false-value='0')
       label(class='size_210 group_'+'{{team.gid}}' for='{{team.id}}') 类型:{{team.group_type}}  队名:{{team.name}}

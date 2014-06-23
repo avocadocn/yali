@@ -1002,30 +1002,12 @@ exports.appointLeader = function (req, res) {
 
             var l = false;
 
-            //这段代码性能很高
-            /*
-            var s = true;
-            for(var i =0; i< user.group.length && s; i ++) {
-                if(user.group[i]._id === gid){
-                    for(var k = 0; k < user.group[i].team.length; k ++){
-                        if(user.group[i].team[k].id.toString() == tid.toString()){
-                            user.group[i].team[k].leader = operate;
-                            s = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            */
-
-            //这段代码性能很低
-            for(var i =0; i< user.group.length; i ++) {
-                for(var k = 0; k < user.group[i].team.length; k ++){
-                    if(user.group[i].team[k].id.toString() == tid.toString()){
-                        user.group[i].team[k].leader = operate;
-                        l = user.group[i].team[k].leader;
-                        break;
-                    }
+            //这段代码性能很低,但是需要
+            for(var i =0; i< user.team.length; i ++) {
+                if(user.team[i]._id.toString() == tid.toString()){
+                    user.team[i].leader = operate;
+                    l = user.team[i].leader;
+                    break;
                 }
             }
 

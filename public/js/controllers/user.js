@@ -1,6 +1,6 @@
 'use strict';
 
-var userApp = angular.module('user', []);
+var userApp = angular.module('mean.main');
 
 userApp.directive('match', function($parse) {
   return {
@@ -20,8 +20,10 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
         $scope.cid = data.cid;
         $scope.groups = data.teams;
 
+        alert($scope.groups.length);
         $scope.teams = [];
 
+        //显示在员工选小队的界面供其选择
         for(var i = 0, length = $scope.groups.length; i < length; i++) {
             $scope.teams.push({
                 'gid':$scope.groups[i].gid,
@@ -46,8 +48,20 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
 
         var tick = 0;
         var gid = '';
+
+        //挑选出员工已经选择的小队
         for(var i = 0; i < $scope.teams.length; i ++) {
             if($scope.teams[i].select == '1') {
+                $scope.selected.push({
+                    'gid' : $scope.teams[i].gid,
+                    '_id' : $scope.teams[i].id,
+                    'group_type' : $scope.teams[i].group_type,
+                    'entity_type' : $scope.teams[i].entity_type,
+                    'name' : $scope.teams[i].name,
+                    'leader' : false,
+                    'logo' : $scope.teams[i].logo
+                });
+                /*
                 if($scope.teams[i].gid != gid) {
                     var team = [{
                         'logo' : $scope.teams[i].logo,
@@ -71,21 +85,19 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
                         'leader' : false
                     });
                 }
+                */
             }
         }
 
-        var team_default = [{
-            'logo' : 'default',
-            'id' : $scope.cid,
-            'name' : 'virtual',
-            'leader' : false
-        }];
-
+        //置入虚拟小队
         $scope.selected.push({
-            '_id': '0',
-            'group_type':'virtual',
-            'entity_type': 'virtual',
-            'team': team_default
+            'gid' : '0',
+            '_id' : $scope.cid,
+            'group_type' : 'virtual',
+            'entity_type' : 'virtual',
+            'name' : 'virtual',
+            'leader' : false,
+            'logo' : 'null'   //TODO 记得给虚拟小队弄一个默认logo啊!
         });
         try {
             $http({
