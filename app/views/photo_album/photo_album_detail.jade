@@ -60,6 +60,13 @@ append footExt
       window.location.href = returnUri;
     });
     $('#delete_button').click(function() {
+      alertify.set({
+        buttonFocus: "none",
+        labels: {
+          ok: '确认删除',
+          cancel: '取消'
+        }
+      });
       alertify.confirm('删除后不可恢复，您确定要删除该相册吗？', function(e) {
         if (e) {
           deleteForm.submit();
