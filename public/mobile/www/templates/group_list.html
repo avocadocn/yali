@@ -8,7 +8,7 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="group in show_list" href="#/app/group_detail/{{ group._id }}">
+      <ion-item ng-repeat="group in show_list" href="#/app/group/{{ group._id }}/info">
         <p>{{ group.name }}</p>
         <p>{{ group.group_type }}</p>
       </ion-item>

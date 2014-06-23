@@ -89,13 +89,32 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-
-    .state('app.groupDetail', {
-      url: '/group_detail/:id',
+    .state('app.groupInfo', {
+      url: '/group/:id/info',
       views: {
         'menuContent': {
           templateUrl: 'templates/group_detail.html',
-          controller: 'GroupDetailCtrl'
+          controller: 'GroupInfoCtrl'
+        }
+      }
+    })
+
+    .state('app.groupCampaigns', {
+      url: '/group/:id/campaigns',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/group_detail.html',
+          controller: 'GroupCampaignCtrl'
+        }
+      }
+    })
+
+    .state('app.groupDynamics', {
+      url: '/group/:id/dynamics',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/group_detail.html',
+          controller: 'GroupDynamicCtrl'
         }
       }
     })
