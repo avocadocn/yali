@@ -77,70 +77,100 @@ exports.getUserMessage = function(req, res) {
   }
   var group_messages = [];
   var i = 0;
-  async.whilst(
-    function() { return i < req.user.group.length; },
+  var companyLogo;
 
-    function(callback) {
-      var team_ids = [];
-      for(var k = 0; k < req.user.group[i].team.length; k ++){
-        team_ids.push(req.user.group[i].team[k].id);
-      }
-      console.log(team_ids);
-      GroupMessage.find({'team' :{'$in':team_ids}}).sort({'_id':-1})
-      .exec(function(err, group_message) {
-        if (group_message.length > 0) {
-          if (err) {
-            console.log(err);
-            return res.send([]);
-          } else {
+  var team_ids = [];
+  var team_names = [];
+  var tid,tname;
 
-            var length = group_message.length;
-            for(var j = 0; j < length; j ++) {
+  for(var i = 0; i < req.user.team.length; i ++) {
+    team_ids.push(req.user.team[i]._id);
+    team_names.push(req.user.team[i].name);
+  }
 
-              var positive = 0;
-              var negative = 0;
-              for(var k = 0; k < group_message[j].provoke.camp.length; k ++) {
-                if(group_message[j].provoke.camp[k].tname === req.user.group[i].tname){
+
+  GroupMessage.find({'team' :{'$in':team_ids}})
+  .populate('team').sort({'create_time':-1})
+  .exec(function(err, group_message) {
+    if (group_message.length > 0) {
+      if (err) {
+        console.log(err);
+        return res.send([]);
+      } else {
+
+        var length = group_message.length;
+        for(var j = 0; j < length; j ++) {
+
+          var positive = 0;
+          var negative = 0;
+          var my_team_id,my_team_name;
+          var find = false;
+          var host = true;
+
+          //如果是比赛动态
+          if(group_message[j].provoke.active) {
+            //其实 team.length == 2
+            for(var k = 0; k < group_message[j].team.length && !find; k ++) {
+              for(var l = 0; l < team_ids.length; l ++) {
+                if(group_message[j].team[k]._id.toString() === team_ids[l]._id.toString()) {
+                  my_team_id = team_ids[l]._id;
+                  my_team_name = team_names[l];
                   positive = group_message[j].provoke.camp[k].vote.positive;
                   negative = group_message[j].provoke.camp[k].vote.negative;
+                  find = true;
+                  host = (k === 0);  //默认规定team[0]是发起比赛的那一方
                   break;
                 }
               }
-              group_messages.push({
-                'positive' : positive,
-                'negative' : negative,
-                'my_tname': req.user.group[i].tname,
-                '_id': group_message[j]._id,
-                'cid': group_message[j].cid,
-                'group': group_message[j].group,
-                'active': group_message[j].active,
-                'date': group_message[j].date,
-                'poster': group_message[j].poster,
-                'content': group_message[j].content,
-                'location' : group_message[j].location,
-                'start_time' : group_message[j].start_time ? group_message[j].start_time.toLocaleDateString() : '',
-                'end_time' : group_message[j].end_time ? group_message[j].end_time.toLocaleDateString() : '',
-                'provoke': group_message[j].provoke,
-                'provoke_accept': false,
-                'comment_sum':group_message[j].comment_sum
-              });
+            }
+
+          } else {
+            //如果是普通活动动态
+            for(var l = 0; l < team_ids.length; l ++) {
+              if(group_message[j].team[0]._id.toString() === team_ids[l].toString()) {
+                my_team_id = team_ids[l];
+                my_team_name = team_names[l];
+                break;
+              }
             }
           }
+          //console.log('logo'+ j +':' + group_message[j].team[0].logo,host);
+          //console.log('group_message_id'+ j +':' + group_message[j]._id);
+          group_messages.push({
+            'positive' : positive,
+            'negative' : negative,
+            'my_team_name' : my_team_name,
+            'my_team_id': my_team_id,
+            'host': host,                  //是不是发赛方
+            '_id': group_message[j]._id,
+            'cid': group_message[j].cid,
+            'group': group_message[j].group,
+            'active': group_message[j].active,
+            'date': group_message[j].date,
+            'poster': group_message[j].poster,
+            'content': group_message[j].content,
+            'location' : group_message[j].location,
+            'start_time' : group_message[j].start_time,
+            'end_time' : group_message[j].end_time,
+            'provoke': group_message[j].provoke,
+            'logo':host ? group_message[j].team[0].logo : group_message[j].team[1].logo,
+            'provoke_accept': false,
+            'comment_sum':group_message[j].comment_sum
+          });
         }
-        i++;
-        callback();
-      });
-    },
-
-    function(err) {
-      if (err) {
-        console.log(err);
-        res.send([]);
-      } else {
-        res.send({'group_messages':group_messages,'role':req.session.role});
+        Company.findOne({'_id':req.user.cid}).exec(function(err,company){
+          if(err || !company){
+            return res.send([]);
+          } else {
+            var companyLogo = company.info.logo;
+            res.send({'group_messages':group_messages,'role':req.session.role,'companyLogo':companyLogo});
+          }
+        });
       }
+    } else {
+      return res.send([]);
     }
-  );
+  });
 };
 
 

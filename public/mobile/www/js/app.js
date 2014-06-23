@@ -69,23 +69,52 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-    .state('app.groupList', {
-      url: '/group_list',
+    .state('app.groupJoinedList', {
+      url: '/group_list/joined',
       views: {
         'menuContent': {
           templateUrl: 'templates/group_list.html',
-          controller: 'GroupListCtrl'
+          controller: 'GroupJoinedListCtrl'
         }
       }
     })
 
+    .state('app.groupUnjoinList', {
+      url: '/group_list/unjoin',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/group_list.html',
+          controller: 'GroupUnjoinListCtrl'
+        }
+      }
+    })
 
-    .state('app.groupDetail', {
-      url: '/group_detail/:id',
+    .state('app.groupInfo', {
+      url: '/group/:id/info',
       views: {
         'menuContent': {
           templateUrl: 'templates/group_detail.html',
-          controller: 'GroupDetailCtrl'
+          controller: 'GroupInfoCtrl'
+        }
+      }
+    })
+
+    .state('app.groupCampaigns', {
+      url: '/group/:id/campaigns',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/group_detail.html',
+          controller: 'GroupCampaignCtrl'
+        }
+      }
+    })
+
+    .state('app.groupDynamics', {
+      url: '/group/:id/dynamics',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/group_detail.html',
+          controller: 'GroupDynamicCtrl'
         }
       }
     })

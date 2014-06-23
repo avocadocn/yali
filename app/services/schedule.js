@@ -113,23 +113,21 @@ exports.updateTname =function (tid){
         console.log(err);
       }
     });
-    User.find({'group.team.id': tid},function(err,users){
+    User.find({'team._id': tid},function(err,users){
       if(err){
         console.log(err);
       }
       else{
         users.forEach(function(value){
-          for(var i=0;i<value.group.length;i++){
-            if(value.group[i]._id ==companyGroup.gid){
-              for(var j= 0; j<value.group[i].team.length;j++){
-                if(value.group[i].team[j].id==tid){
-                  value.group[i].team[j].name = companyGroup.name;
-                  value.save(function(err){
-                    if(err){
-                      console.log(err);
-                    }
-                  });
-                }
+          for(var i=0; i < value.team.length; i++){
+            if(value.team[i].gid === companyGroup.gid){
+              if(value.team[i]._id.toString() === tid.toString()){
+                value.team[i].name = companyGroup.name;
+                value.save(function(err){
+                  if(err){
+                    console.log(err);
+                  }
+                });
               }
             }
           }
@@ -185,23 +183,21 @@ exports.updateTlogo =function (tid){
         console.log(err);
       }
     });
-    User.find({'group.team.id': tid},function(err,users){
+    User.find({'team._id': tid},function(err,users){
       if(err){
         console.log(err);
       }
       else{
         users.forEach(function(value){
-          for(var i=0;i<value.group.length;i++){
-            if(value.group[i]._id ==companyGroup.gid){
-              for(var j= 0; j<value.group[i].team.length;j++){
-                if(value.group[i].team[j].id==tid){
-                  value.group[i].team[j].photo = companyGroup.logo;
-                  value.save(function(err){
-                    if(err){
-                      console.log(err);
-                    }
-                  });
-                }
+          for(var i=0; i < value.team.length; i++){
+            if(value.team[i].gid === companyGroup.gid){
+              if(value.team[i]._id.toString() === tid.toString()){
+                value.team[i].logo = companyGroup.logo;
+                value.save(function(err){
+                  if(err){
+                    console.log(err);
+                  }
+                });
               }
             }
           }

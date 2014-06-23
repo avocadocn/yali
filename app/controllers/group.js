@@ -45,11 +45,11 @@ exports.authorize = function(req, res, next) {
     }
   }
   else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
-    var _groupIndex = arrayObjectIndexOf(req.user.group,req.companyGroup.gid,'_id');
+    var _groupIndex = arrayObjectIndexOf(req.user.team,req.companyGroup.gid,'gid');
     if(_groupIndex>-1){
-      var _teamIndex = arrayObjectIndexOf(req.user.group[_groupIndex].team,req.companyGroup._id,'id');
+      var _teamIndex = arrayObjectIndexOf(req.user.team,req.companyGroup._id,'_id');
       if(_teamIndex>-1){
-        if(req.user.group[_groupIndex].team[_teamIndex].leader ===true){
+        if(req.user.team[_teamIndex].leader === true){
           req.session.role = 'LEADER';
           req.session.Global.role = 'LEADER';
         }
@@ -327,10 +327,8 @@ exports.home = function(req, res) {
         var unselected_teams = [];
         var user_teams = [];
         var photo_album_ids = [];
-        for(var i = 0; i < req.user.group.length; i ++) {
-          for(var j = 0; j < req.user.group[i].team.length; j ++) {
-            user_teams.push(req.user.group[i].team[j].id.toString());
-          }
+        for(var i = 0; i < req.user.team.length; i ++) {
+          user_teams.push(req.user.team[i]._id.toString());
         }
         CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
           if(err || !company_groups) {
@@ -394,9 +392,10 @@ exports.getCompanyGroups = function(req, res) {
     if(err || !teams) {
       return res.send([]);
     } else {
+      console.log(req.user);
       return res.send({
         'teams':teams,
-        'group' : req.user.group,
+        'team' : req.user != undefined ? req.user.team : [],
         'cid':req.session.nowcid,
         'role':req.session.role,
         'provoke_gid' : provoke_gid,   //进对方公司资料对其小队进行挑战时判断小队类型
