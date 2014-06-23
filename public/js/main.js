@@ -382,7 +382,7 @@ app.run(['$translate','$rootScope', function ($translate,$rootScope) {
     };
     $rootScope.initAlertCss = function(){
        var body = {
-            'border': '1px',
+            'border': 'solid 1px #e5e5e5',
             'border-radius': '0px',
             'top' : '50px',
             'left' : '55%',
