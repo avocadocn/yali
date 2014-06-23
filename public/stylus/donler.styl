@@ -22,6 +22,9 @@ li
   list-style none
 select
   border-radius 0 !important
+button
+  border none
+  
 .dl_head
     max-width 70%
     width auto
@@ -198,12 +201,12 @@ select
   vertical-align middle
   padding 5px 0
   display inline-block
-  background-color #ff2200
-  border-color #ff2200
+  background-color btnActionBgColor
+  border-color btnActionBgColor
   cursor pointer
   &:hover
-    background-color #8f5248
-    border-color #8f5248
+    background-color btnActionHoverBgColor 
+    border-color btnActionHoverBgColor 
   &:disabled
     opacity .55
 
@@ -391,6 +394,7 @@ select
   text-align center
   vertical-align middle
   display inline-block
+  cursor pointer
   &:hover
     background-color buttonHoverColor
     border-color buttonHoverColor
@@ -400,7 +404,8 @@ select
   width 120px
   height 30px
 .dl_btn_small
-  padding 7px 21px
+  padding 7px 12px
+  text-align center
 .dl_btn_large
   width 150px
   height 30px
@@ -415,19 +420,19 @@ select
     color white
     background-color #ea6060
 .dl_btn_red
-  background-color #ea6060
-  border-color #ea6060
+  background-color btnActionBgColor 
+  border-color btnActionBgColor 
   &:hover
-    background-color #a83737
-    border-color #a83737
+    background-color btnActionHoverBgColor
+    border-color btnActionHoverBgColor
 .dl_btn_submit
   width 80px
   height 25px
 .dl_close
   opacity 1
 .map_btn
-  background-color #cd270d
-  border-color #cd270d
+  background-color btnActionBgColor 
+  border-color btnActionBgColor 
   border-style solid
   line-height 1
   position relative
@@ -435,6 +440,7 @@ select
   width 60px
   height 25px
   color white
+  cursor pointer
 .cancel_btn
   background-color #e5e5e5
   line-height 1
@@ -664,11 +670,6 @@ input::-webkit-inner-spin-button
 .dl_nav
   height 50px
   background-color themeColor
-  background -ms-linear-gradient(top, themeColor, navbarLinearColor)
-  background -moz-linear-gradient(top, themeColor, navbarLinearColor)
-  background -webkit-gradient(linear, 0% 0%, 0% 100%, from(themeColor), to(navbarLinearColor))
-  background -webkit-linear-gradient(top, themeColor, navbarLinearColor)
-  background -o-linear-gradient(top, themeColor, navbarLinearColor)
   border-color #fff
   color navbarFontColor
   border-radius 0px

@@ -9,8 +9,8 @@ body {
   font-family: "Microsoft YaHei", STHeiti, MingLiu;
   font-size: 12px;
   line-height: 18px;
-  color: #666;
-  background-color: #fff;
+  color: fontColor;
+  background-color: backgroundColor;
 }
 h1,
 h2,
@@ -30,7 +30,7 @@ h6,
   font-family: "Microsoft YaHei", STHeiti, MingLiu;
 }
 a {
-  color: #28689b;
+  color: linkColor;
 }
 li {
   list-style: none;
@@ -44,7 +44,7 @@ button {
 .dl_head {
   max-width: 70%;
   width: auto;
-  min-width: 960px;
+  min-width: miniPageWidth;
   margin: 0 auto;
   padding: 0 2rem;
 }
@@ -75,15 +75,15 @@ button {
 }
 .comment .comment_content_panel .comment_content {
   padding: 10px;
-  background-color: #fbfbfb;
-  border: solid 1px #ededed;
+  background-color: contentBgColor;
+  border: solid 1px contentBdColor;
   width: 450px;
   min-height: 50px;
 }
 .comment_textarea {
   height: 60px;
-  background-color: #fbfbfb;
-  border-color: #ededed;
+  background-color: contentBgColor;
+  border-color: contentBdColor;
   border-radius: 0;
 }
 .triangle {
@@ -94,7 +94,7 @@ button {
   margin-left: -19px;
   border-width: 10px;
   border-style: solid;
-  border-color: transparent #fbfbfb transparent transparent;
+  border-color: transparent contentBgColor transparent transparent;
 }
 .triangle_border {
   position: absolute;
@@ -104,7 +104,7 @@ button {
   margin-left: -21px;
   border-width: 11px;
   border-style: solid;
-  border-color: transparent #ededed transparent transparent;
+  border-color: transparent contentBdColor transparent transparent;
 }
 .dl_comment_area {
   float: right;
@@ -231,13 +231,13 @@ button {
   vertical-align: middle;
   padding: 5px 0;
   display: inline-block;
-  background-color: #cd270d;
-  border-color: #cd270d;
+  background-color: btnActionBgColor;
+  border-color: btnActionBgColor;
   cursor: pointer;
 }
 .dl_btn_right:hover {
-  background-color: #8f5248;
-  border-color: #8f5248;
+  background-color: btnActionHoverBgColor;
+  border-color: btnActionHoverBgColor;
 }
 .dl_btn_right:disabled {
   opacity: 0.55;
@@ -444,7 +444,7 @@ button {
 .dl_btn {
   margin: 0;
   color: #fff;
-  background-color: #3498db;
+  background-color: buttonColor;
   border: none;
   line-height: 1;
   position: relative;
@@ -455,8 +455,8 @@ button {
   cursor: pointer;
 }
 .dl_btn:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
+  background-color: buttonHoverColor;
+  border-color: buttonHoverColor;
 }
 .dl_btn:disabled {
   opacity: 0.65;
@@ -479,20 +479,20 @@ button {
   height: 40px;
 }
 .dl_btn_danger {
-  color: #000;
+  color: black;
   background-color: #e5e5e5;
 }
 .dl_btn_danger:hover {
-  color: #fff;
+  color: white;
   background-color: #ea6060;
 }
 .dl_btn_red {
-  background-color: #cd270d;
-  border-color: #cd270d;
+  background-color: btnActionBgColor;
+  border-color: btnActionBgColor;
 }
 .dl_btn_red:hover {
-  background-color: #8f5248;
-  border-color: #8f5248;
+  background-color: btnActionHoverBgColor;
+  border-color: btnActionHoverBgColor;
 }
 .dl_btn_submit {
   width: 80px;
@@ -502,15 +502,15 @@ button {
   opacity: 1;
 }
 .map_btn {
-  background-color: #cd270d;
-  border-color: #cd270d;
+  background-color: btnActionBgColor;
+  border-color: btnActionBgColor;
   border-style: solid;
   line-height: 1;
   position: relative;
   font-size: 12px;
   width: 60px;
   height: 25px;
-  color: #fff;
+  color: white;
   cursor: pointer;
 }
 .cancel_btn {
@@ -526,7 +526,7 @@ button {
   border-color: #e5e5e5;
 }
 .close_btn {
-  background-color: #ff8c00;
+  background-color: closeButtonColor;
   color: #fff;
   border: none;
   line-height: 1;
@@ -535,8 +535,8 @@ button {
   border-radius: 1px;
 }
 .close_btn:hover {
-  background-color: #ce760a;
-  border-color: #ce760a;
+  background-color: closeButtonHoverColor;
+  border-color: closeButtonHoverColor;
 }
 .dl_input.editToggle[disabled='disabled'] {
   background-color: inherit;
@@ -549,13 +549,13 @@ button {
   padding: 5px;
   border-style: solid;
   border-width: 1px;
-  border-color: #3498db;
+  border-color: buttonColor;
 }
 .info_right_border {
   padding: 8px 5px;
   border-style: solid;
   border-width: 1px 1px 1px 0;
-  border-color: #3498db;
+  border-color: buttonColor;
 }
 .margin_0 {
   margin: 0;
@@ -811,17 +811,17 @@ input::-webkit-inner-spin-button {
 }
 .dl_nav {
   height: 50px;
-  background-color: #3498db;
+  background-color: themeColor;
   border-color: #fff;
-  color: #fff;
+  color: navbarFontColor;
   border-radius: 0px;
   margin-bottom: 0px;
-  min-width: 960px;
+  min-width: miniPageWidth;
 }
 .dl_nav .header_container {
   max-width: 90%;
   width: auto;
-  min-width: 960px;
+  min-width: miniPageWidth;
   padding: 0 50px;
 }
 .dl_nav ul li a:focus {
@@ -880,17 +880,17 @@ input::-webkit-inner-spin-button {
   position: relative;
 }
 .dl_footer {
-  background-color: #f8f8f3;
-  height: 60px;
+  background-color: footerBgColor;
+  height: footerHeight;
   min-width: 960px;
-  color: #999;
+  color: footerFontColor;
 }
 .dl_footer hr {
   margin-top: 0;
   margin-bottom: 15px;
 }
 .dl_footer .text_icp {
-  line-height: 60px;
+  line-height: footerHeight;
 }
 .dl_footer .text_icp a {
   margin-left: 50px;
@@ -931,10 +931,10 @@ input::-webkit-inner-spin-button {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .dl_err {
-  color: #f00;
+  color: red;
 }
 input.ng-invalid.ng-dirty {
-  border-color: #ffc0cb;
+  border-color: pink;
 }
 .tooltip.right {
   width: 300px;
@@ -953,7 +953,7 @@ input.ng-invalid.ng-dirty {
 }
 .clearLinkUnderline:hover {
   text-decoration: none;
-  color: #fff;
+  color: white;
 }
 .dl-top-login {
   width: 480px;
@@ -967,7 +967,7 @@ input.ng-invalid.ng-dirty {
   border-radius: 0px;
 }
 .dl-top-login .btn-signin-link {
-  color: #28689b;
+  color: linkColor;
 }
 .dl-top-login .input-group-btn>.btn+.btn-submit {
   margin-left: 14px;
@@ -987,4 +987,24 @@ input.ng-invalid.ng-dirty {
   color: #716b7a;
   padding: 5px 20px;
   font-size: 120%;
+}
+.wrap {
+  margin-top: 0px;
+}
+.block_left {
+  margin-top: 100px;
+}
+.block_left h1 {
+  font-family: "KaiTi", "STKaiti", "BiauKai";
+  font-size: 50px;
+  margin-bottom: 40px;
+}
+.block_right {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  width: 340px;
+}
+.btn_submit {
+  width: 100%;
+  height: 40px !important;
 }
