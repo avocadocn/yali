@@ -48,7 +48,7 @@
           .message_row
             span.message_label {{"LOCATION"|translate}}: {{group_message.campaign.location.name}}
             span.message_label 开始{{"TIME"|translate}}: {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm'}}
-            span.message_label 结束{{"TIME"|translate}}: {{group_message.campaign.end_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限: {{group_message.campaign.member_max}}
           .message_row
             span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false")
               button.dl_btn(ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.positive}}
