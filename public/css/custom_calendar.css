@@ -1,3 +1,9 @@
+.calendar_box {
+  margin-top: 20px;
+}
+.calendar_title {
+  margin-top: 5px;
+}
 .cal-day-inmonth span[data-cal-date] {
   opacity: 1;
 }

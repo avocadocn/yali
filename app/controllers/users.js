@@ -884,6 +884,7 @@ exports.home = function(req, res) {
         'unselected_teams' : unselected_teams,
         'photo': _user.photo,
         'realname':_user.realname,
+        'nickname': _user.nickname,
         'cname':_user.cname,
         'sign':_user.introduce,
         'role': req.session.role

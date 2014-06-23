@@ -53,7 +53,6 @@ module.exports = function(grunt) {
             css: {
                 src: [
                     'public/lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
-                    'public/lib/alertify.js/themes/alertify.bootstrap.css',
                     'public/lib/alertify.js/themes/alertify.core.css',
                     'public/lib/alertify.js/themes/alertify.default.css'
                 ],
