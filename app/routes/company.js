@@ -7,7 +7,7 @@ var config = require('../../config/config');
 
 module.exports = function(app, passport) {
 
-    //显示企业小组列表
+    //显示企业小队列表
     app.get('/company/signup', company.signup);
     app.get('/company/wait', company.wait);
 
@@ -35,8 +35,8 @@ module.exports = function(app, passport) {
     app.get('/company/select', company.select);//选择组件
     app.get('/company/invite', company.invite);//发送邀请链接
     app.post('/company/addDomain', company.addDomain);// 添加邮箱后缀
-    app.get('/company/add_group', company.add_company_group);//增加小组
-    app.post('/company/saveGroup', company.saveGroup);//保存新增小组信息
+    app.get('/company/add_group', company.add_company_group);//增加小队
+    app.post('/company/saveGroup', company.saveGroup);//保存新增小队信息
     app.post('/company/groupSelect', company.groupSelect);
     app.post('/company', company.create);// 提交公司申请信息
     app.post('/company/createDetail', company.createDetail);// 验证通过后进一步提交公司注册信息
@@ -50,9 +50,9 @@ module.exports = function(app, passport) {
     app.get('/company/change_password', authorization.requiresLogin, company.renderChangePassword);
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);
     app.post('/company/saveAccount', authorization.requiresCompany, company.saveAccount);
-    //公司小组信息保存
+    //公司小队信息保存
     app.post('/company/saveGroupInfo',authorization.requiresCompany,company.saveGroupInfo);
-    //公司小组查看修改
+    //公司小队查看修改
     app.get('/company/groupList', authorization.requiresLogin, company.renderGroupList);
     //企业发布活动
     app.post('/company/campaignSponsor', authorization.requiresCompany, company.sponsor);

@@ -1,6 +1,6 @@
 .group_select
   .groups.row
-      .text-center.h3.group_head='请选择要增加的' + group_head + '兴趣小组类型'
+      .text-center.h3.group_head='请选择要增加的' + group_head + '兴趣小队类型'
       //todo
   .groups.row
     .group.col-xs-2(ng-repeat='group in groupModel.groups' ng-class="{'active':groupModel.selected==group.type, 'inactive':groupModel.selected!=group.type}")

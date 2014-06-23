@@ -104,7 +104,7 @@ exports.updateUname =function (uid){
     });
   }).then(null,console.log);
 }
-//同步小组名称
+//同步小队名称
 exports.updateTname =function (tid){
   console.log(tid);
   CompanyGroup.findOne({_id: tid}).exec().then(function(companyGroup){
@@ -176,7 +176,7 @@ exports.updateUlogo =function (uid){
   }).then(null,console.log);
 }
 
-//同步小组logo
+//同步小队logo
 exports.updateTlogo =function (tid){
   console.log(tid);
   CompanyGroup.findOne({_id: tid}).exec().then(function(companyGroup){

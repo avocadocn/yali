@@ -14,9 +14,11 @@ exports.renderMessageList =function(req,res){
       'role':req.session.role
   });
 };
+
 //根据小队ID返回小组动态消息
 exports.getTeamMessage = function(req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER' && req.session.role !=='MEMBER' && req.session.role !=='PARTNER'){
+
     return res.send(403,forbidden);
   }
   GroupMessage.find({'team.teamid' : req.session.nowtid,
@@ -109,6 +111,8 @@ exports.getTeamMessage = function(req, res) {
      }
   });
 };
+
+
 //根据个人ID返回小组动态消息
 exports.getUserMessage = function(req, res) {
   if( req.session.role !=='OWNER'){

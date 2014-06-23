@@ -12,6 +12,23 @@ body {
   color: #666;
   background-color: #fff;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: "Microsoft YaHei", STHeiti, MingLiu;
+}
+* {
+  font-family: "Microsoft YaHei", STHeiti, MingLiu;
+}
 a {
   color: #28689b;
 }
@@ -22,8 +39,11 @@ select {
   border-radius: 0 !important;
 }
 .dl_head {
-  margin: auto;
-  width: 960px;
+  max-width: 70%;
+  width: auto;
+  min-width: 960px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 .dl_block {
   display: block;
@@ -419,11 +439,10 @@ select {
   padding-top: 0;
 }
 .dl_btn {
+  margin: 0;
   color: #fff;
   background-color: #3498db;
-  border-color: #3498db;
-  border-style: solid;
-  border-width: 2px;
+  border: none;
   line-height: 1;
   position: relative;
   font-size: 12px;
@@ -443,7 +462,7 @@ select {
   height: 30px;
 }
 .dl_btn_small {
-  padding: 5px 19px;
+  padding: 7px 21px;
 }
 .dl_btn_large {
   width: 150px;
@@ -454,8 +473,18 @@ select {
   width: 180px;
   height: 40px;
 }
-.dl_btn_red background-color ＃ea6060,
-.dl_btn_red border-color #ea6060,
+.dl_btn_danger {
+  color: #000;
+  background-color: #e5e5e5;
+}
+.dl_btn_danger:hover {
+  color: #fff;
+  background-color: #ea6060;
+}
+.dl_btn_red {
+  background-color: #ea6060;
+  border-color: #ea6060;
+}
 .dl_btn_red:hover {
   background-color: #a83737;
   border-color: #a83737;
@@ -480,9 +509,6 @@ select {
 }
 .cancel_btn {
   background-color: #e5e5e5;
-  border-color: #e5e5e5;
-  border-style: solid;
-  border-width: 2px;
   line-height: 1;
   position: relative;
   color: #000;
@@ -495,9 +521,8 @@ select {
 }
 .close_btn {
   background-color: #ff8c00;
-  border-color: #ff8c00;
   color: #fff;
-  border-style: solid;
+  border: none;
   line-height: 1;
   position: relative;
   font-size: 12px;
@@ -686,6 +711,7 @@ select {
   min-height: 34px;
   padding: 7px 0;
   float: left;
+  text-align: right;
 }
 .info_detail {
   min-width: 100px;
@@ -792,7 +818,7 @@ input::-webkit-inner-spin-button {
   min-width: 960px;
 }
 .dl_nav .header_container {
-  max-width: 1280px;
+  max-width: 90%;
   width: auto;
   min-width: 960px;
   padding: 0 50px;
@@ -848,9 +874,7 @@ input::-webkit-inner-spin-button {
 .wrap {
   min-height: 100%;
   height: auto;
-  margin-top: -73px;
   margin-bottom: 13px;
-  padding-top: 73px;
   min-width: 960px;
   position: relative;
 }
@@ -952,7 +976,7 @@ input.ng-invalid.ng-dirty {
 }
 .dl_slider .slider {
   position: fixed;
-  top: 77px;
+  top: 60px;
   padding: 10px 40px;
   background-color: #f5f5f5;
   border-radius: 5px;

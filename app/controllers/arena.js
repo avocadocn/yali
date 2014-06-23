@@ -177,7 +177,7 @@ exports.challenge = function(req, res){
     var uid = req.user.cid ? req.user.id : '';
     var username = req.user.cid ? req.user.nickname : '';
     var cid_opposite = req.arena.champion.cid;       //被约方公司id(如果是同一家公司那么cid_b = cid_a)
-    var gid = req.session.gid;         //约战小组id
+    var gid = req.session.gid;         //约战小队id
 
     var content = req.arena.campaign_info.content;
     var competition_format = req.arena.campaign_info.competition_format;
@@ -278,7 +278,7 @@ exports.challenge = function(req, res){
           });
         }
         else {
-          return res.send({'result':0,'msg':'未查到对方小组！'});
+          return res.send({'result':0,'msg':'未查到对方小队！'});
         }
       }
     });

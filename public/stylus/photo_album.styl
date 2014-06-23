@@ -1,10 +1,12 @@
-@require('../variables')
+@require('variables')
 
 contentBgColor = #fbfbfb
 contentBdColor = #ededed
 
 
 .photo_album
+
+  // common style
 
   .breadcrumb
     background-color backgroundColor
@@ -26,14 +28,15 @@ contentBdColor = #ededed
   .text
     color #9a9a9a
 
-  .photo_panel
-    margin-top -35px
+  // photo_album_detail page
+  .operator
+    padding-top 15px
 
   .photo
     position relative
     float left
     margin-left 53px
-    margin-top 53px
+    margin-bottom 53px
     &:nth-child(4n+1)
       margin-left 0
     width 200px
@@ -49,6 +52,9 @@ contentBdColor = #ededed
     background-color rgba(0, 0, 0, 0.4)
     color white
     text-decoration none
+
+
+  // photo_detail page
 
   .left
     position absolute
@@ -67,9 +73,6 @@ contentBdColor = #ededed
       &:after
         content ''
 
-  .btn_padding
-    padding-left 20px
-    padding-right 20px
 
   .comment_panel
     margin-top 20px
@@ -126,10 +129,14 @@ contentBdColor = #ededed
     border-style solid
     border-color transparent contentBdColor transparent transparent
 
-  .tags_input
-    background-color contentBgColor
-    border-color contentBdColor
-    border-radius 0
+  .photo_operator_form
+    margin-bottom 5px
+
+    .edit_photo_input
+      margin-bottom 5px
+      background-color contentBgColor
+      border-color contentBdColor
+      border-radius 0
 
   .photo_detail_container
     margin-bottom 30px
@@ -137,9 +144,8 @@ contentBdColor = #ededed
   .photo_ori
     max-height 500px
 
-  .btn_create
-    padding-left 10px
-    padding-right 10px
+
+  // photo_album_list page
 
   .photo_album_panel
     display block

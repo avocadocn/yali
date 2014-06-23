@@ -247,18 +247,18 @@ exports.addDomain = function(req,res){
             })
     });
 }
-//配合路由渲染增加小组列表Todo
+//配合路由渲染增加小队列表Todo
 exports.add_company_group = function(req, res){
     res.render('company/company_addgroup', {
         group_head: '企业',
-        title: '新建小组!'
+        title: '新建小队!'
     });
 };
 
-//显示企业小组列表
+//显示企业小队列表
 exports.renderGroupList = function(req, res) {
     res.render('company/company_group_list', {
-        title: '兴趣小组',
+        title: '兴趣小队',
         role: req.session.role
     });
 };
@@ -351,7 +351,7 @@ exports.groupSelect = function(req, res) {
         }
     });
 };
-//HR增加小组
+//HR增加小队
 exports.saveGroup = function(req, res) {
     var selected_group = req.body.selected_group;
     if(selected_group === undefined){
@@ -741,7 +741,7 @@ exports.saveGroupInfo = function(req, res){
                 res.send({'result':0,'msg':'您没进行修改'});
             }
         } else {
-            res.send({'result':0,'msg':'不存在小组！'});
+            res.send({'result':0,'msg':'不存在小队！'});
         }
     });
 };
@@ -965,7 +965,7 @@ exports.changeUser = function (req, res) {
     }
 };
 
-//任命/罢免组长
+//任命/罢免队长
 exports.appointLeader = function (req, res) {
   var uid = req.body.uid;
   var gid = req.body.gid;

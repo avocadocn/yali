@@ -93,7 +93,11 @@ var PhotoAlbum = new Schema({
     type: Boolean,
     default: false
   },
-  photos: [Photo]
+  photos: [Photo],
+  photo_count: {
+    type: Number,
+    default: 0
+  }
 });
 
 PhotoAlbum.pre('save', function(next) {

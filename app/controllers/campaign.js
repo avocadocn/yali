@@ -165,7 +165,7 @@ exports.sponsorCompanyCampaign = function (req, res) {
 };
 
 
-//HR/组长关闭活动
+//HR/队长关闭活动
 exports.campaignCancel = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
@@ -249,7 +249,7 @@ exports.getAllCampaign = function(req, res) {
   });
 }
 
-//返回某一小组的活动,待前台调用
+//返回某一小队的活动,待前台调用
 exports.getGroupCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
@@ -307,7 +307,7 @@ exports.getGroupCampaign = function(req, res) {
     }
   });
 };
-//组长发布一个活动(只能是一个企业)
+//队长发布一个活动(只能是一个企业)
 exports.sponsorGroupCampaign = function (req, res) {
 
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
@@ -465,7 +465,7 @@ function getUserCampaigns(req,res,_in) {
     }
   });
 }
-//列出该user加入的所有小组的活动
+//列出该user加入的所有小队的活动
 //这是在员工日程里的,不用判断权限,因为关闭活动等操作
 //必须让队长进入小队页面去完成,不能在个人页面进行
 exports.getUserCampaign = function(req, res) {

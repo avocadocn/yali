@@ -15,7 +15,7 @@ exports.auth_user = function (req, res, next) {
 			case PERMISSION[0]:
 
 			break;
-			//组长权限
+			//队长权限
 			case PERMISSION[2]:
 			
 			break;

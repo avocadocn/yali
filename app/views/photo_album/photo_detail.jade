@@ -1,14 +1,14 @@
 extend ../layouts/user_base
 
 append headExt
-  link(rel="stylesheet" href="/css/views/photo_album.css")
+  link(rel="stylesheet" href="/css/photo_album.css")
 
 block contentExt
   .dl_container.photo_album
     ol.breadcrumb
       li: a(href="/group/home/#{photo_album.owner._id}")= photo_album.owner.name
       li: a(href="/#{photo_album.owner._id}/photoAlbumListView") 相册集
-      li: a(href="/photoAlbumDetailView/#{photo_album._id}")= photo_album.name
+      li: a#returnUri(href="/photoAlbumDetailView/#{photo_album._id}")= photo_album.name
       li.active= photo_detail.name
     hr
     .row.photo_detail_container
@@ -30,7 +30,7 @@ block contentExt
             input(type="hidden" name="_method" value="put")
             textarea.comment_textarea.form-control(type="text" name="text" required)
             .clearfix
-              button.dl_btn.btn_padding.pull-right.margin_top_5(type="submit") 提交留言
+              button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
           section
             each comment in photo_detail.comments
               div.comment.clearfix
@@ -54,12 +54,19 @@ block contentExt
         p.text 照片数:&nbsp;#{photo_album.photo_count}
         - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
         p.text 最后更新:&nbsp;#{year}.#{month}.#{day}
-        form.margin_top_20.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
+        form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
           input(type="hidden" name="_method" value="put")
           h4 给照片添加标签
           p.text 输入照片中人名/队名/企业名/
-          input.form-control.tags_input(type="text" name="tags" required)
-          button.dl_btn.btn_padding.margin_top_5(type="submit") 添加标签
+          input.form-control.edit_photo_input(type="text" name="tags" required)
+          button.dl_btn.dl_btn_small(type="submit") 添加标签
+        form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
+          input(type="hidden" name="_method" value="put")
+          input.form-control.edit_photo_input(type="text" name="name" required)
+          button.dl_btn.dl_btn_small(type="submit") 更改照片名字
+        form#delete_form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
+          input(type="hidden" name="_method" value="delete")
+          button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该照片
 
 
 append footExt
@@ -69,4 +76,18 @@ append footExt
       if (status === 'success') {
         window.location.reload();
       }
+    });
+    var deleteForm = $('#delete_form');
+    deleteForm.ajaxForm(function(data, status) {
+      var returnUri = $('#returnUri').attr('href');
+      window.location.href = returnUri;
+    });
+    $('#delete_button').click(function() {
+      alertify.confirm('删除后不可恢复，您确定要删除该照片吗？', function(e) {
+        if (e) {
+          deleteForm.submit();
+        } else {
+
+        }
+      });
     });

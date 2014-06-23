@@ -44,6 +44,7 @@ var GroupMessage = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Campaign'
     },
+
     //可做成数组合并多个成员加入
     user:{
         user_id:{

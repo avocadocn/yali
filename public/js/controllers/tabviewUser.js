@@ -262,7 +262,6 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
     $scope.company = false;
     $http.get('/users/getScheduleListData').success(function(data, status) {
-        console.log(data.data)
       $scope.campaigns = data.data;
       $scope.company = false;
     });

@@ -431,7 +431,7 @@ exports.selectGroup = function(req, res) {
       if(req.session.username != undefined) {
         res.render('users/message', message.actived);
       } else {
-        res.render('users/selectGroup', { title: '选择你的兴趣小组', group_head: '个人' });
+        res.render('users/selectGroup', { title: '选择你的兴趣小队', group_head: '个人' });
       }
     } else {
       res.render('users/message', message.unregister);
@@ -522,6 +522,7 @@ exports.finishRegister = function(req, res) {
 };
 
 
+
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{
       'provider':'user',
@@ -563,12 +564,12 @@ function fetchCampaign(req,res,team_ids,role) {
         if(campaign[j].team.length === 0){//公司活动
           logo = campaign[j].cid[0].logo;
           link = '/company/home';
-        }    
+        }
         else{
           if(campaign[j].team.length === 1){//小队活动
             logo = campaign[j].team[0].logo;
             link = '/group/home/'+campaign[j].team[0]._id;
-          }  
+          }
           else{                              //小队挑战
             if(team_ids.indexOf(campaign[j].team[0]._id)!== -1){ //是主办方
               logo = campaign[j].team[0].logo;
@@ -619,7 +620,7 @@ function fetchTeam(group) {
   }
   return temp;
 }
-//列出该user加入的所有小组的活动
+//列出该user加入的所有小队的活动
 //这是在员工日程里的,不用判断权限,因为关闭活动等操作
 //必须让队长进入小队页面去完成,不能在个人页面进行
 exports.getCampaigns = function(req, res) {
@@ -725,13 +726,29 @@ exports.scheduleCalendarData = function(req, res) {
   getUserSchedule(req.user._id.toString(), function(campaigns) {
     var calendarCampaigns = [];
     campaigns.forEach(function(campaign) {
+      var company_group_id;
+      for (var i = 0, groups = req.user.group; i < groups.length; i++) {
+        for (var j = 0, teams = groups[i].team; j < teams.length; j++) {
+          if (campaign.team.indexOf(teams[j].id) !== -1) {
+            company_group_id = teams[j].id;
+          }
+        }
+      }
+
+      var count = 0;
+      if (campaign.member) {
+        count = campaign.member.length;
+      }
+
       calendarCampaigns.push({
         'id': campaign._id,
+        'company_group_id': company_group_id,
         'title': campaign.theme,
         'url': '/group/campaign/' + campaign._id.toString(),
         'class': 'event-info',
         'start': campaign.start_time.valueOf(),
-        'end': campaign.end_time.valueOf()
+        'end': campaign.end_time.valueOf(),
+        'count': count
       });
     });
     res.send({
@@ -1108,7 +1125,7 @@ exports.timeLine = function(req,res){
   });
 };
 
-//用户加入小组
+//用户加入小队
 exports.joinGroup = function (req, res){
   var uid = req.user._id.toString();
   var tid = req.body.tid;
@@ -1152,11 +1169,11 @@ exports.joinGroup = function (req, res){
                 'team': [team]
               });
             }
-            //保存小组
+            //保存小队
             companyGroup.save(function (err){
               if(err){
                 console.log(err);
-                return res.send({result: 0, msg:'保存小组出错'});
+                return res.send({result: 0, msg:'保存小队出错'});
               }
             });
             //保存用户
@@ -1188,7 +1205,7 @@ exports.joinGroup = function (req, res){
   });
 };
 
-//用户退出小组
+//用户退出小队
 exports.quitGroup = function (req, res){
   var uid = req.user._id.toString();
   var tid = req.body.tid;
@@ -1221,7 +1238,7 @@ exports.quitGroup = function (req, res){
             User.findOne({_id: uid},
               function (err, user){
                 if(user){
-                  //从user的group的team中删除此小组
+                  //从user的group的team中删除此小队
                   for(var j=0;j<user.group.length;j++){
                     for(var k=0; k<user.group[j].team.length;k++){
                       if(user.group[j].team[k].id.toString() === tid){
@@ -1235,7 +1252,7 @@ exports.quitGroup = function (req, res){
                       return res.send(err);
                     }
                     else
-                      return res.send({result:1, msg: '退出小组成功！'});
+                      return res.send({result:1, msg: '退出小队成功！'});
                   });
                 }
                 else
@@ -1245,7 +1262,7 @@ exports.quitGroup = function (req, res){
         });
       }
       else
-        return res.send({result: 0, msg:'无此小组'});
+        return res.send({result: 0, msg:'无此小队'});
     });
 };
 
@@ -1386,7 +1403,7 @@ exports.getGroups = function(req, res) {
 
     res.send({
       result: 1,
-      msg: '获取小组列表成功',
+      msg: '获取小队列表成功',
       joined_groups: joined_groups,
       unjoin_groups: unjoin_groups
     });
@@ -1394,7 +1411,7 @@ exports.getGroups = function(req, res) {
   })
   .then(null, function(err) {
     console.log(err);
-    res.send('获取小组列表失败');
+    res.send('获取小队列表失败');
   });
 
 
