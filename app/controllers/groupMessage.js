@@ -108,16 +108,15 @@ exports.getTeamMessage = function(req, res) {
      }
   });
 };
-//根据个人ID返回小组动态消息
+
+//列出该user加入的所有小队的动态
 exports.getUserMessage = function(req, res) {
   if( req.session.role !=='OWNER'){
     return res.send(403,forbidden);
   }
   var team_ids = [];
-  req.user.group.forEach(function(group){
-    group.team.forEach(function(team){
+  req.user.team.forEach(function(team){
       team_ids.push(team.id.toString());
-    });
   });
   GroupMessage.find({
       '$or':[{'team.teamid' : {'$in':team_ids}},{'company.cid':req.user.cid}],
@@ -200,4 +199,5 @@ exports.getUserMessage = function(req, res) {
       return res.send({'group_messages':group_messages,'role':req.session.role});
      }
   });
+
 };

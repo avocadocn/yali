@@ -265,27 +265,25 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             $scope.cid = data.cid;
             $scope.tname= data.name;
             $scope.role = data.role;
-            $scope.group = data.group;//用户的group
+            $scope.team = data.team;//用户的group
             $scope.provoke_gid = data.provoke_gid;  //挑战时的小组类型
             $scope.provoke_tid = data.provoke_tid;
             for(var i = 0; i < $scope.team_lists.length; i ++) {
                 $scope.team_lists[i].provoke = ($scope.team_lists[i].gid == $scope.provoke_gid && $scope.team_lists[i]._id != $scope.provoke_tid);//是否可以对此组发起挑战
                 if($scope.role === 'EMPLOYEE'){
                     $scope.team_lists[i].belong = false;
-                    for(var j=0; j< $scope.group.length; j++){
+                    for(var j=0; j< $scope.team.length; j++){
                         //如果已找到则跳出此循环标记下一个team
                         if($scope.team_lists[i].belong === true)
                             break;
                         //如果此team的gid与此group的_id不同 则找下一个group
-                        if($scope.team_lists[i].gid !== $scope.group[j]._id)
+                        if($scope.team_lists[i].gid !== $scope.team[j].gid)
                             continue;
                         else{
-                            for (var k = 0; k < $scope.group[j].team.length; k++) {
-                                if($scope.team_lists[i]._id === $scope.group[j].team[k].id.toString()){
-                                    $scope.team_lists[i].belong = true;
-                                    break;
-                                }
-                            };
+                            if($scope.team_lists[i]._id === $scope.team[j]._id.toString()){
+                                $scope.team_lists[i].belong = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -300,8 +298,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.inviteUrlStatus= false;
     $scope.select_user = false;
     $scope.select_leader = false;
-    // $scope.groupInfoUnEdit = true;
-    // $scope.groupInfoButtonStatus = '编辑队名'
 
 
     $scope.preProvoke = function(team) {

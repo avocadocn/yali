@@ -234,7 +234,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/getCampaigns/'+tid+'?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.data;
-            $scope.role = data.role;    //只有改组的组长才可以操作活动(关闭、编辑等)
+            $scope.role = data.role;    //只有改组的队长才可以操作活动(关闭、编辑等)
         });
 
     });
@@ -638,7 +638,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 $scope.teams = data;
                 $scope.companies=[];
                 if($scope.teams.length <= 0) {
-                    $rootScope.donlerAlert("没有找到符合条件的小组!");
+                    $rootScope.donlerAlert("没有找到符合条件的小队!");
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);

@@ -10,7 +10,7 @@
         .dl_modal_container
           .dl_row
             .dl_md_12
-              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,可以是公司名或者小组名" type="text" ng-model="s_value" required)
+              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,可以是公司名或者小队名" type="text" ng-model="s_value" required)
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="search_form.$invalid") 搜索
         .dl_modal_container
@@ -35,10 +35,10 @@
                     h5 {{company.name}}
                 .row.margin_left_10
                   .dl_md_3
-                    h5 公司小组数:{{company.team.length}}
+                    h5 公司小队数:{{company.team.length}}
                   .dl_md_3
               .dl_md_1
-                a.clearLinkUnderline.dl_btn_right(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小组
+                a.clearLinkUnderline.dl_btn_right(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小队
                 a.clearLinkUnderline.dl_btn_right(ng-if="show_team[$index]" ng-click="toggleTeam(company._id,$index)") 收起
             .dl_modal_container
               hr

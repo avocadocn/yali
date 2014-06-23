@@ -5,7 +5,7 @@ block contentExt
   input#group_id(type="hidden" value="#{gid}")
   h3= photo_album.name
   p= '最后更新：' + photo_album.update_date
-  a(href="/group/#{gid}/managePhotoAlbum") 返回小组相册列表
+  a(href="/group/#{gid}/managePhotoAlbum") 返回小队相册列表
   hr
   h5 上传照片
   form.js_ajax_form(action="/photoAlbum/#{photo_album.id}/photo" method="post" enctype="multipart/form-data")

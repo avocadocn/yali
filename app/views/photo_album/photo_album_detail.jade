@@ -1,28 +1,39 @@
 extend ../layouts/user_base
 
 append headExt
-  link(rel="stylesheet" href="/css/views/photo_album.css")
+  link(rel="stylesheet" href="/css/photo_album.css")
 
 block contentExt
   .dl_container.photo_album
-    header.relative
+    header.clearfix
       ol.breadcrumb
         li: a(href="/group/home/#{photo_album.owner._id}")= photo_album.owner.name
-        li: a(href="/#{photo_album.owner._id}/photoAlbumListView") 相册集
+        li: a#returnUri(href="/#{photo_album.owner._id}/photoAlbumListView") 相册集
         li.active= photo_album.name
-      div
+      div.relative
         .media
           .pull-left
             img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.logo}")
           .media-body
             h4.media-heading= photo_album.owner.name
             p.text 相册名:&nbsp;#{photo_album.name}
-            p.text 照片数:&nbsp;#{photo_album.photos.length}
+            p.text 照片数:&nbsp;#{photo_album.photo_count}
             - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
             p.text 最后更新:&nbsp;#{year}.#{month}.#{day}
         form#upload_photo_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo" method="post" enctype="multipart/form-data")
           input#photo.hidden(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
-        label.dl_btn.right_down(for="photo") 上传照片
+        .right_down
+          label.dl_btn.dl_btn_small(for="photo") 上传照片
+          button.dl_btn.dl_btn_small(data-toggle="collapse" data-target="#more") 更多操作
+      #more.more.collapse.clearfix
+        .operator
+          form#delete_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
+            input(type="hidden" name="_method" value="delete")
+            button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该相册
+          form.js_ajax_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
+            input(type="hidden" name="_method" value="put")
+            input.dl_input(type="text" name="name")
+            button.dl_btn.dl_btn_small(type="submit") 修改相册名字
     hr
     div.photo_panel.clearfix
       each photo in photo_album.photos
@@ -42,4 +53,25 @@ append footExt
       if ($(this).val() !== '' || $(this).val() != null) {
         $('#upload_photo_form').submit();
       }
+    });
+    var deleteForm = $('#delete_form');
+    deleteForm.ajaxForm(function(data, status) {
+      var returnUri = $('#returnUri').attr('href');
+      window.location.href = returnUri;
+    });
+    $('#delete_button').click(function() {
+      alertify.set({
+        buttonFocus: "none",
+        labels: {
+          ok: '确认删除',
+          cancel: '取消'
+        }
+      });
+      alertify.confirm('删除后不可恢复，您确定要删除该相册吗？', function(e) {
+        if (e) {
+          deleteForm.submit();
+        } else {
+
+        }
+      });
     });

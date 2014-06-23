@@ -12,16 +12,25 @@ body
   line-height 18px
   color fontColor
   background-color backgroundColor
-
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+  font-family "Microsoft YaHei",STHeiti,MingLiu
+*
+  font-family "Microsoft YaHei",STHeiti,MingLiu
 a
   color linkColor
 li
   list-style none
 select
   border-radius 0 !important
+button
+  border none
+  
 .dl_head
-  margin auto
-  width 960px
+    max-width 70%
+    width auto
+    min-width miniPageWidth
+    margin 0 auto
+    padding 0 2rem
 
 .dl_block
   display block
@@ -192,12 +201,12 @@ select
   vertical-align middle
   padding 5px 0
   display inline-block
-  background-color #ff2200
-  border-color #ff2200
+  background-color btnActionBgColor
+  border-color btnActionBgColor
   cursor pointer
   &:hover
-    background-color #8f5248
-    border-color #8f5248
+    background-color btnActionHoverBgColor 
+    border-color btnActionHoverBgColor 
   &:disabled
     opacity .55
 
@@ -375,17 +384,17 @@ select
 .padding_top_0
   padding-top 0
 .dl_btn
+  margin 0
   color #fff
   background-color buttonColor
-  border-color buttonColor
-  border-style solid
-  border-width 2px
+  border none
   line-height 1
   position relative
   font-size 12px
   text-align center
   vertical-align middle
   display inline-block
+  cursor pointer
   &:hover
     background-color buttonHoverColor
     border-color buttonHoverColor
@@ -395,7 +404,8 @@ select
   width 120px
   height 30px
 .dl_btn_small
-  padding 5px 19px
+  padding 7px 12px
+  text-align center
 .dl_btn_large
   width 150px
   height 30px
@@ -403,20 +413,26 @@ select
 .dl_btn_detail
   width 180px
   height 40px
-.dl_btn_red
-  background-color ＃ea6060
-  border-color #ea6060
+.dl_btn_danger
+  color black
+  background-color #e5e5e5
   &:hover
-    background-color #a83737
-    border-color #a83737
+    color white
+    background-color #ea6060
+.dl_btn_red
+  background-color btnActionBgColor 
+  border-color btnActionBgColor 
+  &:hover
+    background-color btnActionHoverBgColor
+    border-color btnActionHoverBgColor
 .dl_btn_submit
   width 80px
   height 25px
 .dl_close
   opacity 1
 .map_btn
-  background-color #cd270d
-  border-color #cd270d
+  background-color btnActionBgColor 
+  border-color btnActionBgColor 
   border-style solid
   line-height 1
   position relative
@@ -424,11 +440,9 @@ select
   width 60px
   height 25px
   color white
+  cursor pointer
 .cancel_btn
   background-color #e5e5e5
-  border-color #e5e5e5
-  border-style solid
-  border-width 2px
   line-height 1
   position relative
   color #000
@@ -439,9 +453,8 @@ select
     border-color #e5e5e5
 .close_btn
   background-color closeButtonColor
-  border-color closeButtonColor
   color #fff
-  border-style solid
+  border none
   line-height 1
   position relative
   font-size 12px
@@ -457,7 +470,7 @@ select
   font-size 12px
 .info_border
   padding 5px
-  border-style solid  
+  border-style solid
   border-width 1px
   border-color buttonColor
 .info_right_border
@@ -583,6 +596,7 @@ select
   min-height 34px
   padding 7px 0
   float left
+  text-align right
 .info_detail
   min-width 100px
   float left
@@ -656,11 +670,6 @@ input::-webkit-inner-spin-button
 .dl_nav
   height 50px
   background-color themeColor
-  background -ms-linear-gradient(top, themeColor, navbarLinearColor)
-  background -moz-linear-gradient(top, themeColor, navbarLinearColor)
-  background -webkit-gradient(linear, 0% 0%, 0% 100%, from(themeColor), to(navbarLinearColor))
-  background -webkit-linear-gradient(top, themeColor, navbarLinearColor)
-  background -o-linear-gradient(top, themeColor, navbarLinearColor)
   border-color #fff
   color navbarFontColor
   border-radius 0px
@@ -668,7 +677,7 @@ input::-webkit-inner-spin-button
   min-width miniPageWidth
   
   .header_container
-    max-width maxPageWidth
+    max-width 90%
     width auto
     min-width miniPageWidth
     padding 0 50px
@@ -714,9 +723,9 @@ input::-webkit-inner-spin-button
 .wrap
   min-height 100%
   height auto
-  margin-top -73px
+
   margin-bottom 13px
-  padding-top 73px
+
   min-width 960px
   position relative
 .dl_footer
@@ -797,7 +806,7 @@ input.ng-invalid.ng-dirty
 .dl_slider
   .slider
     position fixed
-    top: 77px
+    top: 60px
     padding 10px 40px
     background-color #f5f5f5
     border-radius 5px

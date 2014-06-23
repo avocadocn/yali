@@ -12,7 +12,13 @@ var mongoose = require('mongoose'),
 
 
 var _team = new Schema({
-    id : Schema.Types.ObjectId,                  //即companyGroup的_id
+    gid: {
+        type: String,
+        ref: 'Group'
+    },
+    _id: Schema.Types.ObjectId,
+    group_type: String,
+    entity_type: String,           //对应的增强组件名字
     name : String,
     leader : {                    //该员工是不是这个小队的队长
         type : Boolean,
@@ -21,15 +27,6 @@ var _team = new Schema({
     logo: String
 });
 
-var _group = new Schema({
-    _id: {
-        type: String,
-        ref: 'Group'
-    },
-    group_type: String,
-    entity_type: String,           //对应的增强组件名字
-    team: [_team]
-});
 /**
  * User Schema
  */
@@ -89,14 +86,14 @@ var UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['LEADER','EMPLOYEE']      //HR 组长 普通员工
+        enum: ['LEADER','EMPLOYEE']      //HR 队长 普通员工
     },
     cid: {
         type: Schema.Types.ObjectId,
         ref: 'Company'
     },
     cname: String,
-    group: [_group]
+    team: [_team]
 });
 
 /**

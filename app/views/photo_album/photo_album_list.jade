@@ -1,7 +1,7 @@
 extend ../layouts/user_base
 
 append headExt
-  link(rel="stylesheet" href="/css/views/photo_album.css")
+  link(rel="stylesheet" href="/css/photo_album.css")
 
 block contentExt
   .dl_container.photo_album
@@ -20,7 +20,7 @@ block contentExt
           input(type="hidden" name="cid" value="#{cid}")
           input(type="hidden" name="gid" value="#{owner_id}")
           input(type="text" name="name" required)
-          button.dl_btn.btn_create(type="submit") 新建相册
+          button.dl_btn.dl_btn_small(type="submit") 新建相册
       hr
     .row.photo_album_list_wrap
       each photo_album in photo_album_list
@@ -30,7 +30,7 @@ block contentExt
             h4.text-center
               span.photo_album_name= photo_album.name
               | &nbsp;
-              small (#{photo_album.photo_count})
+              small /&nbsp;#{photo_album.photo_count}
           div.update_info.center-block.margin_top_10
             if photo_album.update_user.type === 'user'
               img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36")

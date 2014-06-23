@@ -39,22 +39,16 @@ exports.authorize = function(req, res, next) {
     }
   }
   else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
-    var _groupIndex = model_helper.arrayObjectIndexOf(req.user.group,req.companyGroup.gid,'_id');
-    if(_groupIndex>-1){
-      var _teamIndex = model_helper.arrayObjectIndexOf(req.user.group[_groupIndex].team,req.companyGroup._id,'id');
-      if(_teamIndex>-1){
-        if(req.user.group[_groupIndex].team[_teamIndex].leader ===true){
-          req.session.role = 'LEADER';
-          req.session.Global.role = 'LEADER';
-        }
-        else{
-          req.session.role = 'MEMBER';
-          req.session.Global.role = 'MEMBER';
-        }
+    var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,req.companyGroup._id,'_id');
+    if(_teamIndex>-1){
+      console.log(_teamIndex,req.user.team[_teamIndex]);
+      if(req.user.team[_teamIndex].leader === true){
+        req.session.role = 'LEADER';
+        req.session.Global.role = 'LEADER';
       }
       else{
-        req.session.role = 'PARTNER';
-        req.session.Global.role = 'PARTNER';
+        req.session.role = 'MEMBER';
+        req.session.Global.role = 'MEMBER';
       }
     }
     else{
@@ -111,7 +105,7 @@ exports.renderInfo = function (req, res) {
   res.render('group/group_info',{'role':req.session.role});
 };
 
-//激活小组
+//激活小队
 exports.activateGroup = function(req, res) {
   var tid = req.body.tid;
   var active = req.body.active;
@@ -120,7 +114,7 @@ exports.activateGroup = function(req, res) {
   },function(err,companyGroup){
     if (err || !companyGroup){
       console.log('cannot find team');
-      return res.send({'result':0,'msg':'小组查询错误'});
+      return res.send({'result':0,'msg':'小队查询错误'});
     }else{
       companyGroup.active = active;
       companyGroup.save(function(s_err){
@@ -147,8 +141,8 @@ exports.info =function(req,res) {
             return res.send(err);
         } else {
             return res.send({
-                'companyGroup': req.companyGroup,  //父小组信息
-                'entity': entity                   //实体小组信息
+                'companyGroup': req.companyGroup,  //父小队信息
+                'entity': entity                   //实体小队信息
             });
         }
     });
@@ -321,10 +315,8 @@ exports.home = function(req, res) {
         var unselected_teams = [];
         var user_teams = [];
         var photo_album_ids = [];
-        for(var i = 0; i < req.user.group.length; i ++) {
-          for(var j = 0; j < req.user.group[i].team.length; j ++) {
-            user_teams.push(req.user.group[i].team[j].id.toString());
-          }
+        for(var i = 0; i < req.user.team.length; i ++) {
+          user_teams.push(req.user.team[i]._id.toString());
         }
         CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
           if(err || !company_groups) {
@@ -387,9 +379,10 @@ exports.getCompanyGroups = function(req, res) {
     if(err || !teams) {
       return res.send([]);
     } else {
+      console.log(req.user);
       return res.send({
         'teams':teams,
-        'group' : req.user.group,
+        'team' : req.user != undefined ? req.user.team : [],
         'cid':req.session.nowcid,
         'role':req.session.role,
         'provoke_gid' : provoke_gid,   //进对方公司资料对其小队进行挑战时判断小队类型
@@ -400,6 +393,7 @@ exports.getCompanyGroups = function(req, res) {
 };
 
 
+
 exports.renderCampaigns = function(req,res){
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
@@ -408,6 +402,7 @@ exports.renderCampaigns = function(req,res){
 }
 
 //返回某一小组的活动,待前台调用
+
 exports.getGroupCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
@@ -473,7 +468,7 @@ exports.getGroupCampaign = function(req, res) {
   });
 };
 
-//组长关闭活动
+//队长关闭活动
 exports.campaignCancel = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
@@ -670,7 +665,7 @@ exports.responseProvoke = function (req, res) {
   });
 };
 
-//组长发布一个活动(只能是一个企业)
+//队长发布一个活动(只能是一个企业)
 exports.sponsor = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);

@@ -2,14 +2,14 @@ extends ../layouts/user_base
 
 append headExt
   link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
-  link(rel="stylesheet" href="/css/views/edit_logo.css")
+  link(rel="stylesheet" href="/css/edit_logo.css")
 
 block contentExt
   .dl_container
     .row
       .col-xs-12.col-sm-7
         h3
-          | 添加或更改小组logo
+          | 添加或更改小队logo
           &nbsp;
           small: a(href="/group/home/#{id}#/group_info") 返回
           input#return_uri(type="hidden" value="/group/home/#{id}#/group_info")

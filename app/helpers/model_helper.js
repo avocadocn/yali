@@ -19,11 +19,11 @@ var formatCampaign = function(user, campaign) {
     }
   }
   var opponent_list = [];
-  var group_index = arrayObjectIndexOf(user.group, campaign.gid, '_id');
+  var group_index = arrayObjectIndexOf(user.team, campaign.gid, 'gid');
   if (group_index > -1) {
     for (var i = 0; i < campaign.team.length; i++) {
       var team = campaign.team[i];
-      var team_index = arrayObjectIndexOf(user.group[group_index].team, team._id, 'id')
+      var team_index = arrayObjectIndexOf(user.team, team._id, '_id')
       if (team_index > -1) {
         var team_name = team.name;
         var team_id = team._id;

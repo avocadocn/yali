@@ -33,8 +33,8 @@ var footBall = new Schema({
     family: String,          //全家福路径
     home_court: Array,       //主场(可能有多个)
     sponsor: String,         //赞助商
-    score: Number,           //该小组分数
-    rank: Number,            //该小组排名
+    score: Number,           //该小队分数
+    rank: Number,            //该小队排名
     create_date: {
         type:Date,
         default:Date.now()

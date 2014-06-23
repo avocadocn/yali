@@ -47,7 +47,7 @@ module.exports = function(app, passport) {
     //加入、退出活动
     app.post('/users/joinCampaign', authorization.requiresLogin, users.joinCampaign);
     app.post('/users/quitCampaign', authorization.requiresLogin, users.quitCampaign);
-    //加入、退出小组
+    //加入、退出小队
     app.post('/users/joinGroup', authorization.requiresLogin, users.joinGroup);
     app.post('/users/quitGroup', authorization.requiresLogin, users.quitGroup);
 
