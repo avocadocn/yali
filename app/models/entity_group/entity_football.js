@@ -34,11 +34,7 @@ var footBall = new Schema({
     home_court: Array,       //主场(可能有多个)
     sponsor: String,         //赞助商
     score: Number,           //该小队分数
-    rank: Number,            //该小队排名
-    create_date: {
-        type:Date,
-        default:Date.now()
-    }
+    rank: Number           //该小队排名
 });
 
 mongoose.model('FootBall', footBall);

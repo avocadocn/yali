@@ -48,7 +48,7 @@ div
       .info_side
         span.info_label {{"LOCATION"|translate}}
       .info_side(ng-if="infoUnEdit")
-        span.info_label {{linkage_init_location.province}} {{linkage_init_location.city}} {{linkage_init_location.district}}
+        span.info_detail {{linkage_init_location.province}} {{linkage_init_location.city}} {{linkage_init_location.district}}
       .info_detail(ng-show="!infoUnEdit")
         select.dl_input.editToggle.dl_form-Control.no_radius.height_34(type="text" name ="province" ng-disabled="infoUnEdit")
       .info_detail(ng-show="!infoUnEdit")
@@ -59,34 +59,36 @@ div
       .info_side
         span.info_label {{"ADDRESS"|translate}}
       .info_side(ng-if="!infoUnEdit")
-        span.info_label {{ info.city.province }} {{ info.city.city }} {{ info.city.district }}
+        span.info_detail {{ info.city.province }} {{ info.city.city }} {{ info.city.district }}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-model="info.address" ng-disabled="infoUnEdit")
-    .dl_row.clearfix
+    .dl_row.clearfix(ng-if="info.linkman!=undefined || !infoUnEdit")
       .info_side
         span.info_label {{"LINK_MAN"|translate}}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="linkman" ng-model="info.linkman" ng-disabled="infoUnEdit")
-    .dl_row.clearfix
+    .dl_row.clearfix(ng-if="info.lindline!=undefined || !infoUnEdit")
       .info_side
         span.info_label {{"ENTERPRISE_PHONE"|translate}}
-      .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="number" name ="areacode" ng-model="info.lindline.areacode" ng-disabled="infoUnEdit")
-      .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="number" name ="number" ng-model="info.lindline.number" ng-disabled="infoUnEdit")
-      .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="number" name ="extension" ng-model="info.lindline.extension" ng-disabled="infoUnEdit")
-    .dl_row.clearfix
+      .info_side(ng-if="infoUnEdit")
+        span.info_detail {{info.lindline.areacode}} - {{info.lindline.number}} {{info.lindline.extension ? ':'+info.lindline.extension:''}}
+      .info_detail(ng-show="!infoUnEdit")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="areacode" ng-model="info.lindline.areacode" ng-disabled="infoUnEdit")
+      .info_detail(ng-show="!infoUnEdit")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="number" ng-model="info.lindline.number" ng-disabled="infoUnEdit")
+      .info_detail(ng-show="!infoUnEdit")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="extension" ng-model="info.lindline.extension" ng-disabled="infoUnEdit")
+    .dl_row.clearfix(ng-if="info.phone!='' || !infoUnEdit")
       .info_side
         span.info_label {{"PHONE"|translate}}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="number" name ="phone" ng-model="info.phone" ng-disabled="infoUnEdit")
-    .dl_row.clearfix
+    .dl_row.clearfix(ng-if="info.email!=undefined || !infoUnEdit")
       .info_side
         span.info_label {{"EMAIL"|translate}}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="email" name ="email" ng-model="info.email" ng-disabled="infoUnEdit")
-    .dl_row.clearfix
+    .dl_row.clearfix(ng-if="info.brief!=undefined || !infoUnEdit")
       .info_side
         span.info_label {{"BRIEF"|translate}}
       .info_detail

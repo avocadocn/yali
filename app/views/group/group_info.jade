@@ -9,43 +9,43 @@ div(ng-controller="infoController")
       .info_side
         span.info_label {{"TEAM_NAME" | translate}}
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="name" ng-model="name"  ng-disabled="unEdit")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="name" ng-model="team.name"  ng-disabled="unEdit")
     .dl_row.clearfix
       .info_side
         span.info_label {{"COMPANY" | translate}}
-      .info_side
-        span.info_label {{companyname}}
+      .info_detail
+        span.info_label {{team.cname}}
     .dl_row.clearfix
       .info_side
         span.info_label {{"SUM" | translate}}
-      .info_side
-        span.info_label {{members.length}}
+      .info_detail
+        span.info_label {{team.member.length}}
     .dl_row.clearfix
       .info_side
         span.info_label {{"TEAM_LOGO" | translate}}
-      .info_side
+      .info_detail
         if (Global.role=== 'HR' || Global.role ==='LEADER')
           a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") {{"CHANGE" | translate}}LOGO
-    .dl_row.clearfix
+    .dl_row.clearfix(ng-if="entity.home_court[0]!=undefined || !unEdit")
       .info_side
         span.info_label {{"HOME_COURT" | translate}}
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-model="home_court_1" ng-disabled="unEdit")
-    .dl_row.clearfix
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-model="entity.home_court[0]" ng-disabled="unEdit")
+    .dl_row.clearfix(ng-if="entity.home_court[1]!=undefined || !unEdit")
       .info_side
         span.info_label.col-md-2.control-label
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-model="home_court_2" ng-disabled="unEdit")
-    .dl_row.clearfix
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-model="entity.home_court[1]" ng-disabled="unEdit")
+    .dl_row.clearfix(ng-if="team.brief!=undefined || !unEdit")
       .info_side
         span.info_label {{"BRIEF" | translate}}
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="textarea" rows="10" name ="brief" ng-model="brief" ng-disabled="unEdit")
+        input.dl_input.editToggle.dl_form-Control(type="textarea" rows="10" name ="brief" ng-model="team.brief" ng-disabled="unEdit")
     .dl_row.clearfix
       .info_side
         span.info_label {{"BUILD_TIME" | translate}}
-      .info_side
-        span.info_label {{create_time | date:'yyyy-MM-dd HH:mm:ss'}}
+      .info_detail
+        span.info_label {{team.create_time | date:'yyyy-MM-dd HH:mm:ss'}}
     .dl_row.clearfix
       h5.pull-left 成员信息
     hr.margin_top_6
@@ -55,7 +55,7 @@ div(ng-controller="infoController")
     .row
       .dl_modal_container.margin_left_10
         .groups.row
-          .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="leader in leaders")
+          .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="leader in team.leader")
             .dl_row
               a(href="/users/home/{{leader._id}}")
                 img.size_80(ng-src="{{leader.photo}}")

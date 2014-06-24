@@ -56,6 +56,10 @@ var CompanyGroup = new Schema({
     active: {
         type: Boolean,
         default: true
+    },
+    create_time:{
+        type: Date,
+        default: Date.now()
     }
 });
 

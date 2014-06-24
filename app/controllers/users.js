@@ -1065,6 +1065,9 @@ exports.joinGroup = function (req, res){
             return res.send(err);
           if(companyGroup){
             //先把个人资料先放入组员中
+            if(model_helper.arrayObjectIndexOf(companyGroup.member,uid,'_id')>-1){
+              return res.send({result: 0, msg:'您已经加入该小队'});
+            }
             companyGroup.member.push({
               '_id':user._id,
               'nickname':user.nickname,

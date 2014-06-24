@@ -133,7 +133,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     //alert('您已退出该活动!');
                     $scope.join = false;
                     for(var i = 0;i < $scope.campaign.member.length; i ++) {
-                        if($scope.campaign.member[i].nickname = $scope.nickname) {
+                        if($scope.campaign.member[i].nickname === $scope.nickname) {
                             $scope.campaign.member.splice(i,1);
                             break;
                         }
