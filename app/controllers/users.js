@@ -548,12 +548,12 @@ function fetchCampaign(req,res,team_ids,role) {
         if(campaign[j].team.length === 0){//公司活动
           logo = campaign[j].cid[0].logo;
           link = '/company/home';
-        }    
+        }
         else{
           if(campaign[j].team.length === 1){//小队活动
             logo = campaign[j].team[0].logo;
             link = '/group/home/'+campaign[j].team[0]._id;
-          }  
+          }
           else{                              //小队挑战
             if(team_ids.indexOf(campaign[j].team[0]._id)!== -1){ //是主办方
               logo = campaign[j].team[0].logo;
@@ -630,9 +630,13 @@ exports.getCampaigns = function(req, res) {
 };
 
 
-function getUserSchedule(uid, callback) {
-  Campaign
-  .find({ 'member.uid': uid })
+function getUserSchedule(uid, isCalendar, callback) {
+  var query = Campaign.find({ 'member.uid': uid });
+  if (isCalendar === false) {
+    query = query.populate('team').populate('cid');
+  }
+
+  query
   .exec()
   .then(function(campaigns) {
     callback(campaigns);
@@ -649,10 +653,12 @@ exports.renderScheduleList = function(req, res) {
 
 
 exports.scheduleListData = function(req, res) {
-  getUserSchedule(req.user._id.toString(), function(campaigns) {
+  getUserSchedule(req.user._id.toString(), false, function(campaigns) {
 
     var campaignListData = [];
     var join = false;
+    var logo ='';
+    var link ='';
 
     if (!campaigns) {
       return res.send({
@@ -671,7 +677,28 @@ exports.scheduleListData = function(req, res) {
         }
         var judge = false;
         if(campaigns[j].deadline && campaigns[j].member_max){
-            judge = !(Date.now() - campaigns[j].end_time.valueOf() <= 0 || Date.now() - campaigns[j].deadline.valueOf() <= 0 || campaign[j].member.length >= campaign[j].member_max);
+            judge = !(Date.now() - campaigns[j].end_time.valueOf() <= 0 || Date.now() - campaigns[j].deadline.valueOf() <= 0 || campaigns[j].member.length >= campaigns[j].member_max);
+        }
+
+        if(campaigns[j].team.length === 0){//公司活动
+          logo = campaigns[j].cid[0].logo;
+          link = '/company/home';
+        }
+        else{
+          if(campaigns[j].team.length === 1){//小队活动
+            logo = campaigns[j].team[0].logo;
+            link = '/group/home/'+campaigns[j].team[0]._id;
+          }
+          else{                              //小队挑战
+            if(team_ids.indexOf(campaigns[j].team[0]._id)!== -1){ //是主办方
+              logo = campaigns[j].team[0].logo;
+              link = '/group/home/'+campaigns[j].team[0]._id;
+            }
+            else{                             //不是主办方
+              logo = campaigns[j].team[1].logo;
+              link = '/group/home/'+campaigns[j].team[1]._id;
+            }
+          }
         }
         campaignListData.push({
           'over' : judge,
@@ -692,7 +719,11 @@ exports.scheduleListData = function(req, res) {
           'deadline':campaigns[j].deadline,
           'join':join,
           'provoke':campaigns[j].provoke,
-          'index':j
+          'index':j,
+          'theme':campaigns[j].theme,
+          'team':campaigns[j].team,
+          'logo':logo,
+          'link':link
         });
       }
       return res.send({
@@ -705,7 +736,7 @@ exports.scheduleListData = function(req, res) {
 };
 
 exports.scheduleCalendarData = function(req, res) {
-  getUserSchedule(req.user._id.toString(), function(campaigns) {
+  getUserSchedule(req.user._id.toString(), true, function(campaigns) {
     var calendarCampaigns = [];
     campaigns.forEach(function(campaign) {
       var company_group_id;

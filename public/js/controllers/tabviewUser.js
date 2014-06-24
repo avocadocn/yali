@@ -271,7 +271,7 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
       $scope.next = '下个月';
       break;
     }
-  }
+  };
 
 
   var options = {
