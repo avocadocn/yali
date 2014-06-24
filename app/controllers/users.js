@@ -1073,59 +1073,45 @@ exports.joinGroup = function (req, res){
               'nickname':user.nickname,
               'photo':user.photo
             });
-            //再去找此人是否加过此组件 找到则find为true，并在此组中加入此team
-            var find = false;
-            var team ={'_id':companyGroup._id, 'name':companyGroup.name, 'gid':companyGroup.gid,'leader': false, 'logo':companyGroup.logo, 'entity_type':companyGroup.entity_type,'group_type':companyGroup.group_type};
-            console.log(team);
-            for(var i=0;i<user.team.length;i++){
-              if(companyGroup.gid=== user.team[i].gid){
-                user.team.push(team);
-                find=true;
-                break;
-              }
-            }
-            //如果没找到，新建一个带此team的组push到用户的group里
-            if(find===false){
-              user.team.push({
-                '_id' : companyGroup._id,
-                'gid': companyGroup.gid,
-                'group_type': companyGroup.group_type,
-                'entity_type': companyGroup.entity_type,
-                'team': [team],
-                'name':companyGroup.name,
-                'logo':companyGroup.logo
-              });
-            }
+            user.team.push({
+              '_id' : companyGroup._id,
+              'gid': companyGroup.gid,
+              'group_type': companyGroup.group_type,
+              'entity_type': companyGroup.entity_type,
+              'name':companyGroup.name,
+              'logo':companyGroup.logo
+            });
             //保存小队
             companyGroup.save(function (err){
               if(err){
                 console.log(err);
                 return res.send({result: 0, msg:'保存小队出错'});
               }
-            });
-            //保存用户
-            user.save(function (err){
-              if(err){
-                console.log(err);
-                return res.send({result: 0, msg:'保存用户出错'});
-              }else{
-                console.log('保存用户成功');
-                var groupMessage = new GroupMessage();
-                groupMessage.message_type = 8;
-                groupMessage.team = {
-                  teamid : companyGroup._id,
-                  name : companyGroup.name
-                };
-                groupMessage.user ={
-                  user_id : user._id,
-                  name : user.nickname,
-                  logo : user.photo
-                };
-                groupMessage.save();
-              }
+              else{
+                //保存用户
+                user.save(function (err){
+                if(err){
+                  console.log(err);
+                  return res.send({result: 0, msg:'保存用户出错'});
+                }else{
+                  var groupMessage = new GroupMessage();
+                  groupMessage.message_type = 8;
+                  groupMessage.team = {
+                    teamid : companyGroup._id,
+                    name : companyGroup.name
+                  };
+                  groupMessage.user ={
+                    user_id : user._id,
+                    name : user.nickname,
+                    logo : user.photo
+                  };
+                  groupMessage.save();
+                  return res.send({result: 1, msg:'保存用户成功'});
+                }
 
             });
-            return res.send({result: 1, msg:'保存用户成功'});
+              }
+            });
           }
       });
     }
@@ -1144,18 +1130,16 @@ exports.quitGroup = function (req, res){
         return res.send(err);
       if(companyGroup){
          //从companyGroup的memeber里删除此人
-        for(var i =0; i<companyGroup.member.length; i++){
-          if(companyGroup.member[i]._id.toString() === uid){
-            companyGroup.member.splice(i,1);
-            break;
-          }
+        var member_index = model_helper.arrayObjectIndexOf(companyGroup.member,uid,'_id');
+        if(member_index>-1){
+          companyGroup.member.splice(member_index,1);
         }
-        //从companyGroup的leader里删除此人
-        for(var i =0; i<companyGroup.leader.length; i++){
-          if(companyGroup.leader[i]._id.toString() === uid){
-            companyGroup.leader.splice(i,1);
-            break;
-          }
+        else{
+          return res.send({result: 0, msg:'您没有参加该小队'});
+        }
+        var leader_index = model_helper.arrayObjectIndexOf(companyGroup.leader,uid,'_id');
+        if(leader_index>-1){
+          companyGroup.leader.splice(leader_index,1);
         }
         companyGroup.save(function (err) {
           if(err){
@@ -1166,11 +1150,12 @@ exports.quitGroup = function (req, res){
               function (err, user){
                 if(user){
                   //从user的group的team中删除此小队
-                  for(var j=0;j<user.team.length;j++){
-                    if(user.team[j]._id.toString() === tid){
-                      user.team.splice(j,1);
-                      break;
-                    }
+                  var team_index = model_helper.arrayObjectIndexOf(user.team,tid,'_id');
+                  if(team_index>-1){
+                    user.team.splice(team_index,1);
+                  }
+                  else{
+                    return res.send({result: 0, msg:'您没有参加该小队'});
                   }
                   user.save(function (err) {
                     if(err){
