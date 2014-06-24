@@ -38,7 +38,7 @@ exports.getTeamMessage = function(req, res) {
           'create_time' : group_message[i].create_time,
           'user': group_message[i].user
         };
-        if(group_message[i].message_type === 4 || group_message[i].message_type === 5){
+        if(group_message[i].message_type === 4 || group_message[i].message_type === 5 || group_message[i].message_type === 6){
           var camp_flag = group_message[i].campaign.camp[0].id== req.session.nowtid? 0 : 1;
           _group_message.camp_flag =camp_flag;
           _group_message.logo = group_message[i].team[camp_flag ].logo;
@@ -86,7 +86,7 @@ exports.getTeamMessage = function(req, res) {
         }
         else if(group_message[i].message_type === 0 ||group_message[i].message_type === 1 ){
           _group_message.logo = group_message[i].message_type === 0 ? group_message[i].company[0].logo : group_message[i].team[0].logo;
-          if(req.user.provider==='user'){
+          if(req.user.provider==='user' && Date()<group_message[i].campaign.deadline && group_message[i].campaign.member.length<group_message[i].campaign.member_max){
             var join_flag = false;
             group_message[i].campaign.member.forEach(function(member){
               if(member.uid.toString() === req.user._id.toString()){
@@ -100,7 +100,7 @@ exports.getTeamMessage = function(req, res) {
           _group_message.logo = group_message[i].user.logo;
         }
         else{
-          _group_message.logo = group_message[i].message_type === 0 ? group_message[i].company[0].logo : group_message[i].team[0].logo;
+          _group_message.logo = group_message[i].message_type === 2 ? group_message[i].company[0].logo : group_message[i].team[0].logo;
         }
         group_messages.push(_group_message);
       }
@@ -164,20 +164,8 @@ exports.getUserMessage = function(req, res) {
 
           }
           else if(group_message[i].message_type === 5) {
-            //没有参加为false，参加为true
-            var join_flag = false;
-            if(group_message[i].campaign.camp[camp_flag].member.length>0){
-              group_message[i].campaign.camp[camp_flag].member.forEach(function(member){
-                if(member.uid === req.user._id){
-                  join_flag = true;
-                }
-              });
-                _group_message.provoke_accept = true;
-            }
-
-          }
-          else if(group_message[i].message_type === 3) {
-            if(req.user.provider==='user'){
+            if(req.user.provider==='user' && Date()<group_message[i].campaign.deadline){
+              //没有参加为false，参加为true
               var join_flag = false;
               if(group_message[i].campaign.camp[camp_flag].member.length>0){
                 group_message[i].campaign.camp[camp_flag].member.forEach(function(member){
@@ -186,15 +174,13 @@ exports.getUserMessage = function(req, res) {
                   }
                 });
               }
-
-              _group_message.join_flag = join_flag;
             }
-            _group_message.join_flag = join_flag;
+
           }
         }
         else if(group_message[i].message_type === 0 || group_message[i].message_type === 1){
           _group_message.logo = group_message[i].message_type === 0 ? group_message[i].company[0].logo : group_message[i].team[0].logo;
-          if(req.user.provider==='user'){
+          if(req.user.provider==='user' && Date()<group_message[i].campaign.deadline){
             var join_flag = false;
             group_message[i].campaign.member.forEach(function(member){
               if(member.uid === req.user._id){
