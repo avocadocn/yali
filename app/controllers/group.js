@@ -865,7 +865,6 @@ exports.renderCampaignDetail = function(req, res) {
     console.log(err);
     res.send(404);
   });
-
 };
 
 exports.getCampaignDetail = function(req, res) {

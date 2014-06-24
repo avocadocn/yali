@@ -457,6 +457,12 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         alert($scope.team_lists[$scope.team_index].member.length);
     }
 
+    $scope.appointReady = function(user,leader,index){
+        $scope._user = user;
+        $scope.leader=leader;
+        $scope._index = index;
+        $scope.users[index].leader = true;
+    }
     $scope.dismissLeader = function (leader) {
         try{
             $http({
@@ -481,7 +487,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     }
     //指定队长
-    $scope.appointLeader = function (user,leader,index) {
+    $scope.appointLeader = function () {
       try{
             $http({
                 method: 'post',
@@ -490,47 +496,46 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     cid: $scope.cid,
                     gid: $scope.gid,
                     tid: $scope.tid,
-                    uid: user._id,
+                    uid: $scope._user._id,
                     operate:true
                 }
             }).success(function(data, status) {
 
-                if(leader!='null'){
+                if($scope.leader!='null'){
                     var _leader = $scope.team_lists[$scope.team_index].leader;
                     for(var i = 0; i < _leader.length; i++){
-                        if(_leader[i]._id == leader._id) {
+                        if(_leader[i]._id == $scope.leader._id) {
                             $scope.team_lists[$scope.team_index].leader.splice(i,1);
                         }
                     }
                     for(var i = 0; i < $scope.leaders.length; i ++) {
-                        if($scope.leaders[i]._id == leader._id) {
+                        if($scope.leaders[i]._id == $scope.leader._id) {
                             $scope.leaders.splice(i,1);
                         }
                     }
                 }
                 $scope.team_lists[$scope.team_index].leader.push({
-                    '_id':user._id,
-                    'nickname':user.nickname,
-                    'photo':user.photo
+                    '_id':$scope._user._id,
+                    'nickname':$scope._user.nickname,
+                    'photo':$scope._user.photo
                 });
 
                 $scope.leaders.push({
-                    '_id':user._id,
-                    'nickname':user.nickname,
-                    'photo':user.photo
+                    '_id':$scope._user._id,
+                    'nickname':$scope._user.nickname,
+                    'photo':$scope._user.photo
                 });
 
 
                 for(var i = 0; i < $scope.users.length; i ++) {
-                    if(leader._id.toString() === $scope.users[i]._id.toString()){
+                    if($scope.leader._id.toString() === $scope.users[i]._id.toString()){
                         $scope.users[i].leader = false;
                         break;
                     }
                 }
-                $scope.users[index].leader = true;
 
-                if(leader!='null'){
-                    $scope.dismissLeader(leader);
+                if($scope.leader!='null'){
+                    $scope.dismissLeader($scope.leader);
                 }
             }).error(function(data, status) {
                 //TODO:更改对话框
