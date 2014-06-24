@@ -77,9 +77,9 @@ var Campaign = new Schema({
         type: Boolean,
         default: false
     },
-    group_type: Array,
     cid: [{
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref: 'Company'
     }],                        //参加该活动的所有公司
     cname: Array,
     poster: {

@@ -17,7 +17,7 @@
     .campaign_container
       .campaign_logo
         a(ng-href="{{campaign_item.link}}")
-          img.size_56.img_contain(src="{{campaign_item.logo}}")
+          img.size_56.img_contain(ng-src="{{campaign_item.logo}}")
       .campaign_right
         //a.invisible_link(ng-href="/group/{{ !campaign_item.provoke.active ? 'campaign/'+campaign_item._id : 'competition/'+campaign_item.provoke.competition_id }}")
         p

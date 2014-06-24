@@ -379,7 +379,6 @@ exports.getCompanyGroups = function(req, res) {
     if(err || !teams) {
       return res.send([]);
     } else {
-      console.log(req.user);
       return res.send({
         'teams':teams,
         'team' : req.user != undefined ? req.user.team : [],
@@ -440,8 +439,6 @@ exports.getGroupCampaign = function(req, res) {
             'over' : judge,
             'active':campaign[i].active, //截止时间到了活动就无效了//这个有问题啊！－M
             '_id': campaign[i]._id.toString(),
-            'gid': campaign[i].gid,
-            'group_type': campaign[i].group_type,
             'cid': campaign[i].cid,
             'cname': campaign[i].cname,
             'poster': campaign[i].poster,
@@ -453,8 +450,8 @@ exports.getGroupCampaign = function(req, res) {
             'end_time': campaign[i].end_time ,
             'deadline':campaign[i].deadline,
             'join':join,
-            'provoke':campaign[i].provoke,
             'index':i,
+            'camp':campaign[i].camp,
             'logo':campaign[i].team[0].logo,
             'link':''
           });
@@ -686,10 +683,8 @@ exports.sponsor = function (req, res) {
   //生成活动
   var campaign = new Campaign();
   campaign.team.push(tid);
-  campaign.gid.push(req.companyGroup.gid);
-  campaign.group_type.push(group_type);
-  campaign.cid.push(cid);//其实只有一个公司
-  campaign.cname.push(cname);
+  campaign.cid =[cid];//其实只有一个公司
+  campaign.cname =[cname];
   campaign.poster.cname = cname;
   campaign.poster.cid = cid;
   campaign.poster.role = req.session.role;
