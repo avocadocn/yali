@@ -33,12 +33,12 @@ exports.authCallback = function(req, res) {
     res.redirect('/');
 };
 exports.authorize = function(req, res, next){
-    if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id)){
+    if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id.toString())){
         req.session.nowcid = req.user._id;
         req.session.role = 'HR';
         req.session.Global.role = 'HR';
     }
-    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid)){
+    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid.toString())){
         req.session.role = 'EMPLOYEE';
         req.session.Global.role = 'EMPLOYEE';
         req.session.nowcid = req.user.cid;
@@ -267,7 +267,7 @@ exports.renderGroupList = function(req, res) {
 //显示企业成员列表
 exports.renderMembers = function(req,res){
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
 }
@@ -673,38 +673,38 @@ exports.createDetail = function(req, res) {
 
 
 exports.home = function(req, res) {
-    if(req.session.role === 'HR'){
+    var render = function(company) {
         return res.render('company/home', {
-            title : '公司主页',
-            logo: req.user.info.logo,
-            cname : req.user.info.name,
-            sign : req.user.info.brief,
-            groupnumber: req.user.team.length,
-            membernumber: req.user.info.membernumber,
-            role: req.session.role
+            title: '公司主页',
+            logo: company.info.logo,
+            cname: company.info.name,
+            sign: company.info.brief,
+            groupnumber: company.team ? company.team.length : 0,
+            membernumber: company.info.membernumber
         });
-    }
-    else{
+    };
 
-        Company.findOne({_id: req.user.cid}, function(err, company) {
-            if(company) {
-                if (err) {
-                    console.log('错误');
-                }
-                return res.render('company/home', {
-                    title : '公司主页',
-                    logo: company.info.logo,
-                    cname : company.info.name,
-                    sign : company.info.brief,
-                    groupnumber: company.team ? company.team.length : 0,
-                    membernumber: company.info.membernumber,
-                    role: req.session.role
+    if (!req.params.companyId) {
+        if (req.user.provider === 'company') {
+            return render(req.user);
+        } else if (req.user.provider === 'user') {
+            return Company.findById(req.user.cid).exec()
+                .then(function(company) {
+                    if (!company) {
+                        throw 'not found company';
+                    }
+                    render(company);
+                })
+                .then(null, function(err) {
+                    console.log(err);
+                    // TO DO: temp err handle
+                    res.redirect('/');
                 });
-            }
-            else
-                res.redirect('/');
-        });
+        }
+    } else {
+        return render(req.profile);
     }
+
 };
 
 exports.Info = function(req, res) {
@@ -716,7 +716,7 @@ exports.Info = function(req, res) {
 
 exports.saveGroupInfo = function(req, res){
     if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-        return res.send(403,forbidden);
+        return res.send(403,'forbidden');
     }
     CompanyGroup.findOne({'_id' : req.body.tid}, function(err, companyGroup) {
         if (err) {
@@ -1045,7 +1045,7 @@ exports.appointLeader = function (req, res) {
 //关闭企业活动
 exports.campaignCancel = function (req, res) {
     if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-        return res.send(403,forbidden);
+        return res.send(403,'forbidden');
     }
     var campaign_id = req.body.campaign_id;
     Campaign.findOne({_id:campaign_id},function(err, campaign) {
@@ -1085,7 +1085,7 @@ exports.campaignCancel = function (req, res) {
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function (req, res) {
     if(req.session.role !=='HR'){
-      return res.send(403,forbidden);
+      return res.send(403,'forbidden');
     }
     var cname = req.user.info.name;
     var cid = req.user._id.toString();    //公司id
