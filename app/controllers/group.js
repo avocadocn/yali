@@ -14,7 +14,6 @@ var mongoose = require('mongoose'),
     Group = mongoose.model('Group'),
     UUID = require('../middlewares/uuid'),
     CompanyGroup = mongoose.model('CompanyGroup'),
-    Competition = mongoose.model('Competition'),
     Arena = mongoose.model('Arena'),
     PhotoAlbum = mongoose.model('PhotoAlbum'),
     validator = require('validator'),
@@ -566,7 +565,7 @@ exports.provoke = function (req, res) {
       competition.member_max = member_max;
       competition.cname=[cname];
       competition.cid=[req.user.cid];
-      competition.team=[my_team_id,team_opposite._Id];
+      competition.team=[my_team_id,team_opposite._id];
 
       competition.poster.cname = cname;
       competition.poster.cid = req.user.cid;
@@ -898,7 +897,7 @@ exports.updateFormation = function(req, res){
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
   }
-  Competition.findOne({
+  Campaign.findOne({
     '_id':req.params.competitionId
   }).exec(function(err, competition){
     if(req.competition_team === req.body.competition_team){
@@ -932,7 +931,7 @@ exports.updateFormation = function(req, res){
 
 exports.competition = function(req, res, next, id){
   var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
-  Competition.findOne({
+  Campaign.findOne({
       '_id':id
     }).exec(function(err, competition){
       if (err) return next(err);
@@ -964,8 +963,7 @@ exports.resultConfirm = function (req, res) {
   var score_b = req.body.score_b;
   var rst_content = req.body.rst_content;
 
-  Competition.findOne({'_id' : competition_id}, function (err, competition) {
-    console.log(competition);
+  Campaign.findOne({'_id' : competition_id}, function (err, competition) {
     if(err) {
       console.log(err);
       res.send(err);

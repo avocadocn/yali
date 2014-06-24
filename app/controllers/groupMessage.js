@@ -43,7 +43,7 @@ exports.getTeamMessage = function(req, res) {
           _group_message.camp_flag =camp_flag;
           _group_message.logo = group_message[i].team[camp_flag ].logo;
           if(group_message[i].message_type === 4){
-            if(req.user.provider==='user'){
+            if(req.user.provider==='user' && (req.session.role ==='LEADER' || req.session.role ==='MEMBER' )){
               //0：未投票，1：赞成，-1反对
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
