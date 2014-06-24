@@ -69,7 +69,7 @@ exports.getTeamMessage = function(req, res) {
 
           }
           else if(group_message[i].message_type === 5) {
-            if(req.user.provider==='user'){
+            if(req.user.provider==='user' && new Date()<group_message[i].campaign.deadline){
               //没有参加为false，参加为true
               var join_flag = false;
               if(group_message[i].campaign.camp[camp_flag].member.length>0){
@@ -86,7 +86,7 @@ exports.getTeamMessage = function(req, res) {
         }
         else if(group_message[i].message_type === 0 ||group_message[i].message_type === 1 ){
           _group_message.logo = group_message[i].message_type === 0 ? group_message[i].company[0].logo : group_message[i].team[0].logo;
-          if(req.user.provider==='user' && Date()<group_message[i].campaign.deadline && group_message[i].campaign.member.length<group_message[i].campaign.member_max){
+          if(req.user.provider==='user' && new Date()<group_message[i].campaign.deadline){
             var join_flag = false;
             group_message[i].campaign.member.forEach(function(member){
               if(member.uid.toString() === req.user._id.toString()){
@@ -104,7 +104,7 @@ exports.getTeamMessage = function(req, res) {
         }
         group_messages.push(_group_message);
       }
-      return res.send({'group_messages':group_messages,'role':req.session.role});
+      return res.send({'group_messages':group_messages,'role':req.session.role,'user':{'nickname':req.user.nickname,'photo':req.user.photo}});
      }
   });
 };
@@ -175,12 +175,13 @@ exports.getUserMessage = function(req, res) {
                 });
               }
             }
+            _group_message.join_flag = join_flag;
 
           }
         }
         else if(group_message[i].message_type === 0 || group_message[i].message_type === 1){
           _group_message.logo = group_message[i].message_type === 0 ? group_message[i].company[0].logo : group_message[i].team[0].logo;
-          if(req.user.provider==='user' && Date()<group_message[i].campaign.deadline){
+          if(req.user.provider==='user' && new Date()<group_message[i].campaign.deadline){
             var join_flag = false;
             group_message[i].campaign.member.forEach(function(member){
               if(member.uid === req.user._id){

@@ -52,6 +52,7 @@ exports.setComment = function(req,res){
         'realname':req.user.realname,
         'photo':req.user.photo
     };
+    comment.host_type = host_type;
     comment.content = content;
     comment.host_id = host_id;
     comment.poster = poster;
@@ -60,9 +61,9 @@ exports.setComment = function(req,res){
             console.log('COMMENT_PUSH_ERROR',err);
             return res.send("{{'COMMENT_PUSH_ERROR'|translate}}");
         } else {
-            if(host_type === "message") {
-                GroupMessage.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':1}},function(err,groupmessage){
-                    if(err || !groupmessage) {
+            if(host_type === "campaign" || host_type === "campaign_detail") {
+                Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':1}},function(err,message){
+                    if(err || !message) {
                         return res.send("ERROR");
                     } else {
                         return res.send("SUCCESS");
@@ -86,9 +87,9 @@ exports.deleteComment = function(req,res){
         if(err || !comment) {
             return res.send("{{'COMMENT_NOT_FOUND'|translate}}");
         } else {
-            if(host_type === "message") {
-                GroupMessage.findByIdAndUpdate(host_id,{'$dec':{'comment_sum':1}},function(err,groupmessage){
-                    if(err || !groupmessage) {
+            if(host_type === "campaign" || host_type === "campaign_detail") {
+                Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':-1}},function(err,message){
+                    if(err || !message) {
                         return res.send("ERROR");
                     } else {
                         return res.send("SUCCESS");

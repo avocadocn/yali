@@ -129,7 +129,11 @@ var Campaign = new Schema({
         default: Date.now()
     },
     close_time: Date,
-    camp:[_camp]    //阵营
+    camp:[_camp],    //阵营
+    comment_sum:{
+        type:Number,
+        default:0
+    }
 });
 
 

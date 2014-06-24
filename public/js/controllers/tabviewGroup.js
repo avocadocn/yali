@@ -99,6 +99,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $rootScope.$watch('teamId',function(tid){
         $http.get('/groupMessage/team?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
+            $scope.user = data.user;
             $scope.role = data.role;
 
             $rootScope.sum = $scope.group_messages.length;
@@ -128,7 +129,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     method: 'post',
                     url: '/comment/pull',
                     data:{
-                        host_id : $scope.group_messages[index]._id
+                        host_id : $scope.group_messages[index].campaign._id
                     }
                 }).success(function(data, status) {
                     if(data.length > 0){
@@ -153,23 +154,24 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 method: 'post',
                 url: '/comment/push',
                 data:{
-                    host_id : $scope.group_messages[index]._id,
+                    host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,
-                    host_type : 'message'
+                    host_type : 'campaign'
                 }
             }).success(function(data, status) {
                 if(data === 'SUCCESS'){
                     var poster={
-                        'nickname' : '我自己'
+                        'nickname' : '我自己',
+                        'photo' : $scope.user.photo
                     };
-                    $scope.group_messages[index].comment_sum ++;
+                    $scope.group_messages[index].campaign.comment_sum ++;
                     $scope.group_messages[index].comments.push({
-                        'host_id' : $scope.group_messages[index]._id,
+                        'host_id' : $scope.group_messages[index].campaign._id,
                         'content' : $scope.new_comment[index].text,
                         'create_date' : Date.now(),
                         'poster' : poster,
-                        'host_type' : 'message',
-                        'index' : $scope.group_messages[index].comment_sum
+                        'host_type' : 'campaign',
+                        'index' : $scope.group_messages[index].campaign.comment_sum
                     });
                 } else {
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -200,6 +202,57 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     $scope.group_messages[index].vote_flag = vote_status + data.data.quit -1;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+    $scope.join = function(campaign_id,index) {
+        try {
+            $http({
+                method: 'post',
+                url: '/users/joinCampaign',
+                data:{
+                    campaign_id : campaign_id
+                }
+            }).success(function(data, status) {
+                if(data.result===1){
+                    //alert('成功加入该活动!');
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    $scope.group_messages[index].join_flag = true;
+                }
+                else{
+                    $rootScope.donlerAlert(data.msg);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+    $scope.quit = function(campaign_id,index) {
+        try {
+            $http({
+                method: 'post',
+                url: '/users/quitCampaign',
+                data:{
+                    campaign_id : campaign_id
+                }
+            }).success(function(data, status) {
+                if(data.result===1){
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    //alert('您已退出该活动!');
+                    $scope.group_messages[index].join_flag = false;
+                }
+                else{
+                    $rootScope.donlerAlert(data.msg);
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
