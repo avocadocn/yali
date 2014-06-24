@@ -1125,7 +1125,7 @@ exports.quitGroup = function (req, res){
         companyGroup.save(function (err) {
           if(err){
             return res.send(err);
-          } 
+          }
           else{
             User.findOne({_id: uid},
               function (err, user){

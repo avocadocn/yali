@@ -53,6 +53,7 @@ exports.getTeam = function(req, res) {
     condition = {'gid':gid,'name':regx , '_id':{'$ne': tid}}
   }
   CompanyGroup.find(condition,function(err, company_groups){
+    console.log(condition,company_groups);
     if(err || !company_groups) {
       return res.send([]);
     } else {

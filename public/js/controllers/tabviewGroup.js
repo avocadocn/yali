@@ -566,7 +566,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         $scope.showMapFlag = true;
     };
     $scope.getCompany =function() {
-
         try {
             $scope.show_team = [];
             $http({
@@ -577,6 +576,18 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 }
             }).success(function(data, status) {
                 $scope.companies = data;
+                var tmp = 0;
+                for(var i = 0; i < $scope.companies.length; i ++) {
+                    var team_tmp = $scope.companies[i].team;
+                    $scope.companies[i].team = [];
+                    for(var j = 0; j < team_tmp.length; j ++) {
+                        if(team_tmp[j].gid === $rootScope.groupId){
+                            if(team_tmp[j].id.toString() !== $rootScope.teamId){
+                                $scope.companies[i].team.push(team_tmp[j]);
+                            }
+                        }
+                    }
+                }
                 $scope.teams=[];
                 if($scope.companies.length <= 0) {
                     $scope.donlerAlert("没有找到符合条件的公司!");
