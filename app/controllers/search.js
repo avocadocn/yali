@@ -35,7 +35,6 @@ exports.getCompany = function (req, res) {
 };
 
 
-
 //TODO
 //根据公司和组件类型搜索小队
 //返回该组件的队名和队长

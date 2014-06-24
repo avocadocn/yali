@@ -44,8 +44,10 @@ block panel
       if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
         li.tab_style(ng-class="{'active':nowTab=='group_message'}")
           a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"TEAM_MESSAGE"|translate}}
+          .dl_corner(ng-if="corner && sum > 0") {{sum}}
         li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
           a.subtitle.no_radius(href="#/group_campaign" ng-click="addactive('group_campaign')") {{"TEAM_CAMPAIGN"|translate}}
+          .dl_corner(ng-if="!corner && sum > 0") {{sum}}
       li.tab_style(ng-class="{'active':nowTab=='group_info'}")
         a.subtitle.no_radius(href="#/group_info" ng-click="addactive('group_info')") {{"TEAM_INFO"|translate}}
       li.tab_style(ng-class="{'active':nowTab=='timeLine'}")

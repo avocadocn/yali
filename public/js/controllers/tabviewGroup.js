@@ -100,6 +100,10 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         $http.get('/groupMessage/team?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
+
+            $rootScope.sum = $scope.group_messages.length;
+            $rootScope.corner = true;
+
             for(var i = 0;i < $scope.group_messages.length; i ++) {
                 $scope.group_messages[i].comments = [];
                 $scope.toggle.push(false);
@@ -234,7 +238,11 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/getCampaigns/'+tid+'?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.data;
-            $scope.role = data.role;    //只有改组的队长才可以操作活动(关闭、编辑等)
+
+            $rootScope.sum = $scope.campaigns.length;
+            $rootScope.corner = false;
+
+            $rootScope.role = data.role;    //只有改组的队长才可以操作活动(关闭、编辑等)
         });
 
     });

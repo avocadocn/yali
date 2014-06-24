@@ -63,7 +63,7 @@ module.exports = function(grunt) {
                     'public/lib/jquery/dist/jquery.js',
                     'public/lib/angular/angular.js',
                     'public/lib/angular-route/angular-route.js',
-                    'public/lib/moment/min/moment.js',
+                    'public/lib/moment/moment.js',
                     'public/lib/bootstrap/dist/js/bootstrap.js',
                     'public/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
                     'public/lib/angular-translate/angular-translate.min.js',

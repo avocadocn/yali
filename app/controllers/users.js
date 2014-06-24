@@ -1040,7 +1040,7 @@ exports.joinGroup = function (req, res){
             });
             //再去找此人是否加过此组件 找到则find为true，并在此组中加入此team
             var find = false;
-            var team ={'_id':companyGroup._id, 'name':companyGroup.name, 'gid':companyGroup.gid,'leader': false, 'logo':companyGroup.logo};
+            var team ={'_id':companyGroup._id, 'name':companyGroup.name, 'gid':companyGroup.gid,'leader': false, 'logo':companyGroup.logo, 'entity_type':companyGroup.entity_type,'group_type':companyGroup.group_type};
             console.log(team);
             for(var i=0;i<user.team.length;i++){
               if(companyGroup.gid=== user.team[i].gid){
@@ -1056,7 +1056,9 @@ exports.joinGroup = function (req, res){
                 'gid': companyGroup.gid,
                 'group_type': companyGroup.group_type,
                 'entity_type': companyGroup.entity_type,
-                'team': [team]
+                'team': [team],
+                'name':companyGroup.name,
+                'logo':companyGroup.logo
               });
             }
             //保存小队

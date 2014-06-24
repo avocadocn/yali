@@ -24,10 +24,13 @@ block contentExt
           .dl_row
             .label_left  
               label.control-label(for="province") *城市
-            .input_right
-              select#province.dl_form-Control(type="text" name="province" ng-model= "province")
-              select#city.dl_form-Control(type="text" name="city" ng-model= "city")
-              select#region.dl_form-Control(type="text" name="region" ng-model= "region")
+            .input_right.select_right
+              .select_box
+                select#province.dl_form-Control(type="text" name="province" ng-model= "province")
+              .select_box
+                select#city.dl_form-Control(type="text" name="city" ng-model= "city")
+              .select_box
+                select#region.dl_form-Control(type="text" name="region" ng-model= "region")
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.address.$invalid && signup_form.address.$dirty}")
           .dl_row
             .label_left

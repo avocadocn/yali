@@ -36,10 +36,21 @@ li {
   list-style: none;
 }
 select {
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 button {
   border: none;
+}
+.dl_corner {
+  margin-top: -42px;
+  margin-left: 127px;
+  font-size: 12px;
+  position: absolute;
+  z-index: 1000;
+  width: 15px;
+  height: 15px;
+  background-color: #4ac066;
+  radius: 5px;
 }
 .dl_head {
   max-width: 70%;
@@ -987,6 +998,14 @@ input.ng-invalid.ng-dirty {
   color: #716b7a;
   padding: 5px 20px;
   font-size: 120%;
+}
+.signup_row .select_box {
+  width: 85px;
+  float: left;
+  margin-right: 3px;
+}
+.signup_row .select_right {
+  width: 266px;
 }
 .wrap {
   margin-top: 0px;

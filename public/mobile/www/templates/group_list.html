@@ -1,12 +1,12 @@
 <ion-view title="">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
-    <button ng-click="joinedList()">我的小队</button>
-    <button ng-click="unjoinList()">未加入的小队</button>
+    <a href="#/app/group_list/joined" class="button">我的小队</a>
+    <a href="#/app/group_list/unjoin" class="button">未加入的小队</a>
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="group in show_list" href="#/app/group_detail/{{ group._id }}">
+      <ion-item ng-repeat="group in show_list" href="#/app/group/{{ group._id }}/info">
         <p>{{ group.name }}</p>
         <p>{{ group.group_type }}</p>
       </ion-item>

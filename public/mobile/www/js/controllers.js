@@ -128,84 +128,83 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('GroupListCtrl', function($scope, $rootScope, $http, Authorize, Group) {
+.controller('GroupJoinedListCtrl', function($scope, Authorize, Group) {
 
   Authorize.authorize();
 
-  $rootScope.show_list = [];
+  $scope.show_list = [];
 
-  Group.getGroups(function(joined_groups, unjoin_groups) {
-    $scope.joined_list = joined_groups;
-    $scope.unjoin_list = unjoin_groups;
-    $rootScope.show_list = $scope.joined_list;
-  });
-
-  $scope.joinedList = function() {
-    $rootScope.show_list = $scope.joined_list;
-  };
-
-  $scope.unjoinList = function() {
-    $rootScope.show_list = $scope.unjoin_list;
-  };
+  var joined_list = Group.getJoinedGroups();
+  if (joined_list === null) {
+    Group.getGroups(function(joined_groups, unjoin_groups) {
+      $scope.show_list = joined_groups;
+    });
+  } else {
+    $scope.show_list = joined_list;
+  }
 
 })
 
-
-.controller('GroupDetailCtrl', function($scope, $rootScope, $stateParams, Authorize, Campaign, Dynamic, Global) {
+.controller('GroupUnjoinListCtrl', function($scope, Authorize, Group) {
 
   Authorize.authorize();
 
-  $scope.base_url = Global.base_url;
+  $scope.show_list = [];
 
-  $rootScope.campaign_owner = 'group';
-
-  for (var i = 0; i < $rootScope.show_list.length; i++) {
-    if ($rootScope.show_list[i]._id === $stateParams.id) {
-      var index = i;
-      break;
-    }
+  var unjoin_list = Group.getUnjoinGroups();
+  if (unjoin_list === null) {
+    Group.getGroups(function(joined_groups, unjoin_groups) {
+      $scope.show_list = unjoin_groups;
+    });
+  } else {
+    $scope.show_list = unjoin_list;
   }
-  $scope.group = $rootScope.show_list[index];
 
-  $rootScope.group_id = $scope.group._id;
+})
 
-  $rootScope.campaignReturnUri = '#/app/group_detail/' + $stateParams.group_index;
+.controller('GroupInfoCtrl', function($scope, $stateParams, Authorize, Group) {
 
-  $scope.templates = [
-    'templates/partials/group_info.html',
-    'templates/partials/campaigns.html',
-    'templates/partials/dynamics.html'
-  ];
+  Authorize.authorize();
 
-  $scope.template = $scope.templates[0];
+  $scope.template = 'templates/partials/group_info.html';
+  $scope.group = Group.getGroup($stateParams.id);
 
-  $scope.info = function() {
-    $scope.template = $scope.templates[0];
-  };
+})
+
+.controller('GroupCampaignCtrl', function($scope, $rootScope, $stateParams, Authorize, Group, Campaign) {
+
+  Authorize.authorize();
+
+  $scope.template = 'templates/partials/campaigns.html';
+  $rootScope.campaign_owner = 'group';
+  $rootScope.campaignReturnUri = '#/app/group_detail/' + $stateParams.id;
+  $scope.group = Group.getGroup($stateParams.id);
 
   var getGroupCampaigns = function() {
-    Campaign.getGroupCampaigns($scope.group._id, function(campaign_list) {
+    Campaign.getGroupCampaigns($stateParams.id, function(campaign_list) {
       $scope.campaign_list = campaign_list;
-      $scope.template = $scope.templates[1];
     });
-  }
-
-  $scope.campaign = function() {
-    getGroupCampaigns();
   };
 
-
-  $scope.dynamic = function() {
-    Dynamic.getGroupDynamics($scope.group._id, function(dynamics) {
-      $scope.dynamic_list = dynamics;
-      $scope.template = $scope.templates[2];
-    })
-  };
+  getGroupCampaigns();
 
   $scope.join = Campaign.join(getGroupCampaigns);
   $scope.quit = Campaign.quit(getGroupCampaigns);
 
 })
+
+.controller('GroupDynamicCtrl', function($scope, $stateParams, Authorize, Group, Dynamic) {
+
+  Authorize.authorize();
+
+  $scope.template = 'templates/partials/dynamics.html';
+  $scope.group = Group.getGroup($stateParams.id);
+
+  Dynamic.getGroupDynamics($scope.group._id, function(dynamics) {
+    $scope.dynamic_list = dynamics;
+  })
+})
+
 
 
 .controller('TimelineCtrl', function($scope, $rootScope, Authorize, Timeline) {
