@@ -140,7 +140,7 @@ div
           .dl_row
             span.info_label {{"SUM"|translate}}
             span.info_label {{team.member.length}}
-      .dl_row.clearfix 
+      .dl_row.clearfix
         if (Global.role ==='HR')
           //-关组
           button.dl_btn.dl_btn_small.cancel_btn.pull-right(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") {{"OPEN"|translate}}

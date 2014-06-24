@@ -157,7 +157,8 @@ app.config(['$translateProvider',
       OTHER :"其他",
       OPTIONAL:"可选",
       OPTION :"选项",
-      PLACE :"场所"
+      PLACE :"场所",
+      APPOINT:"任命"
     });
     $translateProvider.translations('jp-jp', {
       I:"私",

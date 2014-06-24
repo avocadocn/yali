@@ -34,12 +34,13 @@
           .groups.row
             .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="user in users")
               .dl_row
-                a(ng-click="appointLeader(user,leaders[0])")
+                .dl_cover(ng-if="user.leader")
+                a(ng-click="appointLeader(user,leaders[0],$index)" ng-disabled="true")
                   img.size_80(ng-src="{{user.photo}}")
               .dl_row(style="width:80px;text-align:center")
                 label {{user.nickname}}
       .dl-modal-footer
-        button.dl_btn.dl_btn_large(data-dismiss="modal") {{"SAVE"|translate}}
+        button.dl_btn.dl_btn_large(data-dismiss="modal") {{"APPOINT"|translate}}
 //- .modal-dialog
 //-   .dl-modal
 //-     .dl-modal-header

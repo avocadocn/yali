@@ -398,6 +398,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     }
 
+    $scope.test = function(){
+        alert('kaka');
+    }
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
         $scope.team_index = index;
@@ -415,6 +418,18 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             }).success(function(data, status) {
                 $scope.users = data.users;
                 $scope.leaders = data.leaders.length > 0 ? data.leaders : ['null'];
+
+                var leader_find = false;
+                for(var i = 0; i < $scope.users.length && !leader_find; i ++) {
+                    for(var j = 0; j < $scope.leaders.length; j ++) {
+                        //标记
+                        if($scope.leaders[j]._id.toString() === $scope.users[i]._id.toString()){
+                            $scope.users[i].leader = true;
+                            leader_find = true;
+                            break;//目前一个小队只有一个组长
+                        }
+                    }
+                }
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -455,7 +470,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     operate:false
                 }
             }).success(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
+                
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -466,7 +481,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     }
     //指定队长
-    $scope.appointLeader = function (user,leader) {
+    $scope.appointLeader = function (user,leader,index) {
       try{
             $http({
                 method: 'post',
@@ -480,13 +495,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }).success(function(data, status) {
 
-                var _member = $scope.team_lists[$scope.team_index].member;
-                for(var i = 0; i < _member.length; i++){
-                    if(_member[i]._id == user._id) {
-                        $scope.team_lists[$scope.team_index].member.splice(i,1);
-                    }
-                }
-
                 if(leader!='null'){
                     var _leader = $scope.team_lists[$scope.team_index].leader;
                     for(var i = 0; i < _leader.length; i++){
@@ -494,11 +502,11 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                             $scope.team_lists[$scope.team_index].leader.splice(i,1);
                         }
                     }
-                    $scope.team_lists[$scope.team_index].member.push({
-                        '_id':leader._id,
-                        'nickname':leader.nickname,
-                        'photo':leader.photo
-                    });
+                    for(var i = 0; i < $scope.leaders.length; i ++) {
+                        if($scope.leaders[i]._id == leader._id) {
+                            $scope.leaders.splice(i,1);
+                        }
+                    }
                 }
                 $scope.team_lists[$scope.team_index].leader.push({
                     '_id':user._id,
@@ -506,30 +514,21 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     'photo':user.photo
                 });
 
-
-
-                if(leader!='null'){
-                    for(var i = 0; i < $scope.leaders.length; i ++) {
-                        if($scope.leaders[i]._id == leader._id) {
-                            $scope.leaders.splice(i,1);
-                        }
-                    }
-                    $scope.users.push({
-                        '_id':leader._id,
-                        'nickname':leader.nickname,
-                        'photo':leader.photo
-                    });
-                }
-                for(var i = 0; i < $scope.users.length; i ++) {
-                    if($scope.users[i]._id == user._id) {
-                        $scope.users.splice(i,1);
-                    }
-                }
                 $scope.leaders.push({
                     '_id':user._id,
                     'nickname':user.nickname,
                     'photo':user.photo
                 });
+
+
+                for(var i = 0; i < $scope.users.length; i ++) {
+                    if(leader._id.toString() === $scope.users[i]._id.toString()){
+                        $scope.users[i].leader = false;
+                        break;
+                    }
+                }
+                $scope.users[index].leader = true;
+
                 if(leader!='null'){
                     $scope.dismissLeader(leader);
                 }

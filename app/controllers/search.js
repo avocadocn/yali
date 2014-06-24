@@ -69,36 +69,38 @@ function findUser()
 
 }
 
+
+//全都让前台判断去吧
 function findComapnyGroup(condition,req,res)
 {
-  var users = [];
-  var leaders = [];
+  //var users = [];
+  //var leaders = [];
   CompanyGroup.findOne(condition,{'member':1,'leader':1},function (err,cg) {
     if(err || !cg) {
       return res.send([]);
     } else {
-      var users = [];
-      var ls = [];
+      //var users = [];
+      //var ls = [];
       var members = cg.member;
       var leaders = cg.leader;
-      var flag = false;
-      for(var i = 0; i < members.length; i ++) {
-        for(var j = 0 ;j < leaders.length; j ++) {
-          if(members[i]._id.toString() === leaders[j]._id.toString()){
-            flag = true;
-          }
-        }
-        if(!flag){
-          users.push(members[i]);
-        }else{
-          ls.push(members[i]);
-        }
-        flag = false;
-      }
-      console.log(ls);
+      // var flag = false;
+      // for(var i = 0; i < members.length; i ++) {
+      //   for(var j = 0 ;j < leaders.length; j ++) {
+      //     if(members[i]._id.toString() === leaders[j]._id.toString()){
+      //       flag = true;
+      //     }
+      //   }
+      //   if(!flag){
+      //     users.push(members[i]);
+      //   }else{
+      //     ls.push(members[i]);
+      //   }
+      //   flag = false;
+      // }
+      // console.log(ls);
       return res.send({
-        'users':users,
-        'leaders':ls
+        'users':members,
+        'leaders':leaders
       });
     }
   });
