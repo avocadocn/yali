@@ -42,15 +42,18 @@ button {
   border: none;
 }
 .dl_corner {
-  margin-top: -42px;
-  margin-left: 127px;
+  margin-top: -48px;
+  margin-left: 120px;
   font-size: 12px;
   position: absolute;
   z-index: 1000;
-  width: 15px;
-  height: 15px;
-  background-color: #4ac066;
-  radius: 5px;
+  width: auto;
+  height: auto;
+  background-color: btnActionBgColor;
+  radius: 500px;
+  border-radius: 500px;
+  color: white;
+  padding: 2px 10px 0;
 }
 .dl_head {
   max-width: 70%;

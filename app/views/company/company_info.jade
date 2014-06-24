@@ -21,9 +21,10 @@ div
         .info_side
           span.info_label {{"INVATE_LINK"|translate}}
         .info_detail
-          button.dl_btn.dl_btn_small(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
-
-          textarea.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
+          .row
+            button.dl_btn.dl_btn_small(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
+          .row
+            textarea.info_label.dl_word_break(ng-if="inviteUrlStatus",disabled) {{company.inviteUrl}}
   form.form-horizontal(name="infoForm")
     .dl_row.clearfix
       h5.pull-left {{"ENTERPRISE_INFO"|translate}}

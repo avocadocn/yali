@@ -9190,11 +9190,7 @@ return jQuery;
 }));
 
 /**
-<<<<<<< HEAD
  * @license AngularJS v1.2.18
-=======
- * @license AngularJS v1.2.16
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,11 +9259,7 @@ function minErr(module) {
       return match;
     });
 
-<<<<<<< HEAD
     message = message + '\nhttp://errors.angularjs.org/1.2.18/' +
-=======
-    message = message + '\nhttp://errors.angularjs.org/1.2.16/' +
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10820,15 +10812,9 @@ function setupModuleLoader(window) {
      * {@link angular.bootstrap} to simplify this process for you.
      *
      * @param {!string} name The name of the module to create or retrieve.
-<<<<<<< HEAD
      * @param {!Array.<string>=} requires If specified then new module is being created. If
      *        unspecified then the module is being retrieved for further configuration.
      * @param {Function=} configFn Optional configuration function for the module. Same as
-=======
-<<<<<* @param {!Array.<string>=} requires If specified then new module is being created. If
->>>>>*        unspecified then the module is being retrieved for further configuration.
-     * @param {Function} configFn Optional configuration function for the module. Same as
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
      *        {@link angular.Module#config Module#config()}.
      * @returns {module} new module with the {@link angular.Module} api.
      */
@@ -11158,19 +11144,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-<<<<<<< HEAD
   full: '1.2.18',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 18,
   codeName: 'ear-extendability'
-=======
-  full: '1.2.16',    // all of these placeholder strings will be replaced by grunt's
-  major: 1,    // package task
-  minor: 2,
-  dot: 16,
-  codeName: 'badger-enumeration'
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
 };
 
 
@@ -14025,11 +14003,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#put
-<<<<<<< HEAD
          * @kind function
-=======
-         * @function
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
          *
          * @description
          * Inserts a named entry into the {@link $cacheFactory.Cache Cache} object to be
@@ -14065,11 +14039,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#get
-<<<<<<< HEAD
          * @kind function
-=======
-         * @function
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
          *
          * @description
          * Retrieves named data stored in the {@link $cacheFactory.Cache Cache} object.
@@ -14093,11 +14063,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#remove
-<<<<<<< HEAD
          * @kind function
-=======
-         * @function
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
          *
          * @description
          * Removes an entry from the {@link $cacheFactory.Cache Cache} object.
@@ -14125,11 +14091,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#removeAll
-<<<<<<< HEAD
          * @kind function
-=======
-         * @function
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
          *
          * @description
          * Clears the cache object of any entries.
@@ -14145,11 +14107,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#destroy
-<<<<<<< HEAD
          * @kind function
-=======
-         * @function
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
          *
          * @description
          * Destroys the {@link $cacheFactory.Cache Cache} object entirely,
@@ -14166,11 +14124,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#info
-<<<<<<< HEAD
          * @kind function
-=======
-         * @function
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
          *
          * @description
          * Retrieve information regarding a particular {@link $cacheFactory.Cache Cache}.
@@ -14812,13 +14766,8 @@ $CompileProvider.$inject = ['$provide', '$$sanitizeUriProvider'];
 function $CompileProvider($provide, $$sanitizeUriProvider) {
   var hasDirectives = {},
       Suffix = 'Directive',
-<<<<<<< HEAD
       COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w_\-]+)\s+(.*)$/,
       CLASS_DIRECTIVE_REGEXP = /(([\d\w_\-]+)(?:\:([^;]+))?;?)/;
-=======
-      COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w\-_]+)\s+(.*)$/,
-      CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/;
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
 
   // Ref: http://developers.whatwg.org/webappapis.html#event-handler-idl-attributes
   // The assumption is that future DOM event attribute names will begin with
@@ -15578,11 +15527,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if (jqLiteIsTextNode(directiveValue)) {
               $template = [];
             } else {
-<<<<<<< HEAD
               $template = jqLite(trim(directiveValue));
-=======
-              $template = jqLite(directiveValue);
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
             }
             compileNode = $template[0];
 
@@ -16016,11 +15961,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if (jqLiteIsTextNode(content)) {
               $template = [];
             } else {
-<<<<<<< HEAD
               $template = jqLite(trim(content));
-=======
-              $template = jqLite(content);
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
             }
             compileNode = $template[0];
 
@@ -17473,11 +17414,7 @@ function $HttpProvider() {
           } else {
             // serving from cache
             if (isArray(cachedResp)) {
-<<<<<<< HEAD
               resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3]);
-=======
-              resolvePromise(cachedResp[1], cachedResp[0], copy(cachedResp[2]), cachedResp[3]);
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
             } else {
               resolvePromise(cachedResp, 200, {}, 'OK');
             }
@@ -27420,17 +27357,11 @@ function classDirective(name, selector) {
           scope.$watch('$index', function($index, old$index) {
             // jshint bitwise: false
             var mod = $index & 1;
-<<<<<<< HEAD
             if (mod !== (old$index & 1)) {
-=======
-            if (mod !== old$index & 1) {
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
               var classes = arrayClasses(scope.$eval(attr[name]));
               mod === selector ?
                 addClasses(classes) :
                 removeClasses(classes);
-<<<<<<< HEAD
-=======
             }
           });
         }
@@ -27454,67 +27385,12 @@ function classDirective(name, selector) {
               if (classCounts[className] === +(count > 0)) {
                 classesToUpdate.push(className);
               }
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
             }
           });
           element.data('$classCounts', classCounts);
           return classesToUpdate.join(' ');
         }
 
-<<<<<<< HEAD
-        function addClasses(classes) {
-          var newClasses = digestClassCounts(classes, 1);
-          attr.$addClass(newClasses);
-        }
-
-        function removeClasses(classes) {
-          var newClasses = digestClassCounts(classes, -1);
-          attr.$removeClass(newClasses);
-        }
-
-        function digestClassCounts (classes, count) {
-          var classCounts = element.data('$classCounts') || {};
-          var classesToUpdate = [];
-          forEach(classes, function (className) {
-            if (count > 0 || classCounts[className]) {
-              classCounts[className] = (classCounts[className] || 0) + count;
-              if (classCounts[className] === +(count > 0)) {
-                classesToUpdate.push(className);
-              }
-=======
-        function updateClasses (oldClasses, newClasses) {
-          var toAdd = arrayDifference(newClasses, oldClasses);
-          var toRemove = arrayDifference(oldClasses, newClasses);
-          toRemove = digestClassCounts(toRemove, -1);
-          toAdd = digestClassCounts(toAdd, 1);
-
-          if (toAdd.length === 0) {
-            $animate.removeClass(element, toRemove);
-          } else if (toRemove.length === 0) {
-            $animate.addClass(element, toAdd);
-          } else {
-            $animate.setClass(element, toAdd, toRemove);
-          }
-        }
-
-        function ngClassWatchAction(newVal) {
-          if (selector === true || scope.$index % 2 === selector) {
-            var newClasses = arrayClasses(newVal || []);
-            if (!oldVal) {
-              addClasses(newClasses);
-            } else if (!equals(newVal,oldVal)) {
-              var oldClasses = arrayClasses(oldVal);
-              updateClasses(oldClasses, newClasses);
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
-            }
-          });
-          element.data('$classCounts', classCounts);
-          return classesToUpdate.join(' ');
-        }
-      }
-    };
-
-<<<<<<< HEAD
         function updateClasses (oldClasses, newClasses) {
           var toAdd = arrayDifference(newClasses, oldClasses);
           var toRemove = arrayDifference(oldClasses, newClasses);
@@ -27541,20 +27417,8 @@ function classDirective(name, selector) {
             }
           }
           oldVal = shallowCopy(newVal);
-=======
-    function arrayDifference(tokens1, tokens2) {
-      var values = [];
-
-      outer:
-      for(var i = 0; i < tokens1.length; i++) {
-        var token = tokens1[i];
-        for(var j = 0; j < tokens2.length; j++) {
-          if(token == tokens2[j]) continue outer;
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
         }
-        values.push(token);
       }
-<<<<<<< HEAD
     };
 
     function arrayDifference(tokens1, tokens2) {
@@ -27568,8 +27432,6 @@ function classDirective(name, selector) {
         }
         values.push(token);
       }
-=======
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
       return values;
     }
 
@@ -27582,11 +27444,7 @@ function classDirective(name, selector) {
         var classes = [], i = 0;
         forEach(classVal, function(v, k) {
           if (v) {
-<<<<<<< HEAD
             classes = classes.concat(k.split(' '));
-=======
-            classes.push(k);
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
           }
         });
         return classes;
@@ -31050,11 +30908,7 @@ var styleDirective = valueFn({
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>');
 /**
-<<<<<<< HEAD
  * @license AngularJS v1.2.18
-=======
- * @license AngularJS v1.2.16
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -37036,11 +36890,8 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 			var zIndex = index_highest + 10;
 
 			var offset, top, left, containerOffset;
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
 			if (this.container instanceof $) {
 				containerOffset = this.container.offset();
 			} else {
@@ -37057,11 +36908,7 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 				offset = this.element.offset();
 				left = offset.left;
 			}
-<<<<<<< HEAD
 
-=======
-			
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
 			if(left+220 > document.body.clientWidth){
             			left = document.body.clientWidth-220;
           		}
@@ -37075,7 +36922,6 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 			top = top - containerOffset.top;
 			left = left - containerOffset.left;
 
-<<<<<<< HEAD
 
 			//todo
 
@@ -37085,8 +36931,6 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
 			console.log($(this.container).offset());
 			console.log($("body").offset());
 
-=======
->>>>>>> 20b737c6edf875b4a149f8fa56fe5c56d9b21595
 			this.picker.css({
 				top:    top,
 				left:   left,
