@@ -56,12 +56,13 @@
               button.dl_btn(ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.positive}}
               button.dl_btn(ng-click="vote(group_message.campaign._id,false,$index)") {{group_message.vote_flag == -1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.negative}}
               button.dl_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id)" ng-if="group_message.response_flag") {{"FACE"|translate}}
-            //-span.pull-right(ng-if="group_message.provoke.active && ( role=='OWNER'||role=='LEADER' ) && !group_message.provoke.start_confirm")
-            //-  btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(campaign_item._id,$index)" ng-if="campaign_item.join") {{"QUIT"|translate}}
-            //-  btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(campaign_item._id,$index)" ng-if="!campaign_item.join") {{"JOIN"|translate}}
+            span.pull-right(ng-if="group_message.join_flag!=undefined")
+             btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") {{"QUIT"|translate}}
+             btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag") {{"JOIN"|translate}}
         .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
           .message_row
-            span.message_label {{group_message.user.name}}
+            span.message_label
+            a(ng-href="/users/home/{{group_message.user.user_id}}") {{group_message.user.name}}
 
             span.message_label  加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<7 ")
