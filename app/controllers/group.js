@@ -524,7 +524,7 @@ exports.provoke = function (req, res) {
   var member_min = req.body.member_min;
   var member_max = req.body.member_max;
   var competition = new Campaign();
-
+  var cid = req.user.provider==="company" ? req.user._id : req.user.cid;
   var cname = req.user.provider==="company" ? req.user.info.name : req.user.cname;
   competition.gid = req.companyGroup.gid;
   competition.group_type = req.companyGroup.group_type;
@@ -540,6 +540,7 @@ exports.provoke = function (req, res) {
 
   competition.camp.push(camp_a);
 
+<<<<<<< HEAD
   var photo_album = new PhotoAlbum({
     owner: {
       _id: competition._id,
@@ -578,14 +579,16 @@ exports.provoke = function (req, res) {
           competition.member_min = member_min;
           competition.member_max = member_max;
           competition.cname=[cname];
-          competition.cid=[req.user.cid];
+          competition.cid=[cid];
           competition.team=[my_team_id,team_opposite._id];
 
           competition.poster.cname = cname;
-          competition.poster.cid = req.user.cid;
+          competition.poster.cid = cid;
           competition.poster.role = req.session.role;
-          competition.poster.uid = req.user._id;
-          competition.poster.nickname = req.user.nickname;
+          if(req.session.role==='LEADER'){
+            competition.poster.uid = req.user._id;
+            competition.poster.nickname = req.user.nickname;
+          }
           competition.save(function(err){
             if(!err){
               var groupMessage = new GroupMessage();

@@ -61,24 +61,24 @@ block aside
   .row
     label.col-xs-4.control-label 类型：
     label.col-xs-8.control-label= competition.group_type
-  .row
-    label.col-xs-4.control-label 赛制：
-    label.col-xs-8.control-label= competition.brief.competition_format
-  .row
-    label.col-xs-4.control-label 人数：
-    label.col-xs-8.control-label= competition.brief.number
+  //- .row
+  //-   label.col-xs-4.control-label 赛制：
+  //-   label.col-xs-8.control-label= competition.brief.competition_format
+  //- .row
+  //-   label.col-xs-4.control-label 人数：
+  //-   label.col-xs-8.control-label= competition.brief.number
   .row
     label.col-xs-4.control-label 场地：
-    label.col-xs-8.control-label= competition.brief.location.name
+    label.col-xs-8.control-label= competition.location.name
   .row
     label.col-xs-4.control-label 应战截止时间：
-    label.col-xs-8.control-label= moment(competition.brief.deadline).format("YYYY-MM-DD HH:mm")
+    label.col-xs-8.control-label= moment(competition.deadline).format("YYYY-MM-DD HH:mm")
   .row
     label.col-xs-4.control-label 活动时间：
-    label.col-xs-8.control-label= moment(competition.brief.competition_date).format("YYYY-MM-DD HH:mm")
+    label.col-xs-8.control-label= moment(competition.start_time).format("YYYY-MM-DD HH:mm")
   .row
     label.col-xs-4.control-label 备注：
-    label.col-xs-8.control-label= competition.brief.remark
+    label.col-xs-8.control-label= competition.content
   hr
   .row
     h4.pull-left 活动地点
@@ -91,7 +91,7 @@ block aside
       a(href="#") 上传照片
 
   script.
-    var competition_location = !{JSON.stringify(competition.brief.location)}
+    var competition_location = !{JSON.stringify(competition.location)}
 
 append footExt
   script(src="/js/controllers/competition.js")

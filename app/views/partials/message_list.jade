@@ -43,7 +43,8 @@
         .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<7 ")
           .message_row
             span.message_label 主题:
-              a(ng-if="group_message.message_type!=4 || group_message.campaign.camp[1].start_confirm==true" ng-href="/group/campaign/{{group_message.campaign._id}}"){{group_message.campaign.theme}}
+              a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/group/campaign/{{group_message.campaign._id}}"){{group_message.campaign.theme}}
+              a(ng-if="group_message.campaign.camp[1].start_confirm==true" ng-href="/group/competition/{{group_message.campaign._id}}"){{group_message.campaign.theme}}
               span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false"){{group_message.campaign.theme}}
           .message_row
             span.message_label 内容: {{group_message.campaign.content}}
