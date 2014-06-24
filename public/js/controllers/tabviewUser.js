@@ -67,6 +67,10 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
     $rootScope.nowTab='group_message';
     $http.get('/users/getGroupMessages').success(function(data, status) {
         $scope.group_messages = data.group_messages;
+
+        $rootScope.sum = $scope.group_messages.length;
+        $rootScope.corner = true;
+
         $scope.role = data.role;
         $scope.companyLogo = data.companyLogo;
     });
@@ -123,8 +127,11 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.company = false;
     $http.get('/users/getCampaigns').success(function(data, status) {
-      $scope.campaigns = data.data;
-      $scope.company = false;
+        $scope.campaigns = data.data;
+
+        $rootScope.sum = $scope.campaigns.length;
+        $rootScope.corner = false;
+
     });
 
     $scope.join = function(campaign_id,index) {

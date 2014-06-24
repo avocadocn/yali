@@ -65,6 +65,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $rootScope.nowTab = 'company_campaign';
     $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.data;
+      $rootScope.sum = $scope.campaigns.length;
       $scope.role = data.role;
     });
 
