@@ -42,7 +42,7 @@
         .triangle
         .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<7 ")
           .message_row
-            span.message_label 主题: 
+            span.message_label 主题:
               a(ng-if="group_message.message_type!=4 || group_message.campaign.camp[1].start_confirm==true" ng-href="/group/campaign/{{group_message.campaign._id}}"){{group_message.campaign.theme}}
               span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false"){{group_message.campaign.theme}}
           .message_row
@@ -67,4 +67,56 @@
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<7 ")
         span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         span.message_label 报名截止{{"TIME"|translate}}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
-  hr
+        label.pull-right(ng-if="message_role==='group'")
+          a(ng-click="toggleOperate($index);getComment($index)") 留言 {{group_message.campaign.comment_sum}}
+      .message_row(ng-if="toggle[$index] && message_role==='group'")
+        .dl_comment_area
+          .dl_modal_container.margin_top_5
+            .dl_md_8
+              input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text")
+            .dl_md_1
+              a.clearLinkUnderline.dl_btn_right(ng-click="comment($index)") 发表
+          hr
+          .dl_modal_container(ng-if="group_message.comments.length > 0")
+            .dl_row(style="height:93px" ng-repeat="comment in group_message.comments")
+              .dl_md_1
+                img.size_56(ng-src="{{comment.poster.photo}}")
+              .dl_md_8.margin_left_5
+                .row
+                  .dl_md_name
+                    h7 {{comment.poster.nickname}}
+                  .dl_md_time
+                    h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+                .row
+                  .dl_md_12
+                    h5 {{comment.content}}
+                  .dl_md_3.pull-right
+                    h5.pull-right.margin_right_20 # {{comment.index}}
+
+//- .dl_area(ng-if="message_role==='group'")
+//-   .row
+//-     label.pull-right
+//-       a(ng-click="toggleOperate($index);getComment($index)") 留言 {{group_message.comment_sum}}
+//-   .row(ng-if="toggle[$index]")
+//-     .dl_comment_area
+//-       .dl_modal_container.margin_top_5
+//-         .dl_md_8
+//-           input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text")
+//-         .dl_md_1
+//-           a.clearLinkUnderline.dl_btn_right(ng-click="comment($index)") 发表
+//-       hr
+//-       .dl_modal_container(ng-if="group_message.comments.length > 0")
+//-         .dl_row(style="height:93px" ng-repeat="comment in group_message.comments")
+//-           .dl_md_1
+//-             img.size_56(ng-src="{{comment.poster.photo}}")
+//-           .dl_md_8.margin_left_5
+//-             .row
+//-               .dl_md_name
+//-                 h7 {{comment.poster.nickname}}
+//-               .dl_md_time
+//-                 h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+//-             .row
+//-               .dl_md_12
+//-                 h5 {{comment.content}}
+//-               .dl_md_3.pull-right
+//-                 h5.pull-right.margin_right_20 # {{comment.index}}

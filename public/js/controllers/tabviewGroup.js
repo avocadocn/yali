@@ -99,6 +99,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $rootScope.$watch('teamId',function(tid){
         $http.get('/groupMessage/team?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
+            $scope.user = data.user;
             $scope.role = data.role;
 
             $rootScope.sum = $scope.group_messages.length;
@@ -128,7 +129,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     method: 'post',
                     url: '/comment/pull',
                     data:{
-                        host_id : $scope.group_messages[index]._id
+                        host_id : $scope.group_messages[index].campaign._id
                     }
                 }).success(function(data, status) {
                     if(data.length > 0){
@@ -153,23 +154,24 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 method: 'post',
                 url: '/comment/push',
                 data:{
-                    host_id : $scope.group_messages[index]._id,
+                    host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,
-                    host_type : 'message'
+                    host_type : 'campaign'
                 }
             }).success(function(data, status) {
                 if(data === 'SUCCESS'){
                     var poster={
-                        'nickname' : '我自己'
+                        'nickname' : '我自己',
+                        'photo' : $scope.user.photo
                     };
-                    $scope.group_messages[index].comment_sum ++;
+                    $scope.group_messages[index].campaign.comment_sum ++;
                     $scope.group_messages[index].comments.push({
-                        'host_id' : $scope.group_messages[index]._id,
+                        'host_id' : $scope.group_messages[index].campaign._id,
                         'content' : $scope.new_comment[index].text,
                         'create_date' : Date.now(),
                         'poster' : poster,
-                        'host_type' : 'message',
-                        'index' : $scope.group_messages[index].comment_sum
+                        'host_type' : 'campaign',
+                        'index' : $scope.group_messages[index].campaign.comment_sum
                     });
                 } else {
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);

@@ -104,7 +104,7 @@ exports.getTeamMessage = function(req, res) {
         }
         group_messages.push(_group_message);
       }
-      return res.send({'group_messages':group_messages,'role':req.session.role});
+      return res.send({'group_messages':group_messages,'role':req.session.role,'user':{'nickname':req.user.nickname,'photo':req.user.photo}});
      }
   });
 };
