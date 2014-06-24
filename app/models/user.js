@@ -27,15 +27,6 @@ var _team = new Schema({
     logo: String
 });
 
-var _group = new Schema({
-    _id: {
-        type: String,
-        ref: 'Group'
-    },
-    group_type: String,
-    entity_type: String,           //对应的增强组件名字
-    team: [_team]
-});
 /**
  * User Schema
  */

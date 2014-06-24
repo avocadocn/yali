@@ -35,9 +35,9 @@
                     h5 {{company.name}}
                 .row.margin_left_10
                   .dl_md_3
-                    h5 公司小队数:{{company.team.length}}
+                    h5 该公司小队数:{{company.team.length}}
                   .dl_md_3
-              .dl_md_1
+              .dl_md_1(ng-if="company.team.length > 0")
                 a.clearLinkUnderline.dl_btn_right(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小队
                 a.clearLinkUnderline.dl_btn_right(ng-if="show_team[$index]" ng-click="toggleTeam(company._id,$index)") 收起
             .dl_modal_container

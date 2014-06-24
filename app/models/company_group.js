@@ -14,7 +14,11 @@ var _member = new Schema({
         ref: 'User'
     },
     nickname: String,
-    photo: String
+    photo: String,
+    join_time:{
+        type: Date,
+        default: Date.now()
+    }
 });
 
 

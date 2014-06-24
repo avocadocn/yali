@@ -33,12 +33,12 @@ exports.authCallback = function(req, res) {
     res.redirect('/');
 };
 exports.authorize = function(req, res, next){
-    if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id)){
+    if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id.toString())){
         req.session.nowcid = req.user._id;
         req.session.role = 'HR';
         req.session.Global.role = 'HR';
     }
-    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid)){
+    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid.toString())){
         req.session.role = 'EMPLOYEE';
         req.session.Global.role = 'EMPLOYEE';
         req.session.nowcid = req.user.cid;
@@ -267,7 +267,7 @@ exports.renderGroupList = function(req, res) {
 //显示企业成员列表
 exports.renderMembers = function(req,res){
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
 }
@@ -294,76 +294,58 @@ exports.groupSelect = function(req, res) {
                 return;
             }
 
-            //先创建一个虚拟小队
-            var companyGroup = new CompanyGroup();
-            companyGroup._id = req.session.company_id;
-            companyGroup.cid = req.session.company_id;
-            companyGroup.cname = company.info.name;
-            companyGroup.gid = '0';
-            companyGroup.group_type = 'virtual';
-            companyGroup.entity_type = 'virtual';
-            companyGroup.name = 'virtual';
-            companyGroup.logo = company.info.logo;
-
-            companyGroup.save(function (err){
-                if (err) {
-                    console.log(err);
-                    return res.send('err');
-                } else {
-                    for (var i = 0, length = selected_groups.length; i < length; i++) {
-                        var tname = company.info.official_name + '-'+ selected_groups[i].group_type + '队'; //默认的小队名
+            for (var i = 0, length = selected_groups.length; i < length; i++) {
+                var tname = company.info.official_name + '-'+ selected_groups[i].group_type + '队'; //默认的小队名
 
 
-                        var companyGroup = new CompanyGroup();
+                var companyGroup = new CompanyGroup();
 
-                        companyGroup.cid = req.session.company_id;
-                        companyGroup.cname = company.info.name;
-                        companyGroup.gid = selected_groups[i]._id;
-                        companyGroup.group_type = selected_groups[i].group_type;
-                        companyGroup.entity_type = selected_groups[i].entity_type;
-                        companyGroup.name = tname;
-                        companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type.toLowerCase() +'_on.png';
+                companyGroup.cid = req.session.company_id;
+                companyGroup.cname = company.info.name;
+                companyGroup.gid = selected_groups[i]._id;
+                companyGroup.group_type = selected_groups[i].group_type;
+                companyGroup.entity_type = selected_groups[i].entity_type;
+                companyGroup.name = tname;
+                companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type.toLowerCase() +'_on.png';
 
-                        companyGroup.save(function (err){
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                ;
-                            }
-                        });
-
-                        company.team.push({
-                            'gid' : selected_groups[i]._id,
-                            'group_type' : selected_groups[i].group_type,
-                            'name' : tname,
-                            'id' : companyGroup._id
-                        });
-                        var Entity = mongoose.model(companyGroup.entity_type);//将增强组件模型引进来
-                        var entity = new Entity();
-
-                        //增强组件目前只能存放这三个字段
-                        entity.tid = companyGroup._id;        //小队id
-                        entity.cid = req.session.company_id;  //组件类型id
-                        entity.gid = selected_groups[i]._id;  //公司id
-
-                        entity.save(function (err){
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
+                companyGroup.save(function (err){
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        ;
                     }
+                });
 
-                    company.save(function (s_err){
-                        if(req.session.selected != undefined && req.session.selected !=null){
-                            delete req.session.selected;
-                        }
-                        if(s_err){
-                            return res.send('err');
-                        }
-                    });
-                    res.send({'result':1,'msg':'组件选择成功！'});
+                company.team.push({
+                    'gid' : selected_groups[i]._id,
+                    'group_type' : selected_groups[i].group_type,
+                    'name' : tname,
+                    'id' : companyGroup._id
+                });
+                var Entity = mongoose.model(companyGroup.entity_type);//将增强组件模型引进来
+                var entity = new Entity();
+
+                //增强组件目前只能存放这三个字段
+                entity.tid = companyGroup._id;        //小队id
+                entity.cid = req.session.company_id;  //公司id
+                entity.gid = selected_groups[i]._id;  //组件类型id
+
+                entity.save(function (err){
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+            company.save(function (s_err){
+                if(req.session.selected != undefined && req.session.selected !=null){
+                    delete req.session.selected;
+                }
+                if(s_err){
+                    return res.send('err');
                 }
             });
+            res.send({'result':1,'msg':'组件选择成功！'});
         } else {
             return res.send('err');
         }
@@ -691,38 +673,38 @@ exports.createDetail = function(req, res) {
 
 
 exports.home = function(req, res) {
-    if(req.session.role === 'HR'){
+    var render = function(company) {
         return res.render('company/home', {
-            title : '公司主页',
-            logo: req.user.info.logo,
-            cname : req.user.info.name,
-            sign : req.user.info.brief,
-            groupnumber: req.user.team.length,
-            membernumber: req.user.info.membernumber,
-            role: req.session.role
+            title: '公司主页',
+            logo: company.info.logo,
+            cname: company.info.name,
+            sign: company.info.brief,
+            groupnumber: company.team ? company.team.length : 0,
+            membernumber: company.info.membernumber
         });
-    }
-    else{
+    };
 
-        Company.findOne({_id: req.user.cid}, function(err, company) {
-            if(company) {
-                if (err) {
-                    console.log('错误');
-                }
-                return res.render('company/home', {
-                    title : '公司主页',
-                    logo: company.info.logo,
-                    cname : company.info.name,
-                    sign : company.info.brief,
-                    groupnumber: company.team ? company.team.length : 0,
-                    membernumber: company.info.membernumber,
-                    role: req.session.role
+    if (!req.params.companyId) {
+        if (req.user.provider === 'company') {
+            return render(req.user);
+        } else if (req.user.provider === 'user') {
+            return Company.findById(req.user.cid).exec()
+                .then(function(company) {
+                    if (!company) {
+                        throw 'not found company';
+                    }
+                    render(company);
+                })
+                .then(null, function(err) {
+                    console.log(err);
+                    // TO DO: temp err handle
+                    res.redirect('/');
                 });
-            }
-            else
-                res.redirect('/');
-        });
+        }
+    } else {
+        return render(req.profile);
     }
+
 };
 
 exports.Info = function(req, res) {
@@ -734,7 +716,7 @@ exports.Info = function(req, res) {
 
 exports.saveGroupInfo = function(req, res){
     if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-        return res.send(403,forbidden);
+        return res.send(403,'forbidden');
     }
     CompanyGroup.findOne({'_id' : req.body.tid}, function(err, companyGroup) {
         if (err) {
@@ -1063,7 +1045,7 @@ exports.appointLeader = function (req, res) {
 //关闭企业活动
 exports.campaignCancel = function (req, res) {
     if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-        return res.send(403,forbidden);
+        return res.send(403,'forbidden');
     }
     var campaign_id = req.body.campaign_id;
     Campaign.findOne({_id:campaign_id},function(err, campaign) {
@@ -1076,9 +1058,23 @@ exports.campaignCancel = function (req, res) {
             }
             var active = campaign.active;
             campaign.active = !active;
-            campaign.save();
-
-            return res.send('ok');
+            campaign.save(function(err){
+                if(!err){
+                    var groupMessage = new GroupMessage();
+                    groupMessage.message_type = 3;
+                    groupMessage.company ={
+                        cid : campaign.cid[0],
+                        name : campaign.cname[0],
+                        logo : req.user.info.logo
+                    };
+                    groupMessage.campaign = campaign._id;
+                    groupMessage.save(function(err){
+                        if(!err){
+                            return res.send({'result':1,'msg':'活动关闭成功'});
+                        }
+                    });
+                }
+            });
             //console.log('创建成功');
         } else {
             return res.send('not exist');
@@ -1089,9 +1085,9 @@ exports.campaignCancel = function (req, res) {
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function (req, res) {
     if(req.session.role !=='HR'){
-      return res.send(403,forbidden);
+      return res.send(403,'forbidden');
     }
-    var username = req.user.info.name;
+    var cname = req.user.info.name;
     var cid = req.user._id.toString();    //公司id
     var gid = '0';                  //HR发布的活动,全部归在虚拟组里,虚拟组的id默认是0
     var group_type = '虚拟组';
@@ -1109,12 +1105,9 @@ exports.sponsor = function (req, res) {
     var member_min = req.body.member_min;
     var member_max = req.body.member_max;
     var campaign = new Campaign();
-    campaign.team.push(cid);
-    campaign.gid.push(gid);
-    campaign.group_type.push(group_type);
-    campaign.cname = username;
+    campaign.cname = cname;
     campaign.cid = company_in_campaign; //参加活动的所有公司的id
-    campaign.poster.cname = username;
+    campaign.poster.cname = cname;
     campaign.poster.cid = cid;
     campaign.poster.role = 'HR';
     campaign.active = true;
@@ -1168,21 +1161,13 @@ exports.sponsor = function (req, res) {
                 //生成动态消息
 
                 var groupMessage = new GroupMessage();
-                groupMessage.team.push(cid);
-                groupMessage.group.gid.push(gid);
-                groupMessage.group.group_type.push(group_type);
-                groupMessage.active = true;
-                groupMessage.cid.push(cid);
-
-                groupMessage.poster.cname = username;
-                groupMessage.poster.cid = cid;
-                groupMessage.poster.role = 'HR';
-
-                groupMessage.content = content;
-                groupMessage.location = location;
-                groupMessage.start_time = start_time;
-                groupMessage.end_time = end_time;
-                groupMessage.deadline = deadline;
+                groupMessage.message_type = 0;
+                groupMessage.company = {
+                    cid : cid,
+                    name: cname,
+                    logo: req.user.info.logo
+                };
+                groupMessage.campaign = campaign._id;
                 groupMessage.save(function(err) {
                     if (err) {
                         return res.send({'result':0,'msg':'活动创建失败'});

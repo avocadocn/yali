@@ -1,13 +1,11 @@
 'use strict';
 
-var group_message = require('../controllers/groupMessage');
+var groupMessage = require('../controllers/groupMessage');
 var express = require('express');
 var config = require('../../config/config');
-
+var authorization = require('./middlewares/authorization');
 module.exports = function(app) {
-  app.get('/campaign/group/getMessages', group_message.getGroupMessage);
-  app.get('/campaign/user/getMessages', group_message.getUserMessage);
-
-  app.get('/groupMessage/:groupId', group_message.getGroupId);
-  //app.param('groupId',group_message.group);
+  app.get('/group/message_list', authorization.requiresLogin, groupMessage.renderMessageList)
+  app.get('/groupMessage/user', authorization.requiresLogin, groupMessage.getUserMessage);
+  app.get('/groupMessage/team', authorization.requiresLogin, groupMessage.getTeamMessage);
 }

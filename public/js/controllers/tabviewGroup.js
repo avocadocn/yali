@@ -19,7 +19,7 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/group_message', {
-        templateUrl: '/group/group_message_list',
+        templateUrl: '/group/message_list',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
@@ -97,7 +97,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
-        $http.get('/group/getGroupMessages/'+tid +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.role = data.role;
 
@@ -183,22 +183,23 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     }
     //消除ajax缓存
-    $scope.vote = function(provoke_message_id, status, index) {
+    $scope.vote = function(competition_id, vote_status, index) {
          try {
             $http({
                 method: 'post',
                 url: '/users/vote',
                 data:{
-                    provoke_message_id : provoke_message_id,
-                    aOr : status,
-                    tid : $scope.group_messages[index].my_team_id
+                    competition_id : competition_id,
+                    aOr : vote_status,
+                    tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
                 }
             }).success(function(data, status) {
-                if(data.msg != undefined && data.msg != null) {
+                if(data.result===0) {
                     $rootScope.donlerAlert(data.msg);
                 } else {
-                    $scope.group_messages[index].positive = data.positive;
-                    $scope.group_messages[index].negative = data.negative;
+                    $scope.group_messages[index].vote_flag = vote_status + data.data.quit -1;
+                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
+                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
                 }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -209,13 +210,13 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     };
     //应战
-    $scope.responseProvoke = function(tid,provoke_message_id) {
+    $scope.responseProvoke = function(tid,competition_id) {
          try {
             $http({
                 method: 'post',
                 url: '/group/responseProvoke/'+$rootScope.teamId,
                 data:{
-                    provoke_message_id : provoke_message_id
+                    competition_id : competition_id
                 }
             }).success(function(data, status) {
                 window.location.reload();
@@ -301,7 +302,25 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             console.log(e);
         }
     };
-
+    //应战
+    $scope.responseProvoke = function(competition_id) {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/responseProvoke',
+                data:{
+                    competition_id : competition_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
 
     $scope.cancel = function (_id) {
         try {
@@ -547,7 +566,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         $scope.showMapFlag = true;
     };
     $scope.getCompany =function() {
-
         try {
             $scope.show_team = [];
             $http({
@@ -558,6 +576,18 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 }
             }).success(function(data, status) {
                 $scope.companies = data;
+                var tmp = 0;
+                for(var i = 0; i < $scope.companies.length; i ++) {
+                    var team_tmp = $scope.companies[i].team;
+                    $scope.companies[i].team = [];
+                    for(var j = 0; j < team_tmp.length; j ++) {
+                        if(team_tmp[j].gid === $rootScope.groupId){
+                            if(team_tmp[j].id.toString() !== $rootScope.teamId){
+                                $scope.companies[i].team.push(team_tmp[j]);
+                            }
+                        }
+                    }
+                }
                 $scope.teams=[];
                 if($scope.companies.length <= 0) {
                     $scope.donlerAlert("没有找到符合条件的公司!");
@@ -645,7 +675,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     };
         //约战
     $scope.provoke = function() {
-        console.log($scope.team_opposite);
          try {
             $http({
                 method: 'post',

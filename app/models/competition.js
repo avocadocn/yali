@@ -97,6 +97,11 @@ var Competition = new Schema({
       content: String,                          //备注内容
       number: Number                           //人数
     },
+    create_time:{
+      type: Date,
+      default: Date.now()
+    },
+    close_time: Date,
     camp:[_camp],                              //阵营
     poster: {
         cid: String,                   //活动发起者所属的公司
@@ -108,11 +113,6 @@ var Competition = new Schema({
             enum: ['HR','LEADER','GUESTLEADER','GUESTHR']      //HR 队长
         },
     },
-    convert_to_campaign: {
-        type: Boolean,
-        default: false
-    },
-    provoke_message_id: Schema.Types.ObjectId,
     arena_flag: {
         type: Boolean,
         default: false

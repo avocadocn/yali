@@ -41,7 +41,7 @@ block baseInfo
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
     ul.nav.nav-tabs
-      if (Global.role !=='GUESTHR' && Global.role !=='GUEST')
+      if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
         li.tab_style(ng-class="{'active':nowTab=='group_message'}")
           a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"TEAM_MESSAGE"|translate}}
           .dl_corner(ng-if="corner && sum > 0") {{sum}}

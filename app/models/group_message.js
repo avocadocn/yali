@@ -12,80 +12,54 @@ var mongoose = require('mongoose'),
  */
 
 
-var _camp = new Schema({
-    cid: String,
-    tid: String,
-    tname: {
-        type: String,
-        default: 'unknown'
-    },
-    vote: {                           //在投票按钮上显示票数,由于异步方式的多表查询有问题,所以这样定义也是无奈之举啊
-        positive: {
-            type: Number,
-            default: 0
-        },
-        negative: {
-            type: Number,
-            default: 0
-        }
-    }
-});
-
 var GroupMessage = new Schema({
+    //动态类型
+    //0:发起公司活动，
+    // 1:发起小队活动，
+    // 2:关闭公司活动，
+    // 3:关闭小组活动，
+    // 4：发起挑战，
+    // 5:接受挑战应战，
+    // 6:比赛确认，
+    // 7:公司新成员加入，
+    // 8:小组新成员加人
+    message_type: Number,
+    company: [{//如果是约战消息,要在两家公司的主页同时显示
+        cid:{
+            type: Schema.Types.ObjectId,
+            ref:'Company'
+        },
+        name: String,
+        logo:String
+    }],
     team:[{
+        teamid:{
+            type: Schema.Types.ObjectId,
+            ref: 'CompanyGroup'
+        },
+        name: String,
+        logo:String
+    }],
+    campaign:{
         type: Schema.Types.ObjectId,
-        ref: 'CompanyGroup'
-    }],
-    id: String,
-    cid: [{                            //如果是约战消息,要在两家公司的主页同时显示
-        type: Schema.Types.ObjectId
-    }],
-    group: {
-        gid: Array,
-        group_type: Array
+        ref: 'Campaign'
     },
-    active: Boolean, //
+    //可做成数组合并多个成员加入
+    user:{
+        user_id:{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        name: String,
+        logo:String
+    },
+    active: {
+        type: Boolean, //
+        default: true
+    },
     create_time: {
         type: Date,
         default: Date.now()
-    },
-    poster: {
-        cid: String,                  //消息发布者所属的公司
-        uid: String,
-        cname: String,
-        tname: String,                //哪个小队发布的
-        nickname: String,
-        role: {
-            type: String,
-            enum: ['HR','LEADER','GUESTLEADER','GUESTHR']     //HR 队长
-        },
-    },
-    theme: String,
-    content: String,
-    location: {
-        type: {
-          type:String
-        },
-        coordinates: [],
-        name: String
-    },                 //地点
-    start_time: Date,                 //活动开始时间(或者比赛时间)
-    end_time: Date,                   //活动结束时间(或者比赛截止时间)
-    deadline:Date,
-    comment_sum:{                     //该动态的留言数量
-        type:Number,
-        default:0
-    },
-    provoke: {                        //约战动态
-        active: {
-            type: Boolean,
-            default: false            //如果是true就显示为约战动态,否则为普通动态
-        },
-        camp: [_camp],                //双方队名、投票情况
-        start_confirm: {
-            type: Boolean,
-            default: false
-        }                           //双方确认后才能变为true,此时不再显示"投票"按钮
     }
 });
 

@@ -37,7 +37,10 @@ block contentExt
             if photo_album.update_user.type === 'hr'
               img.update_user_photo(src="/logo/company/#{photo_album.update_user._id}/36/36")
             .pull-left
-              a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
+              if photo_album.update_user.type === 'user'
+                a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
+              if photo_album.update_user.type === 'hr'
+                a.update_user_name(href="/company/home/#{photo_album.update_user._id}")= photo_album.update_user.name
               - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
               p.text #{year}.#{month}.#{day} 最后更新
 
