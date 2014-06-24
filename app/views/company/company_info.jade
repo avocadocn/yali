@@ -20,9 +20,9 @@ div
       .dl_row.clearfix
         .info_side
           span.info_label {{"INVATE_LINK"|translate}}
-        .info_side
+        .info_detail
           button.dl_btn.dl_btn_small(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
-        .info_side
+
           textarea.info_label.dl_word_break(ng-if="inviteUrlStatus") {{company.inviteUrl}}
   form.form-horizontal(name="infoForm")
     .dl_row.clearfix
