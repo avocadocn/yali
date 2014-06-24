@@ -47,6 +47,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
+        $rootScope.message_corner = false;
     };
 
     //加入小队
@@ -102,8 +103,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             $scope.user = data.user;
             $scope.role = data.role;
 
+            $rootScope.message_corner = true;
             $rootScope.sum = $scope.group_messages.length;
-            $rootScope.corner = true;
 
             for(var i = 0;i < $scope.group_messages.length; i ++) {
                 $scope.group_messages[i].comments = [];
@@ -292,8 +293,8 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         $http.get('/group/getCampaigns/'+tid+'?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.data;
 
+            $rootScope.campaign_corner = false;
             $rootScope.sum = $scope.campaigns.length;
-            $rootScope.corner = false;
 
             $rootScope.role = data.role;    //只有改组的队长才可以操作活动(关闭、编辑等)
         });

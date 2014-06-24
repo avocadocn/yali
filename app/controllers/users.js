@@ -244,6 +244,7 @@ exports.invite = function(req, res) {
 
 function userOperate(cid, key, res, req) {
 
+  console.log(cid, config.SECRET);
   if (encrypt.encrypt(cid, config.SECRET) === key) {
 
     Company
