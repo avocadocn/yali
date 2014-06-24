@@ -58,6 +58,7 @@ tabViewUser.run(['$rootScope', function ($rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
+        $rootScope.message_corner = false;
     };
 }]);
 
@@ -68,8 +69,8 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
     $http.get('/groupMessage/user?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.group_messages = data.group_messages;
 
+        $rootScope.message_corner = true;
         $rootScope.sum = $scope.group_messages.length;
-        $rootScope.corner = true;
 
         $scope.role = data.role;
     });
@@ -176,10 +177,6 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
     $scope.company = false;
     $http.get('/users/getCampaigns').success(function(data, status) {
         $scope.campaigns = data.data;
-
-        $rootScope.sum = $scope.campaigns.length;
-        $rootScope.corner = false;
-
     });
 
     $scope.join = function(campaign_id,index) {
