@@ -540,74 +540,91 @@ exports.provoke = function (req, res) {
 
   competition.camp.push(camp_a);
 
-  var photo_album = new PhotoAlbum();
-  photo_album.save(function(err){
-    if(!err){
-      competition.photo = { pid: photo_album._id, name: photo_album.name };
-      fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
-        if (err) console.log(err);
-      });
-
-      var camp_b = {
-        'id' : team_opposite._id,
-        'cid' : team_opposite.cid,
-        'tname' : team_opposite.name,
-        'logo' : team_opposite.logo
-      };
-      competition.camp.push(camp_b);
-      competition.theme = theme;
-      competition.content = content;
-      competition.location = location;
-      competition.start_time = start_time;
-      competition.end_time = end_time;
-      competition.deadline = deadline;
-      competition.member_min = member_min;
-      competition.member_max = member_max;
-      competition.cname=[cname];
-      competition.cid=[req.user.cid];
-      competition.team=[my_team_id,team_opposite._id];
-
-      competition.poster.cname = cname;
-      competition.poster.cid = req.user.cid;
-      competition.poster.role = req.session.role;
-      competition.poster.uid = req.user._id;
-      competition.poster.nickname = req.user.nickname;
-      competition.save(function(err){
+  var photo_album = new PhotoAlbum({
+    owner: {
+      _id: competition._id,
+      model: 'Campaign'
+    },
+    name: competition.theme,
+    owner_company: req.companyGroup.cid,
+    owner_company_group: req.companyGroup._id,
+    update_user: {
+      _id: req.user._id,
+      nickname: req.user.nickname
+    }
+  });
+  fs.mkdir(path.join(meanConfig.root, '/public/img/photo_album/', photo_album._id.toString()), function(err) {
+    if (err) {
+      console.log(err);
+      return res.send(500);
+    } else {
+      photo_album.save(function(err){
         if(!err){
-          var groupMessage = new GroupMessage();
-          groupMessage.message_type = 4;
-          groupMessage.team.push({
-            teamid: my_team_id,
-            name: req.companyGroup.name,
-            logo: req.companyGroup.logo
-          });         //发起挑战方小队信息
-          groupMessage.team.push({
-            teamid: team_opposite._id,
-            name: team_opposite.name,
-            logo: team_opposite.logo
-          });  //应约方小队信息
+          competition.photo_album = photo_album._id;
 
-          groupMessage.company.push({
-            cid: req.companyGroup.cid,
-            name: cname
-          });
-          groupMessage.company.push({
-            cid: team_opposite.cid,
-            name: team_opposite.cname
-          });
-          groupMessage.campaign = competition._id;
-          groupMessage.save(function (err) {
-            if (err) {
-              console.log('保存约战动态时出错' + err);
+          var camp_b = {
+            'id' : team_opposite._id,
+            'cid' : team_opposite.cid,
+            'tname' : team_opposite.name,
+            'logo' : team_opposite.logo
+          };
+          competition.camp.push(camp_b);
+          competition.theme = theme;
+          competition.content = content;
+          competition.location = location;
+          competition.start_time = start_time;
+          competition.end_time = end_time;
+          competition.deadline = deadline;
+          competition.member_min = member_min;
+          competition.member_max = member_max;
+          competition.cname=[cname];
+          competition.cid=[req.user.cid];
+          competition.team=[my_team_id,team_opposite._id];
+
+          competition.poster.cname = cname;
+          competition.poster.cid = req.user.cid;
+          competition.poster.role = req.session.role;
+          competition.poster.uid = req.user._id;
+          competition.poster.nickname = req.user.nickname;
+          competition.save(function(err){
+            if(!err){
+              var groupMessage = new GroupMessage();
+              groupMessage.message_type = 4;
+              groupMessage.team.push({
+                teamid: my_team_id,
+                name: req.companyGroup.name,
+                logo: req.companyGroup.logo
+              });         //发起挑战方小队信息
+              groupMessage.team.push({
+                teamid: team_opposite._id,
+                name: team_opposite.name,
+                logo: team_opposite.logo
+              });  //应约方小队信息
+
+              groupMessage.company.push({
+                cid: req.companyGroup.cid,
+                name: cname
+              });
+              groupMessage.company.push({
+                cid: team_opposite.cid,
+                name: team_opposite.cname
+              });
+              groupMessage.campaign = competition._id;
+              groupMessage.save(function (err) {
+                if (err) {
+                  console.log('保存约战动态时出错' + err);
+                }
+              });
+              return res.send({'result':1,'msg':'挑战成功！'});
+            }else{
+              console.log('保存比赛',err);
             }
           });
-          return res.send({'result':1,'msg':'挑战成功！'});
-        }else{
-          console.log('保存比赛',err);
         }
       });
     }
-  });
+  })
+
 };
 
 
