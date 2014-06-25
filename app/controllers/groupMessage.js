@@ -48,14 +48,14 @@ exports.getTeamMessage = function(req, res) {
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
                 group_message[i].campaign.camp[camp_flag].vote.positive_member.forEach(function(member){
-                  if(member.uid === req.user._id){
+                  if(member.uid.toString() === req.user._id.toString()){
                     vote_flag = 1;
                   }
                 });
               }
-              if(group_message[i].campaign.camp[camp_flag].vote.negatuve>0 ){
-                group_message[i].campaign.camp[camp_flag].vote.negatuve_member.forEach(function(member){
-                  if(member.uid === req.user._id){
+              if(group_message[i].campaign.camp[camp_flag].vote.negative>0 ){
+                group_message[i].campaign.camp[camp_flag].vote.negative_member.forEach(function(member){
+                  if(member.uid.toString() === req.user._id.toString()){
                     vote_flag = -1;
                   }
                 });
@@ -153,8 +153,8 @@ exports.getUserMessage = function(req, res) {
                 }
               });
             }
-            if(group_message[i].campaign.camp[camp_flag].vote.negatuve>0 ){
-              group_message[i].campaign.camp[camp_flag].vote.negatuve_member.forEach(function(member){
+            if(group_message[i].campaign.camp[camp_flag].vote.negative>0 ){
+              group_message[i].campaign.camp[camp_flag].vote.negative_member.forEach(function(member){
                 if(member.uid.toString() === req.user._id.toString()){
                   vote_flag = -1;
                 }

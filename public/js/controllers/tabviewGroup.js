@@ -200,7 +200,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 if(data.result===0) {
                     $rootScope.donlerAlert(data.msg);
                 } else {
-                    $scope.group_messages[index].vote_flag = vote_status + data.data.quit -1;
+                    $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
                 }
