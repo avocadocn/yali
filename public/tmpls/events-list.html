@@ -4,7 +4,7 @@
 		<% _.each(events, function(event) { %>
 			<li class="custom_calendar_li">
 				<!-- <span class="pull-left event <%= event['class'] %>"></span>&nbsp; -->
-				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>"
+				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
 					data-event-class="<%= event['class'] %>" class="event-item"><img src="/logo/group/<%= event.company_group_id %>/27/27"/>
 					<%= event.title %>&nbsp;&nbsp;开始时间: <%= new Date(event.start).toLocaleDateString() %>&nbsp;&nbsp;结束时间: <%= new Date(event.end).toLocaleDateString() %>&nbsp;&nbsp;报名人数: <%= event.count %></a>
 			</li>
