@@ -7,15 +7,15 @@ block contentExt
   .dl_container.photo_album
     header.clearfix
       ol.breadcrumb
-        li: a(href="/group/home/#{photo_album.owner._id}")= photo_album.owner.name
-        li: a#returnUri(href="/#{photo_album.owner._id}/photoAlbumListView") 相册集
+        li: a(href="/group/home/#{photo_album.owner.team._id}")= photo_album.owner.name
+        li: a#returnUri(href="/#{photo_album.owner.team._id}/photoAlbumListView") 相册集
         li.active= photo_album.name
       div.relative
         .media
           .pull-left
-            img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.logo}")
+            img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.team.logo}")
           .media-body
-            h4.media-heading= photo_album.owner.name
+            h4.media-heading= photo_album.owner.team.name
             p.text 相册名:&nbsp;#{photo_album.name}
             p.text 照片数:&nbsp;#{photo_album.photo_count}
             - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();

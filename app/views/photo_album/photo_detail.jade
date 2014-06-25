@@ -6,8 +6,8 @@ append headExt
 block contentExt
   .dl_container.photo_album
     ol.breadcrumb
-      li: a(href="/group/home/#{photo_album.owner._id}")= photo_album.owner.name
-      li: a(href="/#{photo_album.owner._id}/photoAlbumListView") 相册集
+      li: a(href="/group/home/#{photo_album.owner.team._id}")= photo_album.owner.team.name
+      li: a(href="/#{photo_album.owner.team._id}/photoAlbumListView") 相册集
       li: a#returnUri(href="/photoAlbumDetailView/#{photo_album._id}")= photo_album.name
       li.active= photo_detail.name
     hr
@@ -47,9 +47,9 @@ block contentExt
       .col-xs-offset-1.col-sm-offset-1.col-xs-3.col-sm-3
         .media
           .pull-left
-            img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.logo}")
+            img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.team.logo}")
           .media-body
-            h4= photo_album.owner.name
+            h4= photo_album.owner.team.name
         p.text 相册名:&nbsp;#{photo_album.name}
         p.text 照片数:&nbsp;#{photo_album.photo_count}
         - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();

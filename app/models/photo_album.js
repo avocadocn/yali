@@ -50,16 +50,18 @@ Photo.pre('save', function(next) {
 
 var PhotoAlbum = new Schema({
   owner: {
-    _id: Schema.Types.ObjectId,
-    model: String
-  },
-  owner_company: {
-    type: Schema.Types.ObjectId,
-    ref: 'Company'
-  },
-  owner_company_group: {
-    type: Schema.Types.ObjectId,
-    ref: 'CompanyGroup'
+    model: {
+      _id: Schema.Types.ObjectId,
+      type: String
+    },
+    companies: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Company'
+    }],
+    teams: [{
+      type: Schema.Types.ObjectId,
+      ref: 'CompanyGroup'
+    }]
   },
   name: {
     type: String,

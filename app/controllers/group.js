@@ -540,14 +540,43 @@ exports.provoke = function (req, res) {
 
   competition.camp.push(camp_a);
 
+  var camp_b = {
+    'id' : team_opposite._id,
+    'cid' : team_opposite.cid,
+    'tname' : team_opposite.name,
+    'logo' : team_opposite.logo
+  };
+  competition.camp.push(camp_b);
+  competition.theme = theme;
+  competition.content = content;
+  competition.location = location;
+  competition.start_time = start_time;
+  competition.end_time = end_time;
+  competition.deadline = deadline;
+  competition.member_min = member_min;
+  competition.member_max = member_max;
+  competition.cname=[cname];
+  competition.cid=[cid];
+  competition.team=[my_team_id,team_opposite._id];
+
+  competition.poster.cname = cname;
+  competition.poster.cid = cid;
+  competition.poster.role = req.session.role;
+  if(req.session.role==='LEADER'){
+    competition.poster.uid = req.user._id;
+    competition.poster.nickname = req.user.nickname;
+  }
+
   var photo_album = new PhotoAlbum({
     owner: {
-      _id: competition._id,
-      model: 'Campaign'
+      model: {
+        _id: competition._id,
+        type: 'Campaign'
+      },
+      companies: [req.companyGroup.cid, team_opposite.cid],
+      teams: [req.companyGroup._id, team_opposite._id]
     },
     name: competition.theme,
-    owner_company: req.companyGroup.cid,
-    owner_company_group: req.companyGroup._id,
     update_user: {
       _id: req.user._id,
       nickname: req.user.nickname
@@ -562,32 +591,6 @@ exports.provoke = function (req, res) {
         if(!err){
           competition.photo_album = photo_album._id;
 
-          var camp_b = {
-            'id' : team_opposite._id,
-            'cid' : team_opposite.cid,
-            'tname' : team_opposite.name,
-            'logo' : team_opposite.logo
-          };
-          competition.camp.push(camp_b);
-          competition.theme = theme;
-          competition.content = content;
-          competition.location = location;
-          competition.start_time = start_time;
-          competition.end_time = end_time;
-          competition.deadline = deadline;
-          competition.member_min = member_min;
-          competition.member_max = member_max;
-          competition.cname=[cname];
-          competition.cid=[cid];
-          competition.team=[my_team_id,team_opposite._id];
-
-          competition.poster.cname = cname;
-          competition.poster.cid = cid;
-          competition.poster.role = req.session.role;
-          if(req.session.role==='LEADER'){
-            competition.poster.uid = req.user._id;
-            competition.poster.nickname = req.user.nickname;
-          }
           competition.save(function(err){
             if(!err){
               var groupMessage = new GroupMessage();
@@ -725,12 +728,14 @@ exports.sponsor = function (req, res) {
   campaign.deadline = deadline;
   var photo_album = new PhotoAlbum({
     owner: {
-      _id: campaign._id,
-      model: 'Campaign'
+      model: {
+        _id: campaign._id,
+        type: 'Campaign'
+      },
+      companies: [cid],
+      teams: [req.companyGroup._id]
     },
     name: campaign.theme,
-    owner_company: cid,
-    owner_company_group: req.companyGroup._id,
     update_user: {
       _id: req.user._id,
       nickname: req.user.nickname
@@ -821,7 +826,8 @@ exports.getCompetition = function(req, res){
     'score_b': "",
     'rst_content': "",
     'moment':moment,
-    'confirm_btn_show':false
+    'confirm_btn_show':false,
+    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album).slice(0, 4)
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.session.role==='HR'){
@@ -860,10 +866,7 @@ exports.renderCampaignDetail = function(req, res) {
     }else{
       res.render('competition/football', {
         campaign: campaign,
-        role: req.session.role,
-        nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
-        nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo,
-        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4),
+        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4)
       });
     }
 
@@ -956,7 +959,9 @@ exports.competition = function(req, res, next, id){
   var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
   Campaign.findOne({
       '_id':id
-    }).exec(function(err, competition){
+    })
+    .populate('photo_album')
+    .exec(function(err, competition){
       if (err) return next(err);
       req.competition = competition;
       if(cid.toString() ===competition.camp[0].cid.toString()){

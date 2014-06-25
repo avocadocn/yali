@@ -82,9 +82,9 @@ block contentExt
     .dl_detail_side
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         #mapContainer.size_400
-      p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
-        a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
       if (Global.role!=='PARTNER')
+        p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
+          a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
         .photo_album
           each photo in photo_thumbnails
             a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")

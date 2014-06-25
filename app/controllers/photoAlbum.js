@@ -27,11 +27,11 @@ function photoEditAuth(user, photo_album, photo) {
     return true;
   }
 
+  var owner = getPhotoAlbumOwner(user, photo_album);
+
   // 该照片所属组的队长
   var leaders = [];
-  if (photo_album.owner_company_group) {
-    leaders = photo_album.owner_company_group.leader || [];
-  }
+  leaders = photo_album.owner.team.leader || [];
   for (var i = 0; i < leaders.length; i++) {
     if (user._id.toString() === leaders[i]._id.toString()) {
       return true;
@@ -39,8 +39,8 @@ function photoEditAuth(user, photo_album, photo) {
   }
 
   // 该照片所属公司的HR
-  if (photo_album.owner_company) {
-    if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+  if (owner.company) {
+    if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
       return true;
     }
   }
@@ -54,8 +54,11 @@ function photoAlbumEditAuth(user, photo_album) {
 
   // 该照片所属组的队长
   var leaders = [];
-  if (photo_album.owner_company_group) {
-    leaders = photo_album.owner_company_group.leader || [];
+
+  var owner = getPhotoAlbumOwner(user, photo_album);
+
+  if (owner.team) {
+    leaders = owner.team.leader || [];
   }
   for (var i = 0; i < leaders.length; i++) {
     if (user._id.toString() === leaders[i]._id.toString()) {
@@ -64,8 +67,8 @@ function photoAlbumEditAuth(user, photo_album) {
   }
 
   // 该照片所属公司的HR
-  if (photo_album.owner_company) {
-    if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+  if (owner.company) {
+    if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
       return true;
     }
   }
@@ -77,8 +80,11 @@ function photoAlbumEditAuth(user, photo_album) {
 function photoUploadAuth(user, photo_album) {
   // 该照片所属组的成员
   var members = [];
-  if (photo_album.owner_company_group) {
-    members = photo_album.owner_company_group.member || [];
+
+  var owner = getPhotoAlbumOwner(user, photo_album);
+
+  if (owner.team) {
+    members = owner.team.member || [];
   }
   for (var i = 0; i < members.length; i++) {
     if (user._id.toString() === members[i]._id.toString()) {
@@ -87,8 +93,8 @@ function photoUploadAuth(user, photo_album) {
   }
 
   // 该照片所属公司的HR
-  if (photo_album.owner_company) {
-    if (user.provider === 'company' && user._id.toString() === photo_album.owner_company.toString()) {
+  if (owner.company) {
+    if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
       return true;
     }
   }
@@ -128,6 +134,32 @@ var photoThumbnailList = exports.photoThumbnailList = function(photo_album) {
   return photo_list;
 };
 
+function getPhotoAlbumOwner(user, photo_album) {
+  // why company.team.id, user.team._id?
+  if (user.provider === 'company') {
+    for (var i = 0; i < user.team.length; i++) {
+      for (var j = 0; j < photo_album.owner.teams.length; j++) {
+        if (photo_album.owner.teams[j]._id.toString() === user.team[i].id.toString()) {
+          return {
+            company: photo_album.owner.companies[j],
+            team: photo_album.owner.teams[j],
+          };
+        }
+      }
+    }
+  } else if (user.provider === 'user') {
+    for (var i = 0; i < user.team.length; i++) {
+      for (var j = 0; j < photo_album.owner.teams.length; j++) {
+        if (photo_album.owner.teams[j]._id.toString() === user.team[i]._id.toString()) {
+          return {
+            company: photo_album.owner.companies[j],
+            team: photo_album.owner.teams[j],
+          };
+        }
+      }
+    }
+  }
+}
 
 function getShowPhotos(photo_album) {
   var photos = [];
@@ -147,7 +179,7 @@ function photoAlbumProcess(res, _id, process) {
 
     PhotoAlbum
     .findOne({ _id: _id })
-    .populate('owner_company_group')
+    .populate('owner.teams')
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
@@ -171,7 +203,7 @@ function photoProcess(res, pa_id, p_id, process) {
 
     PhotoAlbum
     .findOne({ _id: pa_id })
-    .populate('owner_company_group')
+    .populate('owner.teams')
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
@@ -246,9 +278,9 @@ exports.ownerFilter = function(req, res, next) {
       .findOne({ _id: req.body.owner_id })
       .exec(function(err, company_group) {
         req.model = company_group;
-        req.owner = {
+        req.owner_model = {
           _id: req.body.owner_id,
-          model: 'CompanyGroup'
+          type: 'CompanyGroup'
         };
         next();
       });
@@ -270,11 +302,11 @@ exports.createAuth = function(req, res, next) {
     }
 
     // 相册所属的组不在所属公司里
-    var gids = [];
+    var tids = [];
     company.team.forEach(function(team) {
-      gids.push(team.id.toString());
+      tids.push(team.id.toString());
     });
-    var index = gids.indexOf(req.body.gid);
+    var index = tids.indexOf(req.body.tid);
     if (index === -1) {
       return res.send(403);
     }
@@ -287,7 +319,7 @@ exports.createAuth = function(req, res, next) {
 
 
     CompanyGroup
-    .findById(gids[index])
+    .findById(tids[index])
     .exec()
     .then(function(company_group) {
       if (company_group) {
@@ -321,9 +353,11 @@ exports.createAuth = function(req, res, next) {
 
 exports.createPhotoAlbum = function(req, res) {
   var photo_album = new PhotoAlbum({
-    owner: req.owner,
-    owner_company: req.body.cid,
-    owner_company_group: req.body.gid,
+    owner: {
+      model: req.owner_model,
+      companies: [req.body.cid],
+      teams: [req.body.tid]
+    },
     name: req.body.name
   });
   if (req.user.provider === 'company') {
@@ -359,7 +393,7 @@ exports.createPhotoAlbum = function(req, res) {
         }
         else {
           delete req.model;
-          delete req.owner;
+          delete req.owner_model;
           return res.send({ result: 1, msg: '创建相册成功' });
         }
       });
@@ -418,7 +452,7 @@ exports.deletePhotoAlbum = function(req, res) {
   var _id = req.params.photoAlbumId;
   if (validator.isAlphanumeric(_id)) {
     PhotoAlbum.findOne({ _id: _id })
-    .populate('owner_company_group')
+    .populate('owner.teams')
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
@@ -455,7 +489,7 @@ exports.createPhoto = function(req, res) {
 
     PhotoAlbum
     .findOne({ _id: pa_id })
-    .populate('owner_company_group')
+    .populate('owner.teams')
     .exec(function(err, photo_album) {
 
       if (photoUploadAuth(req.user, photo_album) === false) {
@@ -651,7 +685,7 @@ exports.deletePhoto = function(req, res) {
 
     PhotoAlbum
     .findOne({ _id: pa_id })
-    .populate('owner_company_group')
+    .populate('owner.teams')
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
@@ -744,20 +778,22 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
 exports.renderPhotoAlbumDetail = function(req, res) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
-  .populate('owner_company_group')
+  .populate('owner.teams')
   .exec()
   .then(function(photo_album) {
     if (!photo_album) {
       throw 'not found';
     }
     var photos = getShowPhotos(photo_album);
+    var owner = getPhotoAlbumOwner(req.user, photo_album);
+
     res.render('photo_album/photo_album_detail', {
       photo_album: {
         _id: photo_album._id,
         name: photo_album.name,
         update_date: photo_album.update_date,
         photos: photos,
-        owner: photo_album.owner_company_group,
+        owner: owner,
         photo_count: photo_album.photo_count
       }
     });
@@ -772,7 +808,7 @@ exports.renderPhotoAlbumDetail = function(req, res) {
 exports.renderPhotoDetail = function(req, res) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
-  .populate('owner_company_group')
+  .populate('owner.teams')
   .exec()
   .then(function(photo_album) {
     var pre_id, next_id;
@@ -793,6 +829,8 @@ exports.renderPhotoDetail = function(req, res) {
           next_id = photos[i + 1]._id;
         }
 
+        var owner = getPhotoAlbumOwner(req.user, photo_album);
+
         res.render('photo_album/photo_detail', {
           photo_detail: {
             _id: photos[i]._id,
@@ -810,7 +848,7 @@ exports.renderPhotoDetail = function(req, res) {
             name: photo_album.name,
             update_date: photo_album.update_date,
             photo_count: photo_album.photos.length,
-            owner: photo_album.owner_company_group
+            owner: owner
           }
         });
 

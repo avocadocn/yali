@@ -86,9 +86,14 @@ block aside
 
   hr
   .row
-    h4.pull-left 活动精彩照片
     if (Global.role!=='PARTNER')
-      a(href="#") 上传照片
+      p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
+        a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{competition.photo_album._id}") 上传活动照片
+      .photo_album
+        each photo in photo_thumbnails
+          a.thumbnail_cell(href="/photoView/#{competition.photo_album._id}/#{photo._id}")
+            img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
+            p.thumbnail_name.text-center= photo.name
 
   script.
     var competition_location = !{JSON.stringify(competition.location)}
