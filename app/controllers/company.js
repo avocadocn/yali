@@ -805,31 +805,34 @@ exports.timeLine = function(req, res){
   Campaign
   .find({ 'end_time':{'$lt':new Date()},'cid': req.session.nowcid})
   .sort('-start_time')
-  .populate('team')
+  .populate('team').populate('cid')
   .exec()
   .then(function(campaigns) {
     if (campaigns && campaigns.length>0) {
       var timeLines = [];
       campaigns.forEach(function(campaign) {
-        var _head;
-        if(campaign.provoke.active){
-          _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
+        var _head,_logo;
+        if(campaign.camp.length>0){
+          _head = campaign.camp[0].name +'对' + campaign.camp[1].name +'的比赛';
+          _logo = campaign.camp[0].cid==req.session.nowcid ?campaign.camp[0].logo :campaign.camp[1].logo;
         }
-        else if(campaign.gid[0]==='0'){
+        else if(campaign.team.length===0){
           _head = '公司活动';
+          _logo = campaign.cid[0].logo;
         }
         else{
           _head = campaign.team[0].name + '活动';
+          _logo = campaign.team[0].logo;
         }
         var tempObj = {
           id: campaign._id,
-          head: _head,
-          logo:campaign.team[0].logo,
+          //head: _head,
+          head:campaign.theme,
+          logo:_logo,
           content: campaign.content,
           location: campaign.location,
-          group_type: campaign.group_type,
-          date: campaign.start_time,
-          provoke:campaign.provoke
+          start_time: campaign.start_time,
+          provoke:campaign.camp.length>0
         }
         timeLines.push(tempObj);
       });

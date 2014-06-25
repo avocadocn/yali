@@ -6,19 +6,15 @@ if(timeLines)
     each timeline in timeLines
       li.timeline
         .timeline-time
-          span.date= moment(timeline.date).format('YY/MM/DD')
-          span.time= moment(timeline.date).format('HH:mm')
+          span.date= moment(timeline.start_time).format('YY/MM/DD')
+          span.time= moment(timeline.start_time).format('HH:mm')
         .timeline-icon
         .timeline-body
-          a(href="/group/#{timeline.provoke.active ? 'competition': 'campaign'}/#{timeline.id}")
+          a(href="/group/#{timeline.provoke ? 'competition': 'campaign'}/#{timeline.id}")
             p.subtitle= timeline.head
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline.logo :'/img/icons/default_company_logo.png'}")
             p= "{{'LOCATION'|translate}}" +":"+ timeline.location.name
-            if (timeline.group_type !== '虚拟组')
-              p= "{{'TYPE'|translate}}" +":"+ timeline.group_type
             p= "{{'CONTENT'|translate}}" +":"+ timeline.content
-            if(timeline.provoke.active)
-              p= "{{'FORMATION'|translate}}" +":"+ timeline.provoke.competition_format
 else
   span {{"NO_CAMPAIGN"|translate}}

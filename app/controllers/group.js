@@ -222,26 +222,28 @@ exports.timeLine = function(req, res){
   .populate('team')
   .exec()
   .then(function(campaigns) {
-    console.log(campaigns);
     if (campaigns && campaigns.length>0) {
       var timeLines = [];
       campaigns.forEach(function(campaign) {
-        var _head;
-        if(campaign.provoke.active){
-          _head = campaign.provoke.team[0].name +'对' + campaign.provoke.team[1].name +'的比赛';
+        var _head,_logo;
+        if(campaign.camp.length>0){
+          _head = campaign.camp[0].name +'对' + campaign.camp[1].name +'的比赛';
+          _logo = campaign.camp[0].id ==req.session.nowtid ? campaign.camp[0].logo:campaign.camp[1].logo ;
         }
         else{
           _head = campaign.team[0].name + '活动';
+          _logo = campaign.team[0].logo;
         }
         var tempObj = {
           id: campaign._id,
-          head: _head,
-          logo:campaign.team[0].logo,
+          //head: _head,
+          head:campaign.theme,
+          logo:_logo,
           content: campaign.content,
           location: campaign.location,
           group_type: campaign.group_type,
-          date: campaign.start_time,
-          provoke:campaign.provoke
+          start_time: campaign.start_time,
+          provoke:campaign.camp.length>0
         }
         timeLines.push(tempObj);
       });

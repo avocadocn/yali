@@ -1000,34 +1000,39 @@ exports.quitCampaign = function (req, res) {
 exports.timeLine = function(req,res){
   //如果是访问其它员工的timeline
   var uid = (req.session.otheruid != null ? req.session.otheruid : req.session.nowuid);
+  console.log(uid);
   Campaign
-  .find({ 'end_time':{'$lt':new Date()},'member.uid': uid})
+  .find({ 'end_time':{'$lt':new Date()},'$or':[{'member.uid': uid},{'camp.member.uid':uid}]})
   .sort('-start_time')
-  .populate('team')
+  .populate('team').populate('cid')
   .exec()
   .then(function(campaigns) {
     if (campaigns && campaigns.length>0) {
       var timeLines = [];
       campaigns.forEach(function(campaign) {
-        var _head;
-        if(campaign.provoke.active){
+        var _head,_logo;
+        if(campaign.camp.length>0){
           _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
+          _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
         }
-        else if(campaign.gid[0]==='0'){
+        else if(campaign.team.length==0){
           _head = '公司活动';
+          _logo = campaign.cid.info.logo;
         }
         else{
           _head = campaign.team[0].name + '活动';
+          _logo = campaign.team[0].logo;
         }
         var tempObj = {
           id: campaign._id,
-          head: _head,
-          logo:campaign.team[0].logo,
+          //head: _head,
+          head:campaign.theme,
+          logo:_logo,
           content: campaign.content,
           location: campaign.location,
           group_type: campaign.group_type,
-          date: campaign.start_time,
-          provoke:campaign.provoke,
+          start_time: campaign.start_time,
+          provoke:campaign.camp.length>0,
         }
         timeLines.push(tempObj);
       });
