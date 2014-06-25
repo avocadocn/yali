@@ -24,7 +24,7 @@ var mongoose = require('mongoose'),
       },
       start_time:{
         type: Date,
-        default: Date.now()
+        default: Date.now
       },
       end_time: {
         type: Date
@@ -83,7 +83,7 @@ var ArenaModel = new Schema({
       },
       start_time:{
         type: Date,
-        default: Date.now()
+        default: Date.now
       },
       end_time: {
         type: Date

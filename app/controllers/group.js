@@ -432,7 +432,7 @@ exports.getGroupCampaign = function(req, res) {
           }
           var judge = false;
           if(campaign[i].deadline && campaign[i].member_max){
-              judge = (Date.now() - campaign[i].deadline.valueOf() > 0 || (campaign[i].member.length >= campaign[i].member_max) && campaign[i].member_max > 0 );
+              judge = (new Date() > campaign[i].deadline || (campaign[i].member.length >= campaign[i].member_max) && campaign[i].member_max > 0 );
           }
           campaigns.push({
             'over' : judge,
@@ -902,7 +902,7 @@ exports.getCampaignDetail = function(req, res) {
     }
     var judge = false;
     if(campaign.deadline != undefined && campaign.member_max != undefined){
-      judge = !(Date.now() - campaign.end_time.valueOf() <= 0 || Date.now() - campaign.deadline.valueOf() <= 0 || campaign.member.length >= campaign.member_max);
+      judge = !(new Date() <= campaign.end_time || new Date() <= campaign.deadline || campaign.member.length >= campaign.member_max);
     }
     return res.send({
       over : judge,
@@ -1012,7 +1012,7 @@ exports.resultConfirm = function (req, res) {
         competition.camp[_otherCampFlag].score = score_b;
         competition.camp[_otherCampFlag].result.confirm = false;
         competition.camp[_campFlag].result.content = rst_content;
-        competition.camp[_campFlag].result.start_date = Date.now();
+        competition.camp[_campFlag].result.start_date = new Date();
       }
       competition.save(function (err){
         if(err){

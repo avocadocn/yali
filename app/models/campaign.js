@@ -126,7 +126,7 @@ var Campaign = new Schema({
 
     create_time: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     close_time: Date,
     camp:[_camp],    //阵营

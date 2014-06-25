@@ -11,7 +11,7 @@ var Comment = new Schema({
   content: String,
   create_date:{
     type:Date,
-    default:Date.now
+    default: Date.now
   },
   poster:{
     _id:Schema.Types.ObjectId,

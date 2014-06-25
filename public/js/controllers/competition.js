@@ -10,25 +10,31 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     //     $('#resultModel').modal();
     //   }
     // });
-    $scope.edit = false;
-    $scope.modify_caption = "修改比分";
+    $scope.modify_caption = "成绩确认";
 
+
+    $scope.score_own = {
+      'score':0
+    };
+    $scope.score_opposite = {
+      'score':0
+    };
     //异步接受真是太麻烦了,必须嵌套来保持一致性
     $scope.$watch('rst_content',function(rst_content){
       $scope.rst_content = rst_content;
       $scope.$watch('score_a',function(score_a){
-        $scope.score_a = score_a;
+        $scope.score_own.score = score_a != 'undefined' ? score_a : 0;
         $scope.$watch('score_b',function(score_b){
-          $scope.score_b = score_b;
+          $scope.score_opposite.score = score_b != 'undefined' ? score_b : 0;
           $scope.$watch('msg_show',function(msg_show){
-            $scope.msg_show = msg_show;
-            if($scope.msg_show == 'true'){
-              $('#resultModel').modal();
+            if(msg_show=='true'){
+              $scope.modify_caption = "发出异议";
             }
           });
         });
       });
     });
+
     // $scope.msg_show = $('#competition_data').attr('data-msg-show');
     // $scope.rst_content = $('#competition_data').attr('data-rst-content');
     // $scope.score_a = $('#competition_data').attr('data-score-a');
@@ -42,18 +48,19 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
         $scope.edit = true;
         $scope.modify_caption = "发送";
       }else{
-        confirm(false);
+        $scope.modify_caption = "修改比分";
+        $scope.confirmScore(false);
       }
     }
-    $scope.confirm = function (confirm) {
+    $scope.confirmScore = function (confirm) {
       try {
         $http({
           method: 'post',
           url: '/competition/resultConfirm/'+competition_id,
           data:{
-            score_a : $scope.score_a,
-            score_b : $scope.score_b,
-            rst_content: $scope.rst_content,
+            score_a : $scope.score_own.score,
+            score_b : $scope.score_opposite.score,
+            rst_content: 'null',
             rst_accept : confirm
           }
         }).success(function(data, status) {

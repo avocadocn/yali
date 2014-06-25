@@ -104,7 +104,7 @@ var PhotoAlbum = new Schema({
 
 PhotoAlbum.pre('save', function(next) {
   this.name = validator.escape(this.name);
-  this.update_date = Date.now();
+  this.update_date = new Date();
   return next();
 });
 
