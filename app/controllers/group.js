@@ -855,13 +855,18 @@ exports.renderCampaignDetail = function(req, res) {
       throw 'not found';
     }
 
-    res.render('campaign/campaign_detail', {
-      campaign: campaign,
-      role: req.session.role,
-      nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
-      nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo,
-      photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4),
-    });
+    if(campaign.team.length >= 2){
+      res.redirect("/competition/"+req.session.nowcampaignid);
+    }else{
+      res.render('competition/football', {
+        campaign: campaign,
+        role: req.session.role,
+        nav_name : req.user.provider==='company'? req.user.info.name :req.user.nickname,
+        nav_logo : req.user.provider==='company'? req.user.info.logo :req.user.photo,
+        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4),
+      });
+    }
+
   })
   .then(null, function(err) {
     console.log(err);

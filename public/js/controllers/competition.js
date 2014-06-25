@@ -24,7 +24,7 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
       try {
         $http({
           method: 'post',
-          url: '/group/resultConfirm/'+competition_id,
+          url: '/competition/resultConfirm/'+competition_id,
           data:{
             score_a : $scope.score_a,
             score_b : $scope.score_b,

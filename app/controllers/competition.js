@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     Group = mongoose.model('Group'),
     Competition = mongoose.model('Competition'),
     Arena = mongoose.model('Arena'),
+    moment = require('moment'),
     Campaign = mongoose.model('Campaign');
 
 
@@ -47,7 +48,6 @@ exports.provoke = function (req, res) {
 
 
   competition.camp.push(camp_a);
-
 
   var camp_b = {
     'id' : req.body.team_opposite._id,
@@ -240,16 +240,20 @@ exports.getCompetition = function(req, res){
     'team': req.competition_team,
     'role': req.session.role,
     'msg_show': false,
-    'moment':moment
+    'score_a': "",
+    'score_b': "",
+    'rst_content': "",
+    'moment':moment,
+    'confirm_btn_show':false
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.session.role==='HR'){
-    nowTeamIndex = req.competition.camp[0].cid === req.user.id ? 0:1;
-    otherTeamIndex = req.competition.camp[0].cid === req.user.id ? 1:0;
+    nowTeamIndex = req.competition.camp[0].cid.toString() === req.user._id.toString() ? 0:1;
+    otherTeamIndex = req.competition.camp[0].cid.toString() === req.user._id.toString() ? 1:0;
   }
   else{
-    nowTeamIndex = req.competition.camp[0].cid === req.user.cid ? 0:1;
-    otherTeamIndex = req.competition.camp[0].cid === req.user.cid ? 1:0;
+    nowTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 0:1;
+    otherTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 1:0;
   }
   if((req.session.role==='HR' || req.session.role ==='LEADER') && req.competition.camp[otherTeamIndex].result.confirm && !req.competition.camp[nowTeamIndex].result.confirm) {
     options.msg_show = true;
@@ -258,6 +262,7 @@ exports.getCompetition = function(req, res){
     options.rst_content = req.competition.camp[otherTeamIndex].result.content;
     options.date = req.competition.camp[otherTeamIndex].result.start_date;
   }
+  options.confirm_btn_show = !(req.competition.camp[otherTeamIndex].result.confirm && req.competition.camp[nowTeamIndex].result.confirm);
   res.render('competition/football', options);
 };
 
@@ -267,14 +272,14 @@ exports.updateFormation = function(req, res){
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
     return res.send(403,forbidden);
   }
-  Competition.findOne({
+  Campaign.findOne({
     '_id':req.params.competitionId
   }).exec(function(err, competition){
     if(req.competition_team === req.body.competition_team){
       var _formation = [];
       var _tempFormation = req.body.formation;
       for (var member in _tempFormation){
-        _formation.push({'uid':member_length,
+        _formation.push({'uid':member,
                           'x':_tempFormation[member].x,
                           'y':_tempFormation[member].y
 
@@ -301,15 +306,15 @@ exports.updateFormation = function(req, res){
 
 exports.competition = function(req, res, next, id){
   var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
-  Competition.findOne({
+  Campaign.findOne({
       '_id':id
     }).exec(function(err, competition){
       if (err) return next(err);
       req.competition = competition;
-      if(cid ===competition.camp[0].cid){
+      if(cid.toString() ===competition.camp[0].cid.toString()){
         req.competition_team = 'A';
       }
-      else if(cid ===competition.camp[1].cid){
+      else if(cid.toString() ===competition.camp[1].cid.toString()){
         req.competition_team = 'B';
       }
       else
@@ -333,7 +338,7 @@ exports.resultConfirm = function (req, res) {
   var score_b = req.body.score_b;
   var rst_content = req.body.rst_content;
 
-  Competition.findOne({'_id' : competition_id}, function (err, competition) {
+  Campaign.findOne({'_id' : competition_id}, function (err, competition) {
     if(err) {
       console.log(err);
       res.send(err);
@@ -341,12 +346,12 @@ exports.resultConfirm = function (req, res) {
       //本组的index
       var _campFlag,_otherCampFlag;
       if(req.session.role ==='HR'){
-        _campFlag = req.user.id === competition.camp[0].cid ? 0 : 1;
-        _otherCampFlag = req.user.id === competition.camp[0].cid ? 1 : 0;
+        _campFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 0 : 1;
+        _otherCampFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 1 : 0;
       }
       else{
-        _campFlag = req.user.cid === competition.camp[0].cid ? 0 : 1;
-        _otherCampFlag = req.user.cid === competition.camp[0].cid ? 1 : 0;
+        _campFlag = req.user.cid.toString() === competition.camp[0].cid.toString() ? 0 : 1;
+        _otherCampFlag = req.user.cid.toString() === competition.camp[0].cid.toString() ? 1 : 0;
       }
       competition.camp[_campFlag].result.confirm = true;
       if(!rst_accept) {
