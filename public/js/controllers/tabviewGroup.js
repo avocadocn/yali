@@ -49,7 +49,8 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
         $rootScope.nowTab = value;
         $rootScope.message_corner = false;
     };
-
+    $rootScope.number;
+    $rootScope.isMember;
     //加入小队
     $rootScope.joinGroup = function(){
         try{
@@ -60,7 +61,8 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                     tid : $rootScope.teamId
                 }
             }).success(function(data,status){
-                window.location.reload();
+                $rootScope.number += 1;
+                $rootScope.isMember = true;
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_TEAM_FAILURE);
             });
@@ -80,7 +82,8 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                     tid : $rootScope.teamId
                 }
             }).success(function(data,status){
-                window.location.reload();
+                $rootScope.number -= 1;
+                $rootScope.isMember = false;
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
             });
