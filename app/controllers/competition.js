@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     Competition = mongoose.model('Competition'),
     Arena = mongoose.model('Arena'),
     moment = require('moment'),
+    Config = mongoose.model('Config'),
     photo_album_controller = require('./photoAlbum'),
     Campaign = mongoose.model('Campaign');
 
@@ -232,7 +233,7 @@ exports.responseProvoke = function (req, res) {
 
 //比赛
 exports.getCompetition = function(req, res){
-  var timeout = 72 * 3600 * 1000;
+  var timeout = Config.COMPETITION_CONFIRM_TIMEOUT;
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
