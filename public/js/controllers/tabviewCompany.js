@@ -242,6 +242,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 
 
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+
     $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
@@ -587,7 +588,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
     //激活、关闭小组
-    $scope.activateGroup = function(active,tid){
+    $scope.activateGroup = function(active, tid, index){
         try{
             $http({
                 method:'post',
@@ -601,13 +602,13 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.ACTIVE +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                    window.location.reload();
+                    $scope.team_lists[index].active = active;
                 }
                 else{
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
                                                 $rootScope.lang_for_msg[$rootScope.lang_key].value.CLOSE +
                                                     $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
-                    window.location.reload();
+                    $scope.team_lists[index].active = active;
                 }
             }).error(function(data, status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
