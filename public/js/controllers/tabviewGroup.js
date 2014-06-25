@@ -473,6 +473,10 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         $('#start_time').datetimepicker('setEndDate', dateUTC);
 
     });
+    $("#deadline").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+    });
     $scope.initialize = function(){
         if($scope.showMapFlag ==false){
             $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
@@ -571,12 +575,12 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.competition_date = moment(dateUTC).format("YYYY-MM-DD HH:mm");
         $('#competition_end_time').datetimepicker('setStartDate', dateUTC);
-        $('#competition_deadline').datetimepicker('setEndDate', dateUTC);
     });
     $("#competition_end_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
         $('#competition_start_time').datetimepicker('setEndDate', dateUTC);
+        $('#competition_deadline').datetimepicker('setEndDate', dateUTC);
     });
     $("#competition_deadline").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));

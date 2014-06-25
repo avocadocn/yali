@@ -521,7 +521,7 @@ exports.provoke = function (req, res) {
   var location = req.body.location;
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
-  var deadline = req.body.deadline ? req.body.deadline : start_time;
+  var deadline = req.body.deadline ? req.body.deadline : end_time;
   var content = req.body.content;
   var member_min = req.body.member_min;
   var member_max = req.body.member_max;
@@ -709,7 +709,7 @@ exports.sponsor = function (req, res) {
   var member_max = req.body.member_max ? req.body.member_max : 0;
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
-  var deadline = req.body.deadline ? req.body.deadline : start_time;
+  var deadline = req.body.deadline ? req.body.deadline : end_time;
   //生成活动
   var campaign = new Campaign();
   campaign.team.push(tid);
