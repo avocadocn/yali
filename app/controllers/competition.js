@@ -232,6 +232,7 @@ exports.responseProvoke = function (req, res) {
 
 //比赛
 exports.getCompetition = function(req, res){
+  var timeout = 72 * 3600 * 1000;
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
@@ -257,14 +258,32 @@ exports.getCompetition = function(req, res){
     nowTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 0:1;
     otherTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 1:0;
   }
+  options.confirm_btn_show = !(req.competition.camp[otherTeamIndex].result.confirm && req.competition.camp[nowTeamIndex].result.confirm);
   if((req.session.role==='HR' || req.session.role ==='LEADER') && req.competition.camp[otherTeamIndex].result.confirm && !req.competition.camp[nowTeamIndex].result.confirm) {
+    console.log(req.competition.camp[otherTeamIndex].result.start_date - (new Date()));
     options.msg_show = true;
     options.score_a = req.competition.camp[nowTeamIndex].score;
     options.score_b = req.competition.camp[otherTeamIndex].score;
     options.rst_content = req.competition.camp[otherTeamIndex].result.content;
     options.date = req.competition.camp[otherTeamIndex].result.start_date;
+
+    //过了时间自动确认
+    if((new Date())-req.competition.camp[otherTeamIndex].result.start_date >= timeout){
+      options.confirm_btn_show = false;
+      Campaign.findOne({'_id':req.competition._id},function(err,competition){
+        if(err || !competition){
+          ;
+        } else {
+          competition.camp[nowTeamIndex].result.confirm = true;
+          competition.save(function(err){
+            if(err){
+              console.log('同步',err);
+            }
+          })
+        }
+      });
+    }
   }
-  options.confirm_btn_show = !(req.competition.camp[otherTeamIndex].result.confirm && req.competition.camp[nowTeamIndex].result.confirm);
   res.render('competition/football', options);
 };
 

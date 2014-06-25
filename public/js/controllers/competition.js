@@ -10,8 +10,7 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     //     $('#resultModel').modal();
     //   }
     // });
-    $scope.edit = false;
-    $scope.modify_caption = "修改比分";
+    $scope.modify_caption = "成绩确认";
 
 
     $scope.score_own = {
@@ -28,11 +27,14 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
         $scope.$watch('score_b',function(score_b){
           $scope.score_opposite.score = score_b != 'undefined' ? score_b : 0;
           $scope.$watch('msg_show',function(msg_show){
-            $scope.msg_show = msg_show;
+            if(msg_show=='true'){
+              $scope.modify_caption = "发出异议";
+            }
           });
         });
       });
     });
+
     // $scope.msg_show = $('#competition_data').attr('data-msg-show');
     // $scope.rst_content = $('#competition_data').attr('data-rst-content');
     // $scope.score_a = $('#competition_data').attr('data-score-a');

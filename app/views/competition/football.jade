@@ -15,21 +15,21 @@ block panel
           .dl_box
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                label.dl_score(ng-if="!edit")= competition.camp[0].score
-                input.dl_score(type="text" ng-model="score_own.score" ng-if="edit")
+                //- label.dl_score(ng-if="!edit") {{score_own.score}}
+                input.dl_score(type="text" ng-model="score_own.score")
                 if msg_show
                   a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
               else
-                label.dl_score= competition.camp[0].score
+                label.dl_score {{score_own.score}}
             .dl_score_frame
               label.dl_score :
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                label.dl_score(ng-if="!edit")= competition.camp[1].score
-                input.dl_score(type="text" ng-model="score_opposite.score" ng-if="edit")
-                a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
+                //- label.dl_score(ng-if="!edit") {{score_opposite.score}}
+                input.dl_score(type="text" ng-model="score_opposite.score")
+                a.dl_btn_right(ng-click='confirmScore(false)') {{modify_caption}}
               else
-                label.dl_score= competition.camp[1].score
+                label.dl_score {{score_opposite.score}}
           //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
       .teamInfo.col-xs-4
         img.size_210.teamLogo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
