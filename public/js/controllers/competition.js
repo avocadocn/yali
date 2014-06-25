@@ -27,6 +27,7 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
         $scope.$watch('score_b',function(score_b){
           $scope.score_opposite.score = score_b != 'undefined' ? score_b : 0;
           $scope.$watch('msg_show',function(msg_show){
+            $scope._msg_show = msg_show;
             if(msg_show=='true'){
               $scope.modify_caption = "发出异议";
             }
@@ -35,6 +36,19 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
       });
     });
 
+    $scope.tip = function(){
+      var content = "";
+      if($scope._msg_show == 'false'){
+        content="您可以编辑比分框里的分数,然后点击'比赛确认'按钮向对方发送待确认比分!";
+      }else{
+        content="您可以接受对方发来的分数,如果您对次比分有疑问,可以修改比分框里的分数,然后点击'发出异议'按钮即可!";
+      }
+      $("#score_tip").tooltip({
+        "trigger":"hover",
+        "title":content,
+        "placement" : "right"
+      });
+    }
     // $scope.msg_show = $('#competition_data').attr('data-msg-show');
     // $scope.rst_content = $('#competition_data').attr('data-rst-content');
     // $scope.score_a = $('#competition_data').attr('data-score-a');
