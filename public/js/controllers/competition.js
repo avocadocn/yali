@@ -43,6 +43,14 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     //alert($scope.msg_show);
     var competition_id = $('#competition_content').attr('data-id');
 
+    $scope.numValidate = function(){
+      if(isNaN(Number($scope.score_own.score)) || isNaN(Number($scope.score_opposite.score))){
+        alertify.alert("请输入数字!");
+        $scope.score_own.score = 0;
+        $scope.score_opposite.score = 0;
+      }
+    }
+
     $scope.scoreModify = function(){
       if(!$scope.edit){
         $scope.edit = true;

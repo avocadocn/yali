@@ -16,7 +16,7 @@ block panel
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
                 //- label.dl_score(ng-if="!edit") {{score_own.score}}
-                input.dl_score(type="text" ng-model="score_own.score")
+                input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()")
                 if msg_show
                   a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
               else
@@ -26,7 +26,7 @@ block panel
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
                 //- label.dl_score(ng-if="!edit") {{score_opposite.score}}
-                input.dl_score(type="text" ng-model="score_opposite.score")
+                input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()")
                 a.dl_btn_right(ng-click='confirmScore(false)') {{modify_caption}}
               else
                 label.dl_score {{score_opposite.score}}
