@@ -462,6 +462,13 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         $scope.leader=leader;
         $scope._index = index;
         $scope.users[index].leader = true;
+
+        for(var i = 0; i < $scope.users.length; i ++) {
+            if($scope.leader._id.toString() === $scope.users[i]._id.toString()){
+                $scope.users[i].leader = false;
+                break;
+            }
+        }
     }
     $scope.dismissLeader = function (leader) {
         try{
@@ -476,7 +483,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     operate:false
                 }
             }).success(function(data, status) {
-                
+
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -525,14 +532,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     'nickname':$scope._user.nickname,
                     'photo':$scope._user.photo
                 });
-
-
-                for(var i = 0; i < $scope.users.length; i ++) {
-                    if($scope.leader._id.toString() === $scope.users[i]._id.toString()){
-                        $scope.users[i].leader = false;
-                        break;
-                    }
-                }
 
                 if($scope.leader!='null'){
                     $scope.dismissLeader($scope.leader);
