@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     Competition = mongoose.model('Competition'),
     Arena = mongoose.model('Arena'),
     moment = require('moment'),
+    photo_album_controller = require('./photoAlbum'),
     Campaign = mongoose.model('Campaign');
 
 
