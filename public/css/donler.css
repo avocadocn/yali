@@ -418,6 +418,10 @@ button {
   margin-right: 20px;
   float: left;
 }
+.dl_container .tab-content {
+  min-height: 300px;
+  background: url("/img/loading.gif") center 40px no-repeat;
+}
 .tab_style {
   min-width: 145px;
   text-align: center;
@@ -519,6 +523,7 @@ button {
 .dl_btn_medium {
   width: 120px;
   height: 30px;
+  line-height: 30px;
 }
 .dl_btn_small {
   padding: 7px 12px;

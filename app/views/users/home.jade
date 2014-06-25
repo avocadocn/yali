@@ -30,7 +30,7 @@ block panel
       a.subtitle.no_radius(href="#/timeLine" ng-click="addactive('timeLine')") {{"TIME_LINE"|translate}}
   .tab-content.margin_top_20
     .tab-pane.active
-      div(ng-view)
+      div(ng-view).tab-body
 
 block aside
   if Global.role !== 'HR'

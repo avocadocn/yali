@@ -65,20 +65,20 @@ block contentExt
         p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}
         textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" required)
         button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()") {{"SUBMIT"|translate}}{{"LEAVEMESSAGE"|translate}}
-      .dl_row
-        section
-          div.comment.clearfix(ng-repeat="comment in comments")
-            .comment_user_info
-              img.user_photo.size_56(ng-src="{{comment.poster.photo}}")
-              p
-                a.user_name(href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
-            .comment_content_panel
-              .relative
-                .triangle_border
-                .triangle
-                .comment_content
-                  p {{comment.content}}
-              p.comment_date.text {{comment.create_date}}
+        .dl_row
+          section
+            div.comment.clearfix(ng-repeat="comment in comments")
+              .comment_user_info
+                img.user_photo.size_56(ng-src="{{comment.poster.photo}}")
+                p
+                  a.user_name(href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
+              .comment_content_panel
+                .relative
+                  .triangle_border
+                  .triangle
+                  .comment_content
+                    p {{comment.content}}
+                p.comment_date.text {{comment.create_date}}
     .dl_detail_side
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         #mapContainer.size_400
