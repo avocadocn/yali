@@ -72,7 +72,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     $scope.comments.push({
                         'host_id' : $scope.campaign._id,
                         'content' : $scope.new_comment.text,
-                        'create_date' : Date.now(),
+                        'create_date' : new Date(),
                         'poster' : poster,
                         'host_type' : 'campaign_detail',
                         'index' : $scope.comments.length + 1

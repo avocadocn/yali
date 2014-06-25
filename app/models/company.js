@@ -80,7 +80,7 @@ var CompanySchema = new Schema({
 
     register_date: {
         type: Date,
-        default: Date.now()
+        default: new Date
     },
     provider: {
         type: String,

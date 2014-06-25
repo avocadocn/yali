@@ -363,7 +363,7 @@ exports.resultConfirm = function (req, res) {
         competition.camp[_otherCampFlag].score = score_b;
         competition.camp[_otherCampFlag].result.confirm = false;
         competition.camp[_campFlag].result.content = rst_content;
-        competition.camp[_campFlag].result.start_date = Date.now();
+        competition.camp[_campFlag].result.start_date = new Date();
       }
       competition.save(function (err){
         if(err){

@@ -12,7 +12,7 @@ var Photo = new Schema({
   thumbnail_uri: String,
   upload_date: {
     type: Date,
-    default: Date.now
+    default: new Date()
   },
   hidden: {
     type: Boolean,
@@ -29,7 +29,7 @@ var Photo = new Schema({
     },
     publish_date: {
       type: Date,
-      default: Date.now
+      default: new Date()
     }
   }],
   upload_user: {
@@ -69,7 +69,7 @@ var PhotoAlbum = new Schema({
   },
   create_date: {
     type: Date,
-    default: Date.now
+    default: new Date()
   },
   create_user: {
     _id: Schema.Types.ObjectId,
@@ -89,7 +89,7 @@ var PhotoAlbum = new Schema({
   },
   update_date: {
     type: Date,
-    default: Date.now
+    default: new Date()
   },
   hidden: {
     type: Boolean,
@@ -104,7 +104,7 @@ var PhotoAlbum = new Schema({
 
 PhotoAlbum.pre('save', function(next) {
   this.name = validator.escape(this.name);
-  this.update_date = Date.now();
+  this.update_date = new Date();
   return next();
 });
 

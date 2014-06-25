@@ -884,7 +884,7 @@ exports.getCompanyCampaign = function(req, res) {
                 for(var i = 0;i < campaign.length; i ++) {
                     var judge = false;
                     if(campaign[i].deadline && campaign[i].member_max){
-                        judge = (Date.now() - campaign[i].deadline.valueOf() > 0 || (campaign[i].member.length >= campaign[i].member_max) && campaign[i].member_max > 0 );
+                        judge = (new Date() > campaign[i].deadline || (campaign[i].member.length >= campaign[i].member_max) && campaign[i].member_max > 0 );
                     }
                     campaigns.push({
                         'over' : judge,

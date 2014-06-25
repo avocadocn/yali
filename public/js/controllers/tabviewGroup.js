@@ -169,7 +169,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     $scope.group_messages[index].comments.push({
                         'host_id' : $scope.group_messages[index].campaign._id,
                         'content' : $scope.new_comment[index].text,
-                        'create_date' : Date.now(),
+                        'create_date' : new Date(),
                         'poster' : poster,
                         'host_type' : 'campaign',
                         'index' : $scope.group_messages[index].campaign.comment_sum
@@ -503,7 +503,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
             }
             var myCity = new BMap.LocalCity();
             myCity.get(getCity);
-            $scope.showMapFlag = true;
             window.map_ready =true;
         }
         else{
@@ -519,6 +518,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
             return false;
         }
         if(!window.map_ready && $scope.showMapFlag ==false){
+            $scope.showMapFlag = true;
             var script = document.createElement("script");  
             script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
             document.body.appendChild(script);
@@ -624,7 +624,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             }
             var myCity = new BMap.LocalCity();
             myCity.get(getCity);
-            $scope.showMapFlag = true;
             window.map_ready =true;
         }
         else{
@@ -639,6 +638,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             return false;
         }
         if(!window.map_ready && $scope.showMapFlag ==false){
+            $scope.showMapFlag = true;
             var script = document.createElement("script");  
             script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=provokeMapInitialize";
             document.body.appendChild(script);

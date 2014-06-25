@@ -540,7 +540,7 @@ function fetchCampaign(req,res,team_ids,role) {
         }
         var judge = false;
         if(campaign[j].deadline && campaign[j].member_max){
-            judge = (Date.now() - campaign[j].deadline.valueOf() > 0 || (campaign[j].member.length >= campaign[j].member_max) && campaign[j].member_max > 0 );
+            judge = (new Date() > campaign[j].deadline || (campaign[j].member.length >= campaign[j].member_max) && campaign[j].member_max > 0 );
         }
         if(campaign[j].team.length === 0){//公司活动
           logo = campaign[j].cid[0].logo;
@@ -674,7 +674,7 @@ exports.scheduleListData = function(req, res) {
         }
         var judge = false;
         if(campaigns[j].deadline && campaigns[j].member_max){
-            judge = !(Date.now() - campaigns[j].end_time.valueOf() <= 0 || Date.now() - campaigns[j].deadline.valueOf() <= 0 || campaigns[j].member.length >= campaigns[j].member_max);
+            judge = !(new Date() <= campaigns[j].end_time || new Date() <= campaigns[j].deadline || campaigns[j].member.length >= campaigns[j].member_max);
         }
 
         if(campaigns[j].team.length === 0){//公司活动

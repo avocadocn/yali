@@ -9190,7 +9190,11 @@ return jQuery;
 }));
 
 /**
+<<<<<<< HEAD
  * @license AngularJS v1.2.14
+=======
+ * @license AngularJS v1.2.16
+>>>>>>> 修改时间默认值bug
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9259,7 +9263,11 @@ function minErr(module) {
       return match;
     });
 
+<<<<<<< HEAD
     message = message + '\nhttp://errors.angularjs.org/1.2.14/' +
+=======
+    message = message + '\nhttp://errors.angularjs.org/1.2.16/' +
+>>>>>>> 修改时间默认值bug
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10739,8 +10747,13 @@ function setupModuleLoader(window) {
      * {@link angular.bootstrap} to simplify this process for you.
      *
      * @param {!string} name The name of the module to create or retrieve.
+<<<<<<< HEAD
      * @param {Array.<string>=} requires If specified then new module is being created. If
      *        unspecified then the the module is being retrieved for further configuration.
+=======
+<<<<<* @param {!Array.<string>=} requires If specified then new module is being created. If
+>>>>>*        unspecified then the module is being retrieved for further configuration.
+>>>>>>> 修改时间默认值bug
      * @param {Function} configFn Optional configuration function for the module. Same as
      *        {@link angular.Module#config Module#config()}.
      * @returns {module} new module with the {@link angular.Module} api.
@@ -11071,11 +11084,19 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
+<<<<<<< HEAD
   full: '1.2.14',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 14,
   codeName: 'feisty-cryokinesis'
+=======
+  full: '1.2.16',    // all of these placeholder strings will be replaced by grunt's
+  major: 1,    // package task
+  minor: 2,
+  dot: 16,
+  codeName: 'badger-enumeration'
+>>>>>>> 修改时间默认值bug
 };
 
 
@@ -13776,6 +13797,27 @@ function $CacheFactoryProvider() {
 
       return caches[cacheId] = {
 
+<<<<<<< HEAD
+=======
+        /**
+         * @ngdoc method
+         * @name $cacheFactory.Cache#put
+         * @function
+         *
+         * @description
+         * Inserts a named entry into the {@link $cacheFactory.Cache Cache} object to be
+         * retrieved later, and incrementing the size of the cache if the key was not already
+         * present in the cache. If behaving like an LRU cache, it will also remove stale
+         * entries from the set.
+         *
+         * It will not insert undefined values into the cache.
+         *
+         * @param {string} key the key under which the cached data is stored.
+         * @param {*} value the value to store alongside the key. If it is undefined, the key
+         *    will not be stored.
+         * @returns {*} the value stored.
+         */
+>>>>>>> 修改时间默认值bug
         put: function(key, value) {
           if (capacity < Number.MAX_VALUE) {
             var lruEntry = lruHash[key] || (lruHash[key] = {key: key});
@@ -13794,7 +13836,21 @@ function $CacheFactoryProvider() {
           return value;
         },
 
+<<<<<<< HEAD
 
+=======
+        /**
+         * @ngdoc method
+         * @name $cacheFactory.Cache#get
+         * @function
+         *
+         * @description
+         * Retrieves named data stored in the {@link $cacheFactory.Cache Cache} object.
+         *
+         * @param {string} key the key of the data to be retrieved
+         * @returns {*} the value stored.
+         */
+>>>>>>> 修改时间默认值bug
         get: function(key) {
           if (capacity < Number.MAX_VALUE) {
             var lruEntry = lruHash[key];
@@ -13808,6 +13864,19 @@ function $CacheFactoryProvider() {
         },
 
 
+<<<<<<< HEAD
+=======
+        /**
+         * @ngdoc method
+         * @name $cacheFactory.Cache#remove
+         * @function
+         *
+         * @description
+         * Removes an entry from the {@link $cacheFactory.Cache Cache} object.
+         *
+         * @param {string} key the key of the entry to be removed
+         */
+>>>>>>> 修改时间默认值bug
         remove: function(key) {
           if (capacity < Number.MAX_VALUE) {
             var lruEntry = lruHash[key];
@@ -13826,6 +13895,17 @@ function $CacheFactoryProvider() {
         },
 
 
+<<<<<<< HEAD
+=======
+        /**
+         * @ngdoc method
+         * @name $cacheFactory.Cache#removeAll
+         * @function
+         *
+         * @description
+         * Clears the cache object of any entries.
+         */
+>>>>>>> 修改时间默认值bug
         removeAll: function() {
           data = {};
           size = 0;
@@ -13834,6 +13914,18 @@ function $CacheFactoryProvider() {
         },
 
 
+<<<<<<< HEAD
+=======
+        /**
+         * @ngdoc method
+         * @name $cacheFactory.Cache#destroy
+         * @function
+         *
+         * @description
+         * Destroys the {@link $cacheFactory.Cache Cache} object entirely,
+         * removing it from the {@link $cacheFactory $cacheFactory} set.
+         */
+>>>>>>> 修改时间默认值bug
         destroy: function() {
           data = null;
           stats = null;
@@ -13842,6 +13934,25 @@ function $CacheFactoryProvider() {
         },
 
 
+<<<<<<< HEAD
+=======
+        /**
+         * @ngdoc method
+         * @name $cacheFactory.Cache#info
+         * @function
+         *
+         * @description
+         * Retrieve information regarding a particular {@link $cacheFactory.Cache Cache}.
+         *
+         * @returns {object} an object with the following properties:
+         *   <ul>
+         *     <li>**id**: the id of the cache instance</li>
+         *     <li>**size**: the number of entries kept in the cache instance</li>
+         *     <li>**...**: any additional properties from the options object when creating the
+         *       cache.</li>
+         *   </ul>
+         */
+>>>>>>> 修改时间默认值bug
         info: function() {
           return extend({}, stats, {size: size});
         }
@@ -14470,8 +14581,12 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
   var hasDirectives = {},
       Suffix = 'Directive',
       COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w\-_]+)\s+(.*)$/,
+<<<<<<< HEAD
       CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/,
       TABLE_CONTENT_REGEXP = /^<\s*(tr|th|td|tbody)(\s+[^>]*)?>/i;
+=======
+      CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/;
+>>>>>>> 修改时间默认值bug
 
   // Ref: http://developers.whatwg.org/webappapis.html#event-handler-idl-attributes
   // The assumption is that future DOM event attribute names will begin with
@@ -15213,7 +15328,15 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
           if (directive.replace) {
             replaceDirective = directive;
+<<<<<<< HEAD
             $template = directiveTemplateContents(directiveValue);
+=======
+            if (jqLiteIsTextNode(directiveValue)) {
+              $template = [];
+            } else {
+              $template = jqLite(directiveValue);
+            }
+>>>>>>> 修改时间默认值bug
             compileNode = $template[0];
 
             if ($template.length != 1 || compileNode.nodeType !== 1) {
@@ -15658,7 +15781,15 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           content = denormalizeTemplate(content);
 
           if (origAsyncDirective.replace) {
+<<<<<<< HEAD
             $template = directiveTemplateContents(content);
+=======
+            if (jqLiteIsTextNode(content)) {
+              $template = [];
+            } else {
+              $template = jqLite(content);
+            }
+>>>>>>> 修改时间默认值bug
             compileNode = $template[0];
 
             if ($template.length != 1 || compileNode.nodeType !== 1) {
@@ -17090,7 +17221,11 @@ function $HttpProvider() {
           } else {
             // serving from cache
             if (isArray(cachedResp)) {
+<<<<<<< HEAD
               resolvePromise(cachedResp[1], cachedResp[0], copy(cachedResp[2]));
+=======
+              resolvePromise(cachedResp[1], cachedResp[0], copy(cachedResp[2]), cachedResp[3]);
+>>>>>>> 修改时间默认值bug
             } else {
               resolvePromise(cachedResp, 200, {});
             }
@@ -26780,7 +26915,11 @@ function classDirective(name, selector) {
             // jshint bitwise: false
             var mod = $index & 1;
             if (mod !== old$index & 1) {
+<<<<<<< HEAD
               var classes = flattenClasses(scope.$eval(attr[name]));
+=======
+              var classes = arrayClasses(scope.$eval(attr[name]));
+>>>>>>> 修改时间默认值bug
               mod === selector ?
                 attr.$addClass(classes) :
                 attr.$removeClass(classes);
@@ -26802,6 +26941,7 @@ function classDirective(name, selector) {
         }
 
 
+<<<<<<< HEAD
         function flattenClasses(classVal) {
           if(isArray(classVal)) {
             return classVal.join(' ');
@@ -26813,6 +26953,18 @@ function classDirective(name, selector) {
               }
             });
             return classes.join(' ');
+=======
+    function arrayClasses (classVal) {
+      if (isArray(classVal)) {
+        return classVal;
+      } else if (isString(classVal)) {
+        return classVal.split(' ');
+      } else if (isObject(classVal)) {
+        var classes = [], i = 0;
+        forEach(classVal, function(v, k) {
+          if (v) {
+            classes.push(k);
+>>>>>>> 修改时间默认值bug
           }
 
           return classVal;
@@ -30243,7 +30395,11 @@ var styleDirective = valueFn({
 
 !angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}</style>');
 /**
+<<<<<<< HEAD
  * @license AngularJS v1.2.14
+=======
+ * @license AngularJS v1.2.16
+>>>>>>> 修改时间默认值bug
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
