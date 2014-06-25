@@ -377,7 +377,6 @@ exports.dealSetProfile = function(req, res) {
         user.department = req.body.department;
         user.phone = req.body.phone;
         user.role = 'EMPLOYEE';
-        user.active = true;
         user.save(function(err) {
           if(err) {
             console.log(err);
@@ -415,11 +414,11 @@ exports.dealSetProfile = function(req, res) {
  */
 exports.selectGroup = function(req, res) {
   User.findOne({ username: req.session.username }, function(err, user) {
-    if(err) {
+    if (err) {
       console.log(err);
       res.render('users/message', message.dbError);
     } else if(user) {
-      if(req.session.username != undefined) {
+      if (user.active === true) {
         res.render('users/message', message.actived);
       } else {
         res.render('users/selectGroup', { title: '选择你的兴趣小队', group_head: '个人' });
@@ -445,10 +444,8 @@ exports.dealSelectGroup = function(req, res) {
         res.status(400).send('用户不存在!');
         return;
       } else if(user) {
-        if(req.session.username == undefined) {
+        if(user.active === false) {
           user.team = req.body.selected;
-
-
           user.active = true;
           user.save(function(err){
             if(err){
