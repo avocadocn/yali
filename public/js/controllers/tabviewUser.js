@@ -300,14 +300,14 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
   var calendar = $('#calendar').calendar(options);
 
-  $('#calendar_operator button[data-calendar-nav]').each(function() {
+  $('#calendar_operator [data-calendar-nav]').each(function() {
     var $this = $(this);
     $this.click(function() {
       calendar.navigate($this.data('calendar-nav'));
     });
   });
 
-  $('#calendar_operator button[data-calendar-view]').each(function() {
+  $('#calendar_operator [data-calendar-view]').each(function() {
     var $this = $(this);
     $this.click(function() {
       calendar.view($this.data('calendar-view'));

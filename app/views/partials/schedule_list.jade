@@ -1,7 +1,8 @@
-div
-  .btn-group
-    button#btn_calendar.btn.btn-primary.active(ng-click="calendar(true)") 日历
-    button#btn_list.btn.btn-primary(ng-click="calendar(false)") 列表
+div.clearfix
+  p.pull-left
+    a#btn_calendar(ng-click="calendar(true)" href="javascript:void(0)") 日历
+    | &nbsp;|&nbsp;
+    a#btn_list(ng-click="calendar(false)" href="javascript:void(0)") 列表
   .pull-right#calendar_operator(ng-show="isCalendar")
     .btn-group
       button.btn.btn-primary(data-calendar-nav="prev") &lt;&lt;&nbsp;{{ prev }}
@@ -11,6 +12,7 @@ div
       button.btn.btn-primary.active(data-calendar-view="month" ng-click="setText('month')") 月
       button.btn.btn-primary(data-calendar-view="week" ng-click="setText('week')") 周
       button.btn.btn-primary(data-calendar-view="day" ng-click="setText('day')") 日
+    //-a(data-calendar-view="month" ng-click="setText('month')" ng-show="mode==='d'" href="javascript:void(0)") 返回
 
 div.calendar_box
   div(ng-show="isCalendar")
