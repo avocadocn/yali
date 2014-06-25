@@ -7,7 +7,7 @@ block contentExt
   .dl_container.photo_album
     header.clearfix
       ol.breadcrumb
-        li: a(href="/group/home/#{photo_album.owner.team._id}")= photo_album.owner.name
+        li: a(href="/group/home/#{photo_album.owner.team._id}")= photo_album.owner.team.name
         li: a#returnUri(href="/#{photo_album.owner.team._id}/photoAlbumListView") 相册集
         li.active= photo_album.name
       div.relative

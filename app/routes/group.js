@@ -47,12 +47,6 @@ module.exports = function(app) {
 
   app.get('/group/editLogo', authorization.requiresLogin, group.editLogo);
 
-
-  app.get('/group/:teamId/managePhotoAlbum', authorization.requiresLogin,group.managePhotoAlbum);
-  app.get('/group/:tid/photoAlbum/:photoAlbumId', authorization.requiresLogin, authorization.requiresLogin, group.groupPhotoAlbumDetail);
-
-  app.get('/group/competition/:competitionId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.competitionPhotoAlbumDetail);
-  app.get('/group/campaign/:campaignId/photoAlbum/:photoAlbumId', authorization.requiresLogin, group.campaignPhotoAlbumDetail);
   app.post('/group/oneTeam',authorization.requiresLogin, group.getOneTeam);
 
   // for app
