@@ -540,7 +540,6 @@ exports.provoke = function (req, res) {
 
   competition.camp.push(camp_a);
 
-<<<<<<< HEAD
   var photo_album = new PhotoAlbum({
     owner: {
       _id: competition._id,
