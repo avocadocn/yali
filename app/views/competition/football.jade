@@ -12,22 +12,21 @@ block panel
             img.size_50.teamMember(draggable="#{team=='A'}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
       .vs.col-xs-4
         h1.text-center VS
-        if (competition.camp[0].result.confirm && competition.camp[1].result.confirm)
           .dl_box
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
                 label.dl_score(ng-if="!edit")= competition.camp[0].score
-                input(type="text" ng-model="score_a" ng-if="edit").dl_score
+                input.dl_score(type="text" ng-model="score_own.score" ng-if="edit")
                 if msg_show
-                  a.dl_btn_right(ng-click='confirm(true)') 接受比分
+                  a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
               else
                 label.dl_score= competition.camp[0].score
             .dl_score_frame
               label.dl_score :
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                label.dl_score(ng-if="!edit")= competition.camp[0].score
-                input(type="text" ng-model="score_b" ng-if="edit").dl_score
+                label.dl_score(ng-if="!edit")= competition.camp[1].score
+                input.dl_score(type="text" ng-model="score_opposite.score" ng-if="edit")
                 a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
               else
                 label.dl_score= competition.camp[1].score
