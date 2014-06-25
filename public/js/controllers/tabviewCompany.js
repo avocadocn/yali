@@ -463,10 +463,12 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         $scope._index = index;
         $scope.users[index].leader = true;
 
-        for(var i = 0; i < $scope.users.length; i ++) {
-            if($scope.leader._id.toString() === $scope.users[i]._id.toString()){
-                $scope.users[i].leader = false;
-                break;
+        if($scope.leader != 'null'){
+            for(var i = 0; i < $scope.users.length; i ++) {
+                if($scope.leader._id.toString() === $scope.users[i]._id.toString()){
+                    $scope.users[i].leader = false;
+                    break;
+                }
             }
         }
     }
