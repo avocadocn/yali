@@ -41,6 +41,37 @@ select {
 button {
   border: none;
 }
+.dl_btn_score {
+  width: 100px;
+  height: 50px;
+  background: #f20;
+}
+.dl_center {
+  text-align: center;
+}
+.dl_score_frame {
+  width: 90px;
+  height: 138px;
+  float: left;
+  text-align: center;
+  border-style: solid;
+  border-width: 1px;
+}
+.dl_score {
+  width: 90px;
+  height: 98px;
+  float: left;
+  font-size: 80px;
+  text-align: center;
+  line-height: 120%;
+}
+.dl_box {
+  border-style: solid;
+  border-width: 1px;
+  width: 275px;
+  height: 150px;
+  margin-left: -32px;
+}
 .dl_cover {
   border-style: solid;
   border-color: #f22;

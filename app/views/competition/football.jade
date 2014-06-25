@@ -1,22 +1,40 @@
 extends ../layouts/manager
 
 block panel
-  #competition_content(data-nowteam="#{team}" data-id='#{competition._id}' data-msg-show='#{msg_show}' data-rst-content='#{rst_content}' data-score-a='#{score_a}' data-score-b='#{score_b}')
+  #competition_content(ng-controller="resultController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="msg_show='#{msg_show}';rst_content='#{rst_content}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}'")
     .row
       .teamInfo.col-xs-4
         img.size_210.teamLogo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
-        div
+        div.dl_center
           a.teamName= competition.camp[0].tname
         div
           each teamAMember in competition.camp[0].member
             img.size_50.teamMember(draggable="#{team=='A'}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
       .vs.col-xs-4
         h1.text-center VS
-        if(competition.camp[0].result.confirm && competition.camp[1].result.confirm)
-          h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
+        if (competition.camp[0].result.confirm && competition.camp[1].result.confirm)
+          .dl_box
+            .dl_score_frame
+              if confirm_btn_show && (role === 'HR' || role === 'LEADER')
+                label.dl_score(ng-if="!edit")= competition.camp[0].score
+                input(type="text" ng-model="score_a" ng-if="edit").dl_score
+                if msg_show
+                  a.dl_btn_right(ng-click='confirm(true)') 接受比分
+              else
+                label.dl_score= competition.camp[0].score
+            .dl_score_frame
+              label.dl_score :
+            .dl_score_frame
+              if confirm_btn_show && (role === 'HR' || role === 'LEADER')
+                label.dl_score(ng-if="!edit")= competition.camp[0].score
+                input(type="text" ng-model="score_b" ng-if="edit").dl_score
+                a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
+              else
+                label.dl_score= competition.camp[1].score
+          //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
       .teamInfo.col-xs-4
         img.size_210.teamLogo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
-        div
+        div.dl_center
           a.teamName= competition.camp[1].tname
         div
           each teamBMember in competition.camp[1].member
@@ -35,28 +53,6 @@ block panel
 block aside
   .row
     h4.pull-left 活动简介
-    if (role === 'HR' || role === 'LEADER')
-      //- div(ng-controller="resultController" ng-init="msg_show=#{msg_show};rst_content=#{rst_content};score_a=#{score_a};score_b=#{score_b}" )
-      #competition_data(ng-controller="resultController" data-msg-show='#{msg_show}' data-rst-content='#{rst_content}' data-score-a='#{score_a}' data-score-b='#{score_b}')
-        button.margin_left_20.margin_top_5.dl_btn_right(ng-if="#{confirm_btn_show}" data-toggle="modal" data-target="#resultModel") 结果确认
-        div(class="modal fade" id="resultModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-          .modal-dialog
-            .modal-content
-              .modal-header
-                button(class="close" data-dismiss="modal" aria-hidden="true") x
-                h4(class="modal-title" id="myModalLabel") 比赛确认
-              .modal-body
-                .row
-                  label 确认内容
-                    input(type="text" class="form-control" name="content" ng-model="rst_content")
-                  label 我方比分
-                    input(type="text" class="form-control" name="score_a" ng-model="score_a")
-                  label 对方比分
-                    input(type="text" class="form-control" name="score_b" ng-model="score_b")
-              .modal-footer
-                button(ng-if="!#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(false)' data-dismiss="modal") 确定
-                button(ng-if="#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(true)' data-dismiss="modal") 接受对方确认
-                button(ng-if="#{msg_show}" type="button" class="btn btn-primary" ng-click='confirm(false)' data-dismiss="modal") 发出异议
   hr
   .row
     label.col-xs-4.control-label 类型：

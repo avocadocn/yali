@@ -10,15 +10,40 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     //     $('#resultModel').modal();
     //   }
     // });
+    $scope.edit = false;
+    $scope.modify_caption = "修改比分";
 
-    $scope.msg_show = $('#competition_data').attr('data-msg-show');
-    $scope.rst_content = $('#competition_data').attr('data-rst-content');
-    $scope.score_a = $('#competition_data').attr('data-score-a');
-    $scope.score_b = $('#competition_data').attr('data-score-b');
+    //异步接受真是太麻烦了,必须嵌套来保持一致性
+    $scope.$watch('rst_content',function(rst_content){
+      $scope.rst_content = rst_content;
+      $scope.$watch('score_a',function(score_a){
+        $scope.score_a = score_a;
+        $scope.$watch('score_b',function(score_b){
+          $scope.score_b = score_b;
+          $scope.$watch('msg_show',function(msg_show){
+            $scope.msg_show = msg_show;
+            if($scope.msg_show == 'true'){
+              $('#resultModel').modal();
+            }
+          });
+        });
+      });
+    });
+    // $scope.msg_show = $('#competition_data').attr('data-msg-show');
+    // $scope.rst_content = $('#competition_data').attr('data-rst-content');
+    // $scope.score_a = $('#competition_data').attr('data-score-a');
+    // $scope.score_b = $('#competition_data').attr('data-score-b');
 
+    //alert($scope.msg_show);
     var competition_id = $('#competition_content').attr('data-id');
-    if($scope.msg_show === 'true'){
-      $('#resultModel').modal();
+
+    $scope.scoreModify = function(){
+      if(!$scope.edit){
+        $scope.edit = true;
+        $scope.modify_caption = "发送";
+      }else{
+        confirm(false);
+      }
     }
     $scope.confirm = function (confirm) {
       try {

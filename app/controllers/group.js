@@ -860,11 +860,11 @@ exports.renderCampaignDetail = function(req, res) {
     if (!campaign) {
       throw 'not found';
     }
-
+    console.log(campaign.team.length);
     if(campaign.team.length >= 2){
       res.redirect("/competition/"+req.session.nowcampaignid);
     }else{
-      res.render('competition/football', {
+      res.render('campaign/campaign_detail', {
         campaign: campaign,
         photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4)
       });
