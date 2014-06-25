@@ -59,7 +59,7 @@ var GroupMessage = new Schema({
     },
     create_time: {
         type: Date,
-        default: new Date()
+        default: Date.now
     }
 });
 

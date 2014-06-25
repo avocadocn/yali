@@ -20,7 +20,7 @@ var MessageContent = new Schema({
   company_id: Schema.Types.ObjectId,  // 消息所属公司的_id
   post_date: {
     type: Date,
-    default: new Date()
+    default: Date.now
   }
 });
 

@@ -17,7 +17,7 @@ var _member = new Schema({
     photo: String,
     join_time:{
         type: Date,
-        default: new Date()
+        default: Date.now
     }
 });
 
@@ -59,7 +59,7 @@ var CompanyGroup = new Schema({
     },
     create_time:{
         type: Date,
-        default: new Date()
+        default: Date.now
     }
 });
 

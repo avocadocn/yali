@@ -99,7 +99,7 @@ var Competition = new Schema({
     },
     create_time:{
       type: Date,
-      default: new Date()
+      default: Date.now
     },
     close_time: Date,
     camp:[_camp],                              //阵营

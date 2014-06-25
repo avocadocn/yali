@@ -75,7 +75,7 @@ var UserSchema = new Schema({
     },
     register_date: {
         type: Date,
-        default: new Date()
+        default: Date.now
     },
     phone: {
         type: String
