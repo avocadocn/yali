@@ -1,10 +1,10 @@
 .row(ng-if="select")
-  if (Global.role!=='HR')
-    .btn-group.pull-right
-      button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{"CAMPAIGN_SELECT"|translate}}
-      ul.dropdown-menu(role="menu")
-        li
-          a(ng-click="selectCampaign(0)") {{"COMPANY_CAMPAIGN"|translate}}
+  .btn-group.pull-right
+    button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{"CAMPAIGN_SELECT"|translate}}
+    ul.dropdown-menu(role="menu")
+      li
+        a(ng-click="selectCampaign(0)") {{"COMPANY_CAMPAIGN"|translate}}
+      if (Global.role!=='HR')
         li
           a(ng-click="selectCampaign(1)") {{"SELECTED_TEAM"|translate}}
         li

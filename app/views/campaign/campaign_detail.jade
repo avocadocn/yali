@@ -79,7 +79,7 @@ block contentExt
                   .triangle
                   .comment_content
                     p {{comment.content}}
-                p.comment_date.text {{comment.create_date}}
+                p.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
     .dl_detail_side
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         #mapContainer.size_400
