@@ -379,8 +379,13 @@ exports.resultConfirm = function (req, res) {
       }
       competition.camp[_campFlag].result.confirm = true;
       if(!rst_accept) {
-        competition.camp[_campFlag].score = score_a;
-        competition.camp[_otherCampFlag].score = score_b;
+
+        //由于页面双方顺序待定,此处也待定
+        competition.camp[0].score = score_a;
+        competition.camp[1].score = score_b;
+        // competition.camp[_campFlag].score = score_a;
+        // competition.camp[_otherCampFlag].score = score_b;
+
         competition.camp[_otherCampFlag].result.confirm = false;
         competition.camp[_campFlag].result.content = rst_content;
         competition.camp[_campFlag].result.start_date = new Date();

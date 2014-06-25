@@ -1163,8 +1163,9 @@ exports.quitGroup = function (req, res){
                     if(err){
                       return res.send(err);
                     }
-                    else
+                    else {
                       return res.send({result:1, msg: '退出小队成功！'});
+                    }
                   });
                 }
                 else

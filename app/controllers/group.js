@@ -581,7 +581,13 @@ exports.provoke = function (req, res) {
     name: competition.theme,
     update_user: {
       _id: req.user._id,
-      nickname: req.user.nickname
+      name: req.user.nickname,
+      type: 'user'
+    },
+    create_user: {
+      _id: req.user._id,
+      name: req.user.nickname,
+      type: 'user'
     }
   });
   fs.mkdir(path.join(meanConfig.root, '/public/img/photo_album/', photo_album._id.toString()), function(err) {
@@ -740,7 +746,13 @@ exports.sponsor = function (req, res) {
     name: campaign.theme,
     update_user: {
       _id: req.user._id,
-      nickname: req.user.nickname
+      name: req.user.nickname,
+      type: 'user'
+    },
+    create_user: {
+      _id: req.user._id,
+      name: req.user.nickname,
+      type: 'user'
     }
   });
 
