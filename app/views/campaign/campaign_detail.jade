@@ -57,9 +57,10 @@ block contentExt
       //-成员
       .dl_detail_member
         p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}:
-        div(ng-repeat = "_member in campaign.member")
-          a(href="/users/home/{{_member.uid}}")
+        div.member(ng-repeat = "_member in campaign.member", title="{{_member.nickname}}")
+          a.item(href="/users/home/{{_member.uid}}")
             img.img_contain.detail_photo(ng-src="{{_member.photo}}" title="{{_member.nickname}}")
+            span.name {{_member.nickname}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
       .dl_detail_main
         p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}

@@ -113,6 +113,9 @@ button {
 .comment .comment_user_info {
   float: left;
 }
+.comment .comment_user_info p {
+  text-align: center;
+}
 .comment .comment_user_info .user_photo {
   width: 50px;
   height: 50px;

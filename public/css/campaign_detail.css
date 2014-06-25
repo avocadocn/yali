@@ -34,6 +34,22 @@
   margin: 20px -20px;
   padding: 10px 20px;
 }
+.dl_detail_container .dl_detail_main .dl_detail_member .member {
+  float: left;
+  margin: 4px;
+}
+.dl_detail_container .dl_detail_main .dl_detail_member .member .item {
+  display: block;
+}
+.dl_detail_container .dl_detail_main .dl_detail_member .member .item .img_contain {
+  display: block;
+}
+.dl_detail_container .dl_detail_main .dl_detail_member .member .item .name {
+  padding-top: 5px;
+  display: block;
+  width: 50px;
+  text-align: center;
+}
 .dl_detail_container .dl_detail_side {
   width: 290px;
   float: right;
