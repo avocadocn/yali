@@ -299,6 +299,18 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.select_user = false;
     $scope.select_leader = false;
 
+    var refreshCompanyInfo = function() {
+        $http
+        .get('/company/getAccount?' + Math.round(Math.random()*100))
+        .success(function(data, status) {
+            $scope.company = data.company;
+        })
+        .error(function(data, status) {
+            //TODO:更改对话框
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+        });
+    };
+
 
     $scope.preProvoke = function(team) {
         $scope.team_opposite = team;

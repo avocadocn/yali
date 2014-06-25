@@ -17,5 +17,5 @@ module.exports = function(app) {
   app.get('/competition/:groupId', competition.getGroupId);   //只是为了将groupId传进去
 
   //app.param('groupId',competition.group);
-  //app.param('competitionId',competition.competition);
+  app.param('competitionId',competition.competition);
 }

@@ -244,7 +244,8 @@ exports.getCompetition = function(req, res){
     'score_b': "",
     'rst_content': "",
     'moment':moment,
-    'confirm_btn_show':false
+    'confirm_btn_show':false,
+    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album).slice(0, 4)
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.session.role==='HR'){
@@ -308,7 +309,9 @@ exports.competition = function(req, res, next, id){
   var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
   Campaign.findOne({
       '_id':id
-    }).exec(function(err, competition){
+    })
+    .populate('photo_album')
+    .exec(function(err, competition){
       if (err) return next(err);
       req.competition = competition;
       if(cid.toString() ===competition.camp[0].cid.toString()){
