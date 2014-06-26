@@ -5,15 +5,15 @@ div.clearfix
     a#btn_list(ng-click="calendar(false)" href="javascript:void(0)") 列表
   .pull-right#calendar_operator(ng-show="isCalendar")
     .btn-group
-      button.btn.btn-primary(data-calendar-nav="prev") &lt;&lt;&nbsp;{{ prev }}
+      button.btn.btn-primary(data-calendar-nav="prev") &lt;&lt;
       button.btn.btn-default(data-calendar-nav="today") 今天
-      button.btn.btn-primary(data-calendar-nav="next") {{ next }}&nbsp;&gt;&gt;
-    .btn-group
+      button.btn.btn-primary(data-calendar-nav="next") &gt;&gt;
+    //-.btn-group
       button.btn.btn-primary.active(data-calendar-view="month" ng-click="setText('month')") 月
       button.btn.btn-primary(data-calendar-view="week" ng-click="setText('week')") 周
       button.btn.btn-primary(data-calendar-view="day" ng-click="setText('day')") 日
     //-a(data-calendar-view="month" ng-click="setText('month')" ng-show="mode==='d'" href="javascript:void(0)") 返回
-
+    button.btn.btn-primary(data-calendar-view="month" ng-show="isDayView") 返回
 div.calendar_box
   div(ng-show="isCalendar")
     .clearfix
