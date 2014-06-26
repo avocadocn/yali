@@ -1,108 +1,109 @@
-extends ../layouts/manager
+extends ../layouts/user_base
 
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
 
-block panel
-  #competition_content(ng-controller="resultController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="msg_show='#{msg_show}';rst_content='#{rst_content}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}';confirm_mode='#{confirm_mode}'")
-    .row
-      .teamInfo.col-xs-4
-        img.size_210.teamLogo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
-        div.dl_center
-          a.teamName= competition.camp[0].tname
-        div
-          each teamAMember in competition.camp[0].member
-            img.size_50.teamMember(draggable="#{team=='A'}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
-      .vs.col-xs-4
-        h1.text-center VS
-          .dl_box#score_tip
-            .dl_score_frame
-              if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                //- label.dl_score(ng-if="!edit") {{score_own.score}}
-                input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()")
-                if msg_show
-                  a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
-              else
-                label.dl_score {{score_own.score}}
-            .dl_score_frame
-              label.dl_score :
-              if confirm_btn_show && !msg_show
-                if confirm_mode === 1
-                  a.dl_btn_right(ng-disabled="true") 等待确认
-                else
-                  a.dl_btn_right(ng-click='confirmScore(false)') 比赛确认
-            .dl_score_frame
-              if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                //- label.dl_score(ng-if="!edit") {{score_opposite.score}}
-                input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()")
-                if msg_show
-                  a.dl_btn_right(ng-click='confirmScore(false)') 发出异议
-              else
-                label.dl_score {{score_opposite.score}}
-          //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
-      .teamInfo.col-xs-4
-        img.size_210.teamLogo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
-        div.dl_center
-          a.teamName= competition.camp[1].tname
-        div
-          each teamBMember in competition.camp[1].member
-            img.size_50.teamMember(draggable="#{team=='B'}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
-    .row.formatField.field
-      img#formatField.col-xs-12.img_contain.field(draggable="false" src='/img/field.png')
-      each teamAMember in competition.camp[0].formation
-        img.size_50.teamMember.onmemberA(draggable="#{team=='A'}" id='on_#{teamAMember.uid}' data-top='#{teamAMember.y}' data-left='#{teamAMember.x}')
-      each teamBMember in competition.camp[1].formation
-        img.size_50.teamMember.onmemberB(draggable="#{team=='B'}" id='on_#{teamBMember.uid}' data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
+block contentExt
+  .dl_container.clearfix
+    .main
+      #competition_content(ng-controller="resultController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="msg_show='#{msg_show}';rst_content='#{rst_content}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}';confirm_mode='#{confirm_mode}'")
+        .row
+          .teamInfo.col-xs-4
+            img.size_210.teamLogo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
+            div.dl_center
+              a.teamName= competition.camp[0].tname
+            div
+              each teamAMember in competition.camp[0].member
+                img.size_50.teamMember(draggable="#{team=='A'}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
+          .vs.col-xs-4
+            h1.text-center VS
+              .dl_box#score_tip
+                .dl_score_frame
+                  if confirm_btn_show && (role === 'HR' || role === 'LEADER')
+                    //- label.dl_score(ng-if="!edit") {{score_own.score}}
+                    input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()")
+                    if msg_show
+                      a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
+                  else
+                    label.dl_score {{score_own.score}}
+                .dl_score_frame
+                  label.dl_score :
+                  if confirm_btn_show && !msg_show
+                    if confirm_mode === 1
+                      a.dl_btn_right(ng-disabled="true") 等待确认
+                    else
+                      a.dl_btn_right(ng-click='confirmScore(false)') 比赛确认
+                .dl_score_frame
+                  if confirm_btn_show && (role === 'HR' || role === 'LEADER')
+                    //- label.dl_score(ng-if="!edit") {{score_opposite.score}}
+                    input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()")
+                    if msg_show
+                      a.dl_btn_right(ng-click='confirmScore(false)') 发出异议
+                  else
+                    label.dl_score {{score_opposite.score}}
+              //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
+          .teamInfo.col-xs-4
+            img.size_210.teamLogo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
+            div.dl_center
+              a.teamName= competition.camp[1].tname
+            div
+              each teamBMember in competition.camp[1].member
+                img.size_50.teamMember(draggable="#{team=='B'}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
+        //- 7是足球
+        if (competition.camp[0].gid === '7')
+          .row.formatField.field
+            img#formatField.col-xs-12.img_contain.field(draggable="false" src='/img/field.png')
+            each teamAMember in competition.camp[0].formation
+              img.size_50.teamMember.onmemberA(draggable="#{team=='A'}" id='on_#{teamAMember.uid}' data-top='#{teamAMember.y}' data-left='#{teamAMember.x}')
+            each teamBMember in competition.camp[1].formation
+              img.size_50.teamMember.onmemberB(draggable="#{team=='B'}" id='on_#{teamBMember.uid}' data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
+
+    .side
+      .row
+        h4.pull-left 活动简介
+      hr
+      .row
+        label.col-xs-4.control-label 类型：
+        label.col-xs-8.control-label= competition.group_type
+      //- .row
+      //-   label.col-xs-4.control-label 赛制：
+      //-   label.col-xs-8.control-label= competition.brief.competition_format
+      //- .row
+      //-   label.col-xs-4.control-label 人数：
+      //-   label.col-xs-8.control-label= competition.brief.number
+      .row
+        label.col-xs-4.control-label 场地：
+        label.col-xs-8.control-label= competition.location.name
+      .row
+        label.col-xs-4.control-label 应战截止时间：
+        label.col-xs-8.control-label= moment(competition.deadline).format("YYYY-MM-DD HH:mm")
+      .row
+        label.col-xs-4.control-label 活动时间：
+        label.col-xs-8.control-label= moment(competition.start_time).format("YYYY-MM-DD HH:mm")
+      .row
+        label.col-xs-4.control-label 备注：
+        label.col-xs-8.control-label= competition.content
+      hr
+      .row
+        h4.pull-left 活动地点
+      #location.size_400
+
+      hr
+      .row
+        if (Global.role!=='PARTNER')
+          p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
+            a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{competition.photo_album._id}") 上传活动照片
+          .photo_album
+            each photo in photo_thumbnails
+              a.thumbnail_cell(href="/photoView/#{competition.photo_album._id}/#{photo._id}")
+                img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
+                p.thumbnail_name.text-center= photo.name
 
 
-
-
-
-block aside
-  .row
-    h4.pull-left 活动简介
-  hr
-  .row
-    label.col-xs-4.control-label 类型：
-    label.col-xs-8.control-label= competition.group_type
-  //- .row
-  //-   label.col-xs-4.control-label 赛制：
-  //-   label.col-xs-8.control-label= competition.brief.competition_format
-  //- .row
-  //-   label.col-xs-4.control-label 人数：
-  //-   label.col-xs-8.control-label= competition.brief.number
-  .row
-    label.col-xs-4.control-label 场地：
-    label.col-xs-8.control-label= competition.location.name
-  .row
-    label.col-xs-4.control-label 应战截止时间：
-    label.col-xs-8.control-label= moment(competition.deadline).format("YYYY-MM-DD HH:mm")
-  .row
-    label.col-xs-4.control-label 活动时间：
-    label.col-xs-8.control-label= moment(competition.start_time).format("YYYY-MM-DD HH:mm")
-  .row
-    label.col-xs-4.control-label 备注：
-    label.col-xs-8.control-label= competition.content
-  hr
-  .row
-    h4.pull-left 活动地点
-  #location.size_400
-
-  hr
-  .row
-    if (Global.role!=='PARTNER')
-      p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
-        a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{competition.photo_album._id}") 上传活动照片
-      .photo_album
-        each photo in photo_thumbnails
-          a.thumbnail_cell(href="/photoView/#{competition.photo_album._id}/#{photo._id}")
-            img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
-            p.thumbnail_name.text-center= photo.name
-
-  script.
-    var competition_location = !{JSON.stringify(competition.location)}
 
 append footExt
+  script.
+    var competition_location = !{JSON.stringify(competition.location)}
   script(src="/js/controllers/competition.js")
   script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")
 

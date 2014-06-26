@@ -139,10 +139,9 @@ exports.resetPwd = function(req, res){
     }
   });
 }
-/**
- * Logout
- */
-exports.signout = function(req, res) {
+
+
+var destroySession = function(req){
   if(req.session.nowtid != null || req.session.nowtid != undefined){
     delete req.session.nowtid;
   }
@@ -158,6 +157,12 @@ exports.signout = function(req, res) {
   if (req.session.Global) {
     delete req.session.Global;
   }
+}
+/**
+ * Logout
+ */
+exports.signout = function(req, res) {
+  destroySession(req);
   req.logout();
   res.redirect('/');
 };
@@ -211,6 +216,7 @@ exports.authorize = function(req, res, next) {
  * 通过邀请链接进入激活流程
  */
 exports.invite = function(req, res) {
+  destroySession(req);
   var key = req.query.key;
   var cid = req.query.cid;
   if(key == undefined || cid == undefined) {

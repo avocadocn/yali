@@ -534,15 +534,17 @@ exports.provoke = function (req, res) {
   var competition = new Campaign();
   var cid = req.user.provider==="company" ? req.user._id : req.user.cid;
   var cname = req.user.provider==="company" ? req.user.info.name : req.user.cname;
-  competition.gid = req.companyGroup.gid;
-  competition.group_type = req.companyGroup.group_type;
+  // 没有这两个属性
+  //competition.gid = req.companyGroup.gid;
+  //competition.group_type = req.companyGroup.group_type;
 
   var camp_a = {
     'id' : my_team_id,
     'cid' : req.companyGroup.cid,
     'start_confirm' : true,
     'tname' : req.companyGroup.name,
-    'logo' : req.companyGroup.logo
+    'logo' : req.companyGroup.logo,
+    'gid': req.companyGroup.gid
   };
 
 
@@ -552,7 +554,8 @@ exports.provoke = function (req, res) {
     'id' : team_opposite._id,
     'cid' : team_opposite.cid,
     'tname' : team_opposite.name,
-    'logo' : team_opposite.logo
+    'logo' : team_opposite.logo,
+    'gid': req.companyGroup.gid
   };
   competition.camp.push(camp_b);
   competition.theme = theme;
