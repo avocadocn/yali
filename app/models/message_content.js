@@ -17,7 +17,7 @@ var MessageContent = new Schema({
     enum: ['private', 'public', 'global']
   },
   send_id: Schema.Types.ObjectId,  // Model.User._id
-  team_id: Schema.Types.ObjectId,  // 消息所属小队(小队)的_id
+  team_id: [Schema.Types.ObjectId],  // 消息所属小队(小队)的_id
   company_id: Schema.Types.ObjectId,  // 消息所属公司的_id
   post_date: {
     type: Date,

@@ -20,8 +20,8 @@ block contentExt
               .dl_box#score_tip
                 .dl_score_frame
                   if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                    //- label.dl_score(ng-if="!edit") {{score_own.score}}
-                    input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()")
+                    label.dl_score(ng-if="!edit") {{score_own.score}}
+                    input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
                     if msg_show
                       a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
                   else
@@ -32,13 +32,13 @@ block contentExt
                     if confirm_mode === 1
                       a.dl_btn_right(ng-disabled="true") 等待确认
                     else
-                      a.dl_btn_right(ng-click='confirmScore(false)') 比赛确认
+                      a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
                 .dl_score_frame
                   if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                    //- label.dl_score(ng-if="!edit") {{score_opposite.score}}
-                    input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()")
+                    label.dl_score(ng-if="!edit") {{score_opposite.score}}
+                    input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
                     if msg_show
-                      a.dl_btn_right(ng-click='confirmScore(false)') 发出异议
+                      a.dl_btn_right(ng-click='scoreModify()') {{object_caption}}
                   else
                     label.dl_score {{score_opposite.score}}
               //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score

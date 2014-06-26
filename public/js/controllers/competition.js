@@ -11,7 +11,8 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     //   }
     // });
     $scope.modify_caption = "成绩确认";
-
+    $scope.object_caption = "发出异议";
+    $scope.edit = false;
 
     $scope.score_own = {
       'score':0
@@ -69,8 +70,10 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
       if(!$scope.edit){
         $scope.edit = true;
         $scope.modify_caption = "发送";
+        $scope.object_caption = "发送";
       }else{
-        $scope.modify_caption = "修改比分";
+        $scope.modify_caption = "成绩确认";
+        $scope.object_caption = "发出异议";
         $scope.confirmScore(false);
       }
     }
