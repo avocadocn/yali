@@ -231,6 +231,21 @@ exports.responseProvoke = function (req, res) {
 
 
 
+
+function booleanJudge(own,opposite){
+  if(own && opposite){
+    return 0;
+  }
+  if(own && !opposite){
+    return 1;
+  }
+  if(!own && opposite){
+    return 2;
+  }
+  if(!own && !opposite){
+    return 3;
+  }
+}
 //比赛
 exports.getCompetition = function(req, res){
   var timeout = Config.COMPETITION_CONFIRM_TIMEOUT;
@@ -248,7 +263,8 @@ exports.getCompetition = function(req, res){
     'rst_content': "",
     'moment':moment,
     'confirm_btn_show':false,
-    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album).slice(0, 4)
+    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album).slice(0, 4),
+    'confirm_mode':3
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.session.role==='HR'){
@@ -259,9 +275,14 @@ exports.getCompetition = function(req, res){
     nowTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 0:1;
     otherTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 1:0;
   }
-  options.confirm_btn_show = !(req.competition.camp[otherTeamIndex].result.confirm && req.competition.camp[nowTeamIndex].result.confirm);
-  if((req.session.role==='HR' || req.session.role ==='LEADER') && req.competition.camp[otherTeamIndex].result.confirm && !req.competition.camp[nowTeamIndex].result.confirm) {
-    console.log(req.competition.camp[otherTeamIndex].result.start_date - (new Date()));
+
+  var boolean_judge = booleanJudge(req.competition.camp[nowTeamIndex].result.confirm,req.competition.camp[otherTeamIndex].result.confirm);
+  options.confirm_mode = boolean_judge;
+
+
+  options.confirm_btn_show = (boolean_judge > 0);
+
+  if((req.session.role==='HR' || req.session.role ==='LEADER') && (boolean_judge===2)) {
     options.msg_show = true;
     options.score_a = req.competition.camp[nowTeamIndex].score;
     options.score_b = req.competition.camp[otherTeamIndex].score;
@@ -285,6 +306,7 @@ exports.getCompetition = function(req, res){
       });
     }
   }
+  console.log(boolean_judge,req.session.role);
   res.render('competition/football', options);
 };
 

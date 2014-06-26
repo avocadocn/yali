@@ -1,7 +1,7 @@
 extends ../layouts/manager
 
 block panel
-  #competition_content(ng-controller="resultController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="msg_show='#{msg_show}';rst_content='#{rst_content}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}'")
+  #competition_content(ng-controller="resultController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="msg_show='#{msg_show}';rst_content='#{rst_content}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}';confirm_mode='#{confirm_mode}'")
     .row
       .teamInfo.col-xs-4
         img.size_210.teamLogo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
@@ -16,18 +16,24 @@ block panel
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
                 //- label.dl_score(ng-if="!edit") {{score_own.score}}
-                input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" onmouseover="tip()")
+                input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()")
                 if msg_show
                   a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
               else
                 label.dl_score {{score_own.score}}
             .dl_score_frame
               label.dl_score :
+              if confirm_btn_show
+                if confirm_mode === 1
+                  a.dl_btn_right(ng-disabled="true") 等待确认
+              else
+                a.dl_btn_right(ng-click='confirmScore(false)') 比赛确认
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
                 //- label.dl_score(ng-if="!edit") {{score_opposite.score}}
                 input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()")
-                a.dl_btn_right(ng-click='confirmScore(false)') {{modify_caption}}
+                if msg_show
+                  a.dl_btn_right(ng-click='confirmScore(false)') 发出异议
               else
                 label.dl_score {{score_opposite.score}}
           //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
