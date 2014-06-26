@@ -6,10 +6,17 @@ var Schema = mongoose.Schema;
 
 var Message = new Schema({
   rec_id: Schema.Types.ObjectId,  // 接收者_id
-  message_content_id: Schema.Types.ObjectId,  // Model.MessageContent._id
+  MessageContent: {
+    type:Schema.Types.ObjectId,  // Model.MessageContent._id
+    ref:"MessageContent"
+  },
   status: {
     type: String,
     enum: ['unread', 'read', 'delete']
+  },
+  create_date:{
+    type:Date,
+    default:Date.now
   }
 });
 

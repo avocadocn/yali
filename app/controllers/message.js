@@ -11,11 +11,13 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Company = mongoose.model('Company'),
     Message = mongoose.model('Message'),
+    MessageContent = mongoose.model('MessageContent'),
     CompanyGroup = mongoose.model('CompanyGroup');
 
 
 
 /*
+* collection:目标文档
 * type:      查询方式
 * condition: 查询条件
 * limit:     过滤条件
@@ -23,23 +25,23 @@ var mongoose = require('mongoose'),
 * sort:      排序方式
 * _err:      错误处理函数
 */
-function get(type,condition,limit,sort,callback,_err){
+function get(collection,type,condition,limit,sort,callback,_err,other_param,req,res){
   switch(type){
     case '0':
-      Message.findOne(condition,limit,function(err,message){
+      collection.findOne(condition,limit,function(err,message){
         if(err || !message){
           _err(err);
         }else{
-          callback(message);
+          callback(message,other_param,req,res);
         }
       });
       break;
     case '1':
-      Message.find(condition,limit).sort(sort).exec(function(err,messages){
+      collection.find(condition,limit).sort(sort).exec(function(err,messages){
         if(err || !messages){
           _err(err);
         }else{
-          callback(messages);
+          callback(messages,other_param,req,res);
         }
       });
       break;
@@ -48,16 +50,17 @@ function get(type,condition,limit,sort,callback,_err){
 }
 
 /*
+* collection:目标文档
 * type:      更新方式
 * condition: 查询条件
 * operate:   更新方法
 * callback:  回调函数
 * _err:      错误处理函数
 */
-function set(type,condition,operate,callback,_err){
+function set(collection,type,condition,operate,callback,_err){
   switch(type){
     case '0':
-      Message.findByIdAndUpdate({'_id':condition},operate,function(err,message){
+      collection.findByIdAndUpdate({'_id':condition},operate,function(err,message){
         if(err || !message){
           _err(err);
         }else{
@@ -65,11 +68,11 @@ function set(type,condition,operate,callback,_err){
         }
       });
     case '1':
-      Message.update(condition,operate,{multi: true},function(err,message){
+      collection.update(condition,operate,{multi: true},function(err,message){
         if(err || !message){
           _err(err);
         }else{
-          callback();
+          callback(message);
         }
       });
     default:break;
@@ -77,28 +80,184 @@ function set(type,condition,operate,callback,_err){
 }
 
 
-function add(condition,callback,_err){
-  Message.insert(condition,{safe:true},function(err,message){
+function _add(collection,operate,callback,_err,other_param,req,res){
+  collection.insert(condition,{safe:true},function(err,message){
     if(err || !message){
-      _err(err);
+      if(_err!=null && typeof _err == 'function'){
+        _err(err);
+      }
     } else {
-      callback();
+      if(callback!=null && typeof callback == 'function'){
+        callback(message,other_param,req,res);
+      }
     }
   })
 }
 
-function drop(condition,callback,_err){
-  Message.remove(condition,function(err,message){
+function drop(collection,condition,callback,_err){
+  collection.remove(condition,function(err,message){
     if(err || message){
       _err(err);
     }else{
-      callback();
+      callback(message);
     }
   });
 }
 
+var _err = function(err){
+  console.log(err);
+}
+
+
+
+
+
+//无论是组长对组员、hr对员工还是生成新活动后对该活动所属组所有组员发送站内信,都可以调用此函数
+var oneToMember = function(members,content,send_id,team_id,company_id,req,res){
+  var callback = function (message_content,other,req,res){
+    for(var i = 0; i < members.length; i ++){
+      var M = {
+        'rec_id':members[i]._id,
+        'MessageContent':message_content._id,
+        'status':'unread'
+      };
+      _add(Message,M,null,_err,null,req,res);
+    }
+    //由于异步性质,不能保证所有队员的消息都存储完毕
+    res.send("ADD_SUCCESS");
+  }
+  var MC={
+    'content':content,
+    'type':'public',
+    'send_id':send_id,
+    'team_id':team_id,
+    'company_id':company_id,
+    'deadline':(new Date())+time_out;
+  };
+  _add(MessageContent,MC,callback,_err,members,req,res);
+}
+
+//HR给所有公司成员发送站内信
+exports.hrSendToMember = function(req,res){
+
+}
+
+
+
+
+var time_out = 72*24*3600;
 
 //组长给组员发送站内信
-exports.leaderSendToMember = function(req,res){
-
+var leaderSendToMember = function(req,res){
+  var members = req.body.members;
+  var content = req.body.content,
+      type = "public",
+      send_id = req.user._id,
+      team_id = req.body.tid;
+  oneToMember(members,content,send_id,team_id,null,req,res);
 };
+
+
+
+
+exports.newCampaignCreate = function(req,res){
+  var team = req.body.team;        //是对象
+  var content = req.body.content;  //也是对象
+  var cid = req.body.cid;
+
+  switch(team_id.length){
+    //公司活动
+    case 0:
+      var condition = {'cid':cid};
+      var callback = function(users,other,req,res){
+        if(users){
+          oneToMember(users,content,null,null,cid,req,res);
+        }
+      }
+      get(User,1,condition,{'_id':1,'nickname':1},null,callback,_err,null,req,res)
+      break;
+    //小队活动
+    case 1:
+      var condition = {'_id':team_id};
+      var callback = function(company_group,other,req,res){
+        if(company_group){
+          var members = company_group.member;
+          oneToMember(members,content,null,team_id,null,req,res);
+        }
+      }
+      get(CompanyGroup,1,condition,{'member':1},null,callback,_err,null,req,res)
+      break;
+    //小队比赛
+    case 2:
+
+      break;
+    default:break;
+  }
+}
+
+//比赛结果确认时给队长发送站内信
+exports.resultConfirm = function(req,res){
+
+}
+
+
+
+//员工登录时读取站内信
+var getMessage = function(_private,req,res){
+  var sort = {'create_date':-1};
+  if(_private){
+    var condition = {'rec_id':req.user._id};
+    Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
+      if(err || !messages){
+        _err(err);
+      }else{
+        var rst = [];
+        for(var i = 0; i < messages.length; i ++){
+          rst.push({
+            'rec_id':messages[i].rec_id,
+            'status':messages[i].status,
+            'message_content':messages[i].MessageContent
+          });
+        }
+        res.send(rst);
+      }
+    });
+  }else{
+    var condition = {'rec_id':null};
+    var rst = [];
+    Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, meassages){
+      if(err || !messages){
+        _err(err);
+      } else {
+        for(var i = 0; i < messages.length; i ++) {
+          rst.push({
+            'status':messages[i].status,
+            'message_content':messages[i].MessageContent
+          });
+        }
+        res.send(rst);
+      }
+    });
+  }
+}
+
+//修改站内信状态(比如用户点击了一条站内信就把它设为已读)
+var setMessageStatus = function(status,req,res){
+  var status_model = ['read','unread','delete'];
+  if(status_model.indexOf(status) > -1){
+    var msg_id = req.body.msg_id;
+    var operate = {'$set':{'status':status}};
+    var callback = function(){
+      res.send('MODIFY_OK');
+    }
+    set(Message,0,msg_id,operate,callback,_err);
+  }else{
+    res.send('STATUS_ERROR');
+  }
+}
+
+exports.messageInit = function(req,res){
+  if(req.user.provider === 'user'){
+
+  }
+}
