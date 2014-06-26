@@ -162,6 +162,9 @@ var destroySession = function(req){
   if (req.session.Global.role !=null || req.session.Global.role != undefined) {
     delete req.session.Global.role;
   }
+  if (req.session.Global !=null || req.session.Global != undefined) {
+    delete req.session.Global;
+  }
 }
 /**
  * Logout
@@ -450,58 +453,57 @@ exports.dealSelectGroup = function(req, res) {
     ;
   }
   User.findOne({'username': req.session.username}, function(err, user) {
-    if(user) {
-      if (err) {
-        res.status(400).send('用户不存在!');
-        return;
-      } else if(user) {
-        if(user.active === false) {
-          user.team = req.body.selected;
-          user.active = true;
-          user.save(function(err){
-            if(err){
-              console.log(err);
-              res.render('users/message', message.dbError);
+    if (err) {
+      return res.status(400).send('用户不存在!');
+    }
+    else if(user) {
+      if(user.active === false) {
+        user.team = req.body.selected;
+        user.active = true;
+        user.save(function(err){
+          if(err){
+            console.log(err);
+            res.render('users/message', message.dbError);
+          }
+          var tids = [];
+          var member = {
+            '_id' : user._id,
+            'nickname' : user.nickname,
+            'photo' : user.photo
+          }
+          for( var i = 0; i < user.team.length && user.team[i].gid != '0'; i++){
+            tids.push(user.team[i]._id);
+            var groupMessage = new GroupMessage();
+              groupMessage.message_type = 8;
+              groupMessage.company={
+                cid : user.cid,
+                name : user.cname
+              };
+              groupMessage.team = {
+                teamid : user.team[i]._id,
+                name : user.team[i].name,
+                logo : user.team[i].logo
+              };
+              groupMessage.user= {
+                user_id : user._id,
+                name : user.nickname,
+                logo : user.photo
+              };
+              groupMessage.save();
+          }
+          CompanyGroup.update({'_id':{'$in':tids}},{'$push':{'member':member}},{'safe':false,'multi':true}).exec(function(err, company_group){
+            if(err || !company_group){
+              return res.send(err);
+            }else{
+              return res.redirect('/users/finishRegister');
             }
-            var tids = [];
-            var member = {
-              '_id' : user._id,
-              'nickname' : user.nickname,
-              'photo' : user.photo
-            }
-            for( var i = 0; i < user.team.length && user.team[i].gid != '0'; i++){
-              tids.push(user.team[i]._id);
-              var groupMessage = new GroupMessage();
-                groupMessage.message_type = 8;
-                groupMessage.company={
-                  cid : user.cid,
-                  name : user.cname
-                };
-                groupMessage.team = {
-                  teamid : user.team[i]._id,
-                  name : user.team[i].name,
-                  logo : user.team[i].logo
-                };
-                groupMessage.user= {
-                  user_id : user._id,
-                  name : user.nickname,
-                  logo : user.photo
-                };
-                groupMessage.save();
-            }
-            CompanyGroup.update({'_id':{'$in':tids}},{'$push':{'member':member}},{'safe':false,'multi':true}).exec(function(err, company_group){
-              if(err || !company_group){
-                console.log(err);
-                return res.send(err);
-              }
-            });
           });
-          res.redirect('/users/finishRegister');
-        } else {
-          res.render('users/message', message.actived);
-        }
+        });
+      } else {
+        res.render('users/message', message.actived);
       }
-    } else {
+    }
+    else {
       res.render('users/message', message.unregister);
     }
   });
@@ -1226,6 +1228,7 @@ exports.saveAccount = function (req, res) {
     }
     else {
       if (user) {
+        console.log(req.body.user.nickname , user.nickname);
         if(req.body.user.nickname !== user.nickname){
           schedule.updateUname(user._id);
           req.session.Global.nav_name = req.body.user.nickname;
