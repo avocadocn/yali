@@ -16,8 +16,7 @@ var mongoose = require('mongoose'),
   Group = mongoose.model('Group'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   GroupMessage = mongoose.model('GroupMessage'),
-  Campaign = mongoose.model('Campaign'),
-  Competition = mongoose.model('Competition');
+  Campaign = mongoose.model('Campaign');
 
 // 3rd
 var validator = require('validator'),

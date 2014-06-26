@@ -61,11 +61,9 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
-    $scope.select = true;
     $rootScope.nowTab = 'company_campaign';
-    $http.get('/campaign/all?' + Math.round(Math.random()*100)).success(function(data, status) {
-      $scope.campaigns = data.data;
-      $scope.role = data.role;
+    $http.get('/campaign/getCampaigns/company/all?' + Math.round(Math.random()*100)).success(function(data, status) {
+      $scope.campaigns = data.campaigns;
     });
 
 
@@ -74,27 +72,28 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         var _selected = true;
         switch(value) {
             case 0:
-                _url = "/campaign/company/getCampaigns";
+                _url = "/campaign/getCampaigns/company/company";
                 break;
             case 1:
-                _url = "/campaign/user/getCampaigns";
-                _selected = true;
+                _url = "/campaign/getCampaigns/company/selected";
                 break;
             case 2:
-                _url = "/campaign/user/getCampaigns";
-                _selected = false;
+                _url = "/campaign/getCampaigns/company/unselected";
+                break;
+            case 3:
+                _url = "/campaign/getCampaigns/company/team";
+                break;
+            case 4:
+                _url = "/campaign/getCampaigns/company/all";
                 break;
             default:break;
         }
          try{
             $http({
-                method: 'post',
+                method: 'get',
                 url: _url,
-                data:{
-                    team_selected : _selected
-                }
             }).success(function(data, status) {
-                $scope.campaigns = data.data;
+                $scope.campaigns = data.campaigns;
             }).error(function(data, status) {
                 //TODO:更改对话框
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -144,8 +143,8 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                 if(data.result===1){
                     //alert('成功加入该活动!');
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
-                    $scope.campaigns[index].join = true;
-                    $scope.campaigns[index].member_length++;
+                    $scope.campaigns[index].join_flag = 1;
+                    $scope.campaigns[index].member_num++;
                 }
                 else{
                     $rootScope.donlerAlert(data.msg);
@@ -171,8 +170,8 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                  if(data.result===1){
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     //alert('您已退出该活动!');
-                    $scope.campaigns[index].join = false;
-                    $scope.campaigns[index].member_length--;
+                    $scope.campaigns[index].join_flag = -1;
+                    $scope.campaigns[index].member_num--;
                 }
                 else{
                     $rootScope.donlerAlert(data.msg);

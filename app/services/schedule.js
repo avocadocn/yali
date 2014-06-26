@@ -5,8 +5,7 @@ var mongoose = require('mongoose'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup'),
     GroupMessage = mongoose.model('GroupMessage'),
-    Campaign = mongoose.model('Campaign'),
-    Competition = mongoose.model('Competition');
+    Campaign = mongoose.model('Campaign');
 
 // exports.init = function(){
 //   var rule = new schedule.RecurrenceRule();
