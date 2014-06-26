@@ -25,23 +25,26 @@ var mongoose = require('mongoose'),
 * sort:      排序方式
 * _err:      错误处理函数
 */
-function get(collection,type,condition,limit,sort,callback,_err,other_param,req,res){
-  switch(type){
+
+
+
+function get(param){
+  switch(param.type){
     case '0':
-      collection.findOne(condition,limit,function(err,message){
+      param.collection.findOne(param.condition,param.limit,function(err,message){
         if(err || !message){
-          _err(err);
+          param._err(err);
         }else{
-          callback(message,other_param,req,res);
+          param.callback(message,param.other_param,param.req,param.res);
         }
       });
       break;
     case '1':
-      collection.find(condition,limit).sort(sort).exec(function(err,messages){
+      param.collection.find(param.condition,param.limit).sort(param.sort).exec(function(err,messages){
         if(err || !messages){
-          _err(err);
+          param._err(err);
         }else{
-          callback(messages,other_param,req,res);
+          param.callback(messages,param.other_param,param.req,param.res);
         }
       });
       break;
@@ -57,22 +60,22 @@ function get(collection,type,condition,limit,sort,callback,_err,other_param,req,
 * callback:  回调函数
 * _err:      错误处理函数
 */
-function set(collection,type,condition,operate,callback,_err){
-  switch(type){
+function set(param){
+  switch(param.type){
     case '0':
-      collection.findByIdAndUpdate({'_id':condition},operate,function(err,message){
+      param.collection.findByIdAndUpdate({'_id':param.condition},param.operate,function(err,message){
         if(err || !message){
-          _err(err);
+          param._err(err);
         }else{
-          callback();
+          param.callback();
         }
       });
     case '1':
-      collection.update(condition,operate,{multi: true},function(err,message){
+      param.collection.update(param.condition,param.operate,{multi: true},function(err,message){
         if(err || !message){
-          _err(err);
+          param._err(err);
         }else{
-          callback(message);
+          param.callback(message);
         }
       });
     default:break;
@@ -80,26 +83,26 @@ function set(collection,type,condition,operate,callback,_err){
 }
 
 
-function _add(collection,operate,callback,_err,other_param,req,res){
-  collection.insert(condition,{safe:true},function(err,message){
+function _add(param){
+  param.collection.insert(param.operate,{safe:true},function(err,message){
     if(err || !message){
-      if(_err!=null && typeof _err == 'function'){
-        _err(err);
+      if(param._err!=null && typeof param._err == 'function'){
+        param._err(err);
       }
     } else {
-      if(callback!=null && typeof callback == 'function'){
-        callback(message,other_param,req,res);
+      if(param.callback!=null && typeof param.callback == 'function'){
+        param.callback(message,param.other_param,param.req,param.res);
       }
     }
   })
 }
 
-function drop(collection,condition,callback,_err){
-  collection.remove(condition,function(err,message){
+function drop(param){
+  param.collection.remove(param.condition,function(err,message){
     if(err || message){
-      _err(err);
+      param._err(err);
     }else{
-      callback(message);
+      param.callback(message);
     }
   });
 }
@@ -121,7 +124,16 @@ var oneToMember = function(members,content,send_id,team_id,company_id,req,res){
         'MessageContent':message_content._id,
         'status':'unread'
       };
-      _add(Message,M,null,_err,null,req,res);
+      var param = {
+        'collection':Message,
+        'operate':M,
+        'callback':null,
+        '_err':_err,
+        'other_param':null,
+        'req':req,
+        'res':res
+      };
+      _add(param);
     }
     //由于异步性质,不能保证所有队员的消息都存储完毕
     res.send("ADD_SUCCESS");
@@ -134,7 +146,16 @@ var oneToMember = function(members,content,send_id,team_id,company_id,req,res){
     'company_id':company_id,
     'deadline':(new Date())+time_out;
   };
-  _add(MessageContent,MC,callback,_err,members,req,res);
+  var param = {
+    'collection':MessageContent,
+    'operate':MC,
+    'callback':callback,
+    '_err':_err,
+    'other_param':members,
+    'req':req,
+    'res':res
+  };
+  _add(param);
 }
 
 //HR给所有公司成员发送站内信
@@ -160,12 +181,12 @@ var leaderSendToMember = function(req,res){
 
 
 
-exports.newCampaignCreate = function(req,res){
+var newCampaignCreate = function(req,res){
   var team = req.body.team;        //是对象
   var content = req.body.content;  //也是对象
   var cid = req.body.cid;
 
-  switch(team_id.length){
+  switch(team.size){
     //公司活动
     case 0:
       var condition = {'cid':cid};
@@ -174,22 +195,65 @@ exports.newCampaignCreate = function(req,res){
           oneToMember(users,content,null,null,cid,req,res);
         }
       }
-      get(User,1,condition,{'_id':1,'nickname':1},null,callback,_err,null,req,res)
+      var param= {
+        'collection':User,
+        'type':1,
+        'condition':condition,
+        'limit':{'_id':1,'nickname':1},
+        'sort':null,
+        'callback':callback,
+        '_err':_err,
+        'other_param':other_param,
+        'req':req,
+        'res':res
+      };
+      get(param)
       break;
     //小队活动
     case 1:
-      var condition = {'_id':team_id};
+      var condition = {'_id':team._id_own};
       var callback = function(company_group,other,req,res){
         if(company_group){
           var members = company_group.member;
-          oneToMember(members,content,null,team_id,null,req,res);
+          oneToMember(members,content.content_own,null,team._id_own,null,req,res);
         }
       }
-      get(CompanyGroup,1,condition,{'member':1},null,callback,_err,null,req,res)
+      var param= {
+        'collection':CompanyGroup,
+        'type':1,
+        'condition':condition,
+        'limit':{'member':1},
+        'sort':null,
+        'callback':callback,
+        '_err':_err,
+        'other_param':null,
+        'req':req,
+        'res':res
+      };
+      get(param);
       break;
     //小队比赛
     case 2:
-
+      var condition = {'_id':team._id_own};
+      var callback = function(company_group,other,req,res){
+        if(company_group){
+          var members = company_group.member;
+          oneToMember(members,content.content_own,null,team._id_own,null,req,res);
+        }
+      }
+      var param= {
+        'collection':CompanyGroup,
+        'type':1,
+        'condition':condition,
+        'limit':{'member':1},
+        'sort':null,
+        'callback':callback,
+        '_err':_err,
+        'other_param':null,
+        'req':req,
+        'res':res
+      };
+      get(param);
       break;
     default:break;
   }
@@ -250,7 +314,15 @@ var setMessageStatus = function(status,req,res){
     var callback = function(){
       res.send('MODIFY_OK');
     }
-    set(Message,0,msg_id,operate,callback,_err);
+    var param = {
+      'collection':Message,
+      'type':0.
+      'condition':msg_id,
+      'operate':operate,
+      'callback':callback,
+      '_err':_err
+    };
+    set(param);
   }else{
     res.send('STATUS_ERROR');
   }

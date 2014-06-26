@@ -11,7 +11,7 @@ var Schema = mongoose.Schema;
  */
 var MessageContent = new Schema({
   caption: String,
-  content: String,
+  content: [String],
   type: {
     type: String,
     enum: ['private', 'public', 'global']
