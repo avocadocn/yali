@@ -384,7 +384,7 @@ exports.dealSetProfile = function(req, res) {
       if(user.active === false) {
         user.nickname = req.body.nickname;
         user.password = req.body.password;
-        user.realName = req.body.realName;
+        user.realname = req.body.realName;
         user.department = req.body.department;
         user.phone = req.body.phone;
         user.role = 'EMPLOYEE';
@@ -1226,7 +1226,6 @@ exports.saveAccount = function (req, res) {
     }
     else {
       if (user) {
-        console.log(req.body.user.nickname , user.nickname);
         if(req.body.user.nickname !== user.nickname){
           schedule.updateUname(user._id);
           req.session.Global.nav_name = req.body.user.nickname;
