@@ -406,6 +406,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         $http.get('/group/info/'+tid).success(function(data, status) {
             $scope.members = [];
             $scope.team = data.companyGroup;
+            $scope.name = $scope.team.name;
             $scope.entity = data.entity;
             var judge = true;
             for(var i = 0; i < data.companyGroup.member.length; i ++) {
