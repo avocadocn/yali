@@ -19,7 +19,7 @@ window.calendar_languages['zh-CN'] = {
 	week:        '第{0}周',
 	all_day:     '整天',
 	time:        '时间',
-	events:      '发展',
+	events:      '活动',
 	before_time: '时间前结束带',
 	after_time:  '临时磁带结束后，',
 

@@ -4,16 +4,16 @@ div.clearfix
     | &nbsp;|&nbsp;
     a#btn_list(ng-click="calendar(false)" href="javascript:void(0)") 列表
   p.pull-right#calendar_nav(ng-show="isCalendar")
-    a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
-    | &nbsp;&nbsp;
+    a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&nbsp;{{ prev }}
+    | &nbsp;|&nbsp;
     a(data-calendar-nav="today" href="javascript:void(0)") 今天
-    | &nbsp;&nbsp;
-    a(data-calendar-nav="next" href="javascript:void(0)") &gt;&gt;
+    | &nbsp;|&nbsp;
+    a(data-calendar-nav="next" href="javascript:void(0)") {{ next }}&nbsp;&gt;
 div.calendar_box
   #calendar_view(ng-show="isCalendar")
     .clearfix
       h4#calendar_title.calendar_title.pull-left
-      a.pull-right(data-calendar-view="month" href="javascript:void(0)" ng-show="isDayView") 返回
+      a.pull-right(data-calendar-view="month" href="javascript:void(0)" ng-show="isDayView") 返回日历
     #calendar
 
   div(ng-show="!isCalendar")

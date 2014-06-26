@@ -236,8 +236,8 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
 tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
 
   $scope.isCalendar = true;
-  // $scope.prev = '上个月';
-  // $scope.next = '下个月';
+  $scope.prev = '上个月';
+  $scope.next = '下个月';
   $scope.isDayView = false;
 
   // 判断是否是第一次加载视图，用于$scope.$digest()
@@ -256,26 +256,26 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
     }
   };
 
-  // $scope.setText = function(textType) {
-  //   switch (textType) {
-  //   case 'month':
-  //     $scope.prev = '上个月';
-  //     $scope.next = '下个月';
-  //     break;
-  //   case 'week':
-  //     $scope.prev = '上一周';
-  //     $scope.next = '下一周';
-  //     break;
-  //   case 'day':
-  //     $scope.prev = '前一天';
-  //     $scope.next = '后一天';
-  //     break;
-  //   default:
-  //     $scope.prev = '上个月';
-  //     $scope.next = '下个月';
-  //     break;
-  //   }
-  // };
+  $scope.setText = function(textType) {
+    switch (textType) {
+    case 'month':
+      $scope.prev = '上个月';
+      $scope.next = '下个月';
+      break;
+    // case 'week':
+    //   $scope.prev = '上一周';
+    //   $scope.next = '下一周';
+    //   break;
+    case 'day':
+      $scope.prev = '前一天';
+      $scope.next = '后一天';
+      break;
+    default:
+      $scope.prev = '上个月';
+      $scope.next = '下个月';
+      break;
+    }
+  };
 
   var options = {
     events_source: '/users/getScheduleCalendarData',
@@ -298,9 +298,11 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         if (firstLoad === true) {
             firstLoad = false;
         }
+        $scope.setText('day');
         $scope.$digest();
       } else {
         $scope.isDayView = false;
+        $scope.setText('month');
         if (firstLoad === false) {
             $scope.$digest();
         }

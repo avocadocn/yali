@@ -84,7 +84,7 @@ div.company-info
       .info_side
         span.info_label {{"PHONE"|translate}}
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="number" name ="phone" ng-model="info.phone" ng-disabled="infoUnEdit")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="phone" ng-model="info.phone" ng-disabled="infoUnEdit")
     .dl_row.clearfix(ng-if="info.email!=undefined || !infoUnEdit")
       .info_side
         span.info_label {{"EMAIL"|translate}}

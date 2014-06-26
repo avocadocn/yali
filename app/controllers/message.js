@@ -187,7 +187,8 @@ exports.leaderSendToMember = function(req,res){
       type = "public",
       send_id = req.user._id,
       team_id = req.body.tid;
-  oneToMember(members,contentPush(content),send_id,team_id,null,req,res);
+      var tid = [team_id];
+  oneToMember(members,contentPush(content),send_id,tid,null,req,res);
 };
 
 
@@ -227,7 +228,8 @@ exports.newCampaignCreate = function(req,res){
       var callback = function(company_group,other,req,res){
         if(company_group){
           var members = company_group.member;
-          oneToMember(members,contentPush(content),null,team._id_own,null,req,res);
+          var tid = [team._id_own];
+          oneToMember(members,contentPush(content),null,tid,null,req,res);
         }
       }
       var param= {
@@ -348,6 +350,9 @@ var setMessageStatus = function(status,req,res){
 exports.messageInit = function(req,res){
   if(req.user.provider === 'user'){
     var _private = req.body._private;
+    if(_private == undefined){
+      _private = true;
+    }
     getMessage(_private,req,res);
   }else{
     //公司获取的肯定是系统站内信
