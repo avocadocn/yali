@@ -27,7 +27,7 @@ div.company-info
             p
             textarea.info_label.dl_word_break.col-md-12.invite-link(ng-if="inviteUrlStatus",disabled) {{company.inviteUrl}}
             p
-  form.form-horizontal(name="infoForm")
+  form.form-horizontal.tab-info-form(name="infoForm")
     .dl_row.clearfix
       h5.pull-left {{"ENTERPRISE_INFO"|translate}}
       if (Global.role === 'HR')

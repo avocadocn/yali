@@ -431,7 +431,8 @@ textarea {
   min-height: 300px;
   background: url("/img/loading.gif") center 40px no-repeat;
 }
-.dl_container .tab-body {
+.dl_container .tab-body,
+.dl_container .tab-info-form {
   background-color: #fff;
   min-height: 200px;
 }
