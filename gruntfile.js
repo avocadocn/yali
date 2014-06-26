@@ -78,7 +78,7 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 mangle: false,
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+                banner: '/*! <%= pkg.name %> */\n',
                 sourceMap: true,
                 sourceMapName: 'public/js/library.min.js.map'
             },
