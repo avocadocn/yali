@@ -6,27 +6,27 @@ append headExt
 block baseInfo
   .dl_container.clearfix
     .aside
-      img.size_140.img_contain(src="#{logo}")
-    .main
+      img.size_80.img_contain(src="#{logo}")
+    .main.top-main
       .dl_row
         //小队名
         label.head= tname
       .dl_row
         //公司名
         a.subtitle(href="/company/home/#{cid}")= cname
-      .dl_row
+      //- .dl_row
         //签名
         p= sign
-      .dl_row.margin_top_5
+      .dl_row
         .score_container
-          label.info_border {{"TEAM_MEMBER"|translate}}
-          span.info_right_border(ng-init="number=#{number}") {{ number }}
+          span.info_border {{"TEAM_MEMBER"|translate}}
+          span.info_border.info_right_border(ng-init="number=#{number}") {{ number }}
         .score_container
-          label.info_border {{"SCORE"|translate}}
-          span.info_right_border= score
-        .score_container
-          label.info_border {{"WIN_RATE"|translate}}
-          span.info_right_border 100%
+          span.info_border {{"SCORE"|translate}}
+          span.info_border.info_right_border= score
+        //-.score_container
+          span.info_border {{"WIN_RATE"|translate}}
+          span.info_border.info_right_border 100%
         if (Global.role ==='HR' || Global.role ==='LEADER')
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}

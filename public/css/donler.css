@@ -408,12 +408,18 @@ button {
   margin-right: 20px;
   float: left;
 }
+.dl_container .main .score_container .info_border {
+  display: inline-block;
+}
+.dl_container .main .score_container .info_right_border {
+  padding: 5px;
+}
 .dl_container .side {
   width: 260px;
   float: left;
 }
 .dl_container .aside {
-  width: 140px;
+  width: 80px;
   margin-right: 20px;
   float: left;
 }
@@ -438,8 +444,11 @@ button {
   padding-bottom: 30px;
   background-color: #f8f8f3;
   width: 100%;
-  height: 240px;
+  height: 140px;
   margin: 0 auto;
+}
+.baseInfo .dl_container {
+  padding-top: 0px;
 }
 .dl_messagebox {
   padding-top: 10px;
@@ -530,7 +539,7 @@ button {
 .dl_btn_medium {
   width: 120px;
   height: 30px;
-  line-height: 30px;
+  line-height: 28px;
 }
 .dl_btn_small {
   padding: 7px 12px;
