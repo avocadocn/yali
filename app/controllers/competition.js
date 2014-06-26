@@ -299,7 +299,6 @@ exports.getCompetition = function(req, res){
 
   options.confirm_btn_show = (boolean_judge > 0);
 
-  console.log(boolean_judge);
 
   if((req.session.role==='HR' || req.session.role ==='LEADER') && (boolean_judge===2)) {
     options.msg_show = true;
@@ -325,7 +324,10 @@ exports.getCompetition = function(req, res){
       });
     }
   }
-  console.log(boolean_judge,req.session.role);
+
+  if((new Date())<=req.competition.start_time){
+    options.confirm_btn_show = false;
+  }
   res.render('competition/football', options);
 };
 
