@@ -136,13 +136,38 @@ exports.resetPwd = function(req, res){
 exports.signin = function(req, res) {
     res.render('company/signin', {title: '公司登录'});
 };
+
+var destroySession = function(req){
+  if(req.session.nowtid != null || req.session.nowtid != undefined){
+    delete req.session.nowtid;
+  }
+  if(req.session.nowgid != null || req.session.nowgid != undefined){
+    delete req.session.nowgid;
+  }
+  if(req.session.nowuid != null || req.session.nowuid != undefined){
+    delete req.session.nowuid;
+  }
+  if(req.session.role != null || req.session.role != undefined){
+    delete req.session.role;
+  }
+  if (req.session.Global.nav_name !=null || req.session.Global.nav_name != undefined) {
+    delete req.session.Global.nav_name;
+  }
+  if (req.session.Global.nav_logo !=null || req.session.Global.nav_logo != undefined) {
+    delete req.session.Global.nav_logo;
+  }
+  if (req.session.Global.role !=null || req.session.Global.role != undefined) {
+    delete req.session.Global.role;
+  }
+  if (req.session.Global !=null || req.session.Global != undefined) {
+    delete req.session.Global;
+  }
+}
 /**
  * Logout
  */
 exports.signout = function(req, res) {
-  if (req.session.Global) {
-    delete req.session.Global;
-  }
+  destroySession(req);
   req.logout();
   res.redirect('/');
 };

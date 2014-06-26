@@ -175,8 +175,8 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
 tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.company = false;
-    $http.get('/users/getCampaigns').success(function(data, status) {
-        $scope.campaigns = data.data;
+    $http.get('/campaign/getCampaigns/user?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $scope.campaigns = data.campaigns;
     });
 
     $scope.join = function(campaign_id,index) {

@@ -16,8 +16,7 @@ var mongoose = require('mongoose'),
   Group = mongoose.model('Group'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   GroupMessage = mongoose.model('GroupMessage'),
-  Campaign = mongoose.model('Campaign'),
-  Competition = mongoose.model('Competition');
+  Campaign = mongoose.model('Campaign');
 
 // 3rd
 var validator = require('validator'),
@@ -154,7 +153,16 @@ var destroySession = function(req){
   if(req.session.role != null || req.session.role != undefined){
     delete req.session.role;
   }
-  if (req.session.Global) {
+  if (req.session.Global.nav_name !=null || req.session.Global.nav_name != undefined) {
+    delete req.session.Global.nav_name;
+  }
+  if (req.session.Global.nav_logo !=null || req.session.Global.nav_logo != undefined) {
+    delete req.session.Global.nav_logo;
+  }
+  if (req.session.Global.role !=null || req.session.Global.role != undefined) {
+    delete req.session.Global.role;
+  }
+  if (req.session.Global !=null || req.session.Global != undefined) {
     delete req.session.Global;
   }
 }

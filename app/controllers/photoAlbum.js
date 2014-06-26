@@ -23,26 +23,30 @@ var config = require('../../config/config');
 
 // photo_album need populate owner_company_group
 function photoEditAuth(user, photo_album, photo) {
+
   // 照片的上传者
   if (user._id.toString() === photo.upload_user._id.toString()) {
     return true;
   }
 
-  var owner = getPhotoAlbumOwner(user, photo_album);
+  // 比赛照片只允许上传者更改
+  if (photo_album.owner.teams.length === 1 || photo_album.owner.companies.length === 1) {
+    var owner = getPhotoAlbumOwner(user, photo_album);
 
-  // 该照片所属组的队长
-  var leaders = [];
-  leaders = photo_album.owner.team.leader || [];
-  for (var i = 0; i < leaders.length; i++) {
-    if (user._id.toString() === leaders[i]._id.toString()) {
-      return true;
+    // 该照片所属组的队长
+    var leaders = [];
+    leaders = photo_album.owner.team.leader || [];
+    for (var i = 0; i < leaders.length; i++) {
+      if (user._id.toString() === leaders[i]._id.toString()) {
+        return true;
+      }
     }
-  }
 
-  // 该照片所属公司的HR
-  if (owner.company) {
-    if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
-      return true;
+    // 该照片所属公司的HR
+    if (owner.company) {
+      if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
+        return true;
+      }
     }
   }
 
@@ -53,24 +57,27 @@ function photoEditAuth(user, photo_album, photo) {
 // photo_album need populate owner_company_group
 function photoAlbumEditAuth(user, photo_album) {
 
-  // 该照片所属组的队长
-  var leaders = [];
+  // 比赛相册不允许修改
+  if (photo_album.owner.teams.length === 1 || photo_album.owner.companies.length === 1) {
+    // 该照片所属组的队长
+    var leaders = [];
 
-  var owner = getPhotoAlbumOwner(user, photo_album);
+    var owner = getPhotoAlbumOwner(user, photo_album);
 
-  if (owner.team) {
-    leaders = owner.team.leader || [];
-  }
-  for (var i = 0; i < leaders.length; i++) {
-    if (user._id.toString() === leaders[i]._id.toString()) {
-      return true;
+    if (owner.team) {
+      leaders = owner.team.leader || [];
     }
-  }
+    for (var i = 0; i < leaders.length; i++) {
+      if (user._id.toString() === leaders[i]._id.toString()) {
+        return true;
+      }
+    }
 
-  // 该照片所属公司的HR
-  if (owner.company) {
-    if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
-      return true;
+    // 该照片所属公司的HR
+    if (owner.company) {
+      if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
+        return true;
+      }
     }
   }
 
@@ -105,7 +112,7 @@ function photoUploadAuth(user, photo_album) {
 
 
 
-
+// 一个相册的缩略图
 var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   var first_photo;
   for (var i = 0; i < photo_album.photos.length; i++) {
@@ -135,6 +142,7 @@ var photoThumbnailList = exports.photoThumbnailList = function(photo_album) {
   return photo_list;
 };
 
+// 根据当前登录的用户获取相册的所有者
 function getPhotoAlbumOwner(user, photo_album) {
   // why company.team.id, user.team._id?
   if (user.provider === 'company') {
@@ -162,6 +170,7 @@ function getPhotoAlbumOwner(user, photo_album) {
   }
 }
 
+// 获取一个相册未删除的照片
 function getShowPhotos(photo_album) {
   var photos = [];
   for (var i = 0; i < photo_album.photos.length; i++) {
@@ -184,18 +193,18 @@ function photoAlbumProcess(res, _id, process) {
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
-        res.send({ result: 0, msg: '获取相册信息失败' });
+        return res.send({ result: 0, msg: '获取相册信息失败' });
       } else {
         if (photo_album) {
           process(photo_album);
         } else {
-          res.send({ result: 0, msg: '没有找到对应的相册' });
+          return res.send({ result: 0, msg: '没有找到对应的相册' });
         }
       }
     });
 
   } else {
-    res.send({ result: 0, msg: '请求错误' });
+    return res.send({ result: 0, msg: '请求错误' });
   }
 }
 
@@ -208,7 +217,7 @@ function photoProcess(res, pa_id, p_id, process) {
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
-        res.send({ result: 0, msg: '获取照片失败' });
+        return res.send({ result: 0, msg: '获取照片失败' });
       } else {
         var photos = photo_album.photos;
         for (var i = 0; i < photos.length; i++) {
@@ -218,12 +227,12 @@ function photoProcess(res, pa_id, p_id, process) {
           }
         }
 
-        res.send({ result: 0, msg: '没有找到对应的照片' });
+        return res.send({ result: 0, msg: '没有找到对应的照片' });
       }
     });
 
   } else {
-    res.send({ result: 0, msg: '请求错误' });
+    return res.send({ result: 0, msg: '请求错误' });
   }
 }
 
@@ -272,7 +281,7 @@ exports.authorize = function(req, res, next) {
   if (req.user) {
     next();
   } else {
-    res.redirect('/users/signin');
+    return res.redirect('/users/signin');
   }
 };
 
@@ -291,7 +300,7 @@ exports.ownerFilter = function(req, res, next) {
       });
       break;
     default:
-      res.send({ result: 0, msg: 'failed' });
+      return res.send({ result: 0, msg: 'failed' });
       break;
   }
 };
@@ -336,7 +345,7 @@ exports.createAuth = function(req, res, next) {
         }
       }
       if (auth === false) {
-        res.send(403);
+        return res.send(403);
       } else {
         next();
       }
@@ -345,13 +354,13 @@ exports.createAuth = function(req, res, next) {
     })
     .then(null, function(err) {
       console.log(err);
-      res.send(500);
+      return res.send(500);
     });
 
   })
   .then(null, function(err) {
     console.log(err);
-    res.send(500);
+    return res.send(500);
   });
 };
 
@@ -384,24 +393,24 @@ exports.createPhotoAlbum = function(req, res) {
   fs.mkdir(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()),
     function(err) {
       if (err) {
-        res.send({ result: 0, msg: '创建相册失败' });
+        return res.send({ result: 0, msg: '创建相册失败' });
       } else {
         photo_album.save(function(err) {
           if (err) {
             console.log(err);
-            res.send({ result: 0, msg: '创建相册失败' });
+            return res.send({ result: 0, msg: '创建相册失败' });
           } else {
 
             req.model.photo_album_list.push(photo_album._id);
             req.model.save(function(err) {
               if (err) {
                 console.log(err);
-                res.send({ result: 0, msg: '创建相册失败' });
+                return res.send({ result: 0, msg: '创建相册失败' });
               }
               else {
                 delete req.model;
                 delete req.owner_model;
-                res.send({ result: 1, msg: '创建相册成功' });
+                return res.send({ result: 1, msg: '创建相册成功' });
               }
             });
 
@@ -427,9 +436,9 @@ exports.readPhotoAlbum = function(req, res) {
         update_date: photo_album.update_date,
         update_user: photo_album.update_user
       };
-      res.send({ result: 1, msg: '获取相册信息成功', data: data });
+      return res.send({ result: 1, msg: '获取相册信息成功', data: data });
     } else {
-      res.send({ result: 0, msg: '该相册不存在' });
+      return res.send({ result: 0, msg: '该相册不存在' });
     }
 
   });
@@ -441,7 +450,7 @@ exports.updatePhotoAlbum = function(req, res) {
 
   photoAlbumProcess(res, _id, function(photo_album) {
     if (photoAlbumEditAuth(req.user, photo_album) === false) {
-      res.send(403);
+      return res.send(403);
     }
     if (photo_album.hidden === false) {
       photo_album.name = new_name;
@@ -449,11 +458,11 @@ exports.updatePhotoAlbum = function(req, res) {
         if (err) {
           console.log(err);
         } else {
-          res.send({ result: 1, msg: '更新相册成功' });
+          return res.send({ result: 1, msg: '更新相册成功' });
         }
       });
     } else {
-      res.send({ result: 0, msg: '该相册不存在' });
+      return res.send({ result: 0, msg: '该相册不存在' });
     }
   });
 };
@@ -469,21 +478,21 @@ exports.deletePhotoAlbum = function(req, res) {
       } else if(photo_album) {
 
         if (photoAlbumEditAuth(req.user, photo_album) === false) {
-          res.send(403);
+          return res.send(403);
         }
         photo_album.hidden = true;
         photo_album.save(function(err) {
           if (err) { console.log(err); }
           else {
-            res.send({ result: 1, msg: '删除相册成功' });
+            return res.send({ result: 1, msg: '删除相册成功' });
           }
         });
       } else {
-        res.send({ result: 0, msg: '删除相册失败' });
+        return res.send({ result: 0, msg: '删除相册失败' });
       }
     });
   } else {
-    res.send({ result: 0, msg: '请求错误' });
+    return res.send({ result: 0, msg: '请求错误' });
   }
 };
 
@@ -588,9 +597,9 @@ exports.createPhoto = function(req, res) {
         function(err) {
           if (err) {
             console.log(err);
-            res.send({ result: 0, msg: '添加照片失败' });
+            return res.send({ result: 0, msg: '添加照片失败' });
           } else {
-            res.send({ result: 1, msg: '添加照片成功' });
+            return res.send({ result: 1, msg: '添加照片成功' });
           }
         }
       );
@@ -598,7 +607,7 @@ exports.createPhoto = function(req, res) {
     });
 
   } else {
-    res.send({ result: 0, msg: '请求错误' });
+    return res.send({ result: 0, msg: '请求错误' });
   }
 };
 
@@ -610,7 +619,7 @@ exports.readPhoto = function(req, res) {
 
   photoProcess(res, pa_id, p_id, function(photo_album, photo) {
     if (photo.hidden === false) {
-      res.send({ result: 1, msg: '获取照片成功',
+      return res.send({ result: 1, msg: '获取照片成功',
         data: {
           uri: photo.uri,
           comments: photo.comments,
@@ -619,7 +628,7 @@ exports.readPhoto = function(req, res) {
         }
       });
     } else {
-      res.send({ result: 0, msg: '该照片不存在' });
+      return res.send({ result: 0, msg: '该照片不存在' });
     }
   });
 
@@ -632,11 +641,37 @@ exports.updatePhoto = function(req, res) {
 
   photoProcess(res, pa_id, p_id, function(photo_album, photo) {
 
-    if (photoEditAuth(req.user, photo_album, photo) === false) {
-      res.send(403);
-    }
-
     if (photo.hidden === false) {
+
+      var setUpdateUser = function() {
+        if (req.user.provider === 'company') {
+          photo_album.update_user = {
+            _id: req.user._id,
+            name: req.user.info.name,
+            type: 'hr'
+          };
+        } else if (req.user.provider === 'user' ) {
+          photo_album.update_user = {
+            _id: req.user._id,
+            name: req.user.nickname,
+            type: 'user'
+          };
+        }
+      };
+
+      if (photoEditAuth(req.user, photo_album, photo) === true) {
+        if (req.body.tags) {
+          var tags = req.body.tags.split(' ');
+          if (!photo.tags) {
+            photo.tags = [];
+          }
+          photo.tags = photo.tags.concat(tags);
+        }
+        if (req.body.name) {
+          photo.name = req.body.name;
+        }
+        setUpdateUser();
+      }
       if (req.body.text) {
         if (req.user.provider === 'company') {
           return res.send(403);
@@ -649,39 +684,17 @@ exports.updatePhoto = function(req, res) {
             photo: req.user.photo
           }
         });
-      }
-      if (req.body.tags) {
-        var tags = req.body.tags.split(' ');
-        if (!photo.tags) {
-          photo.tags = [];
-        }
-        photo.tags = photo.tags.concat(tags);
-      }
-      if (req.body.name) {
-        photo.name = req.body.name;
-      }
-      if (req.user.provider === 'company') {
-        photo_album.update_user = {
-          _id: req.user._id,
-          name: req.user.info.name,
-          type: 'hr'
-        };
-      } else if (req.user.provider === 'user' ) {
-        photo_album.update_user = {
-          _id: req.user._id,
-          name: req.user.nickname,
-          type: 'user'
-        };
+        setUpdateUser();
       }
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
         } else {
-          res.send({ result: 1, msg: '更新成功' });
+          return res.send({ result: 1, msg: '更新成功' });
         }
       });
     } else {
-      res.send({ result: 0, msg: '该照片不存在' });
+      return res.send({ result: 0, msg: '该照片不存在' });
     }
   });
 
@@ -699,7 +712,7 @@ exports.deletePhoto = function(req, res) {
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
-        res.send({ result: 0, msg: '删除照片失败' });
+        return res.send({ result: 0, msg: '删除照片失败' });
       } else {
         var photos = photo_album.photos;
         for (var i = 0; i < photos.length; i++) {
@@ -707,7 +720,7 @@ exports.deletePhoto = function(req, res) {
           if (p_id == photos[i]._id) {
 
             if (photoEditAuth(req.user, photo_album, photos[i]) === false) {
-              res.send(403);
+              return res.send(403);
             }
 
             photos[i].hidden = true;
@@ -715,22 +728,22 @@ exports.deletePhoto = function(req, res) {
             photo_album.save(function(err) {
               if (err) {
                 console.log(err);
-                res.send({ result: 0, msg: '删除照片失败' });
+                return res.send({ result: 0, msg: '删除照片失败' });
               } else {
-                res.send({ result: 1, msg: '删除照片成功' });
+                return res.send({ result: 1, msg: '删除照片成功' });
               }
             });
             return;
           }
         }
 
-        res.send({ result: 0, msg: '没有找到对应的照片' });
+        return res.send({ result: 0, msg: '没有找到对应的照片' });
       }
     });
 
 
   } else {
-    res.send({ result: 0, msg: '请求错误' });
+    return res.send({ result: 0, msg: '请求错误' });
   }
 };
 
@@ -743,9 +756,9 @@ exports.deletePhoto = function(req, res) {
 exports.readGroupPhotoAlbumList = function(req, res) {
   getGroupPhotoAlbumList(req.params.groupId, function(photo_album_list) {
     if (photo_album_list !== null) {
-      res.send({ result: 1, photo_album_list: photo_album_list });
+      return res.send({ result: 1, photo_album_list: photo_album_list });
     } else {
-      res.send(404);
+      return res.send(404);
     }
   });
 
@@ -762,7 +775,7 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
         if (!company_group) {
           throw 'not found';
         }
-        res.render('photo_album/photo_album_list', {
+        return res.render('photo_album/photo_album_list', {
           photo_album_list: photo_album_list,
           photo: req.user.photo,
           realname: req.user.realname,
@@ -777,10 +790,10 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
       .then(null, function(err) {
         console.log(err);
         // TO DO: temp err handle
-        res.send(404);
+        return res.send(404);
       });
     } else {
-      res.send(404);
+      return res.send(404);
     }
   });
 };
@@ -798,7 +811,9 @@ exports.renderPhotoAlbumDetail = function(req, res) {
     var photos = getShowPhotos(photo_album);
     var owner = getPhotoAlbumOwner(req.user, photo_album);
 
-    res.render('photo_album/photo_album_detail', {
+    var editAuth = photoAlbumEditAuth(req.user, photo_album);
+
+    return res.render('photo_album/photo_album_detail', {
       photo_album: {
         _id: photo_album._id,
         name: photo_album.name,
@@ -807,13 +822,14 @@ exports.renderPhotoAlbumDetail = function(req, res) {
         owner: owner,
         photo_count: photo_album.photo_count
       },
-      moment: moment
+      moment: moment,
+      editAuth: editAuth
     });
   })
   .then(null, function(err) {
     console.log(err);
     // TO DO: temp err handle
-    res.send(404);
+    return res.send(404);
   })
 };
 
@@ -842,8 +858,9 @@ exports.renderPhotoDetail = function(req, res) {
         }
 
         var owner = getPhotoAlbumOwner(req.user, photo_album);
+        var editAuth = photoEditAuth(req.user, photo_album, photos[i]);
 
-        res.render('photo_album/photo_detail', {
+        return res.render('photo_album/photo_detail', {
           photo_detail: {
             _id: photos[i]._id,
             pre_id: pre_id,
@@ -862,7 +879,8 @@ exports.renderPhotoDetail = function(req, res) {
             photo_count: photo_album.photos.length,
             owner: owner
           },
-          moment: moment
+          moment: moment,
+          editAuth: editAuth
         });
 
       }
@@ -871,7 +889,7 @@ exports.renderPhotoDetail = function(req, res) {
   .then(null, function(err) {
     console.log(err);
     // TO DO: temp err handle
-    res.send(404);
+    return res.send(404);
   });
 
 
@@ -887,7 +905,7 @@ exports.readPhotoList = function(req, res) {
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
-        res.send({ result: 0, msg: '获取相册照片失败' });
+        return res.send({ result: 0, msg: '获取相册照片失败' });
       } else {
         if (photo_album) {
           var photos = [];
@@ -905,15 +923,15 @@ exports.readPhotoList = function(req, res) {
               photos.push(temp_photo);
             }
           });
-          res.send({ result: 1, msg: '获取相册照片成功', data: photos });
+          return res.send({ result: 1, msg: '获取相册照片成功', data: photos });
         } else {
-          res.send({ result: 0, msg: '相册不存在' });
+          return res.send({ result: 0, msg: '相册不存在' });
         }
       }
     });
 
   } else {
-    res.send({ result: 0, msg: '请求错误' });
+    return res.send({ result: 0, msg: '请求错误' });
   }
 };
 
@@ -926,7 +944,7 @@ exports.preview = function(req, res) {
     PhotoAlbum.findOne({ _id: _id }).exec(function(err, photo_album) {
       if (err) {
         console.log(err);
-        res.send({ result: 0, msg: '获取相册照片失败' });
+        return res.send({ result: 0, msg: '获取相册照片失败' });
       } else {
         if (photo_album) {
           var first_photo;
@@ -959,13 +977,13 @@ exports.preview = function(req, res) {
           }
 
         } else {
-          res.send({ result: 0, msg: '相册不存在' });
+          return res.send({ result: 0, msg: '相册不存在' });
         }
       }
     });
 
   } else {
-    res.send({ result: 0, msg: '请求错误' });
+    return res.send({ result: 0, msg: '请求错误' });
   }
 }
 

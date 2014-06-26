@@ -404,7 +404,7 @@ exports.renderCampaigns = function(req,res){
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
-  res.render('partials/campaign_list',{'role':req.session.role,'provider':'group'});
+  res.render('partials/campaign_list',{'role':req.session.role,'provider':'team'});
 }
 
 //返回某一小组的活动,待前台调用
@@ -537,7 +537,6 @@ exports.provoke = function (req, res) {
   // 没有这两个属性
   //competition.gid = req.companyGroup.gid;
   //competition.group_type = req.companyGroup.group_type;
-
   var camp_a = {
     'id' : my_team_id,
     'cid' : req.companyGroup.cid,

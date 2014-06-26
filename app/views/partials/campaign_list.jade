@@ -1,14 +1,20 @@
-.row(ng-if="select")
-  .btn-group.pull-right
-    button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{"CAMPAIGN_SELECT"|translate}}
-    ul.dropdown-menu(role="menu")
-      li
-        a(ng-click="selectCampaign(0)") {{"COMPANY_CAMPAIGN"|translate}}
-      if (Global.role!=='HR')
+if provider=='company'
+  .row
+    .btn-group.pull-right
+      button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{"CAMPAIGN_SELECT"|translate}}
+      ul.dropdown-menu(role="menu")
         li
-          a(ng-click="selectCampaign(1)") {{"SELECTED_TEAM"|translate}}
+          a(ng-click="selectCampaign(0)") {{"COMPANY_CAMPAIGN"|translate}}
+        if (Global.role==='EMPLOYEE')
+          li
+            a(ng-click="selectCampaign(1)") {{"SELECTED_TEAM"|translate}}
+          li
+            a(ng-click="selectCampaign(2)") {{"UNSELECTED_TEAM"|translate}}
+        else
+          li
+            a(ng-click="selectCampaign(3)") 小组活动
         li
-          a(ng-click="selectCampaign(2)") {{"UNSELECTED_TEAM"|translate}}
+          a(ng-click="selectCampaign(4)") 全部活动
 .campaigns_list(ng-repeat="campaign_item in campaigns" )
   .campaign_panel.clearfix
     .aside
@@ -19,23 +25,20 @@
         a(ng-href="{{campaign_item.link}}")
           img.size_56.img_contain(ng-src="{{campaign_item.logo}}")
       .campaign_right
-        //a.invisible_link(ng-href="/group/{{ !campaign_item.provoke.active ? 'campaign/'+campaign_item._id : 'competition/'+campaign_item.provoke.competition_id }}")
-        p
-          a(ng-href="/group/{{ !campaign_item.provoke.active ? 'campaign/'+campaign_item._id : 'competition/'+campaign_item.provoke.competition_id }}") {{campaign_item.theme}}
-        p(ng-if="campaign_item.provoke.active") 
-          a {{campaign_item.team[0].name}} vs {{campaign_item.team[1].name}}
-        p(ng-if="!campaign_item.team.length")
-          a {{campaign_item.cname}}
-        p(ng-if="campaign_item.team.length === 1")
-          a {{campaign_item.team[0].name}}
-      .campaign_right
-        span.dl_message_label {{"TYPE"|translate}}: {{ campaign_item.gid[0] !== '0' ? campaign_item.group_type[0] : '公司活动' }}
-        span.dl_message_label(ng-if="campaign_item.provoke.active") {{"FORMATION"|translate}}: {{ campaign_item.provoke.competition_format }}
-        span.dl_message_label {{"LOCATION"|translate}}: {{ campaign_item.location.name }}
-        span.dl_message_label 参加活动人数：{{ campaign_item.member_length }}
-        span.dl_message_label 内容：{{campaign_item.content}}
-        if (Global.role==='EMPLOYEE' || Global.role==='OWNER' || Global.role ==='LEADER' || Global.role ==='MEMBER')
-          div(ng-if="campaign_item.active && !campaign_item.over")
-            button.cancel_btn.dl_btn_small.operator_btn.pull-right(ng-click="quit(campaign_item._id,$index)" ng-if="campaign_item.join") {{"QUIT"|translate}}
-            button.dl_btn.dl_btn_small.operator_btn.pull-right(ng-click="join(campaign_item._id,$index)" ng-if="!campaign_item.join") {{"JOIN"|translate}}
-  hr
+        .message_row
+            span.message_label 主题:
+              a(ng-href="/group/{{(group_message.type=='provoke'?'competition/':'campaign/')+campaign_item._id}}"){{campaign_item.theme}}
+          .message_row
+            span.message_label 内容: {{campaign_item.content}}
+          .message_row
+            span.message_label {{"LOCATION"|translate}}: {{campaign_item.location.name}}
+            span.message_label 开始{{"TIME"|translate}}: {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label(ng-if="campaign_item.member_max>0") 报名人数上限: {{campaign_item.member_max}}
+          .message_row
+            span.message_label 报名人数: {{campaign_item.member_num }}
+          .message_row
+            span(ng-if="campaign_item.join_flag==1 || campaign_item.join_flag==-1")
+              btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(campaign_item._id,$index)" ng-if="campaign_item.join_flag==1") {{"QUIT"|translate}}
+              btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(campaign_item._id,$index)" ng-if="campaign_item.join_flag==-1") {{"JOIN"|translate}}
+            span(ng-if="campaign_item.close_flag")
+              btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_item._id)") 关闭活动

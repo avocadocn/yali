@@ -53,19 +53,20 @@ block contentExt
         p.text 相册名:&nbsp;#{photo_album.name}
         p.text 照片数:&nbsp;#{photo_album.photo_count}
         p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
-        form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
-          input(type="hidden" name="_method" value="put")
-          h4 给照片添加标签
-          p.text 输入照片中人名/队名/企业名/
-          input.form-control.edit_photo_input(type="text" name="tags" required)
-          button.dl_btn.dl_btn_small(type="submit") 添加标签
-        form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
-          input(type="hidden" name="_method" value="put")
-          input.form-control.edit_photo_input(type="text" name="name" required)
-          button.dl_btn.dl_btn_small(type="submit") 更改照片名字
-        form#delete_form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
-          input(type="hidden" name="_method" value="delete")
-          button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该照片
+        if editAuth === true
+          form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
+            input(type="hidden" name="_method" value="put")
+            h4 给照片添加标签
+            p.text 输入照片中人名/队名/企业名/
+            input.form-control.edit_photo_input(type="text" name="tags" required)
+            button.dl_btn.dl_btn_small(type="submit") 添加标签
+          form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
+            input(type="hidden" name="_method" value="put")
+            input.form-control.edit_photo_input(type="text" name="name" required)
+            button.dl_btn.dl_btn_small(type="submit") 更改照片名字
+          form#delete_form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
+            input(type="hidden" name="_method" value="delete")
+            button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该照片
 
 
 append footExt

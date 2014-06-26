@@ -3,8 +3,6 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    UUID = require('../middlewares/uuid'),
-    Competition = mongoose.model('Competition'),
     GroupMessage = mongoose.model('GroupMessage'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup'),
@@ -54,7 +52,7 @@ exports.home = function(req, res) {
 };
 exports.detail = function(req, res){
   if(req.arena.champion.provoke_status){
-    Competition.findOne({'id':req.arena.champion.competition_id[req.arena.champion.competition_id.length()-1]},function(err,competition){
+    Campaign.findOne({'id':req.arena.champion.competition_id[req.arena.champion.competition_id.length()-1]},function(err,competition){
       if(!err &&competition){
         var challenger = {
           'cname': competition.camp[0].cname,
@@ -187,7 +185,7 @@ exports.challenge = function(req, res){
     var remark = req.arena.campaign_info.remark;
     var number = req.arena.campaign_info.number;
 
-    var competition = new Competition();
+    var competition = new Campaign();
 
 
     var team_a = req.session.companyGroup.name;   //约战方队名

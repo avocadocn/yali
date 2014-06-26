@@ -290,18 +290,9 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
-    $scope.company = false;
-    var groupId,teamId;
-    $rootScope.$watch('teamId',function(tid){
-        $http.get('/group/getCampaigns/'+tid+'?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-            $scope.campaigns = data.data;
-
-            $rootScope.campaign_corner = false;
-            $rootScope.sum = $scope.campaigns.length;
-
-            $rootScope.role = data.role;    //只有改组的队长才可以操作活动(关闭、编辑等)
-        });
-
+    $http.get('/campaign/getCampaigns/team?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $scope.campaigns = data.campaigns;
+        $rootScope.sum = $scope.campaigns.length;
     });
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
@@ -318,8 +309,8 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 if(data.result===1){
                     //alert('成功加入该活动!');
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
-                    $scope.campaigns[index].join = true;
-                    $scope.campaigns[index].member_length++;
+                    $scope.campaigns[index].join_flag = 1;
+                    $scope.campaigns[index].member_num++;
                 }
                 else{
                     $rootScope.donlerAlert(data.msg);
@@ -345,8 +336,8 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 if(data.result===1){
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     //alert('您已退出该活动!');
-                    $scope.campaigns[index].join = false;
-                    $scope.campaigns[index].member_length--;
+                    $scope.campaigns[index].join_flag = -1;
+                    $scope.campaigns[index].member_num--;
                 }
                 else{
                     $rootScope.donlerAlert(data.msg);

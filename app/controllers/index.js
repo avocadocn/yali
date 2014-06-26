@@ -1,21 +1,28 @@
 'use strict';
 
 exports.render = function(req, res) {
-  if(req.session.Global.role !== ""){
+  if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
     if(req.session.Global.role==="HR"){
       res.redirect('/company/home');
     }else{
-      res.redirect('/users/home');
+      if(req.session.Global.role != ""){
+        res.redirect('/users/home');
+      }else{
+        res.render('index', {
+          'Global':undefined
+        });
+      }
     }
   }else{
     res.render('index', {
-        user: req.user ? JSON.stringify(req.user) : 'null'
+        'Global':undefined
     });
   }
 };
 
 
 exports.header = function(req,res){
+  console.log('dsds');
   var authenticated = false;
   if(req.Global){
     authenticated = true;
