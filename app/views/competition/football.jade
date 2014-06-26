@@ -23,11 +23,11 @@ block panel
                 label.dl_score {{score_own.score}}
             .dl_score_frame
               label.dl_score :
-              if confirm_btn_show
+              if confirm_btn_show && !msg_show
                 if confirm_mode === 1
                   a.dl_btn_right(ng-disabled="true") 等待确认
-              else
-                a.dl_btn_right(ng-click='confirmScore(false)') 比赛确认
+                else
+                  a.dl_btn_right(ng-click='confirmScore(false)') 比赛确认
             .dl_score_frame
               if confirm_btn_show && (role === 'HR' || role === 'LEADER')
                 //- label.dl_score(ng-if="!edit") {{score_opposite.score}}

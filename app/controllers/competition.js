@@ -299,6 +299,8 @@ exports.getCompetition = function(req, res){
 
   options.confirm_btn_show = (boolean_judge > 0);
 
+  console.log(boolean_judge);
+
   if((req.session.role==='HR' || req.session.role ==='LEADER') && (boolean_judge===2)) {
     options.msg_show = true;
     options.score_a = req.competition.camp[nowTeamIndex].score;
