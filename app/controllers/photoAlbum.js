@@ -376,31 +376,36 @@ exports.createPhotoAlbum = function(req, res) {
     };
     photo_album.update_user = photo_album.create_user;
   }
-  if (!fs.mkdirSync(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()))) {
-    res.send({ result: 0, msg: '创建相册失败' });
-  }
 
-  photo_album.save(function(err) {
-    if (err) {
-      console.log(err);
-      res.send({ result: 0, msg: '创建相册失败' });
-    } else {
+  fs.mkdir(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()),
+    function(err) {
+      if (err) {
+        res.send({ result: 0, msg: '创建相册失败' });
+      } else {
+        photo_album.save(function(err) {
+          if (err) {
+            console.log(err);
+            res.send({ result: 0, msg: '创建相册失败' });
+          } else {
 
-      req.model.photo_album_list.push(photo_album._id);
-      req.model.save(function(err) {
-        if (err) {
-          console.log(err);
-          res.send({ result: 0, msg: '创建相册失败' });
-        }
-        else {
-          delete req.model;
-          delete req.owner_model;
-          return res.send({ result: 1, msg: '创建相册成功' });
-        }
-      });
+            req.model.photo_album_list.push(photo_album._id);
+            req.model.save(function(err) {
+              if (err) {
+                console.log(err);
+                res.send({ result: 0, msg: '创建相册失败' });
+              }
+              else {
+                delete req.model;
+                delete req.owner_model;
+                res.send({ result: 1, msg: '创建相册成功' });
+              }
+            });
 
-    }
+          }
+        });
+      }
   });
+
 
 };
 

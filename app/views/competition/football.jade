@@ -1,5 +1,8 @@
 extends ../layouts/manager
 
+append headExt
+  link(rel="stylesheet" href="/css/photo_album.css")
+
 block panel
   #competition_content(ng-controller="resultController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="msg_show='#{msg_show}';rst_content='#{rst_content}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}';confirm_mode='#{confirm_mode}'")
     .row

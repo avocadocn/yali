@@ -26,7 +26,7 @@ block contentExt
       each photo_album in photo_album_list
         .col-sm-3.col-xs-3.photo_album_container
           a(href="/photoAlbumDetailView/#{photo_album._id}").photo_album_panel.center-block
-            img.img-responsive(src="#{photo_album.thumbnail}")
+            img.photo_album_thumbnail.img-responsive(src="#{photo_album.thumbnail}")
             h4.text-center
               span.photo_album_name= photo_album.name
               | &nbsp;
