@@ -144,7 +144,7 @@ var oneToMember = function(members,content,send_id,team_id,company_id,req,res){
     'send_id':send_id,
     'team_id':team_id,
     'company_id':company_id,
-    'deadline':(new Date())+time_out;
+    'deadline':(new Date())+time_out
   };
   var param = {
     'collection':MessageContent,
@@ -181,7 +181,7 @@ var contentPush = function(content){
 }
 
 //组长给组员发送站内信
-var leaderSendToMember = function(req,res){
+exports.leaderSendToMember = function(req,res){
   var members = req.body.members;
   var content = req.body.content,
       type = "public",
@@ -193,7 +193,7 @@ var leaderSendToMember = function(req,res){
 
 
 
-var newCampaignCreate = function(req,res){
+exports.newCampaignCreate = function(req,res){
   var team = req.body.team;        //是对象
   var content = req.body.content;  //也是对象
   var cid = req.body.cid;
@@ -333,7 +333,7 @@ var setMessageStatus = function(status,req,res){
     }
     var param = {
       'collection':Message,
-      'type':0.
+      'type':0,
       'condition':msg_id,
       'operate':operate,
       'callback':callback,

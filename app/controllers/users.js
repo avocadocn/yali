@@ -154,7 +154,7 @@ var destroySession = function(req){
   if(req.session.role != null || req.session.role != undefined){
     delete req.session.role;
   }
-  if (req.session.Global) {
+  if (req.session.Global !=null || req.session.Global != undefined) {
     delete req.session.Global;
   }
 }
