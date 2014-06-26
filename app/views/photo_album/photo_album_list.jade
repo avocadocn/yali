@@ -26,7 +26,7 @@ block contentExt
       each photo_album in photo_album_list
         .col-sm-3.col-xs-3.photo_album_container
           a(href="/photoAlbumDetailView/#{photo_album._id}").photo_album_panel.center-block
-            img.img-responsive(src="#{photo_album.thumbnail}")
+            img.photo_album_thumbnail.img-responsive(src="#{photo_album.thumbnail}")
             h4.text-center
               span.photo_album_name= photo_album.name
               | &nbsp;
@@ -41,8 +41,7 @@ block contentExt
                 a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
               if photo_album.update_user.type === 'hr'
                 a.update_user_name(href="/company/home/#{photo_album.update_user._id}")= photo_album.update_user.name
-              - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
-              p.text #{year}.#{month}.#{day} 最后更新
+              p.text #{moment(photo_album.update_date).format('YYYY.MM.DD')} 最后更新
 
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")

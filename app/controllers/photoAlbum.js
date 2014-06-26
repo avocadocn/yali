@@ -15,6 +15,7 @@ var CompanyGroup = mongoose.model('CompanyGroup');
 var validator = require('validator');
 var gm = require('gm');
 var async = require('async');
+var moment = require('moment');
 
 // custom
 var config = require('../../config/config');
@@ -238,16 +239,20 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
 
     var photo_album_list = [];
     company_group.photo_album_list.forEach(function(photo_album) {
-      if (photo_album.hidden === false) {
-        photo_album_list.push({
-          _id: photo_album._id,
-          thumbnail: photoAlbumThumbnail(photo_album),
-          name: photo_album.name,
-          photo_count: photo_album.photo_count,
-          update_user: photo_album.update_user,
-          update_date: photo_album.update_date,
-        });
+      if (photo_album.hidden === true) {
+        return;
       }
+      if (photo_album.owner.model.type === 'Campaign' && photo_album.photos.length === 0) {
+        return;
+      }
+      photo_album_list.push({
+        _id: photo_album._id,
+        thumbnail: photoAlbumThumbnail(photo_album),
+        name: photo_album.name,
+        photo_count: photo_album.photo_count,
+        update_user: photo_album.update_user,
+        update_date: photo_album.update_date,
+      });
     });
     callback(photo_album_list);
   })
@@ -375,31 +380,36 @@ exports.createPhotoAlbum = function(req, res) {
     };
     photo_album.update_user = photo_album.create_user;
   }
-  if (!fs.mkdirSync(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()))) {
-    res.send({ result: 0, msg: '创建相册失败' });
-  }
 
-  photo_album.save(function(err) {
-    if (err) {
-      console.log(err);
-      res.send({ result: 0, msg: '创建相册失败' });
-    } else {
+  fs.mkdir(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()),
+    function(err) {
+      if (err) {
+        res.send({ result: 0, msg: '创建相册失败' });
+      } else {
+        photo_album.save(function(err) {
+          if (err) {
+            console.log(err);
+            res.send({ result: 0, msg: '创建相册失败' });
+          } else {
 
-      req.model.photo_album_list.push(photo_album._id);
-      req.model.save(function(err) {
-        if (err) {
-          console.log(err);
-          res.send({ result: 0, msg: '创建相册失败' });
-        }
-        else {
-          delete req.model;
-          delete req.owner_model;
-          return res.send({ result: 1, msg: '创建相册成功' });
-        }
-      });
+            req.model.photo_album_list.push(photo_album._id);
+            req.model.save(function(err) {
+              if (err) {
+                console.log(err);
+                res.send({ result: 0, msg: '创建相册失败' });
+              }
+              else {
+                delete req.model;
+                delete req.owner_model;
+                res.send({ result: 1, msg: '创建相册成功' });
+              }
+            });
 
-    }
+          }
+        });
+      }
   });
+
 
 };
 
@@ -760,7 +770,8 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
           owner_id: company_group._id,
           owner_name: company_group.name,
           owner_logo: company_group.logo,
-          cid: company_group.cid
+          cid: company_group.cid,
+          moment: moment
         });
       })
       .then(null, function(err) {
@@ -795,7 +806,8 @@ exports.renderPhotoAlbumDetail = function(req, res) {
         photos: photos,
         owner: owner,
         photo_count: photo_album.photo_count
-      }
+      },
+      moment: moment
     });
   })
   .then(null, function(err) {
@@ -849,7 +861,8 @@ exports.renderPhotoDetail = function(req, res) {
             update_date: photo_album.update_date,
             photo_count: photo_album.photos.length,
             owner: owner
-          }
+          },
+          moment: moment
         });
 
       }

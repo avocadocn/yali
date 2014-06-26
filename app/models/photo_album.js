@@ -52,7 +52,9 @@ var PhotoAlbum = new Schema({
   owner: {
     model: {
       _id: Schema.Types.ObjectId,
-      type: String
+      type: {
+        type: String
+      }
     },
     companies: [{
       type: Schema.Types.ObjectId,

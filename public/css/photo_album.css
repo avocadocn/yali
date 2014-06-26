@@ -158,6 +158,10 @@
 .photo_album .photo_album_container {
   margin-bottom: 40px;
 }
+.photo_album .photo_album_container .photo_album_thumbnail {
+  width: 200px;
+  height: 200px;
+}
 .photo_album .photo_album_container .photo_album_name {
   max-width: 120px;
   line-height: 1;

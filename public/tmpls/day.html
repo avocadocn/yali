@@ -11,7 +11,7 @@
 					<div class="day-highlight dh-<%= event.class %>">
 						<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
 						   data-event-class="<%= event['class'] %>" class="event-item">
-							<%= event.title %></a>
+							<img src="/logo/group/<%= event.company_group_id %>/27/27"/><%= event.title %></a>
 					</div>
 				<% }); %>
 			</div>
@@ -23,10 +23,10 @@
 			<div class="span5 col-xs-5">
 				<% _.each(before_time, function(event){ %>
 					<div class="day-highlight dh-<%= event.class %>">
-						<span class="cal-hours pull-right"><%= event.end_hour %></span>
+						<!-- <span class="cal-hours pull-right"><%= event.end_hour %></span> -->
 						<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>"
 						   data-event-class="<%= event['class'] %>" class="event-item">
-							<%= event.title %></a>
+							<img src="/logo/group/<%= event.company_group_id %>/27/27"/><%= event.title %></a>
 					</div>
 				<% }); %>
 			</div>
@@ -35,10 +35,10 @@
 	<div id="cal-day-panel" class="clearfix">
 		<% _.each(by_hour, function(event){ %>
 			<div class="pull-left day-event day-highlight dh-<%= event.class %>" style="margin-top: <%= (event.top * 30) %>px; height: <%= (event.lines * 30) %>px">
-				<span class="cal-hours"><%= event.start_hour %> - <%= event.end_hour %></span>
+				<!-- <span class="cal-hours"><%= event.start_hour %> - <%= event.end_hour %></span> -->
 				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
 				   data-event-class="<%= event['class'] %>" class="event-item">
-					<%= event.title %></a>
+					<img src="/logo/group/<%= event.company_group_id %>/27/27"/><%= event.title %></a>
 			</div>
 		<% }); %>
 
@@ -61,10 +61,10 @@
 		<div class="span11 col-xs-9">
 			<% _.each(after_time, function(event){ %>
 			<div class="day-highlight dh-<%= event.class %>">
-				<span class="cal-hours"><%= event.start_hour %></span>
+				<!-- <span class="cal-hours"><%= event.start_hour %></span> -->
 				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
 				   data-event-class="<%= event['class'] %>" class="event-item">
-					<%= event.title %></a>
+					<img src="/logo/group/<%= event.company_group_id %>/27/27"/><%= event.title %></a>
 			</div>
 			<% }); %>
 		</div>

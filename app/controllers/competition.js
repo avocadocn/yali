@@ -299,7 +299,6 @@ exports.getCompetition = function(req, res){
 
   options.confirm_btn_show = (boolean_judge > 0);
 
-  console.log(boolean_judge);
 
   if((req.session.role==='HR' || req.session.role ==='LEADER') && (boolean_judge===2)) {
     options.msg_show = true;
@@ -325,7 +324,9 @@ exports.getCompetition = function(req, res){
       });
     }
   }
-  console.log(boolean_judge,req.session.role);
+  if((new Date())<=req.competition.end_time){
+    options.confirm_btn_show = false;
+  }
   res.render('competition/football', options);
 };
 
@@ -435,6 +436,26 @@ exports.resultConfirm = function (req, res) {
         if(err){
           return res.send(err);
         } else {
+          var groupMessage = new GroupMessage();
+          groupMessage.message_type = 6;
+          groupMessage.team.push({
+            teamid: competition.camp[0].id,
+            name: competition.camp[0].tname,
+            logo: competition.camp[0].logo
+          });         //发起挑战方小队信息
+          groupMessage.team.push({
+            teamid: competition.camp[1].id,
+            name: competition.camp[1].tname,
+            logo: competition.camp[0].logo
+          });  //应约方小队信息
+          groupMessage.company.push({
+            cid: competition.camp[0].cid
+          });
+          groupMessage.company.push({
+            cid: competition.camp[1].cid
+          });
+          groupMessage.campaign = competition._id;
+          groupMessage.save();
           return res.send('ok');
         }
       });

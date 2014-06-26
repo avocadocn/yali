@@ -275,6 +275,12 @@ exports.home = function(req, res) {
         var photo_album_thumbnails = [];
 
         for (var i = 0; i < photo_albums.length; i++) {
+          if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
+            continue;
+          }
+          if (photo_albums[i].hidden === true) {
+            continue;
+          }
           var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
           photo_album_thumbnails.push({
             uri: thumbnail_uri,
@@ -743,7 +749,7 @@ exports.sponsor = function (req, res) {
       companies: [cid],
       teams: [req.companyGroup._id]
     },
-    name: campaign.theme,
+    name: moment(campaign.start_time).format("YYYY年MM月DD日 HH:mm ") + campaign.theme,
     update_user: {
       _id: req.user._id,
       name: req.user.nickname,
