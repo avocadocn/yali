@@ -39,25 +39,47 @@ exports.header = function(req,res){
   }
 }
 
+
+function sessionJudge(req){
+  var g = undefined;
+  if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
+    if(req.session.Global.role != "" && req.session.Global.role != undefined && req.session.Global.role != null){
+      g = req.session.Global;
+    }
+  }
+  return g;
+}
 exports.about = function(req, res) {
-  res.render('about');
+  res.render('about',{
+    'Global':sessionJudge(req)
+  });
 };
 
 exports.law = function(req, res) {
-  res.render('law');
+  res.render('law',{
+    'Global':sessionJudge(req)
+  });
 };
 
 exports.privacy = function(req, res) {
-  res.render('privacy');
+  res.render('privacy',{
+    'Global':sessionJudge(req)
+  });
 };
 
 exports.question = function(req, res) {
-  res.render('question');
+  res.render('question',{
+    'Global':sessionJudge(req)
+  });
 };
 
 exports.contact = function(req, res) {
-  res.render('contact');
+  res.render('contact',{
+    'Global':sessionJudge(req)
+  });
 };
 exports.test = function(req, res) {
-  res.render('test');
+  res.render('test',{
+    'Global':sessionJudge(req)
+  });
 };
