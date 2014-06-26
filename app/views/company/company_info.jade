@@ -20,12 +20,13 @@ div.company-info
       .dl_row.clearfix
         .info_side
           span.info_label {{"INVATE_LINK"|translate}}
-        .info_detail
+        .info_detail.col-md-9
           .row.col-md-9
             button.dl_btn.dl_btn_small.col-md-5(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
-          .row.col-md-9
+          .row.col-md-12
             p
-            textarea.info_label.dl_word_break.col-md-9(ng-if="inviteUrlStatus",disabled) {{company.inviteUrl}}
+            textarea.info_label.dl_word_break.col-md-12.invite-link(ng-if="inviteUrlStatus",disabled) {{company.inviteUrl}}
+            p
   form.form-horizontal(name="infoForm")
     .dl_row.clearfix
       h5.pull-left {{"ENTERPRISE_INFO"|translate}}
@@ -127,7 +128,7 @@ div.company-info
         .dl_row.clearfix(ng-if="!team.active")
           .aside
             a(href="/group/home/{{team._id}}")
-              img.size_128.img-thumbnail.img_contain(ng-src="{{team.logo}}")
+              img.size_80.img-thumbnail.img_contain(ng-src="{{team.logo}}")
           .dl_row
             span.info_label {{"TEAM_NAME"|translate}}
             span.info_label {{team.name}}

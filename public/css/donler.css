@@ -41,6 +41,9 @@ select {
 button {
   border: none;
 }
+textarea {
+  resize: none;
+}
 .dl_btn_score {
   width: 100px;
   height: 50px;
@@ -803,6 +806,9 @@ button {
   min-width: 100px;
   float: left;
   padding-right: 20px;
+}
+.info_detail .invite-link {
+  height: 72px;
 }
 .m_l_5 {
   margin-left: 5px;
