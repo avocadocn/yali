@@ -641,7 +641,7 @@ exports.getCampaigns = function(req, res) {
 
 
 function getUserSchedule(uid, isCalendar, callback) {
-  var query = Campaign.find({ 'member.uid': uid });
+  var query = Campaign.find({ '$or': [{ 'member.uid': uid }, { 'camp.member.uid': uid }] });
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
