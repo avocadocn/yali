@@ -239,16 +239,20 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
 
     var photo_album_list = [];
     company_group.photo_album_list.forEach(function(photo_album) {
-      if (photo_album.hidden === false) {
-        photo_album_list.push({
-          _id: photo_album._id,
-          thumbnail: photoAlbumThumbnail(photo_album),
-          name: photo_album.name,
-          photo_count: photo_album.photo_count,
-          update_user: photo_album.update_user,
-          update_date: photo_album.update_date,
-        });
+      if (photo_album.hidden === true) {
+        return;
       }
+      if (photo_album.owner.model.type === 'Campaign' && photo_album.photos.length === 0) {
+        return;
+      }
+      photo_album_list.push({
+        _id: photo_album._id,
+        thumbnail: photoAlbumThumbnail(photo_album),
+        name: photo_album.name,
+        photo_count: photo_album.photo_count,
+        update_user: photo_album.update_user,
+        update_date: photo_album.update_date,
+      });
     });
     callback(photo_album_list);
   })
