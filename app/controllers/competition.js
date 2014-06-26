@@ -248,6 +248,23 @@ function booleanJudge(own,opposite){
 }
 //比赛
 exports.getCompetition = function(req, res){
+
+  var find = false;
+  //如果是从个人主页进入某个比赛,还需判断用户是不是这个比赛所属队的队长
+  if(req.session.role === 'OWNER'){
+    for(var i = 0; i < req.user.team.length && !find; i ++){
+      //其实只有两个小队
+      for(var k =0;k <req.competition.team.length; k ++){
+        if(req.user.team[i]._id.toString() === req.competition.team[k].toString()){
+          if(req.user.team[i].leader){
+            req.session.role = 'LEADER';
+            find = true;
+            break;
+          }
+        }
+      }
+    }
+  }
   var timeout = Config.COMPETITION_CONFIRM_TIMEOUT;
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
