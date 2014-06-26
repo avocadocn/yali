@@ -1,4 +1,4 @@
-div
+div.company-info
   form.form-horizontal(name="accountForm")
     .dl_row
       h5.pull-left {{"ACCOUNT"|translate}}
@@ -21,10 +21,11 @@ div
         .info_side
           span.info_label {{"INVATE_LINK"|translate}}
         .info_detail
-          .row
-            button.dl_btn.dl_btn_small(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
-          .row
-            textarea.info_label.dl_word_break(ng-if="inviteUrlStatus",disabled) {{company.inviteUrl}}
+          .row.col-md-9
+            button.dl_btn.dl_btn_small.col-md-5(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
+          .row.col-md-9
+            p
+            textarea.info_label.dl_word_break.col-md-9(ng-if="inviteUrlStatus",disabled) {{company.inviteUrl}}
   form.form-horizontal(name="infoForm")
     .dl_row.clearfix
       h5.pull-left {{"ENTERPRISE_INFO"|translate}}

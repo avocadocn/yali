@@ -1,20 +1,31 @@
 extends ../layouts/register
 
 block contentExt
-  p 请输入您的企业邮箱
-  form.form-inline(role="form" action="/users/dealActive" method="post")
-    .form-group
-      label.sr-only Email Host
-      input.form-control(type="text" name="host" placeholder="email")
-    | @
-    .form-group
-      label.sr-only Email Domain
-      if domains.length === 1
-        input(type="hidden" name="domain" value="#{domains[0]}")
-        input.form-control(type="text" value="#{domains[0]}" disabled="true")
-      if domains.length > 1
-        select.form-control(name="domain")
-          each domain in domains
-            option(value="#{domain}")= domain
-    button.btn.btn-success(type="submit") 激活
-  p= message
+  .dl_container
+    .row.margin_top_123
+      .col-xs-12.col-sm-5.text-right
+        div
+          h1.text-right
+            small 加入
+            | 动梨
+          p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
+          p 我们会对每家申请加入的团体当然也包括您在内
+          p 认真的核实资料，感谢您的配合
+      .col-xs-12.col-sm-7
+        p 请输入您的企业邮箱
+        form.form-inline(role="form" action="/users/dealActive" method="post")
+          .form-group
+            label.sr-only Email Host
+            input.form-control(type="text" name="host" placeholder="email")
+          | @
+          .form-group
+            label.sr-only Email Domain
+            if domains.length === 1
+              input(type="hidden" name="domain" value="#{domains[0]}")
+              input.form-control(type="text" value="#{domains[0]}" disabled="true")
+            if domains.length > 1
+              select.form-control(name="domain")
+                each domain in domains
+                  option(value="#{domain}")= domain
+          button.btn.btn-success(type="submit") 激活
+        p= message

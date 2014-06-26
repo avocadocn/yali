@@ -410,9 +410,10 @@ button {
 }
 .dl_container .main .score_container .info_border {
   display: inline-block;
+  padding: 3px 6px;
 }
 .dl_container .main .score_container .info_right_border {
-  padding: 5px;
+  padding: 3px 6px;
 }
 .dl_container .side {
   width: 260px;
@@ -437,7 +438,7 @@ button {
   font-weight: bold;
 }
 .no_radius {
-  border-radius: 0 !important;
+  radius: 0;
 }
 .baseInfo {
   padding-top: 30px;
@@ -449,6 +450,9 @@ button {
 }
 .baseInfo .dl_container {
   padding-top: 0px;
+}
+.baseInfo .dl_container .aside {
+  width: 80px;
 }
 .dl_messagebox {
   padding-top: 10px;
@@ -538,8 +542,8 @@ button {
 }
 .dl_btn_medium {
   width: 120px;
-  height: 30px;
-  line-height: 28px;
+  height: 26px;
+  line-height: 24px;
 }
 .dl_btn_small {
   padding: 7px 12px;
@@ -572,7 +576,7 @@ button {
 }
 .dl_btn_submit {
   width: 80px;
-  height: 25px;
+  height: 26px;
 }
 .dl_close {
   opacity: 1;
@@ -1071,4 +1075,8 @@ input.ng-invalid.ng-dirty {
 }
 .signup_row .select_right {
   width: 266px;
+}
+.company-info {
+  min-height: 300px;
+  background-color: #fff;
 }
