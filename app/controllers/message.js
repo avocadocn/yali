@@ -168,6 +168,18 @@ exports.hrSendToMember = function(req,res){
 
 var time_out = 72*24*3600;
 
+
+var contentPush = function(content){
+  var _content = [];
+  if(content.content_own){
+    _content.push(content.content_own);
+  }
+  if(content.content_opposite){
+    _content.push(content.content_opposite);
+  }
+  return _content;
+}
+
 //组长给组员发送站内信
 var leaderSendToMember = function(req,res){
   var members = req.body.members;
@@ -175,7 +187,7 @@ var leaderSendToMember = function(req,res){
       type = "public",
       send_id = req.user._id,
       team_id = req.body.tid;
-  oneToMember(members,content,send_id,team_id,null,req,res);
+  oneToMember(members,contentPush(content),send_id,team_id,null,req,res);
 };
 
 
@@ -192,7 +204,7 @@ var newCampaignCreate = function(req,res){
       var condition = {'cid':cid};
       var callback = function(users,other,req,res){
         if(users){
-          oneToMember(users,content,null,null,cid,req,res);
+          oneToMember(users,contentPush(content),null,null,cid,req,res);
         }
       }
       var param= {
@@ -215,12 +227,12 @@ var newCampaignCreate = function(req,res){
       var callback = function(company_group,other,req,res){
         if(company_group){
           var members = company_group.member;
-          oneToMember(members,content.content_own,null,team._id_own,null,req,res);
+          oneToMember(members,contentPush(content),null,team._id_own,null,req,res);
         }
       }
       var param= {
         'collection':CompanyGroup,
-        'type':1,
+        'type':0,
         'condition':condition,
         'limit':{'member':1},
         'sort':null,
@@ -234,11 +246,14 @@ var newCampaignCreate = function(req,res){
       break;
     //小队比赛
     case 2:
-      var condition = {'_id':team._id_own};
-      var callback = function(company_group,other,req,res){
-        if(company_group){
-          var members = company_group.member;
-          oneToMember(members,content.content_own,null,team._id_own,null,req,res);
+      var condition = {'_id':{'$in':[team._id_own,team._id_opposite]}};
+      var callback = function(company_groups,other,req,res){
+        if(company_groups){
+          var members = [];
+          if(company_groups.length == 2){
+            members = company_groups[0].member.concat(company_groups[1].member);
+          }
+          oneToMember(members,contentPush(content),null,team._id_own,null,req,res);
         }
       }
       var param= {
@@ -274,6 +289,7 @@ var getMessage = function(_private,req,res){
     Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
       if(err || !messages){
         _err(err);
+        res.send([]);
       }else{
         var rst = [];
         for(var i = 0; i < messages.length; i ++){
@@ -292,6 +308,7 @@ var getMessage = function(_private,req,res){
     Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, meassages){
       if(err || !messages){
         _err(err);
+        res.send([]);
       } else {
         for(var i = 0; i < messages.length; i ++) {
           rst.push({
@@ -311,7 +328,7 @@ var setMessageStatus = function(status,req,res){
   if(status_model.indexOf(status) > -1){
     var msg_id = req.body.msg_id;
     var operate = {'$set':{'status':status}};
-    var callback = function(){
+    var callback = function(value){
       res.send('MODIFY_OK');
     }
     var param = {
@@ -330,6 +347,10 @@ var setMessageStatus = function(status,req,res){
 
 exports.messageInit = function(req,res){
   if(req.user.provider === 'user'){
-
+    var _private = req.body._private;
+    getMessage(_private,req,res);
+  }else{
+    //公司获取的肯定是系统站内信
+    getMessage(false,req,res);
   }
 }
