@@ -23,16 +23,18 @@ block contentExt
           input#photo.hidden(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
         .right_down
           label.dl_btn.dl_btn_small(for="photo") 上传照片
-          button.dl_btn.dl_btn_small(data-toggle="collapse" data-target="#more") 更多操作
-      #more.more.collapse.clearfix
-        .operator
-          form#delete_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
-            input(type="hidden" name="_method" value="delete")
-            button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该相册
-          form.js_ajax_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
-            input(type="hidden" name="_method" value="put")
-            input.dl_input(type="text" name="name" value="#{photo_album.name}")
-            button.dl_btn.dl_btn_small(type="submit") 修改相册名字
+          if editAuth === true
+            button.dl_btn.dl_btn_small(data-toggle="collapse" data-target="#more") 更多操作
+      if editAuth === true
+        #more.more.collapse.clearfix
+          .operator
+            form#delete_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
+              input(type="hidden" name="_method" value="delete")
+              button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该相册
+            form.js_ajax_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
+              input(type="hidden" name="_method" value="put")
+              input.dl_input(type="text" name="name" value="#{photo_album.name}")
+              button.dl_btn.dl_btn_small(type="submit") 修改相册名字
     hr
     div.photo_panel.clearfix
       each photo in photo_album.photos
