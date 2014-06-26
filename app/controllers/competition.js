@@ -324,8 +324,7 @@ exports.getCompetition = function(req, res){
       });
     }
   }
-
-  if((new Date())<=req.competition.start_time){
+  if((new Date())<=req.competition.end_time){
     options.confirm_btn_show = false;
   }
   res.render('competition/football', options);
