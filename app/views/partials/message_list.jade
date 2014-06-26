@@ -6,10 +6,10 @@
     .messagebox_content(ng-switch="group_message.message_type")
       span(ng-switch-when="0") 您的公司
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
-        {{"NEW_MESSAGE"|translate}}
+        span {{"NEW_MESSAGE"|translate}}
       span(ng-switch-when="1") 您的小队
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-        {{"NEW_MESSAGE"|translate}}
+        span {{"NEW_MESSAGE"|translate}}
       span(ng-switch-when="2") 您的公司
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
         span 关闭了活动
@@ -18,19 +18,21 @@
         span 关闭了活动示
       span(ng-switch-when="4") {{!group_message.camp_flag ? "您的小队":""}}
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-        {{!group_message.camp_flag ? "向" :"向您的小队"}}
+        span {{!group_message.camp_flag ? "向" :"向您的小队"}}
         a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
         span 发出了挑战
       span(ng-switch-when="5")  {{group_message.camp_flag ? "您的小队":""}}
         a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
-        {{group_message.camp_flag ? "接受了" :"接受了您的小队"}}
+        span {{group_message.camp_flag ? "接受了" :"接受了您的小队"}}
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
         span 发出的挑战
-      span(ng-switch-when="6") {{!group_message.camp_flag ? "您的小队":""}}
-        a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-        {{!group_message.camp_flag ? "与" :"与您的小队"}}
-        a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
-        span 的比赛结果已经确认
+      //- span(ng-switch-when="6") {{!group_message.camp_flag ? "您的小队":""}}
+      //-   a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+      //-   span {{!group_message.camp_flag ? "与" :"与您的小队"}}
+      //-   a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
+      span(ng-switch-when="6") 您参加的比赛
+        a(ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+        span 的结果已经确认
       span(ng-switch-when="7") 您的公司
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
         span 有新成员加入
@@ -40,7 +42,7 @@
       span(ng-switch-default)
       .dl_message
         .triangle
-        .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<7 ")
+        .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
           .message_row
             span.message_label 主题:
               a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/group/campaign/{{group_message.campaign._id}}"){{group_message.campaign.theme}}
@@ -60,13 +62,23 @@
             span.pull-right(ng-if="group_message.join_flag!=undefined")
              btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") {{"QUIT"|translate}}
              btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag") {{"JOIN"|translate}}
+        .dl_message_container(ng-if="group_message.message_type ==6")
+          .message_row
+            a(ng-href="{{'/company/home/'+group_message.campaign.camp[0].id}}")
+              img.size_56(ng-src='{{group_message.campaign.camp[0].logo}}')
+            span {{group_message.campaign.camp[0].tname}}
+            span.h3.margin_15{{group_message.campaign.camp[0].score}} : {{group_message.campaign.camp[1].score}}
+            a(ng-href="{{'/company/home/'+group_message.campaign.camp[1].id}}")
+              img.size_56(ng-src='{{group_message.campaign.camp[1].logo}}')
+            span {{group_message.campaign.camp[1].tname}}
+          .message_row
+            span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
           .message_row
             span.message_label
             a(ng-href="/users/home/{{group_message.user.user_id}}") {{group_message.user.name}}
-
             span.message_label  加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-      .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<7 ")
+      .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
         span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         span.message_label 报名截止{{"TIME"|translate}}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
         label.pull-right(ng-if="message_role==='group'")

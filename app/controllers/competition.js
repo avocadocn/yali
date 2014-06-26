@@ -436,6 +436,26 @@ exports.resultConfirm = function (req, res) {
         if(err){
           return res.send(err);
         } else {
+          var groupMessage = new GroupMessage();
+          groupMessage.message_type = 6;
+          groupMessage.team.push({
+            teamid: competition.camp[0].id,
+            name: competition.camp[0].tname,
+            logo: competition.camp[0].logo
+          });         //发起挑战方小队信息
+          groupMessage.team.push({
+            teamid: competition.camp[1].id,
+            name: competition.camp[1].tname,
+            logo: competition.camp[0].logo
+          });  //应约方小队信息
+          groupMessage.company.push({
+            cid: competition.camp[0].cid
+          });
+          groupMessage.company.push({
+            cid: competition.camp[1].cid
+          });
+          groupMessage.campaign = competition._id;
+          groupMessage.save();
           return res.send('ok');
         }
       });
