@@ -72,8 +72,8 @@ div.company-info
     .dl_row.clearfix(ng-if="info.lindline!=undefined || !infoUnEdit")
       .info_side
         span.info_label {{"ENTERPRISE_PHONE"|translate}}
-      .info_side(ng-if="infoUnEdit")
-        span.info_detail {{info.lindline.areacode}} - {{info.lindline.number}} {{info.lindline.extension ? ':'+info.lindline.extension:''}}
+      .info_detail(ng-if="infoUnEdit")
+        span.info_text {{info.lindline.areacode}} - {{info.lindline.number}} {{info.lindline.extension ? ':'+info.lindline.extension:''}}
       .info_detail(ng-show="!infoUnEdit")
         input.dl_input.editToggle.dl_form-Control(type="text" name ="areacode" ng-model="info.lindline.areacode" ng-disabled="infoUnEdit")
       .info_detail(ng-show="!infoUnEdit")

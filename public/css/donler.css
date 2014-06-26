@@ -418,6 +418,10 @@ textarea {
 .dl_container .main .score_container .info_right_border {
   padding: 3px 6px;
 }
+.dl_container .main .info_text {
+  padding: 6px 5px;
+  line-height: 32px;
+}
 .dl_container .side {
   width: 260px;
   float: left;
