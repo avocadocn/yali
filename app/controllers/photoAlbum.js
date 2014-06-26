@@ -15,6 +15,7 @@ var CompanyGroup = mongoose.model('CompanyGroup');
 var validator = require('validator');
 var gm = require('gm');
 var async = require('async');
+var moment = require('moment');
 
 // custom
 var config = require('../../config/config');
@@ -760,7 +761,8 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
           owner_id: company_group._id,
           owner_name: company_group.name,
           owner_logo: company_group.logo,
-          cid: company_group.cid
+          cid: company_group.cid,
+          moment: moment
         });
       })
       .then(null, function(err) {
@@ -795,7 +797,8 @@ exports.renderPhotoAlbumDetail = function(req, res) {
         photos: photos,
         owner: owner,
         photo_count: photo_album.photo_count
-      }
+      },
+      moment: moment
     });
   })
   .then(null, function(err) {
@@ -849,7 +852,8 @@ exports.renderPhotoDetail = function(req, res) {
             update_date: photo_album.update_date,
             photo_count: photo_album.photos.length,
             owner: owner
-          }
+          },
+          moment: moment
         });
 
       }

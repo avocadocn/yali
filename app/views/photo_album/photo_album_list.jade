@@ -41,8 +41,7 @@ block contentExt
                 a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
               if photo_album.update_user.type === 'hr'
                 a.update_user_name(href="/company/home/#{photo_album.update_user._id}")= photo_album.update_user.name
-              - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
-              p.text #{year}.#{month}.#{day} 最后更新
+              p.text #{moment(photo_album.update_date).format('YYYY.MM.DD')} 最后更新
 
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")

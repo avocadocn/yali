@@ -743,7 +743,7 @@ exports.sponsor = function (req, res) {
       companies: [cid],
       teams: [req.companyGroup._id]
     },
-    name: campaign.theme,
+    name: moment(campaign.start_time).format("YYYY年MM月DD日 HH:mm ") + campaign.theme,
     update_user: {
       _id: req.user._id,
       name: req.user.nickname,

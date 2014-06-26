@@ -18,8 +18,7 @@ block contentExt
             h4.media-heading= photo_album.owner.team.name
             p.text 相册名:&nbsp;#{photo_album.name}
             p.text 照片数:&nbsp;#{photo_album.photo_count}
-            - var date = photo_album.update_date, year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
-            p.text 最后更新:&nbsp;#{year}.#{month}.#{day}
+            p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
         form#upload_photo_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo" method="post" enctype="multipart/form-data")
           input#photo.hidden(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
         .right_down
