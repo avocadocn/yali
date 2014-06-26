@@ -397,7 +397,7 @@ exports.competition = function(req, res, next, id){
 //某一方发送或者修改比赛成绩确认消息
 exports.resultConfirm = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   var competition_id = req.params.competitionId;
 

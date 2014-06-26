@@ -162,9 +162,6 @@ var destroySession = function(req){
   if (req.session.Global.role !=null || req.session.Global.role != undefined) {
     delete req.session.Global.role;
   }
-  if (req.session.Global !=null || req.session.Global != undefined) {
-    delete req.session.Global;
-  }
 }
 /**
  * Logout

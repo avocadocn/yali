@@ -5,18 +5,14 @@ exports.render = function(req, res) {
     if(req.session.Global.role==="HR"){
       res.redirect('/company/home');
     }else{
-      if(req.session.Global.role != ""){
+      if(req.session.Global.role != "" && req.session.Global.role != undefined && req.session.Global.role != null){
         res.redirect('/users/home');
       }else{
-        res.render('index', {
-          'Global':undefined
-        });
+        res.render('index');
       }
     }
   }else{
-    res.render('index', {
-        'Global':undefined
-    });
+    res.render('index');
   }
 };
 
@@ -40,46 +36,25 @@ exports.header = function(req,res){
 }
 
 
-function sessionJudge(req){
-  var g = undefined;
-  if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
-    if(req.session.Global.role != "" && req.session.Global.role != undefined && req.session.Global.role != null){
-      g = req.session.Global;
-    }
-  }
-  return g;
-}
 exports.about = function(req, res) {
-  res.render('about',{
-    'Global':sessionJudge(req)
-  });
+  res.render('about');
 };
 
 exports.law = function(req, res) {
-  res.render('law',{
-    'Global':sessionJudge(req)
-  });
+  res.render('law');
 };
 
 exports.privacy = function(req, res) {
-  res.render('privacy',{
-    'Global':sessionJudge(req)
-  });
+  res.render('privacy');
 };
 
 exports.question = function(req, res) {
-  res.render('question',{
-    'Global':sessionJudge(req)
-  });
+  res.render('question');
 };
 
 exports.contact = function(req, res) {
-  res.render('contact',{
-    'Global':sessionJudge(req)
-  });
+  res.render('contact');
 };
 exports.test = function(req, res) {
-  res.render('test',{
-    'Global':sessionJudge(req)
-  });
+  res.render('test');
 };
