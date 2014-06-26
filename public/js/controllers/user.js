@@ -19,8 +19,6 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
     $http.get('/group/getCompanyGroups').success(function(data, status) {
         $scope.cid = data.cid;
         $scope.groups = data.teams;
-
-        alert($scope.groups.length);
         $scope.teams = [];
 
         //显示在员工选小队的界面供其选择
