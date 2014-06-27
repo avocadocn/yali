@@ -141,7 +141,7 @@ exports.getCampaigns = function(req, res) {
         options={
           'active':true,
           'end_time':{'$lt':new Date()},
-          '$or':[{'team':team_ids},{'cid':user.cid,'team':[]}]
+          '$or':[{'team':{'$in':team_ids}},{'cid':user.cid,'team':[]}]
         }
         Campaign
         .find(options)
