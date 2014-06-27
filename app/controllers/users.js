@@ -666,6 +666,8 @@ exports.scheduleListData = function(req, res) {
     var join = false;
     var logo ='';
     var link ='';
+    var team = req.user.team;
+    var team_ids = fetchTeam(team);
 
     if (!campaigns) {
       return res.send({
