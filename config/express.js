@@ -85,7 +85,7 @@ module.exports = function(app, passport, db) {
             // 绑定我们自己的处理函数:
             res.send = function () {
                 // 发送Header:
-                res.set('X-Execution-Time', String(Date.now() - exec_start_at));
+                res.set('X-Execution-Time', String(Date.now() - exec_start_at + "ms"));
                 // 调用原始处理函数:
                 return _send.apply(res, arguments);
             };
