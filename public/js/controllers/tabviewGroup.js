@@ -101,7 +101,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
-        $http.get('/groupMessage/team?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/0?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.user = data.user;
             $scope.role = data.role;
@@ -122,7 +122,19 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     //var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
 
-
+    $scope.loadMore_flag = true;
+    $scope.page = 1;
+    $scope.loadMore = function(){
+        $http.get('/groupMessage/team/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.group_messages.length>0){
+                $scope.group_messages = $scope.group_messages.concat(data.group_messages);
+                $scope.page++;
+            }
+            else{
+                $scope.loadMore_flag = false;
+            }
+        });
+    }
     $scope.toggleOperate = function(index){
         $scope.toggle[index] = !$scope.toggle[index];
     }
@@ -290,10 +302,23 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
-    $http.get('/campaign/getCampaigns/team?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+    $http.get('/campaign/getCampaigns/team/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.campaigns = data.campaigns;
         $rootScope.sum = $scope.campaigns.length;
     });
+    $scope.loadMore_flag = true;
+    $scope.page = 1;
+    $scope.loadMore = function(){
+        $http.get('/campaign/getCampaigns/team/all/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                $scope.page++;
+            }
+            else{
+                $scope.loadMore_flag = false;
+            }
+        });
+    }
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };

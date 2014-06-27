@@ -106,3 +106,6 @@
                     h5 {{comment.content}}
                   .dl_md_3.pull-right
                     h5.pull-right.margin_right_20 # {{comment.index}}
+.text-center
+  button(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
+  span(ng-if="!loadMore_flag") 已经加载了所有的动态

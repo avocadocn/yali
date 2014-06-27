@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     GroupMessage = mongoose.model('GroupMessage');
 
 
-
+var pagesize = 40;
 exports.renderMessageList =function(req,res){
   res.render('partials/message_list',{
       'role':req.session.role
@@ -20,7 +20,9 @@ exports.getTeamMessage = function(req, res) {
     return res.send(403,'forbidden');
   }
   GroupMessage.find({'team.teamid' : req.session.nowtid,
-      'active':true}).sort({'create_time':-1}).populate('campaign')
+      'active':true})
+  .skip(req.params.page * pagesize).limit(pagesize)
+  .sort({'create_time':-1}).populate('campaign')
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -104,7 +106,7 @@ exports.getTeamMessage = function(req, res) {
         }
         group_messages.push(_group_message);
       }
-      return res.send({'group_messages':group_messages,'role':req.session.role,'user':{'nickname':req.user.nickname,'photo':req.user.photo}});
+      return res.send({'result':1,'group_messages':group_messages,'role':req.session.role,'user':{'nickname':req.user.nickname,'photo':req.user.photo}});
      }
   });
 };
@@ -121,7 +123,7 @@ exports.getUserMessage = function(req, res) {
   GroupMessage.find({
       '$or':[{'team.teamid' : {'$in':team_ids}},{'company.cid':req.user.cid}],
       'active':true
-    }).sort({'create_time':-1}).populate('campaign')
+    }).skip(req.params.page * pagesize).limit(pagesize).sort({'create_time':-1}).populate('campaign')
   .exec(function(err, group_message) {
     if (err || !group_message) {
       console.log(err);
@@ -199,7 +201,7 @@ exports.getUserMessage = function(req, res) {
         }
         group_messages.push(_group_message);
       }
-      return res.send({'group_messages':group_messages,'role':req.session.role});
+      return res.send({'result':1,'group_messages':group_messages,'role':req.session.role});
      }
   });
 };

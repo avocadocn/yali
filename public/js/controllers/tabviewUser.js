@@ -35,9 +35,9 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
         controllerAs: 'account'
       })
       .when('/timeLine', {
-        templateUrl: '/users/timeline',
-        //controller: 'timelineController',
-       // controllerAs: 'timeline'
+        templateUrl: '/users/timeline/0',
+        controller: 'timelineController',
+        controllerAs: 'timeline'
       })
       .when('/schedule', {
         templateUrl: '/users/getScheduleList',
@@ -66,7 +66,7 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.message_role = "user";
     $rootScope.nowTab='group_message';
-    $http.get('/groupMessage/user?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+    $http.get('/groupMessage/user/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.group_messages = data.group_messages;
 
         $rootScope.message_corner = true;
@@ -74,6 +74,19 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
 
         $scope.role = data.role;
     });
+    $scope.loadMore_flag = true;
+    $scope.page = 1;
+    $scope.loadMore = function(){
+        $http.get('/groupMessage/user/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.group_messages.length>0){
+                $scope.group_messages = $scope.group_messages.concat(data.group_messages);
+                $scope.page++;
+            }
+            else{
+                $scope.loadMore_flag = false;
+            }
+        });
+    }
     $scope.vote = function(competition_id, vote_status, index) {
          try {
             $http({
@@ -175,10 +188,22 @@ tabViewUser.controller('GroupMessageController', ['$http','$scope','$rootScope',
 tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.company = false;
-    $http.get('/campaign/getCampaigns/user?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+    $http.get('/campaign/getCampaigns/user/all/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.campaigns = data.campaigns;
     });
-
+    $scope.loadMore_flag = true;
+    $scope.page = 1;
+    $scope.loadMore = function(){
+        $http.get('/campaign/getCampaigns/user/all/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                $scope.page++;
+            }
+            else{
+                $scope.loadMore_flag = false;
+            }
+        });
+    }
     $scope.join = function(campaign_id,index) {
         try {
             $http({
@@ -190,7 +215,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
             }).success(function(data, status) {
                 if(data.result===1){
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
-                    $scope.campaigns[index].join = true;
+                    $scope.campaigns[index].join_flag = true;
                     $scope.campaigns[index].member_length++;
                 }
                 else{
@@ -216,7 +241,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
             }).success(function(data, status) {
                 if(data.result===1){
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
-                    $scope.campaigns[index].join = false;
+                    $scope.campaigns[index].join_flag = false;
                     $scope.campaigns[index].member_length--;
                 }
                 else{

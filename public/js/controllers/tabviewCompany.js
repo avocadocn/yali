@@ -62,29 +62,47 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'company_campaign';
-    $http.get('/campaign/getCampaigns/company/all?' + Math.round(Math.random()*100)).success(function(data, status) {
+    $http.get('/campaign/getCampaigns/company/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.campaigns;
     });
-
+    $scope.campaignType='all';
+    $scope.loadMore_flag = true;
+    $scope.page = 1;
+    $scope.loadMore = function(){
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                $scope.page++;
+            }
+            else{
+                $scope.loadMore_flag = false;
+            }
+        });
+    }
 
     $scope.selectCampaign = function (value) {
         var _url = "";
         var _selected = true;
         switch(value) {
             case 0:
-                _url = "/campaign/getCampaigns/company/company";
+                $scope.campaignType = 'company';
+                _url = "/campaign/getCampaigns/company/company/0";
                 break;
             case 1:
-                _url = "/campaign/getCampaigns/company/selected";
+                $scope.campaignType = 'selected';
+                _url = "/campaign/getCampaigns/company/selected/0";
                 break;
             case 2:
-                _url = "/campaign/getCampaigns/company/unselected";
+                $scope.campaignType = 'unselected';
+                _url = "/campaign/getCampaigns/company/unselected/0";
                 break;
             case 3:
-                _url = "/campaign/getCampaigns/company/team";
+                $scope.campaignType = 'team';
+                _url = "/campaign/getCampaigns/company/team/0";
                 break;
             case 4:
-                _url = "/campaign/getCampaigns/company/all";
+                $scope.campaignType = 'all';
+                _url = "/campaign/getCampaigns/company/all/0";
                 break;
             default:break;
         }

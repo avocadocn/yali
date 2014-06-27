@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Campaign = mongoose.model('Campaign'),
     model_helper = require('../helpers/model_helper');
-
+var pagesize = 40;
 var formatCampaign = function(campaign,pageType,role,user){
   var campaigns = [];
   campaign.forEach(function(_campaign){
@@ -65,6 +65,7 @@ exports.getCampaigns = function(req, res) {
   var options;
   var pageType = req.params.pageType;
   var campaignType = req.params.campaignType;
+  var page = req.params.page;
   if(pageType==='company') {
     options={
       'active':true,
@@ -93,10 +94,12 @@ exports.getCampaigns = function(req, res) {
     }
     Campaign
       .find(options)
+      .skip(page * pagesize)
+      .limit(pagesize)
       .populate('team').populate('cid')
       .exec()
       .then(function(campaign) {
-        if(!campaign){
+        if(campaign===[]){
           return res.send({ result: 0, msg:'查找活动失败' });
         }
         else{
@@ -108,7 +111,7 @@ exports.getCampaigns = function(req, res) {
         return res.send(400);
       });
   }
-  else if(pageType==='team') {
+  else if(pageType==='team' && campaignType==='all') {
     options={
       'active':true,
       'end_time':{'$lt':new Date()},
@@ -116,10 +119,12 @@ exports.getCampaigns = function(req, res) {
     }
     Campaign
     .find(options)
+    .skip(page * pagesize)
+    .limit(pagesize)
     .populate('team').populate('cid')
     .exec()
     .then(function(campaign) {
-      if(!campaign){
+      if(campaign===[]){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
@@ -131,7 +136,7 @@ exports.getCampaigns = function(req, res) {
       res.send(400);
     });
   }
-  else if(pageType==='user') {
+  else if(pageType==='user' && campaignType==='all') {
     User.findOne({_id:req.session.nowuid}).exec(function(err,user){
       if(!err && user){
         var team_ids = [];
@@ -145,11 +150,12 @@ exports.getCampaigns = function(req, res) {
         }
         Campaign
         .find(options)
+        .skip(page * pagesize)
+        .limit(pagesize)
         .populate('team').populate('cid')
         .exec()
         .then(function(campaign) {
-          console.log(campaign);
-          if(!campaign){
+          if(campaign===[]){
             return res.send({ result: 0, msg:'查找活动失败' });
           }
           else{
