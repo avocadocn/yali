@@ -2,7 +2,7 @@
   //若是公司动态
   div.clearfix
     .message_side
-      img.size_90(ng-src='{{group_message.logo}}')
+      img.size_56(ng-src='{{group_message.logo}}')
     .messagebox_content(ng-switch="group_message.message_type")
       span(ng-switch-when="0") 您的公司
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}

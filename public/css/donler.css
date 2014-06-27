@@ -467,13 +467,13 @@ textarea {
   background-color: #fff;
 }
 .dl_messagebox .message_side {
-  width: 90px;
+  width: 56px;
   float: left;
 }
 .dl_messagebox .messagebox_content {
   width: 540px;
   float: left;
-  margin-left: 30px;
+  margin-left: 10px;
   position: relative;
 }
 .dl_messagebox .message_row {
@@ -488,6 +488,10 @@ textarea {
 .dl_message {
   border-left: 2px solid #f7f7f7;
   background-color: #f7f7f7;
+  position: relative;
+}
+.dl_message .triangle {
+  top: 0%;
 }
 .dl_message_container {
   padding: 0 5px;
