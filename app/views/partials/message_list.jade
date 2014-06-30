@@ -2,7 +2,8 @@
   //若是公司动态
   div.clearfix
     .message_side
-      img.size_56(ng-src='{{group_message.logo}}')
+      img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
+      .size_56(ng-if="group_message.message_type==6")
     .messagebox_content(ng-switch="group_message.message_type")
       span(ng-switch-when="0")
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
@@ -37,7 +38,7 @@
         span 有新成员加入
       span(ng-switch-default)
       .dl_message
-        .triangle
+        .triangle(ng-if="group_message.message_type!=6")
         .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
           .message_row
             span.message_label 主题:
@@ -53,8 +54,7 @@
             span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限: {{group_message.campaign.member_max}}
           .message_row
             span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false && group_message.vote_flag !=undefined")
-              button.dl_btn(ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "CANCEL" : "POSITIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.positive}}
-              button.dl_btn(ng-click="vote(group_message.campaign._id,false,$index)") {{group_message.vote_flag == -1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.negative}}
+              //-button.dl_btn(ng-click="vote(group_message.campaign._id,false,$index)") {{group_message.vote_flag == -1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.negative}}
               button.dl_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id)" ng-if="group_message.response_flag") {{"FACE"|translate}}
             span.pull-right(ng-if="group_message.join_flag!=undefined")
              btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") {{"QUIT"|translate}}
@@ -79,7 +79,9 @@
         span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         span.message_label 报名截止{{"TIME"|translate}}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
         label.pull-right(ng-if="message_role==='group'")
-          a(ng-click="toggleOperate($index);getComment($index)") 留言 {{group_message.campaign.comment_sum}}
+          a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
+        label.pull-right.vertical_label |
+        a.pull-right(ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
       .message_row(ng-if="toggle[$index] && message_role==='group'")
         .dl_comment_area
           .dl_modal_container.margin_top_5

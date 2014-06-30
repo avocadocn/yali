@@ -149,6 +149,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         $scope.pageTime = [0];
         $scope.lastPage_flag = false;
         $scope.nextPage_flag = false;
+        $scope.loadOver_flag = false;
          try{
             $http({
                 method: 'get',
