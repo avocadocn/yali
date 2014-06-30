@@ -19,7 +19,7 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/group_message', {
-        templateUrl: '/group/message_list',
+        templateUrl: '/message_list',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
@@ -123,15 +123,53 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $rootScope.nowTab ='group_message';
 
     $scope.loadMore_flag = true;
+    $scope.block = 1;
     $scope.page = 1;
+    $scope.pageTime = [0];
+    $scope.lastPage_flag = false;
+    $scope.nextPage_flag = false;
     $scope.loadMore = function(){
-        $http.get('/groupMessage/team/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
                 $scope.group_messages = $scope.group_messages.concat(data.group_messages);
-                $scope.page++;
+                if(++$scope.block==5){
+                    $scope.nextPage_flag = true;
+                    $scope.loadMore_flag = false;
+                    if($scope.page!=1){
+                        $scope.lastPage_flag = true;
+                    }
+                }
             }
             else{
+                $scope.loadOver_flag = true;
                 $scope.loadMore_flag = false;
+                $scope.nextPage_flag = false;
+            }
+        });
+    }
+    $scope.changePage = function(flag){
+        var start_time = flag ==1? new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime() :$scope.pageTime[$scope.page-2];
+        $http.get('/groupMessage/team/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.group_messages.length>0){
+                if(flag ==1){
+                    $scope.page++;
+                    $scope.pageTime.push(new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime());
+                }
+                else{
+                    $scope.page--;
+                }
+                $scope.group_messages = data.group_messages;
+                $scope.loadMore_flag = true;
+                $scope.nextPage_flag = false;
+                $scope.lastPage_flag = false;
+                $scope.loadOver_flag = false;
+                $scope.block = 1;
+                window.scroll(0,0);
+            }
+            else{
+                $scope.nextPage_flag = false;
+                $scope.loadMore_flag = false;
+                $scope.loadOver_flag = true;
             }
         });
     }
@@ -307,15 +345,53 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         $rootScope.sum = $scope.campaigns.length;
     });
     $scope.loadMore_flag = true;
+    $scope.block = 1;
     $scope.page = 1;
+    $scope.pageTime = [0];
+    $scope.lastPage_flag = false;
+    $scope.nextPage_flag = false;
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/team/all/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
-                $scope.page++;
+                if(++$scope.block==5){
+                    $scope.nextPage_flag = true;
+                    $scope.loadMore_flag = false;
+                    if($scope.page!=1){
+                        $scope.lastPage_flag = true;
+                    }
+                }
             }
             else{
+                $scope.loadOver_flag = true;
                 $scope.loadMore_flag = false;
+                $scope.nextPage_flag = false;
+            }
+        });
+    }
+    $scope.changePage = function(flag){
+        var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
+        $http.get('/campaign/getCampaigns/team/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                if(flag ==1){
+                    $scope.page++;
+                    $scope.pageTime.push(new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime());
+                }
+                else{
+                    $scope.page--;
+                }
+                $scope.campaigns = data.campaigns;
+                $scope.loadMore_flag = true;
+                $scope.nextPage_flag = false;
+                $scope.lastPage_flag = false;
+                $scope.loadOver_flag = false;
+                $scope.block = 1;
+                window.scroll(0,0);
+            }
+            else{
+                $scope.nextPage_flag = false;
+                $scope.loadMore_flag = false;
+                $scope.loadOver_flag = true;
             }
         });
     }
@@ -404,7 +480,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                     campaign_id : _id
                 }
             }).success(function(data, status) {
-                window.location.reload();
+                //window.location.reload();
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });

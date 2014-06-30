@@ -17,43 +17,42 @@ tabViewUser.directive('match', function($parse) {
 });
 
 tabViewUser.config(['$routeProvider', '$locationProvider',
-    function($routeProvider, $locationProvider) {
-        $routeProvider
-            .when('/group_message', {
-                templateUrl: '/group/message_list',
-                controller: 'GroupMessageController',
-                controllerAs: 'messages'
-            })
-            .when('/campaign', {
-                templateUrl: '/users/campaign',
-                controller: 'CampaignListController',
-                controllerAs: 'campaign'
-            })
-            .when('/personal', {
-                templateUrl: '/users/editInfo',
-                controller: 'AccountFormController',
-                controllerAs: 'account'
-            })
-            .when('/timeLine', {
-                templateUrl: '/users/timeline/0',
-                controller: 'timelineController',
-                controllerAs: 'timeline'
-            })
-            .when('/schedule', {
-                templateUrl: '/users/getScheduleList',
-                controller: 'ScheduleListController',
-                controllerAs: 'schedule'
-            })
-            .when('/changePassword', {
-                templateUrl: '/users/change_password',
-                controller: 'PasswordFormController',
-                controllerAs: 'password'
-            }).
-        otherwise({
-            redirectTo: '/group_message'
-        });
-    }
-]);
+  function ($routeProvider, $locationProvider) {
+    $routeProvider
+      .when('/group_message', {
+        templateUrl: '/message_list',
+        controller: 'GroupMessageController',
+        controllerAs: 'messages'
+      })
+      .when('/campaign', {
+        templateUrl: '/users/campaign',
+        controller: 'CampaignListController',
+        controllerAs: 'campaign'
+      })
+      .when('/personal', {
+        templateUrl: '/users/editInfo',
+        controller: 'AccountFormController',
+        controllerAs: 'account'
+      })
+      .when('/timeLine', {
+        templateUrl: '/users/timeline'
+        // controller: 'timelineController',
+        // controllerAs: 'timeline'
+      })
+      .when('/schedule', {
+        templateUrl: '/users/getScheduleList',
+        controller: 'ScheduleListController',
+        controllerAs: 'schedule'
+      })
+      .when('/changePassword', {
+        templateUrl: '/users/change_password',
+        controller: 'PasswordFormController',
+        controllerAs: 'password'
+      }).
+      otherwise({
+        redirectTo: '/group_message'
+      });
+  }]);
 
 tabViewUser.run(['$rootScope',
     function($rootScope) {
@@ -74,18 +73,58 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
 
             $rootScope.message_corner = true;
             $rootScope.sum = $scope.group_messages.length;
-
             $scope.role = data.role;
+            $scope.loadMore_flag = true;
         });
-        $scope.loadMore_flag = true;
+        $scope.loadMore_flag = false;
+        $scope.block = 1;
         $scope.page = 1;
-        $scope.loadMore = function() {
-            $http.get('/groupMessage/user/' + $scope.page + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-                if (data.result === 1 && data.group_messages.length > 0) {
+        $scope.pageTime = [0];
+        $scope.lastPage_flag = false;
+        $scope.nextPage_flag = false;
+        $scope.loadMore = function(){
+            $http.get('/groupMessage/user/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+                if(data.result===1 && data.group_messages.length>0){
                     $scope.group_messages = $scope.group_messages.concat(data.group_messages);
-                    $scope.page++;
-                } else {
+                    if(++$scope.block==5){
+                        $scope.nextPage_flag = true;
+                        $scope.loadMore_flag = false;
+                        if($scope.page!=1){
+                            $scope.lastPage_flag = true;
+                        }
+                    }
+                }
+                else{
+                    $scope.loadOver_flag = true;
                     $scope.loadMore_flag = false;
+                    $scope.nextPage_flag = false;
+                }
+            });
+        }
+        $scope.changePage = function(flag){
+            var start_time = flag ==1? new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime() :$scope.pageTime[$scope.page-2];
+            $http.get('/groupMessage/user/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+                if(data.result===1 && data.group_messages.length>0){
+                    if(flag ==1){
+                        $scope.page++;
+                        $scope.pageTime.push(new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime());
+                    }
+                    else{
+                        $scope.page--;
+                        $scope.pageTime.pop();
+                    }
+                    $scope.group_messages = data.group_messages;
+                    $scope.loadMore_flag = true;
+                    $scope.nextPage_flag = false;
+                    $scope.lastPage_flag = false;
+                    $scope.loadOver_flag = false;
+                    $scope.block = 1;
+                    window.scroll(0,0);
+                }
+                else{
+                    $scope.nextPage_flag = false;
+                    $scope.loadMore_flag = false;
+                    $scope.loadOver_flag = true;
                 }
             });
         }
@@ -94,93 +133,196 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 $http({
                     method: 'post',
                     url: '/users/vote',
-                    data: {
-                        competition_id: competition_id,
-                        aOr: vote_status,
-                        tid: $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
+                    data:{
+                        competition_id : competition_id,
+                        aOr : vote_status,
+                        tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
                     }
                 }).success(function(data, status) {
-                    if (data.result === 0) {
+                    if(data.result===0) {
                         $rootScope.donlerAlert(data.msg);
                     } else {
-                        $scope.group_messages[index].vote_flag = vote_status + data.data.quit - 1;
-                        $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
-                        $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
+                        $scope.loadMore_flag = false;
                     }
-                }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
-            } catch (e) {
+            }
+            catch(e) {
                 console.log(e);
             }
         };
-        $scope.join = function(campaign_id, index) {
+        $scope.join = function(campaign_id,index) {
             try {
                 $http({
                     method: 'post',
                     url: '/users/joinCampaign',
-                    data: {
-                        campaign_id: campaign_id
+                    data:{
+                        campaign_id : campaign_id
                     }
                 }).success(function(data, status) {
-                    if (data.result === 1) {
+                    if(data.result===1){
                         //alert('成功加入该活动!');
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                         $scope.group_messages[index].join_flag = true;
-                    } else {
+                    }
+                    else{
                         $rootScope.donlerAlert(data.msg);
                     }
                 }).error(function(data, status) {
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
-            } catch (e) {
+            }
+            catch(e) {
                 console.log(e);
             }
         };
 
-        $scope.quit = function(campaign_id, index) {
+        $scope.quit = function(campaign_id,index) {
             try {
                 $http({
                     method: 'post',
                     url: '/users/quitCampaign',
-                    data: {
-                        campaign_id: campaign_id
+                    data:{
+                        campaign_id : campaign_id
                     }
                 }).success(function(data, status) {
-                    if (data.result === 1) {
+                    if(data.result===1){
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                         //alert('您已退出该活动!');
                         $scope.group_messages[index].join_flag = false;
-                    } else {
+                    }
+                    else{
                         $rootScope.donlerAlert(data.msg);
                     }
                 }).error(function(data, status) {
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
-            } catch (e) {
+            }
+            catch(e) {
                 console.log(e);
             }
         };
         //应战
-        $scope.responseProvoke = function(tid, provoke_message_id) {
+        $scope.responseProvoke = function(tid,provoke_message_id) {
             try {
                 $http({
                     method: 'post',
-                    url: '/group/responseProvoke/' + tid,
-                    data: {
-                        provoke_message_id: provoke_message_id
+                    url: '/group/responseProvoke/'+tid,
+                    data:{
+                        provoke_message_id : provoke_message_id
                     }
                 }).success(function(data, status) {
                     window.location.reload();
                 }).error(function(data, status) {
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
-            } catch (e) {
+            }
+            catch(e) {
                 console.log(e);
             }
         };
     }
 ]);
+
+tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',function ($http, $scope,$rootScope) {
+    $scope.company = false;
+    $http.get('/campaign/getCampaigns/user/all/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $scope.campaigns = data.campaigns;
+        $scope.loadMore_flag = true;
+    });
+    $scope.loadMore_flag = false;
+    $scope.block = 1;
+    $scope.page = 1;
+    $scope.pageTime = [0];
+    $scope.lastPage_flag = false;
+    $scope.nextPage_flag = false;
+    $scope.loadMore = function(){
+        $http.get('/campaign/getCampaigns/user/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                if(++$scope.block==5){
+                    $scope.nextPage_flag = true;
+                    $scope.loadMore_flag = false;
+                    if($scope.page!=1){
+                        $scope.lastPage_flag = true;
+                    }
+                }
+            }
+            else{
+                $scope.loadOver_flag = true;
+                $scope.loadMore_flag = false;
+                $scope.nextPage_flag = false;
+            }
+        });
+    }
+    $scope.changePage = function(flag){
+        var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
+        $http.get('/campaign/getCampaigns/user/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                if(flag ==1){
+                    $scope.page++;
+                    $scope.pageTime.push(new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime());
+                }
+                else{
+                    $scope.page--;
+                }
+                $scope.campaigns = data.campaigns;
+                $scope.loadMore_flag = true;
+                $scope.nextPage_flag = false;
+                $scope.lastPage_flag = false;
+                $scope.loadOver_flag = false;
+                $scope.block = 1;
+                window.scroll(0,0);
+            }
+            else{
+                $scope.nextPage_flag = false;
+                $scope.loadMore_flag = false;
+                $scope.loadOver_flag = true;
+            }
+        });
+    };
+
+    $scope.quit = function(campaign_id, index) {
+        try {
+            $http({
+                method: 'post',
+                url: '/users/quitCampaign',
+                data: {
+                    campaign_id: campaign_id
+                }
+            }).success(function(data, status) {
+                if (data.result === 1) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    //alert('您已退出该活动!');
+                    $scope.group_messages[index].join_flag = false;
+                } else {
+                    $rootScope.donlerAlert(data.msg);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    //应战
+    $scope.responseProvoke = function(tid, provoke_message_id) {
+        try {
+            $http({
+                method: 'post',
+                url: '/group/responseProvoke/' + tid,
+                data: {
+                    provoke_message_id: provoke_message_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}]);
 
 tabViewUser.controller('CampaignListController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {

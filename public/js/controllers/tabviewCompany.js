@@ -67,19 +67,56 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     });
     $scope.campaignType='all';
     $scope.loadMore_flag = true;
+    $scope.block = 1;
     $scope.page = 1;
+    $scope.pageTime = [0];
+    $scope.lastPage_flag = false;
+    $scope.nextPage_flag = false;
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$scope.page+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
-                $scope.page++;
+                if(++$scope.block==5){
+                    $scope.nextPage_flag = true;
+                    $scope.loadMore_flag = false;
+                    if($scope.page!=1){
+                        $scope.lastPage_flag = true;
+                    }
+                }
             }
             else{
+                $scope.loadOver_flag = true;
                 $scope.loadMore_flag = false;
+                $scope.nextPage_flag = false;
             }
         });
     }
-
+    $scope.changePage = function(flag){
+        var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                if(flag ==1){
+                    $scope.page++;
+                    $scope.pageTime.push(new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime());
+                }
+                else{
+                    $scope.page--;
+                }
+                $scope.campaigns = data.campaigns;
+                $scope.loadMore_flag = true;
+                $scope.nextPage_flag = false;
+                $scope.lastPage_flag = false;
+                $scope.loadOver_flag = false;
+                $scope.block = 1;
+                window.scroll(0,0);
+            }
+            else{
+                $scope.nextPage_flag = false;
+                $scope.loadMore_flag = false;
+                $scope.loadOver_flag = true;
+            }
+        });
+    }
     $scope.selectCampaign = function (value) {
         var _url = "";
         var _selected = true;
@@ -106,6 +143,12 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                 break;
             default:break;
         }
+        $scope.loadMore_flag = true;
+        $scope.block = 1;
+        $scope.page = 1;
+        $scope.pageTime = [0];
+        $scope.lastPage_flag = false;
+        $scope.nextPage_flag = false;
          try{
             $http({
                 method: 'get',
