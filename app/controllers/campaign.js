@@ -4,6 +4,104 @@ var mongoose = require('mongoose'),
     Campaign = mongoose.model('Campaign'),
     model_helper = require('../helpers/model_helper');
 var pagesize = 40;
+
+
+function getUserAllCampaigns(user, isCalendar, callback) {
+  var query = Campaign.find({ 'cid': user.cid, 'active': true });
+  if (isCalendar === false) {
+    query = query.populate('team').populate('cid');
+  }
+
+  query
+  .exec()
+  .then(function(campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function(err) {
+    console.log(err);
+    callback([]);
+  });
+}
+
+function getUserJoinedCampaigns(user, isCalendar, callback) {
+  var query = Campaign.find({
+    '$or': [{ 'member.uid': user._id }, { 'camp.member.uid': user._id }],
+    'active': true
+  });
+  if (isCalendar === false) {
+    query = query.populate('team').populate('cid');
+  }
+
+  query
+  .exec()
+  .then(function(campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function(err) {
+    console.log(err);
+    callback([]);
+  });
+}
+
+function getUserUnjoinCampaigns(user, isCalendar, callback) {
+  var query = Campaign.find({
+    'cid': user.cid,
+    '$not': {
+      '$or': [
+        { 'member.uid': user._id },
+        { 'camp.member.uid': user._id }
+      ]
+    },
+    'active': true
+  });
+  if (isCalendar === false) {
+    query = query.populate('team').populate('cid');
+  }
+
+  query
+  .exec()
+  .then(function(campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function(err) {
+    console.log(err);
+    callback([]);
+  });
+}
+
+function formatCampaignForCalendar(user, campaigns) {
+  var calendarCampaigns = [];
+  campaigns.forEach(function(campaign) {
+    var team_id;
+    for (var i = 0, teams = user.team; i < teams.length; i++) {
+      if (campaign.team.indexOf(teams[i]._id) !== -1) {
+        team_id = teams[i]._id;
+      }
+    }
+
+    var count = 0;
+    if (campaign.member) {
+      count = campaign.member.length;
+    }
+
+    calendarCampaigns.push({
+      'id': campaign._id,
+      'team_id': team_id,
+      'title': campaign.theme,
+      'url': '/group/campaign/' + campaign._id.toString(),
+      'class': 'event-info',
+      'start': campaign.start_time.valueOf(),
+      'end': campaign.end_time.valueOf(),
+      'count': count
+    });
+  });
+  return {
+    'success': 1,
+    'result': calendarCampaigns
+  };
+}
+
+
 var formatCampaign = function(campaign,pageType,role,user){
   var campaigns = [];
   campaign.forEach(function(_campaign){
@@ -61,6 +159,7 @@ var formatCampaign = function(campaign,pageType,role,user){
   });
   return campaigns;
 };
+
 exports.getCampaigns = function(req, res) {
   var options;
   var pageType = req.params.pageType;
@@ -174,6 +273,7 @@ exports.getCampaigns = function(req, res) {
     });
   }
 }
+
 exports.cancelCampaign = function(req, res){
   Campaign
     .findOne({'_id':req.body.campaign_id})
@@ -190,7 +290,7 @@ exports.cancelCampaign = function(req, res){
             if(!err){
               return res.send({ result: 1, msg:'活动关闭成功' });
             }
-          })
+          });
         }
         else{
           return res.send({ result: 0, msg:'您没有权限关闭该活动' });
@@ -203,3 +303,45 @@ exports.cancelCampaign = function(req, res){
     });
 }
 
+
+exports.getUserAllCampaignsForCalendar = function(req, res) {
+  getUserAllCampaigns(req.user, true, function(campaigns) {
+    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+    res.send(format_campaigns);
+  });
+};
+
+exports.getUserJoinedCampaignsForCalendar = function(req, res) {
+  getUserJoinedCampaigns(req.user, true, function(campaigns) {
+    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+    res.send(format_campaigns);
+  });
+};
+
+exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
+  getUserUnjoinCampaigns(req.user, true, function(campaigns) {
+    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+    res.send(format_campaigns);
+  });
+};
+
+exports.getUserAllCampaignsForList = function(req, res) {
+  getUserAllCampaigns(req.user, false, function(campaigns) {
+    var format_campaigns = formatCampaign(campaigns, 'user', req.session.role, req.user);
+    res.send({ result: 1, campaigns: format_campaigns });
+  });
+};
+
+exports.getUserJoinedCampaignsForList = function(req, res) {
+  getUserJoinedCampaigns(req.user, false, function(campaigns) {
+    var format_campaigns = formatCampaign(campaigns, 'user', req.session.role, req.user);
+    res.send({ result: 1, campaigns: format_campaigns });
+  });
+};
+
+exports.getUserUnjoinCampaignsForList = function(req, res) {
+  getUserUnjoinCampaigns(req.user, false, function(campaigns) {
+    var format_campaigns = formatCampaign(campaigns, 'user', req.session.role, req.user);
+    res.send({ result: 1, campaigns: format_campaigns });
+  });
+};
