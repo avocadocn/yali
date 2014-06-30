@@ -151,7 +151,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     if(data.length > 0){
                         $scope.group_messages[index].comments = data;
                         for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
-                            $scope.group_messages[index].comments[i].index = i+1;
+                            $scope.group_messages[index].comments[i].index = data.length - i;
                         }
                     }
                 }).error(function(data, status) {
@@ -181,7 +181,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                         'photo' : $scope.user.photo
                     };
                     $scope.group_messages[index].campaign.comment_sum ++;
-                    $scope.group_messages[index].comments.push({
+                    $scope.group_messages[index].comments.unshift({
                         'host_id' : $scope.group_messages[index].campaign._id,
                         'content' : $scope.new_comment[index].text,
                         'create_date' : new Date(),

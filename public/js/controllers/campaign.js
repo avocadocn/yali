@@ -41,7 +41,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 if(data.length > 0){
                     $scope.comments = data;
                     for(var i = 0; i < $scope.comments.length; i ++) {
-                        $scope.comments[i].index = i+1;
+                        $scope.comments[i].index = data.length - i;
                     }
                 }
             }).error(function(data, status) {
@@ -69,7 +69,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                         'nickname' : $scope.nickname,
                         'photo' : $scope.photo
                     };
-                    $scope.comments.push({
+                    $scope.comments.unshift({
                         'host_id' : $scope.campaign._id,
                         'content' : $scope.new_comment.text,
                         'create_date' : new Date(),

@@ -14,7 +14,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               button.btn.btn-primary.btn-sm.btn-submit(type="submit") 登录动梨
               a.btn.btn-link.btn-sm.btn-signin-link(href="/company/signin") 企业登录
   else
-    .dl_head
+    .dl_head(ng-controller="messageHeaderController")
       if Global.role !== 'HR'
         //.navbar-header
         a.navbar-brand(href="/")
@@ -45,6 +45,19 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
                 a.dl_menu_a(href="/users/signout") {{"LOGOUT"|translate}}
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
+          li
+            a(href="#" data-toggle="dropdown")
+              span.dl_msg_corner(ng-if="(private_length + team_length + company_length)>0") {{private_length + team_length + company_length}}
+              span.glyphicon.glyphicon-comment
+            ul.dl_menu.dropdown-menu(role="menu")
+              li
+                a.dl_menu_a(href="/message/home#/private") 私信({{private_length}})
+              li
+                a.dl_menu_a(href="/message/home#/team") 小队消息({{team_length}})
+              li
+                a.dl_menu_a(href="/message/home#/company") 全公司消息({{company_length}})
+              li
+                a.dl_menu_a(href="/message/home#/system") 系统公告({{global_length}})
       if Global.role === 'HR'
         //.navbar-header
         a.navbar-brand(href="/")
@@ -71,3 +84,11 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
                 a.dl_menu_a(href="/company/signout") {{"LOGOUT"|translate}}
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
+          li
+            a(href="#" data-toggle="dropdown")
+              span.dl_msg_corner
+              span.glyphicon.glyphicon-comment
+            ul.dl_menu.dropdown-menu(role="menu")
+              li
+                a.dl_menu_a(href="/message/home#/system") 系统公告({{global_length}})
+

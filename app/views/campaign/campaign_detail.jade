@@ -13,12 +13,12 @@ block contentExt
       .dl_detail_border.clearfix
         .dl_detail_content
           .dl_detail_row
-            .dl_detail_label 
+            .dl_detail_label
               span {{"CAMPAIGN"|translate}}{{"PLACE"|translate}}{{"LOCATION"|translate}}:
             .dl_detail_detail
               span {{campaign.location.name}}
           .dl_detail_row
-            .dl_detail_label 
+            .dl_detail_label
               span {{"CAMPAIGN"|translate}}{{"START_TIME"|translate}}:
             .dl_detail_detail
               span {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}} {{campaign.start_time | week }}
@@ -68,6 +68,7 @@ block contentExt
         button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()") {{"SUBMIT"|translate}}{{"LEAVEMESSAGE"|translate}}
         .dl_row
           section
+            br
             div.comment.clearfix(ng-repeat="comment in comments")
               .comment_user_info
                 img.user_photo.size_56(ng-src="{{comment.poster.photo}}")
@@ -79,7 +80,8 @@ block contentExt
                   .triangle
                   .comment_content
                     p {{comment.content}}
-                p.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+                label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+                label.comment_date.text.pull-right {{comment.index}}
     .dl_detail_side
       p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         #mapContainer.size_400

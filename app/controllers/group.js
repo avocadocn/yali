@@ -24,6 +24,7 @@ var mongoose = require('mongoose'),
     moment = require('moment'),
     model_helper = require('../helpers/model_helper'),
     schedule = require('../services/schedule'),
+    message = require('../controllers/message'),
     photo_album_controller = require('./photoAlbum');
 
 exports.authorize = function(req, res, next) {
@@ -636,7 +637,20 @@ exports.provoke = function (req, res) {
                   console.log('保存约战动态时出错' + err);
                 }
               });
-              return res.send({'result':1,'msg':'挑战成功！'});
+              var team = {
+                'size':2,
+                'own':{
+                  '_id':req.companyGroup._id,
+                  'name':req.companyGroup.name,
+                  'provoke_status':0
+                },
+                'opposite':{
+                  '_id':team_opposite._id,
+                  'name':team_opposite.name,
+                  'provoke_status':0
+                }
+              }
+              message.newCampaignCreate(req,res,team,cid);
             }else{
               console.log('保存比赛',err);
             }
@@ -692,7 +706,20 @@ exports.responseProvoke = function (req, res) {
             console.log('保存约战动态时出错' + err);
           }
           else{
-            return res.send({'result':1,'msg':'应战成功！'});
+            var team = {
+              'size':2,
+              'own':{
+                '_id':campaign.camp[0].id,
+                'name':campaign.camp[0].tname,
+                'provoke_status':1
+              },
+              'opposite':{
+                '_id':campaign.camp[1].id,
+                'name':campaign.camp[1].tname,
+                'provoke_status':1
+              }
+            }
+            message.newCampaignCreate(req,res,team,req.user.cid);
           }
         });
       }
@@ -796,27 +823,35 @@ exports.sponsor = function (req, res) {
           req.companyGroup.save(function(err) {
             if (err) {
               res.send(500);
-              return {'result':0,'msg':'活动发起失败'};
+              return res.send({'result':0,'msg':'活动发起失败'});
             } else {
-              return res.send({'result':1,'msg':'活动发起成功'});
-            }
-          });
-          //生成动态消息
-          var groupMessage = new GroupMessage();
-          groupMessage.message_type = 1;
-          groupMessage.company = {
-            cid : cid,
-            name : cname
-          };
-          groupMessage.team= {
-            teamid : tid,
-            name : tname,
-            logo : req.companyGroup.logo
-          };
-          groupMessage.campaign = campaign._id;
-          groupMessage.save(function (err) {
-            if (err) {
-              console.log(err);
+              //生成动态消息
+              var groupMessage = new GroupMessage();
+              groupMessage.message_type = 1;
+              groupMessage.company = {
+                cid : cid,
+                name : cname
+              };
+              groupMessage.team= {
+                teamid : tid,
+                name : tname,
+                logo : req.companyGroup.logo
+              };
+              groupMessage.campaign = campaign._id;
+              groupMessage.save(function (err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  var team = {
+                    'size':1,
+                    'own':{
+                      '_id':req.companyGroup._id,
+                      'name':req.companyGroup.name
+                    }
+                  }
+                  message.newCampaignCreate(req,res,team,cid);
+                }
+              });
             }
           });
         }

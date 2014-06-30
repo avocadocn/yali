@@ -1,0 +1,16 @@
+hr
+.dl_modal_container
+  .dl_row(style="height:93px" ng-repeat="global_message in global_messages")
+    .dl_message_head
+      img.dl_message_head_size(ng-src="default")
+    .dl_message_body.margin_left_5
+      .row
+        .dl_message_caption
+          h7 {{global_message.caption}}
+        .dl_message_date
+          h7 {{global_message.date | date:'yyyy-MM-dd HH:mm'}}
+        .dl_message_status
+          a.dl_btn_small {{global_message.status}}
+      .row
+        .dl_md_12
+          h5 {{global_message.content}}

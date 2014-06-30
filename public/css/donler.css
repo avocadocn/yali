@@ -44,6 +44,21 @@ button {
 textarea {
   resize: none;
 }
+.dl_message_head {
+  width: 12%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_message_body {
+  width: 85%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_message_tail {
+  width: 18%;
+  margin-left: 5px;
+  float: left;
+}
 .dl_btn_score {
   width: 100px;
   height: 50px;
@@ -80,6 +95,19 @@ textarea {
   z-index: 1000;
   width: 80px;
   height: 80px;
+}
+.dl_msg_corner {
+  margin-top: -15px;
+  margin-left: 10px;
+  font-size: 0.1px;
+  position: absolute;
+  z-index: 1000;
+  width: auto;
+  height: auto;
+  background-color: #cd270d;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 2px 0;
 }
 .dl_corner {
   margin-top: -48px;
@@ -364,6 +392,24 @@ textarea {
 .dl_md_5 {
   width: 30%;
   margin-left: 5px;
+  float: left;
+}
+.dl_message_date {
+  width: 19%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_message_caption {
+  width: 78%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_message_head_size {
+  width: 48px;
+  height: 48px;
+}
+.dl_message_status {
+  width: 1%;
   float: left;
 }
 .dl_md_time {
