@@ -427,7 +427,7 @@ textarea {
   float: left;
 }
 .dl_container .aside {
-  width: 80px;
+  width: 128px;
   margin-right: 20px;
   float: left;
 }
@@ -439,6 +439,17 @@ textarea {
 .dl_container .tab-info-form {
   background-color: #fff;
   min-height: 200px;
+}
+.dl_companygroup_container {
+  width: 600px;
+  float: left;
+  margin-left: 10px;
+}
+.dl_companygroup_container .groups .group {
+  float: left;
+  padding-left: 20px;
+  padding-bottom: 5px;
+  text-align: center;
 }
 .tab_style {
   min-width: 145px;
@@ -818,6 +829,12 @@ textarea {
 }
 .info_detail .invite-link {
   height: 72px;
+}
+.info_detail_2 {
+  min-width: 100px;
+  min-height: 34px;
+  padding: 7px 0;
+  float: left;
 }
 .m_l_5 {
   margin-left: 5px;

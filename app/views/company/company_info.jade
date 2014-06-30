@@ -107,7 +107,7 @@ div.company-info
         //-所有人可见active的team
         .aside
           a(href="/group/home/{{team._id}}")
-            img.img-responsive.img-thumbnail.img_contain(ng-src="{{team.logo}}" width="128px")
+            img.img-responsive.img-thumbnail.img_contain(ng-src="{{team.logo}}")
         .dl_row
           span.info_label {{"TEAM_NAME"|translate}}
           span.info_label {{team.name}}
@@ -128,7 +128,7 @@ div.company-info
         .dl_row.clearfix(ng-if="!team.active")
           .aside
             a(href="/group/home/{{team._id}}")
-              img.size_80.img-thumbnail.img_contain(ng-src="{{team.logo}}")
+              img.img-thumbnail.img_contain(ng-src="{{team.logo}}")
           .dl_row
             span.info_label {{"TEAM_NAME"|translate}}
             span.info_label {{team.name}}
