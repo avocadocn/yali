@@ -13,4 +13,5 @@ hr
           a.dl_btn_small {{team_message.status}}
       .row
         .dl_md_12
-          h5 {{team_message.content}}
+          h5 
+            a(href="{{team_message.url}}"){{team_message.content}}

@@ -21,6 +21,8 @@ module.exports = function(app) {
 
   app.post('/message/pull', authorization.requiresLogin, Message.messageGetByHand);  //手动获取指定类型站内信
 
+  app.post('/message/modify', authorization.requiresLogin, Message.messageGetByHand); //修改站内信状态
+
 	app.post('/message/push/leader', authorization.requiresLogin, Message.leaderSendToMember);
 	app.post('/message/push/hr', authorization.requiresLogin, Message.hrSendToMember);
 }

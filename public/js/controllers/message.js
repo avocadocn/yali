@@ -94,6 +94,7 @@ var provokeStatus = function(value,name,own){
 
 var messagePreHandle = function(teams,msg){
   var content = "";
+  var url = "#";
   var message = [];
   var team_messages = [],
       company_messages = [],
@@ -106,9 +107,11 @@ var messagePreHandle = function(teams,msg){
         for(var j = 0; j < teams.length; j ++){
           if(teams[j]._id === msg[i].message_content.team[0]._id){
             content = provokeStatus(msg[i].message_content.team[0].provoke_status,msg[i].message_content.team[0].name,true);
+            url = "/group/home/"+msg[i].message_content.team[0]._id+"#/group_message";
           }else{
             if(teams[j]._id === msg[i].message_content.team[1]._id){
               content = provokeStatus(msg[i].message_content.team[1].provoke_status,msg[i].message_content.team[1].name,false);
+              url = "/group/home/"+msg[i].message_content.team[1]._id+"#/group_message";
             }
           }
         }
@@ -119,23 +122,28 @@ var messagePreHandle = function(teams,msg){
           content += msg[i].message_content.content;
         }else{
           content = "您的小队 "+msg[i].message_content.team[0].name + "有了新的活动哟!";
+          url = "/group/home/"+msg[i].message_content.team[0]._id+"#/group_message";
         }
       }
       team_messages.push({
+        '_id':msg[i]._id,
         'caption':msg[i].message_content.caption,
         'content':content,
         'status':msg[i].status,
-        'date':msg[i].message_content.post_date
+        'date':msg[i].message_content.post_date,
+        'url':url
       });
     }
 
     //公司
     if(msg[i].type == 'company'){
       company_messages.push({
+        '_id':msg[i]._id,
         'caption':msg[i].message_content.caption,
         'content':msg[i].message_content.content,
         'status':msg[i].status,
-        'date':msg[i].message_content.post_date
+        'date':msg[i].message_content.post_date,
+        'url':'/company/home#/company_campaign'
       });
     }
 
@@ -145,6 +153,7 @@ var messagePreHandle = function(teams,msg){
       content += "</br>";
       content += msg[i].message_content.content;
       private_messages.push({
+        '_id':msg[i]._id,
         'caption':msg[i].message_content.caption,
         'content':content,
         'status':msg[i].status,
@@ -155,6 +164,7 @@ var messagePreHandle = function(teams,msg){
     //系统
     if(msg[i].type == 'global'){
       global_messages.push({
+        '_id':msg[i]._id,
         'caption':msg[i].message_content.caption,
         'content':msg[i].message_content.content,
         'status':msg[i].status,
@@ -200,19 +210,61 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
   }
 }]);
 
+
+var sendSet = function(http,status,rootScope,_id,type){
+  try{
+    http({
+        method: 'post',
+        url: '/message/modify',
+        data:{
+            status:status,
+            msg_id:_id
+        }
+    }).success(function(data, status) {
+        switch(type){
+          case 'private':
+            rootScope.private_length--;
+          break;
+          case 'team':
+            rootScope.team_length--;
+          break;
+          case 'company':
+            rootScope.company_length--;
+          break;
+          default:break;
+        }
+    }).error(function(data, status) {
+        //TODO:更改对话框
+        alertify.alert('ERROR');
+    });
+  }
+  catch(e){
+      console.log(e);
+  }
+}
+
 //获取一对一私信
 messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('private');
+  $scope.setToRead = function(index){
+    sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id);
+  }
 }]);
 
 //获取小队站内信
 messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('team');
+  $scope.setToRead = function(index){
+    sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id);
+  }
 }]);
 
 //获取公司站内信
 messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('company');
+  $scope.setToRead = function(index){
+    sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id);
+  }
 }]);
 
 //获取系统公告

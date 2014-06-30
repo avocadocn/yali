@@ -13,4 +13,5 @@ hr
           a.dl_btn_small {{company_message.status}}
       .row
         .dl_md_12
-          h5 {{company_message.content}}
+          h5
+            a(href="{{company_message.url}}"){{company_message.content}}

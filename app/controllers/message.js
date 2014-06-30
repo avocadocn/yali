@@ -369,6 +369,7 @@ var getMessage = function(req,res,condition){
       var rst = [];
       for(var i = 0; i < messages.length; i ++){
         rst.push({
+          '_id':messages[i]._id,
           'rec_id':messages[i].rec_id,
           'status':messages[i].status,
           'type':messages[i].type,
@@ -386,7 +387,8 @@ var getMessage = function(req,res,condition){
 }
 
 //修改站内信状态(比如用户点击了一条站内信就把它设为已读,或者删掉这条站内信)
-var setMessageStatus = function(status,req,res){
+exports.setMessageStatus = function(req,res){
+  var status = req.body.status;
   var status_model = ['read','unread','delete'];
   if(status_model.indexOf(status) > -1){
     var msg_id = req.body.msg_id;
