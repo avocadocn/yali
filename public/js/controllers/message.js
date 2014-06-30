@@ -235,7 +235,7 @@ var sendSet = function(http,status,rootScope,_id,type){
         }
     }).error(function(data, status) {
         //TODO:更改对话框
-        alertify.alert('ERROR');
+        alertify.alert(status);
     });
   }
   catch(e){
@@ -247,7 +247,9 @@ var sendSet = function(http,status,rootScope,_id,type){
 messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('private');
   $scope.setToRead = function(index){
-    sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id);
+    if($rootScope.private_messages[index].status === 'unread'){
+      sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id);
+    }
   }
 }]);
 
@@ -255,7 +257,9 @@ messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope
 messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('team');
   $scope.setToRead = function(index){
-    sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id);
+    if($rootScope.team_messages[index].status === 'unread'){
+      sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id);
+    }
   }
 }]);
 
@@ -263,7 +267,9 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
 messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('company');
   $scope.setToRead = function(index){
-    sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id);
+    if($rootScope.company_messages[index].status === 'unread'){
+      sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id);
+    }
   }
 }]);
 

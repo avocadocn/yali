@@ -68,7 +68,7 @@ function set(param){
         if(err || !message){
           param._err(err);
         }else{
-          param.callback();
+          param.callback(message);
         }
       });
     case 1:

@@ -14,4 +14,4 @@ hr
       .row
         .dl_md_12
           h5
-            a(href="{{company_message.url}}"){{company_message.content}}
+            a(href="{{company_message.url}}" ng-click="setToRead($index)"){{company_message.content}}
