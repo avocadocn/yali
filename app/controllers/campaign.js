@@ -46,12 +46,10 @@ function getUserJoinedCampaigns(user, isCalendar, callback) {
 function getUserUnjoinCampaigns(user, isCalendar, callback) {
   var query = Campaign.find({
     'cid': user.cid,
-    '$not': {
-      '$or': [
-        { 'member.uid': user._id },
-        { 'camp.member.uid': user._id }
-      ]
-    },
+    '$nor': [
+      { 'member.uid': user._id },
+      { 'camp.member.uid': user._id }
+    ],
     'active': true
   });
   if (isCalendar === false) {
