@@ -566,7 +566,7 @@ exports.provoke = function (req, res) {
   competition.member_min = member_min;
   competition.member_max = member_max;
   competition.cname=[cname];
-  competition.cid=[cid];
+  competition.cid=[req.companyGroup.cid, team_opposite.cid];
   competition.team=[my_team_id,team_opposite._id];
 
   competition.poster.cname = cname;

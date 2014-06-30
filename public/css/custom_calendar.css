@@ -32,3 +32,13 @@
 #cal-slide-content .custom_calendar_li {
   margin-bottom: 5px;
 }
+.cal-month-day .join_sign {
+  margin-top: 1px;
+  margin-left: 1px;
+  width: 16px;
+  height: 16px;
+}
+.event-item .join_sign {
+  width: 16px;
+  height: 16px;
+}

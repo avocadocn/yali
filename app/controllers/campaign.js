@@ -82,6 +82,30 @@ function formatCampaignForCalendar(user, campaigns) {
       count = campaign.member.length;
     }
 
+    var is_joined = false;
+
+    // 活动
+    if (campaign.team.length <= 1) {
+      for (var i = 0, members = campaign.member; i < members.length; i++) {
+        if (user._id.toString() === members[i].uid) {
+          is_joined = true;
+          break;
+        }
+      }
+    }
+
+    // 比赛
+    if (campaign.team.length > 1) {
+      for (var i = 0; i < campaign.camp.length; i++) {
+        for (var j = 0, camp = campaign.camp[i]; j < camp.member.length; j++) {
+          if (user._id.toString() === camp.member[j].uid) {
+            is_joined = true;
+            break;
+          }
+        }
+      }
+    }
+
     calendarCampaigns.push({
       'id': campaign._id,
       'team_id': team_id,
@@ -90,7 +114,8 @@ function formatCampaignForCalendar(user, campaigns) {
       'class': 'event-info',
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
-      'count': count
+      'count': count,
+      'is_joined': is_joined
     });
   });
   return {
