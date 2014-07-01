@@ -56,7 +56,7 @@
           .message_row
             span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false && group_message.vote_flag !=undefined")
               //-button.dl_btn(ng-click="vote(group_message.campaign._id,false,$index)") {{group_message.vote_flag == -1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.negative}}
-              button.dl_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id)" ng-if="group_message.response_flag") {{"FACE"|translate}}
+              button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id)" ng-if="group_message.response_flag") {{"FACE"|translate}}
         .dl_message_container(ng-if="group_message.message_type ==6")
           .message_row
             a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}")

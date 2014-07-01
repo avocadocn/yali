@@ -160,14 +160,13 @@ exports.getMessage = function(req, res) {
             }
           break;
           case 8:
-            if(last_team_index!=undefined && group_message[i].team[0].teamid.toString()===group_messages[last_team_index].team[0].teamid.toString()){
+            if(last_team_index!=undefined && group_messages[last_team_index].team.length===1 && group_message[i].team[0].teamid.toString()===group_messages[last_team_index].team[0].teamid.toString()){
               group_messages[last_team_index].user.push(group_message[i].user);
               group_messages[last_team_index].logo = group_message[i].team[0].logo;
               push_flag = false;
-              console.log(group_message[i]);
               break;
             }
-            else if(last_user_index!=undefined && group_message[i].user.user_id.toString()===group_messages[last_user_index].user[0].user_id.toString()){
+            else if(last_user_index!=undefined && group_messages[last_team_index].user.length===1 && group_message[i].user.user_id.toString()===group_messages[last_user_index].user[0].user_id.toString()){
               group_messages[last_user_index].team.push(group_message[i].team[0]);
               push_flag = false;
               break;
