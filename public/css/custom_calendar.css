@@ -72,6 +72,9 @@
 .schedule_type span {
   margin-left: 3px;
 }
+.schedule_type .active {
+  color: #aaa;
+}
 .calendar_nav {
   margin-top: 3px;
 }

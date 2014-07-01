@@ -25,8 +25,6 @@ module.exports = function(app) {
   //激活、关闭小队
   app.post('/group/activateGroup', authorization.requiresLogin,group.activateGroup);
 
-  app.post('/group/campaignCancel', authorization.requiresLogin, group.campaignCancel);
-
   app.get('/group/competition/:competitionId', authorization.requiresLogin, group.getCompetition);
 
   app.get('/group/campaign/:campaignId', authorization.requiresLogin,group.renderCampaignDetail);

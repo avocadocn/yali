@@ -516,47 +516,6 @@ exports.getGroupCampaign = function(req, res) {
   });
 };
 
-//队长关闭活动
-exports.campaignCancel = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,'forbidden');
-  }
-  var campaign_id = req.body.campaign_id;
-  Campaign.findOne({_id:campaign_id}).populate('team').exec(function(err, campaign) {
-      if(!err && campaign) {
-        var active = campaign.active;
-        campaign.active = !active;
-        campaign.save(function(err){
-          if(!err){
-            var groupMessage = new GroupMessage();
-            groupMessage.message_type = 3;
-            groupMessage.company = {
-              cid : campaign.team[0].cid,
-              name : campaign.team[0].cname
-            };
-            groupMessage.team= {
-              teamid : campaign.team[0]._id,
-              name : campaign.team[0].name,
-              logo : campaign.team[0].logo
-            };
-            groupMessage.campaign = campaign._id;
-            groupMessage.save(function(err){
-                if(!err){
-                    return res.send({'result':1,'msg':'活动关闭成功'});
-                }
-            });
-             return res.send({'result':1,'msg':'关闭成功'});
-          }
-          else{
-            return res.send({'result':0,'msg':'关闭活动失败'});
-          }
-        });
-      } else {
-          return res.send({'result':0,'msg':'不存在该活动'});
-      }
-  });
-};
-
 
 //约战
 exports.provoke = function (req, res) {
@@ -993,8 +952,8 @@ exports.getCampaignDetail = function(req, res) {
       over : judge,
       campaign: campaign,
       join: join,
-      nickname : req.user.nickname,
-      photo : req.user.photo,
+      role:req.session.role,
+      user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
       campaignLogo: campaign.team[0].logo
     });
   })

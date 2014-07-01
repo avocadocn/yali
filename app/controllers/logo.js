@@ -127,16 +127,16 @@ exports.updateLogo = function(req, res) {
 
                 fs.unlink(logo_temp_path, function(err) {
                   if (err) {
-                    callback(err);
+                    return callback(err);
                   }
-                  var unlink_dir = path.join(config.root, 'public');
-                  if (ori_logo.indexOf('/img/icons/') === -1) {
-                    if (fs.existsSync(unlink_dir + ori_logo)) {
-                      fs.unlinkSync(unlink_dir + ori_logo);
-                    }
-                  }
+                  // var unlink_dir = path.join(config.root, 'public');
+                  // if (ori_logo.indexOf('/img/icons/') === -1) {
+                  //   if (fs.existsSync(unlink_dir + ori_logo)) {
+                  //     fs.unlinkSync(unlink_dir + ori_logo);
+                  //   }
+                  // }
                   //success
-                  res.send({ result: 1 });
+                  return res.send({ result: 1 });
                 });
               }
             });

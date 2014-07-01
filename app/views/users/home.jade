@@ -23,10 +23,10 @@ block panel
       li.tab_style(ng-class="{'active':nowTab=='group_message'}")
         a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"LATEST_MESSAGE"|translate}}
         .dl_corner(ng-if="message_corner && sum > 0") {{sum}}
-    li.tab_style(ng-class="{'active':nowTab=='campaign'}")
+    //-li.tab_style(ng-class="{'active':nowTab=='campaign'}")
       a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") {{"CAMPAIGN"|translate}}{{"LIST"|translate}}
     li.tab_style(ng-class="{'active':nowTab=='schedule'}")
-      a.subtitle.no_radius(href="#/schedule" ng-click="addactive('schedule')") {{"MY"|translate}}{{"SCHEDULE"|translate}}
+      a.subtitle.no_radius(href="#/schedule" ng-click="addactive('schedule')") {{"SCHEDULE"|translate}}
     li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
       a.subtitle.no_radius(href="#/timeLine" ng-click="addactive('timeLine')") {{"TIME_LINE"|translate}}
   .tab-content.margin_top_20
