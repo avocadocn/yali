@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Campaign = mongoose.model('Campaign'),
     model_helper = require('../helpers/model_helper');
-var pagesize = 40;
+var pagesize = 20;
 
 
 function getUserAllCampaigns(user, isCalendar, callback) {
@@ -123,8 +123,6 @@ function formatCampaignForCalendar(user, campaigns) {
     'result': calendarCampaigns
   };
 }
-
-
 var formatCampaign = function(campaign,pageType,role,user){
   var campaigns = [];
   campaign.forEach(function(_campaign){
@@ -184,23 +182,27 @@ var formatCampaign = function(campaign,pageType,role,user){
 };
 
 exports.getCampaigns = function(req, res) {
-  var options;
+  var option;
   var pageType = req.params.pageType;
   var campaignType = req.params.campaignType;
   var page = req.params.page;
   if(pageType==='company') {
-    options={
+    option={
       'active':true,
       'end_time':{'$lt':new Date()},
       'cid' : req.session.nowcid
     }
+    if(req.params.start_time!=0){
+      var _start_Date = new Date();
+      option.start_time={'$lt':_start_Date.setTime(req.params.start_time)}
+    }
     if(campaignType==='all'){
     }
     else if(campaignType==='company') {
-      options.team = [];
+      option.team = [];
     }
     else if(campaignType==='team') {
-      options.team = {'$size':2};
+      option.team = {'$size':2};
     }
     else if(req.session.role ==='EMPLOYEE')  {
       var team_ids = [];
@@ -208,17 +210,17 @@ exports.getCampaigns = function(req, res) {
         team_ids.push(req.user.team[i]._id.toString());
       }
       if(campaignType==='selected') {
-        options.team={'$in':team_ids};
+        option.team={'$in':team_ids};
       }
       else if(campaignType==='unselected') {
-        options.team = {'$nin':team_ids,'$size':2};
+        option.team = {'$nin':team_ids,'$size':2};
       }
     }
     Campaign
-      .find(options)
-      .skip(page * pagesize)
+      .find(option)
       .limit(pagesize)
       .populate('team').populate('cid')
+      .sort({'start_time':-1})
       .exec()
       .then(function(campaign) {
         if(campaign===[]){
@@ -234,16 +236,20 @@ exports.getCampaigns = function(req, res) {
       });
   }
   else if(pageType==='team' && campaignType==='all') {
-    options={
+    option={
       'active':true,
       'end_time':{'$lt':new Date()},
       'team':req.session.nowtid
     }
+    if(req.params.start_time!=0){
+      var _start_Date = new Date();
+      option.start_time={'$lt':_start_Date.setTime(req.params.start_time)}
+    }
     Campaign
-    .find(options)
-    .skip(page * pagesize)
+    .find(option)
     .limit(pagesize)
     .populate('team').populate('cid')
+    .sort({'start_time':-1})
     .exec()
     .then(function(campaign) {
       if(campaign===[]){
@@ -265,22 +271,28 @@ exports.getCampaigns = function(req, res) {
         for( var i = 0; i < user.team.length; i ++) {
           team_ids.push(user.team[i]._id.toString());
         }
-        options={
+        option={
           'active':true,
           'end_time':{'$lt':new Date()},
           '$or':[{'team':{'$in':team_ids}},{'cid':user.cid,'team':[]}]
         }
+        if(req.params.start_time!=0){
+          var _start_Date = new Date();
+          option.start_time={'$lt':_start_Date.setTime(req.params.start_time)}
+        }
         Campaign
-        .find(options)
-        .skip(page * pagesize)
+        .find(option)
         .limit(pagesize)
         .populate('team').populate('cid')
+        .sort({'start_time':-1})
+        .sort({'start_time':-1})
         .exec()
         .then(function(campaign) {
           if(campaign===[]){
             return res.send({ result: 0, msg:'查找活动失败' });
           }
           else{
+            console.log(campaign);
             return res.send({ result: 1, campaigns: formatCampaign(campaign,pageType,req.session.role,req.user) });
           }
         })
@@ -307,7 +319,7 @@ exports.cancelCampaign = function(req, res){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
-        if (campaign.camp==[] &&req.session.role==="HR"&&campaign.cid[0].toString()==req.user._id.toString() || campaign.camp==[] && campaign.team.length===2&&req.session.role==='LEADER' && model_helper.arrayObjectIndexOf(campaign.team[0].leader,req.user._id,'_id')>-1){
+        if (campaign.camp.length===0 &&req.session.role==="HR"&&campaign.cid[0].toString()==req.user._id.toString() || campaign.camp.length===0 && campaign.team.length===1&&req.session.role==='LEADER' && model_helper.arrayObjectIndexOf(campaign.team[0].leader,req.user._id,'_id')>-1){
           campaign.active=false;
           campaign.save(function(err){
             if(!err){

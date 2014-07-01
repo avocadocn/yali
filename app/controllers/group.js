@@ -476,7 +476,7 @@ exports.getGroupCampaign = function(req, res) {
 //队长关闭活动
 exports.campaignCancel = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   var campaign_id = req.body.campaign_id;
   Campaign.findOne({_id:campaign_id}).populate('team').exec(function(err, campaign) {

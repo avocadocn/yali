@@ -536,6 +536,9 @@ textarea {
 .dl_messagebox .message_row {
   padding: 5px 0;
 }
+.dl_messagebox .vertical_label {
+  margin: 0 8px 0 8px;
+}
 .campaigns_list {
   background-color: #fff;
 }

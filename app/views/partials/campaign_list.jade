@@ -42,6 +42,12 @@ if provider=='company'
               btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(campaign_item._id,$index)" ng-if="campaign_item.join_flag==-1") {{"JOIN"|translate}}
             span(ng-if="campaign_item.close_flag")
               btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_item._id)") 关闭活动
-.text-center
+  hr
+.text-center(ng-if="campaigns.length>0")
   button(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
-  span(ng-if="!loadMore_flag") 已经加载了所有的活动
+  span(ng-if="loadOver_flag") 已经加载了所有的活动
+ul.pager
+  li
+    a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
+  li
+    a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
