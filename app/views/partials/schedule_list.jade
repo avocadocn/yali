@@ -11,11 +11,11 @@ div.clearfix
     | &nbsp;|&nbsp;
     a(ng-click="getCampaigns('unjoin')" href="javascript:void(0)") 未参加
   p.pull-right#calendar_nav(ng-show="isCalendar")
-    a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&nbsp;{{ prev }}
-    | &nbsp;|&nbsp;
+    a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
+    | &nbsp;&nbsp;
     a(data-calendar-nav="today" href="javascript:void(0)") 今天
-    | &nbsp;|&nbsp;
-    a(data-calendar-nav="next" href="javascript:void(0)") {{ next }}&nbsp;&gt;
+    | &nbsp;&nbsp;
+    a(data-calendar-nav="next" href="javascript:void(0)") &gt;&gt;
 div.calendar_box
   #calendar_view(ng-show="isCalendar")
     .clearfix

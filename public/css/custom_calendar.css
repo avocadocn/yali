@@ -38,7 +38,16 @@
   width: 16px;
   height: 16px;
 }
-.event-item .join_sign {
+#cal-slide-content .event-item {
+  position: relative;
+}
+#cal-slide-content .event-item .join_sign {
+  position: absolute;
+  left: 5px;
+  top: -1px;
   width: 16px;
   height: 16px;
+}
+#cal-slide-content .event_list_logo {
+  margin-left: 24px;
 }
