@@ -7,7 +7,14 @@ var pagesize = 20;
 
 
 function getUserAllCampaigns(user, isCalendar, callback) {
-  var query = Campaign.find({ 'cid': user.cid, 'active': true });
+  var options = {
+    'cid': user.cid,
+    'active': true
+  };
+  if (isCalendar === false) {
+    options.end_time = { '$gt': new Date() };
+  }
+  var query = Campaign.find(options);
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -24,10 +31,14 @@ function getUserAllCampaigns(user, isCalendar, callback) {
 }
 
 function getUserJoinedCampaigns(user, isCalendar, callback) {
-  var query = Campaign.find({
+  var options = {
     '$or': [{ 'member.uid': user._id }, { 'camp.member.uid': user._id }],
     'active': true
-  });
+  };
+  if (isCalendar === false) {
+    options.end_time = { '$gt': new Date() };
+  }
+  var query = Campaign.find(options);
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -44,14 +55,18 @@ function getUserJoinedCampaigns(user, isCalendar, callback) {
 }
 
 function getUserUnjoinCampaigns(user, isCalendar, callback) {
-  var query = Campaign.find({
+  var options = {
     'cid': user.cid,
     '$nor': [
       { 'member.uid': user._id },
       { 'camp.member.uid': user._id }
     ],
     'active': true
-  });
+  };
+  if (isCalendar === false) {
+    options.end_time = { '$gt': new Date() };
+  }
+  var query = Campaign.find(options);
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -340,13 +355,35 @@ exports.cancelCampaign = function(req, res){
 
 
 exports.getUserAllCampaignsForCalendar = function(req, res) {
-  getUserAllCampaigns(req.user, true, function(campaigns) {
-    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
-    res.send(format_campaigns);
-  });
+  if (req.session.role === 'OWNER') {
+    getUserAllCampaigns(req.user, true, function(campaigns) {
+      var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+      res.send(format_campaigns);
+    });
+  } else {
+    User
+    .findById(req.session.nowuid)
+    .exec()
+    .then(function(user) {
+      if (!user) {
+        throw 'not found';
+      }
+      getUserJoinedCampaigns(user, true, function(campaigns) {
+        var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+        res.send(format_campaigns);
+      });
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.send(500);
+    });
+  }
 };
 
 exports.getUserJoinedCampaignsForCalendar = function(req, res) {
+  if (req.session.role !== 'OWNER') {
+    res.send(403);
+  }
   getUserJoinedCampaigns(req.user, true, function(campaigns) {
     var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
     res.send(format_campaigns);
@@ -354,6 +391,9 @@ exports.getUserJoinedCampaignsForCalendar = function(req, res) {
 };
 
 exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
+  if (req.session.role !== 'OWNER') {
+    res.send(403);
+  }
   getUserUnjoinCampaigns(req.user, true, function(campaigns) {
     var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
     res.send(format_campaigns);
