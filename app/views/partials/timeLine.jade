@@ -20,7 +20,7 @@ if(newTimeLines)
                 span.date= moment(item.start_time).format('MM/DD')
             .img_container
             .content
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
                 
                 p= item.content
       .column.column_right
@@ -33,7 +33,7 @@ if(newTimeLines)
                 span.date= moment(item.start_time).format('MM/DD')
             .img_container
             .content
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
                 
                 p= item.content
 else
