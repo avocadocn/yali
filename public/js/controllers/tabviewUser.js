@@ -466,73 +466,73 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
     };
 }]);
 
-tabViewUser.controller('CampaignListController', ['$http', '$scope', '$rootScope',
-    function($http, $scope, $rootScope) {
-        $scope.company = false;
-        $http.get('/campaign/getCampaigns/user/all/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-            $scope.campaigns = data.campaigns;
-        });
-        $scope.loadMore_flag = true;
-        $scope.page = 1;
-        $scope.loadMore = function() {
-            $http.get('/campaign/getCampaigns/user/all/' + $scope.page + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-                if (data.result === 1 && data.campaigns.length > 0) {
-                    $scope.campaigns = $scope.campaigns.concat(data.campaigns);
-                    $scope.page++;
-                } else {
-                    $scope.loadMore_flag = false;
-                }
-            });
-        }
-        $scope.join = function(campaign_id, index) {
-            try {
-                $http({
-                    method: 'post',
-                    url: '/users/joinCampaign',
-                    data: {
-                        campaign_id: campaign_id
-                    }
-                }).success(function(data, status) {
-                    if (data.result === 1) {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
-                        $scope.campaigns[index].join_flag = true;
-                        $scope.campaigns[index].member_length++;
-                    } else {
-                        alert(data.msg);
-                    }
-                }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-                });
-            } catch (e) {
-                console.log(e);
-            }
-        };
+// tabViewUser.controller('CampaignListController', ['$http', '$scope', '$rootScope',
+//     function($http, $scope, $rootScope) {
+//         $scope.company = false;
+//         $http.get('/campaign/getCampaigns/user/all/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+//             $scope.campaigns = data.campaigns;
+//         });
+//         $scope.loadMore_flag = true;
+//         $scope.page = 1;
+//         $scope.loadMore = function() {
+//             $http.get('/campaign/getCampaigns/user/all/' + $scope.page + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+//                 if (data.result === 1 && data.campaigns.length > 0) {
+//                     $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+//                     $scope.page++;
+//                 } else {
+//                     $scope.loadMore_flag = false;
+//                 }
+//             });
+//         }
+//         $scope.join = function(campaign_id, index) {
+//             try {
+//                 $http({
+//                     method: 'post',
+//                     url: '/users/joinCampaign',
+//                     data: {
+//                         campaign_id: campaign_id
+//                     }
+//                 }).success(function(data, status) {
+//                     if (data.result === 1) {
+//                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+//                         $scope.campaigns[index].join_flag = true;
+//                         $scope.campaigns[index].member_length++;
+//                     } else {
+//                         alert(data.msg);
+//                     }
+//                 }).error(function(data, status) {
+//                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+//                 });
+//             } catch (e) {
+//                 console.log(e);
+//             }
+//         };
 
-        $scope.quit = function(campaign_id, index) {
-            try {
-                $http({
-                    method: 'post',
-                    url: '/users/quitCampaign',
-                    data: {
-                        campaign_id: campaign_id
-                    }
-                }).success(function(data, status) {
-                    if (data.result === 1) {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
-                        $scope.campaigns[index].join_flag = false;
-                        $scope.campaigns[index].member_length--;
-                    } else {
-                        alert(data.msg);
-                    }
-                }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-                });
-            } catch (e) {
-                console.log(e);
-            }
-        };
-    }
-]);
+//         $scope.quit = function(campaign_id, index) {
+//             try {
+//                 $http({
+//                     method: 'post',
+//                     url: '/users/quitCampaign',
+//                     data: {
+//                         campaign_id: campaign_id
+//                     }
+//                 }).success(function(data, status) {
+//                     if (data.result === 1) {
+//                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+//                         $scope.campaigns[index].join_flag = false;
+//                         $scope.campaigns[index].member_length--;
+//                     } else {
+//                         alert(data.msg);
+//                     }
+//                 }).error(function(data, status) {
+//                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+//                 });
+//             } catch (e) {
+//                 console.log(e);
+//             }
+//         };
+//     }
+// ]);
 
 
 tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope',
