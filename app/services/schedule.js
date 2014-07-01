@@ -5,17 +5,26 @@ var mongoose = require('mongoose'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup'),
     GroupMessage = mongoose.model('GroupMessage'),
-    Campaign = mongoose.model('Campaign');
+    Campaign = mongoose.model('Campaign'),
+    schedule = require('node-schedule');
+function finishCampaign(){
+  Campaign.update({'active':true,'finish':false,'end_time': {'$gt':new Date()}},{$set:{'active':true,'finish':true}},{multi: true},function(err,num){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log('finishCampaign:'+num);
+    }
+  });
+}
+exports.init = function(){
+  var rule = new schedule.RecurrenceRule();
+  rule.minute = 0;
+  var j = schedule.scheduleJob(rule, function(){
+      finishCampaign();
+  });
+}
 
-// exports.init = function(){
-//   var rule = new schedule.RecurrenceRule();
-//   rule.second = 42;
-//   var num=0;
-//   //处理要做的事情
-//   var j = schedule.scheduleJob(rule, function(){
-//       console.log(num++,new Date());
-//   });
-// }
 //同步公司名
 exports.updateCname =function (cid){
   Company.findOne({_id: cid}).exec().then(function(company){
@@ -33,12 +42,6 @@ exports.updateCname =function (cid){
       if(err){
         console.log(err);
       }
-    });
-    Competition.update({'poster.cid': cid},{$set:{'poster.cname':company.info.name}},{multi: true},function(err,num){
-      if(err){
-        console.log(err);
-      }
-
     });
     Campaign.update({'poster.cid': cid},{$set:{'poster.cname':company.info.name}},{multi: true},function(err,num){
       if(err){
@@ -85,18 +88,13 @@ exports.updateUname =function (uid){
         console.log(err);
       }
     });
-    Competition.update({'poster.uid': uid},{$set:{'poster.nickname':user.nickname}},{multi: true},function(err,num){
-      if(err){
-        console.log(err);
-      }
-    });
     //目前无法进行嵌套数组的定位，所以分别进行camp A和 camp B的查找
-    Competition.update({'camp.0.member.uid': uid},{$set:{'camp.0.member.$.nickname':user.nickname}},{multi: true},function(err,num){
+    Campaign.update({'camp.0.member.uid': uid},{$set:{'camp.0.member.$.nickname':user.nickname}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
     });
-    Competition.update({'camp.1.member.uid': uid},{$set:{'camp.1.member.$.nickname':user.nickname}},{multi: true},function(err,num){
+    Campaign.update({'camp.1.member.uid': uid},{$set:{'camp.1.member.$.nickname':user.nickname}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
@@ -138,7 +136,7 @@ exports.updateTname =function (tid){
         console.log(err);
       }
     });
-    Competition.update({'camp.id': tid},{$set:{'camp.$.tname':companyGroup.name}},{multi: true},function(err,num){
+    Campaign.update({'camp.id': tid},{$set:{'camp.$.tname':companyGroup.name}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
@@ -160,12 +158,12 @@ exports.updateUlogo =function (uid){
       }
     });
     //目前无法进行嵌套数组的定位，所以分别进行camp A和 camp B的查找
-    Competition.update({'camp.0.member.uid': uid},{$set:{'camp.0.member.$.photo':user.nickname}},{multi: true},function(err,num){
+    Campaign.update({'camp.0.member.uid': uid},{$set:{'camp.0.member.$.photo':user.nickname}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
     });
-    Competition.update({'camp.1.member.uid': uid},{$set:{'camp.1.member.$.photo':user.nickname}},{multi: true},function(err,num){
+    Campaign.update({'camp.1.member.uid': uid},{$set:{'camp.1.member.$.photo':user.nickname}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }

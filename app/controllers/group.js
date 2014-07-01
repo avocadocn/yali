@@ -218,7 +218,7 @@ exports.saveInfo =function(req,res) {
 //小队信息维护
 exports.timeLine = function(req, res){
   Campaign
-  .find({ 'end_time':{'$lt':new Date()},'team': req.session.nowtid})
+  .find({ 'active':true,'finish':true,'team': req.session.nowtid})
   .sort('-start_time')
   .populate('team')
   .exec()
@@ -434,7 +434,7 @@ exports.getCompanyGroups = function(req, res) {
     } else {
       return res.send({
         'teams':teams,
-        'team' : req.user != undefined ? req.user.team : [],
+        'team' : req.user.provider==='user' ? req.user.team : [],
         'cid':req.session.nowcid,
         'role':req.session.role,
         'provoke_gid' : provoke_gid,   //进对方公司资料对其小队进行挑战时判断小队类型

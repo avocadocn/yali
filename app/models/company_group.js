@@ -60,6 +60,24 @@ var CompanyGroup = new Schema({
     create_time:{
         type: Date,
         default: Date.now
+    },
+    count:{
+        last_week_campaign: {
+            type: Number,
+            default: 0
+        },
+        last_week_member: {
+            type: Number,
+            default: 0
+        },
+        last_month_campaign: {
+            type: Number,
+            default: 0
+        },
+        last_month_member: {
+            type: Number,
+            default: 0
+        }
     }
 });
 

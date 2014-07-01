@@ -59,8 +59,6 @@ module.exports = function(app, passport) {
     app.get('/company/campaigns', authorization.requiresLogin, company.renderCompanyCampaign);
     app.get('/company/getCampaigns', authorization.requiresLogin, company.getCompanyCampaign);
 
-    app.post('/company/campaignCancel', authorization.requiresCompany, company.campaignCancel);
-
     app.post('/company/appointLeader', authorization.requiresCompany, company.appointLeader);
 
     app.get('/company/home', authorization.requiresLogin,company.authorize,company.home);

@@ -204,6 +204,7 @@ exports.getCampaigns = function(req, res) {
   if(pageType==='company') {
     option={
       'active':true,
+      'finish':false,
       'end_time':{'$gt':new Date()},
       'cid' : req.session.nowcid
     }
@@ -327,7 +328,6 @@ exports.getCampaigns = function(req, res) {
 exports.cancelCampaign = function(req, res){
   Campaign
     .findOne({'_id':req.body.campaign_id})
-    .populate('team')
     .exec()
     .then(function(campaign) {
       if(!campaign){

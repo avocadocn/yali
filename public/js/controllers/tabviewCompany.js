@@ -270,8 +270,8 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
  function ($http, $scope, $rootScope) {
     $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
-      //按照员工真实姓名的拼音排序
-      $scope.members = $scope.members.sort(function (e,f){return e.realname.localeCompare(f.realname);});
+      //按照员工昵称的拼音排序
+      $scope.members = $scope.members.sort(function (e,f){return e.nickname.localeCompare(f.nickname);});
       $scope.company = true;
     });
 
@@ -827,7 +827,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
         }
     };
 }]);
-// HR增加小组 controller
+// HR 发布公司活动 controller
 tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', function($http, $scope, $rootScope){
     $("#start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));

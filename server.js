@@ -11,7 +11,6 @@ var express = require('express'),
     logger = require('mean-logger'),
     cluster = require('cluster'),
     numCPUs = require('os').cpus().length;
-
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
@@ -117,9 +116,8 @@ logger.init(app, passport, mongoose);
 exports = module.exports = app;
 
 //var dataInit = require('./app/config/db');
-
+require('./app/services/schedule').init();
 //dataInit.create();
-
 
 // 创建被git排除的目录
 mkdirp.sync(path.join(__dirname, 'temp_uploads/'));

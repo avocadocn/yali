@@ -77,6 +77,10 @@ var Campaign = new Schema({
         type: Boolean,
         default: false
     },
+    finish:{
+        type: Boolean,
+        default: false
+    },
     cid: [{
         type: Schema.Types.ObjectId,
         ref: 'Company'
@@ -128,7 +132,6 @@ var Campaign = new Schema({
         type: Date,
         default: Date.now
     },
-    close_time: Date,
     camp:[_camp],    //阵营
     comment_sum:{
         type:Number,

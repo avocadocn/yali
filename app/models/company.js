@@ -77,7 +77,6 @@ var CompanySchema = new Schema({
             default: 0
         }
     },
-
     register_date: {
         type: Date,
         default: Date.now

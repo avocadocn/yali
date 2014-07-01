@@ -826,7 +826,7 @@ exports.saveAccount = function(req, res) {
 };
 exports.timeLine = function(req, res){
   Campaign
-  .find({ 'end_time':{'$lt':new Date()},'cid': req.session.nowcid})
+  .find({'active':true,'finish':true,'cid': req.session.nowcid})
   .sort('-start_time')
   .populate('team').populate('cid')
   .exec()
@@ -1105,47 +1105,6 @@ exports.appointLeader = function (req, res) {
     });
 };
 
-
-
-//关闭企业活动
-exports.campaignCancel = function (req, res) {
-    if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-        return res.send(403,'forbidden');
-    }
-    var campaign_id = req.body.campaign_id;
-    Campaign.findOne({_id:campaign_id},function(err, campaign) {
-        if(campaign) {
-            if (err) {
-                console.log('错误');
-            }
-            if(campaign.poster.cid.toString() !== req.user._id.toString()){
-                return res.send(403, 'forbidden!');
-            }
-            var active = campaign.active;
-            campaign.active = !active;
-            campaign.save(function(err){
-                if(!err){
-                    var groupMessage = new GroupMessage();
-                    groupMessage.message_type = 3;
-                    groupMessage.company ={
-                        cid : campaign.cid[0],
-                        name : campaign.cname[0],
-                        logo : req.user.info.logo
-                    };
-                    groupMessage.campaign = campaign._id;
-                    groupMessage.save(function(err){
-                        if(!err){
-                            return res.send({'result':1,'msg':'活动关闭成功'});
-                        }
-                    });
-                }
-            });
-            //console.log('创建成功');
-        } else {
-            return res.send('not exist');
-        }
-    });
-};
 
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function (req, res) {

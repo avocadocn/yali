@@ -616,7 +616,7 @@ exports.getCampaigns = function(req, res) {
   var team_ids = [];
   var team;
 
-  if(req.session.otheruid != null) {
+  if(req.session.role!=='OWNER') {
     User.findOne({'_id':req.session.otheruid},function (err,user){
       if(err || !user) {
         return res.send({
@@ -645,11 +645,6 @@ exports.renderScheduleList = function(req, res) {
 
 
 exports.home = function(req, res) {
-  if(req.params.userId) {
-    req.session.otheruid = req.params.userId;
-  } else {
-    req.session.otheruid = null;
-  }
   var _user = {};
   var _nickname,_logo;
   if(req.session.role ==='OWNER'){
@@ -877,10 +872,9 @@ exports.quitCampaign = function (req, res) {
 };
 exports.timeLine = function(req,res){
   //如果是访问其它员工的timeline
-  var uid = (req.session.otheruid != null ? req.session.otheruid : req.session.nowuid);
-  console.log(uid);
+  var uid = req.session.nowuid;
   Campaign
-  .find({ 'end_time':{'$lt':new Date()},'$or':[{'member.uid': uid},{'camp.member.uid':uid}]})
+  .find({ 'active':true,'finish':true,'$or':[{'member.uid': uid},{'camp.member.uid':uid}]})
   .sort('-start_time')
   .populate('team').populate('cid')
   .exec()
