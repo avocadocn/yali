@@ -127,6 +127,9 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
             $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope),true;
         });
+        $rootScope.$watch('teamName',function(tname){
+            ;
+        });
     });
 
     //var teamId = $('#team_content').attr('team-id');

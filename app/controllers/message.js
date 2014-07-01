@@ -85,7 +85,6 @@ function set(param){
 
 
 function _add(param){
-  console.log('hahaha_add',param.other_param);
   param.collection.create(param.operate,function(err,message){
     if(err || !message){
       if(param._err!=null && typeof param._err == 'function'){
@@ -119,8 +118,8 @@ var _err = function(err){
 
 //无论是组长对组员、hr对员工还是生成新活动后对该活动所属组所有组员发送站内信,都可以调用此函数
 var oneToMember = function(param){
+  console.log('LETSEE',param.members);
   var callback = function (message_content,other,req,res){
-    console.log('hahaha',other[0].length);
     var counter = {'i':0};
     async.whilst(
       function() { return counter.i < other[0].length},
@@ -154,7 +153,7 @@ var oneToMember = function(param){
   var MC={
     'caption':param.caption,
     'content':param.content,
-    'sender':param.sender,
+    'sender':[param.sender],
     'team':param.team,
     'company_id':param.company_id,
     'deadline':(new Date())+time_out
@@ -197,7 +196,7 @@ exports.leaderSendToMember = function(req,res){
 
   var callback = function(company_group,team,req,res){
     if(company_group){
-      var members = company_group.member;
+      var members = company_group[0].member;
       var caption = 'Message From Leader!';
       var _param = {
         'members':members,
@@ -210,13 +209,14 @@ exports.leaderSendToMember = function(req,res){
         'res':res,
         'type':'team'
       }
+      console.log('BEFORE',_param.members);
       oneToMember(_param);
     }
   }
   var param= {
     'collection':CompanyGroup,
     'type':1,
-    'condition':{'_id':team._id},
+    'condition':{'_id':team.own._id},
     'limit':{'member':1},
     'sort':null,
     'callback':callback,
@@ -243,8 +243,8 @@ exports.newCampaignCreate = function(req,res,team,cid){
             'members':users,
             'caption':caption,
             'content':null,
-            'sender':null,
-            'team':null,
+            'sender':[],
+            'team':[],
             'company_id':cid,
             'req':req,
             'res':res,
@@ -278,7 +278,7 @@ exports.newCampaignCreate = function(req,res,team,cid){
             'members':members,
             'caption':caption,
             'content':null,
-            'sender':null,
+            'sender':[],
             'team':[team.own],
             'company_id':null,
             'req':req,
@@ -318,7 +318,7 @@ exports.newCampaignCreate = function(req,res,team,cid){
             'members':members,
             'caption':caption,
             'content':null,
-            'sender':null,
+            'sender':[],
             'team':[team.own,team.opposite],
             'company_id':null,
             'req':req,

@@ -31,6 +31,7 @@ block baseInfo
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") {{"CAMPAIGN"|translate}}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorSearchModel") {{"PROVOKE"|translate}}
+            button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorMessageModel") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") {{"ARENA"|translate}}
         - var isMember = false;
         if (Global.role === 'MEMBER' || Global.role ==='LEADER' || Global.role ==='PARTNER')
@@ -41,7 +42,7 @@ block baseInfo
           .score_container(ng-show="!isMember")
             button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
 block panel
-  div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
+  div(ng-init="teamId='#{teamId}';groupId='#{gid}';teamName='#{tname}'")
     ul.nav.nav-tabs
       if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
         li.tab_style(ng-class="{'active':nowTab=='group_message'}")
@@ -64,6 +65,9 @@ block panel
           include ../partials/provoke_modal
         div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           include ../partials/search_modal
+      div(ng-controller="messageTeamController" )
+        div.modal.fade#sponsorMessageModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+          include ../partials/private_message_send
     if (Global.role ==='MEMBER' || Global.role ==='LEADER')
       div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
