@@ -543,11 +543,11 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
         // 判断是否是第一次加载视图，用于$scope.$digest()
         var firstLoad = true;
-        var campaignsType = 'all';
+        $scope.campaignsType = 'all';
 
         $scope.calendar = function(isCalendar) {
             $scope.isCalendar = isCalendar;
-            $scope.getCampaigns(campaignsType);
+            $scope.getCampaigns($scope.campaignsType);
         };
 
         var initCalendar = function(events_source) {
@@ -607,11 +607,11 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         $scope.company = false; // 作用？
         $scope.getCampaigns = function(attr) {
             if ($scope.isCalendar === true) {
-                campaignsType = attr;
+                $scope.campaignsType = attr;
                 var events_source = '/campaign/user/' + attr + '/calendar';
                 initCalendar(events_source);
             } else {
-                campaignsType = attr;
+                $scope.campaignsType = attr;
                 $http.get('/campaign/user/' + attr + '/list').success(function(data, status) {
                   $scope.campaigns = data.campaigns;
                   $scope.company = false;

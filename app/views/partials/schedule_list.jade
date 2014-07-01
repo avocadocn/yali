@@ -6,11 +6,14 @@ div.clearfix.schedule_operator
       a(ng-click="calendar(false)" href="javascript:void(0)") 列表
   if (Global.role === 'OWNER')
     p.pull-left.schedule_type
-      a(ng-click="getCampaigns('all')" href="javascript:void(0)") 所有
+      a(ng-if="campaignsType!=='all'" ng-click="getCampaigns('all')" href="javascript:void(0)") 所有
+      span.active(ng-if="campaignsType==='all'") 所有
       span |
-      a(ng-click="getCampaigns('joined')" href="javascript:void(0)") 已参加
+      a(ng-if="campaignsType!=='joined'" ng-click="getCampaigns('joined')" href="javascript:void(0)") 已参加
+      span.active(ng-if="campaignsType==='joined'") 已参加
       span |
-      a(ng-click="getCampaigns('unjoin')" href="javascript:void(0)") 未参加
+      a(ng-if="campaignsType!=='unjoin'" ng-click="getCampaigns('unjoin')" href="javascript:void(0)") 未参加
+      span.active(ng-if="campaignsType==='unjoin'") 未参加
   p.pull-right.calendar_nav#calendar_nav(ng-show="isCalendar")
     a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
     a(data-calendar-nav="today" href="javascript:void(0)") 今天
