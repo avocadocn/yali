@@ -192,6 +192,9 @@ Timeline UI Base
   margin: 0px auto;
   background-color: #fff;
 }
+.dl_timeline:hover .timeline_element {
+  opacity: 0.6;
+}
 .dl_timeline .spine {
   position: absolute;
   top: 0px;
@@ -207,9 +210,6 @@ Timeline UI Base
 .dl_timeline .column {
   width: 50%;
 }
-.dl_timeline .column:hover .timeline_element {
-  opacity: 0.6;
-}
 .dl_timeline .column .timeline_element {
   background-color: #fff;
   border: 1px solid #ccc;
@@ -221,6 +221,8 @@ Timeline UI Base
   margin: 10px 0px;
   clear: both;
   border-radius: 5px;
+  padding: 10px;
+  color: #888;
 }
 .dl_timeline .column .timeline_element:hover {
   cursor: pointer;
@@ -245,6 +247,36 @@ Timeline UI Base
   background-color: #bbb;
   border: 1px solid #fff;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+}
+.dl_timeline .column .timeline_element .title {
+  position: relative;
+  font-size: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.dl_timeline .column .timeline_element .title a {
+  color: #aaa;
+}
+.dl_timeline .column .timeline_element .title a:hover {
+  text-decoration: none;
+}
+.dl_timeline .column .timeline_element .title .head {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 22px;
+}
+.dl_timeline .column .timeline_element .title .date {
+  float: right;
+}
+.dl_timeline .column .timeline_element .title .timeline-logo {
+  margin-right: 4px;
+}
+.dl_timeline .column .timeline_element .content a {
+  color: #888;
+}
+.dl_timeline .column .timeline_element .content a:hover {
+  text-decoration: none;
 }
 .dl_timeline .column_left {
   float: left;
@@ -280,7 +312,7 @@ Timeline UI Base
 .dl_timeline .date_separator {
   clear: both;
   text-align: center;
-  height: 60px;
+  height: 40px;
   position: relative;
 }
 .dl_timeline .date_separator .span {
@@ -296,5 +328,4 @@ Timeline UI Base
   color: #666;
   left: 50%;
   margin-left: -75px;
-  margin-top: 20px;
 }

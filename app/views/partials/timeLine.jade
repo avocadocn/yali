@@ -1,6 +1,44 @@
 append block headExt
   link(rel="stylesheet" href="/css/timeline.css")
 .row
+
+
+.row
+if(newTimeLines)
+  .dl_timeline
+    .spine
+    each years in newTimeLines
+      .date_separator(id='year' + "#{years.left[0].year}")
+        span.span= years.left[0].year
+      .column.column_left
+        each item in years.left
+          .timeline_element
+            .title
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+                img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                span.head= item.head
+                span.date= moment(item.start_time).format('YY/MM/DD')
+            .img_container
+            .content
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+                
+                p= item.content
+      .column.column_right
+        each item in years.right
+          .timeline_element
+            .title
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+                img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                span.head= item.head
+                span.date= moment(item.start_time).format('YY/MM/DD')
+            .img_container
+            .content
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+                
+                p= item.content
+else
+  span.emptiem no newTimeLines
+
 //-if(timeLines)
   ul.timeline
     each timeline in timeLines
@@ -18,36 +56,3 @@ append block headExt
             p= "{{'CONTENT'|translate}}" +":"+ timeline.content
 //-else
   span.emptiem {{"NO_CAMPAIGN"|translate}}
-
-.row
-if(newTimeLines)
-  .dl_timeline
-    .spine
-    each years in newTimeLines
-      .date_separator(id='year' + "#{years.left[0].year}")
-        span.span= years.left[0].year
-      .column.column_left
-        each item in years.left
-          .timeline_element
-            .title
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
-                span.label= item.head
-                span.date= moment(item.start_time).format('YY/MM/DD')
-            .img_container
-            .content
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
-                img.timeline-img.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                p= item.content
-      .column.column_right
-        each item in years.right
-          .timeline_element
-            .title
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
-              span.label= item.head
-              span.date= moment(item.start_time).format('YY/MM/DD')
-            .img_container
-            .content
-              img.timeline-img.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-              p= item.content
-else
-  span.emptiem no newTimeLines

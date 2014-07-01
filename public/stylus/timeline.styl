@@ -1,6 +1,7 @@
 /***
 Timeline UI Base
 ***/
+@require('variables')
 .timeline
   margin 20px 0 0 0
   padding 0
@@ -222,6 +223,9 @@ Timeline UI Base
   overflow hidden
   margin 0px auto
   background-color #FFFFFF
+  &:hover
+    .timeline_element
+      opacity 0.6
   .spine
     position absolute
     top 0px
@@ -235,9 +239,7 @@ Timeline UI Base
     height 100%
   .column
     width 50%
-    &:hover
-      .timeline_element
-        opacity 0.6
+    
     .timeline_element
       background-color #FFFFFF
       border 1px solid #CCCCCC
@@ -249,6 +251,8 @@ Timeline UI Base
       margin 10px 0px
       clear both
       border-radius 5px
+      padding 10px
+      color #888888
       
       &:hover
         cursor pointer
@@ -271,6 +275,30 @@ Timeline UI Base
         background-color #BBBBBB
         border 1px solid #FFFFFF
         box-shadow 0px 0px 2px rgba(0, 0, 0, 0.2)
+      .title
+        position relative
+        font-size 10px
+        overflow hidden
+        margin-bottom 10px
+        text-transform uppercase
+        a
+          color #AAAAAA
+          &:hover
+            text-decoration none
+        .head
+          color #AAAAAA
+          font-size 12px
+          line-height 22px
+        .date
+          float right
+        .timeline-logo
+          margin-right 4px
+      .content
+        a
+          color #888888
+          &:hover
+            text-decoration none
+
     
 
   .column_left
@@ -278,7 +306,6 @@ Timeline UI Base
     .timeline_element
       float right
       margin-right 30px
-      
       &:before
         top 15px
         right -27px
@@ -303,7 +330,7 @@ Timeline UI Base
   .date_separator 
     clear both
     text-align center
-    height 60px
+    height 40px
     position relative
 
     .span 
@@ -319,7 +346,6 @@ Timeline UI Base
       color #666666
       left 50%
       margin-left -75px
-      margin-top 20px
 
 
 

@@ -292,10 +292,10 @@ exports.timeLine = function(req, res){
     else{
       res.render('partials/timeLine');
     }
-      // todo new time style
-      console.log(timeLines);
-      console.log(newTimeLines);
-      // todo new time style
+      // // todo new time style
+      // console.log(timeLines);
+      // console.log(newTimeLines);
+      // // todo new time style
   })
   .then(null, function(err) {
     console.log(err);
