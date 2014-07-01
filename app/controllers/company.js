@@ -22,6 +22,7 @@ var mongoose = require('mongoose'),
     fs = require('fs'),
     async = require('async'),
     moment = require('moment'),
+    message = require('../controllers/message'),
     schedule = require('../services/schedule');
 
 var mail = require('../services/mail');

@@ -1,28 +1,45 @@
-.invisible_link
-  position absolute
-  width 100%
-  height 100%
-  background-color translate
-  z-index 1
+// .invisible_link
+//   position absolute
+//   width 100%
+//   height 100%
+//   background-color translate
+//   z-index 1
 
-.operator_btn
-  z-index 2
+// .operator_btn
+//   z-index 2
 
-.campaigns_list
-  .operator_btn
-    margin 5px
-  .campaign_panel
-    position relative
-    .aside
-      margin-right 0
-      min-height 70px
-    .campaign_container
-      width 520px
-      float left
-      .campaign_logo
-        width 60px
-        height 60px
-        float left
-      .campaign_right
-        width 460px
-        float left
+.campaign_table
+  tr:first-child
+    td
+      border-top none
+
+  tr
+    height 60px
+    td
+      padding-top 9px !important
+
+.time_col
+  width 64px
+  p
+    font-size 16px
+    margin 0
+  .day
+    margin-top 4px
+    font-size 12px
+
+.logo_col
+  width 64px
+
+  .campaign_logo
+    width 40px
+    height 40px
+    margin-top 2px
+
+.content_col
+  p
+    margin 0
+  .theme_text
+    margin-left 5px
+
+  .content_text
+    margin-left 5px

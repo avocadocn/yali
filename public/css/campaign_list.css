@@ -1,33 +1,37 @@
-.invisible_link {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: translate;
-  z-index: 1;
+.campaign_table tr:first-child td {
+  border-top: none;
 }
-.operator_btn {
-  z-index: 2;
-}
-.campaigns_list .operator_btn {
-  margin: 5px;
-}
-.campaigns_list .campaign_panel {
-  position: relative;
-}
-.campaigns_list .campaign_panel .aside {
-  margin-right: 0;
-  min-height: 70px;
-}
-.campaigns_list .campaign_panel .campaign_container {
-  width: 520px;
-  float: left;
-}
-.campaigns_list .campaign_panel .campaign_container .campaign_logo {
-  width: 60px;
+.campaign_table tr {
   height: 60px;
-  float: left;
 }
-.campaigns_list .campaign_panel .campaign_container .campaign_right {
-  width: 460px;
-  float: left;
+.campaign_table tr td {
+  padding-top: 9px !important;
+}
+.time_col {
+  width: 64px;
+}
+.time_col p {
+  font-size: 16px;
+  margin: 0;
+}
+.time_col .day {
+  margin-top: 4px;
+  font-size: 12px;
+}
+.logo_col {
+  width: 64px;
+}
+.logo_col .campaign_logo {
+  width: 40px;
+  height: 40px;
+  margin-top: 2px;
+}
+.content_col p {
+  margin: 0;
+}
+.content_col .theme_text {
+  margin-left: 5px;
+}
+.content_col .content_text {
+  margin-left: 5px;
 }
