@@ -14,13 +14,23 @@
 	<% if (monthTip !== '' && monthTip != null) { %>
 		<span class="pull-right month"><%= monthTip %></span>
 	<% } %>
-	<% if (events.length > 0) { %>
+	<%
+		if (events.length > 0) {
+			var count = 0;
+	%>
 		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
-			<% _.each(events, function(event) { %>
-				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" target="_blank" data-event-id="<%= event.id %>" data-event-class="<%= event['class'] %>"
-					class="pull-left event <%= event['class'] %>" data-toggle="tooltip"
-					title="<%= event.title %>"><img src="/logo/group/<%= event.team_id %>/27/27"/></a>
-			<% }); %>
+			<%
+				_.each(events, function(event) {
+					if (count < 6) {
+			%>
+			<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" target="_blank" data-event-id="<%= event.id %>" data-event-class="<%= event['class'] %>"
+				class="pull-left event <%= event['class'] %>" data-toggle="tooltip"
+				title="<%= event.title %>"><img src="/logo/group/<%= event.team_id %>/27/27"/></a>
+			<%
+					}
+					count++;
+				});
+			%>
 		</div>
 	<% } %>
 </div>
