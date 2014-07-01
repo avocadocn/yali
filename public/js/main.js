@@ -441,6 +441,29 @@ app.filter('dateView', function() {
     }
   }
 });
+app.filter('day', function() {
+  return function(input) {
+    var today = new Date();
+    var date = new Date(input);
+    var intervalMilli = date.getTime() - today.getTime();
+    var xcts = parseInt(intervalMilli / (24 * 60 * 60 * 1000));
+    // -2:前天 -1：昨天 0：今天 1：明天 2：后天， out：显示日期
+    switch(xcts){
+    // case -2:
+    //   return '前天';
+    case -1:
+      return '昨天';
+    case 0:
+      return '今天';
+    case 1:
+      return '明天';
+    // case 2:
+    //   return '后天';
+    default:
+      return date.getMonthFormatted() + '-' + date.getDateFormatted();
+    }
+  }
+});
 app.filter('week', function() {
 return function(input) {
 // input will be ginger in the usage below
