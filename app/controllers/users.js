@@ -948,12 +948,12 @@ exports.timeLine = function(req,res){
           }
           
         }
-        console.log('item:'+ newTimeLines[groupYear].length);
+        // console.log('item:'+ newTimeLines[groupYear].length);
         // todo new time style
 
         timeLines.push(tempObj);
       });
-      console.log(newTimeLines);
+      // console.log(newTimeLines);
       res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
 
       // res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
