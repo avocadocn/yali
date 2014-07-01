@@ -173,9 +173,13 @@ var oneToMember = function(param){
 //HR给所有公司成员发送站内信
 exports.hrSendToMember = function(req,res){
   var cid = req.body.cid;
-
   var content = req.body.content,
-      type = "public";
+      type = "public",
+      sender = {
+        '_id':req.user._id,
+        'nickname':req.user.info.name,
+        'leader':false
+      };
 
   var callback = function(users,other,req,res){
     if(users){
@@ -184,7 +188,7 @@ exports.hrSendToMember = function(req,res){
         'members':users,
         'caption':caption,
         'content':content,
-        'sender':[],
+        'sender':[sender],
         'team':[],
         'company_id':cid,
         'req':req,
@@ -236,7 +240,7 @@ exports.leaderSendToMember = function(req,res){
         'members':members,
         'caption':caption,
         'content':content,
-        'sender':sender,
+        'sender':[sender],
         'team':[team.own],
         'company_id':null,
         'req':req,
@@ -396,7 +400,7 @@ var getMessage = function(req,res,condition){
       res.send({
         'msg':[],
         'team':req.user.team,
-        'cid':req.user.cid,
+        'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
         'uid':req.user._id
       });
     }else{
@@ -413,7 +417,7 @@ var getMessage = function(req,res,condition){
       res.send({
         'msg':rst,
         'team':req.user.team,
-        'cid':req.user.cid,
+        'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
         'uid':req.user._id
       });
     }
