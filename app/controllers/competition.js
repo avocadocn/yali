@@ -19,213 +19,213 @@ exports.getGroupId = function(req, res) {
 
 
 //约战
-exports.provoke = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
-  }
+// exports.provoke = function (req, res) {
+//   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+//     return res.send(403,forbidden);
+//   }
 
-  var my_team_id = req.params.teamId;
-  var team_opposite = req.body.team_opposite;
+//   var my_team_id = req.params.teamId;
+//   var team_opposite = req.body.team_opposite;
 
-  var content = req.body.content;
-  var competition_format = req.body.competition_format;
-  var location = req.body.location;
-  var competition_date = req.body.competition_date;
-  var deadline = req.body.deadline;
-  var remark = req.body.remark;
-  var number = req.body.number;
-  var competition = new Competition();
+//   var content = req.body.content;
+//   var competition_format = req.body.competition_format;
+//   var location = req.body.location;
+//   var competition_date = req.body.competition_date;
+//   var deadline = req.body.deadline;
+//   var remark = req.body.remark;
+//   var number = req.body.number;
+//   var competition = new Competition();
 
-  competition.gid = req.companyGroup.gid;
-  competition.group_type = req.companyGroup.group_type;
+//   competition.gid = req.companyGroup.gid;
+//   competition.group_type = req.companyGroup.group_type;
 
-  var camp_a = {
-    'id' : my_team_id,
-    'cid' : req.companyGroup.cid,
-    'start_confirm' : true,
-    'tname' : req.companyGroup.name,
-    'logo' : req.companyGroup.logo
-  };
-
-
-  competition.camp.push(camp_a);
-
-  var camp_b = {
-    'id' : req.body.team_opposite._id,
-    'cid' : req.body.team_opposite.cid,
-    'tname' : req.body.team_opposite.name,
-    'logo' : req.body.team_opposite.logo
-  };
-  competition.camp.push(camp_b);
-
-  competition.content = req.body.content;
-  competition.brief.remark = req.body.remark;
-  competition.brief.location.name = location;
-  competition.brief.competition_date = competition_date;
-  competition.brief.deadline = deadline;
-  competition.brief.competition_format = competition_format;
-  competition.brief.number = number;
+//   var camp_a = {
+//     'id' : my_team_id,
+//     'cid' : req.companyGroup.cid,
+//     'start_confirm' : true,
+//     'tname' : req.companyGroup.name,
+//     'logo' : req.companyGroup.logo
+//   };
 
 
-  competition.poster.cname = req.user.cname;
-  competition.poster.cid = req.user.cid;
-  competition.poster.role = req.session.role;
-  competition.poster.uid = req.user._id;
-  competition.poster.nickname = req.user.nickname;
-  var groupMessage = new GroupMessage();
+//   competition.camp.push(camp_a);
 
-  groupMessage.team.push(my_team_id);         //发起挑战方小队id
-  groupMessage.team.push(team_opposite._id);  //应约方小队id
-  groupMessage.group.gid.push(req.companyGroup.gid);
-  groupMessage.group.group_type.push(competition.group_type);
-  groupMessage.provoke.active = true;
-  groupMessage.provoke.competition_format = competition_format;
+//   var camp_b = {
+//     'id' : req.body.team_opposite._id,
+//     'cid' : req.body.team_opposite.cid,
+//     'tname' : req.body.team_opposite.name,
+//     'logo' : req.body.team_opposite.logo
+//   };
+//   competition.camp.push(camp_b);
 
-  var a = {
-    'tid':my_team_id.toString(),
-    'cid':req.companyGroup.cid,
-    'tname':req.companyGroup.name
-  };
-  var b = {
-    'tid':team_opposite._id.toString(),
-    'cid':req.body.team_opposite.cid,
-    'tname':req.body.team_opposite.name
-  };
+//   competition.content = req.body.content;
+//   competition.brief.remark = req.body.remark;
+//   competition.brief.location.name = location;
+//   competition.brief.competition_date = competition_date;
+//   competition.brief.deadline = deadline;
+//   competition.brief.competition_format = competition_format;
+//   competition.brief.number = number;
 
-  groupMessage.provoke.camp.push(a);
-  groupMessage.provoke.camp.push(b);
 
-  groupMessage.poster.cid = req.companyGroup.cid;
-  if(req.session.role ==='LEADER'){
-    groupMessage.poster.uid = req.user._id;
-    groupMessage.poster.role = 'LEADER';
-    groupMessage.poster.nickname = req.user.nickname;
-  }
-  groupMessage.cid.push(req.companyGroup.cid);
-  if(req.companyGroup.cid !== req.body.team_opposite.cid) {
-    groupMessage.cid.push(req.body.team_opposite.cid);
-  }
-  groupMessage.content = content;
-  groupMessage.location = location;
-  groupMessage.start_time = competition_date;
-  groupMessage.end_time = deadline;
+//   competition.poster.cname = req.user.cname;
+//   competition.poster.cid = req.user.cid;
+//   competition.poster.role = req.session.role;
+//   competition.poster.uid = req.user._id;
+//   competition.poster.nickname = req.user.nickname;
+//   var groupMessage = new GroupMessage();
 
-  groupMessage.save(function (err) {
-    if (err) {
-      console.log('保存约战动态时出错' + err);
-      return res.send(err);
-    } else {
-      competition.provoke_message_id = groupMessage._id;
-      competition.save(function(err){
-        if(!err){
-           return res.send({'result':1,'msg':'挑战成功！'});
-        }
-      });
-    }
-    //这里要注意一下,生成动态消息后还要向被约队长发一封私信
-  });
+//   groupMessage.team.push(my_team_id);         //发起挑战方小队id
+//   groupMessage.team.push(team_opposite._id);  //应约方小队id
+//   groupMessage.group.gid.push(req.companyGroup.gid);
+//   groupMessage.group.group_type.push(competition.group_type);
+//   groupMessage.provoke.active = true;
+//   groupMessage.provoke.competition_format = competition_format;
 
-};
+//   var a = {
+//     'tid':my_team_id.toString(),
+//     'cid':req.companyGroup.cid,
+//     'tname':req.companyGroup.name
+//   };
+//   var b = {
+//     'tid':team_opposite._id.toString(),
+//     'cid':req.body.team_opposite.cid,
+//     'tname':req.body.team_opposite.name
+//   };
+
+//   groupMessage.provoke.camp.push(a);
+//   groupMessage.provoke.camp.push(b);
+
+//   groupMessage.poster.cid = req.companyGroup.cid;
+//   if(req.session.role ==='LEADER'){
+//     groupMessage.poster.uid = req.user._id;
+//     groupMessage.poster.role = 'LEADER';
+//     groupMessage.poster.nickname = req.user.nickname;
+//   }
+//   groupMessage.cid.push(req.companyGroup.cid);
+//   if(req.companyGroup.cid !== req.body.team_opposite.cid) {
+//     groupMessage.cid.push(req.body.team_opposite.cid);
+//   }
+//   groupMessage.content = content;
+//   groupMessage.location = location;
+//   groupMessage.start_time = competition_date;
+//   groupMessage.end_time = deadline;
+
+//   groupMessage.save(function (err) {
+//     if (err) {
+//       console.log('保存约战动态时出错' + err);
+//       return res.send(err);
+//     } else {
+//       competition.provoke_message_id = groupMessage._id;
+//       competition.save(function(err){
+//         if(!err){
+//            return res.send({'result':1,'msg':'挑战成功！'});
+//         }
+//       });
+//     }
+//     //这里要注意一下,生成动态消息后还要向被约队长发一封私信
+//   });
+
+// };
 
 
 //应约
-exports.responseProvoke = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
-  }
-  var provoke_message_id = req.body.provoke_message_id;
-  Competition.findOne({
-      'provoke_message_id' : provoke_message_id
-    },
-    function (err, competition) {
-      competition.camp[1].start_confirm = true;
-      //还要存入应约方的公司名、队长用户名、真实姓名等
-      competition.save(function (err) {
-        if (err) {
-          res.send(err);
-          return res.send({'result':0,'msg':'应战失败！'});
-        }
-        //双方都确认后就可以将约战变为活动啦
-        var campaign = new Campaign();
-        campaign.gid.push(competition.gid);
-        campaign.group_type.push(competition.group_type);
+// exports.responseProvoke = function (req, res) {
+//   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+//     return res.send(403,forbidden);
+//   }
+//   var provoke_message_id = req.body.provoke_message_id;
+//   Competition.findOne({
+//       'provoke_message_id' : provoke_message_id
+//     },
+//     function (err, competition) {
+//       competition.camp[1].start_confirm = true;
+//       //还要存入应约方的公司名、队长用户名、真实姓名等
+//       competition.save(function (err) {
+//         if (err) {
+//           res.send(err);
+//           return res.send({'result':0,'msg':'应战失败！'});
+//         }
+//         //双方都确认后就可以将约战变为活动啦
+//         var campaign = new Campaign();
+//         campaign.gid.push(competition.gid);
+//         campaign.group_type.push(competition.group_type);
 
-        if(competition.camp[0].cid !== competition.camp[1].cid){
-          campaign.cid.push(competition.camp[1].cid);
-        }
-        campaign.cid.push(competition.camp[0].cid);   //两家公司同时显示这一条活动
+//         if(competition.camp[0].cid !== competition.camp[1].cid){
+//           campaign.cid.push(competition.camp[1].cid);
+//         }
+//         campaign.cid.push(competition.camp[0].cid);   //两家公司同时显示这一条活动
 
-        campaign.team.push(competition.camp[0].id); //约战方小队id
-        campaign.team.push(competition.camp[1].id); //应约方小队id
+//         campaign.team.push(competition.camp[0].id); //约战方小队id
+//         campaign.team.push(competition.camp[1].id); //应约方小队id
 
-        campaign.poster.cname = competition.poster.cname;
-        campaign.poster.cid = competition.poster.cid;
-        campaign.poster.uid = competition.poster.uid;
-        campaign.poster.role = 'LEADER';
-        campaign.poster.nickname = competition.poster.nickname;
+//         campaign.poster.cname = competition.poster.cname;
+//         campaign.poster.cid = competition.poster.cid;
+//         campaign.poster.uid = competition.poster.uid;
+//         campaign.poster.role = 'LEADER';
+//         campaign.poster.nickname = competition.poster.nickname;
 
-        campaign.content = competition.camp[0].tname + ' VS ' + competition.camp[1].tname;
-        campaign.location = competition.brief.location.name;
-        campaign.start_time = competition.brief.competition_date;
-        campaign.end_time = competition.brief.deadline;
+//         campaign.content = competition.camp[0].tname + ' VS ' + competition.camp[1].tname;
+//         campaign.location = competition.brief.location.name;
+//         campaign.start_time = competition.brief.competition_date;
+//         campaign.end_time = competition.brief.deadline;
 
-        campaign.active = true;
-        campaign.provoke.active = true;
-        campaign.provoke.competition_id = competition._id;
-        campaign.provoke.competition_format = competition.brief.competition_format;
-        campaign.provoke.active = true;
+//         campaign.active = true;
+//         campaign.provoke.active = true;
+//         campaign.provoke.competition_id = competition._id;
+//         campaign.provoke.competition_format = competition.brief.competition_format;
+//         campaign.provoke.active = true;
 
 
-        campaign.save(function(err) {
-          if (err) {
-            console.log(err);
-            //检查信息是否重复
-            switch (err.code) {
-              case 11000:
-                break;
-              case 11001:
-                res.status(400).send('该活动已经存在!');
-                break;
-              default:
-                break;
-            }
-            return;
-          }
-          GroupMessage.findOne({'_id' : provoke_message_id}, function (err, group_message) {
-            if (err) {
-              console.log(err);
-            } else {
-              group_message.provoke.start_confirm = true;
-              group_message.save(function(err){
-                if(!err){
-                  if(competition.arena_flag){
-                    Arena.findOne({
-                      _id: competition.arena_id
-                    },
-                    function(err,arena){
-                      if(!err &&arena){
-                        arena.champion.provoke_status = true;
-                        if(!arena.champion.competition_id){
-                          arena.champion.competition_id =[];
-                        }
-                        arena.champion.competition_id.push(competition._id);
-                        arena.save(function(err){
-                          if(err){
-                            console.log(err);
-                          }
-                        });
-                      }
-                    });
-                  }
-                  res.send({'result':1,'msg':'应战成功'});
-                }
-              });
-            }
-          });
-        });
-    });
-  });
-};
+//         campaign.save(function(err) {
+//           if (err) {
+//             console.log(err);
+//             //检查信息是否重复
+//             switch (err.code) {
+//               case 11000:
+//                 break;
+//               case 11001:
+//                 res.status(400).send('该活动已经存在!');
+//                 break;
+//               default:
+//                 break;
+//             }
+//             return;
+//           }
+//           GroupMessage.findOne({'_id' : provoke_message_id}, function (err, group_message) {
+//             if (err) {
+//               console.log(err);
+//             } else {
+//               group_message.provoke.start_confirm = true;
+//               group_message.save(function(err){
+//                 if(!err){
+//                   if(competition.arena_flag){
+//                     Arena.findOne({
+//                       _id: competition.arena_id
+//                     },
+//                     function(err,arena){
+//                       if(!err &&arena){
+//                         arena.champion.provoke_status = true;
+//                         if(!arena.champion.competition_id){
+//                           arena.champion.competition_id =[];
+//                         }
+//                         arena.champion.competition_id.push(competition._id);
+//                         arena.save(function(err){
+//                           if(err){
+//                             console.log(err);
+//                           }
+//                         });
+//                       }
+//                     });
+//                   }
+//                   res.send({'result':1,'msg':'应战成功'});
+//                 }
+//               });
+//             }
+//           });
+//         });
+//     });
+//   });
+// };
 
 
 
@@ -331,41 +331,41 @@ exports.getCompetition = function(req, res){
 
 
 
-exports.updateFormation = function(req, res){
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
-  }
-  Campaign.findOne({
-    '_id':req.params.competitionId
-  }).exec(function(err, competition){
-    if(req.competition_team === req.body.competition_team){
-      var _formation = [];
-      var _tempFormation = req.body.formation;
-      for (var member in _tempFormation){
-        _formation.push({'uid':member,
-                          'x':_tempFormation[member].x,
-                          'y':_tempFormation[member].y
+// exports.updateFormation = function(req, res){
+//   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+//     return res.send(403,forbidden);
+//   }
+//   Campaign.findOne({
+//     '_id':req.params.competitionId
+//   }).exec(function(err, competition){
+//     if(req.competition_team === req.body.competition_team){
+//       var _formation = [];
+//       var _tempFormation = req.body.formation;
+//       for (var member in _tempFormation){
+//         _formation.push({'uid':member,
+//                           'x':_tempFormation[member].x,
+//                           'y':_tempFormation[member].y
 
-        });
-      }
-      if(req.competition_team ==='A'){
-        competition.camp[0].formation = _formation;
-      }
-      else{
-        competition.camp[1].formation = _formation;
-      }
-      competition.save(function(err){
-        if(err){
-          console.log(err);
-        }
-        return res.send({'result':1,'msg':'更新成功！'});
-      });
-    }
-    else{
-      return res.send({'result':0,'msg':'您没有权限修改阵形图'});
-    }
-  });
-};
+//         });
+//       }
+//       if(req.competition_team ==='A'){
+//         competition.camp[0].formation = _formation;
+//       }
+//       else{
+//         competition.camp[1].formation = _formation;
+//       }
+//       competition.save(function(err){
+//         if(err){
+//           console.log(err);
+//         }
+//         return res.send({'result':1,'msg':'更新成功！'});
+//       });
+//     }
+//     else{
+//       return res.send({'result':0,'msg':'您没有权限修改阵形图'});
+//     }
+//   });
+// };
 
 
 
@@ -439,27 +439,13 @@ exports.resultConfirm = function (req, res) {
         if(err){
           return res.send(err);
         } else {
-          var groupMessage = new GroupMessage();
-          groupMessage.message_type = 6;
-          groupMessage.team.push({
-            teamid: competition.camp[0].id,
-            name: competition.camp[0].tname,
-            logo: competition.camp[0].logo
-          });         //发起挑战方小队信息
-          groupMessage.team.push({
-            teamid: competition.camp[1].id,
-            name: competition.camp[1].tname,
-            logo: competition.camp[0].logo
-          });  //应约方小队信息
-          groupMessage.company.push({
-            cid: competition.camp[0].cid
+          GroupMessage.findOne({campaign:competition._id},function(err,groupMessage){
+            groupMessage.message_type = 6;
+            groupMessage.create_time = new Date();
+            groupMessage.save();
+            return res.send('ok');
           });
-          groupMessage.company.push({
-            cid: competition.camp[1].cid
-          });
-          groupMessage.campaign = competition._id;
-          groupMessage.save();
-          return res.send('ok');
+
         }
       });
     }

@@ -32,7 +32,7 @@ exports.getMessage = function(req, res) {
       team_ids.push(team.id.toString());
     });
     option ={
-      'team.teamid' : req.session.nowtid,
+      'team.teamid' : {'$in':team_ids},
       'active':true
     };
   }
@@ -58,8 +58,9 @@ exports.getMessage = function(req, res) {
           'team' : group_message[i].team,
           'campaign' : group_message[i].campaign,
           'create_time' : group_message[i].create_time,
-          'user': group_message[i].user
+          'user': [group_message[i].user]
         };
+        var last_user,last_contain;
         switch (group_message[i].message_type){
           case 0:
           _group_message.logo = group_message[i].company[0].logo;
@@ -148,6 +149,9 @@ exports.getMessage = function(req, res) {
           break;
           case 7:
           case 8:
+          if(group_message[i].user.user_id.toString()===last_user){
+
+          }
           _group_message.logo = group_message[i].user.logo;
           break;
           default:

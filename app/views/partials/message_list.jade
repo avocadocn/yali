@@ -73,7 +73,7 @@
         .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
           .message_row
             span.message_label
-            a(ng-href="/users/home/{{group_message.user.user_id}}") {{group_message.user.name}}
+            a(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
             span.message_label  加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
         span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}

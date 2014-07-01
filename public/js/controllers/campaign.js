@@ -100,7 +100,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.join = true;
                     $scope.campaign.member.push({
                         'nickname' : $scope.nickname,
@@ -129,7 +129,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     //alert('您已退出该活动!');
                     $scope.join = false;
                     for(var i = 0;i < $scope.campaign.member.length; i ++) {
