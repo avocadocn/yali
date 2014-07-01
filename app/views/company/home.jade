@@ -23,6 +23,7 @@ block baseInfo
         if Global.role === 'HR'
           .score_container.margin_top_5
             button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") {{'SPONSOR'|translate}}{{'COMPANY'|translate}}{{ 'CAMPAIGN' | translate }}
+            button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorMessageModel") 发送私信
     .ad-top
 block panel
   ul.nav.nav-tabs
@@ -51,6 +52,9 @@ block panel
   if Global.role === 'HR'
     div(ng-controller="SponsorController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_modal
+    div(ng-controller="messageCompanyController" )
+      div.modal.fade#sponsorMessageModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../partials/private_message_send
   #bottom
 block aside
 append footExt
