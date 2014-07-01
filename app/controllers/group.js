@@ -225,7 +225,12 @@ exports.timeLine = function(req, res){
   .then(function(campaigns) {
     if (campaigns && campaigns.length>0) {
       var timeLines = [];
+      // todo new time style
+      var newTimeLines = {};
+      // todo new time style
       campaigns.forEach(function(campaign) {
+
+
         var _head,_logo;
         if(campaign.camp.length>0){
           _head = campaign.camp[0].name +'对' + campaign.camp[1].name +'的比赛';
@@ -244,15 +249,53 @@ exports.timeLine = function(req, res){
           location: campaign.location,
           group_type: campaign.group_type,
           start_time: campaign.start_time,
-          provoke:campaign.camp.length>0
+          provoke:campaign.camp.length>0,
+          year: getYear(campaign)
         }
+        // todo new time style
+        // console.log(campaign);
+        function getYear(dates) {
+          var response = String(dates.end_time);
+          var _ = response.split(" ");
+          var year = _[3]
+          return year;
+        }
+        // console.log(getYear(campaign));
+        var groupYear = getYear(campaign);
+        if (!newTimeLines[groupYear]) {
+          newTimeLines[groupYear] = [];
+          newTimeLines[groupYear]['left'] = [];
+          newTimeLines[groupYear]['right'] = [];
+
+          newTimeLines[groupYear]['left'][0] = tempObj;
+          newTimeLines[groupYear][0] = tempObj;
+          newTimeLines
+        }else{
+          var i = newTimeLines[groupYear].length;
+          newTimeLines[groupYear][i] = tempObj;
+          if (i%2==0) {
+            var j = newTimeLines[groupYear]['left'].length;
+            newTimeLines[groupYear]['left'][j] = tempObj;
+          }else{
+            var j = newTimeLines[groupYear]['right'].length;
+            newTimeLines[groupYear]['right'][j] = tempObj;
+          }
+          
+        }
+        console.log('item:'+ newTimeLines[groupYear].length);
+        // todo new time style
+
         timeLines.push(tempObj);
       });
-      res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
+      res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
     }
     else{
       res.render('partials/timeLine');
     }
+      // todo new time style
+      console.log(timeLines);
+      console.log(newTimeLines);
+      // todo new time style
   })
   .then(null, function(err) {
     console.log(err);
