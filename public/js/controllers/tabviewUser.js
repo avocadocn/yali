@@ -512,6 +512,20 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
                 },
                 onAfterViewLoad: function(view) {
                     $('#calendar_title').text(this.getTitle());
+                    //$('#calendar_operator button').removeClass('active');
+                    //$('button[data-calendar-view="' + view + '"]').addClass('active');
+                    if (view === 'day') {
+                        $scope.isDayView = true;
+                        if (firstLoad === true) {
+                            firstLoad = false;
+                        }
+                        $scope.$digest();
+                    } else {
+                        $scope.isDayView = false;
+                        if (firstLoad === false) {
+                            $scope.$digest();
+                        }
+                    }
                 },
                 classes: {
                     months: {

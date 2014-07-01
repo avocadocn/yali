@@ -10,7 +10,10 @@
 			<img class="join_sign" src="/img/icons/joined_campaign.ico"/>
 		<% } %>
 	<% } %>
-	<span class="pull-right" data-cal-date="<%= data_day %>" data-cal-view="day" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
+	<span class="pull-right day" data-cal-date="<%= data_day %>" data-cal-view="day" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
+	<% if (monthTip !== '' && monthTip != null) { %>
+		<span class="pull-right month"><%= monthTip %></span>
+	<% } %>
 	<% if (events.length > 0) { %>
 		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
 			<% _.each(events, function(event) { %>

@@ -33,21 +33,48 @@
   margin-bottom: 5px;
 }
 .cal-month-day .join_sign {
-  margin-top: 1px;
-  margin-left: 1px;
+  margin-top: 5px;
+  margin-left: 5px;
   width: 16px;
   height: 16px;
+}
+.cal-month-day .day {
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.cal-month-day .month {
+  margin-top: 5px;
+  margin-right: 5px;
 }
 #cal-slide-content .event-item {
   position: relative;
 }
 #cal-slide-content .event-item .join_sign {
   position: absolute;
-  left: 5px;
+  left: 0px;
   top: -1px;
   width: 16px;
   height: 16px;
 }
 #cal-slide-content .event_list_logo {
   margin-left: 24px;
+}
+.view_type a,
+.view_type span {
+  margin-left: 3px;
+  font-size: 20px;
+}
+.schedule_type {
+  margin-top: 3px;
+  margin-left: 24px;
+}
+.schedule_type a,
+.schedule_type span {
+  margin-left: 3px;
+}
+.calendar_nav {
+  margin-top: 3px;
+}
+.calendar_nav a {
+  margin-left: 5px;
 }
