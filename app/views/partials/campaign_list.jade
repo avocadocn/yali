@@ -27,7 +27,7 @@ if provider=='company'
       .campaign_right
         .message_row
             span.message_label 主题:
-              a(ng-href="/group/{{(group_message.type=='provoke'?'competition/':'campaign/')+campaign_item._id}}"){{campaign_item.theme}}
+              a(ng-href="/group/{{(campaign_item.type=='provoke'?'competition/':'campaign/')+campaign_item._id}}"){{campaign_item.theme}}
           .message_row
             span.message_label 内容: {{campaign_item.content}}
           .message_row

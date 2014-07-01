@@ -32,7 +32,7 @@ exports.getMessage = function(req, res) {
       team_ids.push(team.id.toString());
     });
     option ={
-      'team.teamid' : {'$in':team_ids},
+      '$or':[{'team.teamid':{'$in':team_ids}},{'company.cid':req.user.cid,'team':{'$size': 0}}],
       'active':true
     };
   }

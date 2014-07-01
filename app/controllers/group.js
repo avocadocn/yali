@@ -903,8 +903,7 @@ exports.renderCampaignDetail = function(req, res) {
     if (!campaign) {
       throw 'not found';
     }
-    console.log(campaign.team.length);
-    if(campaign.team.length >= 2){
+    if(campaign.camp.length >= 2){
       res.redirect("/competition/"+req.session.nowcampaignid);
     }else{
       res.render('campaign/campaign_detail', {

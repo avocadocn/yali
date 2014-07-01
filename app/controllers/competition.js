@@ -378,6 +378,7 @@ exports.competition = function(req, res, next, id){
     .populate('photo_album')
     .exec(function(err, competition){
       if (err) return next(err);
+      console.log(competition);
       req.competition = competition;
       if(cid.toString() ===competition.camp[0].cid.toString()){
         req.competition_team = 'A';
