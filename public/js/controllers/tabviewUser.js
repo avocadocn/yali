@@ -64,17 +64,38 @@ tabViewUser.run(['$rootScope',
     }
 ]);
 
+
+
+var messageConcat = function(messages,rootScope,scope,reset){
+    if(reset){
+        rootScope.sum = 0;
+    }
+    rootScope.sum += messages.length;
+    var new_messages = messages;
+    for(var i = 0; i < new_messages.length; i ++){
+        new_messages[i].comments = [];
+        new_messages[i].comment_permission = ([2,3,7,8].indexOf(messages[i].message_type) == -1);
+        scope.toggle.push(false);
+        scope.new_comment.push({
+            text: ''
+        });
+    }
+    return new_messages;
+}
+
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
+        $scope.new_comment = [];
+        $scope.toggle = [];
         $scope.message_role = "user";
         $rootScope.nowTab = 'group_message';
         $http.get('/groupMessage/user/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-            $scope.group_messages = data.group_messages;
-
+            $scope.user = data.user;
             $rootScope.message_corner = true;
-            $rootScope.sum = $scope.group_messages.length;
             $scope.role = data.role;
             $scope.loadMore_flag = true;
+
+            $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
         });
         $scope.loadMore_flag = false;
         $scope.block = 1;
@@ -85,7 +106,9 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
         $scope.loadMore = function(){
             $http.get('/groupMessage/user/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
                 if(data.result===1 && data.group_messages.length>0){
-                    $scope.group_messages = $scope.group_messages.concat(data.group_messages);
+
+                    $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
+
                     if(++$scope.block==5){
                         $scope.nextPage_flag = true;
                         $scope.loadMore_flag = false;
@@ -113,7 +136,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         $scope.page--;
                         $scope.pageTime.pop();
                     }
-                    $scope.group_messages = data.group_messages;
+                    $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
                     $scope.loadMore_flag = true;
                     $scope.nextPage_flag = false;
                     $scope.lastPage_flag = false;
@@ -128,6 +151,72 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 }
             });
         }
+
+        $scope.toggleOperate = function(index){
+            $scope.toggle[index] = !$scope.toggle[index];
+        }
+        $scope.getComment = function(index){
+            if($scope.toggle){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/comment/pull',
+                        data:{
+                            host_id : $scope.group_messages[index].campaign._id
+                        }
+                    }).success(function(data, status) {
+                        if(data.length > 0){
+                            $scope.group_messages[index].comments = data;
+                            for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
+                                $scope.group_messages[index].comments[i].index = data.length - i;
+                            }
+                        }
+                    }).error(function(data, status) {
+                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    });
+                }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        }
+        $scope.comment = function(index){
+            try {
+                $http({
+                    method: 'post',
+                    url: '/comment/push',
+                    data:{
+                        host_id : $scope.group_messages[index].campaign._id,
+                        content : $scope.new_comment[index].text,
+                        host_type : 'campaign'
+                    }
+                }).success(function(data, status) {
+                    if(data === 'SUCCESS'){
+                        var poster={
+                            'nickname' : '我自己',
+                            'photo' : $scope.user.photo
+                        };
+                        $scope.group_messages[index].campaign.comment_sum ++;
+                        $scope.group_messages[index].comments.unshift({
+                            'host_id' : $scope.group_messages[index].campaign._id,
+                            'content' : $scope.new_comment[index].text,
+                            'create_date' : new Date(),
+                            'poster' : poster,
+                            'host_type' : 'campaign',
+                            'index' : $scope.group_messages[index].campaign.comment_sum
+                        });
+                    } else {
+                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    }
+                }).error(function(data, status) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+
         $scope.vote = function(competition_id, vote_status, index) {
             try {
                 $http({

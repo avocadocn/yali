@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 var pagesize = 20;
 exports.renderMessageList =function(req,res){
   res.render('partials/message_list',{
-      'role':req.session.role
+    'role':req.session.role
   });
 };
 //根据小队ID返回小组动态消息
