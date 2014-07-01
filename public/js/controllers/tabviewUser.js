@@ -434,7 +434,7 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         var initCalendar = function(events_source) {
             var options = {
                 events_source: events_source,
-                view: 'month',
+                view: 'weeks',
                 time_end: '24:00',
                 tmpl_path: '/tmpls/',
                 tmpl_cache: false,
