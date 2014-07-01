@@ -976,18 +976,28 @@ exports.joinGroup = function (req, res){
                   console.log(err);
                   return res.send({result: 0, msg:'保存用户出错'});
                 }else{
-                  var groupMessage = new GroupMessage();
-                  groupMessage.message_type = 8;
-                  groupMessage.team = {
-                    teamid : companyGroup._id,
-                    name : companyGroup.name
-                  };
-                  groupMessage.user ={
-                    user_id : user._id,
-                    name : user.nickname,
-                    logo : user.photo
-                  };
-                  groupMessage.save();
+                  GroupMessage.findOne({'message_type ':8,'user.user_id':uid},function(err,groupMessage){
+                    if(!err&&groupMessage){
+                      groupMessage.create_time = new Date();
+                      groupMessage.save();
+                    }
+                    else{
+                      var groupMessage = new GroupMessage();
+                      groupMessage.message_type = 8;
+                      groupMessage.team = {
+                        teamid : companyGroup._id,
+                        name : companyGroup.name,
+                        logo : companyGroup.logo
+                      };
+                      groupMessage.user ={
+                        user_id : user._id,
+                        name : user.nickname,
+                        logo : user.photo
+                      };
+                      groupMessage.save();
+
+                    }
+                  });
                   return res.send({result: 1, msg:'保存用户成功'});
                 }
 

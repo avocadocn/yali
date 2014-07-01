@@ -1,26 +1,23 @@
-div.clearfix
-  p.pull-left
+div.clearfix.schedule_operator
+  p.pull-left.view_type
     a(ng-click="calendar(true)" href="javascript:void(0)") 日历
-    | &nbsp;|&nbsp;
+    span |
     a(ng-click="calendar(false)" href="javascript:void(0)") 列表
-  p.pull-left
-    | &nbsp;&nbsp;
-    a(ng-click="getCampaigns('all')" href="javascript:void(0)") 所有活动
-    | &nbsp;|&nbsp;
+  p.pull-left.schedule_type
+    a(ng-click="getCampaigns('all')" href="javascript:void(0)") 所有
+    span |
     a(ng-click="getCampaigns('joined')" href="javascript:void(0)") 已参加
-    | &nbsp;|&nbsp;
+    span |
     a(ng-click="getCampaigns('unjoin')" href="javascript:void(0)") 未参加
-  p.pull-right#calendar_nav(ng-show="isCalendar")
-    a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&nbsp;{{ prev }}
-    | &nbsp;|&nbsp;
+  p.pull-right.calendar_nav#calendar_nav(ng-show="isCalendar")
+    a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
     a(data-calendar-nav="today" href="javascript:void(0)") 今天
-    | &nbsp;|&nbsp;
-    a(data-calendar-nav="next" href="javascript:void(0)") {{ next }}&nbsp;&gt;
+    a(data-calendar-nav="next" href="javascript:void(0)") &gt;&gt;
 div.calendar_box
   #calendar_view(ng-show="isCalendar")
     .clearfix
-      h4#calendar_title.calendar_title.pull-left
-      a.pull-right(data-calendar-view="month" href="javascript:void(0)" ng-show="isDayView") 返回日历
+      h5#calendar_title.calendar_title.pull-left
+      a.pull-right(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView") 返回日历
     #calendar
 
   div(ng-if="!isCalendar")

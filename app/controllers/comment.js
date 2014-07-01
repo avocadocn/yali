@@ -75,6 +75,7 @@ exports.setComment = function(req,res){
     })
 }
 
+
 //删除留言
 exports.deleteComment = function(req,res){
     if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST' || req.session.role ==='GUESTLEADER'){
@@ -82,21 +83,28 @@ exports.deleteComment = function(req,res){
     }
     var comment_id = req.body.comment_id;
     var host_id = req.body.host_id;
-    Comment.remove({'_id':comment_id},function (err, comment) {
+    Comment.findByIdAndUpdate({'_id':comment_id},{'$set':{'status':'delete'}},function (err,comment){
         if(err || !comment) {
-            return res.send("{{'COMMENT_NOT_FOUND'|translate}}");
+            return res.send("COMMENT_NOT_FOUND");
         } else {
-            if(host_type === "campaign" || host_type === "campaign_detail") {
-                Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':-1}},function(err,message){
-                    if(err || !message) {
-                        return res.send("ERROR");
-                    } else {
-                        return res.send("SUCCESS");
-                    }
-                });
-            } else {
-                return res.send("SUCCESS");
-            }
+            return res.send("SUCCESS");
         }
     });
+    // Comment.remove({'_id':comment_id},function (err, comment) {
+    //     if(err || !comment) {
+    //         return res.send("{{'COMMENT_NOT_FOUND'|translate}}");
+    //     } else {
+    //         if(host_type === "campaign" || host_type === "campaign_detail") {
+    //             Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':-1}},function(err,message){
+    //                 if(err || !message) {
+    //                     return res.send("ERROR");
+    //                 } else {
+    //                     return res.send("SUCCESS");
+    //                 }
+    //             });
+    //         } else {
+    //             return res.send("SUCCESS");
+    //         }
+    //     }
+    // });
 }

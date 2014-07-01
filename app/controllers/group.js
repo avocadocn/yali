@@ -725,45 +725,31 @@ exports.responseProvoke = function (req, res) {
         return res.send({'result':0,'msg':'应战失败！'});
       }
       else{
-        var groupMessage = new GroupMessage();
-        groupMessage.message_type = 5;
-        groupMessage.team.push({
-          teamid: campaign.camp[0].id,
-          name: campaign.camp[0].tname,
-          logo: campaign.camp[0].logo
-        });         //发起挑战方小队信息
-        groupMessage.team.push({
-          teamid: campaign.camp[1].id,
-          name: campaign.camp[1].tname,
-          logo: campaign.camp[0].logo
-        });  //应约方小队信息
-        groupMessage.company.push({
-          cid: campaign.camp[0].cid
-        });
-        groupMessage.company.push({
-          cid: campaign.camp[1].cid
-        });
-        groupMessage.campaign = campaign._id;
-        groupMessage.save(function (err) {
-          if (err) {
-            console.log('保存约战动态时出错' + err);
-          }
-          else{
-            var team = {
-              'size':2,
-              'own':{
-                '_id':campaign.camp[0].id,
-                'name':campaign.camp[0].tname,
-                'provoke_status':1
-              },
-              'opposite':{
-                '_id':campaign.camp[1].id,
-                'name':campaign.camp[1].tname,
-                'provoke_status':1
-              }
+        GroupMessage.findOne({campaign:campaign._id},function(err,groupMessage){
+          groupMessage.message_type = 5;
+
+          groupMessage.create_time = new Date();
+          groupMessage.save(function (err) {
+            if (err) {
+              console.log('保存约战动态时出错' + err);
             }
-            message.newCampaignCreate(req,res,team,req.user.cid);
-          }
+            else{
+              var team = {
+                'size':2,
+                'own':{
+                  '_id':campaign.camp[0].id,
+                  'name':campaign.camp[0].tname,
+                  'provoke_status':1
+                },
+                'opposite':{
+                  '_id':campaign.camp[1].id,
+                  'name':campaign.camp[1].tname,
+                  'provoke_status':1
+                }
+              }
+              message.newCampaignCreate(req,res,team,req.user.cid);
+            }
+          });
         });
       }
     });
@@ -960,8 +946,7 @@ exports.renderCampaignDetail = function(req, res) {
     if (!campaign) {
       throw 'not found';
     }
-    console.log(campaign.team.length);
-    if(campaign.team.length >= 2){
+    if(campaign.camp.length >= 2){
       res.redirect("/competition/"+req.session.nowcampaignid);
     }else{
       res.render('campaign/campaign_detail', {

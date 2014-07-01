@@ -21,6 +21,10 @@ var Comment = new Schema({
     realname:String,
     photo:String
   },
+  status:{
+    type: String,
+    enum:['acctive','delete']
+  },
   host_type:{
     type: String,
     enum: ['message', 'album', 'campaign', 'competition', 'campaign_detail']

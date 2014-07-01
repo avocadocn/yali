@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 var pagesize = 20;
 exports.renderMessageList =function(req,res){
   res.render('partials/message_list',{
-      'role':req.session.role
+    'role':req.session.role
   });
 };
 //根据小队ID返回小组动态消息
@@ -32,7 +32,7 @@ exports.getMessage = function(req, res) {
       team_ids.push(team.id.toString());
     });
     option ={
-      'team.teamid' : req.session.nowtid,
+      '$or':[{'team.teamid':{'$in':team_ids}},{'company.cid':req.user.cid,'team':{'$size': 0}}],
       'active':true
     };
   }
@@ -50,6 +50,7 @@ exports.getMessage = function(req, res) {
     } else {
       var group_messages = [];
       var length = group_message.length;
+      var last_user_index,last_team_index,last_company_index;
       for(var i = 0; i < length; i ++) {
         var _group_message ={
           '_id': group_message[i]._id,
@@ -58,11 +59,23 @@ exports.getMessage = function(req, res) {
           'team' : group_message[i].team,
           'campaign' : group_message[i].campaign,
           'create_time' : group_message[i].create_time,
-          'user': group_message[i].user
+          'user': [group_message[i].user]
         };
+        var push_flag=true;
         switch (group_message[i].message_type){
           case 0:
           _group_message.logo = group_message[i].company[0].logo;
+          if(req.user.provider==='user' && new Date()<group_message[i].campaign.deadline){
+            var join_flag = false;
+            group_message[i].campaign.member.forEach(function(member){
+              if(member.uid.toString() === req.user._id.toString()){
+                join_flag = true;
+              }
+            });
+            _group_message.member_num = group_message[i].campaign.member.length;
+            _group_message.join_flag = join_flag;
+          }
+          break;
           case 1:
             _group_message.logo = group_message[i].team[0].logo;
             if(req.user.provider==='user' && new Date()<group_message[i].campaign.deadline){
@@ -136,13 +149,41 @@ exports.getMessage = function(req, res) {
             _group_message.logo = group_message[i].team[camp_flag ].logo;
           break;
           case 7:
+            if(last_company_index!=undefined && group_message[i].company[0].cid.toString()===group_messages[last_company_index].company[0].cid.toString()){
+              group_messages[last_company_index].user.push(group_message[i].user);
+              group_messages[last_company_index].logo = group_message[i].company[0].logo;
+              push_flag = false;
+            }
+            else{
+              last_company_index = group_messages.length;
+              _group_message.logo = group_message[i].user.logo;
+            }
+          break;
           case 8:
-          _group_message.logo = group_message[i].user.logo;
+            if(last_team_index!=undefined && group_message[i].team[0].teamid.toString()===group_messages[last_team_index].team[0].teamid.toString()){
+              group_messages[last_team_index].user.push(group_message[i].user);
+              group_messages[last_team_index].logo = group_message[i].team[0].logo;
+              push_flag = false;
+              console.log(group_message[i]);
+              break;
+            }
+            else if(last_user_index!=undefined && group_message[i].user.user_id.toString()===group_messages[last_user_index].user[0].user_id.toString()){
+              group_messages[last_user_index].team.push(group_message[i].team[0]);
+              push_flag = false;
+              break;
+            }
+            else{
+              last_team_index = group_messages.length;
+              last_user_index = group_messages.length;
+              _group_message.logo = group_message[i].user.logo;
+            }
           break;
           default:
           break;
         }
-        group_messages.push(_group_message);
+        if(push_flag){
+          group_messages.push(_group_message);
+        }
       }
       return res.send({'result':1,'group_messages':group_messages,'role':req.session.role,'user':{'nickname':req.user.nickname,'photo':req.user.photo}});
      }

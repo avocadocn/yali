@@ -95,9 +95,26 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
 
 }]);
 
+
+var messageConcat = function(messages,rootScope,scope,reset){
+    if(reset){
+        rootScope.sum = 0;
+    }
+    rootScope.sum += messages.length;
+    var new_messages = messages;
+    for(var i = 0; i < new_messages.length; i ++){
+        new_messages[i].comments = [];
+        new_messages[i].comment_permission = true;
+        scope.toggle.push(false);
+        scope.new_comment.push({
+            text: ''
+        });
+    }
+    return new_messages;
+}
+
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
-    $scope.message_role = "group";
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
@@ -107,15 +124,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             $scope.role = data.role;
 
             $rootScope.message_corner = true;
-            $rootScope.sum = $scope.group_messages.length;
 
-            for(var i = 0;i < $scope.group_messages.length; i ++) {
-                $scope.group_messages[i].comments = [];
-                $scope.toggle.push(false);
-                $scope.new_comment.push({
-                    text: ''
-                });
-            }
+            $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope),true;
         });
     });
 
@@ -131,7 +141,10 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.loadMore = function(){
         $http.get('/groupMessage/team/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
-                $scope.group_messages = $scope.group_messages.concat(data.group_messages);
+
+
+
+                $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
                 if(++$scope.block==5){
                     $scope.nextPage_flag = true;
                     $scope.loadMore_flag = false;
@@ -158,7 +171,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 else{
                     $scope.page--;
                 }
-                $scope.group_messages = data.group_messages;
+                $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
+
                 $scope.loadMore_flag = true;
                 $scope.nextPage_flag = false;
                 $scope.lastPage_flag = false;

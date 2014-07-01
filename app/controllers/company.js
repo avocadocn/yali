@@ -1197,7 +1197,7 @@ exports.sponsor = function (req, res) {
                     if (err) {
                         return res.send({'result':0,'msg':'活动创建失败'});
                     }
-                    else{
+                    else{console.log(groupMessage);
                         res.send({'result':1,'msg':'活动创建成功'});
                     }
                 });

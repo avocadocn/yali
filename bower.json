@@ -19,6 +19,7 @@
     "angular-translate-loader-url": "~2.1.0",
     "angular-translate-loader-static-files": "~2.1.0",
     "alertify.js": "latest",
-    "smalot-bootstrap-datetimepicker": "latest"
+    "smalot-bootstrap-datetimepicker": "latest",
+    "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.5"
   }
 }

@@ -33,12 +33,13 @@ block baseInfo
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorSearchModel") {{"PROVOKE"|translate}}
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") {{"ARENA"|translate}}
         - var isMember = false;
-        if (Global.role === 'MEMBER' || Global.role ==='LEADER')
-          - isMember = true;
-        .score_container(ng-init="isMember=#{isMember}" ng-show="isMember")
-          button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") {{"QUIT_GROUP"|translate}}
-        .score_container(ng-show="!isMember")
-          button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
+        if (Global.role === 'MEMBER' || Global.role ==='LEADER' || Global.role ==='PARTNER')
+          if (Global.role === 'MEMBER' || Global.role ==='LEADER')
+            - isMember = true;
+          .score_container(ng-init="isMember=#{isMember}" ng-show="isMember")
+            button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") {{"QUIT_GROUP"|translate}}
+          .score_container(ng-show="!isMember")
+            button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") {{"JOIN_GROUP"|translate}}
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}'")
     ul.nav.nav-tabs

@@ -5,11 +5,12 @@
 			<li class="custom_calendar_li">
 				<!-- <span class="pull-left event <%= event['class'] %>"></span>&nbsp; -->
 				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
-					data-event-class="<%= event['class'] %>" class="event-item"><img src="/logo/group/<%= event.team_id %>/27/27"/>
-					&nbsp;&nbsp;开始时间: <%= new Date(event.start).toLocaleDateString() %>&nbsp;&nbsp;结束时间: <%= new Date(event.end).toLocaleDateString() %>&nbsp;&nbsp;主题: <%= event.title %>
+					data-event-class="<%= event['class'] %>" class="event-item">
 					<% if (event.is_joined) { %>
 						<img class="join_sign" src="/img/icons/joined_campaign.ico"/>
 					<% } %>
+					<img class="event_list_logo" src="/logo/group/<%= event.team_id %>/27/27"/>
+					<span>&nbsp;&nbsp;开始: <%= moment(new Date(event.start)).format('hh:mm') %>&nbsp;&nbsp;主题: <%= event.title %></span>
 				</a>
 			</li>
 		<% }) %>
