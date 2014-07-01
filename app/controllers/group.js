@@ -250,10 +250,12 @@ exports.timeLine = function(req, res){
           group_type: campaign.group_type,
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
-          year: getYear(campaign)
+          year: getYear(campaign),
+          photo_album: campaign.photo_album
         }
         // todo new time style
         // console.log(campaign);
+        // console.log(tempObj);
         function getYear(dates) {
           var response = String(dates.end_time);
           var _ = response.split(" ");
@@ -294,7 +296,7 @@ exports.timeLine = function(req, res){
     }
       // // todo new time style
       // console.log(timeLines);
-      // console.log(newTimeLines);
+      console.log(newTimeLines);
       // // todo new time style
   })
   .then(null, function(err) {

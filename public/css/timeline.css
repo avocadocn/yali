@@ -257,6 +257,7 @@ Timeline UI Base
 }
 .dl_timeline .column .timeline_element .title a {
   color: #aaa;
+  display: block;
 }
 .dl_timeline .column .timeline_element .title a:hover {
   text-decoration: none;
@@ -274,6 +275,7 @@ Timeline UI Base
 }
 .dl_timeline .column .timeline_element .content a {
   color: #888;
+  display: block;
 }
 .dl_timeline .column .timeline_element .content a:hover {
   text-decoration: none;

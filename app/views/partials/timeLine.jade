@@ -14,7 +14,7 @@ if(newTimeLines)
         each item in years.left
           .timeline_element
             .title
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
                 img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                 span.head= item.head
                 span.date= moment(item.start_time).format('MM/DD')
@@ -27,7 +27,7 @@ if(newTimeLines)
         each item in years.right
           .timeline_element
             .title
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
+              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
                 img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                 span.head= item.head
                 span.date= moment(item.start_time).format('MM/DD')

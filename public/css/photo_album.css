@@ -32,7 +32,11 @@
 .photo_album .photo:nth-child(4n+1) {
   margin-left: 0;
 }
-.photo_album .photo_name {
+.photo_album .photo:hover .photo_name {
+  opacity: 0.8;
+}
+.photo_album .photo .photo_name {
+  opacity: 0;
   position: absolute;
   bottom: 0;
   margin: 0;
