@@ -2,7 +2,7 @@ hr
 .dl_modal_container
   .dl_row(style="height:93px" ng-repeat="company_message in company_messages")
     .dl_message_head
-      img.dl_message_head_size(ng-src="default")
+      img.dl_message_head_size
     .dl_message_body.margin_left_5
       .row
         .dl_message_caption
@@ -14,4 +14,5 @@ hr
       .row
         .dl_md_12
           h5
-            a(href="{{company_message.url}}" ng-click="setToRead($index)"){{company_message.content}}
+            a(href="{{company_message.url}}" ng-click="setToRead($index)" ng-if="!company_message.direct_show"){{company_message.content}}
+            a.pop(ng-click="setToRead($index)" data-toggle="popover" data-placement="top" data-content="{{company_message.detail}}" ng-if="company_message.direct_show"){{company_message.content}}

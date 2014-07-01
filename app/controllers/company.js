@@ -1197,8 +1197,11 @@ exports.sponsor = function (req, res) {
                     if (err) {
                         return res.send({'result':0,'msg':'活动创建失败'});
                     }
-                    else{console.log(groupMessage);
-                        res.send({'result':1,'msg':'活动创建成功'});
+                    else{
+                        var team = {
+                            'size':0
+                        }
+                        message.newCampaignCreate(req,res,team,cid);
                     }
                 });
             });

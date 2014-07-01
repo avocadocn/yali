@@ -2,7 +2,7 @@ hr
 .dl_modal_container
   .dl_row(style="height:93px" ng-repeat="private_message in private_messages")
     .dl_message_head
-      img.dl_message_head_size(ng-src="default")
+      img.dl_message_head_size
     .dl_message_body.margin_left_5
       .row
         .dl_message_caption
@@ -13,4 +13,5 @@ hr
           a.dl_btn_small {{private_message.status}}
       .row
         .dl_md_12
-          h5 {{private_message.content}}
+          h5
+            a.pop(ng-click="setToRead($index)" data-toggle="popover" data-placement="top" data-content="{{private_message.detail}}" ng-if="private_message.direct_show"){{private_message.content}}
