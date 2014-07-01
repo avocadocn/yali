@@ -261,7 +261,7 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
     'text':''
   }
   //队长给队员发私信
-  $scope.sendToTeam = function(){
+  $scope.sendToAll = function(){
     var _team = {
       size : 1,
       own : {
@@ -304,6 +304,38 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
 //获取公司站内信
 messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('company');
+
+  $scope.private_message_content = {
+    'text':''
+  }
+  $scope.private_message_caption = {
+    'text':''
+  }
+  //队长给队员发私信
+  $scope.sendToAll = function(){
+    try{
+      $http({
+          method: 'post',
+          url: '/message/push/hr',
+          data:{
+              cid : $rootScope.cid,
+              content : $scope.private_message_content.text,
+              caption : $scope.private_message_caption.text
+          }
+      }).success(function(data, status) {
+          if(data.msg === 'SUCCESS'){
+            $rootScope.company_length++;
+          }
+      }).error(function(data, status) {
+          //TODO:更改对话框
+          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+      });
+    }
+    catch(e){
+        console.log(e);
+    }
+  }
+
   $scope.setToRead = function(index){
     if($rootScope.company_messages[index].direct_show){
       alertify.alert($rootScope.company_messages[index].detail);

@@ -153,7 +153,7 @@ var oneToMember = function(param){
   var MC={
     'caption':param.caption,
     'content':param.content,
-    'sender':[param.sender],
+    'sender':param.sender,
     'team':param.team,
     'company_id':param.company_id,
     'deadline':(new Date())+time_out
@@ -172,7 +172,41 @@ var oneToMember = function(param){
 
 //HR给所有公司成员发送站内信
 exports.hrSendToMember = function(req,res){
+  var cid = req.body.cid;
 
+  var content = req.body.content,
+      type = "public";
+
+  var callback = function(users,other,req,res){
+    if(users){
+      var caption = 'Message From Company!';
+      var _param = {
+        'members':users,
+        'caption':caption,
+        'content':content,
+        'sender':[],
+        'team':[],
+        'company_id':cid,
+        'req':req,
+        'res':res,
+        'type':'company'
+      }
+      oneToMember(_param);
+    }
+  }
+  var param= {
+    'collection':User,
+    'type':1,
+    'condition':{'cid':cid},
+    'limit':{'_id':1},
+    'sort':null,
+    'callback':callback,
+    '_err':_err,
+    'other_param':null,
+    'req':req,
+    'res':res
+  };
+  get(param);
 }
 
 
