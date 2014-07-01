@@ -40,7 +40,7 @@ table.table.table-hover.campaign_table
       p.text-right {{ campaign_item.start_time  | date:'yyyy-MM-dd HH:mm' | day }}
       p.text-right {{ campaign_item.start_time | date:'HH:mm' }}
     .campaign_container
-      .campaign_logo
+      .campaign_logo(bs-popover)
         a(ng-href="{{campaign_item.link}}")
           img.size_56.img_contain(ng-src="{{campaign_item.logo}}")
       .campaign_right

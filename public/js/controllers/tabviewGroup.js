@@ -403,6 +403,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $scope.pageTime = [0];
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
+
     $scope.loadMore = function(){
         $http.get('/campaign/getCampaigns/team/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
@@ -544,9 +545,11 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     };
 }]);
 
+
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+    //$('#pop1').popover({trigger:'hover'});
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/info/'+tid).success(function(data, status) {
             $scope.members = [];
@@ -602,7 +605,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         else {
             $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;;
         }
-  };
+    };
 }]);
 tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.showMapFlag=false;

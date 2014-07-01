@@ -5,6 +5,38 @@ angular.module('mean.main', ['ngRoute','ui.bootstrap','pascalprecht.translate'])
 
 var app = angular.module('mean.main');
 
+//弹出信息卡片的控制器
+app.directive('bsPopover',function() {
+  return{
+    controller:['$http','$scope',function($http, $scope){
+      $scope.showUserCard = function(member_id,pop_id) {
+        $scope.member_id=member_id;
+        $http.get('/users/briefInfo/'+member_id).success(function(data, status){
+          if(data.result){           
+            $scope.htmlcontent= data.htmlcontent;
+            $('#pop'+pop_id).popover({trigger:'hover',html:'true',delay:{show:200,hide:500},content:$scope.htmlcontent,title:''});
+            $('#pop'+pop_id).popover('show');
+          }
+          else
+            console.log(data.msg);
+        });
+      };
+      $scope.showGroupCard = function(group_id,pop_id) {
+        $scope.group_id=group_id;
+        $http.get('/group/briefInfo/'+group_id).success(function(data, status){
+          if(data.result){           
+            $scope.htmlcontent= data.htmlcontent;
+            $('#pop'+pop_id).popover({trigger:'hover',html:'true',delay:{show:200,hide:500},content:$scope.htmlcontent,title:''});
+            $('#pop'+pop_id).popover('show');
+          }
+          else
+            console.log(data.msg);
+        });
+      };
+    }],
+  };
+});
+
 app.config(['$translateProvider',
   function ($translateProvider) {
 

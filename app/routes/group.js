@@ -13,7 +13,8 @@ module.exports = function(app) {
   app.get('/group/home/:teamId', authorization.requiresLogin,group.authorize, group.home);
 
   app.get('/group/info/:teamId', authorization.requiresLogin, group.info);
-
+  //获取小队简要信息供弹出窗使用
+  app.get('/group/briefInfo/:teamId', authorization.requiresLogin, group.getBriefInfo);
   app.get('/group/renderInfo', authorization.requiresLogin, group.renderInfo);
   app.post('/group/saveInfo', authorization.requiresLogin, group.saveInfo);
   app.get('/group/timeLine', authorization.requiresLogin, group.timeLine);

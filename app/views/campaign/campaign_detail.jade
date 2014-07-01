@@ -59,23 +59,24 @@ block contentExt
               input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}{{'CAMPAIGN'|translate}}" ng-click="quitCampaign()" ng-if="join")
               input.dl_btn.dl_btn_detail(type = "button" value = "{{'ENTRY'|translate}}{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="!join")
       //-成员
-      .dl_detail_member
+      .dl_detail_member(bs-popover)
         p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}:
-        div.member(ng-repeat = "_member in campaign.member", title="{{_member.nickname}}")
-          a.item(href="/users/home/{{_member.uid}}")
-            img.img_contain.detail_photo(ng-src="{{_member.photo}}" title="{{_member.nickname}}")
+        div.member(ng-repeat = "_member in campaign.member")
+          a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
+            img.img_contain.detail_photo(ng-src="{{_member.photo}}")
             span.name {{_member.nickname}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
       form.dl_detail_main(name="comment_form" novalidate)
         p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}
         textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
         button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") {{"SUBMIT"|translate}}{{"LEAVEMESSAGE"|translate}}
-        .dl_row
+        .dl_row(bs-popover)
           section
             br
             div.comment.clearfix(ng-repeat="comment in comments")
               .comment_user_info
-                img.user_photo.size_56(ng-src="{{comment.poster.photo}}")
+                a(href="/users/home/{{comment.poster._id}}" )
+                  img.user_photo.size_56(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
                 p
                   a.user_name(href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
               .comment_content_panel

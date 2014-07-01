@@ -56,9 +56,9 @@ fdiv(ng-controller="infoController")
       .dl_companygroup_container
         .groups
           .group( ng-repeat="leader in team.leader")
-            .dl_row
-              a(href="/users/home/{{leader._id}}")
-                img.size_80(ng-src="{{leader.photo}}")
+            .dl_row(bs-popover)
+              a(href="/users/home/{{leader._id}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}' rel='popover')
+                img.size_56(ng-src="{{leader.photo}}")
             .dl_row
               label {{leader.nickname}}
     .dl_row.clearfix
@@ -66,12 +66,13 @@ fdiv(ng-controller="infoController")
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
-          .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="member in members")
-            .dl_row
-              a(href="/users/home/{{member._id}}")
-                img.size_80(ng-src="{{member.photo}}")
+          .group(ng-repeat="member in members")
+            .dl_row(bs-popover)
+              a(href="/users/home/{{member._id}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}' rel='popover')
+                img.size_56(ng-src="{{member.photo}}")
             .dl_row
               label {{member.nickname}}
+
     //- 此部分逻辑未做 暂时隐藏
     //- .row.dl_row
     //-   h5.pull-left {{"COMPETITION_INFO" | translate}}
