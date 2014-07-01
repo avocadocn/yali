@@ -78,7 +78,7 @@
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
         span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         span.message_label 报名截止{{"TIME"|translate}}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
-        label.pull-right(ng-if="message_role==='group'")
+        label.pull-right
           a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
         label.pull-right.vertical_label |
         a.pull-right(ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})

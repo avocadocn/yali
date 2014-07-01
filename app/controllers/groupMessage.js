@@ -63,6 +63,17 @@ exports.getMessage = function(req, res) {
         switch (group_message[i].message_type){
           case 0:
           _group_message.logo = group_message[i].company[0].logo;
+          if(req.user.provider==='user' && new Date()<group_message[i].campaign.deadline){
+            var join_flag = false;
+            group_message[i].campaign.member.forEach(function(member){
+              if(member.uid.toString() === req.user._id.toString()){
+                join_flag = true;
+              }
+            });
+            _group_message.member_num = group_message[i].campaign.member.length;
+            _group_message.join_flag = join_flag;
+          }
+          break;
           case 1:
             _group_message.logo = group_message[i].team[0].logo;
             if(req.user.provider==='user' && new Date()<group_message[i].campaign.deadline){
