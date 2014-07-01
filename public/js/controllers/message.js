@@ -142,7 +142,7 @@ var messagePreHandle = function(teams,msg){
     //公司
     if(msg[i].type == 'company'){
       if(msg[i].message_content.sender.length > 0){
-        content = "公司HR "+msg[i].message_content.sender[0].nickname + " 给您发了一条私信!";
+        content = "公司给您发了一条私信!";
         detail = msg[i].message_content.content;
         direct_show = true;
         company_messages.push({
@@ -159,7 +159,7 @@ var messagePreHandle = function(teams,msg){
         company_messages.push({
           '_id':msg[i]._id,
           'caption':msg[i].message_content.caption,
-          'content':msg[i].message_content.content,
+          'content':'公司有了新的活动,快去看看吧!',
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'url':'/company/home#/company_campaign',
