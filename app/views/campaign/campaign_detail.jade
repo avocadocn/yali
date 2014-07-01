@@ -10,6 +10,10 @@ block contentExt
       ul.nav.nav-tabs
         li.tab_style(ng-class="{'active':nowTab=='campaign'}")
           a.subtitle.no_radius.border_red {{campaign.theme}}
+      //-TODO:详情页权限不正确，需要更改
+      if Global.role==='HR' || Global.role==='LEADER'
+        span.pull-right
+          btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_item._id)") 关闭活动
       .dl_detail_border.clearfix
         .dl_detail_content
           .dl_detail_row
@@ -85,7 +89,7 @@ block contentExt
                 label.comment_date.text.pull-right |
                 a.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
-      p.subtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
+      p.subtitle.locationtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         #mapContainer.size_400
       if (Global.role!=='PARTNER')
         p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}

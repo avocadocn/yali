@@ -305,6 +305,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         //alert('成功加入该活动!');
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                         $scope.group_messages[index].join_flag = true;
+                        $scope.group_messages[index].member_num++;
                     }
                     else{
                         $rootScope.donlerAlert(data.msg);
@@ -331,6 +332,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                         //alert('您已退出该活动!');
                         $scope.group_messages[index].join_flag = false;
+                        $scope.group_messages[index].member_num--;
                     }
                     else{
                         $rootScope.donlerAlert(data.msg);
