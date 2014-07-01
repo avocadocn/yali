@@ -189,6 +189,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     }
     $scope.toggleOperate = function(index){
         $scope.toggle[index] = !$scope.toggle[index];
+        $scope.message_index = index;
     }
     $scope.getComment = function(index){
         if($scope.toggle){
@@ -202,8 +203,15 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 }).success(function(data, status) {
                     if(data.length > 0){
                         $scope.group_messages[index].comments = data;
+                        $scope.fixed_sum = data.length;
                         for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
-                            $scope.group_messages[index].comments[i].index = data.length - i;
+                            if($scope.group_messages[index].comments[i].status == 'delete'){
+                                $scope.group_messages[index].comments.splice(i,1);
+                                i--;
+                            }else{
+                                $scope.group_messages[index].comments[i].delete_permission = $scope.role === 'LEADER' || $scope.role === 'HR' || $scope.group_messages[index].comments[i].poster._id === $scope.user._id;
+                                $scope.group_messages[index].comments[i].index = data.length - i;
+                            }
                         }
                     }
                 }).error(function(data, status) {
@@ -216,6 +224,31 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     }
 
+    $scope.deleteComment = function(index){
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/delete',
+                data:{
+                    comment_id : $scope.group_messages[$scope.message_index].comments[index]._id,
+                    host_type:'campaign',
+                    host_id:$scope.group_messages[$scope.message_index].campaign._id
+                }
+            }).success(function(data, status) {
+                if(data === 'SUCCESS'){
+                    $scope.group_messages[$scope.message_index].comments.splice(index,1);
+                    $scope.group_messages[$scope.message_index].campaign.comment_sum --;
+                } else {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                }
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
     $scope.comment = function(index){
         try {
             $http({
@@ -234,12 +267,13 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     };
                     $scope.group_messages[index].campaign.comment_sum ++;
                     $scope.group_messages[index].comments.unshift({
+                        'show':true,
                         'host_id' : $scope.group_messages[index].campaign._id,
                         'content' : $scope.new_comment[index].text,
                         'create_date' : new Date(),
                         'poster' : poster,
                         'host_type' : 'campaign',
-                        'index' : $scope.group_messages[index].campaign.comment_sum
+                        'index' : $scope.fixed_sum+1
                     });
                 } else {
                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
@@ -753,7 +787,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         }
         if(!window.map_ready && $scope.showMapFlag ==false){
             $scope.showMapFlag = true;
-            var script = document.createElement("script");  
+            var script = document.createElement("script");
             script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=provokeMapInitialize";
             document.body.appendChild(script);
         }

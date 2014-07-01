@@ -993,8 +993,8 @@ exports.getCampaignDetail = function(req, res) {
       over : judge,
       campaign: campaign,
       join: join,
-      nickname : req.user.nickname,
-      photo : req.user.photo,
+      role:req.session.role,
+      user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
       campaignLogo: campaign.team[0].logo
     });
   })

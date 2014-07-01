@@ -85,27 +85,32 @@
         a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
       .message_row(ng-if="toggle[$index] && group_message.comment_permission")
         .dl_comment_area
-          .dl_modal_container.margin_top_5
+          form.dl_modal_container.margin_top_5(name="comment_form" novalidate)
             .dl_md_8
-              input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text")
+              input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
             .dl_md_1
-              a.clearLinkUnderline.dl_btn_right(ng-click="comment($index)") 发表
+              button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
           hr
           .dl_modal_container(ng-if="group_message.comments.length > 0")
             .dl_row(style="height:93px" ng-repeat="comment in group_message.comments")
-              .dl_md_1
-                img.size_56(ng-src="{{comment.poster.photo}}")
-              .dl_md_8.margin_left_5
-                .row
-                  .dl_md_name
-                    h7 {{comment.poster.nickname}}
-                  .dl_md_time
-                    h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-                .row
-                  .dl_md_12
-                    h5 {{comment.content}}
-                  .dl_md_3.pull-right
-                    h5.pull-right.margin_right_20 # {{comment.index}}
+              .row.line_left
+                .dl_md_1
+                  img.size_head_list(ng-src="{{comment.poster.photo}}")
+                .dl_md_8.comment_left
+                  .row
+                    .dl_md_name
+                      h7 {{comment.poster.nickname}}
+                    .dl_md_time
+                      h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+                  .row
+                    .dl_md_12.comment_top
+                      h5 {{comment.content}}
+                    .dl_md_3.pull-right
+                      h5.pull-right.margin_right_20 # {{comment.index}}
+              .row.line_top
+                hr.comment_bottom
+              .dl_md_12.comment_tool_bottom(ng-if="comment.delete_permission")
+                a.pull-right(ng-click="deleteComment($index)") 删除
   hr
 .text-center(ng-if="group_messages.length>0")
   button(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多

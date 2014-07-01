@@ -8,4 +8,6 @@ var config = require('../../config/config');
 module.exports = function(app, passport) {
   app.post('/comment/pull', comment.getComment);
   app.post('/comment/push', comment.setComment);
+
+  app.post('/comment/delete', comment.deleteComment);
 };

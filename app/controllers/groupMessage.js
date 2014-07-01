@@ -185,7 +185,7 @@ exports.getMessage = function(req, res) {
           group_messages.push(_group_message);
         }
       }
-      return res.send({'result':1,'group_messages':group_messages,'role':req.session.role,'user':{'nickname':req.user.nickname,'photo':req.user.photo}});
+      return res.send({'result':1,'group_messages':group_messages,'role':req.session.role,'user':{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team}});
      }
   });
 };
