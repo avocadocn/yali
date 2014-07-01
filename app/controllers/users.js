@@ -900,7 +900,7 @@ exports.timeLine = function(req,res){
         }
         else if(campaign.team.length==0){
           _head = '公司活动';
-          _logo = campaign.cid.info.logo;
+          _logo = campaign.cid[0].info.logo;
         }
         else{
           _head = campaign.team[0].name + '活动';
@@ -916,6 +916,7 @@ exports.timeLine = function(req,res){
           group_type: campaign.group_type,
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
+          year: getYear(campaign)
         }
         // todo new time style
         // console.log(campaign);
@@ -952,6 +953,7 @@ exports.timeLine = function(req,res){
 
         timeLines.push(tempObj);
       });
+      console.log(newTimeLines);
       res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
 
       // res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });

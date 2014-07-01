@@ -220,7 +220,7 @@ Timeline UI Base
   position: relative;
   margin: 10px 0px;
   clear: both;
-  border-radius: 5px;
+  border-radius: 0px;
   padding: 10px;
   color: #888;
 }
@@ -295,7 +295,7 @@ Timeline UI Base
 }
 .dl_timeline .column_right {
   float: right;
-  margin-top: 20px;
+  margin-top: 32px;
 }
 .dl_timeline .column_right .timeline_element {
   float: left;
@@ -322,7 +322,7 @@ Timeline UI Base
   height: 30px;
   line-height: 30px;
   font-size: 14px;
-  border-radius: 5px;
+  border-radius: 0px;
   border: 1px solid #bbb;
   background-color: #fff;
   color: #666;

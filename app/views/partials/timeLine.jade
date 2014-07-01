@@ -17,7 +17,7 @@ if(newTimeLines)
               a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
                 img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                 span.head= item.head
-                span.date= moment(item.start_time).format('YY/MM/DD')
+                span.date= moment(item.start_time).format('MM/DD')
             .img_container
             .content
               a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
@@ -30,7 +30,7 @@ if(newTimeLines)
               a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
                 img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                 span.head= item.head
-                span.date= moment(item.start_time).format('YY/MM/DD')
+                span.date= moment(item.start_time).format('MM/DD')
             .img_container
             .content
               a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}")
