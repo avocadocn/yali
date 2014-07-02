@@ -363,6 +363,23 @@ app.config(['$translateProvider',
 
 app.run(['$translate','$rootScope', function ($translate,$rootScope) {
 
+    $rootScope.shortTrim = function(value){
+      //中文
+      if(escape(value).indexOf("%u")>=0){
+        if(value.length>10){
+          return value.substr(0,10)+'...';
+        }else{
+          return value;
+        }
+      //非中文
+      }else{
+        if(value.length>20){
+          return value.substr(0,20)+'...';
+        }else{
+          return value;
+        }
+      }
+    }
     $rootScope.lang_for_msg = [];
     $rootScope.lang_key = 0;
 

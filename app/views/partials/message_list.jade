@@ -109,7 +109,7 @@
                 .dl_md_12.comment_left.comment_box
                   .dl_row
                     .dl_md_name.name
-                      h7 {{comment.poster.nickname}}
+                      a(title="{{comment.poster.nickname}}" href="/users/home/{{comment.poster._id}}") {{shortTrim(comment.poster.nickname)}}
                     .dl_md_time.time
                       h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
                   .dl_row
