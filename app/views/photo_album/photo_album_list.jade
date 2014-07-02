@@ -6,9 +6,11 @@ append headExt
 block contentExt
   .dl_container.photo_album
     header.clearfix
-      ol.breadcrumb
-        li: a(href="/group/home/#{owner_id}")= owner_name
-        li.active 相册集
+      //- ol.breadcrumb
+      //-   li: a(href="/group/home/#{owner_id}")= owner_name
+      //-   li.active 相册集
+      include ../partials/breadcrumb
+      +breadcrumb(links)
       div.clearfix
         .pull-left
           p

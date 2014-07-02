@@ -22,7 +22,6 @@ function getUserAllCampaigns(user, isCalendar, callback) {
   query
   .exec()
   .then(function(campaigns) {
-    console.log(campaigns)
     callback(campaigns);
   })
   .then(null, function(err) {

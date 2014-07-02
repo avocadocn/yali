@@ -1,0 +1,8 @@
+//-links 为对象数组: [{ text, url}] 或者 [{ text, active }]
+mixin breadcrumb(links)
+  ol.breadcrumb
+    each link in links
+      if !link.active
+        li: a(href="#{link.url}")= link.text
+      else
+        li.active= link.text

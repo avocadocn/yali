@@ -5,11 +5,13 @@ append headExt
 
 block contentExt
   .dl_container.photo_album
-    ol.breadcrumb
-      li: a(href="/group/home/#{photo_album.owner.team._id}")= photo_album.owner.team.name
-      li: a(href="/#{photo_album.owner.team._id}/photoAlbumListView") 相册集
-      li: a#returnUri(href="/photoAlbumDetailView/#{photo_album._id}")= photo_album.name
-      li.active= photo_detail.name
+    //- ol.breadcrumb
+    //-   li: a(href="/group/home/#{photo_album.owner.team._id}")= photo_album.owner.team.name
+    //-   li: a(href="/#{photo_album.owner.team._id}/photoAlbumListView") 相册集
+    //-   li: a#returnUri(href="/photoAlbumDetailView/#{photo_album._id}")= photo_album.name
+    //-   li.active= photo_detail.name
+    include ../partials/breadcrumb
+    +breadcrumb(links)
     hr
     .row.photo_detail_container
       .col-xs-8.col-sm-8
