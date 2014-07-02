@@ -14,7 +14,7 @@ app.directive('bsPopover',function() {
         $http.get('/users/briefInfo/'+member_id).success(function(data, status){
           if(data.result){           
             $scope.htmlcontent= data.htmlcontent;
-            $('#pop'+pop_id).popover({trigger:'hover',html:'true',delay:{show:200,hide:500},content:$scope.htmlcontent,title:''});
+            $('#pop'+pop_id).popover({trigger:'hover',html:'true',animation:false,content:$scope.htmlcontent,title:''});
             $('#pop'+pop_id).popover('show');
           }
           else
@@ -26,7 +26,7 @@ app.directive('bsPopover',function() {
         $http.get('/group/briefInfo/'+group_id).success(function(data, status){
           if(data.result){           
             $scope.htmlcontent= data.htmlcontent;
-            $('#pop'+pop_id).popover({trigger:'hover',html:'true',delay:{show:200,hide:500},content:$scope.htmlcontent,title:''});
+            $('#pop'+pop_id).popover({trigger:'hover',html:'true',animation:false,content:$scope.htmlcontent,title:''});
             $('#pop'+pop_id).popover('show');
           }
           else
