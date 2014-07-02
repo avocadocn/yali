@@ -20,7 +20,7 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     $scope.score_opposite = {
       'score':0
     };
-    //异步接受真是太麻烦了,必须嵌套来保持一致性
+    //必须嵌套来保持一致性
     $scope.$watch('rst_content',function(rst_content){
       $scope.rst_content = rst_content;
       $scope.$watch('score_a',function(score_a){

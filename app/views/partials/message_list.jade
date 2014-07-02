@@ -94,7 +94,7 @@
       .message_row(ng-if="toggle[$index] && group_message.comment_permission")
         .dl_comment_area
           form.dl_modal_container.margin_top_5(name="comment_form" novalidate)
-            .dl_md_8
+            .dl_md_12
               input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
@@ -113,13 +113,11 @@
                     .dl_md_time.time
                       h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
                   .dl_row
-                    .dl_md_12.comment_top.content
+                    .dl_md_12.comment_top
                       p {{comment.content}}
-                    .dl_md_2.pull-right
-                      h5.pull-right.margin_right_20 # {{comment.index}}
                     .dl_md_2.pull-right(ng-if="comment.delete_permission")
                       h5.pull-right.margin_right_20
-                        a(ng-click="deleteComment($index)") 删除
+                        a.mouse_hidden(ng-click="deleteComment($index)") 删除
               .dl_row.line_top
                 hr.comment_bottom
   hr
