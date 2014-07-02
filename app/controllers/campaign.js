@@ -165,7 +165,7 @@ var formatCampaign = function(campaign,pageType,role,user){
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum
     };
-    if(_campaign.team.length==0){
+    if(_campaign.team.length==0){//公司活动
       temp.type='companycampaign';
       temp.logo=_campaign.cid[0].info.logo;
       temp.link = '/company/home/'+_campaign.cid._id;
@@ -173,11 +173,12 @@ var formatCampaign = function(campaign,pageType,role,user){
       temp.cname=_campaign.cid[0].info.name;
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
     }
-    else if(_campaign.camp.length==0){
+    else if(_campaign.camp.length==0){//小队活动
       temp.type='teamcampaign';
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
       temp.link = '/group/home/'+_campaign.team[0]._id;
+      temp.team_id = _campaign.team[0]._id;
       if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
         if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
           temp.join_flag = 1;
@@ -187,12 +188,13 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
-    else{
+    else{//对战
       temp.type = 'provoke';
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
       temp.logo=_campaign.camp[camp_index].logo;
       temp.link = '/group/home/'+_campaign.camp[camp_index].id;
+      team.team_id =_campaign.camp[camp_index].id;
       if(model_helper.arrayObjectIndexOf(_campaign.camp[camp_index].member,user._id,'uid')>-1){
         temp.join_flag = 1;
       }
