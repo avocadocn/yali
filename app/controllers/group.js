@@ -1002,7 +1002,7 @@ exports.getCampaignDetail = function(req, res) {
   console.log(req.session.nowcampaignid);
   Campaign
   .findOne({ _id: req.session.nowcampaignid })
-  .populate('team')
+  .populate('team').populate('cid')
   .exec()
   .then(function(campaign) {
     //增加返回值是否加入
@@ -1024,10 +1024,11 @@ exports.getCampaignDetail = function(req, res) {
       join: join,
       role:req.session.role,
       user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
-      campaignLogo: campaign.team[0].logo
+      campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo
     });
   })
   .then(null, function(err) {
+    console.log(err);
     return res.status(500).send('error');
   });
 };
