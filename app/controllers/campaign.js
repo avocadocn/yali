@@ -14,7 +14,7 @@ function getUserAllCampaigns(user, isCalendar, callback) {
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
   }
-  var query = Campaign.find(options);
+  var query = Campaign.find(options).sort('start_time');
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -22,6 +22,7 @@ function getUserAllCampaigns(user, isCalendar, callback) {
   query
   .exec()
   .then(function(campaigns) {
+    console.log(campaigns)
     callback(campaigns);
   })
   .then(null, function(err) {
@@ -38,7 +39,7 @@ function getUserJoinedCampaigns(user, isCalendar, callback) {
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
   }
-  var query = Campaign.find(options);
+  var query = Campaign.find(options).sort('start_time');
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -66,7 +67,7 @@ function getUserUnjoinCampaigns(user, isCalendar, callback) {
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
   }
-  var query = Campaign.find(options);
+  var query = Campaign.find(options).sort('start_time');
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -85,7 +86,7 @@ function getUserUnjoinCampaigns(user, isCalendar, callback) {
 function formatCampaignForCalendar(user, campaigns) {
   var calendarCampaigns = [];
   campaigns.forEach(function(campaign) {
-    
+
     // 公司活动
     if (campaign.cid.length === 1 && campaign.team.length === 0) {
       var logo_owner_id = campaign.cid[0];
