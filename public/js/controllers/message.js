@@ -42,6 +42,17 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
         $rootScope.nowTab = value;
     };
 
+    $rootScope.statusHandle = function(value){
+      switch(value){
+        case 'read':
+        return '已读';
+        case 'unread':
+        return '未读';
+        case 'delete':
+        return '删除';
+        default:return '未知';
+      }
+    }
     $rootScope.getMessageByHand = function(_type){
       try{
         $http({
@@ -203,28 +214,37 @@ var messagePreHandle = function(teams,msg){
 }
 
 
-var sendSet = function(http,status,rootScope,_id,type,index){
+var sendSet = function(http,_status,rootScope,_id,type,index){
   try{
     http({
         method: 'post',
         url: '/message/modify',
         data:{
-            status:status,
+            status:_status,
             msg_id:_id
         }
     }).success(function(data, status) {
         switch(type){
           case 'private':
-            rootScope.private_length--;
-            rootScope.private_messages[index].status = 'read';
+            if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread')rootScope.private_length--;
+            rootScope.private_messages[index].status = _status;
+            if(_status === 'delete'){
+              rootScope.private_messages.splice(index,1);
+            }
           break;
           case 'team':
-            rootScope.team_length--;
-            rootScope.team_messages[index].status = 'read';
+            if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread')rootScope.team_length--;
+            rootScope.team_messages[index].status = _status;
+            if(_status === 'delete'){
+              rootScope.team_messages.splice(index,1);
+            }
           break;
           case 'company':
-            rootScope.company_length--;
-            rootScope.company_messages[index].status = 'read';
+            if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread')rootScope.company_length--;
+            rootScope.company_messages[index].status = _status;
+            if(_status === 'delete'){
+              rootScope.company_messages.splice(index,1);
+            }
           break;
           default:break;
         }
@@ -241,6 +261,9 @@ var sendSet = function(http,status,rootScope,_id,type,index){
 //获取一对一私信
 messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('private');
+  $scope.setToDelete = function(index){
+    sendSet($http,'delete',$rootScope,$rootScope.private_messages[index]._id,'private',index);
+  }
   $scope.setToRead = function(index){
     if($rootScope.private_messages[index].direct_show){
       alertify.alert($rootScope.private_messages[index].detail);
@@ -291,6 +314,11 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
         console.log(e);
     }
   }
+
+  $scope.setToDelete = function(index){
+    sendSet($http,'delete',$rootScope,$rootScope.team_messages[index]._id,'team',index);
+  }
+
   $scope.setToRead = function(index){
     if($rootScope.team_messages[index].direct_show){
       alertify.alert($rootScope.team_messages[index].detail);
@@ -334,6 +362,10 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
     catch(e){
         console.log(e);
     }
+  }
+
+  $scope.setToDelete = function(index){
+    sendSet($http,'delete',$rootScope,$rootScope.company_messages[index]._id,'company',index);
   }
 
   $scope.setToRead = function(index){

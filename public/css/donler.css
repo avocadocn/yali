@@ -99,6 +99,10 @@ textarea {
   margin-left: 5px;
   float: left;
 }
+.dl_message_rightcorner {
+  margin-right: 20px !important;
+  margin-top: 5px !important;
+}
 .dl_btn_score {
   width: 100px;
   height: 50px;
