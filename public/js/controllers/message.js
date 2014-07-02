@@ -246,7 +246,7 @@ messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope
       alertify.alert($rootScope.private_messages[index].detail);
     }
     if($rootScope.private_messages[index].status === 'unread'){
-      sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id,index);
+      sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id,'private',index);
     }
   }
 }]);
@@ -296,7 +296,7 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
       alertify.alert($rootScope.team_messages[index].detail);
     }
     if($rootScope.team_messages[index].status === 'unread'){
-      sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id,index);
+      sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id,'team',index);
     }
   }
 }]);
@@ -341,7 +341,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
       alertify.alert($rootScope.company_messages[index].detail);
     }
     if($rootScope.company_messages[index].status === 'unread'){
-      sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id,index);
+      sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id,'company',index);
     }
   }
 }]);
