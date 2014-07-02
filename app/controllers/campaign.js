@@ -205,7 +205,6 @@ exports.getCampaigns = function(req, res) {
     option={
       'active':true,
       'finish':false,
-      'end_time':{'$gt':new Date()},
       'cid' : req.session.nowcid
     }
     if(req.params.start_time!=0){
@@ -254,7 +253,7 @@ exports.getCampaigns = function(req, res) {
   else if(pageType==='team' && campaignType==='all') {
     option={
       'active':true,
-      'end_time':{'$gt':new Date()},
+      'finish':false,
       'team':req.session.nowtid
     }
     if(req.params.start_time!=0){
@@ -289,7 +288,7 @@ exports.getCampaigns = function(req, res) {
         }
         option={
           'active':true,
-          'end_time':{'$gt':new Date()},
+          'finish':false,
           '$or':[{'team':{'$in':team_ids}},{'cid':user.cid,'team':{'$size':0}}]
         }
         if(req.params.start_time!=0){

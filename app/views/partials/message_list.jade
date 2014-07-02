@@ -42,16 +42,21 @@
         .triangle(ng-if="group_message.message_type!=6")
         .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
           .message_row
-            span.message_label 主题:
+            span.message_label 主题: 
+            span.message_label
               a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/group/campaign/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
               a(ng-if="group_message.campaign.camp[1].start_confirm==true" ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
               span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false") {{group_message.campaign.theme}}
           .message_row
-            span.message_label 内容: {{group_message.campaign.content}}
+            span.message_label 内容:
+            span.message_label {{group_message.campaign.content}}
           .message_row
-            span.message_label {{"LOCATION"|translate}}: {{group_message.campaign.location.name}}
-            span.message_label 开始{{"TIME"|translate}}: {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-            span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限: {{group_message.campaign.member_max}}
+            span.message_label {{"LOCATION"|translate}}:
+            span.message_label {{group_message.campaign.location.name}}
+            span.message_label 开始{{"TIME"|translate}}:
+            span.message_label {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限:
+            span.message_label(ng-if="group_message.campaign.member_max>0") {{group_message.campaign.member_max}}
           .message_row
             span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false && group_message.vote_flag !=undefined")
               //-button.dl_btn(ng-click="vote(group_message.campaign._id,false,$index)") {{group_message.vote_flag == -1 ? "CANCEL" : "NEGATIVE"|translate}} {{group_message.campaign.camp[group_message.camp_flag].vote.negative}}
@@ -74,8 +79,9 @@
             span.message_label  加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6")
         span(ng-if="group_message.join_flag!=undefined")
-          btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") 已参加 {{group_message.member_num ? group_message.member_num :'0'}}
-          btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") {{"JOIN"|translate}} {{group_message.member_num ? group_message.member_num :'0'}}
+          btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") 退出
+          btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") {{"JOIN"|translate}}
+        span.message_label {{group_message.member_num ? group_message.member_num :'0'}}
         span.message_label(ng-if="group_message.join_flag!=undefined") 报名截止{{"TIME"|translate}}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
         span.message_label(ng-if="group_message.join_flag==undefined &&group_message.message_type!=4") 报名已截止
         label.pull-right(ng-if="group_message.comment_permission")
