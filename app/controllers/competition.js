@@ -268,6 +268,28 @@ exports.getCompetition = function(req, res){
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
     return res.send(403,forbidden);
   }
+
+  var competition = req.competition;
+  var parent_name, parent_url;
+  for (var i = 0, teams = req.user.team; i < teams.length; i++) {
+    var index = competition.team.indexOf(teams[i]._id);
+    if (index !== -1) {
+      parent_name = competition.camp[index].tname;
+      parent_url = '/group/home/' + competition.team[index];
+      break;
+    }
+  }
+  var links = [
+    {
+      text: parent_name,
+      url: parent_url
+    },
+    {
+      text: competition.theme,
+      active: true
+    }
+  ];
+
   var options ={
     'title': '比赛页面',
     'competition' : req.competition,
@@ -280,7 +302,8 @@ exports.getCompetition = function(req, res){
     'moment':moment,
     'confirm_btn_show':false,
     'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album).slice(0, 4),
-    'confirm_mode':3
+    'confirm_mode':3,
+    'links': links
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.session.role==='HR'){

@@ -1268,3 +1268,6 @@ input.ng-invalid.ng-dirty {
   width: 230px;
   padding: 10px;
 }
+.breadcrumb {
+  background-color: #fff;
+}
