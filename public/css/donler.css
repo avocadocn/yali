@@ -145,9 +145,9 @@ textarea {
   width: auto;
   height: auto;
   background-color: #cd270d;
-  border-radius: 5px;
+  border-radius: 100%;
   color: #fff;
-  padding: 2px 2px 0;
+  padding: 2px 7px 0;
 }
 .dl_corner {
   margin-top: -48px;
