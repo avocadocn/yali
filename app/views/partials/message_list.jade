@@ -114,7 +114,7 @@
                       p {{comment.content}}
                     .dl_md_2.pull-right
                       h5.pull-right.margin_right_20 # {{comment.index}}
-                    .dl_md_2.pull-right(ng-if="comment.delete_permission")
+                    //-.dl_md_2.pull-right(ng-if="comment.delete_permission")
                       h5.pull-right.margin_right_20
                         a(ng-click="deleteComment($index)") 删除
               .dl_row.line_top
