@@ -32,20 +32,21 @@ function photoEditAuth(user, photo_album, photo) {
   // 比赛照片只允许上传者更改
   if (photo_album.owner.teams.length === 1 || photo_album.owner.companies.length === 1) {
     var owner = getPhotoAlbumOwner(user, photo_album);
-
-    // 该照片所属组的队长
-    var leaders = [];
-    leaders = photo_album.owner.team.leader || [];
-    for (var i = 0; i < leaders.length; i++) {
-      if (user._id.toString() === leaders[i]._id.toString()) {
-        return true;
+    if (owner) {
+      // 该照片所属组的队长
+      var leaders = [];
+      leaders = photo_album.owner.team.leader || [];
+      for (var i = 0; i < leaders.length; i++) {
+        if (user._id.toString() === leaders[i]._id.toString()) {
+          return true;
+        }
       }
-    }
 
-    // 该照片所属公司的HR
-    if (owner.company) {
-      if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
-        return true;
+      // 该照片所属公司的HR
+      if (owner.company) {
+        if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
+          return true;
+        }
       }
     }
   }
@@ -64,21 +65,24 @@ function photoAlbumEditAuth(user, photo_album) {
 
     var owner = getPhotoAlbumOwner(user, photo_album);
 
-    if (owner.team) {
-      leaders = owner.team.leader || [];
-    }
-    for (var i = 0; i < leaders.length; i++) {
-      if (user._id.toString() === leaders[i]._id.toString()) {
-        return true;
+    if (owner) {
+      if (owner.team) {
+        leaders = owner.team.leader || [];
+      }
+      for (var i = 0; i < leaders.length; i++) {
+        if (user._id.toString() === leaders[i]._id.toString()) {
+          return true;
+        }
+      }
+
+      // 该照片所属公司的HR
+      if (owner.company) {
+        if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
+          return true;
+        }
       }
     }
 
-    // 该照片所属公司的HR
-    if (owner.company) {
-      if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
-        return true;
-      }
-    }
   }
 
   return false;
@@ -91,19 +95,21 @@ function photoUploadAuth(user, photo_album) {
 
   var owner = getPhotoAlbumOwner(user, photo_album);
 
-  if (owner.team) {
-    members = owner.team.member || [];
-  }
-  for (var i = 0; i < members.length; i++) {
-    if (user._id.toString() === members[i]._id.toString()) {
-      return true;
+  if (owner) {
+    if (owner.team) {
+      members = owner.team.member || [];
     }
-  }
+    for (var i = 0; i < members.length; i++) {
+      if (user._id.toString() === members[i]._id.toString()) {
+        return true;
+      }
+    }
 
-  // 该照片所属公司的HR
-  if (owner.company) {
-    if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
-      return true;
+    // 该照片所属公司的HR
+    if (owner.company) {
+      if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
+        return true;
+      }
     }
   }
 
@@ -151,7 +157,7 @@ function getPhotoAlbumOwner(user, photo_album) {
         if (photo_album.owner.teams[j]._id.toString() === user.team[i].id.toString()) {
           return {
             company: photo_album.owner.companies[j],
-            team: photo_album.owner.teams[j],
+            team: photo_album.owner.teams[j]
           };
         }
       }
@@ -162,12 +168,16 @@ function getPhotoAlbumOwner(user, photo_album) {
         if (photo_album.owner.teams[j]._id.toString() === user.team[i]._id.toString()) {
           return {
             company: photo_album.owner.companies[j],
-            team: photo_album.owner.teams[j],
+            team: photo_album.owner.teams[j]
           };
         }
       }
     }
   }
+  return {
+    company: photo_album.owner.companies[0],
+    team: photo_album.owner.teams[0]
+  };
 }
 
 // 获取一个相册未删除的照片
@@ -812,6 +822,7 @@ exports.renderPhotoAlbumDetail = function(req, res) {
     var owner = getPhotoAlbumOwner(req.user, photo_album);
 
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
+    var uploadAuth = photoUploadAuth(req.user, photo_album)
 
     return res.render('photo_album/photo_album_detail', {
       photo_album: {
@@ -823,7 +834,8 @@ exports.renderPhotoAlbumDetail = function(req, res) {
         photo_count: photo_album.photo_count
       },
       moment: moment,
-      editAuth: editAuth
+      editAuth: editAuth,
+      uploadAuth: uploadAuth
     });
   })
   .then(null, function(err) {
