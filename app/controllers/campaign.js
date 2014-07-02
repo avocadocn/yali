@@ -85,17 +85,28 @@ function getUserUnjoinCampaigns(user, isCalendar, callback) {
 function formatCampaignForCalendar(user, campaigns) {
   var calendarCampaigns = [];
   campaigns.forEach(function(campaign) {
-    var team_id;
-    for (var i = 0, teams = user.team; i < teams.length; i++) {
-      if (campaign.team.indexOf(teams[i]._id) !== -1) {
-        team_id = teams[i]._id;
+    
+    // 公司活动
+    if (campaign.cid.length === 1 && campaign.team.length === 0) {
+      var logo_owner_id = campaign.cid[0];
+      var logo = '/logo/company/' + logo_owner_id + '/27/27';
+    } else {
+      // 挑战或比赛
+      var logo_owner_id;
+      for (var i = 0, teams = user.team; i < teams.length; i++) {
+        if (campaign.team.indexOf(teams[i]._id) !== -1) {
+          logo_owner_id = teams[i]._id;
+          var logo = '/logo/group/' + logo_owner_id + '/27/27';
+          break;
+        }
       }
     }
 
-    var count = 0;
-    if (campaign.member) {
-      count = campaign.member.length;
-    }
+
+    // var count = 0;
+    // if (campaign.member) {
+    //   count = campaign.member.length;
+    // }
 
     var is_joined = false;
 
@@ -123,13 +134,13 @@ function formatCampaignForCalendar(user, campaigns) {
 
     calendarCampaigns.push({
       'id': campaign._id,
-      'team_id': team_id,
+      'logo': logo,
       'title': campaign.theme,
       'url': '/group/campaign/' + campaign._id.toString(),
       'class': 'event-info',
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
-      'count': count,
+      //'count': count,
       'is_joined': is_joined
     });
   });
