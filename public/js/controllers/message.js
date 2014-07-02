@@ -25,12 +25,12 @@ messageApp.config(['$routeProvider', '$locationProvider',
         templateUrl: '/message/company',
         controller: 'messageCompanyController',
         controllerAs: 'company'
-      })
-      .when('/system', {
-        templateUrl: '/message/system',
-        controller: 'messageGlobalController',
-        controllerAs: 'system'
       }).
+      // .when('/system', {
+      //   templateUrl: '/message/system',
+      //   controller: 'messageGlobalController',
+      //   controllerAs: 'system'
+      // }).
       otherwise({
         redirectTo: '/private'
       });
@@ -187,7 +187,7 @@ var messagePreHandle = function(teams,msg){
 
     //系统
     if(msg[i].type == 'global'){
-      global_messages.push({
+      private_messages.push({
         '_id':msg[i]._id,
         'caption':msg[i].message_content.caption,
         'content':msg[i].message_content.content,
