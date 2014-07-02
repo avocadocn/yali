@@ -453,38 +453,70 @@ exports.home = function(req, res) {
   });
 
 };
-
-//返回公司小队的所有数据,待前台调用
+//返回公司小队的所有数据,员工选择组件时使用
 exports.getCompanyGroups = function(req, res) {
-  var provoke_gid = '-1';
-  var provoke_tid = '-1';
-  if(req.session.nowgid != undefined && req.session.nowgid != null){
-    provoke_gid = req.session.nowgid;
-  }
-  if(req.session.nowtid != undefined && req.session.nowtid != null){
-    provoke_tid = req.session.nowtid;
-  }
-  CompanyGroup.find({cid : req.session.nowcid, gid : {'$ne' : '0'}},{'_id':1,'logo':1,'gid':1,'cid':1,'group_type':1,'entity_type':1,'name':1,'leader':1,'member':1,'active':1}, function(err, teams) {
+  CompanyGroup.find({cid : req.session.nowcid},{'gid':1,'group_type':1,'entity_type':1,'name':1,'logo':1}, function(err, teams) {
     if(err || !teams) {
       return res.send([]);
     } else {
       return res.send({
-        'teams':teams,
-        'team' : req.user.provider==='user' ? req.user.team : [],
-        'cid':req.session.nowcid,
-        'role':req.session.role,
-        'provoke_gid' : provoke_gid,   //进对方公司资料对其小队进行挑战时判断小队类型
-        'provoke_tid' : provoke_tid
+        'teams':teams
       });
+    }
+  });
+};
+//返回公司小队的所有数据,待前台调用
+exports.getCompanyTeamsInfo = function(req, res) {
+  var option = {cid : req.session.nowcid};
+  if(req.session.role !== 'HR'){
+    option.active = true;
+  }
+  CompanyGroup.find(option, function(err, teams) {
+    if(err || !teams) {
+      return res.send([]);
+    } else {
+      var output ={
+        'cid':req.session.nowcid,
+        'role':req.session.role
+      };
+      if(req.session.role ==='EMPLOYEE'){
+        var _teams = [];
+        teams.forEach(function(value){
+          var _team = {
+            '_id':value._id,
+            'gid':value.gid,
+            'group_type':value.group_type,
+            'logo':value.logo,
+            'active':value.active,
+            'count':value.count,
+            'entity_type':value.entity_type,
+            'leader':value.leader,
+            'member':value.member,
+            'name':value.name
+          }
+          if(model_helper.arrayObjectIndexOf(req.user.team,value._id,'_id')>-1){
+            _team.belong = true;
+          }
+          else{
+            _team.belong = false;
+          }
+          _teams.push(_team);
+        });
+
+        output.teams = _teams;
+      }
+      else {
+        output.teams = teams;
+      }
+      return res.send(output);
     }
   });
 };
 
 
-
 exports.renderCampaigns = function(req,res){
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   res.render('partials/campaign_list',{'role':req.session.role,'provider':'team'});
 }
@@ -493,7 +525,7 @@ exports.renderCampaigns = function(req,res){
 
 exports.getGroupCampaign = function(req, res) {
   if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   var tid = req.params.teamId;
   //有包含gid的活动都列出来
