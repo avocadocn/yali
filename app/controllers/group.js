@@ -627,7 +627,7 @@ exports.provoke = function (req, res) {
       companies: [req.companyGroup.cid, team_opposite.cid],
       teams: [req.companyGroup._id, team_opposite._id]
     },
-    name: competition.theme,
+    name: moment(competition.start_time).format("YYYY-MM-DD ") + competition.theme,
     update_user: {
       _id: req.user._id,
       name: req.user.nickname,
@@ -804,7 +804,7 @@ exports.sponsor = function (req, res) {
       companies: [cid],
       teams: [req.companyGroup._id]
     },
-    name: moment(campaign.start_time).format("YYYY年MM月DD日 HH:mm ") + campaign.theme,
+    name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme,
     update_user: {
       _id: req.user._id,
       name: req.user.nickname,

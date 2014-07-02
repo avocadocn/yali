@@ -1,9 +1,3 @@
-.calendar_box {
-  margin-top: 20px;
-}
-.calendar_title {
-  margin-top: 5px;
-}
 .cal-day-inmonth span[data-cal-date] {
   opacity: 1;
 }
@@ -16,6 +10,20 @@
 }
 .cal-cell1 small span {
   margin-right: 0;
+}
+.cal-context .cal-row-head .cal-cell1 {
+  font-weight: normal;
+}
+.cal-month-box {
+  border: 1px solid #ddd;
+}
+.cal-year-box .row-fluid,
+.cal-month-box .cal-row-fluid {
+  border-bottom: 1px solid #ddd;
+}
+.cal-year-box [class*="span"],
+.cal-month-box [class*="cal-cell"] {
+  border-right: 1px solid #ddd;
 }
 .events-list {
   max-height: 60px;
@@ -59,13 +67,18 @@
 #cal-slide-content .event_list_logo {
   margin-left: 24px;
 }
+.calendar_box {
+  margin-top: 20px;
+}
+.calendar_title {
+  margin-top: 5px;
+  font-weight: normal;
+}
 .view_type a,
 .view_type span {
   margin-left: 3px;
-  font-size: 20px;
 }
 .schedule_type {
-  margin-top: 3px;
   margin-left: 24px;
 }
 .schedule_type a,
@@ -74,9 +87,6 @@
 }
 .schedule_type .active {
   color: #aaa;
-}
-.calendar_nav {
-  margin-top: 3px;
 }
 .calendar_nav a {
   margin-left: 5px;

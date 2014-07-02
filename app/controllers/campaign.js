@@ -14,7 +14,7 @@ function getUserAllCampaigns(user, isCalendar, callback) {
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
   }
-  var query = Campaign.find(options);
+  var query = Campaign.find(options).sort('start_time');
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -22,6 +22,7 @@ function getUserAllCampaigns(user, isCalendar, callback) {
   query
   .exec()
   .then(function(campaigns) {
+    console.log(campaigns)
     callback(campaigns);
   })
   .then(null, function(err) {
@@ -38,7 +39,7 @@ function getUserJoinedCampaigns(user, isCalendar, callback) {
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
   }
-  var query = Campaign.find(options);
+  var query = Campaign.find(options).sort('start_time');
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -66,7 +67,7 @@ function getUserUnjoinCampaigns(user, isCalendar, callback) {
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
   }
-  var query = Campaign.find(options);
+  var query = Campaign.find(options).sort('start_time');
   if (isCalendar === false) {
     query = query.populate('team').populate('cid');
   }
@@ -85,17 +86,28 @@ function getUserUnjoinCampaigns(user, isCalendar, callback) {
 function formatCampaignForCalendar(user, campaigns) {
   var calendarCampaigns = [];
   campaigns.forEach(function(campaign) {
-    var team_id;
-    for (var i = 0, teams = user.team; i < teams.length; i++) {
-      if (campaign.team.indexOf(teams[i]._id) !== -1) {
-        team_id = teams[i]._id;
+
+    // 公司活动
+    if (campaign.cid.length === 1 && campaign.team.length === 0) {
+      var logo_owner_id = campaign.cid[0];
+      var logo = '/logo/company/' + logo_owner_id + '/27/27';
+    } else {
+      // 挑战或比赛
+      var logo_owner_id;
+      for (var i = 0, teams = user.team; i < teams.length; i++) {
+        if (campaign.team.indexOf(teams[i]._id) !== -1) {
+          logo_owner_id = teams[i]._id;
+          var logo = '/logo/group/' + logo_owner_id + '/27/27';
+          break;
+        }
       }
     }
 
-    var count = 0;
-    if (campaign.member) {
-      count = campaign.member.length;
-    }
+
+    // var count = 0;
+    // if (campaign.member) {
+    //   count = campaign.member.length;
+    // }
 
     var is_joined = false;
 
@@ -123,13 +135,13 @@ function formatCampaignForCalendar(user, campaigns) {
 
     calendarCampaigns.push({
       'id': campaign._id,
-      'team_id': team_id,
+      'logo': logo,
       'title': campaign.theme,
       'url': '/group/campaign/' + campaign._id.toString(),
       'class': 'event-info',
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
-      'count': count,
+      //'count': count,
       'is_joined': is_joined
     });
   });
@@ -153,7 +165,7 @@ var formatCampaign = function(campaign,pageType,role,user){
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum
     };
-    if(_campaign.team.length==0){
+    if(_campaign.team.length==0){//公司活动
       temp.type='companycampaign';
       temp.logo=_campaign.cid[0].info.logo;
       temp.link = '/company/home/'+_campaign.cid._id;
@@ -161,11 +173,12 @@ var formatCampaign = function(campaign,pageType,role,user){
       temp.cname=_campaign.cid[0].info.name;
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
     }
-    else if(_campaign.camp.length==0){
+    else if(_campaign.camp.length==0){//小队活动
       temp.type='teamcampaign';
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
       temp.link = '/group/home/'+_campaign.team[0]._id;
+      temp.team_id = _campaign.team[0]._id;
       if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
         if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
           temp.join_flag = 1;
@@ -175,12 +188,13 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
-    else{
+    else{//对战
       temp.type = 'provoke';
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
       temp.logo=_campaign.camp[camp_index].logo;
       temp.link = '/group/home/'+_campaign.camp[camp_index].id;
+      team.team_id =_campaign.camp[camp_index].id;
       if(model_helper.arrayObjectIndexOf(_campaign.camp[camp_index].member,user._id,'uid')>-1){
         temp.join_flag = 1;
       }
@@ -205,7 +219,6 @@ exports.getCampaigns = function(req, res) {
     option={
       'active':true,
       'finish':false,
-      'end_time':{'$gt':new Date()},
       'cid' : req.session.nowcid
     }
     if(req.params.start_time!=0){
@@ -254,7 +267,7 @@ exports.getCampaigns = function(req, res) {
   else if(pageType==='team' && campaignType==='all') {
     option={
       'active':true,
-      'end_time':{'$gt':new Date()},
+      'finish':false,
       'team':req.session.nowtid
     }
     if(req.params.start_time!=0){
@@ -289,7 +302,7 @@ exports.getCampaigns = function(req, res) {
         }
         option={
           'active':true,
-          'end_time':{'$gt':new Date()},
+          'finish':false,
           '$or':[{'team':{'$in':team_ids}},{'cid':user.cid,'team':{'$size':0}}]
         }
         if(req.params.start_time!=0){

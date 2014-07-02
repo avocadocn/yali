@@ -25,7 +25,7 @@
 			%>
 			<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" target="_blank" data-event-id="<%= event.id %>" data-event-class="<%= event['class'] %>"
 				class="pull-left event <%= event['class'] %>" data-toggle="tooltip"
-				title="<%= event.title %>"><img src="/logo/group/<%= event.team_id %>/27/27"/></a>
+				title="<%= event.title %>"><img src="<%= event.logo %>"/></a>
 			<%
 					}
 					count++;
