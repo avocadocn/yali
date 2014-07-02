@@ -97,7 +97,7 @@
               button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
           hr
           .dl_modal_container(ng-if="group_message.comments.length > 0")
-            .dl_row(style="height:93px" ng-repeat="comment in group_message.comments")
+            .dl_row.comment_height_limit(ng-repeat="comment in group_message.comments")
               .row.line_left
                 .dl_md_1
                   img.size_head_list(ng-src="{{comment.poster.photo}}")
@@ -110,12 +110,10 @@
                   .row
                     .dl_md_12.comment_top
                       h5 {{comment.content}}
-                    .dl_md_3.pull-right
-                      h5.pull-right.margin_right_20 # {{comment.index}}
               .row.line_top
                 hr.comment_bottom
               .dl_md_12.comment_tool_bottom(ng-if="comment.delete_permission")
-                a.pull-right(ng-click="deleteComment($index)") 删除
+                a.comment_right.mouse_hidden(ng-click="deleteComment($index)") 删除
   hr
 .text-center(ng-if="group_messages.length>0")
   button(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多

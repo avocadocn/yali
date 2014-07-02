@@ -86,9 +86,7 @@ block contentExt
                   .comment_content
                     p {{comment.content}}
                 label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
-                label.comment_date.text.pull-right {{comment.index}}
-                label.comment_date.text.pull-right |
-                a.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+                a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       p.subtitle.locationtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
         #mapContainer.size_400
