@@ -91,25 +91,26 @@
               button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
           hr
           .dl_modal_container(ng-if="group_message.comments.length > 0")
-            .dl_row(style="height:93px" ng-repeat="comment in group_message.comments")
+            .dl_row(ng-repeat="comment in group_message.comments")
               .row.line_left
-                .dl_md_1
+                .dl_md_1.photo
                   img.size_head_list(ng-src="{{comment.poster.photo}}")
-                .dl_md_8.comment_left
-                  .row
-                    .dl_md_name
+                .dl_md_12.comment_left.comment_box
+                  .dl_row
+                    .dl_md_name.name
                       h7 {{comment.poster.nickname}}
-                    .dl_md_time
+                    .dl_md_time.time
                       h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
-                  .row
-                    .dl_md_12.comment_top
-                      h5 {{comment.content}}
-                    .dl_md_3.pull-right
+                  .dl_row
+                    .dl_md_12.comment_top.content
+                      p {{comment.content}}
+                    .dl_md_2.pull-right
                       h5.pull-right.margin_right_20 # {{comment.index}}
-              .row.line_top
+                    .dl_md_2.pull-right(ng-if="comment.delete_permission")
+                      h5.pull-right.margin_right_20
+                        a(ng-click="deleteComment($index)") 删除
+              .dl_row.line_top
                 hr.comment_bottom
-              .dl_md_12.comment_tool_bottom(ng-if="comment.delete_permission")
-                a.pull-right(ng-click="deleteComment($index)") 删除
   hr
 .text-center(ng-if="group_messages.length>0")
   button(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多

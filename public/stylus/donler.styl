@@ -36,8 +36,10 @@ textarea
   margin-top -20px !important
 
 .comment_bottom
-  width 71%
+  width 100%
   margin-left 15px
+  padding 0
+  margin 0
 
 .comment_tool_bottom
   margin-top -15px !important
@@ -156,6 +158,7 @@ textarea
 
   .comment_user_info
     float left
+    max-width 50px
     p 
       text-align center
 
@@ -176,6 +179,10 @@ textarea
       border solid 1px contentBdColor
       width 450px
       min-height 50px
+      word-break break-all
+      max-height 140px
+      overflow hidden
+      margin-bottom 4px
 
 .comment_textarea
     height 60px
@@ -208,6 +215,20 @@ textarea
   width 450px
   height 100%
   background-color #f8f8f8
+  .photo
+    width 55px
+    .size_head_list
+      margin-left 0
+  .comment_box
+    width 380px
+    float left
+  .content
+    width 380px
+    max-height 140px
+    word-break break-all
+    overflow hidden
+  .dl_row
+    min-height 24px
 .dl_area
   margin-right 15px
 
@@ -263,8 +284,9 @@ textarea
   margin-bottom 25px
   font-size 12px
 .dl_modal_container
-  width 600px
+  width 100%
   float left
+  clear left
 .dl_modal_half_container
   width 280px
   float left
@@ -468,20 +490,19 @@ textarea
   .tab-body , .tab-info-form
     background-color white
     min-height 200px
+  .tab_style
+    min-width 145px
+    text-align center
+    font-weight bold
 .dl_companygroup_container
   width 600px
   float left
   margin-left 10px
-  .groups
-    .group
-      float left
-      padding-left 20px
-      padding-bottom 5px
-      text-align center
-.tab_style
-  min-width 145px
-  text-align center
-  font-weight bold
+  .group
+    float left
+    padding-left 20px
+    padding-bottom 5px
+    text-align center
 
 .no_radius
   border-radius 0 !important
@@ -522,6 +543,7 @@ textarea
   border-left 2px solid #f7f7f7
   background-color #f7f7f7
   position relative
+  clear both
   .triangle
     top 0%
 .dl_message_container

@@ -10,13 +10,13 @@
       .dl_md_1
         img.size_56(ng-src="{{comment.poster.photo}}")
       .dl_md_8.margin_left_5
-        .row
-          .dl_md_name
+        .dl_row.aaaaaa
+          .dl_md_name.name
             h7 {{comment.poster.nickname}}
-          .dl_md_time
+          .dl_md_time.time
             h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
-        .row
-          .dl_md_12
-            h5 {{comment.content}}
-          .dl_md_3.pull-right
+        .dl_row
+          .dl_md_12.content
+            p {{comment.content}}
+          .dl_md_3.pull-right.index
             h5.pull-right.margin_right_20 # {{comment.index}}
