@@ -1,8 +1,4 @@
-.calendar_box
-  margin-top 20px
-
-.calendar_title
-  margin-top 5px
+borderColor = #ddd
 
 .cal-day-inmonth
   span[data-cal-date]
@@ -22,6 +18,11 @@
     span
       margin-right 0
 
+.cal-context
+  .cal-row-head
+    .cal-cell1
+      font-weight normal
+
 logoLink()
   background none
   width 27px
@@ -29,6 +30,17 @@ logoLink()
   box-shadow none
   border-radius none
   border none
+
+.cal-month-box
+  border 1px solid borderColor
+
+.cal-year-box .row-fluid,
+.cal-month-box .cal-row-fluid
+  border-bottom 1px solid borderColor
+
+.cal-year-box [class*="span"],
+.cal-month-box [class*="cal-cell"]
+  border-right 1px solid borderColor
 
 .events-list
   max-height 60px
@@ -69,13 +81,18 @@ logoLink()
 
 // schedule_list partials style
 
+.calendar_box
+  margin-top 20px
+
+.calendar_title
+  margin-top 5px
+  font-weight normal
+
 .view_type
   a, span
     margin-left 3px
-    font-size 20px
 
 .schedule_type
-  margin-top 3px
   margin-left 24px
   a, span
     margin-left 3px
@@ -83,6 +100,5 @@ logoLink()
     color #aaa
 
 .calendar_nav
-  margin-top 3px
   a
     margin-left 5px
