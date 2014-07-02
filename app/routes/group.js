@@ -10,6 +10,7 @@ var config = require('../../config/config');
 module.exports = function(app) {
   app.get('/group/getgroups', group.getGroups);
   app.get('/group/getCompanyGroups', group.getCompanyGroups);
+  app.get('/group/getCompanyTeamsInfo', group.getCompanyTeamsInfo);
   app.get('/group/home/:teamId', authorization.requiresLogin,group.authorize, group.home);
 
   app.get('/group/info/:teamId', authorization.requiresLogin, group.info);

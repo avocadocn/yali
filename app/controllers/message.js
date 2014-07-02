@@ -118,7 +118,6 @@ var _err = function(err){
 
 //无论是组长对组员、hr对员工还是生成新活动后对该活动所属组所有组员发送站内信,都可以调用此函数
 var oneToMember = function(param){
-  console.log('LETSEE',param.members);
   var callback = function (message_content,other,req,res){
     var counter = {'i':0};
     async.whilst(
@@ -174,43 +173,33 @@ var oneToMember = function(param){
 exports.hrSendToMember = function(req,res){
   var cid = req.body.cid;
   var content = req.body.content,
-      type = "public",
       sender = {
         '_id':req.user._id,
         'nickname':req.user.info.name,
         'leader':false
       };
-
-  var callback = function(users,other,req,res){
-    if(users){
-      var caption = 'Message From Company!';
-      var _param = {
-        'members':users,
-        'caption':caption,
-        'content':content,
-        'sender':[sender],
-        'team':[],
-        'company_id':cid,
-        'req':req,
-        'res':res,
-        'type':'company'
-      }
-      oneToMember(_param);
-    }
+  var callback = function (message_content,cid,req,res){
+    res.send({'result':1,'msg':'SUCCESS'});
   }
-  var param= {
-    'collection':User,
-    'type':1,
-    'condition':{'cid':cid},
-    'limit':{'_id':1},
-    'sort':null,
+  var MC={
+    'caption':'Message From Company',
+    'content':content,
+    'sender':[sender],
+    'team':[],
+    'type':'company',
+    'company_id':cid,
+    'deadline':(new Date())+time_out
+  };
+  var _param = {
+    'collection':MessageContent,
+    'operate':MC,
     'callback':callback,
     '_err':_err,
-    'other_param':null,
+    'other_param':cid,
     'req':req,
     'res':res
   };
-  get(param);
+  _add(_param);
 }
 
 
@@ -225,7 +214,6 @@ exports.leaderSendToMember = function(req,res){
   var team = req.body.team;
 
   var content = req.body.content,
-      type = "public",
       sender = {
         '_id':req.user._id,
         'nickname':req.user.nickname,
@@ -273,37 +261,28 @@ exports.newCampaignCreate = function(req,res,team,cid){
   switch(team.size){
     //公司活动
     case 0:
-      var condition = {'cid':cid};
-      var callback = function(users,other,req,res){
-        if(users){
-          var caption = 'Message From Company!';
-          var _param = {
-            'members':users,
-            'caption':caption,
-            'content':null,
-            'sender':[],
-            'team':[],
-            'company_id':cid,
-            'req':req,
-            'res':res,
-            'type':'company'
-          }
-          oneToMember(_param);
-        }
+      var callback = function (message_content,cid,req,res){
+        res.send({'result':1,'msg':'SUCCESS'});
       }
-      var param= {
-        'collection':User,
-        'type':1,
-        'condition':condition,
-        'limit':{'_id':1,'nickname':1},
-        'sort':null,
+      var MC={
+        'caption':'Company Campaign Message',
+        'content':null,
+        'sender':[],
+        'team':[],
+        'type':'company',
+        'company_id':cid,
+        'deadline':(new Date())+time_out
+      };
+      var _param = {
+        'collection':MessageContent,
+        'operate':MC,
         'callback':callback,
         '_err':_err,
-        'other_param':null,
+        'other_param':cid,
         'req':req,
         'res':res
       };
-      get(param);
+      _add(_param);
       break;
     //小队活动
     case 1:
@@ -391,7 +370,144 @@ exports.resultConfirm = function(req,res){
 
 
 
-//读取站内信
+var getPublicMessage = function(req,res,cid){
+  var callbackA = function(message_contents,other,req,res){
+    if(message_contents.length > 0){
+      var mcs = [];
+      for(var i = 0; i < message_contents.length; i ++){
+        mcs.push({
+          '_id':message_contents[i]._id,
+          'type':message_contents[i].type
+        });
+      }
+      var callbackB = function(messages,mcs,req,res){
+        //该用户有站内信
+        if(messages.length > 0){
+          var exist_mc_ids = [];  //该用户已经存在的MessageContent_id
+          var new_mcs = [];    //新的站内信id,要创建新的Message
+          for(var i = 0; i < messages.length; i ++){
+            exist_mc_ids.push(messages[i].MessageContent);
+          }
+          var find = false;
+          for(var j = 0; j < mcs.length; j ++){
+
+            for(var k = 0; k < exist_mc_ids.length; k ++){
+              if(mcs[j]._id.toString() === exist_mc_ids[k].toString()){
+                find = true;
+                break;
+              }
+            }
+            if(!find){
+              new_mcs.push(mcs[j]);
+            }
+          }
+
+
+          if(new_mcs.length > 0){
+            var counter = {'i':0};
+            async.whilst(
+              function() { return counter.i < new_mcs.length},
+              function(__callback){
+                var M = {
+                  'rec_id':req.user._id,
+                  'MessageContent':new_mcs[counter.i]._id,
+                  'type':new_mcs[counter.i].type,
+                  'status':'unread'
+                };
+                var param = {
+                  'collection':Message,
+                  'operate':M,
+                  'callback':function(message,_counter,req,res){_counter.i++;__callback();},
+                  '_err':_err,
+                  'other_param':counter,
+                  'req':req,
+                  'res':res
+                };
+                _add(param);
+              },
+              function(err){
+                if(err){
+                  return res.send({'result':1,'msg':'FAILURED'});
+                }else{
+                  console.log('USER_ALREADY_HAS_MSG_AND_NEW');
+                  getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+                }
+              }
+            );
+          }else{
+            console.log('USER_ALREADY_HAS_MSG_AND_OLD');
+            getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+          }
+        //该用户没有收到任何站内信
+        }else{
+          var counter = {'i':0};
+          async.whilst(
+            function() { return counter.i < message_contents.length},
+            function(__callback){
+              var M = {
+                'rec_id':req.user._id,
+                'MessageContent':message_contents[counter.i]._id,
+                'type':message_contents[counter.i].type,
+                'status':'unread'
+              };
+              var param = {
+                'collection':Message,
+                'operate':M,
+                'callback':function(message,_counter,req,res){_counter.i++;__callback();},
+                '_err':_err,
+                'other_param':counter,
+                'req':req,
+                'res':res
+              };
+              _add(param);
+            },
+            function(err){
+              if(err){
+                return res.send({'result':1,'msg':'FAILURED'});
+              }else{
+                console.log('USER_HAS_NO_MSG_AND_NEW');
+                getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+              }
+            }
+          );
+        }
+      }
+
+      var paramB = {
+        'collection':Message,
+        'type':1,
+        'condition':{'rec_id':req.user._id},
+        'limit':null,
+        'sort':{'post_date':-1},
+        'callback':callbackB,
+        '_err':_err,
+        'other_param':mcs,
+        'req':req,
+        'res':res
+      };
+      get(paramB);
+    }else{ //没有任何公共消息
+      console.log('NO_NEW_PUBLIC_MSG');
+      getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+    }
+  }
+  var paramA = {
+    'collection':MessageContent,
+    'type':1,
+    'condition':{'company_id':cid,'$or':[{'type':'company'},{'type':'global'}]},  //公司消息和系统消息都是当作全局来对待的
+    'limit':{'_id':1,'type':1},
+    'sort':{'post_date':-1},
+    'callback':callbackA,
+    '_err':_err,
+    'other_param':null,
+    'req':req,
+    'res':res
+  };
+  get(paramA);
+}
+
+
+//获取私人或者小队站内信(点到点/点到个别)
 var getMessage = function(req,res,condition){
   var sort = {'create_date':-1};
   Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
@@ -451,7 +567,7 @@ exports.setMessageStatus = function(req,res){
 //手动获取私信
 exports.messageGetByHand = function(req,res){
   var _type = req.body._type;
-  var condition = {'type':_type,'$or':[{'rec_id':req.user._id},{'type':'global'}],'status':{'$ne':'delete'}};
+  var condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
   getMessage(req,res,condition);
 }
 
@@ -459,8 +575,7 @@ exports.messageGetByHand = function(req,res){
 //只读取未读站内信
 exports.messageHeader = function(req,res){
   if(req.user.provider === 'user'){
-    var condition = {'$or':[{'rec_id':req.user._id},{'type':'global'}],'status':{'$nin':['delete','read']}};
-    getMessage(req,res,condition);
+    getPublicMessage(req,res,req.user.cid);
   }else{
     //公司暂时只获取系统公告(以后可以获取针对公司的站内信)
     var condition = {'type':'global','status':{'$nin':['delete','read']}};

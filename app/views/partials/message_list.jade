@@ -1,7 +1,10 @@
 .dl_messagebox.clearfix(ng-repeat="group_message in group_messages")
   //若是公司动态
-  div.clearfix
-    .message_side
+  div.clearfix(bs-popover)
+    .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
+      a(ng-href='/group/home/{{group_message.team_id}}')
+        img.size_56(ng-src='{{group_message.logo}}' ng-Mouseover='showGroupCard(group_message.team_id,group_message._id)' id='pop{{group_message._id}}' rel='popover')
+    .message_side(ng-if="group_message.message_type==0||group_message.message_type==2||group_message.message_type==6||group_message.message_type==7||group_message.message_type==8")
       img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
       .size_56(ng-if="group_message.message_type==6")
     .messagebox_content(ng-switch="group_message.message_type")
@@ -75,7 +78,7 @@
         .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
           .message_row
             span.message_label
-            a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
+              a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
             span.message_label  加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6")
         span(ng-if="group_message.join_flag!=undefined")
@@ -91,7 +94,7 @@
       .message_row(ng-if="toggle[$index] && group_message.comment_permission")
         .dl_comment_area
           form.dl_modal_container.margin_top_5(name="comment_form" novalidate)
-            .dl_md_8
+            .dl_md_12
               input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
@@ -106,17 +109,15 @@
                 .dl_md_12.comment_left.comment_box
                   .dl_row
                     .dl_md_name.name
-                      h7 {{comment.poster.nickname}}
+                      a(title="{{comment.poster.nickname}}" href="/users/home/{{comment.poster._id}}") {{shortTrim(comment.poster.nickname)}}
                     .dl_md_time.time
                       h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
                   .dl_row
                     .dl_md_12.comment_top.content
                       p {{comment.content}}
-                    .dl_md_2.pull-right
-                      h5.pull-right.margin_right_20 # {{comment.index}}
-                    //-.dl_md_2.pull-right(ng-if="comment.delete_permission")
+                    .dl_md_2.pull-right(ng-if="comment.delete_permission")
                       h5.pull-right.margin_right_20
-                        a(ng-click="deleteComment($index)") 删除
+                        a.mouse_hidden(ng-click="deleteComment($index)") 删除
               .dl_row.line_top
                 hr.comment_bottom
   hr

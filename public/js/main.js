@@ -14,7 +14,7 @@ app.directive('bsPopover',function() {
         $http.get('/users/briefInfo/'+member_id).success(function(data, status){
           if(data.result){           
             $scope.htmlcontent= data.htmlcontent;
-            $('#pop'+pop_id).popover({trigger:'hover',html:'true',delay:{show:200,hide:500},content:$scope.htmlcontent,title:''});
+            $('#pop'+pop_id).popover({trigger:'hover',html:'true',animation:false,content:$scope.htmlcontent,title:''});
             $('#pop'+pop_id).popover('show');
           }
           else
@@ -26,7 +26,7 @@ app.directive('bsPopover',function() {
         $http.get('/group/briefInfo/'+group_id).success(function(data, status){
           if(data.result){           
             $scope.htmlcontent= data.htmlcontent;
-            $('#pop'+pop_id).popover({trigger:'hover',html:'true',delay:{show:200,hide:500},content:$scope.htmlcontent,title:''});
+            $('#pop'+pop_id).popover({trigger:'hover',html:'true',animation:false,content:$scope.htmlcontent,title:''});
             $('#pop'+pop_id).popover('show');
           }
           else
@@ -363,6 +363,23 @@ app.config(['$translateProvider',
 
 app.run(['$translate','$rootScope', function ($translate,$rootScope) {
 
+    $rootScope.shortTrim = function(value){
+      //中文
+      if(escape(value).indexOf("%u")>=0){
+        if(value.length>10){
+          return value.substr(0,10)+'...';
+        }else{
+          return value;
+        }
+      //非中文
+      }else{
+        if(value.length>20){
+          return value.substr(0,20)+'...';
+        }else{
+          return value;
+        }
+      }
+    }
     $rootScope.lang_for_msg = [];
     $rootScope.lang_key = 0;
 

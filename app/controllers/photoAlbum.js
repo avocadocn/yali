@@ -785,6 +785,16 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
         if (!company_group) {
           throw 'not found';
         }
+        var links = [
+          {
+            text: company_group.name,
+            url: '/group/home/' + company_group._id
+          },
+          {
+            text: '相册集',
+            active: true
+          }
+        ];
         return res.render('photo_album/photo_album_list', {
           photo_album_list: photo_album_list,
           photo: req.user.photo,
@@ -794,7 +804,8 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
           owner_name: company_group.name,
           owner_logo: company_group.logo,
           cid: company_group.cid,
-          moment: moment
+          moment: moment,
+          links: links
         });
       })
       .then(null, function(err) {
@@ -824,6 +835,21 @@ exports.renderPhotoAlbumDetail = function(req, res) {
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
     var uploadAuth = photoUploadAuth(req.user, photo_album)
 
+    var links = [
+      {
+        text: owner.team.name,
+        url: '/group/home/' + owner.team._id
+      },
+      {
+        text: '相册集',
+        url: '/' + owner.team._id + '/photoAlbumListView'
+      },
+      {
+        text: photo_album.name,
+        active: true
+      }
+    ];
+
     return res.render('photo_album/photo_album_detail', {
       photo_album: {
         _id: photo_album._id,
@@ -835,7 +861,8 @@ exports.renderPhotoAlbumDetail = function(req, res) {
       },
       moment: moment,
       editAuth: editAuth,
-      uploadAuth: uploadAuth
+      uploadAuth: uploadAuth,
+      links: links
     });
   })
   .then(null, function(err) {
@@ -872,6 +899,25 @@ exports.renderPhotoDetail = function(req, res) {
         var owner = getPhotoAlbumOwner(req.user, photo_album);
         var editAuth = photoEditAuth(req.user, photo_album, photos[i]);
 
+        var links = [
+          {
+            text: owner.team.name,
+            url: '/group/home/' + owner.team._id,
+          },
+          {
+            text: '相册集',
+            url: '/' + owner.team._id + '/photoAlbumListView'
+          },
+          {
+            text: photo_album.name,
+            url: '/photoAlbumDetailView/' + photo_album._id
+          },
+          {
+            text: photos[i].name,
+            active: true
+          }
+        ];
+
         return res.render('photo_album/photo_detail', {
           photo_detail: {
             _id: photos[i]._id,
@@ -891,6 +937,7 @@ exports.renderPhotoDetail = function(req, res) {
             photo_count: photo_album.photos.length,
             owner: owner
           },
+          links: links,
           moment: moment,
           editAuth: editAuth
         });
