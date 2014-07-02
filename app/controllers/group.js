@@ -707,24 +707,12 @@ exports.provoke = function (req, res) {
               groupMessage.save(function (err) {
                 if (err) {
                   console.log('保存约战动态时出错' + err);
+                }else{
+                  return res.send({'result':0,'msg':'SUCCESS'});
                 }
               });
-              var team = {
-                'size':2,
-                'own':{
-                  '_id':req.companyGroup._id,
-                  'name':req.companyGroup.name,
-                  'provoke_status':0
-                },
-                'opposite':{
-                  '_id':team_opposite._id,
-                  'name':team_opposite.name,
-                  'provoke_status':0
-                }
-              }
-              message.newCampaignCreate(req,res,team,cid);
             }else{
-              console.log('保存比赛',err);
+              return res.send({'result':0,'msg':'ERROR'});
             }
           });
         }
@@ -763,20 +751,7 @@ exports.responseProvoke = function (req, res) {
               console.log('保存约战动态时出错' + err);
             }
             else{
-              var team = {
-                'size':2,
-                'own':{
-                  '_id':campaign.camp[0].id,
-                  'name':campaign.camp[0].tname,
-                  'provoke_status':1
-                },
-                'opposite':{
-                  '_id':campaign.camp[1].id,
-                  'name':campaign.camp[1].tname,
-                  'provoke_status':1
-                }
-              }
-              message.newCampaignCreate(req,res,team,req.user.cid);
+              return res.send({'result':0,'msg':'SUCCESS'});
             }
           });
         });
@@ -900,14 +875,7 @@ exports.sponsor = function (req, res) {
                 if (err) {
                   console.log(err);
                 } else {
-                  var team = {
-                    'size':1,
-                    'own':{
-                      '_id':req.companyGroup._id,
-                      'name':req.companyGroup.name
-                    }
-                  }
-                  message.newCampaignCreate(req,res,team,cid);
+                  return res.send({'result':0,'msg':'活动发起成功'});
                 }
               });
             }
