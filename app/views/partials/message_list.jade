@@ -100,11 +100,13 @@
             .dl_row.comment_height_limit(ng-repeat="comment in group_message.comments")
               .row.line_left
                 .dl_md_1
-                  img.size_head_list(ng-src="{{comment.poster.photo}}")
+                  a(href="/users/home/{{comment.poster._id}}")
+                    img.size_head_list(ng-src="{{comment.poster.photo}}")
                 .dl_md_8.comment_left
                   .row
                     .dl_md_name
-                      h7 {{comment.poster.nickname}}
+                      h7
+                        a(href="/users/home/{{comment.poster._id}}"){{comment.poster.nickname}}
                     .dl_md_time
                       h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
                   .row
