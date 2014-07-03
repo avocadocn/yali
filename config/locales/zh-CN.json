@@ -118,5 +118,9 @@
 	"L_ZH": "中文",
 	"L_JP": "日语",
 	"LATEST_MESSAGE": "最新动态",
-	"SCHEDULE": "日程"
+	"SCHEDULE": "日程",
+	"JOIN_GROUP": "加入小队",
+	"QUIT_GROUP": "退出小队",
+	"CHANGE": "修改",
+	"AVATAR": "头像"
 }
