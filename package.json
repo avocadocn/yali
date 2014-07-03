@@ -69,7 +69,8 @@
     "mkdirp": "^0.5.0",
     "moment": "~2.6.0",
     "connect-redis": "1.4.7",
-    "node-schedule":"latest"
+    "node-schedule":"latest",
+    "i18n": "^0.5.0"
   },
   "devDependencies": {
     "supertest": "0.8.2",

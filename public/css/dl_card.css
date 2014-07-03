@@ -1,0 +1,81 @@
+.dl_card {
+  position: absolute;
+  z-index: 9999;
+  width: 320px;
+  min-height: 150px;
+  background-color: #59c8e8;
+  border: 4px solid #cfcfcf;
+  color: #fff;
+  line-height: 10px;
+}
+.dl_card .dl_card_layer {
+  position: static;
+}
+.dl_card .dl_card_layer .dl_card_content {
+  padding: 9px 14px;
+}
+.dl_card .dl_card_layer .dl_card_content .popover_img {
+  float: left;
+  width: 82px;
+  height: 82px;
+  border: 1px solid #fff;
+}
+.dl_card .dl_card_layer .dl_card_content .popover_content {
+  float: left;
+  width: 150px;
+  padding: 3px 10px;
+}
+.dl_card .dl_card_layer .dl_card_content .popover_brief {
+  float: left;
+  width: 230px;
+  padding: 10px;
+}
+.dl_card .dl_card_default_html {
+  background-color: #fff;
+  width: 150px;
+  height: 100px;
+}
+.dl_card .arrow {
+  background: url("/img/layer_arrow.png") no-repeat scroll 0 0 transparent;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+}
+.dl_card .arrow_t,
+.dl_card .arrow_b {
+  background-position: 0 0;
+  height: 9px;
+  left: 20px;
+  top: -9px;
+  width: 14px;
+}
+.dl_card .arrow_r,
+.dl_card .arrow_l {
+  background-position: -8px -24px;
+  height: 14px;
+  right: -9px;
+  top: 20px;
+  width: 9px;
+}
+.dl_card .arrow_b {
+  background-position: 0 -8px;
+  bottom: -9px;
+  top: auto;
+}
+.dl_card .arrow_l {
+  background-position: 0 -24px;
+  left: -9px;
+  right: auto;
+}
+.dl_card .pinwheel_loading {
+  padding: 10px 20px;
+  font-size: 12px;
+  color: #666;
+}
+.dl_card .pinwheel_loading {
+  background: url("/img/loading.gif") no-repeat scroll 0 0 transparent;
+  text-align: center;
+  text-indent: 20px;
+  width: 120px;
+  height: 20px;
+}

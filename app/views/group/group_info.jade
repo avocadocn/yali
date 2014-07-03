@@ -57,7 +57,7 @@ fdiv(ng-controller="infoController")
         .groups
           .group( ng-repeat="leader in team.leader")
             .dl_row(bs-popover)
-              a(href="/users/home/{{leader._id}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}' rel='popover')
+              a(href="/users/home/{{leader._id}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
                 img.size_56(ng-src="{{leader.photo}}")
             .dl_row
               label {{leader.nickname}}

@@ -938,6 +938,8 @@ exports.renderCampaignDetail = function(req, res) {
   Campaign
   .findById(req.params.campaignId)
   .populate('photo_album')
+  .populate('team')
+  .populate('cid')
   .exec()
   .then(function(campaign) {
     if (!campaign) {
@@ -946,8 +948,27 @@ exports.renderCampaignDetail = function(req, res) {
     if(campaign.camp.length >= 2){
       res.redirect("/competition/"+req.session.nowcampaignid);
     }else{
+      var parent_name, parent_url;
+      if (campaign.team.length === 0) {
+        parent_name = campaign.cid[0].info.name;
+        parent_url = '/company/home';
+      } else {
+        parent_name = campaign.team[0].name;
+        parent_url = '/group/home/' + campaign.team[0]._id;
+      }
+      var links = [
+        {
+          text: parent_name,
+          url: parent_url
+        },
+        {
+          text: campaign.theme,
+          active: true
+        }
+      ];
       res.render('campaign/campaign_detail', {
         campaign: campaign,
+        links: links,
         photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4)
       });
     }

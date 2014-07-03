@@ -10,16 +10,23 @@ var express = require('express'),
     helpers = require('view-helpers'),
     config = require('./config'),
     middleware = require('./middleware'),
+    i18n = require('i18n'),
     fs = require('fs');
-    
+
 module.exports = function(app, passport, db) {
+    i18n.configure({
+      locales: ['zh-CN', 'ja-JP'],
+      directory: __dirname + '/locales',
+      defaultLocale: 'zh-CN'
+    });
+
     app.set('showStackError', true);
 
     // Prettify HTML
     app.locals.pretty = true;
 		// cache=memory or swig dies in NODE_ENV=production
 		app.locals.cache = 'memory';
-		
+
     // Should be placed before express.static
     // To ensure that all assets and data are compressed (utilize bandwidth)
     app.use(express.compress({
@@ -51,7 +58,7 @@ module.exports = function(app, passport, db) {
     app.configure(function() {
         // The cookieParser should be above session
         app.use(express.cookieParser());
-
+        app.use(i18n.init);
         // Request body parsing middleware should be above methodOverride
         app.use(express.urlencoded());
         app.use(express.json());

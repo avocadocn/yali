@@ -6,21 +6,38 @@ append headExt
 block baseInfo
   .dl_container.clearfix {{test}}
 block panel
-  div
-    ul.nav.nav-tabs
-      if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
-        if (Global.role !== 'HR')
+  if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
+    div
+      if (Global.role !== 'HR')
+        ul.nav.nav-tabs
           li.tab_style(ng-class="{'active':nowTab=='private'}")
             a.subtitle.no_radius(href="#/private" ng-click="addactive('private')") 私信({{private_length}})
           li.tab_style(ng-class="{'active':nowTab=='team'}")
-            a.subtitle.no_radius(href="#/team" ng-click="addactive('team')") 小道消息({{team_length}})
+            a.subtitle.no_radius(href="#/team" ng-click="addactive('team')") 小队消息({{team_length}})
           li.tab_style(ng-class="{'active':nowTab=='company'}")
             a.subtitle.no_radius(href="#/company" ng-click="addactive('company')") 全公司消息({{company_length}})
-        li.tab_style(ng-class="{'active':nowTab=='system'}")
-          a.subtitle.no_radius(href="#/system" ng-click="addactive('system')") 系统公告({{global_length}})
-    .tab-content.margin_top_20
-      .tab-pane.active
-        div(ng-view)
+        .tab-content.margin_top_20
+          .tab-pane.active
+            div(ng-view)
+      else
+        .modal-dialog(ng-controller="messageCompanyController")
+          .dl-modal
+            form(name="message_form" novalidate)
+              .dl-modal-header
+                .head#myModalLabel 给您的成员发送私信
+              .dl-modal-body
+                .dl_modal_container
+                  .dl_md_1.dl_vertical
+                    label.subtitle 标题
+                  .dl_md_10
+                    input.dl_modal_input.form-control(type="text" name="cname" ng-model="private_message_caption.text")
+                .dl_modal_container
+                  .dl_md_1.dl_vertical
+                    label.subtitle 内容
+                  .dl_md_10
+                    textarea.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
+              .dl-modal-footer
+                button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="sendToAll()" ng-disabled="message_form.$invalid") 发送
 block aside
 
 

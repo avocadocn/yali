@@ -25,12 +25,12 @@ messageApp.config(['$routeProvider', '$locationProvider',
         templateUrl: '/message/company',
         controller: 'messageCompanyController',
         controllerAs: 'company'
-      })
-      .when('/system', {
-        templateUrl: '/message/system',
-        controller: 'messageGlobalController',
-        controllerAs: 'system'
       }).
+      // .when('/system', {
+      //   templateUrl: '/message/system',
+      //   controller: 'messageGlobalController',
+      //   controllerAs: 'system'
+      // }).
       otherwise({
         redirectTo: '/private'
       });
@@ -38,10 +38,27 @@ messageApp.config(['$routeProvider', '$locationProvider',
 
 messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
+
+    $rootScope.private_length = 0;
+    $rootScope.team_length = 0;
+    $rootScope.company_length = 0;
+    $rootScope.global_length = 0;
+
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
 
+    $rootScope.statusHandle = function(value){
+      switch(value){
+        case 'read':
+        return '已读';
+        case 'unread':
+        return '未读';
+        case 'delete':
+        return '删除';
+        default:return '未知';
+      }
+    }
     $rootScope.getMessageByHand = function(_type){
       try{
         $http({
@@ -187,7 +204,7 @@ var messagePreHandle = function(teams,msg){
 
     //系统
     if(msg[i].type == 'global'){
-      global_messages.push({
+      private_messages.push({
         '_id':msg[i]._id,
         'caption':msg[i].message_content.caption,
         'content':msg[i].message_content.content,
@@ -203,28 +220,37 @@ var messagePreHandle = function(teams,msg){
 }
 
 
-var sendSet = function(http,status,rootScope,_id,type,index){
+var sendSet = function(http,_status,rootScope,_id,type,index){
   try{
     http({
         method: 'post',
         url: '/message/modify',
         data:{
-            status:status,
+            status:_status,
             msg_id:_id
         }
     }).success(function(data, status) {
         switch(type){
           case 'private':
-            rootScope.private_length--;
-            rootScope.private_messages[index].status = 'read';
+            if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread')rootScope.private_length--;
+            rootScope.private_messages[index].status = _status;
+            if(_status === 'delete'){
+              rootScope.private_messages.splice(index,1);
+            }
           break;
           case 'team':
-            rootScope.team_length--;
-            rootScope.team_messages[index].status = 'read';
+            if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread')rootScope.team_length--;
+            rootScope.team_messages[index].status = _status;
+            if(_status === 'delete'){
+              rootScope.team_messages.splice(index,1);
+            }
           break;
           case 'company':
-            rootScope.company_length--;
-            rootScope.company_messages[index].status = 'read';
+            if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread')rootScope.company_length--;
+            rootScope.company_messages[index].status = _status;
+            if(_status === 'delete'){
+              rootScope.company_messages.splice(index,1);
+            }
           break;
           default:break;
         }
@@ -241,15 +267,28 @@ var sendSet = function(http,status,rootScope,_id,type,index){
 //获取一对一私信
 messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('private');
+  $scope.setToDelete = function(index){
+    sendSet($http,'delete',$rootScope,$rootScope.private_messages[index]._id,'private',index);
+  }
   $scope.setToRead = function(index){
     if($rootScope.private_messages[index].direct_show){
-      alertify.alert($rootScope.private_messages[index].detail);
+      popOver(index,$rootScope.private_messages[index].detail);
     }
     if($rootScope.private_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id,'private',index);
     }
   }
 }]);
+
+var popOver = function(index,detail){
+  $('.pop').popover('destroy');
+  $('#pop_message_'+index).popover({
+    'content': detail,
+    'trigger': 'hover'
+  });
+  $('#pop_message_'+index).popover('show');
+}
+
 
 //获取小队站内信
 messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
@@ -291,9 +330,14 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
         console.log(e);
     }
   }
+
+  $scope.setToDelete = function(index){
+    sendSet($http,'delete',$rootScope,$rootScope.team_messages[index]._id,'team',index);
+  }
+
   $scope.setToRead = function(index){
     if($rootScope.team_messages[index].direct_show){
-      alertify.alert($rootScope.team_messages[index].detail);
+      popOver(index,$rootScope.team_messages[index].detail);
     }
     if($rootScope.team_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id,'team',index);
@@ -311,7 +355,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
   $scope.private_message_caption = {
     'text':''
   }
-  //队长给队员发私信
+  //公司给员工发私信
   $scope.sendToAll = function(){
     try{
       $http({
@@ -325,6 +369,9 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
             $rootScope.company_length++;
+            alertify.alert('发送成功!');
+          }else{
+            alertify.alert('发送失败!');
           }
       }).error(function(data, status) {
           //TODO:更改对话框
@@ -336,9 +383,13 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
     }
   }
 
+  $scope.setToDelete = function(index){
+    sendSet($http,'delete',$rootScope,$rootScope.company_messages[index]._id,'company',index);
+  }
+
   $scope.setToRead = function(index){
     if($rootScope.company_messages[index].direct_show){
-      alertify.alert($rootScope.company_messages[index].detail);
+      popOver(index,$rootScope.company_messages[index].detail);
     }
     if($rootScope.company_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id,'company',index);

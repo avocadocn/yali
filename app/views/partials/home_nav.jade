@@ -27,7 +27,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
         //.collapse.navbar-collapse#personal_nav
         ul.nav.navbar-nav.pull-right
           li
-            a(href="/company/home") {{"COMPANY_HOME"|translate}}
+            a(href="/company/home")= __("COMPANY_HOME")
           li
             a(href="/users/home")
               span.user_img
@@ -47,17 +47,15 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
             a(href="#" data-toggle="dropdown")
-              span.dl_msg_corner(ng-if="(private_length + team_length + company_length)>0") {{private_length + team_length + company_length}}
+              span.dl_msg_corner(ng-if="(private_length + team_length + company_length + global_length)>0") {{private_length + team_length + company_length + global_length}}
               span.glyphicon.glyphicon-comment
             ul.dl_menu.dropdown-menu(role="menu")
               li
-                a.dl_menu_a(href="/message/home#/private") 私信({{private_length}})
+                a.dl_menu_a(href="/message/home#/private") 私信({{private_length + global_length}})
               li
                 a.dl_menu_a(href="/message/home#/team") 小队消息({{team_length}})
               li
                 a.dl_menu_a(href="/message/home#/company") 全公司消息({{company_length}})
-              li
-                a.dl_menu_a(href="/message/home#/system") 系统公告({{global_length}})
       if Global.role === 'HR'
         //.navbar-header
         a.navbar-brand(href="/")
@@ -85,10 +83,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
-            a(href="#" data-toggle="dropdown")
-              span.dl_msg_corner(ng-if="(global_length)>0")
+            a(href="/message/home")
               span.glyphicon.glyphicon-comment
-            ul.dl_menu.dropdown-menu(role="menu")
-              li
-                a.dl_menu_a(href="/message/home#/system") 系统公告({{global_length}})
+
 

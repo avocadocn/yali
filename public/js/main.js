@@ -10,24 +10,18 @@ app.directive('bsPopover',function() {
   return{
     controller:['$http','$scope',function($http, $scope){
       $scope.showUserCard = function(member_id,pop_id) {
-        $scope.member_id=member_id;
         $http.get('/users/briefInfo/'+member_id).success(function(data, status){
-          if(data.result){           
-            $scope.htmlcontent= data.htmlcontent;
-            $('#pop'+pop_id).popover({trigger:'hover',html:'true',animation:false,content:$scope.htmlcontent,title:''});
-            $('#pop'+pop_id).popover('show');
+          if(data.result){
+            $('#pop'+pop_id).dl_card({content:data.htmlcontent});
           }
           else
             console.log(data.msg);
         });
       };
       $scope.showGroupCard = function(group_id,pop_id) {
-        $scope.group_id=group_id;
         $http.get('/group/briefInfo/'+group_id).success(function(data, status){
-          if(data.result){           
-            $scope.htmlcontent= data.htmlcontent;
-            $('#pop'+pop_id).popover({trigger:'hover',html:'true',animation:false,content:$scope.htmlcontent,title:''});
-            $('#pop'+pop_id).popover('show');
+          if(data.result){
+              $('#pop'+pop_id).dl_card({content:data.htmlcontent});
           }
           else
             console.log(data.msg);
@@ -366,15 +360,15 @@ app.run(['$translate','$rootScope', function ($translate,$rootScope) {
     $rootScope.shortTrim = function(value){
       //中文
       if(escape(value).indexOf("%u")>=0){
-        if(value.length>10){
-          return value.substr(0,10)+'...';
+        if(value.length>6){
+          return value.substr(0,6)+'...';
         }else{
           return value;
         }
       //非中文
       }else{
-        if(value.length>20){
-          return value.substr(0,20)+'...';
+        if(value.length>15){
+          return value.substr(0,15)+'...';
         }else{
           return value;
         }
