@@ -254,7 +254,7 @@ exports.saveInfo =function(req,res) {
 //小队信息维护
 exports.timeLine = function(req, res){
   Campaign
-  .find({ 'active':true,'finish':true,'team': req.session.nowtid})
+  .find({ 'active':true,'finish':false,'team': req.session.nowtid})
   .sort('-start_time')
   .populate('team')
   .exec()
@@ -307,7 +307,7 @@ exports.timeLine = function(req, res){
 
           newTimeLines[groupYear]['left'][0] = tempObj;
           newTimeLines[groupYear][0] = tempObj;
-          newTimeLines
+          // newTimeLines
         }else{
           var i = newTimeLines[groupYear].length;
           newTimeLines[groupYear][i] = tempObj;
