@@ -186,14 +186,7 @@
 			}
 			$wrap.html('<div class="dl_card_layer"><div class="dl_card_content"></div><div class="arrow"></div></div>');
 			$wrap.find('.dl_card_content').append($loading);
-
-			for(var i=0; i<optsArray.length; i++){
-				if(optsArray[i] && optsArray[i].obj == currentObj){
-					currentOpts = optsArray[i].opts;
-					break;
-				}
-			}
-			
+			currentOpts = optsArray.opts;
 			if(currentOpts.content){
 				type = 'html';
 			}else{
@@ -243,44 +236,37 @@
 				window.console.log("pinwheel count :" +　$obj.size());
 			};
 		};
-	$.fn.dl_card = function(options){
-		var opts = $.extend({}, $.fn.dl_card.defaults, options);
-		
-		return this.each(function(){
-			optsArray.push({obj:this, opts:opts});
-			
-			$(this).bind("mouseover",function(e){
-				e.stopPropagation();
-				_clearTimer();
-				
-				
-				if(currentObj && currentObj == this){
-					_position($(this), $wrap);//定位
-					$wrap.show();
-				}else{
-					currentObj = this;	
-					_appendContent();//为容器添加内容
-					_position($(this), $wrap);//定位
-					$wrap.show();
 
-					$wrap.unbind().bind('mouseover', function(e){
-						e.stopPropagation();
-						_clearTimer();
-					});
-			
-					$(document).unbind().bind("mouseover", function(){
-						_clearTimer();
-						if($wrap.is(':visible')){
-							var timer = setInterval(function(){
-								$wrap.hide();
-								_clearTimer();
-							},50);	
-							timers.push(timer);
-						}
-					});		
-				}
-			});	
-			
+	$.fn.dl_card = function(options){
+		var opts=options;
+		return this.each(function(){
+			optsArray={obj:this, opts:opts};
+			_clearTimer();
+			if(currentObj && currentObj == this){
+				_position($(this), $wrap);//定位
+				$wrap.show();
+			}else{
+				currentObj = this;
+				_appendContent();//为容器添加内容
+				_position($(this), $wrap);//定位
+				$wrap.show();
+
+				$wrap.unbind().bind('mouseover', function(e){
+					e.stopPropagation();
+					_clearTimer();
+				});
+		
+				$(document).unbind().bind("mouseover", function(){
+					_clearTimer();
+					if($wrap.is(':visible')){
+						var timer = setInterval(function(){
+							$wrap.hide();
+							_clearTimer();
+						},50);	
+						timers.push(timer);
+					}
+				});		
+			}
 		});
 	};
 })(jQuery);
