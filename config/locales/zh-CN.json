@@ -122,5 +122,17 @@
 	"JOIN_GROUP": "加入小队",
 	"QUIT_GROUP": "退出小队",
 	"CHANGE": "修改",
-	"AVATAR": "头像"
+	"AVATAR": "头像",
+	"PLACE": "PLACE",
+	"LEAST": "LEAST",
+	"ENTRY": "ENTRY",
+	"LIMIT": "LIMIT",
+	"SIMPLE": "SIMPLE",
+	"INTRODUCTION": "INTRODUCTION",
+	"I": "I",
+	"WANT": "WANT",
+	"LEAVEMESSAGE": "LEAVEMESSAGE",
+	"SUBMIT": "SUBMIT",
+	"WONDERFUL": "WONDERFUL",
+	"PHOTO": "PHOTO"
 }

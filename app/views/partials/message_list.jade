@@ -113,10 +113,10 @@
                     .dl_md_time.time
                       h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
                   .dl_row
-                    .dl_md_12.comment_top.content
+                    .dl_md_8.comment_top.content
                       p {{comment.content}}
-                    .dl_md_2.pull-right(ng-if="comment.delete_permission")
-                      h5.pull-right.margin_right_20
+                    .dl_md_2.pull-right.hidden_block(ng-if="comment.delete_permission")
+                      h7.pull-right.margin_right_20
                         a.mouse_hidden(ng-click="deleteComment($index)") 删除
               .dl_row.line_top
                 hr.comment_bottom
