@@ -256,7 +256,7 @@
 					_clearTimer();
 				});
 		
-				$(document).unbind().bind("mouseover", function(){
+				$(this).bind("mouseleave", function(){
 					_clearTimer();
 					if($wrap.is(':visible')){
 						var timer = setInterval(function(){
@@ -265,8 +265,22 @@
 						},50);	
 						timers.push(timer);
 					}
-				});		
+				});
+				$wrap.bind("mouseleave", function(){
+					_clearTimer();
+					if($wrap.is(':visible')){
+						var timer = setInterval(function(){
+							$wrap.hide();
+							_clearTimer();
+						},50);	
+						timers.push(timer);
+					}
+				});
 			}
 		});
 	};
+
+	// $.fn.dl_card_hide = function(){
+	// 	//$wrap.hide();
+	// }
 })(jQuery);
