@@ -90,8 +90,10 @@ exports.init = function(){
       finishCampaign();
       countCampaign();
   });
-}
-
+};
+//统计活动数
+exports.countCampaign = countCampaign;
+exports.finishCampaign = finishCampaign;
 //同步公司名
 exports.updateCname =function (cid){
   Company.findOne({_id: cid}).exec().then(function(company){
