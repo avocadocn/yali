@@ -377,7 +377,8 @@ var getPublicMessage = function(req,res,cid){
       for(var i = 0; i < message_contents.length; i ++){
         mcs.push({
           '_id':message_contents[i]._id,
-          'type':message_contents[i].type
+          'type':message_contents[i].type,
+          'create_date':message_contents[i].post_date
         });
       }
       var callbackB = function(messages,mcs,req,res){
@@ -412,7 +413,8 @@ var getPublicMessage = function(req,res,cid){
                   'rec_id':req.user._id,
                   'MessageContent':new_mcs[counter.i]._id,
                   'type':new_mcs[counter.i].type,
-                  'status':'unread'
+                  'status':'unread',
+                  'create_date':new_mcs[counter.i].create_date
                 };
                 var param = {
                   'collection':Message,
@@ -448,7 +450,8 @@ var getPublicMessage = function(req,res,cid){
                 'rec_id':req.user._id,
                 'MessageContent':message_contents[counter.i]._id,
                 'type':message_contents[counter.i].type,
-                'status':'unread'
+                'status':'unread',
+                'create_date':message_contents[counter.i].post_date
               };
               var param = {
                 'collection':Message,
@@ -495,7 +498,7 @@ var getPublicMessage = function(req,res,cid){
     'collection':MessageContent,
     'type':1,
     'condition':{'company_id':cid,'$or':[{'type':'company'},{'type':'global'}]},  //公司消息和系统消息都是当作全局来对待的
-    'limit':{'_id':1,'type':1},
+    'limit':{'_id':1,'type':1,'post_date':1},
     'sort':{'post_date':-1},
     'callback':callbackA,
     '_err':_err,
