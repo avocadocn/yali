@@ -9190,11 +9190,7 @@ return jQuery;
 }));
 
 /**
-<<<<<<< HEAD
- * @license AngularJS v1.2.18
-=======
  * @license AngularJS v1.2.16
->>>>>>> 修改公司活动bug
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9263,11 +9259,7 @@ function minErr(module) {
       return match;
     });
 
-<<<<<<< HEAD
-    message = message + '\nhttp://errors.angularjs.org/1.2.18/' +
-=======
     message = message + '\nhttp://errors.angularjs.org/1.2.16/' +
->>>>>>> 修改公司活动bug
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10788,15 +10780,9 @@ function setupModuleLoader(window) {
      * {@link angular.bootstrap} to simplify this process for you.
      *
      * @param {!string} name The name of the module to create or retrieve.
-<<<<<<< HEAD
-     * @param {!Array.<string>=} requires If specified then new module is being created. If
-     *        unspecified then the module is being retrieved for further configuration.
-     * @param {Function=} configFn Optional configuration function for the module. Same as
-=======
 <<<<<* @param {!Array.<string>=} requires If specified then new module is being created. If
 >>>>>*        unspecified then the module is being retrieved for further configuration.
      * @param {Function} configFn Optional configuration function for the module. Same as
->>>>>>> 修改公司活动bug
      *        {@link angular.Module#config Module#config()}.
      * @returns {module} new module with the {@link angular.Module} api.
      */
@@ -11124,19 +11110,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-<<<<<<< HEAD
-  full: '1.2.18',    // all of these placeholder strings will be replaced by grunt's
-  major: 1,    // package task
-  minor: 2,
-  dot: 18,
-  codeName: 'ear-extendability'
-=======
   full: '1.2.16',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 16,
   codeName: 'badger-enumeration'
->>>>>>> 修改公司活动bug
 };
 
 
@@ -11359,11 +11337,7 @@ function publishExternalAPI(angular){
  */
 
 var jqCache = JQLite.cache = {},
-<<<<<<< HEAD
-    jqName = JQLite.expando = 'ng' + new Date().getTime(),
-=======
     jqName = JQLite.expando = 'ng-' + new Date().getTime(),
->>>>>>> 修改公司活动bug
     jqId = 1,
     addEventListenerFn = (window.document.addEventListener
       ? function(element, type, fn) {element.addEventListener(type, fn, false);}
@@ -13992,11 +13966,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#put
-<<<<<<< HEAD
-         * @kind function
-=======
          * @function
->>>>>>> 修改公司活动bug
          *
          * @description
          * Inserts a named entry into the {@link $cacheFactory.Cache Cache} object to be
@@ -14032,11 +14002,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#get
-<<<<<<< HEAD
-         * @kind function
-=======
          * @function
->>>>>>> 修改公司活动bug
          *
          * @description
          * Retrieves named data stored in the {@link $cacheFactory.Cache Cache} object.
@@ -14060,11 +14026,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#remove
-<<<<<<< HEAD
-         * @kind function
-=======
          * @function
->>>>>>> 修改公司活动bug
          *
          * @description
          * Removes an entry from the {@link $cacheFactory.Cache Cache} object.
@@ -14092,11 +14054,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#removeAll
-<<<<<<< HEAD
-         * @kind function
-=======
          * @function
->>>>>>> 修改公司活动bug
          *
          * @description
          * Clears the cache object of any entries.
@@ -14112,11 +14070,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#destroy
-<<<<<<< HEAD
-         * @kind function
-=======
          * @function
->>>>>>> 修改公司活动bug
          *
          * @description
          * Destroys the {@link $cacheFactory.Cache Cache} object entirely,
@@ -14133,11 +14087,7 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#info
-<<<<<<< HEAD
-         * @kind function
-=======
          * @function
->>>>>>> 修改公司活动bug
          *
          * @description
          * Retrieve information regarding a particular {@link $cacheFactory.Cache Cache}.
@@ -14784,13 +14734,8 @@ $CompileProvider.$inject = ['$provide', '$$sanitizeUriProvider'];
 function $CompileProvider($provide, $$sanitizeUriProvider) {
   var hasDirectives = {},
       Suffix = 'Directive',
-<<<<<<< HEAD
-      COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w_\-]+)\s+(.*)$/,
-      CLASS_DIRECTIVE_REGEXP = /(([\d\w_\-]+)(?:\:([^;]+))?;?)/;
-=======
       COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w\-_]+)\s+(.*)$/,
       CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/;
->>>>>>> 修改公司活动bug
 
   // Ref: http://developers.whatwg.org/webappapis.html#event-handler-idl-attributes
   // The assumption is that future DOM event attribute names will begin with
@@ -15535,11 +15480,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if (jqLiteIsTextNode(directiveValue)) {
               $template = [];
             } else {
-<<<<<<< HEAD
-              $template = jqLite(trim(directiveValue));
-=======
               $template = jqLite(directiveValue);
->>>>>>> 修改公司活动bug
             }
             compileNode = $template[0];
 
@@ -15966,11 +15907,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if (jqLiteIsTextNode(content)) {
               $template = [];
             } else {
-<<<<<<< HEAD
-              $template = jqLite(trim(content));
-=======
               $template = jqLite(content);
->>>>>>> 修改公司活动bug
             }
             compileNode = $template[0];
 
@@ -17418,11 +17355,7 @@ function $HttpProvider() {
           } else {
             // serving from cache
             if (isArray(cachedResp)) {
-<<<<<<< HEAD
-              resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3]);
-=======
               resolvePromise(cachedResp[1], cachedResp[0], copy(cachedResp[2]), cachedResp[3]);
->>>>>>> 修改公司活动bug
             } else {
               resolvePromise(cachedResp, 200, {}, 'OK');
             }
@@ -23954,13 +23887,8 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
       fractionSize = Math.min(Math.max(pattern.minFrac, fractionLen), pattern.maxFrac);
     }
 
-<<<<<<< HEAD
-    var pow = Math.pow(10, fractionSize + 1);
-    number = Math.floor(number * pow + 5) / pow;
-=======
     var pow = Math.pow(10, fractionSize);
     number = Math.round(number * pow) / pow;
->>>>>>> 修改公司活动bug
     var fraction = ('' + number).split(DECIMAL_SEP);
     var whole = fraction[0];
     fraction = fraction[1] || '';
@@ -25857,11 +25785,6 @@ function addNativeHtml5Validators(ctrl, validatorName, element) {
 
 function textInputType(scope, element, attr, ctrl, $sniffer, $browser) {
   var validity = element.prop('validity');
-<<<<<<< HEAD
-  var placeholder = element[0].placeholder, noevent = {};
-
-=======
->>>>>>> 修改公司活动bug
   // In composition mode, users are still inputing intermediate text buffer,
   // hold the listener until composition is done.
   // More about composition events: https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent
@@ -27200,11 +27123,7 @@ function classDirective(name, selector) {
           scope.$watch('$index', function($index, old$index) {
             // jshint bitwise: false
             var mod = $index & 1;
-<<<<<<< HEAD
-            if (mod !== (old$index & 1)) {
-=======
             if (mod !== old$index & 1) {
->>>>>>> 修改公司活动bug
               var classes = arrayClasses(scope.$eval(attr[name]));
               mod === selector ?
                 addClasses(classes) :
@@ -27263,11 +27182,7 @@ function classDirective(name, selector) {
               updateClasses(oldClasses, newClasses);
             }
           }
-<<<<<<< HEAD
-          oldVal = shallowCopy(newVal);
-=======
           oldVal = copy(newVal);
->>>>>>> 修改公司活动bug
         }
       }
     };
@@ -27295,11 +27210,7 @@ function classDirective(name, selector) {
         var classes = [], i = 0;
         forEach(classVal, function(v, k) {
           if (v) {
-<<<<<<< HEAD
-            classes = classes.concat(k.split(' '));
-=======
             classes.push(k);
->>>>>>> 修改公司活动bug
           }
         });
         return classes;
@@ -29737,7 +29648,7 @@ var ngHideDirective = ['$animate', function($animate) {
      <file name="protractor.js" type="protractor">
        var colorSpan = element(by.css('span'));
 
-       iit('should check ng-style', function() {
+       it('should check ng-style', function() {
          expect(colorSpan.getCssValue('color')).toBe('rgba(0, 0, 0, 1)');
          element(by.css('input[value=set]')).click();
          expect(colorSpan.getCssValue('color')).toBe('rgba(255, 0, 0, 1)');
@@ -30743,11 +30654,7 @@ var styleDirective = valueFn({
 
 !angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}</style>');
 /**
-<<<<<<< HEAD
- * @license AngularJS v1.2.18
-=======
  * @license AngularJS v1.2.16
->>>>>>> 修改公司活动bug
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
