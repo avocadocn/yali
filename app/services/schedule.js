@@ -84,7 +84,8 @@ function countCampaign(){
 }
 exports.init = function(){
   var rule = new schedule.RecurrenceRule();
-  rule.seconds = 0;
+  rule.minute = 0;
+  //rule.seconds = 0;
   var j = schedule.scheduleJob(rule, function(){
       finishCampaign();
       countCampaign();
