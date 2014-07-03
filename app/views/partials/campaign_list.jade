@@ -1,7 +1,7 @@
 if provider=='company'
   .row
     .btn-group.pull-right
-      button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{"CAMPAIGN_SELECT"|translate}}
+      button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{campaign_type}}
       ul.dropdown-menu(role="menu")
         li
           a(ng-click="selectCampaign(0)") {{"COMPANY_CAMPAIGN"|translate}}

@@ -66,7 +66,7 @@ block contentExt
         div.member(ng-repeat = "_member in campaign.member")
           a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
             img.img_contain.detail_photo(ng-src="{{_member.photo}}")
-            span.name {{_member.nickname}}
+            span.name {{shortTrim(_member.nickname)}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
       form.dl_detail_main(name="comment_form" novalidate)
         p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}

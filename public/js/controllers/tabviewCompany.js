@@ -62,6 +62,9 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'company_campaign';
+
+    $scope.campaign_type = "活动类型";
+
     $http.get('/campaign/getCampaigns/company/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.campaigns;
     });
@@ -124,22 +127,27 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
             case 0:
                 $scope.campaignType = 'company';
                 _url = "/campaign/getCampaigns/company/company/0";
+                $scope.campaign_type = "全公司活动";
                 break;
             case 1:
                 $scope.campaignType = 'selected';
                 _url = "/campaign/getCampaigns/company/selected/0";
+                $scope.campaign_type = "已加入小队的活动";
                 break;
             case 2:
                 $scope.campaignType = 'unselected';
                 _url = "/campaign/getCampaigns/company/unselected/0";
+                $scope.campaign_type = "未加入小队的活动";
                 break;
             case 3:
                 $scope.campaignType = 'team';
                 _url = "/campaign/getCampaigns/company/team/0";
+                $scope.campaign_type = "所有小队的活动";
                 break;
             case 4:
                 $scope.campaignType = 'all';
                 _url = "/campaign/getCampaigns/company/all/0";
+                $scope.campaign_type = "所有活动";
                 break;
             default:break;
         }
