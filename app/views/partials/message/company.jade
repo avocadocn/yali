@@ -13,7 +13,7 @@ hr
         .dl_md_12
           h5
             a(href="{{company_message.url}}" ng-click="setToRead($index)" ng-if="!company_message.direct_show"){{company_message.content}}
-            a.pop(ng-click="setToRead($index)" data-toggle="popover" data-placement="top" data-content="{{company_message.detail}}" ng-if="company_message.direct_show"){{company_message.content}}
+            a.pop(id="pop_message_{{$index}}" ng-click="setToRead($index)" data-toggle="popover" data-placement="top" data-content="{{company_message.detail}}" ng-if="company_message.direct_show"){{company_message.content}}
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |

@@ -366,15 +366,15 @@ app.run(['$translate','$rootScope', function ($translate,$rootScope) {
     $rootScope.shortTrim = function(value){
       //中文
       if(escape(value).indexOf("%u")>=0){
-        if(value.length>10){
-          return value.substr(0,10)+'...';
+        if(value.length>6){
+          return value.substr(0,6)+'...';
         }else{
           return value;
         }
       //非中文
       }else{
-        if(value.length>20){
-          return value.substr(0,20)+'...';
+        if(value.length>15){
+          return value.substr(0,15)+'...';
         }else{
           return value;
         }
