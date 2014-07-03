@@ -23,7 +23,7 @@ block baseInfo
         if Global.role === 'HR'
           .score_container.margin_top_5
             button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") {{'SPONSOR'|translate}}{{'COMPANY'|translate}}{{ 'CAMPAIGN' | translate }}
-            button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorMessageModel") 发送私信
+            a.dl_btn.dl_btn_small.margin_left_5(href="/message/home") 发送私信
     .ad-top
 block panel
   ul.nav.nav-tabs

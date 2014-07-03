@@ -63,7 +63,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
   function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'company_campaign';
 
-    $scope.campaign_type = "活动类型";
+    $scope.campaign_type = "所有活动";
 
     $http.get('/campaign/getCampaigns/company/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.campaigns;

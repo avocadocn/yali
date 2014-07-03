@@ -64,10 +64,6 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
               a.dl_menu_a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
             li
               a.dl_menu_a(href="/company/signout") {{"LOGOUT"|translate}}
-        //- li
-        //-   a(href="#" data-toggle="dropdown")
-        //-     span.dl_msg_corner(ng-if="(global_length)>0")
-        //-     span.glyphicon.glyphicon-comment
-        //-   ul.dl_menu.dropdown-menu(role="menu")
-        //-     li
-        //-       a.dl_menu_a(href="/message/home#/system") 系统公告({{global_length}})
+        li
+          a(href="/message/home")
+            span.glyphicon.glyphicon-comment

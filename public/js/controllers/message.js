@@ -349,7 +349,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
   $scope.private_message_caption = {
     'text':''
   }
-  //队长给队员发私信
+  //公司给员工发私信
   $scope.sendToAll = function(){
     try{
       $http({
@@ -363,6 +363,9 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
             $rootScope.company_length++;
+            alertify.alert('发送成功!');
+          }else{
+            alertify.alert('发送失败!');
           }
       }).error(function(data, status) {
           //TODO:更改对话框
