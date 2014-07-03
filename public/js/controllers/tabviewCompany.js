@@ -862,6 +862,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
             }
             var myCity = new BMap.LocalCity();
             myCity.get(getCity);
+            $scope.showMapFlag = true;
         }
         else{
             $scope.local.search($scope.location.name );
@@ -875,7 +876,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
             return false;
         }
         if($scope.showMapFlag ==false){
-            $scope.showMapFlag = true;
             var script = document.createElement("script");  
             script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
             document.body.appendChild(script);
