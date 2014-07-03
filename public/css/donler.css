@@ -1236,42 +1236,6 @@ input.ng-invalid.ng-dirty {
   min-height: 300px;
   background-color: #fff;
 }
-.popover {
-  border-radius: 0;
-  width: 320px;
-  min-height: 150px;
-  background-color: #59c8eb;
-  border: 1px solid #fff;
-  color: #fff;
-  line-height: 10px;
-}
-.popover .arrow {
-  border-right-color: transparent !important;
-}
-.popover .popover-title {
-  background-color: #59c8eb;
-  border-radius: 0;
-}
-.popover .popover-content {
-  height: 128px;
-  border: 0;
-}
-.popover .popover-content .popover_img {
-  float: left;
-  width: 82px;
-  height: 82px;
-  border: 1px solid #fff;
-}
-.popover .popover-content .popover_content {
-  float: left;
-  width: 150px;
-  padding: 3px 10px;
-}
-.popover .popover-content .popover_brief {
-  float: left;
-  width: 230px;
-  padding: 10px;
-}
 .breadcrumb {
   background-color: #fff;
 }

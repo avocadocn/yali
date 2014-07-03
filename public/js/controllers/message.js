@@ -266,13 +266,23 @@ messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope
   }
   $scope.setToRead = function(index){
     if($rootScope.private_messages[index].direct_show){
-      alertify.alert($rootScope.private_messages[index].detail);
+      popOver(index,$rootScope.private_messages[index].detail);
     }
     if($rootScope.private_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id,'private',index);
     }
   }
 }]);
+
+var popOver = function(index,detail){
+  $('.pop').popover('destroy');
+  $('#pop_message_'+index).popover({
+    'content': detail,
+    'trigger': 'hover'
+  });
+  $('#pop_message_'+index).popover('show');
+}
+
 
 //获取小队站内信
 messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
@@ -321,7 +331,7 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
 
   $scope.setToRead = function(index){
     if($rootScope.team_messages[index].direct_show){
-      alertify.alert($rootScope.team_messages[index].detail);
+      popOver(index,$rootScope.team_messages[index].detail);
     }
     if($rootScope.team_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id,'team',index);
@@ -370,7 +380,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
 
   $scope.setToRead = function(index){
     if($rootScope.company_messages[index].direct_show){
-      alertify.alert($rootScope.company_messages[index].detail);
+      popOver(index,$rootScope.company_messages[index].detail);
     }
     if($rootScope.company_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id,'company',index);
