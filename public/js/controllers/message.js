@@ -233,21 +233,21 @@ var sendSet = function(http,_status,rootScope,_id,type,index){
     }).success(function(data, status) {
         switch(type){
           case 'private':
-            if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread')rootScope.private_length--;
+            if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread'){rootScope.private_length--;rootScope.o--}
             rootScope.private_messages[index].status = _status;
             if(_status === 'delete'){
               rootScope.private_messages.splice(index,1);
             }
           break;
           case 'team':
-            if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread')rootScope.team_length--;
+            if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread'){rootScope.team_length--;rootScope.o--}
             rootScope.team_messages[index].status = _status;
             if(_status === 'delete'){
               rootScope.team_messages.splice(index,1);
             }
           break;
           case 'company':
-            if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread')rootScope.company_length--;
+            if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread'){rootScope.company_length--;rootScope.o--}
             rootScope.company_messages[index].status = _status;
             if(_status === 'delete'){
               rootScope.company_messages.splice(index,1);
