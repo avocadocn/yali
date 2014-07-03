@@ -307,10 +307,6 @@ exports.timeLine = function(req, res){
 
           newTimeLines[groupYear]['left'][0] = tempObj;
           newTimeLines[groupYear][0] = tempObj;
-<<<<<<< HEAD
-          // newTimeLines
-=======
->>>>>>> c434b03808af76de80d49906e65f28f905d454c0
         }else{
           var i = newTimeLines[groupYear].length;
           newTimeLines[groupYear][i] = tempObj;
