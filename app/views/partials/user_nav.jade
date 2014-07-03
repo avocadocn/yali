@@ -31,7 +31,7 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
               a.dl_menu_a(href="/users/signout") {{"LOGOUT"|translate}}
         li
           a(href="#" data-toggle="dropdown")
-            span.dl_msg_corner(ng-if="(private_length + team_length + company_length + global_length)>0") {{private_length + team_length + company_length + global_length}}
+            span.dl_msg_corner(ng-if="o>0") {{o}}
             span.glyphicon.glyphicon-comment
           ul.dl_menu.dropdown-menu(role="menu")
             li

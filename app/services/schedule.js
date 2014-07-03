@@ -17,11 +17,78 @@ function finishCampaign(){
     }
   });
 }
+function countCampaign(){
+  CompanyGroup.find({'active':true},function(err,teams){
+    if(err){
+      console.log(err);
+    }
+    else{
+      teams.forEach(function(value){
+        var _now_time=new Date();
+        var lastweek_time=new Date();
+        var lastmonth_time=new Date();
+        lastweek_time.setDate(new Date().getDate()-7);
+        lastmonth_time.setMonth(new Date().getMonth()-1);
+        var last_week_campaign=0;
+        var last_week_member=0;
+        var last_month_campaign=0;
+        var last_month_member=0;
+        var week_flag = false;
+        Campaign.find({'active':true,'team':value._id,'end_time':{'$lt':new Date(),'$gt':lastmonth_time}},function(err,campaigns){
+          campaigns.forEach(function(campaign){
+            if(campaign.camp.length==0){
+              last_month_campaign++;
+              last_month_member+=campaign.member.length;
+              if(week_flag){
+                last_week_campaign++;
+                last_week_member+=campaign.member.length;
+              }
+              else if(campaign.end_time>lastweek_time){
+                week_flag = true;
+                last_week_campaign++;
+                last_week_member+=campaign.member.length;
+              }
+            }
+            else{
+              var camp_index = campaign.camp[0].id.toString()===value._id.toString() ? 0:1;
+              last_month_campaign++;
+              last_month_member+=campaign.camp[camp_index].member.length;
+              if(week_flag){
+                last_week_campaign++;
+                last_week_member+=campaign.camp[camp_index].member.length;
+              }
+              else if(campaign.end_time>lastweek_time){
+                week_flag = true;
+                last_week_campaign++;
+                last_week_member+=campaign.camp[camp_index].member.length;
+              }
+              value.count ={
+                last_week_campaign: last_week_campaign,
+                last_week_member: last_week_member,
+                last_month_campaign: last_month_campaign,
+                last_month_member:last_month_member
+              }
+              console.log(value._id,value.name,value.count);
+              value.save(function(err){
+                if(err){
+                  console.log(err);
+                }
+              });
+            }
+          });
+        });
+      });
+      
+    }
+  });
+}
 exports.init = function(){
   var rule = new schedule.RecurrenceRule();
   rule.minute = 0;
+  //rule.seconds = 0;
   var j = schedule.scheduleJob(rule, function(){
       finishCampaign();
+      countCampaign();
   });
 }
 
