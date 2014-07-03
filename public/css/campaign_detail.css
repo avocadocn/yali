@@ -49,6 +49,10 @@
   display: block;
   width: 50px;
   text-align: center;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .dl_detail_container .dl_detail_side {
   width: 290px;

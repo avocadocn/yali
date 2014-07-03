@@ -71,7 +71,7 @@ fdiv(ng-controller="infoController")
               a(href="/users/home/{{member._id}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}' rel='popover')
                 img.size_56(ng-src="{{member.photo}}")
             .dl_row
-              label {{member.nickname}}
+              label.user_name {{member.nickname}}
 
     //- 此部分逻辑未做 暂时隐藏
     //- .row.dl_row

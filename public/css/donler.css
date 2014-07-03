@@ -170,6 +170,19 @@ textarea {
   margin: 0 auto;
   padding: 0 2rem;
 }
+.dl_head .user_img {
+  display: inline-block;
+}
+.dl_head .user_img img {
+  display: block;
+}
+.dl_head .user_name {
+  display: inline-block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .dl_block {
   display: block;
 }
@@ -571,6 +584,13 @@ textarea {
   padding-left: 20px;
   padding-bottom: 5px;
   text-align: center;
+}
+.group .user_name {
+  display: inline-block;
+  max-width: 84px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .no_radius {
   border-radius: 0 !important;

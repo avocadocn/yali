@@ -9,6 +9,6 @@ div
             a(ng-click="userDetail($index)" ng-Mouseenter="showUserCard(member._id,member._id)" id='pop{{member._id}}' rel='popover' data-toggle="modal" data-target="#sponsorUserDetailModel")
               img.size_80(ng-src="{{member.photo}}")
           .dl_row(style="width:80px;text-align:center")
-            label {{member.nickname}}
+            label.user_name {{member.nickname}}
 div(class="modal fade" id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   include user_detail_modal

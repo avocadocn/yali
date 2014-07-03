@@ -30,9 +30,9 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
             a(href="/company/home") {{"COMPANY_HOME"|translate}}
           li
             a(href="/users/home")
-              span
+              span.user_img
                 img.size_20(ng-src="#{Global.nav_logo}")
-              span.m_l_5 #{Global.nav_name}
+              span.m_l_5.user_name #{Global.nav_name}
           li
             a(href="#" data-toggle="dropdown")
               span.glyphicon.glyphicon-cog.m_l_5
