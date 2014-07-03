@@ -38,6 +38,12 @@ messageApp.config(['$routeProvider', '$locationProvider',
 
 messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
+
+    $rootScope.private_length = 0;
+    $rootScope.team_length = 0;
+    $rootScope.company_length = 0;
+    $rootScope.global_length = 0;
+
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
