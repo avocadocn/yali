@@ -15,7 +15,7 @@ var express = require('express'),
 
 module.exports = function(app, passport, db) {
     i18n.configure({
-      locales: ['zh-cn', 'ja-jp'],
+      locales: ['zh-cn', 'ja-jp', 'en'],
       directory: __dirname + '/locales',
       defaultLocale: 'zh-cn'
     });
