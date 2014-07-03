@@ -21,9 +21,9 @@ table.table.table-hover.campaign_table
     td.time_col
       p.text-right.day {{ campaign_item.start_time  | date:'yyyy-MM-dd HH:mm' | day }}
       p.text-right {{ campaign_item.start_time | date:'HH:mm' }}
-    td.logo_col.text-center
+    td.logo_col.text-center(bs-popover)
       a(ng-href="{{campaign_item.link}}")
-        img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" bs-popover ng-src="{{campaign_item.logo}}"  ng-Mouseover='showGroupCard(campaign_item.team_id,campaign_item._id)' id='pop{{campaign_item._id}}' rel='popover')
+        img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}"  ng-Mouseover='showGroupCard(campaign_item.team_id,campaign_item._id)' id='pop{{campaign_item._id}}')
         img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}")
     td.content_col
       p 主题:

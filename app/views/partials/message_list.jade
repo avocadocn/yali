@@ -3,7 +3,7 @@
   div.clearfix(bs-popover)
     .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
       a(ng-href='/group/home/{{group_message.team_id}}')
-        img.size_56(ng-src='{{group_message.logo}}' ng-Mouseover='showGroupCard(group_message.team_id,group_message._id)' id='pop{{group_message._id}}' rel='popover')
+        img.size_56(ng-src='{{group_message.logo}}' ng-Mouseover='showGroupCard(group_message.team_id,group_message._id)' id='pop{{group_message._id}}')
     .message_side(ng-if="group_message.message_type==0||group_message.message_type==2||group_message.message_type==6||group_message.message_type==7||group_message.message_type==8")
       img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
       .size_56(ng-if="group_message.message_type==6")
