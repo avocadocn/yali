@@ -307,7 +307,6 @@ exports.timeLine = function(req, res){
 
           newTimeLines[groupYear]['left'][0] = tempObj;
           newTimeLines[groupYear][0] = tempObj;
-          newTimeLines
         }else{
           var i = newTimeLines[groupYear].length;
           newTimeLines[groupYear][i] = tempObj;
@@ -320,7 +319,7 @@ exports.timeLine = function(req, res){
           }
           
         }
-        console.log('item:'+ newTimeLines[groupYear].length);
+        //console.log('item:'+ newTimeLines[groupYear].length);
         // todo new time style
 
         timeLines.push(tempObj);
@@ -332,7 +331,7 @@ exports.timeLine = function(req, res){
     }
       // // todo new time style
       // console.log(timeLines);
-      console.log(newTimeLines);
+      //console.log(newTimeLines);
       // // todo new time style
   })
   .then(null, function(err) {

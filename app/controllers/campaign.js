@@ -179,7 +179,8 @@ var formatCampaign = function(campaign,pageType,role,user){
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum
     };
-    if(_campaign.team.length==0){//公司活动
+    console.log(_campaign.team.length,_campaign.camp.length,_campaign);
+    if(_campaign.team==undefined || _campaign.team.length==0){//公司活动
       temp.type='companycampaign';
       temp.logo=_campaign.cid[0].info.logo;
       temp.link = '/company/home/'+_campaign.cid._id;
@@ -327,7 +328,6 @@ exports.getCampaigns = function(req, res) {
         .find(option)
         .limit(pagesize)
         .populate('team').populate('cid')
-        .sort({'start_time':-1})
         .sort({'start_time':-1})
         .exec()
         .then(function(campaign) {

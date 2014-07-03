@@ -9190,7 +9190,11 @@ return jQuery;
 }));
 
 /**
+<<<<<<< HEAD
  * @license AngularJS v1.2.19
+=======
+ * @license AngularJS v1.2.16
+>>>>>>> 增加活动统计，修改timeline
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9259,7 +9263,11 @@ function minErr(module) {
       return match;
     });
 
+<<<<<<< HEAD
     message = message + '\nhttp://errors.angularjs.org/1.2.19/' +
+=======
+    message = message + '\nhttp://errors.angularjs.org/1.2.16/' +
+>>>>>>> 增加活动统计，修改timeline
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10549,7 +10557,11 @@ function angularInit(element, bootstrap) {
  *
  * Angular will detect if it has been loaded into the browser more than once and only allow the
  * first loaded script to be bootstrapped and will report a warning to the browser console for
+<<<<<<< HEAD
  * each of the subsequent scripts. This prevents strange results in applications, where otherwise
+=======
+ * each of the subsequent scripts.   This prevents strange results in applications, where otherwise
+>>>>>>> 增加活动统计，修改timeline
  * multiple instances of Angular try to work on the DOM.
  *
  * <example name="multi-bootstrap" module="multi-bootstrap">
@@ -10817,9 +10829,15 @@ function setupModuleLoader(window) {
      * {@link angular.bootstrap} to simplify this process for you.
      *
      * @param {!string} name The name of the module to create or retrieve.
+<<<<<<< HEAD
      * @param {!Array.<string>=} requires If specified then new module is being created. If
      *        unspecified then the module is being retrieved for further configuration.
      * @param {Function=} configFn Optional configuration function for the module. Same as
+=======
+<<<<<* @param {!Array.<string>=} requires If specified then new module is being created. If
+>>>>>*        unspecified then the module is being retrieved for further configuration.
+     * @param {Function} configFn Optional configuration function for the module. Same as
+>>>>>>> 增加活动统计，修改timeline
      *        {@link angular.Module#config Module#config()}.
      * @returns {module} new module with the {@link angular.Module} api.
      */
@@ -11149,11 +11167,19 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
+<<<<<<< HEAD
   full: '1.2.19',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 19,
   codeName: 'precognitive-flashbacks'
+=======
+  full: '1.2.16',    // all of these placeholder strings will be replaced by grunt's
+  major: 1,    // package task
+  minor: 2,
+  dot: 16,
+  codeName: 'badger-enumeration'
+>>>>>>> 增加活动统计，修改timeline
 };
 
 
@@ -14014,7 +14040,11 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#put
+<<<<<<< HEAD
          * @kind function
+=======
+         * @function
+>>>>>>> 增加活动统计，修改timeline
          *
          * @description
          * Inserts a named entry into the {@link $cacheFactory.Cache Cache} object to be
@@ -14050,7 +14080,11 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#get
+<<<<<<< HEAD
          * @kind function
+=======
+         * @function
+>>>>>>> 增加活动统计，修改timeline
          *
          * @description
          * Retrieves named data stored in the {@link $cacheFactory.Cache Cache} object.
@@ -14074,7 +14108,11 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#remove
+<<<<<<< HEAD
          * @kind function
+=======
+         * @function
+>>>>>>> 增加活动统计，修改timeline
          *
          * @description
          * Removes an entry from the {@link $cacheFactory.Cache Cache} object.
@@ -14102,7 +14140,11 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#removeAll
+<<<<<<< HEAD
          * @kind function
+=======
+         * @function
+>>>>>>> 增加活动统计，修改timeline
          *
          * @description
          * Clears the cache object of any entries.
@@ -14118,7 +14160,11 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#destroy
+<<<<<<< HEAD
          * @kind function
+=======
+         * @function
+>>>>>>> 增加活动统计，修改timeline
          *
          * @description
          * Destroys the {@link $cacheFactory.Cache Cache} object entirely,
@@ -14135,7 +14181,11 @@ function $CacheFactoryProvider() {
         /**
          * @ngdoc method
          * @name $cacheFactory.Cache#info
+<<<<<<< HEAD
          * @kind function
+=======
+         * @function
+>>>>>>> 增加活动统计，修改timeline
          *
          * @description
          * Retrieve information regarding a particular {@link $cacheFactory.Cache Cache}.
@@ -14777,8 +14827,13 @@ $CompileProvider.$inject = ['$provide', '$$sanitizeUriProvider'];
 function $CompileProvider($provide, $$sanitizeUriProvider) {
   var hasDirectives = {},
       Suffix = 'Directive',
+<<<<<<< HEAD
       COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w_\-]+)\s+(.*)$/,
       CLASS_DIRECTIVE_REGEXP = /(([\d\w_\-]+)(?:\:([^;]+))?;?)/;
+=======
+      COMMENT_DIRECTIVE_REGEXP = /^\s*directive\:\s*([\d\w\-_]+)\s+(.*)$/,
+      CLASS_DIRECTIVE_REGEXP = /(([\d\w\-_]+)(?:\:([^;]+))?;?)/;
+>>>>>>> 增加活动统计，修改timeline
 
   // Ref: http://developers.whatwg.org/webappapis.html#event-handler-idl-attributes
   // The assumption is that future DOM event attribute names will begin with
@@ -15542,7 +15597,11 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if (jqLiteIsTextNode(directiveValue)) {
               $template = [];
             } else {
+<<<<<<< HEAD
               $template = jqLite(trim(directiveValue));
+=======
+              $template = jqLite(directiveValue);
+>>>>>>> 增加活动统计，修改timeline
             }
             compileNode = $template[0];
 
@@ -15976,7 +16035,11 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             if (jqLiteIsTextNode(content)) {
               $template = [];
             } else {
+<<<<<<< HEAD
               $template = jqLite(trim(content));
+=======
+              $template = jqLite(content);
+>>>>>>> 增加活动统计，修改timeline
             }
             compileNode = $template[0];
 
@@ -17429,7 +17492,11 @@ function $HttpProvider() {
           } else {
             // serving from cache
             if (isArray(cachedResp)) {
+<<<<<<< HEAD
               resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3]);
+=======
+              resolvePromise(cachedResp[1], cachedResp[0], copy(cachedResp[2]), cachedResp[3]);
+>>>>>>> 增加活动统计，修改timeline
             } else {
               resolvePromise(cachedResp, 200, {}, 'OK');
             }
@@ -17630,7 +17697,11 @@ function createHttpBackend($browser, createXhr, $browserDefer, callbacks, rawDoc
               status || xhr.status,
               response,
               responseHeaders,
+<<<<<<< HEAD
               statusText);
+=======
+              xhr.statusText || '');
+>>>>>>> 增加活动统计，修改timeline
         }
       };
 
@@ -27417,11 +27488,17 @@ function classDirective(name, selector) {
           scope.$watch('$index', function($index, old$index) {
             // jshint bitwise: false
             var mod = $index & 1;
+<<<<<<< HEAD
             if (mod !== (old$index & 1)) {
+=======
+            if (mod !== old$index & 1) {
+>>>>>>> 增加活动统计，修改timeline
               var classes = arrayClasses(scope.$eval(attr[name]));
               mod === selector ?
                 addClasses(classes) :
                 removeClasses(classes);
+<<<<<<< HEAD
+=======
             }
           });
         }
@@ -27445,12 +27522,67 @@ function classDirective(name, selector) {
               if (classCounts[className] === +(count > 0)) {
                 classesToUpdate.push(className);
               }
+>>>>>>> 增加活动统计，修改timeline
             }
           });
           element.data('$classCounts', classCounts);
           return classesToUpdate.join(' ');
         }
 
+<<<<<<< HEAD
+        function addClasses(classes) {
+          var newClasses = digestClassCounts(classes, 1);
+          attr.$addClass(newClasses);
+        }
+
+        function removeClasses(classes) {
+          var newClasses = digestClassCounts(classes, -1);
+          attr.$removeClass(newClasses);
+        }
+
+        function digestClassCounts (classes, count) {
+          var classCounts = element.data('$classCounts') || {};
+          var classesToUpdate = [];
+          forEach(classes, function (className) {
+            if (count > 0 || classCounts[className]) {
+              classCounts[className] = (classCounts[className] || 0) + count;
+              if (classCounts[className] === +(count > 0)) {
+                classesToUpdate.push(className);
+              }
+=======
+        function updateClasses (oldClasses, newClasses) {
+          var toAdd = arrayDifference(newClasses, oldClasses);
+          var toRemove = arrayDifference(oldClasses, newClasses);
+          toRemove = digestClassCounts(toRemove, -1);
+          toAdd = digestClassCounts(toAdd, 1);
+
+          if (toAdd.length === 0) {
+            $animate.removeClass(element, toRemove);
+          } else if (toRemove.length === 0) {
+            $animate.addClass(element, toAdd);
+          } else {
+            $animate.setClass(element, toAdd, toRemove);
+          }
+        }
+
+        function ngClassWatchAction(newVal) {
+          if (selector === true || scope.$index % 2 === selector) {
+            var newClasses = arrayClasses(newVal || []);
+            if (!oldVal) {
+              addClasses(newClasses);
+            } else if (!equals(newVal,oldVal)) {
+              var oldClasses = arrayClasses(oldVal);
+              updateClasses(oldClasses, newClasses);
+>>>>>>> 增加活动统计，修改timeline
+            }
+          });
+          element.data('$classCounts', classCounts);
+          return classesToUpdate.join(' ');
+        }
+      }
+    };
+
+<<<<<<< HEAD
         function updateClasses (oldClasses, newClasses) {
           var toAdd = arrayDifference(newClasses, oldClasses);
           var toRemove = arrayDifference(oldClasses, newClasses);
@@ -27477,8 +27609,20 @@ function classDirective(name, selector) {
             }
           }
           oldVal = shallowCopy(newVal);
+=======
+    function arrayDifference(tokens1, tokens2) {
+      var values = [];
+
+      outer:
+      for(var i = 0; i < tokens1.length; i++) {
+        var token = tokens1[i];
+        for(var j = 0; j < tokens2.length; j++) {
+          if(token == tokens2[j]) continue outer;
+>>>>>>> 增加活动统计，修改timeline
         }
+        values.push(token);
       }
+<<<<<<< HEAD
     };
 
     function arrayDifference(tokens1, tokens2) {
@@ -27492,6 +27636,8 @@ function classDirective(name, selector) {
         }
         values.push(token);
       }
+=======
+>>>>>>> 增加活动统计，修改timeline
       return values;
     }
 
@@ -27504,7 +27650,11 @@ function classDirective(name, selector) {
         var classes = [], i = 0;
         forEach(classVal, function(v, k) {
           if (v) {
+<<<<<<< HEAD
             classes = classes.concat(k.split(' '));
+=======
+            classes.push(k);
+>>>>>>> 增加活动统计，修改timeline
           }
         });
         return classes;
@@ -30968,7 +31118,11 @@ var styleDirective = valueFn({
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>');
 /**
+<<<<<<< HEAD
  * @license AngularJS v1.2.19
+=======
+ * @license AngularJS v1.2.16
+>>>>>>> 增加活动统计，修改timeline
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
