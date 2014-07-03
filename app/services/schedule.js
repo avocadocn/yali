@@ -62,18 +62,18 @@ function countCampaign(){
                 last_week_campaign++;
                 last_week_member+=campaign.camp[camp_index].member.length;
               }
-              value.count ={
-                last_week_campaign: last_week_campaign,
-                last_week_member: last_week_member,
-                last_month_campaign: last_month_campaign,
-                last_month_member:last_month_member
-              }
-              console.log(value._id,value.name,value.count);
-              value.save(function(err){
-                if(err){
-                  console.log(err);
-                }
-              });
+            }
+          });
+          value.count ={
+            last_week_campaign: last_week_campaign,
+            last_week_member: last_week_member,
+            last_month_campaign: last_month_campaign,
+            last_month_member:last_month_member
+          }
+          console.log(value._id,value.name,value.count);
+          value.save(function(err){
+            if(err){
+              console.log(err);
             }
           });
         });
