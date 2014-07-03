@@ -15,7 +15,7 @@ block contentExt
             h2 激活成功！
             p 现在可以完成注册，加入动梨啦！
           .form-group.dl_sm_group(ng-class="{'has-error':signup_form.nickname.$invalid && signup_form.nickname.$dirty}")
-            label.col-xs-3.control-label(for="nickname") ＊{{"NICKNAME"|translate}}
+            label.col-xs-3.control-label(for="nickname") ＊#{__("NICKNAME")}
             .col-xs-9
               input#nickname.form-control.dl_full_control(type="text" name="nickname" ng-model="nickname" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.nickname.$invalid && signup_form.nickname.$dirty ? '请填写昵称':''}}" required)
           .form-group.dl_sm_group(ng-class="{'has-error':signup_form.password.$invalid && signup_form.password.$dirty}")
@@ -27,15 +27,15 @@ block contentExt
             .col-xs-9
               input#passconf.form-control.dl_full_control(type="password" name="passconf" ng-model="passconf" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.passconf.$invalid && signup_form.passconf.$dirty ? '请输入确认密码':''}}" required)
           .form-group.dl_sm_group(ng-class="{'has-error':signup_form.realName.$invalid && signup_form.realName.$dirty}")
-            label.col-xs-3.control-label(for="realName") ＊{{"REALNAME"|translate}}
+            label.col-xs-3.control-label(for="realName") ＊#{__("REALNAME")}
             .col-xs-9
               input#realName.form-control.dl_full_control(type="text" placeholder="仅公司成员可见" name="realName" ng-model="realName" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.realName.$invalid && signup_form.realName.$dirty ? '请输入真实姓名':''}}" required)
           .form-group.dl_sm_group
-            label.col-xs-3.control-label(for="department") {{"DEPARTMENT"|translate}}
+            label.col-xs-3.control-label(for="department") #{__("DEPARTMENT")}
             .col-xs-9
               input#department.form-control.dl_full_control(type="text" name="department" ng-model="department")
           .form-group.dl_sm_group
-            label.col-xs-3.control-label(for="phone") {{"PHONE"|translate}}
+            label.col-xs-3.control-label(for="phone") #{__("PHONE")}
             .col-xs-9
               input#phone.form-control.dl_full_control(type="text" name="phone" ng-model="phone")
           .form-group.dl_sm_group

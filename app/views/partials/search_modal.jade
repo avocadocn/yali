@@ -4,7 +4,7 @@
       .dl-modal-header
         button(class="close" data-dismiss="modal" aria-hidden="true")
           img(ng-src='/img/icons/icon_close.png')
-        .head#myModalLabel {{"SEARCH"|translate}}{{"COMPETITOR"|translate}}
+        .head#myModalLabel #{__("SEARCH")}#{__("COMPETITOR")}
       .dl-modal-body
         br
         .dl_modal_container
@@ -70,4 +70,4 @@
       br
       br
       .dl-modal-footer.margin_top_20
-        button.dl_btn.dl_btn_large(data-dismiss="modal") {{"CANCEL"|translate}}
+        button.dl_btn.dl_btn_large(data-dismiss="modal") #{__("CANCEL")}

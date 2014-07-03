@@ -21,13 +21,13 @@ block panel
   ul.nav.nav-tabs
     if (Global.role==='OWNER')
       li.tab_style(ng-class="{'active':nowTab=='group_message'}")
-        a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") {{"LATEST_MESSAGE"|translate}}
+        a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") #{__("LATEST_MESSAGE")}
     //-li.tab_style(ng-class="{'active':nowTab=='campaign'}")
-      a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") {{"CAMPAIGN"|translate}}{{"LIST"|translate}}
+      a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") #{__("CAMPAIGN")}#{__("LIST")}
     li.tab_style(ng-class="{'active':nowTab=='schedule'}")
-      a.subtitle.no_radius(href="#/schedule" ng-click="addactive('schedule')") {{"SCHEDULE"|translate}}
+      a.subtitle.no_radius(href="#/schedule" ng-click="addactive('schedule')") #{__("SCHEDULE")}
     li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
-      a.subtitle.no_radius(href="#/timeLine" ng-click="addactive('timeLine')") {{"TIME_LINE"|translate}}
+      a.subtitle.no_radius(href="#/timeLine" ng-click="addactive('timeLine')") #{__("TIME_LINE")}
   .tab-content.margin_top_20
     .tab-pane.active
       div(ng-view).tab-body

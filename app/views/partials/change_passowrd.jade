@@ -1,21 +1,21 @@
 .main
-  p.subtitle {{"CHANGE"|translate}}{{"PASSWORD"|translate}}
+  p.subtitle #{__("CHANGE")}#{__("PASSWORD")}
   hr.margin_top_6
   form(name="passwordForm")
     .dl_row
       .dl_pass_label
-        span {{"CURRENT"|translate}}{{"PASSWORD"|translate}}:
+        span #{__("CURRENT")}#{__("PASSWORD")}:
       .dl_pass_input
         input.dl_form-Control(type="password" name="nowpassword" placeholder="{{'CURRENT'|translate}}{{'PASSWORD'|translate}}" ng-model="nowpassword" required)
     .dl_row.margin_top_6
       .dl_pass_label
-        span {{"NEW"|translate}}{{"PASSWORD"|translate}}:
+        span #{__("NEW")}#{__("PASSWORD")}:
       .dl_pass_input
         input.dl_form-Control(type="password" name="newpassword" placeholder="{{'NEW'|translate}}{{'PASSWORD'|translate}}" ng-model="newpassword" required)
     .dl_row.margin_top_6
       .dl_pass_label
-        span {{"CONFIRM"|translate}}{{"NEW"|translate}}{{"PASSWORD"|translate}}:
+        span #{__("CONFIRM")}#{__("NEW")}#{__("PASSWORD")}:
       .dl_pass_input
         input.dl_form-Control(type="password" name="confirmpassword" placeholder="{{'CONFIRM'|translate}}{{'NEW'|translate}}{{'PASSWORD'|translate}}" ng-model="confirmpassword" match="newpassword" required)
     .dl_row.margin_top_6
-      button.dl_btn.dl_btn_small(ng-disabled="passwordForm.$invalid" ng-click="change_password()") {{"CONFIRM"|translate}}{{"CHANGE"|translate}}{{"PASSWORD"|translate}}
+      button.dl_btn.dl_btn_small(ng-disabled="passwordForm.$invalid" ng-click="change_password()") #{__("CONFIRM")}#{__("CHANGE")}#{__("PASSWORD")}

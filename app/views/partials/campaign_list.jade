@@ -4,12 +4,12 @@ if provider=='company'
       button.dl_btn.dl_btn_small.dropdown-toggle(data-toggle="dropdown") {{campaign_type}}
       ul.dropdown-menu(role="menu")
         li
-          a(ng-click="selectCampaign(0)") {{"COMPANY_CAMPAIGN"|translate}}
+          a(ng-click="selectCampaign(0)") #{__("COMPANY_CAMPAIGN")}
         if (Global.role==='EMPLOYEE')
           li
-            a(ng-click="selectCampaign(1)") {{"SELECTED_TEAM"|translate}}
+            a(ng-click="selectCampaign(1)") #{__("SELECTED_TEAM")}
           li
-            a(ng-click="selectCampaign(2)") {{"UNSELECTED_TEAM"|translate}}
+            a(ng-click="selectCampaign(2)") #{__("UNSELECTED_TEAM")}
         else
           li
             a(ng-click="selectCampaign(3)") 小组活动
@@ -30,7 +30,7 @@ table.table.table-hover.campaign_table
         a.theme_text(ng-href="/group/{{(campaign_item.type=='provoke'?'competition/':'campaign/')+campaign_item._id}}") {{campaign_item.theme}}
       p 内容:
         span.content_text {{campaign_item.content}}
-      p {{"LOCATION"|translate}}:
+      p #{__("LOCATION")}:
         span.content_text {{campaign_item.location.name}}
     td.operator_col
       button.cancel_btn.dl_btn_small.operator_btn(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
@@ -51,21 +51,21 @@ table.table.table-hover.campaign_table
           .message_row
             span.message_label 内容: {{campaign_item.content}}
           .message_row
-            span.message_label {{"LOCATION"|translate}}: {{campaign_item.location.name}}
+            span.message_label #{__("LOCATION")}: {{campaign_item.location.name}}
 
-            span.message_label 开始{{"TIME"|translate}}: {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
+            span.message_label 开始#{__("TIME")}: {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
             span.message_label(ng-if="campaign_item.member_max>0") 报名人数上限: {{campaign_item.member_max}}
           .message_row
             span.message_label 报名人数: {{campaign_item.member_num }}
 
-            //-span.message_label 开始{{"TIME"|translate}}: {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
+            //-span.message_label 开始#{__("TIME")}: {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
             //-span.message_label(ng-if="campaign_item.member_max>0") 报名人数上限: {{campaign_item.member_max}}
           //- .message_row
           //-   span.message_label 报名人数: {{campaign_item.member_num }}
           .message_row
             //-span(ng-if="campaign_item.join_flag==1 || campaign_item.join_flag==-1")
-              btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(campaign_item._id,$index)" ng-if="campaign_item.join_flag==1") {{"QUIT"|translate}}
-              btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(campaign_item._id,$index)" ng-if="campaign_item.join_flag==-1") {{"JOIN"|translate}}
+              btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(campaign_item._id,$index)" ng-if="campaign_item.join_flag==1") #{__("QUIT")}
+              btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(campaign_item._id,$index)" ng-if="campaign_item.join_flag==-1") #{__("JOIN")}
             span(ng-if="campaign_item.close_flag")
               btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_item._id)") 关闭活动
   hr

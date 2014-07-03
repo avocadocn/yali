@@ -1,34 +1,34 @@
 fdiv(ng-controller="infoController")
   form.form-horizontal.tab-info-form(name="infoForm")
     .dl_row
-      h5.pull-left {{"INFO" | translate}}
+      h5.pull-left #{__("INFO")}
       if (Global.role ==='HR' || Global.role === 'LEADER')
         button.dl_btn.dl_btn_small.pull-right(ng-click="editToggle()" ng-bind="buttonStatus")
     hr.margin_top_6
     .dl_row.clearfix
       .info_side
-        span.info_label {{"TEAM_NAME" | translate}}
+        span.info_label #{__("TEAM_NAME")}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="name" ng-model="name"  ng-disabled="unEdit")
     .dl_row.clearfix
       .info_side
-        span.info_label {{"COMPANY" | translate}}
+        span.info_label #{__("COMPANY")}
       .info_detail
         span.info_label {{team.cname}}
     .dl_row.clearfix
       .info_side
-        span.info_label {{"SUM" | translate}}
+        span.info_label #{__("SUM")}
       .info_detail
         span.info_label {{team.member.length}}
     .dl_row.clearfix
       .info_side
-        span.info_label {{"TEAM_LOGO" | translate}}
+        span.info_label #{__("TEAM_LOGO")}
       .info_detail
         if (Global.role=== 'HR' || Global.role ==='LEADER')
-          a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") {{"CHANGE" | translate}}LOGO
+          a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") #{__("CHANGE")}LOGO
     .dl_row.clearfix(ng-if="entity.home_court[0]!=undefined || !unEdit")
       .info_side
-        span.info_label {{"HOME_COURT" | translate}}
+        span.info_label #{__("HOME_COURT")}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-model="entity.home_court[0]" ng-disabled="unEdit")
     .dl_row.clearfix(ng-if="entity.home_court[1]!=undefined || !unEdit")
@@ -38,12 +38,12 @@ fdiv(ng-controller="infoController")
         input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-model="entity.home_court[1]" ng-disabled="unEdit")
     .dl_row.clearfix(ng-if="team.brief!=undefined || !unEdit")
       .info_side
-        span.info_label {{"BRIEF" | translate}}
+        span.info_label #{__("BRIEF")}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="textarea" rows="10" name ="brief" ng-model="team.brief" ng-disabled="unEdit")
     .dl_row.clearfix
       .info_side
-        span.info_label {{"BUILD_TIME" | translate}}
+        span.info_label #{__("BUILD_TIME")}
       .info_detail
         span.info_label {{team.create_time | date:'yyyy-MM-dd HH:mm:ss'}}
     .dl_row.clearfix
@@ -51,7 +51,7 @@ fdiv(ng-controller="infoController")
     hr.margin_top_6
 
     .dl_row
-      span.subtitle.margin_left_15 {{"TEAM_LEADER"|translate}}
+      span.subtitle.margin_left_15 #{__("TEAM_LEADER")}
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
@@ -62,7 +62,7 @@ fdiv(ng-controller="infoController")
             .dl_row
               label {{leader.nickname}}
     .dl_row.clearfix
-      span.subtitle.margin_left_15 {{"MEMBER"|translate}}
+      span.subtitle.margin_left_15 #{__("MEMBER")}
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
@@ -75,29 +75,29 @@ fdiv(ng-controller="infoController")
 
     //- 此部分逻辑未做 暂时隐藏
     //- .row.dl_row
-    //-   h5.pull-left {{"COMPETITION_INFO" | translate}}
+    //-   h5.pull-left #{__("COMPETITION_INFO")}
     //- hr
     //- .row.dl_row
     //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label {{"COMPETITION_SEQ" | translate}}
+    //-     span.info_label.control-label #{__("COMPETITION_SEQ")}
     //-   .col-md-5.col-sm-10.col-xs-10
     //-     span.info_label 0
     //- .row.dl_row
     //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label {{"WIN_RATE" | translate}}
+    //-     span.info_label.control-label #{__("WIN_RATE")}
     //-   .col-md-5.col-sm-10.col-xs-10
     //-     span.info_label 0
     //- .row.dl_row
     //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label {{"SCORE" | translate}}
+    //-     span.info_label.control-label #{__("SCORE")}
     //-   .col-md-5.col-sm-10.col-xs-10
     //-     span.info_label 0
     //- .row.dl_row
     //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label {{"RATE" | translate}}
+    //-     span.info_label.control-label #{__("RATE")}
     //-   .col-md-5.col-sm-10.col-xs-10
     //-     span.info_label 0
     .dl_row.clearfix
-      h5.pull-left {{"FAMILY" | translate}}
+      h5.pull-left #{__("FAMILY")}
     hr.margin_top_6
     img.img-responsive.img-thumbnail.size_family.img_contain(src="")

@@ -12,7 +12,7 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
       //.collapse.navbar-collapse#personal_nav
       ul.nav.navbar-nav.pull-right
         li
-          a(href="/company/home") {{"COMPANY_HOME"|translate}}
+          a(href="/company/home") #{__("COMPANY_HOME")}
         li
           a(href="/users/home")
             span
@@ -24,11 +24,11 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
             span.glyphicon.glyphicon-cog
           ul.dl_menu.dropdown-menu(role="menu")
             li
-              a.dl_menu_a(href="/users/home") {{"PERSONAL_HOME"|translate}}
+              a.dl_menu_a(href="/users/home") #{__("PERSONAL_HOME")}
             li
-              a.dl_menu_a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
+              a.dl_menu_a(href="/users/home#/personal") #{__("PERSONAL_INFO")}
             li
-              a.dl_menu_a(href="/users/signout") {{"LOGOUT"|translate}}
+              a.dl_menu_a(href="/users/signout") #{__("LOGOUT")}
         li
           a(href="#" data-toggle="dropdown")
             span.dl_msg_corner(ng-if="o>0") {{o}}
@@ -61,9 +61,10 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
             span.glyphicon.glyphicon-cog.m_l_5
           ul.dl_menu.dropdown-menu(role="menu")
             li
-              a.dl_menu_a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
+              a.dl_menu_a(href="/company/home#/company_info") #{__("COMPANY_INFO")}
             li
-              a.dl_menu_a(href="/company/signout") {{"LOGOUT"|translate}}
+              a.dl_menu_a(href="/company/signout") #{__("LOGOUT")}
         li
           a(href="/message/home")
             span.glyphicon.glyphicon-comment
+

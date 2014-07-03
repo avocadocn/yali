@@ -38,11 +38,11 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               span.glyphicon.glyphicon-cog.m_l_5
             ul.dl_menu.dropdown-menu(role="menu")
               li
-                a.dl_menu_a(href="/users/home") {{"PERSONAL_HOME"|translate}}
+                a.dl_menu_a(href="/users/home") #{__("PERSONAL_HOME")}
               li
-                a.dl_menu_a(href="/users/home#/personal") {{"PERSONAL_INFO"|translate}}
+                a.dl_menu_a(href="/users/home#/personal") #{__("PERSONAL_INFO")}
               li
-                a.dl_menu_a(href="/users/signout") {{"LOGOUT"|translate}}
+                a.dl_menu_a(href="/users/signout") #{__("LOGOUT")}
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
@@ -77,9 +77,9 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               span.glyphicon.glyphicon-cog.m_l_5
             ul.dl_menu.dropdown-menu(role="menu")
               li
-                a.dl_menu_a(href="/company/home#/company_info") {{"COMPANY_INFO"|translate}}
+                a.dl_menu_a(href="/company/home#/company_info") #{__("COMPANY_INFO")}
               li
-                a.dl_menu_a(href="/company/signout") {{"LOGOUT"|translate}}
+                a.dl_menu_a(href="/company/signout") #{__("LOGOUT")}
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li

@@ -179,7 +179,6 @@ var formatCampaign = function(campaign,pageType,role,user){
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum
     };
-    console.log(_campaign.team.length,_campaign.camp.length,_campaign);
     if(_campaign.team==undefined || _campaign.team.length==0){//公司活动
       temp.type='companycampaign';
       temp.logo=_campaign.cid[0].info.logo;
@@ -209,7 +208,7 @@ var formatCampaign = function(campaign,pageType,role,user){
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
       temp.logo=_campaign.camp[camp_index].logo;
       temp.link = '/group/home/'+_campaign.camp[camp_index].id;
-      team.team_id =_campaign.camp[camp_index].id;
+      temp.team_id =_campaign.camp[camp_index].id;
       if(model_helper.arrayObjectIndexOf(_campaign.camp[camp_index].member,user._id,'uid')>-1){
         temp.join_flag = 1;
       }

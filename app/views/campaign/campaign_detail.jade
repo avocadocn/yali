@@ -20,32 +20,32 @@ block contentExt
         .dl_detail_content
           .dl_detail_row
             .dl_detail_label
-              span {{"CAMPAIGN"|translate}}{{"PLACE"|translate}}{{"LOCATION"|translate}}:
+              span #{__("CAMPAIGN")}#{__("PLACE")}#{__("LOCATION")}:
             .dl_detail_detail
               span {{campaign.location.name}}
           .dl_detail_row
             .dl_detail_label
-              span {{"CAMPAIGN"|translate}}{{"START_TIME"|translate}}:
+              span #{__("CAMPAIGN")}#{__("START_TIME")}:
             .dl_detail_detail
               span {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}} {{campaign.start_time | week }}
           .dl_detail_row
             .dl_detail_label
-              span {{"CAMPAIGN"|translate}}{{"END_TIME"|translate}}:
+              span #{__("CAMPAIGN")}#{__("END_TIME")}:
             .dl_detail_detail
               span {{campaign.end_time | date:'yyyy-MM-dd HH:mm'}} {{campaign.end_time | week }}
           .dl_detail_row
             .dl_detail_label
-              span {{"LEAST"|translate}}{{"ENTRY"|translate}}{{"SUM"|translate}}:
+              span #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
             .dl_detail_detail
               span {{campaign.member_min}}
           .dl_detail_row
             .dl_detail_label
-              span {{"ENTRY"|translate}}{{"SUM"|translate}}{{"LIMIT"|translate}}:
+              span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
             .dl_detail_detail
               span {{campaign.member_max}}
           .dl_detail_row
             .dl_detail_label
-              span {{"ENTRY"|translate}}{{"DEADLINE"|translate}}:
+              span #{__("ENTRY")}#{__("DEADLINE")}:
             .dl_detail_detail
               span {{campaign.deadline| date:'yyyy-MM-dd HH:mm'}} {{campaign.deadline | week }}
         .dl_detail_aside
@@ -53,7 +53,7 @@ block contentExt
         .dl_detail_content2
           .dl_detail_row
             .dl_detail_label
-              span {{"CAMPAIGN"|translate}}{{"SIMPLE"|translate}}{{"INTRODUCTION"|translate}}:
+              span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span.dl_word_break {{campaign.content}}
            if ((Global.role==='EMPLOYEE' &&  campaign.gid === 0) || Global.role==='OWNER' || Global.role ==='LEADER' || Global.role ==='MEMBER')
@@ -62,16 +62,16 @@ block contentExt
               input.dl_btn.dl_btn_detail(type = "button" value = "{{'ENTRY'|translate}}{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="!join")
       //-成员
       .dl_detail_member(bs-popover)
-        p.subtitle {{"JOIN"|translate}}{{"MEMBER"|translate}}:
+        p.subtitle #{__("JOIN")}#{__("MEMBER")}:
         div.member(ng-repeat = "_member in campaign.member")
           a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
             img.img_contain.detail_photo(ng-src="{{_member.photo}}")
             span.name {{shortTrim(_member.nickname)}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
       form.dl_detail_main(name="comment_form" novalidate)
-        p.subtitle {{"I"|translate}}{{"WANT"|translate}}{{"LEAVEMESSAGE"|translate}}
+        p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
         textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
-        button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") {{"SUBMIT"|translate}}{{"LEAVEMESSAGE"|translate}}
+        button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
         .dl_row(bs-popover)
           section
             br
@@ -90,10 +90,10 @@ block contentExt
                 label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
                 a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
-      p.subtitle.locationtitle {{"CAMPAIGN"|translate}}{{"LOCATION"|translate}}
+      p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
         #mapContainer.size_400
       if (Global.role!=='PARTNER')
-        p.subtitle.clearfix {{"CAMPAIGN"|translate}}{{"WONDERFUL"|translate}}{{"PHOTO"|translate}}
+        p.subtitle.clearfix #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
           a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
         .photo_album
           each photo in photo_thumbnails
