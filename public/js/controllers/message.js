@@ -43,6 +43,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.team_length = 0;
     $rootScope.company_length = 0;
     $rootScope.global_length = 0;
+    $rootScope.o = 0;
 
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
@@ -320,6 +321,7 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
             $rootScope.team_length++;
+            $rootScope.o ++;
           }
       }).error(function(data, status) {
           //TODO:更改对话框
@@ -369,6 +371,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
             $rootScope.company_length++;
+            $rootScope.o ++;
             alertify.alert('发送成功!');
           }else{
             alertify.alert('发送失败!');
@@ -404,12 +407,12 @@ messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope'
 
 
 messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-
     $http.get('/message/header').success(function(data, status) {
         var messages = messagePreHandle(data.team,data.msg);
         $rootScope.private_length = messages[0].length;
         $rootScope.team_length = messages[1].length;
         $rootScope.company_length = messages[2].length;
         $rootScope.global_length = messages[3].length;
+        $rootScope.o = $rootScope.private_length + $rootScope.team_length + $rootScope.company_length + $rootScope.global_length;
     });
 }]);
