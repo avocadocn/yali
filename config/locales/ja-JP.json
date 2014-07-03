@@ -116,5 +116,7 @@
   "NO_CAMPAIGN" : "現在まだ活動",
   "L_CHANGE" : "言語",
   "L_ZH":"中国語",
-  "L_JP":"日本語"
+  "L_JP":"日本語",
+  "LATEST_MESSAGE": "ニュース",
+  "SCHEDULE": "スケジュール"
 }

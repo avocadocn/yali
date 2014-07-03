@@ -37,7 +37,7 @@ if(newTimeLines)
                 
                 p= item.content
 else
-  span.emptiem {{"NO_CAMPAIGN"|translate}}
+  span.emptiem #{__("NO_CAMPAIGN")}
 
 //-if(timeLines)
   ul.timeline
@@ -55,4 +55,4 @@ else
             p= "{{'LOCATION'|translate}}" +":"+ timeline.location.name
             p= "{{'CONTENT'|translate}}" +":"+ timeline.content
 //-else
-  span.emptiem {{"NO_CAMPAIGN"|translate}}
+  span.emptiem #{__("NO_CAMPAIGN")}

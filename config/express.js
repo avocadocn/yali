@@ -15,9 +15,9 @@ var express = require('express'),
 
 module.exports = function(app, passport, db) {
     i18n.configure({
-      locales: ['zh-CN', 'ja-JP'],
+      locales: ['zh-cn', 'ja-jp'],
       directory: __dirname + '/locales',
-      defaultLocale: 'zh-CN'
+      defaultLocale: 'zh-cn'
     });
 
     app.set('showStackError', true);

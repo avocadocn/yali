@@ -17,17 +17,17 @@ block contentExt
           .col-md-6
             label #{msg}
         .form-group
-          label.col-md-4.control-label(for="email") {{"EMAIL"|translate}}
+          label.col-md-4.control-label(for="email") #{__("EMAIL")}
           .col-md-6
             input#email.form-control(type="email" name="username" placeholder="Email" required)
         .form-group
-          label.col-md-4.control-label(for="password") {{"PASSWORD"|translate}}
+          label.col-md-4.control-label(for="password") #{__("PASSWORD")}
           .col-md-6
             input#password.form-control(type="password" name="password" placeholder="password" required)
         .form-group
           .col-md-offset-4.col-md-8
-            button.btn.btn-primary(type="submit") {{"SIGNIN"|translate}}
+            button.btn.btn-primary(type="submit") #{__("SIGNIN")}
             | &nbsp;or&nbsp;
-            a.show-signup(href="/users/signup") {{"SIGNUP"|translate}}
+            a.show-signup(href="/users/signup") #{__("SIGNUP")}
             | &nbsp;&nbsp;
-            a.reset-pwd(href="/users/forgetPwd")  {{"FORGET"|translate}}{{"PASSWORD"|translate}}
+            a.reset-pwd(href="/users/forgetPwd")  #{__("FORGET")}#{__("PASSWORD")}

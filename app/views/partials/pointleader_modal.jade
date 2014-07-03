@@ -40,23 +40,23 @@
               .dl_row(style="width:80px;text-align:center")
                 label {{user.nickname}}
       .dl-modal-footer
-        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointLeader()") {{"APPOINT"|translate}}
+        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointLeader()") #{__("APPOINT")}
 //- .modal-dialog
 //-   .dl-modal
 //-     .dl-modal-header
 //-       button(class="close" data-dismiss="modal" aria-hidden="true")
 //-         img(ng-src='/img/icons/icon_close.png')
-//-       .head {{"EDIT"|translate}}{{"TEAM_INFO"|translate}}
+//-       .head #{__("EDIT")}#{__("TEAM_INFO")}
 //-     .dl-modal-body
 //-       .row
 //-         .col-md-2.dl_md_2
-//-             span.info_label {{"TEAM_NAME"|translate}}
+//-             span.info_label #{__("TEAM_NAME")}
 //-         .col-md-2.dl_md_10
 //-             input.dl_input.dl_form-control.editToggle(type="text" name ="name" ng-model="team.name")
 //-       hr
 //-       .row
 //-         .col-md-4
-//-           label.info_label.control-label {{"APPOINT_LEADER"|translate}}
+//-           label.info_label.control-label #{__("APPOINT_LEADER")}
 //-           .row
 //-             .col-md-4
 //-               label.info_label.control-label 成员
@@ -82,4 +82,4 @@
 //-                   button.dl_btn.dl_btn_small(ng-click="dismissLeader(leader_selected._id,leader_selected.nickname,leader_selected.photo)" ng-if="select_leader") 罢免
 
 //-     .modal-footer
-//-       button.dl_btn.dl_btn_small(ng-click="saveGroupInfo(team._id,team.name)") {{"CONFIRM"|translate}}
+//-       button.dl_btn.dl_btn_small(ng-click="saveGroupInfo(team._id,team.name)") #{__("CONFIRM")}
