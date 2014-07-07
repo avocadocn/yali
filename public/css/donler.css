@@ -357,6 +357,12 @@ textarea {
   float: left;
   margin-right: 20px;
 }
+.dl_modal_half_container.end_time {
+  margin-right: 0px;
+}
+.dl_modal_half_container.end_time .dl_modal_half_container {
+  margin-right: 0px;
+}
 .dl_modal_quarter_container {
   width: 150px;
   float: left;
@@ -366,7 +372,7 @@ textarea {
   float: left;
 }
 .dl_modal_button {
-  width: 70px;
+  width: 67px;
   height: 33px;
   float: right;
   padding: 8px 0 4px 2px;

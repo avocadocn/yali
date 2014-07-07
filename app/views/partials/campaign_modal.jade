@@ -21,7 +21,7 @@
                 //img(ng-src='/img/icons/icon_date.png')
                 span.glyphicon.glyphicon-th
               input.dl_form-Control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.startTime.$invalid ? '请选择活动活动开始时间':''}}" readonly required)
-          .dl_modal_half_container(ng-class="{'has-error':start_time >= end_time}")
+          .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
             .dl_modal_half_container
               label.subtitle #{__("CAMPAIGN")}#{__("END_TIME")}
             .input-group.date.form_datetime.dl_modal_input#end_time
