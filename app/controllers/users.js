@@ -1346,7 +1346,7 @@ exports.getUserInfo = function(req, res) {
 
 //获取用户简要信息供弹出层查看
 exports.getBriefInfo = function(req,res){
-  User.findOne({'_id': req.params.userId },function(err,user){
+  User.findOne({'_id': req.params.userId },{'_id':1,'realname':1,'photo':1,'nickname':1,'department':1,'phone':1,'email':1,'introduce':1},function(err,user){
     if (err || !user){
       console.log('cannot find user');
       return res.send({'result':0,'msg':'用户查询错误'});

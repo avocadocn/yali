@@ -140,6 +140,7 @@
 }
 .photo_album .update_info {
   width: 202px;
+  margin-top: 10px;
 }
 .photo_album .update_info .update_user_photo {
   float: left;

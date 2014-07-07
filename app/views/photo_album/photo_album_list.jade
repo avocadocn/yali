@@ -30,7 +30,7 @@ block contentExt
               span.photo_album_name= photo_album.name
               | &nbsp;
               small /&nbsp;#{photo_album.photo_count}
-          div.update_info.center-block.margin_top_10(bs-popover)
+          div.update_info.center-block(bs-popover)
             if photo_album.update_user.type === 'user'
               a(href="/users/home/#{photo_album.update_user._id}")
                 img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36" ng-Mouseover="showUserCard('#{photo_album.update_user._id}','#{photo_album._id}')" id="pop#{photo_album._id}")

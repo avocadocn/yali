@@ -150,14 +150,14 @@ exports.info =function(req,res) {
 
 //获取小组简要信息供弹出层查看
 exports.getBriefInfo = function(req,res) {
-  CompanyGroup.findOne({'_id': req.params.teamId },function(err,companyGroup){
+  CompanyGroup.findOne({'_id': req.params.teamId },{'_id':1,'name':1,'logo':1},function(err,companyGroup){
     if (err || !companyGroup){
       console.log('cannot find team');
       return res.send({'result':0,'msg':'小队查询错误'});
     }else{
       var message_theme = '';
       var campaign_id = '';
-      Campaign.find({'team':req.params.teamId})
+      Campaign.find({'team':req.params.teamId},{'_id':1,'theme':1})
       .sort({'create_time':-1})
       .limit(1)
       .exec(function(err,campaign){

@@ -853,9 +853,6 @@ textarea {
 .margin_top_6 {
   margin-top: 6px;
 }
-.margin_top_10 {
-  margin-top: 10px;
-}
 .margin_top_15 {
   margin-top: 15px;
 }
@@ -867,12 +864,6 @@ textarea {
 }
 .margin_top_50 {
   margin-top: 50px;
-}
-.margin_top_60 {
-  margin-top: 60px;
-}
-.margin_top_70 {
-  margin-top: 70px;
 }
 .margin_top_100 {
   margin-top: 100px;
@@ -886,26 +877,11 @@ textarea {
 .margin_left_15 {
   margin-left: 15px;
 }
-.margin_left_20 {
-  margin-left: 20px;
-}
 .margin_left_30 {
   margin-left: 30px;
 }
-.margin_left_50 {
-  margin-left: 50px;
-}
-.margin_left_60 {
-  margin-left: 60px;
-}
-.margin_left_70 {
-  margin-left: 70px;
-}
 .margin_left_80 {
   margin-left: 80px;
-}
-.margin_bottom_20 {
-  margin-bottom: 20px;
 }
 .margin_right_20 {
   margin-right: 20px;
@@ -929,10 +905,6 @@ textarea {
 .size_210 {
   height: 210px;
   width: 210px;
-}
-.size_140 {
-  height: 140px;
-  width: 140px;
 }
 .size_128 {
   height: 128px;
@@ -965,12 +937,6 @@ textarea {
 }
 .height_200 {
   height: 200px;
-}
-.height_60 {
-  height: 60px;
-}
-.height_400 {
-  height: 400px;
 }
 .width_120 {
   width: 120px;
