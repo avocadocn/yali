@@ -246,7 +246,7 @@ exports.getCampaigns = function(req, res) {
       option.team = {'$size':0};
     }
     else if(campaignType==='team') {
-      option.team = {'$size':2};
+      option.team = {'$not':{'$size':0}};
     }
     else if(req.session.role ==='EMPLOYEE')  {
       var team_ids = [];
@@ -257,7 +257,7 @@ exports.getCampaigns = function(req, res) {
         option.team={'$in':team_ids};
       }
       else if(campaignType==='unselected') {
-        option.team = {'$nin':team_ids,'$size':2};
+        option.team = {'$nin':team_ids,'$not':{'$size':0}};
       }
     }
     Campaign
