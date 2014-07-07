@@ -355,12 +355,14 @@ exports.getCampaigns = function(req, res) {
 exports.cancelCampaign = function(req, res){
   Campaign
     .findOne({'_id':req.body.campaign_id})
+    .populate('team')
     .exec()
     .then(function(campaign) {
       if(!campaign){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
+        console.log(campaign,campaign.camp.length);
         if (campaign.camp.length===0 &&req.session.role==="HR"&&campaign.cid[0].toString()==req.user._id.toString() || campaign.camp.length===0 && campaign.team.length===1&&req.session.role==='LEADER' && model_helper.arrayObjectIndexOf(campaign.team[0].leader,req.user._id,'_id')>-1){
           campaign.active=false;
           campaign.save(function(err){
@@ -516,6 +518,7 @@ exports.renderCampaignDetail = function(req, res) {
         }
       ];
       return res.render('campaign/campaign_detail', {
+        active: campaign.active,
         over : campaign.deadline<new Date(),
         join: req.join,
         role:req.role,

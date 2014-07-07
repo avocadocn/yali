@@ -35,7 +35,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     campaign_id : _id
                 }
             }).success(function(data, status) {
-                //window.location.reload();
+                window.location.reload();
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
@@ -150,6 +150,12 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     //alert('成功加入该活动!');
                     //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.join = 1;
+                    for(var i = 0;i < $scope.campaign.member_quit.length; i ++) {
+                        if($scope.campaign.member_quit[i].nickname === $scope.user.nickname) {
+                            $scope.campaign.member_quit.splice(i,1);
+                            break;
+                        }
+                    }
                     $scope.campaign.member.push({
                         'nickname' : $scope.user.nickname,
                         'photo' : $scope.user.photo
@@ -186,6 +192,10 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                             break;
                         }
                     }
+                    $scope.campaign.member_quit.push({
+                        'nickname' : $scope.user.nickname,
+                        'photo' : $scope.user.photo
+                    });
                 }
                 else{
                     $rootScope.donlerAlert(data.msg);
