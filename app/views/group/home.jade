@@ -30,7 +30,7 @@ block baseInfo
         if (Global.role ==='HR' || Global.role ==='LEADER')
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
-            button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorSearchModel") #{__("PROVOKE")}
+            button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorProvokeModel") #{__("PROVOKE")}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorMessageModel") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
         - var isMember = false;
@@ -61,9 +61,7 @@ block panel
         include ../partials/campaign_modal
       div(ng-controller="ProvokeController" )
         div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-          include ../partials/provoke_modal
-        div.modal.fade#sponsorSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-          include ../partials/search_modal
+          include ../campaign/provoke_modal_base
       div(ng-controller="messageTeamController" )
         div.modal.fade#sponsorMessageModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           include ../partials/private_message_send

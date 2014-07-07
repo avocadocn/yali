@@ -549,7 +549,6 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
-    //$('#pop1').popover({trigger:'hover'});
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/info/'+tid).success(function(data, status) {
             $scope.members = [];
@@ -585,10 +584,12 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                         'homecourt': [$scope.home_court_1,$scope.home_court_2]
                     }
                 }).success(function(data, status) {
+                    console.log($scope.brief);
+                    console.log($scope.home_court_1);
                     //TODO:更改对话框
                     if(data.result === 1) {
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
-                        window.location.reload();
+                        //window.location.reload();
                     }
                     else
                         $rootScope.donlerAlert(data.msg);
@@ -719,6 +720,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.teams = [];
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
+    $scope.modal=false;
     $("#competition_start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.competition_date = moment(dateUTC).format("YYYY-MM-DD HH:mm");
@@ -742,9 +744,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         } else {
             $scope.getTeam();
         }
-    }
-    $scope.showProvoke = function() {
-        $("#sponsorProvokeModel").modal();
     }
     $scope.initialize = function(){
         if($scope.showMapFlag ==false){
@@ -907,8 +906,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
 
     $scope.provoke_select = function (team) {
         $scope.team_opposite = team;
-        $("#sponsorSearchModel").modal('hide');
-        $("#sponsorProvokeModel").modal('show');
+        $scope.modal=true;
     };
         //约战
     $scope.provoke = function() {
@@ -925,8 +923,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                     end_time: $scope.end_time,
                     deadline: $scope.deadline,
                     member_min : $scope.member_min,
-                    member_max : $scope.member_max,
-
+                    member_max : $scope.member_max
                 }
             }).success(function(data, status) {
                 window.location.reload();

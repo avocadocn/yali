@@ -57,6 +57,7 @@ var CompanyGroup = new Schema({
         type: Boolean,
         default: true
     },
+    home_court: Array,       //主场(可能有多个)
     create_time:{
         type: Date,
         default: Date.now
