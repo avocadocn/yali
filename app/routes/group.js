@@ -21,7 +21,6 @@ module.exports = function(app) {
   app.get('/group/timeLine', authorization.requiresLogin, group.timeLine);
   app.get('/group/campaign', authorization.requiresLogin, group.renderCampaigns);
 
-  app.get('/group/getCampaigns/:teamId', authorization.requiresLogin, group.getGroupCampaign);
   app.get('/group/getGroupMembers/:teamId', authorization.requiresLogin, group.getGroupMember);
   //app.get('/group/getMembers', authorization.requiresLogin, group.renderMember);
   //激活、关闭小队
