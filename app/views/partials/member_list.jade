@@ -1,4 +1,4 @@
-div
+div.memberlist
   span.subtitle #{__("MEMBER")}
   hr
   .row
@@ -10,5 +10,5 @@ div
               img.size_80(ng-src="{{member.photo}}" ng-Mouseenter="showUserCard(member._id,member._id)" id='pop{{member._id}}')
           .dl_row(style="width:80px;text-align:center")
             label.user_name {{member.nickname}}
-div(class="modal fade" id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+div.loadfale(class="modal fade" id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   include user_detail_modal

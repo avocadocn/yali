@@ -121,7 +121,7 @@
               .dl_row.line_top
                 hr.comment_bottom
 .text-center(ng-if="group_messages.length>0")
-  button(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
+  button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
   span(ng-if="loadOver_flag") 已经加载了所有的动态
 ul.pager
   li

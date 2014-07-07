@@ -651,6 +651,9 @@ textarea {
 .dl_messagebox .dl_messageitem {
   padding: 10px 0;
 }
+.dl_messagebox .pointer {
+  cursor: pointer;
+}
 .dl_messagebox .message_side {
   width: 56px;
   float: left;
@@ -1302,5 +1305,12 @@ input.ng-invalid.ng-dirty {
   padding: 10px;
 }
 .breadcrumb {
+  background-color: #fff;
+}
+.campaign_table tr {
+  background-color: #fff;
+}
+.memberlist,
+.loadfale {
   background-color: #fff;
 }
