@@ -580,8 +580,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                     url : '/group/saveInfo',
                     data : {
                         'name' : $scope.name,
-                        'brief' : $scope.brief,
-                        'homecourt': [$scope.home_court_1,$scope.home_court_2]
+                        'brief' : $scope.team.brief,
+                        'homecourt': [$scope.entity.home_court[0],$scope.entity.home_court[1]]
                     }
                 }).success(function(data, status) {
                     console.log($scope.brief);
