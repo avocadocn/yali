@@ -607,6 +607,45 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;;
         }
     };
+
+    $scope.family_photos;
+    var getFamily = function() {
+        $http
+        .get('/group/family')
+        .success(function(data, status) {
+            $scope.family_photos = data;
+        })
+        .error(function(data, status) {
+            // TO DO
+        });
+    };
+
+    getFamily();
+
+    $scope.active = function(index) {
+        if (index === 0 || index === '0') {
+            return 'active';
+        } else {
+            return '';
+        }
+    };
+
+    $scope.deletePhoto = function(id) {
+        $http
+        .delete('/group/family/photo/' + id)
+        .success(function(data, status) {
+            getFamily();
+        })
+        .error(function(data, status) {
+            // TO DO
+        });
+    };
+
+    $('#upload_family_form').ajaxForm(function(data, status) {
+        getFamily();
+    });
+
+
 }]);
 tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.showMapFlag=false;

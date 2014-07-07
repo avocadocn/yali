@@ -987,6 +987,129 @@ exports.group = function(req, res, next, id) {
 
 
 
+exports.uploadFamily = function(req, res) {
+  CompanyGroup
+  .findById(req.session.nowtid)
+  .exec()
+  .then(function(company_group) {
+    if (!company_group) {
+      throw 'not found';
+    }
+
+    var family_photo = req.files.family;
+    var family_dir = '/img/group/family/';
+    var photo_name = Date.now().toString() + '.png';
+    try{
+      gm(family_photo.path)
+      .write(path.join(meanConfig.root, 'public', family_dir, photo_name), function(err) {
+        if (err) {
+          console.log(err);
+          return res.send(500);
+        }
+
+        var user = {
+          _id: req.user._id
+        };
+        if (req.user.provider === 'company') {
+          user.name = req.user.info.name;
+          user.photo = req.user.info.logo;
+        } else if (req.user.provider === 'user') {
+          user.name = req.user.nickname;
+          user.photo = req.user.photo;
+        }
+
+        company_group.family.push({
+          uri: path.join(family_dir, photo_name),
+          upload_user: user
+        });
+
+        var length = 0;
+        for (var i = 0; i < company_group.family.length; i++) {
+          if (company_group.family[i].hidden === false) {
+            length++;
+          }
+        }
+        if (length > 3) {
+          company_group.family.splice(0, 1);
+        }
+
+        company_group.save(function(err) {
+          if (err) {
+            console.log(err);
+            res.send(500);
+          } else {
+            res.send(200);
+            console.log('ok')
+          }
+        });
+      });
+    } catch (e) {
+      console.log(e);
+      res.send(500);
+    }
+
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
+
+exports.getFamily = function(req, res) {
+  CompanyGroup
+  .findById(req.session.nowtid)
+  .exec()
+  .then(function(company_group) {
+    if (!company_group) {
+      throw 'not found';
+    }
+    var length = 0;
+    var res_data = [];
+    for (var i = 0; i < company_group.family.length; i++) {
+      if (company_group.family[i].hidden === false) {
+        res_data.push(company_group.family[i]);
+        length++;
+        if (length >= 3) {
+          break;
+        }
+      }
+    }
+    res.send(res_data);
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
+exports.deleteFamilyPhoto = function(req, res) {
+  CompanyGroup
+  .findById(req.session.nowtid)
+  .exec()
+  .then(function(company_group) {
+    if (!company_group) {
+      throw 'not found';
+    }
+    for (var i = 0; i < company_group.family.length; i++) {
+      if (company_group.family[i]._id.toString() === req.params.photoId) {
+        company_group.family[i].hidden = true;
+        break;
+      }
+    }
+    company_group.save(function(err) {
+      if (err) {
+        console.log(err);
+        return res.send(500);
+      }
+      res.send(200);
+    });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
 
 exports.editLogo = function(req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){

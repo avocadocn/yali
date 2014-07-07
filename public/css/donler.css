@@ -1314,3 +1314,21 @@ input.ng-invalid.ng-dirty {
 .loadfale {
   background-color: #fff;
 }
+.carousel-inner>.item>img,
+.carousel-inner>.item>a>img {
+  margin: auto;
+  max-height: 100%;
+}
+.family_photo_preview_cell {
+  width: 150px;
+  height: 150px;
+  float: left;
+  margin-right: 20px;
+}
+.family_photo_preview_cell img {
+  margin: auto;
+  max-height: 100%;
+}
+#family {
+  height: 300px;
+}
