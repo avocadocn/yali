@@ -1024,13 +1024,18 @@ exports.uploadFamily = function(req, res) {
         });
 
         var length = 0;
+        var first_index = 0, get_first = false;
         for (var i = 0; i < company_group.family.length; i++) {
           if (company_group.family[i].hidden === false) {
+            if (get_first === false) {
+              first_index = i;
+              get_first = true;
+            }
             length++;
           }
         }
         if (length > 3) {
-          company_group.family.splice(0, 1);
+          company_group.family[first_index].hidden = true;
         }
 
         company_group.save(function(err) {
