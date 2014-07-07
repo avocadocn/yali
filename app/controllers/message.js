@@ -150,6 +150,7 @@ var oneToMember = function(param){
     );
   }
   var MC={
+    'type':'private',
     'caption':param.caption,
     'content':param.content,
     'sender':param.sender,
@@ -212,14 +213,12 @@ var time_out = 72*24*3600;
 //组长给组员发送站内信
 exports.leaderSendToMember = function(req,res){
   var team = req.body.team;
-
   var content = req.body.content,
       sender = {
         '_id':req.user._id,
         'nickname':req.user.nickname,
         'leader':true
       };
-
   var callback = function(company_group,team,req,res){
     if(company_group){
       var members = company_group[0].member;
@@ -255,6 +254,66 @@ exports.leaderSendToMember = function(req,res){
 };
 
 
+exports.sendToParticipator = function(req, res, campaign_id){
+  var callback = function(campaign,other,req,res){
+
+    var sender = {
+      '_id':req.user._id,
+      'nickname':req.user.nickname,
+      'leader':true
+    };
+
+    if(campaign){
+      var team;
+
+      for(var i = 0; i < campaign.team.length; i ++){
+        for(var j = 0; j < req.user.team.length; j ++){
+          if(req.user.team[j]._id.toString() === campaign.team[i]._id.toString()){
+            team = {
+              '_id':req.user.team[j]._id,
+              'name':req.user.team[j].name,
+              'provoke_status':0
+            };
+            break;
+          }
+        }
+      }
+
+      var members = [];
+      for(var i = 0; i < campaign.member.length; i ++){
+        members.push({
+          '_id':campaign.member[i].uid
+        });
+      }
+      var caption = 'Message From Campaign!';
+      var _param = {
+        'members':members,
+        'caption':caption,
+        'content':campaign.theme,
+        'sender':[sender],
+        'team':[team],
+        'company_id':null,
+        'req':req,
+        'res':res,
+        'type':'team'
+      }
+      oneToMember(_param);
+    }
+  }
+  var param= {
+    'collection':Campaign,
+    'type':0,
+    'condition':{'_id':campaign_id},
+    'limit':{'member':1,'theme':1,'team':1},
+    'sort':null,
+    'callback':callback,
+    '_err':_err,
+    'other_param':null,
+    'req':req,
+    'res':res
+  };
+  get(param);
+}
 
 
 exports.newCampaignCreate = function(req,res,team,cid){
