@@ -72,6 +72,7 @@ block contentExt
             img.img_contain.detail_photo(ng-src="{{_member.photo}}")
             span.name {{shortTrim(_member.nickname)}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
+      if role==='HR' || role ==='LEADER'
       .dl_detail_member(ng-if="campaign.member_quit.length>0" bs-popover)
         p.subtitle 退出#{__("MEMBER")}:
         div.member(ng-repeat = "_member in campaign.member_quit")

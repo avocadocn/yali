@@ -394,7 +394,7 @@ exports.getCompetition = function(req, res){
 
 
 exports.competition = function(req, res, next, id){
-  var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
+  var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user._id : req.user.cid);
 
   Campaign.findOne({
       '_id':id

@@ -152,7 +152,7 @@ function formatCampaignForCalendar(user, campaigns) {
       'id': campaign._id,
       'logo': logo,
       'title': campaign.theme,
-      'url': '/group/campaign/' + campaign._id.toString(),
+      'url': '/campaign/detail/' + campaign._id.toString(),
       'class': 'event-info',
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
