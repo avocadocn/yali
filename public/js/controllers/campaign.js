@@ -4,6 +4,9 @@ var campaignApp = angular.module('mean.main');
 
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
     $scope.$watch('campaign',function(campaign){
+        if(campaign==null){
+            return;
+        }
         $scope.getComment(); //获取留言
         $(function(){
             var locationmap = new BMap.Map("mapContainer");            // 创建Map实例

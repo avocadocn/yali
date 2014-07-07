@@ -27,7 +27,7 @@ table.table.table-hover.campaign_table
         img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}")
     td.content_col
       p 主题:
-        a.theme_text(ng-href="/group/{{(campaign_item.type=='provoke'?'competition/':'campaign/')+campaign_item._id}}") {{campaign_item.theme}}
+        a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
       p 内容:
         span.content_text {{campaign_item.content}}
       p #{__("LOCATION")}:
