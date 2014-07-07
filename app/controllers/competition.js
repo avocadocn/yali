@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
     moment = require('moment'),
     Config = mongoose.model('Config'),
     photo_album_controller = require('./photoAlbum'),
+    message = require('../controllers/message.js'),
     Campaign = mongoose.model('Campaign');
 
 
@@ -431,7 +432,7 @@ exports.resultConfirm = function (req, res) {
   var score_b = req.body.score_b;
   var rst_content = req.body.rst_content;
 
-  Campaign.findOne({'_id' : competition_id}, function (err, competition) {
+  Campaign.findOne({'_id' : competition_id}).populate('team').exec(function (err, competition) {
     if(err) {
       console.log(err);
       res.send(err);
@@ -466,10 +467,21 @@ exports.resultConfirm = function (req, res) {
           GroupMessage.findOne({campaign:competition._id},function(err,groupMessage){
             groupMessage.message_type = 6;
             groupMessage.create_time = new Date();
-            groupMessage.save();
-            return res.send('ok');
+            groupMessage.save(function(err){
+              if(err){
+                res.send('ERROR');
+              }else{
+                //发送站内信
+                var olid = competition.team[_otherCampFlag].leader[0]._id;
+                var team = {
+                  '_id':competition.team[_campFlag]._id,
+                  'name':competition.team[_campFlag].name,
+                  'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 1 : 2,
+                };
+                message.resultConfirm(req,res,olid,team,competition_id);
+              }
+            });
           });
-
         }
       });
     }

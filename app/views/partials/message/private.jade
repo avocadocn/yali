@@ -12,6 +12,7 @@ hr
       .row
         .dl_md_12
           h5
+            a(href="{{private_message.url}}" ng-click="setToRead($index)" ng-if="!private_message.direct_show"){{private_message.content}}
             a.pop(id="pop_message_{{$index}}" ng-click="setToRead($index)" data-toggle="popover" data-placement="top" data-content="{{private_message.detail}}" ng-if="private_message.direct_show"){{private_message.content}}
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X

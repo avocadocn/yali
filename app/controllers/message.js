@@ -364,8 +364,53 @@ exports.newCampaignCreate = function(req,res,team,cid){
 }
 
 //比赛结果确认时给队长发送站内信
-exports.resultConfirm = function(req,res){
-
+exports.resultConfirm = function(req,res,olid,team,competition_id){
+  var content = competition_id,
+      sender = {
+        '_id':req.user._id,
+        'nickname':req.user.nickname,
+        'leader':true
+      };
+  var callbackMC = function (message_content,olid,req,res){
+    var callbackM = function (message_content,other,req,res){
+      res.send({'result':1,'msg':'SUCCESS'});
+    }
+    var M={
+      'rec_id':olid,
+      'MessageContent':message_content._id,
+      'type':'private',
+      'status':'unread'
+    };
+    var _param = {
+      'collection':Message,
+      'operate':M,
+      'callback':callbackM,
+      '_err':_err,
+      'other_param':null,
+      'req':req,
+      'res':res
+    };
+    _add(_param);
+  }
+  var MC={
+    'caption':'Result Confirm Message',
+    'content':content,
+    'sender':[sender],
+    'team':[team],
+    'type':'private',
+    'company_id':req.user.cid,
+    'deadline':(new Date())+time_out
+  };
+  var _param = {
+    'collection':MessageContent,
+    'operate':MC,
+    'callback':callbackMC,
+    '_err':_err,
+    'other_param':olid,
+    'req':req,
+    'res':res
+  };
+  _add(_param);
 }
 
 

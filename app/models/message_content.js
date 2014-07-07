@@ -18,7 +18,7 @@ var _team = new Schema({
   name : String,
   provoke_status: {
     type: Number,
-    enum: [0,1,2]              //0:生成挑战动态   1:挑战转化为比赛   2.比赛结束,结果确认
+    enum: [0,1,2]              //
   }
 });
 /**

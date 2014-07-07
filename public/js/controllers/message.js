@@ -189,18 +189,36 @@ var messagePreHandle = function(teams,msg){
 
     //私人
     if(msg[i].type == 'private'){
-      content = msg[i].message_content.sender.nickname + "给您发了一条私信!";
-      direct_show = true;
-      detail = msg[i].message_content.content;
-      private_messages.push({
-        '_id':msg[i]._id,
-        'caption':msg[i].message_content.caption,
-        'content':content,
-        'status':msg[i].status,
-        'date':msg[i].message_content.post_date,
-        'detail':detail,
-        'direct_show':direct_show
-      })
+      if(msg[i].message_content.team.length > 0){
+        if(msg[i].message_content.team[0].provoke_status > 0){
+          var last_content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的比赛结果" : "发出了一个新的比赛确认";
+          content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
+          direct_show = false;
+          private_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'content':content,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'url':'/competition/'+ msg[i].message_content.content,
+            'direct_show':direct_show
+          });
+        }
+      }else{
+        content = msg[i].message_content.sender.nickname + "给您发了一条私信!";
+        direct_show = true;
+        detail = msg[i].message_content.content;
+        private_messages.push({
+          '_id':msg[i]._id,
+          'caption':msg[i].message_content.caption,
+          'content':content,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':detail,
+          'direct_show':direct_show
+        });
+      }
+
     }
 
     //系统
