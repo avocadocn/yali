@@ -1,6 +1,6 @@
 .dl_messagebox.clearfix(ng-repeat="group_message in group_messages")
   //若是公司动态
-  div.clearfix(bs-popover)
+  div.clearfix.dl_messageitem(bs-popover)
     .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
       a(ng-href='/group/home/{{group_message.team_id}}')
         img.size_56(ng-src='{{group_message.logo}}' ng-Mouseover='showGroupCard(group_message.team_id,group_message._id)' id='pop{{group_message._id}}')
@@ -120,7 +120,6 @@
                         a.mouse_hidden(ng-click="deleteComment($index)") 删除
               .dl_row.line_top
                 hr.comment_bottom
-  hr
 .text-center(ng-if="group_messages.length>0")
   button(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
   span(ng-if="loadOver_flag") 已经加载了所有的动态

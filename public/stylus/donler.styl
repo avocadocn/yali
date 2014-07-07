@@ -565,9 +565,22 @@ textarea
     .aside
       width 80px
 .dl_messagebox
-  padding-top 10px
+  padding 0
   background-color white
-
+  &:hover
+    background-color #f7f7f7
+  &:after
+    display block
+    line-height 0
+    content ""
+    border 0
+    border-top 1px solid #eee
+  &:before
+    display block
+    line-height 0
+    content ""
+  .dl_messageitem
+    padding 10px 0
   .message_side
     width 56px
     float left
@@ -577,7 +590,7 @@ textarea
     margin-left 10px
     position relative
   .message_row
-    padding 5px 0
+    padding 1px 0
   .vertical_label
     margin 0 8px 0 8px
 .campaigns_list

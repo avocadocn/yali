@@ -627,8 +627,26 @@ textarea {
   width: 80px;
 }
 .dl_messagebox {
-  padding-top: 10px;
+  padding: 0;
   background-color: #fff;
+}
+.dl_messagebox:hover {
+  background-color: #f7f7f7;
+}
+.dl_messagebox:after {
+  display: block;
+  line-height: 0;
+  content: "";
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.dl_messagebox:before {
+  display: block;
+  line-height: 0;
+  content: "";
+}
+.dl_messagebox .dl_messageitem {
+  padding: 10px 0;
 }
 .dl_messagebox .message_side {
   width: 56px;
@@ -641,7 +659,7 @@ textarea {
   position: relative;
 }
 .dl_messagebox .message_row {
-  padding: 5px 0;
+  padding: 1px 0;
 }
 .dl_messagebox .vertical_label {
   margin: 0 8px 0 8px;
