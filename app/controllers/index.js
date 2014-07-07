@@ -1,5 +1,5 @@
 'use strict';
-
+  var schedule = require('../services/schedule');
 exports.render = function(req, res) {
   if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
     if(req.session.Global.role==="HR"){
@@ -16,7 +16,14 @@ exports.render = function(req, res) {
   }
 };
 
-
+exports.count = function(req,res){
+  schedule.countCampaign();
+  return res.send('小组活动统计更新成功');
+}
+exports.finish = function(req,res){
+  schedule.finishCampaign();
+  return res.send('活动自动完成更新成功');
+}
 exports.header = function(req,res){
   console.log('dsds');
   var authenticated = false;

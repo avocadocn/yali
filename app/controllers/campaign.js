@@ -193,7 +193,7 @@ var formatCampaign = function(campaign,pageType,role,user){
       temp.logo=_campaign.team[0].logo;
       temp.link = '/group/home/'+_campaign.team[0]._id;
       temp.team_id = _campaign.team[0]._id;
-      if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
+      if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
         if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
           temp.join_flag = 1;
         }

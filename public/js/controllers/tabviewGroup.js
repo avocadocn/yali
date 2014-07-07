@@ -660,9 +660,9 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
             var myCity = new BMap.LocalCity();
             myCity.get(getCity);
             window.map_ready =true;
+            $scope.showMapFlag = true;
         }
         else{
-            console.log('search');
             $scope.local.search($scope.location.name );
         }
 
@@ -674,7 +674,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
             return false;
         }
         if(!window.map_ready && $scope.showMapFlag ==false){
-            $scope.showMapFlag = true;
             var script = document.createElement("script");  
             script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
             document.body.appendChild(script);
@@ -781,6 +780,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             var myCity = new BMap.LocalCity();
             myCity.get(getCity);
             window.map_ready =true;
+            $scope.showMapFlag = true;
         }
         else{
             $scope.local.search($scope.location.name );
@@ -794,7 +794,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             return false;
         }
         if(!window.map_ready && $scope.showMapFlag ==false){
-            $scope.showMapFlag = true;
             var script = document.createElement("script");
             script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=provokeMapInitialize";
             document.body.appendChild(script);
