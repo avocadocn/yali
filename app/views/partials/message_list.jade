@@ -99,13 +99,13 @@
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
           hr
-          .dl_modal_container(ng-if="group_message.comments.length > 0")
+          .dl_modal_container(bs-popover ng-if="group_message.comments.length > 0")
 
             .dl_row(ng-repeat="comment in group_message.comments")
               .row.line_left
                 .dl_md_1.photo
                   a(href="/users/home/{{comment.poster._id}}")
-                    img.size_head_list(ng-src="{{comment.poster.photo}}")
+                    img.size_head_list(ng-src="{{comment.poster.photo}}" ng-Mouseover='showUserCard(comment.poster._id,comment._id)' id='pop{{comment._id}}')
                 .dl_md_12.comment_left.comment_box
                   .dl_row
                     .dl_md_name.name

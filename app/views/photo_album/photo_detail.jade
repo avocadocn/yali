@@ -28,11 +28,12 @@ block contentExt
             textarea.comment_textarea.form-control(type="text" name="text" required)
             .clearfix
               button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
-          section
+          section(bs-popover)
             each comment in photo_detail.comments
               div.comment.clearfix
                 .comment_user_info
-                  img.user_photo(src="#{comment.publish_user.photo}")
+                  a(href="/users/home/#{comment.publish_user._id}")
+                   img.user_photo(src="#{comment.publish_user.photo}" ng-Mouseenter="showUserCard('#{comment.publish_user._id}','#{comment._id}')" id="pop#{comment._id}")
                   p: a.user_name(href="/users/home/#{comment.publish_user._id}")= comment.publish_user.nickname
                 .comment_content_panel
                   .relative
