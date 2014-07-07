@@ -491,7 +491,7 @@ exports.renderCampaignDetail = function(req, res) {
       if((req.role ==='MEMBER' ||req.role ==='LEADER' ) && model_helper.arrayObjectIndexOf(campaign.member,req.user._id,'uid')>-1){
         req.join = 1;
       }
-      else if(campaign.member_max===campaign.member.length){
+      else if(campaign.member_max!==0 && campaign.member_max<=campaign.member.length){
         req.join = 0
       }
       else{
