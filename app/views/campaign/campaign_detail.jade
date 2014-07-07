@@ -10,7 +10,7 @@ block contentExt
     +breadcrumb(links)
     .dl_detail_main
       //-TODO:详情页权限不正确，需要更改
-      if (role==='HR' || Global.role==='LEADER') && !over
+      if (role==='HR' || Global.role==='LEADER') && active
         span.pull-right
           btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign._id)") 关闭活动
       ul.nav.nav-tabs
@@ -50,17 +50,20 @@ block contentExt
             .dl_detail_detail
               span {{campaign.deadline| date:'yyyy-MM-dd HH:mm'}} {{campaign.deadline | week }}
         .dl_detail_aside
-            img.img_contain.size_128(ng-src="{{campaignLogo}}")
+            img.img_contain.size_128(ng-src="#{campaignLogo}")
         .dl_detail_content2
           .dl_detail_row
             .dl_detail_label
               span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span.dl_word_break {{campaign.content}}
-           if (role==='MEMBER' ||role ==='LEADER') && !over
+           if active && (role==='MEMBER' ||role ==='LEADER') && !over
             div.margin_top_30
               input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}{{'CAMPAIGN'|translate}}" ng-click="quitCampaign()" ng-if="join==1")
               input.dl_btn.dl_btn_detail(type = "button" value = "{{'ENTRY'|translate}}{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="join!==1" ng-disabled="join==0")
+      if !active
+        .dl_detail_row.text-center
+          span 活动已经停止
       //-成员
       .dl_detail_member(bs-popover)
         p.subtitle #{__("JOIN")}#{__("MEMBER")}:
@@ -69,6 +72,13 @@ block contentExt
             img.img_contain.detail_photo(ng-src="{{_member.photo}}")
             span.name {{shortTrim(_member.nickname)}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
+      if role==='HR' || role ==='LEADER'
+      .dl_detail_member(ng-if="campaign.member_quit.length>0" bs-popover)
+        p.subtitle 退出#{__("MEMBER")}:
+        div.member(ng-repeat = "_member in campaign.member_quit")
+          a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
+            img.img_contain.detail_photo(ng-src="{{_member.photo}}")
+            span.name {{shortTrim(_member.nickname)}}
       form.dl_detail_main(name="comment_form" novalidate)
         p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
         textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)

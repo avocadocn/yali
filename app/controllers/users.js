@@ -778,6 +778,10 @@ exports.joinCampaign = function (req, res) {
       if(camp_length===0){
         var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
         if(member_index<0){
+          var member_quit_index = model_helper.arrayObjectIndexOf(campaign.member_quit,uid,'uid');
+          if(member_quit_index>-1){
+            campaign.member_quit.splice(member_quit_index,1);
+          }
           campaign.member.push({
             'cid':cid,
             'uid':uid,
@@ -793,6 +797,10 @@ exports.joinCampaign = function (req, res) {
         var camp_index = model_helper.arrayObjectIndexOf(req.user.team,campaign.camp[0].id,'_id') > -1 ? 0: 1;
         var member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
         if(member_index<0){
+          var member_quit_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member_quit,uid,'uid');
+          if(member_quit_index>-1){
+            campaign.camp[camp_index].member_quit.splice(member_quit_index,1);
+          }
           campaign.camp[camp_index].member.push({
             'cid':cid,
             'uid':uid,
@@ -839,6 +847,12 @@ exports.quitCampaign = function (req, res) {
         var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
         if(member_index>-1){
           campaign.member.splice(member_index,1);
+          campaign.member_quit.push({
+            'cid':cid,
+            'uid':uid,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo
+          });
         }
         else{
           return res.send({ result: 0, msg: '您没有参加该活动'});
@@ -850,6 +864,12 @@ exports.quitCampaign = function (req, res) {
           member_index = model_helper.arrayObjectIndexOf(campaign.camp[i].member,uid,'uid');
           if(member_index>-1){
             campaign.camp[i].member.splice(member_index,1);
+            campaign.member_quit.push({
+              'cid':cid,
+              'uid':uid,
+              'nickname':req.user.nickname,
+              'photo':req.user.photo
+            });
             break;
           }
         }

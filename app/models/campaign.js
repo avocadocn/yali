@@ -26,6 +26,7 @@ var _camp = new Schema({
   logo: String,                            //队徽路径
   tname: String,
   member:[_member],
+  member_quit:[_member],
   cid: String,
   gid: String,
   start_confirm: {                         //双方组长都确认后才能开战
@@ -127,7 +128,7 @@ var Campaign = new Schema({
         ref: 'PhotoAlbum'
     },
     member: [_member],
-
+    member_quit:[_member],
     create_time: {
         type: Date,
         default: Date.now
