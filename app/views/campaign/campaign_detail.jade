@@ -5,17 +5,18 @@ append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join}")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .dl_detail_main
+      //-TODO:详情页权限不正确，需要更改
+      if (role==='HR' || Global.role==='LEADER') && !over
+        span.pull-right
+          btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign._id)") 关闭活动
       ul.nav.nav-tabs
         li.tab_style(ng-class="{'active':nowTab=='campaign'}")
           a.subtitle.no_radius.border_red {{campaign.theme}}
-      //-TODO:详情页权限不正确，需要更改
-      if Global.role==='HR' || Global.role==='LEADER'
-        span.pull-right
-          btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_item._id)") 关闭活动
+
       .dl_detail_border.clearfix
         .dl_detail_content
           .dl_detail_row
@@ -56,10 +57,10 @@ block contentExt
               span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span.dl_word_break {{campaign.content}}
-           if ((Global.role==='EMPLOYEE' &&  campaign.gid === 0) || Global.role==='OWNER' || Global.role ==='LEADER' || Global.role ==='MEMBER')
-            div.margin_top_30(ng-if="campaign.active && !campaign.over")
-              input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}{{'CAMPAIGN'|translate}}" ng-click="quitCampaign()" ng-if="join")
-              input.dl_btn.dl_btn_detail(type = "button" value = "{{'ENTRY'|translate}}{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="!join")
+           if (role==='MEMBER' ||role ==='LEADER') && !over
+            div.margin_top_30
+              input.dl_btn.dl_btn_detail(type = "button" value = "{{'QUIT'|translate}}{{'CAMPAIGN'|translate}}" ng-click="quitCampaign()" ng-if="join==1")
+              input.dl_btn.dl_btn_detail(type = "button" value = "{{'ENTRY'|translate}}{{'JOIN'|translate}}" ng-click="joinCampaign()" ng-if="join!==1" ng-disabled="join==0")
       //-成员
       .dl_detail_member(bs-popover)
         p.subtitle #{__("JOIN")}#{__("MEMBER")}:
@@ -92,7 +93,7 @@ block contentExt
     .dl_detail_side
       p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
         #mapContainer.size_400
-      if (Global.role!=='PARTNER')
+      if role!=='PARTNER'
         p.subtitle.clearfix #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
           a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
         .photo_album

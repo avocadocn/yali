@@ -3,32 +3,44 @@
 var campaignApp = angular.module('mean.main');
 
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-
-    $http.get('/group/campaignData').success(function(data, status) {
-        $scope.campaign = data.campaign;
-        $scope.join = data.join;
-        $scope.over = data.over;
-        $scope.campaignLogo = data.campaignLogo;
-        $scope.comments = [];
-        $scope.role = data.role;
-        $scope.user = data.user;
+    $scope.$watch('campaign',function(campaign){
+        $scope.getComment(); //获取留言
         $(function(){
             var locationmap = new BMap.Map("mapContainer");            // 创建Map实例
-            var nowPoint = new BMap.Point(data.campaign.location.coordinates[0],data.campaign.location.coordinates[1]);
+            var nowPoint = new BMap.Point(campaign.location.coordinates[0],campaign.location.coordinates[1]);
             locationmap.centerAndZoom(nowPoint,15);
             locationmap.enableScrollWheelZoom(true);
             locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
             var marker = new BMap.Marker(nowPoint);  // 创建标注
             locationmap.addOverlay(marker);              // 将标注添加到地图中
-            var label = new BMap.Label(data.campaign.location.name,{offset:new BMap.Size(20,-10)});
+            var label = new BMap.Label(campaign.location.name,{offset:new BMap.Size(20,-10)});
             marker.setLabel(label);
         });
-        $scope.getComment(); //获取留言
-        $scope.new_comment = {
-            text:''
-        };
     });
 
+    $scope.comments = [];
+
+    $scope.new_comment = {
+        text:''
+    };
+    $scope.cancel = function (_id) {
+        try {
+            $http({
+                method: 'post',
+                url: '/campaign/cancel',
+                data:{
+                    campaign_id : _id
+                }
+            }).success(function(data, status) {
+                //window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
     $scope.getComment = function(){
         try {
             $http({

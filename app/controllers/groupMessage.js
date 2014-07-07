@@ -158,7 +158,7 @@ exports.getMessage = function(req, res) {
           case 7:
             if(last_company_index!=undefined && group_message[i].company[0].cid.toString()===group_messages[last_company_index].company[0].cid.toString()){
               group_messages[last_company_index].user.push(group_message[i].user);
-              group_messages[last_company_index].logo = group_message[i].company[0].logo;
+              group_messages[last_company_index].logo = group_message[last_company_index].company[0].logo;
               push_flag = false;
             }
             else{
@@ -169,12 +169,12 @@ exports.getMessage = function(req, res) {
           case 8://小组新成员加入
             if(last_team_index!=undefined && group_messages[last_team_index].team.length===1 && group_message[i].team[0].teamid.toString()===group_messages[last_team_index].team[0].teamid.toString()){
               group_messages[last_team_index].user.push(group_message[i].user);
-              group_messages[last_team_index].logo = group_message[i].team[0].logo;
+              group_messages[last_team_index].logo = group_message[last_team_index].team[0].logo;
               push_flag = false;
               break;
             }
             else if(last_user_index!=undefined && group_messages[last_team_index].user.length===1 && group_message[i].user.user_id.toString()===group_messages[last_user_index].user[0].user_id.toString()){
-              group_messages[last_user_index].team.push(group_message[i].team[0]);
+              group_messages[last_user_index].team.push(group_message[last_team_index].team[0]);
               push_flag = false;
               break;
             }

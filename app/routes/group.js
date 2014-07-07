@@ -29,9 +29,6 @@ module.exports = function(app) {
 
   app.get('/group/competition/:competitionId', authorization.requiresLogin, group.getCompetition);
 
-  app.get('/group/campaign/:campaignId', authorization.requiresLogin,group.renderCampaignDetail);
-  app.get('/group/campaignData', authorization.requiresLogin,group.getCampaignDetail);
-
 
   app.post('/group/updateFormation/:competitionId', authorization.requiresLogin, group.updateFormation);
   //小队发布活动

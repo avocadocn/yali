@@ -6,7 +6,7 @@ var campaign = require('../controllers/campaign');
 module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:campaignType/:start_time', campaign.getCampaigns);
   app.post('/campaign/cancel', campaign.cancelCampaign);
-
+  app.get('/campaign/detail/:campaignId',campaign.renderCampaignDetail);
   app.get('/campaign/user/all/calendar', campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar', campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar', campaign.getUserUnjoinCampaignsForCalendar);

@@ -2,7 +2,8 @@
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Campaign = mongoose.model('Campaign'),
-    model_helper = require('../helpers/model_helper');
+    model_helper = require('../helpers/model_helper'),
+    photo_album_controller = require('./photoAlbum');
 var pagesize = 20;
 
 
@@ -444,5 +445,91 @@ exports.getUserUnjoinCampaignsForList = function(req, res) {
   getUserUnjoinCampaigns(req.user, false, function(campaigns) {
     var format_campaigns = formatCampaign(campaigns, 'user', req.session.role, req.user);
     res.send({ result: 1, campaigns: format_campaigns });
+  });
+};
+exports.renderCampaignDetail = function(req, res) {
+  Campaign
+  .findById(req.params.campaignId)
+  .populate('photo_album')
+  .populate('team')
+  .populate('cid')
+  .exec()
+  .then(function(campaign) {
+    if (!campaign) {
+      throw 'not found';
+    }
+    if(campaign.camp.length >= 2){
+      res.redirect("/competition/"+req.session.nowcampaignid);
+    }else{
+      if(req.user.provider==='company' && req.user._id.toString()===campaign.cid[0]._id.toString()){
+        req.role = 'HR';
+      }
+      else if(req.user.provider==='user' && req.user.cid.toString()===campaign.cid[0]._id.toString()){
+        if(campaign.team.length===0){
+          req.role = 'MEMBER';
+        }
+        else {
+          var team_index = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[0]._id,'_id');
+          if (team_index>-1){
+            if(req.user.team[team_index].leader ===true){
+              req.role = 'LEADER';
+            }
+            else{
+            req.role = 'MEMBER';
+            }
+
+          }
+          else{
+            req.role = 'PARTNER';
+          }
+        }
+      }
+      else{
+        return res.send(403,'forbidden');
+      }
+      //join: 1已经参加，0报名人数已满，-1未参加
+      if((req.role ==='MEMBER' ||req.role ==='LEADER' ) && model_helper.arrayObjectIndexOf(campaign.member,req.user._id,'uid')>-1){
+        req.join = 1;
+      }
+      else if(campaign.member_max===campaign.member.length){
+        req.join = 0
+      }
+      else{
+        req.join = -1;
+      }
+      var parent_name, parent_url;
+      if (campaign.team.length === 0) {
+        parent_name = campaign.cid[0].info.name;
+        parent_url = '/company/home';
+      } else {
+        parent_name = campaign.team[0].name;
+        parent_url = '/group/home/' + campaign.team[0]._id;
+      }
+      var links = [
+        {
+          text: parent_name,
+          url: parent_url
+        },
+        {
+          text: campaign.theme,
+          active: true
+        }
+      ];
+      return res.render('campaign/campaign_detail', {
+        over : campaign.deadline<new Date(),
+        join: req.join,
+        role:req.role,
+        user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
+        campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo,
+        campaign: campaign,
+        links: links,
+        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4)
+      });
+    }
+
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(404);
   });
 };
