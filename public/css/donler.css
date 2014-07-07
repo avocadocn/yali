@@ -572,6 +572,9 @@ textarea {
   width: 260px;
   float: left;
 }
+.dl_container .side .photo_album {
+  padding-top: 20px;
+}
 .dl_container .aside {
   width: 128px;
   margin-right: 20px;
@@ -690,6 +693,8 @@ textarea {
 .dl_row {
   min-height: 34px;
   padding: 2px 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 .content {
   width: 100%;
