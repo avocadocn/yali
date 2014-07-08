@@ -29,4 +29,4 @@ hr
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
-          button.dl_btn.pull-right(ng-click="setToRead($index)") {{statusHandle(team_message.status)}}
+          button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="team_message.status=='read'") {{statusHandle(team_message.status)}}

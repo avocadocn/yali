@@ -16,9 +16,6 @@ module.exports = function(app) {
 
 	app.get('/message/header', authorization.requiresLogin, Message.messageHeader);  //获取所有未读站内信
 
-
-	app.post('/message/all', authorization.requiresLogin, Message.messageAll);  //手动获取所有未删站内信
-
   app.post('/message/pull', authorization.requiresLogin, Message.messageGetByHand);  //手动获取指定类型站内信
 
   app.post('/message/modify', authorization.requiresLogin, Message.setMessageStatus); //修改站内信状态
