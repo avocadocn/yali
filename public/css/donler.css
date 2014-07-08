@@ -597,6 +597,9 @@ textarea {
   text-align: center;
   font-weight: bold;
 }
+.dl_allteaminfo_container {
+  background-color: #fff;
+}
 .dl_company_container .main {
   width: 820px;
 }

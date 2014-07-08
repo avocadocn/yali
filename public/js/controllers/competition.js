@@ -253,7 +253,7 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     });
     // 百度地图API功能
     var map = new BMap.Map("location");            // 创建Map实例
-    var _address = competition_location['address']?competition_location['address'] :'';
+    var _address = competition_location['address']?competition_location['address'] :'sss';
     var _locationName = competition_location['name'];
     var _longitude = competition_location['coordinates'][0]?competition_location['coordinates'][0]:116.404 ;
     var _latitude = competition_location['coordinates'][1]?competition_location['coordinates'][1]:39.915;
@@ -262,6 +262,8 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     map.enableScrollWheelZoom();
     map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}));
     var marker = new BMap.Marker(point);  // 创建标注
+    var label = new BMap.Label(competition_location['name'],{offset:new BMap.Size(20,-10)});
+    marker.setLabel(label);
     map.addOverlay(marker);              // 将标注添加到地图中
     function showInfo(e){
       var opts = {
