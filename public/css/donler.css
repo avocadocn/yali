@@ -609,10 +609,15 @@ textarea {
 .dl_company_container .main .group_table th,
 .dl_company_container .main .group_table td {
   text-align: center;
+  border: solid #000 1px;
+  overflow: hidden;
 }
 .dl_company_container .main .group_table th img,
 .dl_company_container .main .group_table td img {
   float: left;
+}
+.dl_company_container .main .group_table .noborder {
+  border: none;
 }
 .dl_companygroup_container {
   width: 600px;

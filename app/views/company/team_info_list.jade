@@ -2,7 +2,7 @@
   //-小队信息
   table.group_table
     tr
-      th
+      th.noborder(colspan="8")
         h5.pull-left #{__("TEAM_INFO")}
         if (Global.role === 'HR')
           a.dl_btn.dl_btn_small.pull-right(href="#/addGroup") #{__("ADD_TEAM")}
