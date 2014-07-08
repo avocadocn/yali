@@ -514,9 +514,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         alert($scope.team_lists[$scope.team_index].member.length);
     }
 
-    $scope.appointReady = function(user,leader,index){
+    $scope.appointReady = function(user,index){
         $scope._user = user;
-        $scope.leader=leader;
+        $scope.leader=$scope.leaders[0];
         $scope._index = index;
         $scope.users[index].leader = true;
 
@@ -527,6 +527,11 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     break;
                 }
             }
+        }
+        $scope.leaders[0] = {
+            '_id':user._id,
+            'nickname':user.nickname,
+            'photo':user.photo
         }
     }
     $scope.dismissLeader = function (leader) {
