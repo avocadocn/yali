@@ -100,7 +100,7 @@ div(ng-controller="infoController")
     .dl_row.clearfix
       span.subtitle.pull-left #{__("FAMILY")}
       button.dl_btn.dl_btn_small.pull-right(data-toggle="modal" data-target="#upload_modal") 修改全家福
-    .dl_row
+    .dl_row(ng-if="family_photos.length !== 0")
       carousel#family(interval="5000")
         slide(ng-repeat="photo in family_photos" active="photo.active")
           .carousel-img-container
