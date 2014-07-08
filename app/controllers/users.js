@@ -1034,7 +1034,7 @@ exports.joinGroup = function (req, res){
                   console.log(err);
                   return res.send({result: 0, msg:'保存用户出错'});
                 }else{
-                  GroupMessage.findOne({'message_type ':8,'user.user_id':uid},function(err,groupMessage){
+                  GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
                     if(!err&&groupMessage){
                       groupMessage.create_time = new Date();
                       groupMessage.save();
