@@ -406,6 +406,7 @@ exports.home = function(req, res) {
         for(var i = 0; i < req.user.team.length; i ++) {
           user_teams.push(req.user.team[i]._id.toString());
         }
+        //此处不需传那么多吧……M
         CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
           if(err || !company_groups) {
             return res.send([]);

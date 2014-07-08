@@ -29,7 +29,7 @@ block baseInfo
           span.info_border.info_right_border 100%
         if (Global.role ==='HR' || Global.role ==='LEADER')
           .score_container.margin_left_30
-            button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
+            button.dl_btn.dl_btn_small(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorProvokeModel") #{__("PROVOKE")}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorMessageModel") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
@@ -58,7 +58,7 @@ block panel
         div(ng-view)
     if Global.role ==='HR' || Global.role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        include ../partials/campaign_modal
+        include ../campaign/campaign_modal
       div(ng-controller="ProvokeController" )
         div.modal.fade#sponsorProvokeModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           include ../campaign/provoke_modal_base

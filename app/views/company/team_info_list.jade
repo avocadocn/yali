@@ -7,7 +7,8 @@
         if (Global.role === 'HR')
           a.dl_btn.dl_btn_small.pull-right(href="#/addGroup") #{__("ADD_TEAM")}
     tr
-      th 小队
+      th 小队logo
+      th 小队名
       th 人数
       th 队长
       if Global.role ==='HR'
@@ -20,10 +21,10 @@
       td
         a(href="/group/home/{{team._id}}")
           img.img-responsive.img-thumbnail.img_contain.size_56(ng-src="{{team.logo}}" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
-        span.info_label #{__("TEAM_NAME")}
+      td
         span.info_label {{team.name}}
       td
-          span.info_label {{team.member.length}}
+        span.info_label {{team.member.length}}
       td
           span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
             span.info_label {{l.nickname}}
@@ -40,7 +41,7 @@
       td
         if Global.role === 'HR'
           .dl_row.clearfix
-            button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}#{__("TEAM")}
+            button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}
             //-关组
             button.dl_btn.dl_btn_small.cancel_btn(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
             //-开组

@@ -38,6 +38,14 @@ var familyPhoto = new Schema({
     }
 });
 
+var _home_court = new Schema({
+    type: {
+        type:String,
+        default: 'Point'
+    },
+    coordinates: [],
+    name: String
+});
 
 /**
  * 企业组件
@@ -72,7 +80,7 @@ var CompanyGroup = new Schema({
         type: Boolean,
         default: true
     },
-    home_court: Array,       //主场(可能有多个)
+    home_court: [_home_court],       //主场(可能有多个)
     create_time:{
         type: Date,
         default: Date.now
