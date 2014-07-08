@@ -8,19 +8,19 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             return;
         }
         $scope.getComment(); //获取留言
-        $(function(){
-            var locationmap = new BMap.Map("mapContainer");            // 创建Map实例
-            var nowPoint = new BMap.Point(campaign.location.coordinates[0],campaign.location.coordinates[1]);
-            locationmap.centerAndZoom(nowPoint,15);
-            locationmap.enableScrollWheelZoom(true);
-            locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-            var marker = new BMap.Marker(nowPoint);  // 创建标注
-            locationmap.addOverlay(marker);              // 将标注添加到地图中
-            var label = new BMap.Label(campaign.location.name,{offset:new BMap.Size(20,-10)});
-            marker.setLabel(label);
-        });
     });
-
+    $scope.initialize = function(){
+        var locationmap = new BMap.Map("mapContainer");            // 创建Map实例
+        var nowPoint = new BMap.Point($scope.campaign.location.coordinates[0],$scope.campaign.location.coordinates[1]);
+        locationmap.centerAndZoom(nowPoint,15);
+        locationmap.enableScrollWheelZoom(true);
+        locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+        var marker = new BMap.Marker(nowPoint);  // 创建标注
+        locationmap.addOverlay(marker);              // 将标注添加到地图中
+        var label = new BMap.Label($scope.campaign.location.name,{offset:new BMap.Size(20,-10)});
+        marker.setLabel(label);
+    };
+    window.initialize = $scope.initialize;
     $scope.comments = [];
 
     $scope.new_comment = {
@@ -156,7 +156,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     //alert('成功加入该活动!');
                     //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.join = 1;
-                    if($scope.role==='HR'|| $scope.role ='LEADER'){
+                    if($scope.role==='HR'|| $scope.role ==='LEADER'){
                         for(var i = 0;i < $scope.campaign.member_quit.length; i ++) {
                             if($scope.campaign.member_quit[i].nickname === $scope.user.nickname) {
                                 $scope.campaign.member_quit.splice(i,1);
@@ -203,7 +203,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                             }
                         }
 
-                    if($scope.role==='HR'|| $scope.role ='LEADER'){
+                    if($scope.role==='HR'|| $scope.role ==='LEADER'){
                         $scope.campaign.member_quit.push({
                             'nickname' : $scope.user.nickname,
                             'photo' : $scope.user.photo
@@ -222,3 +222,9 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         }
     };
 }]);
+$(function(){
+    var script = document.createElement("script");  
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
+    document.body.appendChild(script);
+
+});
