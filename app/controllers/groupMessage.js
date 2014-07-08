@@ -170,7 +170,7 @@ exports.getMessage = function(req, res) {
           case 8://小组新成员加入
             if(last_team_index!=undefined && group_messages[last_team_index].team.length===1 && group_message[i].team[0].teamid.toString()===group_messages[last_team_index].team[0].teamid.toString()&&group_messages[last_team_index].create_time - group_message[i].create_time<day_time){
               group_messages[last_team_index].user.push(group_message[i].user);
-              group_messages[last_team_index].logo = group_message[last_team_index].team[0].logo;
+              group_messages[last_team_index].logo = group_messages[last_team_index].team[0].logo;
               push_flag = false;
               break;
             }
