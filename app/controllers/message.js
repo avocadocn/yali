@@ -668,20 +668,28 @@ exports.setMessageStatus = function(req,res){
   var status = req.body.status;
   var status_model = ['read','unread','delete'];
   if(status_model.indexOf(status) > -1){
-    var msg_id = req.body.msg_id;
+
+
     var operate = {'$set':{'status':status}};
     var callback = function(value){
       res.send('MODIFY_OK');
     }
     var param = {
       'collection':Message,
-      'type':0,
-      'condition':msg_id,
       'operate':operate,
       'callback':callback,
       '_err':_err
     };
+    if(!req.body.multi){
+      var msg_id = req.body.msg_id;
+      param.condition = msg_id;
+      param.type = 0;
+    }else{
+
+    }
+
     set(param);
+
   }else{
     res.send('STATUS_ERROR');
   }
@@ -702,25 +710,6 @@ exports.messageHeader = function(req,res){
   }else{
     //公司暂时只获取系统公告(以后可以获取针对公司的站内信)
     var condition = {'type':'global','status':{'$nin':['delete','read']}};
-    getMessage(req,res,condition);
-  }
-}
-
-
-//读取所有站内信
-exports.messageAll = function(req,res){
-  if(req.user.provider === 'user'){
-    var _private = req.body._private;
-    if(_private == undefined || _private == true){
-      var condition = {'$or':[{'rec_id':req.user._id},{'type':'global'}],'status':{'$nin':['delete']}};
-      getMessage(req,res,condition);
-    }else{
-      var condition = {'type':'global','status':{'$nin':['delete']}};
-      getMessage(req,res,condition);
-    }
-  }else{
-    //公司暂时只获取系统公告(以后可以获取针对公司的站内信)
-    var condition = {'type':'global','status':{'$nin':['delete']}};
     getMessage(req,res,condition);
   }
 }

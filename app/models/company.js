@@ -17,6 +17,13 @@ var _team = new Schema({
         type: Schema.Types.ObjectId
     }
 });
+
+var _department = new Schema({
+    parent_id:Schema.Types.ObjectId,
+    name: String,
+    child: [_department]
+});
+
 /**
  * Company Schema
  */
@@ -34,6 +41,7 @@ var CompanySchema = new Schema({
         domain: Array               //邮箱后缀(多个)
     },
 
+    department:[_department],
     //是否激活
     status: {
         active: {

@@ -79,7 +79,7 @@
           .message_row
             span.message_label
               a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
-            span.message_label  加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6")
         span(ng-if="group_message.join_role &&group_message.join_flag!=undefined")
           btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") 退出
