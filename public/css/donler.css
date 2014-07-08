@@ -1334,11 +1334,6 @@ input.ng-invalid.ng-dirty {
 .loadfale {
   background-color: #fff;
 }
-.carousel-inner>.item>img,
-.carousel-inner>.item>a>img {
-  margin: auto;
-  max-height: 100%;
-}
 .family_preview_container {
   margin-top: 20px;
 }
@@ -1358,7 +1353,9 @@ input.ng-invalid.ng-dirty {
   position: absolute;
   top: -9px;
   right: -10px;
+  padding: 3px;
   border-radius: 10px;
+  font-size: 12px;
   background-color: #ff6c6c;
   opacity: 1;
   color: #fff;
@@ -1369,6 +1366,22 @@ input.ng-invalid.ng-dirty {
 .family_photo_preview_cell:hover .dl_btn_close {
   display: block;
 }
+.upload_family_form {
+  margin-top: 20px;
+}
 #family {
-  height: 300px;
+  margin-top: 30px;
+  width: 660px;
+  height: 371.25px;
+  position: relative;
+  background-color: #000;
+}
+#family .carousel-img-container {
+  display: table-cell;
+  vertical-align: middle;
+  width: 660px;
+  height: 371.25px;
+}
+#family .carousel-img-container img {
+  max-height: 100%;
 }

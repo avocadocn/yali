@@ -695,8 +695,9 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $('#upload_family').change(function() {
         if ($(this).val() !== '' && $(this).val() != null) {
             $('#upload_family_form').submit();
+            $(this).val(null);
         }
-    })
+    });
 
 }]);
 tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
