@@ -26,6 +26,8 @@
   float: left;
   margin-left: 53px;
   margin-bottom: 53px;
+  background: url("/img/loading.gif") center center no-repeat;
+  border: 1px solid #ddd;
   width: 200px;
   height: 200px;
 }

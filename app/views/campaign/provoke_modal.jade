@@ -26,7 +26,7 @@ form(name="provoke_form" novalidate)
           //img(ng-src='/img/icons/icon_date.png')
           span.input-group-addon.no_radius
             span.glyphicon.glyphicon-th
-          input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{provoke_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
+          input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm"  data-data-language="zh-CN" tooltip="{{provoke_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
     .dl_modal_container
       .dl_modal_container
         label.subtitle #{__("PROVOKE")}#{__("LOCATION")}
