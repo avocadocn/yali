@@ -21,7 +21,22 @@ var _member = new Schema({
     }
 });
 
-
+var familyPhoto = new Schema({
+    uri: String,
+    upload_user: {
+        _id: Schema.Types.ObjectId,
+        name: String,
+        photo: String
+    },
+    upload_date: {
+        type: Date,
+        default: Date.now
+    },
+    hidden: {
+        type: Boolean,
+        default: false
+    }
+});
 
 
 /**
@@ -79,7 +94,8 @@ var CompanyGroup = new Schema({
             type: Number,
             default: 0
         }
-    }
+    },
+    family: [familyPhoto]
 });
 
 mongoose.model('CompanyGroup', CompanyGroup);

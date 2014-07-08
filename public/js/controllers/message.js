@@ -89,32 +89,32 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     }
 }]);
 
-var provokeStatus = function(value,name,own){
-  switch(value){
-    case 0:
-      if(own){
-        return "您的小队 "+name+"发出了一个新的挑战,快去看看吧!";
-      }else{
-        return "您的小队 "+name+"接受了一个新的挑战,快去看看吧!";
-      }
-    break;
-    case 1:
-      if(own){
-        return "您的小队 "+name+"发出的挑战已经生效,快去看看吧!";
-      }else{
-        return "您的小队 "+name+"接受的挑战已经生效,快去看看吧!";
-      }
-    break;
-    default:break;
-  }
-}
+// var provokeStatus = function(value,name,own){
+//   switch(value){
+//     case 0:
+//       if(own){
+//         return "您的小队 "+name+"发出了一个新的挑战,快去看看吧!";
+//       }else{
+//         return "您的小队 "+name+"接受了一个新的挑战,快去看看吧!";
+//       }
+//     break;
+//     case 1:
+//       if(own){
+//         return "您的小队 "+name+"发出的挑战已经生效,快去看看吧!";
+//       }else{
+//         return "您的小队 "+name+"接受的挑战已经生效,快去看看吧!";
+//       }
+//     break;
+//     default:break;
+//   }
+// }
 
 
 var messagePreHandle = function(teams,msg){
   var direct_show = false;
   var detail = "";
   var content = "";
-  var url = "#";
+  var message_type = 0;
   var message = [];
   var team_messages = [],
       company_messages = [],
@@ -123,66 +123,60 @@ var messagePreHandle = function(teams,msg){
   for(var i = 0; i < msg.length; i ++) {
     //小队
     if(msg[i].type == 'team'){
-      if(msg[i].message_content.team.length == 2){
-        for(var j = 0; j < teams.length; j ++){
-          if(teams[j]._id === msg[i].message_content.team[0]._id){
-            content = provokeStatus(msg[i].message_content.team[0].provoke_status,msg[i].message_content.team[0].name,true);
-            url = "/group/home/"+msg[i].message_content.team[0]._id+"#/group_message";
-          }else{
-            if(teams[j]._id === msg[i].message_content.team[1]._id){
-              content = provokeStatus(msg[i].message_content.team[1].provoke_status,msg[i].message_content.team[1].name,false);
-              url = "/group/home/"+msg[i].message_content.team[1]._id+"#/group_message";
-            }
-          }
-        }
-      }else{
-        if(msg[i].message_content.sender.length > 0){
-          content = "小队 "+msg[i].message_content.team[0].name + "的组长 "+msg[i].message_content.sender[0].nickname + " 给您发了一条私信!";
+      if(msg[i].message_content.sender.length > 0){
+        if(msg[i].message_content.campaign_id == null){
+          message_type = 0;
+          content = "小队 "+msg[i].message_content.team[0].name + "的组长 "+msg[i].message_content.sender[0].nickname;
           detail = msg[i].message_content.content;
           direct_show = true;
         }else{
-          content = "您的小队 "+msg[i].message_content.team[0].name + "有了新的活动哟!";
-          url = "/group/home/"+msg[i].message_content.team[0]._id+"#/group_message";
+          detail = msg[i].message_content.content;
+          if(msg[i].message_content.team[0].provoke_status == 0){
+            message_type = 1;
+          }else{
+            message_type = 2;
+          }
         }
       }
+      // if(msg[i].message_content.team.length == 2){
+      //   for(var j = 0; j < teams.length; j ++){
+      //     if(teams[j]._id === msg[i].message_content.team[0]._id){
+      //       content = provokeStatus(msg[i].message_content.team[0].provoke_status,msg[i].message_content.team[0].name,true);
+      //       url = "/group/home/"+msg[i].message_content.team[0]._id+"#/group_message";
+      //     }else{
+      //       if(teams[j]._id === msg[i].message_content.team[1]._id){
+      //         content = provokeStatus(msg[i].message_content.team[1].provoke_status,msg[i].message_content.team[1].name,false);
+      //         url = "/group/home/"+msg[i].message_content.team[1]._id+"#/group_message";
+      //       }
+      //     }
+      //   }
+      // }else{
+      // }
       team_messages.push({
         '_id':msg[i]._id,
-        'caption':msg[i].message_content.caption,
+        'caption':'Message From Campaign',
         'content':content,
         'status':msg[i].status,
         'date':msg[i].message_content.post_date,
-        'url':url,
-        'detail':detail,
-        'direct_show':direct_show
+        'detail':msg[i].message_content.content,
+        'message_type':message_type,
+        'campaign_id':msg[i].message_content.campaign_id,
+        'campaign_name':msg[i].message_content.caption
       });
     }
 
     //公司
     if(msg[i].type == 'company'){
       if(msg[i].message_content.sender.length > 0){
-        content = "公司给您发了一条私信!";
+        message_type = 3;
         detail = msg[i].message_content.content;
-        direct_show = true;
         company_messages.push({
           '_id':msg[i]._id,
           'caption':msg[i].message_content.caption,
-          'content':content,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
-          'url':url,
           'detail':detail,
-          'direct_show':direct_show
-        });
-      }else{
-        company_messages.push({
-          '_id':msg[i]._id,
-          'caption':msg[i].message_content.caption,
-          'content':'公司有了新的活动,快去看看吧!',
-          'status':msg[i].status,
-          'date':msg[i].message_content.post_date,
-          'url':'/company/home#/company_campaign',
-          'detail':detail,
-          'direct_show':direct_show
+          'message_type':message_type
         });
       }
     }
@@ -191,31 +185,30 @@ var messagePreHandle = function(teams,msg){
     if(msg[i].type == 'private'){
       if(msg[i].message_content.team.length > 0){
         if(msg[i].message_content.team[0].provoke_status > 0){
+          message_type = 4;
           var last_content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的比赛结果" : "发出了一个新的比赛确认";
           content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
-          direct_show = false;
           private_messages.push({
             '_id':msg[i]._id,
             'caption':msg[i].message_content.caption,
             'content':content,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
-            'url':'/competition/'+ msg[i].message_content.content,
-            'direct_show':direct_show
+            'message_type':message_type,
+            'campaign_id':msg[i].message_content.campaign_id
           });
         }
       }else{
-        content = msg[i].message_content.sender.nickname + "给您发了一条私信!";
-        direct_show = true;
+        message_type = 5;
         detail = msg[i].message_content.content;
         private_messages.push({
           '_id':msg[i]._id,
           'caption':msg[i].message_content.caption,
-          'content':content,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':detail,
-          'direct_show':direct_show
+          'sender':msg[i].message_content.sender,
+          'message_type':message_type
         });
       }
 
@@ -223,14 +216,14 @@ var messagePreHandle = function(teams,msg){
 
     //系统
     if(msg[i].type == 'global'){
+      message_type = 6;
       private_messages.push({
         '_id':msg[i]._id,
         'caption':msg[i].message_content.caption,
-        'content':msg[i].message_content.content,
         'status':msg[i].status,
         'date':msg[i].message_content.post_date,
-        'detail':detail,
-        'direct_show':direct_show
+        'detail':msg[i].message_content.content,
+        'message_type':message_type
       })
     }
   }
@@ -289,10 +282,10 @@ messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope
   $scope.setToDelete = function(index){
     sendSet($http,'delete',$rootScope,$rootScope.private_messages[index]._id,'private',index);
   }
+  $scope.showPop = function(index){
+    popOver(index,$rootScope.private_messages[index].detail);
+  }
   $scope.setToRead = function(index){
-    if($rootScope.private_messages[index].direct_show){
-      popOver(index,$rootScope.private_messages[index].detail);
-    }
     if($rootScope.private_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id,'private',index);
     }
@@ -318,8 +311,11 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
   $scope.private_message_caption = {
     'text':''
   }
+
+
   //队长给队员发私信
   $scope.sendToAll = function(){
+    $rootScope.message_for_group = true;
     var _team = {
       size : 1,
       own : {
@@ -354,11 +350,10 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
   $scope.setToDelete = function(index){
     sendSet($http,'delete',$rootScope,$rootScope.team_messages[index]._id,'team',index);
   }
-
+  $scope.showPop = function(index){
+    popOver(index,$rootScope.team_messages[index].detail);
+  }
   $scope.setToRead = function(index){
-    if($rootScope.team_messages[index].direct_show){
-      popOver(index,$rootScope.team_messages[index].detail);
-    }
     if($rootScope.team_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id,'team',index);
     }
@@ -408,10 +403,10 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
     sendSet($http,'delete',$rootScope,$rootScope.company_messages[index]._id,'company',index);
   }
 
+  $scope.showPop = function(index){
+    popOver(index,$rootScope.company_messages[index].detail);
+  }
   $scope.setToRead = function(index){
-    if($rootScope.company_messages[index].direct_show){
-      popOver(index,$rootScope.company_messages[index].detail);
-    }
     if($rootScope.company_messages[index].status === 'unread'){
       sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id,'company',index);
     }

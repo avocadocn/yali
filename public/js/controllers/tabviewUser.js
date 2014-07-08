@@ -57,6 +57,7 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
 tabViewUser.run(['$rootScope',
     function($rootScope) {
         $rootScope.nowTab = window.location.hash.substr(2);
+        $rootScope.message_for_group = false;
         $rootScope.addactive = function(value) {
             $rootScope.nowTab = value;
             $rootScope.message_corner = false;

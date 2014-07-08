@@ -123,6 +123,7 @@ require('./app/services/schedule').init();
 mkdirp.sync(path.join(__dirname, 'temp_uploads/'));
 mkdirp.sync(path.join(__dirname, 'public/img/user/photo/'));
 mkdirp.sync(path.join(__dirname, 'public/img/group/logo/'));
+mkdirp.sync(path.join(__dirname, 'public/img/group/family/'));
 mkdirp.sync(path.join(__dirname, 'public/img/company/logo/'));
 mkdirp.sync(path.join(__dirname, 'public/img/photo_album/'));
 

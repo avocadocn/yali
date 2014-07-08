@@ -4,7 +4,10 @@
 var group = require('../controllers/group');
 var authorization = require('./middlewares/authorization');
 var config = require('../../config/config');
-
+var express = require('express');
+var bodyParser = express.bodyParser({
+    uploadDir: config.root + '/temp_uploads/',
+    limit: 1024 * 1024 * 5 });
 
 
 module.exports = function(app) {
@@ -47,5 +50,10 @@ module.exports = function(app) {
 
   // for app
   app.get('/group/:teamId/campaigns', authorization.requiresLogin, group.getCampaignsForApp);
+
+  // 全家福
+  app.post('/group/family', authorization.requiresLogin, bodyParser, group.uploadFamily);
+  app.get('/group/family', authorization.requiresLogin, group.getFamily);
+  app.delete('/group/family/photo/:photoId', authorization.requiresLogin, group.deleteFamilyPhoto);
 
 };

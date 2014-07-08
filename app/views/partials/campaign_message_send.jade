@@ -1,0 +1,20 @@
+.modal-dialog
+  .dl-modal
+    form(name="message_form" novalidate)
+      .dl-modal-header
+        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+        .head#myModalLabel 给参加该活动的队员发送私信
+      .dl-modal-body
+        .dl_modal_container
+          .dl_md_1.dl_vertical
+            label.subtitle 标题
+          .dl_md_10
+            input.dl_modal_input.form-control(type="text" name="cname" ng-model="private_message_caption.text")
+        .dl_modal_container
+          .dl_md_1.dl_vertical
+            label.subtitle 内容
+          .dl_md_10
+            textarea.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
+      .dl-modal-footer
+        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="sendToParticipator()" ng-disabled="message_form.$invalid") 发送

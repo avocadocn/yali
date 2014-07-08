@@ -10,11 +10,19 @@ hr
         .dl_message_date
           h7 {{private_message.date | date:'yyyy-MM-dd HH:mm'}}
       .row
-        .dl_md_12
-          h5
-            a(href="{{private_message.url}}" ng-click="setToRead($index)" ng-if="!private_message.direct_show"){{private_message.content}}
-            a.pop(id="pop_message_{{$index}}" ng-click="setToRead($index)" data-toggle="popover" data-placement="top" data-content="{{private_message.detail}}" ng-if="private_message.direct_show"){{private_message.content}}
+        .dl_md_12(ng-switch="private_messages.message_type")
+          h5(ng-switch-when="4")
+            a(href="/competition/{{private_messages.campaign_id}}" ng-click="setToRead($index)")
+              {{private_messages.content}}
+          h5(ng-switch-when="5")
+            a
+              {{private_message.sender.nickname}} 给您发了
+              a(id='pop_message_{{$index}}' ng-click="showPop($index)") 一条私信
+          h5(ng-switch-when="6")
+            您收到了一条
+            a(id='pop_message_{{$index}}' ng-click="showPop($index)")
+              系统消息
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
-          button.dl_btn.pull-right(ng-disabled='true') {{statusHandle(private_message.status)}}
+          button.dl_btn.pull-right(ng-click="setToRead($index)") {{statusHandle(private_message.status)}}

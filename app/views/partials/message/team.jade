@@ -10,11 +10,23 @@ hr
         .dl_message_date
           h7 {{team_message.date | date:'yyyy-MM-dd HH:mm'}}
       .row
-        .dl_md_12
-          h5
-            a(href="{{team_message.url}}" ng-click="setToRead($index)" ng-if="!team_message.direct_show"){{team_message.content}}
-            a.pop(id="pop_message_{{$index}}" ng-click="setToRead($index)" ng-if="team_message.direct_show"){{team_message.content}}
+        .dl_md_12(ng-switch="team_message.message_type")
+          h5(ng-switch-when="0")
+            {{team_message.content}} 给您发了
+            a(id='pop_message_{{$index}}' ng-click="showPop($index)") 一条私信
+          h5(ng-switch-when="1")
+            您参加的活动
+            a(href="/campaign/detail/{{team_message.campaign_id}}")
+              {{team_message.campaign_name}}
+            有了
+            a(id='pop_message_{{$index}}' ng-click="showPop($index)") 新的消息
+          h5(ng-switch-when="2")
+            您参加的比赛
+            a(href="/competition/{{team_message.campaign_id}}")
+              {{team_message.campaign_name}}
+            有了
+            a(id='pop_message_{{$index}}' ng-click="showPop($index)") 新的消息
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
-          button.dl_btn.pull-right(ng-disabled='true') {{statusHandle(team_message.status)}}
+          button.dl_btn.pull-right(ng-click="setToRead($index)") {{statusHandle(team_message.status)}}
