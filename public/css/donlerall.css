@@ -347,7 +347,7 @@ textarea {
 }
 .dl_modal_input {
   border-radius: 0;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   font-size: 12px;
 }
 .dl_modal_container {
@@ -612,12 +612,10 @@ textarea {
 .dl_company_container .main .group_table th,
 .dl_company_container .main .group_table td {
   text-align: center;
-  border: solid #000 1px;
+  border: solid #ddd;
+  border-width: 1px 0;
   overflow: hidden;
-}
-.dl_company_container .main .group_table th img,
-.dl_company_container .main .group_table td img {
-  float: left;
+  padding: 10px 0;
 }
 .dl_company_container .main .group_table .noborder {
   border: none;
@@ -1004,7 +1002,7 @@ textarea {
   text-align: right;
 }
 .info_detail {
-  min-width: 100px;
+  min-width: 200px;
   float: left;
   padding-right: 20px;
 }
