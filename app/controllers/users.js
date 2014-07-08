@@ -1375,22 +1375,23 @@ exports.getBriefInfo = function(req,res){
       console.log('cannot find user');
       return res.send({'result':0,'msg':'用户查询错误'});
     }else{
-      var htmlcontent ="<div class='popover_img'><a href='/users/home/"+user._id+"'><img class='size_80' src='"+user.photo+"'></img></a></div>";
-        htmlcontent += "<div class='popover_content'><p><a href='/users/home/"+user._id+"'>"+user.nickname;
-        if(user.realname)//如果填写真名
-          htmlcontent+="("+user.realname+")";
-        htmlcontent += "</a></p><p>部门:"+user.department+"</p>";
-        if(user.phone)
-          htmlcontent+="<p>电话:"+user.phone+"</p>";
-        htmlcontent += "<p>Email:"+user.email+"</p></div>";
-        if(user.introduce)//如果有简介则显示
-          htmlcontent+="<div class='popover_brief'><p>简介："+user.introduce+"</p></div>";
-        else
-          htmlcontent+="<div class='popover_brief'><p>简介：这个人很懒啥都没留下-_-#</p></div>";
-      return res.send({
-        result: 1,
-        htmlcontent: htmlcontent
-      });
+      // var htmlcontent ="<div class='popover_img'><a href='/users/home/"+user._id+"'><img class='size_80' src='"+user.photo+"'></img></a></div>";
+      //   htmlcontent += "<div class='popover_content'><p><a href='/users/home/"+user._id+"'>"+user.nickname;
+      //   if(user.realname)//如果填写真名
+      //     htmlcontent+="("+user.realname+")";
+      //   htmlcontent += "</a></p><p>部门:"+user.department+"</p>";
+      //   if(user.phone)
+      //     htmlcontent+="<p>电话:"+user.phone+"</p>";
+      //   htmlcontent += "<p>Email:"+user.email+"</p></div>";
+      //   if(user.introduce)//如果有简介则显示
+      //     htmlcontent+="<div class='popover_brief'><p>简介："+user.introduce+"</p></div>";
+      //   else
+      //     htmlcontent+="<div class='popover_brief'><p>简介：这个人很懒啥都没留下-_-#</p></div>";
+      // return res.send({
+      //   result: 1,
+      //   htmlcontent: htmlcontent
+      // });
+      res.render('partials/brief_card', { user: user });
     }
   });
 };

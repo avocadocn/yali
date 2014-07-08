@@ -15,12 +15,8 @@ app.directive('bsPopover',function() {
         else{
           $scope.member_id = member_id;
           $http.get('/users/briefInfo/'+member_id).success(function(data, status){
-            if(data.result){
-              $scope.htmlcontent=data.htmlcontent;
-              $('#pop'+pop_id).dl_card({content:data.htmlcontent});
-            }
-            else
-              console.log(data.msg);
+            $scope.htmlcontent=data;
+            $('#pop'+pop_id).dl_card({content:data});
           });
         }
       };
