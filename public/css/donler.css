@@ -1338,8 +1338,8 @@ input.ng-invalid.ng-dirty {
   margin-top: 20px;
 }
 .family_photo_preview_cell {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 90px;
   float: left;
   margin-right: 20px;
   position: relative;
