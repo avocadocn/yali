@@ -666,6 +666,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
 
     getFamily();
 
+    // for ng-class
     $scope.active = function(index) {
         if (index === 0 || index === '0') {
             return 'active';
@@ -689,6 +690,11 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         getFamily();
     });
 
+    $('#upload_family').change(function() {
+        if ($(this).val() !== '' && $(this).val() != null) {
+            $('#upload_family_form').submit();
+        }
+    })
 
 }]);
 tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {

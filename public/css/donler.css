@@ -1319,15 +1319,35 @@ input.ng-invalid.ng-dirty {
   margin: auto;
   max-height: 100%;
 }
+.family_preview_container {
+  margin-top: 20px;
+}
 .family_photo_preview_cell {
   width: 150px;
   height: 150px;
   float: left;
   margin-right: 20px;
+  position: relative;
 }
 .family_photo_preview_cell img {
   margin: auto;
   max-height: 100%;
+}
+.family_photo_preview_cell .dl_btn_close {
+  display: none;
+  position: absolute;
+  top: -9px;
+  right: -10px;
+  border-radius: 10px;
+  background-color: #ff6c6c;
+  opacity: 1;
+  color: #fff;
+}
+.family_photo_preview_cell .dl_btn_close span {
+  text-shadow: none;
+}
+.family_photo_preview_cell:hover .dl_btn_close {
+  display: block;
 }
 #family {
   height: 300px;
