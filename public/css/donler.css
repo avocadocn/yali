@@ -612,12 +612,10 @@ textarea {
 .dl_company_container .main .group_table th,
 .dl_company_container .main .group_table td {
   text-align: center;
-  border: solid #000 1px;
+  border: solid #ddd;
+  border-width: 1px 0;
   overflow: hidden;
-}
-.dl_company_container .main .group_table th img,
-.dl_company_container .main .group_table td img {
-  float: left;
+  padding: 10px 0;
 }
 .dl_company_container .main .group_table .noborder {
   border: none;
