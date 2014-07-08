@@ -3,8 +3,6 @@ extends ../layouts/manager
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
 
-block baseInfo
-  .dl_container.clearfix {{test}}
 block panel
   if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
     div

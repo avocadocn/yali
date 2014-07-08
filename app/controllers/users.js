@@ -322,6 +322,8 @@ function userOperate(cid, key, res, req) {
     });
 
   } else {
+    delete req.session.key;
+    delete req.session.key_id;
     res.render('users/message', message.invalid);
   }
 
@@ -334,8 +336,9 @@ exports.dealActive = function(req, res) {
   var key = req.session.key;
   var cid = req.session.key_id;
   userOperate(cid, key, res, req);
-  delete req.session.key;
-  delete req.session.key_id;
+  // 这里不能急着删
+  // delete req.session.key;
+  // delete req.session.key_id;
 };
 
 /**
