@@ -907,7 +907,7 @@ exports.timeLine = function(req,res){
       campaigns.forEach(function(campaign) {
         var _head,_logo;
         // todo new time style
-        // console.log(campaign);
+        console.log(campaign);
         if(campaign.camp.length>0){
           _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
           _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
