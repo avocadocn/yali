@@ -5,7 +5,7 @@ append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join}")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join};role=#{role}")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .dl_detail_main
@@ -73,12 +73,12 @@ block contentExt
             span.name {{shortTrim(_member.nickname)}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
       if role==='HR' || role ==='LEADER'
-      .dl_detail_member(ng-if="campaign.member_quit.length>0" bs-popover)
-        p.subtitle 退出#{__("MEMBER")}:
-        div.member(ng-repeat = "_member in campaign.member_quit")
-          a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-            img.img_contain.detail_photo(ng-src="{{_member.photo}}")
-            span.name {{shortTrim(_member.nickname)}}
+        .dl_detail_member(ng-if="campaign.member_quit.length>0" bs-popover)
+          p.subtitle 退出#{__("MEMBER")}:
+          div.member(ng-repeat = "_member in campaign.member_quit")
+            a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
+              img.img_contain.detail_photo(ng-src="{{_member.photo}}")
+              span.name {{shortTrim(_member.nickname)}}
       form.dl_detail_main(name="comment_form" novalidate)
         p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
         textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
@@ -111,9 +111,9 @@ block contentExt
             a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")
               img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
               p.thumbnail_name.text-center= photo.name
-
 append footExt
   script(src="/js/controllers/campaign.js")
-append bottomExt
-  script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")
-
+  script.
+    var script = document.createElement("script");  
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
+    document.body.appendChild(script);

@@ -322,6 +322,8 @@ function userOperate(cid, key, res, req) {
     });
 
   } else {
+    delete req.session.key;
+    delete req.session.key_id;
     res.render('users/message', message.invalid);
   }
 
@@ -334,8 +336,9 @@ exports.dealActive = function(req, res) {
   var key = req.session.key;
   var cid = req.session.key_id;
   userOperate(cid, key, res, req);
-  delete req.session.key;
-  delete req.session.key_id;
+  // 这里不能急着删
+  // delete req.session.key;
+  // delete req.session.key_id;
 };
 
 /**
@@ -984,7 +987,7 @@ exports.timeLine = function(req,res){
 
 //用户加入小队
 exports.joinGroup = function (req, res){
-  var uid = req.user._id.toString();
+  var uid = req.user._id;
   var tid = req.body.tid;
   User.findOne({
     _id: uid
@@ -1030,12 +1033,16 @@ exports.joinGroup = function (req, res){
                   console.log(err);
                   return res.send({result: 0, msg:'保存用户出错'});
                 }else{
-                  GroupMessage.findOne({'message_type ':8,'user.user_id':uid},function(err,groupMessage){
+                  console.log(uid);
+                  GroupMessage.findOne({'message_type':8,'user.user_id':uid},function(err,groupMessage){
+                    console.log(err,groupMessage);
                     if(!err&&groupMessage){
                       groupMessage.create_time = new Date();
                       groupMessage.save();
+                      console.log('save');
                     }
                     else{
+                      console.log('new');
                       var groupMessage = new GroupMessage();
                       groupMessage.message_type = 8;
                       groupMessage.team = {

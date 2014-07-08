@@ -32,6 +32,11 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controller: 'AccountFormController',
         controllerAs: 'account'
       })
+      .when('/team_info', {
+        templateUrl: '/company/teamInfo',
+        controller: 'TeamInfoController',
+        controllerAs: 'teamInfo'
+      })
       .when('/timeLine', {
         templateUrl: '/company/timeLine',
         //controller: 'AccountFormController',
@@ -308,127 +313,13 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     }
 }]);
 
-
-tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
-
-    $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
-        $scope.company = data.company;
-        $scope.info = data.info;
-        $scope.linkage_init_location = {
-            province: data.info.city.province,
-            city: data.info.city.city,
-            district: data.info.city.district
-        };
-
-        var seletor = new LinkageSelector(document.getElementById('location'), function(selectValues) {
-            $scope.info.city.province = selectValues[0];
-            $scope.info.city.city = selectValues[1];
-            $scope.info.city.district = selectValues[2];
-            $scope.$digest();
-        });
-
-
-         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-        $http.get('/group/getCompanyTeamsInfo' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-            $scope.team_lists = data.teams;//公司的所有team
-            $scope.cid = data.cid;
-            $scope.role = data.role;
-        });
-    }).error(function(data,status) {
-        //TODO:更改对话框
-        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+tabViewCompany.controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+    //获取公司小组，若是此成员在此小组则标记此team的belong值为true
+    $http.get('/group/getCompanyTeamsInfo' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $scope.team_lists = data.teams;//公司的所有team
+        $scope.cid = data.cid;
+        $scope.role = data.role;
     });
-    $scope.infoUnEdit = true;
-    $scope.infoButtonStatus = '编辑';
-    $scope.inviteUrlStatus= false;
-    $scope.select_user = false;
-    $scope.select_leader = false;
-
-    var refreshCompanyInfo = function() {
-        $http
-        .get('/company/getAccount?' + Math.round(Math.random()*100))
-        .success(function(data, status) {
-            $scope.company = data.company;
-        })
-        .error(function(data, status) {
-            //TODO:更改对话框
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
-        });
-    };
-
-
-    $scope.preProvoke = function(team) {
-        $scope.team_opposite = team;
-        $('#sponsorProvokeModel').modal();
-    }
-    //约战
-    $scope.provoke = function() {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/provoke/'+$scope.provoke_tid,
-                data:{
-                    provoke_model : 'against',
-                    team_opposite : $scope.team_opposite,
-                    content : $scope.content,
-                    location: $scope.location,
-                    remark: $scope.remark,
-                    competition_date: $scope.competition_date,
-                    deadline: $scope.deadline,
-                    competition_format: $scope.competition_format,
-                    number: $scope.number
-
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-
-    $scope.select = function(value) {
-        $scope.select_user = value;
-        $scope.select_leader = !value;
-    }
-    $scope.inviteUrlToggle = function(){
-        $scope.inviteUrlStatus= !$scope.inviteUrlStatus;
-    };
-    $scope.infoEditToggle = function() {
-        $scope.infoUnEdit = !$scope.infoUnEdit;
-        if($scope.infoUnEdit) {
-            try{
-                $http({
-                    method : 'post',
-                    url : '/company/saveAccount',
-                    data : {
-                        info : $scope.info
-                    }
-                }).success(function(data, status) {
-                    //TODO:更改对话框
-                    if(data.result === 1)
-                        $rootScope.donlerAlert(data.msg);
-                    else
-                        $rootScope.donlerAlert(data.msg);
-                    window.location.reload();
-                }).error(function(data, status) {
-                    //TODO:更改对话框
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-            $scope.infoButtonStatus = '编辑';
-        }
-        else {
-            $scope.infoButtonStatus = '保存';
-        }
-     };
-
     $scope.search = function () {
         $scope.member_backup = $scope.users;
         var find = false;
@@ -454,10 +345,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             }
         }
     }
-
-    $scope.test = function(){
-        alert('kaka');
-    }
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
         $scope.team_index = index;
@@ -474,7 +361,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 }
             }).success(function(data, status) {
                 $scope.users = data.users;
-                $scope.leaders = data.leaders.length > 0 ? data.leaders : ['null'];
+                $scope.leaders = data.leaders.length > 0 ? data.leaders : [];
 
                 var leader_find = false;
                 for(var i = 0; i < $scope.users.length && !leader_find; i ++) {
@@ -508,25 +395,24 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             console.log(e);
         }
     };
-
-
-    $scope.tip = function() {
-        alert($scope.team_lists[$scope.team_index].member.length);
-    }
-
-    $scope.appointReady = function(user,leader,index){
+    $scope.appointReady = function(user,index){
         $scope._user = user;
-        $scope.leader=leader;
+        $scope.leader=$scope.leaders[0];
         $scope._index = index;
         $scope.users[index].leader = true;
 
-        if($scope.leader != 'null'){
+        if($scope.leader != []){
             for(var i = 0; i < $scope.users.length; i ++) {
                 if($scope.leader._id.toString() === $scope.users[i]._id.toString()){
                     $scope.users[i].leader = false;
                     break;
                 }
             }
+        }
+        $scope.leaders[0] = {
+            '_id':user._id,
+            'nickname':user.nickname,
+            'photo':user.photo
         }
     }
     $scope.dismissLeader = function (leader) {
@@ -710,8 +596,118 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             console.log(e);
         }
     };
+}]);
+tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+
+    $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
+        $scope.company = data.company;
+        $scope.info = data.info;
+        $scope.linkage_init_location = {
+            province: data.info.city.province,
+            city: data.info.city.city,
+            district: data.info.city.district
+        };
+
+        var seletor = new LinkageSelector(document.getElementById('location'), function(selectValues) {
+            $scope.info.city.province = selectValues[0];
+            $scope.info.city.city = selectValues[1];
+            $scope.info.city.district = selectValues[2];
+            $scope.$digest();
+        });
+    }).error(function(data,status) {
+        //TODO:更改对话框
+        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+    });
+    $scope.infoUnEdit = true;
+    $scope.infoButtonStatus = '编辑';
+    $scope.inviteUrlStatus= false;
+    $scope.select_user = false;
+    $scope.select_leader = false;
+
+    var refreshCompanyInfo = function() {
+        $http
+        .get('/company/getAccount?' + Math.round(Math.random()*100))
+        .success(function(data, status) {
+            $scope.company = data.company;
+        })
+        .error(function(data, status) {
+            //TODO:更改对话框
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.COMPANY + $rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+        });
+    };
 
 
+    $scope.preProvoke = function(team) {
+        $scope.team_opposite = team;
+        $('#sponsorProvokeModel').modal();
+    }
+    //约战
+    $scope.provoke = function() {
+        try {
+            $http({
+                method: 'post',
+                url: '/group/provoke/'+$scope.provoke_tid,
+                data:{
+                    provoke_model : 'against',
+                    team_opposite : $scope.team_opposite,
+                    content : $scope.content,
+                    location: $scope.location,
+                    remark: $scope.remark,
+                    competition_date: $scope.competition_date,
+                    deadline: $scope.deadline,
+                    competition_format: $scope.competition_format,
+                    number: $scope.number
+
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+    $scope.select = function(value) {
+        $scope.select_user = value;
+        $scope.select_leader = !value;
+    }
+    $scope.inviteUrlToggle = function(){
+        $scope.inviteUrlStatus= !$scope.inviteUrlStatus;
+    };
+    $scope.infoEditToggle = function() {
+        $scope.infoUnEdit = !$scope.infoUnEdit;
+        if($scope.infoUnEdit) {
+            try{
+                $http({
+                    method : 'post',
+                    url : '/company/saveAccount',
+                    data : {
+                        info : $scope.info
+                    }
+                }).success(function(data, status) {
+                    //TODO:更改对话框
+                    if(data.result === 1)
+                        $rootScope.donlerAlert(data.msg);
+                    else
+                        $rootScope.donlerAlert(data.msg);
+                    window.location.reload();
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+            $scope.infoButtonStatus = '编辑';
+        }
+        else {
+            $scope.infoButtonStatus = '保存';
+        }
+     };
 
 }]);
 

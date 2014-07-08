@@ -44,6 +44,9 @@ button {
 textarea {
   resize: none;
 }
+.dl_allteaminfo_container {
+  width: 1200px !important;
+}
 .comment_height_limit {
   height: auto;
   max-height: 190px;
@@ -594,6 +597,28 @@ textarea {
   text-align: center;
   font-weight: bold;
 }
+.dl_company_container .main {
+  width: 820px;
+}
+.dl_company_container .main .group_table {
+  width: 920px;
+}
+.dl_company_container .main .group_table .dl_btn {
+  margin: 0 5px 0 5px;
+}
+.dl_company_container .main .group_table th,
+.dl_company_container .main .group_table td {
+  text-align: center;
+  border: solid #000 1px;
+  overflow: hidden;
+}
+.dl_company_container .main .group_table th img,
+.dl_company_container .main .group_table td img {
+  float: left;
+}
+.dl_company_container .main .group_table .noborder {
+  border: none;
+}
 .dl_companygroup_container {
   width: 600px;
   float: left;
@@ -632,6 +657,7 @@ textarea {
 .dl_messagebox {
   padding: 0;
   background-color: #fff;
+  line-height: 21px;
 }
 .dl_messagebox:hover {
   background-color: #f7f7f7;
@@ -669,6 +695,9 @@ textarea {
 }
 .dl_messagebox .vertical_label {
   margin: 0 8px 0 8px;
+}
+.dl_messagebox .message_head {
+  font-size: 14px;
 }
 .campaigns_list {
   background-color: #fff;
@@ -1314,21 +1343,54 @@ input.ng-invalid.ng-dirty {
 .loadfale {
   background-color: #fff;
 }
-.carousel-inner>.item>img,
-.carousel-inner>.item>a>img {
-  margin: auto;
-  max-height: 100%;
+.family_preview_container {
+  margin-top: 20px;
 }
 .family_photo_preview_cell {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 90px;
   float: left;
   margin-right: 20px;
+  position: relative;
 }
 .family_photo_preview_cell img {
   margin: auto;
   max-height: 100%;
 }
+.family_photo_preview_cell .dl_btn_close {
+  display: none;
+  position: absolute;
+  top: -9px;
+  right: -10px;
+  padding: 3px;
+  border-radius: 10px;
+  font-size: 12px;
+  background-color: #ff6c6c;
+  opacity: 1;
+  color: #fff;
+}
+.family_photo_preview_cell .dl_btn_close span {
+  text-shadow: none;
+}
+.family_photo_preview_cell:hover .dl_btn_close {
+  display: block;
+}
+.upload_family_form {
+  margin-top: 20px;
+}
 #family {
-  height: 300px;
+  margin-top: 30px;
+  width: 660px;
+  height: 371.25px;
+  position: relative;
+  background-color: #000;
+}
+#family .carousel-img-container {
+  display: table-cell;
+  vertical-align: middle;
+  width: 660px;
+  height: 371.25px;
+}
+#family .carousel-img-container img {
+  max-height: 100%;
 }

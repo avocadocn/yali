@@ -98,16 +98,14 @@ div(ng-controller="infoController")
     //-   .col-md-5.col-sm-10.col-xs-10
     //-     span.info_label 0
     .dl_row.clearfix
-      button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#upload_modal") 修改全家福
-      h5.pull-left #{__("FAMILY")}
+      span.subtitle.pull-left #{__("FAMILY")}
+      button.dl_btn.dl_btn_small.pull-right(data-toggle="modal" data-target="#upload_modal") 修改全家福
+    .dl_row(ng-if="family_photos.length !== 0")
       carousel#family(interval="5000")
         slide(ng-repeat="photo in family_photos" active="photo.active")
-          img(ng-src="{{ photo.uri }}")
+          .carousel-img-container
+            img.center-block(ng-src="{{ photo.uri }}")
 
-
-
-    //- hr.margin_top_6
-    //- img.img-responsive.img-thumbnail.size_family.img_contain(src="")
 
   #upload_modal.modal.fade(tabindex="-1" role="dialog" aria-hidden="true")
     .modal-dialog
@@ -115,15 +113,15 @@ div(ng-controller="infoController")
         .modal-header
           button.close(type="button" data-dismiss="modal")
             span(aria-hidden="true") &times;
-          h4.modal-title 请上传或删除照片
+          h4.modal-title 推荐使用16:9的图片
         .modal-body
-          form#upload_family_form(action="/group/family" method="post" enctype="multipart/form-data")
-            input#upload_family.hidden(type="file" name="family" required)
-            label.dl_btn.dl_btn_small(for="upload_family") 上传
-            button(type="submit") 提交
-          .clearfix
+          .clearfix.family_preview_container
             .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos")
               img.img-responsive(ng-src="{{ photo.uri }}")
-              button.dl_btn.dl_btn_small(ng-click="deletePhoto(photo._id)") 删除
+              button.close.dl_btn_close(ng-click="deletePhoto(photo._id)")
+                span &times;
+          form#upload_family_form.clearfix.upload_family_form(action="/group/family" method="post" enctype="multipart/form-data")
+            input#upload_family.hidden(type="file" name="family" accept="image/*" required)
+            label.dl_btn.dl_btn_small.pull-right(for="upload_family") 上传
 
 

@@ -293,6 +293,12 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     }
     $scope.comment = function(index){
+        for(var i = 0; i < $scope.group_messages[index].comments.length; i ++){
+            if($scope.new_comment[index].text === $scope.group_messages[index].comments[i].content){
+                alertify.alert('勿要重复留言!');
+                return;
+            }
+        }
         try {
             $http({
                 method: 'post',
@@ -305,7 +311,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             }).success(function(data, status) {
                 if(data === 'SUCCESS'){
                     var poster={
-                        'nickname' : '我自己',
+                        'nickname' : $scope.user.nickname,
                         'photo' : $scope.user.photo
                     };
                     $scope.group_messages[index].campaign.comment_sum ++;
@@ -595,6 +601,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.team = data.companyGroup;
             $scope.name = $scope.team.name;
             $scope.entity = data.entity;
+            $scope.home_court = $scope.home_court ? $scope.team.home_court :['',''];
+            console.log($scope.home_court);
             var judge = true;
             for(var i = 0; i < data.companyGroup.member.length; i ++) {
                 for(var j = 0; j < data.companyGroup.leader.length; j ++) {
@@ -660,6 +668,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
 
     getFamily();
 
+    // for ng-class
     $scope.active = function(index) {
         if (index === 0 || index === '0') {
             return 'active';
@@ -683,6 +692,12 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         getFamily();
     });
 
+    $('#upload_family').change(function() {
+        if ($(this).val() !== '' && $(this).val() != null) {
+            $('#upload_family_form').submit();
+            $(this).val(null);
+        }
+    });
 
 }]);
 tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {

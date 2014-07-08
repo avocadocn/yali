@@ -933,66 +933,6 @@ exports.renderCompanyCampaign = function(req, res){
         'provider':'company'
     });
 }
-//返回公司发布的所有活动,待前台调用
-exports.getCompanyCampaign = function(req, res) {
-    if(req.session.role==='GUEST'){
-        return res.send(403, 'forbidden!');
-    }
-    else if(req.session.role ==='EMPLOYEE'){
-        //公司发布的活动都归在虚拟组 gid = 0 里
-        Campaign.find({'cid' : req.session.nowcid.toString(), 'gid' : '0'}).sort({'start_time':-1}).exec(function(err, campaign) {
-            if (err) {
-                console.log(err);
-                return res.status(404).send([]);
-            } else {
-                var campaigns = [];
-                for(var i = 0;i < campaign.length; i ++) {
-                    var judge = false;
-                    if(campaign[i].deadline && campaign[i].member_max){
-                        judge = (new Date() > campaign[i].deadline || (campaign[i].member.length >= campaign[i].member_max) && campaign[i].member_max > 0 );
-                    }
-                    campaigns.push({
-                        'over' : judge,
-                        'active':campaign[i].active, //截止时间到了活动就无效了
-                        '_id': campaign[i]._id,
-                        'gid': campaign[i].gid,
-                        'group_type': campaign[i].group_type,
-                        'cid': campaign[i].cid,
-                        'cname': campaign[i].cname,
-                        'poster': campaign[i].poster,
-                        'content': campaign[i].content,
-                        'location': campaign[i].location,
-                        'member': campaign[i].member,
-                        'create_time': campaign[i].create_time,
-                        'start_time': campaign[i].start_time,
-                        'end_time': campaign[i].end_time,
-                        'deadline':campaign[i].deadline,
-                        'index':i
-                    });
-                    for(var j = 0;j < campaign[i].member.length; j ++) {
-                        if(req.user.id === campaign[i].member[j].uid) {
-                            campaigns[i].join = true;
-                            break;
-                        }
-                    }
-                }
-                return res.send({'data':campaigns,'role':req.session.role});
-            }
-        });
-    }
-    else if(req.session.role ==='HR'){
-        Campaign.find({'cid' : req.session.nowcid, 'gid' : '0'}, function(err, campaigns) {
-            if (err) {
-                console.log(err);
-                return res.status(404).send([]);
-            }
-            else {
-                return res.send({'data':campaigns,'role':req.session.role});
-            }
-        });
-    }
-};
-
 
 exports.changeUser = function (req, res) {
     var _user = req.body.user;
@@ -1252,3 +1192,6 @@ exports.editLogo = function(req, res) {
   });
 
 };
+exports.renderTeamInfo = function(req, res){
+    return res.render('company/team_info_list');
+}

@@ -1,4 +1,4 @@
-extends ../layouts/manager
+extends ../layouts/company
 
 block baseInfo
   .dl_container.clearfix
@@ -32,6 +32,8 @@ block panel
         a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") {{ 'COMPANY_CAMPAIGN' | translate }}
     li.tab_style(ng-class="{'active':nowTab=='company_info'}")
       a.subtitle.no_radius(href="#/company_info"  ng-click="addactive('company_info')") {{ 'COMPANY_INFO' | translate }}
+    li.tab_style(ng-class="{'active':nowTab=='team_info'}")
+      a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')") 小队信息
     li.tab_style(ng-class="{'active':nowTab=='company_member'}")
       a.subtitle.no_radius(href="#/company_member"  ng-click="addactive('company_member')") {{ 'STAFF' | translate }}
     li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
