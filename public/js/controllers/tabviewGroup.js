@@ -584,8 +584,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                         'homecourt': [$scope.entity.home_court[0],$scope.entity.home_court[1]]
                     }
                 }).success(function(data, status) {
-                    console.log($scope.brief);
-                    console.log($scope.home_court_1);
                     //TODO:更改对话框
                     if(data.result === 1) {
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
