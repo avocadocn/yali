@@ -8,35 +8,35 @@
       img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
       .size_56(ng-if="group_message.message_type==6")
     .messagebox_content(ng-switch="group_message.message_type")
-      span(ng-switch-when="0")
+      span.message_head(ng-switch-when="0")
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
         span #{__("NEW_MESSAGE")}
-      span(ng-switch-when="1")
+      span.message_head(ng-switch-when="1")
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
         span #{__("NEW_MESSAGE")}
-      span(ng-switch-when="2")
+      span.message_head(ng-switch-when="2")
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
         span 关闭了活动
-      span(ng-switch-when="3")
+      span.message_head(ng-switch-when="3")
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
         span 关闭了活动示
-      span(ng-switch-when="4")
+      span.message_head(ng-switch-when="4")
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
         span 向
         a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
         span 发出了挑战
-      span(ng-switch-when="5")
+      span.message_head(ng-switch-when="5")
         a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
         span 接受了
         a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
         span 发出的挑战
-      span(ng-switch-when="6") 比赛
+      span.message_head(ng-switch-when="6") 比赛
         a(ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
         span 的结果已经确认
-      span(ng-switch-when="7")
+      span.message_head(ng-switch-when="7")
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
         span 有新成员加入
-      span(ng-switch-when="8")
+      span.message_head(ng-switch-when="8")
         a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}
         span 有新成员加入
       span(ng-switch-default)

@@ -652,6 +652,7 @@ textarea {
 .dl_messagebox {
   padding: 0;
   background-color: #fff;
+  line-height: 21px;
 }
 .dl_messagebox:hover {
   background-color: #f7f7f7;
@@ -689,6 +690,9 @@ textarea {
 }
 .dl_messagebox .vertical_label {
   margin: 0 8px 0 8px;
+}
+.dl_messagebox .message_head {
+  font-size: 14px;
 }
 .campaigns_list {
   background-color: #fff;
