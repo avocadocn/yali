@@ -20,7 +20,7 @@ if(newTimeLines)
                 span.date= moment(item.start_time).format('MM/DD')
                 .img_scroll
                   each imgs in item.photo_list
-                    img.photo(src="#{imgs.uri}")
+                    img.photo(src="#{imgs.thumbnail_uri}")
             .content
               a(href="/campaign/detail/#{item.id}",target="_blank")
                 
@@ -35,7 +35,7 @@ if(newTimeLines)
                 span.date= moment(item.start_time).format('MM/DD')
                 .img_scroll
                   each imgs in item.photo_list
-                    img.photo(src="#{imgs.uri}")
+                    img.photo(src="#{imgs.thumbnail_uri}")
             .content
               a(href="/campaign/detail/#{item.id}",target="_blank")
                 

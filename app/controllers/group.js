@@ -256,7 +256,7 @@ exports.timeLine = function(req, res){
   Campaign
   .find({ 'active':true,'finish':true,'team': req.session.nowtid})
   .sort('-start_time')
-  .populate('team')
+  .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
     if (campaigns && campaigns.length>0) {
@@ -287,7 +287,7 @@ exports.timeLine = function(req, res){
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
           year: getYear(campaign),
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 10)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
         }
         // todo new time style
         // console.log(campaign);
@@ -330,7 +330,7 @@ exports.timeLine = function(req, res){
       res.render('partials/timeLine');
     }
       // // todo new time style
-      // console.log(timeLines);
+      // console.log(newTimeLines);
       //console.log(newTimeLines);
       // // todo new time style
   })

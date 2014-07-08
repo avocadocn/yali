@@ -829,7 +829,7 @@ exports.timeLine = function(req, res){
   Campaign
   .find({'active':true,'finish':true,'cid': req.session.nowcid})
   .sort('-start_time')
-  .populate('team').populate('cid')
+  .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
     if (campaigns && campaigns.length>0) {

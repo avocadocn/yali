@@ -934,7 +934,7 @@ exports.timeLine = function(req,res){
           year: getYear(campaign),
 
           // photo_list[i].thumbnail_uri是缩略图，200*200，photo_list[i].uri是原图
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 10)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
         }
         // todo new time style
         // console.log(campaign);
@@ -971,7 +971,7 @@ exports.timeLine = function(req,res){
 
         timeLines.push(tempObj);
       });
-      console.log(newTimeLines);
+      // console.log(newTimeLines);
       res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
 
       // res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
