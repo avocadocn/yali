@@ -34,7 +34,7 @@ var departmentFindAndUpdate = function(department,did,child){
           if(pop.department[i]._id === did){
             //插入
             child.parent_id = pop.department[i]._id;
-            pop.department[i].department.push(child;)
+            pop.department[i].department.push(child);
           }else{
             stack.push(pop.department[i]);
           }
@@ -85,9 +85,9 @@ exports.createDepartment = function(req,res){
               company.department = departmentFindAndUpdate(company,did,child).department;
               company.save(function (err){
                 if(err){
-                  res.send('msg':'DEPARTMENT_UPDATE_FAILURE');
+                  res.send({'msg':'DEPARTMENT_UPDATE_FAILURE'});
                 }else{
-                  res.send('msg':'DEPARTMENT_ADD_SUCCESS','department':child);
+                  res.send({'msg':'DEPARTMENT_ADD_SUCCESS','department':child});
                 }
               })
             });
