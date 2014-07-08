@@ -21,7 +21,7 @@ var departmentFindAndUpdate = function(department,did,child){
   if(department._id === did){
     //插入
     child.parent_id = department._id;
-    department.department.push(child;)
+    department.department.push(child);
   }else{
     stack.push({
       '_id':department._id,
