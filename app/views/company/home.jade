@@ -53,7 +53,7 @@ block panel
 
   if Global.role === 'HR'
     div(ng-controller="SponsorController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../partials/campaign_modal
+      include ../campaign/campaign_modal
     div(ng-controller="messageCompanyController" )
       div.modal.fade#sponsorMessageModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/private_message_send

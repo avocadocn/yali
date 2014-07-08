@@ -33,7 +33,7 @@ form(name="provoke_form" novalidate)
       .dl_modal_input_container
         input.dl_modal_input(type="text" class="form-control" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" tooltip="{{provoke_form.location.$invalid? '请输入活动地点':''}}" required)
       .dl_modal_button
-        a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap(1)") #{__("MAP")}
+        a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap()") #{__("MAP")}
     .dl_modal_container
           #competitionMapDetail.height_200(ng-show="showMapFlag")
     .dl_modal_container

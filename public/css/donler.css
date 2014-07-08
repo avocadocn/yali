@@ -347,7 +347,7 @@ textarea {
 }
 .dl_modal_input {
   border-radius: 0;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   font-size: 12px;
 }
 .dl_modal_container {
@@ -1004,7 +1004,7 @@ textarea {
   text-align: right;
 }
 .info_detail {
-  min-width: 100px;
+  min-width: 200px;
   float: left;
   padding-right: 20px;
 }
