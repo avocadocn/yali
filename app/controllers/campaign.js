@@ -526,7 +526,7 @@ exports.renderCampaignDetail = function(req, res) {
         campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo,
         campaign: campaign,
         links: links,
-        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album).slice(0, 4)
+        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
       });
     }
 

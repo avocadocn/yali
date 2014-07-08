@@ -31,7 +31,8 @@ var encrypt = require('../middlewares/encrypt'),
   config = require('../config/config'),
   meanConfig = require('../../config/config'),
   message = require('../language/zh-cn/message'),
-  model_helper = require('../helpers/model_helper');
+  model_helper = require('../helpers/model_helper'),
+  photo_album_controller = require('./photoAlbum');
 
 
 
@@ -896,7 +897,7 @@ exports.timeLine = function(req,res){
   Campaign
   .find({ 'active':true,'finish':true,'$or':[{'member.uid': uid},{'camp.member.uid':uid}]})
   .sort('-start_time')
-  .populate('team').populate('cid')
+  .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
     if (campaigns && campaigns.length>0) {
@@ -930,7 +931,10 @@ exports.timeLine = function(req,res){
           group_type: campaign.group_type,
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
-          year: getYear(campaign)
+          year: getYear(campaign),
+
+          // photo_list[i].thumbnail_uri是缩略图，200*200，photo_list[i].uri是原图
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 10)
         }
         // todo new time style
         // console.log(campaign);
