@@ -173,8 +173,8 @@ exports.getMessage = function(req, res) {
               push_flag = false;
               break;
             }
-            else if(last_user_index!=undefined && group_messages[last_team_index].user.length===1 && group_message[i].user.user_id.toString()===group_messages[last_user_index].user[0].user_id.toString()){
-              group_messages[last_user_index].team.push(group_message[last_team_index].team[0]);
+            else if(last_user_index!=undefined && group_messages[last_user_index].user.length===1 && group_message[i].user.user_id.toString()===group_messages[last_user_index].user[0].user_id.toString()){
+              group_messages[last_user_index].team.push(group_message[i].team[0]);
               push_flag = false;
               break;
             }

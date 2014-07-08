@@ -86,7 +86,7 @@
           btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
         span.message_label 已报名人数：{{group_message.member_num ? group_message.member_num :'0'}}
         span.message_label(ng-if="group_message.join_role") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
-        span.message_label(ng-if="group_message.join_role &&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名已截止
+        span.message_label(ng-if="group_message.join_role &&group_message.join_flag==undefined&& group_message.message_type!=4") 报名已截止
         if (role === 'LEADER')
           label.pull-right(ng-if="message_for_group")
             a(ng-click="modalPerticipator($index)" ng-if="group_message.member_num > 0") 私信

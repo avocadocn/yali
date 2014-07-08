@@ -47,6 +47,7 @@ module.exports = function(app, passport) {
     app.get('/company/member', authorization.requiresLogin, company.renderMembers);
     app.get('/company/getAccount', authorization.requiresLogin, company.getAccount);
     app.get('/company/info', authorization.requiresLogin, company.Info);
+    app.get('/company/teamInfo', authorization.requiresLogin, company.renderTeamInfo);
     app.get('/company/change_password', authorization.requiresLogin, company.renderChangePassword);
     app.post('/company/changePassword',authorization.requiresCompany, company.changePassword);
     app.post('/company/saveAccount', authorization.requiresCompany, company.saveAccount);
@@ -57,7 +58,6 @@ module.exports = function(app, passport) {
     //企业发布活动
     app.post('/company/campaignSponsor', authorization.requiresCompany, company.sponsor);
     app.get('/company/campaigns', authorization.requiresLogin, company.renderCompanyCampaign);
-    app.get('/company/getCampaigns', authorization.requiresLogin, company.getCompanyCampaign);
 
     app.post('/company/appointLeader', authorization.requiresCompany, company.appointLeader);
 

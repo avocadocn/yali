@@ -156,12 +156,15 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     //alert('成功加入该活动!');
                     //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.join = 1;
-                    for(var i = 0;i < $scope.campaign.member_quit.length; i ++) {
-                        if($scope.campaign.member_quit[i].nickname === $scope.user.nickname) {
-                            $scope.campaign.member_quit.splice(i,1);
-                            break;
+                    if($scope.role==='HR'|| $scope.role ='LEADER'){
+                        for(var i = 0;i < $scope.campaign.member_quit.length; i ++) {
+                            if($scope.campaign.member_quit[i].nickname === $scope.user.nickname) {
+                                $scope.campaign.member_quit.splice(i,1);
+                                break;
+                            }
                         }
                     }
+
                     $scope.campaign.member.push({
                         'nickname' : $scope.user.nickname,
                         'photo' : $scope.user.photo
@@ -192,16 +195,20 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     //alert('您已退出该活动!');
                     $scope.join = -1;
-                    for(var i = 0;i < $scope.campaign.member.length; i ++) {
-                        if($scope.campaign.member[i].nickname === $scope.user.nickname) {
-                            $scope.campaign.member.splice(i,1);
-                            break;
+
+                        for(var i = 0;i < $scope.campaign.member.length; i ++) {
+                            if($scope.campaign.member[i].nickname === $scope.user.nickname) {
+                                $scope.campaign.member.splice(i,1);
+                                break;
+                            }
                         }
+
+                    if($scope.role==='HR'|| $scope.role ='LEADER'){
+                        $scope.campaign.member_quit.push({
+                            'nickname' : $scope.user.nickname,
+                            'photo' : $scope.user.photo
+                        });
                     }
-                    $scope.campaign.member_quit.push({
-                        'nickname' : $scope.user.nickname,
-                        'photo' : $scope.user.photo
-                    });
                 }
                 else{
                     $rootScope.donlerAlert(data.msg);

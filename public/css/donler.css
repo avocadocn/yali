@@ -44,6 +44,9 @@ button {
 textarea {
   resize: none;
 }
+.dl_allteaminfo_container {
+  width: 1200px !important;
+}
 .comment_height_limit {
   height: auto;
   max-height: 190px;
@@ -593,6 +596,23 @@ textarea {
   min-width: 145px;
   text-align: center;
   font-weight: bold;
+}
+.dl_company_container .main {
+  width: 820px;
+}
+.dl_company_container .main .group_table {
+  width: 920px;
+}
+.dl_company_container .main .group_table .dl_btn {
+  margin: 0 5px 0 5px;
+}
+.dl_company_container .main .group_table th,
+.dl_company_container .main .group_table td {
+  text-align: center;
+}
+.dl_company_container .main .group_table th img,
+.dl_company_container .main .group_table td img {
+  float: left;
 }
 .dl_companygroup_container {
   width: 600px;

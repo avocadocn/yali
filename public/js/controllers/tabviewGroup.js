@@ -601,6 +601,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.team = data.companyGroup;
             $scope.name = $scope.team.name;
             $scope.entity = data.entity;
+            $scope.home_court = $scope.home_court ? $scope.team.home_court :['',''];
+            console.log($scope.home_court);
             var judge = true;
             for(var i = 0; i < data.companyGroup.member.length; i ++) {
                 for(var j = 0; j < data.companyGroup.leader.length; j ++) {
