@@ -23,7 +23,8 @@ var mongoose = require('mongoose'),
     async = require('async'),
     moment = require('moment'),
     message = require('../controllers/message'),
-    schedule = require('../services/schedule');
+    schedule = require('../services/schedule'),
+    photo_album_controller = require('./photoAlbum');
 
 var mail = require('../services/mail');
 var encrypt = require('../middlewares/encrypt');
@@ -859,7 +860,8 @@ exports.timeLine = function(req, res){
           location: campaign.location,
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
-          year: getYear(campaign)
+          year: getYear(campaign),
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 10)
         }
         // todo new time style
         // console.log(campaign);

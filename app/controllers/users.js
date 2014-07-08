@@ -971,7 +971,7 @@ exports.timeLine = function(req,res){
 
         timeLines.push(tempObj);
       });
-      // console.log(newTimeLines);
+      console.log(newTimeLines);
       res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
 
       // res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });

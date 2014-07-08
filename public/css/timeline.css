@@ -273,6 +273,16 @@ Timeline UI Base
 .dl_timeline .column .timeline_element .title .timeline-logo {
   margin-right: 4px;
 }
+.dl_timeline .column .timeline_element .img_scroll {
+  max-height: 66px;
+  overflow: hidden;
+}
+.dl_timeline .column .timeline_element .img_scroll .photo {
+  display: inline-block;
+  max-width: 66px;
+  max-height: 66px;
+  margin-right: 1px;
+}
 .dl_timeline .column .timeline_element .content p {
   margin-bottom: 0;
 }
