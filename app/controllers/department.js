@@ -4,23 +4,45 @@
 
 var mongoose = require('mongoose'),
     encrypt = require('../middlewares/encrypt'),
+    StackAndQueue = require('../helpers/stackAndQueue'),
     crypto = require('crypto'),
     async = require('async'),
-    meanConfig = require('../../config/config'),
     User = mongoose.model('User'),
-    Department = mongoose.model('Department')
+    Department = mongoose.model('Department'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup');
 
 
-var departmentFindAndUpdate = function(department,did,child){
-  for(var i = 0; i < department.department.length; i ++){
-    if(department._id.toString() === did){
+var stack = new StackAndQueue.stack();
+//var queue = new StackAndQueue.queue();
 
-    }else{
-      
+//深度优先插入算法
+var departmentFindAndUpdate = function(department,did,child){
+  if(department._id === did){
+    //插入
+    child.parent_id = department._id;
+    department.department.push(child;)
+  }else{
+    stack.push({
+      '_id':department._id,
+      'department':department.department
+    });
+    while(!stack.isEmpty()){
+      var pop = stack.pop();
+      if(pop.department.length > 0){
+        for(var i = 0; i < pop.department.length; i ++){
+          if(pop.department[i]._id === did){
+            //插入
+            child.parent_id = pop.department[i]._id;
+            pop.department[i].department.push(child;)
+          }else{
+            stack.push(pop.department[i]);
+          }
+        }
+      }
     }
   }
+  return department;
 }
 
 
@@ -54,26 +76,21 @@ exports.createDepartment = function(req,res){
           if(err || !department){
             res.send({'msg':'DEPARTMENT_CREATE_FAILURE'});
           }else{
-            //没有任何部门,进来的是公司id
-            if(req.user._id === did){
+            Company.findOne({'_id':req.user._id},function (err,company){
               var child = {
-                'parent_id':req.user._id,
                 '_id':department._id,
                 'name':name
               }
-              Company.findByIdAndUpdate({'_id':req.user._id},{'$push':{'department':child}},function (err,company){
-                if(err || !company){
-                  res.send({'msg':'COMPANY_DEPARTMENT_UPDATE_FAILURE'});
+              departmentFindAndUpdate(company,did,child);
+              company.department = departmentFindAndUpdate(company,did,child).department;
+              company.save(function (err){
+                if(err){
+                  res.send('msg':'DEPARTMENT_UPDATE_FAILURE');
                 }else{
                   res.send('msg':'DEPARTMENT_ADD_SUCCESS','department':child);
                 }
-              });
-            //已经有部门了
-            }else{
-              Company.findOne({'_id':req.user._id},function (err,company){
-
-              });
-            }
+              })
+            });
           }
         });
       }
