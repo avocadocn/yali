@@ -135,12 +135,15 @@ var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
 };
 
 // 一个相册的照片缩略图
-var photoThumbnailList = exports.photoThumbnailList = function(photo_album) {
+var photoThumbnailList = exports.photoThumbnailList = function(photo_album, count) {
   var photo_list = [];
+  if (!count) {
+    var count = 4;
+  }
   for (var i = 0; i < photo_album.photos.length; i++) {
     if (photo_album.photos[i].hidden === false) {
       photo_list.push(photo_album.photos[i]);
-      if (photo_list.length === 4) {
+      if (photo_list.length === count) {
         break;
       }
     }

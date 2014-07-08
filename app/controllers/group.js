@@ -842,7 +842,7 @@ exports.getCompetition = function(req, res){
     'rst_content': "",
     'moment':moment,
     'confirm_btn_show':false,
-    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album).slice(0, 4)
+    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album, 4)
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.session.role==='HR'){

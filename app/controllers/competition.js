@@ -302,7 +302,7 @@ exports.getCompetition = function(req, res){
     'rst_content': "",
     'moment':moment,
     'confirm_btn_show':false,
-    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album).slice(0, 4),
+    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album, 4),
     'confirm_mode':3,
     'links': links
   };
