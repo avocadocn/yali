@@ -322,8 +322,6 @@ function userOperate(cid, key, res, req) {
     });
 
   } else {
-    delete req.session.key;
-    delete req.session.key_id;
     res.render('users/message', message.invalid);
   }
 
@@ -336,9 +334,8 @@ exports.dealActive = function(req, res) {
   var key = req.session.key;
   var cid = req.session.key_id;
   userOperate(cid, key, res, req);
-  // 这里不能急着删
-  // delete req.session.key;
-  // delete req.session.key_id;
+  delete req.session.key;
+  delete req.session.key_id;
 };
 
 /**
@@ -910,7 +907,7 @@ exports.timeLine = function(req,res){
       campaigns.forEach(function(campaign) {
         var _head,_logo;
         // todo new time style
-        console.log(campaign);
+        // console.log(campaign);
         if(campaign.camp.length>0){
           _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
           _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
@@ -987,7 +984,7 @@ exports.timeLine = function(req,res){
 
 //用户加入小队
 exports.joinGroup = function (req, res){
-  var uid = req.user._id;
+  var uid = req.user._id.toString();
   var tid = req.body.tid;
   User.findOne({
     _id: uid
@@ -1033,16 +1030,12 @@ exports.joinGroup = function (req, res){
                   console.log(err);
                   return res.send({result: 0, msg:'保存用户出错'});
                 }else{
-                  console.log(uid);
-                  GroupMessage.findOne({'message_type':8,'user.user_id':uid},function(err,groupMessage){
-                    console.log(err,groupMessage);
+                  GroupMessage.findOne({'message_type ':8,'user.user_id':uid},function(err,groupMessage){
                     if(!err&&groupMessage){
                       groupMessage.create_time = new Date();
                       groupMessage.save();
-                      console.log('save');
                     }
                     else{
-                      console.log('new');
                       var groupMessage = new GroupMessage();
                       groupMessage.message_type = 8;
                       groupMessage.team = {
