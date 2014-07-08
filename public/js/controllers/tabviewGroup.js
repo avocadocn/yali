@@ -51,6 +51,11 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     };
     $rootScope.number;
     $rootScope.isMember;
+    $rootScope.message_for_group = true;
+
+    $rootScope.messageTypeChange = function(value){
+        $rootScope.message_for_group = value;
+    }
     //加入小队
     $rootScope.joinGroup = function(){
         try{
@@ -115,6 +120,9 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
+    $scope.private_message_content = {
+        'text':""
+    };
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
@@ -141,6 +149,38 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.pageTime = [0];
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
+
+
+    $scope.index_for_participator = 0;
+    $scope.modalPerticipator = function(index){
+        $rootScope.index_for_participator = index;
+        $('#sponsorMessageCampaignModel').modal();
+    }
+    $scope.sendToParticipator = function(){
+        try{
+          $http({
+              method: 'post',
+              url: '/message/push/campaign',
+              data:{
+                  campaign_id : $scope.group_messages[$rootScope.index_for_participator].campaign._id,
+                  content : $scope.private_message_content.text
+              }
+          }).success(function(data, status) {
+              if(data.msg === 'SUCCESS'){
+                $scope.private_message_content.text = "";
+                $rootScope.team_length++;
+                $rootScope.o ++;
+              }
+          }).error(function(data, status) {
+              //TODO:更改对话框
+              $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+          });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+
     $scope.loadMore = function(){
         $http.get('/groupMessage/team/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){

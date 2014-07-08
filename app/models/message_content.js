@@ -30,6 +30,7 @@ var MessageContent = new Schema({
   sender: [_sender],
   team: [_team],  // 消息所属小队
   company_id: Schema.Types.ObjectId,  // 消息所属公司的_id
+  campaign_id: Schema.Types.ObjectId,
   type: {
     type: String,
     enum: ['private','company','global']

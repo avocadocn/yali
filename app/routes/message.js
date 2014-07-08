@@ -24,5 +24,6 @@ module.exports = function(app) {
   app.post('/message/modify', authorization.requiresLogin, Message.setMessageStatus); //修改站内信状态
 
 	app.post('/message/push/leader', authorization.requiresLogin, Message.leaderSendToMember);
+  app.post('/message/push/campaign', authorization.requiresLogin, Message.sendToParticipator);
 	app.post('/message/push/hr', authorization.requiresLogin, Message.hrSendToMember);
 }

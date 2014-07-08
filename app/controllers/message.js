@@ -156,6 +156,7 @@ var oneToMember = function(param){
     'sender':param.sender,
     'team':param.team,
     'company_id':param.company_id,
+    'campaign_id':param.campaign_id,
     'deadline':(new Date())+time_out
   };
   var _param = {
@@ -230,6 +231,7 @@ exports.leaderSendToMember = function(req,res){
         'sender':[sender],
         'team':[team.own],
         'company_id':null,
+        'campaign_id':null,
         'req':req,
         'res':res,
         'type':'team'
@@ -254,7 +256,7 @@ exports.leaderSendToMember = function(req,res){
 };
 
 
-exports.sendToParticipator = function(req, res, campaign_id){
+exports.sendToParticipator = function(req, res){
   var callback = function(campaign,other,req,res){
 
     var sender = {
@@ -268,7 +270,7 @@ exports.sendToParticipator = function(req, res, campaign_id){
 
       for(var i = 0; i < campaign.team.length; i ++){
         for(var j = 0; j < req.user.team.length; j ++){
-          if(req.user.team[j]._id.toString() === campaign.team[i]._id.toString()){
+          if(req.user.team[j]._id.toString() === campaign.team[i].toString()){
             team = {
               '_id':req.user.team[j]._id,
               'name':req.user.team[j].name,
@@ -280,19 +282,32 @@ exports.sendToParticipator = function(req, res, campaign_id){
       }
 
       var members = [];
-      for(var i = 0; i < campaign.member.length; i ++){
-        members.push({
-          '_id':campaign.member[i].uid
-        });
+
+      if(campaign.team.length == 2){
+        team.provoke_status = 1;
+        for(var i = 0; i < campaign.camp.length; i ++){
+          for(var j = 0; j < campaign.camp[i].member.length; j ++){
+            members.push({
+              '_id':campaign.camp[i].member[j].uid
+            });
+          }
+        }
+      }else{
+        team.provoke_status = 0;
+        for(var i = 0; i < campaign.member.length; i ++){
+          members.push({
+            '_id':campaign.member[i].uid
+          });
+        }
       }
-      var caption = 'Message From Campaign!';
       var _param = {
         'members':members,
-        'caption':caption,
-        'content':campaign.theme,
+        'caption':campaign.theme,
+        'content':req.body.content,
         'sender':[sender],
         'team':[team],
         'company_id':null,
+        'campaign_id':req.body.campaign_id,
         'req':req,
         'res':res,
         'type':'team'
@@ -303,8 +318,8 @@ exports.sendToParticipator = function(req, res, campaign_id){
   var param= {
     'collection':Campaign,
     'type':0,
-    'condition':{'_id':campaign_id},
-    'limit':{'member':1,'theme':1,'team':1},
+    'condition':{'_id':req.body.campaign_id},
+    'limit':{'member':1,'theme':1,'team':1,'camp':1},
     'sort':null,
     'callback':callback,
     '_err':_err,
@@ -316,115 +331,115 @@ exports.sendToParticipator = function(req, res, campaign_id){
 }
 
 
-exports.newCampaignCreate = function(req,res,team,cid){
-  switch(team.size){
-    //公司活动
-    case 0:
-      var callback = function (message_content,cid,req,res){
-        res.send({'result':1,'msg':'SUCCESS'});
-      }
-      var MC={
-        'caption':'Company Campaign Message',
-        'content':null,
-        'sender':[],
-        'team':[],
-        'type':'company',
-        'company_id':cid,
-        'deadline':(new Date())+time_out
-      };
-      var _param = {
-        'collection':MessageContent,
-        'operate':MC,
-        'callback':callback,
-        '_err':_err,
-        'other_param':cid,
-        'req':req,
-        'res':res
-      };
-      _add(_param);
-      break;
-    //小队活动
-    case 1:
-      var condition = {'_id':team.own._id};
-      var callback = function(company_group,team,req,res){
-        if(company_group){
-          var members = company_group.member;
-          var caption = 'Team Campaign!';
-          var _param = {
-            'members':members,
-            'caption':caption,
-            'content':null,
-            'sender':[],
-            'team':[team.own],
-            'company_id':null,
-            'req':req,
-            'res':res,
-            'type':'team'
-          }
-          oneToMember(_param);
-        }
-      }
-      var param= {
-        'collection':CompanyGroup,
-        'type':0,
-        'condition':condition,
-        'limit':{'member':1},
-        'sort':null,
-        'callback':callback,
-        '_err':_err,
-        'other_param':team,
-        'req':req,
-        'res':res
-      };
-      get(param);
-      break;
-    //小队比赛
-    case 2:
-      var condition = {'_id':{'$in':[team.own._id,team.opposite._id]}};
-      var callback = function(company_groups,other,req,res){
-        if(company_groups){
-          var members = [];
-          if(company_groups.length == 2){
-            members = company_groups[0].member.concat(company_groups[1].member);
-            console.log('成员',members);
-          }
-          var caption = "Competition Message!";
+// exports.newCampaignCreate = function(req,res,team,cid){
+//   switch(team.size){
+//     //公司活动
+//     case 0:
+//       var callback = function (message_content,cid,req,res){
+//         res.send({'result':1,'msg':'SUCCESS'});
+//       }
+//       var MC={
+//         'caption':'Company Campaign Message',
+//         'content':null,
+//         'sender':[],
+//         'team':[],
+//         'type':'company',
+//         'company_id':cid,
+//         'deadline':(new Date())+time_out
+//       };
+//       var _param = {
+//         'collection':MessageContent,
+//         'operate':MC,
+//         'callback':callback,
+//         '_err':_err,
+//         'other_param':cid,
+//         'req':req,
+//         'res':res
+//       };
+//       _add(_param);
+//       break;
+//     //小队活动
+//     case 1:
+//       var condition = {'_id':team.own._id};
+//       var callback = function(company_group,team,req,res){
+//         if(company_group){
+//           var members = company_group.member;
+//           var caption = 'Team Campaign!';
+//           var _param = {
+//             'members':members,
+//             'caption':caption,
+//             'content':null,
+//             'sender':[],
+//             'team':[team.own],
+//             'company_id':null,
+//             'req':req,
+//             'res':res,
+//             'type':'team'
+//           }
+//           oneToMember(_param);
+//         }
+//       }
+//       var param= {
+//         'collection':CompanyGroup,
+//         'type':0,
+//         'condition':condition,
+//         'limit':{'member':1},
+//         'sort':null,
+//         'callback':callback,
+//         '_err':_err,
+//         'other_param':team,
+//         'req':req,
+//         'res':res
+//       };
+//       get(param);
+//       break;
+//     //小队比赛
+//     case 2:
+//       var condition = {'_id':{'$in':[team.own._id,team.opposite._id]}};
+//       var callback = function(company_groups,other,req,res){
+//         if(company_groups){
+//           var members = [];
+//           if(company_groups.length == 2){
+//             members = company_groups[0].member.concat(company_groups[1].member);
+//             console.log('成员',members);
+//           }
+//           var caption = "Competition Message!";
 
-          var _param = {
-            'members':members,
-            'caption':caption,
-            'content':null,
-            'sender':[],
-            'team':[team.own,team.opposite],
-            'company_id':null,
-            'req':req,
-            'res':res,
-            'type':'team'
-          }
-          oneToMember(_param);
-        }
-      }
-      var param= {
-        'collection':CompanyGroup,
-        'type':1,
-        'condition':condition,
-        'limit':{'member':1},
-        'sort':null,
-        'callback':callback,
-        '_err':_err,
-        'other_param':null,
-        'req':req,
-        'res':res
-      };
-      get(param);
-      break;
-    default:break;
-  }
-}
+//           var _param = {
+//             'members':members,
+//             'caption':caption,
+//             'content':null,
+//             'sender':[],
+//             'team':[team.own,team.opposite],
+//             'company_id':null,
+//             'req':req,
+//             'res':res,
+//             'type':'team'
+//           }
+//           oneToMember(_param);
+//         }
+//       }
+//       var param= {
+//         'collection':CompanyGroup,
+//         'type':1,
+//         'condition':condition,
+//         'limit':{'member':1},
+//         'sort':null,
+//         'callback':callback,
+//         '_err':_err,
+//         'other_param':null,
+//         'req':req,
+//         'res':res
+//       };
+//       get(param);
+//       break;
+//     default:break;
+//   }
+// }
 
 //比赛结果确认时给队长发送站内信
 exports.resultConfirm = function(req,res,olid,team,competition_id){
-  var content = competition_id,
+  var content = null,
       sender = {
         '_id':req.user._id,
         'nickname':req.user.nickname,
@@ -458,6 +473,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id){
     'team':[team],
     'type':'private',
     'company_id':req.user.cid,
+    'campaign_id':competition_id,
     'deadline':(new Date())+time_out
   };
   var _param = {
