@@ -111,6 +111,9 @@ block contentExt
             a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")
               img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
               p.thumbnail_name.text-center= photo.name
-
 append footExt
   script(src="/js/controllers/campaign.js")
+  script.
+    var script = document.createElement("script");  
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
+    document.body.appendChild(script);
