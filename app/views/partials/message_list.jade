@@ -45,7 +45,7 @@
         .triangle(ng-if="group_message.message_type!=6")
         .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
           .message_row
-            span.message_label 主题: 
+            span.message_label 主题:
             span.message_label
               a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
               a(ng-if="group_message.campaign.camp[1].start_confirm==true" ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}

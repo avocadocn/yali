@@ -234,6 +234,12 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             }
         }
         $scope.comment = function(index){
+            for(var i = 0; i < $scope.group_messages[index].comments.length; i ++){
+                if($scope.new_comment[index].text === $scope.group_messages[index].comments[i].content){
+                    alertify.alert('勿要重复留言!');
+                    return;
+                }
+            }
             try {
                 $http({
                     method: 'post',
@@ -246,7 +252,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 }).success(function(data, status) {
                     if(data === 'SUCCESS'){
                         var poster={
-                            'nickname' : '我自己',
+                            'nickname' : $scope.user.nickname,
                             'photo' : $scope.user.photo
                         };
                         $scope.group_messages[index].campaign.comment_sum ++;

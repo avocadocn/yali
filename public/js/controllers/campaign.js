@@ -102,6 +102,12 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
     }
 
     $scope.comment = function(){
+        for(var i = 0; i < $scope.comments.length; i ++){
+            if($scope.new_comment.text === $scope.comments[i].content){
+                alertify.alert('勿要重复留言!');
+                return;
+            }
+        }
         try {
             $http({
                 method: 'post',
