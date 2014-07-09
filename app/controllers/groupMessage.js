@@ -54,7 +54,7 @@ exports.getMessage = function(req, res) {
       var last_user_index,last_team_index,last_company_index;
       for(var i = 0; i < length; i ++) {
         var push_flag=true;
-        var join_role = req.user.provider==='user' && (req.session.role ==='LEADER' || req.session.role ==='MEMBER' || req.session.role ==='OWNER');
+        var join_role = req.user.provider==='user' && (req.params.pageType==="team" &&(req.session.role === 'MEMBER' || req.session.role ==='LEADER') || req.params.pageType==="user" &&(req.session.role === 'OWNER'));
         var _group_message ={
           '_id': group_message[i]._id,
           'message_type' : group_message[i].message_type,
@@ -107,7 +107,7 @@ exports.getMessage = function(req, res) {
             _group_message.logo = group_message[i].team[camp_flag].logo;
             _group_message.team_id = group_message[i].team[camp_flag].teamid;
             _group_message.member_num = group_message[i].campaign.camp[camp_flag].member.length;
-            if(join_role&& req.session.role !=='OWNER'){
+            if(join_role){
               //0：未投票，1：赞成，-1反对
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){

@@ -402,7 +402,6 @@ exports.competition = function(req, res, next, id){
     .populate('photo_album')
     .exec(function(err, competition){
       if (err) return next(err);
-      console.log(competition);
       req.competition = competition;
       if(cid.toString() ===competition.camp[0].cid.toString()){
         req.competition_team = 'A';
@@ -464,24 +463,30 @@ exports.resultConfirm = function (req, res) {
         if(err){
           return res.send(err);
         } else {
-          GroupMessage.findOne({campaign:competition._id},function(err,groupMessage){
-            groupMessage.message_type = 6;
-            groupMessage.create_time = new Date();
-            groupMessage.save(function(err){
-              if(err){
-                res.send('ERROR');
-              }else{
-                //发送站内信
-                var olid = competition.team[_otherCampFlag].leader[0]._id;
-                var team = {
-                  '_id':competition.team[_campFlag]._id,
-                  'name':competition.team[_campFlag].name,
-                  'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 1 : 2,
-                };
-                message.resultConfirm(req,res,olid,team,competition_id);
-              }
+          if(competition.camp[0].result.confirm && competition.camp[1].result.confirm){
+            GroupMessage.findOne({campaign:competition._id},function(err,groupMessage){
+              groupMessage.message_type = 6;
+              groupMessage.create_time = new Date();
+              groupMessage.save(function(err){
+                if(err){
+                  res.send('ERROR');
+                }else{
+                  //发送站内信
+                  var olid = competition.team[_otherCampFlag].leader[0]._id;
+                  var team = {
+                    '_id':competition.team[_campFlag]._id,
+                    'name':competition.team[_campFlag].name,
+                    'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 1 : 2,
+                  };
+                  message.resultConfirm(req,res,olid,team,competition_id);
+                }
+              });
             });
-          });
+          }
+          else{
+
+          }
+          
         }
       });
     }
