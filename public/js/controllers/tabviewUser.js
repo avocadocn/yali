@@ -790,7 +790,6 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                             user: _info
                         }
                     }).success(function(data, status) {
-                        console.log(data);
                         //TODO:更改对话框
                         if (data.result === 1)
                             $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);

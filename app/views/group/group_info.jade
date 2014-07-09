@@ -26,19 +26,19 @@ div(ng-controller="infoController")
       .info_detail_2
         if (Global.role=== 'HR' || Global.role ==='LEADER')
           a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") #{__("CHANGE")}LOGO
-    .dl_row.clearfix(ng-if="team.home_court[0]!=undefined || !unEdit")
+    .dl_row.clearfix(ng-show="team.home_court[0]!=undefined || !unEdit")
       .info_side
         span.info_label #{__("HOME_COURT")}
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip='请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。' tooltip-placement="right")
-    .dl_row.clearfix(ng-if="team.home_court[1]!=undefined || !unEdit")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-change='changeLocation(1)' ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip='请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。' tooltip-placement="right")
+    .dl_row.clearfix(ng-show="team.home_court[1]!=undefined || !unEdit")
       .info_side
         span.info_label.col-md-2.control-label
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-model="team.home_court[1].name" ng-disabled="unEdit")
-    .dl_row.clearfix(ng-if="showmap")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-change='changeLocation(2)' ng-model="team.home_court[1].name" ng-disabled="unEdit")
+    .dl_row.clearfix(ng-show="showmap")
       #courtMap.height_200(ng-show='showMap')
-    .dl_row.clearfix(ng-if="team.brief!=undefined || !unEdit")
+    .dl_row.clearfix(ng-show="team.brief!=undefined || !unEdit")
       .info_side
         span.info_label #{__("BRIEF")}
       .info_detail

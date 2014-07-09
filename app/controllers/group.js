@@ -650,6 +650,7 @@ exports.provoke = function (req, res) {
                 }
               });
             }else{
+              console.log(err);
               return res.send({'result':0,'msg':'ERROR'});
             }
           });
