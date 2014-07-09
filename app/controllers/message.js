@@ -687,9 +687,9 @@ exports.setMessageStatus = function(req,res){
       param.type = 0;
     }else{
       if(_type === 'private'){
-        param.condition = {'$or':[{'type':'private'},{'type':'global'}],'status':{'$ne':'delete'}};
+        param.condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
       }else{
-        param.condition = {'type':_type,'status':{'$ne':'delete'}};
+        param.condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
       }
       param.type = 1;
     }

@@ -10,10 +10,10 @@ hr
         .dl_message_date
           h7 {{private_message.date | date:'yyyy-MM-dd HH:mm'}}
       .row
-        .dl_md_12(ng-switch="private_messages.message_type")
+        .dl_md_12(ng-switch="private_message.message_type")
           h5(ng-switch-when="4")
-            a(href="/competition/{{private_messages.campaign_id}}" ng-click="setToRead($index)")
-              {{private_messages.content}}
+            a(href="/competition/{{private_message.campaign_id}}" ng-click="setToRead($index)")
+              {{private_message.content}}
           h5(ng-switch-when="5")
             a
               {{private_message.sender.nickname}} 给您发了
