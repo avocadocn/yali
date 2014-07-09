@@ -95,3 +95,17 @@ div.company-info
         span.info_label #{__("BRIEF")}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
+
+  script(type="text/ng-template" id="node.html")
+    span
+      i.glyphicon.glyphicon-minus(ng-if="node.children")
+      i.glyphicon.glyphicon-credit-card(ng-if="!node.children")
+      | &nbsp;{{node.name}}
+    button(ng-click="addNode(node)") 增加
+    button(ng-click="deleteNode(node)") 删除
+    ul
+      li(ng-repeat="node in node.children" ng-include="'node.html'" ng-class="hasChild(node)")
+
+  .tree
+    ul
+      li(ng-include="'node.html'" ng-class="hasChild(node)")

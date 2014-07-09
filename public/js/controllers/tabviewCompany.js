@@ -725,7 +725,74 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         else {
             $scope.infoButtonStatus = '保存';
         }
-     };
+    };
+
+    (function getDepartments() {
+        $http
+        .get('/department/pull')
+        .success(function(data, status) {
+            $scope.node = {
+                _id: data._id,
+                name: data.name,
+                children: data.department
+            };
+            if ($scope.node.children.length === 0) {
+                $scope.node.children = null;
+            }
+        });
+    })();
+
+    $('.tree').delegate('li.parent_li > span', 'click', function(e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('glyphicon-minus').removeClass('glyphicon-plus');
+        }
+        e.stopPropagation();
+    });
+
+
+    $scope.hasChild = function(node) {
+        if (node && node.children) {
+            return 'parent_li';
+        } else {
+            return '';
+        }
+    };
+
+    $scope.addNode = function(node) {
+        $http
+        .post('/department/push', {
+            did: node._id,
+            name: 'test department'
+        })
+        .success(function(data, status) {
+            $scope.node = {
+                _id: data._id,
+                name: data.name,
+                children: data.department
+            };
+            if ($scope.node.children.length === 0) {
+                $scope.node.children = null;
+            }
+        });
+    };
+
+    $scope.deleteNode = function(node) {
+        $http
+        .post('/department/delete', {
+            did: node._id
+        })
+        .success(function(data, status) {
+            // 不应该这样
+            if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
+                getDepartments();
+            }
+        });
+    };
 
 }]);
 
