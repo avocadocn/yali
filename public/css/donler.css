@@ -632,9 +632,16 @@ textarea {
   padding: 10px 0;
   width: 10%;
 }
-.dl_company_container .main .group_table th .operate,
-.dl_company_container .main .group_table td .operate {
+.dl_company_container .main .group_table td.text-left,
+.dl_company_container .main .group_table th.text-left {
+  text-align: left;
+}
+.dl_company_container .main .group_table .operate {
   width: 20%;
+}
+.dl_company_container .main .group_table img {
+  display: inline-block;
+  border: 1px solid #ddd;
 }
 .dl_company_container .main .group_table .noborder {
   border: none;
