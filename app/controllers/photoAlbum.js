@@ -35,7 +35,9 @@ function photoEditAuth(user, photo_album, photo) {
     if (owner) {
       // 该照片所属组的队长
       var leaders = [];
-      leaders = photo_album.owner.team.leader || [];
+      if (owner.team) {
+        leaders = owner.team.leader || [];
+      }
       for (var i = 0; i < leaders.length; i++) {
         if (user._id.toString() === leaders[i]._id.toString()) {
           return true;
@@ -360,6 +362,7 @@ exports.createAuth = function(req, res, next) {
       if (auth === false) {
         return res.send(403);
       } else {
+        req.create_auth = true;
         next();
       }
 
