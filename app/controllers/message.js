@@ -666,6 +666,7 @@ var getMessage = function(req,res,condition){
 //修改站内信状态(比如用户点击了一条站内信就把它设为已读,或者删掉这条站内信)
 exports.setMessageStatus = function(req,res){
   var status = req.body.status;
+  var _type = req.body.type;
   var status_model = ['read','unread','delete'];
   if(status_model.indexOf(status) > -1){
 
@@ -685,11 +686,14 @@ exports.setMessageStatus = function(req,res){
       param.condition = msg_id;
       param.type = 0;
     }else{
-
+      if(_type === 'private'){
+        param.condition = {'$or':[{'type':'private'},{'type':'global'}],'status':{'$ne':'delete'}};
+      }else{
+        param.condition = {'type':_type,'status':{'$ne':'delete'}};
+      }
+      param.type = 1;
     }
-
     set(param);
-
   }else{
     res.send('STATUS_ERROR');
   }
@@ -698,7 +702,12 @@ exports.setMessageStatus = function(req,res){
 //手动获取私信
 exports.messageGetByHand = function(req,res){
   var _type = req.body._type;
-  var condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
+  var condition;
+  if(_type === 'private'){
+    condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
+  }else{
+    condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
+  }
   getMessage(req,res,condition);
 }
 

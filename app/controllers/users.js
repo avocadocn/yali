@@ -323,8 +323,6 @@ function userOperate(cid, key, res, req) {
     });
 
   } else {
-    delete req.session.key;
-    delete req.session.key_id;
     res.render('users/message', message.invalid);
   }
 
@@ -337,9 +335,8 @@ exports.dealActive = function(req, res) {
   var key = req.session.key;
   var cid = req.session.key_id;
   userOperate(cid, key, res, req);
-  // 这里不能急着删
-  // delete req.session.key;
-  // delete req.session.key_id;
+  delete req.session.key;
+  delete req.session.key_id;
 };
 
 /**
@@ -937,7 +934,7 @@ exports.timeLine = function(req,res){
           year: getYear(campaign),
 
           // photo_list[i].thumbnail_uri是缩略图，200*200，photo_list[i].uri是原图
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 10)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
         }
         // todo new time style
         // console.log(campaign);
@@ -991,7 +988,7 @@ exports.timeLine = function(req,res){
 
 //用户加入小队
 exports.joinGroup = function (req, res){
-  var uid = req.user._id;
+  var uid = req.user._id.toString();
   var tid = req.body.tid;
   User.findOne({
     _id: uid
@@ -1037,16 +1034,12 @@ exports.joinGroup = function (req, res){
                   console.log(err);
                   return res.send({result: 0, msg:'保存用户出错'});
                 }else{
-                  console.log(uid);
-                  GroupMessage.findOne({'message_type':8,'user.user_id':uid},function(err,groupMessage){
-                    console.log(err,groupMessage);
+                  GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
                     if(!err&&groupMessage){
                       groupMessage.create_time = new Date();
                       groupMessage.save();
-                      console.log('save');
                     }
                     else{
-                      console.log('new');
                       var groupMessage = new GroupMessage();
                       groupMessage.message_type = 8;
                       groupMessage.team = {
@@ -1382,22 +1375,23 @@ exports.getBriefInfo = function(req,res){
       console.log('cannot find user');
       return res.send({'result':0,'msg':'用户查询错误'});
     }else{
-      var htmlcontent ="<div class='popover_img'><a href='/users/home/"+user._id+"'><img class='size_80' src='"+user.photo+"'></img></a></div>";
-        htmlcontent += "<div class='popover_content'><p><a href='/users/home/"+user._id+"'>"+user.nickname;
-        if(user.realname)//如果填写真名
-          htmlcontent+="("+user.realname+")";
-        htmlcontent += "</a></p><p>部门:"+user.department+"</p>";
-        if(user.phone)
-          htmlcontent+="<p>电话:"+user.phone+"</p>";
-        htmlcontent += "<p>Email:"+user.email+"</p></div>";
-        if(user.introduce)//如果有简介则显示
-          htmlcontent+="<div class='popover_brief'><p>简介："+user.introduce+"</p></div>";
-        else
-          htmlcontent+="<div class='popover_brief'><p>简介：这个人很懒啥都没留下-_-#</p></div>";
-      return res.send({
-        result: 1,
-        htmlcontent: htmlcontent
-      });
+      // var htmlcontent ="<div class='popover_img'><a href='/users/home/"+user._id+"'><img class='size_80' src='"+user.photo+"'></img></a></div>";
+      //   htmlcontent += "<div class='popover_content'><p><a href='/users/home/"+user._id+"'>"+user.nickname;
+      //   if(user.realname)//如果填写真名
+      //     htmlcontent+="("+user.realname+")";
+      //   htmlcontent += "</a></p><p>部门:"+user.department+"</p>";
+      //   if(user.phone)
+      //     htmlcontent+="<p>电话:"+user.phone+"</p>";
+      //   htmlcontent += "<p>Email:"+user.email+"</p></div>";
+      //   if(user.introduce)//如果有简介则显示
+      //     htmlcontent+="<div class='popover_brief'><p>简介："+user.introduce+"</p></div>";
+      //   else
+      //     htmlcontent+="<div class='popover_brief'><p>简介：这个人很懒啥都没留下-_-#</p></div>";
+      // return res.send({
+      //   result: 1,
+      //   htmlcontent: htmlcontent
+      // });
+      res.render('partials/user_brief_card', { user: user });
     }
   });
 };

@@ -37,7 +37,7 @@
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
         span 有新成员加入
       span.message_head(ng-switch-when="8")
-        a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}
+        a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}、
         span 有新成员加入
       span(ng-switch-default)
       span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
@@ -79,13 +79,13 @@
           .message_row
             span.message_label
               a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
-            span.message_label  加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
       .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6")
         span(ng-if="group_message.join_role &&group_message.join_flag!=undefined")
           btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") 退出
           btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
         span.message_label 已报名人数：{{group_message.member_num ? group_message.member_num :'0'}}
-        span.message_label(ng-if="group_message.join_role") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
+        span.message_label(ng-if="group_message.join_role&&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
         span.message_label(ng-if="group_message.join_role &&group_message.join_flag==undefined&& group_message.message_type!=4") 报名已截止
         if (role === 'LEADER')
           label.pull-right(ng-if="message_for_group")
@@ -127,6 +127,8 @@
 .text-center(ng-if="group_messages.length>0")
   button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
   span(ng-if="loadOver_flag") 已经加载了所有的动态
+.text-center(ng-if="group_messages.length==0")
+  span 目前没有新的动态
 ul.pager
   li
     a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页

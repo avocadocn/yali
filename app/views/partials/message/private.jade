@@ -17,12 +17,15 @@ hr
           h5(ng-switch-when="5")
             a
               {{private_message.sender.nickname}} 给您发了
-              a(id='pop_message_{{$index}}' ng-click="showPop($index)") 一条私信
+              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
           h5(ng-switch-when="6")
             您收到了一条
-            a(id='pop_message_{{$index}}' ng-click="showPop($index)")
+            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
               系统消息
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
           button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="private_message.status=='read'") {{statusHandle(private_message.status)}}
+  .dl_row
+    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="private_length + global_length > 0") 全部设为已读
+    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="private_messages.length > 0") 全部删除

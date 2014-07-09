@@ -58,6 +58,13 @@ module.exports = function(grunt) {
                 ],
                 dest: 'public/css/library.css'
             },
+            cssdonler:{
+                src: [
+                    'public/css/donler.css',
+                    'public/css/timeline.css'
+                ],
+                dest: 'public/css/donlerall.css'
+            },
             js: {
                 src: [
                     'public/lib/jquery/dist/jquery.js',
@@ -96,7 +103,7 @@ module.exports = function(grunt) {
             minify: {
                 expand: true,
                 cwd: 'public/css/',
-                src: ['library.css', 'donler.css'],
+                src: ['library.css', 'donlerall.css'],
                 dest: 'public/css/',
                 ext: '.min.css'
             }

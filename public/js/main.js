@@ -15,12 +15,8 @@ app.directive('bsPopover',function() {
         else{
           $scope.member_id = member_id;
           $http.get('/users/briefInfo/'+member_id).success(function(data, status){
-            if(data.result){
-              $scope.htmlcontent=data.htmlcontent;
-              $('#pop'+pop_id).dl_card({content:data.htmlcontent});
-            }
-            else
-              console.log(data.msg);
+            $scope.htmlcontent=data;
+            $('#pop'+pop_id).dl_card({content:data});
           });
         }
       };
@@ -30,12 +26,8 @@ app.directive('bsPopover',function() {
         else{
           $scope.group_id = group_id;
           $http.get('/group/briefInfo/'+group_id).success(function(data, status){
-            if(data.result){
-                $('#pop'+pop_id).dl_card({content:data.htmlcontent});
-                $scope.htmlcontent =  data.htmlcontent;
-            }
-            else
-              console.log(data.msg);
+            $('#pop'+pop_id).dl_card({content:data});
+            $scope.htmlcontent = data;
           });
         }
       };

@@ -1,12 +1,5 @@
 'use strict';
 
-
-
-// rst.push({
-//   'rec_id':messages[i].rec_id,
-//   'status':messages[i].status,
-//   'message_content':messages[i].MessageContent
-// });
 var messageApp = angular.module('mean.main');
 messageApp.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
@@ -251,40 +244,70 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
               if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread'){rootScope.private_length--;rootScope.o--}
               rootScope.private_messages[index].status = _status;
             }else{
-              var sum = 0;
               for(var i = 0; i < rootScope.private_messages.length; i ++){
                 if(rootScope.private_messages[i].status === 'unread'){
                   rootScope.private_messages[i].status = 'read';
                   rootScope.private_length--;
-                  sum ++;
+                  rootScope.o--;
                 }
               }
-              for(var i = 0; i < rootScope.global_messages.length; i ++){
-                if(rootScope.global_messages[i].status === 'unread'){
-                  rootScope.global_messages[i].status = 'read';
-                  rootScope.global_length--;
-                  sum ++;
-                }
-              }
-
             }
 
             if(_status === 'delete'){
-              rootScope.private_messages.splice(index,1);
+              if(!multi){
+                rootScope.private_messages.splice(index,1);
+              }else{
+                rootScope.private_messages = [];
+                rootScope.o -= (rootScope.private_length + rootScope.global_length);
+                rootScope.private_length = 0;
+                rootScope.global_length = 0;
+              }
             }
           break;
           case 'team':
-            if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread'){rootScope.team_length--;rootScope.o--}
-            rootScope.team_messages[index].status = _status;
+            if(!multi){
+              if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread'){rootScope.team_length--;rootScope.o--}
+              rootScope.team_messages[index].status = _status;
+            }else{
+              for(var i = 0; i < rootScope.team_messages.length; i ++){
+                if(rootScope.team_messages[i].status === 'unread'){
+                  rootScope.team_messages[i].status = 'read';
+                  rootScope.team_length--;
+                  rootScope.o--;
+                }
+              }
+            }
             if(_status === 'delete'){
-              rootScope.team_messages.splice(index,1);
+              if(!multi){
+                rootScope.team_messages.splice(index,1);
+              }else{
+                rootScope.team_messages = [];
+                rootScope.o -= (rootScope.team_length);
+                rootScope.team_length = 0;
+              }
             }
           break;
           case 'company':
-            if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread'){rootScope.company_length--;rootScope.o--}
-            rootScope.company_messages[index].status = _status;
+            if(!multi){
+              if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread'){rootScope.company_length--;rootScope.o--}
+              rootScope.company_messages[index].status = _status;
+            }else{
+              for(var i = 0; i < rootScope.company_messages.length; i ++){
+                if(rootScope.company_messages[i].status === 'unread'){
+                  rootScope.company_messages[i].status = 'read';
+                  rootScope.companylength--;
+                  rootScope.o--;
+                }
+              }
+            }
             if(_status === 'delete'){
-              rootScope.company_messages.splice(index,1);
+              if(!multi){
+                rootScope.company_messages.splice(index,1);
+              }else{
+                rootScope.company_messages = [];
+                rootScope.o -= (rootScope.company_length);
+                rootScope.company_length = 0;
+              }
             }
           break;
           default:break;
@@ -302,6 +325,9 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
 //获取一对一私信或者系统站内信
 messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('private');
+  $scope.setAllStatus = function(_status){
+    sendSet($http,_status,$rootScope,null,'private',null,true);
+  }
   $scope.setToDelete = function(index){
     sendSet($http,'delete',$rootScope,$rootScope.private_messages[index]._id,'private',index,false);
   }
@@ -370,6 +396,9 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
     }
   }
 
+  $scope.setAllStatus = function(_status){
+    sendSet($http,_status,$rootScope,null,'team',null,true);
+  }
   $scope.setToDelete = function(index){
     sendSet($http,'delete',$rootScope,$rootScope.team_messages[index]._id,'team',index,false);
   }
@@ -423,6 +452,9 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
     }
   }
 
+  $scope.setAllStatus = function(_status){
+    sendSet($http,_status,$rootScope,null,'company',null,true);
+  }
   $scope.setToDelete = function(index){
     sendSet($http,'delete',$rootScope,$rootScope.company_messages[index]._id,'company',index,false);
   }
@@ -438,9 +470,9 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
 }]);
 
 //获取系统公告
-messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-  $rootScope.getMessageByHand('global');
-}]);
+// messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+//   $rootScope.getMessageByHand('global');
+// }]);
 
 
 messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {

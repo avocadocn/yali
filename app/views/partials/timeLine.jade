@@ -1,4 +1,4 @@
-append block headExt
+//-append block headExt
   link(rel="stylesheet" href="/css/timeline.css")
 .row
 
@@ -14,26 +14,30 @@ if(newTimeLines)
         each item in years.left
           .timeline_element
             .title
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
+              a(href="/campaign/detail/#{item.id}",target="_blank")
                 img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                 span.head= item.head
                 span.date= moment(item.start_time).format('MM/DD')
-            .img_container
+                .img_scroll
+                  each imgs in item.photo_list
+                    img.photo(src="#{imgs.thumbnail_uri}")
             .content
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
+              a(href="/campaign/detail/#{item.id}",target="_blank")
                 
                 p= item.content
       .column.column_right
         each item in years.right
           .timeline_element
             .title
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
+              a(href="/campaign/detail/#{item.id}",target="_blank")
                 img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                 span.head= item.head
                 span.date= moment(item.start_time).format('MM/DD')
-            .img_container
+                .img_scroll
+                  each imgs in item.photo_list
+                    img.photo(src="#{imgs.thumbnail_uri}")
             .content
-              a(href="/group/#{item.provoke ? 'competition': 'campaign'}/#{item.id}",target="_blank")
+              a(href="/campaign/detail/#{item.id}",target="_blank")
                 
                 p= item.content
 else

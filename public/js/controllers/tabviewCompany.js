@@ -71,9 +71,15 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
 
     $http.get('/campaign/getCampaigns/company/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.campaigns;
+      if(data.campaigns.length<20){
+        $scope.loadMore_flag = false;
+      }
+      else{
+        $scope.loadMore_flag = true;
+      }
     });
     $scope.campaignType='all';
-    $scope.loadMore_flag = true;
+
     $scope.block = 1;
     $scope.page = 1;
     $scope.pageTime = [0];
@@ -83,6 +89,12 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 if(++$scope.block==5){
                     $scope.nextPage_flag = true;
                     $scope.loadMore_flag = false;
@@ -90,6 +102,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                         $scope.lastPage_flag = true;
                     }
                 }
+
             }
             else{
                 $scope.loadOver_flag = true;
@@ -110,11 +123,16 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                     $scope.page--;
                 }
                 $scope.campaigns = data.campaigns;
-                $scope.loadMore_flag = true;
                 $scope.nextPage_flag = false;
                 $scope.lastPage_flag = false;
                 $scope.loadOver_flag = false;
                 $scope.block = 1;
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 window.scroll(0,0);
             }
             else{
@@ -826,58 +844,53 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $scope.initialize = function(){
-        if($scope.showMapFlag ==false){
-            $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-            $scope.locationmap.centerAndZoom('上海',15);
-            $scope.locationmap.enableScrollWheelZoom(true);
-            $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-            var getCity =function (result){
-                var cityName = result.name;
-                $scope.locationmap.centerAndZoom(cityName,15);
-                var options = {
-                    onSearchComplete: function(results){
-                        // 判断状态是否正确
-                        if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
-                            $scope.locationmap.clearOverlays();
-                            var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                            //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                            var marker = new BMap.Marker(nowPoint);  // 创建标注
-                            $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
-                            marker.enableDragging();    //可拖拽
-                            $scope.locationmap.centerAndZoom(nowPoint,15);
-                            $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                            marker.addEventListener("dragend", function changePoint(){
-                                var p = marker.getPosition();
-                                $scope.location.coordinates=[p.lng , p.lat];
-                            });
-                        }
+        $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
+        $scope.locationmap.centerAndZoom('上海',15);
+        $scope.locationmap.enableScrollWheelZoom(true);
+        $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+        var getCity =function (result){
+            var cityName = result.name;
+            $scope.locationmap.centerAndZoom(cityName,15);
+            var options = {
+                onSearchComplete: function(results){
+                    // 判断状态是否正确
+                    if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
+                        $scope.locationmap.clearOverlays();
+                        var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
+                        //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                        var marker = new BMap.Marker(nowPoint);  // 创建标注
+                        $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
+                        marker.enableDragging();    //可拖拽
+                        $scope.locationmap.centerAndZoom(nowPoint,15);
+                        $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                        marker.addEventListener("dragend", function changePoint(){
+                            var p = marker.getPosition();
+                            $scope.location.coordinates=[p.lng , p.lat];
+                        });
                     }
-                };
-                $scope.local = new BMap.LocalSearch($scope.locationmap,options);
-                $scope.local.search($scope.location.name );
-            }
-            var myCity = new BMap.LocalCity();
-            myCity.get(getCity);
-            $scope.showMapFlag = true;
-        }
-        else{
+                }
+            };
+            $scope.local = new BMap.LocalSearch($scope.locationmap,options);
             $scope.local.search($scope.location.name );
         }
-
+        var myCity = new BMap.LocalCity();
+        myCity.get(getCity);
+        $scope.showMapFlag = true;
     };
-    window.initialize = $scope.initialize;
+    
     $scope.showMap = function(){
         if($scope.location.name==''){
             $rootScope.donlerAlert('请输入地点');
             return false;
         }
         if($scope.showMapFlag ==false){
+            window.initialize = $scope.initialize;
             var script = document.createElement("script");  
             script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
             document.body.appendChild(script);
         }
         else{
-            $scope.initialize();
+            $scope.local.search($scope.location.name );
         }
     };
     $scope.sponsor = function() {

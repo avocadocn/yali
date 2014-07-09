@@ -171,12 +171,17 @@ exports.getBriefInfo = function(req,res) {
           message_theme = campaign[0].theme;
           campaign_id = campaign[0]._id;
         }
-        var htmlcontent ="<div class='popover_img'><a href='/group/home/"+companyGroup._id+"'><img class='size_80' src='"+companyGroup.logo+"'></img></a></div>";
-          htmlcontent += "<div class='popover_content'><p><a href='/group/home/"+companyGroup._id+"'>"+companyGroup.name+"</a></p></div>";
-          htmlcontent += "<div class='popover_brief'><p><span>最新活动:</span><a href='/campaign/detail/"+campaign_id+"'>"+message_theme+"</a></p></div>";
-        return res.send({
-          result: 1,
-          htmlcontent: htmlcontent
+        // var htmlcontent ="<div class='popover_img'><a href='/group/home/"+companyGroup._id+"'><img class='size_80' src='"+companyGroup.logo+"'></img></a></div>";
+        //   htmlcontent += "<div class='popover_content'><p><a href='/group/home/"+companyGroup._id+"'>"+companyGroup.name+"</a></p></div>";
+        //   htmlcontent += "<div class='popover_brief'><p><span>最新活动:</span><a href='/campaign/detail/"+campaign_id+"'>"+message_theme+"</a></p></div>";
+        // return res.send({
+        //   result: 1,
+        //   htmlcontent: htmlcontent
+        // });
+        res.render('partials/group_brief_card', {
+          companyGroup: companyGroup,
+          message_theme: message_theme,
+          campaign_id: campaign_id
         });
       });
     }
@@ -256,7 +261,7 @@ exports.timeLine = function(req, res){
   Campaign
   .find({ 'active':true,'finish':true,'team': req.session.nowtid})
   .sort('-start_time')
-  .populate('team')
+  .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
     if (campaigns && campaigns.length>0) {
@@ -287,7 +292,7 @@ exports.timeLine = function(req, res){
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
           year: getYear(campaign),
-          photo_album: campaign.photo_album
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
         }
         // todo new time style
         // console.log(campaign);
@@ -330,7 +335,7 @@ exports.timeLine = function(req, res){
       res.render('partials/timeLine');
     }
       // // todo new time style
-      // console.log(timeLines);
+      // console.log(newTimeLines);
       //console.log(newTimeLines);
       // // todo new time style
   })
@@ -406,6 +411,7 @@ exports.home = function(req, res) {
         for(var i = 0; i < req.user.team.length; i ++) {
           user_teams.push(req.user.team[i]._id.toString());
         }
+        //此处不需传那么多吧……M
         CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
           if(err || !company_groups) {
             return res.send([]);
@@ -644,6 +650,7 @@ exports.provoke = function (req, res) {
                 }
               });
             }else{
+              console.log(err);
               return res.send({'result':0,'msg':'ERROR'});
             }
           });
