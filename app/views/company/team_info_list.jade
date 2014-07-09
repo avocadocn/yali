@@ -1,18 +1,16 @@
 .dl_allteaminfo_container
-  //-小队信息
   table.group_table
     tr
-      th.noborder(colspan="8")
-        h5.pull-left #{__("TEAM_INFO")}
+      th.noborder(colspan="9")
         if (Global.role === 'HR')
-          a.dl_btn.dl_btn_small.pull-right(href="#/addGroup") #{__("ADD_TEAM")}
+          a.pull-right(href="#/addGroup") #{__("ADD_TEAM")}
     tr
-      th 小队logo
+      th 
       th 小队名
       th 人数
       th 队长
       if Global.role ==='HR'
-        th 一周内活动数
+        th 近一周活动数
         th 一周内活动人次
         th 一月内活动数
         th 一月内活动人次
@@ -38,7 +36,7 @@
           span {{team.count.last_month_campaign}}
         td
           span {{team.count.last_month_member}}
-      td
+      td.operate
         if Global.role === 'HR'
           .dl_row.clearfix
             button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}

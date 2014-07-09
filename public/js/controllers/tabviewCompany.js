@@ -71,9 +71,15 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
 
     $http.get('/campaign/getCampaigns/company/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.campaigns = data.campaigns;
+      if(data.campaigns.length<20){
+        $scope.loadMore_flag = false;
+      }
+      else{
+        $scope.loadMore_flag = true;
+      }
     });
     $scope.campaignType='all';
-    $scope.loadMore_flag = true;
+
     $scope.block = 1;
     $scope.page = 1;
     $scope.pageTime = [0];
@@ -83,6 +89,12 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 if(++$scope.block==5){
                     $scope.nextPage_flag = true;
                     $scope.loadMore_flag = false;
@@ -90,6 +102,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                         $scope.lastPage_flag = true;
                     }
                 }
+
             }
             else{
                 $scope.loadOver_flag = true;
@@ -110,11 +123,16 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                     $scope.page--;
                 }
                 $scope.campaigns = data.campaigns;
-                $scope.loadMore_flag = true;
                 $scope.nextPage_flag = false;
                 $scope.lastPage_flag = false;
                 $scope.loadOver_flag = false;
                 $scope.block = 1;
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 window.scroll(0,0);
             }
             else{

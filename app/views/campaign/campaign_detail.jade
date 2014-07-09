@@ -98,7 +98,7 @@ block contentExt
                   .triangle
                   .comment_content
                     p {{comment.content}}
-                label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+                label.comment_date.text {{comment.create_date | dateView}}
                 a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}

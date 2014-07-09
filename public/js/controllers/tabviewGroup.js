@@ -136,7 +136,12 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             $scope.role = data.role;
 
             $rootScope.message_corner = true;
-
+            if(data.group_messages.length<20){
+                $scope.loadMore_flag = false;
+            }
+            else{
+                $scope.loadMore_flag = true;
+            }
             $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope),true;
         });
         $rootScope.$watch('teamName',function(tname){
@@ -146,8 +151,6 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
     //var teamId = $('#team_content').attr('team-id');
     $rootScope.nowTab ='group_message';
-
-    $scope.loadMore_flag = true;
     $scope.block = 1;
     $scope.page = 1;
     $scope.pageTime = [0];
@@ -188,10 +191,13 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.loadMore = function(){
         $http.get('/groupMessage/team/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
-
-
-
                 $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
+                if(data.group_messages.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 if(++$scope.block==5){
                     $scope.nextPage_flag = true;
                     $scope.loadMore_flag = false;
@@ -199,6 +205,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                         $scope.lastPage_flag = true;
                     }
                 }
+
             }
             else{
                 $scope.loadOver_flag = true;
@@ -219,8 +226,12 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     $scope.page--;
                 }
                 $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
-
-                $scope.loadMore_flag = true;
+                if(data.group_messages.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 $scope.nextPage_flag = false;
                 $scope.lastPage_flag = false;
                 $scope.loadOver_flag = false;
@@ -446,6 +457,12 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $http.get('/campaign/getCampaigns/team/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.campaigns = data.campaigns;
         $rootScope.sum = $scope.campaigns.length;
+        if(data.campaigns.length<20){
+            $scope.loadMore_flag = false;
+        }
+        else{
+            $scope.loadMore_flag = true;
+        }
     });
     $scope.loadMore_flag = true;
     $scope.block = 1;
@@ -458,6 +475,12 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         $http.get('/campaign/getCampaigns/team/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 if(++$scope.block==5){
                     $scope.nextPage_flag = true;
                     $scope.loadMore_flag = false;
@@ -465,6 +488,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                         $scope.lastPage_flag = true;
                     }
                 }
+
             }
             else{
                 $scope.loadOver_flag = true;
@@ -485,11 +509,16 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                     $scope.page--;
                 }
                 $scope.campaigns = data.campaigns;
-                $scope.loadMore_flag = true;
                 $scope.nextPage_flag = false;
                 $scope.lastPage_flag = false;
                 $scope.loadOver_flag = false;
                 $scope.block = 1;
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
                 window.scroll(0,0);
             }
             else{

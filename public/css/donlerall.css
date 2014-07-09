@@ -601,7 +601,7 @@ textarea {
   background-color: #fff;
 }
 .dl_company_container .main {
-  width: 820px;
+  width: 920px;
 }
 .dl_company_container .main .group_table {
   width: 920px;
@@ -616,6 +616,11 @@ textarea {
   border-width: 1px 0;
   overflow: hidden;
   padding: 10px 0;
+  width: 10%;
+}
+.dl_company_container .main .group_table th .operate,
+.dl_company_container .main .group_table td .operate {
+  width: 20%;
 }
 .dl_company_container .main .group_table .noborder {
   border: none;

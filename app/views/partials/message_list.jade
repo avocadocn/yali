@@ -37,7 +37,7 @@
         a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
         span 有新成员加入
       span.message_head(ng-switch-when="8")
-        a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}
+        a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}、
         span 有新成员加入
       span(ng-switch-default)
       span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
@@ -127,6 +127,8 @@
 .text-center(ng-if="group_messages.length>0")
   button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
   span(ng-if="loadOver_flag") 已经加载了所有的动态
+.text-center(ng-if="group_messages.length==0")
+  span 目前没有新的动态
 ul.pager
   li
     a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
