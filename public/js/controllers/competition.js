@@ -24,14 +24,17 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     $scope.$watch('rst_content',function(rst_content){
       $scope.rst_content = rst_content;
       $scope.$watch('score_a',function(score_a){
-        $scope.score_own.score = score_a != 'undefined' ? score_a : 0;
+        $scope.score_own.score = score_a != 'undefined' ? score_a : "";
         $scope.$watch('score_b',function(score_b){
-          $scope.score_opposite.score = score_b != 'undefined' ? score_b : 0;
+          $scope.score_opposite.score = score_b != 'undefined' ? score_b : "";
           $scope.$watch('msg_show',function(msg_show){
             $scope._msg_show = msg_show;
             if(msg_show=='true'){
               $scope.modify_caption = "发出异议";
             }
+            $scope.$watch('confirm_mode',function(confirm_mode){
+              ;
+            });
           });
         });
       });

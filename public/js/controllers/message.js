@@ -177,9 +177,11 @@ var messagePreHandle = function(teams,msg){
     //私人
     if(msg[i].type == 'private'){
       if(msg[i].message_content.team.length > 0){
-        if(msg[i].message_content.team[0].provoke_status > 0){
+        if([2,3].indexOf(msg[i].message_content.team[0].provoke_status) > -1){
+
+
           message_type = 4;
-          var last_content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的比赛结果" : "发出了一个新的比赛确认";
+          var last_content = msg[i].message_content.team[0].provoke_status == 3 ? "接受了您的比赛结果" : "发出了一个新的比赛确认";
           content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
           private_messages.push({
             '_id':msg[i]._id,
@@ -189,6 +191,22 @@ var messagePreHandle = function(teams,msg){
             'date':msg[i].message_content.post_date,
             'message_type':message_type,
             'campaign_id':msg[i].message_content.campaign_id
+          });
+        }
+        if([0,1].indexOf(msg[i].message_content.team[0].provoke_status) > -1){
+
+
+          message_type = 7;
+          var last_content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的挑战" : "向您发出了一个新的挑战";
+          content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
+          private_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'content':content,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'message_type':message_type,
+            'team_id':msg[i].message_content.team[1]._id
           });
         }
       }else{

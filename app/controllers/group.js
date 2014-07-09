@@ -646,6 +646,32 @@ exports.provoke = function (req, res) {
                 if (err) {
                   console.log('保存约战动态时出错' + err);
                 }else{
+
+                  if(team_opposite.leader.length > 0){
+                    var param = {
+                      'own':{
+                        '_id':req.user._id,
+                        'nickname':req.user.nickname,
+                        'leader':true
+                      },
+                      'receiver':{
+                        '_id':team_opposite.leader[0]._id
+                      },
+                      'content':null,
+                      'own_team':{
+                        '_id':my_team_id,
+                        'name':req.companyGroup.name,
+                        'provoke_status':0
+                      },
+                      'receive_team':{
+                        '_id':team_opposite._id,
+                        'name':team_opposite.name,
+                        'provoke_status':0
+                      },
+                      'campaign_id':null
+                    };
+                    message.sendToOne(req,res,param);
+                  }
                   return res.send({'result':0,'msg':'SUCCESS'});
                 }
               });
@@ -670,7 +696,7 @@ exports.responseProvoke = function (req, res) {
   var competition_id = req.body.competition_id;
   Campaign.findOne({
       '_id' : competition_id
-    },
+    }).populate('team').exec(
   function (err, campaign) {
     campaign.camp[1].start_confirm = true;
     campaign.active = true;
@@ -681,7 +707,8 @@ exports.responseProvoke = function (req, res) {
         return res.send({'result':0,'msg':'应战失败！'});
       }
       else{
-        GroupMessage.findOne({campaign:campaign._id},function(err,groupMessage){
+        var rst = campaign.team;
+        GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
           groupMessage.message_type = 5;
 
           groupMessage.create_time = new Date();
@@ -690,6 +717,29 @@ exports.responseProvoke = function (req, res) {
               console.log('保存约战动态时出错' + err);
             }
             else{
+              var param = {
+                'own':{
+                  '_id':req.user._id,
+                  'nickname':req.user.nickname,
+                  'leader':true
+                },
+                'receiver':{
+                  '_id':rst[0].leader[0]._id
+                },
+                'content':null,
+                'own_team':{
+                  '_id':rst[1]._id,
+                  'name':rst[1].name,
+                  'provoke_status':1
+                },
+                'receive_team':{
+                  '_id':rst[0]._id,
+                  'name':rst[0].name,
+                  'provoke_status':1
+                },
+                'campaign_id':null
+              };
+              message.sendToOne(req,res,param);
               return res.send({'result':0,'msg':'SUCCESS'});
             }
           });

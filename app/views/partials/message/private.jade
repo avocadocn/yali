@@ -22,6 +22,9 @@ hr
             您收到了一条
             a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
               系统消息
+          h5(ng-switch-when="7")
+            a(href="/group/home/{{private_message.team_id}}" ng-click="setToRead($index)")
+              {{private_message.content}}
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |

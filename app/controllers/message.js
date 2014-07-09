@@ -34,7 +34,7 @@ function get(param){
     case 0:
       param.collection.findOne(param.condition,param.limit,function(err,message){
         if(err || !message){
-          param._err(err);
+          param._err(err,param.req,param.res);
         }else{
           param.callback(message,param.other_param,param.req,param.res);
         }
@@ -43,7 +43,7 @@ function get(param){
     case 1:
       param.collection.find(param.condition,param.limit).sort(param.sort).exec(function(err,messages){
         if(err || !messages){
-          param._err(err);
+          param._err(err,param.req,param.res);
         }else{
           param.callback(messages,param.other_param,param.req,param.res);
         }
@@ -66,17 +66,17 @@ function set(param){
     case 0:
       param.collection.findByIdAndUpdate({'_id':param.condition},param.operate,function(err,message){
         if(err || !message){
-          param._err(err);
+          param._err(err,param.req,param.res);
         }else{
-          param.callback(message);
+          param.callback(message,param.other_param,param.req,param.res);
         }
       });
     case 1:
       param.collection.update(param.condition,param.operate,{multi: true},function(err,message){
         if(err || !message){
-          param._err(err);
+          param._err(err,param.req,param.res);
         }else{
-          param.callback(message);
+          param.callback(message,param.other_param,param.req,param.res);
         }
       });
     default:break;
@@ -88,7 +88,7 @@ function _add(param){
   param.collection.create(param.operate,function(err,message){
     if(err || !message){
       if(param._err!=null && typeof param._err == 'function'){
-        param._err(err);
+        param._err(err,param.req,param.res);
       }
     } else {
       if(param.callback!=null && typeof param.callback == 'function'){
@@ -101,14 +101,14 @@ function _add(param){
 function drop(param){
   param.collection.remove(param.condition,function(err,message){
     if(err || !message){
-      param._err(err);
+      param._err(err,param.req,param.res);
     }else{
       param.callback(message);
     }
   });
 }
 
-var _err = function(err){
+var _err = function(err,req,res){
   console.log(err);
 }
 
@@ -254,6 +254,48 @@ exports.leaderSendToMember = function(req,res){
   };
   get(param);
 };
+
+exports.sendToOne = function(req, res, param){
+  var callback = function (message_content,receiver,req,res){
+    var M = {
+      'type':'private',
+      'rec_id':receiver._id,
+      'MessageContent':message_content._id,
+      'status':'unread'
+    };
+    var param = {
+      'collection':Message,
+      'operate':M,
+      'callback':function(message,other,req,res){return {'result':1,'msg':'SUCCESS'};},
+      '_err':_err,
+      'other_param':null,
+      'req':req,
+      'res':res
+    };
+    _add(param);
+  }
+  var MC={
+    'type':'private',
+    'caption':'Private Message',
+    'content':param.content,
+    'sender':[param.own],
+    'team':[param.own_team,param.receive_team],
+    'company_id':null,
+    'campaign_id':param.campaign_id,
+    'deadline':(new Date())+time_out
+  };
+  var _param = {
+    'collection':MessageContent,
+    'operate':MC,
+    'callback':callback,
+    '_err':_err,
+    'other_param':param.receiver,
+    'req':req,
+    'res':res
+  };
+  _add(_param);
+}
+
 
 
 exports.sendToParticipator = function(req, res){
@@ -447,7 +489,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id){
       };
   var callbackMC = function (message_content,olid,req,res){
     var callbackM = function (message_content,other,req,res){
-      res.send({'result':1,'msg':'SUCCESS'});
+      return {'result':1,'msg':'SUCCESS'};
     }
     var M={
       'rec_id':olid,

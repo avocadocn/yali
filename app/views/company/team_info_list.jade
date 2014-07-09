@@ -19,12 +19,12 @@
         a(href="/group/home/{{team._id}}")
           img.img_border.img_contain.size_56(ng-src="{{team.logo}}" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
       td.text-left
-        span.text-left {{team.name}}
+        span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
       td
         span {{team.member.length}}
       td
           span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
-            span {{l.nickname}}
+            span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
           span.row(ng-if="team.leader.length==0") 无
       if Global.role ==='HR'
         td
