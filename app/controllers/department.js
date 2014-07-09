@@ -77,7 +77,7 @@ var operateFromRootAndDeleteOne = function(did,req,res){
 //深度优先修改算法
 //第一次传进来的是company
 var departmentFindAndUpdate = function(department,did,param){
-  if(department._id === did){
+  if(department._id.toString() === did){
     //操作
     switch(param.type){
       case 0:
@@ -163,7 +163,11 @@ exports.deleteDepartment = function(req,res){
 //获取树形部门数据
 exports.getDepartment = function(req,res){
   if(req.session.role === 'HR'){
-    res.send({'msg':'DEPARTMENT_GET_SUCCESS','department':req.user.department});
+    res.send({
+      '_id': req.user._id,
+      'name': req.user.info.name,
+      'department': req.user.department
+    });
   }else{
     res.send(403);
   }
@@ -218,7 +222,11 @@ exports.createDepartment = function(req,res){
                   if(err){
                     res.send({'msg':'DEPARTMENT_UPDATE_FAILURE'});
                   }else{
-                    res.send({'msg':'DEPARTMENT_ADD_SUCCESS','department':company.department});
+                    res.send({
+                      '_id': req.user._id,
+                      'name': req.user.info.name,
+                      'department': company.department
+                    });
                   }
                 });
               }
