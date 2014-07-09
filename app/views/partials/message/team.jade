@@ -13,20 +13,23 @@ hr
         .dl_md_12(ng-switch="team_message.message_type")
           h5(ng-switch-when="0")
             {{team_message.content}} 给您发了
-            a(id='pop_message_{{$index}}' ng-click="showPop($index)") 一条私信
+            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
           h5(ng-switch-when="1")
             您参加的活动
             a(href="/campaign/detail/{{team_message.campaign_id}}")
               {{team_message.campaign_name}}
             有了
-            a(id='pop_message_{{$index}}' ng-click="showPop($index)") 新的消息
+            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
           h5(ng-switch-when="2")
             您参加的比赛
             a(href="/competition/{{team_message.campaign_id}}")
               {{team_message.campaign_name}}
             有了
-            a(id='pop_message_{{$index}}' ng-click="showPop($index)") 新的消息
+            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
           button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="team_message.status=='read'") {{statusHandle(team_message.status)}}
+  .dl_row
+    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="team_length > 0") 全部设为已读
+    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="team_messages.length > 0") 全部删除
