@@ -921,6 +921,8 @@ exports.renderPhotoDetail = function(req, res) {
           }
         ];
 
+        var return_url = '/photoAlbumDetailView/' + photo_album._id;
+
         return res.render('photo_album/photo_detail', {
           photo_detail: {
             _id: photos[i]._id,
@@ -941,6 +943,7 @@ exports.renderPhotoDetail = function(req, res) {
             owner: owner
           },
           links: links,
+          return_url: return_url,
           moment: moment,
           editAuth: editAuth
         });
