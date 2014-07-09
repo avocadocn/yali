@@ -100,7 +100,7 @@ function _add(param){
 
 function drop(param){
   param.collection.remove(param.condition,function(err,message){
-    if(err || message){
+    if(err || !message){
       param._err(err);
     }else{
       param.callback(message);
