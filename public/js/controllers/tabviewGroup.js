@@ -688,7 +688,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             if(!window.map_ready){//如果没有加载过地图script则加载
                 window.court_map_initialize = $scope.initialize;
                 var script = document.createElement("script");  
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=ccourt_map_initialize";
+                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=court_map_initialize";
                 document.body.appendChild(script);
             }
             if($scope.showMap){//如果需要显示地图则初始化
@@ -899,6 +899,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $scope.modal=false;
+    $scope.result=0;//是否已搜索
     $rootScope.$watch('loadMapIndex',function(value){
         if(value==2){
             //加载地图
@@ -913,6 +914,8 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             }
         }
     });
+    
+
 
     $("#competition_start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
@@ -938,6 +941,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         } else {
             $scope.getTeam();
         }
+        $scope.result=1;//已搜索，显示搜索结果
     };
 
     $scope.initialize = function(){
@@ -1117,4 +1121,33 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
+
+    $scope.preStep = function(){
+        $scope.modal=false;
+    };
+
+        //推荐小队
+    $scope.recommandTeam = function(){
+        try{
+            $http({
+                method:'post',
+                url:'/search/recommandteam',
+                data:{
+                    gid : $rootScope.groupId,
+                    tid : $rootScope.teamId
+                }
+            }).success(function(data,status){
+                if(data.result===1)
+                    $scope.teams=data;
+                else if(data.result===2)//没填主场
+                    $scope.homecourt=false;
+            }).error(function(data,status){
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            })
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+    $scope.recommandTeam();//直接显示推荐小队
 }]);

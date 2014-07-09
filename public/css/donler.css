@@ -46,6 +46,7 @@ textarea {
 }
 .dl_allteaminfo_container {
   width: 1200px !important;
+  background-color: #fff;
 }
 .comment_height_limit {
   height: auto;
@@ -611,9 +612,6 @@ textarea {
   text-align: center;
   font-weight: bold;
 }
-.dl_allteaminfo_container {
-  background-color: #fff;
-}
 .dl_company_container .main {
   width: 920px;
 }
@@ -769,6 +767,9 @@ textarea {
 .subtitle {
   font-size: 14px;
   font-weight: bold;
+}
+.warning_words {
+  color: #cd270d;
 }
 .padding_0 {
   padding-left: 0;
