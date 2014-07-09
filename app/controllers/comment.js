@@ -63,13 +63,13 @@ exports.setComment = function(req,res){
             if(host_type === "campaign" || host_type === "campaign_detail") {
                 Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':1}},function(err,message){
                     if(err || !message) {
-                        return res.send("ERROR");
+                        return res.send({'msg':'ERROR','comment':[]});
                     } else {
-                        return res.send("SUCCESS");
+                        return res.send({'msg':'SUCCESS','comment':comment});
                     }
                 });
             } else {
-                return res.send("SUCCESS");
+                return res.send({'msg':'SUCCESS','comment':comment});
             }
         }
     })

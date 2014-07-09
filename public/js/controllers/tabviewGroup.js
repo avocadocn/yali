@@ -308,10 +308,13 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     }
     $scope.comment = function(index){
-        for(var i = 0; i < $scope.group_messages[index].comments.length; i ++){
-            if($scope.new_comment[index].text === $scope.group_messages[index].comments[i].content){
-                alertify.alert('勿要重复留言!');
-                return;
+        if($scope.group_messages[index].comments.length > 0){
+            var tmp_comment = $scope.group_messages[index].comments[0];
+            if(tmp_comment.poster._id === $scope.user._id){
+                if($scope.new_comment[index].text === tmp_comment.content){
+                    alertify.alert('勿要重复留言!');
+                    return;
+                }
             }
         }
         try {
@@ -324,19 +327,15 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     host_type : 'campaign'
                 }
             }).success(function(data, status) {
-                if(data === 'SUCCESS'){
-                    var poster={
-                        'nickname' : $scope.user.nickname,
-                        'photo' : $scope.user.photo
-                    };
+                if(data.msg === 'SUCCESS'){
                     $scope.group_messages[index].campaign.comment_sum ++;
                     $scope.group_messages[index].comments.unshift({
                         'show':true,
-                        'host_id' : $scope.group_messages[index].campaign._id,
-                        'content' : $scope.new_comment[index].text,
-                        'create_date' : new Date(),
-                        'poster' : poster,
-                        'host_type' : 'campaign',
+                        'host_id' : data.comment.host_id,
+                        'content' : data.comment.content,
+                        'create_date' : data.comment.create_date,
+                        'poster' : data.comment.poster,
+                        'host_type' : data.comment.host_type,
                         'index' : $scope.fixed_sum+1
                     });
                 } else {

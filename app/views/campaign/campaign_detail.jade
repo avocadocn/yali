@@ -90,8 +90,8 @@ block contentExt
               .comment_user_info
                 a(href="/users/home/{{comment.poster._id}}" )
                   img.user_photo.size_56(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-                p
-                  a.user_name(href="/users/home/{{comment.poster._id}}") {{shortTrim(comment.poster.nickname)}}
+                p.dl_user_name_small
+                  a(href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
               .comment_content_panel
                 .relative
                   .triangle_border
