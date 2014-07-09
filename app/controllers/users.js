@@ -1391,7 +1391,7 @@ exports.getBriefInfo = function(req,res){
       //   result: 1,
       //   htmlcontent: htmlcontent
       // });
-      res.render('partials/brief_card', { user: user });
+      res.render('partials/user_brief_card', { user: user });
     }
   });
 };

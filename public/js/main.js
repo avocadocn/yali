@@ -26,12 +26,8 @@ app.directive('bsPopover',function() {
         else{
           $scope.group_id = group_id;
           $http.get('/group/briefInfo/'+group_id).success(function(data, status){
-            if(data.result){
-                $('#pop'+pop_id).dl_card({content:data.htmlcontent});
-                $scope.htmlcontent =  data.htmlcontent;
-            }
-            else
-              console.log(data.msg);
+            $('#pop'+pop_id).dl_card({content:data});
+            $scope.htmlcontent = data;
           });
         }
       };
