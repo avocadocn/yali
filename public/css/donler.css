@@ -1436,12 +1436,14 @@ input.ng-invalid.ng-dirty {
 #family .carousel-img-container img {
   max-height: 100%;
 }
-<<<<<<< HEAD
 .dl_allteaminfo_container {
   width: 100%;
   min-width: 1000px;
   max-width: 1200px;
   background-color: #fff;
+}
+.selected_img {
+  border-color: #5cb85c;
 }
 .dl_allteaminfo_emp {
   background-color: #fff;
@@ -1465,8 +1467,4 @@ input.ng-invalid.ng-dirty {
 }
 .deckgrid .column-1-4 {
   width: 25%;
-=======
-.selected_img {
-  border-color: #5cb85c;
->>>>>>> b5c76eefdb7ed3ed304237c7dcec174cc22a9a6a
 }
