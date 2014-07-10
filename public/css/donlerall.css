@@ -171,7 +171,7 @@ textarea {
   padding: 2px 10px 0;
 }
 .dl_head {
-  max-width: 70%;
+  max-width: 1020px;
   width: auto;
   min-width: 960px;
   margin: 0 auto;
@@ -661,7 +661,7 @@ textarea {
   line-height: 21px;
 }
 .dl_messagebox:hover {
-  background-color: #f7f7f7;
+  background-color: #fafafa;
 }
 .dl_messagebox:after {
   display: block;
@@ -676,7 +676,7 @@ textarea {
   content: "";
 }
 .dl_messagebox .dl_messageitem {
-  padding: 10px 0;
+  padding: 10px;
 }
 .dl_messagebox .pointer {
   cursor: pointer;
@@ -686,7 +686,7 @@ textarea {
   float: left;
 }
 .dl_messagebox .messagebox_content {
-  width: 590px;
+  width: 570px;
   float: left;
   margin-left: 10px;
   position: relative;
