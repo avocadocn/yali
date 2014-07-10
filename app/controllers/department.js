@@ -18,17 +18,78 @@ var stack_root = new StackAndQueue.stack();
 //var queue = new StackAndQueue.queue();
 
 
-
-
-
-
-var deleteFromRoot = function(department,req,res){
-  var delete_ids = [];
-  delete_ids.push(department._id);
-  stack.push({
-    '_id':department._id,
-    'department':department.department
+//任撤部门管理员
+exports.managerOperate = function(req,res){
+  var manager = req.body.manager;
+  var did = req.body.did;
+  Department.findByIdAndUpdate({'_id':did},{'$set':{'manager':manager}},function(err,department){
+    if(err || !message){
+      res.send({'msg':'DEPARTMENT_MANAGER_CHANGE_FAILURE'});
+    }else{
+      res.send({'msg':'DEPARTMENT_MANAGER_CHANGE_SUCCESS','manager':department.manager});
+    }
   });
+}
+
+
+
+//部门之间挑战
+exports.provoke = function(req,res){
+
+}
+
+
+//部门之间应战
+exports.responseProvoke = function(req,res){
+
+}
+
+
+
+//部门发活动
+exports.sponsor = function(req,res){
+
+}
+
+
+//部门成员加退
+
+exports.memberOperate = function(req,res){
+
+}
+
+//获取某一部门的详细信息
+exports.getDepartmentDetail = function(req,res){
+  // var did = req.body.did;
+  // Department.findOne({'_id':did}).populate('team').exec(function(err,department){
+  //   if(err || !department){
+  //     res.send({'msg':'DEPARTMENT_MANAGER_CHANGE_FAILURE'},'department':null);
+  //   }else{
+
+  //   }
+  // });
+}
+
+
+var deleteFromRoot = function(department,seq,req,res){
+  stack = null;
+  stack = new StackAndQueue.stack();
+  var delete_ids = [];
+
+  //删除某个部门以及其下的所有部门
+  if(seq != -1){
+    delete_ids.push(department[seq]._id);
+    stack.push({
+      '_id':department[seq]._id,
+      'department':department[seq].department
+    });
+  //删除公司下的所有部门
+  }else{
+    stack.push({
+      '_id':department._id,
+      'department':department.department
+    });
+  }
   while(!stack.isEmpty()){
     var pop = stack.pop();
     if(pop.department.length > 0){
@@ -39,34 +100,71 @@ var deleteFromRoot = function(department,req,res){
       }
     }
   }
-  Department.remove({'_id':{'$in':delete_ids}},function(err,department){
-    if(err || !department){
+  Department.remove({'_id':{'$in':delete_ids}},function(err,_department){
+    if(err || !_department){
       return res.send({'msg':'DEPARTMENT_DELETE_FAILURE','department':[]});
     }else{
-      return res.send({'msg':'DEPARTMENT_DELETE_SUCCESS','department':req.user.department});
+
+      if(seq != -1){
+        department.splice(seq,1);
+      }else{
+        req.user.department = [];
+      }
+
+      Company.findOne({'_id':req.user._id},function(err,company){
+        if (err || !company){
+          res.send({'msg':'DEPARTMENT_DELETE_FAILURE','department':[]});
+        }else{
+          company.department = req.user.department;
+          company.save(function(err){
+            if(err){
+              res.send({'msg':'DEPARTMENT_DELETE_FAILURE','department':[]});
+            }else{
+              res.send({
+                'msg':'DEPARTMENT_DELETE_SUCCESS',
+                '_id': req.user._id,
+                'name': req.user.info.name,
+                'department': company.department
+              });
+            }
+          })
+        }
+      })
+
     }
   });
 }
-
 var operateFromRootAndDeleteOne = function(did,req,res){
+  stack = null;
+  stack = new StackAndQueue.stack();
+  var find = false;
   //从根部开始找
   stack.push({
     '_id':req.user._id,
     'department':req.user.department
   });
-  while(!stack.isEmpty()){
+  while(!stack.isEmpty() && !find){
     var pop = stack.pop();
     if(pop.department.length > 0){
-      for(var i = 0; i < pop.department.length; i ++){
+      for(var i = 0; i < pop.department.length && !find; i ++){
 
-        if(pop.department[i]._id === did){
-          deleteFromRoot(pop.department[i],res);
-          pop.department.splice(i,1);
+        if(pop.department[i]._id.toString() === did.toString()){
+          find = true;
+
+          //pop.department.splice(i,1);
+
+          deleteFromRoot(pop.department,i,req,res);
+          return;
+
         }else{
           stack.push(pop.department[i]);
         }
+
       }
     }
+  }
+  if(!find){
+    return res.send({'msg':'DEPARTMENT_DELETE_SUCCESS','department':req.user.department});
   }
 }
 
@@ -77,6 +175,8 @@ var operateFromRootAndDeleteOne = function(did,req,res){
 //深度优先修改算法
 //第一次传进来的是company
 var departmentFindAndUpdate = function(department,did,param){
+  stack = null;
+  stack = new StackAndQueue.stack();
   if(department._id.toString() === did){
     //操作
     switch(param.type){
@@ -100,11 +200,12 @@ var departmentFindAndUpdate = function(department,did,param){
       var pop = stack.pop();
       if(pop.department.length > 0){
         for(var i = 0; i < pop.department.length; i ++){
-          if(pop.department[i]._id === did){
+          if(pop.department[i]._id.toString() === did.toString()){
             //操作
             switch(param.type){
               case 0:
                 param.child.parent_id = pop.department[i]._id;
+                param.child.department = [];
                 pop.department[i].department.push(param.child);
               return department;
               case 1:
@@ -154,7 +255,13 @@ exports.modifyDepartment = function(req,res){
 exports.deleteDepartment = function(req,res){
   if(req.session.role === 'HR'){
     var did = req.body.did;
-    operateFromRootAndDeleteOne(did,req,res);
+    if(did.toString() === req.user._id.toString()){
+      //删除该公司下的所有部门
+      deleteFromRoot(req.user,-1,req,res);
+    }else{
+      //删除某个部门以及其下所有子部门
+      operateFromRootAndDeleteOne(did,req,res);
+    }
   }else{
     res.send(403);
   }
@@ -211,13 +318,15 @@ exports.createDepartment = function(req,res){
               }else{
                 var child = {
                   '_id':department._id,
-                  'name':name
+                  'name':name,
+                  'department':[]
                 };
                 var param = {
                   'type':0,
                   'child':child
                 };
-                company.department = departmentFindAndUpdate(company,did,param).department;
+                company.department = departmentFindAndUpdate(req.user,did,param).department;
+
                 company.save(function (err){
                   if(err){
                     res.send({'msg':'DEPARTMENT_UPDATE_FAILURE'});

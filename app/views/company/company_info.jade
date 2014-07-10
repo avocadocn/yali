@@ -98,13 +98,13 @@ div.company-info
 
   script(type="text/ng-template" id="node.html")
     span
-      i.glyphicon.glyphicon-minus(ng-if="node.children")
-      i.glyphicon.glyphicon-credit-card(ng-if="!node.children")
+      i.glyphicon.glyphicon-minus(ng-if="node.department")
+      i.glyphicon.glyphicon-credit-card(ng-if="!node.department")
       | &nbsp;{{node.name}}
     button(ng-click="addNode(node)") 增加
     button(ng-click="deleteNode(node)") 删除
     ul
-      li(ng-repeat="node in node.children" ng-include="'node.html'" ng-class="hasChild(node)")
+      li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
 
   .tree
     ul
