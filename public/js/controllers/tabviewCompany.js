@@ -763,21 +763,21 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             $scope.node = {
                 _id: data._id,
                 name: data.name,
-                children: data.department
+                department: data.department
             };
-            if ($scope.node.children.length === 0) {
-                $scope.node.children = null;
+            if ($scope.node.department.length === 0) {
+                $scope.node.department = null;
             }
         });
     })();
 
     $('.tree').delegate('li.parent_li > span', 'click', function(e) {
-        var children = $(this).parent('li.parent_li').find(' > ul > li');
-        if (children.is(":visible")) {
-            children.hide('fast');
+        var department = $(this).parent('li.parent_li').find(' > ul > li');
+        if (department.is(":visible")) {
+            department.hide('fast');
             $(this).attr('title', 'Expand this branch').find(' > i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
         } else {
-            children.show('fast');
+            department.show('fast');
             $(this).attr('title', 'Collapse this branch').find(' > i').addClass('glyphicon-minus').removeClass('glyphicon-plus');
         }
         e.stopPropagation();
@@ -785,7 +785,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
 
 
     $scope.hasChild = function(node) {
-        if (node && node.children) {
+        if (node && node.department) {
             return 'parent_li';
         } else {
             return '';
@@ -802,10 +802,10 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             $scope.node = {
                 _id: data._id,
                 name: data.name,
-                children: data.department
+                department: data.department
             };
-            if ($scope.node.children.length === 0) {
-                $scope.node.children = null;
+            if ($scope.node.department.length === 0) {
+                $scope.node.department = null;
             }
         });
     };
@@ -817,8 +817,18 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         })
         .success(function(data, status) {
             // 不应该这样
+            /*
             if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
                 getDepartments();
+            }
+            */
+            //应该这样
+            if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
+                $scope.node = {
+                    _id: data._id,
+                    name: data.name,
+                    department: data.department
+                };
             }
         });
     };
