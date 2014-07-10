@@ -698,7 +698,13 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         }
     };
 
+
     var jcrop_api;
+    // ng-show 会有BUG,不得已使用jquery show,hide
+    var family_preview_container = $('#family_preview_container');
+    var family_jcrop_container = $('#family_jcrop_container');
+    family_preview_container.show();
+    family_jcrop_container.hide();
 
     $scope.family_photos;
     var getFamily = function() {
@@ -723,6 +729,14 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         }
     };
 
+    $scope.back = function() {
+        if (jcrop_api) {
+            jcrop_api.destroy();
+        }
+        family_preview_container.show();
+        family_jcrop_container.hide();
+    };
+
     $scope.deletePhoto = function(id) {
         $http
         .delete('/group/family/photo/' + id)
@@ -737,6 +751,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $('#upload_family_form').ajaxForm(function(data, status) {
         getFamily();
         jcrop_api.destroy();
+        family_preview_container.show();
+        family_jcrop_container.hide();
     });
 
     var getFilePath = function(input, callback) {
@@ -762,6 +778,9 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                 $scope.remind = '上传的文件大小不可以超过5M';
             } else {
                 upload_button[0].disabled = false;
+                $scope.step = 'upload';
+                family_preview_container.hide();
+                family_jcrop_container.show();
             }
         }
 

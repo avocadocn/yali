@@ -1374,6 +1374,9 @@ input.ng-invalid.ng-dirty {
 .family_preview_container {
   margin-top: 20px;
 }
+.family_preview_container .add_picture_btn {
+  margin-top: 20px;
+}
 .family_photo_preview_cell {
   width: 160px;
   height: 90px;
