@@ -13,9 +13,17 @@ function getUserAllCampaigns(user, isCalendar, callback) {
     team_ids.push(user.team[i]._id);
   }
   var options = {
-    'cid': user.cid,
-    'active': true,
-    'team': { '$in': team_ids }
+    '$or': [
+      {
+        'cid': user.cid,
+        'team': { '$size': 0 }
+      },
+      {
+        'cid': user.cid,
+        'team': { '$in': team_ids }
+      }
+    ],
+    'active': true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
@@ -42,9 +50,9 @@ function getUserJoinedCampaigns(user, isCalendar, callback) {
     team_ids.push(user.team[i]._id);
   }
   var options = {
+    'cid': user.cid,
     '$or': [{ 'member.uid': user._id }, { 'camp.member.uid': user._id }],
-    'active': true,
-    'team': { '$in': team_ids }
+    'active': true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
@@ -71,13 +79,21 @@ function getUserUnjoinCampaigns(user, isCalendar, callback) {
     team_ids.push(user.team[i]._id);
   }
   var options = {
-    'cid': user.cid,
+    '$or': [
+      {
+        'cid': user.cid,
+        'team': { '$size': 0 }
+      },
+      {
+        'cid': user.cid,
+        'team': { '$in': team_ids }
+      }
+    ],
     '$nor': [
       { 'member.uid': user._id },
       { 'camp.member.uid': user._id }
     ],
-    'active': true,
-    'team': { '$in': team_ids }
+    'active': true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
