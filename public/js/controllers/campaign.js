@@ -102,10 +102,14 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
     }
 
     $scope.comment = function(){
-        for(var i = 0; i < $scope.comments.length; i ++){
-            if($scope.new_comment.text === $scope.comments[i].content){
-                alertify.alert('勿要重复留言!');
-                return;
+
+         if($scope.comments.length > 0){
+            var tmp_comment = $scope.comments[0];
+            if(tmp_comment.poster._id === $scope.user._id){
+                if($scope.new_comment.text === tmp_comment.content){
+                    alertify.alert('勿要重复留言!');
+                    return;
+                }
             }
         }
         try {
@@ -118,17 +122,13 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     host_type : 'campaign_detail'
                 }
             }).success(function(data, status) {
-                if(data === 'SUCCESS'){
-                    var poster={
-                        'nickname' : $scope.user.nickname,
-                        'photo' : $scope.user.photo
-                    };
+                if(data.msg === 'SUCCESS'){
                     $scope.comments.unshift({
-                        'host_id' : $scope.campaign._id,
-                        'content' : $scope.new_comment.text,
-                        'create_date' : new Date(),
-                        'poster' : poster,
-                        'host_type' : 'campaign_detail',
+                        'host_id' : data.comment.host_id,
+                        'content' : data.comment.content,
+                        'create_date' : data.comment.create_date,
+                        'poster' : data.comment.poster,
+                        'host_type' : data.comment.host_type,
                         'index' : $scope.fixed_sum+1
                     });
                 } else {

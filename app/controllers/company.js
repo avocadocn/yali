@@ -946,14 +946,18 @@ exports.changeUser = function (req, res) {
                 if(err || !user) {
                     return res.send('ERROR');
                 } else {
+                    var changeFlag = user.nickname!=_user.nickname;
                     user.nickname = _user.nickname;
                     user.department = _user.department;
                     user.position = _user.position;
                     user.save(function (err) {
                         if(err) {
-                            return res.send('ERR');
+                            return res.send({'result':0,'msg':'用户信息修改失败！'});
                         } else {
-                            return res.send('ok');
+                            if(changeFlag){
+                              schedule.updateUname(user._id);
+                            }
+                            return res.send({'result':1,'msg':'用户信息修改成功！'});
                         }
                     });
                 }
@@ -1089,11 +1093,23 @@ exports.sponsor = function (req, res) {
 
     var photo_album = new PhotoAlbum({
         owner: {
+          model: {
             _id: campaign._id,
-            model: 'Campaign'
+            type: 'Campaign'
+          },
+          companies: [req.user._id]
         },
-        name: campaign.theme,
-        owner_company: req.user._id
+        name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme,
+        update_user: {
+          _id: req.user._id,
+          name: req.user.info.name,
+          type: 'hr'
+        },
+        create_user: {
+          _id: req.user._id,
+          name: req.user.info.name,
+          type: 'hr'
+        }
     });
 
     fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {

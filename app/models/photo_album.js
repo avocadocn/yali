@@ -42,11 +42,6 @@ var Photo = new Schema({
   }
 });
 
-Photo.pre('save', function(next) {
-  this.comment = validator.escape(this.comment);
-  return next();
-});
-
 
 var PhotoAlbum = new Schema({
   owner: {
@@ -104,11 +99,6 @@ var PhotoAlbum = new Schema({
   }
 });
 
-PhotoAlbum.pre('save', function(next) {
-  this.name = validator.escape(this.name);
-  this.update_date = new Date();
-  return next();
-});
 
 mongoose.model('PhotoAlbum', PhotoAlbum);
 

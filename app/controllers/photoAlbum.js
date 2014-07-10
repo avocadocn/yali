@@ -35,7 +35,9 @@ function photoEditAuth(user, photo_album, photo) {
     if (owner) {
       // 该照片所属组的队长
       var leaders = [];
-      leaders = photo_album.owner.team.leader || [];
+      if (owner.team) {
+        leaders = owner.team.leader || [];
+      }
       for (var i = 0; i < leaders.length; i++) {
         if (user._id.toString() === leaders[i]._id.toString()) {
           return true;
@@ -44,6 +46,12 @@ function photoEditAuth(user, photo_album, photo) {
 
       // 该照片所属公司的HR
       if (owner.company) {
+        if (owner.company._id) {
+          if (user._id.toString() === owner.company._id.toString()) {
+            return true;
+          }
+        }
+
         if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
           return true;
         }
@@ -77,6 +85,12 @@ function photoAlbumEditAuth(user, photo_album) {
 
       // 该照片所属公司的HR
       if (owner.company) {
+        if (owner.company._id) {
+          if (user._id.toString() === owner.company._id.toString()) {
+            return true;
+          }
+        }
+
         if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
           return true;
         }
@@ -96,21 +110,41 @@ function photoUploadAuth(user, photo_album) {
   var owner = getPhotoAlbumOwner(user, photo_album);
 
   if (owner) {
-    if (owner.team) {
-      members = owner.team.member || [];
-    }
-    for (var i = 0; i < members.length; i++) {
-      if (user._id.toString() === members[i]._id.toString()) {
-        return true;
+    if (user.provider === 'user') {
+      // 小组活动相册并且是小组成员
+      if (owner.team && owner.team.length > 0) {
+        members = owner.team.member || [];
+        for (var i = 0; i < members.length; i++) {
+          if (user._id.toString() === members[i]._id.toString()) {
+            return true;
+          }
+        }
+      } else {
+        // 公司活动并且是该公司员工
+        if (owner.company._id) {
+          if (user.cid.toString() === owner.company._id.toString()) {
+            return true;
+          }
+        }
+        if (user.cid.toString() === owner.company.toString()) {
+          return true;
+        }
+      }
+    } else if (user.provider === 'company') {
+      // 该照片所属公司的HR
+      if (owner.company) {
+        if (owner.company._id) {
+          if (user._id.toString() === owner.company._id.toString()) {
+            return true;
+          }
+        }
+
+        if (user._id.toString() === owner.company.toString()) {
+          return true;
+        }
       }
     }
 
-    // 该照片所属公司的HR
-    if (owner.company) {
-      if (user.provider === 'company' && user._id.toString() === owner.company.toString()) {
-        return true;
-      }
-    }
   }
 
   return false;
@@ -360,6 +394,7 @@ exports.createAuth = function(req, res, next) {
       if (auth === false) {
         return res.send(403);
       } else {
+        req.create_auth = true;
         next();
       }
 
@@ -827,6 +862,7 @@ exports.renderPhotoAlbumDetail = function(req, res) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
   .populate('owner.teams')
+  .populate('owner.companies')
   .exec()
   .then(function(photo_album) {
     if (!photo_album) {
@@ -834,24 +870,39 @@ exports.renderPhotoAlbumDetail = function(req, res) {
     }
     var photos = getShowPhotos(photo_album);
     var owner = getPhotoAlbumOwner(req.user, photo_album);
-
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
-    var uploadAuth = photoUploadAuth(req.user, photo_album)
-
-    var links = [
-      {
-        text: owner.team.name,
-        url: '/group/home/' + owner.team._id
-      },
-      {
-        text: '相册集',
-        url: '/' + owner.team._id + '/photoAlbumListView'
-      },
-      {
-        text: photo_album.name,
-        active: true
-      }
-    ];
+    var uploadAuth = photoUploadAuth(req.user, photo_album);
+    if (!owner.team || owner.team.length === 0) {
+      var links = [
+        {
+          text: owner.company.info.name,
+          url: '/company/home'
+        },
+        {
+          text: photo_album.name,
+          active: true
+        }
+      ];
+      var owner_name = owner.company.info.name;
+      var owner_logo = owner.company.info.logo;
+    } else {
+      var links = [
+        {
+          text: owner.team.name,
+          url: '/group/home/' + owner.team._id
+        },
+        {
+          text: '相册集',
+          url: '/' + owner.team._id + '/photoAlbumListView'
+        },
+        {
+          text: photo_album.name,
+          active: true
+        }
+      ];
+      var owner_name = owner.team.name;
+      var owner_logo = owner.team.logo;
+    }
 
     return res.render('photo_album/photo_album_detail', {
       photo_album: {
@@ -859,7 +910,10 @@ exports.renderPhotoAlbumDetail = function(req, res) {
         name: photo_album.name,
         update_date: photo_album.update_date,
         photos: photos,
-        owner: owner,
+        owner: {
+          name: owner_name,
+          logo: owner_logo
+        },
         photo_count: photo_album.photo_count
       },
       moment: moment,
@@ -879,6 +933,7 @@ exports.renderPhotoDetail = function(req, res) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
   .populate('owner.teams')
+  .populate('owner.companies')
   .exec()
   .then(function(photo_album) {
     var pre_id, next_id;
@@ -902,24 +957,66 @@ exports.renderPhotoDetail = function(req, res) {
         var owner = getPhotoAlbumOwner(req.user, photo_album);
         var editAuth = photoEditAuth(req.user, photo_album, photos[i]);
 
-        var links = [
-          {
-            text: owner.team.name,
-            url: '/group/home/' + owner.team._id,
-          },
-          {
-            text: '相册集',
-            url: '/' + owner.team._id + '/photoAlbumListView'
-          },
-          {
-            text: photo_album.name,
-            url: '/photoAlbumDetailView/' + photo_album._id
-          },
-          {
-            text: photos[i].name,
-            active: true
-          }
-        ];
+        // var links = [
+        //   {
+        //     text: owner.team.name,
+        //     url: '/group/home/' + owner.team._id,
+        //   },
+        //   {
+        //     text: '相册集',
+        //     url: '/' + owner.team._id + '/photoAlbumListView'
+        //   },
+        //   {
+        //     text: photo_album.name,
+        //     url: '/photoAlbumDetailView/' + photo_album._id
+        //   },
+        //   {
+        //     text: photos[i].name,
+        //     active: true
+        //   }
+        // ];
+
+        if (!owner.team || owner.team.length === 0) {
+          var links = [
+            {
+              text: owner.company.info.name,
+              url: '/company/home'
+            },
+            {
+              text: photo_album.name,
+              url: '/photoAlbumDetailView/' + photo_album._id
+            },
+            {
+              text: photos[i].name,
+              active: true
+            }
+          ];
+          var owner_name = owner.company.info.name;
+          var owner_logo = owner.company.info.logo;
+        } else {
+          var links = [
+            {
+              text: owner.team.name,
+              url: '/group/home/' + owner.team._id
+            },
+            {
+              text: '相册集',
+              url: '/' + owner.team._id + '/photoAlbumListView'
+            },
+            {
+              text: photo_album.name,
+              url: '/photoAlbumDetailView/' + photo_album._id
+            },
+            {
+              text: photos[i].name,
+              active: true
+            }
+          ];
+          var owner_name = owner.team.name;
+          var owner_logo = owner.team.logo;
+        }
+
+        var return_url = '/photoAlbumDetailView/' + photo_album._id;
 
         return res.render('photo_album/photo_detail', {
           photo_detail: {
@@ -938,9 +1035,13 @@ exports.renderPhotoDetail = function(req, res) {
             name: photo_album.name,
             update_date: photo_album.update_date,
             photo_count: photo_album.photos.length,
-            owner: owner
+            owner: {
+              name: owner_name,
+              logo: owner_logo
+            }
           },
           links: links,
+          return_url: return_url,
           moment: moment,
           editAuth: editAuth
         });

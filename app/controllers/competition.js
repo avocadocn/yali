@@ -394,7 +394,7 @@ exports.getCompetition = function(req, res){
 
 
 exports.competition = function(req, res, next, id){
-  var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user._id : req.user.cid);
+  var cid = req.user.provider ==='company' ? req.user._id : req.user.cid;
 
   Campaign.findOne({
       '_id':id
@@ -469,19 +469,22 @@ exports.resultConfirm = function (req, res) {
             groupMessage.create_time = new Date();
             groupMessage.save(function(err){
               if(err){
-                res.send('ERROR');
+                console.log(err);
               }else{
                 //发送站内信
-                var olid = competition.team[_otherCampFlag].leader[0]._id;
-                var team = {
-                  '_id':competition.team[_campFlag]._id,
-                  'name':competition.team[_campFlag].name,
-                  'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 1 : 2,
-                };
-                message.resultConfirm(req,res,olid,team,competition_id);
+                if(competition.team[_otherCampFlag].leader.length > 0){
+                  var olid = competition.team[_otherCampFlag].leader[0]._id;
+                  var team = {
+                    '_id':competition.team[_campFlag]._id,
+                    'name':competition.team[_campFlag].name,
+                    'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 3 : 2,
+                  };
+                  message.resultConfirm(req,res,olid,team,competition_id);
+                }
               }
             });
           });
+          res.send({'result':0,'msg':'SUCCESS'});
         }
       });
     }

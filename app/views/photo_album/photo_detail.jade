@@ -7,6 +7,7 @@ block contentExt
   .dl_container.photo_album
     include ../partials/breadcrumb
     +breadcrumb(links)
+    input#return_url(type="hidden" value="#{return_url}")
     hr
     .row.photo_detail_container
       .col-xs-8.col-sm-8
@@ -45,9 +46,9 @@ block contentExt
       .col-xs-offset-1.col-sm-offset-1.col-xs-3.col-sm-3
         .media
           .pull-left
-            img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.team.logo}")
+            img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.logo}")
           .media-body
-            h4= photo_album.owner.team.name
+            h4= photo_album.owner.name
         p.text 相册名:&nbsp;#{photo_album.name}
         p.text 照片数:&nbsp;#{photo_album.photo_count}
         p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
@@ -77,8 +78,8 @@ append footExt
     });
     var deleteForm = $('#delete_form');
     deleteForm.ajaxForm(function(data, status) {
-      var returnUri = $('#returnUri').attr('href');
-      window.location.href = returnUri;
+      var return_url = $('#return_url').val();
+      window.location.href = return_url;
     });
     $('#delete_button').click(function() {
       alertify.set({

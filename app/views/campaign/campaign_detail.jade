@@ -48,7 +48,7 @@ block contentExt
             .dl_detail_label
               span #{__("ENTRY")}#{__("DEADLINE")}:
             .dl_detail_detail
-              span {{campaign.deadline| date:'yyyy-MM-dd HH:mm'}} {{campaign.deadline | week }}
+              span {{campaign.deadline| date:'yyyy-MM-dd HH:mm' | dateView}} {{campaign.deadline | week }}
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
         .dl_detail_content2
@@ -90,15 +90,15 @@ block contentExt
               .comment_user_info
                 a(href="/users/home/{{comment.poster._id}}" )
                   img.user_photo.size_56(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-                p
-                  a.user_name(href="/users/home/{{comment.poster._id}}") {{shortTrim(comment.poster.nickname)}}
+                p.dl_user_name_small
+                  a(href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
               .comment_content_panel
                 .relative
                   .triangle_border
                   .triangle
                   .comment_content
                     p {{comment.content}}
-                label.comment_date.text {{comment.create_date | dateView}}
+                label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
                 a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}

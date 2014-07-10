@@ -10,10 +10,10 @@ hr
         .dl_message_date
           h7 {{private_message.date | date:'yyyy-MM-dd HH:mm'}}
       .row
-        .dl_md_12(ng-switch="private_messages.message_type")
+        .dl_md_12(ng-switch="private_message.message_type")
           h5(ng-switch-when="4")
-            a(href="/competition/{{private_messages.campaign_id}}" ng-click="setToRead($index)")
-              {{private_messages.content}}
+            a(href="/competition/{{private_message.campaign_id}}" ng-click="setToRead($index)")
+              {{private_message.content}}
           h5(ng-switch-when="5")
             a
               {{private_message.sender.nickname}} 给您发了
@@ -22,6 +22,9 @@ hr
             您收到了一条
             a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
               系统消息
+          h5(ng-switch-when="7")
+            a(href="/group/home/{{private_message.team_id}}" ng-click="setToRead($index)")
+              {{private_message.content}}
         .dl_md_1.pull-right.dl_message_rightcorner
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
