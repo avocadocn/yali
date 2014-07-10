@@ -1,19 +1,22 @@
 .dl_allteaminfo_container
   table.group_table
     tr
-      th.noborder(colspan="8")
-        if (Global.role === 'HR')
-          a.pull-right(href="#/addGroup") #{__("ADD_TEAM")}
-    tr
-      th 
-      th.text-left 小队名
-      th 人数
-      th 队长
+      th.noborder(rowspan="2")
+      th.noborder(rowspan="2")
+      th.noborder(rowspan="2") 队长
+      th.noborder(rowspan="2") 人数
       if Global.role ==='HR'
-        th 本周活动/人次
-        th 上周活动/人次
-        th 上月活动/人次
-      th.operate 操作
+        th.noborder 本周
+        th.noborder 上周
+        th.noborder 上月
+      th.operate.noborder(rowspan="2")
+        if (Global.role === 'HR')
+          a(href="#/addGroup") #{__("ADD_TEAM")}
+    tr
+      if Global.role ==='HR'
+        th.noborder 活动/人次
+        th.noborder 活动/人次
+        th.noborder 活动/人次
     tr(bs-popover ng-repeat="team in team_lists")
       td
         a(href="/group/home/{{team._id}}")
@@ -21,11 +24,13 @@
       td.text-left
         span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
       td
-        span {{team.member.length}}
+        span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
+          span {{l.nickname}}
+        span.row(ng-if="team.leader.length==0") 无
       td
-          span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
-            span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
-          span.row(ng-if="team.leader.length==0") 无
+        span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
+          span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
+        span.row(ng-if="team.leader.length==0") 无
       if Global.role ==='HR'
         td
           span {{team.count.current_week_campaign}}/{{team.count.current_week_member}}

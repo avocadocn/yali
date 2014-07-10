@@ -924,7 +924,7 @@ exports.getCompetition = function(req, res){
 
 exports.updateFormation = function(req, res){
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   Campaign.findOne({
     '_id':req.params.competitionId
@@ -957,30 +957,6 @@ exports.updateFormation = function(req, res){
     }
   });
 };
-
-exports.competition = function(req, res, next, id){
-  var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
-  Campaign.findOne({
-      '_id':id
-    })
-    .populate('photo_album')
-    .exec(function(err, competition){
-      if (err) return next(err);
-      req.competition = competition;
-      if(cid.toString() ===competition.camp[0].cid.toString()){
-        req.competition_team = 'A';
-      }
-      else if(cid.toString() ===competition.camp[1].cid.toString()){
-        req.competition_team = 'B';
-      }
-      else
-      {
-        return new next(Error('Failed to load competition ' + id));
-      }
-      next();
-  });
-};
-
 //某一方发送或者修改比赛成绩确认消息
 exports.resultConfirm = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){

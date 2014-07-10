@@ -36,8 +36,6 @@ module.exports = function(app) {
   //小队发布活动
   app.post('/group/campaignSponsor/:teamId', authorization.requiresLogin, group.sponsor);
   app.param('teamId',group.group);
-  app.param('competitionId',group.competition);
-
   //约战、应战
   app.post('/group/provoke/:teamId',  authorization.requiresLogin, group.provoke);
   app.post('/group/responseProvoke/:teamId', authorization.requiresLogin, group.responseProvoke);

@@ -461,7 +461,7 @@ exports.renderCampaignDetail = function(req, res) {
       throw 'not found';
     }
     if(campaign.camp.length >= 2){
-      res.redirect("/competition/"+req.session.nowcampaignid);
+      res.redirect("/competition/"+req.params.campaignId);
     }else{
       if(req.user.provider==='company' && req.user._id.toString()===campaign.cid[0]._id.toString()){
         req.role = 'HR';

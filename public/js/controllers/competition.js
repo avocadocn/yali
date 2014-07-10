@@ -152,6 +152,7 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
         _offsetX = _left + e.originalEvent.pageX - datax;
         _offsetY = _top +e.originalEvent.pageY - datay;
         console.log(_left,datax,_offsetX);
+        console.log(_top,datay,_offsetY);
         _newEle.css('top',_offsetY > 0 ? _offsetY : 0);
         _newEle.css('left',_offsetX > 0 ? _offsetX : 0);
       };
@@ -173,15 +174,22 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
           $(e.originalEvent.target).remove();
           _id = getMemberId(_id);
           $('#'+_id).attr('draggable',true);
+          updateFormatData(_id,-1);
         };
       }
     };
     var updateFormatData = function(id,percentX,percentY){
       id = getMemberId(id);
-      competition_format[id] ={
-        'x':percentX,
-        'y':percentY
-      };
+      if(percentX===-1){
+        delete competition_format[id];
+      }
+      else{
+        competition_format[id] ={
+          'x':percentX,
+          'y':percentY
+        };
+      }
+
       var competition_team = $('#competition_content').attr('data-nowteam');
       var competition_id = $('#competition_content').attr('data-id');
       $.post('/group/updateFormation/'+competition_id,{'formation':competition_format,'competition_team':competition_team},function(data,status){

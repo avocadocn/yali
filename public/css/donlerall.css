@@ -630,6 +630,9 @@ textarea {
   padding: 10px 0;
   width: 10%;
 }
+.dl_company_container .main .group_table .noborder {
+  border: 0 !important;
+}
 .dl_company_container .main .group_table td.text-left,
 .dl_company_container .main .group_table th.text-left {
   text-align: left;
@@ -640,9 +643,6 @@ textarea {
 .dl_company_container .main .group_table img {
   display: inline-block;
   border: 1px solid #ddd;
-}
-.dl_company_container .main .group_table .noborder {
-  border: none;
 }
 .dl_companygroup_container {
   width: 600px;
