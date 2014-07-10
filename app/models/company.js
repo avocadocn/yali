@@ -21,7 +21,7 @@ var _team = new Schema({
 var _department = new Schema({
     parent_id:Schema.Types.ObjectId,
     name: String,
-    child: [_department]
+    department: [_department]
 });
 
 /**

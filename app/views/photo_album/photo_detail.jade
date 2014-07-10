@@ -7,6 +7,7 @@ block contentExt
   .dl_container.photo_album
     include ../partials/breadcrumb
     +breadcrumb(links)
+    input#return_url(type="hidden" value="#{return_url}")
     hr
     .row.photo_detail_container
       .col-xs-8.col-sm-8
@@ -77,8 +78,8 @@ append footExt
     });
     var deleteForm = $('#delete_form');
     deleteForm.ajaxForm(function(data, status) {
-      var returnUri = $('#returnUri').attr('href');
-      window.location.href = returnUri;
+      var return_url = $('#return_url').val();
+      window.location.href = return_url;
     });
     $('#delete_button').click(function() {
       alertify.set({

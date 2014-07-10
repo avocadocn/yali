@@ -30,6 +30,7 @@ textarea
 
 .dl_allteaminfo_container
   width 1200px !important
+  background-color white
 .comment_height_limit
   height auto
   max-height 190px
@@ -152,6 +153,21 @@ textarea
   border-radius 500px
   color white
   padding 2px 10px 0
+
+
+.dl_user_name_small
+  display inline-block
+  max-width 50px
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+.dl_user_name_normal
+  display inline-block
+  max-width 120px
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
 
 .dl_head
     max-width 1020px
@@ -536,11 +552,9 @@ textarea
     min-width 145px
     text-align center
     font-weight bold
-.dl_allteaminfo_container
-  background-color white
 .dl_company_container
   .main
-    width 820px
+    width 920px
     .group_table
       width 920px
       .dl_btn
@@ -551,6 +565,14 @@ textarea
         border-width 1px 0
         overflow hidden
         padding 10px 0
+        width 10%
+      td.text-left,th.text-left
+        text-align left
+      .operate
+        width 20%
+      img
+        display inline-block
+        border 1px solid #ddd
       .noborder
         border none
 .dl_companygroup_container
@@ -653,6 +675,8 @@ textarea
 .subtitle
   font-size 14px
   font-weight bold
+.warning_words
+  color btnActionBgColor
 .padding_0
   padding-left 0
   padding-right 0

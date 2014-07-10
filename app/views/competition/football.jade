@@ -15,7 +15,7 @@ block contentExt
             img.pull-left.team_logo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             div.text-left
-              a= competition.camp[0].tname
+              a(href="/group/home/#{competition.camp[0].id}")= competition.camp[0].tname
           .score_panel.col-xs-4
             h1.text-center VS
             .dl_box#score_tip
@@ -47,7 +47,7 @@ block contentExt
             img.pull-right.team_logo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             div.text-right
-              a= competition.camp[1].tname
+              a(href="/group/home/#{competition.camp[1].id}")= competition.camp[1].tname
         .row
           .col-xs-5
             each teamAMember in competition.camp[0].member
@@ -68,10 +68,10 @@ block contentExt
     .side
       h4.text-left 活动简介
       hr
-      p 类型:&nbsp;&nbsp;#{competition.group_type}
       p 场地:&nbsp;&nbsp;#{competition.location.name}
       p 应战截止时间:&nbsp;&nbsp;#{moment(competition.deadline).format("YYYY-MM-DD HH:mm")}
       p 活动时间:&nbsp;&nbsp;#{moment(competition.start_time).format("YYYY-MM-DD HH:mm")}
+      p 活动结束时间:&nbsp;&nbsp;#{moment(competition.end_time).format("YYYY-MM-DD HH:mm")}
       p 备注:&nbsp;&nbsp;#{competition.content}
       hr
       h4.text-left 活动地点
@@ -93,6 +93,7 @@ append footExt
   script.
     var competition_location = !{JSON.stringify(competition.location)}
   script(src="/js/controllers/competition.js")
-  script(src="http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c")
-
-
+  script.
+    var script = document.createElement("script");  
+    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
+    document.body.appendChild(script);

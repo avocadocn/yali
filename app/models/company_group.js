@@ -86,6 +86,14 @@ var CompanyGroup = new Schema({
         default: Date.now
     },
     count:{
+        current_week_campaign: {
+            type: Number,
+            default: 0
+        },
+        current_week_member: {
+            type: Number,
+            default: 0
+        },
         last_week_campaign: {
             type: Number,
             default: 0

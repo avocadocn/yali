@@ -46,6 +46,7 @@ textarea {
 }
 .dl_allteaminfo_container {
   width: 1200px !important;
+  background-color: #fff;
 }
 .comment_height_limit {
   height: auto;
@@ -169,6 +170,20 @@ textarea {
   border-radius: 500px;
   color: #fff;
   padding: 2px 10px 0;
+}
+.dl_user_name_small {
+  display: inline-block;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dl_user_name_normal {
+  display: inline-block;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .dl_head {
   max-width: 1020px;
@@ -597,11 +612,8 @@ textarea {
   text-align: center;
   font-weight: bold;
 }
-.dl_allteaminfo_container {
-  background-color: #fff;
-}
 .dl_company_container .main {
-  width: 820px;
+  width: 920px;
 }
 .dl_company_container .main .group_table {
   width: 920px;
@@ -616,6 +628,18 @@ textarea {
   border-width: 1px 0;
   overflow: hidden;
   padding: 10px 0;
+  width: 10%;
+}
+.dl_company_container .main .group_table td.text-left,
+.dl_company_container .main .group_table th.text-left {
+  text-align: left;
+}
+.dl_company_container .main .group_table .operate {
+  width: 20%;
+}
+.dl_company_container .main .group_table img {
+  display: inline-block;
+  border: 1px solid #ddd;
 }
 .dl_company_container .main .group_table .noborder {
   border: none;
@@ -743,6 +767,9 @@ textarea {
 .subtitle {
   font-size: 14px;
   font-weight: bold;
+}
+.warning_words {
+  color: #cd270d;
 }
 .padding_0 {
   padding-left: 0;

@@ -1,44 +1,39 @@
 .dl_allteaminfo_container
-  //-小队信息
   table.group_table
     tr
       th.noborder(colspan="8")
-        h5.pull-left #{__("TEAM_INFO")}
         if (Global.role === 'HR')
-          a.dl_btn.dl_btn_small.pull-right(href="#/addGroup") #{__("ADD_TEAM")}
+          a.pull-right(href="#/addGroup") #{__("ADD_TEAM")}
     tr
-      th 小队logo
-      th 小队名
+      th 
+      th.text-left 小队名
       th 人数
       th 队长
       if Global.role ==='HR'
-        th 一周内活动数
-        th 一周内活动人次
-        th 一月内活动数
-        th 一月内活动人次
-      th 操作
+        th 本周活动/人次
+        th 上周活动/人次
+        th 上月活动/人次
+      th.operate 操作
     tr(bs-popover ng-repeat="team in team_lists")
       td
         a(href="/group/home/{{team._id}}")
-          img.img-responsive.img-thumbnail.img_contain.size_56(ng-src="{{team.logo}}" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
+          img.img_border.img_contain.size_56(ng-src="{{team.logo}}" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
+      td.text-left
+        span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
       td
-        span.info_label {{team.name}}
-      td
-        span.info_label {{team.member.length}}
+        span {{team.member.length}}
       td
           span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
-            span.info_label {{l.nickname}}
+            span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
           span.row(ng-if="team.leader.length==0") 无
       if Global.role ==='HR'
         td
-          span {{team.count.last_week_campaign}}
+          span {{team.count.current_week_campaign}}/{{team.count.current_week_member}}
         td
-          span {{team.count.last_week_member}}
+          span {{team.count.last_week_campaign}}/{{team.count.last_week_member}}
         td
-          span {{team.count.last_month_campaign}}
-        td
-          span {{team.count.last_month_member}}
-      td
+          span {{team.count.last_month_campaign}}/{{team.count.last_month_member}}
+      td.operate
         if Global.role === 'HR'
           .dl_row.clearfix
             button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}

@@ -1163,7 +1163,6 @@ exports.saveAccount = function (req, res) {
     }
     else {
       if (user) {
-        console.log(req.body.user.nickname , user.nickname);
         if(req.body.user.nickname !== user.nickname){
           schedule.updateUname(user._id);
           req.session.Global.nav_name = req.body.user.nickname;
@@ -1391,7 +1390,7 @@ exports.getBriefInfo = function(req,res){
       //   result: 1,
       //   htmlcontent: htmlcontent
       // });
-      res.render('partials/brief_card', { user: user });
+      res.render('partials/user_brief_card', { user: user });
     }
   });
 };

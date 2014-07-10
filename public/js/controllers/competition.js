@@ -24,14 +24,17 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     $scope.$watch('rst_content',function(rst_content){
       $scope.rst_content = rst_content;
       $scope.$watch('score_a',function(score_a){
-        $scope.score_own.score = score_a != 'undefined' ? score_a : 0;
+        $scope.score_own.score = score_a != 'undefined' ? score_a : "";
         $scope.$watch('score_b',function(score_b){
-          $scope.score_opposite.score = score_b != 'undefined' ? score_b : 0;
+          $scope.score_opposite.score = score_b != 'undefined' ? score_b : "";
           $scope.$watch('msg_show',function(msg_show){
             $scope._msg_show = msg_show;
             if(msg_show=='true'){
               $scope.modify_caption = "发出异议";
             }
+            $scope.$watch('confirm_mode',function(confirm_mode){
+              ;
+            });
           });
         });
       });
@@ -251,30 +254,33 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
       $('#'+_id).attr('draggable',false);
       $(this).attr('src',$('#'+_id).attr('src'));
     });
-    // 百度地图API功能
-    var map = new BMap.Map("location");            // 创建Map实例
-    var _address = competition_location['address']?competition_location['address'] :'sss';
-    var _locationName = competition_location['name'];
-    var _longitude = competition_location['coordinates'][0]?competition_location['coordinates'][0]:116.404 ;
-    var _latitude = competition_location['coordinates'][1]?competition_location['coordinates'][1]:39.915;
-    var point = new BMap.Point(_longitude, _latitude);    // 创建点坐标
-    map.centerAndZoom(point,15);                     // 初始化地图,设置中心点坐标和地图级别。
-    map.enableScrollWheelZoom();
-    map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}));
-    var marker = new BMap.Marker(point);  // 创建标注
-    var label = new BMap.Label(competition_location['name'],{offset:new BMap.Size(20,-10)});
-    marker.setLabel(label);
-    map.addOverlay(marker);              // 将标注添加到地图中
-    function showInfo(e){
-      var opts = {
-        width : 200,     // 信息窗口宽度
-        height: 60,     // 信息窗口高度
-        title : _locationName, // 信息窗口标题
-      };
-      var infoWindow = new BMap.InfoWindow(_address, opts);  // 创建信息窗口对象
-      map.openInfoWindow(infoWindow,point); //开启信息窗口
+    window.initialize = function(){
+      // 百度地图API功能
+      var map = new BMap.Map("location");            // 创建Map实例
+      var _address = competition_location['address']?competition_location['address'] :'sss';
+      var _locationName = competition_location['name'];
+      var _longitude = competition_location['coordinates'][0]?competition_location['coordinates'][0]:116.404 ;
+      var _latitude = competition_location['coordinates'][1]?competition_location['coordinates'][1]:39.915;
+      var point = new BMap.Point(_longitude, _latitude);    // 创建点坐标
+      map.centerAndZoom(point,15);                     // 初始化地图,设置中心点坐标和地图级别。
+      map.enableScrollWheelZoom();
+      map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}));
+      var marker = new BMap.Marker(point);  // 创建标注
+      var label = new BMap.Label(competition_location['name'],{offset:new BMap.Size(20,-10)});
+      marker.setLabel(label);
+      map.addOverlay(marker);              // 将标注添加到地图中
+      function showInfo(e){
+        var opts = {
+          width : 200,     // 信息窗口宽度
+          height: 60,     // 信息窗口高度
+          title : _locationName, // 信息窗口标题
+        };
+        var infoWindow = new BMap.InfoWindow(_address, opts);  // 创建信息窗口对象
+        map.openInfoWindow(infoWindow,point); //开启信息窗口
       }
       map.addEventListener("click", showInfo);
+    }
+
   });
 }(window));
 

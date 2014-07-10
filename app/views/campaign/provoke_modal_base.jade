@@ -1,5 +1,5 @@
 .modal-dialog
-  .dl-modal(ng-if='!modal')
+  .dl-modal(ng-show='!modal')
     include search_modal
-  .dl-modal(ng-if='modal')
+  .dl-modal(ng-show='modal')
     include provoke_modal

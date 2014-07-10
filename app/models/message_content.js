@@ -18,7 +18,7 @@ var _team = new Schema({
   name : String,
   provoke_status: {
     type: Number,
-    enum: [0,1,2]              //
+    enum: [0,1,2,3]              //
   }
 });
 /**
@@ -31,6 +31,7 @@ var MessageContent = new Schema({
   team: [_team],  // 消息所属小队
   company_id: Schema.Types.ObjectId,  // 消息所属公司的_id
   campaign_id: Schema.Types.ObjectId,
+  groupmessage_id: Schema.Types.ObjectId,
   type: {
     type: String,
     enum: ['private','company','global']

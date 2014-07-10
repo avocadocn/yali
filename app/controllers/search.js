@@ -53,15 +53,43 @@ exports.getTeam = function(req, res) {
     condition = {'gid':gid,'name':regx , '_id':{'$ne': tid}}
   }
   CompanyGroup.find(condition,function(err, company_groups){
-    console.log(condition,company_groups);
     if(err || !company_groups) {
       return res.send([]);
     } else {
       return res.send(company_groups);
     }
   });
-}
+};
 
+exports.recommandTeam = function(req,res) {
+  var gid = req.body.gid;
+  var tid = req.body.tid;
+  CompanyGroup.findOne({'gid':gid,'tid':tid},{'home_court':1},function (err,companyGroup){
+    if(err || !companyGroup){
+      console.log(err);
+      return res.send({'result':0,'msg':'404'});
+    }
+    else if(companyGroup.home_court){//没填写主场
+      return res.send({'result':2,'team':[]}); //无主场提示
+    }
+    else{
+      CompanyGroup.find({'gid':gid,'active':true,'home_court':{'$near':{'$geometry':companyGroup.home_court}}},{'_id':1,'home_court':1,'logo':1,'member':1})
+      .limit(10)
+      .exec(function (err, teams){
+        if(err){
+          console.log(err);
+          return res.send({'result':0,'msg':'404'});
+        }
+        else if(!teams){//找不到相近的队
+          return res.send({'result':1,'team':[]});
+        }
+        else{
+          return res.send({'result':1,'team':teams});//返回10个推荐队
+        }
+      });
+    }
+  });
+};
 
 
 function findUser()
