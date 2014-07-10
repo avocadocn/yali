@@ -729,6 +729,14 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         }
     };
 
+    $scope.selected = function(photo) {
+        if (photo.select === true) {
+            return 'selected_img';
+        } else {
+            return '';
+        }
+    };
+
     $scope.back = function() {
         if (jcrop_api) {
             jcrop_api.destroy();
@@ -740,6 +748,17 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.deletePhoto = function(id) {
         $http
         .delete('/group/family/photo/' + id)
+        .success(function(data, status) {
+            getFamily();
+        })
+        .error(function(data, status) {
+            // TO DO
+        });
+    };
+
+    $scope.toggleSelect = function(id) {
+        $http
+        .post('/select/group/family/photo/' + id)
         .success(function(data, status) {
             getFamily();
         })

@@ -1080,20 +1080,20 @@ exports.uploadFamily = function(req, res) {
             upload_user: user
           });
 
-          var length = 0;
-          var first_index = 0, get_first = false;
-          for (var i = 0; i < company_group.family.length; i++) {
-            if (company_group.family[i].hidden === false) {
-              if (get_first === false) {
-                first_index = i;
-                get_first = true;
-              }
-              length++;
-            }
-          }
-          if (length > 3) {
-            company_group.family[first_index].hidden = true;
-          }
+          // var length = 0;
+          // var first_index = 0, get_first = false;
+          // for (var i = 0; i < company_group.family.length; i++) {
+          //   if (company_group.family[i].hidden === false) {
+          //     if (get_first === false) {
+          //       first_index = i;
+          //       get_first = true;
+          //     }
+          //     length++;
+          //   }
+          // }
+          // if (length > 3) {
+          //   company_group.family[first_index].hidden = true;
+          // }
 
           company_group.save(function(err) {
             if (err) {
@@ -1127,18 +1127,53 @@ exports.getFamily = function(req, res) {
     if (!company_group) {
       throw 'not found';
     }
-    var length = 0;
+    // var length = 0;
     var res_data = [];
     for (var i = 0; i < company_group.family.length; i++) {
       if (company_group.family[i].hidden === false) {
         res_data.push(company_group.family[i]);
-        length++;
-        if (length >= 3) {
-          break;
-        }
+        // length++;
+        // if (length >= 3) {
+        //   break;
+        // }
       }
     }
     res.send(res_data);
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
+exports.toggleSelectFamilyPhoto = function(req, res) {
+  if (req.session.role !== 'LEADER') {
+    return res.send(403);
+  }
+  CompanyGroup
+  .findById(req.session.nowtid)
+  .exec()
+  .then(function(company_group) {
+    if (!company_group) {
+      throw 'not found';
+    }
+    for (var i = 0; i < company_group.family.length; i++) {
+      if (company_group.family[i]._id.toString() === req.params.photoId) {
+        if (!company_group.family[i].select) {
+          company_group.family[i].select = true;
+        } else {
+          company_group.family[i].select = false;
+        }
+        break;
+      }
+    }
+    company_group.save(function(err) {
+      if (err) {
+        console.log(err);
+        return res.send(500);
+      }
+      res.send(200);
+    });
   })
   .then(null, function(err) {
     console.log(err);

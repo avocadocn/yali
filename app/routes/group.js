@@ -52,6 +52,7 @@ module.exports = function(app) {
   // 全家福
   app.post('/group/family', authorization.requiresLogin, bodyParser, group.uploadFamily);
   app.get('/group/family', authorization.requiresLogin, group.getFamily);
+  app.post('/select/group/family/photo/:photoId', authorization.requiresLogin, group.toggleSelectFamilyPhoto);
   app.delete('/group/family/photo/:photoId', authorization.requiresLogin, group.deleteFamilyPhoto);
 
 };
