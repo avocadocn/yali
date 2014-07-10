@@ -116,7 +116,7 @@ div(ng-controller="infoController")
           .modal-header
             button.close(type="button" data-dismiss="modal")
               span(aria-hidden="true") &times;
-            h4.modal-title 推荐使用16:9的图片
+            h4.modal-title 点击图片可切换选中状态，点击图片右上方的按钮可删除该图片
           .modal-body
             #family_preview_container.clearfix.family_preview_container
               .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos"  ng-class="selected(photo)")
@@ -124,20 +124,20 @@ div(ng-controller="infoController")
                 button.remove(ng-click="deletePhoto(photo._id)"): span.glyphicon.glyphicon-remove
                 button.ok(ng-if="photo.select"): span.glyphicon.glyphicon-ok
               .clearfix
-              label.dl_btn.dl_btn_small.pull-right.add_picture_btn(for="upload_input") 添加图片
+              button.dl_btn.dl_btn_small.pull-right.add_picture_btn(ng-click="next()") 添加图片
             #family_jcrop_container.jcrop
               #jcrop_img_container
                 img.jcrop_img.img-responsive
-              form#upload_family_form.upload_family_form(action="/group/family" method="post" enctype="multipart/form-data")
+              form#upload_family_form.upload_family_form.clearfix(action="/group/family" method="post" enctype="multipart/form-data")
                 input#w(type="hidden" name="width" value="320")
                 input#h(type="hidden" name="height" value="180")
                 input#x(type="hidden" name="x" value="0")
                 input#y(type="hidden" name="y" value="0")
                 input#upload_input.hidden(type="file" name="family" accept="image/*" required)
-                input.remark(type="text" name="remark" placeholder="备注")
-                .upload_operator
+                //-input.remark(type="text" name="remark" placeholder="备注")
+                .upload_operator.pull-right
+                  label.dl_btn.dl_btn_small(for="upload_input") 选择图片
                   button#upload_button.dl_btn.dl_btn_small(type="submit" disabled) 上传
-                  label.dl_btn.dl_btn_small(for="upload_input") 更改图片
                   button.dl_btn.dl_btn_small.cancel_btn(type="button" ng-click="back()") 返回
               p {{ remind }}
 

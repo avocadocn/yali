@@ -737,9 +737,17 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         }
     };
 
+    $scope.next = function() {
+        family_preview_container.hide();
+        family_jcrop_container.show();
+    };
+
     $scope.back = function() {
         if (jcrop_api) {
             jcrop_api.destroy();
+            jcrop_img_container.html('');
+            upload_input.val('');
+            upload_button[0].disabled = true;
         }
         family_preview_container.show();
         family_jcrop_container.hide();
@@ -770,6 +778,9 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $('#upload_family_form').ajaxForm(function(data, status) {
         getFamily();
         jcrop_api.destroy();
+        jcrop_img_container.html('');
+        upload_input.val('');
+        upload_button[0].disabled = true;
         family_preview_container.show();
         family_jcrop_container.hide();
     });
