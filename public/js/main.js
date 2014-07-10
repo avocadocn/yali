@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.main', ['ngRoute','ui.bootstrap','pascalprecht.translate']);
+angular.module('mean.main', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.masonry']);
 
 
 var app = angular.module('mean.main');
