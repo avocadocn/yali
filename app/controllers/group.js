@@ -924,7 +924,7 @@ exports.getCompetition = function(req, res){
 
 exports.updateFormation = function(req, res){
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
-    return res.send(403,forbidden);
+    return res.send(403,'forbidden');
   }
   Campaign.findOne({
     '_id':req.params.competitionId
@@ -957,30 +957,6 @@ exports.updateFormation = function(req, res){
     }
   });
 };
-
-exports.competition = function(req, res, next, id){
-  var cid = req.session.nowcid ? req.session.nowcid :(req.user.provider ==='company' ? req.user.id : req.user.cid);
-  Campaign.findOne({
-      '_id':id
-    })
-    .populate('photo_album')
-    .exec(function(err, competition){
-      if (err) return next(err);
-      req.competition = competition;
-      if(cid.toString() ===competition.camp[0].cid.toString()){
-        req.competition_team = 'A';
-      }
-      else if(cid.toString() ===competition.camp[1].cid.toString()){
-        req.competition_team = 'B';
-      }
-      else
-      {
-        return new next(Error('Failed to load competition ' + id));
-      }
-      next();
-  });
-};
-
 //某一方发送或者修改比赛成绩确认消息
 exports.resultConfirm = function (req, res) {
   if(req.session.role !=='HR' && req.session.role !=='LEADER'){
@@ -1048,6 +1024,14 @@ exports.uploadFamily = function(req, res) {
   if (req.session.role !== 'LEADER') {
     return res.send(403);
   }
+
+  var width = Number(req.body.width);
+  var height = Number(req.body.height);
+  var req_x = Number(req.body.x);
+  var req_y = Number(req.body.y);
+  if (isNaN(width + height + req_x + req_y)) {
+    return res.send(400);
+  }
   CompanyGroup
   .findById(req.session.nowtid)
   .exec()
@@ -1060,54 +1044,68 @@ exports.uploadFamily = function(req, res) {
     var family_dir = '/img/group/family/';
     var photo_name = Date.now().toString() + '.png';
     try{
-      gm(family_photo.path)
-      .write(path.join(meanConfig.root, 'public', family_dir, photo_name), function(err) {
+      gm(family_photo.path).size(function(err, value) {
         if (err) {
           console.log(err);
           return res.send(500);
         }
+        // req.body参数均为百分比
+        var w = width * value.width;
+        var h = height * value.height;
+        var x = req_x * value.width;
+        var y = req_y * value.height;
 
-        var user = {
-          _id: req.user._id
-        };
-        if (req.user.provider === 'company') {
-          user.name = req.user.info.name;
-          user.photo = req.user.info.logo;
-        } else if (req.user.provider === 'user') {
-          user.name = req.user.nickname;
-          user.photo = req.user.photo;
-        }
-
-        company_group.family.push({
-          uri: path.join(family_dir, photo_name),
-          upload_user: user
-        });
-
-        var length = 0;
-        var first_index = 0, get_first = false;
-        for (var i = 0; i < company_group.family.length; i++) {
-          if (company_group.family[i].hidden === false) {
-            if (get_first === false) {
-              first_index = i;
-              get_first = true;
-            }
-            length++;
-          }
-        }
-        if (length > 3) {
-          company_group.family[first_index].hidden = true;
-        }
-
-        company_group.save(function(err) {
+        gm(family_photo.path)
+        .crop(w, h, x, y)
+        .resize(800, 450)
+        .write(path.join(meanConfig.root, 'public', family_dir, photo_name), function(err) {
           if (err) {
             console.log(err);
-            res.send(500);
-          } else {
-            res.send(200);
-            console.log('ok')
+            return res.send(500);
           }
+
+          var user = {
+            _id: req.user._id
+          };
+          if (req.user.provider === 'company') {
+            user.name = req.user.info.name;
+            user.photo = req.user.info.logo;
+          } else if (req.user.provider === 'user') {
+            user.name = req.user.nickname;
+            user.photo = req.user.photo;
+          }
+
+          company_group.family.push({
+            uri: path.join(family_dir, photo_name),
+            upload_user: user
+          });
+
+          // var length = 0;
+          // var first_index = 0, get_first = false;
+          // for (var i = 0; i < company_group.family.length; i++) {
+          //   if (company_group.family[i].hidden === false) {
+          //     if (get_first === false) {
+          //       first_index = i;
+          //       get_first = true;
+          //     }
+          //     length++;
+          //   }
+          // }
+          // if (length > 3) {
+          //   company_group.family[first_index].hidden = true;
+          // }
+
+          company_group.save(function(err) {
+            if (err) {
+              console.log(err);
+              res.send(500);
+            } else {
+              res.send(200);
+            }
+          });
         });
       });
+
     } catch (e) {
       console.log(e);
       res.send(500);
@@ -1129,18 +1127,53 @@ exports.getFamily = function(req, res) {
     if (!company_group) {
       throw 'not found';
     }
-    var length = 0;
+    // var length = 0;
     var res_data = [];
     for (var i = 0; i < company_group.family.length; i++) {
       if (company_group.family[i].hidden === false) {
         res_data.push(company_group.family[i]);
-        length++;
-        if (length >= 3) {
-          break;
-        }
+        // length++;
+        // if (length >= 3) {
+        //   break;
+        // }
       }
     }
     res.send(res_data);
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
+exports.toggleSelectFamilyPhoto = function(req, res) {
+  if (req.session.role !== 'LEADER') {
+    return res.send(403);
+  }
+  CompanyGroup
+  .findById(req.session.nowtid)
+  .exec()
+  .then(function(company_group) {
+    if (!company_group) {
+      throw 'not found';
+    }
+    for (var i = 0; i < company_group.family.length; i++) {
+      if (company_group.family[i]._id.toString() === req.params.photoId) {
+        if (!company_group.family[i].select) {
+          company_group.family[i].select = true;
+        } else {
+          company_group.family[i].select = false;
+        }
+        break;
+      }
+    }
+    company_group.save(function(err) {
+      if (err) {
+        console.log(err);
+        return res.send(500);
+      }
+      res.send(200);
+    });
   })
   .then(null, function(err) {
     console.log(err);

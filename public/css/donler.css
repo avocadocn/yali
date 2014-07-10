@@ -626,6 +626,9 @@ textarea {
   padding: 10px 0;
   width: 10%;
 }
+.dl_company_container .main .group_table .noborder {
+  border: 0 !important;
+}
 .dl_company_container .main .group_table td.text-left,
 .dl_company_container .main .group_table th.text-left {
   text-align: left;
@@ -636,9 +639,6 @@ textarea {
 .dl_company_container .main .group_table img {
   display: inline-block;
   border: 1px solid #ddd;
-}
-.dl_company_container .main .group_table .noborder {
-  border: none;
 }
 .dl_companygroup_container {
   width: 600px;
@@ -1370,37 +1370,55 @@ input.ng-invalid.ng-dirty {
 .family_preview_container {
   margin-top: 20px;
 }
+.family_preview_container .add_picture_btn {
+  margin-top: 20px;
+}
 .family_photo_preview_cell {
   width: 160px;
   height: 90px;
   float: left;
   margin-right: 20px;
+  margin-bottom: 20px;
   position: relative;
 }
 .family_photo_preview_cell img {
   margin: auto;
   max-height: 100%;
 }
-.family_photo_preview_cell .dl_btn_close {
+.family_photo_preview_cell .remove {
   display: none;
   position: absolute;
   top: -9px;
   right: -10px;
-  padding: 3px;
-  border-radius: 10px;
+  border-radius: 20px;
   font-size: 12px;
   background-color: #ff6c6c;
-  opacity: 1;
   color: #fff;
 }
-.family_photo_preview_cell .dl_btn_close span {
-  text-shadow: none;
+.family_photo_preview_cell .remove span {
+  top: 2px;
+  line-height: inherit;
 }
-.family_photo_preview_cell:hover .dl_btn_close {
+.family_photo_preview_cell .ok {
+  position: absolute;
+  bottom: -9px;
+  right: -10px;
+  border-radius: 20px;
+  font-size: 12px;
+  background-color: #5cb85c;
+  color: #fff;
+}
+.family_photo_preview_cell .ok span {
+  line-height: inherit;
+}
+.family_photo_preview_cell:hover .remove {
   display: block;
 }
-.upload_family_form {
-  margin-top: 20px;
+.upload_family_form .upload_operator {
+  margin-top: 10px;
+}
+.upload_family_form .remark {
+  margin-top: 10px;
 }
 #family {
   margin-top: 30px;
@@ -1418,6 +1436,7 @@ input.ng-invalid.ng-dirty {
 #family .carousel-img-container img {
   max-height: 100%;
 }
+<<<<<<< HEAD
 .dl_allteaminfo_container {
   width: 100%;
   min-width: 1000px;
@@ -1446,4 +1465,8 @@ input.ng-invalid.ng-dirty {
 }
 .deckgrid .column-1-4 {
   width: 25%;
+=======
+.selected_img {
+  border-color: #5cb85c;
+>>>>>>> b5c76eefdb7ed3ed304237c7dcec174cc22a9a6a
 }

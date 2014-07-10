@@ -23,6 +23,7 @@ var _member = new Schema({
 
 var familyPhoto = new Schema({
     uri: String,
+    remark: String,
     upload_user: {
         _id: Schema.Types.ObjectId,
         name: String,
@@ -35,6 +36,10 @@ var familyPhoto = new Schema({
     hidden: {
         type: Boolean,
         default: false
+    },
+    select: {
+        type: Boolean,
+        default: true
     }
 });
 

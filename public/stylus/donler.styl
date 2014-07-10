@@ -569,6 +569,8 @@ textarea
         overflow hidden
         padding 10px 0
         width 10%
+      .noborder
+        border 0 !important
       td.text-left,th.text-left
         text-align left
       .operate
@@ -576,8 +578,6 @@ textarea
       img
         display inline-block
         border 1px solid #ddd
-      .noborder
-        border none
 .dl_companygroup_container
   width 600px
   float left
@@ -1166,34 +1166,51 @@ input.ng-invalid.ng-dirty
 .family_preview_container
   margin-top 20px
 
+  .add_picture_btn
+    margin-top 20px
+
 .family_photo_preview_cell
   width 160px
   height 90px
   float left
   margin-right 20px
+  margin-bottom 20px
   position relative
   img
     margin auto
     max-height 100%
-  .dl_btn_close
+  .remove
     display none
     position absolute
     top -9px
     right -10px
-    padding 3px
-    border-radius 10px
+    border-radius 20px
     font-size 12px
     background-color #ff6c6c
-    opacity 1
     color white
     span
-      text-shadow none
+      top 2px
+      line-height inherit
+  .ok
+    position absolute
+    bottom -9px
+    right -10px
+    border-radius 20px
+    font-size 12px
+    background-color #5cb85c
+    color white
+    span
+      line-height inherit
   &:hover
-    .dl_btn_close
+    .remove
       display block
 
 .upload_family_form
-  margin-top 20px
+  .upload_operator
+    margin-top 10px
+
+  .remark
+    margin-top 10px
 
 familyWidth = 660px
 familyHeight = 371.25px
@@ -1212,12 +1229,17 @@ familyHeight = 371.25px
     img
       max-height 100%
 
+<<<<<<< HEAD
 .dl_allteaminfo_container
   width 100%
   min-width 1000px
   max-width 1200px
   background-color white
 
+=======
+.selected_img
+  border-color #5cb85c
+>>>>>>> b5c76eefdb7ed3ed304237c7dcec174cc22a9a6a
 
 .dl_allteaminfo_emp
   background-color white

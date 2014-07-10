@@ -16,7 +16,7 @@ module.exports = function(grunt) {
             },
             css: {
                 files: ['public/css/**.css', '!public/css/**.min.css'],
-                tasks: ['cssmin'],
+                tasks: ['concat', 'cssmin'],
                 options: {
                     livereload: true
                 }
