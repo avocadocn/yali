@@ -1045,6 +1045,9 @@ exports.group = function(req, res, next, id) {
 
 
 exports.uploadFamily = function(req, res) {
+  if (req.session.role !== 'LEADER') {
+    return res.send(403);
+  }
   CompanyGroup
   .findById(req.session.nowtid)
   .exec()
@@ -1146,6 +1149,9 @@ exports.getFamily = function(req, res) {
 };
 
 exports.deleteFamilyPhoto = function(req, res) {
+  if (req.session.role !== 'LEADER') {
+    return res.send(403);
+  }
   CompanyGroup
   .findById(req.session.nowtid)
   .exec()
