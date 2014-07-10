@@ -698,6 +698,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         }
     };
 
+    var jcrop_api;
+
     $scope.family_photos;
     var getFamily = function() {
         $http
@@ -734,14 +736,64 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
 
     $('#upload_family_form').ajaxForm(function(data, status) {
         getFamily();
+        jcrop_api.destroy();
     });
 
-    $('#upload_family').change(function() {
-        if ($(this).val() !== '' && $(this).val() != null) {
-            $('#upload_family_form').submit();
-            $(this).val(null);
+    var getFilePath = function(input, callback) {
+      var file = input.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function(e) {
+        callback(this.result);
+      };
+    };
+
+    var upload_input = $('#upload_input');
+    var upload_button = $('#upload_button');
+    var jcrop_img_container = $('#jcrop_img_container');
+    var clone_img = jcrop_img_container.find('img').clone();
+
+    upload_input.change(function() {
+        if (upload_input.val() == null || upload_input.val() === '') {
+            upload_button[0].disabled = true;
+        } else {
+            if (upload_input[0].files[0].size > 1024 * 1024 * 5) {
+                upload_button[0].disabled = true;
+                $scope.remind = '上传的文件大小不可以超过5M';
+            } else {
+                upload_button[0].disabled = false;
+            }
         }
+
+        getFilePath(upload_input[0], function(path) {
+            jcrop_img_container.html(clone_img.clone());
+            var jcrop_img = jcrop_img_container.find('img');
+            jcrop_img.attr('src', path);
+
+            var select = function(coords) {
+                var operator_img = $('.jcrop-holder img');
+                var imgx = operator_img.width();
+                var imgy = operator_img.height();
+                // 裁剪参数，单位为百分比
+                $('#w').val(coords.w / imgx);
+                $('#h').val(coords.h / imgy);
+                $('#x').val(coords.x / imgx);
+                $('#y').val(coords.y / imgy);
+            };
+
+            jcrop_img.Jcrop({
+                setSelect: [0, 0, 320, 180],
+                aspectRatio: 16 / 9,
+                onSelect: select,
+                onChange: select
+            }, function() {
+                jcrop_api = this;
+            });
+
+            $('.jcrop-holder img').attr('src', path);
+        });
     });
+
 
     //---主场地图
     //初始化 如果有坐标则显示标注点，没有则不显示
