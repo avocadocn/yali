@@ -742,8 +742,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         });
     })();
 
-    $('.tree').delegate('li.parent_li > span', 'click', function(e) {
-        var department = $(this).parent('li.parent_li').find(' > ul > li');
+    $('.tree').delegate('li.parent_li > .self > span', 'click', function(e) {
+        var department = $(this).parent('.self').parent('li.parent_li').find(' > ul > li');
         if (department.is(":visible")) {
             department.hide('fast');
             $(this).attr('title', 'Expand this branch').find(' > i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
@@ -764,21 +764,23 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
     $scope.addNode = function(node) {
-        $http
-        .post('/department/push', {
-            did: node._id,
-            name: 'test department'
-        })
-        .success(function(data, status) {
-            $scope.node = {
-                _id: data._id,
-                name: data.name,
-                department: data.department
-            };
-            if ($scope.node.department.length === 0) {
-                $scope.node.department = null;
-            }
-        });
+        if (node.add_name !== '' && node.add_name != null) {
+            $http
+            .post('/department/push', {
+                did: node._id,
+                name: node.add_name
+            })
+            .success(function(data, status) {
+                $scope.node = {
+                    _id: data._id,
+                    name: data.name,
+                    department: data.department
+                };
+                if ($scope.node.department.length === 0) {
+                    $scope.node.department = null;
+                }
+            });
+        }
     };
 
     $scope.deleteNode = function(node) {
