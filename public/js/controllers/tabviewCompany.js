@@ -792,16 +792,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
-    $scope.addNode = function(node) {
-        node.department.push({
-            edit_name: '',
-            parent_id: node._id,
-            parent: node,
-            is_creating: true
-        });
-    };
-
-    $scope.confirm = function(node) {
+    $scope.confirmCreate = function(node) {
         if (node.edit_name !== '' && node.edit_name != null) {
             $http
             .post('/department/push', {
@@ -821,12 +812,50 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
-    $scope.cancel = function(node) {
+    $scope.cancelCreate = function(node) {
         for (var i = 0; i < node.parent.department.length; i++) {
             if (node.parent.department[i].is_creating) {
                 node.parent.department.splice(i, 1);
             }
         }
+    };
+
+    $scope.confirmEdit = function(node) {
+        if (node.temp_name !== '' && node.temp_name != null) {
+            $http
+            .post('/department/modify', {
+                did: node._id,
+                name: node.temp_name
+            })
+            .success(function(data, status) {
+                $scope.node = {
+                    _id: data._id,
+                    name: data.name,
+                    department: data.department
+                };
+                if ($scope.node.department.length === 0) {
+                    $scope.node.department = null;
+                }
+            });
+        }
+    };
+
+    $scope.cancelEdit = function(node) {
+        node.is_editing = false;
+    };
+
+    $scope.addNode = function(node) {
+        node.department.push({
+            edit_name: '',
+            parent_id: node._id,
+            parent: node,
+            is_creating: true
+        });
+    };
+
+    $scope.editNode = function(node) {
+        node.temp_name = node.name;
+        node.is_editing = true;
     };
 
     $scope.deleteNode = function(node) {
