@@ -56,7 +56,7 @@ else
             p.subtitle= timeline.head
           .timeline-content
             img.timeline-img.pull-left(src="#{timeline.logo ? timeline.logo :'/img/icons/default_company_logo.png'}")
-            p= "{{'LOCATION'|translate}}" +":"+ timeline.location.name
-            p= "{{'CONTENT'|translate}}" +":"+ timeline.content
+            p= "#{__('LOCATION')}" +":"+ timeline.location.name
+            p= "#{__('CONTENT')}" +":"+ timeline.content
 //-else
   span.emptiem #{__("NO_CAMPAIGN")}

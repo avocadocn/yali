@@ -40,8 +40,8 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controller: 'TeamInfoController',
         controllerAs: 'teamInfo'
       })
-      .when('/timeLine', {
-        templateUrl: '/company/timeLine',
+      .when('/timeLine/:id', {
+        templateUrl: '/company'+window.location.hash.substr(1)
         //controller: 'AccountFormController',
         //controllerAs: 'account'
       })
@@ -71,16 +71,19 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $rootScope.nowTab = 'company_campaign';
 
     $scope.campaign_type = "所有活动";
+    $rootScope.$watch('cid',function(cid){
+        console.log(cid);
+        $http.get('/campaign/getCampaigns/company/'+cid+'/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
+          $scope.campaigns = data.campaigns;
+          if(data.campaigns.length<20){
+            $scope.loadMore_flag = false;
+          }
+          else{
+            $scope.loadMore_flag = true;
+          }
+        });
+    })
 
-    $http.get('/campaign/getCampaigns/company/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
-      $scope.campaigns = data.campaigns;
-      if(data.campaigns.length<20){
-        $scope.loadMore_flag = false;
-      }
-      else{
-        $scope.loadMore_flag = true;
-      }
-    });
     $scope.campaignType='all';
 
     $scope.block = 1;
@@ -89,7 +92,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$rootScope.cid+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
@@ -116,7 +119,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$rootScope.cid+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -151,27 +154,27 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         switch(value) {
             case 0:
                 $scope.campaignType = 'company';
-                _url = "/campaign/getCampaigns/company/company/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/company/0";
                 $scope.campaign_type = "全公司活动";
                 break;
             case 1:
                 $scope.campaignType = 'selected';
-                _url = "/campaign/getCampaigns/company/selected/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/selected/0";
                 $scope.campaign_type = "已加入小队的活动";
                 break;
             case 2:
                 $scope.campaignType = 'unselected';
-                _url = "/campaign/getCampaigns/company/unselected/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/unselected/0";
                 $scope.campaign_type = "未加入小队的活动";
                 break;
             case 3:
                 $scope.campaignType = 'team';
-                _url = "/campaign/getCampaigns/company/team/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/team/0";
                 $scope.campaign_type = "所有小队的活动";
                 break;
             case 4:
                 $scope.campaignType = 'all';
-                _url = "/campaign/getCampaigns/company/all/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/all/0";
                 $scope.campaign_type = "所有活动";
                 break;
             default:break;
@@ -301,7 +304,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
 }]);
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
  function ($http, $scope, $rootScope) {
-    $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
+    $http.get('/search/'+$rootScope.cid+'/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
       //按照员工昵称的拼音排序
       $scope.members = $scope.members.sort(function (e,f){return e.nickname.localeCompare(f.nickname);});
@@ -358,7 +361,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
 }).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-    $http.get('/group/getCompanyTeamsInfo' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+    $http.get('/company/'+$rootScope.cid+'/getCompanyTeamsInfo' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.team_lists = data.teams;//公司的所有team
         $scope.cid = data.cid;
         $scope.role = data.role;
@@ -644,7 +647,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
 }]);
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
 
-    $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
+    $http.get('/company/getAccount/'$rootScope.cid+'?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
         $scope.linkage_init_location = {
@@ -752,7 +755,132 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         else {
             $scope.infoButtonStatus = '保存';
         }
-     };
+    };
+
+    (function getDepartments() {
+        $http
+        .get('/department/pull')
+        .success(function(data, status) {
+            $scope.node = {
+                _id: data._id,
+                name: data.name,
+                department: data.department
+            };
+            if ($scope.node.department.length === 0) {
+                $scope.node.department = null;
+            }
+        });
+    })();
+
+    $('.tree').delegate('li.parent_li > .self > span', 'click', function(e) {
+        var department = $(this).parent('.self').parent('li.parent_li').find(' > ul > li');
+        if (department.is(":visible")) {
+            department.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
+        } else {
+            department.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('glyphicon-minus').removeClass('glyphicon-plus');
+        }
+        e.stopPropagation();
+    });
+
+
+    $scope.hasChild = function(node) {
+        if (node && node.department) {
+            return 'parent_li';
+        } else {
+            return '';
+        }
+    };
+
+    $scope.confirmCreate = function(node) {
+        if (node.edit_name !== '' && node.edit_name != null) {
+            $http
+            .post('/department/push', {
+                did: node.parent_id,
+                name: node.edit_name
+            })
+            .success(function(data, status) {
+                $scope.node = {
+                    _id: data._id,
+                    name: data.name,
+                    department: data.department
+                };
+                if ($scope.node.department.length === 0) {
+                    $scope.node.department = null;
+                }
+            });
+        }
+    };
+
+    $scope.cancelCreate = function(node) {
+        for (var i = 0; i < node.parent.department.length; i++) {
+            if (node.parent.department[i].is_creating) {
+                node.parent.department.splice(i, 1);
+            }
+        }
+    };
+
+    $scope.confirmEdit = function(node) {
+        if (node.temp_name !== '' && node.temp_name != null) {
+            $http
+            .post('/department/modify', {
+                did: node._id,
+                name: node.temp_name
+            })
+            .success(function(data, status) {
+                $scope.node = {
+                    _id: data._id,
+                    name: data.name,
+                    department: data.department
+                };
+                if ($scope.node.department.length === 0) {
+                    $scope.node.department = null;
+                }
+            });
+        }
+    };
+
+    $scope.cancelEdit = function(node) {
+        node.is_editing = false;
+    };
+
+    $scope.addNode = function(node) {
+        node.department.push({
+            edit_name: '',
+            parent_id: node._id,
+            parent: node,
+            is_creating: true
+        });
+    };
+
+    $scope.editNode = function(node) {
+        node.temp_name = node.name;
+        node.is_editing = true;
+    };
+
+    $scope.deleteNode = function(node) {
+        $http
+        .post('/department/delete', {
+            did: node._id
+        })
+        .success(function(data, status) {
+            // 不应该这样
+            /*
+            if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
+                getDepartments();
+            }
+            */
+            //应该这样
+            if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
+                $scope.node = {
+                    _id: data._id,
+                    name: data.name,
+                    department: data.department
+                };
+            }
+        });
+    };
 
 }]);
 

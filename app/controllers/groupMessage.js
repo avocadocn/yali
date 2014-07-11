@@ -12,18 +12,20 @@ var pagesize = 20;
 var day_time = 24 * 60 * 60 * 1000;
 exports.renderMessageList =function(req,res){
   res.render('partials/message_list',{
-    'role':req.session.role
+    'role':req.role
   });
 };
 //根据小队ID返回小组动态消息
 exports.getMessage = function(req, res) {
-  if(req.params.pageType==="team"&&req.session.role !=='HR' && req.session.role !=='LEADER' && req.session.role !=='MEMBER' && req.session.role !=='PARTNER' || req.params.pageType==="user"&&req.session.role !=='OWNER' ){
+  if(req.params.pageType==="team"&&req.role !=='HR' && req.role !=='LEADER' && req.role !=='MEMBER' && req.role !=='PARTNER' || req.params.pageType==="user"&&req.role !=='OWNER' ){
     return res.send(403,'forbidden');
   }
+  var pageType = req.params.pageType;
+  var pageId = req.params.pageId;
   var option = {};
-  if(req.params.pageType==="team"){
+  if(pageType==="team"){
     option ={
-      'team.teamid' : req.session.nowtid,
+      'team.teamid' : pageId,
       'active':true
     };
   }
@@ -54,7 +56,7 @@ exports.getMessage = function(req, res) {
       var last_user_index,last_team_index,last_company_index;
       for(var i = 0; i < length; i ++) {
         var push_flag=true;
-        var join_role = req.user.provider==='user' && (req.params.pageType==="team" &&(req.session.role === 'MEMBER' || req.session.role ==='LEADER') || req.params.pageType==="user" &&(req.session.role === 'OWNER'));
+        var join_role = req.user.provider==='user' && (pageType==="team" &&(req.role === 'MEMBER' || req.role ==='LEADER') || pageType==="user" &&(req.role === 'OWNER'));
         var _group_message ={
           '_id': group_message[i]._id,
           'message_type' : group_message[i].message_type,
@@ -102,7 +104,13 @@ exports.getMessage = function(req, res) {
             _group_message.team_id = group_message[i].team[0].teamid;
           break;
           case 4://发起挑战
-            var camp_flag = group_message[i].campaign.camp[0].id== req.session.nowtid? 0 : 1;
+            var camp_flag;
+            if(pageType==="team"){
+              camp_flag = group_message[i].campaign.camp[0].id== pageId? 0 : 1;
+            }
+            else{
+              camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
+            }
             _group_message.camp_flag =camp_flag;
             _group_message.logo = group_message[i].team[camp_flag].logo;
             _group_message.team_id = group_message[i].team[camp_flag].teamid;
@@ -126,13 +134,19 @@ exports.getMessage = function(req, res) {
               }
               _group_message.vote_flag = vote_flag;
             }
-            if(req.params.pageType==="team" &&(req.session.role === 'HR' || req.session.role ==='LEADER')){
+            if(pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')){
               if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false)
                 _group_message.response_flag = true;
             }
           break;
           case 5://接受应战
-            var camp_flag = group_message[i].campaign.camp[0].id== req.session.nowtid? 0 : 1;
+            var camp_flag;
+            if(pageType==="team"){
+              camp_flag = group_message[i].campaign.camp[0].id== pageId? 0 : 1;
+            }
+            else{
+              camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
+            }
             _group_message.camp_flag =camp_flag;
             _group_message.logo = group_message[i].team[camp_flag ].logo;
             _group_message.team_id = group_message[i].team[camp_flag ].teamid;
@@ -152,7 +166,13 @@ exports.getMessage = function(req, res) {
             }
           break;
           case 6:
-            var camp_flag = group_message[i].campaign.camp[0].id== req.session.nowtid? 0 : 1;
+            var camp_flag;
+            if(pageType==="team"){
+              camp_flag = group_message[i].campaign.camp[0].id== pageId? 0 : 1;
+            }
+            else{
+              camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
+            }
             _group_message.camp_flag =camp_flag;
             _group_message.logo = group_message[i].team[camp_flag ].logo;
           break;
@@ -192,7 +212,7 @@ exports.getMessage = function(req, res) {
           group_messages.push(_group_message);
         }
       }
-      return res.send({'result':1,'group_messages':group_messages,'role':req.session.role,'user':{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team}});
+      return res.send({'result':1,'group_messages':group_messages,'role':req.role,'user':{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team}});
      }
   });
 };

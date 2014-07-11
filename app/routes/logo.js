@@ -10,7 +10,7 @@ var bodyParser = express.bodyParser({
 
 module.exports = function(app) {
 
-  app.post('/logo/update', authorization.requiresLogin, bodyParser, logo.updateLogo);
+  app.post('/logo/update', authorization.logoAuthorize, bodyParser, logo.updateLogo);
 
   app.get('/logo/:target/:id/:width/:height', logo.readLogo);
 

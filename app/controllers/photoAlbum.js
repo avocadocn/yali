@@ -837,7 +837,7 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
           photo_album_list: photo_album_list,
           photo: req.user.photo,
           realname: req.user.realname,
-          role: req.session.role,
+          role: req.role,
           owner_id: company_group._id,
           owner_name: company_group.name,
           owner_logo: company_group.logo,

@@ -7,8 +7,19 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
-
-
+//员工申请
+var _member = new Schema({
+    _id: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    nickname: String,
+    photo: String,
+    apply_status:{
+      type:String,
+      enum:['pass','reject','wait']
+    }
+});
 
 var Department = new Schema({
   name:String,
@@ -25,7 +36,8 @@ var Department = new Schema({
     _id:Schema.Types.ObjectId,
     nickname:String,
     photo:String
-  }
+  },
+  member_apply:[_member]
 });
 
 

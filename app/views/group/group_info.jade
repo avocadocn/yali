@@ -25,7 +25,7 @@ div(ng-controller="infoController")
         span.info_label #{__("TEAM_LOGO")}
       .info_detail_2
         if (Global.role=== 'HR' || Global.role ==='LEADER')
-          a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") #{__("CHANGE")}LOGO
+          a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/{{teamId}}/editLogo") #{__("CHANGE")}LOGO
     .dl_row.clearfix(ng-show="team.home_court[0]!=undefined || !unEdit")
       .info_side
         span.info_label #{__("HOME_COURT")}
@@ -128,7 +128,7 @@ div(ng-controller="infoController")
             #family_jcrop_container.jcrop
               #jcrop_img_container
                 img.jcrop_img.img-responsive
-              form#upload_family_form.upload_family_form.clearfix(action="/group/family" method="post" enctype="multipart/form-data")
+              form#upload_family_form.upload_family_form.clearfix(action="/group/{{teamId}}/family" method="post" enctype="multipart/form-data")
                 input#w(type="hidden" name="width" value="320")
                 input#h(type="hidden" name="height" value="180")
                 input#x(type="hidden" name="x" value="0")
