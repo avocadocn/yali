@@ -97,12 +97,15 @@ div.company-info
         input.dl_input.editToggle.dl_form-Control(type="textarea" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit")
 
   script(type="text/ng-template" id="node.html")
-    .self(ng-mouseover="node.show_operator = true" ng-mouseleave="node.show_operator = false")
+    .self.inline(ng-mouseover="node.show_operator = true" ng-mouseleave="node.show_operator = false")
       span
         i.glyphicon.glyphicon-minus(ng-if="node.department")
         | &nbsp;{{node.name}}
-      .operator(ng-if="node.show_operator")
-        input(type="text" ng-model="node.add_name" placeholder="请输入部门名")
+        .inline(ng-if="node.is_creating")
+          input(type="text" ng-model="node.edit_name")
+          button.dl_btn.dl_btn_small(ng-click="confirm(node)") 确定
+          button.cancel_btn.dl_btn_small(ng-click="cancel(node)") 取消
+      .operator.inline(ng-if="node.show_operator && !node.is_creating")
         button.dl_btn.dl_btn_small(ng-click="addNode(node)") 创建子部门
         button.cancel_btn.dl_btn_small(ng-click="deleteNode(node)") 删除该部门
     ul

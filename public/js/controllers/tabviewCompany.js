@@ -793,11 +793,20 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
     $scope.addNode = function(node) {
-        if (node.add_name !== '' && node.add_name != null) {
+        node.department.push({
+            edit_name: '',
+            parent_id: node._id,
+            parent: node,
+            is_creating: true
+        });
+    };
+
+    $scope.confirm = function(node) {
+        if (node.edit_name !== '' && node.edit_name != null) {
             $http
             .post('/department/push', {
-                did: node._id,
-                name: node.add_name
+                did: node.parent_id,
+                name: node.edit_name
             })
             .success(function(data, status) {
                 $scope.node = {
@@ -809,6 +818,14 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     $scope.node.department = null;
                 }
             });
+        }
+    };
+
+    $scope.cancel = function(node) {
+        for (var i = 0; i < node.parent.department.length; i++) {
+            if (node.parent.department[i].is_creating) {
+                node.parent.department.splice(i, 1);
+            }
         }
     };
 

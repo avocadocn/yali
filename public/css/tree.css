@@ -66,8 +66,7 @@
   padding-top: 6px;
   padding-bottom: 6px;
 }
-.tree .self,
-.tree .operator {
+.tree .inline {
   display: inline;
 }
 .tree .operator {
