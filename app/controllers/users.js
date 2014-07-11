@@ -16,6 +16,7 @@ var mongoose = require('mongoose'),
   Group = mongoose.model('Group'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   GroupMessage = mongoose.model('GroupMessage'),
+  Department = mongoose.model('Department'),
   Campaign = mongoose.model('Campaign');
 
 // 3rd
@@ -1446,5 +1447,18 @@ exports.getTimelineForApp = function(req,res){
 }
 
 
+//申请加入某个部门
+exports.applyToDepartment = function(req,res){
+  var did = req.body.did;
+  var member = req.body.member;
+  Department.findByIdAndUpdate({'_id':did},{'$push':{'member_apply':member}},function(err,department){
+    if(err || !department){
+      res.send(500);
+    }else{
+      //记得发站内信
+      res.send(200);
+    }
+  })
+}
 
 
