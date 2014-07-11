@@ -6,16 +6,16 @@
       .dl_pass_label
         span #{__("CURRENT")}#{__("PASSWORD")}:
       .dl_pass_input
-        input.dl_form-Control(type="password" name="nowpassword" placeholder="{{'CURRENT'|translate}}{{'PASSWORD'|translate}}" ng-model="nowpassword" required)
+        input.dl_form-Control(type="password" name="nowpassword" placeholder="#{__('CURRENT')}#{__('PASSWORD')}" ng-model="nowpassword" required)
     .dl_row.margin_top_6
       .dl_pass_label
         span #{__("NEW")}#{__("PASSWORD")}:
       .dl_pass_input
-        input.dl_form-Control(type="password" name="newpassword" placeholder="{{'NEW'|translate}}{{'PASSWORD'|translate}}" ng-model="newpassword" required)
+        input.dl_form-Control(type="password" name="newpassword" placeholder="#{__('NEW')}#{__('PASSWORD')}" ng-model="newpassword" required)
     .dl_row.margin_top_6
       .dl_pass_label
         span #{__("CONFIRM")}#{__("NEW")}#{__("PASSWORD")}:
       .dl_pass_input
-        input.dl_form-Control(type="password" name="confirmpassword" placeholder="{{'CONFIRM'|translate}}{{'NEW'|translate}}{{'PASSWORD'|translate}}" ng-model="confirmpassword" match="newpassword" required)
+        input.dl_form-Control(type="password" name="confirmpassword" placeholder="#{__('CONFIRM')}#{__('NEW')}#{__('PASSWORD')}" ng-model="confirmpassword" match="newpassword" required)
     .dl_row.margin_top_6
       button.dl_btn.dl_btn_small(ng-disabled="passwordForm.$invalid" ng-click="change_password()") #{__("CONFIRM")}#{__("CHANGE")}#{__("PASSWORD")}

@@ -16,17 +16,17 @@ block content
         .col-xs-12.col-sm-7
           form.signin.form-horizontal.center-block(action="/company/session" method="post")
             .form-group
-              label.col-md-4.control-label(for="username") {{ 'USERNAME' | translate}}
+              label.col-md-4.control-label(for="username") #{__('USERNAME')}
               .col-md-8
                 input#username.dl_form-Control(type="text" name="username" placeholder="用户名" required)
             .form-group
-              label.col-md-4.control-label(for="password") {{ 'PASSWORD' | translate}}
+              label.col-md-4.control-label(for="password") #{__('PASSWORD')}
               .col-md-8
                 input#password.dl_form-Control(type="password" name="password" placeholder="密码" required)
             .form-group
               .col-md-offset-4.col-md-8
-                button.btn.btn-primary(type="submit") {{ 'SIGNIN' | translate}}
+                button.btn.btn-primary(type="submit") #{__('SIGNIN')}
                 | &nbsp;or&nbsp;
-                a.show-signup(href="/company/signup") {{ 'SIGNUP' | translate}}
-                a.reset-pwd(href="/company/forgetPwd")  {{ 'FORGET' | translate}}{{ 'PASSWORD' | translate}}
+                a.show-signup(href="/company/signup") #{__('SIGNUP')}
+                a.reset-pwd(href="/company/forgetPwd")  #{__('FORGET')}#{__('PASSWORD')}
   include ../partials/footer
