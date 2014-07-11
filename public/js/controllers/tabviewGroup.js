@@ -626,7 +626,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
-    $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+    $scope.buttonStatus = '编辑';
     $scope.mapFlag=false;//供地图初始化用的flag
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/info/'+tid).success(function(data, status) {
@@ -682,7 +682,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             catch(e) {
                 console.log(e);
             }
-            $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;;
+            $scope.buttonStatus = '编辑';
         }
         else {
             if(!window.map_ready){//如果没有加载过地图script则加载
@@ -694,7 +694,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             if($scope.showMap){//如果需要显示地图则初始化
                 $scope.initialize();
             }
-            $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;;
+            $scope.buttonStatus = '保存';
         }
     };
 
