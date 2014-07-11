@@ -84,7 +84,14 @@ if (Global.role === 'EMPLOYEE')
       a(href="/group/home/{{team._id}}")
         img.img_border.img_contain(ng-src="{{team.logo}}\\20\\20" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
         span {{team.name}}
-      p {{team.member}}
+      p(ng-if="team.belong") 已加入
+      p(ng-if="!team.belong") 加入小队
+      //- if （!team.belong）
+      //-   p 已加入
+      //- else
+      //-   a 加入
+
+      p {{team}}
 
 
 

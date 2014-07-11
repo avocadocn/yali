@@ -16,30 +16,6 @@ tabViewCompany.directive('match', function($parse) {
       });
     }
   };
-}).directive('masonry', function ($parse, $timeout) {
-    return {
-        link: function (scope, elem, attrs) {   
-            $timeout(function() {
-                $(".masonry").masonry({
-                    itemSelector : ".masonry-item"
-                });
-                // console.log($(".masonry-item"));
-            }, 0);
-
-        }
-    };        
-}).directive('masonryItem', function ($parse, $timeout) {
-    return {
-        restrict: 'AC',
-        link: function (scope, elem, attrs) {
-
-            $timeout(function(){
-                elem.parents('.masonry').masonry('bindResize');
-                console.log(elem.parents('.masonry-item').length);
-            }, 2000); 
-
-        }
-    };        
 });
 tabViewCompany.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
@@ -358,7 +334,29 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     }
 }]);
 
-tabViewCompany.controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+tabViewCompany.directive('masonry', function ($timeout) {
+    return {
+        restrict: 'AC',
+        link: function (scope, elem, attrs) {
+            scope.$watch(function () {
+                return elem[0].children.length
+            },
+
+            function (newVal) {
+                $timeout(function () {
+                    elem.masonry('reloadItems');
+                    elem.masonry();
+                })
+            })
+
+            elem.masonry({
+                itemSelector: '.masonry-item'
+            });
+            scope.masonry = elem.data('masonry');
+        }
+    };
+
+}).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
     $http.get('/group/getCompanyTeamsInfo' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.team_lists = data.teams;//公司的所有team
