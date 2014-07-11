@@ -1,8 +1,10 @@
 hr
 .dl_modal_container
   .dl_row(style="height:93px" ng-repeat="team_message in team_messages" ng-if="$index >= page_team.up && $index <= page_team.down")
-    .dl_message_head
-      img.dl_message_head_size
+    .dl_message_head.dl_message_body_font(ng-switch="team_message.message_type")
+      span.glyphicon.glyphicon-star-empty(ng-switch-when="0")
+      span.glyphicon.glyphicon-music(ng-switch-when="1")
+      span.glyphicon.glyphicon-flag(ng-switch-when="2")
     .dl_message_body.margin_left_5
       .row
         .dl_message_caption

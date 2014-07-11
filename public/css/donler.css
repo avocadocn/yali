@@ -1455,6 +1455,14 @@ input.ng-invalid.ng-dirty {
   min-height: 80px;
   margin: 4px;
 }
+.dl_message_body_font {
+  font-size: 48px;
+  color: #3498db;
+}
+.dl_head_font {
+  font-size: 80px;
+  color: #3498db;
+}
 .deckgrid[deckgrid]::before {
 /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
   content: '4 .column.column-1-4';
