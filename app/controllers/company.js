@@ -36,6 +36,29 @@ exports.authCallback = function(req, res) {
     res.redirect('/');
 };
 
+exports.authorize = function(req, res, next){
+    if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id.toString())){
+        req.session.nowcid = req.user._id;
+        req.session.role = 'HR';
+        req.session.Global.role = 'HR';
+    }
+    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid.toString())){
+        req.session.role = 'EMPLOYEE';
+        req.session.Global.role = 'EMPLOYEE';
+        req.session.nowcid = req.user.cid;
+    }
+    else{
+        if(req.user.role == 'LEADER'){
+          req.session.role = 'GUESTLEADER';
+          req.session.Global.role = 'GUESTLEADER';
+        }else{
+          req.session.role = 'GUEST';
+          req.session.Global.role = 'GUEST';
+        }
+        req.session.nowcid = req.params.companyId;
+    }
+    next();
+};
 /*
   忘记密码
 */
@@ -1108,6 +1131,8 @@ exports.sponsor = function (req, res) {
     campaign.deadline = deadline;
     campaign.member_min = member_min;
     campaign.member_max = member_max;
+
+    campaign.type = 1;
 
     var photo_album = new PhotoAlbum({
         owner: {

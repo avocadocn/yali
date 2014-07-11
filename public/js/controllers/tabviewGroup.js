@@ -87,7 +87,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                     tid : $rootScope.teamId
                 }
             }).success(function(data,status){
-                $rootScope.number -= 1;
+                $rootScope.number --;
                 $rootScope.isMember = false;
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
@@ -101,6 +101,14 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     //加载地图
     $rootScope.loadMap = function(index){
         $rootScope.loadMapIndex = index;
+    };
+
+    $rootScope.dongIt = function(){
+        $rootScope.modalNumber = 2;
+    };
+
+    $rootScope.provokeRecommand =function(){
+        $rootScope.recommand = true;
     };
 }]);
 
@@ -907,19 +915,23 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
-    $rootScope.$watch('loadMapIndex',function(value){
-        if(value==1){
-            //加载地图
-            if(!window.map_ready){
-                window.campaign_map_initialize = $scope.initialize;
-                var script = document.createElement("script");  
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
-                document.body.appendChild(script);
-            }
-            else{
-                $scope.initialize();
+    $rootScope.$watch('$rootScope.loadMapIndex',function(value){
+        if($rootScope.loadMapIndex){
+            console.log(1);
+            if(value==1){
+                //加载地图
+                if(!window.map_ready){
+                    window.campaign_map_initialize = $scope.initialize;
+                    var script = document.createElement("script");  
+                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
+                    document.body.appendChild(script);
+                }
+                else{
+                    $scope.initialize();
+                }
             }
         }
+
     });
     $scope.initialize = function(){
         $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
@@ -999,23 +1011,50 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.teams = [];
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
-    $scope.modal=false;
+    $scope.modal=0;
     $scope.result=0;//是否已搜索
+    $rootScope.modalNumber=0;
+
     $rootScope.$watch('loadMapIndex',function(value){
-        if(value==2){
-            //加载地图
-            if(!window.map_ready){
-                window.campaign_map_initialize = $scope.initialize;
-                var script = document.createElement("script");  
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
-                document.body.appendChild(script);
-            }
-            else{
-                $scope.initialize();
+        if($rootScope.loadMapIndex){
+            if(value==2){
+                //加载地图
+                if(!window.map_ready){
+                    window.campaign_map_initialize = $scope.initialize;
+                    var script = document.createElement("script");  
+                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
+                    document.body.appendChild(script);
+                }
+                else{
+                    $scope.initialize();
+                }
             }
         }
     });
-    
+
+    //决定要打开哪个挑战的modal
+    $rootScope.$watch('modalNumber',function(){
+        if($rootScope.modalNumber){
+            if($rootScope.modalNumber!==2)
+                $scope.modal = 0;
+            else{
+                $scope.modal = 2;
+                $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
+                    $scope.similarTeams = data;
+                    if(data.length===1){
+                        $scope.modal=3;//直接跳到发起挑战页面
+                        $scope.team_opposite = $scope.similarTeams[0];
+                    }
+                });
+            }
+        }
+    });
+
+    //推荐小队
+    $rootScope.$watch('recommand',function(){
+        if($rootScope.recommand)
+            $scope.recommandTeam();
+    });
 
 
     $("#competition_start_time").on("changeDate",function (ev) {
@@ -1033,6 +1072,29 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
+    
+    $scope.recommandTeam = function(){
+        try{
+            $http({
+                method:'post',
+                url:'/search/recommandteam',
+                data:{
+                    gid : $rootScope.groupId,
+                    tid : $rootScope.teamId
+                }
+            }).success(function(data,status){
+                if(data.result===1)
+                    $scope.teams=data;
+                else if(data.result===2)//没填主场
+                    $scope.homecourt=false;
+            }).error(function(data,status){
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            })
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
 
     $scope.search = function() {
         //按公司搜索
@@ -1192,63 +1254,69 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
 
     $scope.provoke_select = function (team) {
         $scope.team_opposite = team;
-        $scope.modal=true;
+        $scope.modal++;
         $rootScope.loadMapIndex=2;
     };
         //约战
     $scope.provoke = function() {
-        try {
-            $http({
-                method: 'post',
-                url: '/group/provoke/'+$rootScope.teamId,
-                data:{
-                    theme : $scope.theme,
-                    team_opposite : $scope.team_opposite,
-                    content : $scope.content,
-                    location: $scope.location,
-                    start_time: $scope.start_time,
-                    end_time: $scope.end_time,
-                    deadline: $scope.deadline,
-                    member_min : $scope.member_min,
-                    member_max : $scope.member_max
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
+        if($scope.modal===1){//在自己的小队约战
+            try {
+                $http({
+                    method: 'post',
+                    url: '/group/provoke/'+$rootScope.teamId,
+                    data:{
+                        theme : $scope.theme,
+                        team_opposite_id : $scope.team_opposite._id,
+                        content : $scope.content,
+                        location: $scope.location,
+                        start_time: $scope.start_time,
+                        end_time: $scope.end_time,
+                        deadline: $scope.deadline,
+                        member_min : $scope.member_min,
+                        member_max : $scope.member_max,
+                    }
+                }).success(function(data, status) {
+                    window.location.reload();
+                }).error(function(data, status) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
         }
-        catch(e) {
-            console.log(e);
+        else{//在其它小队约战
+            try {
+                $http({
+                    method: 'post',
+                    url: '/group/provoke/'+$scope.team_opposite._id,
+                    data:{
+                        theme : $scope.theme,
+                        team_opposite_id : $rootScope.teamId,
+                        content : $scope.content,
+                        location: $scope.location,
+                        start_time: $scope.start_time,
+                        end_time: $scope.end_time,
+                        deadline: $scope.deadline,
+                        member_min : $scope.member_min,
+                        member_max : $scope.member_max
+                    }
+                }).success(function(data, status) {
+                    window.location.reload();
+                }).error(function(data, status) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }            
         }
+        
     };
 
     $scope.preStep = function(){
-        $scope.modal=false;
+        $scope.modal--;
     };
 
-        //推荐小队
-    $scope.recommandTeam = function(){
-        try{
-            $http({
-                method:'post',
-                url:'/search/recommandteam',
-                data:{
-                    gid : $rootScope.groupId,
-                    tid : $rootScope.teamId
-                }
-            }).success(function(data,status){
-                if(data.result===1)
-                    $scope.teams=data;
-                else if(data.result===2)//没填主场
-                    $scope.homecourt=false;
-            }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            })
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-    $scope.recommandTeam();//直接显示推荐小队
+
 }]);

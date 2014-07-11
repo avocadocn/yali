@@ -987,6 +987,7 @@ exports.joinGroup = function (req, res){
                 return res.send({result: 0, msg:'保存小队出错'});
               }
               else{
+                console.log(user);
                 //保存用户
                 user.save(function (err){
                 if(err){
@@ -1015,6 +1016,7 @@ exports.joinGroup = function (req, res){
 
                     }
                   });
+                  console.log('保存用户成功');
                   return res.send({result: 1, msg:'保存用户成功'});
                 }
 
