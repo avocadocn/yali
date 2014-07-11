@@ -7,9 +7,9 @@
     .row 
       label {{ group.name }}
     .row
-      label {{ "TYPE"|translate }}：{{ group.group_type }}
+      label #{__("TYPE")}：{{ group.group_type }}
     .row
-      label.pull-left {{ "TEAM_LEADER"|translate }}:
+      label.pull-left #{__("TEAM_LEADER")}:
       .col-md-2(ng-repeat="leader in group.leader")
         a(ng-href='/users/home/{{leader.uid}}')
           p.text-center {{leader.nickname}}
@@ -23,11 +23,11 @@
     .modal-content
       .modal-header
         button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
-        h4.modal-title#myModalLabel {{ "SEARCH"|translate }}
+        h4.modal-title#myModalLabel #{__("SEARCH")}
       .modal-body
         .row
-          p {{ "TEAM_MEMBER"|translate }}
+          p #{__("TEAM_MEMBER")}
           li(ng-repeat="user in users")
             a(ng-click="appointLeader(user.id)" data-dismiss="modal") {{user.nickname}}
       .modal-footer
-        button(type="button" class="btn btn-default" data-dismiss="modal") {{ "CANCEL"|translate }}
+        button(type="button" class="btn btn-default" data-dismiss="modal") #{__("CANCEL")}

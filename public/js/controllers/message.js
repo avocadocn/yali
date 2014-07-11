@@ -25,7 +25,7 @@ messageApp.config(['$routeProvider', '$locationProvider',
       //   controllerAs: 'system'
       // }).
       otherwise({
-        redirectTo: '/private'
+        redirectTo: '/message/private'
       });
 }]);
 
@@ -37,6 +37,40 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.company_length = 0;
     $rootScope.global_length = 0;
     $rootScope.o = 0;
+
+    $rootScope.page_private_messages = [];
+    $rootScope.page_team_messages = [];
+    $rootScope.page_company_messages = [];
+    $rootScope.page_global_messages = [];
+
+    $rootScope.page_private = {
+      'type':'private',
+      'arrow':'both',
+      'current_page':0,
+      'up':0,
+      'down':0
+    };
+    $rootScope.page_team = {
+      'type':'team',
+      'arrow':'both',
+      'current_page':0,
+      'up':0,
+      'down':0
+    };
+    $rootScope.page_company = {
+      'type':'company',
+      'arrow':'both',
+      'current_page':0,
+      'up':0,
+      'down':0
+    };
+    $rootScope.page_global = {
+      'type':'global',
+      'arrow':'both',
+      'current_page':0,
+      'up':0,
+      'down':0
+    };
 
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
@@ -63,11 +97,24 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
             }
         }).success(function(data, status) {
             var messages = messagePreHandle(data.team,data.msg);
+
             $rootScope.private_messages = messages[0];
             $rootScope.team_messages = messages[1];
             $rootScope.company_messages = messages[2];
             $rootScope.global_messages = messages[3];
 
+            if($rootScope.team_messages.length > 0){
+              $rootScope.page_team_messages = pageHandle($rootScope.team_messages,$rootScope.page_team,'init');
+            }
+            if($rootScope.private_messages.length > 0){
+              $rootScope.page_private_messages = pageHandle($rootScope.private_messages,$rootScope.page_private,'init');
+            }
+            if($rootScope.company_messages.length > 0){
+              $rootScope.page_company_messages = pageHandle($rootScope.company_messages,$rootScope.page_company,'init');
+            }
+            if($rootScope.global_messages.length > 0){
+              $rootScope.page_global_messages = pageHandle($rootScope.global_messages,$rootScope.page_global,'init');
+            }
             $rootScope.teams = data.team;
             $rootScope.cid = data.cid;
             $rootScope.uid = data.uid;
@@ -81,6 +128,8 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
       }
     }
 }]);
+
+
 
 // var provokeStatus = function(value,name,own){
 //   switch(value){
@@ -343,6 +392,11 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
 //获取一对一私信或者系统站内信
 messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('private');
+
+  $scope.pageOperate = function(arrow){
+    pageHandle($rootScope.private_messages,$rootScope.page_private,arrow);
+  }
+
   $scope.setAllStatus = function(_status){
     sendSet($http,_status,$rootScope,null,'private',null,true);
   }
@@ -369,9 +423,62 @@ var popOver = function(index,detail){
 }
 
 
+//站内信分页
+var pageHandle = function(messages,page,arrow){
+  var VALVE = 10;
+  var length = messages.length;
+  var sum = parseInt(length / VALVE);
+  var mod = length % VALVE;
+  sum += (mod != 0) ? 1 : 0;
+
+  if(arrow === 'init'){
+    page.current_page = 0;
+    if(length >= VALVE){
+      page.arrow = 'right';
+      page.up = 0;
+      page.down = VALVE-1;
+    }else{
+      page.arrow = 'none';
+      page.up = 0;
+      page.down = length-1;
+    }
+  }
+
+  if(arrow === 'left'){
+    if(page.current_page > 0){
+      page.current_page --;
+      if(page.current_page > 0){
+        page.arrow = 'both';
+      }else{
+        page.arrow = 'right';
+      }
+      page.up = page.current_page * VALVE;
+      page.down = page.current_page * VALVE + VALVE - 1;
+    }
+  }
+
+  if(arrow === 'right'){
+    if(page.current_page < sum - 1){
+      page.current_page ++;
+      if(page.current_page < sum - 1){
+        page.arrow = 'both';
+      }else{
+        page.arrow = 'left';
+      }
+      page.up = page.current_page * VALVE;
+      page.down = page.current_page * VALVE + (page.current_page === (sum - 1) ? ( (mod === 0) ? (VALVE - 1) : (mod - 1)) : VALVE - 1);
+    }
+  }
+}
+
 //获取小队站内信
 messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('team');
+
+  $scope.pageOperate = function(arrow){
+    pageHandle($rootScope.team_messages,$rootScope.page_team,arrow);
+  }
+
   $scope.private_message_content = {
     'text':''
   }
@@ -433,6 +540,10 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
 //获取公司站内信
 messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('company');
+
+  $scope.pageOperate = function(arrow){
+    pageHandle($rootScope.company_messages,$rootScope.page_company,arrow);
+  }
 
   $scope.private_message_content = {
     'text':''

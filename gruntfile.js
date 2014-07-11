@@ -67,7 +67,7 @@ module.exports = function(grunt) {
             },
             js: {
                 src: [
-                    'public/lib/jquery/dist/jquery.js',
+                    'public/lib/jquery/jquery.js',
                     'public/lib/angular/angular.js',
                     'public/lib/angular-route/angular-route.js',
                     'public/lib/moment/moment.js',
@@ -77,7 +77,10 @@ module.exports = function(grunt) {
                     'public/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
                     'public/lib/angular-bootstrap/ui-bootstrap.js',
                     'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                    'public/lib/alertify.js/lib/alertify.min.js'
+                    'public/lib/alertify.js/lib/alertify.min.js',
+                    'public/lib/masonry/dist/masonry.pkgd.min.js',
+                    'public/lib/angular-masonry/angular-masonry.js'
+
                 ],
                 dest: 'public/js/library.js'
             }

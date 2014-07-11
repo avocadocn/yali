@@ -1,61 +1,103 @@
-.dl_allteaminfo_container
-  table.group_table
-    tr
-      th.noborder(rowspan="2")
-      th.noborder(rowspan="2")
-      th.noborder(rowspan="2") 队长
-      th.noborder(rowspan="2") 人数
-      if Global.role ==='HR'
-        th.noborder 本周
-        th.noborder 上周
-        th.noborder 上月
-      th.operate.noborder(rowspan="2")
-        if (Global.role === 'HR')
-          a(href="#/addGroup") #{__("ADD_TEAM")}
-    tr
-      if Global.role ==='HR'
-        th.noborder 活动/人次
-        th.noborder 活动/人次
-        th.noborder 活动/人次
-    tr(bs-popover ng-repeat="team in team_lists")
-      td
-        a(href="/group/home/{{team._id}}")
-          img.img_border.img_contain.size_56(ng-src="{{team.logo}}" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
-      td.text-left
-        span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
-      td
-        span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
-          span {{l.nickname}}
-        span.row(ng-if="team.leader.length==0") 无
-      td
-        span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
-          span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
-        span.row(ng-if="team.leader.length==0") 无
-      if Global.role ==='HR'
-        td
-          span {{team.count.current_week_campaign}}/{{team.count.current_week_member}}
-        td
-          span {{team.count.last_week_campaign}}/{{team.count.last_week_member}}
-        td
-          span {{team.count.last_month_campaign}}/{{team.count.last_month_member}}
-      td.operate
-        if Global.role === 'HR'
-          .dl_row.clearfix
-            button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}
-            //-关组
-            button.dl_btn.dl_btn_small.cancel_btn(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
-            //-开组
-            button.dl_btn.dl_btn_small(ng-if="team.active" ng-click="activateGroup(false,team._id,$index)") #{__("CLOSE")}
-            //-    button.dl_btn.dl_btn_small.pull-right(ng-if="team.provoke" ng-click="preProvoke(team)") #{__("PROVOKE")}
 
-              //- if (Global.role === 'LEADER' || Global.role === 'GUESTLEADER')
-              //-   button.dl_btn.dl_btn_small.pull-right(ng-if="team.provoke" ng-click="preProvoke(team)") {{"PROVOKE"|translate}}
-        if (Global.role === 'EMPLOYEE')
-          .dl_row.clearfix
-            //-不属于显示加组按钮
-            button.dl_btn.dl_btn_small(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
-            //-属于则显示退组按钮
-            button.dl_btn.dl_btn_small.cancel_btn(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
-if (Global.role ==='HR' || Global.role ==='LEADER' || Global.role === 'GUESTLEADER')
-  div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-    include ../partials/pointleader_modal
+if (Global.role === 'HR')
+
+
+
+  .dl_allteaminfo_container
+    table.group_table
+      tr
+        th.noborder(rowspan="2")
+        th.noborder(rowspan="2")
+        th.noborder(rowspan="2") 队长
+        th.noborder(rowspan="2") 人数
+        if Global.role ==='HR'
+          th.noborder 本周
+          th.noborder 上周
+          th.noborder 上月
+        th.operate.noborder(rowspan="2")
+          if (Global.role === 'HR')
+            a(href="#/addGroup") #{__("ADD_TEAM")}
+      tr
+        if Global.role ==='HR'
+          th.noborder 活动/人次
+          th.noborder 活动/人次
+          th.noborder 活动/人次
+      tr(bs-popover ng-repeat="team in team_lists")
+        td
+          a(href="/group/home/{{team._id}}")
+            img.img_border.img_contain.size_56(ng-src="{{team.logo}}" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
+        td.text-left
+          span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
+        td
+          span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
+            span {{l.nickname}}
+          span.row(ng-if="team.leader.length==0") 无
+        td
+          span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
+            span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
+          span.row(ng-if="team.leader.length==0") 无
+        if Global.role ==='HR'
+
+          td
+            a(href="/group/home/{{team._id}}")
+              img.img_border.img_contain.size_56(ng-src="{{team.logo}}" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
+          td.text-left
+            span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
+          td
+            span {{team.member.length}}
+          td
+              span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
+                span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
+              span.row(ng-if="team.leader.length==0") 无
+          if Global.role ==='HR'
+            td
+              span {{team.count.current_week_campaign}}/{{team.count.current_week_member}}
+            td
+              span {{team.count.last_week_campaign}}/{{team.count.last_week_member}}
+            td
+              span {{team.count.last_month_campaign}}/{{team.count.last_month_member}}
+          td.operate
+            if Global.role === 'HR'
+              .dl_row.clearfix
+                button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}
+                //-关组
+                button.dl_btn.dl_btn_small.cancel_btn(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
+                //-开组
+                button.dl_btn.dl_btn_small(ng-if="team.active" ng-click="activateGroup(false,team._id,$index)") #{__("CLOSE")}
+                //-    button.dl_btn.dl_btn_small.pull-right(ng-if="team.provoke" ng-click="preProvoke(team)") #{__("PROVOKE")}
+
+                  //- if (Global.role === 'LEADER' || Global.role === 'GUESTLEADER')
+                  //-   button.dl_btn.dl_btn_small.pull-right(ng-if="team.provoke" ng-click="preProvoke(team)") #{__("PROVOKE")}
+            if (Global.role === 'EMPLOYEE')
+              .dl_row.clearfix
+                //-不属于显示加组按钮
+                button.dl_btn.dl_btn_small(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
+                //-属于则显示退组按钮
+                button.dl_btn.dl_btn_small.cancel_btn(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
+    if (Global.role ==='HR')
+      div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../partials/pointleader_modal
+if (Global.role === 'EMPLOYEE')
+
+  div.dl_allteaminfo_emp.masonry(masonry)
+    div.teamitem.masonry-item(ng-repeat="team in team_lists" masonryItem)
+      a(href="/group/home/{{team._id}}")
+        img.img_border.img_contain(ng-src="{{team.logo}}\\20\\20" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
+        span {{team.name}}
+      p {{team.member}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

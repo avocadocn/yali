@@ -35,8 +35,8 @@ block panel
 block aside
   if Global.role !== 'HR'
     include ../partials/group_thumbnail
-    +group_thumbnail(selected_teams,'active',"{{'MY'|translate}}{{'TEAM'|translate}}")
-    +group_thumbnail(unselected_teams,'inactive',"{{'UNSELECTED_TEAM'|translate}}")
+    +group_thumbnail(selected_teams,'active',__('SELECTED_TEAM'))
+    +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'))
 
 append footExt
   script(src="/js/controllers/tabviewUser.js")

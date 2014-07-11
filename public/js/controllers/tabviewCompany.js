@@ -2,6 +2,9 @@
 
 var tabViewCompany = angular.module('mean.main');
 
+
+
+
 tabViewCompany.directive('match', function($parse) {
   return {
     require: 'ngModel',
@@ -13,6 +16,30 @@ tabViewCompany.directive('match', function($parse) {
       });
     }
   };
+}).directive('masonry', function ($parse, $timeout) {
+    return {
+        link: function (scope, elem, attrs) {   
+            $timeout(function() {
+                $(".masonry").masonry({
+                    itemSelector : ".masonry-item"
+                });
+                // console.log($(".masonry-item"));
+            }, 0);
+
+        }
+    };        
+}).directive('masonryItem', function ($parse, $timeout) {
+    return {
+        restrict: 'AC',
+        link: function (scope, elem, attrs) {
+
+            $timeout(function(){
+                elem.parents('.masonry').masonry('bindResize');
+                console.log(elem.parents('.masonry-item').length);
+            }, 2000); 
+
+        }
+    };        
 });
 tabViewCompany.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
@@ -614,6 +641,8 @@ tabViewCompany.controller('TeamInfoController',['$scope','$http','$rootScope',fu
             console.log(e);
         }
     };
+
+
 }]);
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
 
