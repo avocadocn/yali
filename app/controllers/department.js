@@ -322,7 +322,7 @@ exports.modifyDepartment = function(req,res){
           'type':1,
           'name':name
         };
-        company.department = departmentFindAndUpdate(company,did,param).department;
+        company.department = departmentFindAndUpdate(req.user,did,param).department;
         company.save(function (err){
           if(err){
             res.send({'msg':'DEPARTMENT_UPDATE_FAILURE'});
