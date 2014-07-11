@@ -1,6 +1,6 @@
 hr
 .dl_modal_container
-  .dl_row(style="height:93px" ng-repeat="company_message in company_messages")
+  .dl_row(style="height:93px" ng-repeat="company_message in company_messages" ng-if="$index >= page_company.up && $index <= page_company.down")
     .dl_message_head
       img.dl_message_head_size
     .dl_message_body.margin_left_5
@@ -19,6 +19,9 @@ hr
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
           button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="company_message.status=='read'") {{statusHandle(company_message.status)}}
+  .dl_row.dl_center(ng-if="company_messages.length > 10")
+    button.dl_btn.dl_btn_small(ng-disabled="page_company.arrow == 'right' || page_company.arrow == 'none' " ng-click="pageOperate('left')") <<
+    button.dl_btn.dl_btn_small(ng-disabled="page_company.arrow == 'left' || page_company.arrow == 'none' " ng-click="pageOperate('right')") >>
   .dl_row
     button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="company_length > 0") 全部设为已读
     button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="company_messages.length > 0") 全部删除

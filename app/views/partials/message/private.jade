@@ -1,6 +1,6 @@
 hr
 .dl_modal_container
-  .dl_row(style="height:93px" ng-repeat="private_message in private_messages")
+  .dl_row(style="height:93px" ng-repeat="private_message in private_messages" ng-if="$index >= page_private.up && $index <= page_private.down")
     .dl_message_head
       img.dl_message_head_size
     .dl_message_body.margin_left_5
@@ -29,6 +29,9 @@ hr
           button.dl_btn.pull-right(ng-click="setToDelete($index)") X
           label.pull-right |
           button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="private_message.status=='read'") {{statusHandle(private_message.status)}}
+  .dl_row.dl_center(ng-if="private_messages.length > 10")
+    button.dl_btn.dl_btn_small(ng-disabled="page_private.arrow == 'right' || page_private.arrow == 'none' " ng-click="pageOperate('left')") <<
+    button.dl_btn.dl_btn_small(ng-disabled="page_private.arrow == 'left' || page_private.arrow == 'none' " ng-click="pageOperate('right')") >>
   .dl_row
     button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="private_length + global_length > 0") 全部设为已读
     button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="private_messages.length > 0") 全部删除
