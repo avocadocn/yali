@@ -100,13 +100,18 @@ div.company-info
     .self.inline(ng-mouseover="node.show_operator = true" ng-mouseleave="node.show_operator = false")
       span
         i.glyphicon.glyphicon-minus(ng-if="node.department")
-        | &nbsp;{{node.name}}
+        .inline(ng-if="!node.is_editing") &nbsp;{{node.name}}
         .inline(ng-if="node.is_creating")
           input(type="text" ng-model="node.edit_name")
-          button.dl_btn.dl_btn_small(ng-click="confirm(node)") 确定
-          button.cancel_btn.dl_btn_small(ng-click="cancel(node)") 取消
+          button.dl_btn.dl_btn_small(ng-click="confirmCreate(node)") 确定
+          button.cancel_btn.dl_btn_small(ng-click="cancelCreate(node)") 取消
+        .inline(ng-if="node.is_editing")
+          input(type="text" ng-model="node.temp_name")
+          button.dl_btn.dl_btn_small(ng-click="confirmEdit(node)") 确定
+          button.cancel_btn.dl_btn_small(ng-click="cancelEdit(node)") 取消
       .operator.inline(ng-if="node.show_operator && !node.is_creating")
         button.dl_btn.dl_btn_small(ng-click="addNode(node)") 创建子部门
+        button.dl_btn.dl_btn_small(ng-click="editNode(node)") 编辑
         button.cancel_btn.dl_btn_small(ng-click="deleteNode(node)") 删除该部门
     ul
       li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")

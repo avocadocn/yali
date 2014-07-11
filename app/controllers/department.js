@@ -327,7 +327,12 @@ exports.modifyDepartment = function(req,res){
           if(err){
             res.send({'msg':'DEPARTMENT_UPDATE_FAILURE'});
           }else{
-            res.send({'msg':'DEPARTMENT_UPDATE_SUCCESS','department':company.department});
+            res.send({
+              'msg':'DEPARTMENT_UPDATE_SUCCESS',
+              '_id': company._id,
+              'name': company.info.name,
+              'department':company.department
+            });
           }
         });
       }
