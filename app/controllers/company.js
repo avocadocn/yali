@@ -1059,8 +1059,7 @@ exports.sponsor = function (req, res) {
     }
     var cname = req.user.info.name;
     var cid = req.user._id.toString();    //公司id
-    var gid = '0';                  //HR发布的活动,全部归在虚拟组里,虚拟组的id默认是0
-    var group_type = '虚拟组';
+
     var company_in_campaign = req.body.company_in_campaign;//公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是次hr所在的公司!
 
     if(company_in_campaign === undefined || company_in_campaign === null) {
