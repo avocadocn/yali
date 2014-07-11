@@ -87,8 +87,61 @@ exports.memberOperate = function(req,res){
   }
 }
 
+//处理员工申请
+exports.applyOperate = function(req,res){
+  var did = req.body.did;
+  var apply_status = req.body.apply_status;
+  var apply_members = req.body.apply_members;  //ids是数组,因为可以批量处理申请
+  Department.findOne({'_id':did},function (err,department){
+    if(err || !department){
+      res.send(500);
+    }else{
+      var members = [];
+      for(var i = 0 ; i < department.member_apply.length; i ++){
+        for(var j = 0; j < apply_members.length; j ++){
+          if(apply_members[j]._id.toString() === department.member_apply[i].toString()){
+            members.push(apply_members[j]);
+            department.member_apply[i].apply_status = apply_status;
+            break;
+          }
+        }
+      }
+      department.save(function(err){
+        if(err){
+          res.send(500);
+        }else{
+          CompanyGroup.findOne({'_id':department.team},function (err,company_group){
+            if(err || !company_group){
+              res.send(500);
+            }else{
+              var old_member = company_group.member;
+              company_group.member = old_member.concat(members);
+              company_group.save(function(err){
+                if(err){
+                  res.send(500);
+                }else{
+                  res.send(200,{'member_apply':department.member_apply})
+                }
+              })
+            }
+          });
+        }
+      });
+    }
+  })
+}
 
-
+//获取所有员工的申请信息
+exports.getApplyInfo = function(req,res){
+  var did = req.body.did;
+  Department.findOne({'_id':did},function (err,department){
+    if(err || !department){
+      res.send(500);
+    }else{
+      res.send(200,{'member_apply':department.member_apply});
+    }
+  })
+}
 
 //获取某一部门的详细信息
 exports.getDepartmentDetail = function(req,res){
