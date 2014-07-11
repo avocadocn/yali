@@ -3,6 +3,16 @@ extends ../layouts/manager
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
 
+block baseInfo
+  .dl_container.clearfix
+    .aside
+      //-用户头像
+      .size_80.img_contain.dl_head_font
+        span.glyphicon.glyphicon-envelope
+      //-人名
+    .dl_row
+      h1 站内信
+
 block panel
   if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
     div
