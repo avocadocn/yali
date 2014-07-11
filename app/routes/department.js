@@ -17,4 +17,6 @@ module.exports = function(app) {
   app.post('/department/modify', authorization.requiresLogin, department.modifyDepartment);
   app.post('/department/delete', authorization.requiresLogin, department.deleteDepartment);
 
+  app.get('/department/home/:id', authorization.requiresLogin, department.renderHome);
+
 };

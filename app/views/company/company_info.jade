@@ -110,9 +110,10 @@ div.company-info
           button.dl_btn.dl_btn_small(ng-click="confirmEdit(node)") 确定
           button.cancel_btn.dl_btn_small(ng-click="cancelEdit(node)") 取消
       .operator.inline(ng-if="node.show_operator && !node.is_creating")
+        a.dl_btn.dl_btn_small(href="/department/home/{{ node._id }}" ng-if="!node.is_company") 进入部门主页
         button.dl_btn.dl_btn_small(ng-click="addNode(node)") 创建子部门
-        button.dl_btn.dl_btn_small(ng-click="editNode(node)") 编辑
-        button.cancel_btn.dl_btn_small(ng-click="deleteNode(node)") 删除该部门
+        button.dl_btn.dl_btn_small(ng-if="!node.is_company" ng-click="editNode(node)") 编辑
+        button.cancel_btn.dl_btn_small(ng-if="!node.is_company" ng-click="deleteNode(node)") 删除该部门
     ul
       li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
 

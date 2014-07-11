@@ -756,18 +756,24 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
+
+    var formatData = function(data) {
+        $scope.node = {
+            _id: data._id,
+            name: data.name,
+            is_company: true,
+            department: data.department
+        };
+        if ($scope.node.department.length === 0) {
+            $scope.node.department = null;
+        }
+    };
+
     (function getDepartments() {
         $http
         .get('/department/pull')
         .success(function(data, status) {
-            $scope.node = {
-                _id: data._id,
-                name: data.name,
-                department: data.department
-            };
-            if ($scope.node.department.length === 0) {
-                $scope.node.department = null;
-            }
+            formatData(data);
         });
     })();
 
@@ -800,14 +806,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 name: node.edit_name
             })
             .success(function(data, status) {
-                $scope.node = {
-                    _id: data._id,
-                    name: data.name,
-                    department: data.department
-                };
-                if ($scope.node.department.length === 0) {
-                    $scope.node.department = null;
-                }
+                formatData(data);
             });
         }
     };
@@ -828,14 +827,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 name: node.temp_name
             })
             .success(function(data, status) {
-                $scope.node = {
-                    _id: data._id,
-                    name: data.name,
-                    department: data.department
-                };
-                if ($scope.node.department.length === 0) {
-                    $scope.node.department = null;
-                }
+                formatData(data);
             });
         }
     };
@@ -874,11 +866,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 })
                 .success(function(data, status) {
                     if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
-                        $scope.node = {
-                            _id: data._id,
-                            name: data.name,
-                            department: data.department
-                        };
+                        formatData(data);
                     }
                 });
             }

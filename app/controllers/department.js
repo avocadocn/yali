@@ -438,3 +438,26 @@ exports.createDepartment = function(req,res){
     res.send(403);
   }
 }
+
+
+exports.renderHome = function(req, res) {
+  Department
+  .findById(req.params.id)
+  .exec()
+  .then(function(department) {
+    if (!department) {
+      throw 'not found';
+    }
+    return res.render('department/home', { department: department });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    // TO DO: temp err handle
+    res.send(500);
+  });
+};
+
+
+
+
+
