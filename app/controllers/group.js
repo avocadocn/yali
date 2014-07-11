@@ -311,7 +311,6 @@ exports.timeLine = function(req, res){
   .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
-    if (campaigns && campaigns.length>0) {
       var timeLines = [];
       // todo new time style
       var newTimeLines = {};
@@ -376,11 +375,7 @@ exports.timeLine = function(req, res){
 
         timeLines.push(tempObj);
       });
-      res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
-    }
-    else{
-      res.render('partials/timeLine');
-    }
+      return res.send({result:1,'timeLines': timeLines,'newTimeLines': newTimeLines});
       // // todo new time style
       // console.log(newTimeLines);
       //console.log(newTimeLines);
@@ -388,7 +383,7 @@ exports.timeLine = function(req, res){
   })
   .then(null, function(err) {
     console.log(err);
-    res.render('partials/timeLine');
+    return res.send({result:0,msg:'查询错误'});
   });
 };
 

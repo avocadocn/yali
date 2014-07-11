@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Group = mongoose.model('Group'),
     Campaign = mongoose.model('Campaign'),
-    GroupMessage = mongoose.model('GroupMessage');
+    GroupMessage = mongoose.model('GroupMessage'),
+    model_helper = require('../helpers/model_helper');
 
 
 var pagesize = 20;

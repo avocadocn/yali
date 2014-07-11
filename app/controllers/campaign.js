@@ -571,3 +571,6 @@ exports.renderCampaignDetail = function(req, res) {
     res.send(404);
   });
 };
+exports.renderTimeline = function(req, res){
+  res.render('partials/timeLine');
+}
