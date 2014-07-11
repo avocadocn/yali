@@ -859,24 +859,28 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
     $scope.deleteNode = function(node) {
-        $http
-        .post('/department/delete', {
-            did: node._id
-        })
-        .success(function(data, status) {
-            // 不应该这样
-            /*
-            if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
-                getDepartments();
+        alertify.set({
+            buttonFocus: "none",
+            labels: {
+                ok: '确认删除',
+                cancel: '取消'
             }
-            */
-            //应该这样
-            if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
-                $scope.node = {
-                    _id: data._id,
-                    name: data.name,
-                    department: data.department
-                };
+        });
+        alertify.confirm('删除后不可恢复，您确定要删除“' + node.name + '”部门吗？', function(e) {
+            if (e) {
+                $http
+                .post('/department/delete', {
+                    did: node._id
+                })
+                .success(function(data, status) {
+                    if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
+                        $scope.node = {
+                            _id: data._id,
+                            name: data.name,
+                            department: data.department
+                        };
+                    }
+                });
             }
         });
     };
