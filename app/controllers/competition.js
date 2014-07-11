@@ -490,19 +490,3 @@ exports.resultConfirm = function (req, res) {
     }
   });
 };
-
-
-
-exports.group = function(req, res, next, id) {
-   CompanyGroup
-    .findOne({
-        cid: req.session.nowcid,
-        _id: id
-    })
-    .exec(function(err, companyGroup) {
-        if (err) return next(err);
-        if (!companyGroup) return next(new Error(req.session.nowcid+' Failed to load companyGroup ' + id));
-        req.companyGroup = companyGroup;
-        next();
-    });
-};

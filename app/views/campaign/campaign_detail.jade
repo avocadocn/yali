@@ -10,7 +10,7 @@ block contentExt
     +breadcrumb(links)
     .dl_detail_main
       //-TODO:详情页权限不正确，需要更改
-      if (role==='HR' || Global.role==='LEADER') && active
+      if (role==='HR' || role==='LEADER') && active
         span.pull-right
           btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign._id)") 关闭活动
       ul.nav.nav-tabs

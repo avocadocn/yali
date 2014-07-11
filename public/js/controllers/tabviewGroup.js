@@ -15,8 +15,8 @@ function tirm(arraies,str) {
     }
     return rst;
 }
-tabViewGroup.config(['$routeProvider', '$locationProvider',
-  function ($routeProvider, $locationProvider) {
+tabViewGroup.config(['$routeProvider',
+  function ($routeProvider) {
     $routeProvider
       .when('/group_message', {
         templateUrl: '/message_list',
@@ -33,8 +33,8 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
         controller: 'infoController',
         controllerAs: 'account',
       })
-      .when('/timeLine', {
-        templateUrl: '/group/timeLine',
+      .when('/timeLine/:id', {
+        templateUrl: '/group'+window.location.hash.substr(1)
         //controller: 'infoController',
         //controllerAs: 'account',
       }).
@@ -130,7 +130,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
-        $http.get('/groupMessage/team/0?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/'+tid+'/0?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.user = data.user;
             $scope.role = data.role;
@@ -143,9 +143,6 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 $scope.loadMore_flag = true;
             }
             $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope),true;
-        });
-        $rootScope.$watch('teamName',function(tname){
-            ;
         });
     });
 
@@ -189,7 +186,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     }
 
     $scope.loadMore = function(){
-        $http.get('/groupMessage/team/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/'+$rootScope.teamId+'/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
                 $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
                 if(data.group_messages.length<20){
@@ -216,7 +213,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/groupMessage/team/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/'+$rootScope.teamId+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -453,16 +450,19 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
-    $http.get('/campaign/getCampaigns/team/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-        $scope.campaigns = data.campaigns;
-        $rootScope.sum = $scope.campaigns.length;
-        if(data.campaigns.length<20){
-            $scope.loadMore_flag = false;
-        }
-        else{
-            $scope.loadMore_flag = true;
-        }
+    $rootScope.$watch('teamId',function(teamId){
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $scope.campaigns = data.campaigns;
+            $rootScope.sum = $scope.campaigns.length;
+            if(data.campaigns.length<20){
+                $scope.loadMore_flag = false;
+            }
+            else{
+                $scope.loadMore_flag = true;
+            }
+        });
     });
+
     $scope.loadMore_flag = true;
     $scope.block = 1;
     $scope.page = 1;
@@ -471,7 +471,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $scope.nextPage_flag = false;
 
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/team/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
@@ -498,7 +498,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/campaign/getCampaigns/team/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -658,7 +658,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             try{
                 $http({
                     method : 'post',
-                    url : '/group/saveInfo',
+                    url : '/group/saveInfo/'+$rootScope.teamId,
                     data : {
                         'name' : $scope.name,
                         'brief' : $scope.team.brief,
@@ -709,7 +709,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.family_photos;
     var getFamily = function() {
         $http
-        .get('/group/family')
+        .get('/group/'+$rootScope.teamId+'/family')
         .success(function(data, status) {
             $scope.family_photos = data;
         })

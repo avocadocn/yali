@@ -21,6 +21,7 @@ block contentExt
             p.high_light_title.margin_top_20 从电脑中选择你喜欢的照片
             p.text 你可以上传JPG、JPEG、GIF、PNG或BMP文件
             form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
+              input(type="hidden" name="companyId" value="#{id}")
               input(type="hidden" name="target" value="c")
               input#w(type="hidden" name="width" value="128")
               input#h(type="hidden" name="height" value="128")

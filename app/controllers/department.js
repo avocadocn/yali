@@ -311,7 +311,7 @@ var departmentFindAndUpdate = function(department,did,param){
 
 //修改部门信息
 exports.modifyDepartment = function(req,res){
-  if(req.session.role === 'HR'){
+  if(req.role === 'HR'){
     var did = req.body.did;
     var name = req.body.name;
     Company.findOne({'_id':req.user._id},function (err,company){
@@ -343,7 +343,7 @@ exports.modifyDepartment = function(req,res){
 }
 //删除部门
 exports.deleteDepartment = function(req,res){
-  if(req.session.role === 'HR'){
+  if(req.role === 'HR'){
     var did = req.body.did;
     if(did.toString() === req.user._id.toString()){
       //删除该公司下的所有部门
@@ -374,7 +374,7 @@ exports.getDepartment = function(req,res){
  * param in: req.body.did (部门id,一开始是公司id)
  */
 exports.createDepartment = function(req,res){
-  if(req.session.role === 'HR'){
+  if(req.role === 'HR'){
     var did = req.body.did;
     var name = req.body.name;
 

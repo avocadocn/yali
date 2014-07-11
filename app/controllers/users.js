@@ -143,17 +143,8 @@ exports.resetPwd = function(req, res){
 
 
 var destroySession = function(req){
-  if(req.session.nowtid != null || req.session.nowtid != undefined){
-    delete req.session.nowtid;
-  }
-  if(req.session.nowgid != null || req.session.nowgid != undefined){
-    delete req.session.nowgid;
-  }
-  if(req.session.nowuid != null || req.session.nowuid != undefined){
-    delete req.session.nowuid;
-  }
-  if(req.session.role != null || req.session.role != undefined){
-    delete req.session.role;
+  if(req.role != null || req.role != undefined){
+    delete req.role;
   }
   if (req.session.Global.nav_name !=null || req.session.Global.nav_name != undefined) {
     delete req.session.Global.nav_name;
@@ -180,6 +171,7 @@ exports.signout = function(req, res) {
 exports.loginSuccess = function(req, res) {
   req.session.Global.nav_name = req.user.nickname;
   req.session.Global.nav_logo = req.user.photo;
+  req.session.Global.role ="USER";
   res.redirect('/users/home');
 };
 
@@ -196,27 +188,6 @@ exports.appLogout = function(req, res) {
   req.logout();
   res.send({ result: 1, msg: '注销成功' });
 }
-
-exports.authorize = function(req, res, next) {
-  if(!req.params.userId || req.params.userId === req.user._id.toString()){
-    req.session.role = 'OWNER';
-    req.session.Global.role = 'OWNER';
-    req.session.nowuid = req.user._id;
-  }
-  else if(req.params.userId && req.user._id.toString() === req.profile.cid.toString()){
-    req.session.role = 'HR';
-    req.session.Global.role = 'HR';
-    req.session.nowuid = req.params.userId;
-  }
-  else if(req.params.userId && req.profile.cid.toString() === req.user.cid.toString()){
-    req.session.role = 'PARTNER';
-    req.session.Global.role = 'PARTNER';
-    req.session.nowuid = req.params.userId;
-  }else{
-    return res.send(403, 'forbidden!');
-  }
-  next();
-};
 
 
 /**
@@ -256,8 +227,6 @@ exports.invite = function(req, res) {
 
 
 function userOperate(cid, key, res, req) {
-
-  console.log(cid, config.SECRET);
   if (encrypt.encrypt(cid, config.SECRET) === key) {
 
     Company
@@ -354,7 +323,6 @@ exports.setProfile = function(req, res) {
       if(user.active === true) {
         res.render('users/message', message.actived);
       } else {
-        req.session.nowcid = req.query.cid;
         if(encrypt.encrypt(uid, config.SECRET) === key) {
           res.render('users/setProfile', {
             title: '设置个人信息',
@@ -434,7 +402,7 @@ exports.selectGroup = function(req, res) {
       if (user.active === true) {
         res.render('users/message', message.actived);
       } else {
-        res.render('users/selectGroup', { title: '选择你的兴趣小队', group_head: '个人' });
+        res.render('users/selectGroup', { title: '选择你的兴趣小队', group_head: '个人',cid:user.cid });
       }
     } else {
       res.render('users/message', message.unregister);
@@ -519,7 +487,7 @@ exports.finishRegister = function(req, res) {
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{
       'provider':'user',
-      'role':req.session.role
+      'role':req.role
   });
 };
 
@@ -618,23 +586,23 @@ exports.getCampaigns = function(req, res) {
   var team_ids = [];
   var team;
 
-  if(req.session.role!=='OWNER') {
+  if(req.role!=='OWNER') {
     User.findOne({'_id':req.session.otheruid},function (err,user){
       if(err || !user) {
         return res.send({
           'data':[],
-          'role':req.session.role
+          'role':req.role
         });
       } else {
         team = user.team;
         team_ids = fetchTeam(team);
-        fetchCampaign(req,res,team_ids,req.session.role);
+        fetchCampaign(req,res,team_ids,req.role);
       }
     });
   } else {
     team = req.user.team;
     team_ids = fetchTeam(team);
-    fetchCampaign(req,res,team_ids,req.session.role);
+    fetchCampaign(req,res,team_ids,req.role);
   }
 };
 
@@ -649,22 +617,12 @@ exports.renderScheduleList = function(req, res) {
 exports.home = function(req, res) {
   var _user = {};
   var _nickname,_logo;
-  if(req.session.role ==='OWNER'){
+  if(req.role ==='OWNER'){
     _user = req.user;
-
   }
   else{
     _user = req.profile;
   }
-  if(req.session.role ==='HR'){
-    _nickname = req.user.info.name,   //显示在页头的用户名
-    _logo = _user.user.info.logo
-  }
-  else{
-    _nickname = _user.nickname,   //显示在页头的用户名
-    _logo = _user.photo
-  }
-
   var selected_teams = [];
   var unselected_teams = [];
   var user_teams = [];
@@ -687,6 +645,7 @@ exports.home = function(req, res) {
         }
       }
       res.render('users/home',{
+        'uid':_user._id,
         'selected_teams' : selected_teams,
         'unselected_teams' : unselected_teams,
         'photo': _user.photo,
@@ -694,7 +653,7 @@ exports.home = function(req, res) {
         'nickname': _user.nickname,
         'cname':_user.cname,
         'sign':_user.introduce,
-        'role': req.session.role
+        'role': req.role
       });
     }
   });
@@ -762,13 +721,12 @@ exports.vote = function (req, res) {
 //员工参加活动
 //TODO 加入competition
 exports.joinCampaign = function (req, res) {
-  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE' && req.session.role!=='MEMBER' && req.session.role!=='LEADER'){
+  if(req.role!=='OWNER' && req.role!=='EMPLOYEE' && req.role!=='MEMBER' && req.role!=='LEADER'){
     return res.send(403,'forbidden');
   }
   var cid = req.user.cid.toString();
   var uid = req.user._id.toString();
   var campaign_id = req.body.campaign_id; //该活动的id
-  var tid = req.session.nowtid;              //该活动所属小队的id
   Campaign.findOne({
     _id : campaign_id
   },
@@ -832,7 +790,7 @@ exports.joinCampaign = function (req, res) {
 
 //员工退出活动
 exports.quitCampaign = function (req, res) {
-  if(req.session.role!=='OWNER' && req.session.role!=='EMPLOYEE' && req.session.role!=='MEMBER' && req.session.role!=='LEADER'){
+  if(req.role!=='OWNER' && req.role!=='EMPLOYEE' && req.role!=='MEMBER' && req.role!=='LEADER'){
     return res.send(403,'forbidden');
   }
   var cid = req.user.cid.toString();
@@ -894,7 +852,7 @@ exports.quitCampaign = function (req, res) {
 };
 exports.timeLine = function(req,res){
   //如果是访问其它员工的timeline
-  var uid = req.session.nowuid;
+  var uid = req.params.userId;
   Campaign
   .find({ 'active':true,'finish':true,'$or':[{'member.uid': uid},{'camp.member.uid':uid}]})
   .sort('-start_time')
@@ -1130,11 +1088,11 @@ exports.quitGroup = function (req, res){
 
 //获取账户信息
 exports.getAccount = function (req, res) {
-  if(req.session.role !=='HR'&& req.session.role!=='OWNER'&&req.session.role!=='PARTNER' ){
+  if(req.role !=='HR'&& req.role!=='OWNER'&&req.role!=='PARTNER' ){
     return res.send(403, 'forbidden!');
   }
   User.findOne({
-          _id : req.session.nowuid
+          _id : req.params.userId
       },{'_id':0,'hashed_password':0,'salt':0}, function(err, user) {
           if(err) {
               console.log(err);
@@ -1152,11 +1110,11 @@ exports.getAccount = function (req, res) {
 
 //保存用户信息
 exports.saveAccount = function (req, res) {
-  if(req.session.role !=='HR'&& req.session.role!=='OWNER'){
+  if(req.role !=='HR'&& req.role!=='OWNER'){
     return res.send(403, 'forbidden!');
   }
   User.findOneAndUpdate({
-    _id : req.session.nowuid
+    _id : req.params.userId
   }, req.body.user,{new:false},function(err, user) {
     if(err) {
         console.log(err);
@@ -1178,11 +1136,11 @@ exports.saveAccount = function (req, res) {
 
 //修改密码
 exports.changePassword = function (req, res) {
-  if(req.session.role !=='HR'&& req.session.role!=='OWNER'){
+  if(req.role !=='HR'&& req.role!=='OWNER'){
     return res.send(403, 'forbidden!');
   }
   User.findOne({
-      _id : req.session.nowuid
+      _id : req.params.userId
 
     },function(err, user) {
       if(err) {

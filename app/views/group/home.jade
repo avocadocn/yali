@@ -52,8 +52,8 @@ block panel
           a.subtitle.no_radius(href="#/group_campaign" ng-click="addactive('group_campaign')") #{__("TEAM_CAMPAIGN")}
       li.tab_style(ng-class="{'active':nowTab=='group_info'}")
         a.subtitle.no_radius(href="#/group_info" ng-click="addactive('group_info')") #{__("TEAM_INFO")}
-      li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
-        a.subtitle.no_radius(href="#/timeLine" ng-click="addactive('timeLine')") #{__("TIME_LINE")}
+      li.tab_style(ng-class="{'active':nowTab=='timeLine/#{teamId}'}")
+        a.subtitle.no_radius(href="#/timeLine/#{teamId}" ng-click="addactive('timeLine/#{teamId}')") #{__("TIME_LINE")}
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)

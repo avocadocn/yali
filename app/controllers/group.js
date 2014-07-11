@@ -27,48 +27,7 @@ var mongoose = require('mongoose'),
     message = require('../controllers/message'),
     photo_album_controller = require('./photoAlbum');
 
-exports.authorize = function(req, res, next) {
-  if(req.user.provider==="company"){
-    if(req.user._id.toString() ===req.companyGroup.cid.toString()){
-      req.session.role = 'HR';
-      req.session.Global.role = 'HR';
-    }
-    else{
-      req.session.role = 'GUESTHR';
-      req.session.Global.role = 'GUESTHR';
-    }
-  }
-  else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
-    var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,req.companyGroup._id,'_id');
-    if(_teamIndex>-1){
-      console.log(_teamIndex,req.user.team[_teamIndex]);
-      if(req.user.team[_teamIndex].leader === true){
-        req.session.role = 'LEADER';
-        req.session.Global.role = 'LEADER';
-      }
-      else{
-        req.session.role = 'MEMBER';
-        req.session.Global.role = 'MEMBER';
-      }
-    }
-    else{
-      req.session.role = 'PARTNER';
-      req.session.Global.role = 'PARTNER';
-    }
-  }
-  else{
-    if(req.user.role == 'LEADER'){
-      req.session.role = 'GUESTLEADER';
-      req.session.Global.role = 'GUESTLEADER';
-    }else{
-      req.session.role = 'GUEST';
-      req.session.Global.role = 'GUEST';
-    }
-  }
-  req.session.nowtid = req.params.teamId;
-  req.session.nowgid = req.companyGroup.gid;
-  next();
-};
+
 //返回组件模型里的所有组件(除了虚拟组),待HR选择
 exports.getGroups = function(req,res) {
   Group.find(null,function(err,group){
@@ -94,15 +53,15 @@ exports.getGroups = function(req,res) {
 
 //显示企业成员列表
 exports.renderMember = function(req,res){
-  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+  if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     return res.send(403,forbidden);
   }
-  res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
+  res.render('partials/member_list',{'role':req.role,'provider':'company'});
 };
 
 
 exports.renderInfo = function (req, res) {
-  res.render('group/group_info',{'role':req.session.role});
+  res.render('group/group_info',{'role':req.role});
 };
 
 //激活小队
@@ -206,10 +165,11 @@ exports.getOneTeam = function(req, res) {
 
 //TODO
 exports.saveInfo =function(req,res) {
-    if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+    if(req.role !=='HR' && req.role !=='LEADER'){
     return res.send(403,forbidden);
   }
-  CompanyGroup.findOne({'_id' : req.session.nowtid}, function(err, companyGroup) {
+  var teamId = req.params.teamId;
+  CompanyGroup.findOne({'_id' : teamId}, function(err, companyGroup) {
       if (err) {
           console.log('数据错误');
           res.send({'result':0,'msg':'数据查询错误'});
@@ -229,12 +189,12 @@ exports.saveInfo =function(req,res) {
                   return res.send({'result':0,'msg':'数据保存错误'});
               }
               if(newNameFlag){
-                schedule.updateTname(req.session.nowtid);
+                schedule.updateTname(teamId);
               }
               var entity_type = companyGroup.entity_type;
               var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
               Entity.findOne({
-                  'tid': req.session.nowtid
+                  'tid': teamId
                 },function(err, entity) {
                     if (err) {
                         console.log(err);
@@ -258,8 +218,9 @@ exports.saveInfo =function(req,res) {
 };
 //小队信息维护
 exports.timeLine = function(req, res){
+  var teamId = req.params.teamId;
   Campaign
-  .find({ 'active':true,'finish':true,'team': req.session.nowtid})
+  .find({ 'active':true,'finish':true,'team': teamId})
   .sort('-start_time')
   .populate('team').populate('cid').populate('photo_album')
   .exec()
@@ -275,7 +236,7 @@ exports.timeLine = function(req, res){
         var _head,_logo;
         if(campaign.camp.length>0){
           _head = campaign.camp[0].name +'对' + campaign.camp[1].name +'的比赛';
-          _logo = campaign.camp[0].id ==req.session.nowtid ? campaign.camp[0].logo:campaign.camp[1].logo ;
+          _logo = campaign.camp[0].id ==teamId ? campaign.camp[0].logo:campaign.camp[1].logo ;
         }
         else{
           _head = campaign.team[0].name + '活动';
@@ -385,9 +346,9 @@ exports.home = function(req, res) {
       });
     },
     function(photo_album_thumbnails, callback) {
-      if(req.session.role==='HR' || req.session.role ==='GUESTHR'){
+      if(req.role==='HR' || req.role ==='GUESTHR'){
         res.render('group/home', {
-          'role': req.session.role,
+          'role': req.role,
           'teamId' : req.params.teamId,
           'tname': req.companyGroup.name,
           'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
@@ -434,7 +395,7 @@ exports.home = function(req, res) {
               'tname': req.companyGroup.name,
               'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
               'score': req.companyGroup.score ? req.companyGroup.score : 0,
-              'role': req.session.role,
+              'role': req.role,
               'logo': req.companyGroup.logo,
               'group_id': req.companyGroup._id,
               'cname': req.companyGroup.cname,
@@ -460,7 +421,7 @@ exports.home = function(req, res) {
 };
 //返回公司小队的所有数据,员工选择组件时使用
 exports.getCompanyGroups = function(req, res) {
-  CompanyGroup.find({cid : req.session.nowcid},{'gid':1,'group_type':1,'entity_type':1,'name':1,'logo':1}, function(err, teams) {
+  CompanyGroup.find({cid : req.params.companyId},{'gid':1,'group_type':1,'entity_type':1,'name':1,'logo':1}, function(err, teams) {
     if(err || !teams) {
       return res.send([]);
     } else {
@@ -470,65 +431,17 @@ exports.getCompanyGroups = function(req, res) {
     }
   });
 };
-//返回公司小队的所有数据,待前台调用
-exports.getCompanyTeamsInfo = function(req, res) {
-  var option = {cid : req.session.nowcid};
-  if(req.session.role !== 'HR'){
-    option.active = true;
-  }
-  CompanyGroup.find(option, function(err, teams) {
-    if(err || !teams) {
-      return res.send([]);
-    } else {
-      var output ={
-        'cid':req.session.nowcid,
-        'role':req.session.role
-      };
-      if(req.session.role ==='EMPLOYEE'){
-        var _teams = [];
-        teams.forEach(function(value){
-          var _team = {
-            '_id':value._id,
-            'gid':value.gid,
-            'group_type':value.group_type,
-            'logo':value.logo,
-            'active':value.active,
-            'count':value.count,
-            'entity_type':value.entity_type,
-            'leader':value.leader,
-            'member':value.member,
-            'name':value.name
-          }
-          if(model_helper.arrayObjectIndexOf(req.user.team,value._id,'_id')>-1){
-            _team.belong = true;
-          }
-          else{
-            _team.belong = false;
-          }
-          _teams.push(_team);
-        });
-
-        output.teams = _teams;
-      }
-      else {
-        output.teams = teams;
-      }
-      return res.send(output);
-    }
-  });
-};
-
 
 exports.renderCampaigns = function(req,res){
-  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+  if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     return res.send(403,'forbidden');
   }
-  res.render('partials/campaign_list',{'role':req.session.role,'provider':'team'});
+  res.render('partials/campaign_list',{'role':req.role,'provider':'team'});
 }
 //约战
 exports.provoke = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER' && req.session.role !=='GUESTLEADER' && req.session.role !=='GUESTLEADER'){
-    console.log(req.session.role);
+  if(req.role !=='HR' && req.role !=='LEADER' && req.role !=='GUESTLEADER' && req.role !=='GUESTLEADER'){
+    console.log(req.role);
     return res.send(403,'forbidden');
   }
 
@@ -582,8 +495,8 @@ exports.provoke = function (req, res) {
 
   competition.poster.cname = cname;
   competition.poster.cid = cid;
-  competition.poster.role = req.session.role;
-  if(req.session.role==='LEADER'){
+  competition.poster.role = req.role;
+  if(req.role==='LEADER'){
     competition.poster.uid = req.user._id;
     competition.poster.nickname = req.user.nickname;
   }
@@ -690,7 +603,7 @@ exports.provoke = function (req, res) {
 
 //应约
 exports.responseProvoke = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER' && req.session.role !== 'OWNER'){
+  if(req.role !=='HR' && req.role !=='LEADER' && req.role !== 'OWNER'){
     return res.send(403,forbidden);
   }
   var competition_id = req.body.competition_id;
@@ -751,7 +664,7 @@ exports.responseProvoke = function (req, res) {
 
 //队长发布一个活动(只能是一个企业)
 exports.sponsor = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+  if(req.role !=='HR' && req.role !=='LEADER'){
     return res.send(403,forbidden);
   }
   var theme = req.body.theme;
@@ -759,8 +672,8 @@ exports.sponsor = function (req, res) {
   var location = req.body.location;//活动地点
   var group_type = req.companyGroup.group_type;
   var tid = req.params.teamId;
-  var cid = req.session.role ==='HR' ? req.user._id : req.user.cid;
-  var cname = req.session.role ==='HR' ? req.user.info.name : req.user.cname;
+  var cid = req.role ==='HR' ? req.user._id : req.user.cid;
+  var cname = req.role ==='HR' ? req.user.info.name : req.user.cname;
   var tname = req.companyGroup.name;
   var member_min = req.body.member_min ? req.body.member_min : 0;
   var member_max = req.body.member_max ? req.body.member_max : 0;
@@ -774,9 +687,9 @@ exports.sponsor = function (req, res) {
   campaign.cname =[cname];
   campaign.poster.cname = cname;
   campaign.poster.cid = cid;
-  campaign.poster.role = req.session.role;
+  campaign.poster.role = req.role;
   campaign.poster.tname = tname;
-  if(req.session.role==='LEADER'){
+  if(req.role==='LEADER'){
     campaign.poster.uid = req.user._id;
     campaign.poster.nickname = req.user.nickname;
   }
@@ -885,14 +798,14 @@ exports.getGroupMember = function(req,res){
 
 //比赛
 exports.getCompetition = function(req, res){
-  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+  if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     return res.send(403,forbidden);
   }
   var options ={
     'title': '比赛页面',
     'competition' : req.competition,
     'team': req.competition_team,
-    'role': req.session.role,
+    'role': req.role,
     'msg_show': false,
     'score_a': "",
     'score_b': "",
@@ -902,7 +815,7 @@ exports.getCompetition = function(req, res){
     'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album, 4)
   };
   var nowTeamIndex,otherTeamIndex;
-  if(req.session.role==='HR'){
+  if(req.role==='HR'){
     nowTeamIndex = req.competition.camp[0].cid.toString() === req.user._id.toString() ? 0:1;
     otherTeamIndex = req.competition.camp[0].cid.toString() === req.user._id.toString() ? 1:0;
   }
@@ -910,7 +823,7 @@ exports.getCompetition = function(req, res){
     nowTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 0:1;
     otherTeamIndex = req.competition.camp[0].cid.toString() === req.user.cid.toString() ? 1:0;
   }
-  if((req.session.role==='HR' || req.session.role ==='LEADER') && req.competition.camp[otherTeamIndex].result.confirm && !req.competition.camp[nowTeamIndex].result.confirm) {
+  if((req.role==='HR' || req.role ==='LEADER') && req.competition.camp[otherTeamIndex].result.confirm && !req.competition.camp[nowTeamIndex].result.confirm) {
     options.msg_show = true;
     options.score_a = req.competition.camp[nowTeamIndex].score;
     options.score_b = req.competition.camp[otherTeamIndex].score;
@@ -923,7 +836,7 @@ exports.getCompetition = function(req, res){
 
 
 exports.updateFormation = function(req, res){
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+  if(req.role !=='HR' && req.role !=='LEADER'){
     return res.send(403,'forbidden');
   }
   Campaign.findOne({
@@ -959,7 +872,7 @@ exports.updateFormation = function(req, res){
 };
 //某一方发送或者修改比赛成绩确认消息
 exports.resultConfirm = function (req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+  if(req.role !=='HR' && req.role !=='LEADER'){
     return res.send(403,forbidden);
   }
   var competition_id = req.params.competitionId;
@@ -977,7 +890,7 @@ exports.resultConfirm = function (req, res) {
     } else {
       //本组的index
       var _campFlag,_otherCampFlag;
-      if(req.session.role ==='HR'){
+      if(req.role ==='HR'){
         _campFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 0 : 1;
         _otherCampFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 1 : 0;
       }
@@ -1021,7 +934,7 @@ exports.group = function(req, res, next, id) {
 
 
 exports.uploadFamily = function(req, res) {
-  if (req.session.role !== 'LEADER') {
+  if (req.role !== 'LEADER') {
     return res.send(403);
   }
 
@@ -1033,7 +946,7 @@ exports.uploadFamily = function(req, res) {
     return res.send(400);
   }
   CompanyGroup
-  .findById(req.session.nowtid)
+  .findById(req.params.teamId)
   .exec()
   .then(function(company_group) {
     if (!company_group) {
@@ -1121,7 +1034,7 @@ exports.uploadFamily = function(req, res) {
 
 exports.getFamily = function(req, res) {
   CompanyGroup
-  .findById(req.session.nowtid)
+  .findById(req.params.teamId)
   .exec()
   .then(function(company_group) {
     if (!company_group) {
@@ -1182,11 +1095,11 @@ exports.toggleSelectFamilyPhoto = function(req, res) {
 };
 
 exports.deleteFamilyPhoto = function(req, res) {
-  if (req.session.role !== 'LEADER') {
+  if (req.role !== 'LEADER') {
     return res.send(403);
   }
   CompanyGroup
-  .findById(req.session.nowtid)
+  .findById(req.params.teamId)
   .exec()
   .then(function(company_group) {
     if (!company_group) {
@@ -1213,12 +1126,12 @@ exports.deleteFamilyPhoto = function(req, res) {
 };
 
 exports.editLogo = function(req, res) {
-  if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+  if(req.role !=='HR' && req.role !=='LEADER'){
     return res.send(403,forbidden);
   }
-  CompanyGroup.findOne({ _id: req.session.nowtid  }).exec(function(err, company_group) {
+  CompanyGroup.findOne({ _id: req.params.teamId  }).exec(function(err, company_group) {
     var nav_logo, nav_name;
-    if (req.session.role === 'HR' || req.session.role === 'GUESTHR') {
+    if (req.role === 'HR' || req.role === 'GUESTHR') {
       nav_logo = req.user.info.logo;
       nav_name = req.user.info.name;
     } else {
@@ -1231,7 +1144,7 @@ exports.editLogo = function(req, res) {
       nav_logo: nav_logo,
       nav_name: nav_name,
       id: company_group._id,
-      role: req.session.role
+      role: req.role
     });
   });
 
@@ -1243,7 +1156,7 @@ exports.editLogo = function(req, res) {
 
 
 exports.getCampaignsForApp = function(req, res) {
-  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+  if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     return res.send(403,forbidden);
   }
   var user = req.user;

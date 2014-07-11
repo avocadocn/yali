@@ -16,8 +16,8 @@ tabViewUser.directive('match', function($parse) {
     };
 });
 
-tabViewUser.config(['$routeProvider', '$locationProvider',
-  function ($routeProvider, $locationProvider) {
+tabViewUser.config(['$routeProvider',
+  function ($routeProvider) {
     $routeProvider
       .when('/group_message', {
         templateUrl: '/message_list',
@@ -34,9 +34,9 @@ tabViewUser.config(['$routeProvider', '$locationProvider',
         controller: 'AccountFormController',
         controllerAs: 'account'
       })
-      .when('/timeLine', {
-        templateUrl: '/users/timeline'
-        // controller: 'timelineController',
+      .when('/timeLine/:id', {
+        templateUrl: '/users'+window.location.hash.substr(1)
+        //controller: 'timelineController',
         // controllerAs: 'timeline'
       })
       .when('/schedule', {
@@ -90,18 +90,21 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
         $scope.toggle = [];
         $scope.message_role = "user";
         $rootScope.nowTab = 'group_message';
-        $http.get('/groupMessage/user/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-            $scope.user = data.user;
-            $rootScope.message_corner = true;
-            $scope.role = data.role;
-            if(data.group_messages.length<20){
-                $scope.loadMore_flag = false;
-            }
-            else{
-                $scope.loadMore_flag = true;
-            }
-            $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
+        $rootScope.$watch('uid',function(uid){
+            $http.get('/groupMessage/user/'+uid+'/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+                $scope.user = data.user;
+                $rootScope.message_corner = true;
+                $scope.role = data.role;
+                if(data.group_messages.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
+                $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
+            });
         });
+
         $scope.loadMore_flag = false;
         $scope.block = 1;
         $scope.page = 1;
@@ -109,7 +112,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
         $scope.lastPage_flag = false;
         $scope.nextPage_flag = false;
         $scope.loadMore = function(){
-            $http.get('/groupMessage/user/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $http.get('/groupMessage/user/'+$rootScope.uid+'/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
                 if(data.result===1 && data.group_messages.length>0){
                     $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
                     if(data.group_messages.length<20){
@@ -135,7 +138,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
         }
         $scope.changePage = function(flag){
             var start_time = flag ==1? new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime() :$scope.pageTime[$scope.page-2];
-            $http.get('/groupMessage/user/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $http.get('/groupMessage/user/'+$rootScope.uid+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
                 if(data.result===1 && data.group_messages.length>0){
                     if(flag ==1){
                         $scope.page++;
@@ -407,7 +410,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/user/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
@@ -434,7 +437,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/campaign/getCampaigns/user/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -722,7 +725,7 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
         $rootScope.nowTab = 'personal';
-        $http.get('/users/getAccount').success(function(data, status) {
+        $http.get('/users/'+$rootScope.uid+'/getAccount').success(function(data, status) {
             if (data.result === 1) {
                 $scope.user = data.data;
             } else {
@@ -752,7 +755,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                     };
                     $http({
                         method: 'post',
-                        url: '/users/saveAccount',
+                        url: '/users/'+$rootScope.uid+'/saveAccount',
                         data: {
                             user: _info
                         }
@@ -787,7 +790,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                     };
                     $http({
                         method: 'post',
-                        url: '/users/saveAccount',
+                        url: '/users/'+$rootScope.uid+'/saveAccount',
                         data: {
                             user: _info
                         }
@@ -821,7 +824,7 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
         $scope.change_password = function() {
             $http({
                 method: 'post',
-                url: '/users/changePassword',
+                url: '/users/'+$rootScope.uid+'/changePassword',
                 data: {
                     'nowpassword': $scope.nowpassword,
                     'newpassword': $scope.newpassword
