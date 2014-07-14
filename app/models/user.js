@@ -57,7 +57,10 @@ var UserSchema = new Schema({
 
     nickname: String,
     realname: String,
-    department: String,
+    department: {
+        name : String,
+        _id : Schema.Types.ObjectId
+    },
     position: String,
     sex: {
         type: String,

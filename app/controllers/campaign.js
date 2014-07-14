@@ -242,23 +242,7 @@ var formatCampaign = function(campaign,pageType,role,user){
   return campaigns;
 };
 
-//获取部门活动
-exports.getDepartmentCampaigns = function(req,res){
-  var did = req.body.did;
-  Department.findOne({'_id':did}, function (err,department){
-    if(err || !department){
-      res.send(500);
-    }else{
-      Campaign.find({'_id':{'$in':[department.team]}},function (err,campaigns){
-        if(err || !campaigns){
-          res.send(500);
-        }else{
-          res.send(200,{'campaigns':campaigns});
-        }
-      });
-    }
-  });
-}
+
 
 exports.getCampaigns = function(req, res) {
   var option;

@@ -357,7 +357,7 @@ exports.dealSetProfile = function(req, res) {
         user.nickname = req.body.nickname;
         user.password = req.body.password;
         user.realname = req.body.realName;
-        user.department = (req.body.main_department_name != 'null' ? (req.body.child_department_name != 'null' ? req.body.child_department_name : req.body.main_department_name) : '无');
+        user.department = (req.body.main_department_name != 'null' ? (req.body.child_department_name != 'null' ? {'name':req.body.child_department_name,'_id':req.body.child_department_id} : {'name':req.body.main_department_name,'_id':req.body.main_department_id}) : {'name':'无'});
         user.phone = req.body.phone;
         user.role = 'EMPLOYEE';
         user.save(function(err) {
