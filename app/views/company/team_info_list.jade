@@ -61,4 +61,12 @@ if role === 'EMPLOYEE'
       a(href="/group/home/{{team._id}}")
         img.img_border.img_contain(ng-src="{{team.logo}}/20/20" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')
         span {{team.name}}
-      p {{team.member}}
+      p(ng-repeat="m in team.member track by $index")
+        img(ng-src="{{m.photo}}/36/36")
+        span {{m.nickname}}
+      p {{team}}
+
+
+
+
+

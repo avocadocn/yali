@@ -746,9 +746,11 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
             $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
         });
         $scope.baseUnEdit = true;
-        $scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+        //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+        $scope.baseButtonStatus = '编辑';
         $scope.linkUnEdit = true;
-        $scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+        //$scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+        $scope.linkButtonStatus = '编辑';
         $scope.baseEditToggle = function() {
             $scope.baseUnEdit = !$scope.baseUnEdit;
             if ($scope.baseUnEdit) {
@@ -784,9 +786,11 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                 } catch (e) {
                     console.log(e);
                 }
-                $scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+                //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+                $scope.baseButtonStatus = '编辑';
             } else {
-                $scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
+                //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
+                $scope.baseButtonStatus = '保存';
             }
         };
         $scope.linkEditToggle = function() {
@@ -817,9 +821,11 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                 } catch (e) {
                     console.log(e);
                 }
-                $scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+                //$scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+                $scope.linkButtonStatus = '编辑';
             } else {
-                $scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
+                //scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
+                $scope.linkButtonStatus = '保存';
             }
         };
 

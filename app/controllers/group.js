@@ -207,6 +207,7 @@ exports.saveInfo =function(req,res) {
           }
 
           companyGroup.brief = req.body.brief;
+          companyGroup.home_court = req.body.homecourt;
           companyGroup.save(function (s_err){
               if(s_err){
                   console.log(s_err);
@@ -215,25 +216,7 @@ exports.saveInfo =function(req,res) {
               if(newNameFlag){
                 schedule.updateTname(teamId);
               }
-              var entity_type = companyGroup.entity_type;
-              var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-              Entity.findOne({
-                  'tid': teamId
-                },function(err, entity) {
-                    if (err) {
-                        console.log(err);
-                        return res.send(err);
-                    } else if(entity){
-                      entity.home_court = req.body.homecourt;
-                      entity.save(function(err){
-                        if(err){
-                          console.log(err);
-                          return res.send({'result':0,'msg':'不存在组件！'});;
-                        }
-                        res.send({'result':1,'msg':'更新成功'});
-                      });
-                    }
-                });
+              res.send({'result':1,'msg':'更新成功'});
           });
       } else {
           res.send({'result':0,'msg':'不存在组件！'});
