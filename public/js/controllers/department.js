@@ -6,8 +6,7 @@ department.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/campaign', {
-        //templateUrl: '/department/campaign',
-        template: '<div>{{campaigns}}</div>',
+        templateUrl: '/department/campaigns',
         controller: 'CampaignCtrl'
       });
   }

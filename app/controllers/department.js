@@ -733,3 +733,7 @@ exports.renderHome = function(req, res) {
       res.send(500);
     });
 };
+
+exports.renderCampaigns = function(req, res) {
+  res.render('partials/campaign_list');
+};
