@@ -910,7 +910,7 @@ exports.timeLine = function(req, res){
           
         }
       });
-        // console.log(newTimeLines);
+        //console.log(newTimeLines);
     return res.send({result:1,'newTimeLines': newTimeLines});
   })
   .then(null, function(err) {
@@ -924,7 +924,7 @@ exports.timeLine = function(req, res){
 exports.company = function(req, res, next, id) {
     Company
         .findOne({
-            _id: id
+            '_id': id
         })
         .exec(function(err, company) {
             if (err) return next(err);
