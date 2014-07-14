@@ -29,7 +29,7 @@ div(ng-controller="infoController")
         span.info_label #{__("HOME_COURT")}一
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-change='changeLocation1()' ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip='请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。' tooltip-placement="right")
-    .dl_row.clearfix(ng-show='showMap1')
+    .dl_row.clearfix(ng-show='showMap1 && !unEdit')
       .info_side 
       #courtMap1.height_200(ng-show='showMap1')
     .dl_row.clearfix(ng-show="team.home_court[1]!=undefined || !unEdit")
@@ -37,7 +37,7 @@ div(ng-controller="infoController")
         span.info_label #{__("HOME_COURT")}二
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-change='changeLocation2()' ng-model="team.home_court[1].name" ng-disabled="unEdit")
-    .dl_row.clearfix(ng-show='showMap2')
+    .dl_row.clearfix(ng-show='showMap2 && !unEdit')
       .info_side
       #courtMap2.height_200(ng-show='showMap2')
     .dl_row.clearfix(ng-show="team.brief!=undefined || !unEdit")
