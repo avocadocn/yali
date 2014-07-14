@@ -55,6 +55,10 @@ userApp.controller('signupController',['$http','$scope','$rootScope',function ($
     });
 
     $scope.selectMainDepartment = function(){
+        $scope.main_department_id = 'null';
+        $scope.main_department_name = 'null';
+        $scope.child_department_id = 'null';
+        $scope.child_department_name = 'null';
         for(var i = 0; i < departments.length; i ++){
             if(departments[i]._id === $scope.main_department._id){
                 $scope.child_departments = [];
@@ -78,6 +82,8 @@ userApp.controller('signupController',['$http','$scope','$rootScope',function ($
     }
 
     $scope.selectChildDepartment = function(){
+        $scope.child_department_id = 'null';
+        $scope.child_department_name = 'null';
         $scope.child_department_id = $scope.child_department._id;
         $scope.child_department_name = $scope.child_department.name;
     }
