@@ -6,7 +6,8 @@ department.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
     $routeProvider
       .when('/campaign', {
-        templateUrl: '/department/campaign',
+        //templateUrl: '/department/campaign',
+        template: '<div>{{campaigns}}</div>',
         controller: 'CampaignCtrl'
       });
   }
@@ -14,6 +15,11 @@ department.config(['$routeProvider', '$locationProvider',
 
 department.run(['$rootScope',
   function($rootScope) {
+    $rootScope.nowTab = window.location.hash.substr(2);
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+        $rootScope.message_corner = false;
+    };
     $rootScope.loadMap = function(index) {
       $rootScope.loadMapIndex = index;
     };
@@ -130,15 +136,18 @@ department.controller('SponsorCtrl', ['$http', '$scope', '$rootScope',
 
 department.controller('CampaignCtrl', ['$http', '$scope', '$rootScope',
   function($http, $scope, $rootScope) {
-    $http.get('/campaign/getCampaigns/team/all/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-      $scope.campaigns = data.campaigns;
-      $rootScope.sum = $scope.campaigns.length;
-      if (data.campaigns.length < 20) {
-        $scope.loadMore_flag = false;
-      } else {
-        $scope.loadMore_flag = true;
-      }
+    $rootScope.$watch('teamId', function(teamId) {
+      $http.get('/campaign/getCampaigns/team/' + teamId + '/all/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+        $scope.campaigns = data.campaigns;
+        $rootScope.sum = $scope.campaigns.length;
+        if (data.campaigns.length < 20) {
+          $scope.loadMore_flag = false;
+        } else {
+          $scope.loadMore_flag = true;
+        }
+      });
     });
+
     $scope.loadMore_flag = true;
     $scope.block = 1;
     $scope.page = 1;
@@ -147,7 +156,7 @@ department.controller('CampaignCtrl', ['$http', '$scope', '$rootScope',
     $scope.nextPage_flag = false;
 
     $scope.loadMore = function() {
-      $http.get('/campaign/getCampaigns/team/all/' + new Date($scope.campaigns[$scope.campaigns.length - 1].start_time).getTime() + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+      $http.get('/campaign/getCampaigns/team/' + teamId + '/all/' + new Date($scope.campaigns[$scope.campaigns.length - 1].start_time).getTime() + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
         if (data.result === 1 && data.campaigns.length > 0) {
           $scope.campaigns = $scope.campaigns.concat(data.campaigns);
           if (data.campaigns.length < 20) {
@@ -172,7 +181,7 @@ department.controller('CampaignCtrl', ['$http', '$scope', '$rootScope',
     }
     $scope.changePage = function(flag) {
       var start_time = flag == 1 ? new Date($scope.campaigns[$scope.campaigns.length - 1].start_time).getTime() : $scope.pageTime[$scope.page - 2];
-      $http.get('/campaign/getCampaigns/team/all/' + start_time + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+      $http.get('/campaign/getCampaigns/team/' + teamId + '/all/' + start_time + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
         if (data.result === 1 && data.campaigns.length > 0) {
           if (flag == 1) {
             $scope.page++;

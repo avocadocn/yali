@@ -17,8 +17,8 @@ module.exports = function(app) {
   app.post('/department/modify', department.modifyDepartment);
   app.post('/department/delete', department.deleteDepartment);
 
-  app.get('/department/home/:id', department.renderHome);
+  app.get('/department/home/:departmentId', department.renderHome);
 
-  app.post('/department/:id/sponsor', department.department, department.sponsor);
+  app.post('/department/:departmentId/sponsor', authorization.departmentAuthorize, department.sponsor);
 
 };

@@ -3,7 +3,8 @@ var model_helper = require('../../helpers/model_helper');
 // mongoose and models
 var mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  CompanyGroup = mongoose.model('CompanyGroup');
+  CompanyGroup = mongoose.model('CompanyGroup'),
+  Department = mongoose.model('Department');
 /**
  * Generic require login routing middleware
  */
@@ -23,6 +24,36 @@ exports.companyAuthorize = function(req, res, next){
     }
     next();
 };
+exports.departmentAuthorize = function(req, res, next) {
+  Department
+  .findById(req.params.departmentId)
+  .populate('team')
+  .exec()
+  .then(function(department) {
+    if (!department) {
+      return res.send(404);
+    }
+    req.department = department;
+    if (req.user.provider === 'company') {
+      if (req.user._id.toString() === department.company._id.toString()) {
+        req.role = 'HR';
+      }
+    } else if (req.user.provider === 'user') {
+      if (req.user._id.toString() === department.manager._id.toString()) {
+        req.role = 'DEPARTMENT_MANAGER';
+      }
+    }
+
+    if (!req.role) {
+      req.role = 'GUEST';
+    }
+    next();
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+}
 exports.teamAuthorize = function(req, res, next) {
   if(req.user.provider==="company"){
     if(req.user._id.toString() ===req.companyGroup.cid.toString()){

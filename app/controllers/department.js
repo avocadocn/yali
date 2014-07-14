@@ -27,7 +27,7 @@ var stack_root = new StackAndQueue.stack();
 
 exports.department = function(req, res, next) {
   Department
-  .findById(req.params.id)
+  .findById(req.params.departmentId)
   .populate('team')
   .exec()
   .then(function(department) {
@@ -98,7 +98,7 @@ exports.responseProvoke = function(req, res) {
 
 //部门发活动
 exports.sponsor = function(req, res) {
-  if(req.session.role !=='HR'){
+  if(req.role !=='HR') {
     return res.send(403,forbidden);
   }
   var theme = req.body.theme;
@@ -675,7 +675,7 @@ exports.createDepartment = function(req, res) {
 
 exports.renderHome = function(req, res) {
   Department
-    .findById(req.params.id)
+    .findById(req.params.departmentId)
     .populate('team')
     .exec()
     .then(function(department) {

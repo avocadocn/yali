@@ -23,14 +23,14 @@ block baseInfo
             include ../campaign/campaign_modal
 
 block panel
-  div
+  div(ng-init="teamId='#{department.team._id}'")
     ul.nav.nav-tabs
-      li.tab_style
-        a.subtitle.no_radius 部门动态
-      li.tab_style
-        a.subtitle.no_radius 部门活动
-      li.tab_style
-        a.subtitle.no_radius 活动足迹
+      li.tab_style(ng-class="{'active':nowTab=='message'}")
+        a.subtitle.no_radius(href="#/message" ng-click="addactive('message')") 部门动态
+      li.tab_style(ng-class="{'active':nowTab=='campaign'}")
+        a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign") 部门活动
+      li.tab_style(ng-class="{'active':nowTab=='timeLine/#{department.team._id}'}")
+        a.subtitle.no_radius(href="#/timeLine/#{department.team._id}" ng-click="addactive('timeLine/#{department.team._id}')") 活动足迹
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
