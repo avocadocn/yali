@@ -222,7 +222,7 @@ exports.sponsor = function(req, res) {
   });
 }
 var teamOperate = function(did,operate,res,req){
-  Department.findOne({'_id':did},function(err,department){
+  Department.findByIdAndUpdate({'_id':did},operate,function(err,department){
     if(err || !department){
       if(res != null)return res.send(500);
     }else{
@@ -287,11 +287,11 @@ exports.applyOperate = function(req, res) {
       res.send(500);
     } else {
       var members = [];
-      for (var i = 0; i < department.member_apply.length; i++) {
+      for (var i = 0; i < department.member.length; i++) {
         for (var j = 0; j < apply_members.length; j++) {
-          if (apply_members[j]._id.toString() === department.member_apply[i].toString()) {
+          if (apply_members[j]._id.toString() === department.member[i].toString()) {
             members.push(apply_members[j]);
-            department.member_apply[i].apply_status = apply_status;
+            department.member[i].apply_status = apply_status;
             break;
           }
         }
@@ -313,7 +313,7 @@ exports.applyOperate = function(req, res) {
                   res.send(500);
                 } else {
                   res.send(200, {
-                    'member_apply': department.member_apply
+                    'member': department.member
                   })
                 }
               })
@@ -335,7 +335,7 @@ exports.getApplyInfo = function(req, res) {
       res.send(500);
     } else {
       res.send(200, {
-        'member_apply': department.member_apply
+        'member': department.member
       });
     }
   })
@@ -389,52 +389,73 @@ var deleteFromRoot = function(department, seq, req, res) {
       }
     }
   }
-  Department.remove({
-    '_id': {
+
+  //员工的部门、小队也要删掉
+  Department.find({'_id': {
       '$in': delete_ids
     }
-  }, function(err, _department) {
-    if (err || !_department) {
-      return res.send({
-        'msg': 'DEPARTMENT_DELETE_FAILURE',
-        'department': []
-      });
-    } else {
-
-      if (seq != -1) {
-        department.splice(seq, 1);
-      } else {
-        req.user.department = [];
+  }, function (err,departments){
+    var user_ids = [];
+    var team_ids = [];
+    if(departments){
+      for(var i = 0; i < departments.length; i ++){
+        for(var j = 0; j < departments[i].member.length; j ++){
+          user_ids.push(departments[i].member[j]._id);
+        }
+        team_ids.push(departments[i].team);
       }
 
-      Company.findOne({
-        '_id': req.user._id
-      }, function(err, company) {
-        if (err || !company) {
-          res.send({
-            'msg': 'DEPARTMENT_DELETE_FAILURE',
-            'department': []
-          });
-        } else {
-          company.department = req.user.department;
-          company.save(function(err) {
-            if (err) {
-              res.send({
+      User.update({'_id':{'$in':user_ids}},{'$set':{'department':null}},{'multi':true},function (err,users){
+        CompanyGroup.remove({'_id':{'$in':team_ids}},function (err,company_group){
+          Department.remove({
+            '_id': {
+              '$in': delete_ids
+            }
+          }, function(err, _department) {
+            if (err || !_department) {
+              return res.send({
                 'msg': 'DEPARTMENT_DELETE_FAILURE',
                 'department': []
               });
             } else {
-              res.send({
-                'msg': 'DEPARTMENT_DELETE_SUCCESS',
-                '_id': req.user._id,
-                'name': req.user.info.name,
-                'department': company.department
-              });
-            }
-          })
-        }
-      })
 
+              if (seq != -1) {
+                department.splice(seq, 1);
+              } else {
+                req.user.department = [];
+              }
+
+              Company.findOne({
+                '_id': req.user._id
+              }, function(err, company) {
+                if (err || !company) {
+                  res.send({
+                    'msg': 'DEPARTMENT_DELETE_FAILURE',
+                    'department': []
+                  });
+                } else {
+                  company.department = req.user.department;
+                  company.save(function(err) {
+                    if (err) {
+                      res.send({
+                        'msg': 'DEPARTMENT_DELETE_FAILURE',
+                        'department': []
+                      });
+                    } else {
+                      res.send({
+                        'msg': 'DEPARTMENT_DELETE_SUCCESS',
+                        '_id': req.user._id,
+                        'name': req.user.info.name,
+                        'department': company.department
+                      });
+                    }
+                  })
+                }
+              })
+            }
+          });
+        });
+      });
     }
   });
 }

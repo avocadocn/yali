@@ -1416,7 +1416,7 @@ exports.applyToDepartment = function(req,res){
     'photo':req.user.photo,
     'apply_status':'wait'
   }
-  Department.findByIdAndUpdate({'_id':did},{'$push':{'member_apply':member}},function(err,department){
+  Department.findByIdAndUpdate({'_id':did},{'$push':{'member':member}},function(err,department){
     if(err || !department){
       res.send(500);
     }else{

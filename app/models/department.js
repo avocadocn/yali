@@ -17,7 +17,8 @@ var _member = new Schema({
     photo: String,
     apply_status:{
       type:String,
-      enum:['pass','reject','wait']
+      enum:['pass','reject','wait'],
+      default:'wait'
     }
 });
 
@@ -37,7 +38,7 @@ var Department = new Schema({
     nickname:String,
     photo:String
   },
-  member_apply:[_member]
+  member:[_member]
 });
 
 
