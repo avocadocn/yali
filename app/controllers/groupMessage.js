@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Group = mongoose.model('Group'),
     Campaign = mongoose.model('Campaign'),
-    GroupMessage = mongoose.model('GroupMessage');
+    GroupMessage = mongoose.model('GroupMessage'),
+    model_helper = require('../helpers/model_helper');
 
 
 var pagesize = 20;
@@ -17,7 +18,7 @@ exports.renderMessageList =function(req,res){
 };
 //根据小队ID返回小组动态消息
 exports.getMessage = function(req, res) {
-  if(req.params.pageType==="team"&&req.role !=='HR' && req.role !=='LEADER' && req.role !=='MEMBER' && req.role !=='PARTNER' || req.params.pageType==="user"&&req.role !=='OWNER' ){
+  if(req.params.pageType==="team"&&(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER') || req.params.pageType==="user"&&req.role !=='OWNER' ){
     return res.send(403,'forbidden');
   }
   var pageType = req.params.pageType;
@@ -56,7 +57,7 @@ exports.getMessage = function(req, res) {
       var last_user_index,last_team_index,last_company_index;
       for(var i = 0; i < length; i ++) {
         var push_flag=true;
-        var join_role = req.user.provider==='user' && (pageType==="team" &&(req.role === 'MEMBER' || req.role ==='LEADER') || pageType==="user" &&(req.role === 'OWNER'));
+        var join_role = req.user.provider==='user' && (req.role ==='LEADER' || req.role ==='MEMBER' || req.role ==='OWNER' || req.role==='MEMBERLEADER');
         var _group_message ={
           '_id': group_message[i]._id,
           'message_type' : group_message[i].message_type,
@@ -115,7 +116,7 @@ exports.getMessage = function(req, res) {
             _group_message.logo = group_message[i].team[camp_flag].logo;
             _group_message.team_id = group_message[i].team[camp_flag].teamid;
             _group_message.member_num = group_message[i].campaign.camp[camp_flag].member.length;
-            if(join_role){
+            if(join_role&& req.role !=='OWNER'){
               //0：未投票，1：赞成，-1反对
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){

@@ -27,8 +27,9 @@ module.exports = function(app) {
   //app.get('/group/getMembers', group.renderMember);
   //激活、关闭小队
   app.post('/group/activateGroup', authorization.teamAuthorize, group.activateGroup);
-
+  app.get('/group/getSimiliarTeams/:teamId',authorization.teamAuthorize,group.getSimiliarTeams);
   app.get('/group/competition/:competitionId', authorization.teamAuthorize, group.getCompetition);
+
 
 
   app.post('/group/updateFormation/:competitionId', authorization.teamAuthorize, group.updateFormation);

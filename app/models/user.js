@@ -81,8 +81,7 @@ var UserSchema = new Schema({
         type: String
     },
     qq: {
-        type: String,
-        validate: [validate.numeric, '请填写正确的QQ号']
+        type: String
     },
     role: {
         type: String,

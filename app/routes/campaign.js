@@ -14,4 +14,5 @@ module.exports = function(app) {
   app.get('/campaign/user/all/list', campaign.getUserAllCampaignsForList);
   app.get('/campaign/user/joined/list', campaign.getUserJoinedCampaignsForList);
   app.get('/campaign/user/unjoin/list', campaign.getUserUnjoinCampaignsForList);
+  app.get('/campaign/timeline', campaign.renderTimeline);
 };

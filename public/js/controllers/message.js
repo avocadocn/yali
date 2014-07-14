@@ -4,17 +4,17 @@ var messageApp = angular.module('mean.main');
 messageApp.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/private', {
+      .when('/message_private', {
         templateUrl: '/message/private',
         controller: 'messagePrivateController',
         controllerAs: 'private'
       })
-      .when('/team', {
+      .when('/message_team', {
         templateUrl: '/message/team',
         controller: 'messageTeamController',
         controllerAs: 'team'
       })
-      .when('/company', {
+      .when('/message_company', {
         templateUrl: '/message/company',
         controller: 'messageCompanyController',
         controllerAs: 'company'

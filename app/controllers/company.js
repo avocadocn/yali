@@ -851,7 +851,6 @@ exports.timeLine = function(req, res){
   .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
-    if (campaigns && campaigns.length>0) {
       var timeLines = [];
       // todo new time style
       var newTimeLines = {};
@@ -899,7 +898,6 @@ exports.timeLine = function(req, res){
 
           newTimeLines[groupYear]['left'][0] = tempObj;
           newTimeLines[groupYear][0] = tempObj;
-          newTimeLines
         }else{
           var i = newTimeLines[groupYear].length;
           newTimeLines[groupYear][i] = tempObj;
@@ -917,17 +915,11 @@ exports.timeLine = function(req, res){
         timeLines.push(tempObj);
       });
         // console.log(newTimeLines);
-      return res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
-
-      // return res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
-    }
-    else{
-      return res.render('partials/timeLine');
-    }
+    return res.send({result:1,'timeLines': timeLines,'newTimeLines': newTimeLines});
   })
   .then(null, function(err) {
     console.log(err);
-    return res.render('partials/timeLine');
+    return res.send({result:0,msg:'查询错误'});
   });
 }
 /**
@@ -1109,6 +1101,8 @@ exports.sponsor = function (req, res) {
     campaign.member_min = member_min;
     campaign.member_max = member_max;
 
+    campaign.type = 1;
+
     var photo_album = new PhotoAlbum({
         owner: {
           model: {
@@ -1229,5 +1223,5 @@ exports.editLogo = function(req, res) {
 
 };
 exports.renderTeamInfo = function(req, res){
-    return res.render('company/team_info_list');
+    return res.render('company/team_info_list',{role:req.role});
 }

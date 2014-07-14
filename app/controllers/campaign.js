@@ -120,7 +120,7 @@ function formatCampaignForCalendar(user, campaigns) {
   campaigns.forEach(function(campaign) {
 
     // 公司活动
-    if (campaign.cid.length === 1 && campaign.team.length === 0) {
+    if (campaign.campaign_type === 1) {
       var logo_owner_id = campaign.cid[0];
       var logo = '/logo/company/' + logo_owner_id + '/27/27';
     } else {
@@ -144,7 +144,7 @@ function formatCampaignForCalendar(user, campaigns) {
     var is_joined = false;
 
     // 活动
-    if (campaign.team.length <= 1) {
+    if (campaign.campaign_type < 3) {
       for (var i = 0, members = campaign.member; i < members.length; i++) {
         if (user._id.toString() === members[i].uid) {
           is_joined = true;
@@ -154,7 +154,7 @@ function formatCampaignForCalendar(user, campaigns) {
     }
 
     // 比赛
-    if (campaign.team.length > 1) {
+    if (campaign.campaign_type >= 3) {
       for (var i = 0; i < campaign.camp.length; i++) {
         for (var j = 0, camp = campaign.camp[i]; j < camp.member.length; j++) {
           if (user._id.toString() === camp.member[j].uid) {
@@ -197,15 +197,15 @@ var formatCampaign = function(campaign,pageType,role,user){
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum
     };
-    if(_campaign.team==undefined || _campaign.team.length==0){//公司活动
+    if(_campaign.campaign_type===1){//公司活动
       temp.type='companycampaign';
       temp.logo=_campaign.cid[0].info.logo;
-      temp.link = '/company/home/'+_campaign.cid._id;
+      temp.link = '/company/home/'+_campaign.cid[0]._id;
       temp.cid = _campaign.cid[0]._id;
       temp.cname=_campaign.cid[0].info.name;
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
     }
-    else if(_campaign.camp.length==0){//小队活动
+    else if(_campaign.campaign_type===2){//小队活动
       temp.type='teamcampaign';
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
@@ -220,7 +220,7 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
-    else{//对战
+    else{//动一下
       temp.type = 'provoke';
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
@@ -571,3 +571,6 @@ exports.renderCampaignDetail = function(req, res) {
     res.send(404);
   });
 };
+exports.renderTimeline = function(req, res){
+  res.render('partials/timeLine');
+}

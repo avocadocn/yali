@@ -51,11 +51,11 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               span.glyphicon.glyphicon-comment
             ul.dl_menu.dropdown-menu(role="menu")
               li
-                a.dl_menu_a(href="/message/home#/private") 私信({{private_length + global_length}})
+                a.dl_menu_a(href="/message/home#/message_private") 私信({{private_length + global_length}})
               li
-                a.dl_menu_a(href="/message/home#/team") 小队消息({{team_length}})
+                a.dl_menu_a(href="/message/home#/message_team") 小队消息({{team_length}})
               li
-                a.dl_menu_a(href="/message/home#/company") 全公司消息({{company_length}})
+                a.dl_menu_a(href="/message/home#/message_company") 全公司消息({{company_length}})
       if Global.role === 'HR'
         //.navbar-header
         a.navbar-brand(href="/")

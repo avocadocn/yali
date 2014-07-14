@@ -16,6 +16,29 @@ tabViewCompany.directive('match', function($parse) {
       });
     }
   };
+}).directive('masonry', function ($parse, $timeout) {
+    return {
+        link: function (scope, elem, attrs) {   
+            $timeout(function() {
+                $(".masonry").masonry({
+                    itemSelector : ".masonry-item"
+                });
+                // console.log($(".masonry-item"));
+            }, 0);
+
+        }
+    };        
+}).directive('masonryItem', function ($parse, $timeout) {
+    return {
+        restrict: 'AC',
+        link: function (scope, elem, attrs) {
+
+            $timeout(function(){
+                elem.parents('.masonry').masonry('bindResize');
+            }, 2000); 
+
+        }
+    };        
 });
 tabViewCompany.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
@@ -37,13 +60,13 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
       })
       .when('/team_info', {
         templateUrl: '/company/teamInfo',
-        controller: 'TeamInfoController',
-        controllerAs: 'teamInfo'
+        controller: 'timelineController',
+        controllerAs: 'timeline'
       })
-      .when('/timeLine/:id', {
-        templateUrl: '/company'+window.location.hash.substr(1)
-        //controller: 'AccountFormController',
-        //controllerAs: 'account'
+      .when('/timeLine/:cid', {
+        templateUrl: '/campaign/timeline',
+        controller: 'timelineController',
+        controllerAs: 'timeline'
       })
       .when('/changePassword', {
         templateUrl: '/company/change_password',
@@ -65,6 +88,17 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
+}]);
+tabViewCompany.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
+    $http.get('/company/timeline/'+$routeParams.cid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+        if(data.result===1){
+            $scope.timelines = data.timelines;
+            $scope.newTimeLines = data.newTimeLines;
+        }
+        else{
+             console.log('err');
+        }
+    });
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
@@ -361,7 +395,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
 }).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-    $http.get('/company/'+$rootScope.cid+'/getCompanyTeamsInfo' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+    $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.team_lists = data.teams;//公司的所有team
         $scope.cid = data.cid;
         $scope.role = data.role;
@@ -647,7 +681,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
 }]);
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
 
-    $http.get('/company/getAccount/'$rootScope.cid+'?' + Math.round(Math.random()*100)).success(function(data,status){
+    $http.get('/company/getAccount/'+$rootScope.cid+'?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
         $scope.linkage_init_location = {
