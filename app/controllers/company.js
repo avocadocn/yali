@@ -674,7 +674,8 @@ exports.home = function(req, res) {
             cname: company.info.name,
             sign: company.info.brief,
             groupnumber: company.team ? company.team.length : 0,
-            membernumber: company.info.membernumber
+            membernumber: company.info.membernumber,
+            role:req.role
         });
     };
 
@@ -696,7 +697,7 @@ exports.home = function(req, res) {
                 });
         }
     } else {
-        return render(req.profile);
+        return render(req.company);
     }
 
 };
@@ -891,15 +892,14 @@ exports.timeLine = function(req, res){
         // console.log(getYear(campaign));
         var groupYear = getYear(campaign);
         if (!newTimeLines[groupYear]) {
-          newTimeLines[groupYear] = {};
+          newTimeLines[groupYear] = [];
           newTimeLines[groupYear]['left'] = [];
           newTimeLines[groupYear]['right'] = [];
-          newTimeLines[groupYear]['base'] = [];
           newTimeLines[groupYear]['left'][0] = tempObj;
-          newTimeLines[groupYear]['base'][0] = tempObj;
+          newTimeLines[groupYear][0] = tempObj;
         }else{
-          var i = newTimeLines[groupYear]['base'].length;
-          newTimeLines[groupYear]['base'][i] = tempObj;
+          var i = newTimeLines[groupYear].length;
+          newTimeLines[groupYear][i] = tempObj;
           if (i%2==0) {
             var j = newTimeLines[groupYear]['left'].length;
             newTimeLines[groupYear]['left'][j] = tempObj;
@@ -911,7 +911,7 @@ exports.timeLine = function(req, res){
         }
       });
         //console.log(newTimeLines);
-    return res.send({result:1,'newTimeLines': newTimeLines});
+      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);
@@ -929,16 +929,12 @@ exports.company = function(req, res, next, id) {
         .exec(function(err, company) {
             if (err) return next(err);
             if (!company) return next(new Error('Failed to load Company ' + id));
-            req.profile = company;
+            req.company = company;
             next();
         });
 };
 exports.renderCompanyCampaign = function(req, res){
-    if(req.role==='GUEST'){
-        return res.send(403, 'forbidden!');
-    }
     res.render('partials/campaign_list',{
-        'role':req.role,
         'provider':'company'
     });
 }
@@ -1219,5 +1215,5 @@ exports.editLogo = function(req, res) {
 
 };
 exports.renderTeamInfo = function(req, res){
-    return res.render('company/team_info_list',{role:req.role});
+    return res.render('company/team_info_list');
 }

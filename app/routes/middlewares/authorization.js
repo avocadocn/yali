@@ -3,25 +3,31 @@ var model_helper = require('../../helpers/model_helper');
 // mongoose and models
 var mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  CompanyGroup = mongoose.model('CompanyGroup');
+  CompanyGroup = mongoose.model('CompanyGroup'),
+  Company = mongoose.model('Company');
 /**
  * Generic require login routing middleware
  */
 exports.companyAuthorize = function(req, res, next){
-    if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id.toString())){
-        req.role = 'HR';
+  if(req.route.path==='/company/home' && !req.company){
+    req.role = 'HR';
+  }
+  else{
+    if(req.user.provider==='company' && req.company._id.toString() === req.user._id.toString()){
+      req.role = 'HR';
     }
-    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid.toString())){
-        req.role = 'EMPLOYEE';
+    else if(req.user.provider ==='user' && req.company._id.toString() === req.user.cid.toString()){
+      req.role = 'EMPLOYEE';
     }
     else{
-        if(req.user.role == 'LEADER'){
-          req.role = 'GUESTLEADER';
-        }else{
-          req.role = 'GUEST';
-        }
+      if(req.user.role == 'LEADER'){
+        req.role = 'GUESTLEADER';
+      }else{
+        req.role = 'GUEST';
+      }
     }
-    next();
+  }
+  next();
 };
 exports.teamAuthorize = function(req, res, next) {
   if(req.user.provider==="company"){
@@ -70,20 +76,25 @@ exports.teamAuthorize = function(req, res, next) {
   next();
 };
 exports.userAuthorize = function(req, res, next) {
-  if(!req.params.userId || req.params.userId === req.user._id.toString()){
+  if(req.route.path==='/users/home' && !req.profile){
     req.role = 'OWNER';
   }
-  else if(req.params.userId && req.user._id.toString() === req.profile.cid.toString()){
-    req.role = 'HR';
-  }
-  else if(req.params.userId && req.profile.cid.toString() === req.user.cid.toString()){
-    req.role = 'PARTNER';
-  }else{
-    return res.send(403, 'forbidden!');
+  else{
+    if(req.profile && req.profile._id.toString() === req.user._id.toString()){
+      req.role = 'OWNER';
+    }
+    else if(req.profile && req.user._id.toString() === req.profile.cid.toString()){
+      req.role = 'HR';
+    }
+    else if(req.profile && req.profile.cid.toString() === req.user.cid.toString()){
+      req.role = 'PARTNER';
+    }else{
+      return res.send(403, 'forbidden!');
+    }
   }
   next();
 };
-exports.groupMessageAuthorize = function(req,res, next){
+exports.listAuthorize = function(req,res, next){
   if(req.params.pageType==='user'){
     User
     .findOne({
@@ -106,6 +117,18 @@ exports.groupMessageAuthorize = function(req,res, next){
           if (!companyGroup) return next(new Error(' Failed to load companyGroup ' + id));
           req.companyGroup = companyGroup;
           exports.teamAuthorize(req,res, next);
+      });
+  }
+  else if(req.params.pageType==='company'){
+    Company
+      .findOne({
+        _id: req.params.pageId
+      })
+      .exec(function(err, company) {
+          if (err) return next(err);
+          if (!company) return next(new Error(' Failed to load company ' + id));
+          req.company = company;
+          exports.companyAuthorize(req,res, next);
       });
   }
 }
@@ -146,4 +169,33 @@ exports.logoAuthorize = function(req, res, next){
   else{
     return res.send(403, 'forbidden!');
   }
+}
+exports.campaginAuthorize = function(req, res, next){
+  if(req.user.provider==='company' && req.user._id.toString()===req.campaign.cid[0]._id.toString()){
+    req.role = 'HR';
+  }
+  else if(req.user.provider==='user' && req.user.cid.toString()===req.campaign.cid[0]._id.toString()){
+    if(req.campaign.team.length===0){
+      req.role = 'MEMBER';
+    }
+    else {
+      var team_index = model_helper.arrayObjectIndexOf(req.user.team,req.campaign.team[0]._id,'_id');
+      if (team_index>-1){
+        if(req.user.team[team_index].leader ===true){
+          req.role = 'LEADER';
+        }
+        else{
+        req.role = 'MEMBER';
+        }
+
+      }
+      else{
+        req.role = 'PARTNER';
+      }
+    }
+  }
+  else{
+    return res.send(403,'forbidden');
+  }
+  next();
 }

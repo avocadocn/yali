@@ -23,21 +23,21 @@ block baseInfo
         //-.score_container.margin_top_5
           label.info_border #{__('WIN_RATE')}
           span.info_right_border 100%
-        if Global.role === 'HR'
+        if role === 'HR'
           .score_container.margin_top_5
             button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") #{__('SPONSOR')}#{__('COMPANY')}#{__('CAMPAIGN')}
             a.dl_btn.dl_btn_small.margin_left_5(href="/message/home") 发送私信
     .ad-top
 block panel
   ul.nav.nav-tabs(ng-init="cid='#{cid}'")
-    if Global.role === 'HR' || Global.role === 'EMPLOYEE'
+    if role === 'HR' || role === 'EMPLOYEE'
       li.tab_style(ng-class="{'active':nowTab=='company_campaign'}")
         a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") #{__('COMPANY_CAMPAIGN')}
     li.tab_style(ng-class="{'active':nowTab=='team_info'}")
       a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')") 小队信息
     li.tab_style(ng-class="{'active':nowTab=='company_member'}")
       a.subtitle.no_radius(href="#/company_member"  ng-click="addactive('company_member')") #{__('STAFF')}
-    li.tab_style(ng-class="{'active':nowTab=='timeLine/#{cid}'}")
+    li.tab_style(ng-class="{'active':nowTab=='timeLine/#{cid}'")
       a.subtitle.no_radius(href="#/timeLine/#{cid}"  ng-click="addactive('timeLine/#{cid}')") #{__('TIME_LINE')}
     //- div.margin_top_15.pull-right(ng-controller="CampaignListController")
     //-   button.btn.btn-default.dropdown-toggle(data-toggle="dropdown") 活动类型
@@ -52,7 +52,7 @@ block panel
     .tab-pane.active
       div(ng-view)
 
-  if Global.role === 'HR'
+  if role === 'HR'
     div(ng-controller="SponsorController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal
     div(ng-controller="messageCompanyController" )

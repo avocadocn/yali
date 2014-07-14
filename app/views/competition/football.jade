@@ -78,7 +78,7 @@ block contentExt
       #location.size_400
       hr
       div
-        if (Global.role!=='PARTNER')
+        if role!=='PARTNER'
           p.subtitle.clearfix #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
             a.dl_btn.dl_btn_upload.pull-right(href="/photoAlbumDetailView/#{competition.photo_album._id}") 上传活动照片
           .photo_album

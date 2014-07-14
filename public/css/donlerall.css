@@ -1821,3 +1821,8 @@ Timeline UI Base
   left: 50%;
   margin-left: -75px;
 }
+.emptiem {
+  width: 660px;
+  height: 200px;
+  background-color: #fff;
+}

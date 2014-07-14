@@ -34,9 +34,9 @@ tabViewGroup.config(['$routeProvider',
         controllerAs: 'account',
       })
       .when('/timeLine/:tid', {
-        templateUrl: '/campaign/timeline',
-        controller: 'timelineController',
-        controllerAs: 'timeline'
+        templateUrl: function(params){
+            return '/group/timeline/'+params.tid;
+        }
       }).
       otherwise({
         redirectTo: '/group_message'
@@ -129,16 +129,6 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
-tabViewGroup.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
-    $http.get('/group/timeline/'+$routeParams.tid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-        if(data.result===1){
-            $scope.newTimeLines = data.newTimeLines;
-        }
-        else{
-             console.log('err');
-        }
-    });
-}]);
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.private_message_content = {

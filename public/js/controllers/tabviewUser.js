@@ -35,9 +35,9 @@ tabViewUser.config(['$routeProvider',
         controllerAs: 'account'
       })
       .when('/timeLine/:uid', {
-        templateUrl: '/campaign/timeline',
-        controller: 'timelineController',
-        controllerAs: 'timeline'
+        templateUrl: function(params){
+            return '/users/timeline/'+params.uid;
+        }
       })
       .when('/schedule', {
         templateUrl: '/users/getScheduleList',
@@ -83,17 +83,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
-tabViewUser.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
-    $http.get('/users/timeline/'+$routeParams.uid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-        if(data.result===1){
-            $scope.timelines = data.timelines;
-            $scope.newTimeLines = data.newTimeLines;
-        }
-        else{
-             console.log('err');
-        }
-    });
-}]);
+
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
         $scope.new_comment = [];

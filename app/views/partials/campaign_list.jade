@@ -5,13 +5,11 @@ if provider=='company'
       ul.dropdown-menu(role="menu")
         li
           a(ng-click="selectCampaign(0)") #{__("COMPANY_CAMPAIGN")}
-        if (Global.role==='EMPLOYEE')
-          li
+          li(ng-if="role==='EMPLOYEE'")
             a(ng-click="selectCampaign(1)") #{__("SELECTED_TEAM")}
-          li
+          li(ng-if="role==='EMPLOYEE'")
             a(ng-click="selectCampaign(2)") #{__("UNSELECTED_TEAM")}
-        else
-          li
+          li(ng-if="role!=='EMPLOYEE'")
             a(ng-click="selectCampaign(3)") 小组活动
         li
           a(ng-click="selectCampaign(4)") 全部活动

@@ -2,13 +2,13 @@ div.use_edit_info
   form.form-horizontal(name="accountForm")
     .dl_row
       h5.pull-left #{__("INFO")}
-      if (Global.role!=='PARTNER')
+      if role!=='PARTNER'
         button.dl_btn.dl_btn_small.pull-right(ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
     hr.margin_top_6
     .dl_row.clearfix
       .aside
         img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
-      if (Global.role!=='PARTNER')
+      if role!=='PARTNER'
         .dl_row.margin_top_15
           a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/users/editPhoto") #{__("CHANGE")}#{__("AVATAR")}
         .dl_row.margin_top_15
@@ -34,7 +34,7 @@ div.use_edit_info
         span.info_label #{__("GENDER")}
       .info_detail_2(ng-if="baseUnEdit")
         span.info_label {{user.sex}}
-      if (Global.role!=='PARTNER')
+      if role!=='PARTNER'
         .info_detail(ng-if="!baseUnEdit")
           span.radio.info_radio.info_label
             input(type="radio" name="sex" value="男" ng-model="user.sex" ng-disabled="baseUnEdit")
@@ -55,7 +55,7 @@ div.use_edit_info
   form.form-horizontal(name="linkForm")
     .dl_row
       h5.pull-left #{__("CONTACT")}
-      if (Global.role!=='PARTNER')
+      if role!=='PARTNER'
         button.dl_btn.dl_btn_small.pull-right(ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
     hr.margin_top_6
     .dl_row.clearfix(ng-if="user.phone !=undefined || !linkUnEdit")
@@ -73,7 +73,7 @@ div.use_edit_info
         span.info_label #{__("QQ")}
       .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")
-  if (Global.role!=='PARTNER')
+  if role!=='PARTNER'
     script.
       $(function() {
         $('#birthday').datetimepicker({

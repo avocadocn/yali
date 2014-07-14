@@ -8,7 +8,7 @@ div.company-info
         span.info_label #{__("LOGIN_EMAIL")}
       .info_side
         span.info_label(ng-bind="company.login_email")
-      if (Global.role === 'HR')
+      if role === 'HR'
         .info_side
           a(href="#/changePassword") #{__("CHANGE")}#{__("PASSWORD")}
     .dl_row.clearfix
@@ -16,7 +16,7 @@ div.company-info
         span.info_label #{__("REGISTER_DATE")}
       .info_side
         span.info_label {{company.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
-    if (Global.role === 'HR')
+    if role === 'HR'
       .dl_row.clearfix
         .info_side
           span.info_label #{__("INVATE_LINK")}
@@ -30,7 +30,7 @@ div.company-info
   form.form-horizontal.tab-info-form(name="infoForm")
     .dl_row.clearfix
       h5.pull-left #{__("ENTERPRISE_INFO")}
-      if (Global.role === 'HR')
+      if role === 'HR'
         button.dl_btn.dl_btn_small.pull-right(ng-click="infoEditToggle()" ng-bind="infoButtonStatus")
     hr.margin_top_6
     .dl_row.clearfix
@@ -38,7 +38,7 @@ div.company-info
         span.info_label #{__("OFFICIAL_NAME")}
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
-      if (Global.role === 'HR')
+      if role === 'HR'
         .info_side
           a.clearLinkUnderline.dl_btn.dl_btn_small.pull-right(href="/company/editLogo") #{__("CHANGE_LOGO")}
     .dl_row.clearfix

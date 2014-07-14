@@ -13,7 +13,7 @@
       .col-md-2(ng-repeat="leader in group.leader")
         a(ng-href='/users/home/{{leader.uid}}')
           p.text-center {{leader.nickname}}
-      if (Global.role==='HR')
+      if role==='HR'
         input.btn.dl_btn(type = "button" value = "任命队长" ng-click="setGroupId(group.gid)"  data-toggle="modal" data-target="#appointLeaderModel")
 
 

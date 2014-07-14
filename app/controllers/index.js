@@ -5,7 +5,7 @@ exports.render = function(req, res) {
     if(req.session.Global.role==="HR"){
       res.redirect('/company/home');
     }else{
-      if(req.session.Global.role != "" && req.session.Global.role != undefined && req.session.Global.role != null){
+      if(req.session.Global.role ==='USER'){
         res.redirect('/users/home');
       }else{
         res.render('index');
@@ -25,15 +25,14 @@ exports.finish = function(req,res){
   return res.send('活动自动完成更新成功');
 }
 exports.header = function(req,res){
-  console.log('dsds');
   var authenticated = false;
   if(req.Global){
     authenticated = true;
     res.send({
-      'nav_name':Global.nav_name,
-      'nav_logo':Global.nav_logo,
+      'nav_name':req.Global.nav_name,
+      'nav_logo':req.Global.nav_logo,
       'authenticated':authenticated,
-      'role':Global.role
+      'role':req.Global.role
     });
   } else {
     res.send({

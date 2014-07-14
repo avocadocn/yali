@@ -64,9 +64,9 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controllerAs: 'teamInfo'
       })
       .when('/timeLine/:cid', {
-        templateUrl: '/campaign/timeline',
-        controller: 'TimelineController',
-        controllerAs: 'timeline'
+        templateUrl: function(params){
+            return '/company/timeline/'+params.cid;
+        }
       })
       .when('/changePassword', {
         templateUrl: '/company/change_password',
@@ -89,25 +89,15 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
         $rootScope.nowTab = value;
     };
 }]);
-tabViewCompany.controller('TimelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
-    $http.get('/company/timeline/'+$routeParams.cid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-        if(data.result===1){
-            $scope.newTimeLines = data.newTimeLines;
-        }
-        else{
-             console.log('err');
-        }
-    });
-}]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'company_campaign';
 
     $scope.campaign_type = "所有活动";
     $rootScope.$watch('cid',function(cid){
-        console.log(cid);
         $http.get('/campaign/getCampaigns/company/'+cid+'/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
           $scope.campaigns = data.campaigns;
+          $scope.role = data.role;
           if(data.campaigns.length<20){
             $scope.loadMore_flag = false;
           }
@@ -237,31 +227,6 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };
-    $scope.editCampaign = function() {
-        try{
-            $http({
-                method: 'post',
-                url: '/company/campaignEdit',
-                data:{
-                    campaign_id : $scope.campaign_id,
-                    content : $scope.content,
-                    start_time : $scope.start_time,
-                    end_time : $scope.end_time
-                }
-            }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
-                window.location.reload();
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-
     $scope.join = function(campaign_id,index) {
         try {
             $http({

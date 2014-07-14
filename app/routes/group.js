@@ -26,13 +26,13 @@ module.exports = function(app) {
   app.get('/group/getGroupMembers/:teamId', authorization.teamAuthorize, group.getGroupMember);
   //app.get('/group/getMembers', group.renderMember);
   //激活、关闭小队
-  app.post('/group/activateGroup', authorization.teamAuthorize, group.activateGroup);
+  app.post('/group/activateGroup/:teamId', authorization.teamAuthorize, group.activateGroup);
   app.get('/group/getSimiliarTeams/:teamId',authorization.teamAuthorize,group.getSimiliarTeams);
-  app.get('/group/competition/:competitionId', authorization.teamAuthorize, group.getCompetition);
+  app.get('/group/competition/:teamId/:competitionId', authorization.teamAuthorize, group.getCompetition);
 
 
 
-  app.post('/group/updateFormation/:competitionId', authorization.teamAuthorize, group.updateFormation);
+  app.post('/group/updateFormation/:teamId/:competitionId', authorization.teamAuthorize, group.updateFormation);
   //小队发布活动
   app.post('/group/campaignSponsor/:teamId', authorization.teamAuthorize, group.sponsor);
   app.param('teamId',group.group);
@@ -40,11 +40,11 @@ module.exports = function(app) {
   app.post('/group/provoke/:teamId', authorization.teamAuthorize, group.provoke);
   app.post('/group/responseProvoke/:teamId', authorization.teamAuthorize, group.responseProvoke);
 
-  app.post('/group/resultConfirm/:competitionId', authorization.teamAuthorize, group.resultConfirm);
+  app.post('/group/resultConfirm/:teamId/:competitionId', authorization.teamAuthorize, group.resultConfirm);
 
-  app.get('/group/:teamId/editLogo', authorization.teamAuthorize, group.editLogo);
+  app.get('/group/editLogo/:teamId', authorization.teamAuthorize, group.editLogo);
 
-  app.post('/group/oneTeam', authorization.teamAuthorize, group.getOneTeam);
+  app.post('/group/oneTeam/:teamId', authorization.teamAuthorize, group.getOneTeam);
 
   // for app
   app.get('/group/:teamId/campaigns', authorization.teamAuthorize, group.getCampaignsForApp);
