@@ -347,7 +347,7 @@ exports.applyOperate = function(req, res) {
       });
     }
   })
-}
+};
 
 //获取所有员工的申请信息
 exports.getApplyInfo = function(req, res) {
@@ -363,7 +363,7 @@ exports.getApplyInfo = function(req, res) {
       });
     }
   })
-}
+};
 
 //获取某一部门的详细信息
 exports.getDepartmentDetail = function(req, res) {
@@ -381,7 +381,7 @@ exports.getDepartmentDetail = function(req, res) {
       })
     }
   });
-}
+};
 
 
 var deleteFromRoot = function(department, seq, req, res) {
@@ -773,7 +773,8 @@ exports.renderHome = function(req, res) {
         throw 'not found';
       }
       return res.render('department/home', {
-        department: department
+        department: department,
+        role: req.role
       });
     })
     .then(null, function(err) {
@@ -785,4 +786,8 @@ exports.renderHome = function(req, res) {
 
 exports.renderCampaigns = function(req, res) {
   res.render('partials/campaign_list');
+};
+
+exports.renderApplyList = function(req, res) {
+  res.render('partials/apply_list', { department: req.department });
 };

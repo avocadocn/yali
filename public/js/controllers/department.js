@@ -8,6 +8,12 @@ department.config(['$routeProvider', '$locationProvider',
       .when('/campaign', {
         templateUrl: '/department/campaigns',
         controller: 'CampaignCtrl'
+      })
+      .when('/applylist/:departmentId', {
+        templateUrl: function(params) {
+          return '/department/applylist/' + params.departmentId;
+        },
+        controller: 'ApplyCtrl'
       });
   }
 ]);
@@ -16,8 +22,8 @@ department.run(['$rootScope',
   function($rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
-        $rootScope.message_corner = false;
+      $rootScope.nowTab = value;
+      $rootScope.message_corner = false;
     };
     $rootScope.loadMap = function(index) {
       $rootScope.loadMapIndex = index;
@@ -295,4 +301,10 @@ department.controller('CampaignCtrl', ['$http', '$scope', '$rootScope',
       }
     };
   }
-])
+]);
+
+
+department.controller('ApplyCtrl', ['$scope', '$rootScope', '$http',
+  function($scope, $rootScope, $http) {
+  }
+]);

@@ -39,8 +39,10 @@ exports.departmentAuthorize = function(req, res, next) {
         req.role = 'HR';
       }
     } else if (req.user.provider === 'user') {
-      if (req.user._id.toString() === department.manager._id.toString()) {
-        req.role = 'DEPARTMENT_MANAGER';
+      if (department.manager) {
+        if (req.user._id.toString() === department.manager._id.toString()) {
+          req.role = 'DEPARTMENT_MANAGER';
+        }
       }
     }
 

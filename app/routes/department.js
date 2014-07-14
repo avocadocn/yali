@@ -17,10 +17,11 @@ module.exports = function(app) {
   app.put('/department/:departmentId', authorization.departmentAuthorize, department.modifyDepartment);
   app.delete('/department/:departmentId', authorization.departmentAuthorize, department.deleteDepartment);
 
-  app.get('/department/home/:departmentId', department.renderHome);
+  app.get('/department/home/:departmentId', authorization.departmentAuthorize, department.renderHome);
 
   app.post('/department/:departmentId/sponsor', authorization.departmentAuthorize, department.sponsor);
 
   app.get('/department/campaigns', department.renderCampaigns);
+  app.get('/department/applylist/:departmentId', authorization.departmentAuthorize, department.renderApplyList);
 
 };
