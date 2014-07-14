@@ -60,12 +60,12 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
       })
       .when('/team_info', {
         templateUrl: '/company/teamInfo',
-        controller: 'timelineController',
-        controllerAs: 'timeline'
+        controller: 'TeamInfoController',
+        controllerAs: 'teamInfo'
       })
       .when('/timeLine/:cid', {
         templateUrl: '/campaign/timeline',
-        controller: 'timelineController',
+        controller: 'TimelineController',
         controllerAs: 'timeline'
       })
       .when('/changePassword', {
@@ -89,10 +89,9 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
         $rootScope.nowTab = value;
     };
 }]);
-tabViewCompany.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
+tabViewCompany.controller('TimelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
     $http.get('/company/timeline/'+$routeParams.cid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
         if(data.result===1){
-            $scope.timelines = data.timelines;
             $scope.newTimeLines = data.newTimeLines;
         }
         else{
@@ -395,11 +394,14 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
 }).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-    $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-        $scope.team_lists = data.teams;//公司的所有team
-        $scope.cid = data.cid;
-        $scope.role = data.role;
-    });
+    $rootScope.$watch('cid',function(cid){
+        $http.get('/company/getCompanyTeamsInfo/'+cid+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $scope.team_lists = data.teams;//公司的所有team
+            $scope.cid = data.cid;
+            $scope.role = data.role;
+        });
+    })
+
     $scope.search = function () {
         $scope.member_backup = $scope.users;
         var find = false;

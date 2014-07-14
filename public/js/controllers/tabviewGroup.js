@@ -132,7 +132,6 @@ var messageConcat = function(messages,rootScope,scope,reset){
 tabViewGroup.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
     $http.get('/company/timeline/'+$routeParams.tid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
         if(data.result===1){
-            $scope.timelines = data.timelines;
             $scope.newTimeLines = data.newTimeLines;
         }
         else{

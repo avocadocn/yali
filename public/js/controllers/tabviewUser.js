@@ -86,7 +86,6 @@ var messageConcat = function(messages,rootScope,scope,reset){
 tabViewUser.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
     $http.get('/users/timeline/'+$routeParams.uid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
         if(data.result===1){
-            console.log('2');
             $scope.timelines = data.timelines;
             $scope.newTimeLines = data.newTimeLines;
         }
