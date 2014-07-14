@@ -249,7 +249,6 @@ exports.timeLine = function(req, res){
   .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
-      var timeLines = [];
       // todo new time style
       var newTimeLines = {};
       // todo new time style
@@ -290,15 +289,15 @@ exports.timeLine = function(req, res){
         // console.log(getYear(campaign));
         var groupYear = getYear(campaign);
         if (!newTimeLines[groupYear]) {
-          newTimeLines[groupYear] = [];
+          newTimeLines[groupYear] = {};
           newTimeLines[groupYear]['left'] = [];
           newTimeLines[groupYear]['right'] = [];
-
+          newTimeLines[groupYear]['base'] = [];
           newTimeLines[groupYear]['left'][0] = tempObj;
-          newTimeLines[groupYear][0] = tempObj;
+          newTimeLines[groupYear]['base'][0] = tempObj;
         }else{
-          var i = newTimeLines[groupYear].length;
-          newTimeLines[groupYear][i] = tempObj;
+          var i = newTimeLines[groupYear][base].length;
+          newTimeLines[groupYear]['base'][i] = tempObj;
           if (i%2==0) {
             var j = newTimeLines[groupYear]['left'].length;
             newTimeLines[groupYear]['left'][j] = tempObj;
@@ -308,12 +307,8 @@ exports.timeLine = function(req, res){
           }
           
         }
-        //console.log('item:'+ newTimeLines[groupYear].length);
-        // todo new time style
-
-        timeLines.push(tempObj);
       });
-      return res.send({result:1,'timeLines': timeLines,'newTimeLines': newTimeLines});
+      return res.send({result:1,'newTimeLines': newTimeLines});
       // // todo new time style
       // console.log(newTimeLines);
       //console.log(newTimeLines);
