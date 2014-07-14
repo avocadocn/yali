@@ -767,7 +767,7 @@ exports.messageHeader = function(req,res){
 
 
 exports.home = function(req,res){
-  if(req.session.role !=='GUESTHR' && req.session.role !=='GUEST' && req.session.role !=='GUESTLEADER'){
+  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('partials/message');
   }else{
     res.send(403);
@@ -775,28 +775,28 @@ exports.home = function(req,res){
 }
 
 exports.renderPrivate = function(req,res){
-  if(req.session.role !=='GUESTHR' && req.session.role !=='GUEST' && req.session.role !=='GUESTLEADER'){
+  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('partials/message/private');
   }else{
     res.send(403);
   }
 }
 exports.renderTeam = function(req,res){
-  if(req.session.role !=='GUESTHR' && req.session.role !=='GUEST' && req.session.role !=='GUESTLEADER'){
+  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('partials/message/team');
   }else{
     res.send(403);
   }
 }
 exports.renderCompany = function(req,res){
-  if(req.session.role !=='GUESTHR' && req.session.role !=='GUEST' && req.session.role !=='GUESTLEADER'){
+  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('partials/message/company');
   }else{
     res.send(403);
   }
 }
 exports.renderSystem = function(req,res){
-  if(req.session.role !=='GUESTHR' && req.session.role !=='GUEST' && req.session.role !=='GUESTLEADER'){
+  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('partials/message/system');
   }else{
     res.send(403);

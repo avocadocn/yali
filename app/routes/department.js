@@ -11,14 +11,14 @@ var bodyParser = express.bodyParser({
 
 
 module.exports = function(app) {
-  app.get('/department/pull', authorization.requiresLogin, department.getDepartment);
-  app.post('/department/push', authorization.requiresLogin, department.createDepartment);
+  app.get('/department/pull', department.getDepartment);
+  app.post('/department/push', department.createDepartment);
 
-  app.post('/department/modify', authorization.requiresLogin, department.modifyDepartment);
-  app.post('/department/delete', authorization.requiresLogin, department.deleteDepartment);
+  app.post('/department/modify', department.modifyDepartment);
+  app.post('/department/delete', department.deleteDepartment);
 
-  app.get('/department/home/:id', authorization.requiresLogin, department.renderHome);
+  app.get('/department/home/:id', department.renderHome);
 
-  app.post('/department/:id/sponsor', authorization.requiresLogin, department.department, department.sponsor);
+  app.post('/department/:id/sponsor', department.department, department.sponsor);
 
 };

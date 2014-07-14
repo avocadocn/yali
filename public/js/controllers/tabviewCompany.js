@@ -35,7 +35,6 @@ tabViewCompany.directive('match', function($parse) {
 
             $timeout(function(){
                 elem.parents('.masonry').masonry('bindResize');
-                console.log(elem.parents('.masonry-item').length);
             }, 2000); 
 
         }
@@ -64,10 +63,10 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controller: 'TeamInfoController',
         controllerAs: 'teamInfo'
       })
-      .when('/timeLine', {
-        templateUrl: '/company/timeLine',
-        //controller: 'AccountFormController',
-        //controllerAs: 'account'
+      .when('/timeLine/:cid', {
+        templateUrl: '/campaign/timeline',
+        controller: 'TimelineController',
+        controllerAs: 'timeline'
       })
       .when('/changePassword', {
         templateUrl: '/company/change_password',
@@ -90,21 +89,34 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
         $rootScope.nowTab = value;
     };
 }]);
+tabViewCompany.controller('TimelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
+    $http.get('/company/timeline/'+$routeParams.cid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+        if(data.result===1){
+            $scope.newTimeLines = data.newTimeLines;
+        }
+        else{
+             console.log('err');
+        }
+    });
+}]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
     $rootScope.nowTab = 'company_campaign';
 
     $scope.campaign_type = "所有活动";
+    $rootScope.$watch('cid',function(cid){
+        console.log(cid);
+        $http.get('/campaign/getCampaigns/company/'+cid+'/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
+          $scope.campaigns = data.campaigns;
+          if(data.campaigns.length<20){
+            $scope.loadMore_flag = false;
+          }
+          else{
+            $scope.loadMore_flag = true;
+          }
+        });
+    })
 
-    $http.get('/campaign/getCampaigns/company/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
-      $scope.campaigns = data.campaigns;
-      if(data.campaigns.length<20){
-        $scope.loadMore_flag = false;
-      }
-      else{
-        $scope.loadMore_flag = true;
-      }
-    });
     $scope.campaignType='all';
 
     $scope.block = 1;
@@ -113,7 +125,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$rootScope.cid+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
@@ -140,7 +152,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$rootScope.cid+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -175,27 +187,27 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
         switch(value) {
             case 0:
                 $scope.campaignType = 'company';
-                _url = "/campaign/getCampaigns/company/company/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/company/0";
                 $scope.campaign_type = "全公司活动";
                 break;
             case 1:
                 $scope.campaignType = 'selected';
-                _url = "/campaign/getCampaigns/company/selected/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/selected/0";
                 $scope.campaign_type = "已加入小队的活动";
                 break;
             case 2:
                 $scope.campaignType = 'unselected';
-                _url = "/campaign/getCampaigns/company/unselected/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/unselected/0";
                 $scope.campaign_type = "未加入小队的活动";
                 break;
             case 3:
                 $scope.campaignType = 'team';
-                _url = "/campaign/getCampaigns/company/team/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/team/0";
                 $scope.campaign_type = "所有小队的活动";
                 break;
             case 4:
                 $scope.campaignType = 'all';
-                _url = "/campaign/getCampaigns/company/all/0";
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/all/0";
                 $scope.campaign_type = "所有活动";
                 break;
             default:break;
@@ -325,7 +337,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
 }]);
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
  function ($http, $scope, $rootScope) {
-    $http.get('/search/member?' + Math.round(Math.random()*100)).success(function(data, status) {
+    $http.get('/search/'+$rootScope.cid+'/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
       //按照员工昵称的拼音排序
       $scope.members = $scope.members.sort(function (e,f){return e.nickname.localeCompare(f.nickname);});
@@ -358,13 +370,38 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     }
 }]);
 
-tabViewCompany.controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+tabViewCompany.directive('masonry', function ($timeout) {
+    return {
+        restrict: 'AC',
+        link: function (scope, elem, attrs) {
+            scope.$watch(function () {
+                return elem[0].children.length
+            },
+
+            function (newVal) {
+                $timeout(function () {
+                    elem.masonry('reloadItems');
+                    elem.masonry();
+                })
+            })
+
+            elem.masonry({
+                itemSelector: '.masonry-item'
+            });
+            scope.masonry = elem.data('masonry');
+        }
+    };
+
+}).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-    $http.get('/group/getCompanyTeamsInfo' +'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-        $scope.team_lists = data.teams;//公司的所有team
-        $scope.cid = data.cid;
-        $scope.role = data.role;
-    });
+    $rootScope.$watch('cid',function(cid){
+        $http.get('/company/getCompanyTeamsInfo/'+cid+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $scope.team_lists = data.teams;//公司的所有team
+            $scope.cid = data.cid;
+            $scope.role = data.role;
+        });
+    })
+
     $scope.search = function () {
         $scope.member_backup = $scope.users;
         var find = false;
@@ -646,7 +683,7 @@ tabViewCompany.controller('TeamInfoController',['$scope','$http','$rootScope',fu
 }]);
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
 
-    $http.get('/company/getAccount?' + Math.round(Math.random()*100)).success(function(data,status){
+    $http.get('/company/getAccount/'+$rootScope.cid+'?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
         $scope.linkage_init_location = {

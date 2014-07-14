@@ -142,7 +142,7 @@ exports.rob = function(req, res){
 };
 
 exports.addCampaignInfo = function(req, res){
-  if(req.session.role ==='HR' && req.arena.champion.cid===req.user.id || req.session.role ==='LEADER' && req.arena.champion.uid===req.user.id){
+  if(req.role ==='HR' && req.arena.champion.cid===req.user.id || req.role ==='LEADER' && req.arena.champion.uid===req.user.id){
     if(req.body.campaign_info.number===null || req.body.campaign_info.competition_date===null){
       return res.send({'result':0,'msg':'挑战信息不完整'});
     }
@@ -170,7 +170,7 @@ exports.addCampaignInfo = function(req, res){
   }
 };
 exports.challenge = function(req, res){
-  var nowcid = req.session.role ==='HR' ? req.user.id : req.user.cid;
+  var nowcid = req.role ==='HR' ? req.user.id : req.user.cid;
   if(req.arena.champion.cid!==nowcid){
     var uid = req.user.cid ? req.user.id : '';
     var username = req.user.cid ? req.user.nickname : '';

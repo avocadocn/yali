@@ -1,0 +1,20 @@
+form(name="search_form")
+  .dl-modal-header
+    button(class="close" data-dismiss="modal" aria-hidden="true")
+      img(ng-src='/img/icons/icon_close.png')
+    .head 请选择您想选择与之动一下的小队
+  .dl-modal-body.clearfix
+    .dl_modal_container
+      .dl_row.dl_height(ng-repeat="team in similarTeams")
+        .dl_md_1
+          img.size_80(ng-src="{{team.logo}}")
+        .dl_md_10.margin_left_5
+          .row.margin_left_15
+            a(href="/group/home/{{team._id}}")
+              span {{team.name}}
+          .row.margin_left_10
+            .dl_md_3
+              span 队员人数:{{team.member.length}}
+            .dl_md_3
+        .dl_md_1
+          btn.dl_btn_right(ng-click="provoke_select(team)") 就用它动！

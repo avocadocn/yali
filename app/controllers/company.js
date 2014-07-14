@@ -24,7 +24,8 @@ var mongoose = require('mongoose'),
     moment = require('moment'),
     message = require('../controllers/message'),
     schedule = require('../services/schedule'),
-    photo_album_controller = require('./photoAlbum');
+    photo_album_controller = require('./photoAlbum'),
+    model_helper = require('../helpers/model_helper');
 
 var mail = require('../services/mail');
 var encrypt = require('../middlewares/encrypt');
@@ -34,30 +35,7 @@ var encrypt = require('../middlewares/encrypt');
 exports.authCallback = function(req, res) {
     res.redirect('/');
 };
-exports.authorize = function(req, res, next){
-    if(req.user.provider==='company' && ( !req.params.companyId || req.params.companyId === req.user._id.toString())){
-        req.session.nowcid = req.user._id;
-        req.session.role = 'HR';
-        req.session.Global.role = 'HR';
-    }
-    else if(req.user.provider ==='user' && (!req.params.companyId || req.params.companyId === req.user.cid.toString())){
-        req.session.role = 'EMPLOYEE';
-        req.session.Global.role = 'EMPLOYEE';
-        req.session.nowcid = req.user.cid;
-    }
-    else{
-        if(req.user.role == 'LEADER'){
-          req.session.role = 'GUESTLEADER';
-          req.session.Global.role = 'GUESTLEADER';
-        }else{
-          req.session.role = 'GUEST';
-          req.session.Global.role = 'GUEST';
-        }
-        req.session.nowcid = req.params.companyId;
-    }
-    console.log(req.user._id);
-    next();
-};
+
 /*
   忘记密码
 */
@@ -140,17 +118,8 @@ exports.signin = function(req, res) {
 };
 
 var destroySession = function(req){
-  if(req.session.nowtid != null || req.session.nowtid != undefined){
-    delete req.session.nowtid;
-  }
-  if(req.session.nowgid != null || req.session.nowgid != undefined){
-    delete req.session.nowgid;
-  }
-  if(req.session.nowuid != null || req.session.nowuid != undefined){
-    delete req.session.nowuid;
-  }
-  if(req.session.role != null || req.session.role != undefined){
-    delete req.session.role;
+  if(req.role != null || req.role != undefined){
+    delete req.role;
   }
   if (req.session.Global.nav_name !=null || req.session.Global.nav_name != undefined) {
     delete req.session.Global.nav_name;
@@ -173,6 +142,7 @@ exports.signout = function(req, res) {
 exports.loginSuccess = function(req, res) {
     req.session.Global.nav_name = req.user.info.name;
     req.session.Global.nav_logo = req.user.info.logo;
+    req.session.Global.role = "HR";
     res.redirect('/company/home');
 };
 
@@ -283,17 +253,17 @@ exports.add_company_group = function(req, res){
 exports.renderGroupList = function(req, res) {
     res.render('company/company_group_list', {
         title: '兴趣小队',
-        role: req.session.role
+        role: req.role
     });
 };
 
 
 //显示企业成员列表
 exports.renderMembers = function(req,res){
-  if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST'){
+  if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     return res.send(403,'forbidden');
   }
-  res.render('partials/member_list',{'role':req.session.role,'provider':'company'});
+  res.render('partials/member_list',{'role':req.role,'provider':'company'});
 }
 
 //注意,companyGroup,entity这两个模型的数据不一定要同时保存,异步进行也可以,只要最终确保
@@ -381,8 +351,8 @@ exports.saveGroup = function(req, res) {
     if(selected_group === undefined){
         return  res.redirect('/company/add_group');
     }
-
-    Company.findOne({_id : req.session.nowcid}, function(err, company) {
+    var companyId = req.params.companyId;
+    Company.findOne({_id : companyId}, function(err, company) {
         if(company) {
             if (err) {
                 console.log('不存在公司');
@@ -391,7 +361,7 @@ exports.saveGroup = function(req, res) {
 
             var companyGroup = new CompanyGroup();
 
-            companyGroup.cid = req.session.nowcid;
+            companyGroup.cid = companyId;
             companyGroup.cname = company.info.name;
             companyGroup.gid = selected_group._id;
             companyGroup.group_type = selected_group.group_type;
@@ -418,7 +388,7 @@ exports.saveGroup = function(req, res) {
 
             //增强组件目前只能存放这三个字段
             entity.tid = companyGroup._id;        //小队id
-            entity.cid = req.session.company_id;  //组件类型id
+            entity.cid = companyId;  //组件类型id
             entity.gid = selected_group._id;  //公司id
 
             entity.save(function (err){
@@ -434,7 +404,6 @@ exports.saveGroup = function(req, res) {
             });
             res.send({'result':1,'msg':'组件添加成功！'});
         } else {
-            console.log(req.session.company_id);
             return res.send('err');
         }
     });
@@ -700,6 +669,7 @@ exports.home = function(req, res) {
     var render = function(company) {
         return res.render('company/home', {
             title: '公司主页',
+            cid:company._id,
             logo: company.info.logo,
             cname: company.info.name,
             sign: company.info.brief,
@@ -734,12 +704,12 @@ exports.home = function(req, res) {
 exports.Info = function(req, res) {
     res.render('company/company_info', {
             title: '企业信息管理',
-            role: req.session.role
+            role: req.role
         });
 };
 
 exports.saveGroupInfo = function(req, res){
-    if(req.session.role !=='HR' && req.session.role !=='LEADER'){
+    if(req.role !=='HR' && req.role !=='LEADER'){
         return res.send(403,'forbidden');
     }
     CompanyGroup.findOne({'_id' : req.body.tid}, function(err, companyGroup) {
@@ -771,7 +741,8 @@ exports.saveGroupInfo = function(req, res){
 };
 
 exports.getAccount = function(req, res) {
-    Company.findOne({'_id': req.session.nowcid}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
+    var companyId = req.params.companyId;
+    Company.findOne({'_id': companyId}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
         if (err) {
             console.log(err);
         }
@@ -780,8 +751,8 @@ exports.getAccount = function(req, res) {
                 'login_email': _company.login_email,
                 'register_date': _company.register_date
             };
-            if(req.session.role==='HR'){
-                _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.nowcid, config.SECRET) + '&cid=' + req.session.nowcid;
+            if(req.role==='HR'){
+                _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(companyId, config.SECRET) + '&cid=' + companyId;
             }
             return res.send({
                 'result': 1,
@@ -796,7 +767,7 @@ exports.getAccount = function(req, res) {
 };
 
 exports.saveAccount = function(req, res) {
-    if(req.session.role!=='HR'){
+    if(req.role!=='HR'){
         return res.send(403, 'forbidden!');
     }
     var _company = {};
@@ -825,15 +796,61 @@ exports.saveAccount = function(req, res) {
         }
     });
 };
+//返回公司小队的所有数据,待前台调用
+exports.getCompanyTeamsInfo = function(req, res) {
+  var option = {cid : req.params.companyId};
+  if(req.role !== 'HR'){
+    option.active = true;
+  }
+  CompanyGroup.find(option, function(err, teams) {
+    if(err || !teams) {
+      return res.send([]);
+    } else {
+      var output ={
+        'cid':req.params.companyId,
+        'role':req.role
+      };
+      if(req.role ==='EMPLOYEE'){
+        var _teams = [];
+        teams.forEach(function(value){
+          var _team = {
+            '_id':value._id,
+            'gid':value.gid,
+            'group_type':value.group_type,
+            'logo':value.logo,
+            'active':value.active,
+            'count':value.count,
+            'entity_type':value.entity_type,
+            'leader':value.leader,
+            'member':value.member,
+            'name':value.name
+          }
+          if(model_helper.arrayObjectIndexOf(req.user.team,value._id,'_id')>-1){
+            _team.belong = true;
+          }
+          else{
+            _team.belong = false;
+          }
+          _teams.push(_team);
+        });
+
+        output.teams = _teams;
+      }
+      else {
+        output.teams = teams;
+      }
+      return res.send(output);
+    }
+  });
+};
 exports.timeLine = function(req, res){
+  var companyId = req.params.companyId;
   Campaign
-  .find({'active':true,'finish':true,'cid': req.session.nowcid})
+  .find({'active':true,'finish':true,'cid': req.params.companyId})
   .sort('-start_time')
   .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
-    if (campaigns && campaigns.length>0) {
-      var timeLines = [];
       // todo new time style
       var newTimeLines = {};
       // todo new time style
@@ -841,7 +858,7 @@ exports.timeLine = function(req, res){
         var _head,_logo;
         if(campaign.camp.length>0){
           _head = campaign.camp[0].name +'对' + campaign.camp[1].name +'的比赛';
-          _logo = campaign.camp[0].cid==req.session.nowcid ?campaign.camp[0].logo :campaign.camp[1].logo;
+          _logo = campaign.camp[0].cid==companyId ?campaign.camp[0].logo :campaign.camp[1].logo;
         }
         else if(campaign.team.length===0){
           _head = '公司活动';
@@ -874,16 +891,15 @@ exports.timeLine = function(req, res){
         // console.log(getYear(campaign));
         var groupYear = getYear(campaign);
         if (!newTimeLines[groupYear]) {
-          newTimeLines[groupYear] = [];
+          newTimeLines[groupYear] = {};
           newTimeLines[groupYear]['left'] = [];
           newTimeLines[groupYear]['right'] = [];
-
+          newTimeLines[groupYear]['base'] = [];
           newTimeLines[groupYear]['left'][0] = tempObj;
-          newTimeLines[groupYear][0] = tempObj;
-          newTimeLines
+          newTimeLines[groupYear]['base'][0] = tempObj;
         }else{
-          var i = newTimeLines[groupYear].length;
-          newTimeLines[groupYear][i] = tempObj;
+          var i = newTimeLines[groupYear]['base'].length;
+          newTimeLines[groupYear]['base'][i] = tempObj;
           if (i%2==0) {
             var j = newTimeLines[groupYear]['left'].length;
             newTimeLines[groupYear]['left'][j] = tempObj;
@@ -893,22 +909,13 @@ exports.timeLine = function(req, res){
           }
           
         }
-        // console.log('item:'+ newTimeLines[groupYear].length);
-        // todo new time style
-        timeLines.push(tempObj);
       });
-        // console.log(newTimeLines);
-      return res.render('partials/timeLine',{'timeLines': timeLines,'newTimeLines': newTimeLines,'moment':moment });
-
-      // return res.render('partials/timeLine',{'timeLines': timeLines,'moment':moment });
-    }
-    else{
-      return res.render('partials/timeLine');
-    }
+        //console.log(newTimeLines);
+    return res.send({result:1,'newTimeLines': newTimeLines});
   })
   .then(null, function(err) {
     console.log(err);
-    return res.render('partials/timeLine');
+    return res.send({result:0,msg:'查询错误'});
   });
 }
 /**
@@ -917,7 +924,7 @@ exports.timeLine = function(req, res){
 exports.company = function(req, res, next, id) {
     Company
         .findOne({
-            _id: id
+            '_id': id
         })
         .exec(function(err, company) {
             if (err) return next(err);
@@ -927,11 +934,11 @@ exports.company = function(req, res, next, id) {
         });
 };
 exports.renderCompanyCampaign = function(req, res){
-    if(req.session.role==='GUEST'){
+    if(req.role==='GUEST'){
         return res.send(403, 'forbidden!');
     }
     res.render('partials/campaign_list',{
-        'role':req.session.role,
+        'role':req.role,
         'provider':'company'
     });
 }
@@ -1054,7 +1061,7 @@ exports.appointLeader = function (req, res) {
 
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function (req, res) {
-    if(req.session.role !=='HR'){
+    if(req.role !=='HR'){
       return res.send(403,'forbidden');
     }
     var cname = req.user.info.name;
@@ -1089,6 +1096,8 @@ exports.sponsor = function (req, res) {
     campaign.deadline = deadline;
     campaign.member_min = member_min;
     campaign.member_max = member_max;
+
+    campaign.type = 1;
 
     var photo_album = new PhotoAlbum({
         owner: {
@@ -1210,5 +1219,5 @@ exports.editLogo = function(req, res) {
 
 };
 exports.renderTeamInfo = function(req, res){
-    return res.render('company/team_info_list');
+    return res.render('company/team_info_list',{role:req.role});
 }

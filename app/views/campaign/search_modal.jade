@@ -37,7 +37,7 @@ form(name="search_form")
               span 队员人数:{{team.member.length}}
             .dl_md_3
         .dl_md_1
-          a.clearLinkUnderline.dl_btn_right(ng-click="provoke_select(team)") 挑战
+          button.dl_btn_right(ng-click="provoke_select(team)") 挑战
     .dl_modal_container.margin_top_15(ng-show='result')
       .dl_row
         span.subtitle 搜索结果
@@ -55,8 +55,8 @@ form(name="search_form")
                 h5 该公司小队数:{{company.team.length}}
               .dl_md_3
           .dl_md_1(ng-if="company.team.length > 0")
-            a.clearLinkUnderline.dl_btn_right(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小队
-            a.clearLinkUnderline.dl_btn_right(ng-if="show_team[$index]" ng-click="toggleTeam(company._id,$index)") 收起
+            button.dl_btn_right(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小队
+            button.dl_btn_right(ng-if="show_team[$index]" ng-click="toggleTeam(company._id,$index)") 收起
         .dl_modal_container
           hr
         .dl_modal_container.margin_left_80(ng-if="show_team[$index]")
@@ -83,7 +83,7 @@ form(name="search_form")
               span 队员人数:{{team.member.length}}
             .dl_md_3
         .dl_md_1
-          a.clearLinkUnderline.dl_btn_right(ng-click="provoke_select(team)") 挑战
+          button.dl_btn_right(ng-click="provoke_select(team)") 挑战
   br
   br
   .dl-modal-footer.margin_top_20

@@ -20,7 +20,7 @@ var mongoose = require('mongoose'),
 
 //获取留言
 exports.getComment = function(req,res){
-    if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST' || req.session.role ==='GUESTLEADER'){
+    if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
         return res.send(403,'forbidden');
     }
     var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一条动态、一张照片、一场比赛等等
@@ -36,7 +36,7 @@ exports.getComment = function(req,res){
 
 //发表留言
 exports.setComment = function(req,res){
-    if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST' || req.session.role ==='GUESTLEADER'){
+    if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
         return res.send(403,'forbidden');
     }
     var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一条动态、一张照片、一场比赛等等
@@ -78,7 +78,7 @@ exports.setComment = function(req,res){
 
 //删除留言
 exports.deleteComment = function(req,res){
-    if(req.session.role ==='GUESTHR' || req.session.role ==='GUEST' || req.session.role ==='GUESTLEADER'){
+    if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
         return res.send(403,'forbidden');
     }
     var comment_id = req.body.comment_id;

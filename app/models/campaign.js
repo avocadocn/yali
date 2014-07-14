@@ -138,7 +138,14 @@ var Campaign = new Schema({
     comment_sum:{
         type:Number,
         default:0
-    }
+    },
+    campaign_type:Number
+    //type:活动类型
+    //1:公司活动
+    //2:小队活动
+    //3:公司内跨组活动（非挑战）
+    //4:公司内挑战（同类型小组）
+    //5:公司外挑战（同类型小组）
 });
 
 

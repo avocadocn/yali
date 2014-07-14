@@ -10,7 +10,7 @@ module.exports = function(app, passport) {
 
     app.get('/users/signin', users.signin);
     app.get('/users/signin/:status', users.signin);
-    app.get('/users/signout', authorization.requiresLogin, users.signout);
+    app.get('/users/signout', users.signout);
     app.get('/users/forgetPwd', users.renderForgetPwd);
     app.post('/users/forgetPassword', users.forgetPwd);
     app.get('/users/resetPwd', users.renderResetPwd);
@@ -19,10 +19,10 @@ module.exports = function(app, passport) {
     app.post('/users/session', passport.authenticate('user', {
         failureRedirect: '/users/signin/failure',
         failureFlash: true
-    }), users.authorize, users.loginSuccess);
+    }), authorization.userAuthorize, users.loginSuccess);
 
-    app.get('/users/home', authorization.requiresLogin,users.authorize, users.home);
-    app.get('/users/home/:userId', authorization.requiresLogin,users.authorize, users.home);
+    app.get('/users/home', authorization.userAuthorize, users.home);
+    app.get('/users/home/:userId', authorization.userAuthorize, users.home);
     // Active produce
     app.get('/users/invite', users.invite);
     app.post('/users/dealActive', users.dealActive);
@@ -32,41 +32,41 @@ module.exports = function(app, passport) {
     app.post('/users/dealSelectGroup', users.dealSelectGroup);
     app.get('/users/finishRegister', users.finishRegister);
 
-    app.get('/users/campaign', authorization.requiresLogin, users.renderCampaigns);
-    app.get('/users/getCampaigns', authorization.requiresLogin, users.getCampaigns);
-    app.get('/users/getScheduleList', authorization.requiresLogin, users.renderScheduleList);
+    app.get('/users/campaign', authorization.userAuthorize, users.renderCampaigns);
+    app.get('/users/getCampaigns', authorization.userAuthorize, users.getCampaigns);
+    app.get('/users/getScheduleList', authorization.userAuthorize, users.renderScheduleList);
 
-    app.get('/users/change_password',authorization.requiresLogin, users.renderChangePassword);
-    app.get('/users/getAccount', authorization.requiresLogin, users.getAccount);
-    app.post('/users/saveAccount', authorization.requiresLogin, users.saveAccount);
-    app.post('/users/changePassword', authorization.requiresLogin, users.changePassword);
-    app.get('/users/editInfo', authorization.requiresLogin, users.editInfo);
-    app.get('/users/timeline', authorization.requiresLogin, users.timeLine);
+    app.get('/users/:userId/change_password',authorization.userAuthorize, users.renderChangePassword);
+    app.get('/users/:userId/getAccount', authorization.userAuthorize, users.getAccount);
+    app.post('/users/:userId/saveAccount', authorization.userAuthorize, users.saveAccount);
+    app.post('/users/changePassword', authorization.userAuthorize, users.changePassword);
+    app.get('/users/editInfo', authorization.userAuthorize, users.editInfo);
+    app.get('/users/timeline/:userId', authorization.userAuthorize, users.timeLine);
     //加入、退出活动
-    app.post('/users/joinCampaign', authorization.requiresLogin, users.joinCampaign);
-    app.post('/users/quitCampaign', authorization.requiresLogin, users.quitCampaign);
+    app.post('/users/joinCampaign', authorization.userAuthorize, users.joinCampaign);
+    app.post('/users/quitCampaign', authorization.userAuthorize, users.quitCampaign);
     //加入、退出小队
-    app.post('/users/joinGroup', authorization.requiresLogin, users.joinGroup);
-    app.post('/users/quitGroup', authorization.requiresLogin, users.quitGroup);
+    app.post('/users/joinGroup', authorization.userAuthorize, users.joinGroup);
+    app.post('/users/quitGroup', authorization.userAuthorize, users.quitGroup);
 
-    app.post('/users/vote', authorization.requiresLogin, users.vote);
+    app.post('/users/vote', authorization.userAuthorize, users.vote);
 
 
-    app.get('/users/editPhoto', authorization.requiresLogin, users.editPhoto);
+    app.get('/users/editPhoto', authorization.userAuthorize, users.editPhoto);
 
 
     // for app
-    app.post('/users/login', passport.authenticate('user'), users.authorize, users.appLoginSuccess);
-    app.get('/users/logout', authorization.requiresLogin, users.appLogout);
+    app.post('/users/login', passport.authenticate('user'), authorization.userAuthorize, users.appLoginSuccess);
+    app.get('/users/logout', users.appLogout);
 
-    app.get('/users/campaigns', authorization.requiresLogin, users.getCampaignsForApp);
-    app.get('/users/schedules', authorization.requiresLogin, users.getSchedules);
-    app.get('/users/groups', authorization.requiresLogin, users.getGroups);
+    app.get('/users/campaigns', authorization.userAuthorize, users.getCampaignsForApp);
+    app.get('/users/schedules', authorization.userAuthorize, users.getSchedules);
+    app.get('/users/groups', authorization.userAuthorize, users.getGroups);
 
-    app.get('/users/getTimelineForApp', authorization.requiresLogin, users.getTimelineForApp);
+    app.get('/users/getTimelineForApp', authorization.userAuthorize, users.getTimelineForApp);
 
-    app.post('/users/info', authorization.requiresLogin, users.getUserInfo);
-    app.get('/users/briefInfo/:userId', authorization.requiresLogin, users.getBriefInfo);
+    app.post('/users/info', authorization.userAuthorize, users.getUserInfo);
+    app.get('/users/briefInfo/:userId', authorization.userAuthorize, users.getBriefInfo);
     app.param('userId', users.user);
 
 };

@@ -22,6 +22,7 @@ block contentExt
             p.text 你可以上传JPG、JPEG、GIF、PNG或BMP文件
             form#edit_logo_form(action="/logo/update" method="post" enctype="multipart/form-data")
               input(type="hidden" name="target" value="g")
+              input(type="hidden" name="teamId" value="#{id}")
               input#w(type="hidden" name="width" value="128")
               input#h(type="hidden" name="height" value="128")
               input#x(type="hidden" name="x" value="0")

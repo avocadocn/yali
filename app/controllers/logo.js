@@ -22,10 +22,6 @@ var schedule = require('../services/schedule'),
 
 
 exports.updateLogo = function(req, res) {
-  if(req.role ==='PARTNER'){
-    return res.send(403, 'forbidden!');
-  }
-
 
   var target_model;
   var logo_model;  // 数据库设计不够扁平化，只能用它当对象引用了，用于company.info.logo
@@ -53,7 +49,7 @@ exports.updateLogo = function(req, res) {
         target_dir = path.join(config.root, '/public/img/group/logo/');
         uri_dir = '/img/group/logo/';
         CompanyGroup
-        .findOne({ _id: req.session.nowtid })
+        .findOne({ _id: req.body.teamId })
         .exec()
         .then(function(company_group) {
           if (company_group) {

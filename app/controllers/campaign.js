@@ -120,7 +120,7 @@ function formatCampaignForCalendar(user, campaigns) {
   campaigns.forEach(function(campaign) {
 
     // 公司活动
-    if (campaign.cid.length === 1 && campaign.team.length === 0) {
+    if (campaign.campaign_type === 1) {
       var logo_owner_id = campaign.cid[0];
       var logo = '/logo/company/' + logo_owner_id + '/27/27';
     } else {
@@ -144,7 +144,7 @@ function formatCampaignForCalendar(user, campaigns) {
     var is_joined = false;
 
     // 活动
-    if (campaign.team.length <= 1) {
+    if (campaign.campaign_type < 3) {
       for (var i = 0, members = campaign.member; i < members.length; i++) {
         if (user._id.toString() === members[i].uid) {
           is_joined = true;
@@ -154,7 +154,7 @@ function formatCampaignForCalendar(user, campaigns) {
     }
 
     // 比赛
-    if (campaign.team.length > 1) {
+    if (campaign.campaign_type >= 3) {
       for (var i = 0; i < campaign.camp.length; i++) {
         for (var j = 0, camp = campaign.camp[i]; j < camp.member.length; j++) {
           if (user._id.toString() === camp.member[j].uid) {
@@ -197,15 +197,15 @@ var formatCampaign = function(campaign,pageType,role,user){
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum
     };
-    if(_campaign.team==undefined || _campaign.team.length==0){//公司活动
+    if(_campaign.campaign_type===1){//公司活动
       temp.type='companycampaign';
       temp.logo=_campaign.cid[0].info.logo;
-      temp.link = '/company/home/'+_campaign.cid._id;
+      temp.link = '/company/home/'+_campaign.cid[0]._id;
       temp.cid = _campaign.cid[0]._id;
       temp.cname=_campaign.cid[0].info.name;
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
     }
-    else if(_campaign.camp.length==0){//小队活动
+    else if(_campaign.campaign_type===2){//小队活动
       temp.type='teamcampaign';
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
@@ -220,7 +220,7 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
-    else{//对战
+    else{//动一下
       temp.type = 'provoke';
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
@@ -263,13 +263,14 @@ exports.getDepartmentCampaigns = function(req,res){
 exports.getCampaigns = function(req, res) {
   var option;
   var pageType = req.params.pageType;
+  var pageId = req.params.pageId;
   var campaignType = req.params.campaignType;
   var page = req.params.page;
   if(pageType==='company') {
     option={
       'active':true,
       'finish':false,
-      'cid' : req.session.nowcid
+      'cid' : pageId
     }
     if(req.params.start_time!=0){
       var _start_Date = new Date();
@@ -283,7 +284,7 @@ exports.getCampaigns = function(req, res) {
     else if(campaignType==='team') {
       option.team = {'$not':{'$size':0}};
     }
-    else if(req.session.role ==='EMPLOYEE')  {
+    else if(req.role ==='EMPLOYEE')  {
       var team_ids = [];
       for( var i = 0; i < req.user.team.length; i ++) {
         team_ids.push(req.user.team[i]._id.toString());
@@ -306,7 +307,7 @@ exports.getCampaigns = function(req, res) {
           return res.send({ result: 0, msg:'查找活动失败' });
         }
         else{
-          return res.send({ result: 1, campaigns: formatCampaign(campaign,pageType,req.session.role,req.user) });
+          return res.send({ result: 1, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
         }
       })
       .then(null, function(err) {
@@ -318,7 +319,7 @@ exports.getCampaigns = function(req, res) {
     option={
       'active':true,
       'finish':false,
-      'team':req.session.nowtid
+      'team':pageId
     }
     if(req.params.start_time!=0){
       var _start_Date = new Date();
@@ -335,7 +336,7 @@ exports.getCampaigns = function(req, res) {
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
-        return res.send({ result: 1, campaigns: formatCampaign(campaign,pageType,req.session.role,req.user) });
+        return res.send({ result: 1, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
       }
     })
     .then(null, function(err) {
@@ -344,7 +345,7 @@ exports.getCampaigns = function(req, res) {
     });
   }
   else if(pageType==='user' && campaignType==='all') {
-    User.findOne({_id:req.session.nowuid}).exec(function(err,user){
+    User.findOne({_id:pageId}).exec(function(err,user){
       if(!err && user){
         var team_ids = [];
         for( var i = 0; i < user.team.length; i ++) {
@@ -371,7 +372,7 @@ exports.getCampaigns = function(req, res) {
           }
           else{
             console.log(campaign);
-            return res.send({ result: 1, campaigns: formatCampaign(campaign,pageType,req.session.role,req.user) });
+            return res.send({ result: 1, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
           }
         })
         .then(null, function(err) {
@@ -397,8 +398,7 @@ exports.cancelCampaign = function(req, res){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
-        console.log(campaign,campaign.camp.length);
-        if (campaign.camp.length===0 &&req.session.role==="HR"&&campaign.cid[0].toString()==req.user._id.toString() || campaign.camp.length===0 && campaign.team.length===1&&req.session.role==='LEADER' && model_helper.arrayObjectIndexOf(campaign.team[0].leader,req.user._id,'_id')>-1){
+        if (campaign.camp.length===0 &&req.role==="HR"&&campaign.cid[0].toString()==req.user._id.toString() || campaign.camp.length===0 && campaign.team.length===1&&req.role==='LEADER' && model_helper.arrayObjectIndexOf(campaign.team[0].leader,req.user._id,'_id')>-1){
           campaign.active=false;
           campaign.save(function(err){
             if(!err){
@@ -419,14 +419,14 @@ exports.cancelCampaign = function(req, res){
 
 
 exports.getUserAllCampaignsForCalendar = function(req, res) {
-  if (req.session.role === 'OWNER') {
+  if (req.role === 'OWNER') {
     getUserAllCampaigns(req.user, true, function(campaigns) {
       var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
       res.send(format_campaigns);
     });
   } else {
     User
-    .findById(req.session.nowuid)
+    .findById(req.params.uid)
     .exec()
     .then(function(user) {
       if (!user) {
@@ -445,7 +445,7 @@ exports.getUserAllCampaignsForCalendar = function(req, res) {
 };
 
 exports.getUserJoinedCampaignsForCalendar = function(req, res) {
-  if (req.session.role !== 'OWNER') {
+  if (req.role !== 'OWNER') {
     res.send(403);
   }
   getUserJoinedCampaigns(req.user, true, function(campaigns) {
@@ -455,7 +455,7 @@ exports.getUserJoinedCampaignsForCalendar = function(req, res) {
 };
 
 exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
-  if (req.session.role !== 'OWNER') {
+  if (req.role !== 'OWNER') {
     res.send(403);
   }
   getUserUnjoinCampaigns(req.user, true, function(campaigns) {
@@ -466,21 +466,21 @@ exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
 
 exports.getUserAllCampaignsForList = function(req, res) {
   getUserAllCampaigns(req.user, false, function(campaigns) {
-    var format_campaigns = formatCampaign(campaigns, 'user', req.session.role, req.user);
+    var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.user);
     res.send({ result: 1, campaigns: format_campaigns });
   });
 };
 
 exports.getUserJoinedCampaignsForList = function(req, res) {
   getUserJoinedCampaigns(req.user, false, function(campaigns) {
-    var format_campaigns = formatCampaign(campaigns, 'user', req.session.role, req.user);
+    var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.user);
     res.send({ result: 1, campaigns: format_campaigns });
   });
 };
 
 exports.getUserUnjoinCampaignsForList = function(req, res) {
   getUserUnjoinCampaigns(req.user, false, function(campaigns) {
-    var format_campaigns = formatCampaign(campaigns, 'user', req.session.role, req.user);
+    var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.user);
     res.send({ result: 1, campaigns: format_campaigns });
   });
 };
@@ -571,3 +571,6 @@ exports.renderCampaignDetail = function(req, res) {
     res.send(404);
   });
 };
+exports.renderTimeline = function(req, res){
+  res.render('partials/timeLine');
+}

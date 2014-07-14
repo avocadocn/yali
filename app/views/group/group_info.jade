@@ -2,8 +2,7 @@ div(ng-controller="infoController")
   form.form-horizontal.tab-info-form(name="infoForm")
     .dl_row
       h5.pull-left #{__("INFO")}
-      if (Global.role ==='HR' || Global.role === 'LEADER')
-        button.dl_btn.dl_btn_small.pull-right(ng-click="editToggle()" ng-bind="buttonStatus")
+      button.dl_btn.dl_btn_small.pull-right(ng-if="role==='HR' || role==='LEADER'" ng-click="editToggle()" ng-bind="buttonStatus")
     hr.margin_top_6
     .dl_row.clearfix
       .info_side
@@ -24,8 +23,7 @@ div(ng-controller="infoController")
       .info_side
         span.info_label #{__("TEAM_LOGO")}
       .info_detail_2
-        if (Global.role=== 'HR' || Global.role ==='LEADER')
-          a.clearLinkUnderline.close_btn.dl_btn_small(href="/group/editLogo") #{__("CHANGE")}LOGO
+        a.clearLinkUnderline.close_btn.dl_btn_small(ng-if="role==='HR'|| role==='LEADER'" href="/group/{{teamId}}/editLogo") #{__("CHANGE")}LOGO
     .dl_row.clearfix(ng-show="team.home_court[0]!=undefined || !unEdit")
       .info_side
         span.info_label #{__("HOME_COURT")}
@@ -101,44 +99,42 @@ div(ng-controller="infoController")
     //-     span.info_label 0
     .dl_row.clearfix
       span.subtitle.pull-left #{__("FAMILY")}
-      if (Global.role === 'LEADER')
-        button.dl_btn.dl_btn_small.pull-right(data-toggle="modal" data-target="#upload_modal") 修改全家福
+      button.dl_btn.dl_btn_small.pull-right(ng-if="role==='LEADER'" data-toggle="modal" data-target="#upload_modal") 修改全家福
     .dl_row(ng-if="family_photos.length !== 0")
       carousel#family(interval="5000")
         slide(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
           .carousel-img-container
             img.center-block(ng-src="{{ photo.uri }}")
 
-  if (Global.role === 'LEADER')
-    #upload_modal.modal.fade(tabindex="-1" role="dialog" aria-hidden="true")
-      .modal-dialog
-        .modal-content
-          .modal-header
-            button.close(type="button" data-dismiss="modal")
-              span(aria-hidden="true") &times;
-            h4.modal-title 点击图片可切换选中状态，点击图片右上方的按钮可删除该图片
-          .modal-body
-            #family_preview_container.clearfix.family_preview_container
-              .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos"  ng-class="selected(photo)")
-                img.img-responsive(ng-src="{{ photo.uri }}" ng-click="toggleSelect(photo._id)")
-                button.remove(ng-click="deletePhoto(photo._id)"): span.glyphicon.glyphicon-remove
-                button.ok(ng-if="photo.select"): span.glyphicon.glyphicon-ok
-              .clearfix
-              button.dl_btn.dl_btn_small.pull-right.add_picture_btn(ng-click="next()") 添加图片
-            #family_jcrop_container.jcrop
-              #jcrop_img_container
-                img.jcrop_img.img-responsive
-              form#upload_family_form.upload_family_form.clearfix(action="/group/family" method="post" enctype="multipart/form-data")
-                input#w(type="hidden" name="width" value="320")
-                input#h(type="hidden" name="height" value="180")
-                input#x(type="hidden" name="x" value="0")
-                input#y(type="hidden" name="y" value="0")
-                input#upload_input.hidden(type="file" name="family" accept="image/*" required)
-                //-input.remark(type="text" name="remark" placeholder="备注")
-                .upload_operator.pull-right
-                  label.dl_btn.dl_btn_small(for="upload_input") 选择图片
-                  button#upload_button.dl_btn.dl_btn_small(type="submit" disabled) 上传
-                  button.dl_btn.dl_btn_small.cancel_btn(type="button" ng-click="back()") 返回
-              p {{ remind }}
+  #upload_modal.modal.fade(ng-if="role==='LEADEr'" tabindex="-1" role="dialog" aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type="button" data-dismiss="modal")
+            span(aria-hidden="true") &times;
+          h4.modal-title 点击图片可切换选中状态，点击图片右上方的按钮可删除该图片
+        .modal-body
+          #family_preview_container.clearfix.family_preview_container
+            .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos"  ng-class="selected(photo)")
+              img.img-responsive(ng-src="{{ photo.uri }}" ng-click="toggleSelect(photo._id)")
+              button.remove(ng-click="deletePhoto(photo._id)"): span.glyphicon.glyphicon-remove
+              button.ok(ng-if="photo.select"): span.glyphicon.glyphicon-ok
+            .clearfix
+            button.dl_btn.dl_btn_small.pull-right.add_picture_btn(ng-click="next()") 添加图片
+          #family_jcrop_container.jcrop
+            #jcrop_img_container
+              img.jcrop_img.img-responsive
+            form#upload_family_form.upload_family_form.clearfix(action="/group/{{teamId}}/family" method="post" enctype="multipart/form-data")
+              input#w(type="hidden" name="width" value="320")
+              input#h(type="hidden" name="height" value="180")
+              input#x(type="hidden" name="x" value="0")
+              input#y(type="hidden" name="y" value="0")
+              input#upload_input.hidden(type="file" name="family" accept="image/*" required)
+              //-input.remark(type="text" name="remark" placeholder="备注")
+              .upload_operator.pull-right
+                label.dl_btn.dl_btn_small(for="upload_input") 选择图片
+                button#upload_button.dl_btn.dl_btn_small(type="submit" disabled) 上传
+                button.dl_btn.dl_btn_small.cancel_btn(type="button" ng-click="back()") 返回
+            p {{ remind }}
 
 

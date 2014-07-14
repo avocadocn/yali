@@ -1,62 +1,30 @@
-//-append block headExt
-  link(rel="stylesheet" href="/css/timeline.css")
 .row
-
-
-.row
-if(newTimeLines)
-  .dl_timeline
+  .dl_timeline( ng-repeat="years in newTimeLines")
     .spine
-    each years in newTimeLines
-      .date_separator(id='year' + "#{years.left[0].year}")
-        span.span= years.left[0].year
-      .column.column_left
-        each item in years.left
-          .timeline_element
-            .title
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                span.head= item.head
-                span.date= moment(item.start_time).format('MM/DD')
-                .img_scroll
-                  each imgs in item.photo_list
-                    img.photo(src="#{imgs.thumbnail_uri}")
-            .content
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                
-                p= item.content
-      .column.column_right
-        each item in years.right
-          .timeline_element
-            .title
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                span.head= item.head
-                span.date= moment(item.start_time).format('MM/DD')
-                .img_scroll
-                  each imgs in item.photo_list
-                    img.photo(src="#{imgs.thumbnail_uri}")
-            .content
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                
-                p= item.content
-else
-  span.emptiem #{__("NO_CAMPAIGN")}
-
-//-if(timeLines)
-  ul.timeline
-    each timeline in timeLines
-      li.timeline
-        .timeline-time
-          span.date= moment(timeline.start_time).format('YY/MM/DD')
-          span.time= moment(timeline.start_time).format('HH:mm')
-        .timeline-icon
-        .timeline-body
-          a(href="/group/#{timeline.provoke ? 'competition': 'campaign'}/#{timeline.id}")
-            p.subtitle= timeline.head
-          .timeline-content
-            img.timeline-img.pull-left(src="#{timeline.logo ? timeline.logo :'/img/icons/default_company_logo.png'}")
-            p= "#{__('LOCATION')}" +":"+ timeline.location.name
-            p= "#{__('CONTENT')}" +":"+ timeline.content
-//-else
-  span.emptiem #{__("NO_CAMPAIGN")}
+    .date_separator(id='year' + "{{years.left[0].year}}")
+      span.span {{years.left[0].year}}
+    .column.column_left
+        .timeline_element(ng-repeat="item in years.left")
+          .title
+            a(href="/campaign/detail/{{item.id}}",target="_blank")
+              img.timeline-logo.pull-left.size_20(ng-src="{{item.logo ? item.logo :'/img/icons/default_company_logo.png'}}")
+              span.head {{item.head}}
+              span.date {{item.start_time |date:'MM/DD'}}
+              .img_scroll
+                  img.photo(ng-repeat="imgs in item.photo_list" ng-src="{{imgs.thumbnail_uri}}")
+          .content
+            a(href="/campaign/detail/{{item.id}}",target="_blank")
+              p {{item.content}}
+    .column.column_right
+      .timeline_element(ng-repeat="item in years.right")
+        .title
+          a(href="/campaign/detail/{{item.id}",target="_blank")
+            img.timeline-logo.pull-left.size_20(ng-src="{{item.logo ? item.logo :'/img/icons/default_company_logo.png'}}")
+            span.head {{item.head}}
+            span.date {{item.start_time |date:'MM/DD'}}
+            .img_scroll
+                img.photo(ng-repeat="imgs in item.photo_list" ng-src="{{imgs.thumbnail_uri}")
+        .content
+          a(href="/campaign/detail/{{item.id}}",target="_blank")
+            p {{item.content}}
+span.emptiem(ng-if="newTimeLines.length===0") #{__("NO_CAMPAIGN")}

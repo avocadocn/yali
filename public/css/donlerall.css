@@ -1450,10 +1450,12 @@ input.ng-invalid.ng-dirty {
   min-height: 300px;
 }
 .dl_allteaminfo_emp .teamitem {
-  width: 280px;
+  width: 290px;
   border: 1px solid #ddd;
   min-height: 80px;
-  margin: 4px;
+  margin: 8px;
+  word-break: break-word;
+  padding: 6px;
 }
 .dl_message_body_font {
   font-size: 48px;
@@ -1462,19 +1464,6 @@ input.ng-invalid.ng-dirty {
 .dl_head_font {
   font-size: 80px;
   color: #3498db;
-}
-.deckgrid[deckgrid]::before {
-/* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
-  content: '4 .column.column-1-4';
-  font-size: 0;
-/* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
-  visibility: hidden;
-}
-.deckgrid .column {
-  float: left;
-}
-.deckgrid .column-1-4 {
-  width: 25%;
 }
 
 /***

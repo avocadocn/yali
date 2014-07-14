@@ -15,8 +15,8 @@ function tirm(arraies,str) {
     }
     return rst;
 }
-tabViewGroup.config(['$routeProvider', '$locationProvider',
-  function ($routeProvider, $locationProvider) {
+tabViewGroup.config(['$routeProvider',
+  function ($routeProvider) {
     $routeProvider
       .when('/group_message', {
         templateUrl: '/message_list',
@@ -33,10 +33,10 @@ tabViewGroup.config(['$routeProvider', '$locationProvider',
         controller: 'infoController',
         controllerAs: 'account',
       })
-      .when('/timeLine', {
-        templateUrl: '/group/timeLine',
-        //controller: 'infoController',
-        //controllerAs: 'account',
+      .when('/timeLine/:tid', {
+        templateUrl: '/campaign/timeline',
+        controller: 'timelineController',
+        controllerAs: 'timeline'
       }).
       otherwise({
         redirectTo: '/group_message'
@@ -87,7 +87,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                     tid : $rootScope.teamId
                 }
             }).success(function(data,status){
-                $rootScope.number -= 1;
+                $rootScope.number --;
                 $rootScope.isMember = false;
             }).error(function(data,status){
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
@@ -101,6 +101,14 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     //加载地图
     $rootScope.loadMap = function(index){
         $rootScope.loadMapIndex = index;
+    };
+
+    $rootScope.dongIt = function(){
+        $rootScope.modalNumber = 2;
+    };
+
+    $rootScope.provokeRecommand =function(){
+        $rootScope.recommand = true;
     };
 }]);
 
@@ -121,7 +129,16 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
-
+tabViewGroup.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
+    $http.get('/group/timeline/'+$routeParams.tid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+        if(data.result===1){
+            $scope.newTimeLines = data.newTimeLines;
+        }
+        else{
+             console.log('err');
+        }
+    });
+}]);
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.private_message_content = {
@@ -130,7 +147,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
-        $http.get('/groupMessage/team/0?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/'+tid+'/0?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.group_messages = data.group_messages;
             $scope.user = data.user;
             $scope.role = data.role;
@@ -143,9 +160,6 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 $scope.loadMore_flag = true;
             }
             $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope),true;
-        });
-        $rootScope.$watch('teamName',function(tname){
-            ;
         });
     });
 
@@ -189,7 +203,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     }
 
     $scope.loadMore = function(){
-        $http.get('/groupMessage/team/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/'+$rootScope.teamId+'/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
                 $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
                 if(data.group_messages.length<20){
@@ -216,7 +230,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/groupMessage/team/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/groupMessage/team/'+$rootScope.teamId+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -453,16 +467,19 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 
 tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
-    $http.get('/campaign/getCampaigns/team/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-        $scope.campaigns = data.campaigns;
-        $rootScope.sum = $scope.campaigns.length;
-        if(data.campaigns.length<20){
-            $scope.loadMore_flag = false;
-        }
-        else{
-            $scope.loadMore_flag = true;
-        }
+    $rootScope.$watch('teamId',function(teamId){
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $scope.campaigns = data.campaigns;
+            $rootScope.sum = $scope.campaigns.length;
+            if(data.campaigns.length<20){
+                $scope.loadMore_flag = false;
+            }
+            else{
+                $scope.loadMore_flag = true;
+            }
+        });
     });
+
     $scope.loadMore_flag = true;
     $scope.block = 1;
     $scope.page = 1;
@@ -471,7 +488,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $scope.nextPage_flag = false;
 
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/team/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
@@ -498,7 +515,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/campaign/getCampaigns/team/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -626,7 +643,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
-    $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
+    $scope.buttonStatus = '编辑';
     $scope.mapFlag=false;//供地图初始化用的flag
     $rootScope.$watch('teamId',function(tid){
         $http.get('/group/info/'+tid).success(function(data, status) {
@@ -634,6 +651,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.team = data.companyGroup;
             $scope.name = $scope.team.name;
             $scope.entity = data.entity;
+            $scope.role = data.role;
             $scope.home_court = $scope.team.home_court.length ? $scope.team.home_court : [] ;
             var judge = true;
             for(var i = 0; i < data.companyGroup.member.length; i ++) {
@@ -658,7 +676,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             try{
                 $http({
                     method : 'post',
-                    url : '/group/saveInfo',
+                    url : '/group/saveInfo/'+$rootScope.teamId,
                     data : {
                         'name' : $scope.name,
                         'brief' : $scope.team.brief,
@@ -682,7 +700,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             catch(e) {
                 console.log(e);
             }
-            $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;;
+            $scope.buttonStatus = '编辑';
         }
         else {
             if(!window.map_ready){//如果没有加载过地图script则加载
@@ -694,7 +712,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             if($scope.showMap){//如果需要显示地图则初始化
                 $scope.initialize();
             }
-            $scope.buttonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;;
+            $scope.buttonStatus = '保存';
         }
     };
 
@@ -709,7 +727,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.family_photos;
     var getFamily = function() {
         $http
-        .get('/group/family')
+        .get('/group/'+$rootScope.teamId+'/family')
         .success(function(data, status) {
             $scope.family_photos = data;
         })
@@ -907,19 +925,23 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
-    $rootScope.$watch('loadMapIndex',function(value){
-        if(value==1){
-            //加载地图
-            if(!window.map_ready){
-                window.campaign_map_initialize = $scope.initialize;
-                var script = document.createElement("script");  
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
-                document.body.appendChild(script);
-            }
-            else{
-                $scope.initialize();
+    $rootScope.$watch('$rootScope.loadMapIndex',function(value){
+        if($rootScope.loadMapIndex){
+            console.log(1);
+            if(value==1){
+                //加载地图
+                if(!window.map_ready){
+                    window.campaign_map_initialize = $scope.initialize;
+                    var script = document.createElement("script");  
+                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
+                    document.body.appendChild(script);
+                }
+                else{
+                    $scope.initialize();
+                }
             }
         }
+
     });
     $scope.initialize = function(){
         $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
@@ -999,23 +1021,50 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.teams = [];
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
-    $scope.modal=false;
+    $scope.modal=0;
     $scope.result=0;//是否已搜索
+    $rootScope.modalNumber=0;
+
     $rootScope.$watch('loadMapIndex',function(value){
-        if(value==2){
-            //加载地图
-            if(!window.map_ready){
-                window.campaign_map_initialize = $scope.initialize;
-                var script = document.createElement("script");  
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
-                document.body.appendChild(script);
-            }
-            else{
-                $scope.initialize();
+        if($rootScope.loadMapIndex){
+            if(value==2){
+                //加载地图
+                if(!window.map_ready){
+                    window.campaign_map_initialize = $scope.initialize;
+                    var script = document.createElement("script");  
+                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
+                    document.body.appendChild(script);
+                }
+                else{
+                    $scope.initialize();
+                }
             }
         }
     });
-    
+
+    //决定要打开哪个挑战的modal
+    $rootScope.$watch('modalNumber',function(){
+        if($rootScope.modalNumber){
+            if($rootScope.modalNumber!==2)
+                $scope.modal = 0;
+            else{
+                $scope.modal = 2;
+                $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
+                    $scope.similarTeams = data;
+                    if(data.length===1){
+                        $scope.modal=3;//直接跳到发起挑战页面
+                        $scope.team_opposite = $scope.similarTeams[0];
+                    }
+                });
+            }
+        }
+    });
+
+    //推荐小队
+    $rootScope.$watch('recommand',function(){
+        if($rootScope.recommand)
+            $scope.recommandTeam();
+    });
 
 
     $("#competition_start_time").on("changeDate",function (ev) {
@@ -1033,6 +1082,29 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
+    
+    $scope.recommandTeam = function(){
+        try{
+            $http({
+                method:'post',
+                url:'/search/recommandteam',
+                data:{
+                    gid : $rootScope.groupId,
+                    tid : $rootScope.teamId
+                }
+            }).success(function(data,status){
+                if(data.result===1)
+                    $scope.teams=data;
+                else if(data.result===2)//没填主场
+                    $scope.homecourt=false;
+            }).error(function(data,status){
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            })
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
 
     $scope.search = function() {
         //按公司搜索
@@ -1192,63 +1264,69 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
 
     $scope.provoke_select = function (team) {
         $scope.team_opposite = team;
-        $scope.modal=true;
+        $scope.modal++;
         $rootScope.loadMapIndex=2;
     };
         //约战
     $scope.provoke = function() {
-        try {
-            $http({
-                method: 'post',
-                url: '/group/provoke/'+$rootScope.teamId,
-                data:{
-                    theme : $scope.theme,
-                    team_opposite : $scope.team_opposite,
-                    content : $scope.content,
-                    location: $scope.location,
-                    start_time: $scope.start_time,
-                    end_time: $scope.end_time,
-                    deadline: $scope.deadline,
-                    member_min : $scope.member_min,
-                    member_max : $scope.member_max
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
+        if($scope.modal===1){//在自己的小队约战
+            try {
+                $http({
+                    method: 'post',
+                    url: '/group/provoke/'+$rootScope.teamId,
+                    data:{
+                        theme : $scope.theme,
+                        team_opposite_id : $scope.team_opposite._id,
+                        content : $scope.content,
+                        location: $scope.location,
+                        start_time: $scope.start_time,
+                        end_time: $scope.end_time,
+                        deadline: $scope.deadline,
+                        member_min : $scope.member_min,
+                        member_max : $scope.member_max,
+                    }
+                }).success(function(data, status) {
+                    window.location.reload();
+                }).error(function(data, status) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
         }
-        catch(e) {
-            console.log(e);
+        else{//在其它小队约战
+            try {
+                $http({
+                    method: 'post',
+                    url: '/group/provoke/'+$scope.team_opposite._id,
+                    data:{
+                        theme : $scope.theme,
+                        team_opposite_id : $rootScope.teamId,
+                        content : $scope.content,
+                        location: $scope.location,
+                        start_time: $scope.start_time,
+                        end_time: $scope.end_time,
+                        deadline: $scope.deadline,
+                        member_min : $scope.member_min,
+                        member_max : $scope.member_max
+                    }
+                }).success(function(data, status) {
+                    window.location.reload();
+                }).error(function(data, status) {
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }            
         }
+        
     };
 
     $scope.preStep = function(){
-        $scope.modal=false;
+        $scope.modal--;
     };
 
-        //推荐小队
-    $scope.recommandTeam = function(){
-        try{
-            $http({
-                method:'post',
-                url:'/search/recommandteam',
-                data:{
-                    gid : $rootScope.groupId,
-                    tid : $rootScope.teamId
-                }
-            }).success(function(data,status){
-                if(data.result===1)
-                    $scope.teams=data;
-                else if(data.result===2)//没填主场
-                    $scope.homecourt=false;
-            }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            })
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-    $scope.recommandTeam();//直接显示推荐小队
+
 }]);

@@ -16,7 +16,7 @@ userApp.directive('match', function($parse) {
 });
 //员工注册后在公司组件列表里选择组件
 userApp.controller('GroupsController', ['$scope','$http','$rootScope', function($scope, $http,$rootScope) {
-    $http.get('/group/getCompanyGroups').success(function(data, status) {
+    $http.get('/group/getCompanyGroups/'+$scope.cid).success(function(data, status) {
         $scope.teams = data.teams;
 
         //显示在员工选小队的界面供其选择

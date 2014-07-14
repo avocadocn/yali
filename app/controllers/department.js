@@ -43,6 +43,19 @@ exports.department = function(req, res, next) {
   });
 };
 
+//先搜索
+//任撤部门管理员
+exports.managerOperate = function(req,res){
+  var manager = req.body.manager;
+  var did = req.body.did;
+  Department.findByIdAndUpdate({'_id':did},{'$set':{'manager':manager}},function(err,department){
+    if(err || !message){
+      res.send(500);
+    }else{
+      res.send(200,{'manager':department.manager});
+    }
+  });
+}
 
 
 //先搜索
@@ -77,6 +90,7 @@ exports.provoke = function(req, res) {
 
 //部门之间应战
 exports.responseProvoke = function(req, res) {
+
 
 }
 
