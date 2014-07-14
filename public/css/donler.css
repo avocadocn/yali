@@ -1465,3 +1465,12 @@ input.ng-invalid.ng-dirty {
   font-size: 80px;
   color: #3498db;
 }
+[ngcloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak,
+.ng-hide {
+  display: none !important;
+}
