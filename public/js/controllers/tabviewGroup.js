@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewGroup = angular.module('mean.main');
+var tabViewGroup = angular.module('donler');
 
 
 function tirm(arraies,str) {

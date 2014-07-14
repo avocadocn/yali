@@ -1,4 +1,4 @@
-var companySignUpApp = angular.module('mean.main');
+var companySignUpApp = angular.module('donler');
 
 companySignUpApp.controller('signupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
   var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;

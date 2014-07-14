@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewCompany = angular.module('mean.main');
+var tabViewCompany = angular.module('donler');
 
 
 

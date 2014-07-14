@@ -1,4 +1,26 @@
-extends ../layouts/user_base
+extends ../layouts/manager
 
-block contentExt
-  h1= department.name
+
+block baseInfo
+  .dl_container.clearfix
+    .aside
+      img.size_80.img_contain(src="#{department.company.logo}")
+    .main.top-main
+      .dl_row
+        //-部门名
+        label.head= department.name
+      .dl_row
+        //-公司名
+        a.subtitle(href="/company/home/#{department.company._id}")= department.company.name
+      .dl_row
+        .score_container
+          span.info_border #{__("DEPARTMENT_MEMBER")}
+          span.info_border.info_right_border(ng-init="number=#{department.team.member.length}") {{ number }}
+        if (Global.role === 'HR')
+          .score_container
+            button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
+          div.modal.fade#sponsorCampaignModel(ng-controller="SponsorCtrl" ng-init="did='#{department._id}'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+            include ../campaign/campaign_modal
+
+append footExt
+  script(src="/js/controllers/department.js")

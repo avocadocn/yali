@@ -1,6 +1,6 @@
 'use strict';
 
-var companyApp = angular.module('mean.main');
+var companyApp = angular.module('donler');
 
 //路由管理
 companyApp.config(['$routeProvider',function ($routeProvider) {

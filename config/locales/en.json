@@ -147,5 +147,6 @@
   "OPTIONAL" :"optional",
   "OPTION" :"options",
   "PLACE" :"place",
-  "APPOINT" :"appoint"
+  "APPOINT" :"appoint",
+  "DEPARTMENT_MEMBER": "Member"
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-var campaignApp = angular.module('mean.main');
+var campaignApp = angular.module('donler');
 
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
     $scope.$watch('campaign',function(campaign){

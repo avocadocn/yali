@@ -19,4 +19,6 @@ module.exports = function(app) {
 
   app.get('/department/home/:id', authorization.requiresLogin, department.renderHome);
 
+  app.post('/department/:id/sponsor', authorization.requiresLogin, department.department, department.sponsor);
+
 };

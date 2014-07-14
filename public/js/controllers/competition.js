@@ -2,7 +2,7 @@
 'use strict';
 
 
-var groupApp = angular.module('mean.main');
+var groupApp = angular.module('donler');
 
 groupApp.controller('resultController', ['$http', '$scope','$rootScope',function ($http, $scope,$rootScope) {
     // $scope.$watch('msg_show',function(){

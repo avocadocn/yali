@@ -1,6 +1,6 @@
 'use strict';
 
-var userApp = angular.module('mean.main');
+var userApp = angular.module('donler');
 
 userApp.directive('match', function($parse) {
   return {

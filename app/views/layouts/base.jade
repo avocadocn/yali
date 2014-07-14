@@ -18,14 +18,14 @@ html
   body
     block content
 
-    script(src="/js/main.js")
+    script(src="/js/app.js")
     script.
       angular.element(document).ready(function() {
         //Fixing facebook bug with redirect
         if (window.location.hash === '#_=_') window.location.hash = '#!';
 
         //Then init the app
-        angular.bootstrap(document, ['mean.main']);
+        angular.bootstrap(document, ['donler']);
       });
 
 
@@ -36,9 +36,8 @@ html
 
       ga('create', 'UA-52353216-1', 'auto');
       ga('send', 'pageview');
-
+    script(src="/js/controllers/message.js")
+    script(src="/js/dl_card.js")
 
     block footExt
-        script(src="/js/controllers/message.js")
-        script(src="/js/dl_card.js")
     block bottomExt

@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewUser = angular.module('mean.main');
+var tabViewUser = angular.module('donler');
 
 
 tabViewUser.directive('match', function($parse) {
