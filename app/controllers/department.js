@@ -146,6 +146,7 @@ exports.sponsor = function(req, res) {
     photo_album.create_user = update_user;
   }
 
+
   fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
     if (err) {
       console.log(err);
@@ -205,34 +206,25 @@ exports.sponsor = function(req, res) {
       });
     });
   });
-};
+}
+var teamOperate = function(did,operate,res,req){
+  Department.findOne({'_id':did},function(err,department){
+    if(err || !department){
+      if(res != null)return res.send(500);
+    }else{
+      CompanyGroup.findByIdAndUpdate({'_id':department.team},operate,function(err,company_group){
+        if(err || !department){
+          if(res!=null)return res.send(500);
+        }else{
+          if(res!=null)return res.send(200,{'member':company_group.member});
+        }
+      });
+    }
+  });
+}
 
-
-
-var teamOperate = function(did, operate, res, req) {
-    Department.findOne({
-      '_id': did
-    }, function(err, department) {
-      if (err || !department) {
-        return res.send(500);
-      } else {
-        CompanyGroup.findByIdAndUpdate({
-          '_id': department.team
-        }, operate, function(err, company_group) {
-          if (err || !department) {
-            return res.send(500);
-          } else {
-            return res.send(200, {
-              'member': company_group.member
-            });
-          }
-        });
-      }
-    });
-  }
-  //前提是User里员工已经提出申请
-  //部门成员加退
-exports.memberOperate = function(req, res) {
+//通过路由加退成员
+exports.memberOperateByRoute = function(req,res){
   var did = req.body.did;
   var operate = req.body.operate;
   var member = req.body.member;
@@ -255,6 +247,19 @@ exports.memberOperate = function(req, res) {
     }, req, res);
   }
 }
+
+//手动调用函数
+exports.memberOperateByHand = function(operate,member,did){
+  if(operate === 'join'){
+    //员工提出申请后加入
+    teamOperate(did,{'$push':{'member':member}},null,null);
+  }
+  if(operate === 'quit'){
+    //踢掉
+    teamOperate(did,{'$pull':{'member':{'_id':member._id}}},null,null);
+  }
+}
+
 
 //处理员工申请
 exports.applyOperate = function(req, res) {
@@ -574,8 +579,23 @@ exports.getDepartment = function(req, res) {
       'name': req.user.info.name,
       'department': req.user.department
     });
-  } else {
-    res.send(403);
+  }else{
+    if(req.session.cid != undefined){
+      Company.findOne({'_id':req.session.cid},function (err,company){
+        if(err || !company){
+          res.send(500);
+        }else{
+          res.send({
+            '_id': company._id,
+            'name': company.name,
+            'department': company.department
+          });
+          delete req.session.cid;
+        }
+      })
+    }else{
+      res.send(403);
+    }
   }
 }
 

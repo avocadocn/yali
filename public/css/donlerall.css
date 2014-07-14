@@ -1476,6 +1476,9 @@ input.ng-invalid.ng-dirty {
 .deckgrid .column-1-4 {
   width: 25%;
 }
+.department_select_width {
+  width: 127px !important;
+}
 
 /***
 Timeline UI Base

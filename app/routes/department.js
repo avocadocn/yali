@@ -11,7 +11,7 @@ var bodyParser = express.bodyParser({
 
 
 module.exports = function(app) {
-  app.get('/department/pull', authorization.requiresLogin, department.getDepartment);
+  app.get('/department/pull', department.getDepartment);
   app.post('/department/push', authorization.requiresLogin, department.createDepartment);
 
   app.post('/department/modify', authorization.requiresLogin, department.modifyDepartment);
