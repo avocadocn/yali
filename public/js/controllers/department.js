@@ -4,8 +4,11 @@ var department = angular.module('donler');
 
 department.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
-
-
+    $routeProvider
+      .when('/campaign', {
+        templateUrl: '/department/campaign',
+        controller: 'CampaignCtrl'
+      });
   }
 ]);
 
@@ -118,6 +121,167 @@ department.controller('SponsorCtrl', ['$http', '$scope', '$rootScope',
           //TODO:更改对话框
         });
 
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  }
+]);
+
+department.controller('CampaignCtrl', ['$http', '$scope', '$rootScope',
+  function($http, $scope, $rootScope) {
+    $http.get('/campaign/getCampaigns/team/all/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+      $scope.campaigns = data.campaigns;
+      $rootScope.sum = $scope.campaigns.length;
+      if (data.campaigns.length < 20) {
+        $scope.loadMore_flag = false;
+      } else {
+        $scope.loadMore_flag = true;
+      }
+    });
+    $scope.loadMore_flag = true;
+    $scope.block = 1;
+    $scope.page = 1;
+    $scope.pageTime = [0];
+    $scope.lastPage_flag = false;
+    $scope.nextPage_flag = false;
+
+    $scope.loadMore = function() {
+      $http.get('/campaign/getCampaigns/team/all/' + new Date($scope.campaigns[$scope.campaigns.length - 1].start_time).getTime() + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+        if (data.result === 1 && data.campaigns.length > 0) {
+          $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+          if (data.campaigns.length < 20) {
+            $scope.loadMore_flag = false;
+          } else {
+            $scope.loadMore_flag = true;
+          }
+          if (++$scope.block == 5) {
+            $scope.nextPage_flag = true;
+            $scope.loadMore_flag = false;
+            if ($scope.page != 1) {
+              $scope.lastPage_flag = true;
+            }
+          }
+
+        } else {
+          $scope.loadOver_flag = true;
+          $scope.loadMore_flag = false;
+          $scope.nextPage_flag = false;
+        }
+      });
+    }
+    $scope.changePage = function(flag) {
+      var start_time = flag == 1 ? new Date($scope.campaigns[$scope.campaigns.length - 1].start_time).getTime() : $scope.pageTime[$scope.page - 2];
+      $http.get('/campaign/getCampaigns/team/all/' + start_time + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+        if (data.result === 1 && data.campaigns.length > 0) {
+          if (flag == 1) {
+            $scope.page++;
+            $scope.pageTime.push(new Date($scope.campaigns[$scope.campaigns.length - 1].start_time).getTime());
+          } else {
+            $scope.page--;
+          }
+          $scope.campaigns = data.campaigns;
+          $scope.nextPage_flag = false;
+          $scope.lastPage_flag = false;
+          $scope.loadOver_flag = false;
+          $scope.block = 1;
+          if (data.campaigns.length < 20) {
+            $scope.loadMore_flag = false;
+          } else {
+            $scope.loadMore_flag = true;
+          }
+          window.scroll(0, 0);
+        } else {
+          $scope.nextPage_flag = false;
+          $scope.loadMore_flag = false;
+          $scope.loadOver_flag = true;
+        }
+      });
+    }
+    $scope.getId = function(cid) {
+      $scope.campaign_id = cid;
+    };
+    $scope.join = function(campaign_id, index) {
+      try {
+        $http({
+          method: 'post',
+          url: '/users/joinCampaign',
+          data: {
+            campaign_id: campaign_id
+          }
+        }).success(function(data, status) {
+          if (data.result === 1) {
+            //alert('成功加入该活动!');
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+            $scope.campaigns[index].join_flag = 1;
+            $scope.campaigns[index].member_num++;
+          } else {
+            $rootScope.donlerAlert(data.msg);
+          }
+        }).error(function(data, status) {
+          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    $scope.quit = function(campaign_id, index) {
+      try {
+        $http({
+          method: 'post',
+          url: '/users/quitCampaign',
+          data: {
+            campaign_id: campaign_id
+          }
+        }).success(function(data, status) {
+          if (data.result === 1) {
+            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+            //alert('您已退出该活动!');
+            $scope.campaigns[index].join_flag = -1;
+            $scope.campaigns[index].member_num--;
+          } else {
+            $rootScope.donlerAlert(data.msg);
+          }
+        }).error(function(data, status) {
+          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    //应战
+    $scope.responseProvoke = function(competition_id) {
+      try {
+        $http({
+          method: 'post',
+          url: '/group/responseProvoke',
+          data: {
+            competition_id: competition_id
+          }
+        }).success(function(data, status) {
+          window.location.reload();
+        }).error(function(data, status) {
+          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    $scope.cancel = function(_id) {
+      try {
+        $http({
+          method: 'post',
+          url: '/campaign/cancel',
+          data: {
+            campaign_id: _id
+          }
+        }).success(function(data, status) {
+          window.location.reload();
+        }).error(function(data, status) {
+          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+        });
       } catch (e) {
         console.log(e);
       }

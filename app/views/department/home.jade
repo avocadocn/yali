@@ -22,5 +22,18 @@ block baseInfo
           div.modal.fade#sponsorCampaignModel(ng-controller="SponsorCtrl" ng-init="did='#{department._id}'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
             include ../campaign/campaign_modal
 
+block panel
+  div
+    ul.nav.nav-tabs
+      li.tab_style
+        a.subtitle.no_radius 部门动态
+      li.tab_style
+        a.subtitle.no_radius 部门活动
+      li.tab_style
+        a.subtitle.no_radius 活动足迹
+    .tab-content.margin_top_20
+      .tab-pane.active
+        div(ng-view)
+
 append footExt
   script(src="/js/controllers/department.js")
