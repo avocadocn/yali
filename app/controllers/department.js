@@ -135,6 +135,7 @@ exports.sponsor = function(req, res) {
   campaign.location = location;
   campaign.theme = theme;
   campaign.active = true;
+  campaign.campaign_type = 6; // 部门活动
 
   campaign.start_time = start_time;
   campaign.end_time = end_time;

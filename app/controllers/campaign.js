@@ -220,6 +220,21 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
+    else if (_campaign.campaign_type === 6) {
+      temp.type = 'departmentcampaign';
+      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
+      temp.logo=_campaign.team[0].logo;
+      temp.link = '/group/home/'+_campaign.team[0]._id;
+      temp.team_id = _campaign.team[0]._id;
+      if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
+        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
+          temp.join_flag = 1;
+        }
+        else{
+          temp.join_flag = -1;
+        }
+      }
+    }
     else{//动一下
       temp.type = 'provoke';
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
