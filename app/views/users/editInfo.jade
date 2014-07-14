@@ -23,12 +23,12 @@ div.use_edit_info
       .info_side
         span.info_label #{__("REALNAME")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
+        input.dl_input.dl_form-Control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit" ng-cloak)
     .dl_row.clearfix
       .info_side  
         span.info_label #{__("COMPANY")}
       .info_side
-        span.info_label {{user.cname}}
+        span.info_label(ng-cloak) {{user.cname}}
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
       .info_side
         span.info_label #{__("GENDER")}
