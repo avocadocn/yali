@@ -26,6 +26,7 @@ var validator = require('validator'),
 
 // custom
 var encrypt = require('../middlewares/encrypt'),
+  department = require('../controllers/department'),
   mail = require('../services/mail'),
   schedule = require('../services/schedule'),
   moment = require('moment'),
@@ -315,6 +316,7 @@ exports.dealActive = function(req, res) {
 exports.setProfile = function(req, res) {
   var key = req.query.key;
   var uid = req.query.uid;
+  req.session.cid = req.query.cid; //请不要删除这个session,这个session在department里会自动删除的!
   User.findOne({_id: uid}, function(err, user) {
     if(err) {
       console.log(err);
@@ -355,7 +357,7 @@ exports.dealSetProfile = function(req, res) {
         user.nickname = req.body.nickname;
         user.password = req.body.password;
         user.realname = req.body.realName;
-        user.department = req.body.department;
+        user.department = (req.body.main_department_name != 'null' ? (req.body.child_department_name != 'null' ? req.body.child_department_name : req.body.main_department_name) : '无');
         user.phone = req.body.phone;
         user.role = 'EMPLOYEE';
         user.save(function(err) {
@@ -364,6 +366,19 @@ exports.dealSetProfile = function(req, res) {
             return res.render('users/message', message.dbError);
           }
           else {
+            //将员工加入部门小队
+            var member = {
+              '_id':user._id,
+              'nickname':user.nickname,
+              'photo':user.photo
+            };
+            if(req.body.main_department_id != 'null'){
+              if(req.body.child_department_id != 'null'){
+                department.memberOperateByHand('join',member,req.body.child_department_id);
+              }else{
+                department.memberOperateByHand('join',member,req.body.main_department_id);
+              }
+            }
             var groupMessage = new GroupMessage();
             groupMessage.message_type = 7;
             groupMessage.company.cid = user.cid;
@@ -1395,7 +1410,12 @@ exports.getTimelineForApp = function(req,res){
 //申请加入某个部门
 exports.applyToDepartment = function(req,res){
   var did = req.body.did;
-  var member = req.body.member;
+  var member = {
+    '_id':req.user._id,
+    'nickname':req.user.nickname,
+    'photo':req.user.photo,
+    'apply_status':'wait'
+  }
   Department.findByIdAndUpdate({'_id':did},{'$push':{'member_apply':member}},function(err,department){
     if(err || !department){
       res.send(500);

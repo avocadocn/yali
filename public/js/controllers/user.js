@@ -14,6 +14,76 @@ userApp.directive('match', function($parse) {
     }
   };
 });
+
+
+userApp.controller('signupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
+    var departments;
+  $http.get('/department/pull').success(function(data, status) {
+        $scope.main_department_id = 'null';
+        $scope.main_department_name = 'null';
+        $scope.child_department_id = 'null';
+        $scope.child_department_name = 'null';
+
+        departments = data.department;
+        $scope.main_departments = [];
+        $scope.child_departments = [];
+        for(var i = 0; i < departments.length; i ++){
+            $scope.main_departments.push({
+                '_id':departments[i]._id,
+                'name':departments[i].name
+            });
+        }
+
+        if(departments.length > 0){
+            $scope.main_department = $scope.main_departments[0];
+            $scope.main_department_id = $scope.main_department._id;
+            $scope.main_department_name = $scope.main_department.name;
+        }
+        if(departments[0].department.length > 0){
+            for(var i = 0 ; i < departments[0].department.length; i ++){
+                $scope.child_departments.push({
+                    '_id':departments[0].department[i]._id,
+                    'name':departments[0].department[i].name
+                });
+            }
+            $scope.child_department = $scope.child_departments[0];
+            $scope.child_department_id = $scope.child_department._id;
+            $scope.child_department_name = $scope.child_department.name;
+        }
+    }).error(function(data,status) {
+        alertify.alert('DATA ERROR');
+    });
+
+    $scope.selectMainDepartment = function(){
+        for(var i = 0; i < departments.length; i ++){
+            if(departments[i]._id === $scope.main_department._id){
+                $scope.child_departments = [];
+                for(var j = 0 ; j < departments[i].department.length; j ++){
+                    $scope.child_departments.push({
+                        '_id':departments[i].department[j]._id,
+                        'name':departments[i].department[j].name
+                    });
+                }
+                break;
+            }
+        }
+        $scope.main_department_id = $scope.main_department._id;
+        $scope.main_department_name = $scope.main_department.name;
+
+        if(departments[0].department.length > 0){
+            $scope.child_department = $scope.child_departments[0];
+            $scope.child_department_id = $scope.child_department._id;
+            $scope.child_department_name = $scope.child_department.name;
+        }
+    }
+
+    $scope.selectChildDepartment = function(){
+        $scope.child_department_id = $scope.child_department._id;
+        $scope.child_department_name = $scope.child_department.name;
+    }
+
+}]);
+
 //员工注册后在公司组件列表里选择组件
 userApp.controller('GroupsController', ['$scope','$http','$rootScope', function($scope, $http,$rootScope) {
     $http.get('/group/getCompanyGroups/'+$scope.cid).success(function(data, status) {
@@ -24,9 +94,7 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
             $scope.teams[i].select='0';
         }
     }).error(function(data,status) {
-        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH +
-                                                        $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                            $rootScope.lang_for_msg[$rootScope.lang_key].value.FAILURE);
+        alertify.alert('DATA ERROR');
     });
     $scope.selected = [];
 

@@ -1465,3 +1465,9 @@ input.ng-invalid.ng-dirty {
   font-size: 80px;
   color: #3498db;
 }
+.deckgrid .column-1-4 {
+  width: 25%;
+}
+.department_select_width {
+  width: 127px !important;
+}
