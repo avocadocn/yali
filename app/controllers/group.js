@@ -27,69 +27,6 @@ var mongoose = require('mongoose'),
     message = require('../controllers/message'),
     photo_album_controller = require('./photoAlbum');
 
-exports.authorize = function(req, res, next) {
-  if(req.user.provider==="company"){
-    if(req.user._id.toString() ===req.companyGroup.cid.toString()){
-      req.session.role = 'HR';
-      req.session.Global.role = 'HR';
-    }
-    else{
-      req.session.role = 'GUESTHR';
-      req.session.Global.role = 'GUESTHR';
-    }
-  }
-  else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){
-    var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,req.companyGroup._id,'_id');
-    if(_teamIndex>-1){
-      if(req.user.team[_teamIndex].leader === true){
-        req.session.role = 'LEADER';
-        req.session.Global.role = 'LEADER';
-      }
-      else{
-        if(req.user.role == 'LEADER'){
-          req.session.role = 'MEMBERLEADER';
-          req.session.Global.role = 'MEMBERLEADER';
-        }
-        else{
-          req.session.role = 'MEMBER';
-          req.session.Global.role = 'MEMBER';
-        }
-      }
-    }
-    else{
-      if(req.user.role == 'LEADER'){
-          req.session.role = 'PARTNERLEADER';
-          req.session.Global.role = 'PARTNERLEADER';
-        }
-      else{
-        req.session.role = 'PARTNER';
-        req.session.Global.role = 'PARTNER';
-      }
-    }
-  }
-  else{
-    if(req.user.role == 'LEADER'){
-      for(var i=0;i<req.user.team.length;i++){
-        if(req.user.team[i].leader==true && req.user.team[i].gid==req.companyGroup.gid){
-          req.session.role = 'GUESTLEADER';
-          req.session.Global.role = 'GUESTLEADER';//同类型
-          break;
-        }
-      }
-      if(req.session.role !== 'GUESTLEADER'){
-        req.session.role = 'GUEST';
-        req.session.Global.role = 'GUEST';
-      }
-    }
-    else{
-      req.session.role = 'GUEST';
-      req.session.Global.role = 'GUEST';
-    }
-  }
-  req.session.nowtid = req.params.teamId;
-  req.session.nowgid = req.companyGroup.gid;
-  next();
-};
 //返回组件模型里的所有组件(除了虚拟组),待HR选择
 exports.getGroups = function(req,res) {
   Group.find(null,function(err,group){
@@ -163,7 +100,8 @@ exports.info =function(req,res) {
         } else {
             return res.send({
                 'companyGroup': req.companyGroup,  //父小队信息
-                'entity': entity                   //实体小队信息
+                'entity': entity,                   //实体小队信息
+                'role': req.role
             });
         }
     });

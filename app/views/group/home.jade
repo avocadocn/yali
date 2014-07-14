@@ -28,27 +28,27 @@ block baseInfo
         //-.score_container
           span.info_border #{__("WIN_RATE")}
           span.info_border.info_right_border 100%
-        if (Global.role ==='HR' || Global.role ==='LEADER')
+        if (role ==='HR' || role ==='LEADER')
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
             button.dl_btn.dl_btn_small(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel") #{__("PROVOKE")}
             button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorMessageModel") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
         - var isMember = false;
-          if (Global.role === 'MEMBER' || Global.role ==='LEADER' || Global.role ==='PARTNER' || Global.role === 'MEMBERLEADER' || Global.role === 'PARTNERLEADER')
-            if (Global.role === 'MEMBER' || Global.role ==='LEADER' || Global.role === 'MEMBERLEADER' )
+          if (role === 'MEMBER' || role ==='LEADER' || role ==='PARTNER' || role === 'MEMBERLEADER' || role === 'PARTNERLEADER')
+            if (role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER' )
               - isMember = true;
             .score_container(ng-init="isMember=#{isMember}" ng-show="isMember")
               button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
             .score_container(ng-show="!isMember")
               button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") #{__("JOIN_GROUP")}
-        if (Global.role === 'GUESTLEADER' || Global.role === 'PARTNERLEADER' || Global.role === 'MEMBERLEADER')
+        if (role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER')
           .score_container
             button.pull-right.dl_btn.dl_btn_small(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel") 动一下
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}';teamName='#{tname}'")
     ul.nav.nav-tabs
-      if (Global.role !=='GUESTHR' && Global.role !=='GUEST' && Global.role !=='GUESTLEADER')
+      if (role !=='GUESTHR' && role !=='GUEST' && role !=='GUESTLEADER')
         li.tab_style(ng-class="{'active':nowTab=='group_message'}")
           a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") #{__("TEAM_MESSAGE")}
         li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
@@ -60,7 +60,7 @@ block panel
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
-    if Global.role ==='HR' || Global.role ==='LEADER'
+    if role ==='HR' || role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../campaign/campaign_modal
       div(ng-controller="messageTeamController" )
@@ -69,19 +69,19 @@ block panel
       div(ng-controller="GroupMessageController" )
         div.modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           include ../partials/campaign_message_send
-    if (Global.role ==='MEMBER' || Global.role ==='LEADER' || Global.role === 'MEMBERLEADER')
+    if (role ==='MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER')
       div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
-    if (Global.role ==='PARTNERLEADER' || Global.role ==='MEMBERLEADER' || Global.role ==='GUESTLEADER' || Global.role==='HR' || Global.role==='LEADER')
+    if (role ==='PARTNERLEADER' || role ==='MEMBERLEADER' || role ==='GUESTLEADER' || role==='HR' || role==='LEADER')
       div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../campaign/provoke_modal_base
 block aside
 
-  if (Global.role !=='GUESTHR' && Global.role !=='HR')
+  if (role !=='GUESTHR' && role !=='HR')
     include ../partials/group_thumbnail
     +group_thumbnail(selected_teams,'active',__('SELECTED_TEAM'))
     +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'))
-  if (Global.role !=='GUESTHR' && Global.role !=='GUEST')
+  if (role !=='GUESTHR' && role !=='GUEST')
     .photo_album
       p
         span.subtitle.margin_top_15 #{__("TEAM_ALBUM")}

@@ -14,11 +14,6 @@ div.use_edit_info
         .dl_row.margin_top_15
           a(href="#/changePassword")
             button.dl_btn.dl_btn_medium #{__("CHANGE")}#{__("PASSWORD")}
-    .dl_row.clearfix
-      .info_side
-        span.info_label #{__("LOGIN_EMAIL")}
-      .info_side
-        span.info_label(ng-bind="user.email")
     .dl_row.clearfix(ng-if="user.nickname !=undefined || !baseUnEdit")
       .info_side
         span.info_label #{__("NICKNAME")}
@@ -34,11 +29,6 @@ div.use_edit_info
         span.info_label #{__("COMPANY")}
       .info_side
         span.info_label {{user.cname}}
-    .dl_row.clearfix(ng-if="user.position !=undefined || !baseUnEdit")
-      .info_side
-        span.info_label #{__("POSITION")}
-      .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="user.position" ng-disabled="baseUnEdit")
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
       .info_side
         span.info_label #{__("GENDER")}
@@ -52,28 +42,6 @@ div.use_edit_info
           span.radio.info_radio.info_label
             input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
             | #{__("FEMALE")}
-    .dl_row.clearfix(ng-show="user.birthday  !=''|| ! baseUnEdit")
-      .info_side
-        span.info_label #{__("BIRTHDAY")}
-      .info_detail.birthday_detail(ng-show="!baseUnEdit" )
-        .input-group.date.form_datetime.dl_modal_input#birthday
-          span.input-group-addon.no_radius
-            span.glyphicon.glyphicon-th
-          input.dl_input.editToggle.dl_form-Control(type="text" ng-model="user.birthday" name="date" placeholder="生日"  readonly required)
-      .info_side(ng-if="baseUnEdit")  
-        span.info_label {{user.birthday |date:'yyyy-MM-dd'}}
-    .dl_row.clearfix(ng-if="user.bloodType !=undefined || ! baseUnEdit")
-      .info_side
-        span.info_label #{__("BLOODTYPE")}
-      .info_detail_2(ng-if="baseUnEdit")
-        span.info_label {{user.bloodType}}
-      if (Global.role!=='PARTNER')
-        .info_detail(ng-if="!baseUnEdit")
-          select.dl_input.dl_form-Control.editToggle(type="text" name="bloodType" ng-model ="user.bloodType" style="height:34px")
-            option(ng-select="user.bloodType === 'A'") A
-            option(ng-select="user.bloodType === 'B'") B
-            option(ng-select="user.bloodType === 'O'") O
-            option(ng-select="user.bloodType === 'AB'") AB
     .dl_row.clearfix(ng-if="user.introduce || ! baseUnEdit")
       .info_side
         span.info_label #{__("BRIEF")}
@@ -99,7 +67,7 @@ div.use_edit_info
       .info_side
         span.info_label #{__("EMAIL")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="linkUnEdit")
+        input.dl_input.dl_form-Control.editToggle(type="email" name="email" ng-model="user.email" ng-disabled="true")
     .dl_row.clearfix(ng-if="user.qq !=undefined || !linkUnEdit")
       .info_side
         span.info_label #{__("QQ")}

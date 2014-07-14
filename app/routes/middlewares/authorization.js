@@ -39,16 +39,30 @@ exports.teamAuthorize = function(req, res, next) {
         req.role = 'LEADER';
       }
       else{
-        req.role = 'MEMBER';
+        if(req.user.role==='LEADER')
+          req.role = 'MEMBERLEADER';
+        else
+          req.role = 'MEMBER';
       }
     }
     else{
-      req.role = 'PARTNER';
+      if(req.user.role==='LEADER')
+        req.role = 'PARTNERLEADER'
+      else
+        req.role = 'PARTNER';
     }
   }
   else{
     if(req.user.role == 'LEADER'){
-      req.role = 'GUESTLEADER';
+      for(var i=0;i<req.user.team.length;i++){
+        if(req.user.team[i].leader==true && req.user.team[i].gid==req.companyGroup.gid){
+          req.role = 'GUESTLEADER';//同类型
+          break;
+        }
+      }
+      if(req.role !== 'GUESTLEADER'){
+        req.role = 'GUEST';
+      }
     }else{
       req.role = 'GUEST';
     }
