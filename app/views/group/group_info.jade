@@ -26,16 +26,20 @@ div(ng-controller="infoController")
         a.clearLinkUnderline.close_btn.dl_btn_small(ng-if="role==='HR'|| role==='LEADER'" href="/group/{{teamId}}/editLogo") #{__("CHANGE")}LOGO
     .dl_row.clearfix(ng-show="team.home_court[0]!=undefined || !unEdit")
       .info_side
-        span.info_label #{__("HOME_COURT")}
+        span.info_label #{__("HOME_COURT")}一
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-change='changeLocation(1)' ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip='请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。' tooltip-placement="right")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-change='changeLocation1()' ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip='请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。' tooltip-placement="right")
+    .dl_row.clearfix(ng-show='showMap1')
+      .info_side 
+      #courtMap1.height_200(ng-show='showMap1')
     .dl_row.clearfix(ng-show="team.home_court[1]!=undefined || !unEdit")
       .info_side
-        span.info_label.col-md-2.control-label
+        span.info_label #{__("HOME_COURT")}二
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-change='changeLocation(2)' ng-model="team.home_court[1].name" ng-disabled="unEdit")
-    .dl_row.clearfix(ng-show="showmap")
-      #courtMap.height_200(ng-show='showMap')
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-change='changeLocation2()' ng-model="team.home_court[1].name" ng-disabled="unEdit")
+    .dl_row.clearfix(ng-show='showMap2')
+      .info_side
+      #courtMap2.height_200(ng-show='showMap2')
     .dl_row.clearfix(ng-show="team.brief!=undefined || !unEdit")
       .info_side
         span.info_label #{__("BRIEF")}
@@ -106,7 +110,7 @@ div(ng-controller="infoController")
           .carousel-img-container
             img.center-block(ng-src="{{ photo.uri }}")
 
-  #upload_modal.modal.fade(ng-if="role==='LEADEr'" tabindex="-1" role="dialog" aria-hidden="true")
+  #upload_modal.modal.fade(ng-if="role==='LEADER'" tabindex="-1" role="dialog" aria-hidden="true")
     .modal-dialog
       .modal-content
         .modal-header
@@ -124,7 +128,7 @@ div(ng-controller="infoController")
           #family_jcrop_container.jcrop
             #jcrop_img_container
               img.jcrop_img.img-responsive
-            form#upload_family_form.upload_family_form.clearfix(action="/group/{{teamId}}/family" method="post" enctype="multipart/form-data")
+            form#upload_family_form.upload_family_form.clearfix(action="{{ '/group/' + teamId + '/family' }}" method="post" enctype="multipart/form-data")
               input#w(type="hidden" name="width" value="320")
               input#h(type="hidden" name="height" value="180")
               input#x(type="hidden" name="x" value="0")
