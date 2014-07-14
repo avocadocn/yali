@@ -1465,7 +1465,12 @@ exports.getTimelineForApp = function(req,res){
 //申请加入某个部门
 exports.applyToDepartment = function(req,res){
   var did = req.body.did;
-  var member = req.body.member;
+  var member = {
+    '_id':req.user._id,
+    'nickname':req.user.nickname,
+    'photo':req.user.photo,
+    'apply_status':'wait'
+  }
   Department.findByIdAndUpdate({'_id':did},{'$push':{'member_apply':member}},function(err,department){
     if(err || !department){
       res.send(500);
