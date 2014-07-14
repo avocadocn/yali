@@ -27,32 +27,40 @@ var stack_root = new StackAndQueue.stack();
 
 exports.department = function(req, res, next) {
   Department
-  .findById(req.params.departmentId)
-  .populate('team')
-  .exec()
-  .then(function(department) {
-    if (!department) {
-      return res.send(404);
-    }
-    req.department = department;
-    next();
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send(500);
-  });
+    .findById(req.params.departmentId)
+    .populate('team')
+    .exec()
+    .then(function(department) {
+      if (!department) {
+        return res.send(404);
+      }
+      req.department = department;
+      next();
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.send(500);
+    });
 };
 
 //先搜索
 //任撤部门管理员
-exports.managerOperate = function(req,res){
+exports.managerOperate = function(req, res) {
   var manager = req.body.manager;
   var did = req.body.did;
-  Department.findByIdAndUpdate({'_id':did},{'$set':{'manager':manager}},function(err,department){
-    if(err || !message){
+  Department.findByIdAndUpdate({
+    '_id': did
+  }, {
+    '$set': {
+      'manager': manager
+    }
+  }, function(err, department) {
+    if (err || !message) {
       res.send(500);
-    }else{
-      res.send(200,{'manager':department.manager});
+    } else {
+      res.send(200, {
+        'manager': department.manager
+      });
     }
   });
 }
@@ -98,12 +106,12 @@ exports.responseProvoke = function(req, res) {
 
 //部门发活动
 exports.sponsor = function(req, res) {
-  if(req.role !=='HR') {
-    return res.send(403,forbidden);
+  if (req.role !== 'HR') {
+    return res.send(403, forbidden);
   }
   var theme = req.body.theme;
-  var content = req.body.content;//活动内容
-  var location = req.body.location;//活动地点
+  var content = req.body.content; //活动内容
+  var location = req.body.location; //活动地点
   var group_type = '虚拟组';
   var tid = req.department.team._id;
   var cid = req.department.company._id;
@@ -117,8 +125,8 @@ exports.sponsor = function(req, res) {
   //生成活动
   var campaign = new Campaign();
   campaign.team.push(tid);
-  campaign.cid =[cid];//其实只有一个公司
-  campaign.cname =[cname];
+  campaign.cid = [cid]; //其实只有一个公司
+  campaign.cname = [cname];
   campaign.poster.cname = cname;
   campaign.poster.cid = cid;
   campaign.poster.role = req.session.role;
@@ -180,16 +188,15 @@ exports.sponsor = function(req, res) {
           //检查信息是否重复
           switch (err.code) {
             case 11000:
-                break;
+              break;
             case 11001:
-                res.status(400).send('该活动已经存在!');
-                break;
+              res.status(400).send('该活动已经存在!');
+              break;
             default:
-                break;
+              break;
           }
-            return;
-        }
-        else{
+          return;
+        } else {
           req.department.team.photo_album_list.push(photo_album._id);
           req.department.team.save(function(err) {
             if (err) {
@@ -199,16 +206,16 @@ exports.sponsor = function(req, res) {
               var groupMessage = new GroupMessage();
               groupMessage.message_type = 1;
               groupMessage.company = {
-                cid : cid,
-                name : cname
+                cid: cid,
+                name: cname
               };
-              groupMessage.team= {
-                teamid : tid,
-                name : tname,
-                logo : req.department.team.logo
+              groupMessage.team = {
+                teamid: tid,
+                name: tname,
+                logo: req.department.team.logo
               };
               groupMessage.campaign = campaign._id;
-              groupMessage.save(function (err) {
+              groupMessage.save(function(err) {
                 if (err) {
                   console.log(err);
                 } else {
@@ -222,16 +229,22 @@ exports.sponsor = function(req, res) {
     });
   });
 }
-var teamOperate = function(did,operate,res,req){
-  Department.findByIdAndUpdate({'_id':did},operate,function(err,department){
-    if(err || !department){
-      if(res != null)return res.send(500);
-    }else{
-      CompanyGroup.findByIdAndUpdate({'_id':department.team},operate,function(err,company_group){
-        if(err || !department){
-          if(res!=null)return res.send(500);
-        }else{
-          if(res!=null)return res.send(200,{'member':company_group.member});
+var teamOperate = function(did, operate, res, req) {
+  Department.findByIdAndUpdate({
+    '_id': did
+  }, operate, function(err, department) {
+    if (err || !department) {
+      if (res != null) return res.send(500);
+    } else {
+      CompanyGroup.findByIdAndUpdate({
+        '_id': department.team
+      }, operate, function(err, company_group) {
+        if (err || !department) {
+          if (res != null) return res.send(500);
+        } else {
+          if (res != null) return res.send(200, {
+            'member': company_group.member
+          });
         }
       });
     }
@@ -239,7 +252,7 @@ var teamOperate = function(did,operate,res,req){
 }
 
 //通过路由加退成员
-exports.memberOperateByRoute = function(req,res){
+exports.memberOperateByRoute = function(req, res) {
   var did = req.body.did;
   var operate = req.body.operate;
   var member = req.body.member;
@@ -264,14 +277,24 @@ exports.memberOperateByRoute = function(req,res){
 }
 
 //手动调用函数
-exports.memberOperateByHand = function(operate,member,did){
-  if(operate === 'join'){
+exports.memberOperateByHand = function(operate, member, did) {
+  if (operate === 'join') {
     //员工提出申请后加入
-    teamOperate(did,{'$push':{'member':member}},null,null);
+    teamOperate(did, {
+      '$push': {
+        'member': member
+      }
+    }, null, null);
   }
-  if(operate === 'quit'){
+  if (operate === 'quit') {
     //踢掉
-    teamOperate(did,{'$pull':{'member':{'_id':member._id}}},null,null);
+    teamOperate(did, {
+      '$pull': {
+        'member': {
+          '_id': member._id
+        }
+      }
+    }, null, null);
   }
 }
 
@@ -392,22 +415,37 @@ var deleteFromRoot = function(department, seq, req, res) {
   }
 
   //员工的部门、小队也要删掉
-  Department.find({'_id': {
+  Department.find({
+    '_id': {
       '$in': delete_ids
     }
-  }, function (err,departments){
+  }, function(err, departments) {
     var user_ids = [];
     var team_ids = [];
-    if(departments){
-      for(var i = 0; i < departments.length; i ++){
-        for(var j = 0; j < departments[i].member.length; j ++){
+    if (departments) {
+      for (var i = 0; i < departments.length; i++) {
+        for (var j = 0; j < departments[i].member.length; j++) {
           user_ids.push(departments[i].member[j]._id);
         }
         team_ids.push(departments[i].team);
       }
 
-      User.update({'_id':{'$in':user_ids}},{'$set':{'department':null}},{'multi':true},function (err,users){
-        CompanyGroup.remove({'_id':{'$in':team_ids}},function (err,company_group){
+      User.update({
+        '_id': {
+          '$in': user_ids
+        }
+      }, {
+        '$set': {
+          'department': null
+        }
+      }, {
+        'multi': true
+      }, function(err, users) {
+        CompanyGroup.remove({
+          '_id': {
+            '$in': team_ids
+          }
+        }, function(err, company_group) {
           Department.remove({
             '_id': {
               '$in': delete_ids
@@ -555,81 +593,86 @@ var departmentFindAndUpdate = function(department, did, param) {
 
 //修改部门信息
 exports.modifyDepartment = function(req, res) {
-  if (req.session.role === 'HR') {
-    var did = req.body.did;
-    var name = req.body.name;
-    Company.findOne({
-      '_id': req.user._id
-    }, function(err, company) {
-      if (err || !company) {
-        res.send({
-          'msg': 'DEPARTMENT_UPDATE_FAILURE'
-        });
-      } else {
-        var param = {
-          'type': 1,
-          'name': name
-        };
-        company.department = departmentFindAndUpdate(req.user, did, param).department;
-        company.save(function(err) {
-          if (err) {
-            res.send({
-              'msg': 'DEPARTMENT_UPDATE_FAILURE'
-            });
-          } else {
-            res.send({
-              'msg': 'DEPARTMENT_UPDATE_SUCCESS',
-              '_id': company._id,
-              'name': company.info.name,
-              'department': company.department
-            });
-          }
-        });
-      }
-    });
-  } else {
-    res.send(403);
+
+  if (req.role !== 'HR' && req.role !== 'DEPARTMENT_MANAGER') {
+    return res.send(403);
   }
-}
+
+  var did = req.body.did;
+  var name = req.body.name;
+  Company.findOne({
+    '_id': req.user._id
+  }, function(err, company) {
+    if (err || !company) {
+      res.send({
+        'msg': 'DEPARTMENT_UPDATE_FAILURE'
+      });
+    } else {
+      var param = {
+        'type': 1,
+        'name': name
+      };
+      company.department = departmentFindAndUpdate(req.user, did, param).department;
+      company.save(function(err) {
+        if (err) {
+          res.send({
+            'msg': 'DEPARTMENT_UPDATE_FAILURE'
+          });
+        } else {
+          res.send({
+            'msg': 'DEPARTMENT_UPDATE_SUCCESS',
+            '_id': company._id,
+            'name': company.info.name,
+            'department': company.department
+          });
+        }
+      });
+    }
+  });
+};
 //删除部门
 exports.deleteDepartment = function(req, res) {
-  if (req.session.role === 'HR') {
-    var did = req.body.did;
-    if (did.toString() === req.user._id.toString()) {
-      //删除该公司下的所有部门
-      deleteFromRoot(req.user, -1, req, res);
-    } else {
-      //删除某个部门以及其下所有子部门
-      operateFromRootAndDeleteOne(did, req, res);
-    }
-  } else {
-    res.send(403);
+
+  if (req.role !== 'HR' && req.role !== 'DEPARTMENT_MANAGER') {
+    return res.send(403);
   }
-}
+
+  var did = req.params.departmentId;
+  if (did.toString() === req.user._id.toString()) {
+    //删除该公司下的所有部门
+    deleteFromRoot(req.user, -1, req, res);
+  } else {
+    //删除某个部门以及其下所有子部门
+    operateFromRootAndDeleteOne(did, req, res);
+  }
+};
 
 //获取树形部门数据
 exports.getDepartment = function(req, res) {
-  if (req.session.role === 'HR') {
+  if (req.user._id.toString() === req.params.cid) {
     res.send({
       '_id': req.user._id,
       'name': req.user.info.name,
       'department': req.user.department
     });
-  }else{
-    if(req.session.cid != undefined){
-      Company.findOne({'_id':req.session.cid},function (err,company){
-        if(err || !company){
+  } else {
+    // 用于用户注册流程
+    if (req.session.cid) {
+      Company.findOne({
+        '_id': req.session.cid
+      }, function(err, company) {
+        if (err || !company) {
           res.send(500);
-        }else{
+        } else {
           res.send({
             '_id': company._id,
             'name': company.name,
             'department': company.department
           });
-          delete req.session.cid;
+          req.session.cid = null;
         }
       })
-    }else{
+    } else {
       res.send(403);
     }
   }
@@ -639,9 +682,14 @@ exports.getDepartment = function(req, res) {
  * param in: req.body.did (部门id,一开始是公司id)
  */
 exports.createDepartment = function(req, res) {
-  if (req.session.role === 'HR') {
+  if (req.user.provider === 'company') {
     var did = req.body.did;
     var name = req.body.name;
+    var cid = req.body.cid;
+
+    if (req.user._id.toString() !== cid) {
+      return res.send(403);
+    }
 
     var team_create = {
       'cid': req.user._id,

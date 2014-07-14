@@ -808,7 +808,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
 
     (function getDepartments() {
         $http
-        .get('/department/pull')
+        .get('/departmentTree/' + $rootScope.cid)
         .success(function(data, status) {
             formatData(data);
         });
@@ -838,9 +838,10 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.confirmCreate = function(node) {
         if (node.edit_name !== '' && node.edit_name != null) {
             $http
-            .post('/department/push', {
+            .post('/department', {
                 did: node.parent_id,
-                name: node.edit_name
+                name: node.edit_name,
+                cid: $scope.node._id
             })
             .success(function(data, status) {
                 formatData(data);
@@ -859,7 +860,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.confirmEdit = function(node) {
         if (node.temp_name !== '' && node.temp_name != null) {
             $http
-            .post('/department/modify', {
+            .put('/department/' + node._id, {
                 did: node._id,
                 name: node.temp_name
             })
@@ -898,9 +899,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         alertify.confirm('删除后不可恢复，您确定要删除“' + node.name + '”部门吗？', function(e) {
             if (e) {
                 $http
-                .post('/department/delete', {
-                    did: node._id
-                })
+                .delete('/department/' + node._id)
                 .success(function(data, status) {
                     if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
                         formatData(data);

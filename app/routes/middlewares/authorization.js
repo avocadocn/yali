@@ -53,7 +53,7 @@ exports.departmentAuthorize = function(req, res, next) {
     console.log(err);
     res.send(500);
   });
-}
+};
 exports.teamAuthorize = function(req, res, next) {
   if(req.user.provider==="company"){
     if(req.user._id.toString() ===req.companyGroup.cid.toString()){

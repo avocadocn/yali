@@ -11,11 +11,11 @@ var bodyParser = express.bodyParser({
 
 
 module.exports = function(app) {
-  app.get('/department/pull', department.getDepartment);
-  app.post('/department/push', department.createDepartment);
+  app.get('/departmentTree/:cid', department.getDepartment);
 
-  app.post('/department/modify', department.modifyDepartment);
-  app.post('/department/delete', department.deleteDepartment);
+  app.post('/department', department.createDepartment);
+  app.put('/department/:departmentId', authorization.departmentAuthorize, department.modifyDepartment);
+  app.delete('/department/:departmentId', authorization.departmentAuthorize, department.deleteDepartment);
 
   app.get('/department/home/:departmentId', department.renderHome);
 
