@@ -16,31 +16,31 @@ div(ng-show = '!loading')
           li
             a(ng-click="selectCampaign(4)") 全部活动
             
-    table.table.table-hover.campaign_table
-      tr(ng-repeat="campaign_item in campaigns")
-        td.time_col
-          p.text-right.day {{ campaign_item.start_time  | day }}
-          p.text-right {{ campaign_item.start_time | date:'HH:mm' }}
-        td.logo_col.text-center(bs-popover)
-          a(ng-href="{{campaign_item.link}}")
-            img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}"  ng-Mouseover='showGroupCard(campaign_item.team_id,campaign_item._id)' id='pop{{campaign_item._id}}')
-            img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}")
-        td.content_col
-          p 主题:
-            a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
-          p 内容:
-            span.content_text {{campaign_item.content}}
-          p #{__("LOCATION")}:
-            span.content_text {{campaign_item.location.name}}
-        td.operator_col
-          button.cancel_btn.dl_btn_small.operator_btn(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
-    .text-center(ng-if="campaigns.length>0")
-      button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
-      span(ng-if="loadOver_flag") 已经加载了所有的活动
-    .text-center(ng-if="campaigns.length==0")
-      span 目前没有新的活动
-    ul.pager
-      li
-        a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
-      li
-        a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
+  table.table.table-hover.campaign_table
+    tr(ng-repeat="campaign_item in campaigns")
+      td.time_col
+        p.text-right.day {{ campaign_item.start_time  | day }}
+        p.text-right {{ campaign_item.start_time | date:'HH:mm' }}
+      td.logo_col.text-center(bs-popover)
+        a(ng-href="{{campaign_item.link}}")
+          img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}"  ng-Mouseover='showGroupCard(campaign_item.team_id,campaign_item._id)' id='pop{{campaign_item._id}}')
+          img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}")
+      td.content_col
+        p 主题:
+          a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
+        p 内容:
+          span.content_text {{campaign_item.content}}
+        p #{__("LOCATION")}:
+          span.content_text {{campaign_item.location.name}}
+      td.operator_col
+        button.cancel_btn.dl_btn_small.operator_btn(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
+  .text-center(ng-if="campaigns.length>0")
+    button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
+    span(ng-if="loadOver_flag") 已经加载了所有的活动
+  .text-center(ng-if="campaigns.length==0")
+    span 目前没有新的活动
+  ul.pager
+    li
+      a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
+    li
+      a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
