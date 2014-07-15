@@ -986,14 +986,12 @@ exports.changeUser = function (req, res) {
 
 //任命/罢免队长
 exports.appointLeader = function (req, res) {
+  if(req.role !== 'HR')
+    return res.send(403,{'msg':'forbidden'});
   var uid = req.body.uid;
-  var gid = req.body.gid;
-  var cid = req.body.cid;
   var tid = req.body.tid;
   var operate = req.body.operate;
-  if(cid.toString() !==req.user._id.toString()){
-    return res.send(403, 'forbidden!');
-  }
+
   User.findOne({
         _id : uid
     },function (err, user) {
@@ -1017,15 +1015,15 @@ exports.appointLeader = function (req, res) {
 
             user.save(function(err) {
                 if(err) {
-                    console.log('错误',err);
-                    return res.send('USR_ERROR');
+                    console.log('用户保存错误:',err);
+                    return res.send(500,{'msg':'用户保存出错!'});
                 } else {
 
                     CompanyGroup.findOne({_id : tid},function (err, company_group) {
                         if (err || !company_group) {
-                            console.log(company_group);
+                            console.log(err);
                             //这里需要回滚User的操作
-                            return res.send('N_ERROR');
+                            return res.send(500,{'msg':'小组未找到!'});
                         } else {
                             if(operate){
                                 company_group.leader.push({
@@ -1043,12 +1041,12 @@ exports.appointLeader = function (req, res) {
                             }
                             company_group.save(function(err){
                                 if(err){
-                                    console.log('错误',err);
+                                    console.log('小组保存错误',err);
                                     //这里需要回滚User的操作
-                                    return res.send('G_ERROR');
+                                    return res.send(500,{'msg':'小组保存出错!'});
                                 } else {
                                     console.log(operate);
-                                    return res.send('OK');
+                                    return res.send(200,{'msg':'任命组长成功!'});
                                 }
                             });
                         }

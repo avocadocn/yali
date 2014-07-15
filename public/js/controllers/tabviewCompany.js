@@ -455,7 +455,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
         $scope._index = index;
         $scope.users[index].leader = true;
 
-        if($scope.leader != []){
+        if($scope.leader != undefined){
             for(var i = 0; i < $scope.users.length; i ++) {
                 if($scope.leader._id.toString() === $scope.users[i]._id.toString()){
                     $scope.users[i].leader = false;
@@ -463,20 +463,21 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }
         }
-        $scope.leaders[0] = {
-            '_id':user._id,
-            'nickname':user.nickname,
-            'photo':user.photo
+        else{
+            $scope.leaders[0] = {
+                '_id':user._id,
+                'nickname':user.nickname,
+                'photo':user.photo
+            }            
         }
+
     }
     $scope.dismissLeader = function (leader) {
         try{
             $http({
                 method: 'post',
-                url: '/company/appointLeader',
+                url: '/company/appointLeader/'+$scope.cid,
                 data:{
-                    cid: $scope.cid,
-                    gid: $scope.gid,
                     tid: $scope.tid,
                     uid: leader._id,
                     operate:false
@@ -497,10 +498,8 @@ tabViewCompany.directive('masonry', function ($timeout) {
       try{
             $http({
                 method: 'post',
-                url: '/company/appointLeader',
+                url: '/company/appointLeader/'+$scope.cid,
                 data:{
-                    cid: $scope.cid,
-                    gid: $scope.gid,
                     tid: $scope.tid,
                     uid: $scope._user._id,
                     operate:true
@@ -576,7 +575,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
         try{
             $http({
                 method:'post',
-                url: '/group/activateGroup',
+                url: '/group/activateGroup/'+tid,
                 data:{
                     'tid':tid,
                     'active':active
