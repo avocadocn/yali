@@ -171,15 +171,15 @@ exports.logoAuthorize = function(req, res, next){
   }
 }
 exports.campaginAuthorize = function(req, res, next){
-  if(req.user.provider==='company' && req.user._id.toString()===req.campaign.cid[0]._id.toString()){
+  if(req.user.provider==='company' && req.user._id.toString()===req.campaign.cid[0].toString()){
     req.role = 'HR';
   }
-  else if(req.user.provider==='user' && req.user.cid.toString()===req.campaign.cid[0]._id.toString()){
+  else if(req.user.provider==='user' && req.user.cid.toString()===req.campaign.cid[0].toString()){
     if(req.campaign.team.length===0){
       req.role = 'MEMBER';
     }
     else {
-      var team_index = model_helper.arrayObjectIndexOf(req.user.team,req.campaign.team[0]._id,'_id');
+      var team_index = model_helper.arrayObjectIndexOf(req.user.team,req.campaign.team[0],'_id');
       if (team_index>-1){
         if(req.user.team[team_index].leader ===true){
           req.role = 'LEADER';

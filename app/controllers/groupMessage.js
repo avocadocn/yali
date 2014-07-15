@@ -71,7 +71,7 @@ exports.getMessage = function(req, res) {
         switch (group_message[i].message_type){
           case 0://发起公司活动
           _group_message.logo = group_message[i].company[0].logo;
-          if(join_role&& new Date()<group_message[i].campaign.deadline){
+          if(group_message[i].campaign.active && join_role&& new Date()<group_message[i].campaign.deadline){
             var join_flag = false;
             group_message[i].campaign.member.forEach(function(member){
               if(member.uid.toString() === req.user._id.toString()){
@@ -86,7 +86,7 @@ exports.getMessage = function(req, res) {
             //_group_message.team_id = 
             _group_message.logo = group_message[i].team[0].logo;
             _group_message.team_id=group_message[i].team[0].teamid;
-            if(join_role&& new Date()<group_message[i].campaign.deadline){
+            if(group_message[i].campaign.active && join_role&& new Date()<group_message[i].campaign.deadline){
               var join_flag = false;
               group_message[i].campaign.member.forEach(function(member){
                 if(member.uid.toString() === req.user._id.toString()){

@@ -30,7 +30,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         try {
             $http({
                 method: 'post',
-                url: '/campaign/cancel',
+                url: '/campaign/cancel/'+_id,
                 data:{
                     campaign_id : _id
                 }
@@ -147,7 +147,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         try {
             $http({
                 method: 'post',
-                url: '/users/joinCampaign',
+                url: '/campaign/joinCampaign/'+$scope.campaign._id,
                 data:{
                     campaign_id : $scope.campaign._id
                 }
@@ -186,7 +186,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         try {
             $http({
                 method: 'post',
-                url: '/users/quitCampaign',
+                url: '/campaign/quitCampaign/'+$scope.campaign._id,
                 data:{
                     campaign_id : $scope.campaign._id
                 }

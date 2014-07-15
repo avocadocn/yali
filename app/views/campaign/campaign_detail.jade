@@ -5,7 +5,7 @@ append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join};role=#{role}")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join};role='#{role}'")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .dl_detail_main
