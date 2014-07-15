@@ -53,7 +53,7 @@ div(ng-show = '!loading')
       include ../partials/pointleader_modal
 
 
-div.dl_allteaminfo_emp.masonry(masonry ng-if="role === 'EMPLOYEE'")
+div.dl_allteaminfo_emp.masonry(masonry ng-if="role !== 'HR'")
   div.teamitem.masonry-item(ng-repeat="team in team_lists" masonryItem)
     a(href="/group/home/{{team._id}}")
       img.img_border.img_contain(ng-src="{{team.logo}}/20/20" ng-Mouseover='showGroupCard(team._id,team._id)' id='pop{{team._id}}')

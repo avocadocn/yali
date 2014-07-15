@@ -791,7 +791,7 @@ exports.timeLine = function(req,res){
           }
         }
       });
-      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'moment': moment});
+      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);

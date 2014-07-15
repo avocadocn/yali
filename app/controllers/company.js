@@ -910,8 +910,13 @@ exports.timeLine = function(req, res){
           
         }
       });
-        //console.log(newTimeLines);
-      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'moment': moment});
+    if(newTimeLines){
+        console.log(1,newTimeLines);
+    }
+    else{
+        console.log(2,newTimeLines);
+    }
+      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);

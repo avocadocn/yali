@@ -98,7 +98,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.number --;
                 $rootScope.isMember = false;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
+                alertify.alert('err');
             });
         }
         catch(e){
