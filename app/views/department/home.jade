@@ -19,24 +19,24 @@ block baseInfo
         if req.role === 'HR' || req.role === 'DEPARTMENT_MANAGER'
           .score_container
             button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
-          div.modal.fade#sponsorCampaignModel(ng-controller="SponsorCtrl" ng-init="did='#{department._id}'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+          div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" ng-init="did='#{department._id}'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
             include ../campaign/campaign_modal
 
 block panel
   div(ng-init="teamId='#{department.team._id}'")
     ul.nav.nav-tabs
-      li.tab_style(ng-class="{'active':nowTab=='message'}")
-        a.subtitle.no_radius(href="#/message" ng-click="addactive('message')") 部门动态
-      li.tab_style(ng-class="{'active':nowTab=='campaign'}")
-        a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") 部门活动
+      li.tab_style(ng-class="{'active':nowTab=='group_message'}")
+          a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") 部门动态
+      li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
+        a.subtitle.no_radius(href="#/group_campaign" ng-click="addactive('group_campaign')") 部门活动
       li.tab_style(ng-class="{'active':nowTab=='timeLine/#{department.team._id}'}")
-        a.subtitle.no_radius(href="#/timeLine/#{department.team._id}" ng-click="addactive('timeLine/#{department.team._id}')") 活动足迹
-      if req.role === 'HR' || req.role === 'DEPARTMENT_MANAGER'
-        li.tab_style(ng-class="{'active':nowTab=='applylist/#{department._id}'}")
-          a.subtitle.no_radius(href="#/applylist/#{department._id}" ng-click="addactive('applylist/#{department._id}')") 申请列表
+        a.subtitle.no_radius(href="#/timeLine/#{department.team._id}" ng-click="addactive('timeLine/#{department.team._id}')") #{__("TIME_LINE")}
+      //- if req.role === 'HR' || req.role === 'DEPARTMENT_MANAGER'
+      //-   li.tab_style(ng-class="{'active':nowTab=='applylist/#{department._id}'}")
+      //-     a.subtitle.no_radius(href="#/applylist/#{department._id}" ng-click="addactive('applylist/#{department._id}')") 申请列表
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
 
 append footExt
-  script(src="/js/controllers/department.js")
+  script(src="/js/controllers/tabviewGroup.js")
