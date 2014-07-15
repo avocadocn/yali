@@ -46,7 +46,7 @@ module.exports = function(app, passport) {
     app.post('/users/joinGroup', users.joinGroup);
     app.post('/users/quitGroup', users.quitGroup);
 
-    app.post('/users/vote/:userId', authorization.userAuthorize, users.vote);
+
 
 
     app.get('/users/editPhoto/:userId', authorization.userAuthorize, users.editPhoto);

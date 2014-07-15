@@ -366,7 +366,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
          try {
             $http({
                 method: 'post',
-                url: '/users/vote',
+                url: '/campaign/vote/'+competition_id,
                 data:{
                     competition_id : competition_id,
                     aOr : vote_status,

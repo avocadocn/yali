@@ -116,7 +116,7 @@ exports.getMessage = function(req, res) {
             _group_message.logo = group_message[i].team[camp_flag].logo;
             _group_message.team_id = group_message[i].team[camp_flag].teamid;
             _group_message.member_num = group_message[i].campaign.camp[camp_flag].member.length;
-            if(join_role&& req.role !=='OWNER'){
+            if(join_role){
               //0：未投票，1：赞成，-1反对
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
