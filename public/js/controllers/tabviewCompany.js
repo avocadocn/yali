@@ -88,6 +88,13 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
+
+    $rootScope.$on("$routeChangeStart",function(){
+        $rootScope.loading = true;
+    });
+    $rootScope.$on("$routeChangeSuccess",function(){
+        $rootScope.loading = false;
+    });
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {

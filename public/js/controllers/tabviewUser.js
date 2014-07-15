@@ -39,8 +39,10 @@ tabViewUser.config(['$routeProvider',
             return '/users/timeline/'+params.uid;
         }
       })
-      .when('/schedule', {
-        templateUrl: '/users/getScheduleList',
+      .when('/schedule/:uid', {
+        templateUrl: function(params){
+            return '/users/getScheduleList/'+params.uid;
+        },
         controller: 'ScheduleListController',
         controllerAs: 'schedule'
       })
@@ -62,6 +64,12 @@ tabViewUser.run(['$rootScope',
             $rootScope.nowTab = value;
             $rootScope.message_corner = false;
         };
+        $rootScope.$on("$routeChangeStart",function(){
+            $rootScope.loading = true;
+        });
+        $rootScope.$on("$routeChangeSuccess",function(){
+            $rootScope.loading = false;
+        });
     }
 ]);
 
@@ -86,6 +94,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
+
         $scope.new_comment = [];
         $scope.toggle = [];
         $scope.message_role = "user";
@@ -328,7 +337,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 }).success(function(data, status) {
                     if(data.result===1){
                         //alert('成功加入该活动!');
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                        //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                         $scope.group_messages[index].join_flag = true;
                         $scope.group_messages[index].member_num++;
                     }
@@ -652,11 +661,11 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         $scope.getCampaigns = function(attr) {
             if ($scope.isCalendar === true) {
                 $scope.campaignsType = attr;
-                var events_source = '/campaign/user/' + attr + '/calendar';
+                var events_source = '/campaign/user/' + attr + '/calendar/'+$rootScope.uid;
                 initCalendar(events_source);
             } else {
                 $scope.campaignsType = attr;
-                $http.get('/campaign/user/' + attr + '/list').success(function(data, status) {
+                $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
                   $scope.campaigns = data.campaigns;
                   $scope.company = false;
                 });
@@ -725,15 +734,16 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
         $rootScope.nowTab = 'personal';
-        $http.get('/users/'+$rootScope.uid+'/getAccount').success(function(data, status) {
+        $http.get('/users/getAccount/'+$rootScope.uid).success(function(data, status) {
             if (data.result === 1) {
                 $scope.user = data.data;
+                $scope.role = data.role;
             } else {
                 console.log(data.msg);
             }
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+            alertify.alert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
         });
         $scope.baseUnEdit = true;
         //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
@@ -757,21 +767,21 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                     };
                     $http({
                         method: 'post',
-                        url: '/users/'+$rootScope.uid+'/saveAccount',
+                        url: '/users/saveAccount/'+$rootScope.uid,
                         data: {
                             user: _info
                         }
                     }).success(function(data, status) {
                         //TODO:更改对话框
                         if (data.result === 1) {
-                            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                            //alertify.alert(data.msg);
                             //重新刷新页面
                             window.location.reload();
                         } else
-                            $rootScope.donlerAlert(data.msg);
+                            alertify.alert(data.msg);
                     }).error(function(data, status) {
                         //TODO:更改对话框
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                       alertify.alert('error');
                     });
                 } catch (e) {
                     console.log(e);
@@ -794,19 +804,20 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                     };
                     $http({
                         method: 'post',
-                        url: '/users/'+$rootScope.uid+'/saveAccount',
+                        url: '/users/saveAccount/'+$rootScope.uid,
                         data: {
                             user: _info
                         }
                     }).success(function(data, status) {
                         //TODO:更改对话框
-                        if (data.result === 1)
-                            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                        if (data.result === 1) {
+                            window.location.reload();
+                        }
                         else
-                            $rootScope.donlerAlert(data.msg);
+                            alertify.alert(data.msg);
                     }).error(function(data, status) {
                         //TODO:更改对话框
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                        alertify.alert('error');
                     });
                 } catch (e) {
                     console.log(e);
@@ -830,7 +841,7 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
         $scope.change_password = function() {
             $http({
                 method: 'post',
-                url: '/users/'+$rootScope.uid+'/changePassword',
+                url: '/users/changePassword'/+$rootScope.uid,
                 data: {
                     'nowpassword': $scope.nowpassword,
                     'newpassword': $scope.newpassword
@@ -838,13 +849,13 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
             }).success(function(data, status) {
                 //TODO:更改对话框
                 if (data.result === 1) {
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                     window.location.href = '#/personal';
                 } else
                     $rootScope.donlerAlert(data.msg);
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('error');
             });
         };
     }

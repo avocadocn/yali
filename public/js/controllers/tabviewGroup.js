@@ -53,6 +53,14 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.isMember;
     $rootScope.message_for_group = true;
 
+    $rootScope.$on("$routeChangeStart",function(){
+        $rootScope.loading = true;
+    });
+    $rootScope.$on("$routeChangeSuccess",function(){
+        $rootScope.loading = false;
+    });
+
+
     $rootScope.messageTypeChange = function(value){
         $rootScope.message_for_group = value;
     }
@@ -384,22 +392,22 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         try {
             $http({
                 method: 'post',
-                url: '/users/joinCampaign',
+                url: '/campaign/joinCampaign/'+campaign_id,
                 data:{
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.group_messages[index].join_flag = true;
                     $scope.group_messages[index].member_num++;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    //$rootScope.donlerAlert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -411,22 +419,22 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         try {
             $http({
                 method: 'post',
-                url: '/users/quitCampaign',
+                url: '/campaign/quitCampaign/'+campaign_id,
                 data:{
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
                     //alert('您已退出该活动!');
                     $scope.group_messages[index].join_flag = false;
                     $scope.group_messages[index].member_num--;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    //$rootScope.donlerAlert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
         }
         catch(e) {
@@ -614,12 +622,17 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         try {
             $http({
                 method: 'post',
-                url: '/campaign/cancel',
+                url: '/campaign/cancel/'+_id,
                 data:{
                     campaign_id : _id
                 }
             }).success(function(data, status) {
-                window.location.reload();
+                if(data.result===1){
+                    window.location.reload();
+                }
+                else{
+                    alertify(data.msg);
+                }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });
@@ -679,7 +692,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                     //TODO:更改对话框
                     if(data.result === 1) {
                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
-                        //window.location.reload();
+                        window.location.reload();
                     }
                     else
                         $rootScope.donlerAlert(data.msg);

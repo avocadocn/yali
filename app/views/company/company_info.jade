@@ -1,4 +1,5 @@
-div.company-info
+.loading_div(ng-show = 'loading')
+div.company-info(ng-show = '!loading')
   form.form-horizontal(name="accountForm")
     .dl_row
       h5.pull-left #{__("ACCOUNT")}

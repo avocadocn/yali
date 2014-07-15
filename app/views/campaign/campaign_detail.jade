@@ -5,14 +5,14 @@ append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join};role=#{role}")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join};role='#{role}'")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .dl_detail_main
       //-TODO:详情页权限不正确，需要更改
       if (role==='HR' || role==='LEADER') && active
         span.pull-right
-          btn.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign._id)") 关闭活动
+          button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign._id)") 关闭活动
       ul.nav.nav-tabs
         li.tab_style(ng-class="{'active':nowTab=='campaign'}")
           a.subtitle.no_radius.border_red(ng-cloak) {{campaign.theme}}

@@ -1,41 +1,43 @@
-hr
-.dl_modal_container
-  .dl_row(style="height:93px" ng-repeat="private_message in private_messages" ng-if="$index >= page_private.up && $index <= page_private.down")
-    .dl_message_head.dl_message_body_font(ng-switch="private_message.message_type")
-      span.glyphicon.glyphicon-pencil(ng-switch-when="4")
-      span.glyphicon.glyphicon-user(ng-switch-when="5")
-      span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
-      span.glyphicon.glyphicon-flash(ng-switch-when="7")
-    .dl_message_body.margin_left_5
-      .row
-        .dl_message_caption
-          h7 {{private_message.caption}}
-        .dl_message_date
-          h7 {{private_message.date | date:'yyyy-MM-dd HH:mm'}}
-      .row
-        .dl_md_12(ng-switch="private_message.message_type")
-          h5(ng-switch-when="4")
-            a(href="/competition/{{private_message.campaign_id}}" ng-click="setToRead($index)")
-              {{private_message.content}}
-          h5(ng-switch-when="5")
-            a
-              {{private_message.sender.nickname}} 给您发了
-              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
-          h5(ng-switch-when="6")
-            您收到了一条
-            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
-              系统消息
-          h5(ng-switch-when="7")
-            a(href="/group/home/{{private_message.team_id}}" ng-click="setToRead($index)")
-              {{private_message.content}}
-        .dl_md_1.pull-right.dl_message_rightcorner
-          button.dl_btn.pull-right(ng-click="setToDelete($index)") X
-          label.pull-right |
-          button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="private_message.status=='read'") {{statusHandle(private_message.status)}}
-  .dl_row.dl_center(ng-if="private_messages.length > 10")
-    button.dl_btn.dl_btn_small(ng-disabled="page_private.arrow == 'right' || page_private.arrow == 'none' " ng-click="pageOperate('left')") <<
-    button.dl_btn.dl_btn_small(ng-disabled="page_private.arrow == 'left' || page_private.arrow == 'none' " ng-click="pageOperate('right')") >>
-  .dl_row
-    hr
-    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="private_length + global_length > 0") 全部设为已读
-    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="private_messages.length > 0") 全部删除
+.loading_div(ng-show = 'loading')
+div(ng-show = '!loading')
+  hr
+  .dl_modal_container
+    .dl_row(style="height:93px" ng-repeat="private_message in private_messages" ng-if="$index >= page_private.up && $index <= page_private.down")
+      .dl_message_head.dl_message_body_font(ng-switch="private_message.message_type")
+        span.glyphicon.glyphicon-pencil(ng-switch-when="4")
+        span.glyphicon.glyphicon-user(ng-switch-when="5")
+        span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
+        span.glyphicon.glyphicon-flash(ng-switch-when="7")
+      .dl_message_body.margin_left_5
+        .row
+          .dl_message_caption
+            h7 {{private_message.caption}}
+          .dl_message_date
+            h7 {{private_message.date | date:'yyyy-MM-dd HH:mm'}}
+        .row
+          .dl_md_12(ng-switch="private_message.message_type")
+            h5(ng-switch-when="4")
+              a(href="/competition/{{private_message.campaign_id}}" ng-click="setToRead($index)")
+                {{private_message.content}}
+            h5(ng-switch-when="5")
+              a
+                {{private_message.sender.nickname}} 给您发了
+                a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
+            h5(ng-switch-when="6")
+              您收到了一条
+              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
+                系统消息
+            h5(ng-switch-when="7")
+              a(href="/group/home/{{private_message.team_id}}" ng-click="setToRead($index)")
+                {{private_message.content}}
+          .dl_md_1.pull-right.dl_message_rightcorner
+            button.dl_btn.pull-right(ng-click="setToDelete($index)") X
+            label.pull-right |
+            button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="private_message.status=='read'") {{statusHandle(private_message.status)}}
+    .dl_row.dl_center(ng-if="private_messages.length > 10")
+      button.dl_btn.dl_btn_small(ng-disabled="page_private.arrow == 'right' || page_private.arrow == 'none' " ng-click="pageOperate('left')") <<
+      button.dl_btn.dl_btn_small(ng-disabled="page_private.arrow == 'left' || page_private.arrow == 'none' " ng-click="pageOperate('right')") >>
+    .dl_row
+      hr
+      button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="private_length + global_length > 0") 全部设为已读
+      button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="private_messages.length > 0") 全部删除
