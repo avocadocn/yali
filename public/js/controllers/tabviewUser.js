@@ -39,8 +39,10 @@ tabViewUser.config(['$routeProvider',
             return '/users/timeline/'+params.uid;
         }
       })
-      .when('/schedule', {
-        templateUrl: '/users/getScheduleList',
+      .when('/schedule/:uid', {
+        templateUrl: function(params){
+            return '/users/getScheduleList/'+params.uid;
+        },
         controller: 'ScheduleListController',
         controllerAs: 'schedule'
       })
@@ -652,11 +654,11 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         $scope.getCampaigns = function(attr) {
             if ($scope.isCalendar === true) {
                 $scope.campaignsType = attr;
-                var events_source = '/campaign/user/' + attr + '/calendar';
+                var events_source = '/campaign/user/' + attr + '/calendar/'+$rootScope.uid;
                 initCalendar(events_source);
             } else {
                 $scope.campaignsType = attr;
-                $http.get('/campaign/user/' + attr + '/list').success(function(data, status) {
+                $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
                   $scope.campaigns = data.campaigns;
                   $scope.company = false;
                 });

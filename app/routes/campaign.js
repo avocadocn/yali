@@ -10,13 +10,13 @@ module.exports = function(app) {
       //加入、退出活动
   app.post('/campaign/joinCampaign/:campaignId', authorization.campaginAuthorize, campaign.joinCampaign);
   app.post('/campaign/quitCampaign/:campaignId', authorization.campaginAuthorize, campaign.quitCampaign);
-  app.get('/campaign/user/all/calendar', campaign.getUserAllCampaignsForCalendar);
-  app.get('/campaign/user/joined/calendar', campaign.getUserJoinedCampaignsForCalendar);
-  app.get('/campaign/user/unjoin/calendar', campaign.getUserUnjoinCampaignsForCalendar);
+  app.get('/campaign/user/all/calendar/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForCalendar);
+  app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
+  app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
 
-  app.get('/campaign/user/all/list', campaign.getUserAllCampaignsForList);
-  app.get('/campaign/user/joined/list', campaign.getUserJoinedCampaignsForList);
-  app.get('/campaign/user/unjoin/list', campaign.getUserUnjoinCampaignsForList);
+  app.get('/campaign/user/all/list/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForList);
+  app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);
+  app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
 
   app.param('campaignId', campaign.campaign);
 };

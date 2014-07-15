@@ -609,7 +609,7 @@ exports.getCampaigns = function(req, res) {
 
 
 exports.renderScheduleList = function(req, res) {
-  res.render('partials/schedule_list');
+  res.render('partials/schedule_list',{'role':req.role});
 };
 
 
@@ -841,7 +841,6 @@ exports.joinGroup = function (req, res){
                 return res.send({result: 0, msg:'保存小队出错'});
               }
               else{
-                console.log(user);
                 //保存用户
                 user.save(function (err){
                 if(err){
@@ -948,19 +947,19 @@ exports.getAccount = function (req, res) {
     return res.send(403, 'forbidden!');
   }
   User.findOne({
-          _id : req.params.userId
-      },{'_id':0,'hashed_password':0,'salt':0}, function(err, user) {
-          if(err) {
-              console.log(err);
-              res.send({'result':0,'msg':'数据错误'});
+      _id : req.params.userId
+  },{'_id':0,'hashed_password':0,'salt':0}, function(err, user) {
+      if(err) {
+          console.log(err);
+          res.send({'result':0,'msg':'数据错误'});
+      }
+      else {
+          if (user) {
+              res.send({'result':1,'msg':'用户查找成功','data': user});
+          } else {
+              res.send({'result':0,'msg':'不存在该用户'});
           }
-          else {
-              if (user) {
-                  res.send({'result':1,'msg':'用户查找成功','data': user});
-              } else {
-                  res.send({'result':0,'msg':'不存在该用户'});
-              }
-          }
+      }
   });
 };
 
