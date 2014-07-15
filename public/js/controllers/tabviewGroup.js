@@ -31,14 +31,14 @@ tabViewGroup.config(['$routeProvider',
       .when('/group_info', {
         templateUrl: '/group/renderInfo',
         controller: 'infoController',
-        controllerAs: 'account',
+        controllerAs: 'account'
       })
       .when('/timeLine/:tid', {
         templateUrl: function(params){
             return '/group/timeline/'+params.tid;
         }
-      }).
-      otherwise({
+      })
+      .otherwise({
         redirectTo: '/group_message'
       });
 }]);
