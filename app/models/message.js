@@ -14,7 +14,7 @@ var Message = new Schema({
   },
   type: {
     type: String,
-    enum: ['private', 'team', 'company','global']
+    enum: ['private', 'team', 'department', 'company','global']
   },
   status: {
     type: String,

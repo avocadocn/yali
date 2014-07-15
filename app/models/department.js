@@ -33,11 +33,7 @@ var Department = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'CompanyGroup'
   },
-  manager:{
-    _id:Schema.Types.ObjectId,
-    nickname:String,
-    photo:String
-  },
+  manager:[_member],
   member:[_member]
 });
 

@@ -39,6 +39,11 @@
       span.message_head(ng-switch-when="8")
         a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}、
         span 有新成员加入
+      //- span.message_head(ng-switch-when="9")
+      //-   a(ng-href="{{'/department/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+      //-   span 向
+      //-   a(ng-href="{{'/department/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
+      //-   span 发出了挑战
       span(ng-switch-default)
       span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
       .dl_message

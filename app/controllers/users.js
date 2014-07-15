@@ -366,17 +366,20 @@ exports.dealSetProfile = function(req, res) {
             return res.render('users/message', message.dbError);
           }
           else {
-            //将员工加入部门小队
+            //将员工加入申请列表
             var member = {
               '_id':user._id,
               'nickname':user.nickname,
-              'photo':user.photo
+              'photo':user.photo,
+              'apply_status':'wait'
             };
             if(req.body.main_department_id != 'null'){
               if(req.body.child_department_id != 'null'){
-                department.memberOperateByHand('join',member,req.body.child_department_id);
+                //department.memberOperateByHand('join',member,req.body.child_department_id);
+                _apply(req.body.child_department_id,req,null,member);
               }else{
-                department.memberOperateByHand('join',member,req.body.main_department_id);
+                //department.memberOperateByHand('join',member,req.body.main_department_id);
+                _apply(req.body.main_department_id,req,null,member);
               }
             }
             var groupMessage = new GroupMessage();
@@ -1407,6 +1410,17 @@ exports.getTimelineForApp = function(req,res){
 }
 
 
+var _apply = function(did,req,res,member){
+  Department.findByIdAndUpdate({'_id':did},{'$push':{'member':member}},function(err,department){
+    if(err || !department){
+      if(res!=null)res.send(500);
+    }else{
+      //记得发站内信
+      if(res!=null)res.send(200);
+    }
+  });
+}
+
 //申请加入某个部门
 exports.applyToDepartment = function(req,res){
   var did = req.body.did;
@@ -1415,15 +1429,8 @@ exports.applyToDepartment = function(req,res){
     'nickname':req.user.nickname,
     'photo':req.user.photo,
     'apply_status':'wait'
-  }
-  Department.findByIdAndUpdate({'_id':did},{'$push':{'member':member}},function(err,department){
-    if(err || !department){
-      res.send(500);
-    }else{
-      //记得发站内信
-      res.send(200);
-    }
-  })
+  };
+  _apply(did,req,res,member);
 }
 
 

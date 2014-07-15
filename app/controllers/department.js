@@ -43,10 +43,16 @@ exports.department = function(req, res, next) {
     });
 };
 
+
+
 //先搜索
 //任撤部门管理员
 exports.managerOperate = function(req, res) {
-  var manager = req.body.manager;
+  var manager = [req.body.manager];
+  department_manager
+  if(req.body.manager == 'null'){
+    manager = [];
+  }
   var did = req.body.did;
   Department.findByIdAndUpdate({
     '_id': did
@@ -58,48 +64,111 @@ exports.managerOperate = function(req, res) {
     if (err || !message) {
       res.send(500);
     } else {
-      res.send(200, {
-        'manager': department.manager
+      CompanyGroup.findByIdAndUpdate({'_id':department.team},{'$set':{'leader':manager}},function (err,company_group){
+        if(err || !company_group){
+          res.send(500);
+        }else{
+          res.send(200, {
+            'manager': manager
+          });
+        }
       });
     }
   });
 }
 
 
-//先搜索
-//任撤部门管理员
-exports.managerOperate = function(req, res) {
-  var manager = req.body.manager;
-  var did = req.body.did;
-  Department.findByIdAndUpdate({
-    '_id': did
-  }, {
-    '$set': {
-      'manager': manager
+//部门之间互相发活动
+exports.multiCampaignSponsor = function(req, res) {
+  if(req.role !=='HR' && req.role !=='LEADER'){
+    console.log(req.role);
+    return res.send(403,'forbidden');
+  }
+  var other_departments = req.body.other_departments;//其实只有一个
+  var poster = req.body.poster;
+  var theme = req.body.theme;
+  var content = req.body.content;
+  var member_num = req.body.member_num;
+  var location = req.body.location;
+  var time = req.body.time;
+
+  var department_campaign = new Campaign();
+  department_campaign.team.push(req.department.team);
+  var teams = [];
+  var team_ids = [];
+  for(var i = 0; i < other_departments.length; i ++){
+    department_campaign.team.push(other_departments[i].team._id);
+    team_ids.push(other_departments[i].team._id);
+    teams.push(other_departments[i].team);
+  }
+  department_campaign.cid.push(req.department.company._id);
+  department_campaign.cname.push(req.department.company.name);
+  department_campaign.poster = poster;
+  department_campaign.theme = theme;
+  department_campaign.content = content;
+  department_campaign.member_min = member_num.min;
+  department_campaign.member_max = member_num.max;
+  department_campaign.location = location;
+  department_campaign.start_time = time.start;
+  department_campaign.end_time = time.end;
+  department_campaign.deadline = time.deadline;
+
+  var photo_album = new PhotoAlbum({
+    owner: {
+      model: {
+        _id: department_campaign._id,
+        type: 'Campaign'
+      },
+      companies: [req.department.company._id],
+      teams: team_ids
+    },
+    name: moment(department_campaign.start_time).format("YYYY-MM-DD ") + department_campaign.theme,
+    update_user: {
+      _id: department_campaign.poster._id,
+      name: department_campaign.poster.nickname,
+      type: 'user'
+    },
+    create_user: {
+      _id: department_campaign.poster._id,
+      name: department_campaign.poster.nickname,
+      type: 'user'
     }
-  }, function(err, department) {
-    if (err || !message) {
-      res.send(500);
+  });
+  fs.mkdir(path.join(meanConfig.root, '/public/img/photo_album/', photo_album._id.toString()), function(err) {
+    if (err) {
+      console.log(err);
+      return res.send(500);
     } else {
-      res.send(200, {
-        'manager': department.manager
+      photo_album.save(function(err){
+        if(!err){
+          department_campaign.photo_album = photo_album._id;
+
+          department_campaign.save(function(err){
+            if(!err){
+              var groupMessage = new GroupMessage();
+              groupMessage.message_type = 9;
+              groupMessage.team.push(teams);
+
+              groupMessage.company.push({
+                cid: req.department.company._id,
+                name: req.department.company.name
+              });
+              groupMessage.campaign = department_campaign._id;
+              groupMessage.save(function (err) {
+                if (err) {
+                  console.log('保存约战动态时出错' + err);
+                }else{
+                  return res.send({'result':0,'msg':'SUCCESS'});
+                }
+              });
+            }else{
+              return res.send({'result':0,'msg':'ERROR'});
+            }
+          });
+        }
       });
     }
   });
-}
-
-
-
-//部门之间挑战
-exports.provoke = function(req, res) {
-
-}
-
-
-//部门之间应战
-exports.responseProvoke = function(req, res) {
-
-
 }
 
 
@@ -229,22 +298,26 @@ exports.sponsor = function(req, res) {
     });
   });
 }
-var teamOperate = function(did, operate, res, req) {
-  Department.findByIdAndUpdate({
-    '_id': did
-  }, operate, function(err, department) {
-    if (err || !department) {
-      if (res != null) return res.send(500);
-    } else {
-      CompanyGroup.findByIdAndUpdate({
-        '_id': department.team
-      }, operate, function(err, company_group) {
-        if (err || !department) {
-          if (res != null) return res.send(500);
-        } else {
-          if (res != null) return res.send(200, {
-            'member': company_group.member
-          });
+var teamOperate = function(did,operate,res,req,user){
+  Department.findByIdAndUpdate({'_id':did},operate,function(err,department){
+    if(err || !department){
+      if(res != null)return res.send(500);
+    }else{
+      CompanyGroup.findByIdAndUpdate({'_id':department.team},operate,function(err,company_group){
+        if(err || !department){
+          if(res!=null)return res.send(500);
+        }else{
+          if(user != null){
+            User.findByIdAndUpdate({'_id':user._id},{'$set':{'department':null}},function (err,user){
+              if(!user || err){
+                if(res!=null)return res.send(500);
+              }else{
+                if(res!=null)return res.send(200,{'member':company_group.member});
+              }
+            });
+          }else{
+            if(res!=null)return res.send(200,{'member':company_group.member});
+          }
         }
       });
     }
@@ -262,7 +335,7 @@ exports.memberOperateByRoute = function(req, res) {
       '$push': {
         'member': member
       }
-    }, req, res);
+    }, req, res, null);
   }
   if (operate === 'quit') {
     //踢掉
@@ -272,7 +345,7 @@ exports.memberOperateByRoute = function(req, res) {
           '_id': member._id
         }
       }
-    }, req, res);
+    }, req, res, member);
   }
 }
 
@@ -280,90 +353,81 @@ exports.memberOperateByRoute = function(req, res) {
 exports.memberOperateByHand = function(operate, member, did) {
   if (operate === 'join') {
     //员工提出申请后加入
-    teamOperate(did, {
-      '$push': {
-        'member': member
-      }
-    }, null, null);
+    teamOperate(did,{'$push':{'member':member}},null,null,null);
   }
   if (operate === 'quit') {
     //踢掉
-    teamOperate(did, {
-      '$pull': {
-        'member': {
-          '_id': member._id
-        }
-      }
-    }, null, null);
+    teamOperate(did,{'$pull':{'member':{'_id':member._id}}},null,null,member);
   }
 }
 
+//下面的千万不要删啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊,以后还会用的
 
-//处理员工申请
-exports.applyOperate = function(req, res) {
-  var did = req.body.did;
-  var apply_status = req.body.apply_status;
-  var apply_members = req.body.apply_members; //ids是数组,因为可以批量处理申请
-  Department.findOne({
-    '_id': did
-  }, function(err, department) {
-    if (err || !department) {
-      res.send(500);
-    } else {
-      var members = [];
-      for (var i = 0; i < department.member.length; i++) {
-        for (var j = 0; j < apply_members.length; j++) {
-          if (apply_members[j]._id.toString() === department.member[i].toString()) {
-            members.push(apply_members[j]);
-            department.member[i].apply_status = apply_status;
-            break;
-          }
-        }
-      }
-      department.save(function(err) {
-        if (err) {
-          res.send(500);
-        } else {
-          CompanyGroup.findOne({
-            '_id': department.team
-          }, function(err, company_group) {
-            if (err || !company_group) {
-              res.send(500);
-            } else {
-              var old_member = company_group.member;
-              company_group.member = old_member.concat(members);
-              company_group.save(function(err) {
-                if (err) {
-                  res.send(500);
-                } else {
-                  res.send(200, {
-                    'member': department.member
-                  })
-                }
-              })
-            }
-          });
-        }
-      });
-    }
-  })
-};
+// //处理员工申请
+// exports.applyOperate = function(req, res) {
+//   var did = req.body.did;
+//   var apply_status = req.body.apply_status;
+//   var apply_members = req.body.apply_members; //ids是数组,因为可以批量处理申请
+//   Department.findOne({
+//     '_id': did
+//   }, function(err, department) {
+//     if (err || !department) {
+//       res.send(500);
+//     } else {
+//       var members = [];
+//       for (var i = 0; i < department.member.length; i++) {
+//         for (var j = 0; j < apply_members.length; j++) {
+//           if (apply_members[j]._id.toString() === department.member[i].toString()) {
+//             members.push(apply_members[j]);
+//             department.member[i].apply_status = apply_status;
+//             break;
+//           }
+//         }
+//       }
+//       department.save(function(err) {
+//         if (err) {
+//           res.send(500);
+//         } else {
+//           CompanyGroup.findOne({
+//             '_id': department.team
+//           }, function(err, company_group) {
+//             if (err || !company_group) {
+//               res.send(500);
+//             } else {
+//               var old_member = company_group.member;
+//               company_group.member = old_member.concat(members);
+//               company_group.save(function(err) {
+//                 if (err) {
+//                   res.send(500);
+//                 } else {
+//                   res.send(200, {
+//                     'member': department.member
+//                   })
+//                 }
+//               })
+//             }
+//           });
+//         }
+//       });
+//     }
+//   })
+// }
 
-//获取所有员工的申请信息
-exports.getApplyInfo = function(req, res) {
-  var did = req.body.did;
-  Department.findOne({
-    '_id': did
-  }, function(err, department) {
-    if (err || !department) {
-      res.send(500);
-    } else {
-      res.send(200, {
-        'member': department.member
-      });
-    }
-  })
-};
+// //获取所有员工的申请信息
+// exports.getApplyInfo = function(req, res) {
+//   var did = req.body.did;
+//   Department.findOne({
+//     '_id': did
+//   }, function(err, department) {
+//     if (err || !department) {
+//       res.send(500);
+//     } else {
+//       res.send(200, {
+//         'member': department.member
+//       });
+//     }
+//   })
+// }
 
 //获取某一部门的详细信息
 exports.getDepartmentDetail = function(req, res) {
@@ -695,6 +759,7 @@ exports.createDepartment = function(req, res) {
       'cid': req.user._id,
       'gid': '0',
       'group_type': 'virtual',
+      'name':req.body.name,
       'cname': req.user.info.name,
       'entity_type': 'virtual'
     }
