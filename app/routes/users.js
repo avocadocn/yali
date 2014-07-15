@@ -46,7 +46,7 @@ module.exports = function(app, passport) {
     app.post('/users/joinGroup', users.joinGroup);
     app.post('/users/quitGroup', users.quitGroup);
 
-    app.post('/users/vote/:userId', authorization.userAuthorize, users.vote);
+
 
 
     app.get('/users/editPhoto/:userId', authorization.userAuthorize, users.editPhoto);
@@ -63,7 +63,7 @@ module.exports = function(app, passport) {
     app.get('/users/getTimelineForApp', authorization.userAuthorize, users.getTimelineForApp);
 
     app.post('/users/info', authorization.userAuthorize, users.getUserInfo);
-    app.get('/users/briefInfo/:userId', authorization.userAuthorize, users.getBriefInfo);
+    app.get('/users/briefInfo/:userId', users.getBriefInfo);
     app.param('userId', users.user);
 
 };

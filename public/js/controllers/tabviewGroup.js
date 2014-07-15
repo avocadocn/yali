@@ -98,7 +98,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.number --;
                 $rootScope.isMember = false;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
+                alertify.alert('err');
             });
         }
         catch(e){
@@ -366,7 +366,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
          try {
             $http({
                 method: 'post',
-                url: '/users/vote',
+                url: '/campaign/vote/'+competition_id,
                 data:{
                     competition_id : competition_id,
                     aOr : vote_status,
@@ -691,7 +691,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                 }).success(function(data, status) {
                     //TODO:更改对话框
                     if(data.result === 1) {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                        alertify.alert(data.msg);
                         window.location.reload();
                     }
                     else
@@ -728,6 +728,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         if($scope.team.home_court[0].name!==''){
             var piont1 = new BMap.Point($scope.team.home_court[0].coordinates[0],$scope.team.home_court[0].coordinates[1]);
             $scope.locationmap1.centerAndZoom(piont1,15);
+            var marker1 = new BMap.Marker(piont1);
+            $scope.locationmap1.addOverlay(marker1);
         }
         $scope.locationmap1.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
         var options = {
@@ -763,8 +765,10 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.initialize2 = function(){
         $scope.locationmap2 = new BMap.Map("courtMap2");
         if($scope.team.home_court[1].name!==''){
-            var piont2 = new BMap.Point($scope.team.home_court[1].coordinates[0],$scope.team.home_court[1].coordinates[1]);
-            $scope.locationmap2.centerAndZoom(piont2,15);
+            var point2 = new BMap.Point($scope.team.home_court[1].coordinates[0],$scope.team.home_court[1].coordinates[1]);
+            $scope.locationmap2.centerAndZoom(point2,15);
+            var marker2 = new BMap.Marker(point2);
+            $scope.locationmap2.addOverlay(marker2);
         }
         $scope.locationmap2.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
         var options = {

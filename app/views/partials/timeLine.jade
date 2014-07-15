@@ -1,6 +1,6 @@
 .loading_div(ng-show = 'loading')
 div(ng-show = '!loading')
-  if(newTimeLines)
+  if length>0
     .dl_timeline
       .spine
       each years in newTimeLines
@@ -37,4 +37,4 @@ div(ng-show = '!loading')
                   
                   p= item.content
   else
-    span.emptiem #{__("NO_CAMPAIGN")}
+    .emptiem.text-center #{__("NO_TIMELINE")}

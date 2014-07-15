@@ -290,7 +290,7 @@ exports.timeLine = function(req, res){
           
         }
       });
-      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'moment': moment});
+      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
       // // todo new time style
       // console.log(newTimeLines);
       //console.log(newTimeLines);

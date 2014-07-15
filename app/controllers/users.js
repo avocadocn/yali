@@ -667,57 +667,7 @@ exports.editInfo = function(req, res) {
 };
 
 
-//员工投票是否参加约战
-//记得要做重复投票检查 TODO
-exports.vote = function (req, res) {
 
-  var tid = req.body.tid;
-  var cid = req.user.cid;
-  var uid = req.user._id;
-  var aOr = req.body.aOr;
-  var value = 1;
-  var competition_id = req.body.competition_id;
-
-  Campaign.findOne({
-    '_id' : competition_id
-  },
-  function (err, campaign) {
-    if (campaign) {
-
-      var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
-      var positive_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.positive_member,uid,'uid');
-      var negative_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.negative_member,uid,'uid');
-      if(aOr && negative_index > -1 || !aOr && positive_index > -1){
-        return res.send({result: 0, msg:'您已经投过票，无法再次投票'});
-      }
-      else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
-        campaign.camp[camp_index].vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
-        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']-1;
-      }
-      else if(aOr && positive_index <0 || !aOr && negative_index <0){
-        campaign.camp[camp_index].vote[aOr?'positive_member':'negative_member'].push({'cid':cid,'uid':uid});
-        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']+1;
-      }
-
-      campaign.save(function (err) {
-        if(err) {
-          return res.send({result: 0, msg:'投票发生错误'});
-        }
-        else{
-          return res.send({result: 1, msg:'成功',data:{
-              quit: aOr && positive_index <0 || !aOr && negative_index <0,
-              positive : campaign.camp[camp_index].vote.positive,
-              negative : campaign.camp[camp_index].vote.negative
-            }
-          });
-        }
-      });
-    } else {
-      console.log('没有此约战!');
-      return res.send({result: 0, msg:'没有此约战'});
-    }
-  });
-};
 
 
 exports.timeLine = function(req,res){
@@ -791,7 +741,7 @@ exports.timeLine = function(req,res){
           }
         }
       });
-      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'moment': moment});
+      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);

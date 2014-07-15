@@ -171,10 +171,10 @@ exports.logoAuthorize = function(req, res, next){
   }
 }
 exports.campaginAuthorize = function(req, res, next){
-  if(req.user.provider==='company' && req.user._id.toString()===req.campaign.cid[0].toString()){
+  if(req.user.provider==='company' && req.campaign.cid.indexOf(req.user._id.toString())>-1){
     req.role = 'HR';
   }
-  else if(req.user.provider==='user' && req.user.cid.toString()===req.campaign.cid[0].toString()){
+  else if(req.user.provider==='user' && req.campaign.cid.indexOf(req.user.cid.toString())>-1){
     if(req.campaign.team.length===0){
       req.role = 'MEMBER';
     }

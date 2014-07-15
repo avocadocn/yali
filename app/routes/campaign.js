@@ -10,6 +10,9 @@ module.exports = function(app) {
       //加入、退出活动
   app.post('/campaign/joinCampaign/:campaignId', authorization.campaginAuthorize, campaign.joinCampaign);
   app.post('/campaign/quitCampaign/:campaignId', authorization.campaginAuthorize, campaign.quitCampaign);
+  app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
+
+
   app.get('/campaign/user/all/calendar/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
