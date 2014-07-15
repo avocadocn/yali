@@ -534,10 +534,10 @@ exports.renderCampaignDetail = function(req, res) {
         req.join = -1;
       }
       var parent_name, parent_url;
-      if (campaign.team.length === 0) {
+      if (campaign.team.length === 0 || campaign.campaign_type === 6) {
         parent_name = campaign.cid[0].info.name;
         parent_url = '/company/home';
-      } else {
+      }else {
         parent_name = campaign.team[0].name;
         parent_url = '/group/home/' + campaign.team[0]._id;
       }
