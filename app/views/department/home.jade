@@ -29,7 +29,7 @@ block panel
   div(ng-init="teamId='#{department.team._id}'")
     ul.nav.nav-tabs
       li.tab_style(ng-class="{'active':nowTab=='message'}")
-          a.subtitle.no_radius(href="#/message" ng-click="addactive('message')") 部门动态
+        a.subtitle.no_radius(href="#/message" ng-click="addactive('message')") 部门动态
       li.tab_style(ng-class="{'active':nowTab=='campaign'}")
         a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") 部门活动
       li.tab_style(ng-class="{'active':nowTab=='info'}")
@@ -42,6 +42,22 @@ block panel
     .tab-content.margin_top_20
       .tab-pane.active
         div(ng-view)
+
+block aside
+  if (role !=='GUESTHR' && role !=='HR')
+    include ../partials/group_thumbnail
+    +group_thumbnail(selected_teams,'active',__('SELECTED_TEAM'))
+    +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'))
+  if (role !=='GUESTHR' && role !=='GUEST')
+    .photo_album
+      p
+        span.subtitle.margin_top_15 部门相册
+        a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+      div
+        each photo_album in photo_album_thumbnails
+          a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+            img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
+            p.thumbnail_name.text-center= photo_album.name
 
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")

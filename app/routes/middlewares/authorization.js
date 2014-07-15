@@ -39,9 +39,20 @@ exports.departmentAuthorize = function(req, res, next) {
         req.role = 'HR';
       }
     } else if (req.user.provider === 'user') {
-      if (department.manager) {
+      if (department.manager._id) {
         if (req.user._id.toString() === department.manager._id.toString()) {
           req.role = 'LEADER';
+        }
+      }
+      for (var i = 0, members = department.team.member; i < members.length; i++) {
+        if (req.user._id.toString() === members[i]._id.toString()) {
+          req.role = 'MEMBER';
+        }
+      }
+      if (!req.role) {
+        console.log(req.user.cid, department.company._id)
+        if (req.user.cid.toString() === department.company._id.toString()) {
+          req.role = 'PARTNER';
         }
       }
     }

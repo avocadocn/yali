@@ -164,7 +164,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     });
 
     //var teamId = $('#team_content').attr('team-id');
-    $rootScope.nowTab ='group_message';
+    $rootScope.nowTab ='message';
     $scope.block = 1;
     $scope.page = 1;
     $scope.pageTime = [0];

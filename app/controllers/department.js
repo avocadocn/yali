@@ -16,7 +16,8 @@ var mongoose = require('mongoose'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   PhotoAlbum = mongoose.model('PhotoAlbum'),
   GroupMessage = mongoose.model('GroupMessage'),
-  meanConfig = require('../../config/config');
+  meanConfig = require('../../config/config'),
+  photo_album_controller = require('./photoAlbum');
 
 
 //消除递归使用的栈
@@ -829,24 +830,106 @@ exports.createDepartment = function(req, res) {
 
 
 exports.renderHome = function(req, res) {
-  Department
-    .findById(req.params.departmentId)
-    .populate('team')
+  var department = req.department;
+
+  PhotoAlbum
+    .where('_id').in(department.team.photo_album_list)
     .exec()
-    .then(function(department) {
-      if (!department) {
-        throw 'not found';
+    .then(function(photo_albums) {
+      if (!photo_albums) {
+        return res.send(404);
       }
-      return res.render('department/home', {
-        department: department,
-        role: req.role
-      });
-    })
-    .then(null, function(err) {
-      console.log(err);
-      // TO DO: temp err handle
-      res.send(500);
+      var photo_album_thumbnails = [];
+
+      for (var i = 0; i < photo_albums.length; i++) {
+        if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
+          continue;
+        }
+        if (photo_albums[i].hidden === true) {
+          continue;
+        }
+        var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
+        photo_album_thumbnails.push({
+          uri: thumbnail_uri,
+          name: photo_albums[i].name,
+          _id: photo_albums[i]._id
+        });
+        if (photo_album_thumbnails.length === 4) {
+          break;
+        }
+      }
+
+      if (req.role === 'HR') {
+        return res.render('department/home', {
+          'department': department,
+          'role': req.role,
+          'tname': department.team.name,
+          'number': department.team.member ? department.team.member.length : 0,
+          'score': department.team.score ? department.team.score : 0,
+          'logo': department.team.logo,
+          'group_id': department.team._id,
+          'cname': department.team.cname,
+          'sign': department.team.brief,
+          'gid': department.team.gid,
+          'photo_album_thumbnails': photo_album_thumbnails
+        });
+      } else {
+        var selected_teams = [];
+        var unselected_teams = [];
+        var user_teams = [];
+        var photo_album_ids = [];
+        for (var i = 0; i < req.user.team.length; i++) {
+          user_teams.push(req.user.team[i]._id.toString());
+        }
+        //此处不需传那么多吧……M
+        CompanyGroup.find({
+          'cid': req.user.cid
+        }, {
+          '_id': 1,
+          'gid': 1,
+          'group_type': 1,
+          'logo': 1,
+          'name': 1,
+          'cname': 1,
+          'active': 1
+        }, function(err, company_groups) {
+          if (err || !company_groups) {
+            return res.send([]);
+          } else {
+            for (var i = 0; i < company_groups.length; i++) {
+              if (company_groups[i].gid !== '0' && company_groups[i].active === true) {
+                //下面查找的是该成员加入和未加入的所有active小队
+                if (user_teams.indexOf(company_groups[i]._id.toString()) > -1) {
+                  selected_teams.push(company_groups[i]);
+                } else {
+                  unselected_teams.push(company_groups[i]);
+                }
+              }
+            }
+
+            return res.render('department/home', {
+              'department': department,
+              'selected_teams': selected_teams,
+              'unselected_teams': unselected_teams,
+              'tname': department.team.name,
+              'number': department.team.member ? department.team.member.length : 0,
+              'score': department.team.score ? department.team.score : 0,
+              'role': req.role,
+              'logo': department.team.logo,
+              'group_id': department.team._id,
+              'cname': department.team.cname,
+              'sign': department.team.brief,
+              'gid': department.team.gid,
+              'photo': req.user.photo,
+              'realname': req.user.realname,
+              'photo_album_thumbnails': photo_album_thumbnails
+            });
+          };
+        });
+      }
+
     });
+
 };
 
 exports.renderCampaigns = function(req, res) {
@@ -854,7 +937,9 @@ exports.renderCampaigns = function(req, res) {
 };
 
 exports.renderApplyList = function(req, res) {
-  res.render('partials/apply_list', { department: req.department });
+  res.render('partials/apply_list', {
+    department: req.department
+  });
 };
 
 exports.renderDepartmentInfo = function(req, res) {
