@@ -36,11 +36,11 @@ module.exports = function(app, passport) {
     app.get('/users/getCampaigns/:userId', authorization.userAuthorize, users.getCampaigns);
     app.get('/users/getScheduleList/:userId', authorization.userAuthorize,users.renderScheduleList);
 
-    app.get('/users/:userId/change_password/:userId',authorization.userAuthorize, users.renderChangePassword);
-    app.get('/users/:userId/getAccount/:userId', authorization.userAuthorize, users.getAccount);
-    app.post('/users/:userId/saveAccount/:userId', authorization.userAuthorize, users.saveAccount);
+    app.get('/users/change_password/:userId',authorization.userAuthorize, users.renderChangePassword);
+    app.get('/users/getAccount/:userId', authorization.userAuthorize, users.getAccount);
+    app.post('/users/saveAccount/:userId', authorization.userAuthorize, users.saveAccount);
     app.post('/users/changePassword/:userId', authorization.userAuthorize, users.changePassword);
-    app.get('/users/editInfo/:userId', authorization.userAuthorize, users.editInfo);
+    app.get('/users/editInfo', users.editInfo);
     app.get('/users/timeline/:userId', authorization.userAuthorize, users.timeLine);
     //加入、退出小队
     app.post('/users/joinGroup', users.joinGroup);

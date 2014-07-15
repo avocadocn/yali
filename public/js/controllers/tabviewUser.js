@@ -734,15 +734,16 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
         $rootScope.nowTab = 'personal';
-        $http.get('/users/'+$rootScope.uid+'/getAccount').success(function(data, status) {
+        $http.get('/users/getAccount/'+$rootScope.uid).success(function(data, status) {
             if (data.result === 1) {
                 $scope.user = data.data;
+                $scope.role = data.role;
             } else {
                 console.log(data.msg);
             }
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+            alertify.alert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
         });
         $scope.baseUnEdit = true;
         //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
@@ -766,21 +767,21 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                     };
                     $http({
                         method: 'post',
-                        url: '/users/'+$rootScope.uid+'/saveAccount',
+                        url: '/users/saveAccount/'+$rootScope.uid,
                         data: {
                             user: _info
                         }
                     }).success(function(data, status) {
                         //TODO:更改对话框
                         if (data.result === 1) {
-                            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                            //alertify.alert(data.msg);
                             //重新刷新页面
                             window.location.reload();
                         } else
-                            $rootScope.donlerAlert(data.msg);
+                            alertify.alert(data.msg);
                     }).error(function(data, status) {
                         //TODO:更改对话框
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                       alertify.alert('error');
                     });
                 } catch (e) {
                     console.log(e);
@@ -803,19 +804,20 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                     };
                     $http({
                         method: 'post',
-                        url: '/users/'+$rootScope.uid+'/saveAccount',
+                        url: '/users/saveAccount/'+$rootScope.uid,
                         data: {
                             user: _info
                         }
                     }).success(function(data, status) {
                         //TODO:更改对话框
-                        if (data.result === 1)
-                            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                        if (data.result === 1) {
+                            window.location.reload();
+                        }
                         else
-                            $rootScope.donlerAlert(data.msg);
+                            alertify.alert(data.msg);
                     }).error(function(data, status) {
                         //TODO:更改对话框
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                        alertify.alert('error');
                     });
                 } catch (e) {
                     console.log(e);
@@ -839,7 +841,7 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
         $scope.change_password = function() {
             $http({
                 method: 'post',
-                url: '/users/'+$rootScope.uid+'/changePassword',
+                url: '/users/changePassword'/+$rootScope.uid,
                 data: {
                     'nowpassword': $scope.nowpassword,
                     'newpassword': $scope.newpassword
@@ -847,13 +849,13 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
             }).success(function(data, status) {
                 //TODO:更改对话框
                 if (data.result === 1) {
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                     window.location.href = '#/personal';
                 } else
                     $rootScope.donlerAlert(data.msg);
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('error');
             });
         };
     }
