@@ -53,6 +53,14 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.isMember;
     $rootScope.message_for_group = true;
 
+    $rootScope.$on("$routeChangeStart",function(){
+        $rootScope.loading = true;
+    });
+    $rootScope.$on("$routeChangeSuccess",function(){
+        $rootScope.loading = false;
+    });
+
+
     $rootScope.messageTypeChange = function(value){
         $rootScope.message_for_group = value;
     }

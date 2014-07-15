@@ -1,4 +1,5 @@
-div(ng-controller="infoController")
+.loading_div(ng-show = 'loading')
+div(ng-show = '!loading' ng-controller="infoController")
   form.form-horizontal.tab-info-form(name="infoForm")
     .dl_row
       h5.pull-left #{__("INFO")}

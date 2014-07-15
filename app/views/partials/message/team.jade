@@ -1,41 +1,43 @@
-hr
-.dl_modal_container
-  .dl_row(style="height:93px" ng-repeat="team_message in team_messages" ng-if="$index >= page_team.up && $index <= page_team.down")
-    .dl_message_head.dl_message_body_font(ng-switch="team_message.message_type")
-      span.glyphicon.glyphicon-star-empty(ng-switch-when="0")
-      span.glyphicon.glyphicon-music(ng-switch-when="1")
-      span.glyphicon.glyphicon-flag(ng-switch-when="2")
-    .dl_message_body.margin_left_5
-      .row
-        .dl_message_caption
-          h7 {{team_message.caption}}
-        .dl_message_date
-          h7 {{team_message.date | date:'yyyy-MM-dd HH:mm'}}
-      .row
-        .dl_md_12(ng-switch="team_message.message_type")
-          h5(ng-switch-when="0")
-            {{team_message.content}} 给您发了
-            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
-          h5(ng-switch-when="1")
-            您参加的活动
-            a(href="/campaign/detail/{{team_message.campaign_id}}")
-              {{team_message.campaign_name}}
-            有了
-            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
-          h5(ng-switch-when="2")
-            您参加的比赛
-            a(href="/competition/{{team_message.campaign_id}}")
-              {{team_message.campaign_name}}
-            有了
-            a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
-        .dl_md_1.pull-right.dl_message_rightcorner
-          button.dl_btn.pull-right(ng-click="setToDelete($index)") X
-          label.pull-right |
-          button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="team_message.status=='read'") {{statusHandle(team_message.status)}}
-  .dl_row.dl_center(ng-if="team_messages.length > 10")
-    button.dl_btn.dl_btn_small(ng-disabled="page_team.arrow == 'right' || page_team.arrow == 'none' " ng-click="pageOperate('left')") <<
-    button.dl_btn.dl_btn_small(ng-disabled="page_team.arrow == 'left' || page_team.arrow == 'none' " ng-click="pageOperate('right')") >>
-  .dl_row
-    hr
-    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="team_length > 0") 全部设为已读
-    button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="team_messages.length > 0") 全部删除
+.loading_div(ng-show = 'loading')
+div(ng-show = '!loading')
+  hr
+  .dl_modal_container
+    .dl_row(style="height:93px" ng-repeat="team_message in team_messages" ng-if="$index >= page_team.up && $index <= page_team.down")
+      .dl_message_head.dl_message_body_font(ng-switch="team_message.message_type")
+        span.glyphicon.glyphicon-star-empty(ng-switch-when="0")
+        span.glyphicon.glyphicon-music(ng-switch-when="1")
+        span.glyphicon.glyphicon-flag(ng-switch-when="2")
+      .dl_message_body.margin_left_5
+        .row
+          .dl_message_caption
+            h7 {{team_message.caption}}
+          .dl_message_date
+            h7 {{team_message.date | date:'yyyy-MM-dd HH:mm'}}
+        .row
+          .dl_md_12(ng-switch="team_message.message_type")
+            h5(ng-switch-when="0")
+              {{team_message.content}} 给您发了
+              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
+            h5(ng-switch-when="1")
+              您参加的活动
+              a(href="/campaign/detail/{{team_message.campaign_id}}")
+                {{team_message.campaign_name}}
+              有了
+              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
+            h5(ng-switch-when="2")
+              您参加的比赛
+              a(href="/competition/{{team_message.campaign_id}}")
+                {{team_message.campaign_name}}
+              有了
+              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
+          .dl_md_1.pull-right.dl_message_rightcorner
+            button.dl_btn.pull-right(ng-click="setToDelete($index)") X
+            label.pull-right |
+            button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="team_message.status=='read'") {{statusHandle(team_message.status)}}
+    .dl_row.dl_center(ng-if="team_messages.length > 10")
+      button.dl_btn.dl_btn_small(ng-disabled="page_team.arrow == 'right' || page_team.arrow == 'none' " ng-click="pageOperate('left')") <<
+      button.dl_btn.dl_btn_small(ng-disabled="page_team.arrow == 'left' || page_team.arrow == 'none' " ng-click="pageOperate('right')") >>
+    .dl_row
+      hr
+      button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="team_length > 0") 全部设为已读
+      button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="team_messages.length > 0") 全部删除

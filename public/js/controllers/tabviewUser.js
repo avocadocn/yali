@@ -64,6 +64,12 @@ tabViewUser.run(['$rootScope',
             $rootScope.nowTab = value;
             $rootScope.message_corner = false;
         };
+        $rootScope.$on("$routeChangeStart",function(){
+            $rootScope.loading = true;
+        });
+        $rootScope.$on("$routeChangeSuccess",function(){
+            $rootScope.loading = false;
+        });
     }
 ]);
 
@@ -88,6 +94,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
+
         $scope.new_comment = [];
         $scope.toggle = [];
         $scope.message_role = "user";
@@ -330,7 +337,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 }).success(function(data, status) {
                     if(data.result===1){
                         //alert('成功加入该活动!');
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                        //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                         $scope.group_messages[index].join_flag = true;
                         $scope.group_messages[index].member_num++;
                     }

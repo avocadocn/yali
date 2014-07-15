@@ -32,6 +32,13 @@ messageApp.config(['$routeProvider', '$locationProvider',
 messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
 
+    $rootScope.$on("$routeChangeStart",function(){
+      $rootScope.loading = true;
+    });
+    $rootScope.$on("$routeChangeSuccess",function(){
+      $rootScope.loading = false;
+    });
+
     $rootScope.private_length = 0;
     $rootScope.team_length = 0;
     $rootScope.company_length = 0;

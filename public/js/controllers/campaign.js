@@ -35,7 +35,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     campaign_id : _id
                 }
             }).success(function(data, status) {
-                //window.location.reload();
+                window.location.reload();
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });

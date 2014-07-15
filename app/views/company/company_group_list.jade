@@ -1,4 +1,5 @@
-.group_list
+.loading_div(ng-show = 'loading')
+.group_list(ng-show = '!loading')
   .group_item(ng-repeat="group in group_lists")
     .row
       label(class="group_{{ group.gid }}")

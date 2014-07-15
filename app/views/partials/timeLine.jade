@@ -1,38 +1,40 @@
-if(newTimeLines)
-  .dl_timeline
-    .spine
-    each years in newTimeLines
-      .date_separator(id='year' + "#{years.left[0].year}")
-        span.span= years.left[0].year
-      .column.column_left
-        each item in years.left
-          .timeline_element
-            .title
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                span.head= item.head
-                span.date= moment(item.start_time).format('MM/DD')
-                .img_scroll
-                  each imgs in item.photo_list
-                    img.photo(src="#{imgs.thumbnail_uri}")
-            .content
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                
-                p= item.content
-      .column.column_right
-        each item in years.right
-          .timeline_element
-            .title
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                span.head= item.head
-                span.date= moment(item.start_time).format('MM/DD')
-                .img_scroll
-                  each imgs in item.photo_list
-                    img.photo(src="#{imgs.thumbnail_uri}")
-            .content
-              a(href="/campaign/detail/#{item.id}",target="_blank")
-                
-                p= item.content
-else
-  span.emptiem #{__("NO_CAMPAIGN")}
+.loading_div(ng-show = 'loading')
+div(ng-show = '!loading')
+  if(newTimeLines)
+    .dl_timeline
+      .spine
+      each years in newTimeLines
+        .date_separator(id='year' + "#{years.left[0].year}")
+          span.span= years.left[0].year
+        .column.column_left
+          each item in years.left
+            .timeline_element
+              .title
+                a(href="/campaign/detail/#{item.id}",target="_blank")
+                  img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                  span.head= item.head
+                  span.date= moment(item.start_time).format('MM/DD')
+                  .img_scroll
+                    each imgs in item.photo_list
+                      img.photo(src="#{imgs.thumbnail_uri}")
+              .content
+                a(href="/campaign/detail/#{item.id}",target="_blank")
+                  
+                  p= item.content
+        .column.column_right
+          each item in years.right
+            .timeline_element
+              .title
+                a(href="/campaign/detail/#{item.id}",target="_blank")
+                  img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                  span.head= item.head
+                  span.date= moment(item.start_time).format('MM/DD')
+                  .img_scroll
+                    each imgs in item.photo_list
+                      img.photo(src="#{imgs.thumbnail_uri}")
+              .content
+                a(href="/campaign/detail/#{item.id}",target="_blank")
+                  
+                  p= item.content
+  else
+    span.emptiem #{__("NO_CAMPAIGN")}
