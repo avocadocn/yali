@@ -1,5 +1,8 @@
 extends ../layouts/manager
 
+append headExt
+  link(rel="stylesheet" href="/css/photo_album.css")
+  link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
 
 block baseInfo
   .dl_container.clearfix
@@ -25,10 +28,12 @@ block baseInfo
 block panel
   div(ng-init="teamId='#{department.team._id}'")
     ul.nav.nav-tabs
-      li.tab_style(ng-class="{'active':nowTab=='group_message'}")
-          a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") 部门动态
-      li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
-        a.subtitle.no_radius(href="#/group_campaign" ng-click="addactive('group_campaign')") 部门活动
+      li.tab_style(ng-class="{'active':nowTab=='message'}")
+          a.subtitle.no_radius(href="#/message" ng-click="addactive('message')") 部门动态
+      li.tab_style(ng-class="{'active':nowTab=='campaign'}")
+        a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") 部门活动
+      li.tab_style(ng-class="{'active':nowTab=='info'}")
+        a.subtitle.no_radius(href="#/info" ng-click="addactive('info')") 部门信息
       li.tab_style(ng-class="{'active':nowTab=='timeLine/#{department.team._id}'}")
         a.subtitle.no_radius(href="#/timeLine/#{department.team._id}" ng-click="addactive('timeLine/#{department.team._id}')") #{__("TIME_LINE")}
       //- if req.role === 'HR' || req.role === 'DEPARTMENT_MANAGER'
@@ -39,4 +44,6 @@ block panel
         div(ng-view)
 
 append footExt
-  script(src="/js/controllers/tabviewGroup.js")
+  script(src="/lib/jquery-form/jquery.form.js")
+  script(src="/js/jquery.Jcrop.min.js")
+  script(src="/js/controllers/department.js")

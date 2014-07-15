@@ -24,4 +24,5 @@ module.exports = function(app) {
   app.get('/department/campaigns', department.renderCampaigns);
   app.get('/department/applylist/:departmentId', authorization.departmentAuthorize, department.renderApplyList);
 
+  app.get('/department/info', department.renderDepartmentInfo);
 };

@@ -791,3 +791,7 @@ exports.renderCampaigns = function(req, res) {
 exports.renderApplyList = function(req, res) {
   res.render('partials/apply_list', { department: req.department });
 };
+
+exports.renderDepartmentInfo = function(req, res) {
+  res.render('department/department_info.jade');
+};
