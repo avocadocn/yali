@@ -627,7 +627,12 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                     campaign_id : _id
                 }
             }).success(function(data, status) {
-                window.location.reload();
+                if(data.result===1){
+                    window.location.reload();
+                }
+                else{
+                    alertify(data.msg);
+                }
             }).error(function(data, status) {
                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
             });

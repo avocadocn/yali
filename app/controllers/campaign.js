@@ -234,7 +234,7 @@ var formatCampaign = function(campaign,pageType,role,user){
         temp.join_flag = 0;
       }
     }
-    if(pageType==='team'&&(role ==='LEADER' ||role ==='HR' ) || pageType==='company'&&role ==='HR'){
+    if(temp.type != 'provoke' && pageType==='team'&&(role ==='LEADER' ||role ==='HR' ) || pageType==='company'&&role ==='HR'){
       temp.close_flag=true;
     }
     campaigns.push(temp);
