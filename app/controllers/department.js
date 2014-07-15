@@ -594,7 +594,7 @@ var departmentFindAndUpdate = function(department, did, param) {
 //修改部门信息
 exports.modifyDepartment = function(req, res) {
 
-  if (req.role !== 'HR' && req.role !== 'DEPARTMENT_MANAGER') {
+  if (req.role !== 'HR') {
     return res.send(403);
   }
 
@@ -633,7 +633,7 @@ exports.modifyDepartment = function(req, res) {
 //删除部门
 exports.deleteDepartment = function(req, res) {
 
-  if (req.role !== 'HR' && req.role !== 'DEPARTMENT_MANAGER') {
+  if (req.role !== 'HR') {
     return res.send(403);
   }
 
