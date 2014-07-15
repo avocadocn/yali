@@ -814,25 +814,50 @@ exports.getCompanyTeamsInfo = function(req, res) {
       if(req.role ==='EMPLOYEE'){
         var _teams = [];
         teams.forEach(function(value){
-          var _team = {
-            '_id':value._id,
-            'gid':value.gid,
-            'group_type':value.group_type,
-            'logo':value.logo,
-            'active':value.active,
-            'count':value.count,
-            'entity_type':value.entity_type,
-            'leader':value.leader,
-            'member':value.member,
-            'name':value.name
-          }
-          if(model_helper.arrayObjectIndexOf(req.user.team,value._id,'_id')>-1){
+            var message_theme = '';
+            var campaign_id = '';
+            var _team = {
+                '_id':value._id,
+                'gid':value.gid,
+                'group_type':value.group_type,
+                'logo':value.logo,
+                'active':value.active,
+                'count':value.count,
+                'entity_type':value.entity_type,
+                'leader':value.leader,
+                'member':value.member,
+                'name':value.name,
+                'campaign_theme':message_theme,
+                'campaign_id':campaign_id
+            }
+            Campaign.find({'team':value._id},{'_id':1,'theme':1})
+            .sort({'create_time':-1})
+            .limit(1)
+            .exec(function(err,campaign){
+                console.log(campaign);
+                if(err){
+                  console.log('cannot find campaign');
+                  return res.send({'result':0,'msg':'消息查询错误'});
+                }
+                if(campaign.length==0)
+                  message_theme = '';
+                else{
+                  message_theme = campaign[0].theme;
+                  campaign_id = campaign[0]._id;
+                  _team.campaign_theme = campaign[0].theme;
+                  _team.campaign_id = campaign[0]._id;
+                }
+            });
+            console.log(_team);
+
+            if(model_helper.arrayObjectIndexOf(req.user.team,value._id,'_id')>-1){
             _team.belong = true;
-          }
-          else{
+            }
+            else{
             _team.belong = false;
-          }
-          _teams.push(_team);
+            }
+            _teams.push(_team);
+
         });
 
         output.teams = _teams;
