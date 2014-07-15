@@ -169,3 +169,153 @@ switch(new Date(input).getDay()){
 return input;
 }
 });
+
+var messagePreHandle = function(teams,msg){
+  var direct_show = false;
+  var detail = "";
+  var content = "";
+  var message_type = 0;
+  var message = [];
+  var team_messages = [],
+      company_messages = [],
+      global_messages = [],
+      private_messages = [];
+  for(var i = 0; i < msg.length; i ++) {
+    //小队
+    if(msg[i].type == 'team'){
+      if(msg[i].message_content.sender.length > 0){
+        if(msg[i].message_content.campaign_id == null){
+          message_type = 0;
+          content = "小队 "+msg[i].message_content.team[0].name + "的组长 "+msg[i].message_content.sender[0].nickname;
+          detail = msg[i].message_content.content;
+          direct_show = true;
+        }else{
+          detail = msg[i].message_content.content;
+          if(msg[i].message_content.team[0].provoke_status == 0){
+            message_type = 1;
+          }else{
+            message_type = 2;
+          }
+        }
+      }
+      // if(msg[i].message_content.team.length == 2){
+      //   for(var j = 0; j < teams.length; j ++){
+      //     if(teams[j]._id === msg[i].message_content.team[0]._id){
+      //       content = provokeStatus(msg[i].message_content.team[0].provoke_status,msg[i].message_content.team[0].name,true);
+      //       url = "/group/home/"+msg[i].message_content.team[0]._id+"#/group_message";
+      //     }else{
+      //       if(teams[j]._id === msg[i].message_content.team[1]._id){
+      //         content = provokeStatus(msg[i].message_content.team[1].provoke_status,msg[i].message_content.team[1].name,false);
+      //         url = "/group/home/"+msg[i].message_content.team[1]._id+"#/group_message";
+      //       }
+      //     }
+      //   }
+      // }else{
+      // }
+      team_messages.push({
+        '_id':msg[i]._id,
+        'caption':'Message From Campaign',
+        'content':content,
+        'status':msg[i].status,
+        'date':msg[i].message_content.post_date,
+        'detail':msg[i].message_content.content,
+        'message_type':message_type,
+        'campaign_id':msg[i].message_content.campaign_id,
+        'campaign_name':msg[i].message_content.caption
+      });
+    }
+
+    //公司
+    if(msg[i].type == 'company'){
+      if(msg[i].message_content.sender.length > 0){
+        message_type = 3;
+        detail = msg[i].message_content.content;
+        company_messages.push({
+          '_id':msg[i]._id,
+          'caption':msg[i].message_content.caption,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':detail,
+          'message_type':message_type
+        });
+      }
+    }
+
+    //私人
+    if(msg[i].type == 'private'){
+      if(msg[i].message_content.team.length > 0){
+        if([2,3].indexOf(msg[i].message_content.team[0].provoke_status) > -1){
+
+
+          message_type = 4;
+          var last_content = msg[i].message_content.team[0].provoke_status == 3 ? "接受了您的比赛结果" : "发出了一个新的比赛确认";
+          content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
+          private_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'content':content,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'message_type':message_type,
+            'campaign_id':msg[i].message_content.campaign_id
+          });
+        }
+        if([0,1].indexOf(msg[i].message_content.team[0].provoke_status) > -1){
+
+
+          message_type = 7;
+          var last_content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的挑战" : "向您发出了一个新的挑战";
+          content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
+          private_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'content':content,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'message_type':message_type,
+            'team_id':msg[i].message_content.team[1]._id
+          });
+        }
+      }else{
+        message_type = 5;
+        detail = msg[i].message_content.content;
+        private_messages.push({
+          '_id':msg[i]._id,
+          'caption':msg[i].message_content.caption,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':detail,
+          'sender':msg[i].message_content.sender,
+          'message_type':message_type
+        });
+      }
+
+    }
+
+    //系统
+    if(msg[i].type == 'global'){
+      message_type = 6;
+      private_messages.push({
+        '_id':msg[i]._id,
+        'caption':msg[i].message_content.caption,
+        'status':msg[i].status,
+        'date':msg[i].message_content.post_date,
+        'detail':msg[i].message_content.content,
+        'message_type':message_type
+      })
+    }
+  }
+  message.push(private_messages,team_messages,company_messages,global_messages);
+  return message;
+}
+
+app.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+    $http.get('/message/header').success(function(data, status) {
+        var messages = messagePreHandle(data.team,data.msg);
+        $rootScope.private_length = messages[0].length;
+        $rootScope.team_length = messages[1].length;
+        $rootScope.company_length = messages[2].length;
+        $rootScope.global_length = messages[3].length;
+        $rootScope.o = $rootScope.private_length + $rootScope.team_length + $rootScope.company_length + $rootScope.global_length;
+    });
+}]);
