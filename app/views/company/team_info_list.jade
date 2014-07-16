@@ -63,7 +63,8 @@ div.dl_allteaminfo_emp.masonry(masonry ng-if="role !== 'HR'")
     button.dl_btn.dl_btn_small(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
     //-属于则显示退组按钮
     button.dl_btn.dl_btn_small.cancel_btn(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
-
-    a(href="/campaign/detail/#{{team.campaign_id}}") {{team.campaign_theme}}
-    p {{team}}
+    div.newcampaign(ng-if="team.campaign_theme != '' ")
+      p 最新活动：
+      a(href="/campaign/detail/{{team.campaign_id}}" target="_blank") {{team.campaign_theme}}
+    //- p {{team}}
 
