@@ -46,7 +46,7 @@ module.exports = function(app, passport) {
     app.get('/company/getCompanyTeamsInfo/:companyId', authorization.companyAuthorize, company.getCompanyTeamsInfo);
     app.get('/company/timeLine/:companyId', authorization.companyAuthorize,company.timeLine);
     app.post('/company/changeUser/:companyId', authorization.companyAuthorize, company.changeUser);
-    app.get('/company/member', company.renderMembers);
+    app.get('/company/member/:companyId',authorization.companyAuthorize, company.renderMembers);
     app.get('/company/getAccount/:companyId',  authorization.companyAuthorize, company.getAccount);
     app.get('/company/Info', company.Info);
     app.get('/company/teamInfo', company.renderTeamInfo);

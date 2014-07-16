@@ -150,7 +150,7 @@ exports.getMember = function(req, res) {
   var cid = req.params.companyId;
   User.find({'cid': cid}, {'_id':1,'username':1,'nickname':1,'photo':1,'realname':1,'department':1,'position':1,'sex':1,'register_date':1,'group':1,'birthday':1,'bloodType':1,'phone':1,'qq':1,'introduce':1},function (err, users){
     if(err || !users){
-      console.log('ERROR');
+      console.log('ERROR:',err);
       return res.send([]);
     }else{
       return res.send(users);

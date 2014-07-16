@@ -10,7 +10,7 @@ form(name="search_form")
         .dl_md_12
           input.dl_modal_input.form-control(placeholder="请输入搜索关键字,可以是公司名或者小队名" type="text" ng-model="s_value" required)
         .dl_md_1
-          button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="search_form.$invalid") 搜索
+          button.clearLinkUnderline.dl_btn_right(type='submit' ng-click="search()" ng-disabled="search_form.$invalid") 搜索
     .dl_modal_container
       .dl_row
         .dl_md_3

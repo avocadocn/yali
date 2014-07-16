@@ -1,0 +1,23 @@
+.loading_div(ng-show = 'loading')
+div(ng-show = '!loading')
+  .memberlist
+    span.subtitle #{__("MEMBER")}
+    hr
+    .row
+      .dl_modal_container.margin_left_10
+        .groups.row
+          .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="member in members")
+            if role != 'GUESTHR' && role !='GUEST'
+              .dl_row(bs-popover)
+                a(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel")
+                  img.size_48(ng-src="{{member.photo}}" ng-Mouseenter="showUserCard(member._id,member._id)" id='pop{{member._id}}')
+              .dl_row(style="width:48px;text-align:center")
+                a.user_name(href="/users/home/{{member._id}}") {{member.nickname}}
+            else
+              .dl_row
+                img.size_48(ng-src="{{member.photo}}")
+              .dl_row(style="width:48px;text-align:center")
+                label.user_name {{member.nickname}}
+  if role === 'HR'
+    .modal.fade(id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include user_detail_modal

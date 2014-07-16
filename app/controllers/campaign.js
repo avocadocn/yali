@@ -199,10 +199,12 @@ var formatCampaign = function(campaign,pageType,role,user){
     };
     if(_campaign.campaign_type===1){//公司活动
       temp.type='companycampaign';
+      console.log(0);
       temp.logo=_campaign.cid[0].info.logo;
       temp.link = '/company/home/'+_campaign.cid[0]._id;
       temp.cid = _campaign.cid[0]._id;
       temp.cname=_campaign.cid[0].info.name;
+      console.log(1);
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
     }
     else if(_campaign.campaign_type===2){//小队活动
@@ -222,7 +224,11 @@ var formatCampaign = function(campaign,pageType,role,user){
     }
     else{//动一下
       temp.type = 'provoke';
+      console.log(2);
+      console.log('user',user);
+      console.log('camp',_campaign.camp[0]);
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
+      console.log(3);
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
       temp.logo=_campaign.camp[camp_index].logo;
       temp.link = '/group/home/'+_campaign.camp[camp_index].id;

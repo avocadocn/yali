@@ -36,7 +36,7 @@ block panel
     li.tab_style(ng-class="{'active':nowTab=='team_info'}")
       a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')") 小队信息
     li.tab_style(ng-class="{'active':nowTab=='company_member'}")
-      a.subtitle.no_radius(href="#/company_member"  ng-click="addactive('company_member')") #{__('STAFF')}
+      a.subtitle.no_radius(href="#/company_member/#{cid}"  ng-click="addactive('company_member')") #{__('STAFF')}
     li.tab_style(ng-class="{'active':nowTab=='timeLine/#{cid}'}")
       a.subtitle.no_radius(href="#/timeLine/#{cid}"  ng-click="addactive('timeLine/#{cid}')") #{__('TIME_LINE')}
     //- div.margin_top_15.pull-right(ng-controller="CampaignListController")
@@ -53,11 +53,10 @@ block panel
       div(ng-view)
 
   if role === 'HR'
-    div(ng-controller="SponsorController" class="modal fade" id="sponsorCampaignModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal
-    div(ng-controller="messageCompanyController" )
-      div.modal.fade#sponsorMessageModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        include ../partials/private_message_send
+    div.modal.fade#sponsorMessageModel(ng-controller="messageCompanyController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../partials/private_message_send
   #bottom
 block aside
 append footExt

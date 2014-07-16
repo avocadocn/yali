@@ -48,8 +48,10 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
-      .when('/company_member', {
-        templateUrl: '/company/member',
+      .when('/company_member/:cid', {
+        templateUrl: function(params){ 
+            return '/company/member/'+params.cid;
+        },
         controller: 'CompanyMemberController',
         controllerAs: 'members'
        })
@@ -324,7 +326,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
         try{
             $http({
                 method: 'post',
-                url: '/company/changeUser',
+                url: '/company/changeUser/'+$rootScope.cid,
                 data:{
                     operate : _operate,
                     user : $scope.members[$scope.num]
@@ -1059,7 +1061,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         try{
             $http({
                 method: 'post',
-                url: '/company/campaignSponsor',
+                url: '/company/campaignSponsor/'+$rootScope.cid,
                 data:{
                     theme: $scope.theme,
                     location: $scope.location,
@@ -1069,7 +1071,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
                     deadline : $scope.deadline,
                     member_min : $scope.member_min,
                     member_max : $scope.member_max
-
                 }
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面

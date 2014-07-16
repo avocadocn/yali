@@ -261,9 +261,9 @@ exports.renderGroupList = function(req, res) {
 //显示企业成员列表
 exports.renderMembers = function(req,res){
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,'forbidden');
+    return res.send(403,{'msg':'forbidden'});
   }
-  res.render('partials/member_list',{'role':req.role,'provider':'company'});
+  res.render('company/member_list',{'role':req.role,'provider':'company'});
 }
 
 //注意,companyGroup,entity这两个模型的数据不一定要同时保存,异步进行也可以,只要最终确保
@@ -970,6 +970,8 @@ exports.renderCompanyCampaign = function(req, res){
 }
 
 exports.changeUser = function (req, res) {
+    if(req.role != 'HR')
+        return res.send(403,{'msg':'forbidden'});
     var _user = req.body.user;
     var operate = req.body.operate;
 
@@ -1121,7 +1123,7 @@ exports.sponsor = function (req, res) {
     campaign.member_min = member_min;
     campaign.member_max = member_max;
 
-    campaign.type = 1;
+    campaign.campaign_type = 1;
 
     var photo_album = new PhotoAlbum({
         owner: {
