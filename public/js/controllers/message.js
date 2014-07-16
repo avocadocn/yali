@@ -575,6 +575,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
             $rootScope.company_length++;
             $rootScope.o ++;
             alertify.alert('发送成功!');
+            window.location.href = '/company/home';
           }else{
             alertify.alert('发送失败!');
           }

@@ -321,25 +321,33 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     $scope.userDetail = function(index) {
         $scope.num = index;
     }
-
-    $scope.changeUserInfo = function(_operate) {
-        try{
-            $http({
-                method: 'post',
-                url: '/company/changeUser/'+$rootScope.cid,
-                data:{
-                    operate : _operate,
-                    user : $scope.members[$scope.num]
-                }
-            }).success(function(data, status) {
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
+    $scope.unEdit = true;
+    $scope.buttonStatus = '编辑';
+    $scope.changeUserInfo = function() {
+        $scope.unEdit = !$scope.unEdit;
+        if(!$scope.unEdit){
+            $scope.buttonStatus = '保存';
         }
-        catch(e){
-            console.log(e);
+        else{
+            try{
+                $http({
+                    method: 'post',
+                    url: '/company/changeUser/'+$rootScope.cid,
+                    data:{
+                        operate : 'change',
+                        user : $scope.members[$scope.num]
+                    }
+                }).success(function(data, status) {
+                    $scope.buttonStatus = '编辑';
+                    alertify.alert('保存成功');
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e){
+                console.log(e);
+            }
         }
     }
 }]);
