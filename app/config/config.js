@@ -5,8 +5,8 @@ exports.MAIL_OPTION = {
     secureConnection: true, // use SSL
     port: 994, // port for secure SMTP  默认端口号:25  SSL端口号:994
     auth: {
-        user: 'nicoJiang@55yali.com',
-        pass: '~!jzl1234'
+        user: 'service@donler.com',
+        pass: '55yali'
     }
 };
 

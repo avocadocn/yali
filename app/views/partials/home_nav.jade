@@ -47,7 +47,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
             a(href="#" data-toggle="dropdown")
-              span.dl_msg_corner(ng-if="o>0") {{o}}
+              span.dl_msg_corner(ng-if="o>0" ng-cloak) {{o}}
               span.glyphicon.glyphicon-comment
             ul.dl_menu.dropdown-menu(role="menu")
               li
