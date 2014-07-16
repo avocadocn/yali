@@ -1,7 +1,7 @@
 mixin group_thumbnail(teams,team_class,team_head)
   p.subtitle.margin_top_20= team_head
-  .groups.row.dl_row(bs-popover)
+  .groups.row.dl_row
     each team in teams
       div.center-block(class='group col-xs-3 '+team_class title="#{team.name}")
         a.center-block.margin_top_15(href="/group/home/#{team._id}")
-          img.center-block.group.size_56(src="#{team.logo}" ng-Mouseover="showGroupCard('#{team._id}','#{team._id}')" id='pop#{team._id}' rel='popover')
+          img.center-block.group.size_56(src="#{team.logo}")

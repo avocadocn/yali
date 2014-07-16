@@ -1,0 +1,42 @@
+.modal-dialog
+  .dl-modal(style="width:370px")
+    .dl-modal-header
+      button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
+      h4.modal-title#myModalLabel #{__("STAFF")}#{__("INFO")}
+    .dl-modal-body
+      .dl_row.clearfix
+        .info_side
+          span.info_label #{__("NICKNAME")}
+        .info_detail
+          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="unEdit")
+      .dl_row.clearfix
+        .info_side
+          span.info_label #{__("REALNAME")}
+        .info_detail_2
+          span.info_label {{members[num].realname}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label #{__("DEPARTMENT")}
+        .info_detail
+          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].department" ng-disabled="unEdit")
+      .dl_row.clearfix
+        .info_side
+          span.info_label #{__("GENDER")}
+        .info_detail_2
+          span.info_label {{members[num].sex}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label #{__("BRIEF")}
+        .info_detail_2
+          span.info_label {{members[num].introduce}}
+      .dl_row.clearfix
+        .info_side
+          span.info_label #{__("REGISTER_DATE")}
+        .info_detail_2
+          span.info_label {{members[num].register_date | date:'yyyy-MM-dd HH:mm:ss'}}
+    .dl-modal-footer
+      if role==='HR' || role==='OWNER'
+        span #{unEdit}
+        //button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="changeUserInfo('delete')") #{__("DELETE")}
+        button.dl_btn.dl_btn_large(ng-click="changeUserInfo()") {{buttonStatus}}
+      button.cancel_btn.dl_btn_large(data-dismiss="modal") 返回

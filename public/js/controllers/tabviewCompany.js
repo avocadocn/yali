@@ -48,8 +48,10 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
-      .when('/company_member', {
-        templateUrl: '/company/member',
+      .when('/company_member/:cid', {
+        templateUrl: function(params){ 
+            return '/company/member/'+params.cid;
+        },
         controller: 'CompanyMemberController',
         controllerAs: 'members'
        })
@@ -319,25 +321,33 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     $scope.userDetail = function(index) {
         $scope.num = index;
     }
-
-    $scope.changeUserInfo = function(_operate) {
-        try{
-            $http({
-                method: 'post',
-                url: '/company/changeUser',
-                data:{
-                    operate : _operate,
-                    user : $scope.members[$scope.num]
-                }
-            }).success(function(data, status) {
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-            });
+    $scope.unEdit = true;
+    $scope.buttonStatus = '编辑';
+    $scope.changeUserInfo = function() {
+        $scope.unEdit = !$scope.unEdit;
+        if(!$scope.unEdit){
+            $scope.buttonStatus = '保存';
         }
-        catch(e){
-            console.log(e);
+        else{
+            try{
+                $http({
+                    method: 'post',
+                    url: '/company/changeUser/'+$rootScope.cid,
+                    data:{
+                        operate : 'change',
+                        user : $scope.members[$scope.num]
+                    }
+                }).success(function(data, status) {
+                    $scope.buttonStatus = '编辑';
+                    alertify.alert('保存成功');
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                });
+            }
+            catch(e){
+                console.log(e);
+            }
         }
     }
 }]);
@@ -1059,7 +1069,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         try{
             $http({
                 method: 'post',
-                url: '/company/campaignSponsor',
+                url: '/company/campaignSponsor/'+$rootScope.cid,
                 data:{
                     theme: $scope.theme,
                     location: $scope.location,
@@ -1069,7 +1079,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
                     deadline : $scope.deadline,
                     member_min : $scope.member_min,
                     member_max : $scope.member_max
-
                 }
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面

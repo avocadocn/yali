@@ -20,17 +20,18 @@ app.directive('bsPopover',function() {
           });
         }
       };
-      $scope.showGroupCard = function(group_id,pop_id) {
-        if($scope.group_id===group_id)
-          $('#pop'+pop_id).dl_card({content:$scope.htmlcontent});
-        else{
-          $scope.group_id = group_id;
-          $http.get('/group/briefInfo/'+group_id).success(function(data, status){
-            $('#pop'+pop_id).dl_card({content:data});
-            $scope.htmlcontent = data;
-          });
-        }
-      };
+      //暂时不需要 -Maggie
+      // $scope.showGroupCard = function(group_id,pop_id) {
+      //   if($scope.group_id===group_id)
+      //     $('#pop'+pop_id).dl_card({content:$scope.htmlcontent});
+      //   else{
+      //     $scope.group_id = group_id;
+      //     $http.get('/group/briefInfo/'+group_id).success(function(data, status){
+      //       $('#pop'+pop_id).dl_card({content:data});
+      //       $scope.htmlcontent = data;
+      //     });
+      //   }
+      // };
     }],
   };
 });

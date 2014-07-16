@@ -21,9 +21,9 @@ div(ng-show = '!loading')
       td.time_col
         p.text-right.day {{ campaign_item.start_time  | day }}
         p.text-right {{ campaign_item.start_time | date:'HH:mm' }}
-      td.logo_col.text-center(bs-popover)
+      td.logo_col.text-center
         a(ng-href="{{campaign_item.link}}")
-          img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}"  ng-Mouseover='showGroupCard(campaign_item.team_id,campaign_item._id)' id='pop{{campaign_item._id}}')
+          img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}")
           img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}")
       td.content_col
         p 主题:

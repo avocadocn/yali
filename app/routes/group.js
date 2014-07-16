@@ -17,7 +17,7 @@ module.exports = function(app) {
 
   app.get('/group/info/:teamId', authorization.teamAuthorize, group.info);
   //获取小队简要信息供弹出窗使用
-  app.get('/group/briefInfo/:teamId', authorization.teamAuthorize, group.getBriefInfo);
+  //app.get('/group/briefInfo/:teamId', authorization.teamAuthorize, group.getBriefInfo);
   app.get('/group/renderInfo', group.renderInfo);
   app.post('/group/saveInfo/:teamId', authorization.teamAuthorize, group.saveInfo);
   app.get('/group/timeLine/:teamId', authorization.teamAuthorize, group.timeLine);
