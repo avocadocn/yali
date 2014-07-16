@@ -18,7 +18,7 @@ userApp.directive('match', function($parse) {
 
 userApp.controller('signupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
     var departments;
-  $http.get('/department/pull').success(function(data, status) {
+  $http.get('/departmentTree/0').success(function(data, status) {
         $scope.main_department_id = 'null';
         $scope.main_department_name = 'null';
         $scope.child_department_id = 'null';

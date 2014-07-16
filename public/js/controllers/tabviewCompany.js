@@ -370,6 +370,16 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     }
 }]);
 
+
+
+
+
+
+
+
+
+
+
 tabViewCompany.directive('masonry', function ($timeout) {
     return {
         restrict: 'AC',
@@ -826,6 +836,21 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         e.stopPropagation();
     });
 
+    $scope.getNode = function(node){
+        $scope.did = node._id;
+        $http({
+            method : 'post',
+            url : '/department/detail/'+node._id,
+            data : {
+                'did' : node._id
+            }
+        }).success(function(data, status) {
+            $scope.getCompanyUser(data.department.team._id,function(){$('#managerAppointModel').modal();});
+        }).error(function(data, status) {
+            //TODO:更改对话框
+            alertify.alert(data);
+        });
+    }
 
     $scope.hasChild = function(node) {
         if (node && node.department) {
@@ -870,6 +895,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         }
     };
 
+    $scope.appointManager = function(node){
+        
+    }
     $scope.cancelEdit = function(node) {
         node.is_editing = false;
     };
@@ -907,6 +935,152 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                 });
             }
         });
+    };
+
+    //获取该公司所有员工
+    $scope.getCompanyUser = function(tid,callback){
+         $http({
+              method: 'post',
+              url: '/search/user',
+              data:{
+                  tid:tid
+              }
+          }).success(function(data, status) {
+                $scope.managers = data.leaders;
+                $scope.department_users = data.users;
+                $scope.manager = 'null';
+              var manager_find = false;
+                for(var i = 0; i < $scope.department_users.length && !manager_find; i ++) {
+                    for(var j = 0; j < $scope.managers.length; j ++) {
+                        //标记
+                        if($scope.managers[j]._id.toString() === $scope.department_users[i]._id.toString()){
+                            $scope.department_users[i].leader = true;
+                            manager_find = true;
+                            break;//目前一个小队只有一个组长
+                        }
+                    }
+                }
+              callback();
+        }).error(function(data, status) {
+              //TODO:更改对话框
+            alertify.alert(data);
+        });
+    }
+    //从员工中进一步搜索
+    $scope.search = function () {
+        $scope.member_backup_department = $scope.department_users;
+        var find = false;
+        $scope.department_users = [];
+        for(var i = 0; i < $scope.member_backup_department.length; i ++) {
+            if($scope.member_backup_department[i].nickname.indexOf($scope.member_search_department) > -1){
+                $scope.department_users.push($scope.member_backup_department[i]);
+                find = true;
+            }
+        }
+        if(!find){
+            $scope.department_users = $scope.member_backup_department;
+            $scope.member_backup_department = [];
+            alertify.alert("未找到该员工!");
+        }else{
+            alertify.alert("找到"+$scope.department_users.length+"名员工!");
+        }
+    }
+
+
+
+
+    $scope.recover = function(){
+        if($scope.member_backup_department){
+            if($scope.member_backup_department.length > 0){
+                $scope.department_users = $scope.member_backup_department;
+            }
+        }
+    }
+    $scope.appointReady = function(user,index){
+        $scope.department_user = user;
+        $scope.manager=$scope.managers[0];
+        $scope.department_index = index;
+        $scope.department_users[index].leader = true;
+
+        if($scope.manager){
+            for(var i = 0; i < $scope.department_users.length; i ++) {
+                if($scope.manager._id.toString() === $scope.department_users[i]._id.toString()){
+                    $scope.department_users[i].leader = false;
+                    break;
+                }
+            }
+        }
+        $scope.managers[0] = {
+            '_id':user._id,
+            'nickname':user.nickname,
+            'photo':user.photo
+        }
+    }
+    $scope.dismissManager = function (manager) {
+        try{
+            $http({
+                method: 'post',
+                url: '/department/managerOperate/'+$scope.did,
+                data:{
+                    member:{
+                        '_id':manager._id,
+                    },
+                    did:$scope.did,
+                    operate:'dismiss'
+                }
+            }).success(function(data, status) {
+
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alertify.alert(data);
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+    //指定管理员
+    $scope.appointManager = function () {
+      try{
+            $http({
+                method: 'post',
+                url: '/department/managerOperate/'+$scope.did,
+                data:{
+                    member:{
+                        '_id':$scope.department_user._id,
+                        'nickname':$scope.department_user.nickname,
+                        'photo':$scope.department_user.photo
+                    },
+                    did:$scope.did,
+                    operate:'appoint'
+                }
+            }).success(function(data, status) {
+                console.log($scope.manager);
+                if($scope.manager!='null' && $scope.manager != undefined){
+                    for(var i = 0; i < $scope.managers.length; i ++) {
+                        if($scope.managers[i]._id == $scope.manager._id) {
+                            $scope.managers.splice(i,1);
+                        }
+                    }
+                }
+
+                $scope.managers.push({
+                    '_id':$scope.department_user._id,
+                    'nickname':$scope.department_user.nickname,
+                    'photo':$scope.department_user.photo
+                });
+
+                if($scope.manager!='null' && $scope.manager != undefined){
+                    $scope.dismissManager($scope.manager);
+                }
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
     };
 
 }]);

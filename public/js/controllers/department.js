@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewGroup = angular.module('donler');
+var departmentApp = angular.module('donler');
 
 
 function tirm(arraies,str) {
@@ -15,7 +15,7 @@ function tirm(arraies,str) {
     }
     return rst;
 }
-tabViewGroup.config(['$routeProvider',
+departmentApp.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
       .when('/message', {
@@ -43,7 +43,7 @@ tabViewGroup.config(['$routeProvider',
       });
 }]);
 
-tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
+departmentApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
@@ -129,7 +129,14 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
-tabViewGroup.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
+
+
+
+
+
+
+
+departmentApp.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
     $http.get('/group/timeline/'+$routeParams.tid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
         if(data.result===1){
             $scope.newTimeLines = data.newTimeLines;
@@ -139,7 +146,7 @@ tabViewGroup.controller('timelineController',['$http','$scope','$routeParams',fu
         }
     });
 }]);
-tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
+departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.private_message_content = {
         'text':""
@@ -465,7 +472,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 }]);
 
 
-tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
+departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
     $rootScope.$watch('teamId',function(teamId){
         $http.get('/campaign/getCampaigns/team/'+teamId+'/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
@@ -641,7 +648,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 }]);
 
 
-tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+departmentApp.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
     $rootScope.$watch('teamId',function(tid){
@@ -937,7 +944,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     });
 }]);
 
-tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $("#start_time").on("changeDate",function (ev) {
@@ -1048,7 +1055,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         }
     };
 }]);
-tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.search_type="team";
     $scope.companies = [];
     $scope.teams = [];

@@ -92,11 +92,6 @@ exports.recommandTeam = function(req,res) {
 };
 
 
-function findUser()
-{
-
-}
-
 
 //全都让前台判断去吧
 function findComapnyGroup(condition,req,res)
@@ -138,8 +133,27 @@ function findComapnyGroup(condition,req,res)
 //TODO
 //根据公司id搜索成员
 exports.getUser = function(req, res) {
-  var tid = req.body.tid;   //找选择了该队的员工
-  findComapnyGroup({'_id':tid},req,res);
+  if(req.body.tid != 'null'){
+    var tid = req.body.tid;   //找选择了该队的员工
+    findComapnyGroup({'_id':tid},req,res);
+  }else{
+    var cid = req.user.provider === 'company' ? req.user._id : req.user.cid;
+    User.find({'cid':cid},function (err,users){
+      if(err || !users){
+        res.send(500,[]);
+      }else{
+        var _users = [];
+        for(var i = 0 ; i < users.length; i ++){
+          _users.push({
+            '_id':users[i]._id,
+            'nickname':users[i].nickname,
+            'photo':users[i].photo
+          });
+        }
+        res.send(_users);
+      }
+    });
+  }
 };
 
 

@@ -357,7 +357,6 @@ exports.dealSetProfile = function(req, res) {
         user.nickname = req.body.nickname;
         user.password = req.body.password;
         user.realname = req.body.realName;
-        user.department = (req.body.main_department_name != 'null' ? (req.body.child_department_name != 'null' ? {'name':req.body.child_department_name,'_id':req.body.child_department_id} : {'name':req.body.main_department_name,'_id':req.body.main_department_id}) : {'name':'无'});
         user.phone = req.body.phone;
         user.role = 'EMPLOYEE';
         user.save(function(err) {
@@ -375,11 +374,9 @@ exports.dealSetProfile = function(req, res) {
             };
             if(req.body.main_department_id != 'null'){
               if(req.body.child_department_id != 'null'){
-                //department.memberOperateByHand('join',member,req.body.child_department_id);
-                _apply(req.body.child_department_id,req,null,member);
+                department.memberOperateByHand('join',member,req.body.child_department_id);
               }else{
-                //department.memberOperateByHand('join',member,req.body.main_department_id);
-                _apply(req.body.main_department_id,req,null,member);
+                department.memberOperateByHand('join',member,req.body.main_department_id);
               }
             }
             var groupMessage = new GroupMessage();

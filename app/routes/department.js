@@ -24,5 +24,10 @@ module.exports = function(app) {
   app.get('/department/campaigns', department.renderCampaigns);
   app.get('/department/applylist/:departmentId', authorization.departmentAuthorize, department.renderApplyList);
 
+  app.post('/department/managerOperate/:departmentId', authorization.departmentAuthorize, department.managerOperate);
+  app.post('/department/memberOperate/:departmentId', authorization.departmentAuthorize, department.memberOperateByRoute);
+
   app.get('/department/info', department.renderDepartmentInfo);
+
+  app.post('/department/detail/:departmentId', authorization.departmentAuthorize, department.getDepartmentDetail);
 };

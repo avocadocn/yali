@@ -44,33 +44,55 @@ exports.department = function(req, res, next) {
     });
 };
 
-
-
+// {'$pull':{'member':{'_id':ObjectId("53c50f643f5bc7910ff6c42f")}}}
+// db.companygroups.update({'_id':ObjectId("53bf810948cc8d5e21a3d7e3")},{'$pull':{'member':{'_id':ObjectId("53c50fd33f5bc7910ff6c432")}}})
+// db.companygroups.update({'_id':ObjectId("53bf810948cc8d5e21a3d7e3")},{'$pull':{'member':{'_id':ObjectId("53c50ffc3f5bc7910ff6c435")}}})
 //先搜索
 //任撤部门管理员
 exports.managerOperate = function(req, res) {
-  var manager = [req.body.manager];
-  department_manager
-  if(req.body.manager == 'null'){
-    manager = [];
+  var operate = req.body.operate;
+  var department_set,team_set;
+
+  console.log(operate);
+  if(operate === 'appoint'){
+    department_set = {'$push':{'manager':req.body.member}};
+    team_set = {'$push':{'leader':req.body.member}};
+  }
+  if(operate === 'dismiss'){
+    department_set = {'$pull':{'manager':{'_id':req.body.member._id}}};
+    team_set = {'$pull':{'leader':{'_id':req.body.member._id}}};
   }
   var did = req.body.did;
   Department.findByIdAndUpdate({
     '_id': did
-  }, {
-    '$set': {
-      'manager': manager
-    }
-  }, function(err, department) {
-    if (err || !message) {
+  }, department_set, function(err, department) {
+    if (err || !department) {
       res.send(500);
     } else {
-      CompanyGroup.findByIdAndUpdate({'_id':department.team},{'$set':{'leader':manager}},function (err,company_group){
+      CompanyGroup.findByIdAndUpdate({'_id':department.team},team_set,function (err,company_group){
         if(err || !company_group){
           res.send(500);
         }else{
-          res.send(200, {
-            'manager': manager
+          User.findOne({'_id':req.body.member._id},function (err,user){
+            if(err || !user){
+              res.send(500);
+            }else{
+              for(var i = 0; i < user.team.length; i ++){
+                if(user.team[i]._id.toString() === company_group._id.toString()){
+                  user.team[i].leader = operate == 'appoint' ? true : false;
+                  break;
+                }
+              }
+              user.save(function (err){
+                if(err){
+                  res.send(500);
+                }else{
+                  res.send(200, {
+                    'manager': req.body.member
+                  });
+                }
+              });
+            }
           });
         }
       });
@@ -299,7 +321,7 @@ exports.sponsor = function(req, res) {
     });
   });
 }
-var teamOperate = function(did,operate,res,req,user){
+var teamOperate = function(did,operate,res,req,user,method){
   Department.findByIdAndUpdate({'_id':did},operate,function(err,department){
     if(err || !department){
       if(res != null)return res.send(500);
@@ -308,16 +330,39 @@ var teamOperate = function(did,operate,res,req,user){
         if(err || !department){
           if(res!=null)return res.send(500);
         }else{
-          if(user != null){
-            User.findByIdAndUpdate({'_id':user._id},{'$set':{'department':null}},function (err,user){
+          var _set;
+          //加入
+          if(method){
+            _set = {'department':{'_id':did,'name':department.name},'team':[{'gid':'0','group_type':'virtual','entity_type':'virtual','_id':company_group._id,'name':company_group.name,'logo':company_group.logo}]};
+            User.findByIdAndUpdate({'_id':user._id},{'$set':_set},function (err,user){
               if(!user || err){
                 if(res!=null)return res.send(500);
               }else{
                 if(res!=null)return res.send(200,{'member':company_group.member});
               }
             });
+          //退出
           }else{
-            if(res!=null)return res.send(200,{'member':company_group.member});
+            User.findOne({'_id':user._id},function (err,user){
+              if(!user || err){
+                if(res!=null)return res.send(500);
+              }else{
+                user.department = null;
+                for(var i = 0 ; i < user.team.length; i ++){
+                  if(user.team[i]._id.toString() === company_group._id.toString()){
+                    user.team.splice(i,1);
+                    break;
+                  }
+                }
+                user.save(function (err){
+                  if(err){
+                    if(res!=null)return res.send(500);
+                  }else{
+                    if(res!=null)return res.send(200,{'member':company_group.member});
+                  }
+                });
+              }
+            });
           }
         }
       });
@@ -336,7 +381,7 @@ exports.memberOperateByRoute = function(req, res) {
       '$push': {
         'member': member
       }
-    }, req, res, null);
+    }, req, res, member, true);
   }
   if (operate === 'quit') {
     //踢掉
@@ -346,7 +391,7 @@ exports.memberOperateByRoute = function(req, res) {
           '_id': member._id
         }
       }
-    }, req, res, member);
+    }, req, res, member,false);
   }
 }
 
@@ -354,11 +399,11 @@ exports.memberOperateByRoute = function(req, res) {
 exports.memberOperateByHand = function(operate, member, did) {
   if (operate === 'join') {
     //员工提出申请后加入
-    teamOperate(did,{'$push':{'member':member}},null,null,null);
+    teamOperate(did,{'$push':{'member':member}},null,null,member,true);
   }
   if (operate === 'quit') {
     //踢掉
-    teamOperate(did,{'$pull':{'member':{'_id':member._id}}},null,null,member);
+    teamOperate(did,{'$pull':{'member':{'_id':member._id}}},null,null,member,false);
   }
 }
 
@@ -714,14 +759,7 @@ exports.deleteDepartment = function(req, res) {
 
 //获取树形部门数据
 exports.getDepartment = function(req, res) {
-  if (req.user._id.toString() === req.params.cid) {
-    res.send({
-      '_id': req.user._id,
-      'name': req.user.info.name,
-      'department': req.user.department
-    });
-  } else {
-    // 用于用户注册流程
+  if(req.params.cid === '0'){
     if (req.session.cid) {
       Company.findOne({
         '_id': req.session.cid
@@ -739,6 +777,14 @@ exports.getDepartment = function(req, res) {
       })
     } else {
       res.send(403);
+    }
+  }else{
+    if (req.user._id.toString() === req.params.cid) {
+      res.send({
+        '_id': req.user._id,
+        'name': req.user.info.name,
+        'department': req.user.department
+      });
     }
   }
 }
