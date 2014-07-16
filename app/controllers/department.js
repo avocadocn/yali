@@ -321,32 +321,46 @@ exports.sponsor = function(req, res) {
     });
   });
 }
-var teamOperate = function(did,operate,res,req,user,method){
+var teamOperate = function(options, callback){
+  var did = options.did;
+  var operate = options.operate;
+  var user = options.user;
+  var method = options.method;
   Department.findByIdAndUpdate({'_id':did},operate,function(err,department){
-    if(err || !department){
-      if(res != null)return res.send(500);
-    }else{
+    if (err) {
+      callback(err);
+    }
+    else if(!department){
+      callback('not found');
+    } else {
       CompanyGroup.findByIdAndUpdate({'_id':department.team},operate,function(err,company_group){
-        if(err || !department){
-          if(res!=null)return res.send(500);
-        }else{
+        if(err){
+          callback(err);
+        } else if (!department) {
+          callback('not found');
+        }
+        else{
           var _set;
           //加入
           if(method){
             _set = {'department':{'_id':did,'name':department.name},'team':[{'gid':'0','group_type':'virtual','entity_type':'virtual','_id':company_group._id,'name':company_group.name,'logo':company_group.logo}]};
             User.findByIdAndUpdate({'_id':user._id},{'$set':_set},function (err,user){
-              if(!user || err){
-                if(res!=null)return res.send(500);
-              }else{
-                if(res!=null)return res.send(200,{'member':company_group.member});
+              if(err){
+                callback(err)
+              } else if (!user) {
+                callback('not found');
+              } else {
+                callback(null, {'member':company_group.member});
               }
             });
           //退出
           }else{
             User.findOne({'_id':user._id},function (err,user){
-              if(!user || err){
-                if(res!=null)return res.send(500);
-              }else{
+              if(err){
+                callback(err)
+              } else if (!user) {
+                callback('not found');
+              } else{
                 user.department = null;
                 for(var i = 0 ; i < user.team.length; i ++){
                   if(user.team[i]._id.toString() === company_group._id.toString()){
@@ -356,9 +370,9 @@ var teamOperate = function(did,operate,res,req,user,method){
                 }
                 user.save(function (err){
                   if(err){
-                    if(res!=null)return res.send(500);
+                    callback(err);
                   }else{
-                    if(res!=null)return res.send(200,{'member':company_group.member});
+                    callback(null, {'member':company_group.member})
                   }
                 });
               }
@@ -372,26 +386,79 @@ var teamOperate = function(did,operate,res,req,user,method){
 
 //通过路由加退成员
 exports.memberOperateByRoute = function(req, res) {
-  var did = req.body.did;
+  var did = req.params.departmentId;
   var operate = req.body.operate;
   var member = req.body.member;
+
+  var join = function(callback) {
+    teamOperate({
+      did: did,
+      operate: {
+        '$push': {
+          'member': member
+        }
+      },
+      user: member,
+      method: true
+    }, function(err, data) {
+      if (err) {
+        console.log(err);
+        if (err === 'not found') {
+          return res.send(404);
+        } else {
+          return res.send(500);
+        }
+      }
+
+      callback(data);
+
+    });
+  };
+
+  var quit = function(callback) {
+    teamOperate({
+      did: did,
+      operate: {
+        '$pull': {
+          'member': {
+            '_id': member._id
+          }
+        }
+      },
+      user: member,
+      method: false
+    }, function(err, data) {
+      if (err) {
+        console.log(err);
+        if (err === 'not found') {
+          return res.send(404);
+        } else {
+          return res.send(500);
+        }
+      }
+
+      callback(data);
+
+    });
+  };
+
+
   if (operate === 'join') {
     //员工提出申请后加入
-    teamOperate(did, {
-      '$push': {
-        'member': member
-      }
-    }, req, res, member, true);
+    // 如果有加入部门，先退出之前的部门
+    if (req.user.department && req.user.department._id && req.user.department._id.toString() !== did) {
+
+      quit(function(data) {
+        join(res.send);
+      });
+
+    } else {
+      join(res.send);
+    }
   }
   if (operate === 'quit') {
     //踢掉
-    teamOperate(did, {
-      '$pull': {
-        'member': {
-          '_id': member._id
-        }
-      }
-    }, req, res, member,false);
+    quit(res.send);
   }
 }
 
@@ -784,6 +851,24 @@ exports.getDepartment = function(req, res) {
         '_id': req.user._id,
         'name': req.user.info.name,
         'department': req.user.department
+      });
+    } else {
+      Company
+      .findById(req.params.cid)
+      .exec()
+      .then(function(company) {
+        if (!company) {
+          return res.send(404);
+        }
+        return res.send({
+          _id: company._id,
+          name: company.name,
+          department: company.department
+        });
+      })
+      .then(null, function(err) {
+        console.log(err);
+        res.send(500);
       });
     }
   }

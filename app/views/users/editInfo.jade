@@ -25,10 +25,18 @@ div.use_edit_info
       .info_detail
         input.dl_input.dl_form-Control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit")
     .dl_row.clearfix
-      .info_side  
+      .info_side
         span.info_label #{__("COMPANY")}
       .info_side
         span.info_label {{user.cname}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label 部门
+      .info_side(ng-if="!baseUnEdit")
+        select(ng-model="department._id" ng-options="option._id as option.label for option in options")
+          option(ng-show="unselectDepartment" value="") --请选择部门--
+      .info_side(ng-if="baseUnEdit")
+        span.info_label {{ user.department.name }}
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
       .info_side
         span.info_label #{__("GENDER")}

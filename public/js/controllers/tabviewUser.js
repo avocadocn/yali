@@ -734,17 +734,59 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
+
+        var treeToList = function(department, level) {
+            var list = [];
+            if (department) {
+                for (var i = 0; i < department.length; i++) {
+                    var label = '';
+                    for (var j = 0; j < level; j++) {
+                        label += '---';
+                    }
+                    label += department[i].name;
+                    list.push({
+                        _id: department[i]._id,
+                        name: department[i].name,
+                        label: label
+                    });
+                    list = list.concat(treeToList(department[i].department, level + 1));
+                }
+            }
+            return list;
+        };
+
+        var setDepartmentOptions = function(user) {
+            $http.get('/departmentTree/' + user.cid)
+            .success(function(data, status) {
+                var department = data.department;
+                $scope.options = treeToList(department, 0);
+                for (var i = 0; i < $scope.options.length; i++) {
+                    if (user.department) {
+                        if (user.department._id && user.department._id.toString() === $scope.options[i]._id.toString()) {
+                            $scope.department = {
+                                _id: $scope.options[i]._id
+                            };
+                            break;
+                        }
+                    }
+                    $scope.unselectDepartment = true;
+                }
+            });
+        };
+
         $rootScope.nowTab = 'personal';
         $http.get('/users/'+$rootScope.uid+'/getAccount').success(function(data, status) {
             if (data.result === 1) {
                 $scope.user = data.data;
+                setDepartmentOptions(data.data);
             } else {
                 console.log(data.msg);
             }
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+            //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
         });
+
         $scope.baseUnEdit = true;
         //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
         $scope.baseButtonStatus = '编辑';
@@ -763,26 +805,55 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                         sex: $scope.user.sex,
                         birthday: $scope.user.birthday,
                         bloodType: $scope.user.bloodType,
-                        introduce: $scope.user.introduce,
+                        introduce: $scope.user.introduce
                     };
-                    $http({
-                        method: 'post',
-                        url: '/users/'+$rootScope.uid+'/saveAccount',
-                        data: {
-                            user: _info
+                    for (var i = 0; i < $scope.options.length; i++) {
+                        if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
+                            var department = {
+                                _id: $scope.options[i]._id,
+                                name: $scope.options[i].name
+                            };
+                            break;
                         }
-                    }).success(function(data, status) {
-                        //TODO:更改对话框
-                        if (data.result === 1) {
-                            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
-                            //重新刷新页面
-                            window.location.reload();
-                        } else
-                            $rootScope.donlerAlert(data.msg);
-                    }).error(function(data, status) {
-                        //TODO:更改对话框
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-                    });
+                    }
+
+                    var editUserInfo = function() {
+                        $http({
+                            method: 'post',
+                            url: '/users/'+$rootScope.uid+'/saveAccount',
+                            data: {
+                                user: _info
+                            }
+                        }).success(function(data, status) {
+                            //TODO:更改对话框
+                            if (data.result === 1) {
+                                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                                //重新刷新页面
+                                window.location.reload();
+                            } else
+                                $rootScope.donlerAlert(data.msg);
+                        }).error(function(data, status) {
+                            //TODO:更改对话框
+                            //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                        });
+                    };
+                    if (department && $scope.user.department._id.toString() !== department._id.toString()) {
+                        $http
+                            .post('/department/memberOperate/' + department._id, {
+                                operate: 'join',
+                                member: {
+                                    _id: $scope.user._id,
+                                    nickname: $scope.user.nickname,
+                                    photo: $scope.user.photo
+                                }
+                            })
+                            .success(function(data, status) {
+                                editUserInfo();
+                            });
+                    } else {
+                        editUserInfo();
+                    }
+
                 } catch (e) {
                     console.log(e);
                 }

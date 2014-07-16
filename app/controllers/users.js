@@ -1095,7 +1095,7 @@ exports.getAccount = function (req, res) {
   }
   User.findOne({
           _id : req.params.userId
-      },{'_id':0,'hashed_password':0,'salt':0}, function(err, user) {
+      },{'hashed_password':0,'salt':0}, function(err, user) {
           if(err) {
               console.log(err);
               res.send({'result':0,'msg':'数据错误'});

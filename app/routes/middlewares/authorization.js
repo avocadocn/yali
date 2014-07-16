@@ -45,12 +45,12 @@ exports.departmentAuthorize = function(req, res, next) {
         }
       }
       for (var i = 0, members = department.team.member; i < members.length; i++) {
+        console.log(members[i],'2')
         if (req.user._id.toString() === members[i]._id.toString()) {
           req.role = 'MEMBER';
         }
       }
       if (!req.role) {
-        console.log(req.user.cid, department.company._id)
         if (req.user.cid.toString() === department.company._id.toString()) {
           req.role = 'PARTNER';
         }
