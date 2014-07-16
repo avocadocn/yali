@@ -824,17 +824,15 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         });
     })();
 
-    $('.tree').delegate('li.parent_li > .self > span', 'click', function(e) {
-        var department = $(this).parent('.self').parent('li.parent_li').find(' > ul > li');
-        if (department.is(":visible")) {
-            department.hide('fast');
-            $(this).attr('title', 'Expand this branch').find(' > i').addClass('glyphicon-plus').removeClass('glyphicon-minus');
+    $scope.toggleTree = function(node) {
+        if (!node.toggle || node.toggle === 'glyphicon-minus') {
+            node.toggle = 'glyphicon-plus';
+            node.hideChild = true;
         } else {
-            department.show('fast');
-            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('glyphicon-minus').removeClass('glyphicon-plus');
+            node.toggle = 'glyphicon-minus';
+            node.hideChild = false;
         }
-        e.stopPropagation();
-    });
+    };
 
     $scope.getNode = function(node){
         $scope.did = node._id;
@@ -850,7 +848,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             //TODO:更改对话框
             alertify.alert(data);
         });
-    }
+    };
+
 
     $scope.hasChild = function(node) {
         if (node && node.department) {
@@ -903,6 +902,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
     $scope.addNode = function(node) {
+        node.toggle = 'glyphicon-minus';
+        node.hideChild = false;
         node.department.push({
             edit_name: '',
             parent_id: node._id,
