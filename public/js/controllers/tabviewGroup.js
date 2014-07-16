@@ -69,7 +69,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.number += 1;
                 $rootScope.isMember = true;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_TEAM_FAILURE);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -90,7 +90,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.number --;
                 $rootScope.isMember = false;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -194,7 +194,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
               }
           }).error(function(data, status) {
               //TODO:更改对话框
-              $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+              alertify.alert('DATA ERROR');
           });
         }
         catch(e){
@@ -287,7 +287,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                         }
                     }
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -311,10 +311,10 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     $scope.group_messages[$scope.message_index].comments.splice(index,1);
                     $scope.group_messages[$scope.message_index].campaign.comment_sum --;
                 } else {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -353,10 +353,10 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                         'index' : $scope.fixed_sum+1
                     });
                 } else {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -376,14 +376,14 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 }
             }).success(function(data, status) {
                 if(data.result===0) {
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 } else {
                     $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -401,15 +401,15 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    alertify.alert('加入小队成功');
                     $scope.group_messages[index].join_flag = true;
                     $scope.group_messages[index].member_num++;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -427,16 +427,16 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    alertify.alert('成功退出小队!');
                     //alert('您已退出该活动!');
                     $scope.group_messages[index].join_flag = false;
                     $scope.group_messages[index].member_num--;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -455,7 +455,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -558,15 +558,15 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    alertify.alert('成功加入活动!');
                     $scope.campaigns[index].join_flag = 1;
                     $scope.campaigns[index].member_num++;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -584,16 +584,16 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    alertify.alert('成功退出活动!');
                     //alert('您已退出该活动!');
                     $scope.campaigns[index].join_flag = -1;
                     $scope.campaigns[index].member_num--;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -612,7 +612,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -631,7 +631,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -688,14 +688,13 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                 }).success(function(data, status) {
                     //TODO:更改对话框
                     if(data.result === 1) {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
                         //window.location.reload();
                     }
                     else
-                        $rootScope.donlerAlert(data.msg);
+                        alertify.alert(data.msg);
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -1006,7 +1005,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
 
     $scope.showMap = function(){
         if($scope.location.name==''){
-            $rootScope.donlerAlert('请输入地点');
+            alertify.alert('请输入地点');
             return false;
         }
         else if($scope.showMapFlag ==false){
@@ -1039,7 +1038,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
 
         }
@@ -1131,7 +1130,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 else if(data.result===2)//没填主场
                     $scope.homecourt=false;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             })
         }
         catch(e){
@@ -1180,7 +1179,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     
     $scope.showMap = function(){
         if($scope.location.name==''){
-            $rootScope.donlerAlert('请输入地点');
+            alertify.alert('请输入地点');
             return false;
         }
         else if($scope.showMapFlag ==false){
@@ -1217,14 +1216,14 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 }
                 $scope.teams=[];
                 if($scope.companies.length <= 0) {
-                    $scope.donlerAlert("没有找到符合条件的公司!");
+                    alertify.alert("没有找到符合条件的公司!");
                 }else{
                     for(var i = 0; i < $scope.companies.length; i ++) {
                         $scope.show_team.push(false);
                     }
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -1261,7 +1260,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 $scope.teams = data;
                 var len = $scope.teams.length;
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -1284,10 +1283,10 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 $scope.teams = data;
                 $scope.companies=[];
                 if($scope.teams.length <= 0) {
-                    $rootScope.donlerAlert("没有找到符合条件的小队!");
+                    alertify.alert("没有找到符合条件的小队!");
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -1321,7 +1320,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 }).success(function(data, status) {
                     window.location.reload();
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -1347,7 +1346,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                 }).success(function(data, status) {
                     window.location.reload();
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {

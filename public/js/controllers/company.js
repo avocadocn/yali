@@ -52,7 +52,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -87,7 +87,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                 console.log('check_name:'+_this.check_username);
             }).error(function(data, status) {
               //TODO:更改对话框
-              $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+              alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -117,7 +117,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                 console.log('check_username:'+_this.check_username);
             }).error(function(data, status) {
               //TODO:更改对话框
-              $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+              alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -133,7 +133,7 @@ companyApp.controller('GroupsController',['$http',function($http) {
         _this.groups = data;
     }).error(function(data,status) {
         //TODO:更改对话框
-        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.FETCH_TYPE_FAILURE);
+        alertify.alert('DATA ERROR');
     });
     this.selected_groups =[];
     this.group_next = function() {
@@ -160,7 +160,7 @@ companyApp.controller('GroupsController',['$http',function($http) {
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -185,11 +185,11 @@ companyApp.controller('inviteController',['$http','$scope',function($http,$scope
                     $scope.domains[index].status=true;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {

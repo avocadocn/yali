@@ -120,7 +120,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
             $rootScope.uid = data.uid;
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            alertify.alert('DATA ERROR');
         });
       }
       catch(e){
@@ -513,7 +513,7 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
           }
       }).error(function(data, status) {
           //TODO:更改对话框
-          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+          alertify.alert('DATA ERROR');
       });
     }
     catch(e){
@@ -573,7 +573,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
           }
       }).error(function(data, status) {
           //TODO:更改对话框
-          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+          alertify.alert('DATA ERROR');
       });
     }
     catch(e){

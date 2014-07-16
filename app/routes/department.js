@@ -20,6 +20,7 @@ module.exports = function(app) {
   app.get('/department/home/:departmentId', authorization.departmentAuthorize, department.renderHome);
 
   app.post('/department/:departmentId/sponsor', authorization.departmentAuthorize, department.sponsor);
+  app.post('/department/:departmentId/multi_sponsor', authorization.departmentAuthorize, department.multiCampaignSponsor);
 
   app.get('/department/campaigns', department.renderCampaigns);
   app.get('/department/applylist/:departmentId', authorization.departmentAuthorize, department.renderApplyList);
@@ -30,4 +31,5 @@ module.exports = function(app) {
   app.get('/department/info', department.renderDepartmentInfo);
 
   app.post('/department/detail/:departmentId', authorization.departmentAuthorize, department.getDepartmentDetail);
+  app.get('/department/detail/multi/:cid', department.getMultiDepartmentDetail);
 };

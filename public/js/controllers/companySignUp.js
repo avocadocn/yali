@@ -46,7 +46,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
 
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            alertify.alert('DATA ERROR');
         });
       }
       catch(e){

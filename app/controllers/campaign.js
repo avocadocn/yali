@@ -235,7 +235,7 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
-    else{//动一下
+    else if(_campaign.campaign_type !== 7){//动一下
       temp.type = 'provoke';
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
@@ -331,6 +331,7 @@ exports.getCampaigns = function(req, res) {
     .sort({'start_time':-1})
     .exec()
     .then(function(campaign) {
+      console.log('----',option,campaign);
       if(campaign===[]){
         return res.send({ result: 0, msg:'查找活动失败' });
       }

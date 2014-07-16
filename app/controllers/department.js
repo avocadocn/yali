@@ -17,6 +17,7 @@ var mongoose = require('mongoose'),
   PhotoAlbum = mongoose.model('PhotoAlbum'),
   GroupMessage = mongoose.model('GroupMessage'),
   meanConfig = require('../../config/config'),
+  path = require('path'),
   photo_album_controller = require('./photoAlbum');
 
 
@@ -100,15 +101,30 @@ exports.managerOperate = function(req, res) {
   });
 }
 
-
 //部门之间互相发活动
 exports.multiCampaignSponsor = function(req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
     console.log(req.role);
     return res.send(403,'forbidden');
   }
-  var other_departments = req.body.other_departments;//其实只有一个
-  var poster = req.body.poster;
+  var poster;
+  var other_departments = req.body.select_departments;//其实只有一个
+  if(req.user.provider === 'user'){
+    poster = {
+      'cid':req.user.cid,
+      'cname':req.user.cname,
+      'tname':req.department.team.name,
+      'uid':req.user._id,
+      'nickname':req.user.nickname,
+      'role':'LEADER'
+    };
+  }else{
+    poster = {
+      'cid':req.user._id,
+      'cname':req.user.info.name,
+      'role':'HR'
+    };
+  }
   var theme = req.body.theme;
   var content = req.body.content;
   var member_num = req.body.member_num;
@@ -116,14 +132,27 @@ exports.multiCampaignSponsor = function(req, res) {
   var time = req.body.time;
 
   var department_campaign = new Campaign();
+  department_campaign.campaign_type = 7;
   department_campaign.team.push(req.department.team);
   var teams = [];
   var team_ids = [];
+
+  teams.push({
+    'teamid':req.department.team._id,
+    'name':req.department.team.name,
+    'logo':req.department.team.logo
+  });
   for(var i = 0; i < other_departments.length; i ++){
     department_campaign.team.push(other_departments[i].team._id);
     team_ids.push(other_departments[i].team._id);
-    teams.push(other_departments[i].team);
+    teams.push({
+      'teamid':other_departments[i].team._id,
+      'name':other_departments[i].team.name,
+      'logo':other_departments[i].team.logo
+    });
+    console.log('-3-3-3',other_departments[i].team);
   }
+
   department_campaign.cid.push(req.department.company._id);
   department_campaign.cname.push(req.department.company.name);
   department_campaign.poster = poster;
@@ -169,8 +198,8 @@ exports.multiCampaignSponsor = function(req, res) {
           department_campaign.save(function(err){
             if(!err){
               var groupMessage = new GroupMessage();
-              groupMessage.message_type = 9;
-              groupMessage.team.push(teams);
+              groupMessage.message_type = 10;
+              groupMessage.team = teams;
 
               groupMessage.company.push({
                 cid: req.department.company._id,
@@ -560,6 +589,24 @@ exports.getDepartmentDetail = function(req, res) {
   });
 };
 
+
+//获取部门列表
+exports.getMultiDepartmentDetail = function(req, res) {
+  var cid = req.params.cid;
+  Department.find({
+    'company._id': cid
+  }).populate('team').exec(function(err, departments) {
+    if (err || !departments) {
+      res.send(500, {
+        'departments': null
+      });
+    } else {
+      res.send(200, {
+        'departments': departments
+      })
+    }
+  });
+};
 
 var deleteFromRoot = function(department, seq, req, res) {
   stack = null;
@@ -962,7 +1009,6 @@ exports.createDepartment = function(req, res) {
 
 exports.renderHome = function(req, res) {
   var department = req.department;
-
   PhotoAlbum
     .where('_id').in(department.team.photo_album_list)
     .exec()

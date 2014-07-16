@@ -69,7 +69,7 @@ departmentApp.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.number += 1;
                 $rootScope.isMember = true;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_TEAM_FAILURE);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -90,7 +90,7 @@ departmentApp.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.number --;
                 $rootScope.isMember = false;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_TEAM_FAILURE);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -201,7 +201,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
               }
           }).error(function(data, status) {
               //TODO:更改对话框
-              $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+              alertify.alert('DATA ERROR');
           });
         }
         catch(e){
@@ -294,7 +294,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                         }
                     }
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -318,10 +318,10 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                     $scope.group_messages[$scope.message_index].comments.splice(index,1);
                     $scope.group_messages[$scope.message_index].campaign.comment_sum --;
                 } else {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -360,10 +360,10 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                         'index' : $scope.fixed_sum+1
                     });
                 } else {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -383,14 +383,14 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                 }
             }).success(function(data, status) {
                 if(data.result===0) {
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 } else {
                     $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
                     $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -408,15 +408,15 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    alertify.alert('成功加入该活动!');
                     $scope.group_messages[index].join_flag = true;
                     $scope.group_messages[index].member_num++;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -434,16 +434,16 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    alertify.alert('成功退出该活动!');
                     //alert('您已退出该活动!');
                     $scope.group_messages[index].join_flag = false;
                     $scope.group_messages[index].member_num--;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -462,7 +462,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -565,15 +565,15 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                    alertify.alert('成功加入该活动!');
                     $scope.campaigns[index].join_flag = 1;
                     $scope.campaigns[index].member_num++;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -591,16 +591,16 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                    alertify.alert('成功退出该活动!');
                     //alert('您已退出该活动!');
                     $scope.campaigns[index].join_flag = -1;
                     $scope.campaigns[index].member_num--;
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -619,7 +619,7 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -638,7 +638,7 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -695,14 +695,12 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
                 }).success(function(data, status) {
                     //TODO:更改对话框
                     if(data.result === 1) {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
                         //window.location.reload();
                     }
                     else
-                        $rootScope.donlerAlert(data.msg);
+                        alertify.alert(data.msg);
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                 });
             }
             catch(e) {
@@ -944,7 +942,58 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
     });
 }]);
 
+
+
 departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+    $scope.multi = false;
+    $scope.departments = [];
+    $scope.select_departments = [];
+    $scope.main_department = null;
+    $scope.search_department = null,
+
+    $scope.search = function(){
+        var find = false;
+        $scope.select_departments = [];
+        for(var i = 0 ; i < $scope.departments.length; i ++){
+            if($scope.departments[i].name.indexOf($scope.search_department) > -1){
+                $scope.select_departments.push($scope.departments[i]);
+            }
+        }
+    }
+    $scope.showCampaignSponsor = function(){
+        $scope.multi = true;
+        $('#sponsorCampaignModel').modal();
+    }
+
+    $scope.select_department = function(){
+        for(var i = 0; i < $scope.select_departments.length; i ++){
+            if($scope.select_departments[i]._id === $scope.main_department._id){
+                return;
+            }
+        }
+        $scope.select_departments.push($scope.main_department);
+    }
+    $scope.departmentFormat = function(departments){
+        for(var i = 0 ; i < departments.length; i ++){
+            if(departments[i]._id !== $scope.did){
+                    $scope.departments.push({
+                    '_id':departments[i]._id,
+                    'name':departments[i].name,
+                    'team':departments[i].team,
+                });
+            }
+        }
+    }
+    $scope.$watch('did',function(did){
+        $scope.$watch('cid',function(cid){
+            $http
+            .get('/department/detail/multi/' + cid)
+            .success(function(data, status) {
+                $scope.departmentFormat(data.departments);
+            });
+        });
+    });
+
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $("#start_time").on("changeDate",function (ev) {
@@ -1013,7 +1062,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
 
     $scope.showMap = function(){
         if($scope.location.name==''){
-            $rootScope.donlerAlert('请输入地点');
+            alertify.alert('请输入地点');
             return false;
         }
         else if($scope.showMapFlag ==false){
@@ -1026,27 +1075,50 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
     };
 
     $scope.sponsor = function() {
+        var _data;
+        var _url;
+        if($scope.multi){
+            _url = '/department/'+$scope.did+'/multi_sponsor';
+            _data = {
+                select_departments:$scope.select_departments,
+                theme: $scope.theme,
+                location: $scope.location,
+                content : $scope.content,
+                time:{
+                    start:$scope.start_time,
+                    end:$scope.end_time,
+                    deadline:$scope.deadline
+                },
+                member_num:{
+                    min:$scope.member_min,
+                    max:$scope.member_max
+                }
+            }
+        }else{
+            _url = '/department/'+$scope.did+'/sponsor';
+            _data = {
+                theme: $scope.theme,
+                location: $scope.location,
+                content : $scope.content,
+                start_time : $scope.start_time,
+                end_time : $scope.end_time,
+                member_min: $scope.member_min,
+                member_max: $scope.member_max,
+                deadline: $scope.deadline
+            }
+        }
         try{
             $http({
                 method: 'post',
-                url: '/group/campaignSponsor/'+ $rootScope.teamId,
-                data:{
-                    theme: $scope.theme,
-                    location: $scope.location,
-                    content : $scope.content,
-                    start_time : $scope.start_time,
-                    end_time : $scope.end_time,
-                    member_min: $scope.member_min,
-                    member_max: $scope.member_max,
-                    deadline: $scope.deadline
-                }
+                url: _url,
+                data:_data
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面
                 window.location.reload();
 
             }).error(function(data, status) {
                 //TODO:更改对话框
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
 
         }
@@ -1138,7 +1210,7 @@ departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',fu
                 else if(data.result===2)//没填主场
                     $scope.homecourt=false;
             }).error(function(data,status){
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             })
         }
         catch(e){
@@ -1187,7 +1259,7 @@ departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',fu
     
     $scope.showMap = function(){
         if($scope.location.name==''){
-            $rootScope.donlerAlert('请输入地点');
+            alertify.alert('请输入地点');
             return false;
         }
         else if($scope.showMapFlag ==false){
@@ -1224,14 +1296,14 @@ departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',fu
                 }
                 $scope.teams=[];
                 if($scope.companies.length <= 0) {
-                    $scope.donlerAlert("没有找到符合条件的公司!");
+                    alertify.alert("没有找到符合条件的公司!");
                 }else{
                     for(var i = 0; i < $scope.companies.length; i ++) {
                         $scope.show_team.push(false);
                     }
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -1268,7 +1340,7 @@ departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',fu
                 $scope.teams = data;
                 var len = $scope.teams.length;
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -1291,10 +1363,10 @@ departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',fu
                 $scope.teams = data;
                 $scope.companies=[];
                 if($scope.teams.length <= 0) {
-                    $rootScope.donlerAlert("没有找到符合条件的小队!");
+                    alertify.alert("没有找到符合条件的小队!");
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -1328,7 +1400,7 @@ departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',fu
                 }).success(function(data, status) {
                     window.location.reload();
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -1354,7 +1426,7 @@ departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',fu
                 }).success(function(data, status) {
                     window.location.reload();
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {

@@ -94,7 +94,7 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
         }).success(function(data, status) {
           window.location.reload();
         }).error(function(data, status) {
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            alertify.alert('DATA ERROR');
         });
       }
       catch(e) {

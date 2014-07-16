@@ -128,12 +128,9 @@ userApp.controller('GroupsController', ['$scope','$http','$rootScope', function(
                     selected : $scope.selected
                 }
             }).success(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.SELECT +
-                                                        $rootScope.lang_for_msg[$rootScope.lang_key].value.TEAM +
-                                                            $rootScope.lang_for_msg[$rootScope.lang_key].value.SUCCESS);
                 window.location.href = "/users/finishRegister";
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
