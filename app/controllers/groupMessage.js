@@ -206,6 +206,20 @@ exports.getMessage = function(req, res) {
               _group_message.logo = group_message[i].user.logo;
             }
           break;
+          case 10:
+            _group_message.logo = group_message[i].team[0].logo;
+            _group_message.team_id=group_message[i].team[0].teamid;
+            if(join_role&& new Date()<group_message[i].campaign.deadline){
+              var join_flag = false;
+              group_message[i].campaign.member.forEach(function(member){
+                if(member.uid.toString() === req.user._id.toString()){
+                  join_flag = true;
+                }
+              });
+              _group_message.member_num = group_message[i].campaign.member.length;
+              _group_message.join_flag = join_flag;
+            }
+            break;
           default:
           break;
         }
