@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewUser = angular.module('mean.main');
+var tabViewUser = angular.module('donler');
 
 
 tabViewUser.directive('match', function($parse) {
@@ -223,7 +223,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                             }
                         }
                     }).error(function(data, status) {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                        alertify.alert('DATA ERROR');
                     });
                 }
                 catch(e) {
@@ -248,10 +248,10 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         $scope.group_messages[$scope.message_index].comments.splice(index,1);
                         $scope.group_messages[$scope.message_index].campaign.comment_sum --;
                     } else {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                        alertify.alert('DATA ERROR');
                     }
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -290,10 +290,10 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                             'index' : $scope.fixed_sum+1
                         });
                     } else {
-                        $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                        alertify.alert('DATA ERROR');
                     }
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -313,7 +313,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     }
                 }).success(function(data, status) {
                     if(data.result===0) {
-                        $rootScope.donlerAlert(data.msg);
+                        alertify.alert(data.msg);
                     } else {
                         $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
                         $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
@@ -337,7 +337,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 }).success(function(data, status) {
                     if(data.result===1){
                         //alert('成功加入该活动!');
-                        //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+                        alertify.alert('成功加入该活动!');
                         $scope.group_messages[index].join_flag = true;
                         $scope.group_messages[index].member_num++;
                     }
@@ -345,7 +345,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         alertify.alert(data.msg);
                     }
                 }).error(function(data, status) {
-                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -363,7 +363,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     }
                 }).success(function(data, status) {
                     if(data.result===1){
-                        //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+                        alertify.alert('成功退出该活动!');
                         //alert('您已退出该活动!');
                         $scope.group_messages[index].join_flag = false;
                         $scope.group_messages[index].member_num--;
@@ -372,7 +372,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         alertify.alert(data.msg);
                     }
                 }).error(function(data, status) {
-                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -391,7 +391,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 }).success(function(data, status) {
                     window.location.reload();
                 }).error(function(data, status) {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -400,6 +400,194 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
         };
     }
 ]);
+
+
+tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',function ($http, $scope,$rootScope) {
+    $scope.company = false;
+    $http.get('/campaign/getCampaigns/user/all/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $scope.campaigns = data.campaigns;
+        if(data.campaigns.length<20){
+            $scope.loadMore_flag = false;
+        }
+        else{
+            $scope.loadMore_flag = true;
+        }
+    });
+    $scope.loadMore_flag = false;
+    $scope.block = 1;
+    $scope.page = 1;
+    $scope.pageTime = [0];
+    $scope.lastPage_flag = false;
+    $scope.nextPage_flag = false;
+    $scope.loadMore = function(){
+        $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
+                if(++$scope.block==5){
+                    $scope.nextPage_flag = true;
+                    $scope.loadMore_flag = false;
+                    if($scope.page!=1){
+                        $scope.lastPage_flag = true;
+                    }
+                }
+
+            }
+            else{
+                $scope.loadOver_flag = true;
+                $scope.loadMore_flag = false;
+                $scope.nextPage_flag = false;
+            }
+        });
+    }
+    $scope.changePage = function(flag){
+        var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
+        $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            if(data.result===1 && data.campaigns.length>0){
+                if(flag ==1){
+                    $scope.page++;
+                    $scope.pageTime.push(new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime());
+                }
+                else{
+                    $scope.page--;
+                }
+                $scope.campaigns = data.campaigns;
+                if(data.campaigns.length<20){
+                    $scope.loadMore_flag = false;
+                }
+                else{
+                    $scope.loadMore_flag = true;
+                }
+                $scope.nextPage_flag = false;
+                $scope.lastPage_flag = false;
+                $scope.loadOver_flag = false;
+                $scope.block = 1;
+                window.scroll(0,0);
+            }
+            else{
+                $scope.nextPage_flag = false;
+                $scope.loadMore_flag = false;
+                $scope.loadOver_flag = true;
+            }
+        });
+    };
+
+    $scope.quit = function(campaign_id, index) {
+        try {
+            $http({
+                method: 'post',
+                url: '/users/quitCampaign',
+                data: {
+                    campaign_id: campaign_id
+                }
+            }).success(function(data, status) {
+                if (data.result === 1) {
+                    alertify.alert('成功退出该活动!');
+                    //alert('您已退出该活动!');
+                    $scope.group_messages[index].join_flag = false;
+                } else {
+                    alertify.alert(data.msg);
+                }
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    //应战
+    $scope.responseProvoke = function(tid, provoke_message_id) {
+        try {
+            $http({
+                method: 'post',
+                url: '/group/responseProvoke/' + tid,
+                data: {
+                    provoke_message_id: provoke_message_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+}]);
+
+// tabViewUser.controller('CampaignListController', ['$http', '$scope', '$rootScope',
+//     function($http, $scope, $rootScope) {
+//         $scope.company = false;
+//         $http.get('/campaign/getCampaigns/user/all/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+//             $scope.campaigns = data.campaigns;
+//         });
+//         $scope.loadMore_flag = true;
+//         $scope.page = 1;
+//         $scope.loadMore = function() {
+//             $http.get('/campaign/getCampaigns/user/all/' + $scope.page + '?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+//                 if (data.result === 1 && data.campaigns.length > 0) {
+//                     $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+//                     $scope.page++;
+//                 } else {
+//                     $scope.loadMore_flag = false;
+//                 }
+//             });
+//         }
+//         $scope.join = function(campaign_id, index) {
+//             try {
+//                 $http({
+//                     method: 'post',
+//                     url: '/users/joinCampaign',
+//                     data: {
+//                         campaign_id: campaign_id
+//                     }
+//                 }).success(function(data, status) {
+//                     if (data.result === 1) {
+//                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+//                         $scope.campaigns[index].join_flag = true;
+//                         $scope.campaigns[index].member_length++;
+//                     } else {
+//                         alert(data.msg);
+//                     }
+//                 }).error(function(data, status) {
+//                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+//                 });
+//             } catch (e) {
+//                 console.log(e);
+//             }
+//         };
+
+//         $scope.quit = function(campaign_id, index) {
+//             try {
+//                 $http({
+//                     method: 'post',
+//                     url: '/users/quitCampaign',
+//                     data: {
+//                         campaign_id: campaign_id
+//                     }
+//                 }).success(function(data, status) {
+//                     if (data.result === 1) {
+//                         $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+//                         $scope.campaigns[index].join_flag = false;
+//                         $scope.campaigns[index].member_length--;
+//                     } else {
+//                         alert(data.msg);
+//                     }
+//                 }).error(function(data, status) {
+//                     $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+//                 });
+//             } catch (e) {
+//                 console.log(e);
+//             }
+//         };
+//     }
+// ]);
+
 
 tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
@@ -546,18 +734,63 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
+
+        var treeToList = function(department, level) {
+            var list = [];
+            if (department) {
+                for (var i = 0; i < department.length; i++) {
+                    var label = '';
+                    for (var j = 0; j < level; j++) {
+                        label += '---';
+                    }
+                    label += department[i].name;
+                    list.push({
+                        _id: department[i]._id,
+                        name: department[i].name,
+                        label: label
+                    });
+                    list = list.concat(treeToList(department[i].department, level + 1));
+                }
+            }
+            return list;
+        };
+
+        var setDepartmentOptions = function(user) {
+            $http.get('/departmentTree/' + user.cid)
+            .success(function(data, status) {
+                var department = data.department;
+                $scope.options = treeToList(department, 0);
+                for (var i = 0; i < $scope.options.length; i++) {
+                    if (user.department) {
+                        if (user.department._id && user.department._id.toString() === $scope.options[i]._id.toString()) {
+                            $scope.department = {
+                                _id: $scope.options[i]._id
+                            };
+                            break;
+                        }
+                    }
+                }
+                if (!$scope.department) {
+                    $scope.department = {
+                        _id: $scope.options[0]._id
+                    };
+                }
+            });
+        };
+
         $rootScope.nowTab = 'personal';
         $http.get('/users/getAccount/'+$rootScope.uid).success(function(data, status) {
             if (data.result === 1) {
                 $scope.user = data.data;
-                $scope.role = data.role;
+                setDepartmentOptions(data.data);
             } else {
                 console.log(data.msg);
             }
         }).error(function(data, status) {
             //TODO:更改对话框
-            alertify.alert($rootScope.lang_for_msg[$rootScope.lang_key].value.ACCOUNT_FAILURE);
+            alertify.alert('DATA ERROR');
         });
+
         $scope.baseUnEdit = true;
         //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
         $scope.baseButtonStatus = '编辑';
@@ -576,26 +809,55 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                         sex: $scope.user.sex,
                         birthday: $scope.user.birthday,
                         bloodType: $scope.user.bloodType,
-                        introduce: $scope.user.introduce,
+                        introduce: $scope.user.introduce
                     };
-                    $http({
-                        method: 'post',
-                        url: '/users/saveAccount/'+$rootScope.uid,
-                        data: {
-                            user: _info
+                    for (var i = 0; i < $scope.options.length; i++) {
+                        if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
+                            var department = {
+                                _id: $scope.options[i]._id,
+                                name: $scope.options[i].name
+                            };
+                            break;
                         }
-                    }).success(function(data, status) {
-                        //TODO:更改对话框
-                        if (data.result === 1) {
-                            //alertify.alert(data.msg);
-                            //重新刷新页面
-                            window.location.reload();
-                        } else
-                            alertify.alert(data.msg);
-                    }).error(function(data, status) {
-                        //TODO:更改对话框
-                       alertify.alert('error');
-                    });
+                    }
+
+                    var editUserInfo = function() {
+                        $http({
+                            method: 'post',
+                            url: '/users/saveAccount/'+$rootScope.uid,
+                            data: {
+                                user: _info
+                            }
+                        }).success(function(data, status) {
+                            //TODO:更改对话框
+                            if (data.result === 1) {
+                                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
+                                //重新刷新页面
+                                window.location.reload();
+                            } else
+                                alertify.alert(data.msg);
+                        }).error(function(data, status) {
+                            //TODO:更改对话框
+                            //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                        });
+                    };
+
+                    if (!$scope.user.department._id || $scope.user.department._id.toString() !== department._id.toString()) {
+                        $http
+                            .post('/department/memberOperate/' + department._id, {
+                                operate: 'join',
+                                member: {
+                                    _id: $scope.user._id,
+                                    nickname: $scope.user.nickname,
+                                    photo: $scope.user.photo
+                                }
+                            })
+                            .success(function(data, status) {
+                                editUserInfo();
+                            });
+                    } else {
+                        editUserInfo();
+                    }
                 } catch (e) {
                     console.log(e);
                 }
@@ -623,14 +885,9 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                         }
                     }).success(function(data, status) {
                         //TODO:更改对话框
-                        if (data.result === 1) {
-                            window.location.reload();
-                        }
-                        else
-                            alertify.alert(data.msg);
                     }).error(function(data, status) {
                         //TODO:更改对话框
-                        alertify.alert('error');
+                        alertify.alert('DATA ERROR');
                     });
                 } catch (e) {
                     console.log(e);
@@ -665,7 +922,7 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
                     alertify.alert(data.msg);
                     window.location.href = '#/personal';
                 } else
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alertify.alert('error');

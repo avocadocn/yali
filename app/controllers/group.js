@@ -90,21 +90,35 @@ exports.activateGroup = function(req, res) {
 //小队信息维护 TODO
 exports.info =function(req,res) {
   var entity_type = req.companyGroup.entity_type;
-  var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-  Entity.findOne({
-      'tid': req.companyGroup._id
-    },function(err, entity) {
-        if (err) {
-            console.log(err);
-            return res.send(err);
-        } else {
-            return res.send({
-                'companyGroup': req.companyGroup,  //父小队信息
-                'entity': entity,                   //实体小队信息
-                'role': req.role
-            });
-        }
+
+  if (entity_type === 'virtual') {
+    return res.send({
+      'companyGroup': req.companyGroup,
+      'role': req.role
     });
+  }
+
+  try {
+    var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
+    Entity.findOne({
+        'tid': req.companyGroup._id
+      },function(err, entity) {
+          if (err) {
+              console.log(err);
+              return res.send(err);
+          } else {
+              return res.send({
+                  'companyGroup': req.companyGroup,  //父小队信息
+                  'entity': entity,                   //实体小队信息
+                  'role': req.role
+              });
+          }
+      });
+  } catch (e) {
+    console.log(e);
+    return res.send(500);
+  }
+
 };
 
 //获取小组简要信息供弹出层查看

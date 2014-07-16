@@ -41,45 +41,4 @@
                 label {{user.nickname}}
       .dl-modal-footer
         button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointLeader()") #{__("APPOINT")}
-//- .modal-dialog
-//-   .dl-modal
-//-     .dl-modal-header
-//-       button(class="close" data-dismiss="modal" aria-hidden="true")
-//-         img(ng-src='/img/icons/icon_close.png')
-//-       .head #{__("EDIT")}#{__("TEAM_INFO")}
-//-     .dl-modal-body
-//-       .row
-//-         .col-md-2.dl_md_2
-//-             span.info_label #{__("TEAM_NAME")}
-//-         .col-md-2.dl_md_10
-//-             input.dl_input.dl_form-control.editToggle(type="text" name ="name" ng-model="team.name")
-//-       hr
-//-       .row
-//-         .col-md-4
-//-           label.info_label.control-label #{__("APPOINT_LEADER")}
-//-           .row
-//-             .col-md-4
-//-               label.info_label.control-label 成员
-//-             .col-md-8
-//-               select.dl_modal_input.form-control(tabindex="1" ng-model="user_selected" ng-options="user.nickname for user in users" ng-change="select(true)" ng-click="select(true)" required)
-//-           .row
-//-             .col-md-4
-//-               label.info_label.control-label 队长
-//-             .col-md-8
-//-               select.dl_modal_input.form-control(tabindex="1" ng-model="leader_selected" ng-options="leader.nickname for leader in leaders" ng-change="select(false)" ng-click="select(false)" required)
-//-           br
-//-           br
-//-           .dl_row.clearfix(ng-if="select_user || select_leader")
-//-             .col-md-6
-//-               a(href="/group/home/{{team._id}}")
-//-                 img.size_56.img-thumbnail.img_contain(ng-src="{{select_user ? user_selected.photo : leader_selected.photo}}")
-//-             .col-md-6
-//-               .row
-//-                 label.info_label.control-label {{select_user ? user_selected.nickname : leader_selected.nickname}}
-//-               .row
-//-                 if role ==='HR'
-//-                   button.dl_btn.dl_btn_small(ng-click="appointLeader(user_selected._id,user_selected.nickname,user_selected.photo)" ng-if="select_user") 任命
-//-                   button.dl_btn.dl_btn_small(ng-click="dismissLeader(leader_selected._id,leader_selected.nickname,leader_selected.photo)" ng-if="select_leader") 罢免
 
-//-     .modal-footer
-//-       button.dl_btn.dl_btn_small(ng-click="saveGroupInfo(team._id,team.name)") #{__("CONFIRM")}

@@ -22,7 +22,7 @@ var _team = new Schema({
   }
 });
 /**
- * type=private时，对应 Message 里的 private team 两种情况
+ * type=private时，对应 Message 里的 private team department 三种情况
  */
 var MessageContent = new Schema({
   caption: String,
@@ -32,6 +32,7 @@ var MessageContent = new Schema({
   company_id: Schema.Types.ObjectId,  // 消息所属公司的_id
   campaign_id: Schema.Types.ObjectId,
   groupmessage_id: Schema.Types.ObjectId,
+  department_id: Schema.Types.ObjectId,
   type: {
     type: String,
     enum: ['private','company','global']

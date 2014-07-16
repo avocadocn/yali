@@ -1,143 +1,150 @@
-.loading_div(ng-show = 'loading')
-div(ng-show = '!loading')
-  .dl_messagebox.clearfix(ng-repeat="group_message in group_messages")
-    //若是公司动态
-    div.clearfix.dl_messageitem
-      .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
-        a(ng-href='/group/home/{{group_message.team_id}}')
-          img.size_56(ng-src='{{group_message.logo}}')
-      .message_side(ng-if="group_message.message_type==0||group_message.message_type==2||group_message.message_type==6||group_message.message_type==7||group_message.message_type==8")
-        img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
-        .size_56(ng-if="group_message.message_type==6")
-      .messagebox_content(ng-switch="group_message.message_type")
-        span.message_head(ng-switch-when="0")
-          a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
-          span #{__("NEW_MESSAGE")}
-        span.message_head(ng-switch-when="1")
-          a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-          span #{__("NEW_MESSAGE")}
-        span.message_head(ng-switch-when="2")
-          a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
-          span 关闭了活动
-        span.message_head(ng-switch-when="3")
-          a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-          span 关闭了活动
-        span.message_head(ng-switch-when="4")
-          a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-          span 向
-          a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
-          span 发出了挑战
-        span.message_head(ng-switch-when="5")
-          a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
-          span 接受了
-          a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
-          span 发出的挑战
-        span.message_head(ng-switch-when="6") 比赛
-          a(ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-          span 的结果已经确认
-        span.message_head(ng-switch-when="7")
-          a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
-          span 有新成员加入
-        span.message_head(ng-switch-when="8")
-          a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}、
-          span 有新成员加入
-        span(ng-switch-default)
-        span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
-        .dl_message
-          .triangle(ng-if="group_message.message_type!=6")
-          .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
-            .message_row
-              span.message_label 主题:
-              span.message_label
-                a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-                a(ng-if="group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-            .message_row
-              span.message_label 内容:
-              span.message_label {{group_message.campaign.content}}
-            .message_row
-              span.message_label #{__("LOCATION")}:
-              span.message_label {{group_message.campaign.location.name}}
-              span.message_label 开始#{__("TIME")}:
-              span.message_label {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-              span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限:
-              span.message_label(ng-if="group_message.campaign.member_max>0") {{group_message.campaign.member_max}}
-            .message_row
-              span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false && group_message.response_flag !=undefined")
-                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id)") #{__("FACE")}
-          .dl_message_container(ng-if="group_message.message_type ==6")
-            .message_row
-              a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}")
-                img.size_56(ng-src='{{group_message.campaign.camp[0].logo}}')
-              span {{group_message.campaign.camp[0].tname}}
-              span.h3.margin_15 {{group_message.campaign.camp[0].score}} : {{group_message.campaign.camp[1].score}}
-              a(ng-href="{{'/group/home/'+group_message.campaign.camp[1].id}}")
-                img.size_56(ng-src='{{group_message.campaign.camp[1].logo}}')
-              span {{group_message.campaign.camp[1].tname}}
-            .message_row
-              span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
-          .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
-            .message_row
-              span.message_label
-                a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
-              span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-        .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6&& group_message.message_type!=4")
-          span(ng-if="group_message.join_role &&group_message.join_flag!=undefined")
-            btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") 退出
-            btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
-          span.message_label 已报名人数：{{group_message.member_num ? group_message.member_num :'0'}}
-          span.message_label(ng-if="group_message.join_role&&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
-          span.message_label(ng-if="group_message.campaign.active && group_message.join_role &&group_message.join_flag==undefined&& group_message.message_type!=4") 报名已截止
-          span.message_label(ng-if="!group_message.campaign.active") 活动已关闭
-          if (role === 'LEADER')
-            label.pull-right(ng-if="message_for_group")
-              a(ng-click="modalPerticipator($index)" ng-if="group_message.member_num > 0") 私信
-            label.pull-right.vertical_label(ng-if="group_message.member_num > 0") |
-          label.pull-right(ng-if="group_message.comment_permission")
-            a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
-        .message_row(ng-if="group_message.message_type==4")
-          if (role === 'LEADER')
-            label.pull-right(ng-if="message_for_group")
-              a(ng-click="modalPerticipator($index)" ng-if="group_message.member_num > 0") 私信
-            label.pull-right.vertical_label(ng-if="group_message.member_num > 0") |
-          label.pull-right(ng-if="group_message.comment_permission")
-            a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
-          label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined") |
-          a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
-        .message_row(ng-if="toggle[$index] && group_message.comment_permission")
-          .dl_comment_area
-            form.dl_modal_container.margin_top_5(name="comment_form" novalidate)
-              .dl_md_12
-                input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
-              .dl_md_1
-                button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
-            hr
-            .dl_modal_container(bs-popover ng-if="group_message.comments.length > 0")
-              .dl_row(ng-repeat="comment in group_message.comments")
-                .row.line_left
-                  .dl_md_1.photo
-                    a(href="/users/home/{{comment.poster._id}}")
-                      img.size_head_list(ng-src="{{comment.poster.photo}}" ng-Mouseover='showUserCard(comment.poster._id,comment._id)' id='pop{{comment._id}}')
-                  .dl_md_12.comment_left.comment_box
-                    .dl_row
-                      .dl_md_name.name
-                        a.dl_user_name_normal(title="{{comment.poster.nickname}}" href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
-                      .dl_md_time.time
-                        h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
-                    .dl_row
-                      .dl_md_8.comment_top.content
-                        p {{comment.content}}
-                      .dl_md_2.pull-right.hidden_block(ng-if="comment.delete_permission")
-                        h7.pull-right.margin_right_20
-                          a.mouse_hidden(ng-click="deleteComment($index)") 删除
-                .dl_row.line_top
-                  hr.comment_bottom
-  .text-center(ng-if="group_messages.length>0")
-    button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
-    span(ng-if="loadOver_flag") 已经加载了所有的动态
-  .text-center(ng-if="group_messages.length==0")
-    span 目前没有新的动态
-  ul.pager
-    li
-      a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
-    li
-      a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
+.dl_messagebox.clearfix(ng-repeat="group_message in group_messages")
+  //若是公司动态
+  div.clearfix.dl_messageitem(bs-popover)
+    .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
+      a(ng-href='/group/home/{{group_message.team_id}}')
+        img.size_56(ng-src='{{group_message.logo}}' ng-Mouseover='showGroupCard(group_message.team_id,group_message._id)' id='pop{{group_message._id}}')
+    .message_side(ng-if="group_message.message_type==0||group_message.message_type==2||group_message.message_type==6||group_message.message_type==7||group_message.message_type==8 || group_message.message_type==9 || group_message.message_type==10")
+      img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
+      .size_56(ng-if="group_message.message_type==6")
+    .messagebox_content(ng-switch="group_message.message_type")
+      span.message_head(ng-switch-when="0")
+        a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
+        span #{__("NEW_MESSAGE")}
+      span.message_head(ng-switch-when="1")
+        a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+        span #{__("NEW_MESSAGE")}
+      span.message_head(ng-switch-when="2")
+        a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
+        span 关闭了活动
+      span.message_head(ng-switch-when="3")
+        a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+        span 关闭了活动示
+      span.message_head(ng-switch-when="4")
+        a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+        span 向
+        a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
+        span 发出了挑战
+      span.message_head(ng-switch-when="5")
+        a(ng-href="{{'/group/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
+        span 接受了
+        a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+        span 发出的挑战
+      span.message_head(ng-switch-when="6") 比赛
+        a(ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+        span 的结果已经确认
+      span.message_head(ng-switch-when="7")
+        a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
+        span 有新成员加入
+      span.message_head(ng-switch-when="8")
+        a.vertical_label(ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in group_message.team") {{_team.name}}、
+        span 有新成员加入
+      //- span.message_head(ng-switch-when="9")
+      //-   a(ng-href="{{'/department/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+      //-   span 向
+      //-   a(ng-href="{{'/department/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
+      //-   span 发出了挑战
+      span.message_head(ng-switch-when="10")
+        span {{group_message.team[0].name}}
+        span 发起了一个部门联谊活动
+      span(ng-switch-default)
+      span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
+      .dl_message
+        .triangle(ng-if="group_message.message_type!=6")
+        .dl_message_container(ng-if="group_message.message_type>=0 && (group_message.message_type<6 || group_message.message_type ==9 || group_message.message_type ==10) ")
+          .message_row
+            span.message_label 主题:
+            span.message_label
+              a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+              a(ng-if="group_message.campaign.camp[1].start_confirm==true" ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+              span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false") {{group_message.campaign.theme}}
+          .message_row
+            span.message_label 内容:
+            span.message_label {{group_message.campaign.content}}
+          .message_row
+            span.message_label #{__("LOCATION")}:
+            span.message_label {{group_message.campaign.location.name}}
+            span.message_label 开始#{__("TIME")}:
+            span.message_label {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限:
+            span.message_label(ng-if="group_message.campaign.member_max>0") {{group_message.campaign.member_max}}
+          .message_row
+            span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false && group_message.response_flag !=undefined")
+              button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id)") #{__("FACE")}
+        .dl_message_container(ng-if="group_message.message_type ==6")
+          .message_row
+            a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}")
+              img.size_56(ng-src='{{group_message.campaign.camp[0].logo}}')
+            span {{group_message.campaign.camp[0].tname}}
+            span.h3.margin_15 {{group_message.campaign.camp[0].score}} : {{group_message.campaign.camp[1].score}}
+            a(ng-href="{{'/group/home/'+group_message.campaign.camp[1].id}}")
+              img.size_56(ng-src='{{group_message.campaign.camp[1].logo}}')
+            span {{group_message.campaign.camp[1].tname}}
+          .message_row
+            span.message_label {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
+        .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
+          .message_row
+            span.message_label
+              a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
+            span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+      .message_row(ng-if="group_message.message_type>=0 && (group_message.message_type<6&& group_message.message_type!=4) || (group_message.message_type == 9 || group_message.message_type == 10)")
+        span(ng-if="group_message.join_role &&group_message.join_flag!=undefined")
+          btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") 退出
+          btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
+        span.message_label 已报名人数：{{group_message.member_num ? group_message.member_num :'0'}}
+        span.message_label(ng-if="group_message.join_role&&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
+        span.message_label(ng-if="group_message.join_role &&group_message.join_flag==undefined&& group_message.message_type!=4") 报名已截止
+        if (role === 'LEADER')
+          label.pull-right(ng-if="message_for_group")
+            a(ng-click="modalPerticipator($index)" ng-if="group_message.member_num > 0") 私信
+          label.pull-right.vertical_label(ng-if="group_message.member_num > 0") |
+        label.pull-right(ng-if="group_message.comment_permission")
+          a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
+      .message_row(ng-if="group_message.message_type==4")
+        if (role === 'LEADER')
+          label.pull-right(ng-if="message_for_group")
+            a(ng-click="modalPerticipator($index)" ng-if="group_message.member_num > 0") 私信
+          label.pull-right.vertical_label(ng-if="group_message.member_num > 0") |
+        label.pull-right(ng-if="group_message.comment_permission")
+          a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
+        label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined") |
+        a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
+      .message_row(ng-if="toggle[$index] && group_message.comment_permission")
+        .dl_comment_area
+          form.dl_modal_container.margin_top_5(name="comment_form" novalidate)
+            .dl_md_12
+              input.dl_modal_input.form-control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
+            .dl_md_1
+              button.clearLinkUnderline.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
+          hr
+          .dl_modal_container(bs-popover ng-if="group_message.comments.length > 0")
+
+            .dl_row(ng-repeat="comment in group_message.comments")
+              .row.line_left
+                .dl_md_1.photo
+                  a(href="/users/home/{{comment.poster._id}}")
+                    img.size_head_list(ng-src="{{comment.poster.photo}}" ng-Mouseover='showUserCard(comment.poster._id,comment._id)' id='pop{{comment._id}}')
+                .dl_md_12.comment_left.comment_box
+                  .dl_row
+                    .dl_md_name.name
+                      a.dl_user_name_normal(title="{{comment.poster.nickname}}" href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
+                    .dl_md_time.time
+                      h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
+                  .dl_row
+                    .dl_md_8.comment_top.content
+                      p {{comment.content}}
+                    .dl_md_2.pull-right.hidden_block(ng-if="comment.delete_permission")
+                      h7.pull-right.margin_right_20
+                        a.mouse_hidden(ng-click="deleteComment($index)") 删除
+              .dl_row.line_top
+                hr.comment_bottom
+.text-center(ng-if="group_messages.length>0")
+  button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
+  span(ng-if="loadOver_flag") 已经加载了所有的动态
+.text-center(ng-if="group_messages.length==0")
+  span 目前没有新的动态
+ul.pager
+  li
+    a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
+  li
+    a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页

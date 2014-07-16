@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewGroup = angular.module('donler');
+var departmentApp = angular.module('donler');
 
 
 function tirm(arraies,str) {
@@ -15,35 +15,35 @@ function tirm(arraies,str) {
     }
     return rst;
 }
-tabViewGroup.config(['$routeProvider',
+departmentApp.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
-      .when('/group_message', {
+      .when('/message', {
         templateUrl: '/message_list',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
-      .when('/group_campaign', {
+      .when('/campaign', {
         templateUrl: '/group/campaign',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
-      .when('/group_info', {
-        templateUrl: '/group/renderInfo',
+      .when('/info', {
+        templateUrl: '/department/info',
         controller: 'infoController',
-        controllerAs: 'account'
+        controllerAs: 'account',
       })
       .when('/timeLine/:tid', {
-        templateUrl: function(params){
-            return '/group/timeline/'+params.tid;
-        }
-      })
-      .otherwise({
-        redirectTo: '/group_message'
+        templateUrl: '/campaign/timeline',
+        controller: 'timelineController',
+        controllerAs: 'timeline'
+      }).
+      otherwise({
+        redirectTo: '/message'
       });
 }]);
 
-tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
+departmentApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
@@ -52,14 +52,6 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.number;
     $rootScope.isMember;
     $rootScope.message_for_group = true;
-
-    $rootScope.$on("$routeChangeStart",function(){
-        $rootScope.loading = true;
-    });
-    $rootScope.$on("$routeChangeSuccess",function(){
-        $rootScope.loading = false;
-    });
-
 
     $rootScope.messageTypeChange = function(value){
         $rootScope.message_for_group = value;
@@ -98,7 +90,7 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
                 $rootScope.number --;
                 $rootScope.isMember = false;
             }).error(function(data,status){
-                alertify.alert('err');
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e){
@@ -137,7 +129,24 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
-tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
+
+
+
+
+
+
+
+departmentApp.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
+    $http.get('/group/timeline/'+$routeParams.tid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+        if(data.result===1){
+            $scope.newTimeLines = data.newTimeLines;
+        }
+        else{
+             console.log('err');
+        }
+    });
+}]);
+departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.private_message_content = {
         'text':""
@@ -162,7 +171,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     });
 
     //var teamId = $('#team_content').attr('team-id');
-    $rootScope.nowTab ='group_message';
+    $rootScope.nowTab ='message';
     $scope.block = 1;
     $scope.page = 1;
     $scope.pageTime = [0];
@@ -366,7 +375,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
          try {
             $http({
                 method: 'post',
-                url: '/campaign/vote/'+competition_id,
+                url: '/users/vote',
                 data:{
                     competition_id : competition_id,
                     aOr : vote_status,
@@ -392,15 +401,14 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         try {
             $http({
                 method: 'post',
-                url: '/campaign/joinCampaign/'+campaign_id,
+                url: '/users/joinCampaign',
                 data:{
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-
-                    alertify.alert('加入小队成功');
+                    alertify.alert('成功加入该活动!');
                     $scope.group_messages[index].join_flag = true;
                     $scope.group_messages[index].member_num++;
                 }
@@ -409,7 +417,6 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 }
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');
-
             });
         }
         catch(e) {
@@ -421,13 +428,13 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         try {
             $http({
                 method: 'post',
-                url: '/campaign/quitCampaign/'+campaign_id,
+                url: '/users/quitCampaign',
                 data:{
                     campaign_id : campaign_id
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alertify.alert('成功退出小队!');
+                    alertify.alert('成功退出该活动!');
                     //alert('您已退出该活动!');
                     $scope.group_messages[index].join_flag = false;
                     $scope.group_messages[index].member_num--;
@@ -465,7 +472,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
 }]);
 
 
-tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope',
+departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
     $rootScope.$watch('teamId',function(teamId){
         $http.get('/campaign/getCampaigns/team/'+teamId+'/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
@@ -558,7 +565,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
             }).success(function(data, status) {
                 if(data.result===1){
                     //alert('成功加入该活动!');
-                    alertify.alert('成功加入活动!');
+                    alertify.alert('成功加入该活动!');
                     $scope.campaigns[index].join_flag = 1;
                     $scope.campaigns[index].member_num++;
                 }
@@ -584,7 +591,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alertify.alert('成功退出活动!');
+                    alertify.alert('成功退出该活动!');
                     //alert('您已退出该活动!');
                     $scope.campaigns[index].join_flag = -1;
                     $scope.campaigns[index].member_num--;
@@ -624,17 +631,12 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
         try {
             $http({
                 method: 'post',
-                url: '/campaign/cancel/'+_id,
+                url: '/campaign/cancel',
                 data:{
                     campaign_id : _id
                 }
             }).success(function(data, status) {
-                if(data.result===1){
-                    window.location.reload();
-                }
-                else{
-                    alertify(data.msg);
-                }
+                window.location.reload();
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');
             });
@@ -646,7 +648,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 }]);
 
 
-tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+departmentApp.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
     $rootScope.$watch('teamId',function(tid){
@@ -693,14 +695,12 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                 }).success(function(data, status) {
                     //TODO:更改对话框
                     if(data.result === 1) {
-                        alertify.alert(data.msg);
-                        window.location.reload();
+                        //window.location.reload();
                     }
                     else
                         alertify.alert(data.msg);
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    alertify.alert('DATA ERROR');
                 });
             }
             catch(e) {
@@ -730,8 +730,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         if($scope.team.home_court[0].name!==''){
             var piont1 = new BMap.Point($scope.team.home_court[0].coordinates[0],$scope.team.home_court[0].coordinates[1]);
             $scope.locationmap1.centerAndZoom(piont1,15);
-            var marker1 = new BMap.Marker(piont1);
-            $scope.locationmap1.addOverlay(marker1);
         }
         $scope.locationmap1.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
         var options = {
@@ -767,10 +765,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.initialize2 = function(){
         $scope.locationmap2 = new BMap.Map("courtMap2");
         if($scope.team.home_court[1].name!==''){
-            var point2 = new BMap.Point($scope.team.home_court[1].coordinates[0],$scope.team.home_court[1].coordinates[1]);
-            $scope.locationmap2.centerAndZoom(point2,15);
-            var marker2 = new BMap.Marker(point2);
-            $scope.locationmap2.addOverlay(marker2);
+            var piont2 = new BMap.Point($scope.team.home_court[1].coordinates[0],$scope.team.home_court[1].coordinates[1]);
+            $scope.locationmap2.centerAndZoom(piont2,15);
         }
         $scope.locationmap2.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
         var options = {
@@ -946,7 +942,58 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     });
 }]);
 
-tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+
+
+departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+    $scope.multi = false;
+    $scope.departments = [];
+    $scope.select_departments = [];
+    $scope.main_department = null;
+    $scope.search_department = null,
+
+    $scope.search = function(){
+        var find = false;
+        $scope.select_departments = [];
+        for(var i = 0 ; i < $scope.departments.length; i ++){
+            if($scope.departments[i].name.indexOf($scope.search_department) > -1){
+                $scope.select_departments.push($scope.departments[i]);
+            }
+        }
+    }
+    $scope.showCampaignSponsor = function(){
+        $scope.multi = true;
+        $('#sponsorCampaignModel').modal();
+    }
+
+    $scope.select_department = function(){
+        for(var i = 0; i < $scope.select_departments.length; i ++){
+            if($scope.select_departments[i]._id === $scope.main_department._id){
+                return;
+            }
+        }
+        $scope.select_departments.push($scope.main_department);
+    }
+    $scope.departmentFormat = function(departments){
+        for(var i = 0 ; i < departments.length; i ++){
+            if(departments[i]._id !== $scope.did){
+                    $scope.departments.push({
+                    '_id':departments[i]._id,
+                    'name':departments[i].name,
+                    'team':departments[i].team,
+                });
+            }
+        }
+    }
+    $scope.$watch('did',function(did){
+        $scope.$watch('cid',function(cid){
+            $http
+            .get('/department/detail/multi/' + cid)
+            .success(function(data, status) {
+                $scope.departmentFormat(data.departments);
+            });
+        });
+    });
+
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $("#start_time").on("changeDate",function (ev) {
@@ -1028,20 +1075,43 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
     };
 
     $scope.sponsor = function() {
+        var _data;
+        var _url;
+        if($scope.multi){
+            _url = '/department/'+$scope.did+'/multi_sponsor';
+            _data = {
+                select_departments:$scope.select_departments,
+                theme: $scope.theme,
+                location: $scope.location,
+                content : $scope.content,
+                time:{
+                    start:$scope.start_time,
+                    end:$scope.end_time,
+                    deadline:$scope.deadline
+                },
+                member_num:{
+                    min:$scope.member_min,
+                    max:$scope.member_max
+                }
+            }
+        }else{
+            _url = '/department/'+$scope.did+'/sponsor';
+            _data = {
+                theme: $scope.theme,
+                location: $scope.location,
+                content : $scope.content,
+                start_time : $scope.start_time,
+                end_time : $scope.end_time,
+                member_min: $scope.member_min,
+                member_max: $scope.member_max,
+                deadline: $scope.deadline
+            }
+        }
         try{
             $http({
                 method: 'post',
-                url: '/group/campaignSponsor/'+ $rootScope.teamId,
-                data:{
-                    theme: $scope.theme,
-                    location: $scope.location,
-                    content : $scope.content,
-                    start_time : $scope.start_time,
-                    end_time : $scope.end_time,
-                    member_min: $scope.member_min,
-                    member_max: $scope.member_max,
-                    deadline: $scope.deadline
-                }
+                url: _url,
+                data:_data
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面
                 window.location.reload();
@@ -1057,7 +1127,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         }
     };
 }]);
-tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.search_type="team";
     $scope.companies = [];
     $scope.teams = [];

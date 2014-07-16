@@ -255,7 +255,8 @@ exports.leaderSendToMember = function(req,res){
   get(param);
 };
 
-exports.sendToOne = function(req, res, param){
+
+var toOne = function(req,res,param){
   var callback = function (message_content,receiver,req,res){
     var M = {
       'type':'private',
@@ -275,13 +276,14 @@ exports.sendToOne = function(req, res, param){
     _add(param);
   }
   var MC={
-    'type':'private',
-    'caption':'Private Message',
+    'type':param.type,
+    'caption':param.caption,
     'content':param.content,
     'sender':[param.own],
-    'team':[param.own_team,param.receive_team],
+    'team':param.team,
     'company_id':null,
     'campaign_id':param.campaign_id,
+    'department_id':null,
     'deadline':(new Date())+time_out
   };
   var _param = {
@@ -294,6 +296,53 @@ exports.sendToOne = function(req, res, param){
     'res':res
   };
   _add(_param);
+}
+
+exports.sendToOne = function(req, res, param){
+  // var callback = function (message_content,receiver,req,res){
+  //   var M = {
+  //     'type':'private',
+  //     'rec_id':receiver._id,
+  //     'MessageContent':message_content._id,
+  //     'status':'unread'
+  //   };
+  //   var param = {
+  //     'collection':Message,
+  //     'operate':M,
+  //     'callback':function(message,other,req,res){return {'result':1,'msg':'SUCCESS'};},
+  //     '_err':_err,
+  //     'other_param':null,
+  //     'req':req,
+  //     'res':res
+  //   };
+  //   _add(param);
+  // }
+  // var MC={
+  //   'type':'private',
+  //   'caption':'Private Message',
+  //   'content':param.content,
+  //   'sender':[param.own],
+  //   'team':[param.own_team,param.receive_team],
+  //   'company_id':null,
+  //   'campaign_id':param.campaign_id,
+  //   'department_id':null,
+  //   'deadline':(new Date())+time_out
+  // };
+  // var _param = {
+  //   'collection':MessageContent,
+  //   'operate':MC,
+  //   'callback':callback,
+  //   '_err':_err,
+  //   'other_param':param.receiver,
+  //   'req':req,
+  //   'res':res
+  // };
+  // _add(_param);
+
+  param.type = 'private';
+  param.caption = 'Private Message';
+  param.team = [param.own_team,param.receive_team];
+  toOne(param);
 }
 
 
@@ -659,7 +708,7 @@ var getPublicMessage = function(req,res,cid){
   var paramA = {
     'collection':MessageContent,
     'type':1,
-    'condition':{'company_id':cid,'$or':[{'type':'company'},{'type':'global'}]},  //公司消息和系统消息都是当作全局来对待的
+    'condition':{'$or':[{'type':'company','company_id':cid},{'type':'global'}]},  //公司消息和系统消息都是当作全局来对待的
     'limit':{'_id':1,'type':1,'post_date':1},
     'sort':{'post_date':-1},
     'callback':callbackA,
@@ -672,7 +721,6 @@ var getPublicMessage = function(req,res,cid){
 }
 
 
-//获取私人或者小队站内信(点到点/点到个别)
 var getMessage = function(req,res,condition){
   var sort = {'create_date':-1};
   Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
@@ -682,7 +730,8 @@ var getMessage = function(req,res,condition){
         'msg':[],
         'team':req.user.team,
         'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
-        'uid':req.user._id
+        'uid':req.user._id,
+        'provider':req.user.provider
       });
     }else{
       var rst = [];
@@ -699,7 +748,8 @@ var getMessage = function(req,res,condition){
         'msg':rst,
         'team':req.user.team,
         'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
-        'uid':req.user._id
+        'uid':req.user._id,
+        'provider':req.user.provider
       });
     }
   });
@@ -754,13 +804,35 @@ exports.messageGetByHand = function(req,res){
 }
 
 
+// //员工申请加入部门后给hr和部门管理员发站内信
+// exports.afterUserApply = function(req,res,did){
+//   Message.find({'rec_id':req.user._id,'type':'department'}).populate('MessageContent').exec(function (err,messages){
+//     if(messages){
+//       for(var i = 0; i < messages.length; i ++){
+//         if(messages)
+//       }
+//     }
+//   });
+// }
+
+//hr给部门成员发站内信
+exports.sendToDepartmentMember = function(req,res){
+
+}
+
+// //hr处理成员的部门加入申请后向成员发站内信
+// exports.afterUserApplyOperate = function(req,res){
+
+// }
+
+
 //只读取未读站内信
 exports.messageHeader = function(req,res){
   if(req.user.provider === 'user'){
     getPublicMessage(req,res,req.user.cid);
   }else{
-    //公司暂时只获取系统公告(以后可以获取针对公司的站内信)
-    var condition = {'type':'global','status':{'$nin':['delete','read']}};
+    //目前公司只获取部门申请的站内信
+    var condition = {'type':'department','rec_id':req.user._id,'status':{'$nin':['delete','read']}};
     getMessage(req,res,condition);
   }
 }

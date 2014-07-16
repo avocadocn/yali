@@ -1,33 +1,7 @@
 'use strict';
 
 var messageApp = angular.module('mean.main');
-// messageApp.config(['$routeProvider', '$locationProvider',
-//   function ($routeProvider, $locationProvider) {
-//     $routeProvider
-//       .when('/message_private', {
-//         templateUrl: '/message/private',
-//         controller: 'messagePrivateController',
-//         controllerAs: 'private'
-//       })
-//       .when('/message_team', {
-//         templateUrl: '/message/team',
-//         controller: 'messageTeamController',
-//         controllerAs: 'team'
-//       })
-//       .when('/message_company', {
-//         templateUrl: '/message/company',
-//         controller: 'messageCompanyController',
-//         controllerAs: 'company'
-//       }).
-//       // .when('/system', {
-//       //   templateUrl: '/message/system',
-//       //   controller: 'messageGlobalController',
-//       //   controllerAs: 'system'
-//       // }).
-//       otherwise({
-//         redirectTo: '/message/private'
-//       });
-// }]);
+
 
 messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
@@ -127,7 +101,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
             $rootScope.uid = data.uid;
         }).error(function(data, status) {
             //TODO:更改对话框
-            $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            alertify.alert('DATA ERROR');
         });
       }
       catch(e){
@@ -520,7 +494,7 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
           }
       }).error(function(data, status) {
           //TODO:更改对话框
-          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+          alertify.alert('DATA ERROR');
       });
     }
     catch(e){
@@ -581,7 +555,7 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
           }
       }).error(function(data, status) {
           //TODO:更改对话框
-          $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+          alertify.alert('DATA ERROR');
       });
     }
     catch(e){

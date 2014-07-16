@@ -22,7 +22,7 @@ block contentExt
               input#name.dl_form-Control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.name.$invalid && signup_form.name.$dirty ? '为了保护所有用户的权益，动梨将认真审核每家企业的信息':''}}" required)
         .form-group.dl_sm_group(data-role="linkage-selector" data-src="/region" data-select="province city region")
           .dl_row
-            .label_left  
+            .label_left
               label.control-label(for="province") *城市
             .input_right.select_right
               .select_box

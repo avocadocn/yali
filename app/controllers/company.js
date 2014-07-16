@@ -799,7 +799,7 @@ exports.saveAccount = function(req, res) {
 };
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyTeamsInfo = function(req, res) {
-  var option = {cid : req.params.companyId};
+  var option = {cid : req.params.companyId,gid:{'$ne':'0'}};
   if(req.role !== 'HR'){
     option.active = true;
   }

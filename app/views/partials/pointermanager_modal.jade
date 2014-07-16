@@ -1,0 +1,36 @@
+.modal-dialog
+  .dl-modal
+    form(name="manager_form" novalidate)
+      .dl-modal-header
+        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+        .head#myModalLabel 任命部门管理员
+      .dl-modal-body
+        .dl_modal_container
+          .dl_md_1.dl_vertical
+            label.subtitle 现任管理员
+          .dl_md_1
+            input.dl_modal_input.form-control(type="text" value="{{managers[0].nickname}}" ng-disabled="true")
+        .dl_modal_container
+          .dl_row
+            .dl_md_1.dl_vertical
+              label.subtitle 任命管理员
+            .dl_md_10.dl_vertical
+              label.subtitle.dl_label 点选新成员任命管理员后,现任管理员自动解职
+        .dl_modal_container
+          .dl_row
+            .dl_md_12
+              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索公司成员" type="text" ng-model="member_search_department" required)
+            .dl_md_1
+              button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="manager_form.$invalid") 搜索
+        .dl_modal_container
+          .groups.row
+            .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="user in department_users")
+              .dl_row
+                .dl_cover(ng-if="user.leader")
+                a(ng-click="appointReady(user,$index)" ng-disabled="true")
+                  img.size_80(ng-src="{{user.photo}}")
+              .dl_row(style="width:80px;text-align:center")
+                label {{user.nickname}}
+      .dl-modal-footer
+        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointManager()") #{__("APPOINT")}
