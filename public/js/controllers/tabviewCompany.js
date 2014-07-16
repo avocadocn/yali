@@ -883,6 +883,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.addNode = function(node) {
         node.toggle = 'glyphicon-minus';
         node.hideChild = false;
+        if (!node.department) {
+            node.department = [];
+        }
         node.department.push({
             edit_name: '',
             parent_id: node._id,

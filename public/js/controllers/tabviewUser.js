@@ -769,7 +769,11 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                             break;
                         }
                     }
-                    $scope.unselectDepartment = true;
+                }
+                if (!$scope.department) {
+                    $scope.department = {
+                        _id: $scope.options[0]._id
+                    };
                 }
             });
         };
@@ -837,7 +841,8 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                             //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
                         });
                     };
-                    if (department && $scope.user.department._id.toString() !== department._id.toString()) {
+
+                    if (!$scope.user.department._id || $scope.user.department._id.toString() !== department._id.toString()) {
                         $http
                             .post('/department/memberOperate/' + department._id, {
                                 operate: 'join',

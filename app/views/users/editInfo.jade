@@ -34,7 +34,6 @@ div.use_edit_info
         span.info_label 部门
       .info_side(ng-if="!baseUnEdit")
         select(ng-model="department._id" ng-options="option._id as option.label for option in options")
-          option(ng-show="unselectDepartment" value="") --请选择部门--
       .info_side(ng-if="baseUnEdit")
         span.info_label {{ user.department.name }}
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
