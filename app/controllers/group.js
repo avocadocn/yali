@@ -448,6 +448,7 @@ exports.provoke = function (req, res) {
       return res.send(500,'error');
     }
     else{
+      console.log(team);
       var team_opposite = team;
       var theme = req.body.theme;
       var location = req.body.location;
@@ -622,14 +623,17 @@ exports.provoke = function (req, res) {
 
 //应约
 exports.responseProvoke = function (req, res) {
-  if(req.role !=='HR' && req.role !=='LEADER' && req.role !== 'OWNER'){
-    return res.send(403,forbidden);
+  if(req.role !=='HR' && req.role !=='LEADER'){
+    return res.send(403,'forbidden');
   }
   var competition_id = req.body.competition_id;
   Campaign.findOne({
       '_id' : competition_id
     }).populate('team').exec(
   function (err, campaign) {
+    if(campaign.camp[1].id!=req.param.teamId){
+      return res.send(403,'forbidden');
+    }
     campaign.camp[1].start_confirm = true;
     campaign.active = true;
     //还要存入应约方的公司名、队长用户名、真实姓名等

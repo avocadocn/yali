@@ -148,5 +148,7 @@
 	"OPTION": "选项",
 	"PLACE": "场所",
 	"APPOINT": "任命",
-	"NO_TIMELINE": "目前还没有活动足迹"
+	"NO_TIMELINE": "目前还没有活动足迹",
+	"CAMPAIGNCLOSE":"活动已经关闭",
+  "CAMPAIGNFINISH":"活动已经结束"
 }

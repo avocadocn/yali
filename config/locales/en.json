@@ -147,5 +147,8 @@
   "OPTIONAL" :"optional",
   "OPTION" :"options",
   "PLACE" :"place",
-  "APPOINT" :"appoint"
+  "APPOINT" :"appoint",
+  "NO_TIMELINE": "No timelines",
+  "CAMPAIGNCLOSE":"Campaign has closed",
+  "CAMPAIGNFINISH":"Campaign has finished"
 }

@@ -10,7 +10,7 @@ block contentExt
     +breadcrumb(links)
     .dl_detail_main
       //-TODO:详情页权限不正确，需要更改
-      if (role==='HR' || role==='LEADER') && active
+      if (role==='HR' || role==='LEADER') && campaign.active &&!campaign.finish
         span.pull-right
           button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign._id)") 关闭活动
       ul.nav.nav-tabs
@@ -61,9 +61,12 @@ block contentExt
             div.margin_top_30
               input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
               input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign()" ng-if="join!==1" ng-disabled="join==0")
-      if !active
+      if !campaign.active
         .dl_detail_row.text-center
-          span 活动已经停止
+          span #{__("CAMPAIGNCLOSE")}
+      else if campaign.finish
+        .dl_detail_row.text-center
+          span #{__("CAMPAIGNFINISH")}
       //-成员
       .dl_detail_member(bs-popover)
         p.subtitle #{__("JOIN")}#{__("MEMBER")}:
