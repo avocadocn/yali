@@ -759,7 +759,8 @@ exports.getAccount = function(req, res) {
                 'result': 1,
                 'company': _account,
                 'info': _company.info,
-                'team': _company.team
+                'team': _company.team,
+                'role':req.role
             });
         }
         else
