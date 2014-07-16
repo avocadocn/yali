@@ -64,5 +64,6 @@ div.dl_allteaminfo_emp.masonry(masonry ng-if="role !== 'HR'")
     //-属于则显示退组按钮
     button.dl_btn.dl_btn_small.cancel_btn(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
 
-    a(href="/campaign/detail/") {{team.message_theme}}
+    a(href="/campaign/detail/#{{team.campaign_id}}") {{team.campaign_theme}}
+    p {{team}}
 
