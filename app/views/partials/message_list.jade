@@ -50,8 +50,7 @@ div(ng-show = '!loading')
               span.message_label 主题:
               span.message_label
                 a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-                a(ng-if="group_message.campaign.camp[1].start_confirm==true" ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-                span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false") {{group_message.campaign.theme}}
+                a(ng-if="group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
             .message_row
               span.message_label 内容:
               span.message_label {{group_message.campaign.content}}

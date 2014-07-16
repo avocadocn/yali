@@ -135,6 +135,10 @@ exports.getMessage = function(req, res) {
               }
               _group_message.vote_flag = vote_flag;
             }
+            //是同类型的 grouptype_flag = true 不是则为false 
+            //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
+            console.log(i,group_message.grouptype_flag);
+            //要到小队主页、是HR\LEADER才有应战按钮->response_flag = true;
             if(pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')){
               if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false)
                 _group_message.response_flag = true;
@@ -162,7 +166,8 @@ exports.getMessage = function(req, res) {
                   }
                 });
               }
-
+            //是同类型的 grouptype_flag = true 不是则为false 
+            //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
               _group_message.join_flag = join_flag;
             }
           break;

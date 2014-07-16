@@ -430,7 +430,7 @@ exports.getCompanyGroups = function(req, res) {
 
 exports.renderCampaigns = function(req,res){
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,'forbidden');
+    return res.send(403,{'msg':'forbidden'});
   }
   res.render('partials/campaign_list',{'role':req.role,'provider':'team'});
 }
@@ -438,7 +438,7 @@ exports.renderCampaigns = function(req,res){
 exports.provoke = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER' && req.role !=='GUESTLEADER' && req.role !=='MEMBERLEADER' && req.role !=='PARTNERLEADER'){
     console.log(req.role);
-    return res.send(403,'forbidden');
+    return res.send(403,{'msg':'forbidden'});
   }
 
   var my_team_id = req.params.teamId;
