@@ -108,44 +108,44 @@ exports.info =function(req,res) {
 };
 
 //获取小组简要信息供弹出层查看
-exports.getBriefInfo = function(req,res) {
-  CompanyGroup.findOne({'_id': req.params.teamId },{'_id':1,'name':1,'logo':1},function(err,companyGroup){
-    if (err || !companyGroup){
-      console.log('cannot find team');
-      return res.send({'result':0,'msg':'小队查询错误'});
-    }else{
-      var message_theme = '';
-      var campaign_id = '';
-      Campaign.find({'team':req.params.teamId},{'_id':1,'theme':1})
-      .sort({'create_time':-1})
-      .limit(1)
-      .exec(function(err,campaign){
-        if(err){
-          console.log('cannot find campaign');
-          return res.send({'result':0,'msg':'消息查询错误'});
-        }
-        if(campaign.length==0)
-          message_theme = '';
-        else{
-          message_theme = campaign[0].theme;
-          campaign_id = campaign[0]._id;
-        }
-        // var htmlcontent ="<div class='popover_img'><a href='/group/home/"+companyGroup._id+"'><img class='size_80' src='"+companyGroup.logo+"'></img></a></div>";
-        //   htmlcontent += "<div class='popover_content'><p><a href='/group/home/"+companyGroup._id+"'>"+companyGroup.name+"</a></p></div>";
-        //   htmlcontent += "<div class='popover_brief'><p><span>最新活动:</span><a href='/campaign/detail/"+campaign_id+"'>"+message_theme+"</a></p></div>";
-        // return res.send({
-        //   result: 1,
-        //   htmlcontent: htmlcontent
-        // });
-        res.render('partials/group_brief_card', {
-          companyGroup: companyGroup,
-          message_theme: message_theme,
-          campaign_id: campaign_id
-        });
-      });
-    }
-  });
-};
+// exports.getBriefInfo = function(req,res) {
+//   CompanyGroup.findOne({'_id': req.params.teamId },{'_id':1,'name':1,'logo':1},function(err,companyGroup){
+//     if (err || !companyGroup){
+//       console.log('cannot find team');
+//       return res.send({'result':0,'msg':'小队查询错误'});
+//     }else{
+//       var message_theme = '';
+//       var campaign_id = '';
+//       Campaign.find({'team':req.params.teamId},{'_id':1,'theme':1})
+//       .sort({'create_time':-1})
+//       .limit(1)
+//       .exec(function(err,campaign){
+//         if(err){
+//           console.log('cannot find campaign');
+//           return res.send({'result':0,'msg':'消息查询错误'});
+//         }
+//         if(campaign.length==0)
+//           message_theme = '';
+//         else{
+//           message_theme = campaign[0].theme;
+//           campaign_id = campaign[0]._id;
+//         }
+//         // var htmlcontent ="<div class='popover_img'><a href='/group/home/"+companyGroup._id+"'><img class='size_80' src='"+companyGroup.logo+"'></img></a></div>";
+//         //   htmlcontent += "<div class='popover_content'><p><a href='/group/home/"+companyGroup._id+"'>"+companyGroup.name+"</a></p></div>";
+//         //   htmlcontent += "<div class='popover_brief'><p><span>最新活动:</span><a href='/campaign/detail/"+campaign_id+"'>"+message_theme+"</a></p></div>";
+//         // return res.send({
+//         //   result: 1,
+//         //   htmlcontent: htmlcontent
+//         // });
+//         res.render('partials/group_brief_card', {
+//           companyGroup: companyGroup,
+//           message_theme: message_theme,
+//           campaign_id: campaign_id
+//         });
+//       });
+//     }
+//   });
+// };
 
 
 //根据tid返回team
