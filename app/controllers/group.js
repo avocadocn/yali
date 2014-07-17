@@ -1071,64 +1071,46 @@ exports.uploadFamily = function(req, res) {
 
 
 exports.getFamily = function(req, res) {
-  CompanyGroup
-  .findById(req.params.teamId)
-  .exec()
-  .then(function(company_group) {
-    if (!company_group) {
-      throw 'not found';
+
+  var company_group = req.companyGroup;
+
+  // 如果要限制长度，则取消注释
+  // var length = 0;
+  var res_data = [];
+  for (var i = 0; i < company_group.family.length; i++) {
+    if (company_group.family[i].hidden === false) {
+      res_data.push(company_group.family[i]);
+      // length++;
+      // if (length >= 3) {
+      //   break;
+      // }
     }
-    // var length = 0;
-    var res_data = [];
-    for (var i = 0; i < company_group.family.length; i++) {
-      if (company_group.family[i].hidden === false) {
-        res_data.push(company_group.family[i]);
-        // length++;
-        // if (length >= 3) {
-        //   break;
-        // }
-      }
-    }
-    res.send(res_data);
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send(500);
-  });
+  }
+  res.send(res_data);
 };
 
 exports.toggleSelectFamilyPhoto = function(req, res) {
-  if (req.session.role !== 'LEADER') {
+  if (req.role !== 'LEADER') {
     return res.send(403);
   }
-  CompanyGroup
-  .findById(req.session.nowtid)
-  .exec()
-  .then(function(company_group) {
-    if (!company_group) {
-      throw 'not found';
-    }
-    for (var i = 0; i < company_group.family.length; i++) {
-      if (company_group.family[i]._id.toString() === req.params.photoId) {
-        if (!company_group.family[i].select) {
-          company_group.family[i].select = true;
-        } else {
-          company_group.family[i].select = false;
-        }
-        break;
+  var company_group = req.companyGroup;
+
+  for (var i = 0; i < company_group.family.length; i++) {
+    if (company_group.family[i]._id.toString() === req.params.photoId) {
+      if (!company_group.family[i].select) {
+        company_group.family[i].select = true;
+      } else {
+        company_group.family[i].select = false;
       }
+      break;
     }
-    company_group.save(function(err) {
-      if (err) {
-        console.log(err);
-        return res.send(500);
-      }
-      res.send(200);
-    });
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send(500);
+  }
+  company_group.save(function(err) {
+    if (err) {
+      console.log(err);
+      return res.send(500);
+    }
+    res.send(200);
   });
 };
 
@@ -1136,31 +1118,23 @@ exports.deleteFamilyPhoto = function(req, res) {
   if (req.role !== 'LEADER') {
     return res.send(403);
   }
-  CompanyGroup
-  .findById(req.params.teamId)
-  .exec()
-  .then(function(company_group) {
-    if (!company_group) {
-      throw 'not found';
+
+  var company_group = req.companyGroup;
+
+  for (var i = 0; i < company_group.family.length; i++) {
+    if (company_group.family[i]._id.toString() === req.params.photoId) {
+      company_group.family[i].hidden = true;
+      break;
     }
-    for (var i = 0; i < company_group.family.length; i++) {
-      if (company_group.family[i]._id.toString() === req.params.photoId) {
-        company_group.family[i].hidden = true;
-        break;
-      }
+  }
+  company_group.save(function(err) {
+    if (err) {
+      console.log(err);
+      return res.send(500);
     }
-    company_group.save(function(err) {
-      if (err) {
-        console.log(err);
-        return res.send(500);
-      }
-      res.send(200);
-    });
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send(500);
+    res.send(200);
   });
+
 };
 
 exports.editLogo = function(req, res) {

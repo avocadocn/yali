@@ -859,7 +859,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
 
     $scope.deletePhoto = function(id) {
         $http
-        .delete('/group/family/photo/' + id)
+        .delete('/group/' + $rootScope.teamId + '/family/photo/' + id)
         .success(function(data, status) {
             getFamily();
         })
@@ -870,7 +870,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
 
     $scope.toggleSelect = function(id) {
         $http
-        .post('/select/group/family/photo/' + id)
+        .post('/select/group/' + $rootScope.teamId + '/family/photo/' + id)
         .success(function(data, status) {
             getFamily();
         })

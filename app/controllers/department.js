@@ -1121,5 +1121,5 @@ exports.renderApplyList = function(req, res) {
 };
 
 exports.renderDepartmentInfo = function(req, res) {
-  res.render('department/department_info.jade');
+  res.render('department/department_info');
 };

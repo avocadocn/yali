@@ -19,7 +19,7 @@ block baseInfo
         .score_container
           span.info_border #{__("DEPARTMENT_MEMBER")}
           span.info_border.info_right_border(ng-init="number=#{department.team.member.length}") {{ number }}
-        if req.role === 'HR' || req.role === 'DEPARTMENT_MANAGER'
+        if req.role === 'HR' || req.role === 'LEADER'
           .score_container
             button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
             button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorMultiCampaignModel") 多部门活动
@@ -40,7 +40,7 @@ block panel
         a.subtitle.no_radius(href="#/info" ng-click="addactive('info')") 部门信息
       li.tab_style(ng-class="{'active':nowTab=='timeLine/#{department.team._id}'}")
         a.subtitle.no_radius(href="#/timeLine/#{department.team._id}" ng-click="addactive('timeLine/#{department.team._id}')") #{__("TIME_LINE")}
-      //- if req.role === 'HR' || req.role === 'DEPARTMENT_MANAGER'
+      //- if req.role === 'HR' || req.role === 'LEADER'
       //-   li.tab_style(ng-class="{'active':nowTab=='applylist/#{department._id}'}")
       //-     a.subtitle.no_radius(href="#/applylist/#{department._id}" ng-click="addactive('applylist/#{department._id}')") 申请列表
     .tab-content.margin_top_20

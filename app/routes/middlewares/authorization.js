@@ -49,29 +49,31 @@ exports.departmentAuthorize = function(req, res, next) {
     if (req.user.provider === 'company') {
       if (req.user._id.toString() === department.company._id.toString()) {
         req.role = 'HR';
+        return next();
       }
     } else if (req.user.provider === 'user') {
-      if (department.manager._id) {
-        if (req.user._id.toString() === department.manager._id.toString()) {
-          req.role = 'LEADER';
+      if (department.manager) {
+        for (var i = 0; i < department.manager.length; i++) {
+          if (req.user._id.toString() === department.manager[i]._id.toString()) {
+            req.role = 'LEADER';
+            return next();
+          }
         }
       }
       for (var i = 0, members = department.team.member; i < members.length; i++) {
         if (req.user._id.toString() === members[i]._id.toString()) {
           req.role = 'MEMBER';
+          return next();
         }
       }
-      if (!req.role) {
-        if (req.user.cid.toString() === department.company._id.toString()) {
-          req.role = 'PARTNER';
-        }
+      if (req.user.cid.toString() === department.company._id.toString()) {
+        req.role = 'PARTNER';
+        return next();
       }
     }
 
-    if (!req.role) {
-      req.role = 'GUEST';
-    }
-    next();
+    req.role = 'GUEST';
+    return next();
   })
   .then(null, function(err) {
     console.log(err);
