@@ -34,6 +34,9 @@ module.exports = function(app) {
    * target: 目标(相册所有者), 目前仅可以是team
    * targetId: 所有者的_id
    */
-  app.post('/:target/:targetId/photoAlbum', photoAlbum.createPhotoAlbumAPI);
+  app.post('/:target/:targetId/photoAlbum', photoAlbum.getTargetModel, photoAlbum.createPhotoAlbumAPI);
+
+
+  app.get('/:target/:targetId/photoAlbum/:photoAlbumId', photoAlbum.getTargetModel, photoAlbum.readPhotoAlbumAPI);
 
 };
