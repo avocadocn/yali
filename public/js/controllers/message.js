@@ -24,6 +24,15 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.page_company_messages = [];
     $rootScope.page_global_messages = [];
 
+
+    $rootScope.page_all = {
+      'type':'all',
+      'arrow':'both',
+      'current_page':0,
+      'up':0,
+      'down':0
+    };
+
     $rootScope.page_private = {
       'type':'private',
       'arrow':'both',
@@ -68,6 +77,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
         default:return '未知';
       }
     }
+
     $rootScope.getMessageByHand = function(_type){
       try{
         $http({
@@ -77,24 +87,30 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
                 _type:_type
             }
         }).success(function(data, status) {
-            var messages = messagePreHandle(data.team,data.msg);
-
-            $rootScope.private_messages = messages[0];
-            $rootScope.team_messages = messages[1];
-            $rootScope.company_messages = messages[2];
-            $rootScope.global_messages = messages[3];
-
-            if($rootScope.team_messages.length > 0){
-              $rootScope.page_team_messages = pageHandle($rootScope.team_messages,$rootScope.page_team,'init');
-            }
-            if($rootScope.private_messages.length > 0){
-              $rootScope.page_private_messages = pageHandle($rootScope.private_messages,$rootScope.page_private,'init');
-            }
-            if($rootScope.company_messages.length > 0){
-              $rootScope.page_company_messages = pageHandle($rootScope.company_messages,$rootScope.page_company,'init');
-            }
-            if($rootScope.global_messages.length > 0){
-              $rootScope.page_global_messages = pageHandle($rootScope.global_messages,$rootScope.page_global,'init');
+            var messages;
+            if(_type!=='all'){
+              messages = messagePreHandle(data.team,data.msg,true); //将站内信分类
+              $rootScope.private_messages = messages[0];
+              $rootScope.team_messages = messages[1];
+              $rootScope.company_messages = messages[2];
+              $rootScope.global_messages = messages[3];
+              if($rootScope.team_messages.length > 0){
+                $rootScope.page_team_messages = pageHandle($rootScope.team_messages,$rootScope.page_team,'init');
+              }
+              if($rootScope.private_messages.length > 0){
+                $rootScope.page_private_messages = pageHandle($rootScope.private_messages,$rootScope.page_private,'init');
+              }
+              if($rootScope.company_messages.length > 0){
+                $rootScope.page_company_messages = pageHandle($rootScope.company_messages,$rootScope.page_company,'init');
+              }
+              if($rootScope.global_messages.length > 0){
+                $rootScope.page_global_messages = pageHandle($rootScope.global_messages,$rootScope.page_global,'init');
+              }
+            }else{
+              $rootScope.all_messages = messagePreHandle(data.team,data.msg,false); //不分类,直接显示所有站内信
+              if($rootScope.all_messages.length > 0){
+                $rootScope.page_team_messages = pageHandle($rootScope.all_messages,$rootScope.page_all,'init');
+              }
             }
             $rootScope.teams = data.team;
             $rootScope.cid = data.cid;
@@ -133,7 +149,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
 // }
 
 
-var messagePreHandle = function(teams,msg){
+var messagePreHandle = function(teams,msg,divide){
   var direct_show = false;
   var detail = "";
   var content = "";
@@ -142,7 +158,8 @@ var messagePreHandle = function(teams,msg){
   var team_messages = [],
       company_messages = [],
       global_messages = [],
-      private_messages = [];
+      private_messages = [],
+      all_messages = [];
   for(var i = 0; i < msg.length; i ++) {
     //小队
     if(msg[i].type == 'team'){
@@ -161,31 +178,31 @@ var messagePreHandle = function(teams,msg){
           }
         }
       }
-      // if(msg[i].message_content.team.length == 2){
-      //   for(var j = 0; j < teams.length; j ++){
-      //     if(teams[j]._id === msg[i].message_content.team[0]._id){
-      //       content = provokeStatus(msg[i].message_content.team[0].provoke_status,msg[i].message_content.team[0].name,true);
-      //       url = "/group/home/"+msg[i].message_content.team[0]._id+"#/group_message";
-      //     }else{
-      //       if(teams[j]._id === msg[i].message_content.team[1]._id){
-      //         content = provokeStatus(msg[i].message_content.team[1].provoke_status,msg[i].message_content.team[1].name,false);
-      //         url = "/group/home/"+msg[i].message_content.team[1]._id+"#/group_message";
-      //       }
-      //     }
-      //   }
-      // }else{
-      // }
-      team_messages.push({
-        '_id':msg[i]._id,
-        'caption':'Message From Campaign',
-        'content':content,
-        'status':msg[i].status,
-        'date':msg[i].message_content.post_date,
-        'detail':msg[i].message_content.content,
-        'message_type':message_type,
-        'campaign_id':msg[i].message_content.campaign_id,
-        'campaign_name':msg[i].message_content.caption
-      });
+      if(divide){
+        team_messages.push({
+          '_id':msg[i]._id,
+          'caption':'Message From Campaign',
+          'content':content,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':msg[i].message_content.content,
+          'message_type':message_type,
+          'campaign_id':msg[i].message_content.campaign_id,
+          'campaign_name':msg[i].message_content.caption
+        });
+      }else{
+        all_messages.push({
+          '_id':msg[i]._id,
+          'caption':'Message From Campaign',
+          'content':content,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':msg[i].message_content.content,
+          'message_type':message_type,
+          'campaign_id':msg[i].message_content.campaign_id,
+          'campaign_name':msg[i].message_content.caption
+        });
+      }
     }
 
     //公司
@@ -193,14 +210,25 @@ var messagePreHandle = function(teams,msg){
       if(msg[i].message_content.sender.length > 0){
         message_type = 3;
         detail = msg[i].message_content.content;
-        company_messages.push({
-          '_id':msg[i]._id,
-          'caption':msg[i].message_content.caption,
-          'status':msg[i].status,
-          'date':msg[i].message_content.post_date,
-          'detail':detail,
-          'message_type':message_type
-        });
+        if(divide){
+          company_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'detail':detail,
+            'message_type':message_type
+          });
+        }else{
+          all_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'detail':detail,
+            'message_type':message_type
+          });
+        }
       }
     }
 
@@ -213,15 +241,27 @@ var messagePreHandle = function(teams,msg){
           message_type = 4;
           var last_content = msg[i].message_content.team[0].provoke_status == 3 ? "接受了您的比赛结果" : "发出了一个新的比赛确认";
           content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
-          private_messages.push({
-            '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
-            'content':content,
-            'status':msg[i].status,
-            'date':msg[i].message_content.post_date,
-            'message_type':message_type,
-            'campaign_id':msg[i].message_content.campaign_id
-          });
+          if(divide){
+            private_messages.push({
+              '_id':msg[i]._id,
+              'caption':msg[i].message_content.caption,
+              'content':content,
+              'status':msg[i].status,
+              'date':msg[i].message_content.post_date,
+              'message_type':message_type,
+              'campaign_id':msg[i].message_content.campaign_id
+            });
+          }else{
+            all_messages.push({
+              '_id':msg[i]._id,
+              'caption':msg[i].message_content.caption,
+              'content':content,
+              'status':msg[i].status,
+              'date':msg[i].message_content.post_date,
+              'message_type':message_type,
+              'campaign_id':msg[i].message_content.campaign_id
+            });
+          }
         }
         if([0,1].indexOf(msg[i].message_content.team[0].provoke_status) > -1){
 
@@ -229,28 +269,52 @@ var messagePreHandle = function(teams,msg){
           message_type = 7;
           var last_content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的挑战" : "向您发出了一个新的挑战";
           content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
-          private_messages.push({
-            '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
-            'content':content,
-            'status':msg[i].status,
-            'date':msg[i].message_content.post_date,
-            'message_type':message_type,
-            'team_id':msg[i].message_content.team[1]._id
-          });
+          if(divide){
+            private_messages.push({
+              '_id':msg[i]._id,
+              'caption':msg[i].message_content.caption,
+              'content':content,
+              'status':msg[i].status,
+              'date':msg[i].message_content.post_date,
+              'message_type':message_type,
+              'team_id':msg[i].message_content.team[1]._id
+            });
+          }else{
+            all_messages.push({
+              '_id':msg[i]._id,
+              'caption':msg[i].message_content.caption,
+              'content':content,
+              'status':msg[i].status,
+              'date':msg[i].message_content.post_date,
+              'message_type':message_type,
+              'team_id':msg[i].message_content.team[1]._id
+            });
+          }
         }
       }else{
         message_type = 5;
         detail = msg[i].message_content.content;
-        private_messages.push({
-          '_id':msg[i]._id,
-          'caption':msg[i].message_content.caption,
-          'status':msg[i].status,
-          'date':msg[i].message_content.post_date,
-          'detail':detail,
-          'sender':msg[i].message_content.sender,
-          'message_type':message_type
-        });
+        if(divide){
+          private_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'detail':detail,
+            'sender':msg[i].message_content.sender,
+            'message_type':message_type
+          });
+        }else{
+          all_messages.push({
+            '_id':msg[i]._id,
+            'caption':msg[i].message_content.caption,
+            'status':msg[i].status,
+            'date':msg[i].message_content.post_date,
+            'detail':detail,
+            'sender':msg[i].message_content.sender,
+            'message_type':message_type
+          });
+        }
       }
 
     }
@@ -258,18 +322,33 @@ var messagePreHandle = function(teams,msg){
     //系统
     if(msg[i].type == 'global'){
       message_type = 6;
-      private_messages.push({
-        '_id':msg[i]._id,
-        'caption':msg[i].message_content.caption,
-        'status':msg[i].status,
-        'date':msg[i].message_content.post_date,
-        'detail':msg[i].message_content.content,
-        'message_type':message_type
-      })
+      if(divide){
+        private_messages.push({
+          '_id':msg[i]._id,
+          'caption':msg[i].message_content.caption,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':msg[i].message_content.content,
+          'message_type':message_type
+        });
+      }else{
+        all_messages.push({
+          '_id':msg[i]._id,
+          'caption':msg[i].message_content.caption,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':msg[i].message_content.content,
+          'message_type':message_type
+        });
+      }
     }
   }
-  message.push(private_messages,team_messages,company_messages,global_messages);
-  return message;
+  if(divide){
+    message.push(private_messages,team_messages,company_messages,global_messages);
+    return message;
+  }else{
+    return all_messages;
+  }
 }
 
 
@@ -286,8 +365,30 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
         }
     }).success(function(data, status) {
         switch(type){
+          case 'all':
+            if(!multi){
+              if(rootScope.o>0 && rootScope.all_messages[index].status === 'unread'){rootScope.o--}
+              rootScope.all_messages[index].status = _status;
+            }else{
+              for(var i = 0; i < rootScope.all_messages.length; i ++){
+                if(rootScope.all_messages[i].status === 'unread'){
+                  rootScope.all_messages[i].status = 'read';
+                  rootScope.o--;
+                }
+              }
+            }
+            if(_status === 'delete'){
+              if(!multi){
+                rootScope.all_messages.splice(index,1);
+              }else{
+                rootScope.all_messages = [];
+                rootScope.o =0;
+              }
+            }
+          break;
+          //这些用于站内信分类,以后会用到
+          /*
           case 'private':
-
             if(!multi){
               if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread'){rootScope.private_length--;rootScope.o--}
               rootScope.private_messages[index].status = _status;
@@ -358,6 +459,7 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
               }
             }
           break;
+          */
           default:break;
         }
     }).error(function(data, status) {
@@ -369,6 +471,28 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
       console.log(e);
   }
 }
+
+
+messageApp.controller('messageAllController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+  $rootScope.getMessageByHand('all');
+
+  $scope.pageOperate = function(arrow){
+    pageHandle($rootScope.all_messages,$rootScope.page_all,arrow);
+  }
+
+  $scope.setAllStatus = function(_status){
+    sendSet($http,_status,$rootScope,null,'all',null,true);
+  }
+  $scope.setToDelete = function(index){
+    sendSet($http,'delete',$rootScope,$rootScope.all_messages[index]._id,'all',index,false);
+  }
+  $scope.setToRead = function(index){
+    if($rootScope.all_messages[index].status === 'unread'){
+      sendSet($http,'read',$rootScope,$rootScope.all_messages[index]._id,'all',index,false);
+    }
+  }
+}]);
+
 
 //获取一对一私信或者系统站内信
 messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
@@ -452,9 +576,9 @@ var pageHandle = function(messages,page,arrow){
   }
 }
 
-//获取小队站内信
+//小队站内信
 messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-  $rootScope.getMessageByHand('team');
+  //$rootScope.getMessageByHand('team');
 
   $scope.pageOperate = function(arrow){
     pageHandle($rootScope.team_messages,$rootScope.page_team,arrow);
@@ -518,9 +642,9 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
   }
 }]);
 
-//获取公司站内信
+//公司站内信
 messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-  $rootScope.getMessageByHand('company');
+  //$rootScope.getMessageByHand('company');
 
   $scope.pageOperate = function(arrow){
     pageHandle($rootScope.company_messages,$rootScope.page_company,arrow);
@@ -588,11 +712,16 @@ messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope'
 
 messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
     $http.get('/message/header').success(function(data, status) {
-        var messages = messagePreHandle(data.team,data.msg);
+        var messages = messagePreHandle(data.team,data.msg,false);
+        $rootScope.o = messages.length;
+        //以后站内信分类时会用到
+        /*
+        var messages = messagePreHandle(data.team,data.msg,true);
         $rootScope.private_length = messages[0].length;
         $rootScope.team_length = messages[1].length;
         $rootScope.company_length = messages[2].length;
         $rootScope.global_length = messages[3].length;
         $rootScope.o = $rootScope.private_length + $rootScope.team_length + $rootScope.company_length + $rootScope.global_length;
+        */
     });
 }]);

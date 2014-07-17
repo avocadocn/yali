@@ -373,8 +373,9 @@ var teamOperate = function(options, callback){
           var _set;
           //加入
           if(method){
-            _set = {'department':{'_id':did,'name':department.name},'team':[{'gid':'0','group_type':'virtual','entity_type':'virtual','_id':company_group._id,'name':company_group.name,'logo':company_group.logo}]};
-            User.findByIdAndUpdate({'_id':user._id},{'$set':_set},function (err,user){
+            _set = {'department':{'_id':did,'name':department.name}};
+            var _push = {'team':{'gid':'0','group_type':'virtual','entity_type':'virtual','_id':company_group._id,'name':company_group.name,'logo':company_group.logo}};
+            User.findByIdAndUpdate({'_id':user._id},{'$set':_set,'$push':_push},function (err,user){
               if(err){
                 callback(err)
               } else if (!user) {

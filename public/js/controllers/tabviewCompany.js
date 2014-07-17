@@ -488,7 +488,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
             '_id':user._id,
             'nickname':user.nickname,
             'photo':user.photo
-        }         
+        }
 
     }
     $scope.dismissLeader = function (leader) {

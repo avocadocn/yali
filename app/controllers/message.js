@@ -727,6 +727,8 @@ var getPublicMessage = function(req,res,cid){
 }
 
 
+
+
 var getMessage = function(req,res,condition){
   var sort = {'create_date':-1};
   Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
@@ -784,10 +786,14 @@ exports.setMessageStatus = function(req,res){
       param.condition = msg_id;
       param.type = 0;
     }else{
-      if(_type === 'private'){
-        param.condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
+      if(_type === 'all'){
+        param.condition = {'rec_id':req.user._id,'status':{'$ne':'delete'}};
       }else{
-        param.condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
+        if(_type === 'private'){
+          param.condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
+        }else{
+          param.condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
+        }
       }
       param.type = 1;
     }
@@ -797,14 +803,21 @@ exports.setMessageStatus = function(req,res){
   }
 }
 
+
 //手动获取私信
 exports.messageGetByHand = function(req,res){
   var _type = req.body._type;
   var condition;
-  if(_type === 'private'){
-    condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
-  }else{
-    condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
+  switch(_type){
+    case 'private':
+      condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
+    break;
+    case 'all':
+      condition = {'rec_id':req.user._id,'status':{'$ne':'delete'}};
+    break;
+    default:
+      condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
+    break;
   }
   getMessage(req,res,condition);
 }
@@ -851,7 +864,17 @@ exports.home = function(req,res){
     res.send(403);
   }
 }
+exports.renderAll = function(req,res){
+  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
+    res.render('message/all');
+  }else{
+    res.send(403);
+  }
+}
 
+
+//这些以后站内信分类时会用到的
+/*
 exports.renderPrivate = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('message/private');
@@ -880,3 +903,4 @@ exports.renderSystem = function(req,res){
     res.send(403);
   }
 }
+*/
