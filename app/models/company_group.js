@@ -44,11 +44,13 @@ var familyPhoto = new Schema({
 });
 
 var _home_court = new Schema({
-    type: {
-        type:String,
-        default: 'Point'
+    loc:{
+        type: {
+            type:String,
+            default: 'Point'
+        },
+        coordinates: []
     },
-    coordinates: [],
     name: String
 });
 

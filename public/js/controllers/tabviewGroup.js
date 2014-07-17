@@ -659,7 +659,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                 $scope.name = $scope.team.name;
                 $scope.entity = data.entity;
                 $scope.role = data.role;
-                $scope.team.home_court = $scope.team.home_court.length ? $scope.team.home_court : [{'name':'','coordinates':[]},{'name':'','coordinates':[]}] ;
                 var judge = true;
                 for(var i = 0; i < data.companyGroup.member.length; i ++) {
                     for(var j = 0; j < data.companyGroup.leader.length; j ++) {
@@ -673,16 +672,22 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                     }
                     judge = true;
                 }
+                $scope.team.home_court[0] = $scope.team.home_court[0] ? $scope.team.home_court[0] : {'name':'','loc':{'coordinates':[]}} ;
+                $scope.team.home_court[1] = $scope.team.home_court[1] ? $scope.team.home_court[1] : {'name':'','loc':{'coordinates':[]}} ;
                 $scope.showMap1 = $scope.team.home_court[0].name !=='' ? true : false;//以是否有主场判断是否需要显示地图
                 $scope.showMap2 = $scope.team.home_court[1].name !=='' ? true : false;
             });
         }
-        
     });
 
     $scope.editToggle = function() {
+
         $scope.unEdit = !$scope.unEdit;
         if($scope.unEdit) {
+            if($scope.team.home_court[1].name =='')
+                $scope.team.home_court.length --;
+            if($scope.team.home_court[0].name =='')
+                $scope.team.home_court.length --;
             try{
                 $http({
                     method : 'post',
@@ -720,6 +725,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                 script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=court_map_initialize";
                 document.body.appendChild(script);
             }
+            $scope.team.home_court[0] = $scope.team.home_court[0] ? $scope.team.home_court[0] : {'name':'','loc':{'coordinates':[]}} ;
+            $scope.team.home_court[1] = $scope.team.home_court[1] ? $scope.team.home_court[1] : {'name':'','loc':{'coordinates':[]}} ;
             $scope.buttonStatus = '保存';
         }
     };
@@ -730,7 +737,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.initialize1 = function(){
         $scope.locationmap1 = new BMap.Map("courtMap1");
         if($scope.team.home_court[0].name!==''){
-            var piont1 = new BMap.Point($scope.team.home_court[0].coordinates[0],$scope.team.home_court[0].coordinates[1]);
+            var piont1 = new BMap.Point($scope.team.home_court[0].loc.coordinates[0],$scope.team.home_court[0].loc.coordinates[1]);
             $scope.locationmap1.centerAndZoom(piont1,15);
             var marker1 = new BMap.Marker(piont1);
             $scope.locationmap1.addOverlay(marker1);
@@ -747,10 +754,10 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                     var marker1 = new BMap.Marker(nowPoint1);  // 创建标注
                     $scope.locationmap1.addOverlay(marker1);              // 将标注添加到地图中
                     marker1.enableDragging();    //可拖拽
-                    $scope.team.home_court[0].coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                    $scope.team.home_court[0].loc.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
                     marker1.addEventListener("dragend", function changePoint(){
                         var p = marker1.getPosition();
-                        $scope.team.home_court[0].coordinates = [p.lng , p.lat];
+                        $scope.team.home_court[0].loc.coordinates = [p.lng , p.lat];
                     });
                 }
             }
@@ -769,7 +776,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     $scope.initialize2 = function(){
         $scope.locationmap2 = new BMap.Map("courtMap2");
         if($scope.team.home_court[1].name!==''){
-            var point2 = new BMap.Point($scope.team.home_court[1].coordinates[0],$scope.team.home_court[1].coordinates[1]);
+            var point2 = new BMap.Point($scope.team.home_court[1].loc.coordinates[0],$scope.team.home_court[1].loc.coordinates[1]);
             $scope.locationmap2.centerAndZoom(point2,15);
             var marker2 = new BMap.Marker(point2);
             $scope.locationmap2.addOverlay(marker2);
@@ -786,10 +793,10 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                     var marker2 = new BMap.Marker(nowPoint2);  // 创建标注
                     $scope.locationmap2.addOverlay(marker2);              // 将标注添加到地图中
                     marker2.enableDragging();    //可拖拽
-                    $scope.team.home_court[1].coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                    $scope.team.home_court[1].loc.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
                     marker2.addEventListener("dragend", function changePoint(){
                         var q = marker2.getPosition();
-                        $scope.team.home_court[1].coordinates = [q.lng , q.lat];
+                        $scope.team.home_court[1].loc.coordinates = [q.lng , q.lat];
                     });
                 }
             }
@@ -1128,6 +1135,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     });
     
     $scope.recommandTeam = function(){
+        $scope.homecourt = true;
         try{
             $http({
                 method:'post',
@@ -1137,13 +1145,15 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
                     tid : $rootScope.teamId
                 }
             }).success(function(data,status){
-                if(data.result===1)
-                    $scope.teams=data;
+                if(data.result===1){
+                    $scope.teams=data.teams;
+                    console.log($scope.teams);
+                }
                 else if(data.result===2)//没填主场
                     $scope.homecourt=false;
             }).error(function(data,status){
-                alertify.alert('DATA ERROR');
-            })
+               console.log('推荐失败'); 
+            });
         }
         catch(e){
             console.log(e);
