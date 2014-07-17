@@ -1,6 +1,6 @@
 'use strict';
 
-var campaignApp = angular.module('mean.main');
+var campaignApp = angular.module('donler');
 
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
     $scope.$watch('campaign',function(campaign){
@@ -37,7 +37,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             }).success(function(data, status) {
                 window.location.reload();
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -67,7 +67,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     }
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -90,10 +90,10 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     $scope.comments.splice(index,1);
                     $scope.campaign.comment_sum --;
                 } else {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -132,10 +132,10 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                         'index' : $scope.fixed_sum+1
                     });
                 } else {
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('DATA ERROR');
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -171,10 +171,10 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     });
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert('DATA ERROR');
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {
@@ -211,10 +211,10 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     }
                 }
                 else{
-                    $rootScope.donlerAlert(data.msg);
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                alertify.alert('DATA ERROR');
             });
         }
         catch(e) {

@@ -11,10 +11,25 @@ var bodyParser = express.bodyParser({
 
 
 module.exports = function(app) {
-  app.get('/department/pull', department.getDepartment);
-  app.post('/department/push', department.createDepartment);
+  app.get('/departmentTree/:cid', department.getDepartment);
 
-  app.post('/department/modify', department.modifyDepartment);
-  app.post('/department/delete', department.deleteDepartment);
+  app.post('/department', department.createDepartment);
+  app.put('/department/:departmentId', authorization.departmentAuthorize, department.modifyDepartment);
+  app.delete('/department/:departmentId', authorization.departmentAuthorize, department.deleteDepartment);
 
+  app.get('/department/home/:departmentId', authorization.departmentAuthorize, department.renderHome);
+
+  app.post('/department/:departmentId/sponsor', authorization.departmentAuthorize, department.sponsor);
+  app.post('/department/:departmentId/multi_sponsor', authorization.departmentAuthorize, department.multiCampaignSponsor);
+
+  app.get('/department/campaigns', department.renderCampaigns);
+  app.get('/department/applylist/:departmentId', authorization.departmentAuthorize, department.renderApplyList);
+
+  app.post('/department/managerOperate/:departmentId', authorization.departmentAuthorize, department.managerOperate);
+  app.post('/department/memberOperate/:departmentId', authorization.departmentAuthorize, department.memberOperateByRoute);
+
+  app.get('/department/info', department.renderDepartmentInfo);
+
+  app.post('/department/detail/:departmentId', authorization.departmentAuthorize, department.getDepartmentDetail);
+  app.get('/department/detail/multi/:cid', department.getMultiDepartmentDetail);
 };

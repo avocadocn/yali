@@ -95,8 +95,8 @@ div.company-info(ng-show = '!loading')
 
   script(type="text/ng-template" id="node.html")
     .self.inline(ng-mouseover="node.show_operator = true" ng-mouseleave="node.show_operator = false")
-      span
-        i.glyphicon.glyphicon-minus(ng-if="node.department")
+      span(ng-click="toggleTree(node)")
+        i.glyphicon(ng-class="node.toggle ? node.toggle : 'glyphicon-minus'" ng-if="node.department")
         .inline(ng-if="!node.is_editing") &nbsp;{{node.name}}
         .inline(ng-if="node.is_creating")
           input(type="text" ng-model="node.edit_name")
@@ -107,12 +107,16 @@ div.company-info(ng-show = '!loading')
           button.dl_btn.dl_btn_small(ng-click="confirmEdit(node)") 确定
           button.cancel_btn.dl_btn_small(ng-click="cancelEdit(node)") 取消
       .operator.inline(ng-if="node.show_operator && !node.is_creating")
+        a.dl_btn.dl_btn_small(href="/department/home/{{ node._id }}" ng-if="!node.is_company") 进入部门主页
+        button.dl_btn.dl_btn_small(ng-if="!node.is_company" ng-click="getNode(node)") 任命管理员
         button.dl_btn.dl_btn_small(ng-click="addNode(node)") 创建子部门
-        button.dl_btn.dl_btn_small(ng-click="editNode(node)") 编辑
-        button.cancel_btn.dl_btn_small(ng-click="deleteNode(node)") 删除该部门
-    ul
+        button.dl_btn.dl_btn_small(ng-if="!node.is_company" ng-click="editNode(node)") 编辑
+        button.cancel_btn.dl_btn_small(ng-if="!node.is_company" ng-click="deleteNode(node)") 删除该部门
+    ul(ng-if="!node.hideChild")
       li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
 
   .tree
     ul
       li(ng-include="'node.html'" ng-class="hasChild(node)")
+  div.modal.fade#managerAppointModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    include ../partials/pointermanager_modal

@@ -23,6 +23,8 @@ var GroupMessage = new Schema({
     // 6:比赛确认，
     // 7:公司新成员加入，
     // 8:小组新成员加人，
+    // 9:部门内活动
+    // 10:部门间活动
     message_type: Number,
     company: [{//如果是约战消息,要在两家公司的主页同时显示
         cid:{

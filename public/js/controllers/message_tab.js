@@ -1,4 +1,4 @@
-var messageApp = angular.module('mean.main');
+var messageApp = angular.module('donler');
 messageApp.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
     $routeProvider

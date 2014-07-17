@@ -148,6 +148,7 @@
   "OPTION" :"options",
   "PLACE" :"place",
   "APPOINT" :"appoint",
+  "DEPARTMENT_MEMBER": "Member",
   "NO_TIMELINE": "No timelines",
   "CAMPAIGNCLOSE":"Campaign has closed",
   "CAMPAIGNFINISH":"Campaign has finished"

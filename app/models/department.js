@@ -17,7 +17,8 @@ var _member = new Schema({
     photo: String,
     apply_status:{
       type:String,
-      enum:['pass','reject','wait']
+      enum:['pass','reject','wait'],
+      default:'wait'
     }
 });
 
@@ -32,12 +33,8 @@ var Department = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'CompanyGroup'
   },
-  manager:{
-    _id:Schema.Types.ObjectId,
-    nickname:String,
-    photo:String
-  },
-  member_apply:[_member]
+  manager:[_member],
+  member:[_member]
 });
 
 

@@ -1,13 +1,12 @@
-.loading_div(ng-show = 'loading')
-div(ng-show = '!loading' ng-controller="infoController")
+div(ng-controller="infoController")
   form.form-horizontal.tab-info-form(name="infoForm")
     .dl_row
       h5.pull-left #{__("INFO")}
-      button.dl_btn.dl_btn_small.pull-right(ng-if="role==='HR' || role==='LEADER'" ng-click="editToggle()" ng-bind="buttonStatus")
+      //- button.dl_btn.dl_btn_small.pull-right(ng-if="role==='HR'" ng-click="editToggle()" ng-bind="buttonStatus")
     hr.margin_top_6
     .dl_row.clearfix
       .info_side
-        span.info_label #{__("TEAM_NAME")}
+        span.info_label 部门名
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="name" ng-model="name"  ng-disabled="unEdit")
     .dl_row.clearfix
@@ -20,50 +19,50 @@ div(ng-show = '!loading' ng-controller="infoController")
         span.info_label #{__("SUM")}
       .info_detail_2
         span.info_label {{team.member.length}}
-    .dl_row.clearfix
-      .info_side
-        span.info_label #{__("TEAM_LOGO")}
-      .info_detail_2
-        a.clearLinkUnderline.close_btn.dl_btn_small(ng-if="role==='HR'|| role==='LEADER'" href="/group/{{teamId}}/editLogo") #{__("CHANGE")}LOGO
-    .dl_row.clearfix(ng-show="team.home_court[0]!=undefined || !unEdit")
-      .info_side
-        span.info_label #{__("HOME_COURT")}一
-      .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-change='changeLocation1()' ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip='请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。' tooltip-placement="right")
-    .dl_row.clearfix(ng-show='showMap1 && !unEdit')
-      .info_side 
-      #courtMap1.height_200(ng-show='showMap1')
-    .dl_row.clearfix(ng-show="team.home_court[1]!=undefined || !unEdit")
-      .info_side
-        span.info_label #{__("HOME_COURT")}二
-      .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-change='changeLocation2()' ng-model="team.home_court[1].name" ng-disabled="unEdit")
-    .dl_row.clearfix(ng-show='showMap2 && !unEdit')
-      .info_side
-      #courtMap2.height_200(ng-show='showMap2')
-    .dl_row.clearfix(ng-show="team.brief!=undefined || !unEdit")
-      .info_side
-        span.info_label #{__("BRIEF")}
-      .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="textarea" rows="10" name ="brief" ng-model="team.brief" ng-disabled="unEdit")
-    .dl_row.clearfix
-      .info_side
-        span.info_label #{__("BUILD_TIME")}
-      .info_detail_2
-        span.info_label {{team.create_time | date:'yyyy-MM-dd HH:mm:ss'}}
+    //- .dl_row.clearfix
+    //-   .info_side
+    //-     span.info_label #{__("TEAM_LOGO")}
+    //-   .info_detail_2
+    //-     a.clearLinkUnderline.close_btn.dl_btn_small(ng-if="role==='HR'|| role==='LEADER'" href="/group/{{teamId}}/editLogo") #{__("CHANGE")}LOGO
+    //- .dl_row.clearfix(ng-show="team.home_court[0]!=undefined || !unEdit")
+    //-   .info_side
+    //-     span.info_label #{__("HOME_COURT")}一
+    //-   .info_detail
+    //-     input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-change='changeLocation1()' ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip='请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。' tooltip-placement="right")
+    //- .dl_row.clearfix(ng-show='showMap1 && !unEdit')
+    //-   .info_side 
+    //-   #courtMap1.height_200(ng-show='showMap1')
+    //- .dl_row.clearfix(ng-show="team.home_court[1]!=undefined || !unEdit")
+    //-   .info_side
+    //-     span.info_label #{__("HOME_COURT")}二
+    //-   .info_detail
+    //-     input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-change='changeLocation2()' ng-model="team.home_court[1].name" ng-disabled="unEdit")
+    //- .dl_row.clearfix(ng-show='showMap2 && !unEdit')
+    //-   .info_side
+    //-   #courtMap2.height_200(ng-show='showMap2')
+    //- .dl_row.clearfix(ng-show="team.brief!=undefined || !unEdit")
+    //-   .info_side
+    //-     span.info_label #{__("BRIEF")}
+    //-   .info_detail
+    //-     input.dl_input.editToggle.dl_form-Control(type="textarea" rows="10" name ="brief" ng-model="team.brief" ng-disabled="unEdit")
+    //- .dl_row.clearfix
+    //-   .info_side
+    //-     span.info_label #{__("BUILD_TIME")}
+    //-   .info_detail_2
+    //-     span.info_label {{team.create_time | date:'yyyy-MM-dd HH:mm:ss'}}
     .dl_row.clearfix
       h5.pull-left 成员信息
     hr.margin_top_6
 
     .dl_row
-      span.subtitle.margin_left_15 #{__("TEAM_LEADER")}
+      span.subtitle.margin_left_15 管理员
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
           .group( ng-repeat="leader in team.leader")
             .dl_row(bs-popover)
-              a(href="/users/home/{{leader._id}}")
-                img.size_56(ng-src="{{leader.photo}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
+              a(href="/users/home/{{leader._id}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
+                img.size_56(ng-src="{{leader.photo}}")
             .dl_row
               label {{leader.nickname}}
     .dl_row.clearfix
@@ -73,8 +72,8 @@ div(ng-show = '!loading' ng-controller="infoController")
         .groups
           .group(ng-repeat="member in members")
             .dl_row(bs-popover)
-              a(href="/users/home/{{member._id}}")
-                img.size_56(ng-src="{{member.photo}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}')
+              a(href="/users/home/{{member._id}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}' rel='popover')
+                img.size_56(ng-src="{{member.photo}}")
             .dl_row
               label.user_name {{member.nickname}}
 
@@ -104,14 +103,14 @@ div(ng-show = '!loading' ng-controller="infoController")
     //-     span.info_label 0
     .dl_row.clearfix
       span.subtitle.pull-left #{__("FAMILY")}
-      button.dl_btn.dl_btn_small.pull-right(ng-show="role==='LEADER'||role==='HR'" data-toggle="modal" data-target="#upload_modal") 修改全家福
+      button.dl_btn.dl_btn_small.pull-right(ng-if="role==='LEADER'||role==='HR'" data-toggle="modal" data-target="#upload_modal") 修改全家福
     .dl_row(ng-if="family_photos.length !== 0")
       carousel#family(interval="5000")
         slide(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
           .carousel-img-container
             img.center-block(ng-src="{{ photo.uri }}")
 
-  #upload_modal.modal.fade(ng-show="role==='LEADER'||role==='HR'" tabindex="-1" role="dialog" aria-hidden="true")
+  #upload_modal.modal.fade(ng-if="role==='LEADER'||role==='HR'" tabindex="-1" role="dialog" aria-hidden="true")
     .modal-dialog
       .modal-content
         .modal-header
@@ -139,5 +138,7 @@ div(ng-show = '!loading' ng-controller="infoController")
               .upload_operator.pull-right
                 label.dl_btn.dl_btn_small(for="upload_input") 选择图片
                 button#upload_button.dl_btn.dl_btn_small(type="submit" disabled) 上传
-                button.dl_btn_small.cancel_btn(type="button" ng-click="back()") 返回
+                button.dl_btn.dl_btn_small.cancel_btn(type="button" ng-click="back()") 返回
             p {{ remind }}
+
+

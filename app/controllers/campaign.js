@@ -220,7 +220,22 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
-    else{//动一下
+    else if (_campaign.campaign_type === 6) {
+      temp.type = 'departmentcampaign';
+      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
+      temp.logo=_campaign.team[0].logo;
+      temp.link = '/group/home/'+_campaign.team[0]._id;
+      temp.team_id = _campaign.team[0]._id;
+      if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
+        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
+          temp.join_flag = 1;
+        }
+        else{
+          temp.join_flag = -1;
+        }
+      }
+    }
+    else if(_campaign.campaign_type !== 7){//动一下
       temp.type = 'provoke';
       var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
       temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
@@ -242,23 +257,7 @@ var formatCampaign = function(campaign,pageType,role,user){
   return campaigns;
 };
 
-//获取部门活动
-exports.getDepartmentCampaigns = function(req,res){
-  var did = req.body.did;
-  Department.findOne({'_id':did}, function (err,department){
-    if(err || !department){
-      res.send(500);
-    }else{
-      Campaign.find({'_id':{'$in':[department.team]}},function (err,campaigns){
-        if(err || !campaigns){
-          res.send(500);
-        }else{
-          res.send(200,{'campaigns':campaigns});
-        }
-      });
-    }
-  });
-}
+
 
 exports.getCampaigns = function(req, res) {
   var option;
@@ -332,6 +331,7 @@ exports.getCampaigns = function(req, res) {
     .sort({'start_time':-1})
     .exec()
     .then(function(campaign) {
+      console.log('----',option,campaign);
       if(campaign===[]){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
@@ -496,10 +496,10 @@ exports.renderCampaignDetail = function(req, res) {
         req.join = -1;
       }
       var parent_name, parent_url;
-      if (campaign.team.length === 0) {
+      if (campaign.team.length === 0 || campaign.campaign_type === 6) {
         parent_name = campaign.cid[0].info.name;
         parent_url = '/company/home';
-      } else {
+      }else {
         parent_name = campaign.team[0].name;
         parent_url = '/group/home/' + campaign.team[0]._id;
       }
