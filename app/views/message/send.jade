@@ -38,3 +38,6 @@
             h5 {{send_message.detail}}
           .dl_md_1.pull-right.dl_message_rightcorner
             button.dl_btn.pull-right(ng-click="setToDelete($index)") X
+    .dl_row.dl_center(ng-if="send_messages.length > 10")
+      button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'right' || page_send.arrow == 'none' " ng-click="pageOperate('left')") <<
+      button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'left' || page_send.arrow == 'none' " ng-click="pageOperate('right')") >>

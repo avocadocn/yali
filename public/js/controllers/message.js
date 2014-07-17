@@ -660,7 +660,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
   $scope.getSenderList();
 
   $scope.pageOperate = function(arrow){
-    pageHandle($rootScope.send_messages,$rootScope.page_send,arrow);
+    pageHandle($scope.send_messages,$rootScope.page_send,arrow);
   }
 
   $scope.setAllStatus = function(_status){
