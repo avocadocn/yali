@@ -18,7 +18,6 @@ var config = require('../../config/config');
  * @param {Number} width 目标宽度
  * @param {Number} height 目标高度
  * @param {Function} callback callback(err, handle), handle为gm对象
- * @api public
  */
 var resizeWithCrop = exports.resizeWithCrop = function(img_path, width, height, callback) {
 

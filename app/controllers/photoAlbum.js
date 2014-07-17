@@ -418,62 +418,62 @@ exports.createAuth = function(req, res, next) {
 };
 
 
-exports.createPhotoAlbum = function(req, res) {
-  var photo_album = new PhotoAlbum({
-    owner: {
-      model: req.owner_model,
-      companies: [req.body.cid],
-      teams: [req.body.tid]
-    },
-    name: req.body.name
-  });
-  if (req.user.provider === 'company') {
-    photo_album.create_user = {
-      _id: req.user._id,
-      name: req.user.info.name,
-      type: 'hr'
-    };
-    photo_album.update_user = photo_album.create_user;
-  } else if (req.user.provider === 'user' ) {
-    photo_album.create_user = {
-      _id: req.user._id,
-      name: req.user.nickname,
-      type: 'user'
-    };
-    photo_album.update_user = photo_album.create_user;
-  }
+// exports.createPhotoAlbum = function(req, res) {
+//   var photo_album = new PhotoAlbum({
+//     owner: {
+//       model: req.owner_model,
+//       companies: [req.body.cid],
+//       teams: [req.body.tid]
+//     },
+//     name: req.body.name
+//   });
+//   if (req.user.provider === 'company') {
+//     photo_album.create_user = {
+//       _id: req.user._id,
+//       name: req.user.info.name,
+//       type: 'hr'
+//     };
+//     photo_album.update_user = photo_album.create_user;
+//   } else if (req.user.provider === 'user' ) {
+//     photo_album.create_user = {
+//       _id: req.user._id,
+//       name: req.user.nickname,
+//       type: 'user'
+//     };
+//     photo_album.update_user = photo_album.create_user;
+//   }
 
-  fs.mkdir(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()),
-    function(err) {
-      if (err) {
-        return res.send({ result: 0, msg: '创建相册失败' });
-      } else {
-        photo_album.save(function(err) {
-          if (err) {
-            console.log(err);
-            return res.send({ result: 0, msg: '创建相册失败' });
-          } else {
+//   fs.mkdir(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()),
+//     function(err) {
+//       if (err) {
+//         return res.send({ result: 0, msg: '创建相册失败' });
+//       } else {
+//         photo_album.save(function(err) {
+//           if (err) {
+//             console.log(err);
+//             return res.send({ result: 0, msg: '创建相册失败' });
+//           } else {
 
-            req.model.photo_album_list.push(photo_album._id);
-            req.model.save(function(err) {
-              if (err) {
-                console.log(err);
-                return res.send({ result: 0, msg: '创建相册失败' });
-              }
-              else {
-                delete req.model;
-                delete req.owner_model;
-                return res.send({ result: 1, msg: '创建相册成功' });
-              }
-            });
+//             req.model.photo_album_list.push(photo_album._id);
+//             req.model.save(function(err) {
+//               if (err) {
+//                 console.log(err);
+//                 return res.send({ result: 0, msg: '创建相册失败' });
+//               }
+//               else {
+//                 delete req.model;
+//                 delete req.owner_model;
+//                 return res.send({ result: 1, msg: '创建相册成功' });
+//               }
+//             });
 
-          }
-        });
-      }
-  });
+//           }
+//         });
+//       }
+//   });
 
 
-};
+// };
 
 
 
@@ -1159,6 +1159,47 @@ exports.preview = function(req, res) {
 
 
 
+/**
+ * 根据照片点击数排序照片
+ *
+ * @param  {Array} photos 照片对象数组
+ * @return {Array}        排序后的照片对象数组
+ */
+var sortPhotosByClickCount = function(photos) {
+  photos.sort(function(a, b) {
+    if (a.click_count <= b.click_count) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  return photos;
+};
+
+
+/**
+ * 获取未隐藏的照片
+ *
+ * @param  {Array} photos 照片对象数组
+ * @param  {Function} sort   排序函数，可选
+ * @return {Array}        筛选后的照片对象数组
+ */
+var getPhotos = function(photos, sort) {
+  var result = [];
+  photos.forEach(function(photo) {
+    if (photo.hidden === false) {
+      result.push(photo);
+    }
+  });
+  if (sort) {
+    result = sort(result);
+  }
+  return result;
+};
+
+
+
+
 
 
 
@@ -1181,9 +1222,8 @@ exports.preview = function(req, res) {
  * @param {Object} owner 存放相册ref的Mongoose对象，具有photo_album_list或photo_album属性
  * @param {Object} options
  * @param {Function} callback callback(err, photo_album)
- * @api public
  */
-var createPhotoAlbum = function(owner, options, callback) {
+var createPhotoAlbum = exports.createPhotoAlbum = function(owner, options, callback) {
   var photo_album = new PhotoAlbum({
     name: options.name,
     create_user: options.create_user,
@@ -1222,14 +1262,70 @@ var createPhotoAlbum = function(owner, options, callback) {
 
 
 var readPhotoAlbum = function(photo_album, callback) {
-  
-}
+  var clone_photo_album = _.cloneDeep(photo_album);
+
+};
 
 
 
 
+/**
+ * functions for route
+ */
 
+/**
+ * api 创建相册
+ *
+ * need:
+ *   req.body.name 相册名
+ */
+exports.createPhotoAlbumAPI = function(req, res) {
+  var targetModel;
 
+  switch(req.params.target) {
+    case 'team':
+      targetModel = mongoose.model('CompanyGroup');
+      break;
+    default:
+      return res.send(400);
+  }
+
+  var create_user;
+  if (req.user.provider === 'user') {
+    create_user = {
+      _id: req.user._id,
+      name: req.user.nickname,
+      type: 'user'
+    };
+  } else if (req.user.provider === 'company') {
+    create_user = {
+      _id: req.user._id,
+      name: req.user.info.name,
+      type: 'hr'
+    }
+  }
+
+  targetModel
+  .findById(req.params.targetId)
+  .exec()
+  .then(function(model) {
+    createPhotoAlbum(model, {
+      name: req.body.name,
+      create_user: create_user
+    }, function(err, photo_album) {
+      if (err) {
+        console.log(err);
+        return res.send(500);
+      }
+      return res.send(200);
+    });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+
+};
 
 
 

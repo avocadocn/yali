@@ -18,6 +18,10 @@ var Photo = new Schema({
   },
   name: String,
   tags: [String],
+  click_count: {
+    type: Number,
+    default: 0
+  },
   comments: [{
     content: String,
     publish_user: {
