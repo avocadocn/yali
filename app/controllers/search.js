@@ -81,7 +81,7 @@ exports.recommandTeam = function(req,res) {
       });
     },
     function(homecourt ,callback){
-      CompanyGroup.find({'gid':gid,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},{'_id':1,'name':1,'home_court':1,'logo':1,'member':1})
+      CompanyGroup.find({'_id':{$ne:tid},'gid':gid,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},{'_id':1,'name':1,'home_court':1,'logo':1,'member':1})
       .limit(10)
       .exec(function (err, teams){
         if(err){
