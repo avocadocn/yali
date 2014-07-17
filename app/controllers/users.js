@@ -177,7 +177,6 @@ exports.appLogout = function(req, res) {
  * 通过邀请链接进入激活流程
  */
 exports.invite = function(req, res) {
-  destroySession(req);
   var key = req.query.key;
   var cid = req.query.cid;
   if(key == undefined || cid == undefined) {
