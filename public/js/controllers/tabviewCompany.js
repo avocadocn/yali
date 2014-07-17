@@ -686,6 +686,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $http.get('/company/getAccount/'+$rootScope.cid+'?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
+        $scope.role = data.role;
         $scope.linkage_init_location = {
             province: data.info.city.province,
             city: data.info.city.city,
@@ -767,7 +768,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             try{
                 $http({
                     method : 'post',
-                    url : '/company/saveAccount',
+                    url : '/company/saveAccount/'+$rootScope.cid,
                     data : {
                         info : $scope.info
                     }
@@ -777,10 +778,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                         alertify.alert(data.msg);
                     else
                         alertify.alert(data.msg);
-                    window.location.reload();
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    alertify.alert('DATA ERROR');
+                    alertify.aler('保存错误!');
                 });
             }
             catch(e) {

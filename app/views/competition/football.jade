@@ -9,53 +9,86 @@ block contentExt
     include ../partials/breadcrumb
     +breadcrumb(links)
     .main
-      #competition_content.competition_content(ng-controller="resultController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="msg_show='#{msg_show}';rst_content='#{rst_content}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}';confirm_mode='#{confirm_mode}'")
+      if !competition.active&&competition.camp[1].start_confirm
+        .text-center #{__("CAMPAIGNCLOSE")}
+      else if competition.finish
+        .text-center #{__("CAMPAIGNFINISH")}
+      #competition_content.competition_content(ng-controller="competitionController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}';")
         .row
           .team_left.col-xs-4
             img.pull-left.team_logo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             div.text-left
               a(href="/group/home/#{competition.camp[0].id}")= competition.camp[0].tname
-          .score_panel.col-xs-4
-            h1.text-center VS
-            .dl_box#score_tip
-              .dl_score_frame
-                if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                  label.dl_score(ng-if="!edit") {{score_own.score}}
-                  input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
-                  if msg_show
-                    a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
-                else
-                  label.dl_score {{score_own.score}}
-              .dl_score_frame
-                label.dl_score :
-                if confirm_btn_show && !msg_show
-                  if confirm_mode === 1
-                    a.dl_btn_right(ng-disabled="true") 等待确认
+              if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && team.indexOf(0)>-1
+                div
+                  if competition.camp[1].start_confirm
+                    if join_flag[0]
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                    else
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}')")
                   else
-                    a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
-              .dl_score_frame
-                if confirm_btn_show && (role === 'HR' || role === 'LEADER')
-                  label.dl_score(ng-if="!edit") {{score_opposite.score}}
-                  input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
-                  if msg_show
-                    a.dl_btn_right(ng-click='scoreModify()') {{object_caption}}
-                else
-                  label.dl_score {{score_opposite.score}}
-              //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
+                    a(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
+          .score_panel.col-xs-4
+            if score_flag
+              h1.text-center VS
+              .dl_box#score_tip
+                .dl_score_frame
+                  if confirm_mode!=undefined
+                    label.dl_score(ng-if="!edit")= competition.camp[0].score
+                    input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
+                  else
+                    label.dl_score= competition.camp[0].score
+                .dl_score_frame
+                  label.dl_score :
+                    if confirm_mode === 1
+                      a.dl_btn_right(ng-disabled="true") 等待确认
+                    else
+                      a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
+                .dl_score_frame
+                  if confirm_mode!=undefined
+                    label.dl_score(ng-if="!edit")= competition.camp[0].score
+                    input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
+                    if msg_show
+                      a.dl_btn_right(ng-click='scoreModify()') {{object_caption}}
+                  else
+                    label.dl_score= competition.camp[1].score
+                if msg_show
+                      a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
+                //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
+            else if response_flag
+              .text-center
+                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke('#{competition.camp[1].id}','#{competition._id}')") #{__("FACE")}
           .team_right.col-xs-4
             img.pull-right.team_logo(src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             div.text-right
               a(href="/group/home/#{competition.camp[1].id}")= competition.camp[1].tname
+              if (competition.active || !competition.camp[1].start_confirm) && !competition.finish && team.indexOf(1)>-1
+                div
+                  if competition.camp[1].start_confirm
+                    if join_flag[1]
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                    else
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}')")
+                  else
+                    a(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
         .row
           .col-xs-5
-            each teamAMember in competition.camp[0].member
-              img.teamMember.team_member_logo(draggable="#{team=='A'}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
+            if competition.camp[1].start_confirm
+              each teamAMember in competition.camp[0].member
+                img.teamMember.team_member_logo(draggable="#{team.indexOf(0)>-1}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
+            else
+              each teamAMember in competition.camp[0].vote.positive_member
+                img.teamMember.team_member_logo(src='#{teamAMember.photo}' id='#{teamAMember.uid}')
           .col-xs-2
           .col-xs-5
-            each teamBMember in competition.camp[1].member
-              img.teamMember.team_member_logo(draggable="#{team=='B'}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
+            if competition.camp[1].start_confirm
+              each teamBMember in competition.camp[1].member
+                img.teamMember.team_member_logo(draggable="#{team.indexOf(1)>-1}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
+            else
+              each teamBMember in competition.camp[1].vote.positive_member
+                img.teamMember.team_member_logo(src='#{teamBMember.photo}' id='#{teamBMember.uid}')
         //- 7是足球
         if (competition.camp[0].gid === '7')
           .row.format_field

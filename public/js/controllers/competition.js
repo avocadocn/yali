@@ -4,7 +4,7 @@
 
 var groupApp = angular.module('donler');
 
-groupApp.controller('resultController', ['$http', '$scope','$rootScope',function ($http, $scope,$rootScope) {
+groupApp.controller('competitionController', ['$http', '$scope','$rootScope',function ($http, $scope,$rootScope) {
     // $scope.$watch('msg_show',function(){
     //   if($scope.msg_show){
     //     $('#resultModel').modal();
@@ -13,32 +13,6 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
     $scope.modify_caption = "成绩确认";
     $scope.object_caption = "发出异议";
     $scope.edit = false;
-
-    $scope.score_own = {
-      'score':0
-    };
-    $scope.score_opposite = {
-      'score':0
-    };
-    //必须嵌套来保持一致性
-    $scope.$watch('rst_content',function(rst_content){
-      $scope.rst_content = rst_content;
-      $scope.$watch('score_a',function(score_a){
-        $scope.score_own.score = score_a != 'undefined' ? score_a : "";
-        $scope.$watch('score_b',function(score_b){
-          $scope.score_opposite.score = score_b != 'undefined' ? score_b : "";
-          $scope.$watch('msg_show',function(msg_show){
-            $scope._msg_show = msg_show;
-            if(msg_show=='true'){
-              $scope.modify_caption = "发出异议";
-            }
-            $scope.$watch('confirm_mode',function(confirm_mode){
-              ;
-            });
-          });
-        });
-      });
-    });
 
     $scope.tip = function(){
       var content = "";
@@ -101,10 +75,94 @@ groupApp.controller('resultController', ['$http', '$scope','$rootScope',function
         console.log(e);
       }
     };
+    //应战
+    $scope.responseProvoke = function(tid,provoke_message_id) {
+        try {
+            $http({
+                method: 'post',
+                url: '/group/responseProvoke/'+tid,
+                data:{
+                    competition_id : competition_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+    $scope.joinCampaign = function (competition_id) {
+        //$rootScope.donlerAlert($scope.campaign_id);
+        try {
+            $http({
+                method: 'post',
+                url: '/campaign/joinCampaign/'+competition_id,
+                data:{
+                    campaign_id : competition_id
+                }
+            }).success(function(data, status) {
+                if(data.result===1){
+                  window.location.reload();
+                }
+                else{
+                    //$rootScope.donlerAlert(data.msg);
+                }
+            }).error(function(data, status) {
+                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+    $scope.quitCampaign = function (competition_id) {
+        try {
+            $http({
+                method: 'post',
+                url: '/campaign/quitCampaign/'+competition_id,
+                data:{
+                    campaign_id : competition_id
+                }
+            }).success(function(data, status) {
+                if(data.result===1){
+                    window.location.reload();
+                }
+                else{
+                    //$rootScope.donlerAlert(data.msg);
+                }
+            }).error(function(data, status) {
+                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+    $scope.vote = function(competition_id, vote_status,tid) {
+      try {
+          $http({
+              method: 'post',
+              url: '/campaign/vote/'+competition_id,
+              data:{
+                  competition_id : competition_id,
+                  aOr : vote_status,
+                  tid : tid
+              }
+          }).success(function(data, status) {
+              if(data.result===1) {
+                  window.location.reload();
+              }
+          });
+      }
+      catch(e) {
+          console.log(e);
+      }
+    };
 }]);
-
-
-
 
 
 (function(window){

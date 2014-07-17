@@ -759,7 +759,8 @@ exports.getAccount = function(req, res) {
                 'result': 1,
                 'company': _account,
                 'info': _company.info,
-                'team': _company.team
+                'team': _company.team,
+                'role':req.role
             });
         }
         else
@@ -803,70 +804,98 @@ exports.getCompanyTeamsInfo = function(req, res) {
   if(req.role !== 'HR'){
     option.active = true;
   }
-  CompanyGroup.find(option, function(err, teams) {
-    if(err || !teams) {
-      return res.send([]);
-    } else {
+  CompanyGroup
+  .find(option)
+  .exec()
+  .then(function(teams) {
       var output ={
         'cid':req.params.companyId,
         'role':req.role
       };
-      if(req.role ==='EMPLOYEE'){
+
         var _teams = [];
-        teams.forEach(function(value){
-            var message_theme = '';
-            var campaign_id = '';
-            var _team = {
-                '_id':value._id,
-                'gid':value.gid,
-                'group_type':value.group_type,
-                'logo':value.logo,
-                'active':value.active,
-                'count':value.count,
-                'entity_type':value.entity_type,
-                'leader':value.leader,
-                'member':value.member,
-                'name':value.name,
-                'campaign_theme':message_theme,
-                'campaign_id':campaign_id
-            }
-            Campaign.find({'team':value._id},{'_id':1,'theme':1})
-            .sort({'create_time':-1})
-            .limit(1)
-            .exec(function(err,campaign){
-                console.log(campaign);
+        var counter = {'i':0};
+        // console.log(teams.length);
+        async.whilst(
+            function() { return counter.i < teams.length},
+            function (callback) {
+                //todo
+                // console.log(teams[counter.i]);
+                // console.log('out.waterfall.counter.i=' + counter.i);
+                async.waterfall([
+                    function(callback){
+                        //campaigninfo
+                        // console.log('in.waterfall.counter.i=' + counter.i);
+                        var j = counter.i-1;
+                        var campaigninfo = {};
+                        Campaign.find({'team':teams[j]._id},{'_id':1,'theme':1})
+                        .sort({'create_time':-1})
+                        .limit(1)
+                        .exec()
+                        .then(function(campaign){
+                            //todo
+                            // console.log(campaign)
+                            if(campaign.length==0){
+                                campaigninfo.campaign_theme = '';
+                                campaigninfo.campaign_id = '';
+                            }else{
+                              campaigninfo.campaign_theme = campaign[0].theme;
+                              campaigninfo.campaign_id = campaign[0]._id;
+                            }
+                            callback(null, campaigninfo);
+                        });
+                    },function(campaigninfo, callback){
+                        var j = counter.i-1;
+                        var _team = {
+                            '_id':teams[j]._id,
+                            'gid':teams[j].gid,
+                            'group_type':teams[j].group_type,
+                            'logo':teams[j].logo,
+                            'active':teams[j].active,
+                            'count':teams[j].count,
+                            'entity_type':teams[j].entity_type,
+                            'leader':teams[j].leader,
+                            'member':teams[j].member,
+                            'name':teams[j].name,
+                            'campaign_theme':campaigninfo.campaign_theme,
+                            'campaign_id':campaigninfo.campaign_id
+                        }
+
+                        if(model_helper.arrayObjectIndexOf(req.user.team,teams[j]._id,'_id')>-1){
+                            _team.belong = true;
+                        }
+                        else{
+                            _team.belong = false;
+                        }
+                        _teams.push(_team);
+                        //todo
+                        // console.log(campaigninfo);
+                        // console.log('push to _teams');
+                        // console.log(_team);
+                        // console.log(_teams);
+                    }
+                ], function (err, result) {
+                   // result now equals 'done'    
+                });
+                counter.i++;
+                setTimeout(callback, 60);
+            },
+            function(err){
                 if(err){
-                  console.log('cannot find campaign');
-                  return res.send({'result':0,'msg':'消息查询错误'});
+                    return res.send({'result':1,'msg':'FAILURED'});
+                }else{
+                    console.log('finish~');
+                    if(req.role ==='EMPLOYEE'){
+                        output.teams = _teams;
+                        }
+                      else {
+                        output.teams = teams;
+                    }
+                    return res.send(output);
                 }
-                if(campaign.length==0)
-                  message_theme = '';
-                else{
-                  message_theme = campaign[0].theme;
-                  campaign_id = campaign[0]._id;
-                  _team.campaign_theme = campaign[0].theme;
-                  _team.campaign_id = campaign[0]._id;
-                }
-            });
-            console.log(_team);
-
-            if(model_helper.arrayObjectIndexOf(req.user.team,value._id,'_id')>-1){
-            _team.belong = true;
             }
-            else{
-            _team.belong = false;
-            }
-            _teams.push(_team);
+        );
 
-        });
-
-        output.teams = _teams;
-      }
-      else {
-        output.teams = teams;
-      }
-      return res.send(output);
-    }
   });
 };
 exports.timeLine = function(req, res){

@@ -514,7 +514,6 @@ exports.renderCampaignDetail = function(req, res) {
         }
       ];
       return res.render('campaign/campaign_detail', {
-        active: campaign.active,
         over : campaign.deadline<new Date(),
         join: req.join,
         role:req.role,
@@ -694,7 +693,14 @@ exports.vote = function (req, res) {
         campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']-1;
       }
       else if(aOr && positive_index <0 || !aOr && negative_index <0){
-        campaign.camp[camp_index].vote[aOr?'positive_member':'negative_member'].push({'cid':cid,'uid':uid});
+        campaign.camp[camp_index].
+          vote[aOr?'positive_member':'negative_member'].
+            push({
+                  'cid':cid,
+                  'uid':uid,
+                  'nickname':req.user.nickname,
+                  'photo':req.user.photo
+                });
         campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']+1;
       }
 
