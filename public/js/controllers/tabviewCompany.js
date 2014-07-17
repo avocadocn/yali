@@ -455,7 +455,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
             });
             $http({
                 method:'post',
-                url:'/group/oneTeam',
+                url:'/group/oneTeam/'+tid,
                 data:{
                     tid: $scope.tid
                 }
@@ -484,13 +484,11 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }
         }
-        else{
-            $scope.leaders[0] = {
-                '_id':user._id,
-                'nickname':user.nickname,
-                'photo':user.photo
-            }            
-        }
+        $scope.leaders[0] = {
+            '_id':user._id,
+            'nickname':user.nickname,
+            'photo':user.photo
+        }         
 
     }
     $scope.dismissLeader = function (leader) {

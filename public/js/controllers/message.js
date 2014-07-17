@@ -581,9 +581,9 @@ messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope
 }]);
 
 //获取系统公告
-// messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-//   $rootScope.getMessageByHand('global');
-// }]);
+messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+  $rootScope.getMessageByHand('global');
+}]);
 
 
 messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {

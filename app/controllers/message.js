@@ -705,10 +705,16 @@ var getPublicMessage = function(req,res,cid){
       getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
     }
   }
+  var _condition;
+  if(req.user.provider==='company'){
+    _condition = {'type':'global'};//公司只获取系统消息
+  }else{
+    _condition = {'$or':[{'type':'company','company_id':cid},{'type':'global'}]};//用户获取公司和系统消息
+  }
   var paramA = {
     'collection':MessageContent,
     'type':1,
-    'condition':{'$or':[{'type':'company','company_id':cid},{'type':'global'}]},  //公司消息和系统消息都是当作全局来对待的
+    'condition':_condition,
     'limit':{'_id':1,'type':1,'post_date':1},
     'sort':{'post_date':-1},
     'callback':callbackA,
@@ -815,7 +821,7 @@ exports.messageGetByHand = function(req,res){
 //   });
 // }
 
-//hr给部门成员发站内信
+//给部门成员发站内信
 exports.sendToDepartmentMember = function(req,res){
 
 }
@@ -828,12 +834,12 @@ exports.sendToDepartmentMember = function(req,res){
 
 //只读取未读站内信
 exports.messageHeader = function(req,res){
+  //用户可以读取各种类型的站内信
   if(req.user.provider === 'user'){
     getPublicMessage(req,res,req.user.cid);
+  //公司只能读取系统站内信
   }else{
-    //目前公司只获取部门申请的站内信
-    var condition = {'type':'department','rec_id':req.user._id,'status':{'$nin':['delete','read']}};
-    getMessage(req,res,condition);
+    getPublicMessage(req,res,null);
   }
 }
 
@@ -848,28 +854,28 @@ exports.home = function(req,res){
 
 exports.renderPrivate = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
-    res.render('message/message/private');
+    res.render('message/private');
   }else{
     res.send(403);
   }
 }
 exports.renderTeam = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
-    res.render('message/message/team');
+    res.render('message/team');
   }else{
     res.send(403);
   }
 }
 exports.renderCompany = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
-    res.render('message/message/company');
+    res.render('message/company');
   }else{
     res.send(403);
   }
 }
 exports.renderSystem = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
-    res.render('message/message/system');
+    res.render('message/system');
   }else{
     res.send(403);
   }
