@@ -151,6 +151,9 @@ exports.getMessage = function(req, res) {
             }
             else{
               camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
+              if(camp_flag===0&&model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[1].id,'_id')>-1){
+                _group_message.both_team=true;
+              }
             }
             _group_message.camp_flag =camp_flag;
             _group_message.logo = group_message[i].team[camp_flag ].logo;

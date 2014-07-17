@@ -645,7 +645,7 @@ exports.responseProvoke = function (req, res) {
       '_id' : competition_id
     }).populate('team').exec(
   function (err, campaign) {
-    if(campaign.camp[1].id!=req.param.teamId){
+    if(campaign.camp[1].id!=req.params.teamId){
       return res.send(403,'forbidden');
     }
     campaign.camp[1].start_confirm = true;

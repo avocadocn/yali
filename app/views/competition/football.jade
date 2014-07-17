@@ -20,13 +20,13 @@ block contentExt
             .clearfix
             div.text-left
               a(href="/group/home/#{competition.camp[0].id}")= competition.camp[0].tname
-              if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && team.indexOf(0)>-1
+              if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && role!='HR' && team.indexOf(0)>-1
                 div
                   if competition.camp[1].start_confirm
                     if join_flag[0]
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[0].id}')")
                     else
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}')")
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[0].id}')")
                   else
                     a(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
           .score_panel.col-xs-4
@@ -64,13 +64,13 @@ block contentExt
             .clearfix
             div.text-right
               a(href="/group/home/#{competition.camp[1].id}")= competition.camp[1].tname
-              if (competition.active || !competition.camp[1].start_confirm) && !competition.finish && team.indexOf(1)>-1
+              if (competition.active || !competition.camp[1].start_confirm) && !competition.finish && role!='HR' && team.indexOf(1)>-1
                 div
                   if competition.camp[1].start_confirm
                     if join_flag[1]
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[1].id}')")
                     else
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}')")
+                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[1].id}')")
                   else
                     a(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
         .row

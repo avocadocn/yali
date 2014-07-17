@@ -567,7 +567,12 @@ exports.joinCampaign = function (req, res) {
         }
       }
       else{
-        var camp_index = model_helper.arrayObjectIndexOf(req.user.team,campaign.camp[0].id,'_id') > -1 ? 0: 1;
+        var tid = req.body.tid;
+        console.log(campaign.camp,tid);
+        var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
+        if(camp_index==-1){
+           return res.send({ result: 0, msg: '请求错误'});
+        }
         var member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
         if(member_index<0){
           var member_quit_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member_quit,uid,'uid');

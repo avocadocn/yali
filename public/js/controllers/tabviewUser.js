@@ -326,13 +326,14 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 console.log(e);
             }
         };
-        $scope.join = function(campaign_id,index) {
+        $scope.join = function(campaign_id,index,tid) {
             try {
                 $http({
                     method: 'post',
                     url: '/campaign/joinCampaign/'+campaign_id,
                     data:{
-                        campaign_id : campaign_id
+                        campaign_id : campaign_id,
+                        tid : tid
                     }
                 }).success(function(data, status) {
                     if(data.result===1){
@@ -353,13 +354,14 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             }
         };
 
-        $scope.quit = function(campaign_id,index) {
+        $scope.quit = function(campaign_id,index,tid) {
             try {
                 $http({
                     method: 'post',
                     url: '/campaign/quitCampaign/'+campaign_id,
                     data:{
-                        campaign_id : campaign_id
+                        campaign_id : campaign_id,
+                        tid : tid
                     }
                 }).success(function(data, status) {
                     if(data.result===1){

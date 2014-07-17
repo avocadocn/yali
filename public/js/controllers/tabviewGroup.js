@@ -394,7 +394,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 method: 'post',
                 url: '/campaign/joinCampaign/'+campaign_id,
                 data:{
-                    campaign_id : campaign_id
+                    campaign_id : campaign_id,
+                    tid : $rootScope.teamId
                 }
             }).success(function(data, status) {
                 if(data.result===1){
@@ -423,7 +424,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 method: 'post',
                 url: '/campaign/quitCampaign/'+campaign_id,
                 data:{
-                    campaign_id : campaign_id
+                    campaign_id : campaign_id,
+                    tid : $rootScope.teamId
                 }
             }).success(function(data, status) {
                 if(data.result===1){
@@ -547,78 +549,78 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };
-    $scope.join = function(campaign_id,index) {
-        try {
-            $http({
-                method: 'post',
-                url: '/users/joinCampaign',
-                data:{
-                    campaign_id : campaign_id
-                }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    //alert('成功加入该活动!');
-                    alertify.alert('成功加入活动!');
-                    $scope.campaigns[index].join_flag = 1;
-                    $scope.campaigns[index].member_num++;
-                }
-                else{
-                    alertify.alert(data.msg);
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // $scope.join = function(campaign_id,index) {
+    //     try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/users/joinCampaign',
+    //             data:{
+    //                 campaign_id : campaign_id
+    //             }
+    //         }).success(function(data, status) {
+    //             if(data.result===1){
+    //                 //alert('成功加入该活动!');
+    //                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
+    //                 $scope.campaigns[index].join_flag = 1;
+    //                 $scope.campaigns[index].member_num++;
+    //             }
+    //             else{
+    //                 $rootScope.donlerAlert(data.msg);
+    //             }
+    //         }).error(function(data, status) {
+    //             $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
 
-    $scope.quit = function(campaign_id,index) {
-        try {
-            $http({
-                method: 'post',
-                url: '/users/quitCampaign',
-                data:{
-                    campaign_id : campaign_id
-                }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    alertify.alert('成功退出活动!');
-                    //alert('您已退出该活动!');
-                    $scope.campaigns[index].join_flag = -1;
-                    $scope.campaigns[index].member_num--;
-                }
-                else{
-                    alertify.alert(data.msg);
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-    //应战
-    $scope.responseProvoke = function(competition_id) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/responseProvoke',
-                data:{
-                    competition_id : competition_id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // $scope.quit = function(campaign_id,index) {
+    //     try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/users/quitCampaign',
+    //             data:{
+    //                 campaign_id : campaign_id
+    //             }
+    //         }).success(function(data, status) {
+    //             if(data.result===1){
+    //                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
+    //                 //alert('您已退出该活动!');
+    //                 $scope.campaigns[index].join_flag = -1;
+    //                 $scope.campaigns[index].member_num--;
+    //             }
+    //             else{
+    //                 $rootScope.donlerAlert(data.msg);
+    //             }
+    //         }).error(function(data, status) {
+    //             $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
+    // //应战
+    // $scope.responseProvoke = function(competition_id) {
+    //      try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/group/responseProvoke',
+    //             data:{
+    //                 competition_id : competition_id
+    //             }
+    //         }).success(function(data, status) {
+    //             window.location.reload();
+    //         }).error(function(data, status) {
+    //             $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
 
     $scope.cancel = function (_id) {
         try {

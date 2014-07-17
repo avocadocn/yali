@@ -94,14 +94,15 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
-    $scope.joinCampaign = function (competition_id) {
+    $scope.joinCampaign = function (competition_id,tid) {
         //$rootScope.donlerAlert($scope.campaign_id);
         try {
             $http({
                 method: 'post',
                 url: '/campaign/joinCampaign/'+competition_id,
                 data:{
-                    campaign_id : competition_id
+                    campaign_id : competition_id,
+                    tid:tid
                 }
             }).success(function(data, status) {
                 if(data.result===1){
@@ -119,13 +120,14 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
         }
     };
 
-    $scope.quitCampaign = function (competition_id) {
+    $scope.quitCampaign = function (competition_id,tid) {
         try {
             $http({
                 method: 'post',
                 url: '/campaign/quitCampaign/'+competition_id,
                 data:{
-                    campaign_id : competition_id
+                    campaign_id : competition_id,
+                    tid:tid
                 }
             }).success(function(data, status) {
                 if(data.result===1){
