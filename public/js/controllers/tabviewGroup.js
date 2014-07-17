@@ -400,7 +400,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 if(data.result===1){
                     //alert('成功加入该活动!');
 
-                    alertify.alert('加入小队成功');
+                    alertify.alert('参加活动成功');
                     $scope.group_messages[index].join_flag = true;
                     $scope.group_messages[index].member_num++;
                 }
@@ -427,7 +427,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    alertify.alert('成功退出小队!');
+                    alertify.alert('成功退出活动!');
                     //alert('您已退出该活动!');
                     $scope.group_messages[index].join_flag = false;
                     $scope.group_messages[index].member_num--;
