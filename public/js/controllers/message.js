@@ -622,7 +622,11 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
           data:_data
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
-            if($scope.role === 'LEADER')$rootScope.o ++;
+            alertify.alert('发送成功!');
+            if($scope.role === 'LEADER'){
+              $rootScope.o ++;
+            }
+            $scope.getSenderList();
           }
       }).error(function(data, status) {
           //TODO:更改对话框
