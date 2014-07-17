@@ -456,7 +456,7 @@ exports.provoke = function (req, res) {
   }
 
   var my_team_id = req.params.teamId;
-  CompanyGroup.findOne({'_id':req.body.team_opposite_id},{'cid':1,'gid':1,'name':1,'logo':1},function(err,team){
+  CompanyGroup.findOne({'_id':req.body.team_opposite_id},{'cid':1,'gid':1,'name':1,'logo':1,'leader':1},function(err,team){
     if(err || !team){
       console.log(err);
       return res.send(500,'error');

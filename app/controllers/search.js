@@ -71,7 +71,7 @@ exports.recommandTeam = function(req,res) {
         if(err || !companyGroup){
           callback(err);
         }
-        else if(!companyGroup.home_court){//没填写主场
+        else if(companyGroup.home_court.length==0){//没填写主场
           callback(null,{'result':2,'teams':[]}); //无主场提示
         }
         else{
