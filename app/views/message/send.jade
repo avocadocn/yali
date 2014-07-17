@@ -3,12 +3,18 @@
     form(name="message_form" novalidate)
       .dl-modal-body
         .dl_modal_container
+          .dl_md_10.dl_vertical
+            label 您将对 {{teamName}} 的队员发送站内信
+      .dl-modal-body
+        .dl_modal_container
           .dl_md_1.dl_vertical
             label.subtitle 内容
           .dl_md_10
             textarea.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
+      br
       .dl-modal-footer
         button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="sendToAll()" ng-disabled="message_form.$invalid") 发送
+  br
   .dl_modal_container
     .dl_row(style="height:93px" ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
       .dl_message_head.dl_message_body_font(ng-switch="send_message.message_type")
