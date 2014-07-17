@@ -63,6 +63,9 @@ exports.getCompetition = function(req, res){
     'photo_thumbnails': photo_album_controller.photoThumbnailList(competition.photo_album, 4),
     'links': links
   };
+  if(req.user.provider==='user'){
+    options.user={'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo};
+  }
   if(!competition.active &&competition.camp[1].start_confirm || competition.finish){
     return res.render('competition/football', options);
   }
@@ -121,7 +124,6 @@ exports.getCompetition = function(req, res){
           options.join_flag[value]=0;
         }
       });
-      console.log(options.join_flag);
     }
   }
   //console.log(options);

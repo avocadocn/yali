@@ -10,7 +10,6 @@ var mongoose = require('mongoose'),
  * Generic require login routing middleware
  */
 exports.companyAuthorize = function(req, res, next){
-  console.log(req.route.path);
   if(req.route.path==='/company/home' && !req.company){
     if(req.user.provider==='company'){
       req.role = 'HR';
@@ -58,7 +57,6 @@ exports.departmentAuthorize = function(req, res, next) {
         }
       }
       for (var i = 0, members = department.team.member; i < members.length; i++) {
-        console.log(members[i],'2')
         if (req.user._id.toString() === members[i]._id.toString()) {
           req.role = 'MEMBER';
         }

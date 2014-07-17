@@ -5,15 +5,118 @@
 var groupApp = angular.module('donler');
 
 groupApp.controller('competitionController', ['$http', '$scope','$rootScope',function ($http, $scope,$rootScope) {
-    // $scope.$watch('msg_show',function(){
-    //   if($scope.msg_show){
-    //     $('#resultModel').modal();
-    //   }
-    // });
+    $scope.$watch('competition_id',function(competition_id){
+        if(competition_id==null){
+            return;
+        }
+        $scope.getComment(); //获取留言
+    });
+    $scope.comments = [];
+
+    $scope.new_comment = {
+        text:''
+    };
     $scope.modify_caption = "成绩确认";
     $scope.object_caption = "发出异议";
     $scope.edit = false;
+    $scope.getComment = function(){
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/pull',
+                data:{
+                    host_id : $scope.competition_id
+                }
+            }).success(function(data, status) {
+                if(data.length > 0){
+                    $scope.comments = data;
+                    $scope.fixed_sum = data.length;
+                    for(var i = 0; i < $scope.comments.length; i ++) {
+                        if($scope.comments[i].status == 'delete'){
+                            $scope.comments.splice(i,1);
+                            i--;
+                        }else{
+                            $scope.comments[i].delete_permission = $scope.role === 'LEADER' || $scope.role === 'HR' || $scope.comments[i].poster._id === $scope.user._id;
+                            $scope.comments[i].index = data.length - i;
+                        }
+                    }
+                }
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
 
+    $scope.deleteComment = function(index){
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/delete',
+                data:{
+                    comment_id : $scope.comments[index]._id,
+                    host_type:'competition',
+                    host_id:$scope.competition_id
+                }
+            }).success(function(data, status) {
+                if(data === 'SUCCESS'){
+                    $scope.comments.splice(index,1);
+                    $scope.campaign.comment_sum --;
+                } else {
+                    alertify.alert('DATA ERROR');
+                }
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+
+    $scope.comment = function(){
+
+         if($scope.comments.length > 0){
+            var tmp_comment = $scope.comments[0];
+            if(tmp_comment.poster._id === $scope.user._id){
+                if($scope.new_comment.text === tmp_comment.content){
+                    alertify.alert('勿要重复留言!');
+                    return;
+                }
+            }
+        }
+        try {
+            $http({
+                method: 'post',
+                url: '/comment/push',
+                data:{
+                    host_id : $scope.competition_id,
+                    content : $scope.new_comment.text,
+                    host_type : 'competition'
+                }
+            }).success(function(data, status) {
+                if(data.msg === 'SUCCESS'){
+                    $scope.comments.unshift({
+                        'host_id' : data.comment.host_id,
+                        'content' : data.comment.content,
+                        'create_date' : data.comment.create_date,
+                        'poster' : data.comment.poster,
+                        'host_type' : data.comment.host_type,
+                        'index' : $scope.fixed_sum+1
+                    });
+                } else {
+                    alertify.alert('DATA ERROR');
+                }
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
     $scope.tip = function(){
       var content = "";
       if($scope._msg_show == 'false'){
