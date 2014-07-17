@@ -880,7 +880,8 @@ exports.updateFormation = function(req, res){
   Campaign.findOne({
     '_id':req.params.competitionId
   }).exec(function(err, competition){
-    if(req.competition_team === req.body.competition_team){
+    var camp_index = model_helper.arrayObjectIndexOf(req.campaign.camp,req.companyGroup._id,'id');
+    if(camp_index>-1){
       var _formation = [];
       var _tempFormation = req.body.formation;
       for (var member in _tempFormation){
@@ -890,12 +891,7 @@ exports.updateFormation = function(req, res){
 
         });
       }
-      if(req.competition_team ==='A'){
-        competition.camp[0].formation = _formation;
-      }
-      else{
-        competition.camp[1].formation = _formation;
-      }
+      competition.camp[camp_index].formation = _formation;
       competition.save(function(err){
         if(err){
           console.log(err);

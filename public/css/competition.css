@@ -7,6 +7,9 @@
 .competition_content .format_field .teamMember {
   position: absolute;
 }
+.competition_content .format_contain {
+  height: 460px;
+}
 .competition_content .team_logo {
   width: 200px;
   height: 200px;

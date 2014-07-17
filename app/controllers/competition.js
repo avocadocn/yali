@@ -126,7 +126,6 @@ exports.getCompetition = function(req, res){
       });
     }
   }
-  //console.log(options);
   return res.render('competition/football', options);
 };
 

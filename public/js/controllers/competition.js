@@ -286,7 +286,6 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
 
     var drop =function(e){
       e.originalEvent.preventDefault();
-      var competition_team = $('#competition_content').attr('data-nowteam');
       var data=e.originalEvent.dataTransfer.getData("member_id");
       var _newEle ={};
       var _x = $(e.originalEvent.target).offset().left;
@@ -295,7 +294,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
       var _height = $(e.originalEvent.target).height();
       var _offsetX = e.originalEvent.pageX - _x - 10;
       var _offsetY = e.originalEvent.pageY - _y -10;
-      if(competition_team=='A'&&_offsetX > _width / 2||competition_team=='B'&&_offsetX < _width / 2){
+      if($('#'+data).attr('data-camp')=='0'&&_offsetX > _width / 2||$('#'+data).attr('data-camp')=='1'&&_offsetX < _width / 2){
         return false;
       };
       if(data.indexOf('on_')!=0){
@@ -321,7 +320,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
       };
       var _percentX = 100 * _offsetX / _width;
       var _percentY = 100 * _offsetY / _height;
-      updateFormatData(data,_percentX.toFixed(2),_percentY.toFixed(2));
+      updateFormatData(data,$('#'+data).attr('data-tid'),_percentX.toFixed(2),_percentY.toFixed(2));
     };
     var dragend = function(e){
       var _id = e.originalEvent.target.id;
@@ -337,11 +336,11 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
           $(e.originalEvent.target).remove();
           _id = getMemberId(_id);
           $('#'+_id).attr('draggable',true);
-          updateFormatData(_id,-1);
+          updateFormatData(_id,$('#'+_id).attr('data-tid'),-1);
         };
       }
     };
-    var updateFormatData = function(id,percentX,percentY){
+    var updateFormatData = function(id,tid,percentX,percentY){
       id = getMemberId(id);
       if(percentX===-1){
         delete competition_format[id];
@@ -352,10 +351,8 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
           'y':percentY
         };
       }
-
-      var competition_team = $('#competition_content').attr('data-nowteam');
       var competition_id = $('#competition_content').attr('data-id');
-      $.post('/group/updateFormation/'+competition_id,{'formation':competition_format,'competition_team':competition_team},function(data,status){
+      $.post('/group/updateFormation/'+tid+'/'+competition_id,{'formation':competition_format},function(data,status){
         if(data.result===0){
           //TODO
           //能不能把这个闭包和AngularJS绑定?
