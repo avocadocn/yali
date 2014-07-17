@@ -33,6 +33,11 @@ var MessageContent = new Schema({
   campaign_id: Schema.Types.ObjectId,
   groupmessage_id: Schema.Types.ObjectId,
   department_id: Schema.Types.ObjectId,
+  status:{
+    type:String,
+    enum: ['delete','undelete'],
+    default:'undelete'
+  },
   type: {
     type: String,
     enum: ['private','company','global']

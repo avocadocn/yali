@@ -299,48 +299,6 @@ var toOne = function(req,res,param){
 }
 
 exports.sendToOne = function(req, res, param){
-  // var callback = function (message_content,receiver,req,res){
-  //   var M = {
-  //     'type':'private',
-  //     'rec_id':receiver._id,
-  //     'MessageContent':message_content._id,
-  //     'status':'unread'
-  //   };
-  //   var param = {
-  //     'collection':Message,
-  //     'operate':M,
-  //     'callback':function(message,other,req,res){return {'result':1,'msg':'SUCCESS'};},
-  //     '_err':_err,
-  //     'other_param':null,
-  //     'req':req,
-  //     'res':res
-  //   };
-  //   _add(param);
-  // }
-  // var MC={
-  //   'type':'private',
-  //   'caption':'Private Message',
-  //   'content':param.content,
-  //   'sender':[param.own],
-  //   'team':[param.own_team,param.receive_team],
-  //   'company_id':null,
-  //   'campaign_id':param.campaign_id,
-  //   'department_id':null,
-  //   'deadline':(new Date())+time_out
-  // };
-  // var _param = {
-  //   'collection':MessageContent,
-  //   'operate':MC,
-  //   'callback':callback,
-  //   '_err':_err,
-  //   'other_param':param.receiver,
-  //   'req':req,
-  //   'res':res
-  // };
-  // _add(_param);
-
-  param.type = 'private';
-  param.caption = 'Private Message';
   param.team = [param.own_team,param.receive_team];
   toOne(param);
 }
@@ -643,13 +601,13 @@ var getPublicMessage = function(req,res,cid){
                   return res.send({'result':1,'msg':'FAILURED'});
                 }else{
                   console.log('USER_ALREADY_HAS_MSG_AND_NEW');
-                  getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+                  getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
                 }
               }
             );
           }else{
             console.log('USER_ALREADY_HAS_MSG_AND_OLD');
-            getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+            getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
           }
         //该用户没有收到任何站内信
         }else{
@@ -680,7 +638,7 @@ var getPublicMessage = function(req,res,cid){
                 return res.send({'result':1,'msg':'FAILURED'});
               }else{
                 console.log('USER_HAS_NO_MSG_AND_NEW');
-                getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+                getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
               }
             }
           );
@@ -702,7 +660,7 @@ var getPublicMessage = function(req,res,cid){
       get(paramB);
     }else{ //没有任何公共消息
       console.log('NO_NEW_PUBLIC_MSG');
-      getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}});
+      getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
     }
   }
   var _condition;
@@ -729,7 +687,7 @@ var getPublicMessage = function(req,res,cid){
 
 
 
-var getMessage = function(req,res,condition){
+var getMessage = function(req,res,condition,callback){
   var sort = {'create_date':-1};
   Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
     if(err || !messages){
@@ -743,14 +701,28 @@ var getMessage = function(req,res,condition){
       });
     }else{
       var rst = [];
-      for(var i = 0; i < messages.length; i ++){
-        rst.push({
-          '_id':messages[i]._id,
-          'rec_id':messages[i].rec_id,
-          'status':messages[i].status,
-          'type':messages[i].type,
-          'message_content':messages[i].MessageContent
-        });
+      if(callback != null){
+        for(var i = 0; i < messages.length; i ++){
+          if(callback(messages[i].MessageContent)){
+            rst.push({
+              '_id':messages[i]._id,
+              'rec_id':messages[i].rec_id,
+              'status':messages[i].status,
+              'type':messages[i].type,
+              'message_content':messages[i].MessageContent
+            });
+          }
+        }
+      }else{
+        for(var i = 0; i < messages.length; i ++){
+          rst.push({
+            '_id':messages[i]._id,
+            'rec_id':messages[i].rec_id,
+            'status':messages[i].status,
+            'type':messages[i].type,
+            'message_content':messages[i].MessageContent
+          });
+        }
       }
       res.send({
         'msg':rst,
@@ -804,6 +776,28 @@ exports.setMessageStatus = function(req,res){
 }
 
 
+//列出已发送消息
+exports.senderList = function(req,res){
+  var sid = req.user._id;
+  var callback = function(message_contents,other,req,res){
+    res.send({'msg':'SUCCESS','message_contents':message_contents});
+  }
+  var _condition = {'sender':{'$elemMatch':{'_id':sid}},'status':'undelete'};
+  var paramA = {
+    'collection':MessageContent,
+    'type':1,
+    'condition':_condition,
+    'limit':null,
+    'sort':{'post_date':-1},
+    'callback':callback,
+    '_err':_err,
+    'other_param':null,
+    'req':req,
+    'res':res
+  };
+  get(paramA);
+}
+
 //手动获取私信
 exports.messageGetByHand = function(req,res){
   var _type = req.body._type;
@@ -819,7 +813,7 @@ exports.messageGetByHand = function(req,res){
       condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
     break;
   }
-  getMessage(req,res,condition);
+  getMessage(req,res,condition,null);
 }
 
 
@@ -859,7 +853,15 @@ exports.messageHeader = function(req,res){
 
 exports.home = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
-    res.render('message/message');
+    var _send = {
+      'role':req.role,
+      'cid':req.user.provider === 'user'? req.user.cid : req.user._id
+    };
+    if(req.role === 'LEADER'){
+      _send.teamId = req.companyGroup._id,
+      _send.teamName = req.companyGroup.name
+    }
+    res.render('message/message',_send);
   }else{
     res.send(403);
   }
@@ -871,7 +873,13 @@ exports.renderAll = function(req,res){
     res.send(403);
   }
 }
-
+exports.renderSender = function(req,res){
+  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
+    res.render('message/send');
+  }else{
+    res.send(403);
+  }
+}
 
 //这些以后站内信分类时会用到的
 /*

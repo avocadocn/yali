@@ -7,6 +7,7 @@ var authorization = require('./middlewares/authorization');
 module.exports = function(app) {
 
   app.get('/message/all', Message.renderAll);
+  app.get('/message/send', Message.renderSender);
 
   /* 这些以后站内信分类时会用到
 	app.get('/message/private', Message.renderPrivate);
@@ -15,8 +16,10 @@ module.exports = function(app) {
 	app.get('/message/system', Message.renderSystem);
   */
 
-	app.get('/message/home', Message.home);
 
+  app.get('/message/sendlist', Message.senderList);
+	app.get('/message/home/:teamId', authorization.messageAuthorize, Message.home);
+  app.get('/message/home', authorization.messageAuthorize, Message.home);
 
 	app.get('/message/header', Message.messageHeader);  //获取所有未读站内信
 

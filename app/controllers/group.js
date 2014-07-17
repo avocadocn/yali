@@ -589,39 +589,39 @@ exports.provoke = function (req, res) {
                   groupMessage.campaign = competition._id;
                   groupMessage.save(function (err) {
                     if (err) {
-                      console.log('保存约战动态时出错' + err);
-                    }else{
+                          console.log('保存约战动态时出错' + err);
+                        }else{
+                          if(team_opposite.leader.length > 0){
+                            var param = {
+                              'type':'private',
+                              'caption':'Private Message',
+                              'own':{
+                                '_id':req.user._id,
+                                'nickname':req.user.nickname,
+                                'leader':true
+                              },
+                              'receiver':{
+                                '_id':team_opposite.leader[0]._id
+                              },
+                              'content':null,
+                              'own_team':{
+                                '_id':my_team_id,
+                                'name':req.companyGroup.name,
+                                'provoke_status':0
+                              },
+                              'receive_team':{
+                                '_id':team_opposite._id,
+                                'name':team_opposite.name,
+                                'provoke_status':0
+                              },
+                              'campaign_id':null
+                            };
+                            message.sendToOne(req,res,param);
+                          }
                       return res.send({'result':0,'msg':'SUCCESS'});
                     }
                   });
                 }else{
-                  // 注释by Maggie 
-                  // if(team_opposite.leader.length > 0){
-                  //   var param = {
-                  //     'own':{
-                  //       '_id':req.user._id,
-                  //       'nickname':req.user.nickname,
-                  //       'leader':true
-                  //     },
-                  //     'receiver':{
-                  //       '_id':team_opposite.leader[0]._id
-                  //     },
-                  //     'content':null,
-                  //     'own_team':{
-                  //       '_id':my_team_id,
-                  //       'name':req.companyGroup.name,
-                  //       'provoke_status':0
-                  //     },
-                  //     'receive_team':{
-                  //       '_id':team_opposite._id,
-                  //       'name':team_opposite.name,
-                  //       'provoke_status':0
-                  //     },
-                  //     'campaign_id':null
-                  //   };
-                  //   message.sendToOne(req,res,param);
-                  // }
-                  // return res.send({'result':0,'msg':'SUCCESS'});
                   console.log(err);
                   return res.send({'result':0,'msg':'ERROR'});
                 }
@@ -668,6 +668,8 @@ exports.responseProvoke = function (req, res) {
             }
             else{
               var param = {
+                'type':'private',
+                'caption':'Private Message',
                 'own':{
                   '_id':req.user._id,
                   'nickname':req.user.nickname,

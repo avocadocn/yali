@@ -18,7 +18,7 @@ var Message = new Schema({
   },
   status: {
     type: String,
-    enum: ['unread', 'read', 'delete']
+    enum: ['unread', 'read', 'delete', 'sender_delete']
   },
   create_date:{
     type:Date,

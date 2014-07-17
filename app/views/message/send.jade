@@ -1,0 +1,40 @@
+.modal-dialog
+  .dl-modal
+    form(name="message_form" novalidate)
+      .dl-modal-body
+        .dl_modal_container
+          .dl_md_1.dl_vertical
+            label.subtitle 内容
+          .dl_md_10
+            textarea.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
+      .dl-modal-footer
+        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="sendToAll()" ng-disabled="message_form.$invalid") 发送
+  .dl_modal_container
+    .dl_row(style="height:93px" ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
+      .dl_message_head.dl_message_body_font(ng-switch="send_message.message_type")
+        span.glyphicon.glyphicon-star-empty(ng-switch-when="0")
+        span.glyphicon.glyphicon-music(ng-switch-when="1")
+        span.glyphicon.glyphicon-flag(ng-switch-when="2")
+        span.glyphicon.glyphicon-home(ng-switch-when="3")
+        span.glyphicon.glyphicon-pencil(ng-switch-when="4")
+        span.glyphicon.glyphicon-user(ng-switch-when="5")
+        span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
+        span.glyphicon.glyphicon-flash(ng-switch-when="7")
+      .dl_message_body.margin_left_5
+        .row
+          .dl_message_caption
+            h7 {{send_message.caption}}
+          .dl_message_date
+            h7 {{send_message.date | date:'yyyy-MM-dd HH:mm'}}
+        .row
+          .dl_md_12(ng-switch="send_message.message_type")
+            h5(ng-switch-when="3")
+              {{send_message.content}}
+            h5(ng-switch-when="1")
+              {{send_message.content}}
+            h5(ng-switch-when="2")
+              {{send_message.content}}
+            h5(ng-switch-when="0")
+              {{send_message.content}}
+          .dl_md_1.pull-right.dl_message_rightcorner
+            button.dl_btn.pull-right(ng-click="setToDelete($index)") X
