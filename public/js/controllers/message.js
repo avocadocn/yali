@@ -1,6 +1,6 @@
 'use strict';
 
-var messageApp = angular.module('mean.main');
+var messageApp = angular.module('donler');
 
 
 messageApp.run(['$http','$rootScope', function ($http, $rootScope) {

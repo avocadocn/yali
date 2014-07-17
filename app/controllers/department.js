@@ -133,6 +133,7 @@ exports.multiCampaignSponsor = function(req, res) {
 
   var department_campaign = new Campaign();
   department_campaign.campaign_type = 7;
+  department_campaign.active = true;
   department_campaign.team.push(req.department.team);
   var teams = [];
   var team_ids = [];
