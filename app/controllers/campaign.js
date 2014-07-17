@@ -397,7 +397,7 @@ exports.cancelCampaign = function(req, res){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
-        if (campaign.camp.length===0 &&req.role==="HR"&&campaign.cid[0].toString()==req.user._id.toString() || campaign.camp.length===0 && campaign.team.length===1&&req.role==='LEADER' && model_helper.arrayObjectIndexOf(campaign.team[0].leader,req.user._id,'_id')>-1){
+        if (req.role==="LEADER" || req.role==="HR"){
           campaign.active=false;
           campaign.save(function(err){
             if(!err){
@@ -568,7 +568,6 @@ exports.joinCampaign = function (req, res) {
       }
       else{
         var tid = req.body.tid;
-        console.log(campaign.camp,tid);
         var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
         if(camp_index==-1){
            return res.send({ result: 0, msg: '请求错误'});

@@ -66,11 +66,11 @@ exports.getCompetition = function(req, res){
   if(req.user.provider==='user'){
     options.user={'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo};
   }
+  options.team = req.competition_team;
+  options.competition_leader = req.competition_leader;
   if(!competition.active &&competition.camp[1].start_confirm){
     return res.render('competition/football', options);
   }
-  options.team = req.competition_team;
-  options.competition_leader = req.competition_leader;
   if(!competition.camp[1].start_confirm ){
     if(req.competition_leader.indexOf(1)>-1){
       options.response_flag = true;

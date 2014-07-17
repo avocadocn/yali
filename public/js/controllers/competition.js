@@ -267,6 +267,29 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
           console.log(e);
       }
     };
+    $scope.cancel = function (_id) {
+      try {
+        $http({
+          method: 'post',
+          url: '/campaign/cancel/'+_id,
+          data:{
+            campaign_id : _id
+          }
+        }).success(function(data, status) {
+          if(data.result===1){
+            window.location.reload();
+          }
+          else{
+            alertify.alert(data.msg);
+          }
+        }).error(function(data, status) {
+          alertify.alert('DATA ERROR');
+        });
+      }
+      catch(e) {
+        console.log(e);
+      }
+    };
 }]);
 
 

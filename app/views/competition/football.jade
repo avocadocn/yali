@@ -5,13 +5,13 @@ append headExt
   link(rel="stylesheet" href="/css/competition.css")
 
 block contentExt
-  .dl_container.clearfix
+  .dl_container.clearfix(ng-controller="competitionController" ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score};score_b=#{competition.camp[1].score};")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .main
       if !competition.active&&competition.camp[1].start_confirm
         .text-center #{__("CAMPAIGNCLOSE")}
-      #competition_content.competition_content(ng-controller="competitionController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score};score_b=#{competition.camp[1].score};")
+      #competition_content.competition_content(data-nowteam="#{team}" data-id='#{competition._id}')
         .row
           .team_left.col-xs-4
             img.pull-left.team_logo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
@@ -74,7 +74,7 @@ block contentExt
           .col-xs-5
             if competition.camp[1].start_confirm
               each teamAMember in competition.camp[0].member
-                img.teamMember.team_member_logo(draggable="#{!competition.finish&&competition_leader.indexOf(0)>-1}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
+                img.teamMember.team_member_logo(draggable="#{competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
             else
               each teamAMember in competition.camp[0].vote.positive_member
                 img.teamMember.team_member_logo(src='#{teamAMember.photo}' id='#{teamAMember.uid}')
@@ -82,7 +82,7 @@ block contentExt
           .col-xs-5
             if competition.camp[1].start_confirm
               each teamBMember in competition.camp[1].member
-                img.teamMember.team_member_logo(draggable="#{!competition.finish&&competition_leader.indexOf(1)>-1}" data-camp='1' data-tid="#{competition.camp[1].id}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
+                img.teamMember.team_member_logo(draggable="#{competition.active&&!competition.finish&&competition_leader.indexOf(1)>-1}" data-camp='1' data-tid="#{competition.camp[1].id}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
             else
               each teamBMember in competition.camp[1].vote.positive_member
                 img.teamMember.team_member_logo(src='#{teamBMember.photo}' id='#{teamBMember.uid}')
@@ -91,9 +91,9 @@ block contentExt
           .row.format_field
             img#formatField.col-xs-12.img_contain(draggable="false" src='/img/field.png')
             each teamAMember in competition.camp[0].formation
-              img.team_member_logo.teamMember.onmemberA(draggable="#{!competition.finish&&competition_leader.indexOf(0)>-1}" data-camp='0' id='on_#{teamAMember.uid}' data-tid="#{competition.camp[0].id}" data-top='#{teamAMember.y}' data-left='#{teamAMember.x}')
+              img.team_member_logo.teamMember.onmemberA(draggable="#{competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1}" data-camp='0' id='on_#{teamAMember.uid}' data-tid="#{competition.camp[0].id}" data-top='#{teamAMember.y}' data-left='#{teamAMember.x}')
             each teamBMember in competition.camp[1].formation
-              img.team_member_logo.teamMember.onmemberB(draggable="#{!competition.finish&&competition_leader.indexOf(1)>-1}" data-camp='1' id='on_#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
+              img.team_member_logo.teamMember.onmemberB(draggable="#{competition.active&&!competition.finish&&competition_leader.indexOf(1)>-1}" data-camp='1' id='on_#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
           .format_contain
         hr
         if role ==='LEADER' || role==='MEMBER'
@@ -120,13 +120,50 @@ block contentExt
                       label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
                       a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .side
+      if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish
+        .pull-right
+          button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel('#{competition._id}')") 关闭活动
       h4.text-left 活动简介
       hr
-      p 场地:&nbsp;&nbsp;#{competition.location.name}
-      p 应战截止时间:&nbsp;&nbsp;#{moment(competition.deadline).format("YYYY-MM-DD HH:mm")}
-      p 活动时间:&nbsp;&nbsp;#{moment(competition.start_time).format("YYYY-MM-DD HH:mm")}
-      p 活动结束时间:&nbsp;&nbsp;#{moment(competition.end_time).format("YYYY-MM-DD HH:mm")}
-      p 备注:&nbsp;&nbsp;#{competition.content}
+      .dl_detail_border.clearfix
+        .dl_detail_content
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("CAMPAIGN")}#{__("PLACE")}#{__("LOCATION")}:
+            .dl_detail_detail
+              span= competition.location.name
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("CAMPAIGN")}#{__("START_TIME")}:
+            .dl_detail_detail
+              span= moment(competition.start_time).format("YYYY-MM-DD HH:mm")
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("CAMPAIGN")}#{__("END_TIME")}:
+            .dl_detail_detail
+              span= moment(competition.end_time).format("YYYY-MM-DD HH:mm")
+          if competition.member_min>0
+            .dl_detail_row
+              .dl_detail_label
+                span #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
+              .dl_detail_detail
+                span= competition.member_min
+          if competition.member_max>0
+            .dl_detail_row
+              .dl_detail_label
+                span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
+              .dl_detail_detail
+                span= competition.member_max
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("ENTRY")}#{__("DEADLINE")}:
+            .dl_detail_detail
+              span= moment(competition.deadline).format("YYYY-MM-DD HH:mm")
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
+            .dl_detail_detail
+              span= competition.content
       hr
       h4.text-left 活动地点
       #location.size_400
