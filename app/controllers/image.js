@@ -11,6 +11,72 @@ var gm = require('gm');
 var config = require('../../config/config');
 
 
+/**
+ * 获取缩放图片，如果目标尺寸与原图不一致，则会选取原图中间最大区域裁剪
+ *
+ * @param {String} img_path 图片文件的绝对路径
+ * @param {Number} width 目标宽度
+ * @param {Number} height 目标高度
+ * @param {Function} callback callback(err, handle), handle为gm对象
+ * @api public
+ */
+var resizeWithCrop = exports.resizeWithCrop = function(img_path, width, height, callback) {
+
+  var target_width = width;
+  var target_height = height;
+
+  try {
+    gm(img_path)
+      .size(function(err, value) {
+
+        if (err) {
+          return callback(err);
+        }
+
+        var ori_width = value.width;
+        var ori_height = value.height;
+
+        // tw/th - ow/oh => (tw*oh-th*ow)/(th*oh), 和0比较可忽略分母
+        var compare_result = target_width * ori_height - target_height * ori_width;
+
+        try {
+
+          if (compare_result < 0) {
+
+            var resize_width = ori_width * target_height / ori_height;
+            var crop_x = (resize_width - target_width) / 2;
+
+            var handle = gm(img_path)
+              .resize(resize_width, target_height)
+              .crop(target_width, target_height, crop_x, 0);
+
+          } else {
+
+            var resize_height = ori_height * target_width / ori_width;
+            var crop_y = (resize_height - target_height) / 2;
+
+            var handle = gm(img_path)
+              .resize(target_width, resize_height)
+              .crop(target_width, target_height, 0, crop_y);
+
+          }
+
+          callback(null, handle);
+
+        } catch (e) {
+          callback(e);
+        }
+      });
+  } catch (e) {
+    callback(e);
+  }
+
+
+
+};
+
+
+
 exports.resize = function(req, res) {
   var uri_dir = req.params[0];
   var target_width = Number(req.params[2]);
@@ -33,43 +99,17 @@ exports.resize = function(req, res) {
     if (err) {
       console.log(err);
       res.send(500);
-    }
-    else {
+    } else {
       stdout.pipe(res);
     }
   };
 
-  gm(file_path)
-  .size(function(err, value) {
-    var ori_width = value.width;
-    var ori_height = value.height;
-
-    // tw/th - ow/oh => (tw*oh-th*ow)/(th*oh), 和0比较可忽略分母
-    var compare_result = target_width * ori_height - target_height * ori_width;
-
-    if (compare_result < 0) {
-
-      var resize_width = ori_width * target_height / ori_height;
-      var crop_x = (resize_width - target_width) / 2;
-
-      gm(file_path)
-      .resize(resize_width, target_height)
-      .crop(target_width, target_height, crop_x, 0)
-      .stream(sendImg);
-
-    } else {
-
-      var resize_height = ori_height * target_width / ori_width;
-      var crop_y = (resize_height - target_height) / 2;
-
-      gm(file_path)
-      .resize(target_width, resize_height)
-      .crop(target_width, target_height, 0, crop_y)
-      .stream(sendImg);
-
+  resizeWithCrop(file_path, target_width, target_height, function(err, handle) {
+    if (err) {
+      console.log(err);
+      return res.send(500);
     }
-
+    handle.stream(sendImg);
   });
-
 
 };

@@ -5,8 +5,6 @@ var validator = require('validator');
 
 var Schema = mongoose.Schema;
 
-
-
 var Photo = new Schema({
   uri: String,
   thumbnail_uri: String,
@@ -24,8 +22,11 @@ var Photo = new Schema({
     content: String,
     publish_user: {
       _id: Schema.Types.ObjectId,
-      nickname: String,
-      photo: String
+      name: String,
+      type: {
+        type: String,
+        enum: ['user', 'hr']
+      }
     },
     publish_date: {
       type: Date,
@@ -44,22 +45,6 @@ var Photo = new Schema({
 
 
 var PhotoAlbum = new Schema({
-  owner: {
-    model: {
-      _id: Schema.Types.ObjectId,
-      type: {
-        type: String
-      }
-    },
-    companies: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Company'
-    }],
-    teams: [{
-      type: Schema.Types.ObjectId,
-      ref: 'CompanyGroup'
-    }]
-  },
   name: {
     type: String,
     default: '相册'

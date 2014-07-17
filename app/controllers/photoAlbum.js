@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Module dependencies.
+ */
+
 // node system
 var path = require('path');
 var fs = require('fs');
@@ -16,6 +20,7 @@ var validator = require('validator');
 var gm = require('gm');
 var async = require('async');
 var moment = require('moment');
+var _ = require('lodash');
 
 // custom
 var config = require('../../config/config');
@@ -1149,5 +1154,84 @@ exports.preview = function(req, res) {
     return res.send({ result: 0, msg: '请求错误' });
   }
 }
+
+
+
+
+
+
+
+
+/**
+ * 创建相册
+ *
+ * Examples:
+ *
+ * createPhotoAlbum(company_group, {
+ *   name: 'test',
+ *   create_user: {
+ *     _id: req.user._id,
+ *     name: req.user.nickname,
+ *     type: 'user'
+ *   }
+ * }, function(err, photo_album) {
+ *   if (err) console.log(err);
+ * });
+ *
+ * @param {Object} owner 存放相册ref的Mongoose对象，具有photo_album_list或photo_album属性
+ * @param {Object} options
+ * @param {Function} callback callback(err, photo_album)
+ * @api public
+ */
+var createPhotoAlbum = function(owner, options, callback) {
+  var photo_album = new PhotoAlbum({
+    name: options.name,
+    create_user: options.create_user,
+    update_user: options.create_user
+  });
+
+  fs.mkdir(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()),
+    function(err) {
+      if (err) {
+        return callback(err);
+      }
+      photo_album.save(function(err) {
+        if (err) {
+          return callback(err);
+        }
+
+        if (owner.photo_album_list) {
+          owner.photo_album_list.push(photo_album._id);
+        } else if (owner.photo_album) {
+          owner.photo_album = photo_album._id;
+        }
+
+        owner.save(function(err) {
+          if (err) {
+            return callback(err);
+          }
+
+          return callback(null, photo_album);
+        });
+
+      });
+  });
+};
+
+
+
+
+var readPhotoAlbum = function(photo_album, callback) {
+  
+}
+
+
+
+
+
+
+
+
+
 
 
