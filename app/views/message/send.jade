@@ -22,19 +22,19 @@
         span.glyphicon.glyphicon-flash(ng-switch-when="7")
       .dl_message_body.margin_left_5
         .row
-          .dl_message_caption
-            h7 {{send_message.caption}}
+          .dl_message_caption(ng-switch="send_message.message_type")
+            h7(ng-switch-when="3")
+              {{send_message.content}}
+            h7(ng-switch-when="1")
+              {{send_message.content}}
+            h7(ng-switch-when="2")
+              {{send_message.content}}
+            h7(ng-switch-when="0")
+              {{send_message.content}}
           .dl_message_date
             h7 {{send_message.date | date:'yyyy-MM-dd HH:mm'}}
         .row
           .dl_md_12(ng-switch="send_message.message_type")
-            h5(ng-switch-when="3")
-              {{send_message.content}}
-            h5(ng-switch-when="1")
-              {{send_message.content}}
-            h5(ng-switch-when="2")
-              {{send_message.content}}
-            h5(ng-switch-when="0")
-              {{send_message.content}}
+            h5 {{send_message.detail}}
           .dl_md_1.pull-right.dl_message_rightcorner
             button.dl_btn.pull-right(ng-click="setToDelete($index)") X
