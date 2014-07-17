@@ -47,8 +47,8 @@ div(ng-show = '!loading')
         //-   a(ng-href="{{'/department/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
         //-   span 发出了挑战
         span.message_head(ng-switch-when="10")
-        span {{group_message.team[0].name}}
-        span 发起了一个部门联谊活动
+          span {{group_message.team[0].name}}
+          span 发起了一个部门联谊活动
         span(ng-switch-default)
         span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         .dl_message
