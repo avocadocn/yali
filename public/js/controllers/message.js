@@ -717,11 +717,11 @@ var sendMessagesPre = function(messages){
       message_type = 3;
       content = "您向全公司的员工发送了站内信";
       send_messages.push({
-        '_id':msg[i]._id,
+        '_id':messages[i]._id,
         'content':content,
-        'caption':msg[i].caption,
-        'status':msg[i].status,
-        'date':msg[i].post_date,
+        'caption':messages[i].caption,
+        'status':messages[i].status,
+        'date':messages[i].post_date,
         'detail':detail,
         'message_type':message_type
       });
