@@ -9,9 +9,9 @@ block baseInfo
       //-人名
       .dl_row
         label.head= nickname
-      //-公司名
+      //-部门名
       .dl_row
-        a.subtitle(href='/company/home') #{cname}
+        a.subtitle(href='/department/home/#{department._id}') #{department.name}
       //-个性签名
       .dl_row
         p.subtitle= sign

@@ -668,7 +668,8 @@ exports.home = function(req, res) {
         'nickname': _user.nickname,
         'cname':_user.cname,
         'sign':_user.introduce,
-        'role': req.role
+        'role': req.role,
+        'department': _user.department
       });
     }
   });
