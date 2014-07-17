@@ -828,19 +828,21 @@ exports.getCompanyTeamsInfo = function(req, res) {
                         // console.log('in.waterfall.counter.i=' + counter.i);
                         var j = counter.i-1;
                         var campaigninfo = {};
-                        Campaign.find({'team':teams[j]._id},{'_id':1,'theme':1})
+                        Campaign.find({'team':teams[j]._id})
                         .sort({'create_time':-1})
                         .limit(1)
                         .exec()
                         .then(function(campaign){
                             //todo
-                            // console.log(campaign)
+                            console.log(campaign[0]);
                             if(campaign.length==0){
                                 campaigninfo.campaign_theme = '';
                                 campaigninfo.campaign_id = '';
+                                campaigninfo.start_time = '';
                             }else{
                               campaigninfo.campaign_theme = campaign[0].theme;
                               campaigninfo.campaign_id = campaign[0]._id;
+                              campaigninfo.start_time = campaign[0].start_time;
                             }
                             callback(null, campaigninfo);
                         });
@@ -858,7 +860,8 @@ exports.getCompanyTeamsInfo = function(req, res) {
                             'member':teams[j].member,
                             'name':teams[j].name,
                             'campaign_theme':campaigninfo.campaign_theme,
-                            'campaign_id':campaigninfo.campaign_id
+                            'campaign_id':campaigninfo.campaign_id,
+                            'campaign_start_time':campaigninfo.start_time
                         }
 
                         if(model_helper.arrayObjectIndexOf(req.user.team,teams[j]._id,'_id')>-1){
@@ -884,7 +887,7 @@ exports.getCompanyTeamsInfo = function(req, res) {
                 if(err){
                     return res.send({'result':1,'msg':'FAILURED'});
                 }else{
-                    console.log('finish~');
+                    // console.log('finish~');
                     if(req.role ==='EMPLOYEE'){
                         output.teams = _teams;
                         }

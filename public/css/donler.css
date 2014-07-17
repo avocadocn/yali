@@ -1463,7 +1463,12 @@ input.ng-invalid.ng-dirty {
   min-height: 80px;
   margin: 8px;
   word-break: break-word;
-  padding: 6px;
+  padding: 6px 6px 20px 6px;
+}
+.dl_allteaminfo_emp .teamitem .btn_join {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 .dl_message_body_font {
   font-size: 48px;
