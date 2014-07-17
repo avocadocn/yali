@@ -11,9 +11,7 @@ block contentExt
     .main
       if !competition.active&&competition.camp[1].start_confirm
         .text-center #{__("CAMPAIGNCLOSE")}
-      else if competition.finish
-        .text-center #{__("CAMPAIGNFINISH")}
-      #competition_content.competition_content(ng-controller="competitionController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';score_a='#{competition.camp[0].score}';score_b='#{competition.camp[1].score}';")
+      #competition_content.competition_content(ng-controller="competitionController" data-nowteam="#{team}" data-id='#{competition._id}' ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score};score_b=#{competition.camp[1].score};")
         .row
           .team_left.col-xs-4
             img.pull-left.team_logo(src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
@@ -34,28 +32,27 @@ block contentExt
               h1.text-center VS
               .dl_box#score_tip
                 .dl_score_frame
-                  if confirm_mode!=undefined
-                    label.dl_score(ng-if="!edit")= competition.camp[0].score
-                    input.dl_score(type="text" ng-model="score_own.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
+                  if confirm_mode!=undefined && confirm_mode!=0
+                    label.dl_score(ng-if="!edit") {{score_a}}
+                    input.dl_score(type="text" maxlength="3" ng-model="$parent.score_a" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
+                    if confirm_mode === 2
+                        a.dl_btn_right(ng-if="!edit" ng-click='confirmScore(true)') 接受比分
                   else
                     label.dl_score= competition.camp[0].score
                 .dl_score_frame
-                  label.dl_score :
-                    if confirm_mode === 1
-                      a.dl_btn_right(ng-disabled="true") 等待确认
-                    else
-                      a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
+                  .dl_score :
+                  if confirm_mode === 1
+                    a.dl_btn_right(ng-disabled="true") 等待确认
+                  if confirm_mode === 3
+                    a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
                 .dl_score_frame
-                  if confirm_mode!=undefined
-                    label.dl_score(ng-if="!edit")= competition.camp[0].score
-                    input.dl_score(type="text" ng-model="score_opposite.score" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
-                    if msg_show
+                  if confirm_mode!=undefined && confirm_mode!=0
+                    label.dl_score(ng-if="!edit") {{score_b}}
+                    input.dl_score(type="text" ng-model="$parent.score_b" maxlength="3" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
+                    if confirm_mode === 2
                       a.dl_btn_right(ng-click='scoreModify()') {{object_caption}}
                   else
                     label.dl_score= competition.camp[1].score
-                if msg_show
-                      a.dl_btn_right(ng-click='confirmScore(true)') 接受比分
-                //- h1.text-center= competition.camp[0].score +':' + competition.camp[1].score
             else if response_flag
               .text-center
                 button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke('#{competition.camp[1].id}','#{competition._id}')") #{__("FACE")}
@@ -77,7 +74,7 @@ block contentExt
           .col-xs-5
             if competition.camp[1].start_confirm
               each teamAMember in competition.camp[0].member
-                img.teamMember.team_member_logo(draggable="#{competition_leader.indexOf(0)>-1}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
+                img.teamMember.team_member_logo(draggable="#{!competition.finish&&competition_leader.indexOf(0)>-1}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
             else
               each teamAMember in competition.camp[0].vote.positive_member
                 img.teamMember.team_member_logo(src='#{teamAMember.photo}' id='#{teamAMember.uid}')
@@ -85,7 +82,7 @@ block contentExt
           .col-xs-5
             if competition.camp[1].start_confirm
               each teamBMember in competition.camp[1].member
-                img.teamMember.team_member_logo(draggable="#{competition_leader.indexOf(1)>-1}" data-camp='1' data-tid="#{competition.camp[1].id}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
+                img.teamMember.team_member_logo(draggable="#{!competition.finish&&competition_leader.indexOf(1)>-1}" data-camp='1' data-tid="#{competition.camp[1].id}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
             else
               each teamBMember in competition.camp[1].vote.positive_member
                 img.teamMember.team_member_logo(src='#{teamBMember.photo}' id='#{teamBMember.uid}')
@@ -94,9 +91,9 @@ block contentExt
           .row.format_field
             img#formatField.col-xs-12.img_contain(draggable="false" src='/img/field.png')
             each teamAMember in competition.camp[0].formation
-              img.team_member_logo.teamMember.onmemberA(draggable="#{competition_leader.indexOf(0)>-1}" data-camp='0' id='on_#{teamAMember.uid}' data-tid="#{competition.camp[0].id}" data-top='#{teamAMember.y}' data-left='#{teamAMember.x}')
+              img.team_member_logo.teamMember.onmemberA(draggable="#{!competition.finish&&competition_leader.indexOf(0)>-1}" data-camp='0' id='on_#{teamAMember.uid}' data-tid="#{competition.camp[0].id}" data-top='#{teamAMember.y}' data-left='#{teamAMember.x}')
             each teamBMember in competition.camp[1].formation
-              img.team_member_logo.teamMember.onmemberB(draggable="#{competition_leader.indexOf(1)>-1}" data-camp='1' id='on_#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
+              img.team_member_logo.teamMember.onmemberB(draggable="#{!competition.finish&&competition_leader.indexOf(1)>-1}" data-camp='1' id='on_#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
           .format_contain
         hr
         .dl_comment.row

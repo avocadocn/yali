@@ -90,8 +90,8 @@ div(ng-show = '!loading')
               span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6&& group_message.message_type!=4")
           span(ng-if="group_message.join_role &&group_message.join_flag!=undefined && !group_message.both_team")
-            btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index)" ng-if="group_message.join_flag") 退出
-            btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
+            btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag") 退出
+            btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
           a(ng-if="group_message.both_team" href="/competition/{{group_message.campaign._id}}")  详情
           span.message_label 已报名人数：{{group_message.member_num ? group_message.member_num :'0'}}
           span.message_label(ng-if="group_message.join_role&&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}

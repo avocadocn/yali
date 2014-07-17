@@ -66,7 +66,7 @@ exports.getCompetition = function(req, res){
   if(req.user.provider==='user'){
     options.user={'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo};
   }
-  if(!competition.active &&competition.camp[1].start_confirm || competition.finish){
+  if(!competition.active &&competition.camp[1].start_confirm){
     return res.render('competition/football', options);
   }
   options.team = req.competition_team;
@@ -126,6 +126,7 @@ exports.getCompetition = function(req, res){
       });
     }
   }
+  //console.log(options);
   return res.render('competition/football', options);
 };
 
