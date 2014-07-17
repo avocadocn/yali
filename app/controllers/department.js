@@ -447,7 +447,7 @@ exports.memberOperateByRoute = function(req, res) {
 
   var quit = function(callback) {
     teamOperate({
-      did: did,
+      did: req.user.department._id,
       operate: {
         '$pull': {
           'member': {
