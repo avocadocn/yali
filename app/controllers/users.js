@@ -659,6 +659,10 @@ exports.home = function(req, res) {
           }
         }
       }
+      var department = _user.department;
+      if (!_user.department || !_user.department._id) {
+        department = null;
+      }
       res.render('users/home',{
         'uid':_user._id,
         'selected_teams' : selected_teams,
@@ -669,7 +673,7 @@ exports.home = function(req, res) {
         'cname':_user.cname,
         'sign':_user.introduce,
         'role': req.role,
-        'department': _user.department
+        'department': department
       });
     }
   });
