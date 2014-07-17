@@ -42,7 +42,7 @@ module.exports = function(app) {
 
   app.post('/group/resultConfirm/:teamId/:competitionId', authorization.teamAuthorize, group.resultConfirm);
 
-  app.get('/group/editLogo/:teamId', authorization.teamAuthorize, group.editLogo);
+  app.get('/group/:teamId/editLogo', authorization.teamAuthorize, group.editLogo);
 
   app.post('/group/oneTeam/:teamId', authorization.teamAuthorize, group.getOneTeam);
 

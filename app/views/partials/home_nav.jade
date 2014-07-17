@@ -1,5 +1,6 @@
 nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
-  if Global.role == undefined || Global.role == ''
+  //- if Global.role == undefined || Global.role == ''
+  if !global_user
     .header_container
       a.navbar-brand(href="/"): img.logo(src="/img/logo_w.png")
       .navbar-nav.nav.pull-right.dl-top-login
@@ -15,7 +16,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               a.btn.btn-link.btn-sm.btn-signin-link(href="/company/signin") 企业登录
   else
     .dl_head(ng-controller="messageHeaderController")
-      if Global.role !== 'HR'
+      if global_user.provider === 'user'
         //.navbar-header
         a.navbar-brand(href="/")
           img.logo(src="/img/logo_w.png")
@@ -31,8 +32,8 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
           li
             a(href="/users/home")
               span.user_img
-                img.size_20(ng-src="#{Global.nav_logo}")
-              span.m_l_5.user_name #{Global.nav_name}
+                img.size_20(src="#{global_user.photo}")
+              span.m_l_5.user_name #{global_user.nickname}
           li
             a(href="#" data-toggle="dropdown")
               span.glyphicon.glyphicon-cog.m_l_5
@@ -52,10 +53,9 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
             ul.dl_menu.dropdown-menu(role="menu")
               li
                 a.dl_menu_a(href="/message/home#/message_all") 私信({{o}})
-              if Global.role === 'LEADER'
-                li
-                  a.dl_menu_a(href="/message/home#/send") 发送消息
-      if Global.role === 'HR'
+              //- li
+              //-   a.dl_menu_a(href="/message/home#/send") 发送消息
+      if global_user.provider === 'company'
         //.navbar-header
         a.navbar-brand(href="/")
           img.logo(src="/img/logo_w.png")
@@ -69,8 +69,8 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
           li
             a(href="/company/home")
               span
-                img.size_20(ng-src="#{Global.nav_logo}")
-              span.m_l_5 #{Global.nav_name}
+                img.size_20(src="#{global_user.info.logo}")
+              span.m_l_5 #{global_user.info.name}
           li
             a(href="#" data-toggle="dropdown")
               span.glyphicon.glyphicon-cog.m_l_5

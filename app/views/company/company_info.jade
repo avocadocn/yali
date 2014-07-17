@@ -37,7 +37,7 @@ div.company-info(ng-show = '!loading')
       .info_detail
         input.dl_input.editToggle.dl_form-Control(type="text" name ="username" ng-model="info.official_name" ng-disabled="true")
       .info_side(ng-if="role =='HR'")
-        a.clearLinkUnderline.dl_btn.dl_btn_small.pull-right(href="/company/editLogo") #{__("CHANGE_LOGO")}
+        a.clearLinkUnderline.dl_btn.dl_btn_small.pull-right(href="/company/editLogo/#{global_user._id}") #{__("CHANGE_LOGO")}
     .dl_row.clearfix
       .info_side
         span.info_label #{__("ENTERPRISE_FULL_NAME")}

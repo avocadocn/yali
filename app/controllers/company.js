@@ -117,32 +117,15 @@ exports.signin = function(req, res) {
     res.render('company/signin', {title: '公司登录'});
 };
 
-var destroySession = function(req){
-  if(req.role != null || req.role != undefined){
-    delete req.role;
-  }
-  if (req.session.Global.nav_name !=null || req.session.Global.nav_name != undefined) {
-    delete req.session.Global.nav_name;
-  }
-  if (req.session.Global.nav_logo !=null || req.session.Global.nav_logo != undefined) {
-    delete req.session.Global.nav_logo;
-  }
-  if (req.session.Global.role !=null || req.session.Global.role != undefined) {
-    delete req.session.Global.role;
-  }
-}
+
 /**
  * Logout
  */
 exports.signout = function(req, res) {
-  destroySession(req);
   req.logout();
   res.redirect('/');
 };
 exports.loginSuccess = function(req, res) {
-    req.session.Global.nav_name = req.user.info.name;
-    req.session.Global.nav_logo = req.user.info.logo;
-    req.session.Global.role = "HR";
     res.redirect('/company/home');
 };
 
@@ -789,7 +772,6 @@ exports.saveAccount = function(req, res) {
         if(company) {
             if(req.body.info!==undefined && company.info.name!==_company.info.name){
                 schedule.updateCname(req.user._id);
-                req.session.Global.nav_name = _company.info.name;
             }
 
             res.send({'result':1,'msg':'更新成功'});

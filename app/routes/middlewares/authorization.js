@@ -184,42 +184,44 @@ exports.listAuthorize = function(req,res, next){
   }
 }
 exports.logoAuthorize = function(req, res, next){
-  if(req.body.target==='u'){
-    User
-    .findOne({
-         _id: req.body.userId
-    })
-    .exec(function(err, user) {
-        if (err) return next(err);
-        if (!user) return next(new Error('Failed to load User ' + id));
-        if(req.user.provider==='company'&&req.user._id.toString()===user.cid.toString()||req.user.provider==='user'&&req.user._id.toString()===user._id.toString()){
-          next();
-        }
-        else{
-          return res.send(403, 'forbidden!');
-        }
-    });
+  // if(req.body.target==='u'){
+  //   User
+  //   .findOne({
+  //        _id: req.body.userId
+  //   })
+  //   .exec(function(err, user) {
+  //       if (err) return next(err);
+  //       if (!user) return next(new Error('Failed to load User ' + id));
+  //       if(req.user.provider==='company'&&req.user._id.toString()===user.cid.toString()||req.user.provider==='user'&&req.user._id.toString()===user._id.toString()){
+  //         next();
+  //       }
+  //       else{
+  //         return res.send(403, 'forbidden!');
+  //       }
+  //   });
 
-  }
-  else if(req.body.target==='g'){
+  // }
+  if(req.body.target==='g'){
     if(req.user.provider==='company'&&model_helper.arrayObjectIndexOf(req.user.team,req.body.teamId,'id')>-1||req.user.provider==='user'&&req.user.team[model_helper.arrayObjectIndexOf(req.user.team,req.companyGroup._id,'_id')].leader===true){
       next();
     }
     else{
       return res.send(403, 'forbidden!');
     }
+  } else {
+    next();
   }
-  else if(req.body.target==='c'){
-    if(req.user._id.toString()===req.body.companyId){
-      next();
-    }
-    else{
-      return res.send(403, 'forbidden!');
-    }
-  }
-  else{
-    return res.send(403, 'forbidden!');
-  }
+  // else if(req.body.target==='c'){
+  //   if(req.user._id.toString()===req.body.companyId){
+  //     next();
+  //   }
+  //   else{
+  //     return res.send(403, 'forbidden!');
+  //   }
+  // }
+  // else{
+  //   return res.send(403, 'forbidden!');
+  // }
 }
 exports.campaginAuthorize = function(req, res, next){
   if(req.user.provider==='company' && req.campaign.cid.indexOf(req.user._id.toString())>-1){

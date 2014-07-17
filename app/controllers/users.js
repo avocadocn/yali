@@ -143,25 +143,10 @@ exports.resetPwd = function(req, res){
 }
 
 
-var destroySession = function(req){
-  if(req.role != null || req.role != undefined){
-    delete req.role;
-  }
-  if (req.session.Global.nav_name !=null || req.session.Global.nav_name != undefined) {
-    delete req.session.Global.nav_name;
-  }
-  if (req.session.Global.nav_logo !=null || req.session.Global.nav_logo != undefined) {
-    delete req.session.Global.nav_logo;
-  }
-  if (req.session.Global.role !=null || req.session.Global.role != undefined) {
-    delete req.session.Global.role;
-  }
-}
 /**
  * Logout
  */
 exports.signout = function(req, res) {
-  destroySession(req);
   req.logout();
   res.redirect('/');
 };
@@ -170,9 +155,6 @@ exports.signout = function(req, res) {
  * Session
  */
 exports.loginSuccess = function(req, res) {
-  req.session.Global.nav_name = req.user.nickname;
-  req.session.Global.nav_logo = req.user.photo;
-  req.session.Global.role ="USER";
   res.redirect('/users/home');
 };
 
@@ -949,7 +931,6 @@ exports.saveAccount = function (req, res) {
       if (user) {
         if(req.body.user.nickname !== user.nickname){
           schedule.updateUname(user._id);
-          req.session.Global.nav_name = req.body.user.nickname;
         }
         res.send({'result':1,'msg':'修改成功'});
       } else {

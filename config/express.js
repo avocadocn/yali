@@ -98,21 +98,15 @@ module.exports = function(app, passport, db) {
             };
             next();
         });
-        app.use(function(req, res, next) {
-            if (!req.session.Global) {
-                req.session.Global = {
-                    nav_name: '',
-                    nav_logo: '',
-                    role: ''
-                };
-            }
-            res.locals.Global = req.session.Global;
-            next();
-        });
 
         // Use passport sessions
         app.use(passport.initialize());
         app.use(passport.session());
+
+        app.use(function(req, res, next) {
+            res.locals.global_user = req.user;
+            next();
+        });
 
         // Connect flash for flash messages
         app.use(flash());

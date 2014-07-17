@@ -1,19 +1,29 @@
 'use strict';
   var schedule = require('../services/schedule');
 exports.render = function(req, res) {
-  if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
-    if(req.session.Global.role==="HR"){
-      res.redirect('/company/home');
-    }else{
-      if(req.session.Global.role ==='USER'){
-        res.redirect('/users/home');
-      }else{
-        res.render('index');
-      }
+  // if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
+  //   if(req.session.Global.role==="HR"){
+  //     res.redirect('/company/home');
+  //   }else{
+  //     if(req.session.Global.role ==='USER'){
+  //       res.redirect('/users/home');
+  //     }else{
+  //       res.render('index');
+  //     }
+  //   }
+  // }else{
+  //   res.render('index');
+  // }
+
+  if (req.user) {
+    if (req.user.provider === 'company') {
+       return res.redirect('/company/home');
     }
-  }else{
-    res.render('index');
+    if (req.user.provider === 'user') {
+      return res.redirect('/users/home');
+    }
   }
+  return res.render('index');
 };
 
 exports.count = function(req,res){
