@@ -177,6 +177,10 @@ exports.appLogout = function(req, res) {
  * 通过邀请链接进入激活流程
  */
 exports.invite = function(req, res) {
+  if (req.user) {
+    req.logout();
+    res.locals.global_user = null;
+  }
   var key = req.query.key;
   var cid = req.query.cid;
   if(key == undefined || cid == undefined) {
@@ -295,6 +299,10 @@ exports.dealActive = function(req, res) {
  * 通过激活链接进入，完善个人信息
  */
 exports.setProfile = function(req, res) {
+  if (req.user) {
+    req.logout();
+    res.locals.global_user = null;
+  }
   var key = req.query.key;
   var uid = req.query.uid;
   req.session.cid = req.query.cid; //请不要删除这个session,这个session在department里会自动删除的!

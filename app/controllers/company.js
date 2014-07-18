@@ -623,6 +623,10 @@ exports.create = function(req, res) {
  */
 exports.createDetail = function(req, res) {
 
+    if (req.user) {
+        req.logout();
+        res.locals.global_user = null;
+    }
 
     Company.findOne({_id: req.session.company_id}, function(err, company) {
         if(!company || err) {
