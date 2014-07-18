@@ -1390,7 +1390,22 @@ exports.getTargetModel = function(req, res, next) {
     });
 };
 
-
+exports.getPhotoAlbum = function(req, res, next) {
+  PhotoAlbum
+  .findById(req.params.photoAlbumId)
+  .exec()
+  .then(function(photo_album) {
+    if (!photo_album) {
+      res.send(404);
+    }
+    req.photo_album = photo_album;
+    next();
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
 
 
 /**
@@ -1435,5 +1450,14 @@ exports.createPhotoAlbumAPI = function(req, res) {
  * api 读取相册数据
  */
 exports.readPhotoAlbumAPI = function(req, res) {
-
+  readPhotoAlbum(req.photo_album, function(clone_photo_album) {
+    res.send({ photo_album: clone_photo_album });
+  });
 };
+
+
+
+
+
+
+

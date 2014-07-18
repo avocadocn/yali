@@ -37,6 +37,6 @@ module.exports = function(app) {
   app.post('/:target/:targetId/photoAlbum', photoAlbum.getTargetModel, photoAlbum.createPhotoAlbumAPI);
 
 
-  app.get('/:target/:targetId/photoAlbum/:photoAlbumId', photoAlbum.getTargetModel, photoAlbum.readPhotoAlbumAPI);
+  app.get('/:target/:targetId/photoAlbum/:photoAlbumId', photoAlbum.getTargetModel, photoAlbum.getPhotoAlbum, photoAlbum.readPhotoAlbumAPI);
 
 };
