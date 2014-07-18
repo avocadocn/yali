@@ -34,17 +34,20 @@ departmentApp.config(['$routeProvider',
         controllerAs: 'account',
       })
       .when('/timeLine/:tid', {
-        templateUrl: '/campaign/timeline',
-        controller: 'timelineController',
-        controllerAs: 'timeline'
-      }).
-      otherwise({
-        redirectTo: '/message'
+        templateUrl: function(params){
+            return '/group/timeline/'+params.tid;
+        }
       });
+      // otherwise({
+      //   redirectTo: '/message'
+      // });
 }]);
 
-departmentApp.run(['$http','$rootScope', function ($http, $rootScope) {
-    $rootScope.nowTab = window.location.hash.substr(2);
+departmentApp.run(['$http','$rootScope', '$location', function ($http, $rootScope, $location) {
+    if($location.hash()!=='')
+        $rootScope.nowTab = window.location.hash.substr(2);
+    else if($location.path()!=='')
+        $rootScope.nowTab = $location.path().substr(1);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
         $rootScope.message_corner = false;
@@ -52,6 +55,25 @@ departmentApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.number;
     $rootScope.isMember;
     $rootScope.message_for_group = true;
+    $rootScope.$watch("role",function(role){
+        if (role && $location.hash()=='' && $location.path()==''){
+            if(role === 'GUEST' || role === 'GUESTHR' || role === 'GUESTLEADER'){
+                $location.path('/group_info');
+                $rootScope.nowTab = 'group_info';
+            }
+            else{
+                $location.path('/group_message');
+                $rootScope.nowTab = 'group_message';
+            }
+        }
+    });
+
+    $rootScope.$on("$routeChangeStart",function(){
+        $rootScope.loading = true;
+    });
+    $rootScope.$on("$routeChangeSuccess",function(){
+        $rootScope.loading = false;
+    });
 
     $rootScope.messageTypeChange = function(value){
         $rootScope.message_for_group = value;
@@ -134,18 +156,6 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 
 
-
-
-departmentApp.controller('timelineController',['$http','$scope','$routeParams',function($http,$scope,$routeParams){
-    $http.get('/group/timeline/'+$routeParams.tid+'?'+ (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-        if(data.result===1){
-            $scope.newTimeLines = data.newTimeLines;
-        }
-        else{
-             console.log('err');
-        }
-    });
-}]);
 departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.private_message_content = {
@@ -631,12 +641,17 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
         try {
             $http({
                 method: 'post',
-                url: '/campaign/cancel',
+                url: '/campaign/cancel/'+_id,
                 data:{
                     campaign_id : _id
                 }
             }).success(function(data, status) {
-                window.location.reload();
+                if(data.result===1){
+                    window.location.reload();
+                }
+                else{
+                    alertify(data.msg);
+                }
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');
             });
@@ -677,7 +692,7 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
                 $scope.showMap2 = $scope.team.home_court[1].name !=='' ? true : false;
             });
         }
-        
+
     });
 
     $scope.editToggle = function() {
