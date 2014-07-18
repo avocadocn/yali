@@ -2,8 +2,8 @@ form(name="provoke_form" novalidate)
   .dl-modal-header
     button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
       img(ng-src='/img/icons/icon_close.png')
-    .head#myModalLabel(ng-show='modal==3') {{team_opposite.name}} V.S. #{tname}
-    .head#myModalLabel(ng-show='modal==1') #{tname} V.S. {{team_opposite.name}}
+    .head#myModalLabel(ng-show='modal==3') {{team_opposite.name}} V.S #{tname}
+    .head#myModalLabel(ng-show='modal==1') #{tname} V.S {{team_opposite.name}}
   .dl-modal-body
     .dl_modal_container
         label.subtitle #{__("PROVOKE")}词

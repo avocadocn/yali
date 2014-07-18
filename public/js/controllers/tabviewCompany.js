@@ -1233,31 +1233,36 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         }
     };
     $scope.sponsor = function() {
-        try{
-            $http({
-                method: 'post',
-                url: '/company/campaignSponsor/'+$rootScope.cid,
-                data:{
-                    theme: $scope.theme,
-                    location: $scope.location,
-                    content : $scope.content,
-                    start_time : $scope.start_time,
-                    end_time : $scope.end_time,
-                    deadline : $scope.deadline,
-                    member_min : $scope.member_min,
-                    member_max : $scope.member_max
-                }
-            }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
-                window.location.reload();
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alertify.alert('DATA ERROR');
-            });
+        if($scope.member_max < $scope.member_min){
+            alertify.alert('最少人数须小于最大人数');
         }
-        catch(e){
-            console.log(e);
+        else{
+            try{
+                $http({
+                    method: 'post',
+                    url: '/company/campaignSponsor/'+$rootScope.cid,
+                    data:{
+                        theme: $scope.theme,
+                        location: $scope.location,
+                        content : $scope.content,
+                        start_time : $scope.start_time,
+                        end_time : $scope.end_time,
+                        deadline : $scope.deadline,
+                        member_min : $scope.member_min,
+                        member_max : $scope.member_max
+                    }
+                }).success(function(data, status) {
+                    //发布活动后跳转到显示活动列表页面
+                    window.location.reload();
+
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    alertify.alert('DATA ERROR');
+                });
+            }
+            catch(e){
+                console.log(e);
+            }
         }
     };
 }]);

@@ -1051,32 +1051,37 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
     };
 
     $scope.sponsor = function() {
-        try{
-            $http({
-                method: 'post',
-                url: '/group/campaignSponsor/'+ $rootScope.teamId,
-                data:{
-                    theme: $scope.theme,
-                    location: $scope.location,
-                    content : $scope.content,
-                    start_time : $scope.start_time,
-                    end_time : $scope.end_time,
-                    member_min: $scope.member_min,
-                    member_max: $scope.member_max,
-                    deadline: $scope.deadline
-                }
-            }).success(function(data, status) {
-                //发布活动后跳转到显示活动列表页面
-                window.location.reload();
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alertify.alert('DATA ERROR');
-            });
-
+        if($scope.member_max < $scope.member_min){
+            alertify.alert('最少人数须小于最大人数');
         }
-        catch(e){
-            console.log(e);
+        else{
+            try{
+                $http({
+                    method: 'post',
+                    url: '/group/campaignSponsor/'+ $rootScope.teamId,
+                    data:{
+                        theme: $scope.theme,
+                        location: $scope.location,
+                        content : $scope.content,
+                        start_time : $scope.start_time,
+                        end_time : $scope.end_time,
+                        member_min: $scope.member_min,
+                        member_max: $scope.member_max,
+                        deadline: $scope.deadline
+                    }
+                }).success(function(data, status) {
+                    //发布活动后跳转到显示活动列表页面
+                    window.location.reload();
+
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    alertify.alert('DATA ERROR');
+                });
+
+            }
+            catch(e){
+                console.log(e);
+            }
         }
     };
 }]);
@@ -1336,59 +1341,63 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     };
         //约战
     $scope.provoke = function() {
-        if($scope.modal===1){//在自己的小队约战
-            try {
-                $http({
-                    method: 'post',
-                    url: '/group/provoke/'+$rootScope.teamId,
-                    data:{
-                        theme : $scope.theme,
-                        team_opposite_id : $scope.team_opposite._id,
-                        content : $scope.content,
-                        location: $scope.location,
-                        start_time: $scope.start_time,
-                        end_time: $scope.end_time,
-                        deadline: $scope.deadline,
-                        member_min : $scope.member_min,
-                        member_max : $scope.member_max,
-                    }
-                }).success(function(data, status) {
-                    window.location.reload();
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
+        if($scope.member_max < $scope.member_min){
+            alertify.alert('最少人数须小于最大人数');
+        }
+        else{
+            if($scope.modal===1){//在自己的小队约战
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/group/provoke/'+$rootScope.teamId,
+                        data:{
+                            theme : $scope.theme,
+                            team_opposite_id : $scope.team_opposite._id,
+                            content : $scope.content,
+                            location: $scope.location,
+                            start_time: $scope.start_time,
+                            end_time: $scope.end_time,
+                            deadline: $scope.deadline,
+                            member_min : $scope.member_min,
+                            member_max : $scope.member_max,
+                        }
+                    }).success(function(data, status) {
+                        window.location.reload();
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
+                }
+                catch(e) {
+                    console.log(e);
+                }
             }
-            catch(e) {
-                console.log(e);
+            else{//在其它小队约战
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/group/provoke/'+$scope.team_opposite._id,
+                        data:{
+                            theme : $scope.theme,
+                            team_opposite_id : $rootScope.teamId,
+                            content : $scope.content,
+                            location: $scope.location,
+                            start_time: $scope.start_time,
+                            end_time: $scope.end_time,
+                            deadline: $scope.deadline,
+                            member_min : $scope.member_min,
+                            member_max : $scope.member_max
+                        }
+                    }).success(function(data, status) {
+                        window.location.reload();
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
+                }
+                catch(e) {
+                    console.log(e);
+                }            
             }
         }
-        else{//在其它小队约战
-            try {
-                $http({
-                    method: 'post',
-                    url: '/group/provoke/'+$scope.team_opposite._id,
-                    data:{
-                        theme : $scope.theme,
-                        team_opposite_id : $rootScope.teamId,
-                        content : $scope.content,
-                        location: $scope.location,
-                        start_time: $scope.start_time,
-                        end_time: $scope.end_time,
-                        deadline: $scope.deadline,
-                        member_min : $scope.member_min,
-                        member_max : $scope.member_max
-                    }
-                }).success(function(data, status) {
-                    window.location.reload();
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }            
-        }
-        
     };
 
     $scope.preStep = function(){

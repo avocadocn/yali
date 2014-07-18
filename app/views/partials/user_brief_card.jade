@@ -6,10 +6,7 @@
     = user.nickname
     if (user.realname)
       | (#{user.realname})
-  p 部门: #{user.department}
-  if (user.phone)
-    p 电话: #{user.phone}
-  p Email: #{user.email}
+  p 部门: #{user.department.name}
 .popover_brief
   if (user.introduce)
     p 简介: #{user.introduce}
