@@ -598,7 +598,7 @@ exports.provoke = function (req, res) {
                               'own':{
                                 '_id':req.user._id,
                                 'nickname':req.user.nickname,
-                                'leader':true
+                                'role':'LEADER'
                               },
                               'receiver':{
                                 '_id':team_opposite.leader[0]._id
@@ -673,7 +673,7 @@ exports.responseProvoke = function (req, res) {
                 'own':{
                   '_id':req.user._id,
                   'nickname':req.user.nickname,
-                  'leader':true
+                  'role':'LEADER'
                 },
                 'receiver':{
                   '_id':rst[0].leader[0]._id

@@ -4,7 +4,8 @@
       .dl-modal-body
         .dl_modal_container
           .dl_md_10.dl_vertical
-            label 您将对 {{teamName}} 的队员发送站内信
+            label(ng-if="teamName == 'null'") 您将对全公司成员发送站内信
+            label(ng-if="teamName != 'null'") 您将对 {{teamName}} 的队员发送站内信
       .dl-modal-body
         .dl_modal_container
           .dl_md_1.dl_vertical

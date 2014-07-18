@@ -47,12 +47,9 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
-            a(href="#" data-toggle="dropdown")
+            a(href="/message/home#/message_all")
               span.dl_msg_corner(ng-if="o>0" ng-cloak) {{o}}
               span.glyphicon.glyphicon-comment
-            ul.dl_menu.dropdown-menu(role="menu")
-              li
-                a.dl_menu_a(href="/message/home#/message_all") 私信({{o}})
               //- li
               //-   a.dl_menu_a(href="/message/home#/send") 发送消息
       if global_user.provider === 'company'
@@ -82,11 +79,8 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
-            a(href="#" data-toggle="dropdown")
+            a(href="/message/home#/message_all")
               span.dl_msg_corner(ng-if="o>0" ng-cloak) {{o}}
               span.glyphicon.glyphicon-comment
-            ul.dl_menu.dropdown-menu(role="menu")
-              li
-                a.dl_menu_a(href="/message/home#/message_all") 私信({{o}})
 
 

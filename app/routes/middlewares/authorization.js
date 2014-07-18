@@ -101,7 +101,21 @@ exports.messageAuthorize = function(req,res,next){
   }else{
     //公司
     req.role = 'HR';
-    next();
+
+    if(req.params.teamId != undefined && req.params.teamId != null && req.params.teamId != ''){
+      //公司给小队发站内信
+      CompanyGroup.findOne({'_id':req.params.teamId},function (err,company_group){
+        if(err || !company_group){
+          return res.send(404);
+        }else{
+          req.companyGroup = company_group;
+          next();
+        }
+      });
+      //个人
+    }else{
+      next();
+    }
   }
 }
 

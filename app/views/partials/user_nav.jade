@@ -30,15 +30,9 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
             li
               a.dl_menu_a(href="/users/signout") #{__("LOGOUT")}
         li
-          a(href="#" data-toggle="dropdown")
+          a(href="/message/home#/message_all")
             span.dl_msg_corner(ng-if="o>0") {{o}}
             span.glyphicon.glyphicon-comment
-          ul.dl_menu.dropdown-menu(role="menu")
-            li
-              a.dl_menu_a(href="/message/home#/message_all") 私信({{o}})
-            if Global.role === 'LEADER'
-              li
-                a.dl_menu_a(href="/message/home#/send") 发送消息
     if Global.role === 'HR'
       //.navbar-header
       a.navbar-brand(href="/")
@@ -64,10 +58,7 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
             li
               a.dl_menu_a(href="/company/signout") #{__("LOGOUT")}
         li
-          a(href="#" data-toggle="dropdown")
+          a(href="/message/home#/message_all")
             span.dl_msg_corner(ng-if="o>0" ng-cloak) {{o}}
             span.glyphicon.glyphicon-comment
-          ul.dl_menu.dropdown-menu(role="menu")
-            li
-              a.dl_menu_a(href="/message/home#/message_all") 私信({{o}})
 

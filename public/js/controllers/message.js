@@ -161,6 +161,7 @@ var messagePreHandle = function(teams,msg,divide){
   var direct_show = false;
   var detail = "";
   var content = "";
+  var sender = null;
   var message_type = 0;
   var message = [];
   var team_messages = [],
@@ -174,7 +175,14 @@ var messagePreHandle = function(teams,msg,divide){
       if(msg[i].message_content.sender.length > 0){
         if(msg[i].message_content.campaign_id == null){
           message_type = 0;
-          content = "小队 "+msg[i].message_content.team[0].name + "的组长 "+msg[i].message_content.sender[0].nickname;
+
+          if(msg[i].message_content.sender[0].role === 'LEADER'){
+            sender = "队长 "+msg[i].message_content.sender[0].nickname;
+          }else{
+            if(msg[i].message_content.sender[0].role === 'HR'){
+              sender = "您的公司";
+            }
+          }
           detail = msg[i].message_content.content;
           direct_show = true;
         }else{
@@ -189,11 +197,12 @@ var messagePreHandle = function(teams,msg,divide){
       if(divide){
         team_messages.push({
           '_id':msg[i]._id,
-          'caption':'Message From Campaign',
           'content':content,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
+          'team':msg[i].message_content.team[0],
+          'sender':sender,
           'message_type':message_type,
           'campaign_id':msg[i].message_content.campaign_id,
           'campaign_name':msg[i].message_content.caption
@@ -201,12 +210,13 @@ var messagePreHandle = function(teams,msg,divide){
       }else{
         all_messages.push({
           '_id':msg[i]._id,
-          'caption':'Message From Campaign',
           'content':content,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
           'message_type':message_type,
+          'team':msg[i].message_content.team[0],
+          'sender':sender,
           'campaign_id':msg[i].message_content.campaign_id,
           'campaign_name':msg[i].message_content.caption
         });
@@ -586,6 +596,7 @@ var pageHandle = function(messages,page,arrow){
 
 
 messageApp.controller('messageSenderController',['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+
     $scope.private_message_content = {
       'text':''
     }
@@ -610,9 +621,18 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
       _data.team = _team;
       _url = '/message/push/leader';
     }
+
     if($scope.role === 'HR'){
       _url = '/message/push/hr';
       _data.cid = $scope.cid;
+      var _team = {
+        size : 1,
+        own : {
+          _id : $scope.teamId,
+          name : $scope.teamName,
+        }
+      };
+      _data.team = _team;
     }
     
     try{
@@ -719,6 +739,7 @@ var sendMessagesPre = function(messages){
     //公司
     if(messages[i].type == 'company'){
       message_type = 3;
+      detail = messages[i].content;
       content = "您向全公司的员工发送了站内信";
       send_messages.push({
         '_id':messages[i]._id,

@@ -171,37 +171,50 @@ var oneToMember = function(param){
   _add(_param);
 }
 
-//HR给所有公司成员发送站内信
+//HR给 所有公司成员/某一小队 发送站内信
 exports.hrSendToMember = function(req,res){
+  //给全公司员工发站内信
+  var team = req.body.team;
+  var content = req.body.content;
   var cid = req.body.cid;
-  var content = req.body.content,
-      sender = {
-        '_id':req.user._id,
-        'nickname':req.user.info.name,
-        'leader':false
-      };
-  var callback = function (message_content,cid,req,res){
-    res.send({'result':1,'msg':'SUCCESS'});
+  if(team.own._id == 'null'){
+    var sender = {
+          '_id':req.user._id,
+          'nickname':req.user.info.name,
+          'role':'HR'
+        };
+    var callback = function (message_content,cid,req,res){
+      res.send({'result':1,'msg':'SUCCESS'});
+    }
+    var MC={
+      'caption':'Message From Company',
+      'content':content,
+      'sender':[sender],
+      'team':[],
+      'type':'company',
+      'company_id':cid,
+      'deadline':(new Date())+time_out
+    };
+    var _param = {
+      'collection':MessageContent,
+      'operate':MC,
+      'callback':callback,
+      '_err':_err,
+      'other_param':cid,
+      'req':req,
+      'res':res
+    };
+    _add(_param);
+  //给某一小队发送站内信
+  }else{
+    var sender = {
+      '_id':req.user._id,
+      'nickname':req.user.info.name,
+      'role':'HR'
+    },
+    caption = 'Message From Company';
+    sendToTeamMember(team,content,caption,sender,req,res);
   }
-  var MC={
-    'caption':'Message From Company',
-    'content':content,
-    'sender':[sender],
-    'team':[],
-    'type':'company',
-    'company_id':cid,
-    'deadline':(new Date())+time_out
-  };
-  var _param = {
-    'collection':MessageContent,
-    'operate':MC,
-    'callback':callback,
-    '_err':_err,
-    'other_param':cid,
-    'req':req,
-    'res':res
-  };
-  _add(_param);
 }
 
 
@@ -209,21 +222,10 @@ exports.hrSendToMember = function(req,res){
 
 var time_out = 72*24*3600;
 
-
-
-//组长给组员发送站内信
-exports.leaderSendToMember = function(req,res){
-  var team = req.body.team;
-  var content = req.body.content,
-      sender = {
-        '_id':req.user._id,
-        'nickname':req.user.nickname,
-        'leader':true
-      };
+var sendToTeamMember =function(team,content,caption,sender,req,res){
   var callback = function(company_group,team,req,res){
     if(company_group){
       var members = company_group[0].member;
-      var caption = 'Message From Leader!';
       var _param = {
         'members':members,
         'caption':caption,
@@ -236,7 +238,6 @@ exports.leaderSendToMember = function(req,res){
         'res':res,
         'type':'team'
       }
-      console.log('BEFORE',_param.members);
       oneToMember(_param);
     }
   }
@@ -253,6 +254,19 @@ exports.leaderSendToMember = function(req,res){
     'res':res
   };
   get(param);
+}
+
+//组长给组员发送站内信
+exports.leaderSendToMember = function(req,res){
+  var team = req.body.team;
+  var content = req.body.content,
+      sender = {
+        '_id':req.user._id,
+        'nickname':req.user.nickname,
+        'role':'LEADER'
+      },
+      caption = 'Message From Leader';
+  sendToTeamMember(team,content,caption,sender,req,res);
 };
 
 
@@ -311,7 +325,7 @@ exports.sendToParticipator = function(req, res){
     var sender = {
       '_id':req.user._id,
       'nickname':req.user.nickname,
-      'leader':true
+      'role':'LEADER'
     };
 
     if(campaign){
@@ -492,7 +506,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id){
       sender = {
         '_id':req.user._id,
         'nickname':req.user.nickname,
-        'leader':true
+        'role':'LEADER'
       };
   var callbackMC = function (message_content,olid,req,res){
     var callbackM = function (message_content,other,req,res){
@@ -858,8 +872,11 @@ exports.home = function(req,res){
       'cid':req.user.provider === 'user'? req.user.cid : req.user._id
     };
     if(req.role === 'LEADER'){
-      _send.teamId = req.companyGroup._id,
-      _send.teamName = req.companyGroup.name
+      _send.teamId = req.companyGroup._id;
+      _send.teamName = req.companyGroup.name;
+    }else{
+      _send.teamId = req.companyGroup != undefined ? req.companyGroup._id : 'null';
+      _send.teamName = req.companyGroup != undefined ? req.companyGroup.name : 'null';
     }
     res.render('message/message',_send);
   }else{

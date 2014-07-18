@@ -16,9 +16,9 @@ block baseInfo
 block panel
   div(ng-controller="messageSenderController" ng-init="role='#{role}';teamId='#{teamId}';cid='#{cid}';teamName='#{teamName}';departmentId='#{departmentId}'")
     ul.nav.nav-tabs
-      li.tab_style(ng-class="{'active':nowTab=='all'}")
-        a.subtitle.no_radius(href="#/message_all" ng-click="addactive('all')") 私信({{o}})
       if role === 'HR' || role === 'LEADER'
+        li.tab_style(ng-class="{'active':nowTab=='all'}")
+          a.subtitle.no_radius(href="#/message_all" ng-click="addactive('all')") 私信({{o}})
         li.tab_style(ng-class="{'active':nowTab=='send'}")
           a.subtitle.no_radius(href="#/send" ng-click="addactive('send')" ) 发送
     .tab-content.margin_top_20

@@ -10,7 +10,10 @@ var Schema = mongoose.Schema;
 var _sender = new Schema({
   _id:Schema.Types.ObjectId,
   nickname:String,
-  leader:false
+  role:{
+    type:String,
+    enum:['USER','LEADER','HR']
+  }
 });
 
 var _team = new Schema({

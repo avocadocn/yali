@@ -24,8 +24,7 @@ div(ng-show = '!loading')
                 {{all_message.content}}
             h7(ng-switch-when="5")
               a
-                {{all_message.sender.nickname}} 给您发了
-                a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
+                {{all_message.sender.nickname}} 给您发了一条私信
             h7(ng-switch-when="6")
               您收到了一条
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
@@ -34,20 +33,17 @@ div(ng-show = '!loading')
               a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
                 {{all_message.content}}
             h7(ng-switch-when="0")
-              {{all_message.content}} 给您发了
-              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
+              {{all_message.sender}} 给您的小队 {{all_message.team.name}} 发了一条私信
             h7(ng-switch-when="1")
               您参加的活动
               a(href="/campaign/detail/{{all_message.campaign_id}}")
                 {{all_message.campaign_name}}
-              有了
-              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
+              有了新的消息
             h7(ng-switch-when="2")
               您参加的比赛
               a(href="/competition/{{all_message.campaign_id}}")
                 {{all_message.campaign_name}}
-              有了
-              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
+              有了新的消息
           .dl_message_date
             h7 {{all_message.date | date:'yyyy-MM-dd HH:mm'}}
         .row
