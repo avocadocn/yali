@@ -228,8 +228,8 @@ exports.multiCampaignSponsor = function(req, res) {
 
 //部门发活动
 exports.sponsor = function(req, res) {
-  if (req.role !== 'HR') {
-    return res.send(403, forbidden);
+  if (req.role !== 'HR' && req.role !== 'LEADER') {
+    return res.send(403, 'forbidden');
   }
   var theme = req.body.theme;
   var content = req.body.content; //活动内容
@@ -281,11 +281,19 @@ exports.sponsor = function(req, res) {
     },
     name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme
   });
-  if (req.user.provider = 'company') {
+  if (req.user.provider === 'company') {
     var update_user = {
       _id: req.user._id,
       name: req.user.info.name,
       type: 'hr'
+    };
+    photo_album.update_user = update_user;
+    photo_album.create_user = update_user;
+  } else if (req.user.provider === 'user') {
+    var update_user = {
+      _id: req.user._id,
+      name: req.user.nickname,
+      type: 'user'
     };
     photo_album.update_user = update_user;
     photo_album.create_user = update_user;
