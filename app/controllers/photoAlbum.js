@@ -1251,12 +1251,11 @@ exports.preview = function(req, res) {
 
 
 /**
- * 根据照片点击数排序照片
+ * 根据照片点击数排序照片, 排序后会修改photos对象
  *
  * @param  {Array} photos 照片对象数组
- * @return {Array}        排序后的照片对象数组
  */
-var sortPhotosByClickCount = function(photos) {
+var sortPhotosByClickCount = exports.sortPhotosByClickCount = function(photos) {
   photos.sort(function(a, b) {
     if (a.click_count <= b.click_count) {
       return true;
@@ -1264,7 +1263,6 @@ var sortPhotosByClickCount = function(photos) {
       return false;
     }
   });
-  return photos;
 };
 
 
@@ -1275,7 +1273,7 @@ var sortPhotosByClickCount = function(photos) {
  * @param  {Function} sort   排序函数，可选
  * @return {Array}        筛选后的照片对象数组
  */
-var getPhotos = function(photos, sort) {
+var getPhotos = exports.getPhotos = function(photos, sort) {
   var result = [];
   photos.forEach(function(photo) {
     if (photo.hidden === false) {
@@ -1283,7 +1281,7 @@ var getPhotos = function(photos, sort) {
     }
   });
   if (sort) {
-    result = sort(result);
+    sort(result);
   }
   return result;
 };
@@ -1433,7 +1431,9 @@ exports.createPhotoAlbumAPI = function(req, res) {
 
 };
 
-
+/**
+ * api 读取相册数据
+ */
 exports.readPhotoAlbumAPI = function(req, res) {
 
 };
