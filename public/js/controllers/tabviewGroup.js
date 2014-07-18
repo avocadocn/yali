@@ -37,14 +37,15 @@ tabViewGroup.config(['$routeProvider',
         templateUrl: function(params){
             return '/group/timeline/'+params.tid;
         }
-      })
-      .otherwise({
-        redirectTo: '/group_message'
       });
+      // .otherwise({
+      //   redirectTo: ''
+      // });
 }]);
 
-tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
+tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope, $location) {
     $rootScope.nowTab = window.location.hash.substr(2);
+    console.log($rootScope.nowTab);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
         $rootScope.message_corner = false;
@@ -52,6 +53,18 @@ tabViewGroup.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.number;
     $rootScope.isMember;
     $rootScope.message_for_group = true;
+    $rootScope.$watch("role",function(role){
+        if (role && $location.hash()==''){
+            if(role === 'GUEST' || role === 'GUESTHR' || role === 'GUESTLEADER'){
+                $location.path('/group_info');
+                $rootScope.nowTab = 'group_info';
+            }
+            else{
+                $location.path('/group_message');
+                $rootScope.nowTab = 'group_message';
+            }
+        }
+    });
 
     $rootScope.$on("$routeChangeStart",function(){
         $rootScope.loading = true;

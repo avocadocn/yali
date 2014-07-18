@@ -26,12 +26,12 @@ exports.companyAuthorize = function(req, res, next){
     else if(req.user.provider ==='user' && req.company._id.toString() === req.user.cid.toString()){
       req.role = 'EMPLOYEE';
     }
+    // else{
+    //   if(req.user.role == 'LEADER'){
+    //     req.role = 'GUESTLEADER';
+    //   }
     else{
-      if(req.user.role == 'LEADER'){
-        req.role = 'GUESTLEADER';
-      }else{
-        req.role = 'GUEST';
-      }
+      req.role = 'GUEST';
     }
   }
   next();

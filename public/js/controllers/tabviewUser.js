@@ -50,14 +50,14 @@ tabViewUser.config(['$routeProvider',
         templateUrl: '/users/change_password',
         controller: 'PasswordFormController',
         controllerAs: 'password'
-      }).
-      otherwise({
-        redirectTo: '/group_message'
       });
+      // otherwise({
+      //   redirectTo: '/group_message'
+      // });
   }]);
 
-tabViewUser.run(['$rootScope',
-    function($rootScope) {
+tabViewUser.run(['$rootScope','$location',
+    function($rootScope,$location) {
         $rootScope.nowTab = window.location.hash.substr(2);
         $rootScope.message_for_group = false;
         $rootScope.addactive = function(value) {
@@ -69,6 +69,18 @@ tabViewUser.run(['$rootScope',
         });
         $rootScope.$on("$routeChangeSuccess",function(){
             $rootScope.loading = false;
+        });
+        $rootScope.$watch("role",function(role){
+            if (role && $location.hash()==''){
+                if(role === 'OWNER'){
+                    $location.path('/group_message');
+                    $rootScope.nowTab='group_message';
+                }
+                else{
+                    $location.path('/timeLine/'+$rootScope.uid);
+                    $rootScope.nowTab='timeLine/'+$rootScope.uid;
+                }
+            }
         });
     }
 ]);

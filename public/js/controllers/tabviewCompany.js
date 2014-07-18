@@ -79,13 +79,13 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         templateUrl: '/company/add_group',
         controller: 'CompanyGroupFormController',
         controllerAs:'groupModel'
-      }).
-      otherwise({
-        redirectTo: '/company_campaign'
       });
+      // otherwise({
+      //   redirectTo: '/company_campaign'
+      // });
   }]);
 
-tabViewCompany.run(['$rootScope', function ($rootScope) {
+tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
     $rootScope.nowTab = window.location.hash.substr(2);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
@@ -97,11 +97,23 @@ tabViewCompany.run(['$rootScope', function ($rootScope) {
     $rootScope.$on("$routeChangeSuccess",function(){
         $rootScope.loading = false;
     });
+
+    $rootScope.$watch("role",function(role){
+        if (role && $location.hash()==''){
+            if(role === 'GUEST'){
+                $location.path('/team_info');
+                $rootScope.nowTab='team_info';
+            }
+            else{
+                $location.path('/company_campaign');
+                $rootScope.nowTab='company_campaign';
+            }
+        }
+    });
+
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
-    $rootScope.nowTab = 'company_campaign';
-
     $scope.campaign_type = "所有活动";
     $rootScope.$watch('cid',function(cid){
         $http.get('/campaign/getCampaigns/company/'+cid+'/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {

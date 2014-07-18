@@ -46,7 +46,7 @@ block baseInfo
           .score_container
             button.pull-right.dl_btn.dl_btn_small(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel") 动一下
 block panel
-  div(ng-init="teamId='#{teamId}';groupId='#{gid}';teamName='#{tname}'")
+  div(ng-init="teamId='#{teamId}';groupId='#{gid}';teamName='#{tname}';role='#{role}'")
     ul.nav.nav-tabs
       if (role !=='GUESTHR' && role !=='GUEST' && role !=='GUESTLEADER')
         li.tab_style(ng-class="{'active':nowTab=='group_message'}")
