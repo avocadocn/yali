@@ -44,8 +44,10 @@ tabViewGroup.config(['$routeProvider',
 }]);
 
 tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope, $location) {
-    $rootScope.nowTab = window.location.hash.substr(2);
-    console.log($rootScope.nowTab);
+    if($location.hash()!=='')
+        $rootScope.nowTab = window.location.hash.substr(2);
+    else if($location.path()!=='')
+        $rootScope.nowTab = $location.path().substr(1);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
         $rootScope.message_corner = false;
@@ -54,7 +56,7 @@ tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope,
     $rootScope.isMember;
     $rootScope.message_for_group = true;
     $rootScope.$watch("role",function(role){
-        if (role && $location.hash()==''){
+        if (role && $location.hash()=='' && $location.path()==''){
             if(role === 'GUEST' || role === 'GUESTHR' || role === 'GUESTLEADER'){
                 $location.path('/group_info');
                 $rootScope.nowTab = 'group_info';
@@ -175,7 +177,6 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     });
 
     //var teamId = $('#team_content').attr('team-id');
-    $rootScope.nowTab ='group_message';
     $scope.block = 1;
     $scope.page = 1;
     $scope.pageTime = [0];

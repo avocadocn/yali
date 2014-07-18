@@ -86,7 +86,10 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
   }]);
 
 tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
-    $rootScope.nowTab = window.location.hash.substr(2);
+    if($location.hash()!=='')
+        $rootScope.nowTab = window.location.hash.substr(2);
+    else if($location.path()!=='')
+        $rootScope.nowTab = $location.path().substr(1);
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
     };
@@ -99,7 +102,7 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
     });
 
     $rootScope.$watch("role",function(role){
-        if (role && $location.hash()==''){
+        if (role && $location.hash()=='' && $location.path()==''){
             if(role === 'GUEST'){
                 $location.path('/team_info');
                 $rootScope.nowTab='team_info';

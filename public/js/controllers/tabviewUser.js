@@ -58,7 +58,10 @@ tabViewUser.config(['$routeProvider',
 
 tabViewUser.run(['$rootScope','$location',
     function($rootScope,$location) {
-        $rootScope.nowTab = window.location.hash.substr(2);
+        if($location.hash()!=='')
+            $rootScope.nowTab = window.location.hash.substr(2);
+        else if($location.path()!=='')
+            $rootScope.nowTab = $location.path().substr(1);
         $rootScope.message_for_group = false;
         $rootScope.addactive = function(value) {
             $rootScope.nowTab = value;
@@ -71,7 +74,7 @@ tabViewUser.run(['$rootScope','$location',
             $rootScope.loading = false;
         });
         $rootScope.$watch("role",function(role){
-            if (role && $location.hash()==''){
+            if (role && $location.hash()=='' && $location.path()==''){
                 if(role === 'OWNER'){
                     $location.path('/group_message');
                     $rootScope.nowTab='group_message';
