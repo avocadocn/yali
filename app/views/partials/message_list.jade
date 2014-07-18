@@ -97,19 +97,19 @@ div(ng-show = '!loading')
           span.message_label(ng-if="group_message.join_role&&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
           span.message_label(ng-if="group_message.campaign.active && group_message.join_role &&group_message.join_flag==undefined&& group_message.message_type!=4") 报名已截止
           span.message_label(ng-if="!group_message.campaign.active") 活动已关闭
-          label.pull-right(ng-if="role === 'LEADER'&&message_for_group")
-            a(ng-click="modalPerticipator($index)" ng-if="group_message.member_num > 0") 私信
-          label.pull-right.vertical_label(ng-if="group_message.member_num > 0") |
+          label.pull-right(ng-if="role === 'LEADER'&&message_for_group&&group_message.member_num > 0")
+            a(ng-click="modalPerticipator($index)") 私信
+          label.pull-right.vertical_label(ng-if="group_message.member_num > 0&&role === 'LEADER'&&message_for_group") |
           label.pull-right(ng-if="role!='HR'&&group_message.comment_permission")
             a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
         .message_row(ng-if="group_message.message_type==4")
-          label.pull-right(ng-if="role === 'LEADER'&&message_for_group")
-            a(ng-click="modalPerticipator($index)" ng-if="group_message.member_num > 0") 私信
-          label.pull-right.vertical_label(ng-if="role === 'LEADER'&&group_message.member_num > 0") |
+          label.pull-right(ng-if="role === 'LEADER'&&message_for_group&&group_message.member_num > 0")
+            a(ng-click="modalPerticipator($index)") 私信
+          label.pull-right.vertical_label(ng-if="role === 'LEADER'&&group_message.member_num > 0&&group_message.comment_permission") |
           label.pull-right(ng-if="role!='HR'&&group_message.comment_permission")
             a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
-          label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined") |
-            a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
+          label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined&&role!='HR'&&group_message.comment_permission") |
+          a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
         .message_row(ng-if="toggle[$index] && group_message.comment_permission")
           .dl_comment_area
             form.dl_modal_container.margin_top_5(name="comment_form" novalidate)
