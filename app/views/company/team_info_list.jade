@@ -55,11 +55,11 @@ div.dl_allteaminfo_emp.masonry(masonry ng-if="role !== 'HR'")
     a(href="/group/home/{{team._id}}")
       img.img_border.img_contain(ng-src="{{team.logo}}/20/20")
       span {{team.name}}
-
-    //- 不属于显示加组按钮
-    button.dl_btn.dl_btn_small.btn_join(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
-    //-属于则显示退组按钮
-    button.dl_btn.dl_btn_small.btn_join.cancel_btn(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
+    if role === 'EMPLOYEE'
+      //- 不属于显示加组按钮
+      button.dl_btn.dl_btn_small.btn_join(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
+      //-属于则显示退组按钮
+      button.dl_btn.dl_btn_small.btn_join.cancel_btn(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
 
     div.newcampaign(ng-if="team.campaign_theme != '' ")
       p 最新活动：
