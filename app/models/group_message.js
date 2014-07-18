@@ -42,6 +42,10 @@ var GroupMessage = new Schema({
         name: String,
         logo:String
     }],
+    department: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Department'
+    }],
     campaign:{
         type: Schema.Types.ObjectId,
         ref: 'Campaign'

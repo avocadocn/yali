@@ -6,6 +6,9 @@ div(ng-show = '!loading')
       .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
         a(ng-href='/group/home/{{group_message.team_id}}')
           img.size_56(ng-src='{{group_message.logo}}')
+      .message_side(ng-if="group_message.message_type===9")
+        a(ng-href="{{'/department/home/' + group_message.department_id }}")
+          img.size_56(ng-src='{{group_message.logo}}')
       .message_side(ng-if="group_message.message_type==0||group_message.message_type==2||group_message.message_type==6||group_message.message_type==7||group_message.message_type==8")
         img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
         .size_56(ng-if="group_message.message_type==6")
@@ -46,6 +49,9 @@ div(ng-show = '!loading')
         //-   span 向
         //-   a(ng-href="{{'/department/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
         //-   span 发出了挑战
+        span.message_head(ng-switch-when="9")
+          a(ng-href="{{'/department/home/'+group_message.department_id}}") {{group_message.team[0].name}}
+          span #{__("NEW_MESSAGE")}
         span.message_head(ng-switch-when="10")
           span {{group_message.team[0].name}}
           span 发起了一个部门联谊活动
@@ -53,7 +59,7 @@ div(ng-show = '!loading')
         span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
-          .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 ")
+          .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9")
             .message_row
               span.message_label 主题:
               span.message_label
@@ -88,7 +94,7 @@ div(ng-show = '!loading')
               span.message_label
                 a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}
               span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-        .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6&& group_message.message_type!=4")
+        .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<6&& group_message.message_type!=4 || group_message.message_type===9")
           span(ng-if="group_message.join_role &&group_message.join_flag!=undefined && !group_message.both_team")
             btn.cancel_btn.dl_btn_small.operator_btn(ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag") 退出
             btn.dl_btn.dl_btn_small.operator_btn(ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}

@@ -401,7 +401,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         try {
             $http({
                 method: 'post',
-                url: '/users/joinCampaign',
+                url: '/campaign/joinCampaign/' + campaign_id,
                 data:{
                     campaign_id : campaign_id
                 }
@@ -428,7 +428,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         try {
             $http({
                 method: 'post',
-                url: '/users/quitCampaign',
+                url: '/campaign/quitCampaign/' + campaign_id,
                 data:{
                     campaign_id : campaign_id
                 }

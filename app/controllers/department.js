@@ -207,6 +207,9 @@ exports.multiCampaignSponsor = function(req, res) {
                 name: req.department.company.name
               });
               groupMessage.campaign = department_campaign._id;
+
+              // 暂时只有一个其它部门
+              groupMessage.department = [req.department._id, other_departments[0]._id];
               groupMessage.save(function (err) {
                 if (err) {
                   console.log('保存约战动态时出错' + err);
@@ -334,7 +337,7 @@ exports.sponsor = function(req, res) {
             } else {
               //生成动态消息
               var groupMessage = new GroupMessage();
-              groupMessage.message_type = 1;
+              groupMessage.message_type = 9;
               groupMessage.company = {
                 cid: cid,
                 name: cname
@@ -345,6 +348,7 @@ exports.sponsor = function(req, res) {
                 logo: req.department.team.logo
               };
               groupMessage.campaign = campaign._id;
+              groupMessage.department = req.department._id;
               groupMessage.save(function(err) {
                 if (err) {
                   console.log(err);
