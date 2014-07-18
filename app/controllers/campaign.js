@@ -635,19 +635,20 @@ exports.quitCampaign = function (req, res) {
         }
       }
       else{
-        var member_index;
-        for(var i = 0; i<camp_length;i++){
-          member_index = model_helper.arrayObjectIndexOf(campaign.camp[i].member,uid,'uid');
-          if(member_index>-1){
-            campaign.camp[i].member.splice(member_index,1);
-            campaign.member_quit.push({
-              'cid':cid,
-              'uid':uid,
-              'nickname':req.user.nickname,
-              'photo':req.user.photo
-            });
-            break;
-          }
+        var tid = req.body.tid;
+        var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
+        if(camp_index==-1){
+           return res.send({ result: 0, msg: '请求错误'});
+        }
+        var member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
+        if(member_index>-1){
+          campaign.camp[camp_index].member.splice(member_index,1);
+          campaign.member_quit.push({
+            'cid':cid,
+            'uid':uid,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo
+          });
         }
         if(member_index<0){
           return res.send({ result: 0, msg: '您没有参加该活动'});
