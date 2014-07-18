@@ -331,7 +331,6 @@ exports.getCampaigns = function(req, res) {
     .sort({'start_time':-1})
     .exec()
     .then(function(campaign) {
-      console.log('----',option,campaign);
       if(campaign===[]){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
