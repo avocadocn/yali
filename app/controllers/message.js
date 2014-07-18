@@ -753,13 +753,11 @@ var getMessage = function(req,res,condition,callback){
 exports.setMessageStatus = function(req,res){
   var status = req.body.status;
   var _type = req.body.type;
-  var status_model = ['read','unread','delete'];
+  var status_model = ['read','unread','delete','undelete'];
   if(status_model.indexOf(status) > -1){
-
-
     var operate = {'$set':{'status':status}};
     var callback = function(value){
-      res.send('MODIFY_OK');
+      res.send({'msg':'MODIFY_OK'});
     }
     var param = {
       'collection':Message,
@@ -767,25 +765,33 @@ exports.setMessageStatus = function(req,res){
       'callback':callback,
       '_err':_err
     };
+    if(_type === 'send'){
+      param.collection = 'MessageContent';
+    }
     if(!req.body.multi){
       var msg_id = req.body.msg_id;
       param.condition = msg_id;
       param.type = 0;
     }else{
-      if(_type === 'all'){
-        param.condition = {'rec_id':req.user._id,'status':{'$ne':'delete'}};
-      }else{
-        if(_type === 'private'){
+      switch(_type){
+        case 'all':
+          param.condition = {'rec_id':req.user._id,'status':{'$ne':'delete'}};
+        break;
+        case 'private':
           param.condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
-        }else{
+        break;
+        case 'send':
+          param.condition = {'sender':{'$eleMatch':{'_id':req.user._id}},'status':{'$ne':'delete'}};
+        break;
+        default:
           param.condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
-        }
+        break;
       }
       param.type = 1;
     }
     set(param);
   }else{
-    res.send('STATUS_ERROR');
+    res.send({'msg':'STATUS_ERROR'});
   }
 }
 

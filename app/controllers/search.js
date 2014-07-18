@@ -96,13 +96,17 @@ exports.recommandTeam = function(req,res) {
 
 
 //全都让前台判断去吧
-function findComapnyGroup(condition,req,res)
+function findComapnyGroup(condition,req,res,_users)
 {
   //var users = [];
   //var leaders = [];
   CompanyGroup.findOne(condition,{'member':1,'leader':1},function (err,cg) {
     if(err || !cg) {
-      return res.send([]);
+      return res.send({
+        'all_users':_users,
+        'users':[],
+        'leaders':[]
+      });
     } else {
       //var users = [];
       //var ls = [];
@@ -124,6 +128,7 @@ function findComapnyGroup(condition,req,res)
       // }
       // console.log(ls);
       return res.send({
+        'all_users':_users,
         'users':members,
         'leaders':leaders
       });
@@ -135,27 +140,29 @@ function findComapnyGroup(condition,req,res)
 //TODO
 //根据公司id搜索成员
 exports.getUser = function(req, res) {
-  if(req.body.tid != 'null'){
-    var tid = req.body.tid;   //找选择了该队的员工
-    findComapnyGroup({'_id':tid},req,res);
-  }else{
-    var cid = req.user.provider === 'company' ? req.user._id : req.user.cid;
-    User.find({'cid':cid},function (err,users){
-      if(err || !users){
-        res.send(500,[]);
-      }else{
-        var _users = [];
-        for(var i = 0 ; i < users.length; i ++){
-          _users.push({
-            '_id':users[i]._id,
-            'nickname':users[i].nickname,
-            'photo':users[i].photo
-          });
-        }
-        res.send(_users);
+  var cid = req.user.provider === 'company' ? req.user._id : req.user.cid;
+  User.find({'cid':cid},function (err,users){
+    if(err || !users){
+      res.send(500,[]);
+    }else{
+      var _users = [];
+      for(var i = 0 ; i < users.length; i ++){
+        _users.push({
+          '_id':users[i]._id,
+          'nickname':users[i].nickname,
+          'photo':users[i].photo,
+          'department':users[i].department
+        });
       }
-    });
-  }
+      //只获取公司员工
+      if(req.body.tid == 'null'){
+        res.send(_users);
+      //还要获取某小队成员
+      }else{
+        findComapnyGroup({'_id':req.body.tid},req,res,_users);
+      }
+    }
+  });
 };
 
 

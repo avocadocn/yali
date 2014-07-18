@@ -28,7 +28,7 @@
             .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="user in department_users")
               .dl_row
                 .dl_cover(ng-if="user.leader")
-                a(ng-click="appointReady(user,$index)" ng-disabled="true")
+                a(ng-click="appointReady($index)" ng-disabled="true")
                   img.size_80(ng-src="{{user.photo}}")
               .dl_row(style="width:80px;text-align:center")
                 label {{user.nickname}}

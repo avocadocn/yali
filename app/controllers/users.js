@@ -354,10 +354,20 @@ exports.dealSetProfile = function(req, res) {
               'apply_status':'wait'
             };
             if(req.body.main_department_id != 'null'){
+              var callback = function(err, data) {
+                if (err) {
+                  console.log(err);
+                  if (err === 'not found') {
+                    return res.send(404);
+                  } else {
+                    return res.send(500);
+                  }
+                }
+              }
               if(req.body.child_department_id != 'null'){
-                department.memberOperateByHand('join',member,req.body.child_department_id);
+                department.memberOperateByHand('join',member,req.body.child_department_id,callback);
               }else{
-                department.memberOperateByHand('join',member,req.body.main_department_id);
+                department.memberOperateByHand('join',member,req.body.main_department_id,callback);
               }
             }
             var groupMessage = new GroupMessage();

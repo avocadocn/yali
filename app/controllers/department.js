@@ -53,17 +53,38 @@ exports.department = function(req, res, next) {
 exports.managerOperate = function(req, res) {
   var operate = req.body.operate;
   var department_set,team_set;
-
+  var did = req.body.did;
   console.log(operate);
   if(operate === 'appoint'){
-    department_set = {'$push':{'manager':req.body.member}};
-    team_set = {'$push':{'leader':req.body.member}};
+    if(req.body.member.wait_for_join){
+      teamOperate({
+        did: did,
+        operate: {
+          '$push': {
+            'member': req.body.member
+          }
+        },
+        user: req.body.member,
+        method: true
+      }, function (err,data){managerUpdate(did,operate,req.body.member,res)});
+    }else{
+      managerUpdate(did,operate,req.body.member,res);
+    }
+  }else{
+    managerUpdate(did,operate,req.body.member,res);
   }
-  if(operate === 'dismiss'){
-    department_set = {'$pull':{'manager':{'_id':req.body.member._id}}};
-    team_set = {'$pull':{'leader':{'_id':req.body.member._id}}};
+}
+
+
+var managerUpdate = function(did,operate,member,res){
+  var department_set,team_set;
+  if(operate === 'appoint'){
+    department_set = {'$push':{'manager':member}};
+    team_set = {'$push':{'leader':member}};
+  }else{
+    department_set = {'$pull':{'manager':{'_id':member._id}}};
+    team_set = {'$pull':{'leader':{'_id':member._id}}};
   }
-  var did = req.body.did;
   Department.findByIdAndUpdate({
     '_id': did
   }, department_set, function(err, department) {
@@ -74,7 +95,7 @@ exports.managerOperate = function(req, res) {
         if(err || !company_group){
           res.send(500);
         }else{
-          User.findOne({'_id':req.body.member._id},function (err,user){
+          User.findOne({'_id':member._id},function (err,user){
             if(err || !user){
               res.send(500);
             }else{
@@ -89,7 +110,7 @@ exports.managerOperate = function(req, res) {
                   res.send(500);
                 }else{
                   res.send(200, {
-                    'manager': req.body.member
+                    'manager': member
                   });
                 }
               });
@@ -506,14 +527,34 @@ exports.memberOperateByRoute = function(req, res) {
 }
 
 //手动调用函数
-exports.memberOperateByHand = function(operate, member, did) {
+exports.memberOperateByHand = function(operate, member, did, callback) {
   if (operate === 'join') {
     //员工提出申请后加入
-    teamOperate(did,{'$push':{'member':member}},null,null,member,true);
+    teamOperate({
+      did: did,
+      operate: {
+        '$push': {
+          'member': member
+        }
+      },
+      user: member,
+      method: true
+    }, callback);
   }
   if (operate === 'quit') {
     //踢掉
-    teamOperate(did,{'$pull':{'member':{'_id':member._id}}},null,null,member,false);
+     teamOperate({
+      did: req.user.department._id,
+      operate: {
+        '$pull': {
+          'member': {
+            '_id': member._id
+          }
+        }
+      },
+      user: member,
+      method: false
+    }, callback);
   }
 }
 

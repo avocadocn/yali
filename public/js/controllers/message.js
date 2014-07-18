@@ -383,6 +383,13 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
         }
     }).success(function(data, status) {
         switch(type){
+          case 'send':
+            if(!multi){
+              rootScope.send_messages.splice(index,1);
+            }else{
+              rootScope.send_messages = [];
+            }
+          break;
           case 'all':
             if(!multi){
               if(rootScope.o>0 && rootScope.all_messages[index].status === 'unread'){rootScope.o--}
@@ -665,8 +672,8 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
           url: '/message/sendlist'
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
-            $scope.send_messages = sendMessagesPre(data.message_contents);
-            $rootScope.page_send_messages = pageHandle($scope.send_messages,$rootScope.page_send,'init');
+            $rootScope.send_messages = sendMessagesPre(data.message_contents);
+            $rootScope.page_send_messages = pageHandle($rootScope.send_messages,$rootScope.page_send,'init');
           }
       }).error(function(data, status) {
           //TODO:更改对话框
@@ -680,19 +687,13 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
   $scope.getSenderList();
 
   $scope.pageOperate = function(arrow){
-    pageHandle($scope.send_messages,$rootScope.page_send,arrow);
+    pageHandle($rootScope.send_messages,$rootScope.page_send,arrow);
   }
-
-  $scope.setAllStatus = function(_status){
-    sendSet($http,_status,$rootScope,null,'send',null,true);
+  $scope.deleteAll = function(){
+    sendSet($http,'delete',$rootScope,null,'send',null,true);
   }
   $scope.setToDelete = function(index){
-    sendSet($http,'delete',$rootScope,$rootScope.all_messages[index]._id,'send',index,false);
-  }
-  $scope.setToRead = function(index){
-    if($rootScope.all_messages[index].status === 'unread'){
-      sendSet($http,'read',$rootScope,$rootScope.all_messages[index]._id,'send',index,false);
-    }
+    sendSet($http,'delete',$rootScope,$rootScope.send_messages[index]._id,'send',index,false);
   }
 }]);
 

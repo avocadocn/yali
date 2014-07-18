@@ -921,8 +921,22 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                   tid:tid
               }
           }).success(function(data, status) {
+                $scope.company_users = data.all_users;
+                console.log($scope.company_users);
                 $scope.managers = data.leaders;
                 $scope.department_users = data.users;
+                for(var i = 0 ; i < $scope.department_users.length; i ++){
+                    $scope.department_users[i].wait_for_join = false;
+                }
+                if($scope.company_users.length > 0 ){
+                    for(var i = 0 ; i < $scope.company_users.length; i ++){
+                        if($scope.company_users[i].department._id == undefined || $scope.company_users[i].department._id == null){
+                            $scope.company_users[i].wait_for_join = true;
+                            $scope.department_users.push($scope.company_users[i]);
+                        }
+                    }
+                }
+
                 $scope.manager = 'null';
               var manager_find = false;
                 for(var i = 0; i < $scope.department_users.length && !manager_find; i ++) {
@@ -971,8 +985,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             }
         }
     }
-    $scope.appointReady = function(user,index){
-        $scope.department_user = user;
+    $scope.appointReady = function(index){
+        $scope.department_user = $scope.department_users[index];
+        console.log($scope.department_user);
         $scope.manager=$scope.managers[0];
         $scope.department_index = index;
         $scope.department_users[index].leader = true;
@@ -986,9 +1001,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             }
         }
         $scope.managers[0] = {
-            '_id':user._id,
-            'nickname':user.nickname,
-            'photo':user.photo
+            '_id':$scope.department_user._id,
+            'nickname':$scope.department_user.nickname,
+            'photo':$scope.department_user.photo
         }
     }
     $scope.dismissManager = function (manager) {
@@ -1024,7 +1039,8 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
                     member:{
                         '_id':$scope.department_user._id,
                         'nickname':$scope.department_user.nickname,
-                        'photo':$scope.department_user.photo
+                        'photo':$scope.department_user.photo,
+                        'wait_for_join':$scope.department_user.wait_for_join
                     },
                     did:$scope.did,
                     operate:'appoint'

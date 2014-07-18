@@ -48,3 +48,6 @@
     .dl_row.dl_center(ng-if="send_messages.length > 10")
       button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'right' || page_send.arrow == 'none' " ng-click="pageOperate('left')") <<
       button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'left' || page_send.arrow == 'none' " ng-click="pageOperate('right')") >>
+    .dl_row
+      hr
+      button.dl_btn.dl_btn_small.margin_left_5(ng-click="deleteAll()" ng-if="send_messages.length > 0") 全部删除
