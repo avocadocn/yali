@@ -39,7 +39,7 @@ tabViewGroup.config(['$routeProvider',
         }
       })
       .otherwise({
-        redirectTo: ''
+        redirectTo: '/group_message'
       });
 }]);
 
