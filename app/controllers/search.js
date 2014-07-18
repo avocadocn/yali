@@ -65,43 +65,30 @@ exports.getTeam = function(req, res) {
 exports.recommandTeam = function(req,res) {
   var gid = req.body.gid;
   var tid = req.body.tid;
-  async.waterfall([
-    function(callback){
-      CompanyGroup.findOne({'gid':gid,'_id':tid},{'home_court':1},function (err,companyGroup){
-        if(err || !companyGroup){
-          callback(err);
-        }
-        else if(companyGroup.home_court.length==0){//没填写主场
-          callback(null,{'result':2,'teams':[]}); //无主场提示
-        }
-        else{
-          var homecourt = companyGroup.home_court[0];
-          callback(null,homecourt);
-        }
-      });
-    },
-    function(homecourt ,callback){
+  CompanyGroup.findOne({'gid':gid,'_id':tid},{'home_court':1},function (err,companyGroup){
+    if(err || !companyGroup){
+      console.log(err);
+      return res.send(500,{'result':0,'msg':'500'});
+    }
+    else if(companyGroup.home_court.length==0){//没填写主场
+      return res.send({'result':2,'teams':[]}); //无主场提示
+    }
+    else{
+      var homecourt = companyGroup.home_court[0];
       CompanyGroup.find({'_id':{$ne:tid},'gid':gid,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},{'_id':1,'name':1,'home_court':1,'logo':1,'member':1})
       .limit(10)
       .exec(function (err, teams){
         if(err){
-          callback(err);
+          console.log(err);
+          return res.send(500,{'result':0,'msg':'500'});
         }
         else if(teams.length == 0){//找不到相近的队
-          callback(null,{'result':1,'teams':[]});
+          return res.send({'result':1,'teams':[]});
         }
         else{
-          callback(null,{'result':1,'teams':teams});//返回10个推荐队
+          return res.send({'result':1,'teams':teams});//返回10个推荐队
         }
       });
-    }
-  ],function(err,result){
-    if(err){
-      console.log(err);
-      return res.send(500,{'result':0,'msg':'500'});
-    }
-    else{
-      return res.send(result);
     }
   });
 };

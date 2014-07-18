@@ -1160,7 +1160,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             }).success(function(data,status){
                 if(data.result===1){
                     $scope.teams=data.teams;
-                    console.log($scope.teams);
                 }
                 else if(data.result===2)//没填主场
                     $scope.homecourt=false;
