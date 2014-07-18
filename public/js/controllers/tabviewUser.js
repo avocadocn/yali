@@ -50,14 +50,15 @@ tabViewUser.config(['$routeProvider',
         templateUrl: '/users/change_password',
         controller: 'PasswordFormController',
         controllerAs: 'password'
+      })
+      .otherwise({
+        redirectTo: '/group_message'
       });
-      // otherwise({
-      //   redirectTo: '/group_message'
-      // });
   }]);
 
 tabViewUser.run(['$rootScope','$location',
     function($rootScope,$location) {
+        console.log($location.hash(),$location.path());
         if($location.hash()!=='')
             $rootScope.nowTab = window.location.hash.substr(2);
         else if($location.path()!=='')

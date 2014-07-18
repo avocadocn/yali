@@ -37,10 +37,10 @@ tabViewGroup.config(['$routeProvider',
         templateUrl: function(params){
             return '/group/timeline/'+params.tid;
         }
+      })
+      .otherwise({
+        redirectTo: ''
       });
-      // .otherwise({
-      //   redirectTo: ''
-      // });
 }]);
 
 tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope, $location) {

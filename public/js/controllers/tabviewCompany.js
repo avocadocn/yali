@@ -79,10 +79,10 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         templateUrl: '/company/add_group',
         controller: 'CompanyGroupFormController',
         controllerAs:'groupModel'
+      })
+      .otherwise({
+        redirectTo: '/company_campaign'
       });
-      // otherwise({
-      //   redirectTo: '/company_campaign'
-      // });
   }]);
 
 tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
