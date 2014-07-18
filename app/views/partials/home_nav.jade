@@ -29,6 +29,9 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
         ul.nav.navbar-nav.pull-right
           li
             a(href="/company/home")= __("COMPANY_HOME")
+          if global_user.department._id
+            li
+              a(href="/department/home/#{global_user.department._id}") 部门主页
           li
             a(href="/users/home")
               span.user_img
