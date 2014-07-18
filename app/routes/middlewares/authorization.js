@@ -80,6 +80,31 @@ exports.departmentAuthorize = function(req, res, next) {
     res.send(500);
   });
 };
+
+exports.messageAuthorize = function(req,res,next){
+  if(req.user.provider === 'user'){
+    if(req.params.teamId != undefined && req.params.teamId != null && req.params.teamId != ''){
+      //队长
+      CompanyGroup.findOne({'_id':req.params.teamId},function (err,company_group){
+        if(err || !company_group){
+          return res.send(404);
+        }else{
+          req.companyGroup = company_group;
+          exports.teamAuthorize(req,res,next);
+        }
+      });
+      //个人
+    }else{
+      req.role = 'MEMBER';
+      next();
+    }
+  }else{
+    //公司
+    req.role = 'HR';
+    next();
+  }
+}
+
 exports.teamAuthorize = function(req, res, next) {
   if(req.user.provider==="company"){
     if(req.user._id.toString() ===req.companyGroup.cid.toString()){

@@ -127,7 +127,7 @@ textarea {
   width: 90px;
   height: 98px;
   float: left;
-  font-size: 80px;
+  font-size: 40px;
   text-align: center;
   line-height: 120%;
 }
@@ -1367,6 +1367,8 @@ input.ng-invalid.ng-dirty {
 }
 .breadcrumb {
   background-color: #fff;
+  padding-left: 0;
+  margin-bottom: 10px;
 }
 .campaign_table tr {
   background-color: #fff;

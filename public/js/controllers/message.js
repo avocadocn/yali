@@ -25,6 +25,14 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.page_global_messages = [];
 
 
+    $rootScope.page_send = {
+      'type':'send',
+      'arrow':'both',
+      'current_page':0,
+      'up':0,
+      'down':0
+    };
+
     $rootScope.page_all = {
       'type':'all',
       'arrow':'both',
@@ -109,7 +117,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
             }else{
               $rootScope.all_messages = messagePreHandle(data.team,data.msg,false); //不分类,直接显示所有站内信
               if($rootScope.all_messages.length > 0){
-                $rootScope.page_team_messages = pageHandle($rootScope.all_messages,$rootScope.page_all,'init');
+                $rootScope.page_all_messages = pageHandle($rootScope.all_messages,$rootScope.page_all,'init');
               }
             }
             $rootScope.teams = data.team;
@@ -576,45 +584,49 @@ var pageHandle = function(messages,page,arrow){
   }
 }
 
-//小队站内信
-messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-  //$rootScope.getMessageByHand('team');
 
-  $scope.pageOperate = function(arrow){
-    pageHandle($rootScope.team_messages,$rootScope.page_team,arrow);
-  }
-
-  $scope.private_message_content = {
-    'text':''
-  }
-  $scope.private_message_caption = {
-    'text':''
-  }
-
-
+messageApp.controller('messageSenderController',['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+    $scope.private_message_content = {
+      'text':''
+    }
+    $scope.private_message_caption = {
+      'text':''
+    }
   //队长给队员发私信
   $scope.sendToAll = function(){
-    $rootScope.message_for_group = true;
-    var _team = {
-      size : 1,
-      own : {
-        _id : $rootScope.teamId,
-        name : $rootScope.teamName,
-      }
+    var _url;
+    var _data = {
+      content : $scope.private_message_content.text,
+      caption : $scope.private_message_caption.text
     };
+    if($scope.role === 'LEADER'){
+      var _team = {
+        size : 1,
+        own : {
+          _id : $scope.teamId,
+          name : $scope.teamName,
+        }
+      };
+      _data.team = _team;
+      _url = '/message/push/leader';
+    }
+    if($scope.role === 'HR'){
+      _url = '/message/push/hr';
+      _data.cid = $scope.cid;
+    }
+    
     try{
       $http({
           method: 'post',
-          url: '/message/push/leader',
-          data:{
-              team : _team,
-              content : $scope.private_message_content.text,
-              caption : $scope.private_message_caption.text
-          }
+          url: _url,
+          data:_data
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
-            $rootScope.team_length++;
-            $rootScope.o ++;
+            alertify.alert('发送成功!');
+            if($scope.role === 'LEADER'){
+              $rootScope.o ++;
+            }
+            $scope.getSenderList();
           }
       }).error(function(data, status) {
           //TODO:更改对话框
@@ -626,83 +638,229 @@ messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', 
     }
   }
 
-  $scope.setAllStatus = function(_status){
-    sendSet($http,_status,$rootScope,null,'team',null,true);
-  }
-  $scope.setToDelete = function(index){
-    sendSet($http,'delete',$rootScope,$rootScope.team_messages[index]._id,'team',index,false);
-  }
-  $scope.showPop = function(index){
-    popOver(index,$rootScope.team_messages[index].detail);
-  }
-  $scope.setToRead = function(index){
-    if($rootScope.team_messages[index].status === 'unread'){
-      sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id,'team',index,false);
+  $scope.getSenderList = function(){
+     try{
+      $http({
+          method: 'get',
+          url: '/message/sendlist'
+      }).success(function(data, status) {
+          if(data.msg === 'SUCCESS'){
+            $scope.send_messages = sendMessagesPre(data.message_contents);
+            $rootScope.page_send_messages = pageHandle($scope.send_messages,$rootScope.page_send,'init');
+          }
+      }).error(function(data, status) {
+          //TODO:更改对话框
+          alertify.alert('DATA ERROR');
+      });
+    }
+    catch(e){
+        console.log(e);
     }
   }
-}]);
-
-//公司站内信
-messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-  //$rootScope.getMessageByHand('company');
+  $scope.getSenderList();
 
   $scope.pageOperate = function(arrow){
-    pageHandle($rootScope.company_messages,$rootScope.page_company,arrow);
-  }
-
-  $scope.private_message_content = {
-    'text':''
-  }
-  $scope.private_message_caption = {
-    'text':''
-  }
-
-  //公司给员工发私信
-  $scope.sendToAll = function(){
-    try{
-      $http({
-          method: 'post',
-          url: '/message/push/hr',
-          data:{
-              cid : $rootScope.cid,
-              content : $scope.private_message_content.text,
-              caption : $scope.private_message_caption.text
-          }
-      }).success(function(data, status) {
-          if(data.msg === 'SUCCESS'){
-            $rootScope.company_length++;
-            $rootScope.o ++;
-            alertify.alert('发送成功!');
-            window.location.href = '/company/home';
-          }else{
-            alertify.alert('发送失败!');
-          }
-      }).error(function(data, status) {
-          //TODO:更改对话框
-          alertify.alert('DATA ERROR');
-      });
-    }
-    catch(e){
-        console.log(e);
-    }
+    pageHandle($scope.send_messages,$rootScope.page_send,arrow);
   }
 
   $scope.setAllStatus = function(_status){
-    sendSet($http,_status,$rootScope,null,'company',null,true);
+    sendSet($http,_status,$rootScope,null,'send',null,true);
   }
   $scope.setToDelete = function(index){
-    sendSet($http,'delete',$rootScope,$rootScope.company_messages[index]._id,'company',index,false);
-  }
-
-  $scope.showPop = function(index){
-    popOver(index,$rootScope.company_messages[index].detail);
+    sendSet($http,'delete',$rootScope,$rootScope.all_messages[index]._id,'send',index,false);
   }
   $scope.setToRead = function(index){
-    if($rootScope.company_messages[index].status === 'unread'){
-      sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id,'company',index,false);
+    if($rootScope.all_messages[index].status === 'unread'){
+      sendSet($http,'read',$rootScope,$rootScope.all_messages[index]._id,'send',index,false);
     }
   }
 }]);
+
+
+
+var sendMessagesPre = function(messages){
+  var send_messages = [];
+  var message_type;
+  var detail;
+  var content;
+  var direct_show;
+  for(var i = 0; i < messages.length; i ++) {
+    //小队
+    if(messages[i].type == 'private'){
+      if(messages[i].sender.length > 0){
+        if(messages[i].campaign_id == null){
+          message_type = 0;
+          content = "您向 "+messages[i].team[0].name + "的队员发送了站内信";
+          detail = messages[i].content;
+          direct_show = true;
+        }else{
+          detail = messages[i].content;
+          content = "您向参加 "+ messages[i].caption + " 的成员发送了站内信";
+          if(messages[i].team[0].provoke_status == 0){
+            message_type = 1;
+          }else{
+            message_type = 2;
+          }
+        }
+      }
+     send_messages.push({
+        '_id':messages[i]._id,
+        'caption':'Message From Campaign',
+        'content':content,
+        'status':messages[i].status,
+        'date':messages[i].post_date,
+        'detail':messages[i].content,
+        'message_type':message_type,
+        'campaign_id':messages[i].campaign_id,
+        'campaign_name':messages[i].caption
+      });
+    }
+
+    //公司
+    if(messages[i].type == 'company'){
+      message_type = 3;
+      content = "您向全公司的员工发送了站内信";
+      send_messages.push({
+        '_id':messages[i]._id,
+        'content':content,
+        'caption':messages[i].caption,
+        'status':messages[i].status,
+        'date':messages[i].post_date,
+        'detail':detail,
+        'message_type':message_type
+      });
+    }
+  }
+  return send_messages;
+}
+
+//小队站内信
+// messageApp.controller('messageTeamController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+//   //$rootScope.getMessageByHand('team');
+
+//   $scope.pageOperate = function(arrow){
+//     pageHandle($rootScope.team_messages,$rootScope.page_team,arrow);
+//   }
+
+//   $scope.private_message_content = {
+//     'text':''
+//   }
+//   $scope.private_message_caption = {
+//     'text':''
+//   }
+
+
+//   //队长给队员发私信
+//   $scope.sendToAll = function(){
+//     $rootScope.message_for_group = true;
+//     var _team = {
+//       size : 1,
+//       own : {
+//         _id : $rootScope.teamId,
+//         name : $rootScope.teamName,
+//       }
+//     };
+//     try{
+//       $http({
+//           method: 'post',
+//           url: '/message/push/leader',
+//           data:{
+//               team : _team,
+//               content : $scope.private_message_content.text,
+//               caption : $scope.private_message_caption.text
+//           }
+//       }).success(function(data, status) {
+//           if(data.msg === 'SUCCESS'){
+//             $rootScope.team_length++;
+//             $rootScope.o ++;
+//           }
+//       }).error(function(data, status) {
+//           //TODO:更改对话框
+//           alertify.alert('DATA ERROR');
+//       });
+//     }
+//     catch(e){
+//         console.log(e);
+//     }
+//   }
+
+//   $scope.setAllStatus = function(_status){
+//     sendSet($http,_status,$rootScope,null,'team',null,true);
+//   }
+//   $scope.setToDelete = function(index){
+//     sendSet($http,'delete',$rootScope,$rootScope.team_messages[index]._id,'team',index,false);
+//   }
+//   $scope.showPop = function(index){
+//     popOver(index,$rootScope.team_messages[index].detail);
+//   }
+//   $scope.setToRead = function(index){
+//     if($rootScope.team_messages[index].status === 'unread'){
+//       sendSet($http,'read',$rootScope,$rootScope.team_messages[index]._id,'team',index,false);
+//     }
+//   }
+// }]);
+
+//公司站内信
+// messageApp.controller('messageCompanyController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+//   //$rootScope.getMessageByHand('company');
+
+//   $scope.pageOperate = function(arrow){
+//     pageHandle($rootScope.company_messages,$rootScope.page_company,arrow);
+//   }
+
+//   $scope.private_message_content = {
+//     'text':''
+//   }
+//   $scope.private_message_caption = {
+//     'text':''
+//   }
+
+//   //公司给员工发私信
+//   $scope.sendToAll = function(){
+//     try{
+//       $http({
+//           method: 'post',
+//           url: '/message/push/hr',
+//           data:{
+//               cid : $rootScope.cid,
+//               content : $scope.private_message_content.text,
+//               caption : $scope.private_message_caption.text
+//           }
+//       }).success(function(data, status) {
+//           if(data.msg === 'SUCCESS'){
+//             $rootScope.company_length++;
+//             $rootScope.o ++;
+//             alertify.alert('发送成功!');
+//             window.location.href = '/company/home';
+//           }else{
+//             alertify.alert('发送失败!');
+//           }
+//       }).error(function(data, status) {
+//           //TODO:更改对话框
+//           alertify.alert('DATA ERROR');
+//       });
+//     }
+//     catch(e){
+//         console.log(e);
+//     }
+//   }
+
+//   $scope.setAllStatus = function(_status){
+//     sendSet($http,_status,$rootScope,null,'company',null,true);
+//   }
+//   $scope.setToDelete = function(index){
+//     sendSet($http,'delete',$rootScope,$rootScope.company_messages[index]._id,'company',index,false);
+//   }
+
+//   $scope.showPop = function(index){
+//     popOver(index,$rootScope.company_messages[index].detail);
+//   }
+//   $scope.setToRead = function(index){
+//     if($rootScope.company_messages[index].status === 'unread'){
+//       sendSet($http,'read',$rootScope,$rootScope.company_messages[index]._id,'company',index,false);
+//     }
+//   }
+// }]);
 
 //获取系统公告
 messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {

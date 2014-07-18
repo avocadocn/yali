@@ -5,6 +5,7 @@
 var mongoose = require('mongoose'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup'),
+    async = require('async'),
     User = mongoose.model('User');
 
 
@@ -64,29 +65,43 @@ exports.getTeam = function(req, res) {
 exports.recommandTeam = function(req,res) {
   var gid = req.body.gid;
   var tid = req.body.tid;
-  CompanyGroup.findOne({'gid':gid,'tid':tid},{'home_court':1},function (err,companyGroup){
-    if(err || !companyGroup){
-      console.log(err);
-      return res.send({'result':0,'msg':'404'});
-    }
-    else if(companyGroup.home_court){//没填写主场
-      return res.send({'result':2,'team':[]}); //无主场提示
-    }
-    else{
-      CompanyGroup.find({'gid':gid,'active':true,'home_court':{'$near':{'$geometry':companyGroup.home_court}}},{'_id':1,'home_court':1,'logo':1,'member':1})
+  async.waterfall([
+    function(callback){
+      CompanyGroup.findOne({'gid':gid,'_id':tid},{'home_court':1},function (err,companyGroup){
+        if(err || !companyGroup){
+          callback(err);
+        }
+        else if(companyGroup.home_court.length==0){//没填写主场
+          callback(null,{'result':2,'teams':[]}); //无主场提示
+        }
+        else{
+          var homecourt = companyGroup.home_court[0];
+          callback(null,homecourt);
+        }
+      });
+    },
+    function(homecourt ,callback){
+      CompanyGroup.find({'_id':{$ne:tid},'gid':gid,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},{'_id':1,'name':1,'home_court':1,'logo':1,'member':1})
       .limit(10)
       .exec(function (err, teams){
         if(err){
-          console.log(err);
-          return res.send({'result':0,'msg':'404'});
+          callback(err);
         }
-        else if(!teams){//找不到相近的队
-          return res.send({'result':1,'team':[]});
+        else if(teams.length == 0){//找不到相近的队
+          callback(null,{'result':1,'teams':[]});
         }
         else{
-          return res.send({'result':1,'team':teams});//返回10个推荐队
+          callback(null,{'result':1,'teams':teams});//返回10个推荐队
         }
       });
+    }
+  ],function(err,result){
+    if(err){
+      console.log(err);
+      return res.send(500,{'result':0,'msg':'500'});
+    }
+    else{
+      return res.send(result);
     }
   });
 };

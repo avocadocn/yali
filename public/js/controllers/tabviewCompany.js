@@ -683,7 +683,7 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
 
     var refreshCompanyInfo = function() {
         $http
-        .get('/company/getAccount?' + Math.round(Math.random()*100))
+        .get('/company/getAccount/'+$rootScope.cid+'?' + Math.round(Math.random()*100))
         .success(function(data, status) {
             $scope.company = data.company;
         })
@@ -1100,7 +1100,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
         try{
             $http({
                 method : 'post',
-                url : '/company/saveGroup',
+                url : '/company/saveGroup/'+$rootScope.cid,
                 data : {
                     'selected_group' : _this.selected_group,
                     'tname': _this.tname
@@ -1121,7 +1121,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
     //自动显示默认队名
     this.select = function(){
         try{
-            $http.get('/company/getAccount').success(function(data,status){
+            $http.get('/company/getAccount/'+$rootScope.cid).success(function(data,status){
                 _this.tname = data.info.official_name + '-' + _this.selected + '队';
             }).error(function(data,status){
                 alertify.alert('DATA ERROR');

@@ -14,45 +14,45 @@ div(ng-show = '!loading')
         span.glyphicon.glyphicon-flash(ng-switch-when="7")
       .dl_message_body.margin_left_5
         .row
-          .dl_message_caption
-            h7 {{all_message.caption}}
-          .dl_message_date
-            h7 {{all_message.date | date:'yyyy-MM-dd HH:mm'}}
-        .row
-          .dl_md_12(ng-switch="all_message.message_type")
-            h5(ng-switch-when="3")
+          .dl_message_caption(ng-switch="all_message.message_type")
+            h7(ng-switch-when="3")
               您的公司给您发了
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
                 一条私信
-            h5(ng-switch-when="4")
+            h7(ng-switch-when="4")
               a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
                 {{all_message.content}}
-            h5(ng-switch-when="5")
+            h7(ng-switch-when="5")
               a
                 {{all_message.sender.nickname}} 给您发了
                 a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
-            h5(ng-switch-when="6")
+            h7(ng-switch-when="6")
               您收到了一条
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
                 系统消息
-            h5(ng-switch-when="7")
+            h7(ng-switch-when="7")
               a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
                 {{all_message.content}}
-            h5(ng-switch-when="0")
+            h7(ng-switch-when="0")
               {{all_message.content}} 给您发了
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 一条私信
-            h5(ng-switch-when="1")
+            h7(ng-switch-when="1")
               您参加的活动
               a(href="/campaign/detail/{{all_message.campaign_id}}")
                 {{all_message.campaign_name}}
               有了
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
-            h5(ng-switch-when="2")
+            h7(ng-switch-when="2")
               您参加的比赛
               a(href="/competition/{{all_message.campaign_id}}")
                 {{all_message.campaign_name}}
               有了
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
+          .dl_message_date
+            h7 {{all_message.date | date:'yyyy-MM-dd HH:mm'}}
+        .row
+          .dl_md_12
+            h5 {{all_message.detail}}
           .dl_md_1.pull-right.dl_message_rightcorner
             button.dl_btn.pull-right(ng-click="setToDelete($index)") X
             label.pull-right |

@@ -32,7 +32,7 @@ block baseInfo
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
             button.dl_btn.dl_btn_small(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel") #{__("PROVOKE")}
-            button.dl_btn.dl_btn_small(data-toggle="modal" data-target="#sponsorMessageModel") 发送私信
+            a.dl_btn.dl_btn_small.margin_left_5(href="/message/home/#{teamId}#/send") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
         - var isMember = false;
           if (role === 'MEMBER' || role ==='LEADER' || role ==='PARTNER' || role === 'MEMBERLEADER' || role === 'PARTNERLEADER')
@@ -63,9 +63,6 @@ block panel
     if role ==='HR' || role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../campaign/campaign_modal
-      div(ng-controller="messageTeamController" )
-        div.modal.fade#sponsorMessageModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-          include ../partials/private_message_send
       div(ng-controller="GroupMessageController" )
         div.modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
           include ../partials/campaign_message_send

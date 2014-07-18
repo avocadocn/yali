@@ -82,27 +82,28 @@ block contentExt
             a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
               img.img_contain.detail_photo(ng-src="{{_member.photo}}")
               span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-      form.dl_detail_main(name="comment_form" novalidate)
-        p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
-        textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
-        button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-        .dl_row(bs-popover)
-          section
-            br
-            div.comment.clearfix(ng-repeat="comment in comments")
-              .comment_user_info
-                a(href="/users/home/{{comment.poster._id}}" )
-                  img.user_photo.size_56(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-                p.dl_user_name_small
-                  a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
-              .comment_content_panel
-                .relative
-                  .triangle_border
-                  .triangle
-                  .comment_content
-                    p(ng-cloak) {{comment.content}}
-                label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-                a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+      if role==='MEMBER' || role ==='LEADER'
+        form.dl_detail_main(name="comment_form" novalidate)
+          p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
+          textarea.dl_modal_input.form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
+          button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+          .dl_row(bs-popover)
+            section
+              br
+              div.comment.clearfix(ng-repeat="comment in comments")
+                .comment_user_info
+                  a(href="/users/home/{{comment.poster._id}}" )
+                    img.user_photo.size_56(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
+                  p.dl_user_name_small
+                    a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
+                .comment_content_panel
+                  .relative
+                    .triangle_border
+                    .triangle
+                    .comment_content
+                      p(ng-cloak) {{comment.content}}
+                  label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+                  a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
         #mapContainer.size_400

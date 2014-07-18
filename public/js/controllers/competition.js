@@ -63,7 +63,6 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
             }).success(function(data, status) {
                 if(data === 'SUCCESS'){
                     $scope.comments.splice(index,1);
-                    $scope.campaign.comment_sum --;
                 } else {
                     alertify.alert('DATA ERROR');
                 }
@@ -77,49 +76,48 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
     }
 
     $scope.comment = function(){
-
-         if($scope.comments.length > 0){
-            var tmp_comment = $scope.comments[0];
-            if(tmp_comment.poster._id === $scope.user._id){
-                if($scope.new_comment.text === tmp_comment.content){
-                    alertify.alert('勿要重复留言!');
-                    return;
-                }
+      if($scope.comments.length > 0){
+        var tmp_comment = $scope.comments[0];
+        if(tmp_comment.poster._id === $scope.user._id){
+            if($scope.new_comment.text === tmp_comment.content){
+                alertify.alert('勿要重复留言!');
+                return;
             }
         }
-        try {
-            $http({
-                method: 'post',
-                url: '/comment/push',
-                data:{
-                    host_id : $scope.competition_id,
-                    content : $scope.new_comment.text,
-                    host_type : 'competition'
-                }
-            }).success(function(data, status) {
-                if(data.msg === 'SUCCESS'){
-                    $scope.comments.unshift({
-                        'host_id' : data.comment.host_id,
-                        'content' : data.comment.content,
-                        'create_date' : data.comment.create_date,
-                        'poster' : data.comment.poster,
-                        'host_type' : data.comment.host_type,
-                        'index' : $scope.fixed_sum+1
-                    });
-                } else {
-                    alertify.alert('DATA ERROR');
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+      }
+      try {
+          $http({
+              method: 'post',
+              url: '/comment/push',
+              data:{
+                  host_id : $scope.competition_id,
+                  content : $scope.new_comment.text,
+                  host_type : 'competition'
+              }
+          }).success(function(data, status) {
+              if(data.msg === 'SUCCESS'){
+                  $scope.comments.unshift({
+                      'host_id' : data.comment.host_id,
+                      'content' : data.comment.content,
+                      'create_date' : data.comment.create_date,
+                      'poster' : data.comment.poster,
+                      'host_type' : data.comment.host_type,
+                      'index' : $scope.fixed_sum+1
+                  });
+              } else {
+                  alertify.alert('DATA ERROR');
+              }
+          }).error(function(data, status) {
+              alertify.alert('DATA ERROR');
+          });
+      }
+      catch(e) {
+          console.log(e);
+      }
     }
     $scope.tip = function(){
       var content = "";
-      if($scope._msg_show == 'false'){
+      if($scope.confirm_mode == '3'){
         content="您可以编辑比分框里的分数,然后点击'比赛确认'按钮向对方发送待确认比分!";
       }else{
         content="您可以接受对方发来的分数,如果您对次比分有疑问,可以修改比分框里的分数,然后点击'发出异议'按钮即可!";
@@ -139,10 +137,13 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
     var competition_id = $('#competition_content').attr('data-id');
 
     $scope.numValidate = function(){
-      if(isNaN(Number($scope.score_own.score)) || isNaN(Number($scope.score_opposite.score))){
+      if(isNaN(Number($scope.score_a)) || isNaN(Number($scope.score_b))){
         alertify.alert("请输入数字!");
-        $scope.score_own.score = 0;
-        $scope.score_opposite.score = 0;
+        $scope.score_a = 0;
+        $scope.score_b = 0;
+      }
+      else if($scope.score_a.length>3||$scope.score_b.length>3){
+        alertify.alert("分数最大长度为3!");
       }
     }
 
@@ -163,9 +164,8 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
           method: 'post',
           url: '/competition/resultConfirm/'+competition_id,
           data:{
-            score_a : $scope.score_own.score,
-            score_b : $scope.score_opposite.score,
-            rst_content: 'null',
+            score_a : $scope.score_a,
+            score_b : $scope.score_b,
             rst_accept : confirm
           }
         }).success(function(data, status) {
@@ -265,6 +265,29 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
       }
       catch(e) {
           console.log(e);
+      }
+    };
+    $scope.cancel = function (_id) {
+      try {
+        $http({
+          method: 'post',
+          url: '/campaign/cancel/'+_id,
+          data:{
+            campaign_id : _id
+          }
+        }).success(function(data, status) {
+          if(data.result===1){
+            window.location.reload();
+          }
+          else{
+            alertify.alert(data.msg);
+          }
+        }).error(function(data, status) {
+          alertify.alert('DATA ERROR');
+        });
+      }
+      catch(e) {
+        console.log(e);
       }
     };
 }]);
