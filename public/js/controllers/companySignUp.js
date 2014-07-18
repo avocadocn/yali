@@ -5,7 +5,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
   $scope.reg = true;
   $scope.check = false;
   $scope.ok = false;
-  $scope.check_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_EXIST_CHECK;
+  $scope.check_value = '正在检查邮箱是否存在...';
 
   $scope.mailRegCheck = function() {
      $scope.reg = (pattern.test($scope.email));
@@ -15,7 +15,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
         $scope.ok = false;
         $("#email").tooltip({
           "trigger":"hover",
-          "title":$rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL_REGEX,
+          "title":'请输入正确的邮箱地址!',
           "placement" : "right"
         });
       } else {
@@ -38,10 +38,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
               $scope.check = true;
             } else {
               $scope.check = false;
-              $scope.check_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
-                                      + $rootScope.lang_for_msg[$rootScope.lang_key].value.MAIL
-                                          + $rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
-                                              + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+              $scope.check_value = "该邮箱已经注册!";
             }
 
         }).error(function(data, status) {
