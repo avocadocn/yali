@@ -766,7 +766,7 @@ exports.setMessageStatus = function(req,res){
       '_err':_err
     };
     if(_type === 'send'){
-      param.collection = 'MessageContent';
+      param.collection = MessageContent;
     }
     if(!req.body.multi){
       var msg_id = req.body.msg_id;
@@ -781,7 +781,7 @@ exports.setMessageStatus = function(req,res){
           param.condition = {'$or':[{'type':'private'},{'type':'global'}],'rec_id':req.user._id,'status':{'$ne':'delete'}};
         break;
         case 'send':
-          param.condition = {'sender':{'$eleMatch':{'_id':req.user._id}},'status':{'$ne':'delete'}};
+          param.condition = {'sender':{'$elemMatch':{'_id':req.user._id}},'status':{'$ne':'delete'}};
         break;
         default:
           param.condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
