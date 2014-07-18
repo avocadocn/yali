@@ -65,6 +65,7 @@ exports.getMessage = function(req, res) {
           'team' : group_message[i].team,
           'campaign' : group_message[i].campaign,
           'create_time' : group_message[i].create_time,
+          'department' : group_message[i].department,
           'user': [group_message[i].user],
           'join_role':join_role
         };

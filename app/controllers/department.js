@@ -153,7 +153,7 @@ exports.multiCampaignSponsor = function(req, res) {
   var time = req.body.time;
 
   var department_campaign = new Campaign();
-  department_campaign.campaign_type = 7;
+  department_campaign.campaign_type = 8;
   department_campaign.active = true;
   department_campaign.team.push(req.department.team);
   var teams = [];
@@ -164,6 +164,7 @@ exports.multiCampaignSponsor = function(req, res) {
     'name':req.department.team.name,
     'logo':req.department.team.logo
   });
+  console.log('start',teams);
   for(var i = 0; i < other_departments.length; i ++){
     department_campaign.team.push(other_departments[i].team._id);
     team_ids.push(other_departments[i].team._id);
@@ -172,7 +173,7 @@ exports.multiCampaignSponsor = function(req, res) {
       'name':other_departments[i].team.name,
       'logo':other_departments[i].team.logo
     });
-    console.log('-3-3-3',other_departments[i].team);
+    console.log('-i-i-i',other_departments[i].team);
   }
 
   department_campaign.cid.push(req.department.company._id);
@@ -369,7 +370,7 @@ exports.sponsor = function(req, res) {
                 logo: req.department.team.logo
               };
               groupMessage.campaign = campaign._id;
-              groupMessage.department = req.department._id;
+              groupMessage.department = [req.department._id];
               groupMessage.save(function(err) {
                 if (err) {
                   console.log(err);

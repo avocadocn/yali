@@ -220,7 +220,7 @@ var formatCampaign = function(campaign,pageType,role,user){
         }
       }
     }
-    else if (_campaign.campaign_type === 6) {
+    else if (_campaign.campaign_type === 6 || _campaign.campaign_type === 8) {
       temp.type = 'departmentcampaign';
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;

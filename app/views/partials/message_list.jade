@@ -6,8 +6,8 @@ div(ng-show = '!loading')
       .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
         a(ng-href='/group/home/{{group_message.team_id}}')
           img.size_56(ng-src='{{group_message.logo}}')
-      .message_side(ng-if="group_message.message_type===9")
-        a(ng-href="{{'/department/home/' + group_message.department_id }}")
+      .message_side(ng-if="group_message.message_type===9 || group_message.message_type===10")
+        a(ng-href="{{'/department/home/' + group_message.department[0] }}")
           img.size_56(ng-src='{{group_message.logo}}')
       .message_side(ng-if="group_message.message_type==0||group_message.message_type==2||group_message.message_type==6||group_message.message_type==7||group_message.message_type==8")
         img.size_56(ng-if="group_message.message_type!=6" ng-src='{{group_message.logo}}')
@@ -50,16 +50,16 @@ div(ng-show = '!loading')
         //-   a(ng-href="{{'/department/home/'+group_message.team[1].teamid}}") {{group_message.team[1].name}}
         //-   span 发出了挑战
         span.message_head(ng-switch-when="9")
-          a(ng-href="{{'/department/home/'+group_message.department_id}}") {{group_message.team[0].name}}
+          a(ng-href="{{'/department/home/'+group_message.department[0]}}") {{group_message.team[0].name}}
           span #{__("NEW_MESSAGE")}
         span.message_head(ng-switch-when="10")
-          span {{group_message.team[0].name}}
-          span 发起了一个部门联谊活动
+          a(ng-href="{{'/department/home/'+group_message.department[0]}}") {{group_message.team[0].name}}
+          span 发起了一个多部门联谊活动
         span(ng-switch-default)
         span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
-          .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9")
+          .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
             .message_row
               span.message_label 主题:
               span.message_label
