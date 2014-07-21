@@ -1,6 +1,6 @@
 .popover_img
   a(href="/users/home/#{user._id}")
-    img.size_80(src="#{user.photo}")
+    img.size_80.img_user(src="#{user.photo}")
 .popover_content
   p: a(href="/users/home/#{user._id}")
     = user.nickname

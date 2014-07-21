@@ -129,7 +129,7 @@ div(ng-show = '!loading')
                 .row.line_left
                   .dl_md_1.photo
                     a(href="/users/home/{{comment.poster._id}}")
-                      img.size_head_list(ng-src="{{comment.poster.photo}}" ng-Mouseover='showUserCard(comment.poster._id,comment._id)' id='pop{{comment._id}}')
+                      img.size_head_list.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseover='showUserCard(comment.poster._id,comment._id)' id='pop{{comment._id}}')
                   .dl_md_12.comment_left.comment_box
                     .dl_row
                       .dl_md_name.name

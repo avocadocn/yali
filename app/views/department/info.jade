@@ -62,7 +62,7 @@ div(ng-controller="infoController")
           .group( ng-repeat="leader in team.leader")
             .dl_row(bs-popover)
               a(href="/users/home/{{leader._id}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
-                img.size_56(ng-src="{{leader.photo}}")
+                img.size_56.img_user(ng-src="{{leader.photo}}")
             .dl_row
               label {{leader.nickname}}
     .dl_row.clearfix
@@ -73,7 +73,7 @@ div(ng-controller="infoController")
           .group(ng-repeat="member in members")
             .dl_row(bs-popover)
               a(href="/users/home/{{member._id}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}' rel='popover')
-                img.size_56(ng-src="{{member.photo}}")
+                img.size_56.img_user(ng-src="{{member.photo}}")
             .dl_row
               label.user_name {{member.nickname}}
 

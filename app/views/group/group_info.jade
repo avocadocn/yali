@@ -64,11 +64,11 @@ div(ng-show = '!loading' ng-controller="infoController")
             div(ng-if="role!=='GUESTHR'&&role!=='GUEST'")
               .dl_row(bs-popover)
                 a(href="/users/home/{{leader._id}}")
-                  img.size_56(ng-src="{{leader.photo}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
+                  img.size_56.img_user(ng-src="{{leader.photo}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
               .dl_row
                 a.user_name(href="/users/home/{{leader._id}}") {{leader.nickname}}
             .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-              img.size_56(ng-src="{{leader.photo}}")
+              img.size_56.img_user(ng-src="{{leader.photo}}")
     .dl_row.clearfix
       span.subtitle.margin_left_15 #{__("MEMBER")}
     .dl_row.clearfix
@@ -78,11 +78,11 @@ div(ng-show = '!loading' ng-controller="infoController")
             div(ng-if="role!=='GUESTHR'&&role!=='GUEST'")
               .dl_row(bs-popover)
                 a(href="/users/home/{{member._id}}")
-                  img.size_56(ng-src="{{member.photo}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}')
+                  img.size_56.img_user(ng-src="{{member.photo}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}')
               .dl_row
                 a.user_name(href="/users/home/{{member._id}}") {{member.nickname}}
             .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-              img.size_56(ng-src="{{member.photo}}")
+              img.size_56.img_user(ng-src="{{member.photo}}")
 
     //- 此部分逻辑未做 暂时隐藏
     //- .row.dl_row

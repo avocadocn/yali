@@ -19,6 +19,7 @@
   width: 82px;
   height: 82px;
   border: 1px solid #fff;
+  border-radius: 100%;
 }
 .dl_card .dl_card_layer .dl_card_content .popover_content {
   float: left;

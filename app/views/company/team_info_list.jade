@@ -67,7 +67,7 @@ div.dl_allteaminfo_emp.masonry(masonry ng-if="role !== 'HR'")
       p 小队成员：
       span(ng-repeat="member in team.member track by $index")
 
-        img.img_border.img_contain(ng-src="{{member.photo}}/20/20")
+        img.img_border.img_contain.img_user(ng-src="{{member.photo}}/20/20")
 
 
 

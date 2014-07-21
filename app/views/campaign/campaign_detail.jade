@@ -72,7 +72,7 @@ block contentExt
         p.subtitle #{__("JOIN")}#{__("MEMBER")}:
         div.member(ng-repeat = "_member in campaign.member")
           a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-            img.img_contain.detail_photo(ng-src="{{_member.photo}}")
+            img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
             span.name(ng-cloak) {{shortTrim(_member.nickname)}}
         span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
       if role==='HR' || role ==='LEADER'
@@ -80,7 +80,7 @@ block contentExt
           p.subtitle 退出#{__("MEMBER")}:
           div.member(ng-repeat = "_member in campaign.member_quit")
             a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-              img.img_contain.detail_photo(ng-src="{{_member.photo}}")
+              img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
               span.name(ng-cloak) {{shortTrim(_member.nickname)}}
       if role==='MEMBER' || role ==='LEADER'
         form.dl_detail_main(name="comment_form" novalidate)
@@ -93,7 +93,7 @@ block contentExt
               div.comment.clearfix(ng-repeat="comment in comments")
                 .comment_user_info
                   a(href="/users/home/{{comment.poster._id}}" )
-                    img.user_photo.size_56(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
+                    img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
                   p.dl_user_name_small
                     a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
                 .comment_content_panel
