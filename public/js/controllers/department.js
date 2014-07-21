@@ -37,10 +37,10 @@ departmentApp.config(['$routeProvider',
         templateUrl: function(params){
             return '/group/timeline/'+params.tid;
         }
+      })
+      .otherwise({
+        redirectTo: '/message'
       });
-      // otherwise({
-      //   redirectTo: '/message'
-      // });
 }]);
 
 departmentApp.run(['$http','$rootScope', '$location', function ($http, $rootScope, $location) {
