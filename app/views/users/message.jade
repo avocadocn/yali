@@ -1,4 +1,7 @@
 extends ../layouts/default
 
 block contentExt
-  p= message
+  .wrap
+    .dl_container
+      p.subtitle.margin_top_50= message
+      a(href='/') 点此回到主页

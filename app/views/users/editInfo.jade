@@ -32,11 +32,10 @@ div.use_edit_info(ng-show = '!loading')
       .info_side
         span.info_label 部门
       .info_detail(ng-if="!baseUnEdit")
-        //-select(ng-model="department._id" ng-options="option._id as option.label for option in options")
         .tree.select_tree
           ul
             li(ng-include="'node.html'" ng-class="hasChild(node)")
-      .info_side(ng-if="baseUnEdit")
+      .info_detail_2(ng-if="baseUnEdit")
         span.info_label {{ user.department.name }}
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
       .info_side
