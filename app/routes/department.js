@@ -19,6 +19,7 @@ module.exports = function(app) {
 
   app.get('/department/home/:departmentId', authorization.departmentAuthorize, department.renderHome);
 
+
   app.post('/department/:departmentId/sponsor', authorization.departmentAuthorize, department.sponsor);
   app.post('/department/:departmentId/multi_sponsor', authorization.departmentAuthorize, department.multiCampaignSponsor);
 

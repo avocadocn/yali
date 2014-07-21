@@ -164,7 +164,6 @@ exports.multiCampaignSponsor = function(req, res) {
     'name':req.department.team.name,
     'logo':req.department.team.logo
   });
-  console.log('start',teams);
   for(var i = 0; i < other_departments.length; i ++){
     department_campaign.team.push(other_departments[i].team._id);
     team_ids.push(other_departments[i].team._id);
@@ -173,7 +172,6 @@ exports.multiCampaignSponsor = function(req, res) {
       'name':other_departments[i].team.name,
       'logo':other_departments[i].team.logo
     });
-    console.log('-i-i-i',other_departments[i].team);
   }
 
   department_campaign.cid.push(req.department.company._id);
@@ -249,141 +247,210 @@ exports.multiCampaignSponsor = function(req, res) {
   });
 }
 
-
+//深度搜索部门信息
+var getDeptDepartment = function(req,res,did,callback){
+  Company.findOne({
+    '_id': req.user.provider === 'user' ? req.user.cid : req.user._id
+  }, function(err, company) {
+    if (err || !company) {
+      return {
+        'msg':'ERROR',
+        'data':[]
+      };
+    } else {
+      stack = null;
+      stack = new StackAndQueue.stack();
+      var rst = [];
+      var find = false;
+      stack.push({
+        '_id': company._id,
+        'department': company.department
+      });
+      while (!stack.isEmpty()) {
+        var pop = stack.pop();
+        if (pop.department.length > 0) {
+          for (var i = 0; i < pop.department.length; i++) {
+            if(pop.department[i]._id.toString() === did.toString() && !find){
+              find = true;
+              var f_id = pop.department[i]._id;
+              var f_department = pop.department[i].department;
+              rst.push(f_id);
+              stack = null;
+              stack = new StackAndQueue.stack();
+              stack.push({
+                '_id': f_id,
+                'department': f_department
+              });
+              break;
+            }
+            if(find){
+              rst.push(pop.department[i]._id);
+            }
+            stack.push(pop.department[i]);
+          }
+        }
+      }
+      if(rst.length > 0){
+        Department.find({'_id':{'$in':rst}}).populate('team').exec(function (err,departments){
+          if(err || !departments){
+            console.log(err);
+            return {
+              'msg':'ERROR',
+              'data':[]
+            };
+          }else{
+            callback(req,res,departments);
+          }
+        });
+      }
+    }
+  });
+}
 
 //部门发活动
 exports.sponsor = function(req, res) {
   if (req.role !== 'HR' && req.role !== 'LEADER') {
     return res.send(403, 'forbidden');
   }
-  var theme = req.body.theme;
-  var content = req.body.content; //活动内容
-  var location = req.body.location; //活动地点
-  var group_type = '虚拟组';
-  var tid = req.department.team._id;
-  var cid = req.department.company._id;
-  var cname = req.department.company.name;
-  var tname = req.department.name;
-  var member_min = req.body.member_min ? req.body.member_min : 0;
-  var member_max = req.body.member_max ? req.body.member_max : 0;
-  var start_time = req.body.start_time;
-  var end_time = req.body.end_time;
-  var deadline = req.body.deadline ? req.body.deadline : end_time;
-  //生成活动
-  var campaign = new Campaign();
-  campaign.team.push(tid);
-  campaign.cid = [cid]; //其实只有一个公司
-  campaign.cname = [cname];
-  campaign.poster.cname = cname;
-  campaign.poster.cid = cid;
-  campaign.poster.role = req.session.role;
-  campaign.poster.tname = tname;
-  // 有部门管理员后设置为管理员
-  // if(req.session.role==='LEADER'){
-  //   campaign.poster.uid = req.user._id;
-  //   campaign.poster.nickname = req.user.nickname;
-  // }
-  campaign.member_min = member_min;
-  campaign.member_max = member_max;
 
-  campaign.content = content;
-  campaign.location = location;
-  campaign.theme = theme;
-  campaign.active = true;
-  campaign.campaign_type = 6; // 部门活动
+  var _sponsor = function(req,res,departments){
+    var theme = req.body.theme;
+    var content = req.body.content; //活动内容
+    var location = req.body.location; //活动地点
+    var group_type = '虚拟组';
+    var tid = req.department.team._id;
+    var cid = req.department.company._id;
+    var cname = req.department.company.name;
+    var tname = req.department.name;
+    var member_min = req.body.member_min ? req.body.member_min : 0;
+    var member_max = req.body.member_max ? req.body.member_max : 0;
+    var start_time = req.body.start_time;
+    var end_time = req.body.end_time;
+    var deadline = req.body.deadline ? req.body.deadline : end_time;
+    //生成活动
+    var campaign = new Campaign();
+    var all_teams = [];
+    var all_team_ids = [];
+    for(var i = 0 ; i < departments.length; i ++){
+      all_team_ids.push(departments[i].team._id);
+      all_teams.push({
+        'teamid':departments[i].team._id,
+        'name':departments[i].team.name,
+        'logo':departments[i].team.logo
+      });
+    }
+    campaign.team = all_team_ids;
+    campaign.cid = [cid]; //其实只有一个公司
+    campaign.cname = [cname];
+    campaign.poster.cname = cname;
+    campaign.poster.cid = cid;
+    campaign.poster.role = req.session.role;
+    campaign.poster.tname = tname;
+    // 有部门管理员后设置为管理员
+    // if(req.session.role==='LEADER'){
+    //   campaign.poster.uid = req.user._id;
+    //   campaign.poster.nickname = req.user.nickname;
+    // }
+    campaign.member_min = member_min;
+    campaign.member_max = member_max;
 
-  campaign.start_time = start_time;
-  campaign.end_time = end_time;
-  campaign.deadline = deadline;
-  var photo_album = new PhotoAlbum({
-    owner: {
-      model: {
-        _id: campaign._id,
-        type: 'Campaign'
+    campaign.content = content;
+    campaign.location = location;
+    campaign.theme = theme;
+    campaign.active = true;
+    campaign.campaign_type = 6; // 部门活动
+
+    campaign.start_time = start_time;
+    campaign.end_time = end_time;
+    campaign.deadline = deadline;
+    var photo_album = new PhotoAlbum({
+      owner: {
+        model: {
+          _id: campaign._id,
+          type: 'Campaign'
+        },
+        companies: [cid],
+        teams: [req.department.team._id]
       },
-      companies: [cid],
-      teams: [req.department.team._id]
-    },
-    name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme
-  });
-  if (req.user.provider === 'company') {
-    var update_user = {
-      _id: req.user._id,
-      name: req.user.info.name,
-      type: 'hr'
-    };
-    photo_album.update_user = update_user;
-    photo_album.create_user = update_user;
-  } else if (req.user.provider === 'user') {
-    var update_user = {
-      _id: req.user._id,
-      name: req.user.nickname,
-      type: 'user'
-    };
-    photo_album.update_user = update_user;
-    photo_album.create_user = update_user;
-  }
-
-
-  fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
-    if (err) {
-      console.log(err);
-      return res.send(500);
+      name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme
+    });
+    if (req.user.provider === 'company') {
+      var update_user = {
+        _id: req.user._id,
+        name: req.user.info.name,
+        type: 'hr'
+      };
+      photo_album.update_user = update_user;
+      photo_album.create_user = update_user;
+    } else if (req.user.provider === 'user') {
+      var update_user = {
+        _id: req.user._id,
+        name: req.user.nickname,
+        type: 'user'
+      };
+      photo_album.update_user = update_user;
+      photo_album.create_user = update_user;
     }
 
-    photo_album.save(function(err) {
+
+    fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
       if (err) {
         console.log(err);
         return res.send(500);
       }
-      campaign.photo_album = photo_album._id;
-      campaign.save(function(err) {
+
+      photo_album.save(function(err) {
         if (err) {
           console.log(err);
-          //检查信息是否重复
-          switch (err.code) {
-            case 11000:
-              break;
-            case 11001:
-              res.status(400).send('该活动已经存在!');
-              break;
-            default:
-              break;
-          }
-          return;
-        } else {
-          req.department.team.photo_album_list.push(photo_album._id);
-          req.department.team.save(function(err) {
-            if (err) {
-              return res.send(500);
-            } else {
-              //生成动态消息
-              var groupMessage = new GroupMessage();
-              groupMessage.message_type = 9;
-              groupMessage.company = {
-                cid: cid,
-                name: cname
-              };
-              groupMessage.team = {
-                teamid: tid,
-                name: tname,
-                logo: req.department.team.logo
-              };
-              groupMessage.campaign = campaign._id;
-              groupMessage.department = [req.department._id];
-              groupMessage.save(function(err) {
-                if (err) {
-                  console.log(err);
-                } else {
-                  return res.send(200);
-                }
-              });
-            }
-          });
+          return res.send(500);
         }
+        campaign.photo_album = photo_album._id;
+        campaign.save(function(err) {
+          if (err) {
+            console.log(err);
+            //检查信息是否重复
+            switch (err.code) {
+              case 11000:
+                break;
+              case 11001:
+                res.status(400).send('该活动已经存在!');
+                break;
+              default:
+                break;
+            }
+            return;
+          } else {
+            req.department.team.photo_album_list.push(photo_album._id);
+            req.department.team.save(function(err) {
+              if (err) {
+                return res.send(500);
+              } else {
+                //生成动态消息
+                var groupMessage = new GroupMessage();
+                groupMessage.message_type = 9;
+                groupMessage.company = {
+                  cid: cid,
+                  name: cname
+                };
+                groupMessage.team = all_teams;
+                groupMessage.campaign = campaign._id;
+                groupMessage.department = [req.department._id];
+                groupMessage.save(function(err) {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    return res.send(200);
+                  }
+                });
+              }
+            });
+          }
+        });
       });
     });
-  });
+  }
+  //为了把子部门的小队也放入该活动
+  getDeptDepartment(req,res,req.department._id,_sponsor);
 }
 var teamOperate = function(options, callback){
   var did = options.did;
