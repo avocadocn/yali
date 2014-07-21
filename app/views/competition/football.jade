@@ -73,21 +73,27 @@ block contentExt
         .row
           .col-xs-5
             if competition.camp[1].start_confirm
+              p.subtitle #{__("JOIN")}#{__("MEMBER")}:
               each teamAMember in competition.camp[0].member
                 img.teamMember.team_member_logo(draggable="#{competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1}" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
             else
+              p.subtitle #{__("POSITIVE")}#{__("MEMBER")}:
               each teamAMember in competition.camp[0].vote.positive_member
                 img.teamMember.team_member_logo(tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='#{teamAMember.uid}')
           .col-xs-2
+            span
           .col-xs-5
             if competition.camp[1].start_confirm
+              p.subtitle #{__("JOIN")}#{__("MEMBER")}:
               each teamBMember in competition.camp[1].member
                 img.teamMember.team_member_logo.pull-right(draggable="#{competition.active&&!competition.finish&&competition_leader.indexOf(1)>-1}" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" data-camp='1' data-tid="#{competition.camp[1].id}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
             else
+              p.subtitle #{__("POSITIVE")}#{__("MEMBER")}:
               each teamBMember in competition.camp[1].vote.positive_member
                 img.teamMember.team_member_logo.pull-right(tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='#{teamBMember.uid}')
         //- 7是足球
         if competition.camp[0].gid === '7'
+          hr
           .row.format_field
             img#formatField.col-xs-12.img_contain(draggable="false" src='/img/field.png')
             each teamAMember in competition.camp[0].formation

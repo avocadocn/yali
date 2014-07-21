@@ -19,7 +19,12 @@ var _member = new Schema({
     nickname: String,
     photo: String
 });
-
+//阵形图子文档
+var _formation = new Schema({
+    uid: String,
+    x: Number,
+    y: Number
+});
 //阵营
 var _camp = new Schema({
   id : Schema.Types.ObjectId,              //小队id
@@ -58,12 +63,7 @@ var _camp = new Schema({
 });
 
 
-//阵形图子文档
-var _formation = new Schema({
-    uid: String,
-    x: Number,
-    y: Number
-});
+
 
 /**
  * 活动

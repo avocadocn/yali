@@ -89,8 +89,9 @@ tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope,
                     tid : $rootScope.teamId
                 }
             }).success(function(data,status){
-                $rootScope.number += 1;
-                $rootScope.isMember = true;
+                if(data.result===1){
+                    window.location.reload();
+                }
             }).error(function(data,status){
                 alertify.alert('DATA ERROR');
             });
@@ -110,8 +111,9 @@ tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope,
                     tid : $rootScope.teamId
                 }
             }).success(function(data,status){
-                $rootScope.number --;
-                $rootScope.isMember = false;
+                if(data.result===1){
+                    window.location.reload();
+                }
             }).error(function(data,status){
                 alertify.alert('err');
             });

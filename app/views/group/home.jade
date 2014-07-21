@@ -21,28 +21,26 @@ block baseInfo
       .dl_row
         .score_container
           span.info_border #{__("TEAM_MEMBER")}
-          span.info_border.info_right_border(ng-init="number=#{number}") {{ number }}
+          span.info_border.info_right_border=number 
         .score_container
           span.info_border #{__("SCORE")}
           span.info_border.info_right_border= score
         //-.score_container
           span.info_border #{__("WIN_RATE")}
           span.info_border.info_right_border 100%
-        if (role ==='HR' || role ==='LEADER')
+        if role ==='HR' || role ==='LEADER'
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
             button.dl_btn.dl_btn_small(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel") #{__("PROVOKE")}
             a.dl_btn.dl_btn_small.margin_left_5(href="/message/home/#{teamId}#/send") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
-        - var isMember = false;
-          if (role === 'MEMBER' || role ==='LEADER' || role ==='PARTNER' || role === 'MEMBERLEADER' || role === 'PARTNERLEADER')
-            if (role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER' )
-              - isMember = true;
-            .score_container(ng-init="isMember=#{isMember}" ng-show="isMember")
-              button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
-            .score_container(ng-show="!isMember")
-              button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") #{__("JOIN_GROUP")}
-        if (role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER')
+        if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
+          .score_container
+            button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+        if  role === 'PARTNERLEADER' || role==='PARTNER'
+          .score_container
+            button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") #{__("JOIN_GROUP")}
+        if role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER'
           .score_container
             button.pull-right.dl_btn.dl_btn_small(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel") 动一下
 block panel
