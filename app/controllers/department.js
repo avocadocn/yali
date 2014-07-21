@@ -467,7 +467,7 @@ var teamOperate = function(options, callback){
       CompanyGroup.findByIdAndUpdate({'_id':department.team},operate,function(err,company_group){
         if(err){
           callback(err);
-        } else if (!department) {
+        } else if (!company_group) {
           callback('not found');
         }
         else{

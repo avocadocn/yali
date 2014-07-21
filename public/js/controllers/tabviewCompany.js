@@ -457,6 +457,8 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 $scope.users = data.users;
                 $scope.leaders = data.leaders.length > 0 ? data.leaders : [];
 
+                $scope.origin_leader_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
+
                 var leader_find = false;
                 for(var i = 0; i < $scope.users.length && !leader_find; i ++) {
                     for(var j = 0; j < $scope.leaders.length; j ++) {
@@ -492,6 +494,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
     $scope.appointReady = function(user,index){
         $scope._user = user;
         $scope.leader=$scope.leaders[0];
+        $scope.appoint_permission = true;
         $scope._index = index;
         $scope.users[index].leader = true;
 
@@ -508,7 +511,11 @@ tabViewCompany.directive('masonry', function ($timeout) {
             'nickname':user.nickname,
             'photo':user.photo
         }
-
+        if($scope._user._id !== $scope.origin_leader_id){
+            $scope.appoint_permission = true;
+        }else{
+            $scope.appoint_permission = false;
+        }
     }
     $scope.dismissLeader = function (leader) {
         try{
@@ -533,52 +540,55 @@ tabViewCompany.directive('masonry', function ($timeout) {
     }
     //指定队长
     $scope.appointLeader = function () {
-      try{
-            $http({
-                method: 'post',
-                url: '/company/appointLeader/'+$scope.cid,
-                data:{
-                    tid: $scope.tid,
-                    uid: $scope._user._id,
-                    operate:true
-                }
-            }).success(function(data, status) {
+        if($scope.appoint_permission != undefined && $scope.appoint_permission != null && $scope.appoint_permission != false)
+        {
+            try{
+                $http({
+                    method: 'post',
+                    url: '/company/appointLeader/'+$scope.cid,
+                    data:{
+                        tid: $scope.tid,
+                        uid: $scope._user._id,
+                        operate:true
+                    }
+                }).success(function(data, status) {
 
-                if($scope.leader!='null'){
-                    var _leader = $scope.team_lists[$scope.team_index].leader;
-                    for(var i = 0; i < _leader.length; i++){
-                        if(_leader[i]._id == $scope.leader._id) {
-                            $scope.team_lists[$scope.team_index].leader.splice(i,1);
+                    if($scope.leader!='null'){
+                        var _leader = $scope.team_lists[$scope.team_index].leader;
+                        for(var i = 0; i < _leader.length; i++){
+                            if(_leader[i]._id == $scope.leader._id) {
+                                $scope.team_lists[$scope.team_index].leader.splice(i,1);
+                            }
+                        }
+                        for(var i = 0; i < $scope.leaders.length; i ++) {
+                            if($scope.leaders[i]._id == $scope.leader._id) {
+                                $scope.leaders.splice(i,1);
+                            }
                         }
                     }
-                    for(var i = 0; i < $scope.leaders.length; i ++) {
-                        if($scope.leaders[i]._id == $scope.leader._id) {
-                            $scope.leaders.splice(i,1);
-                        }
+                    $scope.team_lists[$scope.team_index].leader.push({
+                        '_id':$scope._user._id,
+                        'nickname':$scope._user.nickname,
+                        'photo':$scope._user.photo
+                    });
+                    $scope.origin_leader_id = $scope._user._id;
+                    $scope.leaders.push({
+                        '_id':$scope._user._id,
+                        'nickname':$scope._user.nickname,
+                        'photo':$scope._user.photo
+                    });
+
+                    if($scope.leader!='null'){
+                        $scope.dismissLeader($scope.leader);
                     }
-                }
-                $scope.team_lists[$scope.team_index].leader.push({
-                    '_id':$scope._user._id,
-                    'nickname':$scope._user.nickname,
-                    'photo':$scope._user.photo
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    alertify.alert('DATA ERROR');
                 });
-
-                $scope.leaders.push({
-                    '_id':$scope._user._id,
-                    'nickname':$scope._user.nickname,
-                    'photo':$scope._user.photo
-                });
-
-                if($scope.leader!='null'){
-                    $scope.dismissLeader($scope.leader);
-                }
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e){
-            console.log(e);
+            }
+            catch(e){
+                console.log(e);
+            }
         }
     };
 
@@ -1126,8 +1136,8 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
               }
           }).success(function(data, status) {
                 $scope.company_users = data.all_users;
-                console.log($scope.company_users);
                 $scope.managers = data.leaders;
+                $scope.origin_manager_id = data.leaders[0]._id;
                 $scope.department_users = data.users;
                 for(var i = 0 ; i < $scope.department_users.length; i ++){
                     $scope.department_users[i].wait_for_join = false;
@@ -1191,7 +1201,6 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
     }
     $scope.appointReady = function(index){
         $scope.department_user = $scope.department_users[index];
-        console.log($scope.department_user);
         $scope.manager=$scope.managers[0];
         $scope.department_index = index;
         $scope.department_users[index].leader = true;
@@ -1208,6 +1217,12 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             '_id':$scope.department_user._id,
             'nickname':$scope.department_user.nickname,
             'photo':$scope.department_user.photo
+        }
+
+        if($scope.origin_manager_id !== $scope.department_user._id){
+            $scope.appoint_permission_department = true;
+        }else{
+            $scope.appoint_permission_department = false;
         }
     }
     $scope.dismissManager = function (manager) {
@@ -1235,49 +1250,50 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
     }
     //指定管理员
     $scope.appointManager = function () {
-      try{
-            $http({
-                method: 'post',
-                url: '/department/managerOperate/'+$scope.did,
-                data:{
-                    member:{
-                        '_id':$scope.department_user._id,
-                        'nickname':$scope.department_user.nickname,
-                        'photo':$scope.department_user.photo,
-                        'wait_for_join':$scope.department_user.wait_for_join
-                    },
-                    did:$scope.did,
-                    operate:'appoint'
-                }
-            }).success(function(data, status) {
-                console.log($scope.manager);
-                if($scope.manager!='null' && $scope.manager != undefined){
-                    for(var i = 0; i < $scope.managers.length; i ++) {
-                        if($scope.managers[i]._id == $scope.manager._id) {
-                            $scope.managers.splice(i,1);
+        if($scope.appoint_permission_department != undefined && $scope.appoint_permission_department != null && $scope.appoint_permission_department != false){
+            try{
+                $http({
+                    method: 'post',
+                    url: '/department/managerOperate/'+$scope.did,
+                    data:{
+                        member:{
+                            '_id':$scope.department_user._id,
+                            'nickname':$scope.department_user.nickname,
+                            'photo':$scope.department_user.photo,
+                            'wait_for_join':$scope.department_user.wait_for_join
+                        },
+                        did:$scope.did,
+                        operate:'appoint'
+                    }
+                }).success(function(data, status) {
+                    console.log($scope.manager);
+                    if($scope.manager!='null' && $scope.manager != undefined){
+                        for(var i = 0; i < $scope.managers.length; i ++) {
+                            if($scope.managers[i]._id == $scope.manager._id) {
+                                $scope.managers.splice(i,1);
+                            }
                         }
                     }
-                }
+                    $scope.origin_manager_id = $scope.department_user._id;
+                    $scope.managers.push({
+                        '_id':$scope.department_user._id,
+                        'nickname':$scope.department_user.nickname,
+                        'photo':$scope.department_user.photo
+                    });
 
-                $scope.managers.push({
-                    '_id':$scope.department_user._id,
-                    'nickname':$scope.department_user.nickname,
-                    'photo':$scope.department_user.photo
+                    if($scope.manager!='null' && $scope.manager != undefined){
+                        $scope.dismissManager($scope.manager);
+                    }
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    alertify.alert('DATA ERROR');
                 });
-
-                if($scope.manager!='null' && $scope.manager != undefined){
-                    $scope.dismissManager($scope.manager);
-                }
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e){
-            console.log(e);
+            }
+            catch(e){
+                console.log(e);
+            }
         }
     };
-
 }]);
 
 

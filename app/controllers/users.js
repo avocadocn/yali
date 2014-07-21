@@ -365,11 +365,6 @@ exports.dealSetProfile = function(req, res) {
               var callback = function(err, data) {
                 if (err) {
                   console.log(err);
-                  if (err === 'not found') {
-                    return res.send(404);
-                  } else {
-                    return res.send(500);
-                  }
                 }
               }
               if(req.body.child_department_id != 'null'){
@@ -393,7 +388,7 @@ exports.dealSetProfile = function(req, res) {
             };
             groupMessage.save();
             req.session.username = user.username;
-            res.redirect('/users/selectGroup');
+            res.redirect('/users/finishRegister');
           }
         });
       } else {
