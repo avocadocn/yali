@@ -787,6 +787,9 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
         };
 
         $scope.selectNode = function(node) {
+            if (node.is_company === true) {
+                return;
+            }
             if ($scope.last_selected_node) {
                 $scope.last_selected_node.selected = false;
             }
