@@ -986,6 +986,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
                 return;
             }
         }
+        $scope.select_departments = [];
         $scope.select_departments.push($scope.main_department);
     }
     $scope.departmentFormat = function(departments){
