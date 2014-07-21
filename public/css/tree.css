@@ -64,3 +64,9 @@
 .tree .operator {
   padding-left: 20px;
 }
+.selected {
+  border: solid 3px #5cb85c !important;
+}
+.select_tree .self>span {
+  cursor: pointer;
+}

@@ -31,8 +31,11 @@ div.use_edit_info(ng-show = '!loading')
     .dl_row.clearfix
       .info_side
         span.info_label 部门
-      .info_side(ng-if="!baseUnEdit")
-        select(ng-model="department._id" ng-options="option._id as option.label for option in options")
+      .info_detail(ng-if="!baseUnEdit")
+        //-select(ng-model="department._id" ng-options="option._id as option.label for option in options")
+        .tree.select_tree
+          ul
+            li(ng-include="'node.html'" ng-class="hasChild(node)")
       .info_side(ng-if="baseUnEdit")
         span.info_label {{ user.department.name }}
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
@@ -86,3 +89,10 @@ div.use_edit_info(ng-show = '!loading')
         format: 'yyyy-mm-dd'
       });
     });
+
+  script(type="text/ng-template" id="node.html")
+    .self.inline
+      span(ng-click="selectNode(node)" ng-class="{'selected': node.selected}")
+        .inline &nbsp;{{node.name}}
+    ul(ng-if="!node.hideChild")
+      li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")

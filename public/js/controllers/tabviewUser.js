@@ -753,47 +753,45 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
 
-        var treeToList = function(department, level) {
-            var list = [];
+        var markUserDepartment = function(user, department) {
             if (department) {
                 for (var i = 0; i < department.length; i++) {
-                    var label = '';
-                    for (var j = 0; j < level; j++) {
-                        label += '---';
+                    if (department[i]._id.toString() === user.department._id.toString()) {
+                        department[i].selected = true;
+                        $scope.last_selected_node = department[i];
+                        $scope.ori_selected_node = department[i];
                     }
-                    label += department[i].name;
-                    list.push({
-                        _id: department[i]._id,
-                        name: department[i].name,
-                        label: label
-                    });
-                    list = list.concat(treeToList(department[i].department, level + 1));
+                    markUserDepartment(user, department[i].department);
                 }
             }
-            return list;
+        };
+
+        var formatData = function(data) {
+            $scope.node = {
+                _id: data._id,
+                name: data.name,
+                is_company: true,
+                department: data.department
+            };
+            if ($scope.node.department.length === 0) {
+                $scope.node.department = null;
+            }
         };
 
         var setDepartmentOptions = function(user) {
             $http.get('/departmentTree/' + user.cid)
             .success(function(data, status) {
-                var department = data.department;
-                $scope.options = treeToList(department, 0);
-                for (var i = 0; i < $scope.options.length; i++) {
-                    if (user.department) {
-                        if (user.department._id && user.department._id.toString() === $scope.options[i]._id.toString()) {
-                            $scope.department = {
-                                _id: $scope.options[i]._id
-                            };
-                            break;
-                        }
-                    }
-                }
-                if (!$scope.department) {
-                    $scope.department = {
-                        _id: $scope.options[0]._id
-                    };
-                }
+                formatData(data);
+                markUserDepartment(user, $scope.node.department);
             });
+        };
+
+        $scope.selectNode = function(node) {
+            if ($scope.last_selected_node) {
+                $scope.last_selected_node.selected = false;
+            }
+            node.selected = true;
+            $scope.last_selected_node = node;
         };
 
         $rootScope.nowTab = 'personal';
@@ -829,15 +827,6 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                         bloodType: $scope.user.bloodType,
                         introduce: $scope.user.introduce
                     };
-                    for (var i = 0; i < $scope.options.length; i++) {
-                        if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
-                            var department = {
-                                _id: $scope.options[i]._id,
-                                name: $scope.options[i].name
-                            };
-                            break;
-                        }
-                    }
 
                     var editUserInfo = function() {
                         $http({
@@ -860,9 +849,9 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                         });
                     };
 
-                    if (!$scope.user.department._id || $scope.user.department._id.toString() !== department._id.toString()) {
+                    if (!$scope.user.department._id || $scope.user.department._id.toString() !== $scope.last_selected_node._id.toString()) {
                         $http
-                            .post('/department/memberOperate/' + department._id, {
+                            .post('/department/memberOperate/' + $scope.last_selected_node._id, {
                                 operate: 'join',
                                 member: {
                                     _id: $scope.user._id,

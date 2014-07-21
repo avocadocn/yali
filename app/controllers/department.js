@@ -1006,7 +1006,7 @@ exports.getDepartment = function(req, res) {
         } else {
           res.send({
             '_id': company._id,
-            'name': company.name,
+            'name': company.info.name,
             'department': company.department
           });
           req.session.cid = null;
@@ -1032,7 +1032,7 @@ exports.getDepartment = function(req, res) {
         }
         return res.send({
           _id: company._id,
-          name: company.name,
+          name: company.info.name,
           department: company.department
         });
       })
