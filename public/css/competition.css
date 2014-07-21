@@ -19,6 +19,9 @@
   width: 40px;
   height: 40px;
 }
+.competition_content .teamMember[draggable=true] {
+  cursor: move;
+}
 .side .dl_detail_row {
   min-width: 450px;
   min-height: 35px;

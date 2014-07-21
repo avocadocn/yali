@@ -304,6 +304,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
       e.originalEvent.dataTransfer.setData("member_id",e.originalEvent.target.id);
       e.originalEvent.dataTransfer.setData("nowx",e.originalEvent.pageX);
       e.originalEvent.dataTransfer.setData("nowy",e.originalEvent.pageY);
+      e.originalEvent.dataTransfer.dropEffect ='move';
     };
 
 
