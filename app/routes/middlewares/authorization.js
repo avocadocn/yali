@@ -166,7 +166,7 @@ exports.teamAuthorize = function(req, res, next) {
   next();
 };
 exports.userAuthorize = function(req, res, next) {
-  if(req.route.path==='/users/home' && !req.profile){
+  if(req.user && req.route.path==='/users/home' && !req.profile){
     req.role = 'OWNER';
   }
   else{

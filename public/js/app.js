@@ -86,6 +86,7 @@ app.run(['$rootScope', function ($rootScope) {
       $rootScope.initAlertCss();
     }
 }]);
+
 app.filter('dateView', function() {
   return function(input) {
     var today = new Date();
