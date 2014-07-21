@@ -184,7 +184,7 @@ exports.multiCampaignSponsor = function(req, res) {
   department_campaign.location = location;
   department_campaign.start_time = time.start;
   department_campaign.end_time = time.end;
-  department_campaign.deadline = time.deadline;
+  department_campaign.deadline = time.deadline ? time.deadline : time.start;
 
   var photo_album = new PhotoAlbum({
     owner: {
@@ -326,7 +326,7 @@ exports.sponsor = function(req, res) {
     var member_max = req.body.member_max ? req.body.member_max : 0;
     var start_time = req.body.start_time;
     var end_time = req.body.end_time;
-    var deadline = req.body.deadline ? req.body.deadline : end_time;
+    var deadline = req.body.deadline ? req.body.deadline : start_time;
     //生成活动
     var campaign = new Campaign();
     var all_teams = [];

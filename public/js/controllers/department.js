@@ -1110,6 +1110,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
                     max:$scope.member_max
                 }
             }
+            console.log($scope.deadline);
         }else{
             _url = '/department/'+$scope.did+'/sponsor';
             _data = {
@@ -1122,6 +1123,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
                 member_max: $scope.member_max,
                 deadline: $scope.deadline
             }
+            console.log($scope.deadline);
         }
         try{
             $http({

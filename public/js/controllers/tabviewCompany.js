@@ -1137,7 +1137,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
           }).success(function(data, status) {
                 $scope.company_users = data.all_users;
                 $scope.managers = data.leaders;
-                $scope.origin_manager_id = data.leaders[0]._id;
+                $scope.origin_manager_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
                 $scope.department_users = data.users;
                 for(var i = 0 ; i < $scope.department_users.length; i ++){
                     $scope.department_users[i].wait_for_join = false;
