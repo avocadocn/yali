@@ -852,7 +852,7 @@ exports.joinGroup = function (req, res){
   });
 };
 
-//用户退出小队
+//用户退出小队 todo
 exports.quitGroup = function (req, res){
   var uid = req.user._id.toString();
   var tid = req.body.tid;
@@ -891,6 +891,30 @@ exports.quitGroup = function (req, res){
                   else{
                     return res.send({result: 0, msg:'您没有参加该小队'});
                   }
+
+                  //修改user.role的逻辑部分
+                  var l = false;//标识他是不是这个队的队长
+                  var ol = false; // 标识是不是其它队的队长
+                  var ok = false;//提高效率用
+                  //这段代码性能很低,但是需要
+                  for(var i =0; i< user.team.length; i ++) {
+                      if(user.team[i]._id.toString() == tid.toString()){
+                          user.team[i].leader = false;
+                          l = user.team[i].leader;
+                          if(ol)
+                              break;//ol已标记过
+                          ok =true;
+                      }
+                      else if(user.team[i].leader === true){
+                              ol=true;//标记他为其它队长
+                              if(ok)
+                                  break;
+                      }
+                  }
+                  if(!ol)
+                    user.role = 'EMPLOYEE'; //如果不是其它队队长则贬为平民！
+                  //----user.role
+
                   user.save(function (err) {
                     if(err){
                       return res.send(err);

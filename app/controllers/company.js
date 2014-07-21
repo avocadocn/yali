@@ -820,7 +820,7 @@ exports.getCompanyTeamsInfo = function(req, res) {
                         .exec()
                         .then(function(campaign){
                             //todo
-                            console.log(campaign[0]);
+                            //console.log(campaign[0]);
                             if(campaign.length==0){
                                 campaigninfo.campaign_theme = '';
                                 campaigninfo.campaign_id = '';
@@ -1044,19 +1044,27 @@ exports.appointLeader = function (req, res) {
             return res.send('ERROR');
         } else {
 
-            var l = false;
-
+            var l = false;//标识他是不是这个队的队长
+            var ol = false; // 标识是不是其它队的队长
+            var ok = false;//提高效率用
             //这段代码性能很低,但是需要
             for(var i =0; i< user.team.length; i ++) {
                 if(user.team[i]._id.toString() == tid.toString()){
                     user.team[i].leader = operate;
                     l = user.team[i].leader;
-                    break;
+                    if(ol)
+                        break;//ol已标记过
+                    ok =true;
+                }
+                else if(user.team[i].leader === true){
+                        ol=true;
+                        if(ok)
+                            break;
                 }
             }
 
-
-            user.role = l ? 'LEADER' : 'EMPLOYEE';
+            if(!ol)
+                user.role = l ? 'LEADER' : 'EMPLOYEE';
 
             user.save(function(err) {
                 if(err) {
