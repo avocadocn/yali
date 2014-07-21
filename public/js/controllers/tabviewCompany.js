@@ -5,7 +5,7 @@ var tabViewCompany = angular.module('donler');
 
 
 
-tabViewCompany.directive('match', function($parse) {
+tabViewCompany.directive('match', function ($parse) {
   return {
     require: 'ngModel',
     link: function(scope, elem, attrs, ctrl) {
@@ -79,6 +79,10 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         templateUrl: '/company/add_group',
         controller: 'CompanyGroupFormController',
         controllerAs:'groupModel'
+      })
+      .when('/department', {
+        templateUrl: '/department/manager',
+        controller: 'DepartmentController'
       })
       .otherwise({
         redirectTo: '/company_campaign'
@@ -781,301 +785,9 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     };
 
 
-    var formatData = function(data) {
-        $scope.node = {
-            _id: data._id,
-            name: data.name,
-            is_company: true,
-            department: data.department
-        };
-        if ($scope.node.department.length === 0) {
-            $scope.node.department = null;
-        }
-    };
-
-    (function getDepartments() {
-        $http
-        .get('/departmentTree/' + $rootScope.cid)
-        .success(function(data, status) {
-            formatData(data);
-        });
-    })();
-
-    $scope.toggleTree = function(node) {
-        if (!node.toggle || node.toggle === 'glyphicon-minus') {
-            node.toggle = 'glyphicon-plus';
-            node.hideChild = true;
-        } else {
-            node.toggle = 'glyphicon-minus';
-            node.hideChild = false;
-        }
-    };
-
-    $scope.getNode = function(node){
-        $scope.did = node._id;
-        $http({
-            method : 'post',
-            url : '/department/detail/'+node._id,
-            data : {
-                'did' : node._id
-            }
-        }).success(function(data, status) {
-            $scope.getCompanyUser(data.department.team._id,function(){$('#managerAppointModel').modal();});
-        }).error(function(data, status) {
-            //TODO:更改对话框
-            alertify.alert(data);
-        });
-    };
+    
 
 
-    $scope.hasChild = function(node) {
-        if (node && node.department) {
-            return 'parent_li';
-        } else {
-            return '';
-        }
-    };
-
-    $scope.confirmCreate = function(node) {
-        if (node.edit_name !== '' && node.edit_name != null) {
-            $http
-            .post('/department', {
-                did: node.parent_id,
-                name: node.edit_name,
-                cid: $scope.node._id
-            })
-            .success(function(data, status) {
-                formatData(data);
-            });
-        }
-    };
-
-    $scope.cancelCreate = function(node) {
-        for (var i = 0; i < node.parent.department.length; i++) {
-            if (node.parent.department[i].is_creating) {
-                node.parent.department.splice(i, 1);
-            }
-        }
-    };
-
-    $scope.confirmEdit = function(node) {
-        if (node.temp_name !== '' && node.temp_name != null) {
-            $http
-            .put('/department/' + node._id, {
-                did: node._id,
-                name: node.temp_name
-            })
-            .success(function(data, status) {
-                formatData(data);
-            });
-        }
-    };
-
-    $scope.cancelEdit = function(node) {
-        node.is_editing = false;
-    };
-
-    $scope.addNode = function(node) {
-        node.toggle = 'glyphicon-minus';
-        node.hideChild = false;
-        if (!node.department) {
-            node.department = [];
-        }
-        node.department.push({
-            edit_name: '',
-            parent_id: node._id,
-            parent: node,
-            is_creating: true
-        });
-    };
-
-    $scope.editNode = function(node) {
-        node.temp_name = node.name;
-        node.is_editing = true;
-    };
-
-    $scope.deleteNode = function(node) {
-        alertify.set({
-            buttonFocus: "none",
-            labels: {
-                ok: '确认删除',
-                cancel: '取消'
-            }
-        });
-        alertify.confirm('删除后不可恢复，您确定要删除“' + node.name + '”部门吗？', function(e) {
-            if (e) {
-                $http
-                .delete('/department/' + node._id)
-                .success(function(data, status) {
-                    if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
-                        formatData(data);
-                    }
-                });
-            }
-        });
-    };
-
-    //获取该公司所有员工
-    $scope.getCompanyUser = function(tid,callback){
-         $http({
-              method: 'post',
-              url: '/search/user',
-              data:{
-                  tid:tid
-              }
-          }).success(function(data, status) {
-                $scope.company_users = data.all_users;
-                console.log($scope.company_users);
-                $scope.managers = data.leaders;
-                $scope.department_users = data.users;
-                for(var i = 0 ; i < $scope.department_users.length; i ++){
-                    $scope.department_users[i].wait_for_join = false;
-                }
-                if($scope.company_users.length > 0 ){
-                    for(var i = 0 ; i < $scope.company_users.length; i ++){
-                        if($scope.company_users[i].department._id == undefined || $scope.company_users[i].department._id == null){
-                            $scope.company_users[i].wait_for_join = true;
-                            $scope.department_users.push($scope.company_users[i]);
-                        }
-                    }
-                }
-
-                $scope.manager = 'null';
-              var manager_find = false;
-                for(var i = 0; i < $scope.department_users.length && !manager_find; i ++) {
-                    for(var j = 0; j < $scope.managers.length; j ++) {
-                        //标记
-                        if($scope.managers[j]._id.toString() === $scope.department_users[i]._id.toString()){
-                            $scope.department_users[i].leader = true;
-                            manager_find = true;
-                            break;//目前一个小队只有一个组长
-                        }
-                    }
-                }
-              callback();
-        }).error(function(data, status) {
-              //TODO:更改对话框
-            alertify.alert(data);
-        });
-    }
-    //从员工中进一步搜索
-    $scope.search = function () {
-        $scope.member_backup_department = $scope.department_users;
-        var find = false;
-        $scope.department_users = [];
-        for(var i = 0; i < $scope.member_backup_department.length; i ++) {
-            if($scope.member_backup_department[i].nickname.indexOf($scope.member_search_department) > -1){
-                $scope.department_users.push($scope.member_backup_department[i]);
-                find = true;
-            }
-        }
-        if(!find){
-            $scope.department_users = $scope.member_backup_department;
-            $scope.member_backup_department = [];
-            alertify.alert("未找到该员工!");
-        }else{
-            alertify.alert("找到"+$scope.department_users.length+"名员工!");
-        }
-    }
-
-
-
-
-    $scope.recover = function(){
-        if($scope.member_backup_department){
-            if($scope.member_backup_department.length > 0){
-                $scope.department_users = $scope.member_backup_department;
-            }
-        }
-    }
-    $scope.appointReady = function(index){
-        $scope.department_user = $scope.department_users[index];
-        console.log($scope.department_user);
-        $scope.manager=$scope.managers[0];
-        $scope.department_index = index;
-        $scope.department_users[index].leader = true;
-
-        if($scope.manager){
-            for(var i = 0; i < $scope.department_users.length; i ++) {
-                if($scope.manager._id.toString() === $scope.department_users[i]._id.toString()){
-                    $scope.department_users[i].leader = false;
-                    break;
-                }
-            }
-        }
-        $scope.managers[0] = {
-            '_id':$scope.department_user._id,
-            'nickname':$scope.department_user.nickname,
-            'photo':$scope.department_user.photo
-        }
-    }
-    $scope.dismissManager = function (manager) {
-        try{
-            $http({
-                method: 'post',
-                url: '/department/managerOperate/'+$scope.did,
-                data:{
-                    member:{
-                        '_id':manager._id,
-                    },
-                    did:$scope.did,
-                    operate:'dismiss'
-                }
-            }).success(function(data, status) {
-
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alertify.alert(data);
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    }
-    //指定管理员
-    $scope.appointManager = function () {
-      try{
-            $http({
-                method: 'post',
-                url: '/department/managerOperate/'+$scope.did,
-                data:{
-                    member:{
-                        '_id':$scope.department_user._id,
-                        'nickname':$scope.department_user.nickname,
-                        'photo':$scope.department_user.photo,
-                        'wait_for_join':$scope.department_user.wait_for_join
-                    },
-                    did:$scope.did,
-                    operate:'appoint'
-                }
-            }).success(function(data, status) {
-                console.log($scope.manager);
-                if($scope.manager!='null' && $scope.manager != undefined){
-                    for(var i = 0; i < $scope.managers.length; i ++) {
-                        if($scope.managers[i]._id == $scope.manager._id) {
-                            $scope.managers.splice(i,1);
-                        }
-                    }
-                }
-
-                $scope.managers.push({
-                    '_id':$scope.department_user._id,
-                    'nickname':$scope.department_user.nickname,
-                    'photo':$scope.department_user.photo
-                });
-
-                if($scope.manager!='null' && $scope.manager != undefined){
-                    $scope.dismissManager($scope.manager);
-                }
-            }).error(function(data, status) {
-                //TODO:更改对话框
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
 
 }]);
 
@@ -1266,3 +978,307 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         }
     };
 }]);
+
+
+tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$http', function ($rootScope, $scope, $http){
+    var formatData = function(data) {
+        $scope.node = {
+            _id: data._id,
+            name: data.name,
+            is_company: true,
+            department: data.department
+        };
+        if ($scope.node.department.length === 0) {
+            $scope.node.department = null;
+        }
+    };
+
+    (function getDepartments() {
+        $http
+        .get('/departmentTree/' + $rootScope.cid)
+        .success(function(data, status) {
+            formatData(data);
+        });
+    })();
+
+    $scope.toggleTree = function(node) {
+        if (!node.toggle || node.toggle === 'glyphicon-minus') {
+            node.toggle = 'glyphicon-plus';
+            node.hideChild = true;
+        } else {
+            node.toggle = 'glyphicon-minus';
+            node.hideChild = false;
+        }
+    };
+
+    $scope.getNode = function(node){
+        $scope.did = node._id;
+        $http({
+            method : 'post',
+            url : '/department/detail/'+node._id,
+            data : {
+                'did' : node._id
+            }
+        }).success(function(data, status) {
+            $scope.getCompanyUser(data.department.team._id,function(){$('#managerAppointModel').modal();});
+        }).error(function(data, status) {
+            //TODO:更改对话框
+            alertify.alert(data);
+        });
+    };
+
+
+    $scope.hasChild = function(node) {
+        if (node && node.department) {
+            return 'parent_li';
+        } else {
+            return '';
+        }
+    };
+
+    $scope.confirmCreate = function(node) {
+        if (node.edit_name !== '' && node.edit_name != null) {
+            $http
+            .post('/department', {
+                did: node.parent_id,
+                name: node.edit_name,
+                cid: $scope.node._id
+            })
+            .success(function(data, status) {
+                formatData(data);
+            });
+        }
+    };
+
+    $scope.cancelCreate = function(node) {
+        for (var i = 0; i < node.parent.department.length; i++) {
+            if (node.parent.department[i].is_creating) {
+                node.parent.department.splice(i, 1);
+            }
+        }
+    };
+
+    $scope.confirmEdit = function(node) {
+        if (node.temp_name !== '' && node.temp_name != null) {
+            $http
+            .put('/department/' + node._id, {
+                did: node._id,
+                name: node.temp_name
+            })
+            .success(function(data, status) {
+                formatData(data);
+            });
+        }
+    };
+
+    $scope.cancelEdit = function(node) {
+        node.is_editing = false;
+    };
+
+    $scope.addNode = function(node) {
+        node.toggle = 'glyphicon-minus';
+        node.hideChild = false;
+        if (!node.department) {
+            node.department = [];
+        }
+        node.department.push({
+            edit_name: '',
+            parent_id: node._id,
+            parent: node,
+            is_creating: true
+        });
+    };
+
+    $scope.editNode = function(node) {
+        node.temp_name = node.name;
+        node.is_editing = true;
+    };
+
+    $scope.deleteNode = function(node) {
+        alertify.set({
+            buttonFocus: "none",
+            labels: {
+                ok: '确认删除',
+                cancel: '取消'
+            }
+        });
+        alertify.confirm('删除后不可恢复，您确定要删除“' + node.name + '”部门吗？', function(e) {
+            if (e) {
+                $http
+                .delete('/department/' + node._id)
+                .success(function(data, status) {
+                    if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
+                        formatData(data);
+                    }
+                });
+            }
+        });
+    };
+
+
+        //获取该公司所有员工
+    $scope.getCompanyUser = function(tid,callback){
+         $http({
+              method: 'post',
+              url: '/search/user',
+              data:{
+                  tid:tid
+              }
+          }).success(function(data, status) {
+                $scope.company_users = data.all_users;
+                console.log($scope.company_users);
+                $scope.managers = data.leaders;
+                $scope.department_users = data.users;
+                for(var i = 0 ; i < $scope.department_users.length; i ++){
+                    $scope.department_users[i].wait_for_join = false;
+                }
+                if($scope.company_users.length > 0 ){
+                    for(var i = 0 ; i < $scope.company_users.length; i ++){
+                        if($scope.company_users[i].department._id == undefined || $scope.company_users[i].department._id == null){
+                            $scope.company_users[i].wait_for_join = true;
+                            $scope.department_users.push($scope.company_users[i]);
+                        }
+                    }
+                }
+
+                $scope.manager = 'null';
+              var manager_find = false;
+                for(var i = 0; i < $scope.department_users.length && !manager_find; i ++) {
+                    for(var j = 0; j < $scope.managers.length; j ++) {
+                        //标记
+                        if($scope.managers[j]._id.toString() === $scope.department_users[i]._id.toString()){
+                            $scope.department_users[i].leader = true;
+                            manager_find = true;
+                            break;//目前一个小队只有一个组长
+                        }
+                    }
+                }
+              callback();
+        }).error(function(data, status) {
+              //TODO:更改对话框
+            alertify.alert(data);
+        });
+    }
+    //从员工中进一步搜索
+    $scope.search = function () {
+        $scope.member_backup_department = $scope.department_users;
+        var find = false;
+        $scope.department_users = [];
+        for(var i = 0; i < $scope.member_backup_department.length; i ++) {
+            if($scope.member_backup_department[i].nickname.indexOf($scope.member_search_department) > -1){
+                $scope.department_users.push($scope.member_backup_department[i]);
+                find = true;
+            }
+        }
+        if(!find){
+            $scope.department_users = $scope.member_backup_department;
+            $scope.member_backup_department = [];
+            alertify.alert("未找到该员工!");
+        }else{
+            alertify.alert("找到"+$scope.department_users.length+"名员工!");
+        }
+    }
+
+
+
+
+    $scope.recover = function(){
+        if($scope.member_backup_department){
+            if($scope.member_backup_department.length > 0){
+                $scope.department_users = $scope.member_backup_department;
+            }
+        }
+    }
+    $scope.appointReady = function(index){
+        $scope.department_user = $scope.department_users[index];
+        console.log($scope.department_user);
+        $scope.manager=$scope.managers[0];
+        $scope.department_index = index;
+        $scope.department_users[index].leader = true;
+
+        if($scope.manager){
+            for(var i = 0; i < $scope.department_users.length; i ++) {
+                if($scope.manager._id.toString() === $scope.department_users[i]._id.toString()){
+                    $scope.department_users[i].leader = false;
+                    break;
+                }
+            }
+        }
+        $scope.managers[0] = {
+            '_id':$scope.department_user._id,
+            'nickname':$scope.department_user.nickname,
+            'photo':$scope.department_user.photo
+        }
+    }
+    $scope.dismissManager = function (manager) {
+        try{
+            $http({
+                method: 'post',
+                url: '/department/managerOperate/'+$scope.did,
+                data:{
+                    member:{
+                        '_id':manager._id,
+                    },
+                    did:$scope.did,
+                    operate:'dismiss'
+                }
+            }).success(function(data, status) {
+
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alertify.alert(data);
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+    //指定管理员
+    $scope.appointManager = function () {
+      try{
+            $http({
+                method: 'post',
+                url: '/department/managerOperate/'+$scope.did,
+                data:{
+                    member:{
+                        '_id':$scope.department_user._id,
+                        'nickname':$scope.department_user.nickname,
+                        'photo':$scope.department_user.photo,
+                        'wait_for_join':$scope.department_user.wait_for_join
+                    },
+                    did:$scope.did,
+                    operate:'appoint'
+                }
+            }).success(function(data, status) {
+                console.log($scope.manager);
+                if($scope.manager!='null' && $scope.manager != undefined){
+                    for(var i = 0; i < $scope.managers.length; i ++) {
+                        if($scope.managers[i]._id == $scope.manager._id) {
+                            $scope.managers.splice(i,1);
+                        }
+                    }
+                }
+
+                $scope.managers.push({
+                    '_id':$scope.department_user._id,
+                    'nickname':$scope.department_user.nickname,
+                    'photo':$scope.department_user.photo
+                });
+
+                if($scope.manager!='null' && $scope.manager != undefined){
+                    $scope.dismissManager($scope.manager);
+                }
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+
+}]);
+
+
+

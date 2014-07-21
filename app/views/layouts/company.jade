@@ -4,8 +4,6 @@ extends base
 append headExt
   link(rel="stylesheet" href="/css/group_select.css")
   link(rel="stylesheet" href="/css/campaign_list.css")
-  link(rel="stylesheet" href="/lib/bootstrap-calendar/css/calendar.css")
-  link(rel="stylesheet" href="/css/custom_calendar.css")
 
 
 block content
@@ -21,8 +19,3 @@ block content
         block aside
   include ../partials/user_footer
 
-append footExt
-  script(src="/lib/underscore/underscore.js")
-  //-script(src="/js/jstz.min.js")
-  script(src="/js/language/zh-CN.js")
-  script(src="/lib/bootstrap-calendar/js/calendar.js")

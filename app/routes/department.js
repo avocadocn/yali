@@ -29,6 +29,7 @@ module.exports = function(app) {
   app.post('/department/memberOperate/:departmentId', authorization.departmentAuthorize, department.memberOperateByRoute);
 
   app.get('/department/info', department.renderDepartmentInfo);
+  app.get('/department/manager', department.renderDepartmentManager);
 
   app.post('/department/detail/:departmentId', authorization.departmentAuthorize, department.getDepartmentDetail);
   app.get('/department/detail/multi/:cid', department.getMultiDepartmentDetail);

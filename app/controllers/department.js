@@ -1176,5 +1176,11 @@ exports.renderApplyList = function(req, res) {
 };
 
 exports.renderDepartmentInfo = function(req, res) {
-  res.render('department/department_info');
+  res.render('department/info');
 };
+
+exports.renderDepartmentManager = function(req, res) {
+  res.render('department/manager');
+};
+
+

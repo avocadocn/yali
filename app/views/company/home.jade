@@ -40,6 +40,9 @@ block panel
           a.subtitle.no_radius(href="#/company_member/#{cid}"  ng-click="addactive('company_member')") #{__('STAFF')}
         li.tab_style(ng-class="{'active':nowTab=='timeLine/#{cid}'}")
           a.subtitle.no_radius(href="#/timeLine/#{cid}"  ng-click="addactive('timeLine/#{cid}')") #{__('TIME_LINE')}
+      if role === 'HR'
+        li.tab_style(ng-class="{'active':nowTab=='department'}")
+          a.subtitle.no_radius(href="#/department"  ng-click="addactive('department')") 部门管理
       //- div.margin_top_15.pull-right(ng-controller="CampaignListController")
       //-   button.btn.btn-default.dropdown-toggle(data-toggle="dropdown") 活动类型
       //-   ul.dropdown-menu(role="menu")
