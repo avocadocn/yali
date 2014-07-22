@@ -3,7 +3,7 @@ div.use_edit_info(ng-show = '!loading')
   form.form-horizontal(name="accountForm")
     .dl_row
       h5.pull-left #{__("INFO")}
-      button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="baseEditToggle()" ng-bind="baseButtonStatus")
+      button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="baseEditToggle()" ng-bind="baseButtonStatus" ng-disabled="accountForm.$invalid&&!baseUnEdit")
     hr.margin_top_6
     .dl_row.clearfix
       .aside
@@ -17,12 +17,12 @@ div.use_edit_info(ng-show = '!loading')
       .info_side
         span.info_label #{__("NICKNAME")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-disabled="baseUnEdit")
+        input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="user.nickname" ng-maxlength=20 tooltip="{{accountForm.nickname.$invalid? '昵称最长字数20字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" required ng-cloak)
     .dl_row.clearfix(ng-if="user.realname !=undefined || !baseUnEdit")
       .info_side
         span.info_label #{__("REALNAME")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name="realname" ng-model="user.realname" ng-disabled="baseUnEdit" ng-cloak)
+        input.dl_input.dl_form-Control.editToggle(type="text" name ="realname" ng-model="user.realname" ng-maxlength=20 tooltip="{{accountForm.realname.$invalid? '真实姓名最长20字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak)
     .dl_row.clearfix
       .info_side
         span.info_label #{__("COMPANY")}
@@ -53,7 +53,7 @@ div.use_edit_info(ng-show = '!loading')
       .info_side
         span.info_label #{__("BRIEF")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-disabled="baseUnEdit")
+        input.dl_input.dl_form-Control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-maxlength=40 tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak)
     .dl_row.clearfix
       .info_side
         span.info_label #{__("REGISTER_DATE")}
@@ -62,13 +62,13 @@ div.use_edit_info(ng-show = '!loading')
   form.form-horizontal(name="linkForm")
     .dl_row
       h5.pull-left #{__("CONTACT")}
-      button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="linkEditToggle()" ng-bind="linkButtonStatus")
+      button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="linkEditToggle()" ng-bind="linkButtonStatus" ng-disabled="linkForm.$invalid")
     hr.margin_top_6
     .dl_row.clearfix(ng-if="user.phone !=undefined || !linkUnEdit")
       .info_side
         span.info_label #{__("PHONE")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit")
+        input.dl_input.dl_form-Control.editToggle(type="text" name="phone" ng-model="user.phone" ng-disabled="linkUnEdit" ng-maxlength=20)
     .dl_row.clearfix(ng-if="user.email !=undefined || !linkUnEdit")
       .info_side
         span.info_label #{__("EMAIL")}
@@ -78,7 +78,7 @@ div.use_edit_info(ng-show = '!loading')
       .info_side
         span.info_label #{__("QQ")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit")
+        input.dl_input.dl_form-Control.editToggle(type="text" name="qq" ng-model="user.qq" ng-disabled="linkUnEdit" ng-maxlength=20)
   script.
     $(function() {
       $('#birthday').datetimepicker({

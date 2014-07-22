@@ -27,7 +27,7 @@ block contentExt
               select.form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
                 each domain in domains
                   option(value="#{domain}" selected='selected')= domain
-            input(type="hidden" name="index" ng-model="active")
+            input(type="text" name="index" ng-model="active" ng-show='false')
           button.btn.btn-success(type="submit" ng-disabled="active!==1 && active!==2 || active_form.$invalid") 激活
         p
         img(ng-show='loading' src='/img/loading.gif')
