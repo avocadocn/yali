@@ -1,6 +1,5 @@
 .loading_div(ng-show = 'loading')
 div(ng-show = '!loading')
-  hr
   .dl_modal_container
     .dl_row(style="height:93px" ng-repeat="all_message in all_messages" ng-if="$index >= page_all.up && $index <= page_all.down")
       .dl_message_head.dl_message_body_font(ng-switch="all_message.message_type")
@@ -50,9 +49,8 @@ div(ng-show = '!loading')
           .dl_md_12
             h5 {{all_message.detail}}
           .dl_md_1.pull-right.dl_message_rightcorner
-            button.dl_btn.pull-right(ng-click="setToDelete($index)") X
-            label.pull-right |
-            button.dl_btn.pull-right(ng-click="setToRead($index)" ng-disabled="all_message.status=='read'") {{statusHandle(all_message.status)}}
+            a.pull-right(ng-click="setToDelete($index)")
+             h7 删除
     .dl_row.dl_center(ng-if="all_messages.length > 10")
       button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'right' || page_all.arrow == 'none' " ng-click="pageOperate('left')") <<
       button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'left' || page_all.arrow == 'none' " ng-click="pageOperate('right')") >>
