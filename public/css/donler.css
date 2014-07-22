@@ -292,6 +292,16 @@ textarea {
   width: 480px;
   float: left;
 }
+.dl_comment_area .comment_box .comment_name {
+  width: 74%;
+  margin-left: 5px;
+  float: left;
+}
+.dl_comment_area .comment_box .comment_time {
+  width: 24%;
+  margin-right: -15px;
+  float: right;
+}
 .dl_comment_area .hidden_block {
   margin-top: -5px;
   margin-right: -15px;
