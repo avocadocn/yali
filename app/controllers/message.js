@@ -887,9 +887,11 @@ exports.home = function(req,res){
     if(req.role === 'LEADER'){
       _send.teamId = req.companyGroup._id;
       _send.teamName = req.companyGroup.name;
+      _send.teamLogo = req.companyGroup.logo;
     }else{
       _send.teamId = req.companyGroup != undefined ? req.companyGroup._id : 'null';
       _send.teamName = req.companyGroup != undefined ? req.companyGroup.name : 'null';
+      _send.teamLogo = req.companyGroup != undefined ? req.companyGroup.logo : 'null';
     }
     res.render('message/message',_send);
   }else{

@@ -14,7 +14,7 @@ block baseInfo
       h1 站内信
 
 block panel
-  div(ng-controller="messageSenderController" ng-init="role='#{role}';teamId='#{teamId}';cid='#{cid}';teamName='#{teamName}';departmentId='#{departmentId}'")
+  div(ng-controller="messageSenderController" ng-init="role='#{role}';teamId='#{teamId}';cid='#{cid}';teamName='#{teamName}';teamLogo='#{teamLogo}';departmentId='#{departmentId}'")
     ul.nav.nav-tabs
       if role === 'HR' || role === 'LEADER'
         li.tab_style(ng-class="{'active':nowTab=='all'}")
