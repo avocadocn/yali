@@ -5,18 +5,18 @@ div(ng-show = '!loading')
     hr
     .row
       .dl_modal_container.margin_left_10
-        .groups.row
-          .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="member in members")
+        .groups
+          .member(ng-repeat="member in members")
             if role != 'GUESTHR' && role !='GUEST'
-              .dl_row(bs-popover)
+              .dl_row.img(bs-popover)
                 a(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModel")
                   img.size_48.img_user(ng-src="{{member.photo}}" ng-Mouseenter="showUserCard(member._id,member._id)" id='pop{{member._id}}')
-              .dl_row(style="width:48px;text-align:center")
+              .dl_row.text()
                 a.user_name(href="/users/home/{{member._id}}") {{member.nickname}}
             else
-              .dl_row
+              .dl_row.img
                 img.size_48.img_user(ng-src="{{member.photo}}")
-              .dl_row(style="width:48px;text-align:center")
+              //- .dl_row.text()
                 label.user_name {{member.nickname}}
   if role === 'HR'
     .modal.fade(id="sponsorUserDetailModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")

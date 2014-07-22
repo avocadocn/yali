@@ -1373,6 +1373,23 @@ input.ng-invalid.ng-dirty {
   width: 230px;
   padding: 10px;
 }
+.memberlist .member {
+  width: 80px;
+  float: left;
+  margin-right: 10px;
+}
+.memberlist .member .img,
+.memberlist .member .text {
+  text-align: center;
+}
+.memberlist .member .user_name {
+  text-align: center;
+  display: inline-block;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .breadcrumb {
   background-color: #fff;
   padding-left: 0;
