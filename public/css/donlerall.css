@@ -284,6 +284,7 @@ textarea {
 }
 .dl_comment_area .photo {
   width: 55px;
+  padding-top: 4px;
 }
 .dl_comment_area .photo .size_head_list {
   margin-left: 0;
@@ -1486,16 +1487,29 @@ input.ng-invalid.ng-dirty {
 }
 .dl_allteaminfo_emp .teamitem {
   width: 290px;
-  border: 1px solid #ddd;
   min-height: 80px;
   margin: 8px;
-  word-break: break-word;
-  padding: 6px 6px 20px 6px;
 }
 .dl_allteaminfo_emp .teamitem .btn_join {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+.dl_allteaminfo_emp .teamitem .itembox {
+  border: 1px solid #ddd;
+  word-break: break-word;
+  padding: 6px 6px 20px 6px;
+}
+.dl_allteaminfo_emp .teamitem .itembox .member {
+  margin: 4px;
+  width: auto;
+}
+.dl_allteaminfo_emp .teamitem .title {
+  padding-bottom: 4px;
+}
+.dl_allteaminfo_emp .teamitem p {
+  padding-bottom: 4px;
+  margin: 0;
 }
 .dl_message_body_font {
   font-size: 48px;
