@@ -3,7 +3,136 @@
 
 
 var groupApp = angular.module('donler');
+groupApp.directive('donlerMember', ['$rootScope', function($rootScope) {
+      return {
+          restrict: 'A',
+          link: function(scope, el, attrs, controller) {
+            var _id = angular.element(el).attr('id');
+            var _x = angular.element(el).attr('data-left');
+            var _y = angular.element(el).attr('data-top');
+            angular.element(el).css('left',_x+'%');
+            angular.element(el).css('top',_y+'%');
+            _id = scope.getMemberId(_id);
+            scope.competition_format[_id] ={
+              'x':_x,
+              'y':_y
+            };
+            angular.element('#'+_id).attr('draggable',false);
+            angular.element(el).attr('src',angular.element('#'+_id).attr('src'));
+          }
+      }
+  }]);
+groupApp.directive('donlerDraggable', ['$rootScope', function($rootScope) {
+      return {
+          restrict: 'A',
+          link: function(scope, el, attrs, controller) {
+            angular.element(el).attr("draggable", "true");
+            var id = angular.element(el).attr("id");
+            el.bind("dragstart", function(e) {
+              angular.element(e.target).addClass('donler_dragover');
+              e.originalEvent.dataTransfer.setData("member_id",e.originalEvent.target.id);
+              e.originalEvent.dataTransfer.setData("nowx",e.originalEvent.pageX);
+              e.originalEvent.dataTransfer.setData("nowy",e.originalEvent.pageY);
+              e.originalEvent.dataTransfer.dropEffect ='move';
+            });
 
+            el.bind("dragend", function(e) {
+              angular.element(e.target).removeClass('donler_dragover');
+              var _id = e.originalEvent.target.id;
+              if(_id.indexOf('on_')==0){
+                var $field = angular.element('#formatField');
+                var _left = $field.offset().left;
+                var _top = $field.offset().top;
+                var _right = _left + $field.width();
+                var _bottom = _top +$field.height();
+                var _nowx = e.originalEvent.pageX;
+                var _nowy = e.originalEvent.pageY;
+                if (_nowx < _left || _nowx > _right || _nowy > _bottom || _nowy < _top) {
+                  angular.element(e.originalEvent.target).remove();
+                  _id = scope.getMemberId(_id);
+                  angular.element('#'+_id).attr('draggable',true);
+                  scope.updateFormatData(_id,angular.element('#'+_id).attr('data-tid'),-1);
+                };
+              }
+            });
+          }
+      }
+  }]);
+
+groupApp.directive('donlerDropTarget', ['$rootScope', function($rootScope) {
+      return {
+          restrict: 'A',
+          link: function(scope, el, attrs, controller) {
+              var id = angular.element(el).attr("id");
+
+              el.bind("dragover", function(e) {
+                if (e.originalEvent.preventDefault) {
+                  e.originalEvent.preventDefault(); // Necessary. Allows us to drop.
+                }
+
+                e.originalEvent.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+                return false;
+              });
+
+              // el.bind("dragenter", function(e) {
+              //   // this / e.target is the current hover target
+              // });
+
+              // el.bind("dragleave", function(e) {
+              //   angular.element(e.target).removeClass('donler_dragover');  // this / e.target is previous target element.
+              // });
+
+              el.bind("drop", function(e) {
+                if (e.originalEvent.preventDefault) {
+                  e.originalEvent.preventDefault(); // Necessary. Allows us to drop.
+                }
+
+                if (e.originalEvent.stopPropagation) {
+                  e.originalEvent.stopPropagation(); // Necessary. Allows us to drop.
+                }
+                console.log('drop');
+                var data=e.originalEvent.dataTransfer.getData("member_id");
+                if(!data){
+                  return false;
+                }
+                var _newEle ={};
+                var _x = angular.element(e.originalEvent.target).offset().left;
+                var _y = angular.element(e.originalEvent.target).offset().top;
+                var _width = angular.element(e.originalEvent.target).width();
+                var _height = angular.element(e.originalEvent.target).height();
+                var _offsetX = e.originalEvent.pageX - _x - 10;
+                var _offsetY = e.originalEvent.pageY - _y -10;
+                if(angular.element('#'+data).attr('data-camp')=='0'&&_offsetX > _width / 2||angular.element('#'+data).attr('data-camp')=='1'&&_offsetX < _width / 2){
+                  return false;
+                };
+                if(data.indexOf('on_')!=0){
+                  _newEle = angular.element('#'+data).clone(true);
+                  _newEle.attr('id','on_'+data);
+                  _newEle.css('top',_offsetY > 0 ? _offsetY : 0);
+                  _newEle.css('left',_offsetX > 0 ? _offsetX : 0);
+                  angular.element(e.originalEvent.target).parent().append(_newEle);
+                  angular.element('#'+data).attr('draggable',false);
+                }
+                else{
+                  _newEle = angular.element('#'+data);
+                  var _top= _newEle.position().top;
+                  var _left= _newEle.position().left;
+                  var datax=e.originalEvent.dataTransfer.getData("nowx");
+                  var datay=e.originalEvent.dataTransfer.getData("nowy");
+                  _offsetX = _left + e.originalEvent.pageX - datax;
+                  _offsetY = _top +e.originalEvent.pageY - datay;
+                  console.log(_left,datax,_offsetX);
+                  console.log(_top,datay,_offsetY);
+                  _newEle.css('top',_offsetY > 0 ? _offsetY : 0);
+                  _newEle.css('left',_offsetX > 0 ? _offsetX : 0);
+                };
+                var _percentX = 100 * _offsetX / _width;
+                var _percentY = 100 * _offsetY / _height;
+                scope.updateFormatData(data,angular.element('#'+data).attr('data-tid'),_percentX.toFixed(2),_percentY.toFixed(2));
+              });
+          }
+      }
+  }]);
 groupApp.controller('competitionController', ['$http', '$scope','$rootScope',function ($http, $scope,$rootScope) {
     $scope.$watch('competition_id',function(competition_id){
         if(competition_id==null){
@@ -12,7 +141,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
         $scope.getComment(); //获取留言
     });
     $scope.comments = [];
-
+    $scope.competition_format = {};
     $scope.new_comment = {
         text:''
     };
@@ -290,162 +419,31 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
         console.log(e);
       }
     };
+    $scope.getMemberId = function(id){
+      return (id.indexOf('on_')==0) ? id.substr(3) : id;
+    };
+    $scope.updateFormatData = function(id,tid,percentX,percentY){
+      id = $scope.getMemberId(id);
+      if(percentX===-1){
+        delete $scope.competition_format[id];
+      }
+      else{
+        $scope.competition_format[id] ={
+          'x':percentX,
+          'y':percentY
+        };
+      }
+      $.post('/group/updateFormation/'+tid+'/'+$scope.competition_id,{'formation':$scope.competition_format},function(data,status){
+        if(data.result===0){
+          alertify.alert(data.msg);
+        }
+      });
+    };
 }]);
 
 
 (function(window){
   $(function(){
-    var competition_format = {};
-    var allowDrop =function(e){
-      e.originalEvent.preventDefault();
-    };
-
-    var drag =function(e){
-      e.originalEvent.dataTransfer.setData("member_id",e.originalEvent.target.id);
-      e.originalEvent.dataTransfer.setData("nowx",e.originalEvent.pageX);
-      e.originalEvent.dataTransfer.setData("nowy",e.originalEvent.pageY);
-      e.originalEvent.dataTransfer.dropEffect ='move';
-    };
-
-
-    var drop =function(e){
-      e.originalEvent.preventDefault();
-      var data=e.originalEvent.dataTransfer.getData("member_id");
-      var _newEle ={};
-      var _x = $(e.originalEvent.target).offset().left;
-      var _y = $(e.originalEvent.target).offset().top;
-      var _width = $(e.originalEvent.target).width();
-      var _height = $(e.originalEvent.target).height();
-      var _offsetX = e.originalEvent.pageX - _x - 10;
-      var _offsetY = e.originalEvent.pageY - _y -10;
-      if($('#'+data).attr('data-camp')=='0'&&_offsetX > _width / 2||$('#'+data).attr('data-camp')=='1'&&_offsetX < _width / 2){
-        return false;
-      };
-      if(data.indexOf('on_')!=0){
-        _newEle = $('#'+data).clone(true);
-        _newEle.attr('id','on_'+data);
-        _newEle.css('top',_offsetY > 0 ? _offsetY : 0);
-        _newEle.css('left',_offsetX > 0 ? _offsetX : 0);
-        $(e.originalEvent.target).parent().append(_newEle);
-        $('#'+data).attr('draggable',false);
-      }
-      else{
-        _newEle = $('#'+data);
-        var _top= _newEle.position().top;
-        var _left= _newEle.position().left;
-        var datax=e.originalEvent.dataTransfer.getData("nowx");
-        var datay=e.originalEvent.dataTransfer.getData("nowy");
-        _offsetX = _left + e.originalEvent.pageX - datax;
-        _offsetY = _top +e.originalEvent.pageY - datay;
-        console.log(_left,datax,_offsetX);
-        console.log(_top,datay,_offsetY);
-        _newEle.css('top',_offsetY > 0 ? _offsetY : 0);
-        _newEle.css('left',_offsetX > 0 ? _offsetX : 0);
-      };
-      var _percentX = 100 * _offsetX / _width;
-      var _percentY = 100 * _offsetY / _height;
-      updateFormatData(data,$('#'+data).attr('data-tid'),_percentX.toFixed(2),_percentY.toFixed(2));
-    };
-    var dragend = function(e){
-      var _id = e.originalEvent.target.id;
-      if(_id.indexOf('on_')==0){
-        var $field = $('#formatField');
-        var _left = $field.offset().left;
-        var _top = $field.offset().top;
-        var _right = _left + $field.width();
-        var _bottom = _top +$field.height();
-        var _nowx = e.originalEvent.pageX;
-        var _nowy = e.originalEvent.pageY;
-        if (_nowx < _left || _nowx > _right || _nowy > _bottom || _nowy < _top) {
-          $(e.originalEvent.target).remove();
-          _id = getMemberId(_id);
-          $('#'+_id).attr('draggable',true);
-          updateFormatData(_id,$('#'+_id).attr('data-tid'),-1);
-        };
-      }
-    };
-    var updateFormatData = function(id,tid,percentX,percentY){
-      id = getMemberId(id);
-      if(percentX===-1){
-        delete competition_format[id];
-      }
-      else{
-        competition_format[id] ={
-          'x':percentX,
-          'y':percentY
-        };
-      }
-      var competition_id = $('#competition_content').attr('data-id');
-      $.post('/group/updateFormation/'+tid+'/'+competition_id,{'formation':competition_format},function(data,status){
-        if(data.result===0){
-          //TODO
-          //能不能把这个闭包和AngularJS绑定?
-          alertify.alert(data.msg);
-          var body = {
-            'border': '1px',
-            'border-radius': '0px',
-            'top' : '50px',
-            'left' : '55%',
-            'width' : '350px'
-        };
-
-        var buttons = {
-            'border-top' : '0px',
-            'background' : '#fff',
-            'text-align' : 'center'
-        }
-
-        var button = {
-            'margin-left' : '0px',
-            'padding' : '6px 15px',
-            'box-shadow' : '0px 0px 0px #ffffff',
-            'background-color' : '#3498db'
-        }
-
-        $(".alertify-buttons").css(buttons);
-        $(".alertify").css(body);
-        $(".alertify-button").css(button);
-
-        }
-      });
-    };
-    var getMemberId = function(id){
-      return (id.indexOf('on_')==0) ? id.substr(3) : id;
-    };
-    var _conetent = $('#competition_content');
-    _conetent.find('.teamMember').bind('dragstart',drag);
-    _conetent.find('.teamMember').bind('dragend',dragend);
-    _conetent.find('#formatField').bind('drop',drop);
-    _conetent.find('#formatField').bind('dragover',allowDrop);
-    _conetent.find('.onmemberA').each(function(){
-      var _id = $(this).attr('id');
-      var _x = $(this).attr('data-left');
-      var _y = $(this).attr('data-top');
-      _id = getMemberId(_id);
-      competition_format[_id] ={
-        'x':_x,
-        'y':_y
-      };
-      $(this).css('left',_x+'%');
-      $(this).css('top',_y+'%');
-      _id = getMemberId(_id);
-      $('#'+_id).attr('draggable',false);
-      $(this).attr('src',$('#'+_id).attr('src'));
-    });
-    _conetent.find('.onmemberB').each(function(){
-      var _id = $(this).attr('id');
-      var _x = $(this).attr('data-left');
-      var _y = $(this).attr('data-top');
-      $(this).css('left',_x+'%');
-      $(this).css('top',_y+'%');
-      _id = getMemberId(_id);
-      competition_format[_id] ={
-        'x':_x,
-        'y':_y
-      };
-      $('#'+_id).attr('draggable',false);
-      $(this).attr('src',$('#'+_id).attr('src'));
-    });
     window.initialize = function(){
       // 百度地图API功能
       var map = new BMap.Map("location");            // 创建Map实例

@@ -3,6 +3,11 @@
 }
 .competition_content .format_field {
   position: absolute;
+  padding: 0;
+}
+.competition_content .format_field #formatField {
+  padding: 0;
+  background-image: url("/img/field.png");
 }
 .competition_content .format_field .teamMember {
   position: absolute;
