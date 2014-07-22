@@ -21,7 +21,7 @@ block panel
           a.subtitle.no_radius(href="#/message_all" ng-click="addactive('all')") 私信({{o}})
         li.tab_style(ng-class="{'active':nowTab=='send'}")
           a.subtitle.no_radius(href="#/send" ng-click="addactive('send')" ) 发送
-    .tab-content.margin_top_20
+    .tab-content
       .tab-pane.active
         div(ng-view)
 block aside
