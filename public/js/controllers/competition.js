@@ -15,10 +15,11 @@ groupApp.directive('donlerMember', ['$rootScope', function($rootScope) {
             angular.element(el).css('top',_y+'%');
             angular.element('#'+_id).attr('draggable',false);
             angular.element(el).attr('src',angular.element('#'+_id.substr(3)).attr('src'));
-            if(angular.element(el).attr('x-donler-member')===true){
+            if(angular.element(el).attr('x-donler-member')==="true"){
               if(!scope.competition_format[_tid]){
                 scope.competition_format[_tid]={};
               }
+              _id = scope.getMemberId(_id);
               scope.competition_format[_tid][_id] ={
                 'x':_x,
                 'y':_y
@@ -39,6 +40,7 @@ groupApp.directive('donlerDraggable', ['$rootScope', function($rootScope) {
               e.originalEvent.dataTransfer.setData("nowx",e.originalEvent.pageX);
               e.originalEvent.dataTransfer.setData("nowy",e.originalEvent.pageY);
               e.originalEvent.dataTransfer.dropEffect ='move';
+              e.originalEvent.dataTransfer.setDragImage(e.originalEvent.target,20,20);
             });
 
             el.bind("dragend", function(e) {
@@ -433,20 +435,37 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
 
       if(percentX===-1){
         delete $scope.competition_format[tid][id];
+        $scope.pushFormatData(tid);
       }
       else{
         if(!$scope.competition_format[tid]){
           $scope.competition_format[tid]={};
         }
+        if($scope.competition_format[tid][id]){
+          var nowx = $scope.competition_format[tid][id].x;
+          var nowy = $scope.competition_format[tid][id].y;
+        }
         $scope.competition_format[tid][id] ={
           'x':percentX,
           'y':percentY
         };
+        if(!nowx || nowx&& Math.abs(nowx-percentX)>=5||nowy&& Math.abs(nowy-percentY)>=5){
+          $scope.pushFormatData(tid);
+        }
+        else{
+          $scope.updateFlag = true;
+        }
       }
-      $scope.updateFlag = true;
     };
-    $scope.pushFormatData = function(){
-      if($scope.updateFlag){
+    $scope.pushFormatData = function(_tid){
+      if(_tid){
+        $.post('/group/updateFormation/'+_tid+'/'+$scope.competition_id,{'formation':$scope.competition_format[_tid]},function(data,status){
+          if(data.result===0){
+            alertify.alert(data.msg);
+          }
+        });
+      }
+      else if($scope.updateFlag){
         for (var tid in $scope.competition_format){
           $.post('/group/updateFormation/'+tid+'/'+$scope.competition_id,{'formation':$scope.competition_format[tid]},function(data,status){
             if(data.result===0){

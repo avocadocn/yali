@@ -16,7 +16,7 @@ block contentExt
           .team_left.col-xs-4
             img.pull-right.team_logo(draggable="false" src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
-            div.text-left
+            div.text-left.pull-right
               a(href="/group/home/#{competition.camp[0].id}")= competition.camp[0].tname
               if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && role!='HR' && team.indexOf(0)>-1
                 div
@@ -59,7 +59,7 @@ block contentExt
           .team_right.col-xs-4
             img.pull-left.team_logo(draggable="false" src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
-            div.text-right
+            div.text-left.pull-left
               a(href="/group/home/#{competition.camp[1].id}")= competition.camp[1].tname
               if (competition.active || !competition.camp[1].start_confirm) && !competition.finish && role!='HR' && team.indexOf(1)>-1
                 div
@@ -71,9 +71,9 @@ block contentExt
                   else
                     a(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
         .row
-          .col-xs-5
+          .col-xs-5.col-xs-offset-1
             if competition.camp[1].start_confirm
-              p.subtitle #{__("JOIN")}#{__("MEMBER")}:
+              p.subtitle #{__("JOIN")}#{__("MEMBER")}
               if competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1
                 each teamAMember in competition.camp[0].member
                   img.teamMember.team_member_logo.img_user(x-donler-draggable="true" draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
@@ -83,14 +83,13 @@ block contentExt
                 each teamAMember in competition.camp[0].member
                   img.teamMember.team_member_logo.img_user(draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
             else
-              p.subtitle #{__("POSITIVE")}#{__("MEMBER")}:
+              p.subtitle #{__("POSITIVE")}#{__("MEMBER")}
               each teamAMember in competition.camp[0].vote.positive_member
                 img.teamMember.team_member_logo.img_user(draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
-          .col-xs-2
-            span
           .col-xs-5
             if competition.camp[1].start_confirm
-              p.subtitle #{__("JOIN")}#{__("MEMBER")}:
+              .row
+                p.subtitle.pull-right #{__("JOIN")}#{__("MEMBER")}
               if competition.active&&!competition.finish&&competition_leader.indexOf(1)>-1
                 each teamBMember in competition.camp[1].member
                   img.teamMember.team_member_logo.pull-right.img_user(x-donler-draggable="true" draggable='false' tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" data-camp='1' data-tid="#{competition.camp[1].id}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
@@ -100,7 +99,8 @@ block contentExt
                 each teamBMember in competition.camp[1].member
                   img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
             else
-              p.subtitle #{__("POSITIVE")}#{__("MEMBER")}:
+              .row
+                p.subtitle.pull-right #{__("POSITIVE")}#{__("MEMBER")}
               each teamBMember in competition.camp[1].vote.positive_member
                 img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
         //- 7是足球
