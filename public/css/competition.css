@@ -3,7 +3,7 @@
 }
 .competition_content .img_contain {
   height: 384px;
-  background-image: url("/img/football.png");
+  background-image: url("/img/football.jpg");
 }
 .competition_content .img_contain .formatField {
   position: relative;
