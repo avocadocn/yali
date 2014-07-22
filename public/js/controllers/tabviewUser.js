@@ -58,7 +58,6 @@ tabViewUser.config(['$routeProvider',
 
 tabViewUser.run(['$rootScope','$location',
     function($rootScope,$location) {
-        console.log($location.hash(),$location.path());
         if($location.hash()!=='')
             $rootScope.nowTab = window.location.hash.substr(2);
         else if($location.path()!=='')
@@ -67,6 +66,7 @@ tabViewUser.run(['$rootScope','$location',
         $rootScope.addactive = function(value) {
             $rootScope.nowTab = value;
             $rootScope.message_corner = false;
+            angular.element('.tooltip').hide();
         };
         $rootScope.$on("$routeChangeStart",function(){
             $rootScope.loading = true;
@@ -110,7 +110,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-
+        angular.element('.tooltip').hide();
         $scope.new_comment = [];
         $scope.toggle = [];
         $scope.message_role = "user";
@@ -421,6 +421,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
 
 
 tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',function ($http, $scope,$rootScope) {
+    angular.element('.tooltip').hide();
     $scope.company = false;
     $http.get('/campaign/getCampaigns/user/all/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
         $scope.campaigns = data.campaigns;
@@ -609,7 +610,7 @@ tabViewUser.controller('CampaignListController', ['$http','$scope','$rootScope',
 
 tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
-
+        angular.element('.tooltip').hide();
         $scope.isCalendar = true;
         $scope.isDayView = false;
 
@@ -752,7 +753,7 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
-
+        angular.element('.tooltip').hide();
         var markUserDepartment = function(user, department) {
             if (department) {
                 for (var i = 0; i < department.length; i++) {
