@@ -598,6 +598,7 @@ exports.provoke = function (req, res) {
                               'own':{
                                 '_id':req.user._id,
                                 'nickname':req.user.nickname,
+                                'photo':req.user.photo,
                                 'role':'LEADER'
                               },
                               'receiver':{
@@ -607,11 +608,13 @@ exports.provoke = function (req, res) {
                               'own_team':{
                                 '_id':my_team_id,
                                 'name':req.companyGroup.name,
+                                'logo':req.companyGroup.logo,
                                 'provoke_status':0
                               },
                               'receive_team':{
                                 '_id':team_opposite._id,
                                 'name':team_opposite.name,
+                                'logo':team_opposite.logo,
                                 'provoke_status':0
                               },
                               'campaign_id':null
@@ -673,6 +676,7 @@ exports.responseProvoke = function (req, res) {
                 'own':{
                   '_id':req.user._id,
                   'nickname':req.user.nickname,
+                  'photo':req.user.photo,
                   'role':'LEADER'
                 },
                 'receiver':{
@@ -682,11 +686,13 @@ exports.responseProvoke = function (req, res) {
                 'own_team':{
                   '_id':rst[1]._id,
                   'name':rst[1].name,
+                  'logo':rst[1].logo,
                   'provoke_status':1
                 },
                 'receive_team':{
                   '_id':rst[0]._id,
                   'name':rst[0].name,
+                  'logo':rst[0].logo,
                   'provoke_status':1
                 },
                 'campaign_id':null
@@ -887,11 +893,13 @@ exports.updateFormation = function(req, res){
       var _formation = [];
       var _tempFormation = req.body.formation;
       for (var member in _tempFormation){
-        _formation.push({'uid':member,
-                          'x':_tempFormation[member].x,
-                          'y':_tempFormation[member].y
+        if(model_helper.arrayObjectIndexOf(req.campaign.camp[camp_index].member,member,'uid')>-1){
+          _formation.push({'uid':member,
+            'x':_tempFormation[member].x,
+            'y':_tempFormation[member].y
+          });
+        }
 
-        });
       }
       competition.camp[camp_index].formation = _formation;
       competition.save(function(err){

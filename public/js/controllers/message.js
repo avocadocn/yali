@@ -202,6 +202,7 @@ var messagePreHandle = function(teams,msg,divide){
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
           'team':msg[i].message_content.team[0],
+          'photo':msg[i].message_content.sender[0].photo,
           'sender':sender,
           'message_type':message_type,
           'campaign_id':msg[i].message_content.campaign_id,
@@ -216,6 +217,7 @@ var messagePreHandle = function(teams,msg,divide){
           'detail':msg[i].message_content.content,
           'message_type':message_type,
           'team':msg[i].message_content.team[0],
+          'photo':msg[i].message_content.sender[0].photo,
           'sender':sender,
           'campaign_id':msg[i].message_content.campaign_id,
           'campaign_name':msg[i].message_content.caption
@@ -234,6 +236,7 @@ var messagePreHandle = function(teams,msg,divide){
             'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
+            'photo':msg[i].message_content.sender[0].photo,
             'detail':detail,
             'message_type':message_type
           });
@@ -243,6 +246,7 @@ var messagePreHandle = function(teams,msg,divide){
             'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
+            'photo':msg[i].message_content.sender[0].photo,
             'detail':detail,
             'message_type':message_type
           });
@@ -266,6 +270,7 @@ var messagePreHandle = function(teams,msg,divide){
               'content':content,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
+              'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
               'campaign_id':msg[i].message_content.campaign_id
             });
@@ -276,6 +281,7 @@ var messagePreHandle = function(teams,msg,divide){
               'content':content,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
+              'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
               'campaign_id':msg[i].message_content.campaign_id
             });
@@ -294,6 +300,7 @@ var messagePreHandle = function(teams,msg,divide){
               'content':content,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
+              'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
               'team_id':msg[i].message_content.team[1]._id
             });
@@ -304,6 +311,7 @@ var messagePreHandle = function(teams,msg,divide){
               'content':content,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
+              'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
               'team_id':msg[i].message_content.team[1]._id
             });
@@ -319,7 +327,8 @@ var messagePreHandle = function(teams,msg,divide){
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'detail':detail,
-            'sender':msg[i].message_content.sender,
+            'sender':msg[i].message_content.sender[0].nickname,
+            'photo':msg[i].message_content.sender[0].photo,
             'message_type':message_type
           });
         }else{
@@ -329,7 +338,8 @@ var messagePreHandle = function(teams,msg,divide){
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'detail':detail,
-            'sender':msg[i].message_content.sender,
+            'sender':msg[i].message_content.sender[0].nickname,
+            'photo':msg[i].message_content.sender[0].photo,
             'message_type':message_type
           });
         }
@@ -610,7 +620,8 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
     $scope.private_message_caption = {
       'text':''
     }
-  //队长给队员发私信
+  
+  //队长给队员  公司给员工 发送私信
   $scope.sendToAll = function(){
     var _url;
     var _data = {
@@ -623,6 +634,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
         own : {
           _id : $scope.teamId,
           name : $scope.teamName,
+          logo : $scope.teamLogo
         }
       };
       _data.team = _team;
@@ -637,6 +649,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
         own : {
           _id : $scope.teamId,
           name : $scope.teamName,
+          logo : $scope.teamLogo
         }
       };
       _data.team = _team;

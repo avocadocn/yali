@@ -227,7 +227,8 @@ exports.resultConfirm = function (req, res) {
                   var team = {
                     '_id':competition.team[_campFlag]._id,
                     'name':competition.team[_campFlag].name,
-                    'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 3 : 2,
+                    'logo':competition.team[_campFlag].logo,
+                    'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 3 : 2
                   };
                   message.resultConfirm(req,res,olid,team,competition_id);
                 }

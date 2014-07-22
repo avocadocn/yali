@@ -181,6 +181,7 @@ exports.hrSendToMember = function(req,res){
     var sender = {
           '_id':req.user._id,
           'nickname':req.user.info.name,
+          'photo':req.user.info.logo,
           'role':'HR'
         };
     var callback = function (message_content,cid,req,res){
@@ -210,6 +211,7 @@ exports.hrSendToMember = function(req,res){
     var sender = {
       '_id':req.user._id,
       'nickname':req.user.info.name,
+      'photo':req.user.info.logo,
       'role':'HR'
     },
     caption = 'Message From Company';
@@ -263,6 +265,7 @@ exports.leaderSendToMember = function(req,res){
       sender = {
         '_id':req.user._id,
         'nickname':req.user.nickname,
+        'photo':req.user.photo,
         'role':'LEADER'
       },
       caption = 'Message From Leader';
@@ -326,6 +329,7 @@ exports.sendToParticipator = function(req, res){
     var sender = {
       '_id':req.user._id,
       'nickname':req.user.nickname,
+      'photo':req.user.photo,
       'role':'LEADER'
     };
 
@@ -338,6 +342,7 @@ exports.sendToParticipator = function(req, res){
             team = {
               '_id':req.user.team[j]._id,
               'name':req.user.team[j].name,
+              'logo':req.user.team[j].logo,
               'provoke_status':0
             };
             break;
@@ -507,6 +512,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id){
       sender = {
         '_id':req.user._id,
         'nickname':req.user.nickname,
+        'photo':req.user.photo,
         'role':'LEADER'
       };
   var callbackMC = function (message_content,olid,req,res){
@@ -881,9 +887,11 @@ exports.home = function(req,res){
     if(req.role === 'LEADER'){
       _send.teamId = req.companyGroup._id;
       _send.teamName = req.companyGroup.name;
+      _send.teamLogo = req.companyGroup.logo;
     }else{
       _send.teamId = req.companyGroup != undefined ? req.companyGroup._id : 'null';
       _send.teamName = req.companyGroup != undefined ? req.companyGroup.name : 'null';
+      _send.teamLogo = req.companyGroup != undefined ? req.companyGroup.logo : 'null';
     }
     res.render('message/message',_send);
   }else{

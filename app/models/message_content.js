@@ -10,6 +10,7 @@ var Schema = mongoose.Schema;
 var _sender = new Schema({
   _id:Schema.Types.ObjectId,
   nickname:String,
+  photo:String,
   role:{
     type:String,
     enum:['USER','LEADER','HR']
@@ -19,6 +20,7 @@ var _sender = new Schema({
 var _team = new Schema({
   _id : Schema.Types.ObjectId,
   name : String,
+  logo : String,
   provoke_status: {
     type: Number,
     enum: [0,1,2,3]              //

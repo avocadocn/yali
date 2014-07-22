@@ -30,7 +30,7 @@ var sendMail = function (data) {
  * @param {String} id HR的公司id
  */
 exports.sendCompanyActiveMail = function (who, name, id, host) {
-  var from = '动梨无限<nicoJiang@55yali.com>';
+  var from = '动梨无限<service@donler.com>';
   var to = who;
   var subject = name + ' 动梨社区公司账号激活';
   var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
@@ -50,7 +50,7 @@ exports.sendCompanyActiveMail = function (who, name, id, host) {
 };
 
 exports.sendStaffActiveMail = function(who, uid, cid, host) {
-  var from = '动梨无限<nicoJiang@55yali.com>';
+  var from = '动梨无限<service@donler.com>';
   var to = who;
   var subject = '动梨社区员工账号激活';
   var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
@@ -71,7 +71,7 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
     });
 };
 exports.sendStaffResetPwdMail = function(who, uid, host) {
-  var from = '动梨无限<nicoJiang@55yali.com>';
+  var from = '动梨无限<service@donler.com>';
   var to = who;
   var subject = '动梨社区员工密码重置';
   var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
@@ -93,7 +93,7 @@ exports.sendStaffResetPwdMail = function(who, uid, host) {
     });
 };
 exports.sendCompanyResetPwdMail = function(who, uid, host) {
-  var from = '动梨无限<nicoJiang@55yali.com>';
+  var from = '动梨无限<service@donler.com>';
   var to = who;
   var subject = '动梨社区公司密码重置';
   var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +

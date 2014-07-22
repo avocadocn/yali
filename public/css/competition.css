@@ -1,19 +1,18 @@
 .competition_content {
   margin-top: 20px;
 }
-.competition_content .format_field {
-  position: absolute;
+.competition_content .img_contain {
+  height: 384px;
+  background-image: url("/img/football.jpg");
+}
+.competition_content .img_contain .formatField {
+  position: relative;
   padding: 0;
+  height: 334px;
+  margin: 25px;
 }
-.competition_content .format_field #formatField {
-  padding: 0;
-  background-image: url("/img/field.png");
-}
-.competition_content .format_field .teamMember {
+.competition_content .img_contain .formatField .teamMember {
   position: absolute;
-}
-.competition_content .format_contain {
-  height: 460px;
 }
 .competition_content .team_logo {
   width: 120px;

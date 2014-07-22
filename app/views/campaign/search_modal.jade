@@ -10,7 +10,7 @@ form(name="search_form")
         .dl_md_12
           input.dl_modal_input.form-control(placeholder="请输入搜索关键字,可以是公司名或者小队名" type="text" ng-model="s_value" required)
         .dl_md_1
-          button.clearLinkUnderline.dl_btn_right(type='submit' ng-click="search()" ng-disabled="search_form.$invalid") 搜索
+          button.dl_btn_right(type='submit' ng-click="search()" ng-disabled="search_form.$invalid") 搜索
     .dl_modal_container
       .dl_row
         .dl_md_3
@@ -28,14 +28,14 @@ form(name="search_form")
       .dl_row.dl_height(ng-repeat="team in teams")
         .dl_md_1
           img.size_80(ng-src="{{team.logo}}")
-        .dl_md_10.margin_left_5
-          .row.margin_left_15
+        .dl_md_10
+          .group_row_1
             a(href="/group/home/{{team._id}}/#/group_info")
               span {{team.name}}
-          .row.margin_left_10
-            .dl_md_3
-              span 队员人数:{{team.member.length}}
-            .dl_md_3
+          .group_row
+              span 队员人数: {{team.member.length}}
+          .group_row
+              span 主场:{{team.home_court[0].name}}
         .dl_md_1
           button.dl_btn_right(ng-click="provoke_select(team)") 挑战
     .dl_modal_container.margin_top_15(ng-show='result')
@@ -46,43 +46,43 @@ form(name="search_form")
         .dl_modal_container
           .dl_logo_1
             img.size_48(ng-src="{{company.logo}}")
-          .dl_md_10.margin_left_5
+          .dl_md_10
             .row.margin_left_15
               a(href="/company/home/{{company._id}}/#/company_info")
-                h7 {{company.name}}
+                p {{company.name}}
             .row.margin_left_10
               .dl_md_3
-                h7 该公司小队数:{{company.team.length}}
+                p 该公司小队数:{{company.team.length}}
               .dl_md_3
           .dl_md_1(ng-if="company.team.length > 0")
-            button.dl_btn_right(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小队
-            button.dl_btn_right(ng-if="show_team[$index]" ng-click="toggleTeam(company._id,$index)") 收起
+            button.dl_btn.dl_btn_medium(ng-if="!show_team[$index]" ng-click="toggleTeam(company._id,$index)") 查看小队
+            button.dl_btn.dl_btn_medium(ng-if="show_team[$index]" ng-click="toggleTeam(company._id,$index)") 收起
         .dl_modal_container
           hr
         .dl_modal_container(ng-if="show_team[$index]")
-          .dl_row(ng-repeat="team in teams")
+          .dl_row.margin_left_15.clearfix(ng-repeat="team in teams")
             .dl_logo_1
               img.size_48(ng-src="{{team.logo}}")
             .dl_md_large
-              .row
-                .dl_md_name
-                  h5 {{team.name}}
-                .dl_md_right
-                  a(ng-click="provoke_select(team)") 
-                    h5 挑战
+              p
+              .dl_md_name
+                span {{team.name}}
+              .dl_md_right
+                a(ng-click="provoke_select(team)") 
+                  span 挑战
           hr.dl_little_hr
     .dl_modal_container(ng-if="companies.length == 0" ng-show='result')
       .dl_row.dl_height(ng-repeat="team in teams")
         .dl_md_1
           img.size_80(ng-src="{{team.logo}}")
-        .dl_md_10.margin_left_5
-          .row.margin_left_15
+        .dl_md_10
+          .group_row_1
             a(href="/group/home/{{team._id}}/#/group_info")
-              h5 {{team.name}}
-          .row.margin_left_10
-            .dl_md_3
-              h5 队员人数:{{team.member.length}}
-            .dl_md_3
+              span {{team.name}}
+          .group_row
+              span 队员人数: {{team.member.length}}
+          .group_row(ng-show="team.home_court[0].name")
+              span 主场:{{team.home_court[0].name}}
         .dl_md_1
           button.dl_btn_right(ng-click="provoke_select(team)") 挑战
   br
