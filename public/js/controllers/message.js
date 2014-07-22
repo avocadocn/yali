@@ -724,12 +724,10 @@ var sendMessagesPre = function(messages){
       if(messages[i].sender.length > 0){
         if(messages[i].campaign_id == null){
           message_type = 0;
-          content = "您向 "+messages[i].team[0].name + "的队员发送了站内信";
           detail = messages[i].content;
           direct_show = true;
         }else{
           detail = messages[i].content;
-          content = "您向参加 "+ messages[i].caption + " 的成员发送了站内信";
           if(messages[i].team[0].provoke_status == 0){
             message_type = 1;
           }else{
@@ -739,11 +737,10 @@ var sendMessagesPre = function(messages){
       }
      send_messages.push({
         '_id':messages[i]._id,
-        'caption':'Message From Campaign',
-        'content':content,
         'status':messages[i].status,
         'date':messages[i].post_date,
         'detail':messages[i].content,
+        'team':messages[i].team[0],
         'message_type':message_type,
         'campaign_id':messages[i].campaign_id,
         'campaign_name':messages[i].caption
@@ -754,7 +751,6 @@ var sendMessagesPre = function(messages){
     if(messages[i].type == 'company'){
       message_type = 3;
       detail = messages[i].content;
-      content = "您向全公司的员工发送了站内信";
       send_messages.push({
         '_id':messages[i]._id,
         'content':content,

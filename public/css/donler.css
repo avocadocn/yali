@@ -46,9 +46,20 @@ button {
 textarea {
   resize: none;
 }
+.message_detail {
+  width: 364px;
+  max-height: 140px;
+  word-break: break-all;
+  overflow: hidden;
+  margin-top: -20px;
+}
 .message_panel {
-  height: 93px;
+  min-height: 93px !important;
   padding-top: 20px !important;
+}
+.message_panel:hover {
+  cursor: pointer;
+  background-color: #f8f8f3;
 }
 .bg_change:hover {
   cursor: pointer;
@@ -527,12 +538,12 @@ textarea {
   float: left;
 }
 .dl_message_date {
-  width: 19%;
+  width: 23%;
   margin-left: 5px;
   float: left;
 }
 .dl_message_caption {
-  width: 78%;
+  width: 74%;
   margin-left: 5px;
   float: left;
 }
