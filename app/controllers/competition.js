@@ -188,27 +188,26 @@ exports.resultConfirm = function (req, res) {
       res.send(err);
     } else {
       //本组的index
-      var _campFlag,_otherCampFlag;
-      if(req.role ==='HR'){
-        _campFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 0 : 1;
-        _otherCampFlag = req.user._id.toString() === competition.camp[0].cid.toString() ? 1 : 0;
-      }
-      else{
-        _campFlag = req.user.cid.toString() === competition.camp[0].cid.toString() ? 0 : 1;
-        _otherCampFlag = req.user.cid.toString() === competition.camp[0].cid.toString() ? 1 : 0;
-      }
-      competition.camp[_campFlag].result.confirm = true;
       if(!rst_accept) {
-
+        if(req.competition_leader.length===competition.camp.length){
+          req.competition_leader.forEach(function(index){
+            competition.camp[index].result.confirm = true;
+            competition.camp[index].result.start_date = new Date();
+          });
+        }
+        else{
+          competition.camp[req.competition_leader[0]].result.confirm = true;
+          competition.camp[req.competition_leader[0]].result.start_date = new Date();
+          competition.camp[(req.competition_leader[0]+1)%2].result.confirm = false;
+        }
         //由于页面双方顺序待定,此处也待定
         competition.camp[0].score = score_a;
         competition.camp[1].score = score_b;
-        // competition.camp[_campFlag].score = score_a;
-        // competition.camp[_otherCampFlag].score = score_b;
-
-        competition.camp[_otherCampFlag].result.confirm = false;
-        competition.camp[_campFlag].result.content = rst_content;
-        competition.camp[_campFlag].result.start_date = new Date();
+      }
+      else{
+        competition.camp.forEach(function(camp){
+          camp.result.confirm = true;
+        });
       }
       competition.save(function (err){
         if(err){
@@ -220,22 +219,21 @@ exports.resultConfirm = function (req, res) {
             groupMessage.save(function(err){
               if(err){
                 console.log(err);
-              }else{
-                //发送站内信
-                if(competition.team[_otherCampFlag].leader.length > 0){
-                  var olid = competition.team[_otherCampFlag].leader[0]._id;
-                  var team = {
-                    '_id':competition.team[_campFlag]._id,
-                    'name':competition.team[_campFlag].name,
-                    'logo':competition.team[_campFlag].logo,
-                    'provoke_status': (competition.camp[_campFlag].result.confirm && competition.camp[_otherCampFlag].result.confirm) ? 3 : 2
-                  };
-                  message.resultConfirm(req,res,olid,team,competition_id);
-                }
               }
             });
           });
-          res.send({'result':0,'msg':'SUCCESS'});
+          //发送站内信
+          if(!rst_accept&&req.competition_leader.length<competition.camp.length&&competition.team[(req.competition_leader[0]+1)%2].leader.length > 0){
+            var olid = competition.team[(req.competition_leader[0]+1)%2].leader[0]._id;
+            var team = {
+              '_id':competition.team[req.competition_leader[0]]._id,
+              'name':competition.team[req.competition_leader[0]].name,
+              'logo':competition.team[req.competition_leader[0]].logo,
+              'provoke_status': (competition.camp[req.competition_leader[0]].result.confirm && competition.camp[(req.competition_leader[0]+1)%2].result.confirm) ? 3 : 2
+            };
+            message.resultConfirm(req,res,olid,team,competition_id);
+          }
+          res.send({'result':1,'msg':'SUCCESS'});
         }
       });
     }

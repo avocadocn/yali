@@ -1,8 +1,21 @@
 .competition_content {
   margin-top: 20px;
 }
-.competition_content .dl_btn_detail {
-  width: 120px;
+.competition_content .dl_score {
+  width: 90px;
+  height: 50px;
+  float: left;
+  font-size: 40px;
+  text-align: center;
+  line-height: 120%;
+}
+.competition_content .dl_score_colon {
+  font-size: 40px;
+  text-align: center;
+  line-height: 100%;
+}
+.competition_content .dl_left {
+  margin-left: -30px;
 }
 .competition_content .img_contain {
   height: 384px;

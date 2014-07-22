@@ -462,7 +462,6 @@ exports.provoke = function (req, res) {
       return res.send(500,'error');
     }
     else{
-      console.log(team);
       var team_opposite = team;
       var theme = req.body.theme;
       var location = req.body.location;
@@ -503,7 +502,7 @@ exports.provoke = function (req, res) {
         'cid' : team_opposite.cid,
         'tname' : team_opposite.name,
         'logo' : team_opposite.logo,
-        'gid': req.companyGroup.gid
+        'gid': team_opposite.gid
       };
       competition.camp.push(camp_b);
       competition.theme = theme;

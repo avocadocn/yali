@@ -22,16 +22,16 @@ block contentExt
                 div
                   if competition.camp[1].start_confirm
                     if join_flag[0]
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[0].id}')")
+                      input.dl_btn.dl_btn_small.pull-right(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[0].id}')")
                     else
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[0].id}')")
+                      input.dl_btn.dl_btn_small.pull-right(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[0].id}')")
                   else
-                    a(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
+                    a.pull-right(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
           .score_panel.col-xs-4
             if score_flag
               h1.text-center VS
-              .dl_box#score_tip
-                .dl_score_frame
+              .row.dl_box#score_tip
+                .col-xs-5
                   if confirm_mode!=undefined && confirm_mode!=0
                     label.dl_score(ng-if="!edit") {{score_a}}
                     input.dl_score(type="text" maxlength="3" ng-model="$parent.score_a" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
@@ -39,13 +39,13 @@ block contentExt
                         a.dl_btn_right(ng-if="!edit" ng-click='confirmScore(true)') 接受比分
                   else
                     label.dl_score= competition.camp[0].score
-                .dl_score_frame
-                  .dl_score :
+                .col-xs-2
+                  span.dl_score_colon :
                   if confirm_mode === 1
-                    a.dl_btn_right(ng-disabled="true") 等待确认
+                    a.dl_btn_right.dl_left(ng-disabled="true") 等待确认
                   if confirm_mode === 3
-                    a.dl_btn_right(ng-click='scoreModify()') {{modify_caption}}
-                .dl_score_frame
+                    a.dl_btn_right.dl_left(ng-click='scoreModify()') {{modify_caption}}
+                .col-xs-5
                   if confirm_mode!=undefined && confirm_mode!=0
                     label.dl_score(ng-if="!edit") {{score_b}}
                     input.dl_score(type="text" ng-model="$parent.score_b" maxlength="3" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
@@ -65,16 +65,16 @@ block contentExt
                 div
                   if competition.camp[1].start_confirm
                     if join_flag[1]
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[1].id}')")
+                      input.dl_btn.dl_btn_small(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[1].id}')")
                     else
-                      input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[1].id}')")
+                      input.dl_btn.dl_btn_small(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[1].id}')")
                   else
                     a(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
         .row
           .col-xs-5.col-xs-offset-1
             if competition.camp[1].start_confirm
               p.subtitle #{__("JOIN")}#{__("MEMBER")}
-              if competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1
+              if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'&&competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1
                 each teamAMember in competition.camp[0].member
                   img.teamMember.team_member_logo.img_user(x-donler-draggable="true" draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
                 each teamAMember in competition.camp[0].member_quit
@@ -90,7 +90,7 @@ block contentExt
             if competition.camp[1].start_confirm
               .row
                 p.subtitle.pull-right #{__("JOIN")}#{__("MEMBER")}
-              if competition.active&&!competition.finish&&competition_leader.indexOf(1)>-1
+              if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'&&competition.active&&!competition.finish&&competition_leader.indexOf(1)>-1
                 each teamBMember in competition.camp[1].member
                   img.teamMember.team_member_logo.pull-right.img_user(x-donler-draggable="true" draggable='false' tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" data-camp='1' data-tid="#{competition.camp[1].id}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
                 each teamBMember in competition.camp[1].member_quit
@@ -104,7 +104,7 @@ block contentExt
               each teamBMember in competition.camp[1].vote.positive_member
                 img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
         //- 7是足球
-        if competition.camp[0].gid === '7'
+        if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'
           hr
           .row
             .col-xs-1

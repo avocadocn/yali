@@ -271,22 +271,22 @@ exports.campaginAuthorize = function(req, res, next){
       req.role = 'MEMBER';
     }
     else {
-      var team_index = model_helper.arrayObjectIndexOf(req.user.team,req.campaign.team[0],'_id');
-      if(team_index==-1){
-        team_index = model_helper.arrayObjectIndexOf(req.user.team,req.campaign.team[1],'_id');
-      }
-      if (team_index>-1){
-        if(req.user.team[team_index].leader ===true){
-          req.role = 'LEADER';
-        }
-        else{
-        req.role = 'MEMBER';
-        }
+      req.campaign.team.forEach(function(team){
+        var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
+        if (team_index>-1){
+          if(req.user.team[team_index].leader ===true){
+            req.role = 'LEADER';
+          }
+          else if(req.role !== 'LEADER'){
+            req.role = 'MEMBER';
+          }
 
-      }
-      else{
-        req.role = 'PARTNER';
-      }
+        }
+        else if(req.role!=undefined){
+          req.role = 'PARTNER';
+        }
+      });
+      
     }
   }
   else{
