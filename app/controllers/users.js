@@ -1062,7 +1062,6 @@ exports.getGroups = function(req, res) {
       }
       unjoin_groups.push(company_group);
     });
-
     res.send({
       result: 1,
       msg: '获取小队列表成功',

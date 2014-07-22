@@ -17,8 +17,10 @@
       .dl_row.clearfix
         .info_side
           span.info_label #{__("DEPARTMENT")}
-        .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name="position" ng-model="members[num].department" ng-disabled="unEdit")
+        .info_detail(ng-if="!unEdit")
+          select(ng-model="department._id" ng-options="option._id as option.label for option in options")
+        .info_detail_2(ng-if="unEdit")
+          span.info_label {{ members[num].department.name }}
       .dl_row.clearfix
         .info_side
           span.info_label #{__("GENDER")}

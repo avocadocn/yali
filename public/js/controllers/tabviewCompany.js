@@ -337,9 +337,78 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
       $scope.company = true;
     });
 
+    var treeToList = function(department, level) {
+        var list = [];
+        if (department) {
+            for (var i = 0; i < department.length; i++) {
+                var label = '';
+                for (var j = 0; j < level; j++) {
+                    label += '---';
+                }
+                label += department[i].name;
+                list.push({
+                    _id: department[i]._id,
+                    name: department[i].name,
+                    label: label
+                });
+                list = list.concat(treeToList(department[i].department, level + 1));
+            }
+        }
+        return list;
+    };
+    var departFlag =false;
+    var setDepartmentOptions = function(user) {
+        if(!departFlag){
+            $http.get('/departmentTree/' + $rootScope.cid)
+            .success(function(data, status) {
+                var department = data.department;
+                $scope.options = treeToList(department, 0);
+                departFlag = true;
+                for (var i = 0; i < $scope.options.length; i++) {
+                    if (user.department) {
+                        if (user.department._id && user.department._id.toString() === $scope.options[i]._id.toString()) {
+                            $scope.department = {
+                                _id: $scope.options[i]._id
+                            };
+                            break;
+                        }
+                    }
+                }
+                if (!$scope.department) {
+                    $scope.department = {
+                        _id: $scope.options[0]._id
+                    };
+                }
+            });
+        }
+        else{
+            for (var i = 0; i < $scope.options.length; i++) {
+                if (user.department) {
+                    if (user.department._id && user.department._id.toString() === $scope.options[i]._id.toString()) {
+                        $scope.department = {
+                            _id: $scope.options[i]._id
+                        };
+                        break;
+                    }
+                }
+            }
+            if (!$scope.department) {
+                $scope.department = {
+                    _id: $scope.options[0]._id
+                };
+            }
+        }
+
+    };
+
+
     $scope.userDetail = function(index) {
         $scope.num = index;
+        $scope.unEdit = true;
+        $scope.buttonStatus = '编辑';
+        setDepartmentOptions($scope.members[index]);
     }
+
 
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
@@ -349,13 +418,24 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
             $scope.buttonStatus = '保存';
         }
         else{
+            for (var i = 0; i < $scope.options.length; i++) {
+                if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
+                    var department = {
+                        _id: $scope.options[i]._id,
+                        name: $scope.options[i].name
+                    };
+                    $scope.members[$scope.num].department.name = $scope.options[i].name;
+                    break;
+                }
+            }
             try{
                 $http({
                     method: 'post',
                     url: '/company/changeUser/'+$rootScope.cid,
                     data:{
                         operate : 'change',
-                        user : $scope.members[$scope.num]
+                        user : $scope.members[$scope.num],
+                        department: department
                     }
                 }).success(function(data, status) {
                     $scope.buttonStatus = '编辑';
@@ -1137,7 +1217,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
           }).success(function(data, status) {
                 $scope.company_users = data.all_users;
                 $scope.managers = data.leaders;
-                $scope.origin_manager_id = data.leaders[0]._id;
+                $scope.origin_manager_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
                 $scope.department_users = data.users;
                 for(var i = 0 ; i < $scope.department_users.length; i ++){
                     $scope.department_users[i].wait_for_join = false;

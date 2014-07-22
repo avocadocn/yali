@@ -1001,7 +1001,7 @@ exports.changeUser = function (req, res) {
                 } else {
                     var changeFlag = user.nickname!=_user.nickname;
                     user.nickname = _user.nickname;
-                    user.department = _user.department;
+                    user.department = req.body.department;
                     user.position = _user.position;
                     user.save(function (err) {
                         if(err) {

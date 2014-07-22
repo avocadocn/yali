@@ -657,7 +657,7 @@ textarea {
 }
 .group .user_name {
   display: inline-block;
-  max-width: 84px;
+  max-width: 60px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -832,6 +832,7 @@ textarea {
 .dl_btn_red {
   background-color: #cd270d;
   border-color: #cd270d;
+  color: #fff;
 }
 .dl_btn_red:hover {
   background-color: #8f5248;
