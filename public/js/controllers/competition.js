@@ -8,17 +8,22 @@ groupApp.directive('donlerMember', ['$rootScope', function($rootScope) {
           restrict: 'A',
           link: function(scope, el, attrs, controller) {
             var _id = angular.element(el).attr('id');
+            var _tid = angular.element(el).attr('data-tid');
             var _x = angular.element(el).attr('data-left');
             var _y = angular.element(el).attr('data-top');
             angular.element(el).css('left',_x+'%');
             angular.element(el).css('top',_y+'%');
-            _id = scope.getMemberId(_id);
-            scope.competition_format[_id] ={
-              'x':_x,
-              'y':_y
-            };
             angular.element('#'+_id).attr('draggable',false);
-            angular.element(el).attr('src',angular.element('#'+_id).attr('src'));
+            angular.element(el).attr('src',angular.element('#'+_id.substr(3)).attr('src'));
+            if(angular.element(el).attr('x-donler-member')===true){
+              if(!scope.competition_format[_tid]){
+                scope.competition_format[_tid]={};
+              }
+              scope.competition_format[_tid][_id] ={
+                'x':_x,
+                'y':_y
+              };
+            }
           }
       }
   }]);
@@ -40,7 +45,7 @@ groupApp.directive('donlerDraggable', ['$rootScope', function($rootScope) {
               angular.element(e.target).removeClass('donler_dragover');
               var _id = e.originalEvent.target.id;
               if(_id.indexOf('on_')==0){
-                var $field = angular.element('#formatField');
+                var $field = angular.element('.formatField');
                 var _left = $field.offset().left;
                 var _top = $field.offset().top;
                 var _right = _left + $field.width();
@@ -48,10 +53,10 @@ groupApp.directive('donlerDraggable', ['$rootScope', function($rootScope) {
                 var _nowx = e.originalEvent.pageX;
                 var _nowy = e.originalEvent.pageY;
                 if (_nowx < _left || _nowx > _right || _nowy > _bottom || _nowy < _top) {
+                  scope.updateFormatData(_id,angular.element('#'+_id).attr('data-tid'),-1);
                   angular.element(e.originalEvent.target).remove();
                   _id = scope.getMemberId(_id);
                   angular.element('#'+_id).attr('draggable',true);
-                  scope.updateFormatData(_id,angular.element('#'+_id).attr('data-tid'),-1);
                 };
               }
             });
@@ -90,7 +95,6 @@ groupApp.directive('donlerDropTarget', ['$rootScope', function($rootScope) {
                 if (e.originalEvent.stopPropagation) {
                   e.originalEvent.stopPropagation(); // Necessary. Allows us to drop.
                 }
-                console.log('drop');
                 var data=e.originalEvent.dataTransfer.getData("member_id");
                 if(!data){
                   return false;
@@ -100,17 +104,17 @@ groupApp.directive('donlerDropTarget', ['$rootScope', function($rootScope) {
                 var _y = angular.element(e.originalEvent.target).offset().top;
                 var _width = angular.element(e.originalEvent.target).width();
                 var _height = angular.element(e.originalEvent.target).height();
-                var _offsetX = e.originalEvent.pageX - _x - 10;
-                var _offsetY = e.originalEvent.pageY - _y -10;
+                var _offsetX = e.originalEvent.pageX - _x;
+                var _offsetY = e.originalEvent.pageY - _y;
                 if(angular.element('#'+data).attr('data-camp')=='0'&&_offsetX > _width / 2||angular.element('#'+data).attr('data-camp')=='1'&&_offsetX < _width / 2){
                   return false;
                 };
                 if(data.indexOf('on_')!=0){
                   _newEle = angular.element('#'+data).clone(true);
                   _newEle.attr('id','on_'+data);
-                  _newEle.css('top',_offsetY > 0 ? _offsetY : 0);
-                  _newEle.css('left',_offsetX > 0 ? _offsetX : 0);
-                  angular.element(e.originalEvent.target).parent().append(_newEle);
+                  _newEle.css('top',_offsetY > 0 ? _offsetY-3 : 0);
+                  _newEle.css('left',_offsetX > 0 ? _offsetX-3 : 0);
+                  angular.element(e.originalEvent.target).append(_newEle);
                   angular.element('#'+data).attr('draggable',false);
                 }
                 else{
@@ -121,8 +125,6 @@ groupApp.directive('donlerDropTarget', ['$rootScope', function($rootScope) {
                   var datay=e.originalEvent.dataTransfer.getData("nowy");
                   _offsetX = _left + e.originalEvent.pageX - datax;
                   _offsetY = _top +e.originalEvent.pageY - datay;
-                  console.log(_left,datax,_offsetX);
-                  console.log(_top,datay,_offsetY);
                   _newEle.css('top',_offsetY > 0 ? _offsetY : 0);
                   _newEle.css('left',_offsetX > 0 ? _offsetX : 0);
                 };
@@ -139,7 +141,11 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
             return;
         }
         $scope.getComment(); //获取留言
+        if($scope.role==='HR'||$scope.role==='LEADER'){
+          setInterval($scope.pushFormatData,3000);
+        }
     });
+    $scope.updateFlag = false;
     $scope.comments = [];
     $scope.competition_format = {};
     $scope.new_comment = {
@@ -420,25 +426,38 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
       }
     };
     $scope.getMemberId = function(id){
-      return (id.indexOf('on_')==0) ? id.substr(3) : id;
+      return id.substr(id.indexOf('__')+2);
     };
     $scope.updateFormatData = function(id,tid,percentX,percentY){
       id = $scope.getMemberId(id);
+
       if(percentX===-1){
-        delete $scope.competition_format[id];
+        delete $scope.competition_format[tid][id];
       }
       else{
-        $scope.competition_format[id] ={
+        if(!$scope.competition_format[tid]){
+          $scope.competition_format[tid]={};
+        }
+        $scope.competition_format[tid][id] ={
           'x':percentX,
           'y':percentY
         };
       }
-      $.post('/group/updateFormation/'+tid+'/'+$scope.competition_id,{'formation':$scope.competition_format},function(data,status){
-        if(data.result===0){
-          alertify.alert(data.msg);
-        }
-      });
+      $scope.updateFlag = true;
     };
+    $scope.pushFormatData = function(){
+      if($scope.updateFlag){
+        for (var tid in $scope.competition_format){
+          $.post('/group/updateFormation/'+tid+'/'+$scope.competition_id,{'formation':$scope.competition_format[tid]},function(data,status){
+            if(data.result===0){
+              alertify.alert(data.msg);
+            }
+          });
+        }
+        $scope.updateFlag=false;
+      }
+    }
+
 }]);
 
 

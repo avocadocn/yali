@@ -893,11 +893,13 @@ exports.updateFormation = function(req, res){
       var _formation = [];
       var _tempFormation = req.body.formation;
       for (var member in _tempFormation){
-        _formation.push({'uid':member,
-                          'x':_tempFormation[member].x,
-                          'y':_tempFormation[member].y
+        if(model_helper.arrayObjectIndexOf(req.campaign.camp[camp_index].member,member,'uid')>-1){
+          _formation.push({'uid':member,
+            'x':_tempFormation[member].x,
+            'y':_tempFormation[member].y
+          });
+        }
 
-        });
       }
       competition.camp[camp_index].formation = _formation;
       competition.save(function(err){

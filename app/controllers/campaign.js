@@ -649,6 +649,10 @@ exports.quitCampaign = function (req, res) {
             'nickname':req.user.nickname,
             'photo':req.user.photo
           });
+          var formation_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].formation,uid,'uid');
+          if(formation_index>-1){
+            campaign.camp[camp_index].member.splice(formation_index,1);
+          }
         }
         if(member_index<0){
           return res.send({ result: 0, msg: '您没有参加该活动'});
