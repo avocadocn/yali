@@ -15,6 +15,33 @@ userApp.directive('match', function($parse) {
   };
 });
 
+userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
+    $scope.active = 0;
+    $scope.loading = false;
+    $scope.mailCheck = function() {
+        $scope.loading = true;
+        var now_email = $scope.email+'@'+$scope.currentDomain;
+        try{
+            $http({
+                method: 'post',
+                url: '/users/mailCheck',
+                data:{
+                    login_email: now_email
+                }
+            }).success(function(data, status) {
+                $scope.loading = false;
+                $scope.active=data.active;
+            }).error(function(data, status) {
+                //TODO:更改对话框
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+}]);
+
 
 userApp.controller('signupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
     var departments;

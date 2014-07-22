@@ -24,6 +24,7 @@ module.exports = function(app, passport) {
     app.get('/users/home', authorization.userAuthorize, users.home);
     app.get('/users/home/:userId', authorization.userAuthorize, users.home);
     // Active produce
+    app.post('/users/mailCheck', users.mailCheck);
     app.get('/users/invite', users.invite);
     app.post('/users/dealActive', users.dealActive);
     app.get('/users/setProfile', users.setProfile);

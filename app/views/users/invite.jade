@@ -11,21 +11,33 @@ block contentExt
           p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
           p 我们会对每家申请加入的团体当然也包括您在内
           p 认真的核实资料，感谢您的配合
-      .col-xs-12.col-sm-7
+      .col-xs-12.col-sm-7(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
         p 请输入您的企业邮箱
-        form.form-inline(role="form" action="/users/dealActive" method="post")
+        form.form-inline(role="form" name='active_form' action='/users/dealActive' method='post')
           .form-group
             label.sr-only Email Host
-            input.form-control(type="text" name="host" placeholder="email")
+            input.form-control(type="text" name="host" ng-model="email" placeholder="email" ng-change="mailCheck()" required)
           | @
           .form-group
             label.sr-only Email Domain
             if domains.length === 1
-              input(type="hidden" name="domain" value="#{domains[0]}")
+              input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
               input.form-control(type="text" value="#{domains[0]}" disabled="true")
             if domains.length > 1
-              select.form-control(name="domain")
+              select.form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
                 each domain in domains
-                  option(value="#{domain}")= domain
-          button.btn.btn-success(type="submit") 激活
-        p= message
+                  option(value="#{domain}" selected='selected')= domain
+            input(type="hidden" name="index" ng-model="active")
+          button.btn.btn-success(type="submit" ng-disabled="active!==1 && active!==2 || active_form.$invalid") 激活
+        p
+        img(ng-show='loading' src='/img/loading.gif')
+        div(ng-show='active==1')
+          span 此邮箱未被使用!
+        div(ng-show='active==2')
+          span 您的邮箱已激活过,请到您的邮箱查收邮件,若没有收到请重新点击激活！
+        div(ng-show='active==3')
+          span 您的邮箱已注册，请登录，若是您忘记了密码,
+          a(href='/users/forgetPwd') 请点此跳转
+
+block footExt
+  script(src="/js/controllers/user.js")

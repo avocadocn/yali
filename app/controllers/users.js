@@ -222,9 +222,9 @@ function userOperate(cid, key, res, req) {
       if (!company) {
         throw 'Not found company';
       }
-
+      var email = req.body.host + '@' + req.body.domain;
       User
-      .findOne({ username: req.body.host + '@' + req.body.domain })
+      .findOne({ email: email})
       .exec()
       .then(function(user) {
         if (user) {
@@ -235,7 +235,6 @@ function userOperate(cid, key, res, req) {
           });
         }
 
-        var email = req.body.host + '@' + req.body.domain;
         if (company.email.domain.indexOf(req.body.domain) > -1) {
           var user = new User({
             email: email,
@@ -254,7 +253,9 @@ function userOperate(cid, key, res, req) {
                 } else {
                   //系统再给员工发一封激活邮件
                   mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
-                  res.render('users/message', message.wait);
+                  delete req.session.key;
+                  delete req.session.key_id;
+                  return res.render('users/message', message.wait);
                 }
               });
             }
@@ -281,18 +282,85 @@ function userOperate(cid, key, res, req) {
   } else {
     res.render('users/message', message.invalid);
   }
+};
+
+function userOperate2(cid, key, res, req) { //重发邮件
+  if (encrypt.encrypt(cid, config.SECRET) === key) {
+    Company
+    .findOne({ _id: cid })
+    .exec()
+    .then(function(company) {
+      if (!company) {
+        throw 'Not found company';
+      }
+      var email = req.body.host + '@' + req.body.domain;
+      User
+      .findOne({ email: email})
+      .exec()
+      .then(function(user) {
+        if (user) {
+          if (company.email.domain.indexOf(req.body.domain) > -1){
+            //给这个人重新发
+            mail.sendStaffActiveMail(email, user._id.toString(), cid, req.headers.host);
+            delete req.session.key;
+            delete req.session.key_id;
+            res.render('users/message', message.wait);
+          }
+          else {
+            res.render('users/invite', {
+              title: 'validate',
+              domains: company.email.domain,
+              message: '请使用企业邮箱'
+            });
+          }
+        }
+        else {
+          res.render('users/message', message.invalid);
+        }
+      })
+      .then(null, function(err) {
+        console.log(err);
+        res.render('users/message', message.invalid);
+      });
+    });
+  } else {
+    res.render('users/message', message.invalid);
+  }
+};
+/**
+ * 验证用户邮箱是否重复
+ */
+exports.mailCheck = function(req, res) {
+  var email = req.body.login_email;
+  User.findOne({email:email},{active:1},function(err,user){
+    if(err){
+      console.log(err);
+      return res.send(500,{'msg':'DatabaseError'});
+    }
+    else if(!user){//这个邮箱没用过
+      return res.send({'active':1});
+    }
+    else if(user.active === false){//这个邮箱激活了没验证
+      return res.send({'active':2});
+    }
+    else //这个邮箱已激活、并注册完毕
+      return res.send({'active':3});
+  });
+};
 
 
-}
 /**
  * 处理激活验证
  */
 exports.dealActive = function(req, res) {
   var key = req.session.key;
   var cid = req.session.key_id;
-  userOperate(cid, key, res, req);
-  delete req.session.key;
-  delete req.session.key_id;
+  if(req.body.index==1){
+    userOperate(cid, key, res, req);
+  }
+  else{
+    userOperate2(cid,key,res,req);
+  }
 };
 
 /**
