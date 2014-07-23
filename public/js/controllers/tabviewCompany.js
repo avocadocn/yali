@@ -310,7 +310,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     $http.get('/search/'+$rootScope.cid+'/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
       //按照员工昵称的拼音排序
-      $scope.members = $scope.members.sort(function (e,f){return e.nickname.localeCompare(f.nickname);});
+      //$scope.members = $scope.members.sort(function (e,f){return e.nickname.localeCompare(f.nickname);});
       $scope.company = true;
     });
 

@@ -5,7 +5,7 @@ div(ng-show = '!loading')
     hr
     .row.margin_left_10
       .groups
-        .member(ng-repeat="member in members")
+        .member(ng-repeat="member in members track by $index")
           div.member_group(ng-if='member.active')
             if role != 'GUESTHR' && role !='GUEST'
               .dl_row.img(bs-popover)
@@ -23,7 +23,7 @@ div(ng-show = '!loading')
       hr
       .row.margin_left_10
         .groups
-          .member(ng-repeat="member in members")
+          .member(ng-repeat="member in members track by $index")
             div.member_group(ng-if='!member.active')
               .dl_row.img
                 a(ng-click="userDetail($index)" data-toggle="modal" data-target="#UnregUserModal")
@@ -48,6 +48,6 @@ div(ng-show = '!loading')
               .info_detail_2
                 span.info_label {{members[num].email}}
           .dl-modal-footer
-            button.dl_btn_red.dl_btn_large 删除
+            //button.dl_btn_red.dl_btn_large 删除
             button.cancel_btn.dl_btn_large(data-dismiss="modal" aria-hidden="true") 返回
                 

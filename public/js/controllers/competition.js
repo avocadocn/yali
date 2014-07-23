@@ -32,8 +32,10 @@ groupApp.directive('donlerDraggable', ['$rootScope', function($rootScope) {
       return {
           restrict: 'A',
           link: function(scope, el, attrs, controller) {
-            angular.element(el).attr("draggable", "true");
             var id = angular.element(el).attr("id");
+            if(angular.element('#on_'+id).length==0){
+              angular.element(el).attr("draggable", "true");
+            }
             el.bind("dragstart", function(e) {
               angular.element(e.target).addClass('donler_dragover');
               e.originalEvent.dataTransfer.setData("member_id",e.originalEvent.target.id);
@@ -57,8 +59,7 @@ groupApp.directive('donlerDraggable', ['$rootScope', function($rootScope) {
                 if (_nowx < _left || _nowx > _right || _nowy > _bottom || _nowy < _top) {
                   scope.updateFormatData(_id,angular.element('#'+_id).attr('data-tid'),-1);
                   angular.element(e.originalEvent.target).remove();
-                  _id = scope.getMemberId(_id);
-                  angular.element('#'+_id).attr('draggable',true);
+                  angular.element('#'+_id.substr(3)).attr('draggable',true);
                 };
               }
             });

@@ -1,5 +1,5 @@
 .modal-dialog
-  .dl-modal(style="width:370px")
+  form.dl-modal(style="width:370px" name="detail_form")
     .dl-modal-header
       button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
       h4.modal-title#myModalLabel #{__("STAFF")}#{__("INFO")}
@@ -8,7 +8,7 @@
         .info_side
           span.info_label #{__("NICKNAME")}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-disabled="unEdit")
+          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-maxlength=20 tooltip="{{detail_form.nickname.$invalid? '最长20字':''}}" required ng-disabled="unEdit")
       .dl_row.clearfix
         .info_side
           span.info_label #{__("REALNAME")}
@@ -40,5 +40,5 @@
       if role==='HR' || role==='OWNER'
         span #{unEdit}
         //button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="changeUserInfo('delete')") #{__("DELETE")}
-        button.dl_btn.dl_btn_large(ng-click="changeUserInfo()") {{buttonStatus}}
+        button.dl_btn.dl_btn_large(ng-click="changeUserInfo()" ng-disabled="detail_form.$invalid&& !unEdit") {{buttonStatus}}
       button.cancel_btn.dl_btn_large(data-dismiss="modal") 返回
