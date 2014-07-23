@@ -47,10 +47,10 @@ textarea {
   resize: none;
 }
 .nav-tabs>li.active>a {
-  background-color: #f4f4f4;
+  background-color: #fff;
 }
 .nav-tabs>li.active>a:hover {
-  background-color: #f4f4f4;
+  background-color: #fff;
 }
 .message_detail {
   width: 364px;
@@ -662,11 +662,12 @@ textarea {
   float: left;
 }
 .dl_container .tab-content {
-  min-height: 300px;
+  min-height: 200px;
+  padding-top: 20px;
 }
 .dl_container .tab-body,
 .dl_container .tab-info-form {
-  background-color: #f4f4f4;
+  background-color: #fff;
   min-height: 200px;
 }
 .dl_container .tab_style {
@@ -743,7 +744,7 @@ textarea {
 }
 .dl_messagebox {
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #fff;
   line-height: 21px;
 }
 .dl_messagebox:hover {
@@ -1541,7 +1542,7 @@ input.ng-invalid.ng-dirty {
   width: 290px;
   min-height: 80px;
   margin: 8px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 .dl_allteaminfo_emp .teamitem .btn_join {
   position: absolute;

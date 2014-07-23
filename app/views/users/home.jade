@@ -34,7 +34,7 @@ block panel
       a.subtitle.no_radius(href="#/schedule/#{uid}" ng-click="addactive('schedule/#{uid}')") #{__("SCHEDULE")}
     li.tab_style(ng-class="{'active':nowTab=='timeLine/#{uid}'}")
       a.subtitle.no_radius(href="#/timeLine/#{uid}" ng-click="addactive('timeLine/#{uid}')") #{__("TIME_LINE")}
-  .tab-content.margin_top_20
+  .tab-content
     .tab-pane.active
       div(ng-view).tab-body
 
