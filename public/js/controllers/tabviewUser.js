@@ -37,7 +37,8 @@ tabViewUser.config(['$routeProvider',
       .when('/timeLine/:uid', {
         templateUrl: function(params){
             return '/users/timeline/'+params.uid;
-        }
+        },
+        controller: 'TimeLineController'
       })
       .when('/schedule/:uid', {
         templateUrl: function(params){
@@ -107,7 +108,11 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
-
+tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
+    function($http, $scope, $rootScope) {
+         $rootScope.nowTab = window.location.hash.substr(2);
+    }
+]);
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
         angular.element('.tooltip').hide();

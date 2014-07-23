@@ -36,7 +36,8 @@ tabViewGroup.config(['$routeProvider',
       .when('/timeLine/:tid', {
         templateUrl: function(params){
             return '/group/timeline/'+params.tid;
-        }
+        },
+        controller: 'TimeLineController'
       })
       .otherwise({
         redirectTo: '/group_message'
@@ -206,6 +207,11 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
+tabViewGroup.controller('TimeLineController', ['$http', '$scope', '$rootScope',
+    function($http, $scope, $rootScope) {
+         $rootScope.nowTab = window.location.hash.substr(2);
+    }
+]);
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
     $scope.private_message_content = {
