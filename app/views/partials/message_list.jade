@@ -64,7 +64,8 @@ div(ng-show = '!loading')
               span.message_label 主题:
               span.message_label
                 a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-                a(ng-if="group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+                a(ng-if="!group_message.campaign.finish&&group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+                span(ng-if="group_message.campaign.finish&&group_message.message_type==4") {{group_message.campaign.theme}}
             .message_row
               span.message_label 内容:
               span.message_label {{group_message.campaign.content}}
@@ -74,6 +75,8 @@ div(ng-show = '!loading')
             .message_row
               span.message_label 开始#{__("TIME")}:
               span.message_label {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+              span.message_label 结束#{__("TIME")}:
+              span.message_label {{group_message.campaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
               span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限:
               span.message_label(ng-if="group_message.campaign.member_max>0") {{group_message.campaign.member_max}}
             .message_row
@@ -110,6 +113,7 @@ div(ng-show = '!loading')
           label.pull-right(ng-if="role!='HR'&&group_message.comment_permission")
             a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
         .message_row(ng-if="group_message.message_type==4")
+          label.message_label(ng-if="group_message.campaign.finish") 挑战已经结束
           label.pull-right(ng-if="role === 'LEADER'&&message_for_group&&group_message.member_num > 0")
             a(ng-click="modalPerticipator($index)") 私信
           label.pull-right.vertical_label(ng-if="role === 'LEADER'&&group_message.member_num > 0&&group_message.comment_permission") |
