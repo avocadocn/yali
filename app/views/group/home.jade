@@ -74,8 +74,12 @@ block aside
 
   if (role !=='GUESTHR' && role !=='HR')
     include ../partials/group_thumbnail
-    +group_thumbnail(selected_teams,'active',__('SELECTED_TEAM'))
-    +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'))
+    if (leader_teams.length)
+      +group_thumbnail(leader_teams,'leader','管理的小队',1)
+    if (selected_teams.length)
+      +group_thumbnail(selected_teams,'active','加入的小队',2)
+    if (unselected_teams.length)
+      +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'),3)
   if (role !=='GUESTHR' && role !=='GUEST')
     .photo_album
       p

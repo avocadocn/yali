@@ -11,6 +11,25 @@
 .group input {
   display: none;
 }
+.group .leader {
+  cursor: pointer;
+}
+.group .img_div {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+.group .img_div .img {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.text_container {
+  margin-right: 20px;
+}
+.text_container .text {
+  color: #9a9a9a;
+}
 .select_div {
   background-color: #fff;
   margin: 80px 80px;

@@ -375,15 +375,15 @@ exports.home = function(req, res) {
         });
       }
       else{//个人侧栏
-        var selected_teams = [];
-        var unselected_teams = [];
+        var selected_teams = [];//参加的非队长小队
+        var unselected_teams = [];//没参加的小队
+        var leader_teams = [];//是队长的小队
         var user_teams = [];
         var photo_album_ids = [];
         for(var i = 0; i < req.user.team.length; i ++) {
           user_teams.push(req.user.team[i]._id.toString());
         }
-        //此处不需传那么多吧……M
-        CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'cname':1,'active':1},function(err, company_groups) {
+        CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'logo':1,'gid':1,'name':1,'active':1,'leader':1},function(err, company_groups) {
           if(err || !company_groups) {
             return res.send([]);
           } else {
@@ -391,7 +391,21 @@ exports.home = function(req, res) {
               if(company_groups[i].gid !== '0' && company_groups[i].active === true){
                 //下面查找的是该成员加入和未加入的所有active小队
                 if(user_teams.indexOf(company_groups[i]._id.toString()) > -1) {
-                  selected_teams.push(company_groups[i]);
+                  //判断此人是否是此队队长，并作标记
+                  company_groups[i].isLeader = false;
+                  if(req.user.role === 'LEADER'){
+                    if(company_groups[i].leader.length){
+                      for(var j=0;j<company_groups[i].leader.length;j++){
+                        if(company_groups[i].leader[j]._id.toString()===req.user._id.toString()){
+                          company_groups[i].isLeader = true;
+                          leader_teams.push(company_groups[i]);
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  if(!company_groups[i].isLeader)
+                    selected_teams.push(company_groups[i]);
                 } else {
                   unselected_teams.push(company_groups[i]);
                 }
@@ -399,6 +413,7 @@ exports.home = function(req, res) {
             }
 
             res.render('group/home',{
+              'leader_teams': leader_teams,
               'selected_teams' : selected_teams,
               'unselected_teams' : unselected_teams,
               'teamId' : req.params.teamId,
