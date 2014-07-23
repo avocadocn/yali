@@ -190,7 +190,6 @@ Timeline UI Base
   position: relative;
   overflow: hidden;
   margin: 0px auto;
-  background-color: #f4f4f4;
 }
 .dl_timeline:hover .timeline_element {
   opacity: 0.6;

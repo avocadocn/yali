@@ -27,6 +27,11 @@ select
 
 button
   border none
+  outline none
+input
+  outline none
+textarea
+  outline none
 textarea
   resize none
 
@@ -401,22 +406,18 @@ textarea
 
 .dl_btn_right
   width 75px
-  margin-top 3px
+  height 34px
   color #fff
-  border-style solid
   line-height 1
   position relative
   font-size 12px
   text-align center
   vertical-align middle
-  padding 5px 0
+  padding 11px 0
   display inline-block
   background-color btnActionBgColor
-  border-color btnActionBgColor
-  cursor pointer
   &:hover
-    background-color btnActionHoverBgColor 
-    border-color btnActionHoverBgColor 
+    background-color btnActionHoverBgColor
   &:disabled
     opacity .55
 
@@ -601,6 +602,9 @@ textarea
   .tab-content 
     min-height 200px
     padding-top 20px
+    background-color cardbgColor
+    border 1px solid #e6e6e6
+    border-top none
   .tab-body , .tab-info-form
     background-color cardbgColor
     min-height 200px
@@ -1311,13 +1315,14 @@ familyHeight = 371.25px
 
 
 .dl_allteaminfo_emp
-  background-color backgroundColor
+  background-color cardbgColor
   min-height 300px
+  padding-bottom 20px
   .teamitem
     width 290px
     min-height 80px
     margin 8px
-    margin-bottom 40px
+    margin-bottom 50px
     .btn_join
       position absolute
       right 0
