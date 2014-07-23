@@ -44,7 +44,6 @@
   padding: 0 14px;
 }
 .tree li>.self>span {
-  width: 300px;
   border: 1px solid #999;
   border-radius: 0;
   display: inline-block;
@@ -88,4 +87,7 @@
 }
 .select_tree .self>span {
   cursor: pointer;
+}
+.company_tree li>.self>span {
+  width: 300px;
 }

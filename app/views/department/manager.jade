@@ -25,7 +25,7 @@ script(type="text/ng-template" id="node.html")
     li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
 
 h5 部门结构
-.tree
+.tree.company_tree
   ul
     li(ng-include="'node.html'" ng-class="hasChild(node)")
 
