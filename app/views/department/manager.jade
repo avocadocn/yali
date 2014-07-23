@@ -1,13 +1,12 @@
 script(type="text/ng-template" id="node.html")
-  .self.inline(ng-mouseover="node.show_operator = true" ng-mouseleave="node.show_operator = false")
-    span
-      i.glyphicon(ng-class="node.toggle ? node.toggle : 'glyphicon-minus'" ng-if="node.department" ng-click="toggleTree(node)")
+  .self.inline.dropdown
+    span(data-toggle="dropdown")
+      i.glyphicon(ng-class="node.toggle ? node.toggle : 'glyphicon-minus'" ng-if="node.department" ng-click="toggleTree(node, $event)")
       .inline(ng-if="!node.is_editing") &nbsp;{{node.name}}
-      .inline(ng-if="node.manager && node.manager.length>0 && !node.is_editing")
+      .inline.manager_list(ng-if="node.manager && node.manager.length>0 && !node.is_editing")
         | 管理员:&nbsp;
-        .manager.inline(ng-repeat="manager in node.manager")
-          img(src="manager.photo")
-          a(href="/users/home/{{manager._id}}") {{manager.nickname}}
+        a.manager(ng-repeat="manager in node.manager" href="/users/home/{{manager._id}}")
+          img(tooltip-placement="bottom" tooltip-append-to-body="true" tooltip="{{manager.nickname}}" src="manager.photo")
       .inline(ng-if="node.is_creating")
         input(type="text" ng-model="node.edit_name")
         button.dl_btn.dl_btn_small(ng-click="confirmCreate(node)") 确定
@@ -16,14 +15,12 @@ script(type="text/ng-template" id="node.html")
         input(type="text" ng-model="node.temp_name")
         button.dl_btn.dl_btn_small(ng-click="confirmEdit(node)") 确定
         button.cancel_btn.dl_btn_small(ng-click="cancelEdit(node)") 取消
-    .operator.inline.dropdown(ng-if="node.show_operator && !node.is_creating")
-      button.operator_button(data-toggle="dropdown"): i.glyphicon.glyphicon-cog
-      ul.dropdown-menu(role="menu")
-        li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="/department/home/{{ node._id }}") 进入部门主页
-        li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="getNode(node)") 任命管理员
-        li(role="presentation"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="addNode(node)") 创建子部门
-        li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="editNode(node)") 编辑
-        li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="deleteNode(node)") 删除该部门
+    ul.dropdown-menu(role="menu")
+      li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="/department/home/{{ node._id }}") 进入部门主页
+      li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="getNode(node)") 任命管理员
+      li(role="presentation"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="addNode(node)") 创建子部门
+      li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="editNode(node)") 修改部门名字
+      li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="deleteNode(node)") 删除该部门
   ul(ng-if="!node.hideChild")
     li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
 

@@ -30,18 +30,23 @@
 
 .tree
     .dropdown-menu
+        border-radius 0
+        min-width inherit
         li
             padding 0
             &::before, &::after
                 border none
 
+            a
+                padding 0 14px
+
+
 .tree li>.self>span
-    -moz-border-radius 5px
-    -webkit-border-radius 5px
+    width 300px
     border 1px solid #999
-    border-radius 5px
+    border-radius 0
     display inline-block
-    padding 3px 8px
+    padding 5px 8px
     text-decoration none
 
 .tree li.parent_li>.self>span
@@ -65,6 +70,9 @@
 
     .inline
         display inline
+
+    .manager_list
+        float right
 
     .operator
         .operator_button

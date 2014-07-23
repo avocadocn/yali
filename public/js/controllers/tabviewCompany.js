@@ -1112,15 +1112,16 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         }
     };
 
-    (function getDepartments() {
+    var getDepartments = function() {
         $http
         .get('/departmentTree/' + $rootScope.cid + '/detail')
         .success(function(data, status) {
             formatData(data);
         });
-    })();
+    };
+    getDepartments();
 
-    $scope.toggleTree = function(node) {
+    $scope.toggleTree = function(node, $event) {
         if (!node.toggle || node.toggle === 'glyphicon-minus') {
             node.toggle = 'glyphicon-plus';
             node.hideChild = true;
@@ -1128,6 +1129,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             node.toggle = 'glyphicon-minus';
             node.hideChild = false;
         }
+        $event.stopPropagation();
     };
 
     $scope.getNode = function(node){
@@ -1164,7 +1166,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 cid: $scope.node._id
             })
             .success(function(data, status) {
-                formatData(data);
+                getDepartments();
             });
         }
     };
@@ -1185,7 +1187,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 name: node.temp_name
             })
             .success(function(data, status) {
-                formatData(data);
+                getDepartments();
             });
         }
     };
@@ -1227,7 +1229,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 .delete('/department/' + node._id)
                 .success(function(data, status) {
                     if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
-                        formatData(data);
+                        getDepartments();
                     }
                 });
             }
