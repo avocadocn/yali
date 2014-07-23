@@ -966,11 +966,38 @@ exports.modifyDepartment = function(req, res) {
             'msg': 'DEPARTMENT_UPDATE_FAILURE'
           });
         } else {
-          res.send({
-            'msg': 'DEPARTMENT_UPDATE_SUCCESS',
-            '_id': company._id,
-            'name': company.info.name,
-            'department': company.department
+
+          Department
+          .findById(did)
+          .populate('team')
+          .exec()
+          .then(function(department) {
+            department.name = name;
+            department.save(function(err) {
+              if (err) {
+                console.log(err);
+                res.send(500);
+              } else {
+                department.team.name = name;
+                department.team.save(function(err) {
+                  if (err) {
+                    console.log(err);
+                    res.send(500);
+                  } else {
+                    res.send({
+                      'msg': 'DEPARTMENT_UPDATE_SUCCESS',
+                      '_id': company._id,
+                      'name': company.info.name,
+                      'department': company.department
+                    });
+                  }
+                });
+              }
+            });
+          })
+          .then(null, function(err) {
+            console.log(err);
+            res.send(500);
           });
         }
       });
