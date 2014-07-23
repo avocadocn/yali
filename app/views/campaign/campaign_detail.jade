@@ -21,9 +21,9 @@ block contentExt
         .dl_detail_content
           .dl_detail_row
             .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("PLACE")}#{__("LOCATION")}:
+              span #{__("ENTRY")}#{__("DEADLINE")}:
             .dl_detail_detail
-              span(ng-cloak) {{campaign.location.name}}
+              span(ng-cloak) {{campaign.deadline| date:'yyyy-MM-dd HH:mm' | dateView}} {{campaign.deadline | week }}
           .dl_detail_row
             .dl_detail_label
               span #{__("CAMPAIGN")}#{__("START_TIME")}:
@@ -44,23 +44,23 @@ block contentExt
               span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
             .dl_detail_detail
               span(ng-cloak) {{campaign.member_max}}
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("ENTRY")}#{__("DEADLINE")}:
-            .dl_detail_detail
-              span(ng-cloak) {{campaign.deadline| date:'yyyy-MM-dd HH:mm' | dateView}} {{campaign.deadline | week }}
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
+            if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish
+              .margin_top_30
+                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
+                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign()" ng-if="join!==1" ng-disabled="join==0")
         .dl_detail_content2
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("CAMPAIGN")}#{__("PLACE")}#{__("LOCATION")}:
+            .dl_detail_detail
+              span(ng-cloak) {{campaign.location.name}}
           .dl_detail_row
             .dl_detail_label
               span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span.dl_word_break(ng-cloak) {{campaign.content}}
-            if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !over
-              div.margin_top_30
-                input.dl_btn.dl_btn_detail(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
-                input.dl_btn.dl_btn_detail(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign()" ng-if="join!==1" ng-disabled="join==0")
       if !campaign.active
         .dl_detail_row.text-center
           span #{__("CAMPAIGNCLOSE")}
