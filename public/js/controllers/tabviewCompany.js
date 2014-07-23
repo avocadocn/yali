@@ -45,7 +45,8 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
       .when('/timeLine/:cid', {
         templateUrl: function(params){
             return '/company/timeline/'+params.cid;
-        }
+        },
+        controller: 'TimeLineController'
       })
       .when('/changePassword', {
         templateUrl: '/company/change_password',
@@ -118,6 +119,11 @@ tabViewCompany.directive('ngMax', function() {
         }
     };
 });
+tabViewCompany.controller('TimeLineController', ['$http', '$scope', '$rootScope',
+    function($http, $scope, $rootScope) {
+         $rootScope.nowTab = window.location.hash.substr(2);
+    }
+]);
 tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
     if($location.hash()!=='')
         $rootScope.nowTab = window.location.hash.substr(2);

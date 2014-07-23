@@ -36,7 +36,8 @@ departmentApp.config(['$routeProvider',
       .when('/timeLine/:tid', {
         templateUrl: function(params){
             return '/group/timeline/'+params.tid;
-        }
+        },
+        controller: 'TimeLineController'
       })
       .otherwise({
         redirectTo: '/message'
@@ -204,7 +205,11 @@ var messageConcat = function(messages,rootScope,scope,reset){
     return new_messages;
 }
 
-
+departmentApp.controller('TimeLineController', ['$http', '$scope', '$rootScope',
+    function($http, $scope, $rootScope) {
+         $rootScope.nowTab = window.location.hash.substr(2);
+    }
+]);
 
 
 
