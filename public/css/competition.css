@@ -4,15 +4,24 @@
 .competition_content .dl_score {
   width: 90px;
   height: 50px;
-  float: left;
-  font-size: 40px;
-  text-align: center;
+  font-size: 30px;
   line-height: 120%;
+  color: #000;
 }
 .competition_content .dl_score_colon {
-  font-size: 40px;
+  font-size: 30px;
   text-align: center;
   line-height: 100%;
+  padding: 0;
+  color: #000;
+}
+.competition_content .score_left {
+  text-align: right;
+  padding: 0;
+}
+.competition_content .score_right {
+  text-align: left;
+  padding: 0;
 }
 .competition_content .dl_left {
   margin-left: -30px;
@@ -43,21 +52,23 @@
   cursor: move;
 }
 .side .dl_detail_row {
-  min-width: 450px;
+  min-width: 300px;
   min-height: 35px;
-  font-size: 14px;
+  font-size: 12px;
   margin-bottom: 5px;
 }
 .side .dl_detail_row .dl_detail_label {
-  min-width: 100px;
-  padding: 10px 20px;
+  min-width: 70px;
+  padding: 5px 10px;
   background-color: #f1f6fa;
   float: left;
 }
 .side .dl_detail_row .dl_detail_detail {
-  padding: 10px 15px;
-  min-width: 322px;
+  padding: 5px 10px;
+  min-width: 200px;
   max-width: 480px;
+  width: 200px;
   float: left;
-  width: auto;
+  word-break: break-all;
+  white-space: normal;
 }

@@ -60,7 +60,7 @@ exports.setComment = function(req,res){
             console.log('COMMENT_PUSH_ERROR',err);
             return res.send("{{'COMMENT_PUSH_ERROR'|translate}}");
         } else {
-            if(host_type === "campaign" || host_type === "campaign_detail") {
+            if(host_type === "campaign" || host_type === "campaign_detail" || host_type === "competition") {
                 Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':1}},function(err,message){
                     if(err || !message) {
                         return res.send({'msg':'ERROR','comment':[]});

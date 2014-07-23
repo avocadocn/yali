@@ -62,6 +62,7 @@
 	"WONDERFUL": "精彩",
 	"PHOTO": "照片",
 	"DEADLINE": "截止时间",
+	"SDEADLINE": "截止",
 	"LEAST": "最少",
 	"ENTRY": "报名",
 	"JOIN": "参加",
@@ -150,6 +151,6 @@
 	"APPOINT": "任命",
 	"NO_TIMELINE": "目前还没有活动足迹",
 	"DEPARTMENT_MEMBER": "部门成员",
-	"CAMPAIGNCLOSE":"活动已经关闭",
-  "CAMPAIGNFINISH":"活动已经结束"
+	"CAMPAIGNCLOSE": "活动已经关闭",
+	"CAMPAIGNFINISH": "活动已经结束"
 }

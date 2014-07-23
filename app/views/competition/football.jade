@@ -30,8 +30,8 @@ block contentExt
           .score_panel.col-xs-4
             if score_flag
               h1.text-center VS
-              .row.dl_box#score_tip
-                .col-xs-5
+              .row#score_tip
+                .col-xs-5.score_left
                   if confirm_mode!=undefined && confirm_mode!=0
                     label.dl_score(ng-if="!edit") {{score_a}}
                     input.dl_score(type="text" maxlength="3" ng-model="$parent.score_a" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
@@ -39,13 +39,13 @@ block contentExt
                         a.dl_btn_right(ng-if="!edit" ng-click='confirmScore(true)') 接受比分
                   else
                     label.dl_score= competition.camp[0].score
-                .col-xs-2
+                .col-xs-2.score_colon
                   span.dl_score_colon :
                   if confirm_mode === 1
                     a.dl_btn_right.dl_left(ng-disabled="true") 等待确认
                   if confirm_mode === 3
                     a.dl_btn_right.dl_left(ng-click='scoreModify()') {{modify_caption}}
-                .col-xs-5
+                .col-xs-5.score_right
                   if confirm_mode!=undefined && confirm_mode!=0
                     label.dl_score(ng-if="!edit") {{score_b}}
                     input.dl_score(type="text" ng-model="$parent.score_b" maxlength="3" ng-change="numValidate()" ng-mouseover="tip()" ng-if="edit")
@@ -150,23 +150,18 @@ block contentExt
       if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish
         .pull-right
           button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel('#{competition._id}')") 关闭活动
-      h4.text-left 活动简介
+      p.subtitle.text-left 活动简介
       hr
       .dl_detail_border.clearfix
         .dl_detail_content
           .dl_detail_row
             .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("PLACE")}#{__("LOCATION")}:
-            .dl_detail_detail
-              span= competition.location.name
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("START_TIME")}:
+              span #{__("START_TIME")}:
             .dl_detail_detail
               span= moment(competition.start_time).format("YYYY-MM-DD HH:mm")
           .dl_detail_row
             .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("END_TIME")}:
+              span #{__("END_TIME")}:
             .dl_detail_detail
               span= moment(competition.end_time).format("YYYY-MM-DD HH:mm")
           if competition.member_min>0
@@ -183,16 +178,21 @@ block contentExt
                 span= competition.member_max
           .dl_detail_row
             .dl_detail_label
-              span #{__("ENTRY")}#{__("DEADLINE")}:
+              span #{__("ENTRY")}#{__("SDEADLINE")}:
             .dl_detail_detail
               span= moment(competition.deadline).format("YYYY-MM-DD HH:mm")
           .dl_detail_row
             .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
+              span #{__("PLACE")}#{__("LOCATION")}:
+            .dl_detail_detail
+              span= competition.location.name
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span= competition.content
       hr
-      h4.text-left 活动地点
+      p.subtitle.text-left 活动地点
       #location.size_400
       hr
       div

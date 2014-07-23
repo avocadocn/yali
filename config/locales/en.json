@@ -62,6 +62,7 @@
   "WONDERFUL" :"Wonderful",
   "PHOTO" :"Photo",
   "DEADLINE" : "Deadline",
+  "SDEADLINE":"Deadline",
   "LEAST" : "Least",
   "ENTRY" : "Entry",
   "JOIN" : "Join",
