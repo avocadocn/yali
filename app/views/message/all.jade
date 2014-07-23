@@ -30,7 +30,7 @@ div(ng-show = '!loading')
                 a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
                   {{all_message.content}}
               h7(ng-switch-when="0")
-                来自 {{all_message.team.name}}
+                来自 {{all_message.sender.name}}
               h7(ng-switch-when="1")
                 来自活动
                 a(href="/campaign/detail/{{all_message.campaign_id}}")

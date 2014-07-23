@@ -3,8 +3,10 @@ br
 .dl_row
   form.dl_modal_container.margin_top_5.margin_left_15(name="comment_form" novalidate)
     .dl_message_date.dl_vertical
-      h5
+      h5(ng-if="teamName != 'null'")
         发往 {{teamName}}:
+      h5(ng-if="teamName == 'null'")
+        发往全公司:
     .dl_md_8.dl_vertical
       input.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
     .dl_md_1.dl_vertical

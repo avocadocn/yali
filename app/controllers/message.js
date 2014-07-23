@@ -316,7 +316,6 @@ var toOne = function(req,res,param){
 }
 
 exports.sendToOne = function(req, res, param){
-  console.log(param);
   param.team = [param.own_team,param.receive_team];
   toOne(req,res,param);
 }
