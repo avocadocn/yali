@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     Campaign = mongoose.model('Campaign'),
     schedule = require('node-schedule');
 var finishCampaign = function(){
-  Campaign.update({'active':true,'finish':false,'end_time': {'$lt':new Date()}},{$set:{'finish':true}},{multi: true},function(err,num){
+  Campaign.update({'finish':false,'end_time': {'$lt':new Date()}},{$set:{'finish':true}},{multi: true},function(err,num){
     if(err){
       console.log(err);
     }

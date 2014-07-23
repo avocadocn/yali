@@ -702,6 +702,7 @@ exports.home = function(req, res) {
   else{
     _user = req.profile;
   }
+  var leader_teams = [];
   var selected_teams = [];
   var unselected_teams = [];
   var user_teams = [];
@@ -709,38 +710,54 @@ exports.home = function(req, res) {
   for(var i = 0; i < req.user.team.length; i ++) {
     user_teams.push(req.user.team[i]._id.toString());
   }
-  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'group_type':1,'logo':1,'name':1,'active':1},function(err, company_groups) {
+  CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'gid':1,'logo':1,'name':1,'active':1,'leader':1},function(err, company_groups) {
     if(err || !company_groups) {
       return res.send([]);
     } else {
       var _cg_length= company_groups.length;
       for(var i = 0; i < _cg_length; i ++) {
-        //下面查找的是该成员加入和未加入的所有active小队
-        if(company_groups[i].gid !=='0' && company_groups[i].active==true){
+        if(company_groups[i].gid !== '0' && company_groups[i].active === true){
+          //下面查找的是该成员加入和未加入的所有active小队
           if(user_teams.indexOf(company_groups[i]._id.toString()) > -1) {
-            selected_teams.push(company_groups[i]);
-          } else {
+            //判断此人是否是此队队长，并作标记
+            company_groups[i].isLeader = false;
+            if(req.user.role === 'LEADER'){
+              if(company_groups[i].leader.length){
+                for(var j=0;j<company_groups[i].leader.length;j++){
+                  if(company_groups[i].leader[j]._id.toString()===req.user._id.toString()){
+                    company_groups[i].isLeader = true;
+                    leader_teams.push(company_groups[i]);
+                    break;
+                  }
+                }
+              }
+            }
+            if(!company_groups[i].isLeader)
+              selected_teams.push(company_groups[i]);
+          }
+          else {
             unselected_teams.push(company_groups[i]);
           }
         }
       }
-      var department = _user.department;
-      if (!_user.department || !_user.department._id) {
-        department = null;
-      }
-      res.render('users/home',{
-        'uid':_user._id,
-        'selected_teams' : selected_teams,
-        'unselected_teams' : unselected_teams,
-        'photo': _user.photo,
-        'realname':_user.realname,
-        'nickname': _user.nickname,
-        'cname':_user.cname,
-        'sign':_user.introduce,
-        'role': req.role,
-        'department': department
-      });
     }
+    var department = _user.department;
+    if (!_user.department || !_user.department._id) {
+      department = null;
+    }
+    res.render('users/home',{
+      'uid':_user._id,
+      'leader_teams': leader_teams,
+      'selected_teams' : selected_teams,
+      'unselected_teams' : unselected_teams,
+      'photo': _user.photo,
+      'realname':_user.realname,
+      'nickname': _user.nickname,
+      'cname':_user.cname,
+      'sign':_user.introduce,
+      'role': req.role,
+      'department': department
+    });
   });
 };
 

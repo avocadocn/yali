@@ -117,7 +117,7 @@ exports.getMessage = function(req, res) {
             _group_message.logo = group_message[i].team[camp_flag].logo;
             _group_message.team_id = group_message[i].team[camp_flag].teamid;
             _group_message.member_num = group_message[i].campaign.camp[camp_flag].member.length;
-            if(join_role){
+            if(!_group_message.campaign.finish &&join_role){
               //0：未投票，1：赞成，-1反对
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
@@ -140,7 +140,7 @@ exports.getMessage = function(req, res) {
             //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
             //console.log(i,group_message.grouptype_flag);
             //要到小队主页、是HR\LEADER才有应战按钮->response_flag = true;
-            if(pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')){
+            if(!_group_message.campaign.finish &&pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')){
               if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false)
                 _group_message.response_flag = true;
             }
@@ -252,7 +252,7 @@ exports.getMessage = function(req, res) {
           group_messages.push(_group_message);
         }
       }
-      return res.send({'result':1,'group_messages':group_messages,'role':req.role,'user':{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team}});
+      return res.send({'result':1,'group_messages':group_messages,'message_length':group_message.length,'role':req.role,'user':{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team}});
      }
   });
 };

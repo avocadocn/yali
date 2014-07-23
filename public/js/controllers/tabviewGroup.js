@@ -42,7 +42,59 @@ tabViewGroup.config(['$routeProvider',
         redirectTo: '/group_message'
       });
 }]);
+tabViewGroup.directive('ngMin', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attr, ctrl) {
+            scope.$watch('member_max', function(){
+                if(scope.member_min!=undefined){
+                    ctrl.$setViewValue(ctrl.$viewValue);
+                }
+            });
+            var minValidator = function(value) {
+              var min = scope.$eval(attr.ngMin) || 0;
+              if (value < min) {
+                ctrl.$setValidity('ngMin', false);
+                return value;
+              } else {
+                ctrl.$setValidity('ngMin', true);
+                return value;
+              }
+            };
 
+            ctrl.$parsers.push(minValidator);
+            ctrl.$formatters.push(minValidator);
+        }
+    };
+});
+
+tabViewGroup.directive('ngMax', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attr, ctrl) {
+            scope.$watch('member_min', function(){
+                if(scope.member_max!=undefined){
+                    ctrl.$setViewValue(ctrl.$viewValue);
+                }
+            });
+            var maxValidator = function(value) {
+              var max = scope.$eval(attr.ngMax) || Infinity;
+              if (value > max) {
+                ctrl.$setValidity('ngMax', false);
+                return value;
+              } else {
+                ctrl.$setValidity('ngMax', true);
+                return value;
+              }
+            };
+
+            ctrl.$parsers.push(maxValidator);
+            ctrl.$formatters.push(maxValidator);
+        }
+    };
+});
 tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope, $location) {
     if($location.hash()!=='')
         $rootScope.nowTab = window.location.hash.substr(2);
@@ -168,7 +220,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             $scope.role = data.role;
 
             $rootScope.message_corner = true;
-            if(data.group_messages.length<20){
+            if(data.message_length<20){
                 $scope.loadMore_flag = false;
             }
             else{
@@ -220,7 +272,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         $http.get('/groupMessage/team/'+$rootScope.teamId+'/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.group_messages.length>0){
                 $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
-                if(data.group_messages.length<20){
+                if(data.message_length<20){
                     $scope.loadMore_flag = false;
                 }
                 else{
@@ -254,7 +306,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                     $scope.page--;
                 }
                 $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
-                if(data.group_messages.length<20){
+                if(data.message_length<20){
                     $scope.loadMore_flag = false;
                 }
                 else{
@@ -990,7 +1042,16 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
-
+    $scope.$watch('member_max + member_min',function(newValue,oldValue){
+        if($scope.member_max<$scope.member_min){
+            $scope.campaign_form.$setValidity('ngMin', false);
+            $scope.campaign_form.$setValidity('ngMax', false);
+        }
+        else{
+            $scope.campaign_form.$setValidity('ngMin', true);
+            $scope.campaign_form.$setValidity('ngMax', true);
+        };
+    });
     $rootScope.$watch('loadMapIndex',function(value){
         if($rootScope.loadMapIndex){
             if(value==1){

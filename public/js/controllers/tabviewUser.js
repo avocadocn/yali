@@ -120,7 +120,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 $scope.user = data.user;
                 $rootScope.message_corner = true;
                 $scope.role = data.role;
-                if(data.group_messages.length<20){
+                if(data.message_length<20){
                     $scope.loadMore_flag = false;
                 }
                 else{
@@ -140,7 +140,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             $http.get('/groupMessage/user/'+$rootScope.uid+'/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
                 if(data.result===1 && data.group_messages.length>0){
                     $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
-                    if(data.group_messages.length<20){
+                    if(data.message_length<20){
                         $scope.loadMore_flag = false;
                     }
                     else{
@@ -174,7 +174,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         $scope.pageTime.pop();
                     }
                     $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
-                    if(data.group_messages.length<20){
+                    if(data.message_length<20){
                         $scope.loadMore_flag = false;
                     }
                     else{

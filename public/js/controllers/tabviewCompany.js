@@ -65,7 +65,59 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         redirectTo: '/company_campaign'
       });
   }]);
+tabViewCompany.directive('ngMin', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attr, ctrl) {
+            scope.$watch('member_max', function(){
+                if(scope.member_min!=undefined){
+                    ctrl.$setViewValue(ctrl.$viewValue);
+                }
+            });
+            var minValidator = function(value) {
+              var min = scope.$eval(attr.ngMin) || 0;
+              if (value < min) {
+                ctrl.$setValidity('ngMin', false);
+                return value;
+              } else {
+                ctrl.$setValidity('ngMin', true);
+                return value;
+              }
+            };
 
+            ctrl.$parsers.push(minValidator);
+            ctrl.$formatters.push(minValidator);
+        }
+    };
+});
+
+tabViewCompany.directive('ngMax', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attr, ctrl) {
+            scope.$watch('member_min', function(){
+                if(scope.member_max!=undefined){
+                    ctrl.$setViewValue(ctrl.$viewValue);
+                }
+            });
+            var maxValidator = function(value) {
+              var max = scope.$eval(attr.ngMax) || Infinity;
+              if (value > max) {
+                ctrl.$setValidity('ngMax', false);
+                return value;
+              } else {
+                ctrl.$setValidity('ngMax', true);
+                return value;
+              }
+            };
+
+            ctrl.$parsers.push(maxValidator);
+            ctrl.$formatters.push(maxValidator);
+        }
+    };
+});
 tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
     if($location.hash()!=='')
         $rootScope.nowTab = window.location.hash.substr(2);
@@ -1057,15 +1109,16 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         }
     };
 
-    (function getDepartments() {
+    var getDepartments = function() {
         $http
         .get('/departmentTree/' + $rootScope.cid + '/detail')
         .success(function(data, status) {
             formatData(data);
         });
-    })();
+    };
+    getDepartments();
 
-    $scope.toggleTree = function(node) {
+    $scope.toggleTree = function(node, $event) {
         if (!node.toggle || node.toggle === 'glyphicon-minus') {
             node.toggle = 'glyphicon-plus';
             node.hideChild = true;
@@ -1073,6 +1126,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             node.toggle = 'glyphicon-minus';
             node.hideChild = false;
         }
+        $event.stopPropagation();
     };
 
     $scope.getNode = function(node){
@@ -1109,7 +1163,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 cid: $scope.node._id
             })
             .success(function(data, status) {
-                formatData(data);
+                getDepartments();
             });
         }
     };
@@ -1130,7 +1184,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 name: node.temp_name
             })
             .success(function(data, status) {
-                formatData(data);
+                getDepartments();
             });
         }
     };
@@ -1172,7 +1226,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 .delete('/department/' + node._id)
                 .success(function(data, status) {
                     if (data.msg === 'DEPARTMENT_DELETE_SUCCESS') {
-                        formatData(data);
+                        getDepartments();
                     }
                 });
             }
