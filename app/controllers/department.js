@@ -1044,6 +1044,101 @@ exports.getDepartment = function(req, res) {
   }
 }
 
+/**
+ * 获取部门树的所有部门的_id，并push进数组中，返回该数组
+ *
+ * Example:
+ * var list = getDepartmentId(company);
+ * // list should be [_did1, _did2, ...]
+ *
+ * 注意: 如果参数department为company对象, 则也会将company._id认为是根节点_id放进返回的数组中
+ *
+ * @param  {Object} department 部门树的一个节点，可以是company对象
+ * @return {Array}            部门的_id数组
+ */
+var getDepartmentId = function(department) {
+  var ids = [department._id];
+  if (department.department || department.department.length > 0) {
+    for (var i = 0; i < department.department.length; i++) {
+      ids = ids.concat(getDepartmentId(department.department[i]));
+    }
+  }
+  return ids;
+};
+
+
+/**
+ * 深度优先的方式操作部门树
+ * @param  {Object} department 部门树的一个节点，可以是company对象
+ * @param  {Function} operate  operate(department)对某一节点进行操作
+ */
+var doDepartment = function(department, operate) {
+  operate(department);
+  if (department.department || department.department.length > 0) {
+    for (var i = 0; i < department.department.length; i++) {
+      doDepartment(department.department[i], operate);
+    }
+  }
+};
+
+/**
+ * 返回部门树的详细数据
+ * @param  {Object} company        company对象
+ * @param  {Array} department_ids 部门_id数组
+ * @param  {Object} res            res对象
+ */
+var sendDepartments = function(company, department_ids, res) {
+  Department
+  .where('_id').in(department_ids)
+  .exec()
+  .then(function(departments) {
+    doDepartment(company, function(department) {
+      for (var i = 0; i < departments.length; i++) {
+        if (department._id.toString() === departments[i]._id.toString()) {
+          department.manager = departments[i].manager;
+          break;
+        }
+      }
+    });
+    res.send({
+      _id: company._id,
+      name: company.info.name,
+      department: company.department
+    });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
+/**
+ * 获取部门树的详情，包括部门的具体信息
+ */
+exports.getDepartmentTreeDetail = function(req, res) {
+  if (req.user._id.toString() === req.params.cid) {
+    var department_ids = getDepartmentId(req.user);
+    sendDepartments(req.user, department_ids, res);
+  } else {
+    Company
+    .findById(req.params.cid)
+    .exec()
+    .then(function(company) {
+      if (!company) {
+        return res.send(404);
+      }
+
+      var department_ids = getDepartmentId(company);
+      sendDepartments(company, department_ids, res);
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.send(500);
+    });
+  }
+};
+
+
 /*
  * param in: req.body.did (部门id,一开始是公司id)
  */
