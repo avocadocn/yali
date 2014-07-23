@@ -10,6 +10,10 @@ var mongoose = require('mongoose'),
  * Generic require login routing middleware
  */
 exports.companyAuthorize = function(req, res, next){
+  if (!req.user) {
+    return res.redirect('/company/signin');
+  }
+
   if(req.route.path==='/company/home' && !req.company){
     if(req.user.provider==='company'){
       req.role = 'HR';
@@ -166,7 +170,10 @@ exports.teamAuthorize = function(req, res, next) {
   next();
 };
 exports.userAuthorize = function(req, res, next) {
-  if(req.user && req.route.path==='/users/home' && !req.profile){
+  if (!req.user) {
+    return res.redirect('/users/signin');
+  }
+  if(req.route.path==='/users/home' && !req.profile){
     req.role = 'OWNER';
   }
   else{

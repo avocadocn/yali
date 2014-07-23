@@ -3,6 +3,7 @@
 // group routes use group controller
 var group = require('../controllers/group');
 var authorization = require('./middlewares/authorization');
+var utils = require('./middlewares/utils');
 var config = require('../../config/config');
 var express = require('express');
 var bodyParser = express.bodyParser({
@@ -13,7 +14,7 @@ var bodyParser = express.bodyParser({
 module.exports = function(app) {
   app.get('/group/getgroups', group.getGroups);
   app.get('/group/getCompanyGroups/:companyId', group.getCompanyGroups);
-  app.get('/group/home/:teamId',authorization.teamAuthorize, group.home);
+  app.get('/group/home/:teamId', utils.nocache, authorization.teamAuthorize, group.home);
 
   app.get('/group/info/:teamId', authorization.teamAuthorize, group.info);
   //获取小队简要信息供弹出窗使用
