@@ -38,6 +38,10 @@ var MessageContent = new Schema({
   campaign_id: Schema.Types.ObjectId,
   groupmessage_id: Schema.Types.ObjectId,
   department_id: Schema.Types.ObjectId,
+  auto: {
+    type:Boolean,
+    default:false
+  },
   status:{
     type:String,
     enum: ['delete','undelete'],

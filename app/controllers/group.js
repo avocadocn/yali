@@ -631,7 +631,8 @@ exports.provoke = function (req, res) {
                                 'logo':team_opposite.logo,
                                 'provoke_status':0
                               },
-                              'campaign_id':null
+                              'campaign_id':null,
+                              'auto':true
                             };
                             message.sendToOne(req,res,param);
                           }
@@ -709,7 +710,8 @@ exports.responseProvoke = function (req, res) {
                   'logo':rst[0].logo,
                   'provoke_status':1
                 },
-                'campaign_id':null
+                'campaign_id':null,
+                'auto':true
               };
               message.sendToOne(req,res,param);
               return res.send({'result':0,'msg':'SUCCESS'});

@@ -281,14 +281,17 @@ var messagePreHandle = function(teams,msg,divide){
 
 
           message_type = 4;
-          var last_content = msg[i].message_content.team[0].provoke_status == 3 ? "接受了您的比赛结果" : "发出了一个新的比赛确认";
-          content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
+          sender = {
+            'name': msg[i].message_content.team[0].name
+          }
+          content = msg[i].message_content.team[0].provoke_status == 3 ? "接受了您的比赛结果" : "向您发出了一个新的比赛确认";
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
               'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
+              'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
@@ -301,6 +304,7 @@ var messagePreHandle = function(teams,msg,divide){
               'content':content,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
+              'sender':sender,
               'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
               'campaign_id':msg[i].message_content.campaign_id
@@ -311,14 +315,17 @@ var messagePreHandle = function(teams,msg,divide){
 
 
           message_type = 7;
-          var last_content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的挑战" : "向您发出了一个新的挑战";
-          content = msg[i].message_content.team[0].name + " 的队长 " + msg[i].message_content.sender[0].nickname + last_content;
+          sender = {
+            'name': msg[i].message_content.team[0].name
+          }
+          content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的挑战" : "向您发出了一个新的挑战";
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
               'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
+              'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
@@ -330,6 +337,7 @@ var messagePreHandle = function(teams,msg,divide){
               'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
+              'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.sender[0].photo,
               'message_type':message_type,
@@ -739,47 +747,50 @@ var sendMessagesPre = function(messages){
   var content;
   var direct_show;
   for(var i = 0; i < messages.length; i ++) {
+    console.log(messages[i].auto);
     //小队
-    if(messages[i].type == 'private'){
-      if(messages[i].sender.length > 0){
-        if(messages[i].campaign_id == null){
-          message_type = 0;
-          detail = messages[i].content;
-          direct_show = true;
-        }else{
-          detail = messages[i].content;
-          if(messages[i].team[0].provoke_status == 0){
-            message_type = 1;
+    if(messages[i].auto == false || messages[i].auto == 'false'){
+      if(messages[i].type == 'private'){
+        if(messages[i].sender.length > 0){
+          if(messages[i].campaign_id == null){
+            message_type = 0;
+            detail = messages[i].content;
+            direct_show = true;
           }else{
-            message_type = 2;
+            detail = messages[i].content;
+            if(messages[i].team[0].provoke_status == 0){
+              message_type = 1;
+            }else{
+              message_type = 2;
+            }
           }
         }
+       send_messages.push({
+          '_id':messages[i]._id,
+          'status':messages[i].status,
+          'date':messages[i].post_date,
+          'detail':messages[i].content,
+          'team':messages[i].team[0],
+          'message_type':message_type,
+          'campaign_id':messages[i].campaign_id,
+          'campaign_name':messages[i].caption
+        });
       }
-     send_messages.push({
-        '_id':messages[i]._id,
-        'status':messages[i].status,
-        'date':messages[i].post_date,
-        'detail':messages[i].content,
-        'team':messages[i].team[0],
-        'message_type':message_type,
-        'campaign_id':messages[i].campaign_id,
-        'campaign_name':messages[i].caption
-      });
-    }
 
-    //公司
-    if(messages[i].type == 'company'){
-      message_type = 3;
-      detail = messages[i].content;
-      send_messages.push({
-        '_id':messages[i]._id,
-        'content':content,
-        'caption':messages[i].caption,
-        'status':messages[i].status,
-        'date':messages[i].post_date,
-        'detail':detail,
-        'message_type':message_type
-      });
+      //公司
+      if(messages[i].type == 'company'){
+        message_type = 3;
+        detail = messages[i].content;
+        send_messages.push({
+          '_id':messages[i]._id,
+          'content':content,
+          'caption':messages[i].caption,
+          'status':messages[i].status,
+          'date':messages[i].post_date,
+          'detail':detail,
+          'message_type':message_type
+        });
+      }
     }
   }
   return send_messages;

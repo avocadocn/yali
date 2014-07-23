@@ -301,7 +301,8 @@ var toOne = function(req,res,param){
     'company_id':null,
     'campaign_id':param.campaign_id,
     'department_id':null,
-    'deadline':(new Date())+time_out
+    'deadline':(new Date())+time_out,
+    'auto':((param.auto != undefined && param.auto != null) ? param.auto : false)
   };
   var _param = {
     'collection':MessageContent,
@@ -543,6 +544,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id){
     'type':'private',
     'company_id':req.user.cid,
     'campaign_id':competition_id,
+    'auto':true,
     'deadline':(new Date())+time_out
   };
   var _param = {

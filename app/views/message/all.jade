@@ -18,19 +18,25 @@ div(ng-show = '!loading')
               h7(ng-switch-when="3")
                 来自公司
               h7(ng-switch-when="4")
+                strong
+                  {{all_message.sender.name}}&nbsp;&nbsp;
                 a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
                   {{all_message.content}}
               h7(ng-switch-when="5")
-                来自
-                a
+                来自&nbsp;&nbsp;
+                strong
                   {{all_message.sender.nickname}}
               h7(ng-switch-when="6")
-                您收到了一条系统消息
+                来自系统消息
               h7(ng-switch-when="7")
+                strong
+                  {{all_message.sender.name}}&nbsp;&nbsp;
                 a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
                   {{all_message.content}}
               h7(ng-switch-when="0")
-                来自 {{all_message.sender.name}}
+                来自&nbsp;&nbsp;
+                strong
+                  {{all_message.sender.name}}
               h7(ng-switch-when="1")
                 来自活动&nbsp;&nbsp;
                 a(href="/campaign/detail/{{all_message.campaign_id}}")
