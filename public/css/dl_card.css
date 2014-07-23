@@ -12,7 +12,7 @@
   position: static;
 }
 .dl_card .dl_card_layer .dl_card_content {
-  padding: 9px 14px;
+  padding: 18px 14px;
 }
 .dl_card .dl_card_layer .dl_card_content .popover_img {
   float: left;
@@ -24,7 +24,8 @@
 .dl_card .dl_card_layer .dl_card_content .popover_content {
   float: left;
   width: 150px;
-  padding: 3px 10px;
+  padding: 10px 10px 3px;
+  margin-left: 20px;
 }
 .dl_card .dl_card_layer .dl_card_content .popover_brief {
   float: left;

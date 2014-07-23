@@ -1,7 +1,7 @@
 .popover_img
   a(href="/users/home/#{user._id}")
     img.size_80.img_user(src="#{user.photo}")
-.popover_content
+.popover_content.clearfix
   p: a(href="/users/home/#{user._id}").dl_word_break
     = user.nickname
     if (user.realname)

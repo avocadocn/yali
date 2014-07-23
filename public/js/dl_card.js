@@ -184,7 +184,7 @@
 				$('body').append('<div class="dl_card"></div>');
 				$wrap = $('.dl_card');
 			}
-			$wrap.html('<div class="dl_card_layer"><div class="dl_card_content"></div><div class="arrow"></div></div>');
+			$wrap.html('<div class="dl_card_layer clearfix"><div class="dl_card_content clearfix"></div><div class="arrow"></div></div>');
 			$wrap.find('.dl_card_content').append($loading);
 			currentOpts = optsArray.opts;
 			if(currentOpts.content){
