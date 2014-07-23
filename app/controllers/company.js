@@ -832,7 +832,12 @@ exports.getCompanyTeamsInfo = function(req, res) {
                             }
                             callback(null, campaigninfo);
                         });
-                    },function(campaigninfo, callback){
+                    }
+                    ,function(campaigninfo, callback){
+                        var teaminfo = campaigninfo;
+                        //todo add photo here
+                        callback(null, teaminfo);
+                    },function(teaminfo, callback){
                         var j = counter.i-1;
                         var _team = {
                             '_id':teams[j]._id,
@@ -845,9 +850,11 @@ exports.getCompanyTeamsInfo = function(req, res) {
                             'leader':teams[j].leader,
                             'member':teams[j].member,
                             'name':teams[j].name,
-                            'campaign_theme':campaigninfo.campaign_theme,
-                            'campaign_id':campaigninfo.campaign_id,
-                            'campaign_start_time':campaigninfo.start_time
+                            'campaign_theme':teaminfo.campaign_theme,
+                            'campaign_id':teaminfo.campaign_id,
+                            'campaign_start_time':teaminfo.start_time,
+                            //todo add photo in team list
+                            'photo_list':teaminfo.start_time
                         }
 
                         if(model_helper.arrayObjectIndexOf(req.user.team,teams[j]._id,'_id')>-1){

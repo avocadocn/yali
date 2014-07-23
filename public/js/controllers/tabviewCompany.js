@@ -438,7 +438,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 
 
 
-
+//公司小队列表
 tabViewCompany.directive('masonry', function ($timeout) {
     return {
         restrict: 'AC',
@@ -446,21 +446,18 @@ tabViewCompany.directive('masonry', function ($timeout) {
             scope.$watch(function () {
                 return elem[0].children.length
             },
-
             function (newVal) {
                 $timeout(function () {
                     elem.masonry('reloadItems');
                     elem.masonry();
                 })
             })
-
             elem.masonry({
                 itemSelector: '.masonry-item'
             });
             scope.masonry = elem.data('masonry');
         }
     };
-
 }).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     //获取公司小组，若是此成员在此小组则标记此team的belong值为true
     $rootScope.$watch('cid',function(cid){

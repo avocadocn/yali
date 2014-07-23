@@ -1515,16 +1515,17 @@ input.ng-invalid.ng-dirty {
   width: 290px;
   min-height: 80px;
   margin: 8px;
+  margin-bottom: 60px;
 }
 .dl_allteaminfo_emp .teamitem .btn_join {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: -26px;
 }
 .dl_allteaminfo_emp .teamitem .itembox {
   border: 1px solid #ddd;
   word-break: break-word;
-  padding: 6px 6px 20px 6px;
+  padding: 6px;
 }
 .dl_allteaminfo_emp .teamitem .itembox .member {
   margin: 4px;
