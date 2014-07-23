@@ -42,6 +42,13 @@ select {
 }
 button {
   border: none;
+  outline: none;
+}
+input {
+  outline: none;
+}
+textarea {
+  outline: none;
 }
 textarea {
   resize: none;
@@ -447,23 +454,19 @@ textarea {
 }
 .dl_btn_right {
   width: 75px;
-  margin-top: 3px;
+  height: 34px;
   color: #fff;
-  border-style: solid;
   line-height: 1;
   position: relative;
   font-size: 12px;
   text-align: center;
   vertical-align: middle;
-  padding: 5px 0;
+  padding: 11px 0;
   display: inline-block;
   background-color: #cd270d;
-  border-color: #cd270d;
-  cursor: pointer;
 }
 .dl_btn_right:hover {
   background-color: #8f5248;
-  border-color: #8f5248;
 }
 .dl_btn_right:disabled {
   opacity: 0.55;
