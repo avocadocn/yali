@@ -3,7 +3,9 @@
 		<%
 			var joined = false;
 			_.each(events, function(event) {
-				joined = event.is_joined;
+				if (event.is_joined === true) {
+					joined = true;
+				}
 			});
 		%>
 		<% if (joined) { %>

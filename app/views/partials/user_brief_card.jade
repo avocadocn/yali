@@ -2,7 +2,7 @@
   a(href="/users/home/#{user._id}")
     img.size_80.img_user(src="#{user.photo}")
 .popover_content
-  p: a(href="/users/home/#{user._id}")
+  p: a(href="/users/home/#{user._id}").dl_word_break
     = user.nickname
     if (user.realname)
       | (#{user.realname})
