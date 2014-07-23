@@ -308,13 +308,22 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
                 if(data.message_length<20){
                     $scope.loadMore_flag = false;
+                    if(flag==1){
+                        $scope.lastPage_flag = true;
+                        $scope.nextPage_flag = false;
+                    }
+                    else{
+                        $scope.lastPage_flag = false;
+                        $scope.nextPage_flag = true;
+                    }
+                    $scope.loadOver_flag = true;
                 }
                 else{
                     $scope.loadMore_flag = true;
+                    $scope.nextPage_flag = false;
+                    $scope.lastPage_flag = false;
+                    $scope.loadOver_flag = false;
                 }
-                $scope.nextPage_flag = false;
-                $scope.lastPage_flag = false;
-                $scope.loadOver_flag = false;
                 $scope.block = 1;
                 window.scroll(0,0);
             }
@@ -601,9 +610,21 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
                 $scope.block = 1;
                 if(data.campaigns.length<20){
                     $scope.loadMore_flag = false;
+                    if(flag==1){
+                        $scope.lastPage_flag = true;
+                        $scope.nextPage_flag = false;
+                    }
+                    else{
+                        $scope.lastPage_flag = false;
+                        $scope.nextPage_flag = true;
+                    }
+                    $scope.loadOver_flag = true;
                 }
                 else{
                     $scope.loadMore_flag = true;
+                    $scope.nextPage_flag = false;
+                    $scope.lastPage_flag = false;
+                    $scope.loadOver_flag = false;
                 }
                 window.scroll(0,0);
             }
