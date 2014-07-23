@@ -984,11 +984,22 @@ exports.modifyDepartment = function(req, res) {
                     console.log(err);
                     res.send(500);
                   } else {
-                    res.send({
-                      'msg': 'DEPARTMENT_UPDATE_SUCCESS',
-                      '_id': company._id,
-                      'name': company.info.name,
-                      'department': company.department
+                    User.update(
+                      {'department._id': department._id},
+                      {'department.name': name},
+                      {'safe': false, 'multi': true},
+                      function(err, users) {
+                        if (err) {
+                          console.log(err);
+                          res.send(500);
+                        } else {
+                          res.send({
+                            'msg': 'DEPARTMENT_UPDATE_SUCCESS',
+                            '_id': company._id,
+                            'name': company.info.name,
+                            'department': company.department
+                          });
+                        }
                     });
                   }
                 });
