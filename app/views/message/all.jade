@@ -12,7 +12,7 @@ div(ng-show = '!loading')
           img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="5")
           span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
           img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="7")
-        .dl_md_12
+        .dl_message_body
           .dl_row
             .dl_message_caption(ng-switch="all_message.message_type")
               h7(ng-switch-when="3")
@@ -32,11 +32,11 @@ div(ng-show = '!loading')
               h7(ng-switch-when="0")
                 来自 {{all_message.sender.name}}
               h7(ng-switch-when="1")
-                来自活动
+                来自活动&nbsp;&nbsp;
                 a(href="/campaign/detail/{{all_message.campaign_id}}")
                   {{all_message.campaign_name}}
               h7(ng-switch-when="2")
-                来自比赛
+                来自比赛&nbsp;&nbsp;
                 a(href="/competition/{{all_message.campaign_id}}")
                   {{all_message.campaign_name}}
             .dl_message_date

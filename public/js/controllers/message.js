@@ -194,7 +194,7 @@ var messagePreHandle = function(teams,msg,divide){
 
           if(msg[i].message_content.sender[0].role === 'LEADER'){
             sender = {
-              'name':msg[i].message_content.sender[0].nickname
+              'name':msg[i].message_content.team[0].name + " 队长"
             };
           }else{
             if(msg[i].message_content.sender[0].role === 'HR'){

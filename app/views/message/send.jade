@@ -1,8 +1,8 @@
 br
 br
 .dl_row
-  form.dl_modal_container.margin_top_5.margin_left_15(name="comment_form" novalidate)
-    .dl_message_date.dl_vertical
+  form.dl_modal_container.margin_top_5.margin_left_30(name="comment_form" novalidate)
+    .dl_message_send.dl_vertical
       h5(ng-if="teamName != 'null'")
         发往 {{teamName}}:
       h5(ng-if="teamName == 'null'")
@@ -26,7 +26,7 @@ br
         span.glyphicon.glyphicon-user(ng-switch-when="5")
         span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
         span.glyphicon.glyphicon-flash(ng-switch-when="7")
-      .dl_md_12
+      .dl_message_body
         .dl_row
           .dl_message_caption(ng-switch="send_message.message_type")
             h7(ng-switch-when="3")
