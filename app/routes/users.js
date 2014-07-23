@@ -3,7 +3,6 @@
 // User routes use users controller
 var users = require('../controllers/users');
 var authorization = require('./middlewares/authorization');
-var utils = require('./middlewares/utils');
 var config = require('../../config/config');
 
 
@@ -22,8 +21,8 @@ module.exports = function(app, passport) {
         failureFlash: true
     }),  users.loginSuccess);
 
-    app.get('/users/home', utils.nocache, authorization.userAuthorize, users.home);
-    app.get('/users/home/:userId', utils.nocache, authorization.userAuthorize, users.home);
+    app.get('/users/home', authorization.userAuthorize, users.home);
+    app.get('/users/home/:userId', authorization.userAuthorize, users.home);
     // Active produce
     app.post('/users/mailCheck', users.mailCheck);
     app.get('/users/invite', users.invite);

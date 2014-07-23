@@ -3,7 +3,6 @@
 // Company routes use company controller
 var company = require('../controllers/company');
 var authorization = require('./middlewares/authorization');
-var utils = require('./middlewares/utils');
 var config = require('../../config/config');
 
 module.exports = function(app, passport) {
@@ -64,8 +63,8 @@ module.exports = function(app, passport) {
 
     app.post('/company/appointLeader/:companyId', authorization.companyAuthorize, company.appointLeader);
 
-    app.get('/company/home', utils.nocache, authorization.companyAuthorize, company.home);
-    app.get('/company/home/:companyId', utils.nocache, authorization.companyAuthorize, company.home);
+    app.get('/company/home', authorization.companyAuthorize, company.home);
+    app.get('/company/home/:companyId', authorization.companyAuthorize, company.home);
     // Setting up the companyId param
 
 
