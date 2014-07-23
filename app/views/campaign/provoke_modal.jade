@@ -45,7 +45,7 @@ form(name="provoke_form" novalidate)
           .dl_modal_label_container
             span.info_label 最少报名人数:
           .dl_modal_other_container
-            input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.member_min" ng-maxlength=10 tooltip="{{provoke_form.minNumber.$invalid? '请正确填写最少人数':''}}")
+            input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.member_min" ng-min=0 ng-max="{{$parent.member_max}}" ng-maxlength=10 tooltip="{{provoke_form.minNumber.$invalid? '请正确填写最少人数':''}}")
           .dl_modal_people_container
             span.info_label(style="padding:7px") 人
           .dl_modal_label_container
@@ -65,7 +65,7 @@ form(name="provoke_form" novalidate)
           .dl_modal_label_container
             span.info_label 报名人数上限:
           .dl_modal_other_container
-            input.dl_form-Control(type="number" name="maxNumber" ng-model="$parent.member_max" ng-maxlength=10 tooltip="{{provoke_form.minNumber.$invalid? '请正确填写最人数上限':''}}")
+            input.dl_form-Control(type="number" name="maxNumber" ng-model="$parent.member_max" ng-min="{{$parent.member_min}}" ng-maxlength=10 tooltip="{{provoke_form.minNumber.$invalid? '请正确填写最人数上限':''}}")
           .dl_modal_people_container
             span.info_label 人
           .dl_modal_label_container
