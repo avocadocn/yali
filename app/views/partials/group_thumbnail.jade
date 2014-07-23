@@ -1,12 +1,12 @@
 mixin group_thumbnail(teams,team_class,team_head,j)
   .groupsbox
-    div(ng-init="show=[];show[#{j}]=false;")
-      p.subtitle.= team_head
+    .dl_row(ng-init="show=[];show[#{j}]=false;")
+      span.subtitle(style="float:left")= team_head
       if (teams.length>4)
         .text_container.pull-right
           a.text(ng-show="!show[#{j}]" ng-click="show[#{j}]=true;" href="javascript:void(0);" ng-cloak) 更多 > 
           a.text(ng-show='show[#{j}]' ng-click="show[#{j}]=false;" href="javascript:void(0);" ng-cloak) 收起 <
-     .groups
+    .groups
       each team,i in teams
         div.center-block(ng-if="#{i}<4" class='group '+team_class title="#{team.name}")
           a.center-block(href="/group/home/#{team._id}")
