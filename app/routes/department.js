@@ -12,6 +12,7 @@ var bodyParser = express.bodyParser({
 
 module.exports = function(app) {
   app.get('/departmentTree/:cid', department.getDepartment);
+  app.get('/departmentTree/:cid/detail', department.getDepartmentTreeDetail);
 
   app.post('/department', department.createDepartment);
   app.put('/department/:departmentId', authorization.departmentAuthorize, department.modifyDepartment);

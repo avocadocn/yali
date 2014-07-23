@@ -23,8 +23,11 @@
   width: 140px;
   float: right;
 }
+.dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_aside .dl_btn_medium {
+  width: 128px;
+}
 .dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_content2 {
-  width: 590;
+  width: 590px;
   float: left;
 }
 .dl_detail_container .dl_detail_main .dl_detail_member {
@@ -79,7 +82,7 @@
 .dl_detail_row .dl_detail_detail {
   padding: 10px 15px;
   min-width: 322px;
-  max-width: 480px;
+  max-width: 460px;
   float: left;
   width: auto;
 }

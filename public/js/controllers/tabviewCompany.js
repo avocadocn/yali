@@ -1059,7 +1059,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
 
     (function getDepartments() {
         $http
-        .get('/departmentTree/' + $rootScope.cid)
+        .get('/departmentTree/' + $rootScope.cid + '/detail')
         .success(function(data, status) {
             formatData(data);
         });

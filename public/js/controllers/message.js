@@ -2,6 +2,23 @@
 
 var messageApp = angular.module('donler');
 
+messageApp.config(['$routeProvider', '$locationProvider',
+  function ($routeProvider, $locationProvider) {
+    $routeProvider
+      .when('/message_all', {
+        templateUrl: '/message/all',
+        controller: 'messageAllController',
+        controllerAs: 'all'
+      })
+      .when('/send', {
+        templateUrl: '/message/send',
+        controller: 'messageSenderController',
+        controllerAs: 'team'
+      }).
+      otherwise({
+        redirectTo: '/message/all'
+      });
+}]);
 
 messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.nowTab = window.location.hash.substr(2);
@@ -156,7 +173,6 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
 //   }
 // }
 
-
 var messagePreHandle = function(teams,msg,divide){
   var direct_show = false;
   var detail = "";
@@ -177,10 +193,14 @@ var messagePreHandle = function(teams,msg,divide){
           message_type = 0;
 
           if(msg[i].message_content.sender[0].role === 'LEADER'){
-            sender = "队长 "+msg[i].message_content.sender[0].nickname;
+            sender = {
+              'name':msg[i].message_content.team[0].name + " 队长"
+            };
           }else{
             if(msg[i].message_content.sender[0].role === 'HR'){
-              sender = "您的公司";
+              sender = {
+              'name':'公司'
+              };
             }
           }
           detail = msg[i].message_content.content;
@@ -724,12 +744,10 @@ var sendMessagesPre = function(messages){
       if(messages[i].sender.length > 0){
         if(messages[i].campaign_id == null){
           message_type = 0;
-          content = "您向 "+messages[i].team[0].name + "的队员发送了站内信";
           detail = messages[i].content;
           direct_show = true;
         }else{
           detail = messages[i].content;
-          content = "您向参加 "+ messages[i].caption + " 的成员发送了站内信";
           if(messages[i].team[0].provoke_status == 0){
             message_type = 1;
           }else{
@@ -739,11 +757,10 @@ var sendMessagesPre = function(messages){
       }
      send_messages.push({
         '_id':messages[i]._id,
-        'caption':'Message From Campaign',
-        'content':content,
         'status':messages[i].status,
         'date':messages[i].post_date,
         'detail':messages[i].content,
+        'team':messages[i].team[0],
         'message_type':message_type,
         'campaign_id':messages[i].campaign_id,
         'campaign_name':messages[i].caption
@@ -754,7 +771,6 @@ var sendMessagesPre = function(messages){
     if(messages[i].type == 'company'){
       message_type = 3;
       detail = messages[i].content;
-      content = "您向全公司的员工发送了站内信";
       send_messages.push({
         '_id':messages[i]._id,
         'content':content,
@@ -900,21 +916,4 @@ var sendMessagesPre = function(messages){
 //获取系统公告
 messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('global');
-}]);
-
-
-messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-    $http.get('/message/header').success(function(data, status) {
-        var messages = messagePreHandle(data.team,data.msg,false);
-        $rootScope.o = messages.length;
-        //以后站内信分类时会用到
-        /*
-        var messages = messagePreHandle(data.team,data.msg,true);
-        $rootScope.private_length = messages[0].length;
-        $rootScope.team_length = messages[1].length;
-        $rootScope.company_length = messages[2].length;
-        $rootScope.global_length = messages[3].length;
-        $rootScope.o = $rootScope.private_length + $rootScope.team_length + $rootScope.company_length + $rootScope.global_length;
-        */
-    });
 }]);

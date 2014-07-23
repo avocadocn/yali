@@ -101,3 +101,15 @@
   margin-right: auto;
   display: block;
 }
+#cal-slide-content {
+  background: none;
+}
+#cal-slide-content a.event-item {
+  color: #666;
+}
+.cal-day-today {
+  background: #e8e8fd;
+}
+.cal-day-today span[data-cal-date] {
+  color: #00f;
+}

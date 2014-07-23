@@ -1,7 +1,8 @@
 mixin group_thumbnail(teams,team_class,team_head)
-  p.subtitle.margin_top_20= team_head
-  .groups.row.dl_row
-    each team in teams
-      div.center-block(class='group col-xs-3 '+team_class title="#{team.name}")
-        a.center-block.margin_top_15(href="/group/home/#{team._id}")
-          img.center-block.group.size_56(src="#{team.logo}")
+  .groupsbox
+    p.subtitle= team_head
+    .groups
+      each team in teams
+        div.center-block(class='group '+team_class title="#{team.name}")
+          a.center-block(href="/group/home/#{team._id}")
+            img.center-block.group.size_56(src="#{team.logo}")

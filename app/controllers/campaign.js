@@ -544,7 +544,9 @@ exports.joinCampaign = function (req, res) {
   },
   function (err, campaign) {
     if (!err && campaign) {
-
+      if(campaign.end_time<new Date){
+        return res.send({ result: 0, msg: '活动已经结束'});
+      }
       var camp_length = campaign.camp.length;
       //从campaign里删除该员工信息
       if(camp_length===0){
@@ -617,6 +619,9 @@ exports.quitCampaign = function (req, res) {
     },
   function (err, campaign) {
     if (!err && campaign) {
+      if(campaign.end_time<new Date){
+        return res.send({ result: 0, msg: '活动已经结束'});
+      }
       var camp_length = campaign.camp.length;
       //从campaign里删除该员工信息
       if(camp_length===0){

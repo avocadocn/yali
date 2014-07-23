@@ -315,6 +315,7 @@ function userOperate2(cid, key, res, req) { //重发邮件
           }
         }
         else {
+          console.log(email);
           res.render('users/message', message.invalid);
         }
       })
@@ -416,6 +417,7 @@ exports.dealSetProfile = function(req, res) {
         user.realname = req.body.realName;
         user.phone = req.body.phone;
         user.role = 'EMPLOYEE';
+        user.active = true;
         user.save(function(err) {
           if(err) {
             console.log(err);

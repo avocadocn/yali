@@ -1,23 +1,22 @@
-.modal-dialog
-  .dl-modal
-    form(name="message_form" novalidate)
-      .dl-modal-body
-        .dl_modal_container
-          .dl_md_10.dl_vertical
-            label(ng-if="teamName == 'null'") 您将对全公司成员发送站内信
-            label(ng-if="teamName != 'null'") 您将对 {{teamName}} 的队员发送站内信
-      .dl-modal-body
-        .dl_modal_container
-          .dl_md_1.dl_vertical
-            label.subtitle 内容
-          .dl_md_10
-            textarea.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
-      br
-      .dl-modal-footer
-        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="sendToAll()" ng-disabled="message_form.$invalid") 发送
-  br
-  .dl_modal_container
-    .dl_row(style="height:93px" ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
+br
+br
+.dl_row
+  form.dl_modal_container.margin_top_5.margin_left_30(name="comment_form" novalidate)
+    .dl_message_send.dl_vertical
+      h5(ng-if="teamName != 'null'")
+        发往 {{teamName}}:
+      h5(ng-if="teamName == 'null'")
+        发往全公司:
+    .dl_md_8.dl_vertical
+      input.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
+    .dl_md_1.dl_vertical
+      button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll()" ng-disabled="message_form.$invalid") 发送
+br
+br
+br
+.dl_modal_container
+  .dl_row.message_panel(ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
+    .row.line_left
       .dl_message_head.dl_message_body_font(ng-switch="send_message.message_type")
         span.glyphicon.glyphicon-star-empty(ng-switch-when="0")
         span.glyphicon.glyphicon-music(ng-switch-when="1")
@@ -27,27 +26,28 @@
         span.glyphicon.glyphicon-user(ng-switch-when="5")
         span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
         span.glyphicon.glyphicon-flash(ng-switch-when="7")
-      .dl_message_body.margin_left_5
-        .row
+      .dl_message_body
+        .dl_row
           .dl_message_caption(ng-switch="send_message.message_type")
             h7(ng-switch-when="3")
-              {{send_message.content}}
+              发往全公司
             h7(ng-switch-when="1")
-              {{send_message.content}}
+              发往活动 {{send_message.campaign_name}}
             h7(ng-switch-when="2")
-              {{send_message.content}}
+              发往比赛 {{send_message.campaign_name}}
             h7(ng-switch-when="0")
-              {{send_message.content}}
+              发往小队 {{send_message.team.name}}
           .dl_message_date
             h7 {{send_message.date | date:'yyyy-MM-dd HH:mm'}}
-        .row
-          .dl_md_12(ng-switch="send_message.message_type")
+        .dl_row
+          .dl_md_12.message_detail
             h5 {{send_message.detail}}
           .dl_md_1.pull-right.dl_message_rightcorner
-            button.dl_btn.pull-right(ng-click="setToDelete($index)") X
-    .dl_row.dl_center(ng-if="send_messages.length > 10")
-      button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'right' || page_send.arrow == 'none' " ng-click="pageOperate('left')") <<
-      button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'left' || page_send.arrow == 'none' " ng-click="pageOperate('right')") >>
-    .dl_row
-      hr
-      button.dl_btn.dl_btn_small.margin_left_5(ng-click="deleteAll()" ng-if="send_messages.length > 0") 全部删除
+              a.pull-right(ng-click="setToDelete($index)")
+                h7 删除
+  .dl_row.dl_center(ng-if="send_messages.length > 10")
+    button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'right' || page_send.arrow == 'none' " ng-click="pageOperate('left')") <<
+    button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'left' || page_send.arrow == 'none' " ng-click="pageOperate('right')") >>
+  .dl_row
+    hr
+    button.dl_btn.dl_btn_small.margin_left_5(ng-click="deleteAll()" ng-if="send_messages.length > 0") 全部删除

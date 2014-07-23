@@ -1,60 +1,109 @@
 .loading_div(ng-show = 'loading')
 div(ng-show = '!loading')
   .dl_modal_container
-    .dl_row.bg_change.message_panel(ng-repeat="all_message in all_messages" ng-if="$index >= page_all.up && $index <= page_all.down")
-      .dl_message_head.dl_message_body_font(ng-switch="all_message.message_type")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="0")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="1")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="2")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="3")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="4")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="5")
-        span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="7")
-      .dl_message_body.margin_left_5
-        .row
-          .dl_message_caption(ng-switch="all_message.message_type")
-            h7(ng-switch-when="3")
-              您的公司给您发了
-              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
-                一条私信
-            h7(ng-switch-when="4")
-              a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
-                {{all_message.content}}
-            h7(ng-switch-when="5")
-              a
-                {{all_message.sender.nickname}} 给您发了一条私信
-            h7(ng-switch-when="6")
-              您收到了一条
-              a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)")
-                系统消息
-            h7(ng-switch-when="7")
-              a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
-                {{all_message.content}}
-            h7(ng-switch-when="0")
-              {{all_message.sender}} 给您的小队 {{all_message.team.name}} 发了一条私信
-            h7(ng-switch-when="1")
-              您参加的活动
-              a(href="/campaign/detail/{{all_message.campaign_id}}")
-                {{all_message.campaign_name}}
-              有了新的消息
-            h7(ng-switch-when="2")
-              您参加的比赛
-              a(href="/competition/{{all_message.campaign_id}}")
-                {{all_message.campaign_name}}
-              有了新的消息
-          .dl_message_date
-            h7 {{all_message.date | date:'yyyy-MM-dd HH:mm'}}
-        .row
-          .dl_md_12
-            h5 {{all_message.detail}}
-          .dl_md_1.pull-right.dl_message_rightcorner
-            a.pull-right(ng-click="setToDelete($index)")
-             h7 删除
-    .dl_row.dl_center(ng-if="all_messages.length > 10")
-      button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'right' || page_all.arrow == 'none' " ng-click="pageOperate('left')") <<
-      button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'left' || page_all.arrow == 'none' " ng-click="pageOperate('right')") >>
-    .dl_row(ng-if="all_messages.length > 0")
-      hr
-      button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="o > 0") 全部设为已读
-      button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="all_messages.length > 0") 全部删除
+    .dl_row.message_panel(ng-repeat="all_message in all_messages" ng-if="$index >= page_all.up && $index <= page_all.down" ng-click="setToRead($index)")
+      .row.line_left
+        .dl_message_head.dl_message_body_font(ng-switch="all_message.message_type")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="0")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="1")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="2")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="3")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="4")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="5")
+          span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="7")
+        .dl_message_body
+          .dl_row
+            .dl_message_caption(ng-switch="all_message.message_type")
+              h7(ng-switch-when="3")
+                来自公司
+              h7(ng-switch-when="4")
+                a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
+                  {{all_message.content}}
+              h7(ng-switch-when="5")
+                来自
+                a
+                  {{all_message.sender.nickname}}
+              h7(ng-switch-when="6")
+                您收到了一条系统消息
+              h7(ng-switch-when="7")
+                a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
+                  {{all_message.content}}
+              h7(ng-switch-when="0")
+                来自 {{all_message.sender.name}}
+              h7(ng-switch-when="1")
+                来自活动&nbsp;&nbsp;
+                a(href="/campaign/detail/{{all_message.campaign_id}}")
+                  {{all_message.campaign_name}}
+              h7(ng-switch-when="2")
+                来自比赛&nbsp;&nbsp;
+                a(href="/competition/{{all_message.campaign_id}}")
+                  {{all_message.campaign_name}}
+            .dl_message_date
+              h7 {{all_message.date | date:'yyyy-MM-dd HH:mm'}}
+          .dl_row
+            .dl_md_12.message_detail
+              h5 {{all_message.detail}}
+            .dl_md_1.pull-right.dl_message_rightcorner
+                a.pull-right(ng-click="setToDelete($index)")
+                  h7 删除
+.dl_row.dl_center(ng-if="all_messages.length > 10")
+  button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'right' || page_all.arrow == 'none' " ng-click="pageOperate('left')") <<
+  button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'left' || page_all.arrow == 'none' " ng-click="pageOperate('right')") >>
+.dl_row(ng-if="all_messages.length > 0")
+  hr
+  button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="o > 0") 全部设为已读
+  button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="all_messages.length > 0") 全部删除
+  //- .dl_modal_container
+  //-   .dl_row.message_panel(ng-repeat="all_message in all_messages" ng-if="$index >= page_all.up && $index <= page_all.down" ng-click="setToRead($index)")
+  //-     .dl_message_head.dl_message_body_font(ng-switch="all_message.message_type")
+  //-       img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="0")
+  //-       img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="1")
+  //-       img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="2")
+  //-       img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="3")
+  //-       img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="4")
+  //-       img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="5")
+  //-       span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
+  //-       img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="7")
+  //-     .dl_message_body.margin_left_5
+  //-       .row
+  //-         .dl_message_caption(ng-switch="all_message.message_type")
+  //-           h7(ng-switch-when="3")
+  //-             来自公司
+  //-           h7(ng-switch-when="4")
+  //-             a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
+  //-               {{all_message.content}}
+  //-           h7(ng-switch-when="5")
+  //-             来自
+  //-             a
+  //-               {{all_message.sender.nickname}}
+  //-           h7(ng-switch-when="6")
+  //-             您收到了一条系统消息
+  //-           h7(ng-switch-when="7")
+  //-             a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
+  //-               {{all_message.content}}
+  //-           h7(ng-switch-when="0")
+  //-             来自 {{all_message.team.name}}
+  //-           h7(ng-switch-when="1")
+  //-             来自活动
+  //-             a(href="/campaign/detail/{{all_message.campaign_id}}")
+  //-               {{all_message.campaign_name}}
+  //-           h7(ng-switch-when="2")
+  //-             来自比赛
+  //-             a(href="/competition/{{all_message.campaign_id}}")
+  //-               {{all_message.campaign_name}}
+  //-         .dl_message_date
+  //-           h7 {{all_message.date | date:'yyyy-MM-dd HH:mm'}}
+  //-       .row
+  //-         .dl_md_12.message_detail
+  //-           h5 {{all_message.detail}}
+  //-         .dl_md_1.pull-right.dl_message_rightcorner
+  //-           a.pull-right(ng-click="setToDelete($index)")
+  //-            h7 删除
+  //-   .dl_row.dl_center(ng-if="all_messages.length > 10")
+  //-     button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'right' || page_all.arrow == 'none' " ng-click="pageOperate('left')") <<
+  //-     button.dl_btn.dl_btn_small(ng-disabled="page_all.arrow == 'left' || page_all.arrow == 'none' " ng-click="pageOperate('right')") >>
+  //-   .dl_row(ng-if="all_messages.length > 0")
+  //-     hr
+  //-     button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('read')" ng-if="o > 0") 全部设为已读
+  //-     button.dl_btn.dl_btn_small.margin_left_5(ng-click="setAllStatus('delete')" ng-if="all_messages.length > 0") 全部删除
