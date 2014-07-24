@@ -1032,74 +1032,90 @@ exports.changeUser = function (req, res) {
 
 //任命/罢免队长
 exports.appointLeader = function (req, res) {
-  if(req.role !== 'HR')
-    return res.send(403,{'msg':'forbidden'});
-  var uid = req.body.uid;
-  var tid = req.body.tid;
-  var operate = req.body.operate;
+    if(req.role !== 'HR')
+        return res.send(403,{'msg':'forbidden'});
+    var user = req.body.user;
+    var tid = req.body.tid;
+    var operate = req.body.operate;
+    var wait_for_join = req.body.wait_for_join;
 
-  User.findOne({
-        _id : uid
-    },function (err, user) {
-        if (err || !user) {
-            return res.send('ERROR');
+    CompanyGroup.findOne({_id : tid},function (err, company_group) {
+        if (err || !company_group) {
+            console.log(err);
+            return res.send(500,{'msg':'小组未找到!'});
         } else {
-
-            var l = false;//标识他是不是这个队的队长
-            var ol = false; // 标识是不是其它队的队长
-            var ok = false;//提高效率用
-            //这段代码性能很低,但是需要
-            for(var i =0; i< user.team.length; i ++) {
-                if(user.team[i]._id.toString() == tid.toString()){
-                    user.team[i].leader = operate;
-                    l = user.team[i].leader;
-                    if(ol)
-                        break;//ol已标记过
-                    ok =true;
+            if(operate){
+                if(wait_for_join){
+                    company_group.member.push({
+                        '_id' : user._id,
+                        'nickname' : user.nickname,
+                        'photo': user.photo
+                    });
                 }
-                else if(user.team[i].leader === true){
-                        ol=true;
-                        if(ok)
-                            break;
+                company_group.leader.push({
+                    '_id' : user._id,
+                    'nickname' : user.nickname,
+                    'photo': user.photo
+                });
+            } else {
+                for(var i = 0; i < company_group.leader.length; i ++) {
+                    if(company_group.leader[i]._id.toString() === user._id.toString()) {
+                        company_group.leader.splice(i,1);
+                        break;
+                    }
                 }
             }
-
-            if(!ol)
-                user.role = l ? 'LEADER' : 'EMPLOYEE';
-
-            user.save(function(err) {
-                if(err) {
-                    console.log('用户保存错误:',err);
-                    return res.send(500,{'msg':'用户保存出错!'});
+            company_group.save(function(err){
+                if(err){
+                    console.log('小组保存错误',err);
+                    //这里需要回滚User的操作
+                    return res.send(500,{'msg':'小组保存出错!'});
                 } else {
-
-                    CompanyGroup.findOne({_id : tid},function (err, company_group) {
-                        if (err || !company_group) {
-                            console.log(err);
-                            //这里需要回滚User的操作
-                            return res.send(500,{'msg':'小组未找到!'});
+                    User.findOne({
+                        _id : user._id
+                    },function (err, user) {
+                        if (err || !user) {
+                            return res.send('ERROR');
                         } else {
-                            if(operate){
-                                company_group.leader.push({
-                                    '_id' : uid,
-                                    'nickname' : user.nickname,
-                                    'photo': user.photo
-                                });
-                            } else {
-                                for(var i = 0; i < company_group.leader.length; i ++) {
-                                    if(company_group.leader[i]._id.toString() === uid.toString()) {
-                                        company_group.leader.splice(i,1);
-                                        break;
+                            //他已经有这个小队了
+                            if(!wait_for_join){
+                                var l = false;//标识他是不是这个队的队长
+                                var ol = false; // 标识是不是其它队的队长
+                                var ok = false;//提高效率用
+                                //这段代码性能很低,但是需要
+                                for(var i =0; i< user.team.length; i ++) {
+                                    if(user.team[i]._id.toString() == tid.toString()){
+                                        user.team[i].leader = operate;
+                                        l = user.team[i].leader;
+                                        if(ol)
+                                            break;//ol已标记过
+                                        ok =true;
+                                    }
+                                    else if(user.team[i].leader === true){
+                                            ol=true;
+                                            if(ok)
+                                                break;
                                     }
                                 }
+                                if(!ol)
+                                    user.role = l ? 'LEADER' : 'EMPLOYEE';
+                            //他还没有加入这个小队
+                            }else{
+                                user.team.push({
+                                    gid: company_group.gid,
+                                    _id: company_group._id,
+                                    group_type: company_group.group_type,
+                                    entity_type: company_group.entity_type,
+                                    name : company_group.name,
+                                    leader : true,
+                                    logo: company_group.logo
+                                });
                             }
-                            company_group.save(function(err){
-                                if(err){
-                                    console.log('小组保存错误',err);
-                                    //这里需要回滚User的操作
-                                    return res.send(500,{'msg':'小组保存出错!'});
+                            user.save(function(err) {
+                                if(err) {
+                                    console.log('用户保存错误:',err);
+                                    return res.send(500,{'msg':'用户保存出错!'});
                                 } else {
-                                    console.log(operate);
                                     return res.send(200,{'msg':'任命组长成功!'});
                                 }
                             });

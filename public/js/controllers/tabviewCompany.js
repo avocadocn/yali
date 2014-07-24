@@ -566,10 +566,40 @@ tabViewCompany.directive('masonry', function ($timeout) {
                     tid: $scope.tid
                 }
             }).success(function(data, status) {
+                $scope.company_users = [];
+                $scope.company_users = data.all_users;
                 $scope.users = data.users;
                 $scope.leaders = data.leaders.length > 0 ? data.leaders : [];
 
                 $scope.origin_leader_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
+
+                // wait_for_join : 是否将该员工强制加入该部门的标志
+                for(var i = 0 ; i < $scope.users.length; i ++){
+                    $scope.users[i].wait_for_join = false;
+                }
+
+                // 找出没有加入任何小队的公司员工,成为小队队长的候选人(如果选他成为队长必须先让他加入该小队)
+                for(var i = 0 ; i < $scope.company_users.length; i ++){
+                    //没有任何小队
+                    if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
+                        $scope.company_users[i].wait_for_join = true;
+                        $scope.users.push($scope.company_users[i]);
+                    //小队里有部门小队
+                    }else{
+                        var team_find = false;
+                        for(var j = 0; j < $scope.company_users[i].team.length; j ++){
+                            if($scope.company_users[i].team[j].gid != '0'){
+                                team_find = true;
+                            }
+                        }
+                        if(!team_find){
+                            $scope.company_users[i].wait_for_join = true;
+                            $scope.users.push($scope.company_users[i]);
+                        }
+                    }
+                }
+
+                console.log($scope.users);
 
                 var leader_find = false;
                 for(var i = 0; i < $scope.users.length && !leader_find; i ++) {
@@ -629,14 +659,14 @@ tabViewCompany.directive('masonry', function ($timeout) {
             $scope.appoint_permission = false;
         }
     }
-    $scope.dismissLeader = function (leader) {
+    $scope.dismissLeader = function (leader_id) {
         try{
             $http({
                 method: 'post',
                 url: '/company/appointLeader/'+$scope.cid,
                 data:{
                     tid: $scope.tid,
-                    uid: leader._id,
+                    uid: leader_id,
                     operate:false
                 }
             }).success(function(data, status) {
@@ -660,20 +690,22 @@ tabViewCompany.directive('masonry', function ($timeout) {
                     url: '/company/appointLeader/'+$scope.cid,
                     data:{
                         tid: $scope.tid,
-                        uid: $scope._user._id,
+                        user: $scope._user,
+                        wait_for_join:$scope._user.wait_for_join,
                         operate:true
                     }
                 }).success(function(data, status) {
 
-                    if($scope.leader!='null'){
+                    if($scope.origin_leader_id != null){
+                        $scope.dismissLeader($scope.origin_leader_id);
                         var _leader = $scope.team_lists[$scope.team_index].leader;
                         for(var i = 0; i < _leader.length; i++){
-                            if(_leader[i]._id == $scope.leader._id) {
+                            if(_leader[i]._id == $scope.origin_leader_id) {
                                 $scope.team_lists[$scope.team_index].leader.splice(i,1);
                             }
                         }
                         for(var i = 0; i < $scope.leaders.length; i ++) {
-                            if($scope.leaders[i]._id == $scope.leader._id) {
+                            if($scope.leaders[i]._id == $scope.origin_leader_id) {
                                 $scope.leaders.splice(i,1);
                             }
                         }
@@ -689,10 +721,6 @@ tabViewCompany.directive('masonry', function ($timeout) {
                         'nickname':$scope._user.nickname,
                         'photo':$scope._user.photo
                     });
-
-                    if($scope.leader!='null'){
-                        $scope.dismissLeader($scope.leader);
-                    }
                 }).error(function(data, status) {
                     //TODO:更改对话框
                     alertify.alert('DATA ERROR');
@@ -1240,7 +1268,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
     };
 
 
-        //获取该公司所有员工
+    //获取该公司所有员工
     $scope.getCompanyUser = function(tid,callback){
          $http({
               method: 'post',
@@ -1249,13 +1277,17 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                   tid:tid
               }
           }).success(function(data, status) {
+                $scope.company_users = [];
                 $scope.company_users = data.all_users;
                 $scope.managers = data.leaders;
                 $scope.origin_manager_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
                 $scope.department_users = data.users;
+                // wait_for_join : 是否将该员工强制加入该部门的标志
                 for(var i = 0 ; i < $scope.department_users.length; i ++){
                     $scope.department_users[i].wait_for_join = false;
                 }
+
+                // 找出没有加入任何部门的公司员工,成为部门管理员的候选人(如果选他成为管理员必须先让他加入该部门)
                 if($scope.company_users.length > 0 ){
                     for(var i = 0 ; i < $scope.company_users.length; i ++){
                         if($scope.company_users[i].department._id == undefined || $scope.company_users[i].department._id == null){
@@ -1264,9 +1296,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                         }
                     }
                 }
-
-                $scope.manager = 'null';
-              var manager_find = false;
+                var manager_find = false;
                 for(var i = 0; i < $scope.department_users.length && !manager_find; i ++) {
                     for(var j = 0; j < $scope.managers.length; j ++) {
                         //标记
@@ -1315,13 +1345,12 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
     }
     $scope.appointReady = function(index){
         $scope.department_user = $scope.department_users[index];
-        $scope.manager=$scope.managers[0];
         $scope.department_index = index;
         $scope.department_users[index].leader = true;
 
-        if($scope.manager){
+        if($scope.origin_manager_id != null && $scope.origin_manager_id != undefined){
             for(var i = 0; i < $scope.department_users.length; i ++) {
-                if($scope.manager._id.toString() === $scope.department_users[i]._id.toString()){
+                if($scope.origin_manager_id.toString() === $scope.department_users[i]._id.toString()){
                     $scope.department_users[i].leader = false;
                     break;
                 }
@@ -1339,14 +1368,14 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             $scope.appoint_permission_department = false;
         }
     }
-    $scope.dismissManager = function (manager) {
+    $scope.dismissManager = function (manager_id) {
         try{
             $http({
                 method: 'post',
                 url: '/department/managerOperate/'+$scope.did,
                 data:{
                     member:{
-                        '_id':manager._id,
+                        '_id':manager_id,
                     },
                     did:$scope.did,
                     operate:'dismiss'
@@ -1380,10 +1409,11 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                         operate:'appoint'
                     }
                 }).success(function(data, status) {
-                    console.log($scope.manager);
-                    if($scope.manager!='null' && $scope.manager != undefined){
+                    //如果本部门原来有管理员的话就把他撤掉
+                    if($scope.origin_manager_id!=null && $scope.origin_manager_id != undefined){
+                        $scope.dismissManager($scope.origin_manager_id);
                         for(var i = 0; i < $scope.managers.length; i ++) {
-                            if($scope.managers[i]._id == $scope.manager._id) {
+                            if($scope.managers[i]._id == $scope.origin_manager_id) {
                                 $scope.managers.splice(i,1);
                             }
                         }
@@ -1394,10 +1424,6 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                         'nickname':$scope.department_user.nickname,
                         'photo':$scope.department_user.photo
                     });
-
-                    if($scope.manager!='null' && $scope.manager != undefined){
-                        $scope.dismissManager($scope.manager);
-                    }
                 }).error(function(data, status) {
                     //TODO:更改对话框
                     alertify.alert('DATA ERROR');

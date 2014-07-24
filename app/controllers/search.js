@@ -151,7 +151,8 @@ exports.getUser = function(req, res) {
           '_id':users[i]._id,
           'nickname':users[i].nickname,
           'photo':users[i].photo,
-          'department':users[i].department
+          'department':users[i].department,
+          'team':users[i].team
         });
       }
       //只获取公司员工
