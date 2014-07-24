@@ -18,7 +18,8 @@ var mongoose = require('mongoose'),
   GroupMessage = mongoose.model('GroupMessage'),
   meanConfig = require('../../config/config'),
   path = require('path'),
-  photo_album_controller = require('./photoAlbum');
+  photo_album_controller = require('./photoAlbum'),
+  _ = require('lodash');
 
 
 //消除递归使用的栈
@@ -1120,6 +1121,35 @@ var doDepartment = function(department, operate) {
 };
 
 /**
+ * 复制部门树(仅复制_id和name属性)
+ * @param  {Object} company mongoose.model('company')
+ * @return {Object}         仅包含_id,name,department属性的company对象
+ */
+var cloneDepartmentTree = function(company) {
+  var clone = {
+    _id: company._id,
+    name: company.info.name
+  };
+
+  var _clone = function(departments) {
+    var clone = [];
+    for (var i = 0; i < departments.length; i++) {
+      clone[i] = {
+        _id: departments[i]._id,
+        name: departments[i].name
+      };
+      if (departments[i].department) {
+        clone[i].department = _clone(departments[i].department);
+      }
+    }
+    return clone;
+  };
+
+  clone.department = _clone(company.department);
+  return clone;
+};
+
+/**
  * 返回部门树的详细数据
  * @param  {Object} company        company对象
  * @param  {Array} department_ids 部门_id数组
@@ -1130,7 +1160,11 @@ var sendDepartments = function(company, department_ids, res) {
   .where('_id').in(department_ids)
   .exec()
   .then(function(departments) {
-    doDepartment(company, function(department) {
+
+    var departmentTree = cloneDepartmentTree(company);
+    console.log(departmentTree)
+
+    doDepartment(departmentTree, function(department) {
       for (var i = 0; i < departments.length; i++) {
         if (department._id.toString() === departments[i]._id.toString()) {
           department.manager = departments[i].manager;
@@ -1138,11 +1172,7 @@ var sendDepartments = function(company, department_ids, res) {
         }
       }
     });
-    res.send({
-      _id: company._id,
-      name: company.info.name,
-      department: company.department
-    });
+    res.send(departmentTree);
   })
   .then(null, function(err) {
     console.log(err);

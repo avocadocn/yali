@@ -82,6 +82,10 @@
   background: transparent;
   outline: none;
 }
+.tree .manager_photo {
+  width: 18px;
+  height: 18px;
+}
 .selected {
   border: solid 3px #5cb85c !important;
 }

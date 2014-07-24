@@ -5,8 +5,8 @@ script(type="text/ng-template" id="node.html")
       .inline(ng-if="!node.is_editing") &nbsp;{{node.name}}
       .inline.manager_list(ng-if="node.manager && node.manager.length>0 && !node.is_editing")
         | 管理员:&nbsp;
-        a.manager(ng-repeat="manager in node.manager" href="/users/home/{{manager._id}}")
-          img(tooltip-placement="bottom" tooltip-append-to-body="true" tooltip="{{manager.nickname}}" src="manager.photo")
+        a.manager(ng-repeat="manager in node.manager" ng-href="/users/home/{{manager._id}}")
+          img.manager_photo(tooltip-placement="bottom" tooltip-append-to-body="true" tooltip="{{manager.nickname}}" ng-src="{{manager.photo}}")
       .inline(ng-if="node.is_creating")
         input(type="text" ng-model="node.edit_name")
         button.dl_btn.dl_btn_small(ng-click="confirmCreate(node)") 确定
@@ -15,7 +15,7 @@ script(type="text/ng-template" id="node.html")
         input(type="text" ng-model="node.temp_name")
         button.dl_btn.dl_btn_small(ng-click="confirmEdit(node)") 确定
         button.cancel_btn.dl_btn_small(ng-click="cancelEdit(node)") 取消
-    ul.dropdown-menu(role="menu")
+    ul.dropdown-menu(ng-show="!node.is_creating && !node.is_editing" role="menu")
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="/department/home/{{ node._id }}") 进入部门主页
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="getNode(node)") 任命管理员
       li(role="presentation"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="addNode(node)") 创建子部门
