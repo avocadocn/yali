@@ -282,6 +282,9 @@ exports.getCampaigns = function(req, res) {
     else if(campaignType==='team') {
       option.campaign_type = 2;
     }
+    else if(campaignType==='department'){
+      option.campaign_type = {'$in':[6,8]};
+    }
     else if(req.role ==='EMPLOYEE')  {
       var team_ids = [];
       for( var i = 0; i < req.user.team.length; i ++) {

@@ -288,6 +288,7 @@ exports.campaginAuthorize = function(req, res, next){
   if (!req.user) {
     return res.redirect('/');
   }
+  console.log(req.campaign.cid,req.user.cid);
   if(req.user.provider==='company' && req.campaign.cid.indexOf(req.user._id.toString())>-1){
     req.role = 'HR';
   }
@@ -310,6 +311,7 @@ exports.campaginAuthorize = function(req, res, next){
         else if(req.role==undefined){
           req.role = 'PARTNER';
         }
+        console.log(req.role);
       });
       
     }
