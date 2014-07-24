@@ -433,6 +433,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                         'host_type' : data.comment.host_type,
                         'index' : $scope.fixed_sum+1
                     });
+                    $scope.new_comment[index].text='';
                 } else {
                     alertify.alert('DATA ERROR');
                 }
@@ -529,13 +530,14 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     };
     //应战
-    $scope.responseProvoke = function(tid,competition_id) {
+    $scope.responseProvoke = function(tid,competition_id,status) {
          try {
             $http({
                 method: 'post',
                 url: '/group/responseProvoke/'+$rootScope.teamId,
                 data:{
-                    competition_id : competition_id
+                    competition_id : competition_id,
+                    responseStatus : status
                 }
             }).success(function(data, status) {
                 window.location.reload();

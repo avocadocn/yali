@@ -9,7 +9,7 @@ block contentExt
     include ../partials/breadcrumb
     +breadcrumb(links)
     .main
-      if !competition.active&&competition.camp[1].start_confirm
+      if !competition.active&&(competition.camp[1].start_confirm || !competition.camp[0].start_confirm)
         .text-center #{__("CAMPAIGNCLOSE")}
       #competition_content.competition_content(data-nowteam="#{team}" data-id='#{competition._id}')
         .row
@@ -55,13 +55,14 @@ block contentExt
                     label.dl_score= competition.camp[1].score
             else if response_flag
               .text-center
-                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke('#{competition.camp[1].id}','#{competition._id}')") #{__("FACE")}
+                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke('#{competition.camp[1].id}','#{competition._id}',true)") #{__("FACE")}
+                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke('#{competition.camp[1].id}','#{competition._id}',false)") #{__("REFUSE")}
           .team_right.col-xs-4
             img.pull-left.team_logo(draggable="false" src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             div.text-left.pull-left
               a(href="/group/home/#{competition.camp[1].id}")= competition.camp[1].tname
-              if (competition.active || !competition.camp[1].start_confirm) && !competition.finish && role!='HR' && team.indexOf(1)>-1
+              if (competition.active || !competition.camp[1].start_confirm) && competition.camp[0].start_confirm&& !competition.finish && role!='HR' && team.indexOf(1)>-1
                 div
                   if competition.camp[1].start_confirm
                     if join_flag[1]

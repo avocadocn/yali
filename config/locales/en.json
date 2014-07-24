@@ -152,5 +152,6 @@
   "DEPARTMENT_MEMBER": "Member",
   "NO_TIMELINE": "No timelines",
   "CAMPAIGNCLOSE":"Campaign has closed",
-  "CAMPAIGNFINISH":"Campaign has finished"
+  "CAMPAIGNFINISH":"Campaign has finished",
+  "REFUSE":"refuse"
 }

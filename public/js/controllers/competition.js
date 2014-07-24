@@ -318,13 +318,14 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
       }
     };
     //应战
-    $scope.responseProvoke = function(tid,provoke_message_id) {
+    $scope.responseProvoke = function(tid,provoke_message_id,status) {
         try {
             $http({
                 method: 'post',
                 url: '/group/responseProvoke/'+tid,
                 data:{
-                    competition_id : competition_id
+                    competition_id : competition_id,
+                    responseStatus : status
                 }
             }).success(function(data, status) {
                 window.location.reload();

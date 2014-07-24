@@ -117,7 +117,7 @@ exports.getMessage = function(req, res) {
             _group_message.logo = group_message[i].team[camp_flag].logo;
             _group_message.team_id = group_message[i].team[camp_flag].teamid;
             _group_message.member_num = group_message[i].campaign.camp[camp_flag].member.length;
-            if(!_group_message.campaign.finish &&join_role){
+            if(!_group_message.campaign.finish &&join_role&&group_message[i].campaign.camp[0].start_confirm){
               //0：未投票，1：赞成，-1反对
               var vote_flag = 0;
               if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
@@ -141,7 +141,7 @@ exports.getMessage = function(req, res) {
             //console.log(i,group_message.grouptype_flag);
             //要到小队主页、是HR\LEADER才有应战按钮->response_flag = true;
             if(!_group_message.campaign.finish &&pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')){
-              if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false)
+              if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false&&group_message[i].campaign.camp[0].start_confirm)
                 _group_message.response_flag = true;
             }
           break;

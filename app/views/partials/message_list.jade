@@ -81,7 +81,8 @@ div(ng-show = '!loading')
               span.message_label(ng-if="group_message.campaign.member_max>0") {{group_message.campaign.member_max}}
             .message_row
               span(ng-if="group_message.message_type==4 && group_message.campaign.camp[1].start_confirm==false && group_message.response_flag !=undefined")
-                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id)") #{__("FACE")}
+                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id,true)") #{__("FACE")}
+                button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id,false)") #{__("REFUSE")}
           .dl_message_container(ng-if="group_message.message_type ==6")
             .message_row
               a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}")
