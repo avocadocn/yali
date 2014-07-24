@@ -178,7 +178,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$rootScope.cid+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/company/'+$rootScope.cid+'/'+$scope.campaignType+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
@@ -205,7 +205,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     }
     $scope.changePage = function(flag){
         var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType+'/'+$rootScope.cid+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/company/'+$scope.campaignType$+'/'+$scope.campaignType+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 if(flag ==1){
                     $scope.page++;
@@ -259,13 +259,17 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                 $scope.campaign_type = "所有小队的活动";
                 break;
             case 4:
+                $scope.campaignType = 'department';
+                _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/department/0";
+                $scope.campaign_type = "部门活动";
+                break;
+            case 5:
                 $scope.campaignType = 'all';
                 _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/all/0";
                 $scope.campaign_type = "所有活动";
                 break;
             default:break;
         }
-        $scope.loadMore_flag = true;
         $scope.block = 1;
         $scope.page = 1;
         $scope.pageTime = [0];
