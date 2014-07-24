@@ -1606,6 +1606,9 @@ input.ng-invalid.ng-dirty {
   border: 1px solid #e6e6e6;
   border-top: none;
 }
+.registerpage {
+  background: none;
+}
 
 /***
 Timeline UI Base
