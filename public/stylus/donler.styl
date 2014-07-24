@@ -665,8 +665,10 @@ textarea
       width 80px
 .dl_messagebox
   padding 0
-  background-color backgroundColor
+  background-color cardbgColor
   line-height 21px
+  border 1px solid #e6e6e6
+  border-top none 
   &:hover
     background-color #fafafa
   &:after
@@ -674,15 +676,11 @@ textarea
     line-height 0
     content ""
     border 0
-    border-top 1px solid #eee
   &:before
     display block
     line-height 0
     content ""
   .dl_messageitem
-    background-color cardbgColor
-    border 1px solid #e6e6e6
-    border-top none
     padding 10px
   .pointer
     cursor pointer

@@ -747,8 +747,10 @@ textarea {
 }
 .dl_messagebox {
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #fff;
   line-height: 21px;
+  border: 1px solid #e6e6e6;
+  border-top: none;
 }
 .dl_messagebox:hover {
   background-color: #fafafa;
@@ -758,7 +760,6 @@ textarea {
   line-height: 0;
   content: "";
   border: 0;
-  border-top: 1px solid #eee;
 }
 .dl_messagebox:before {
   display: block;
@@ -766,9 +767,6 @@ textarea {
   content: "";
 }
 .dl_messagebox .dl_messageitem {
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
-  border-top: none;
   padding: 10px;
 }
 .dl_messagebox .pointer {
