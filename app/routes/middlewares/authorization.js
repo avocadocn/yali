@@ -307,7 +307,7 @@ exports.campaginAuthorize = function(req, res, next){
           }
 
         }
-        else if(req.role!=undefined){
+        else if(req.role==undefined){
           req.role = 'PARTNER';
         }
       });

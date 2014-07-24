@@ -670,8 +670,14 @@ exports.responseProvoke = function (req, res) {
     if(campaign.camp[1].id!=req.params.teamId){
       return res.send(403,'forbidden');
     }
-    campaign.camp[1].start_confirm = true;
-    campaign.active = true;
+    if(req.body.responseStatus){
+      campaign.camp[1].start_confirm = true;
+      campaign.active = true;
+    }
+    else{
+      campaign.camp[0].start_confirm = false;
+    }
+
     //还要存入应约方的公司名、队长用户名、真实姓名等
     campaign.save(function (err) {
       if (err) {
@@ -680,48 +686,47 @@ exports.responseProvoke = function (req, res) {
       }
       else{
         var rst = campaign.team;
-        GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
-          groupMessage.message_type = 5;
-
-          groupMessage.create_time = new Date();
-          groupMessage.save(function (err) {
-            if (err) {
-              console.log('保存约战动态时出错' + err);
-            }
-            else{
-              var param = {
-                'type':'private',
-                'caption':'Private Message',
-                'own':{
-                  '_id':req.user._id,
-                  'nickname':req.user.nickname,
-                  'photo':req.user.photo,
-                  'role':'LEADER'
-                },
-                'receiver':{
-                  '_id':rst[0].leader[0]._id
-                },
-                'content':null,
-                'own_team':{
-                  '_id':rst[1]._id,
-                  'name':rst[1].name,
-                  'logo':rst[1].logo,
-                  'provoke_status':1
-                },
-                'receive_team':{
-                  '_id':rst[0]._id,
-                  'name':rst[0].name,
-                  'logo':rst[0].logo,
-                  'provoke_status':1
-                },
-                'campaign_id':null,
-                'auto':true
-              };
-              message.sendToOne(req,res,param);
-              return res.send({'result':0,'msg':'SUCCESS'});
-            }
+        if(req.body.responseStatus){
+          GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
+            groupMessage.message_type = 5;
+            groupMessage.create_time = new Date();
+            groupMessage.save(function (err) {
+              if (err) {
+                console.log('保存约战动态时出错' + err);
+              }
+            });
           });
-        });
+        }
+        var param = {
+          'type':'private',
+          'caption':'Private Message',
+          'own':{
+            '_id':req.user._id,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo,
+            'role':'LEADER'
+          },
+          'receiver':{
+            '_id':rst[0].leader[0]._id
+          },
+          'content':null,
+          'own_team':{
+            '_id':rst[1]._id,
+            'name':rst[1].name,
+            'logo':rst[1].logo,
+            'provoke_status':3
+          },
+          'receive_team':{
+            '_id':rst[0]._id,
+            'name':rst[0].name,
+            'logo':rst[0].logo,
+            'provoke_status':3
+          },
+          'campaign_id':null,
+          'auto':true
+        };
+        message.sendToOne(req,res,param);
+        return res.send({'result':1,'msg':'SUCCESS'});
       }
     });
   });

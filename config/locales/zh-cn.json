@@ -152,5 +152,6 @@
 	"NO_TIMELINE": "目前还没有活动足迹",
 	"DEPARTMENT_MEMBER": "部门成员",
 	"CAMPAIGNCLOSE": "活动已经关闭",
-	"CAMPAIGNFINISH": "活动已经结束"
+	"CAMPAIGNFINISH": "活动已经结束",
+	"REFUSE":"拒绝"
 }

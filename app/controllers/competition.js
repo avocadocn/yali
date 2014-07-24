@@ -68,7 +68,7 @@ exports.getCompetition = function(req, res){
   }
   options.team = req.competition_team;
   options.competition_leader = req.competition_leader;
-  if(!competition.active &&competition.camp[1].start_confirm){
+  if(!competition.active &&(competition.camp[1].start_confirm || !competition.camp[0].start_confirm)){
     return res.render('competition/football', options);
   }
   if(!competition.camp[1].start_confirm ){
