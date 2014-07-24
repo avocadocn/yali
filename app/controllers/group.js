@@ -490,6 +490,10 @@ exports.provoke = function (req, res) {
       var cid = req.user.provider==="company" ? req.user._id : req.user.cid;
       var cname = req.user.provider==="company" ? req.user.info.name : req.user.cname;
       var type = 0;
+      var _now = new Date();
+      if (start_time < _now || end_time < _now || deadline < _now ) {
+        return res.send({'result':0,'msg':'活动的时间比现在更早'});
+      }
       if(team_opposite.cid === req.companyGroup.cid){//同公司
         if(team_opposite.gid === req.companyGroup.gid)//同类型
           type= 4;
@@ -741,6 +745,10 @@ exports.sponsor = function (req, res) {
   var start_time = req.body.start_time;
   var end_time = req.body.end_time;
   var deadline = req.body.deadline ? req.body.deadline : end_time;
+  var _now = new Date();
+  if (start_time < _now || end_time < _now || deadline < _now ) {
+    return res.send({'result':0,'msg':'活动的时间比现在更早'});
+  }
   //生成活动
   var campaign = new Campaign();
   campaign.team.push(tid);
@@ -819,7 +827,7 @@ exports.sponsor = function (req, res) {
           req.companyGroup.photo_album_list.push(photo_album._id);
           req.companyGroup.save(function(err) {
             if (err) {
-              res.send(500);
+              //res.send(500);
               return res.send({'result':0,'msg':'活动发起失败'});
             } else {
               //生成动态消息

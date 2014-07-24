@@ -1133,6 +1133,10 @@ exports.sponsor = function (req, res) {
     var deadline = req.body.deadline ? req.body.deadline :req.body.end_time;
     var member_min = req.body.member_min;
     var member_max = req.body.member_max;
+    var _now = new Date();
+    if (start_time < _now || end_time < _now || deadline < _now ) {
+      return res.send({'result':0,'msg':'活动的时间比现在更早'});
+    }
     var campaign = new Campaign();
     campaign.cname = cname;
     campaign.cid = company_in_campaign; //参加活动的所有公司的id
@@ -1213,10 +1217,7 @@ exports.sponsor = function (req, res) {
                 groupMessage.campaign = campaign._id;
                 groupMessage.save(function(err) {
                     if (err) {
-                        return res.send({'result':0,'msg':'活动创建失败'});
-                    }
-                    else{
-                        return res.send({'result':0,'msg':'活动创建成功'});
+                        console.log(err);
                     }
                 });
             });
