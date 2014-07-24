@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
  */
 exports.companyAuthorize = function(req, res, next){
   if (!req.user) {
-    return res.redirect('/company/signin');
+    return res.redirect('/');
   }
 
   if(req.route.path==='/company/home' && !req.company){
@@ -41,6 +41,9 @@ exports.companyAuthorize = function(req, res, next){
   next();
 };
 exports.departmentAuthorize = function(req, res, next) {
+  if (!req.user) {
+    return res.redirect('/');
+  }
   Department
   .findById(req.params.departmentId)
   .populate('team')
@@ -86,6 +89,9 @@ exports.departmentAuthorize = function(req, res, next) {
 };
 
 exports.messageAuthorize = function(req,res,next){
+  if (!req.user) {
+    return res.redirect('/');
+  }
   if(req.user.provider === 'user'){
     if(req.params.teamId != undefined && req.params.teamId != null && req.params.teamId != ''){
       //队长
@@ -124,6 +130,9 @@ exports.messageAuthorize = function(req,res,next){
 }
 
 exports.teamAuthorize = function(req, res, next) {
+  if (!req.user) {
+    return res.redirect('/');
+  }
   if(req.user.provider==="company"){
     if(req.user._id.toString() ===req.companyGroup.cid.toString()){
       req.role = 'HR';
@@ -171,7 +180,7 @@ exports.teamAuthorize = function(req, res, next) {
 };
 exports.userAuthorize = function(req, res, next) {
   if (!req.user) {
-    return res.redirect('/users/signin');
+    return res.redirect('/');
   }
   if(req.route.path==='/users/home' && !req.profile){
     req.role = 'OWNER';
@@ -192,6 +201,9 @@ exports.userAuthorize = function(req, res, next) {
   next();
 };
 exports.listAuthorize = function(req,res, next){
+  if (!req.user) {
+    return res.redirect('/');
+  }
   if(req.params.pageType==='user'){
     User
     .findOne({
@@ -247,6 +259,9 @@ exports.logoAuthorize = function(req, res, next){
   //   });
 
   // }
+  if (!req.user) {
+    return res.redirect('/');
+  }
   if(req.body.target==='g'){
     if(req.user.provider==='company'&&model_helper.arrayObjectIndexOf(req.user.team,req.body.teamId,'id')>-1||req.user.provider==='user'&&req.user.team[model_helper.arrayObjectIndexOf(req.user.team,req.companyGroup._id,'_id')].leader===true){
       next();
@@ -270,6 +285,9 @@ exports.logoAuthorize = function(req, res, next){
   // }
 }
 exports.campaginAuthorize = function(req, res, next){
+  if (!req.user) {
+    return res.redirect('/');
+  }
   if(req.user.provider==='company' && req.campaign.cid.indexOf(req.user._id.toString())>-1){
     req.role = 'HR';
   }

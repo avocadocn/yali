@@ -242,6 +242,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
                       'host_type' : data.comment.host_type,
                       'index' : $scope.fixed_sum+1
                   });
+                  $scope.new_comment[index].text='';
               } else {
                   alertify.alert('DATA ERROR');
               }

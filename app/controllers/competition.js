@@ -132,7 +132,9 @@ exports.getCompetition = function(req, res){
 
 
 exports.competition = function(req, res, next, id){
-
+if(!req.user){
+ return res.redirect('/');
+}
   Campaign.findOne({
       '_id':id
     })
