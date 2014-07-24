@@ -21,9 +21,9 @@ var _team = new Schema({
   _id : Schema.Types.ObjectId,
   name : String,
   logo : String,
-  provoke_status: {
+  status: {
     type: Number,
-    enum: [0,1,2,3]              //
+    enum: [0,1,2,3,4]              //如果(campaign_id 存在){0:活动  1:比赛} 否则 {0:发起挑战 1:接受挑战 2:发起新的比赛确认 3:接受比赛确认 4:拒绝挑战}
   }
 });
 /**

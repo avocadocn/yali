@@ -627,13 +627,13 @@ exports.provoke = function (req, res) {
                                 '_id':my_team_id,
                                 'name':req.companyGroup.name,
                                 'logo':req.companyGroup.logo,
-                                'provoke_status':0
+                                'status':0
                               },
                               'receive_team':{
                                 '_id':team_opposite._id,
                                 'name':team_opposite.name,
                                 'logo':team_opposite.logo,
-                                'provoke_status':0
+                                'status':0
                               },
                               'campaign_id':null,
                               'auto':true
@@ -714,13 +714,13 @@ exports.responseProvoke = function (req, res) {
             '_id':rst[1]._id,
             'name':rst[1].name,
             'logo':rst[1].logo,
-            'provoke_status':3
+            'status': req.body.responseStatus ? 1 : 4
           },
           'receive_team':{
             '_id':rst[0]._id,
             'name':rst[0].name,
             'logo':rst[0].logo,
-            'provoke_status':3
+            'status': req.body.responseStatus ? 1 : 4
           },
           'campaign_id':null,
           'auto':true

@@ -207,7 +207,7 @@ var messagePreHandle = function(teams,msg,divide){
           direct_show = true;
         }else{
           detail = msg[i].message_content.content;
-          if(msg[i].message_content.team[0].provoke_status == 0){
+          if(msg[i].message_content.team[0].status == 0){
             message_type = 1;
           }else{
             message_type = 2;
@@ -277,14 +277,14 @@ var messagePreHandle = function(teams,msg,divide){
     //私人
     if(msg[i].type == 'private'){
       if(msg[i].message_content.team.length > 0){
-        if([2,3].indexOf(msg[i].message_content.team[0].provoke_status) > -1){
+        if([2,3].indexOf(msg[i].message_content.team[0].status) > -1){
 
 
           message_type = 4;
           sender = {
             'name': msg[i].message_content.team[0].name
           }
-          content = msg[i].message_content.team[0].provoke_status == 3 ? "接受了您的比赛结果" : "向您发出了一个新的比赛确认";
+          content = msg[i].message_content.team[0].status == 3 ? "接受了您的比赛结果" : "向您发出了一个新的比赛确认";
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
@@ -311,14 +311,23 @@ var messagePreHandle = function(teams,msg,divide){
             });
           }
         }
-        if([0,1].indexOf(msg[i].message_content.team[0].provoke_status) > -1){
-
-
+        if([0,1,4].indexOf(msg[i].message_content.team[0].status) > -1){
           message_type = 7;
           sender = {
             'name': msg[i].message_content.team[0].name
           }
-          content = msg[i].message_content.team[0].provoke_status == 1 ? "接受了您的挑战" : "向您发出了一个新的挑战";
+          switch(msg[i].message_content.team[0].status){
+            case 0:
+              content = "向您发出了一个新的挑战";
+              break;
+            case 1:
+              content = "接受了您的挑战";
+              break;
+            case 4:
+              content = "拒绝了您发起的挑战";
+              break;
+            default:break;
+          }
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
@@ -758,7 +767,7 @@ var sendMessagesPre = function(messages){
             direct_show = true;
           }else{
             detail = messages[i].content;
-            if(messages[i].team[0].provoke_status == 0){
+            if(messages[i].team[0].status == 0){
               message_type = 1;
             }else{
               message_type = 2;

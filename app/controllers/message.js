@@ -343,7 +343,7 @@ exports.sendToParticipator = function(req, res){
               '_id':req.user.team[j]._id,
               'name':req.user.team[j].name,
               'logo':req.user.team[j].logo,
-              'provoke_status':0
+              'status':0
             };
             break;
           }
@@ -353,7 +353,7 @@ exports.sendToParticipator = function(req, res){
       var members = [];
 
       if(campaign.team.length == 2){
-        team.provoke_status = 1;
+        team.status = 1;
         for(var i = 0; i < campaign.camp.length; i ++){
           for(var j = 0; j < campaign.camp[i].member.length; j ++){
             members.push({
@@ -362,7 +362,7 @@ exports.sendToParticipator = function(req, res){
           }
         }
       }else{
-        team.provoke_status = 0;
+        team.status = 0;
         for(var i = 0; i < campaign.member.length; i ++){
           members.push({
             '_id':campaign.member[i].uid
