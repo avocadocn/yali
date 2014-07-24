@@ -67,6 +67,9 @@
 #cal-slide-content .event_list_logo {
   margin-left: 24px;
 }
+#cal-week-box {
+  cursor: default;
+}
 .calendar_box {
   margin-top: 20px;
 }

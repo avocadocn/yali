@@ -442,7 +442,7 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
         // 判断是否是第一次加载视图，用于$scope.$digest()
         var firstLoad = true;
-        $scope.campaignsType = 'all';
+        $scope.campaignsType = 'joined';
 
         $scope.calendar = function(isCalendar) {
             $scope.isCalendar = isCalendar;
@@ -518,7 +518,7 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
             }
         };
 
-        $scope.getCampaigns('all');
+        $scope.getCampaigns($scope.campaignsType);
 
 
         // $scope.join = function(campaign_id,index) {
