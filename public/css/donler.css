@@ -54,10 +54,10 @@ textarea {
   resize: none;
 }
 .nav-tabs>li.active>a {
-  background-color: #f4f4f4;
+  background-color: #fff;
 }
 .nav-tabs>li.active>a:hover {
-  background-color: #f4f4f4;
+  background-color: #fff;
 }
 .message_detail {
   width: 364px;
@@ -619,7 +619,7 @@ textarea {
   width: 660px;
   max-width: 960px;
   float: left;
-  margin-right: 40px;
+  margin-right: 10px;
 }
 .dl_container .main .score_container {
   margin-right: 20px;
@@ -637,8 +637,9 @@ textarea {
   line-height: 32px;
 }
 .dl_container .side {
-  width: 260px;
+  width: 290px;
   float: left;
+  padding-top: 40px;
 }
 .dl_container .side .photo_album {
   padding-top: 20px;
@@ -765,6 +766,9 @@ textarea {
   content: "";
 }
 .dl_messagebox .dl_messageitem {
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-top: none;
   padding: 10px;
 }
 .dl_messagebox .pointer {
@@ -1597,4 +1601,10 @@ input.ng-invalid.ng-dirty {
 }
 .department_select_width {
   width: 127px !important;
+}
+.schedulebox {
+  padding: 20px 8px 8px;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-top: none;
 }

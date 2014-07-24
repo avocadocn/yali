@@ -190,13 +190,14 @@ Timeline UI Base
   position: relative;
   overflow: hidden;
   margin: 0px auto;
+  padding-top: 20px;
 }
 .dl_timeline:hover .timeline_element {
   opacity: 0.6;
 }
 .dl_timeline .spine {
   position: absolute;
-  top: 0px;
+  top: 30px;
   bottom: 100%;
   width: 4px;
   border-radius: 2px;

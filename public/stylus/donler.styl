@@ -36,9 +36,9 @@ textarea
   resize none
 
 .nav-tabs>li.active>a
-  background-color backgroundColor
+  background-color cardbgColor
   &:hover
-    background-color backgroundColor
+    background-color cardbgColor
 .message_detail
   width 364px
   max-height 140px
@@ -563,7 +563,7 @@ textarea
     width 660px
     max-width 960px
     float left
-    margin-right 40px
+    margin-right 10px
     .score_container
       margin-right 20px
       float left
@@ -577,8 +577,9 @@ textarea
       line-height 32px
 
   .side
-    width 260px
+    width 290px
     float left
+    padding-top 40px
     .photo_album
       padding-top 20px
     .groupsbox
@@ -679,6 +680,9 @@ textarea
     line-height 0
     content ""
   .dl_messageitem
+    background-color cardbgColor
+    border 1px solid #e6e6e6
+    border-top none
     padding 10px
   .pointer
     cursor pointer
@@ -1356,12 +1360,14 @@ familyHeight = 371.25px
     display none !important
 
 
-.deckgrid .column-1-4 {
+.deckgrid .column-1-4 
     width: 25%;
-}
 
-
-.department_select_width {
+.department_select_width 
   width 127px !important
-}
 
+.schedulebox
+  padding 20px 8px 8px
+  background-color cardbgColor
+  border 1px solid #e6e6e6
+  border-top none
