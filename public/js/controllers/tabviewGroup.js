@@ -534,10 +534,29 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
          try {
             $http({
                 method: 'post',
-                url: '/group/responseProvoke/'+$rootScope.teamId,
+                url: '/group/responseProvoke/'+tid,
                 data:{
                     competition_id : competition_id,
                     responseStatus : status
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+    //取消挑战
+    $scope.cancelProvoke = function(tid,competition_id) {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/cancelProvoke/'+tid,
+                data:{
+                    competition_id : competition_id
                 }
             }).success(function(data, status) {
                 window.location.reload();

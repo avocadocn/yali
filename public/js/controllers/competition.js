@@ -337,6 +337,25 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
+    //取消挑战
+    $scope.cancelProvoke = function(tid,competition_id) {
+         try {
+            $http({
+                method: 'post',
+                url: '/group/cancelProvoke/'+tid,
+                data:{
+                    competition_id : competition_id
+                }
+            }).success(function(data, status) {
+                window.location.reload();
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
     $scope.joinCampaign = function (competition_id,tid) {
         //$rootScope.donlerAlert($scope.campaign_id);
         try {

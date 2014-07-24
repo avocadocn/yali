@@ -75,6 +75,9 @@ exports.getCompetition = function(req, res){
     if(req.competition_leader.indexOf(1)>-1){
       options.response_flag = true;
     }
+    if(req.competition_leader.indexOf(0)>-1){
+      options.cancel_flag = true;
+    }
     if(req.user.provider==='user'&&req.competition_team.length>0){
       options.vote_flag=[];
       req.competition_team.forEach(function(value){

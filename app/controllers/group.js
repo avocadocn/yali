@@ -731,7 +731,63 @@ exports.responseProvoke = function (req, res) {
     });
   });
 };
+//取消挑战
+exports.cancelProvoke = function (req, res) {
+  if(req.role !=='HR' && req.role !=='LEADER'){
+    return res.send(403,'forbidden');
+  }
+  var competition_id = req.body.competition_id;
+  Campaign.findOne({
+      '_id' : competition_id
+    }).populate('team').exec(
+  function (err, campaign) {
+    if(campaign.camp[0].id!=req.params.teamId){
+      return res.send(403,'forbidden');
+    }
+    campaign.camp[0].start_confirm = false;
 
+    //还要存入应约方的公司名、队长用户名、真实姓名等
+    campaign.save(function (err) {
+      if (err) {
+        res.send(err);
+        return res.send({'result':0,'msg':'应战失败！'});
+      }
+      else{
+        var rst = campaign.team;
+        var param = {
+          'type':'private',
+          'caption':'Private Message',
+          'own':{
+            '_id':req.user._id,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo,
+            'role':'LEADER'
+          },
+          'receiver':{
+            '_id':rst[1].leader[0]._id
+          },
+          'content':null,
+          'own_team':{
+            '_id':rst[0]._id,
+            'name':rst[0].name,
+            'logo':rst[0].logo,
+            'provoke_status':4
+          },
+          'receive_team':{
+            '_id':rst[1]._id,
+            'name':rst[1].name,
+            'logo':rst[1].logo,
+            'provoke_status':4
+          },
+          'campaign_id':null,
+          'auto':true
+        };
+        message.sendToOne(req,res,param);
+        return res.send({'result':1,'msg':'SUCCESS'});
+      }
+    });
+  });
+};
 //队长发布组内活动
 exports.sponsor = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){

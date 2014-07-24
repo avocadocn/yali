@@ -140,9 +140,13 @@ exports.getMessage = function(req, res) {
             //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
             //console.log(i,group_message.grouptype_flag);
             //要到小队主页、是HR\LEADER才有应战按钮->response_flag = true;
-            if(!_group_message.campaign.finish &&pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')){
-              if(camp_flag===1 && group_message[i].campaign.camp[1].start_confirm===false&&group_message[i].campaign.camp[0].start_confirm)
+            if(!_group_message.campaign.finish &&pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')&& group_message[i].campaign.camp[1].start_confirm===false&&group_message[i].campaign.camp[0].start_confirm){
+              if(camp_flag===1 ){
                 _group_message.response_flag = true;
+              }
+              else{
+                _group_message.cancel_flag = true;
+              }
             }
           break;
           case 5://接受应战

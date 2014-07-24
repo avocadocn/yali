@@ -39,6 +39,7 @@ module.exports = function(app) {
   //约战、应战
   app.post('/group/provoke/:teamId', authorization.teamAuthorize, group.provoke);
   app.post('/group/responseProvoke/:teamId', authorization.teamAuthorize, group.responseProvoke);
+  app.post('/group/cancelProvoke/:teamId', authorization.teamAuthorize, group.cancelProvoke);
 
   app.post('/group/resultConfirm/:teamId/:competitionId', authorization.teamAuthorize, group.resultConfirm);
 
