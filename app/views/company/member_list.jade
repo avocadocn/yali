@@ -3,9 +3,10 @@ div(ng-show = '!loading')
   .memberlist
     span.subtitle #{__("MEMBER")}
     hr
-    .row.margin_left_10
+    .row.margin_left_10(ng-repeat="department in members_by_department track by $index")
+      span {{department.name}}
       .groups
-        .member(ng-repeat="member in members track by $index")
+        .member(ng-repeat="member in department.member track by $index")
           div.member_group(ng-if='member.active')
             if role != 'GUESTHR' && role !='GUEST'
               .dl_row.img(bs-popover)

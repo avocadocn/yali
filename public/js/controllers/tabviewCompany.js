@@ -373,6 +373,39 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
       $scope.members = data;
       //按照员工昵称的拼音排序
       //$scope.members = $scope.members.sort(function (e,f){return e.nickname.localeCompare(f.nickname);});
+
+
+      //按照部门将员工分类
+      $scope.members_by_department = [];
+      var find = false;
+      for(var i = 0 ; i < data.length; i ++){
+        find = false;
+        for(var j = 0; j < $scope.members_by_department.length; j++){
+            //已经存在部门,直接将员工push进去
+            if(data[i].department._id === $scope.members_by_department[j]._id){
+                find = true;
+                $scope.members_by_department[j].member.push({
+                    '_id':data[i]._id,
+                    'nickname':data[i].nickname,
+                    'photo':data[i].photo,
+                    'active':data[i].active
+                })
+            }
+        }
+        //新增部门
+        if(!find){
+            $scope.members_by_department.push({
+                '_id':data[i].department._id,
+                'name':data[i].department.name,
+                'member':[{
+                    '_id':data[i]._id,
+                    'nickname':data[i].nickname,
+                    'photo':data[i].photo,
+                    'active':data[i].active
+                }]
+            });
+        }
+      }
       $scope.company = true;
     });
 
