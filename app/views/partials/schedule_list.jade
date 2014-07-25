@@ -1,20 +1,21 @@
 .schedulebox
   .clearfix.schedule_operator
-    p.pull-left.view_type
-      a(ng-click="calendar(true)" href="javascript:void(0)") 日历
-      if role === 'OWNER'
-        span |
-        a(ng-click="calendar(false)" href="javascript:void(0)") 列表
     if role === 'OWNER'
-      p.pull-left.schedule_type
-        a(ng-if="campaignsType!=='all'" ng-click="getCampaigns('all')" href="javascript:void(0)") 所有
-        span.active(ng-if="campaignsType==='all'") 所有
+      p.pull-left.view_type
+        a(ng-if="!isCalendar" ng-click="calendar(true)" href="javascript:void(0)") 日历
+        span.active(ng-if="isCalendar") 日历
         span |
+        a(ng-if="isCalendar" ng-click="calendar(false)" href="javascript:void(0)") 列表
+        span.active(ng-if="!isCalendar") 列表
+      p.pull-left.schedule_type
         a(ng-if="campaignsType!=='joined'" ng-click="getCampaigns('joined')" href="javascript:void(0)") 已参加
         span.active(ng-if="campaignsType==='joined'") 已参加
         span |
         a(ng-if="campaignsType!=='unjoin'" ng-click="getCampaigns('unjoin')" href="javascript:void(0)") 未参加
         span.active(ng-if="campaignsType==='unjoin'") 未参加
+        span |
+        a(ng-if="campaignsType!=='all'" ng-click="getCampaigns('all')" href="javascript:void(0)") 所有
+        span.active(ng-if="campaignsType==='all'") 所有
     p.pull-right.calendar_nav#calendar_nav(ng-show="isCalendar")
       a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
       a(data-calendar-nav="today" href="javascript:void(0)") 今天

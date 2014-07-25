@@ -88,6 +88,7 @@
 .schedule_type span {
   margin-left: 3px;
 }
+.view_type .active,
 .schedule_type .active {
   color: #aaa;
 }
