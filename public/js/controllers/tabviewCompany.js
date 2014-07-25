@@ -390,14 +390,16 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
         find = false;
         for(var j = 0; j < $scope.members_by_department.length; j++){
             //已经存在部门,直接将员工push进去
-            if(data[i].department._id === $scope.members_by_department[j]._id){
-                find = true;
-                $scope.members_by_department[j].member.push({
-                    '_id':data[i]._id,
-                    'nickname':data[i].nickname,
-                    'photo':data[i].photo,
-                    'active':data[i].active
-                })
+            if(data[i].department != undefined && data[i].department != null){
+                if(data[i].department._id === $scope.members_by_department[j]._id){
+                    find = true;
+                    $scope.members_by_department[j].member.push({
+                        '_id':data[i]._id,
+                        'nickname':data[i].nickname,
+                        'photo':data[i].photo,
+                        'active':data[i].active
+                    })
+                }
             }
         }
         //新增部门
