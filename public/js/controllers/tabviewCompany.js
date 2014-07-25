@@ -663,14 +663,14 @@ tabViewCompany.directive('masonry', function ($timeout) {
             $scope.appoint_permission = false;
         }
     }
-    $scope.dismissLeader = function (leader_id) {
+    $scope.dismissLeader = function (_user) {
         try{
             $http({
                 method: 'post',
                 url: '/company/appointLeader/'+$scope.cid,
                 data:{
                     tid: $scope.tid,
-                    uid: leader_id,
+                    user: _user,
                     operate:false
                 }
             }).success(function(data, status) {
@@ -701,7 +701,10 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }).success(function(data, status) {
 
                     if($scope.origin_leader_id != null){
-                        $scope.dismissLeader($scope.origin_leader_id);
+                        var _user = {
+                            '_id':$scope.origin_leader_id
+                        };
+                        $scope.dismissLeader(_user);
                         var _leader = $scope.team_lists[$scope.team_index].leader;
                         for(var i = 0; i < _leader.length; i++){
                             if(_leader[i]._id == $scope.origin_leader_id) {

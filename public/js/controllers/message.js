@@ -326,6 +326,9 @@ var messagePreHandle = function(teams,msg,divide){
             case 4:
               content = "拒绝了您发起的挑战";
               break;
+            case 5:
+              content = "取消了挑战";
+              break;
             default:break;
           }
           if(divide){
