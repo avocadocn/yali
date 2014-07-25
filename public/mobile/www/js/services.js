@@ -6,7 +6,7 @@ angular.module('starter.services', [])
 
 
 .factory('Global', function() {
-  var base_url = 'http://www.donler.cn';
+  var base_url = window.location.origin;
 
   return {
     base_url: base_url
@@ -76,7 +76,7 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Campaign', function($http, Global) {
+.factory('Campaign', function($http, $rootScope, Global) {
 
   var campaign_list = [];
 
@@ -121,7 +121,7 @@ angular.module('starter.services', [])
 
   // callback(campaign_list)
   var getUserCampaigns = function(callback) {
-    $http.get(Global.base_url + '/users/campaigns')
+    $http.get(Global.base_url + '/users/getCampaigns/'+$rootScope._id)
     .success(function(data, status, headers, config) {
       campaign_list = data.data;
       setTime();
@@ -171,11 +171,11 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Schedule', function($http, Global) {
+.factory('Schedule', function($http, $rootScope, Global) {
 
   // callback(schedule_list)
   var getSchedules = function(callback) {
-    $http.get(Global.base_url + '/users/schedules')
+    $http.get(Global.base_url + '/users/schedules/' + $rootScope._id)
     .success(function(data, status, headers, config) {
       callback(data.data);
     });
@@ -198,17 +198,17 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Dynamic', function($http, Global) {
+.factory('Dynamic', function($http, $rootScope, Global) {
 
   var getDynamics = function(callback) {
-    $http.get(Global.base_url + '/users/getGroupMessages')
+    $http.get(Global.base_url + '/groupMessage/user/' +  $rootScope._id + '/0')
     .success(function(data, status, headers, config) {
       callback(data.group_messages);
     });
   };
 
   var getGroupDynamics = function(group_id, callback) {
-    $http.get(Global.base_url + '/group/getGroupMessages/' + group_id)
+    $http.get(Global.base_url + '/groupMessage/team/' + group_id + '/0')
     .success(function(data, status, headers, config) {
       if (callback) {
         callback(data.group_messages);
@@ -239,14 +239,14 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Group', function($http, Global) {
+.factory('Group', function($http, $rootScope, Global) {
 
   var joined_group_list = null,
     unjoin_group_list = null,
     group_list = [];
 
   var getGroups = function(callback) {
-    $http.get(Global.base_url + '/users/groups')
+    $http.get(Global.base_url + '/users/groups/' + $rootScope._id)
     .success(function(data, status, headers, config) {
       joined_group_list = data.joined_groups;
       unjoin_group_list = data.unjoin_groups;
@@ -282,7 +282,7 @@ angular.module('starter.services', [])
 })
 
 
-.factory('PhotoAlbum', function($http, Global) {
+.factory('PhotoAlbum', function($http, $rootScope, Global) {
 
   // callback(photos)
   var getPhotoList = function(photo_album_id, callback) {
@@ -323,11 +323,11 @@ angular.module('starter.services', [])
 })
 
 
-.factory('User', function($http, Global) {
+.factory('User', function($http, $rootScope, Global) {
 
   // callback(user)
   var getInfo = function(user_id, callback) {
-    $http.post(Global.base_url + '/users/info', { _id: user_id })
+    $http.post(Global.base_url + '/users/info/'+user_id, { _id: user_id })
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
         callback(data.user);
@@ -378,11 +378,11 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Timeline', function($http, Global) {
+.factory('Timeline', function($http, $rootScope, Global) {
 
   // callback(time_lines)
   var getUserTimeline = function(callback) {
-    $http.get(Global.base_url + '/users/getTimelineForApp')
+    $http.get(Global.base_url + '/users/getTimelineForApp/'+$rootScope._id)
     .success(function(data, status) {
       callback(data.time_lines);
     });

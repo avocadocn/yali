@@ -3,8 +3,8 @@
     <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
       <div class="row campaign_line">
         <p class="campaign_team_info">
-          <img class="campaign_group_logo" ng-src="{{ base_url }}/logo/group/{{ campaign.team_id }}/35/35"/>
-          {{ campaign.team_name }}
+          <img class="campaign_group_logo" ng-src="{{ campaign.logo }}"/>
+          {{ campaign.name }}
         </p>
       </div>
       <div class="row campaign_line campaign_content">

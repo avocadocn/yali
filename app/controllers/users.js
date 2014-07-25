@@ -635,7 +635,13 @@ function fetchCampaign(req,res,team_ids,role) {
   var join = false;
   var logo ='';
   var link ='';
-  Campaign.find({'team' : {'$in':team_ids}}).sort({'start_time':-1})
+  var name;
+  var option = {
+    'active':true,
+    'finish':false,
+    '$or':[{'team':{'$in':team_ids}},{'cid':req.user.cid,'team':{'$size':0}}]
+  }
+  Campaign.find(option).sort({'start_time':-1})
   .populate('team')
   .populate('cid')
   .exec(function(err, campaign) {
@@ -659,22 +665,26 @@ function fetchCampaign(req,res,team_ids,role) {
             judge = (new Date() > campaign[j].deadline || (campaign[j].member.length >= campaign[j].member_max) && campaign[j].member_max > 0 );
         }
         if(campaign[j].team.length === 0){//公司活动
-          logo = campaign[j].cid[0].logo;
+          logo = campaign[j].cid[0].info.logo;
           link = '/company/home';
+          name = campaign[j].cid[0].info.official_name;
         }
         else{
           if(campaign[j].team.length === 1){//小队活动
             logo = campaign[j].team[0].logo;
             link = '/group/home/'+campaign[j].team[0]._id;
+            name = campaign[j].team[0].name;
           }
           else{                              //小队挑战
             if(team_ids.indexOf(campaign[j].team[0]._id)!== -1){ //是主办方
               logo = campaign[j].team[0].logo;
               link = '/group/home/'+campaign[j].team[0]._id;
+              name = campaign[j].team[0].name;
             }
             else{                             //不是主办方
               logo = campaign[j].team[1].logo;
               link = '/group/home/'+campaign[j].team[1]._id;
+              name = campaign[j].team[1].name;
             }
           }
         }
@@ -697,6 +707,7 @@ function fetchCampaign(req,res,team_ids,role) {
           'theme':campaign[j].theme,
           'team':campaign[j].team,
           'logo':logo,
+          'name':name,
           'link':link
         });
       }
@@ -1334,28 +1345,29 @@ exports.getBriefInfo = function(req,res){
 
 
 exports.getTimelineForApp = function(req,res){
+  var uid = req.params.userId;
   Campaign
-  .find({ 'member.uid': req.user._id.toString() })
+  .find({ 'active' : true, 'finish' : true, '$or' : [{'member.uid' : uid}, {'camp.member.uid' : uid }]})
   .where('end_time').lt(new Date())
   .sort('-start_time')
-  .populate('team')
+  .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
     if (campaigns && campaigns.length >= 0) {
       var time_lines = [];
       campaigns.forEach(function(campaign) {
-        var _head, _type;
-        if(campaign.provoke.active){
-          _head = campaign.team[0].name + '对' + campaign.team[1].name + '的比赛';
-          _type = 'provoke';
+        var _head, _type,_logo;
+        if(campaign.camp.length>0){
+          _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
+          _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
         }
-        else if(campaign.gid[0] === '0'){
+        else if(campaign.team.length==0){
           _head = '公司活动';
-          _type = 'company_campaign';
+          _logo = campaign.cid[0].info.logo;
         }
-        else {
+        else{
           _head = campaign.team[0].name + '活动';
-          _type = 'group_campaign';
+          _logo = campaign.team[0].logo;
         }
         var temp_obj = {
           _id: campaign._id,
@@ -1365,7 +1377,8 @@ exports.getTimelineForApp = function(req,res){
           group_type: campaign.group_type,
           start_time: campaign.start_time,
           provoke: campaign.provoke,
-          type: _type
+          type: _type,
+          logo:_logo
         };
         time_lines.push(temp_obj);
       });

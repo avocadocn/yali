@@ -55,16 +55,16 @@ module.exports = function(app, passport) {
 
 
     // for app
-    app.post('/users/login', passport.authenticate('user'), authorization.userAuthorize, users.appLoginSuccess);
+    app.post('/users/login', passport.authenticate('user'), users.appLoginSuccess);
     app.get('/users/logout', users.appLogout);
 
-    app.get('/users/campaigns', authorization.userAuthorize, users.getCampaignsForApp);
-    app.get('/users/schedules', authorization.userAuthorize, users.getSchedules);
-    app.get('/users/groups', authorization.userAuthorize, users.getGroups);
+    app.get('/users/campaigns/:userId', authorization.userAuthorize, users.getCampaignsForApp);
+    app.get('/users/schedules/:userId', authorization.userAuthorize, users.getSchedules);
+    app.get('/users/groups/:userId', authorization.userAuthorize, users.getGroups);
 
-    app.get('/users/getTimelineForApp', authorization.userAuthorize, users.getTimelineForApp);
+    app.get('/users/getTimelineForApp/:userId', authorization.userAuthorize, users.getTimelineForApp);
 
-    app.post('/users/info', authorization.userAuthorize, users.getUserInfo);
+    app.post('/users/info/:userId', authorization.userAuthorize, users.getUserInfo);
     app.get('/users/briefInfo/:userId', users.getBriefInfo);
     app.param('userId', users.user);
 
