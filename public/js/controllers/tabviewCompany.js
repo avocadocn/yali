@@ -387,41 +387,43 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
       $scope.members_by_department = [];
       var find = false;
       for(var i = 0 ; i < data.length; i ++){
-        find = false;
-        for(var j = 0; j < $scope.members_by_department.length; j++){
-            //已经存在部门,直接将员工push进去
-            if(data[i].department != undefined && data[i].department != null){
-                if(data[i].department._id === $scope.members_by_department[j]._id){
-                    find = true;
-                    $scope.members_by_department[j].member.push({
+        if(data[i].active){
+            find = false;
+            for(var j = 0; j < $scope.members_by_department.length; j++){
+                //已经存在部门,直接将员工push进去
+                if(data[i].department != undefined && data[i].department != null){
+                    if(data[i].department._id === $scope.members_by_department[j]._id){
+                        find = true;
+                        $scope.members_by_department[j].member.push({
+                            '_id':data[i]._id,
+                            'nickname':data[i].nickname,
+                            'photo':data[i].photo,
+                            'active':data[i].active
+                        })
+                    }
+                }
+            }
+            //新增部门
+            if(!find){
+                var name,_id;
+                if(data[i].department != undefined && data[i].department != null){
+                    _id = data[i].department._id;
+                    name = data[i].department.name;
+                }else{
+                    _id = "";
+                    name = "未选择部门";
+                }
+                $scope.members_by_department.push({
+                    '_id':_id,
+                    'name':name,
+                    'member':[{
                         '_id':data[i]._id,
                         'nickname':data[i].nickname,
                         'photo':data[i].photo,
                         'active':data[i].active
-                    })
-                }
+                    }]
+                });
             }
-        }
-        //新增部门
-        if(!find){
-            var name,_id;
-            if(data[i].department != undefined && data[i].department != null){
-                _id = data[i].department._id;
-                name = data[i].department.name;
-            }else{
-                _id = "";
-                name = "未选择部门";
-            }
-            $scope.members_by_department.push({
-                '_id':_id,
-                'name':name,
-                'member':[{
-                    '_id':data[i]._id,
-                    'nickname':data[i].nickname,
-                    'photo':data[i].photo,
-                    'active':data[i].active
-                }]
-            });
         }
       }
       $scope.company = true;
