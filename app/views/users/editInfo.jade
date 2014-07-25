@@ -11,7 +11,7 @@ div.use_edit_info(ng-show = '!loading')
       .dl_row.margin_top_15(ng-if="role!='PARTNER'")
         a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/users/editPhoto/#{global_user._id}") #{__("CHANGE")}#{__("AVATAR")}
       .dl_row.margin_top_15(ng-if="role!='PARTNER'")
-        a(href="#/changePassword")
+        a(href="#/changePassword/#{global_user._id}")
           button.dl_btn.dl_btn_medium #{__("CHANGE")}#{__("PASSWORD")}
     .dl_row.clearfix(ng-if="user.nickname !=undefined || !baseUnEdit")
       .info_side

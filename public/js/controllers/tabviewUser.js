@@ -47,8 +47,10 @@ tabViewUser.config(['$routeProvider',
         controller: 'ScheduleListController',
         controllerAs: 'schedule'
       })
-      .when('/changePassword', {
-        templateUrl: '/users/change_password',
+      .when('/changePassword/:uid', {
+        templateUrl: function(params) {
+            return '/users/change_password/' + params.uid;
+        },
         controller: 'PasswordFormController',
         controllerAs: 'password'
       })

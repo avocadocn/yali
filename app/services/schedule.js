@@ -193,6 +193,13 @@ exports.updateUname =function (uid){
         console.log('updateUname_CompanyGroup_member',num);
       }
     });
+    Department.update({'manager._id': uid}, {$set: {'manager.$.nickname':user.nickname}}, function(err, num) {
+      if(err){
+        console.log(err);
+      }else{
+        console.log('updateUname_Department_manager',num);
+      }
+    });
   }).then(null,console.log);
 }
 //同步小队名称
