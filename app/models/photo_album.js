@@ -18,6 +18,10 @@ var Photo = new Schema({
     type: Boolean,
     default: false
   },
+  click: {
+    type: Number,
+    default: 0
+  },
   name: String,
   tags: [String],
   comments: [{

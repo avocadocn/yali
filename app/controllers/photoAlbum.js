@@ -150,6 +150,22 @@ function photoUploadAuth(user, photo_album) {
   return false;
 }
 
+/**
+ * 按照点击数由大到小排序照片
+ * @param  {Object} a Photo model
+ * @param  {Object} b
+ * @return {Boolean}
+ */
+var sortByClick = function(a, b) {
+  // 兼容旧数据，旧的数据没有click属性
+  if (!a.click) {
+    a.click = 0;
+  }
+  if (!b.click) {
+    b.click = 0;
+  }
+  return b.click - a.click;
+};
 
 
 // 一个相册的缩略图
@@ -182,7 +198,7 @@ var photoThumbnailList = exports.photoThumbnailList = function(photo_album, coun
       }
     }
   }
-  return photo_list;
+  return photo_list.sort(sortByClick);
 };
 
 // 根据当前登录的用户获取相册的所有者
@@ -869,6 +885,7 @@ exports.renderPhotoAlbumDetail = function(req, res) {
       throw 'not found';
     }
     var photos = getShowPhotos(photo_album);
+    photos.sort(sortByClick);
     var owner = getPhotoAlbumOwner(req.user, photo_album);
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
     var uploadAuth = photoUploadAuth(req.user, photo_album);
@@ -957,25 +974,6 @@ exports.renderPhotoDetail = function(req, res) {
         var owner = getPhotoAlbumOwner(req.user, photo_album);
         var editAuth = photoEditAuth(req.user, photo_album, photos[i]);
 
-        // var links = [
-        //   {
-        //     text: owner.team.name,
-        //     url: '/group/home/' + owner.team._id,
-        //   },
-        //   {
-        //     text: '相册集',
-        //     url: '/' + owner.team._id + '/photoAlbumListView'
-        //   },
-        //   {
-        //     text: photo_album.name,
-        //     url: '/photoAlbumDetailView/' + photo_album._id
-        //   },
-        //   {
-        //     text: photos[i].name,
-        //     active: true
-        //   }
-        // ];
-
         if (!owner.team || owner.team.length === 0) {
           var links = [
             {
@@ -1018,6 +1016,19 @@ exports.renderPhotoDetail = function(req, res) {
 
         var return_url = '/photoAlbumDetailView/' + photo_album._id;
 
+        // 旧数据无click属性
+        if (!photos[i].click) {
+          photos[i].click = 0;
+        }
+        photos[i].click++;
+
+        // 仅为保存点击数，无论成功与否，都允许访问该页面，所以渲染页面过程不写入保存的回调中
+        photo_album.save(function(err) {
+          if (err) {
+            console.log(err);
+          }
+        });
+
         return res.render('photo_album/photo_detail', {
           photo_detail: {
             _id: photos[i]._id,
@@ -1026,6 +1037,7 @@ exports.renderPhotoDetail = function(req, res) {
             uri: photos[i].uri,
             name: photos[i].name,
             tags: photos[i].tags,
+            click: photos[i].click,
             comments: photos[i].comments,
             upload_user: photos[i].update_user,
             upload_date: photos[i].upload_date
