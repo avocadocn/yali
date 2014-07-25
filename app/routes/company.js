@@ -43,7 +43,7 @@ module.exports = function(app, passport) {
     //公司信息查看和修改
     app.get('/company/add_group', company.add_company_group);//增加小队
     app.post('/company/saveGroup/:companyId', authorization.companyAuthorize, company.saveGroup);//保存新增小队信息
-    app.get('/company/getCompanyTeamsInfo/:companyId', authorization.companyAuthorize, company.getCompanyTeamsInfo);
+    app.get('/company/getCompanyTeamsInfo/:companyId/:type', authorization.companyAuthorize, company.getCompanyDepartments, company.getCompanyTeamsInfo);
     app.get('/company/timeLine/:companyId', authorization.companyAuthorize,company.timeLine);
     app.post('/company/changeUser/:companyId', authorization.companyAuthorize, company.changeUser);
     app.get('/company/member/:companyId',authorization.companyAuthorize, company.renderMembers);

@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
     UUID = require('../middlewares/uuid'),
     GroupMessage = mongoose.model('GroupMessage'),
     PhotoAlbum = mongoose.model('PhotoAlbum'),
+    Department = mongoose.model('Department'),
     Config = mongoose.model('Config'),
     Campaign = mongoose.model('Campaign'),
     config = require('../config/config'),
@@ -784,9 +785,50 @@ exports.saveAccount = function(req, res) {
         }
     });
 };
+
+
+exports.getCompanyDepartments = function(req, res, next) {
+    if (req.params.type !== 'department') {
+        return next();
+    }
+    if (!req.company) {
+        return next('req.company is undefined');
+    }
+    Department
+    .find({ 'company._id': req.company._id })
+    .exec()
+    .then(function(departments) {
+        var departmentList = [];
+        for (var i = 0; i < departments.length; i++) {
+            departmentList.push({
+                _id: departments[i]._id,
+                tid: departments[i].team
+            });
+        }
+        req.departments = departmentList;
+        next();
+    })
+    .then(null, function(err) {
+        console.log(err);
+        next(err);
+    });
+};
+
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyTeamsInfo = function(req, res) {
-  var option = {cid : req.params.companyId,gid:{'$ne':'0'}};
+
+  var option = {};
+  switch (req.params.type) {
+  case 'team':
+    option = {cid : req.params.companyId,gid:{'$ne':'0'}};
+    break;
+  case 'department':
+    option = { cid: req.params.companyId, gid: '0' };
+    break;
+  default:
+    return res.send(400);
+  }
+
   if(req.role !== 'HR'){
     option.active = true;
   }
@@ -839,9 +881,19 @@ exports.getCompanyTeamsInfo = function(req, res) {
                         callback(null, teaminfo);
                     },function(teaminfo, callback){
                         var j = counter.i-1;
+                        var did;
+                        if (req.params.type === 'department') {
+                            for (var k = 0; k < req.departments.length; k++) {
+                                if (teams[j]._id.toString() === req.departments[k].tid.toString()) {
+                                    did = req.departments[k]._id;
+                                    break;
+                                }
+                            }
+                        }
                         var _team = {
                             '_id':teams[j]._id,
                             'gid':teams[j].gid,
+                            'did': did,
                             'group_type':teams[j].group_type,
                             'logo':teams[j].logo,
                             'active':teams[j].active,
@@ -857,6 +909,9 @@ exports.getCompanyTeamsInfo = function(req, res) {
                             'photo_list':teaminfo.start_time
                         }
 
+                        teams[j].did = did;
+                        teams[j].set('did', did, { strict: false });
+
                         if(model_helper.arrayObjectIndexOf(req.user.team,teams[j]._id,'_id')>-1){
                             _team.belong = true;
                         }
@@ -871,7 +926,7 @@ exports.getCompanyTeamsInfo = function(req, res) {
                         // console.log(_teams);
                     }
                 ], function (err, result) {
-                   // result now equals 'done'    
+                   // result now equals 'done'
                 });
                 counter.i++;
                 setTimeout(callback, 60);

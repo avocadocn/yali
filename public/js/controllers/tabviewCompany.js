@@ -153,6 +153,8 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
         }
     });
 
+    $rootScope.cid = '';
+
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
@@ -574,14 +576,18 @@ tabViewCompany.directive('masonry', function ($timeout) {
         }
     };
 }).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
-    //获取公司小组，若是此成员在此小组则标记此team的belong值为true
-    $rootScope.$watch('cid',function(cid){
-        $http.get('/company/getCompanyTeamsInfo/'+cid+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+
+    $scope.getData = function(type) {
+        //获取公司小组，若是此成员在此小组则标记此team的belong值为true
+        $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.team_lists = data.teams;//公司的所有team
             $scope.cid = data.cid;
             $scope.role = data.role;
+            $scope.data_type = type;
         });
-    })
+    };
+    $scope.getData('team');
+
 
     $scope.search = function () {
         $scope.member_backup = $scope.users;

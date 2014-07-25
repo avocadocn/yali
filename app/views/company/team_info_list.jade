@@ -4,21 +4,30 @@ div(ng-show = '!loading')
     table.group_table
       tr
         th.noborder(rowspan="2")
+          a(ng-if="data_type!=='team'" ng-click="getData('team')") 小队
+          span(ng-if="data_type==='team'") 小队
+          span &nbsp;&nbsp;|&nbsp;&nbsp;
+          a(ng-if="data_type!=='department'" ng-click="getData('department')") 部门
+          span(ng-if="data_type==='department'") 部门
         th.noborder(rowspan="2")
-        th.noborder(rowspan="2") 队长
+        th.noborder(rowspan="2")
+          span(ng-if="data_type==='team'") 队长
+          span(ng-if="data_type==='department'") 管理员
         th.noborder(rowspan="2") 人数
         th.noborder 本周
         th.noborder 上周
         th.noborder 上月
         th.operate.noborder(rowspan="2")
-          a(ng-if="role === 'HR'" href="#/addGroup") #{__("ADD_TEAM")}
+          a(ng-if="role === 'HR' && data_type==='team'" href="#/addGroup") #{__("ADD_TEAM")}
       tr
         th.noborder 活动/人次
         th.noborder 活动/人次
         th.noborder 活动/人次
       tr(ng-repeat="team in team_lists")
         td
-          a(href="/group/home/{{team._id}}")
+          a(ng-if="data_type==='team'" href="/group/home/{{team._id}}")
+            img.img_border.img_contain.size_56(ng-src="{{team.logo}}")
+          a(ng-if="data_type==='department'" href="/department/home/{{team.did}}")
             img.img_border.img_contain.size_56(ng-src="{{team.logo}}")
         td.text-left
           span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
@@ -35,6 +44,7 @@ div(ng-show = '!loading')
         td
           span {{team.count.last_month_campaign}}/{{team.count.last_month_member}}
         td.operate
+          div(ng-if="data_type==='team'")
             .dl_row.clearfix(ng-if="role === 'HR'")
               button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}
               //-关组
