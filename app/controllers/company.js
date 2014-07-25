@@ -903,7 +903,7 @@ exports.timeLine = function(req, res){
   .exec()
   .then(function(campaigns) {
       // todo new time style
-      var newTimeLines = {};
+      var newTimeLines = [];
       // todo new time style
       campaigns.forEach(function(campaign) {
         var _head,_logo;
@@ -941,23 +941,12 @@ exports.timeLine = function(req, res){
         }
         // console.log(getYear(campaign));
         var groupYear = getYear(campaign);
-        if (!newTimeLines[groupYear]) {
-          newTimeLines[groupYear] = [];
-          newTimeLines[groupYear]['left'] = [];
-          newTimeLines[groupYear]['right'] = [];
-          newTimeLines[groupYear]['left'][0] = tempObj;
-          newTimeLines[groupYear][0] = tempObj;
+        if (newTimeLines.length==0||newTimeLines[newTimeLines.length-1][0].year!=groupYear) {
+          newTimeLines.push([]);
+          newTimeLines[newTimeLines.length-1].push(tempObj);
         }else{
-          var i = newTimeLines[groupYear].length;
-          newTimeLines[groupYear][i] = tempObj;
-          if (i%2==0) {
-            var j = newTimeLines[groupYear]['left'].length;
-            newTimeLines[groupYear]['left'][j] = tempObj;
-          }else{
-            var j = newTimeLines[groupYear]['right'].length;
-            newTimeLines[groupYear]['right'][j] = tempObj;
-          }
-          
+          var i = newTimeLines.length-1;
+          newTimeLines[i].push(tempObj);
         }
       });
       return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
