@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
     CompanyGroup = mongoose.model('CompanyGroup'),
     GroupMessage = mongoose.model('GroupMessage'),
     Campaign = mongoose.model('Campaign'),
+    Department = mongoose.model('Department'),
     schedule = require('node-schedule');
 var finishCampaign = function(){
   Campaign.update({'finish':false,'end_time': {'$lt':new Date()}},{$set:{'finish':true}},{multi: true},function(err,num){
@@ -247,8 +248,15 @@ exports.updateUlogo =function (uid){
         console.log('updateUlogo_CompanyGroup_member',num);
       }
     });
+    Department.update({'manager._id': uid}, {$set: {'manager.$.photo':user.photo}}, function(err, num) {
+      if(err){
+        console.log(err);
+      }else{
+        console.log('updateUlogo_Department_manager',num);
+      }
+    });
   }).then(null,console.log);
-}
+};
 
 //同步小队logo
 exports.updateTlogo =function (tid){
