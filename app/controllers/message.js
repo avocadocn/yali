@@ -351,8 +351,8 @@ exports.sendToParticipator = function(req, res){
       }
 
       var members = [];
-
-      if(campaign.team.length == 2){
+      console.log('campaign_type',campaign.campaign_type);
+      if([4,5,7].indexOf(campaign.campaign_type) > -1){
         team.status = 1;
         for(var i = 0; i < campaign.camp.length; i ++){
           for(var j = 0; j < campaign.camp[i].member.length; j ++){
@@ -362,11 +362,13 @@ exports.sendToParticipator = function(req, res){
           }
         }
       }else{
-        team.status = 0;
-        for(var i = 0; i < campaign.member.length; i ++){
-          members.push({
-            '_id':campaign.member[i].uid
-          });
+        if([1,2,3,6,8,9].indexOf(campaign.campaign_type) > -1){
+          team.status = 0;
+          for(var i = 0; i < campaign.member.length; i ++){
+            members.push({
+              '_id':campaign.member[i].uid
+            });
+          }
         }
       }
       var _param = {
@@ -388,7 +390,7 @@ exports.sendToParticipator = function(req, res){
     'collection':Campaign,
     'type':0,
     'condition':{'_id':req.body.campaign_id},
-    'limit':{'member':1,'theme':1,'team':1,'camp':1},
+    'limit':{'member':1,'theme':1,'team':1,'camp':1,'campaign_type':1},
     'sort':null,
     'callback':callback,
     '_err':_err,

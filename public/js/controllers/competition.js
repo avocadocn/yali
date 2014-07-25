@@ -139,6 +139,10 @@ groupApp.directive('donlerDropTarget', ['$rootScope', function($rootScope) {
       }
   }]);
 groupApp.controller('competitionController', ['$http', '$scope','$rootScope',function ($http, $scope,$rootScope) {
+
+    $scope.private_message_content = {
+      'text':""
+    }
     $scope.$watch('competition_id',function(competition_id){
         if(competition_id==null){
             return;
@@ -157,6 +161,35 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
     $scope.modify_caption = "成绩确认";
     $scope.object_caption = "发出异议";
     $scope.edit = false;
+
+
+    $scope.modalPerticipator = function(){
+        $('#sponsorMessageCampaignModel').modal();
+    }
+    $scope.sendToParticipator = function(){
+        try{
+          $http({
+              method: 'post',
+              url: '/message/push/campaign',
+              data:{
+                  campaign_id : $scope.competition_id,
+                  content : $scope.private_message_content.text
+              }
+          }).success(function(data, status) {
+              if(data.msg === 'SUCCESS'){
+                $scope.private_message_content.text = "";
+                $rootScope.team_length++;
+                $rootScope.o ++;
+              }
+          }).error(function(data, status) {
+              //TODO:更改对话框
+              alertify.alert('DATA ERROR');
+          });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
     $scope.getComment = function(){
         try {
             $http({

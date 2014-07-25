@@ -3,6 +3,9 @@
 var campaignApp = angular.module('donler');
 
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+    $scope.private_message_content = {
+        'text':""
+    };
     $scope.$watch('campaign',function(campaign){
         if(campaign==null){
             return;
@@ -222,4 +225,33 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             console.log(e);
         }
     };
+
+
+    $scope.modalPerticipator = function(){
+        $('#sponsorMessageCampaignModel').modal();
+    }
+    $scope.sendToParticipator = function(){
+        try{
+          $http({
+              method: 'post',
+              url: '/message/push/campaign',
+              data:{
+                  campaign_id : $scope.campaign._id,
+                  content : $scope.private_message_content.text
+              }
+          }).success(function(data, status) {
+              if(data.msg === 'SUCCESS'){
+                $scope.private_message_content.text = "";
+                $rootScope.team_length++;
+                $rootScope.o ++;
+              }
+          }).error(function(data, status) {
+              //TODO:更改对话框
+              alertify.alert('DATA ERROR');
+          });
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
 }]);

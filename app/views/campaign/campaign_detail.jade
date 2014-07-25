@@ -69,7 +69,9 @@ block contentExt
           span #{__("CAMPAIGNFINISH")}
       //-成员
       .dl_detail_member(bs-popover)
-        p.subtitle #{__("JOIN")}#{__("MEMBER")}:
+        .dl_row.subtitle
+          .pull-left #{__("JOIN")}#{__("MEMBER")}:
+          a.pull-right(ng-click="modalPerticipator()") 发送私信
         div.member(ng-repeat = "_member in campaign.member")
           a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
             img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
@@ -116,6 +118,8 @@ block contentExt
             a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")
               img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
               p.thumbnail_name.text-center= photo.name
+    .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../partials/campaign_message_send
 append footExt
   script(src="/js/controllers/campaign.js")
   script.
