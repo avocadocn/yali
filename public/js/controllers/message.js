@@ -140,6 +140,12 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
             $rootScope.teams = data.team;
             $rootScope.cid = data.cid;
             $rootScope.uid = data.uid;
+
+            if($rootScope.all_messages != undefined && $rootScope.all_messages != null){
+              if($rootScope.all_messages.length > 0){
+                sendSet($http,'read',$rootScope,null,'all',null,true);
+              }
+            }
         }).error(function(data, status) {
             //TODO:更改对话框
             alertify.alert('DATA ERROR');

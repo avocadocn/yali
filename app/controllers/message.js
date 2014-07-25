@@ -64,7 +64,7 @@ function get(param){
 function set(param){
   switch(param.type){
     case 0:
-      param.collection.findByIdAndUpdate({'_id':param.condition},param.operate,function(err,message){
+      param.collection.update({'_id':param.condition},param.operate,function(err,message){
         if(err || !message){
           param._err(err,param.req,param.res);
         }else{
