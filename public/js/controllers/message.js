@@ -228,7 +228,7 @@ var messagePreHandle = function(teams,msg,divide){
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
           'team':msg[i].message_content.team[0],
-          'photo':msg[i].message_content.sender[0].photo,
+          'photo':msg[i].message_content.team[0].logo,
           'sender':sender,
           'message_type':message_type,
           'campaign_id':msg[i].message_content.campaign_id,
@@ -243,7 +243,7 @@ var messagePreHandle = function(teams,msg,divide){
           'detail':msg[i].message_content.content,
           'message_type':message_type,
           'team':msg[i].message_content.team[0],
-          'photo':msg[i].message_content.sender[0].photo,
+          'photo':msg[i].message_content.team[0].logo,
           'sender':sender,
           'campaign_id':msg[i].message_content.campaign_id,
           'campaign_name':msg[i].message_content.caption
@@ -299,7 +299,7 @@ var messagePreHandle = function(teams,msg,divide){
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
-              'photo':msg[i].message_content.sender[0].photo,
+              'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
               'campaign_id':msg[i].message_content.campaign_id
             });
@@ -311,7 +311,7 @@ var messagePreHandle = function(teams,msg,divide){
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
               'sender':sender,
-              'photo':msg[i].message_content.sender[0].photo,
+              'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
               'campaign_id':msg[i].message_content.campaign_id
             });
@@ -345,7 +345,7 @@ var messagePreHandle = function(teams,msg,divide){
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
-              'photo':msg[i].message_content.sender[0].photo,
+              'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
               'team_id':msg[i].message_content.team[1]._id
             });
@@ -357,7 +357,7 @@ var messagePreHandle = function(teams,msg,divide){
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
-              'photo':msg[i].message_content.sender[0].photo,
+              'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
               'team_id':msg[i].message_content.team[1]._id
             });
