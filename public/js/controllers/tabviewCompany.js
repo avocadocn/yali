@@ -177,6 +177,14 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     $scope.pageTime = [0];
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
+    $scope.judgeYear = function(index){
+        if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     $scope.loadMore = function(){
         $http.get('/campaign/getCampaigns/company/'+$rootScope.cid+'/'+$scope.campaignType+'/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){

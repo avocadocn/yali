@@ -521,7 +521,14 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         };
 
         $scope.getCampaigns($scope.campaignsType);
-
+        $scope.judgeYear = function(index){
+        if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
         // $scope.join = function(campaign_id,index) {
         //     try {

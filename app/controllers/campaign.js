@@ -434,9 +434,6 @@ exports.getUserAllCampaignsForCalendar = function(req, res) {
 };
 
 exports.getUserJoinedCampaignsForCalendar = function(req, res) {
-  if (req.role !== 'OWNER') {
-    res.send(403);
-  }
   getUserJoinedCampaigns(req.user, true, function(campaigns) {
     var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
     res.send(format_campaigns);

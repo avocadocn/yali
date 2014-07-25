@@ -22,6 +22,8 @@ div(ng-show = '!loading')
   table.table.table-hover.campaign_table
     tr(ng-repeat="campaign_item in campaigns")
       td.time_col
+        p(ng-if="judgeYear($index)") {{campaign_item.start_time  | date:'yyyy'}}
+      td.time_col
         p.text-right.day {{ campaign_item.start_time  | day }}
         p.text-right {{ campaign_item.start_time | date:'HH:mm' }}
       td.logo_col.text-center
