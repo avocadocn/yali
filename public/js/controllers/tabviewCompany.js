@@ -402,9 +402,17 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
         }
         //新增部门
         if(!find){
+            var name,_id;
+            if(data[i].department != undefined && data[i].department != null){
+                _id = data[i].department._id;
+                name = data[i].department.name;
+            }else{
+                _id = "";
+                name = "未选择部门";
+            }
             $scope.members_by_department.push({
-                '_id':data[i].department._id,
-                'name':data[i].department.name,
+                '_id':_id,
+                'name':name,
                 'member':[{
                     '_id':data[i]._id,
                     'nickname':data[i].nickname,
