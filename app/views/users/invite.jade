@@ -1,43 +1,109 @@
 extends ../layouts/register
-
+append headExt
+  link(rel="stylesheet" href="/css/company_signup.css")
 block contentExt
-  .dl_container
-    .row.margin_top_123
-      .col-xs-12.col-sm-5.text-right
+  .dl_container.clearfix
+    .signup_row
+      .block_left.text-right
         div
-          h1.text-right
+          h1
             small 加入
             | 动梨
           p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
           p 我们会对每家申请加入的团体当然也包括您在内
           p 认真的核实资料，感谢您的配合
-      .col-xs-12.col-sm-7(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
-        p 请输入您的企业邮箱
-        form.form-inline(role="form" name='active_form' action='/users/dealActive' method='post')
-          .form-group
-            label.sr-only Email Host
-            input.form-control(type="text" name="host" ng-model="email" placeholder="email" ng-change="mailCheck()" required)
-          | @
-          .form-group
-            label.sr-only Email Domain
-            if domains.length === 1
-              input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
-              input.form-control(type="text" value="#{domains[0]}" disabled="true")
-            if domains.length > 1
-              select.form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
-                each domain in domains
-                  option(value="#{domain}" selected='selected')= domain
-            input(type="text" name="index" ng-model="active" ng-show='false')
-          button.btn.btn-success(type="submit" ng-disabled="active!==1 && active!==2 || active_form.$invalid") 激活
-        p
-        img(ng-show='loading' src='/img/loading.gif')
-        div(ng-show='active==1')
-          span 此邮箱未被使用!
-        div(ng-show='active==2')
-          span 您的邮箱已激活过,请到您的邮箱查收邮件,若没有收到请重新点击激活！
-        div(ng-show='active==3')
-          span 您的邮箱已注册，请登录，若是您忘记了密码,
-          a(href='/users/forgetPwd') 请点此跳转
-
+      .col-xs-offset-3.col-xs-9.block_right(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
+        form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive' method='post')
+          .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
+            .dl_row
+              .label_left
+                label.control-label(for="email") ＊企业邮箱
+              .input_right
+                .input_email
+                  label.sr-only Email Host
+                  input.dl_form-Control(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
+                span.at @
+                .select_domain
+                  label.sr-only Email Domain
+                  if domains.length === 1
+                    input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
+                    input.dl_form-control(type="text" value="#{domains[0]}" disabled="true")
+                  if domains.length > 1
+                    select.dl_form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
+                      each domain in domains
+                        option(value="#{domain}" selected='selected')= domain
+                  input(type="text" name="index" ng-model="active" ng-show='false')
+            .dl_row.email_tip(ng-show="(active||loading)&&active!==4")
+              p
+              img(ng-show='loading' src='/img/loading.gif')
+              div(ng-show='active==1' ng-cloak)
+                span 此邮箱未被注册!
+              div(ng-show='active==2' ng-cloak)
+                p 您的邮箱已注册过,请查收邮件,若未收到请点击重发按钮再次发送。
+                p 
+                  span 若之前不是本人操作请
+                  a.subtitle(ng-click="active=4;") 再次填写信息
+                  span 并查看邮箱激活。
+              div(ng-show='active==3' ng-cloak)
+                span 您的邮箱已注册，请登录，若是您忘记了密码,
+                a(href='/users/forgetPwd') 请点此跳转
+              p
+          div(ng-if="active==0 || active==1 || active ==4")
+            //-未注册过、未激活需重填资料时显示
+            .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
+              .dl_row
+                .label_left
+                  label.control-label(for="nickname") ＊#{__("NICKNAME")}
+                .input_right
+                  input.dl_form-Control(type="text" name="nickname" ng-model="nickname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.nickname.$invalid && active_form.nickname.$dirty ? '请填写昵称':''}}" required)
+            .form-group.dl_sm_group(ng-class="{'has-error':active_form.password.$invalid && active_form.password.$dirty}")
+              .dl_row
+                .label_left
+                  label.control-label(for="password") ＊密码
+                .input_right
+                  input.dl_form-Control(type="password" name="password" ng-model="password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
+            .form-group.dl_sm_group(ng-class="{'has-error':active_form.passconf.$invalid && active_form.passconf.$dirty}")
+              .dl_row
+                .label_left
+                  label.control-label(for="passconf") ＊密码确认
+                .input_right
+                  input.dl_form-Control(type="password" name="passconf" ng-model="passconf" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
+            .form-group.dl_sm_group(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")
+              .dl_row
+                .label_left
+                  label.control-label(for="realname") ＊#{__("REALNAME")}
+                .input_right
+                  input.dl_form-Control(type="text" placeholder="仅公司成员可见" name="realname" ng-model="realname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.realName.$invalid && active_form.realName.$dirty ? '请输入真实姓名':''}}" required)
+            .form-group.dl_sm_group
+              .dl_row
+                .label_left
+                  label.control-label(for="department") #{__("DEPARTMENT")}
+                .input_right
+                  //- input#department.form-control.dl_full_control(type="text" name="department" ng-model="department")
+                  .select_box.department_select_width
+                    select.dl_form-Control.chzn-select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment()" ng-disabled="main_departments.length == 0")
+                    input(type="text" name="main_department_id" ng-model="main_department_id" ng-show="false")
+                    input(type="text" name="main_department_name" ng-model="main_department_name" ng-show="false")
+                  .select_box.department_select_width
+                    select.dl_form-Control.chzn-select(data-placeholder="选择子部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment()" ng-disabled="child_departments.length == 0")
+                    input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
+                    input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
+            .form-group.dl_sm_group
+              .dl_row
+                .label_left
+                  label.control-label(for="phone") #{__("PHONE")}
+                .input_right
+                  input.dl_form-Control(type="text" name="phone" ng-model="phone")
+            .form-group.dl_sm_group
+              .dl_row.center_container
+                label.dl_checkbox.center_content
+                  input(type="checkbox" ng-model= "checkbox" required)
+                  | 我已阅读并同意<a href="/about#law">服务条款</a>
+          .form-group.dl_sm_group(ng-show="active!==3 && active!==2")
+            .dl_row.center_container
+              button.dl_btn.dl_btn_large.center_content(type="submit" ng-disabled="active!==1 && active!==4 || active_form.$invalid") 注册
+          .form-group.dl_sm_group(ng-show="active==2")
+            .dl_row.center_container
+              button.dl_btn.dl_btn_large.center_content(type="submit") 重发激活邮件
 block footExt
   script(src="/js/controllers/user.js")

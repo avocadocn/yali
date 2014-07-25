@@ -28,10 +28,11 @@ module.exports = function(app, passport) {
     app.get('/users/invite', users.invite);
     app.post('/users/dealActive', users.dealActive);
     app.get('/users/setProfile', users.setProfile);
-    app.post('/users/dealSetProfile', users.dealSetProfile);
-    app.get('/users/selectGroup', users.selectGroup);
-    app.post('/users/dealSelectGroup', users.dealSelectGroup);
-    app.get('/users/finishRegister', users.finishRegister);
+    //***这几步已经删除 by M
+    //app.post('/users/dealSetProfile', users.dealSetProfile);
+    //app.get('/users/selectGroup', users.selectGroup);
+    //app.post('/users/dealSelectGroup', users.dealSelectGroup);
+    //app.get('/users/finishRegister', users.finishRegister);
 
     app.get('/users/campaign', authorization.userAuthorize, users.renderCampaigns);
     app.get('/users/getCampaigns/:userId', authorization.userAuthorize, users.getCampaigns);

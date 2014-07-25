@@ -183,6 +183,7 @@ exports.invite = function(req, res) {
   }
   var key = req.query.key;
   var cid = req.query.cid;
+  req.session.cid = req.query.cid; //给注册页显示部门用
   if(key == undefined || cid == undefined) {
     res.render('users/message', {title: 'error', message: 'bad request'});
   } else {
@@ -210,81 +211,7 @@ exports.invite = function(req, res) {
   }
 };
 
-
-
-function userOperate(cid, key, res, req) {
-  if (encrypt.encrypt(cid, config.SECRET) === key) {
-
-    Company
-    .findOne({ _id: cid })
-    .exec()
-    .then(function(company) {
-      if (!company) {
-        throw 'Not found company';
-      }
-      var email = req.body.host + '@' + req.body.domain;
-      User
-      .findOne({ email: email})
-      .exec()
-      .then(function(user) {
-        if (user) {
-          return res.render('users/invite', {
-            title: 'validate',
-            domains: company.email.domain,
-            message: '该邮箱已被注册'
-          });
-        }
-
-        if (company.email.domain.indexOf(req.body.domain) > -1) {
-          var user = new User({
-            email: email,
-            username: email,
-            cid: company._id,
-            cname: company.info.name
-          });
-          user.save(function(err) {
-            if (err) {
-              console.log(err);
-            } else {
-              company.info.membernumber = company.info.membernumber + 1;
-              company.save(function(err){
-                if(err) {
-                  console.log(err);
-                } else {
-                  //系统再给员工发一封激活邮件
-                  mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
-                  delete req.session.key;
-                  delete req.session.key_id;
-                  return res.render('users/message', message.wait);
-                }
-              });
-            }
-          });
-        } else {
-          res.render('users/invite', {
-            title: 'validate',
-            domains: company.email.domain,
-            message: '请使用企业邮箱'
-          });
-        }
-      })
-      .then(null, function(err) {
-        console.log(err);
-        res.render('users/message', message.invalid);
-      });
-
-    })
-    .then(null, function(err) {
-      console.log(err);
-      res.render('users/message', message.invalid);
-    });
-
-  } else {
-    res.render('users/message', message.invalid);
-  }
-};
-
-function userOperate2(cid, key, res, req) { //重发邮件
+function userOperate(cid, key, res, req, index) {
   if (encrypt.encrypt(cid, config.SECRET) === key) {
     Company
     .findOne({ _id: cid })
@@ -298,15 +225,66 @@ function userOperate2(cid, key, res, req) { //重发邮件
       .findOne({ email: email})
       .exec()
       .then(function(user) {
-        if (user) {
-          if (company.email.domain.indexOf(req.body.domain) > -1){
-            //给这个人重新发
-            mail.sendStaffActiveMail(email, user._id.toString(), cid, req.headers.host);
-            delete req.session.key;
-            delete req.session.key_id;
-            res.render('users/message', message.wait);
+        if(index ==1){//未注册过,新建用户并保存
+          if (user) {
+            return res.render('users/invite', {
+              title: 'validate',
+              domains: company.email.domain,
+              message: '该邮箱已被注册'
+            });
           }
-          else {
+          if (company.email.domain.indexOf(req.body.domain) > -1) {
+            var user = new User({
+              email: email,
+              username: email,
+              cid: company._id,
+              cname: company.info.name,
+              nickname:req.body.nickname,
+              password:req.body.password,
+              realname: req.body.realName,
+              phone: req.body.phone,
+              role: 'EMPLOYEE'
+            });
+            user.save(function(err) {
+              if (err) {
+                console.log(err);
+                return res.send(500,{'msg':'user save err.'});
+              } else {
+                //将员工加入部门
+                var member = {
+                  '_id':user._id,
+                  'nickname':user.nickname,
+                  'photo':user.photo,
+                  'apply_status':'wait'
+                };
+                if(req.body.main_department_id != 'null'){
+                  var callback = function(err, data) {
+                    if (err) {
+                      console.log(err);
+                    }
+                  }
+                  if(req.body.child_department_id != 'null'){
+                    department.memberOperateByHand('join',member,req.body.child_department_id,callback);
+                  }else{
+                    department.memberOperateByHand('join',member,req.body.main_department_id,callback);
+                  }
+                }
+                company.info.membernumber = company.info.membernumber + 1;
+                company.save(function(err){
+                  if(err) {
+                    console.log(err);
+                  } else {
+                    //系统再给员工发一封激活邮件
+                    mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
+                    delete req.session.key;
+                    delete req.session.key_id;
+                    delete req.session.cid;
+                    return res.render('users/message', message.wait);
+                  }
+                });
+              }
+            });
+          } else {
             res.render('users/invite', {
               title: 'validate',
               domains: company.email.domain,
@@ -314,20 +292,90 @@ function userOperate2(cid, key, res, req) { //重发邮件
             });
           }
         }
-        else {
-          console.log(email);
-          res.render('users/message', message.invalid);
+        else{//已注册过，重发邮件
+          if (user) {
+            if (company.email.domain.indexOf(req.body.domain) > -1){
+              //覆盖用户信息并保存
+              if(index===4){
+                user.nickname = req.body.nickname;
+                user.password = req.body.password;
+                user.realname = req.body.realname;
+                user.phone = req.body.phone;
+                user.save(function(err){
+                  if(err){
+                    console.log(err);
+                    return res.send(500,{'msg':'user save err.'});
+                  }
+                  else{
+                    //将员工加入部门
+                    var member = {
+                      '_id':user._id,
+                      'nickname':user.nickname,
+                      'photo':user.photo,
+                      'apply_status':'wait'
+                    };
+                    if(req.body.main_department_id != 'null'){
+                      var callback = function(err, data) {
+                        if (err) {
+                          console.log(err);
+                        }
+                      }
+                      if(req.body.child_department_id != 'null'){
+                        department.memberOperateByHand('join',member,req.body.child_department_id,callback);
+                      }else{
+                        department.memberOperateByHand('join',member,req.body.main_department_id,callback);
+                      }
+                    }
+                  }
+                });
+              }
+              //重发邮件
+              mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+              delete req.session.key;
+              delete req.session.key_id;
+              delete req.session.cid;
+              return res.render('users/message', message.wait);
+            }
+            else {
+              return res.render('users/invite', {
+                title: 'validate',
+                domains: company.email.domain,
+                message: '请使用企业邮箱'
+              });
+            }
+          }
+          else {
+            console.log(email);
+            return res.render('users/message', message.invalid);
+          }
         }
       })
       .then(null, function(err) {
         console.log(err);
-        res.render('users/message', message.invalid);
+        return res.render('users/message', message.invalid);
       });
+    })
+    .then(null, function(err) {
+      console.log(err);
+      return res.render('users/message', message.invalid);
     });
+
   } else {
-    res.render('users/message', message.invalid);
+    return res.render('users/message', message.invalid);
   }
 };
+
+/**
+ * 处理激活验证
+ */
+exports.dealActive = function(req, res) {
+  var key = req.session.key;
+  var cid = req.session.key_id;
+  var index = req.body.index;
+  //index为1:未注册过,2:不重填资料重新发邮件,3:重填资料重新发邮件
+  userOperate(cid, key, res, req, index);
+};
+
 /**
  * 验证用户邮箱是否重复
  */
@@ -351,21 +399,7 @@ exports.mailCheck = function(req, res) {
 
 
 /**
- * 处理激活验证
- */
-exports.dealActive = function(req, res) {
-  var key = req.session.key;
-  var cid = req.session.key_id;
-  if(req.body.index==1){
-    userOperate(cid, key, res, req);
-  }
-  else{
-    userOperate2(cid,key,res,req);
-  }
-};
-
-/**
- * 通过激活链接进入，完善个人信息
+ * 通过激活链接进入，完成激活
  */
 exports.setProfile = function(req, res) {
   if (req.user) {
@@ -374,7 +408,6 @@ exports.setProfile = function(req, res) {
   }
   var key = req.query.key;
   var uid = req.query.uid;
-  req.session.cid = req.query.cid; //请不要删除这个session,这个session在department里会自动删除的!
   User.findOne({_id: uid}, function(err, user) {
     if(err) {
       console.log(err);
@@ -384,8 +417,32 @@ exports.setProfile = function(req, res) {
         res.render('users/message', message.actived);
       } else {
         if(encrypt.encrypt(uid, config.SECRET) === key) {
+          user.active= true;
+          user.save(function(err){
+            if(err){
+              console.log(err);
+              return res.send(500,{'msg':'user save err.'});
+            }
+            else{
+              var groupMessage = new GroupMessage();
+              groupMessage.message_type = 7;
+              groupMessage.company.cid = user.cid;
+              groupMessage.company.name = user.cname;
+              groupMessage.company={
+                cid : user.cid,
+                name : user.cname
+              };
+              groupMessage.user={
+                user_id : user._id,
+                name : user.nickname,
+                logo : user.photo
+              };
+              groupMessage.save();
+              //req.session.username = user.username;
+            }
+          });
           res.render('users/setProfile', {
-            title: '设置个人信息',
+            title: '激活成功',
             key: key,
             uid: uid
           });
@@ -398,170 +455,170 @@ exports.setProfile = function(req, res) {
     }
   });
 };
+//***此处已不再需要
+// /**
+//  * 处理个人信息表单
+//  */
+// exports.dealSetProfile = function(req, res) {
+//   User.findOne(
+//     {_id : req.query.uid}
+//   , function(err, user) {
+//     if(err || !user) {
+//       console.log(err);
+//       res.render('users/message', message.dbError);
+//     }
+//     else {
+//       if(user.active === false) {
+//         user.nickname = req.body.nickname;
+//         user.password = req.body.password;
+//         user.realname = req.body.realName;
+//         user.phone = req.body.phone;
+//         user.role = 'EMPLOYEE';
+//         user.active = true;
+//         user.save(function(err) {
+//           if(err) {
+//             console.log(err);
+//             return res.render('users/message', message.dbError);
+//           }
+//           else {
+//             //将员工加入部门
+//             var member = {
+//               '_id':user._id,
+//               'nickname':user.nickname,
+//               'photo':user.photo,
+//               'apply_status':'wait'
+//             };
+//             if(req.body.main_department_id != 'null'){
+//               var callback = function(err, data) {
+//                 if (err) {
+//                   console.log(err);
+//                 }
+//               }
+//               if(req.body.child_department_id != 'null'){
+//                 department.memberOperateByHand('join',member,req.body.child_department_id,callback);
+//               }else{
+//                 department.memberOperateByHand('join',member,req.body.main_department_id,callback);
+//               }
+//             }
+//             var groupMessage = new GroupMessage();
+//             groupMessage.message_type = 7;
+//             groupMessage.company.cid = user.cid;
+//             groupMessage.company.name = user.cname;
+//             groupMessage.company={
+//               cid : user.cid,
+//               name : user.cname
+//             };
+//             groupMessage.user={
+//               user_id : user._id,
+//               name : user.nickname,
+//               logo : user.photo
+//             };
+//             groupMessage.save();
+//             req.session.username = user.username;
+//             res.redirect('/users/finishRegister');
+//           }
+//         });
+//       } else {
+//         res.render('users/message', message.actived);
+//       }
+//     }
+//   });
 
-/**
- * 处理个人信息表单
- */
-exports.dealSetProfile = function(req, res) {
-  User.findOne(
-    {_id : req.query.uid}
-  , function(err, user) {
-    if(err || !user) {
-      console.log(err);
-      res.render('users/message', message.dbError);
-    }
-    else {
-      if(user.active === false) {
-        user.nickname = req.body.nickname;
-        user.password = req.body.password;
-        user.realname = req.body.realName;
-        user.phone = req.body.phone;
-        user.role = 'EMPLOYEE';
-        user.active = true;
-        user.save(function(err) {
-          if(err) {
-            console.log(err);
-            return res.render('users/message', message.dbError);
-          }
-          else {
-            //将员工加入申请列表
-            var member = {
-              '_id':user._id,
-              'nickname':user.nickname,
-              'photo':user.photo,
-              'apply_status':'wait'
-            };
-            if(req.body.main_department_id != 'null'){
-              var callback = function(err, data) {
-                if (err) {
-                  console.log(err);
-                }
-              }
-              if(req.body.child_department_id != 'null'){
-                department.memberOperateByHand('join',member,req.body.child_department_id,callback);
-              }else{
-                department.memberOperateByHand('join',member,req.body.main_department_id,callback);
-              }
-            }
-            var groupMessage = new GroupMessage();
-            groupMessage.message_type = 7;
-            groupMessage.company.cid = user.cid;
-            groupMessage.company.name = user.cname;
-            groupMessage.company={
-              cid : user.cid,
-              name : user.cname
-            };
-            groupMessage.user={
-              user_id : user._id,
-              name : user.nickname,
-              logo : user.photo
-            };
-            groupMessage.save();
-            req.session.username = user.username;
-            res.redirect('/users/finishRegister');
-          }
-        });
-      } else {
-        res.render('users/message', message.actived);
-      }
-    }
-  });
+// };
 
-};
+// /**
+//  * 选择组件页面
+//  */
+// exports.selectGroup = function(req, res) {
+//   User.findOne({ username: req.session.username }, function(err, user) {
+//     if (err) {
+//       console.log(err);
+//       res.render('users/message', message.dbError);
+//     } else if(user) {
+//       if (user.active === true) {
+//         res.render('users/message', message.actived);
+//       } else {
+//         res.render('users/selectGroup', { title: '选择你的兴趣小队', group_head: '个人',cid:user.cid });
+//       }
+//     } else {
+//       res.render('users/message', message.unregister);
+//     }
+//   });
+// }
 
-/**
- * 选择组件页面
- */
-exports.selectGroup = function(req, res) {
-  User.findOne({ username: req.session.username }, function(err, user) {
-    if (err) {
-      console.log(err);
-      res.render('users/message', message.dbError);
-    } else if(user) {
-      if (user.active === true) {
-        res.render('users/message', message.actived);
-      } else {
-        res.render('users/selectGroup', { title: '选择你的兴趣小队', group_head: '个人',cid:user.cid });
-      }
-    } else {
-      res.render('users/message', message.unregister);
-    }
-  });
-}
+// /**
+//  * 处理选择组件表单
+//  */
+// exports.dealSelectGroup = function(req, res) {
+//   if(req.body.selected == undefined) {
+//     return res.redirect('/users/selectGroup');
+//   } else {
+//     ;
+//   }
+//   User.findOne({'username': req.session.username}, function(err, user) {
+//     if (err) {
+//       return res.status(400).send('用户不存在!');
+//     }
+//     else if(user) {
+//       if(user.active === false) {
+//         user.team = req.body.selected;
+//         user.active = true;
+//         user.save(function(err){
+//           if(err){
+//             console.log(err);
+//             res.render('users/message', message.dbError);
+//           }
+//           var tids = [];
+//           var member = {
+//             '_id' : user._id,
+//             'nickname' : user.nickname,
+//             'photo' : user.photo
+//           }
+//           for( var i = 0; i < user.team.length && user.team[i].gid != '0'; i++){
+//             tids.push(user.team[i]._id);
+//             var groupMessage = new GroupMessage();
+//               groupMessage.message_type = 8;
+//               groupMessage.company={
+//                 cid : user.cid,
+//                 name : user.cname
+//               };
+//               groupMessage.team = {
+//                 teamid : user.team[i]._id,
+//                 name : user.team[i].name,
+//                 logo : user.team[i].logo
+//               };
+//               groupMessage.user= {
+//                 user_id : user._id,
+//                 name : user.nickname,
+//                 logo : user.photo
+//               };
+//               groupMessage.save();
+//           }
+//           CompanyGroup.update({'_id':{'$in':tids}},{'$push':{'member':member}},{'safe':false,'multi':true}).exec(function(err, company_group){
+//             if(err || !company_group){
+//               return res.send(err);
+//             }else{
+//               return res.redirect('/users/finishRegister');
+//             }
+//           });
+//         });
+//       } else {
+//         res.render('users/message', message.actived);
+//       }
+//     }
+//     else {
+//       res.render('users/message', message.unregister);
+//     }
+//   });
+// };
 
-/**
- * 处理选择组件表单
- */
-exports.dealSelectGroup = function(req, res) {
-  if(req.body.selected == undefined) {
-    return res.redirect('/users/selectGroup');
-  } else {
-    ;
-  }
-  User.findOne({'username': req.session.username}, function(err, user) {
-    if (err) {
-      return res.status(400).send('用户不存在!');
-    }
-    else if(user) {
-      if(user.active === false) {
-        user.team = req.body.selected;
-        user.active = true;
-        user.save(function(err){
-          if(err){
-            console.log(err);
-            res.render('users/message', message.dbError);
-          }
-          var tids = [];
-          var member = {
-            '_id' : user._id,
-            'nickname' : user.nickname,
-            'photo' : user.photo
-          }
-          for( var i = 0; i < user.team.length && user.team[i].gid != '0'; i++){
-            tids.push(user.team[i]._id);
-            var groupMessage = new GroupMessage();
-              groupMessage.message_type = 8;
-              groupMessage.company={
-                cid : user.cid,
-                name : user.cname
-              };
-              groupMessage.team = {
-                teamid : user.team[i]._id,
-                name : user.team[i].name,
-                logo : user.team[i].logo
-              };
-              groupMessage.user= {
-                user_id : user._id,
-                name : user.nickname,
-                logo : user.photo
-              };
-              groupMessage.save();
-          }
-          CompanyGroup.update({'_id':{'$in':tids}},{'$push':{'member':member}},{'safe':false,'multi':true}).exec(function(err, company_group){
-            if(err || !company_group){
-              return res.send(err);
-            }else{
-              return res.redirect('/users/finishRegister');
-            }
-          });
-        });
-      } else {
-        res.render('users/message', message.actived);
-      }
-    }
-    else {
-      res.render('users/message', message.unregister);
-    }
-  });
-};
-
-/**
- * 完成注册
- */
-exports.finishRegister = function(req, res) {
-  delete req.session.username;
-  res.render('users/signin', {title: '激活成功,请登录!', message: '激活成功,请登录!'});
-};
+// /**
+//  * 完成注册
+//  */
+// exports.finishRegister = function(req, res) {
+//   delete req.session.username;
+//   res.render('users/signin', {title: '激活成功,请登录!', message: '激活成功,请登录!'});
+// };
 
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{

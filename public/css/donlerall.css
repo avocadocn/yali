@@ -1384,7 +1384,7 @@ input.ng-invalid.ng-dirty {
   margin-right: 3px;
 }
 .signup_row .select_right {
-  width: 266px;
+  width: 266px !important;
 }
 .company-info {
   min-height: 300px;
