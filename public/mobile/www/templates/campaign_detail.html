@@ -9,7 +9,7 @@
     <ion-tab title="参加人员" icon="ion-ios7-person-outline">
       <ion-content has-header="true" class="wrap">
         <div class="head_title">
-          <div class="title">{{ campaign.content }}</div>
+          <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
           <div class="campaign_members_wrap content">
@@ -28,7 +28,7 @@
     <ion-tab title="评论" icon="ion-chatbubble">
       <ion-content has-header="true" class="wrap">
         <div class="head_title">
-          <div class="title">{{ campaign.content }}</div>
+          <div class="title">{{ campaign.theme }}</div>
         </div>
         <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
         <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
@@ -38,7 +38,7 @@
     <ion-tab title="活动照片" icon="ion-camera">
       <ion-content has-header="true" class="wrap">
         <div class="head_title">
-          <div class="title">{{ campaign.content }}</div>
+          <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
           <div id="photo_list" class="campaign_photos_wrap">
@@ -69,11 +69,11 @@
     <ion-tab title="活动地点" icon="ion-ios7-location-outline">
       <ion-content has-header="true" class="wrap">
         <div class="head_title">
-          <div class="title">{{ campaign.content }}</div>
+          <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
           <p>活动地点</p>
-          <div id="location" data-location="{{ campaign.location }}" style="width:320px; height:320px;" map-directive></div>
+          <div id="location" data-location="{{ campaign.location }}" map-directive></div>
         </div>
       </ion-content>
     </ion-tab>
@@ -81,7 +81,7 @@
     <ion-tab title="分享" icon="ion-ios7-paperplane-outline">
       <ion-content has-header="true" class="wrap">
         <div class="head_title">
-          <div class="title">{{ campaign.content }}</div>
+          <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
           <h2>share</h2>

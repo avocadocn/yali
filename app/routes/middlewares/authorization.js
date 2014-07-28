@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   Company = mongoose.model('Company'),
+  Campaign = mongoose.model('Campaign'),
   Department = mongoose.model('Department');
 /**
  * Generic require login routing middleware
@@ -40,6 +41,91 @@ exports.companyAuthorize = function(req, res, next){
   }
   next();
 };
+
+
+
+exports.commentAuthorize = function(req, res, next) {
+  console.log(req.user);
+  if (!req.user) {
+    return res.redirect('/');
+  }
+  else if(req.user.provider==='user'){
+    switch(req.params.commentType){
+      case 'campaign':
+          Campaign.findOne({'_id':req.params.commentId},function (err, campaign){
+            if(err || !campaign){
+              res.send(403,'forbidden!');
+              next();
+            }else{
+              campaign.team.forEach(function(team){
+                var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
+                if (team_index>-1){
+                  if(req.user.team[team_index].leader ===true){
+                    req.role = 'LEADER';
+                  }
+                  else if(req.role !== 'LEADER'){
+                    req.role = 'MEMBER';
+                  }
+
+                }
+                else if(req.role==undefined){
+                  req.role = 'PARTNER';
+                }
+              });
+              next();
+            }
+          });
+        break;
+      case 'team':
+        CompanyGroup.findOne({'_id':req.params.commentId},function (err,company_group){
+          if(err || !company_group){
+            res.send(403,'forbidden!');
+            next();
+          }else{
+            if(req.user._id.toString() === company_group.cid.toString()){
+              req.role === 'HR';
+              next();
+            }else{
+              var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,company_group._id,'_id');
+              if(_teamIndex>-1){
+                if(req.user.team[_teamIndex].leader === true){
+                  req.role = 'LEADER';
+                }
+                else{
+                  if(req.user.role==='LEADER')
+                    req.role = 'MEMBERLEADER';
+                  else
+                    req.role = 'MEMBER';
+                }
+              }
+              else{
+                if(req.user.role==='LEADER')
+                  req.role = 'PARTNERLEADER'
+                else
+                  req.role = 'PARTNER';
+              }
+              next();
+            }
+          }
+        });
+        break;
+      case 'album':
+        //暂时不用做
+        next();
+        break;
+      case 'user':
+        next();
+        break;
+      default:
+        res.send(403,'forbidden!');
+        next();
+        break;
+    }
+  }else{
+    res.send(403,'forbidden!');
+    next();
+  }
+}
 exports.departmentAuthorize = function(req, res, next) {
   if (!req.user) {
     return res.redirect('/');
@@ -311,7 +397,6 @@ exports.campaginAuthorize = function(req, res, next){
           req.role = 'PARTNER';
         }
       });
-      
     }
   }
   else{

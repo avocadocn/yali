@@ -219,40 +219,14 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 try {
                     $http({
                         method: 'post',
-                        url: '/comment/pull',
+                        url: '/comment/pull/user/0',
                         data:{
                             host_id : $scope.group_messages[index].campaign._id
                         }
                     }).success(function(data, status) {
-                        if(data.length > 0){
-                            $scope.group_messages[index].comments = data;
-                            $scope.fixed_sum = data.length;
-                            for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
-                                if($scope.group_messages[index].comments[i].status == 'delete'){
-                                    $scope.group_messages[index].comments.splice(i,1);
-                                    i--;
-                                }else{
-                                    var leader = false;
-                                    var find = false;
-                                    //个人动态里如果出现队长权限,那么只有该小队的队长才能删除该小队对应活动的留言
-                                    if($scope.role === 'LEADER' || $scope.role === 'OWNER'){
-                                        for(var ii = 0; ii < $scope.group_messages[index].team.length; ii ++){
-                                            for(var j = 0;j<$scope.user.team.length;j++){
-                                                if($scope.user.team[j]._id === $scope.group_messages[index].team[ii].teamid){
-                                                    leader = $scope.user.team[j].leader;
-                                                    if(leader){
-                                                        find = true;
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    $scope.group_messages[index].comments[i].show = $scope.group_messages[index].comments[i].status !== 'delete';
-                                    $scope.group_messages[index].comments[i].index = data.length - i;
-                                    $scope.group_messages[index].comments[i].delete_permission = $scope.role === 'HR' || leader || $scope.group_messages[index].comments[i].poster._id === $scope.user._id;
-                                }
-                            }
+                        if(data.comments.length > 0){
+                            $scope.group_messages[index].comments = data.comments;
+                            $scope.fixed_sum = data.comments.length;
                         }
                     }).error(function(data, status) {
                         alertify.alert('DATA ERROR');
