@@ -7,6 +7,8 @@ module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:pageId/:campaignType/:start_time', authorization.listAuthorize, campaign.getCampaigns);
   app.post('/campaign/cancel/:campaignId', authorization.campaginAuthorize, campaign.cancelCampaign);
   app.get('/campaign/detail/:campaignId', authorization.campaginAuthorize,campaign.renderCampaignDetail);
+  app.get('/campaign/getCampaigns/:campaignId', authorization.campaginAuthorize,campaign.getCampaignDetail);
+  
       //加入、退出活动
   app.post('/campaign/joinCampaign/:campaignId', authorization.campaginAuthorize, campaign.joinCampaign);
   app.post('/campaign/quitCampaign/:campaignId', authorization.campaginAuthorize, campaign.quitCampaign);

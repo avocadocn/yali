@@ -736,6 +736,10 @@ exports.vote = function (req, res) {
     }
   });
 };
+
+exports.getCampaignDetail = function(req, res){
+  res.send({ result: 1, msg: '获取活动成功', campaign: req.campaign });
+}
 exports.campaign = function(req, res, next, id){
   Campaign
       .findOne({
