@@ -1497,7 +1497,8 @@ input.ng-invalid.ng-dirty {
 .dl_allteaminfo_container,
 .dl_compaign_member,
 .dl_department,
-.dl_campaign_list {
+.dl_campaign_list,
+.dl_group_select {
   width: 100%;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -1507,7 +1508,8 @@ input.ng-invalid.ng-dirty {
 .dl_allteaminfo_container .loademp,
 .dl_compaign_member .loademp,
 .dl_department .loademp,
-.dl_campaign_list .loademp {
+.dl_campaign_list .loademp,
+.dl_group_select .loademp {
   line-height: 120px;
 }
 .dl_company_container .main {
@@ -1561,6 +1563,18 @@ input.ng-invalid.ng-dirty {
 }
 .dl_campaign_list .table {
   margin-bottom: 0px;
+}
+.dl_group_select {
+  padding: 20px 40px;
+}
+.dl_group_select .img_contain {
+  padding: 80px 0 24px;
+  text-align: center;
+  background-size: 64px 64px;
+  background-position: center center;
+}
+.dl_group_select .groups_box {
+  padding-left: 40px;
 }
 .selected_img {
   border-color: #5cb85c;
