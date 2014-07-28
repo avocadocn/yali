@@ -142,7 +142,7 @@ angular.module('starter.services', [])
   // callback(id)
   var join = function(callback) {
     return function(id) {
-      $http.post(Global.base_url + '/users/joinCampaign', { campaign_id: id })
+      $http.post(Global.base_url + '/campaign/joinCampaign/'+id, { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback(id);
       });
@@ -152,7 +152,7 @@ angular.module('starter.services', [])
   // callback(id)
   var quit = function(callback) {
     return function(id) {
-      $http.post(Global.base_url + '/users/quitCampaign', { campaign_id: id })
+      $http.post(Global.base_url + '/campaign/quitCampaign/'+id, { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback(id);
       });
@@ -183,7 +183,7 @@ angular.module('starter.services', [])
 
   var quit = function(callback) {
     return function(id) {
-      $http.post(Global.base_url + '/users/quitCampaign', { campaign_id: id })
+      $http.post(Global.base_url + '/campaign/quitCampaign/'+id, { campaign_id: id })
       .success(function(data, status, headers, config) {
         callback();
       });

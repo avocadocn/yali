@@ -7,9 +7,8 @@
       <li ng-repeat="time_line in time_lines">
         <p>开始时间：{{ time_line.start_time | date:'yyyy-MM-dd hh:mm' }}</p>
         <p>内容：{{ time_line.content }}</p>
-        <p>地点：{{ time_line.location }}</p>
+        <p>地点：{{ time_line.location.name }}</p>
         <p>小队类型：{{ time_line.group_type[0] }}</p>
-        <p ng-if="timeline.provoke.active">赛制：{{ timeline.provoke.competition_format }}</p>
       </li>
     </ul>
   </ion-content>

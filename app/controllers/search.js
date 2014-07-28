@@ -141,7 +141,7 @@ function findComapnyGroup(condition,req,res,_users)
 //根据公司id搜索成员
 exports.getUser = function(req, res) {
   var cid = req.user.provider === 'company' ? req.user._id : req.user.cid;
-  User.find({'cid':cid},function (err,users){
+  User.find({'cid':cid,'active':true},function (err,users){
     if(err || !users){
       res.send(500,[]);
     }else{

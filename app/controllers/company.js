@@ -604,7 +604,7 @@ exports.create = function(req, res) {
                         });
                     }
                     //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
-                    mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
+                    //mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
                     res.redirect('/company/wait');
                 });
             }
