@@ -5,17 +5,17 @@ append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign=#{JSON.stringify(campaign)};user = #{JSON.stringify(user)};join=#{join};role='#{role}'")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';location=#{JSON.stringify(campaign.location)};member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .dl_detail_main
       //-TODO:详情页权限不正确，需要更改
       if (role==='HR' || role==='LEADER') && campaign.active &&!campaign.finish
         span.pull-right
-          button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign._id)") 关闭活动
+          button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_id)") 关闭活动
       ul.nav.nav-tabs
         li.tab_style(ng-class="{'active':nowTab=='campaign'}")
-          a.subtitle.no_radius.border_red(ng-cloak) {{campaign.theme}}
+          a.subtitle.no_radius.border_red= campaign.theme
 
       .dl_detail_border.clearfix
         .dl_detail_content
@@ -23,27 +23,27 @@ block contentExt
             .dl_detail_label
               span #{__("ENTRY")}#{__("DEADLINE")}:
             .dl_detail_detail
-              span(ng-cloak) {{campaign.deadline| date:'yyyy-MM-dd HH:mm' | dateView}} {{campaign.deadline | week }}
+              span= moment(campaign.deadline).format("YYYY-MM-DD HH:mm dddd")
           .dl_detail_row
             .dl_detail_label
               span #{__("CAMPAIGN")}#{__("START_TIME")}:
             .dl_detail_detail
-              span(ng-cloak) {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}} {{campaign.start_time | week }}
+              span= moment(campaign.start_time).format("YYYY-MM-DD HH:mm dddd")
           .dl_detail_row
             .dl_detail_label
               span #{__("CAMPAIGN")}#{__("END_TIME")}:
             .dl_detail_detail
-              span(ng-cloak) {{campaign.end_time | date:'yyyy-MM-dd HH:mm'}} {{campaign.end_time | week }}
+              span= moment(campaign.end_time).format("YYYY-MM-DD HH:mm dddd")
           .dl_detail_row
             .dl_detail_label
               span #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
             .dl_detail_detail
-              span(ng-cloak) {{campaign.member_min}}
+              span= campaign.member_min
           .dl_detail_row
             .dl_detail_label
               span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
             .dl_detail_detail
-              span(ng-cloak) {{campaign.member_max}}
+              span= campaign.member_max
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
             if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish
@@ -55,12 +55,12 @@ block contentExt
             .dl_detail_label
               span #{__("CAMPAIGN")}#{__("PLACE")}#{__("LOCATION")}:
             .dl_detail_detail
-              span(ng-cloak) {{campaign.location.name}}
+              span= campaign.location.name
           .dl_detail_row
             .dl_detail_label
               span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
-              span.dl_word_break(ng-cloak) {{campaign.content}}
+              span.dl_word_break= campaign.content
       if !campaign.active
         .dl_detail_row.text-center
           span #{__("CAMPAIGNCLOSE")}
@@ -72,39 +72,39 @@ block contentExt
         .dl_row.subtitle
           .pull-left #{__("JOIN")}#{__("MEMBER")}:
           a.pull-right(ng-click="modalPerticipator()") 发送私信
-        div.member(ng-repeat = "_member in campaign.member")
+        div.member(ng-repeat = "_member in member")
           a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
             img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
             span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-        span.info_label(ng-if="!campaign.member.length") 该活动还没有人参加哦!
+        span.info_label(ng-if="!member.length") 该活动还没有人参加哦!
       if role==='HR' || role ==='LEADER'
-        .dl_detail_member(ng-if="campaign.member_quit.length>0" bs-popover)
+        .dl_detail_member(ng-init="member_quit=#{JSON.stringify(campaign.member_quit)};" ng-if="member_quit.length>0" bs-popover)
           p.subtitle 退出#{__("MEMBER")}:
-          div.member(ng-repeat = "_member in campaign.member_quit")
+          div.member(ng-repeat = "_member in member_quit")
             a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
               img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
               span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-      if role==='MEMBER' || role ==='LEADER'
-        form.dl_detail_main(name="comment_form" novalidate)
+      form.dl_detail_main(name="comment_form" novalidate)
+        if role==='MEMBER' || role ==='LEADER'
           p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
           textarea.dl_form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
           button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-          .dl_row(bs-popover)
-            section
-              br
-              div.comment.clearfix(ng-repeat="comment in comments")
-                .comment_user_info
-                  a(href="/users/home/{{comment.poster._id}}" )
-                    img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-                  a.dl_user_name_small(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
-                .comment_content_panel
-                  .relative
-                    .triangle_border
-                    .triangle
-                    .comment_content
-                      p(ng-cloak) {{comment.content}}
-                  label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-                  a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+        .dl_row(bs-popover)
+          section
+            br
+            div.comment.clearfix(ng-repeat="comment in comments")
+              .comment_user_info
+                a(href="/users/home/{{comment.poster._id}}" )
+                  img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
+                a.dl_user_name_small(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
+              .comment_content_panel
+                .relative
+                  .triangle_border
+                  .triangle
+                  .comment_content
+                    p(ng-cloak) {{comment.content}}
+                label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+                a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
         #mapContainer.size_400

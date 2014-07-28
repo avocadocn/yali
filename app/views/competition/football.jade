@@ -137,7 +137,7 @@ block contentExt
         hr
         if role ==='LEADER' || role==='MEMBER'
           .dl_comment.row
-            form.dl_detail_main(name="comment_form" novalidate)
+            form.dl_detail_main.col-xs-10(name="comment_form" novalidate)
               p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
               textarea.dl_form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
               button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}

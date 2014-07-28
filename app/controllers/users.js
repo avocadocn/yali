@@ -901,7 +901,7 @@ exports.timeLine = function(req,res){
           newTimeLines[i].push(tempObj);
         }
       });
-      console.log(newTimeLines);
+      //console.log(newTimeLines);
       return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {

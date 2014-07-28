@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
     Campaign = mongoose.model('Campaign'),
     Department = mongoose.model('Department'),
     model_helper = require('../helpers/model_helper'),
-    photo_album_controller = require('./photoAlbum');
+    photo_album_controller = require('./photoAlbum'),
+    moment = require('moment');
 var pagesize = 20;
 
 
@@ -512,6 +513,7 @@ exports.renderCampaignDetail = function(req, res) {
           active: true
         }
       ];
+      moment.lang('zh-cn');
       return res.render('campaign/campaign_detail', {
         over : campaign.deadline<new Date(),
         join: req.join,
@@ -520,7 +522,8 @@ exports.renderCampaignDetail = function(req, res) {
         campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo,
         campaign: campaign,
         links: links,
-        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
+        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4),
+        moment : moment
       });
     }
 
@@ -595,7 +598,12 @@ exports.joinCampaign = function (req, res) {
         if(err) {
           return res.send({ result: 0, msg: '保存错误'});
         } else {
-          return res.send({ result: 1, msg: '退出活动成功'});
+          return res.send({ result: 1, msg: '退出活动成功',member:{
+            'cid':cid,
+            'uid':uid,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo
+          }});
         }
       });
     }
@@ -667,7 +675,12 @@ exports.quitCampaign = function (req, res) {
         if(err) {
           return res.send(err);
         } else {
-          return res.send({ result: 1, msg: '退出活动成功'});
+          return res.send({ result: 1, msg: '退出活动成功',member:{
+            'cid':cid,
+            'uid':uid,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo
+          }});
         }
       });
     }
