@@ -32,9 +32,9 @@ div(ng-show = '!loading')
         td.text-left
           span.text-left.dl_user_name_normal(title="{{team.name}}") {{team.name}}
         td
-          span.row(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
+          span(ng-if="team.leader.length>0" ng-repeat="l in team.leader")
             span.dl_user_name_normal(title="{{l.nickname}}") {{l.nickname}}
-          span.row(ng-if="team.leader.length==0") 无
+          span(ng-if="team.leader.length==0") 无
         td
           span {{team.member.length}}
         td

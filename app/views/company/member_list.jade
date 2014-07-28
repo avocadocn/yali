@@ -1,9 +1,7 @@
 .loading_div(ng-show = 'loading')
-.compaign_member(ng-show = '!loading')
+.dl_compaign_member(ng-show = '!loading')
   .memberlist
-    span.subtitle #{__("MEMBER")}
-    hr
-    .row.margin_left_10(ng-repeat="department in members_by_department track by $index")
+    .row.departmentbox(ng-repeat="department in members_by_department track by $index")
       span {{department.name}}
       .groups
         .member(ng-repeat="member in department.member track by $index")
@@ -18,11 +16,10 @@
               .dl_row.img
                 img.size_48.img_user(ng-src="{{member.photo}}")
               //- .dl_row.member_row
-                label.user_name {{member.nickname}}
+                label.user_name {{member.nickname}
     if role ==='HR'
-      span.subtitle 未激活成员
-      hr
-      .row.margin_left_10
+      .row.departmentbox.nodepartmentbox
+        span.subtitle 未激活成员
         .groups
           .member(ng-repeat="member in members track by $index")
             div.member_group(ng-if='!member.active')
