@@ -73,6 +73,9 @@
 .calendar_box {
   margin-top: 20px;
 }
+.calendar_box .dl_campaign_list {
+  border: 0px;
+}
 .calendar_title {
   margin-top: 5px;
   font-weight: normal;

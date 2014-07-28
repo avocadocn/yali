@@ -1,5 +1,5 @@
 .loading_div(ng-show = 'loading')
-div(ng-show = '!loading')
+.dl_campaign_list(ng-show = '!loading')
   if provider=='company'
     .dl_row
       .btn-group.pull-right
@@ -21,15 +21,17 @@ div(ng-show = '!loading')
             
   table.table.table-hover.campaign_table
     tr(ng-repeat="campaign_item in campaigns")
+      td.emp_col
+        p
       td.time_col
-        p(ng-if="judgeYear($index)") {{campaign_item.start_time  | date:'yyyy'}}
+        p(ng-if="judgeYear($index)").year {{campaign_item.start_time  | date:'yyyy'}}
       td.time_col
         p.text-right.day {{ campaign_item.start_time  | day }}
-        p.text-right {{ campaign_item.start_time | date:'HH:mm' }}
+        p.text-right.time {{ campaign_item.start_time | date:'HH:mm' }}
       td.logo_col.text-center
         a(ng-href="{{campaign_item.link}}")
-          img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}")
-          img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}")
+          img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
+          img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
       td.content_col
         p 主题:
           a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
@@ -44,7 +46,7 @@ div(ng-show = '!loading')
     span(ng-if="loadOver_flag") 已经加载了所有的活动
   .text-center(ng-if="campaigns.length==0")
     span 目前没有新的活动
-  ul.pager
+  ul.pager(ng-if="nextPage_flag")
     li
       a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
     li

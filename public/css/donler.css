@@ -1426,12 +1426,6 @@ input.ng-invalid.ng-dirty {
   padding-left: 0;
   margin-bottom: 10px;
 }
-.campaign_table tr {
-  background-color: #f4f4f4;
-}
-.loadfale {
-  background-color: #f4f4f4;
-}
 .family_preview_container {
   margin-top: 20px;
 }
@@ -1502,7 +1496,8 @@ input.ng-invalid.ng-dirty {
 }
 .dl_allteaminfo_container,
 .dl_compaign_member,
-.dl_department {
+.dl_department,
+.dl_campaign_list {
   width: 100%;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -1556,6 +1551,9 @@ input.ng-invalid.ng-dirty {
 }
 .dl_compaign_member .nodepartmentbox {
   border-bottom: 0px;
+}
+.dl_campaign_list .table {
+  margin-bottom: 0px;
 }
 .selected_img {
   border-color: #5cb85c;

@@ -7,32 +7,41 @@
 .campaign_table tr td {
   padding-top: 9px !important;
 }
-.time_col {
+.campaign_table .emp_col {
+  width: 20px;
+}
+.campaign_table .time_col {
   width: 64px;
 }
-.time_col p {
+.campaign_table .time_col p {
   font-size: 16px;
   margin: 0;
 }
-.time_col .day {
+.campaign_table .time_col .day {
   margin-top: 4px;
+  font-size: 22px;
+}
+.campaign_table .time_col .year {
   font-size: 12px;
 }
-.logo_col {
-  width: 64px;
+.campaign_table .time_col .time {
+  font-size: 12px;
 }
-.logo_col .campaign_logo {
-  width: 40px;
-  height: 40px;
+.campaign_table .logo_col {
+  width: 140px;
+}
+.campaign_table .logo_col .campaign_logo {
+  width: 64px;
+  height: 64px;
   margin-top: 2px;
 }
-.content_col p {
+.campaign_table .content_col p {
   margin: 0;
   line-height: 21px;
 }
-.content_col .theme_text {
+.campaign_table .content_col .theme_text {
   margin-left: 5px;
 }
-.content_col .content_text {
+.campaign_table .content_col .content_text {
   margin-left: 5px;
 }
