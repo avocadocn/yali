@@ -4,22 +4,18 @@
       <div class="row campaign_line">
         <p class="campaign_team_info">
           <img class="campaign_group_logo" ng-src="{{ campaign.logo }}"/>
-          {{ campaign.name }}
+          {{ campaign.owner_name }}
         </p>
       </div>
       <div class="row campaign_line campaign_content">
-        <p>{{ campaign.content }}</p>
+        <p>{{ campaign.theme }}</p>
       </div>
       <div class="row campaign_line campaign_time football">
         <div class="table_wrap campaign_time_shadow">
           <div class="table_cell">
-            <div ng-if="campaign.rest_time">
-              <p class="campaign_time_remind">距离活动开始</p>
-              <p class="campaign_time_count">{{ campaign.rest_time | date:'hh:mm:ss' }}</p>
-            </div>
-            <div ng-if="campaign.beyond_time">
-              <p class="campaign_time_remind">活动已开始</p>
-              <p class="campaign_time_count">{{ campaign.beyond_time | date:'hh:mm:ss' }}</p>
+            <div>
+              <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
+              <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
             </div>
           </div>
         </div>
@@ -33,11 +29,11 @@
         </p>
       </div>
       <div class="col-33 col-40 campaign_operate_button_container">
-        <button class="campaign_operate_button" ng-if="!campaign.join" ng-click="join(campaign._id)">
+        <button class="campaign_operate_button" ng-if="!campaign.is_joined" ng-click="join(campaign._id)">
           <i class="icon ion-android-share"></i>
           参加活动
         </button>
-        <button class="campaign_operate_button" ng-if="campaign.join" ng-click="quit(campaign._id)">
+        <button class="campaign_operate_button" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">
           <i class="icon ion-android-share"></i>
           退出活动
         </button>

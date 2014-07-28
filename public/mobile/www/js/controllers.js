@@ -34,7 +34,7 @@ angular.module('starter.controllers', [])
 
   $rootScope.campaignReturnUri = '#/app/campaign_list';
 
-  Campaign.getUserCampaigns(function(campaign_list) {
+  Campaign.getUserCampaigns($rootScope, function(campaign_list) {
     $scope.campaign_list = campaign_list;
   });
 

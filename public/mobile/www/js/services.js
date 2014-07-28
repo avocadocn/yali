@@ -76,7 +76,7 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Campaign', function($http, $rootScope, Global) {
+.factory('Campaign', function($http, Global) {
 
   var campaign_list = [];
 
@@ -84,29 +84,11 @@ angular.module('starter.services', [])
     return campaign_list;
   };
 
-  var setCampaignTime = function(campaign) {
-    var start_time = new Date(campaign.start_time);
-    var rest_time = start_time - new Date();
-    if (rest_time >= 0) {
-      campaign.rest_time = rest_time;
-    } else {
-      campaign.beyond_time = 0 - rest_time;
-    }
-  }
-
-  var setTime = function() {
-    for (var i = 0; i < campaign_list.length; i++) {
-      setCampaignTime(campaign_list[i]);
-
-    }
-  };
-
   // callback(campaign)
   var getCampaign = function(id, callback) {
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id)
     .success(function(data, status) {
       var campaign = data.campaign;
-      setCampaignTime(campaign);
       for (var i = 0; i < campaign_list.length; i++) {
         if (campaign_list[i]._id === id) {
           campaign_list[i] = campaign;
@@ -120,11 +102,10 @@ angular.module('starter.services', [])
   };
 
   // callback(campaign_list)
-  var getUserCampaigns = function(callback) {
-    $http.get(Global.base_url + '/users/getCampaigns/'+$rootScope._id)
+  var getUserCampaigns = function($rootScope, callback) {
+    $http.get(Global.base_url + '/campaign/user/all/app/'+$rootScope._id)
     .success(function(data, status, headers, config) {
-      campaign_list = data.data;
-      setTime();
+      campaign_list = data.campaigns;
       callback(campaign_list);
     });
   };
@@ -134,7 +115,6 @@ angular.module('starter.services', [])
     $http.get(Global.base_url + '/group/' + group_id + '/campaigns')
     .success(function(data, status, headers, config) {
       campaign_list = data.data;
-      setTime();
       callback(campaign_list);
     });
   };
