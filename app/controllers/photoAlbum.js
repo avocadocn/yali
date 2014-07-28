@@ -885,7 +885,6 @@ exports.renderPhotoAlbumDetail = function(req, res) {
       throw 'not found';
     }
     var photos = getShowPhotos(photo_album);
-    photos.sort(sortByClick);
     var owner = getPhotoAlbumOwner(req.user, photo_album);
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
     var uploadAuth = photoUploadAuth(req.user, photo_album);
