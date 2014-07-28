@@ -2,7 +2,7 @@
 .dl_compaign_member(ng-show = '!loading')
   .memberlist
     .row.departmentbox(ng-repeat="department in members_by_department track by $index")
-      span {{department.name}}
+      span {{department.name}}{{department.id}}
       .groups
         .member(ng-repeat="member in department.member track by $index")
           div.member_group(ng-if='member.active')

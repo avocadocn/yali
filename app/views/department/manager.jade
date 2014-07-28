@@ -24,10 +24,10 @@ script(type="text/ng-template" id="node.html")
   ul(ng-if="!node.hideChild")
     li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
 
-h5 部门结构
-.tree.company_tree
-  ul
-    li(ng-include="'node.html'" ng-class="hasChild(node)")
+.dl_department
+  .tree.company_tree
+    ul
+      li(ng-include="'node.html'" ng-class="hasChild(node)")
 
 div.modal.fade#managerAppointModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   include ../partials/pointermanager_modal
