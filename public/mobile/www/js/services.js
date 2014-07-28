@@ -89,6 +89,7 @@ angular.module('starter.services', [])
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id)
     .success(function(data, status) {
       var campaign = data.campaign;
+      console.log(campaign)
       for (var i = 0; i < campaign_list.length; i++) {
         if (campaign_list[i]._id === id) {
           campaign_list[i] = campaign;
