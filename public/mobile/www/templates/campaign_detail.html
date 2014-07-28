@@ -59,7 +59,7 @@
             </div>
           </div>
         </div>
-        <form id="upload_form" class="campaing_upload_form" action="{{ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
+        <form id="upload_form" class="campaing_upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data">
           <input class="" type="file" name="photos" multiple="multiple" accept="image/*" required/>
           <button type="submit">上传照片</button>
         </form>
