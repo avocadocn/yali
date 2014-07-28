@@ -43,7 +43,7 @@ block contentExt
                 .col-xs-2.score_colon
                   span.dl_score_colon :
                   if confirm_mode === 1
-                    a.cancel_btn.dl_left(ng-disabled="true") 等待确认
+                    span.dl_btn_right.dl_left 等待确认
                   if confirm_mode === 3
                     a.dl_btn_right.dl_left(ng-click='scoreModify()') {{modify_caption}}
                 .col-xs-5.score_right
