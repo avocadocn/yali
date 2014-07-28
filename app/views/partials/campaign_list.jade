@@ -17,17 +17,15 @@
             a(ng-click="selectCampaign(4)") 部门活动
           li
             a(ng-click="selectCampaign(5)") 全部活动
-
-            
   table.table.table-hover.campaign_table
     tr(ng-repeat="campaign_item in campaigns")
-      td.emp_col
-        p
+      //- td.emp_col
+      //-   p
       td.time_col
         p(ng-if="judgeYear($index)").year {{campaign_item.start_time  | date:'yyyy'}}
       td.time_col
-        p.text-right.day {{ campaign_item.start_time  | day }}
-        p.text-right.time {{ campaign_item.start_time | date:'HH:mm' }}
+        p.text-center.day {{ campaign_item.start_time  | day }}
+        p.text-center.time {{ campaign_item.start_time | date:'HH:mm' }}
       td.logo_col.text-center
         a(ng-href="{{campaign_item.link}}")
           img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
@@ -45,7 +43,7 @@
     button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
     span(ng-if="loadOver_flag") 已经加载了所有的活动
   .text-center(ng-if="campaigns.length==0")
-    span 目前没有新的活动
+    span.loademp 目前没有新的活动
   ul.pager(ng-if="nextPage_flag")
     li
       a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页

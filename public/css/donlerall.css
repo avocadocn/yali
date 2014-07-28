@@ -661,7 +661,7 @@ textarea {
 }
 .dl_container .side .groupsbox .group {
   display: inline-block;
-  margin-bottom: 2px;
+  margin: 6px;
 }
 .dl_container .aside {
   width: 128px;
@@ -1502,6 +1502,13 @@ input.ng-invalid.ng-dirty {
   background-color: #fff;
   border: 1px solid #ccc;
   border-top: 0px;
+  min-height: 124px;
+}
+.dl_allteaminfo_container .loademp,
+.dl_compaign_member .loademp,
+.dl_department .loademp,
+.dl_campaign_list .loademp {
+  line-height: 120px;
 }
 .dl_company_container .main {
   width: 960px;

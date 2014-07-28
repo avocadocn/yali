@@ -71,7 +71,7 @@
   cursor: default;
 }
 .calendar_box {
-  margin-top: 20px;
+  margin-top: 0;
 }
 .calendar_box .dl_campaign_list {
   border: 0px;
