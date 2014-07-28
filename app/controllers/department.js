@@ -90,15 +90,15 @@ var managerUpdate = function(did,operate,member,res){
     '_id': did
   }, department_set, function(err, department) {
     if (err || !department) {
-      res.send(500);
+      if(res!=null)res.send(500);
     } else {
       CompanyGroup.findByIdAndUpdate({'_id':department.team},team_set,function (err,company_group){
         if(err || !company_group){
-          res.send(500);
+          if(res!=null)res.send(500);
         }else{
           User.findOne({'_id':member._id},function (err,user){
             if(err || !user){
-              res.send(500);
+              if(res!=null)res.send(500);
             }else{
               for(var i = 0; i < user.team.length; i ++){
                 if(user.team[i]._id.toString() === company_group._id.toString()){
@@ -108,11 +108,13 @@ var managerUpdate = function(did,operate,member,res){
               }
               user.save(function (err){
                 if(err){
-                  res.send(500);
+                  if(res!=null)res.send(500);
                 }else{
-                  res.send(200, {
-                    'manager': member
-                  });
+                  if(res!=null){
+                    res.send(200, {
+                      'manager': member
+                    });
+                  }
                 }
               });
             }
@@ -495,8 +497,12 @@ var teamOperate = function(options, callback){
                 callback('not found');
               } else{
                 user.department = null;
+                var quit_leader_id = null;
                 for(var i = 0 ; i < user.team.length; i ++){
                   if(user.team[i]._id.toString() === company_group._id.toString()){
+                    if(user.team[i].leader === true){
+                      quit_leader_id = user._id;
+                    }
                     user.team.splice(i,1);
                     break;
                   }
@@ -505,6 +511,7 @@ var teamOperate = function(options, callback){
                   if(err){
                     callback(err);
                   }else{
+                    if(quit_leader_id!=null)managerUpdate(did,'dismiss',{'_id':quit_leader_id},null);
                     callback(null, {'member':company_group.member})
                   }
                 });
@@ -577,7 +584,6 @@ exports.memberOperateByRoute = function(req, res) {
 
 
   if (operate === 'join') {
-    //员工提出申请后加入
     // 如果有加入部门，先退出之前的部门
     if (req.user.department && req.user.department._id && req.user.department._id.toString() !== did) {
 
