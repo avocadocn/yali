@@ -33,11 +33,11 @@
         </p>
       </div>
       <div class="col-33 col-40 campaign_operate_button_container">
-        <button class="campaign_operate_button" ng-if="!campaign.is_join" ng-click="join(campaign._id)">
+        <button class="campaign_operate_button" ng-if="!campaign.join" ng-click="join(campaign._id)">
           <i class="icon ion-android-share"></i>
           参加活动
         </button>
-        <button class="campaign_operate_button" ng-if="campaign.is_join" ng-click="quit(campaign._id)">
+        <button class="campaign_operate_button" ng-if="campaign.join" ng-click="quit(campaign._id)">
           <i class="icon ion-android-share"></i>
           退出活动
         </button>
