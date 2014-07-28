@@ -32,22 +32,42 @@ var mongoose = require('mongoose'),
 function get(param){
   switch(param.type){
     case 0:
-      param.collection.findOne(param.condition,param.limit,function(err,message){
-        if(err || !message){
-          param._err(err,param.req,param.res);
-        }else{
-          param.callback(message,param.other_param,param.req,param.res);
-        }
-      });
+      if(param.populate == undefined || param.populate == null){
+        param.collection.findOne(param.condition,param.limit,function(err,message){
+          if(err || !message){
+            param._err(err,param.req,param.res);
+          }else{
+            param.callback(message,param.other_param,param.req,param.res);
+          }
+        });
+      }else{
+        param.collection.findOne(param.condition,param.limit).populate(param.populate).exec(function(err,message){
+          if(err || !message){
+            param._err(err,param.req,param.res);
+          }else{
+            param.callback(message,param.other_param,param.req,param.res);
+          }
+        });
+      }
       break;
     case 1:
-      param.collection.find(param.condition,param.limit).sort(param.sort).exec(function(err,messages){
-        if(err || !messages){
-          param._err(err,param.req,param.res);
-        }else{
-          param.callback(messages,param.other_param,param.req,param.res);
-        }
-      });
+      if(param.populate == undefined || param.populate == null){
+        param.collection.find(param.condition,param.limit).sort(param.sort).exec(function(err,messages){
+          if(err || !messages){
+            param._err(err,param.req,param.res);
+          }else{
+            param.callback(messages,param.other_param,param.req,param.res);
+          }
+        });
+      }else{
+        param.collection.find(param.condition,param.limit).sort(param.sort).populate(param.populate).exec(function(err,messages){
+          if(err || !messages){
+            param._err(err,param.req,param.res);
+          }else{
+            param.callback(messages,param.other_param,param.req,param.res);
+          }
+        });
+      }
       break;
     default:break;
   }
@@ -335,23 +355,13 @@ exports.sendToParticipator = function(req, res){
 
     if(campaign){
       var team;
-
-      for(var i = 0; i < campaign.team.length; i ++){
-        for(var j = 0; j < req.user.team.length; j ++){
-          if(req.user.team[j]._id.toString() === campaign.team[i].toString()){
-            team = {
-              '_id':req.user.team[j]._id,
-              'name':req.user.team[j].name,
-              'logo':req.user.team[j].logo,
-              'status':0
-            };
-            break;
-          }
-        }
-      }
-
+      team = {
+        '_id':campaign.team[0]._id,
+        'name':campaign.team[0].name,
+        'logo':campaign.team[0].logo,
+        'status':0
+      };
       var members = [];
-      console.log('campaign_type',campaign.campaign_type);
       if([4,5,7].indexOf(campaign.campaign_type) > -1){
         team.status = 1;
         for(var i = 0; i < campaign.camp.length; i ++){
@@ -387,6 +397,7 @@ exports.sendToParticipator = function(req, res){
     }
   }
   var param= {
+    'populate':'team',
     'collection':Campaign,
     'type':0,
     'condition':{'_id':req.body.campaign_id},
