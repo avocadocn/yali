@@ -8,34 +8,34 @@
         .info_side
           span.info_label #{__("NICKNAME")}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="members[num].nickname" ng-maxlength=20 tooltip="{{detail_form.nickname.$invalid? '最长20字':''}}" required ng-disabled="unEdit")
+          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="currentmember.nickname" ng-maxlength=20 tooltip="{{detail_form.nickname.$invalid? '最长20字':''}}" required ng-disabled="unEdit")
       .dl_row.clearfix
         .info_side
           span.info_label #{__("REALNAME")}
         .info_detail_2
-          span.info_label {{members[num].realname}}
+          span.info_label {{currentmember.realname}}
       .dl_row.clearfix
         .info_side
           span.info_label #{__("DEPARTMENT")}
         .info_detail(ng-if="!unEdit")
           select(ng-model="department._id" ng-options="option._id as option.label for option in options")
         .info_detail_2(ng-if="unEdit")
-          span.info_label {{ members[num].department.name }}
+          span.info_label {{ currentmember.department.name }}
       .dl_row.clearfix
         .info_side
           span.info_label #{__("GENDER")}
         .info_detail_2
-          span.info_label {{members[num].sex}}
+          span.info_label {{currentmember.sex}}
       .dl_row.clearfix
         .info_side
           span.info_label #{__("BRIEF")}
         .info_detail_2
-          span.info_label {{members[num].introduce}}
+          span.info_label {{currentmember.introduce}}
       .dl_row.clearfix
         .info_side
           span.info_label #{__("REGISTER_DATE")}
         .info_detail_2
-          span.info_label {{members[num].register_date | date:'yyyy-MM-dd HH:mm:ss'}}
+          span.info_label {{currentmember.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
     .dl-modal-footer
       if role==='HR' || role==='OWNER'
         span #{unEdit}

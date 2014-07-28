@@ -496,11 +496,13 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
     };
 
 
-    $scope.userDetail = function(index) {
-        $scope.num = index;
+    $scope.userDetail = function(user_id) {
+        $http.get('/search/user/'+user_id+'?'+ Math.round(Math.random()*100)).success(function(data, status) {
+            $scope.currentmember = data;
+            setDepartmentOptions($scope.currentmember);
+        });
         $scope.unEdit = true;
         $scope.buttonStatus = '编辑';
-        setDepartmentOptions($scope.members[index]);
     }
 
 
@@ -518,7 +520,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                         _id: $scope.options[i]._id,
                         name: $scope.options[i].name
                     };
-                    $scope.members[$scope.num].department.name = $scope.options[i].name;
+                    $scope.currentmember.department.name = $scope.options[i].name;
                     break;
                 }
             }
@@ -528,7 +530,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     url: '/company/changeUser/'+$rootScope.cid,
                     data:{
                         operate : 'change',
-                        user : $scope.members[$scope.num],
+                        user : $scope.currentmember,
                         department: department
                     }
                 }).success(function(data, status) {
@@ -545,15 +547,6 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
         }
     }
 }]);
-
-
-
-
-
-
-
-
-
 
 //公司小队列表
 tabViewCompany.directive('masonry', function ($timeout) {

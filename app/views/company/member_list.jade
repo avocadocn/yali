@@ -8,7 +8,7 @@
           div.member_group(ng-if='member.active')
             if role != 'GUESTHR' && role !='GUEST'
               .dl_row.img(bs-popover)
-                a(ng-click="userDetail($index)" data-toggle="modal" data-target="#sponsorUserDetailModal")
+                a(ng-click="userDetail(member._id)" data-toggle="modal" data-target="#sponsorUserDetailModal")
                   img.size_48.img_user(ng-src="{{member.photo}}" ng-Mouseenter="showUserCard(member._id,member._id)" id='pop{{member._id}}')
               .dl_row.text.member_row
                 a.user_name(href="/users/home/{{member._id}}") {{member.nickname}}
@@ -24,7 +24,7 @@
           .member(ng-repeat="member in members track by $index")
             div.member_group(ng-if='!member.active')
               .dl_row.img
-                a(ng-click="userDetail($index)" data-toggle="modal" data-target="#UnregUserModal")
+                a(ng-click="userDetail(member._id)" data-toggle="modal" data-target="#UnregUserModal")
                   img.size_48.img_user(ng-src="{{member.photo}}")
               .dl_row.text.member_row
                 span.user_name {{member.email}}

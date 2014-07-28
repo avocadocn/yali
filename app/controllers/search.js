@@ -167,17 +167,42 @@ exports.getUser = function(req, res) {
 };
 
 
-
-
-
 exports.getMember = function(req, res) {
   var cid = req.params.companyId;
-  User.find({'cid': cid}, {'_id':1,'username':1,'nickname':1,'photo':1,'realname':1,'department':1,'sex':1,'register_date':1,'introduce':1,'active':1,'email':1},function (err, users){
+  // 根据部门排序成员 注释 by Maggie
+  // Company.findOne({'cid':cid},{'department':1},function(err, company){
+  //   if(err||!company){
+  //     console.log(err);
+  //     return res.send(500,{'msg':'无此公司。'});
+  //   }
+  //   else{
+  //     var departments = company.department;
+  //     for(var i =0;i<company.department.length;i++){
+  //       departments[i]=getChildMember(company.department[i]._id,departments[i]);
+  //       console.log(i,departments[i]);
+  //     }
+  //   }
+  // });
+  User.find({'cid': cid}, {'_id':1,'nickname':1,'photo':1,'department':1,'active':1,},function (err, users){
     if(err || !users){
       console.log('ERROR:',err);
       return res.send([]);
     }else{
       return res.send(users);
+    }
+  });
+};
+
+exports.getUserInfo = function(req,res) {
+  console.log('id:',req.params.userId);
+  User.findOne({'_id':req.params.userId},{'nickname':1,'photo':1,'realname':1,'department':1,'sex':1,'register_date':1,'introduce':1,'email':1},function(err,user){
+    if(err||!user){
+      console.log(err);
+      return res.send(500,{'msg':'no user.'});
+    }
+    else{
+      console.log(user);
+      return res.send(user);
     }
   });
 };

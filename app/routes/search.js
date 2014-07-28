@@ -7,6 +7,7 @@ module.exports = function(app, passport) {
     app.post('/search/company', search.getCompany);
     app.post('/search/team', search.getTeam);
     app.post('/search/user', search.getUser);
-    app.post('/search/recommandTeam', search.recommandTeam)
+    app.get('/search/user/:userId', search.getUserInfo);
+    app.post('/search/recommandTeam', search.recommandTeam);
     app.get('/search/:companyId/member', authorization.companyAuthorize, search.getMember);
 };
