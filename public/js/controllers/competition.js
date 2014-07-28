@@ -194,23 +194,15 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
         try {
             $http({
                 method: 'post',
-                url: '/comment/pull',
+                url: '/comment/pull/campaign/'+$scope.competition_id,
                 data:{
                     host_id : $scope.competition_id
                 }
             }).success(function(data, status) {
-                if(data.length > 0){
-                    $scope.comments = data;
-                    $scope.fixed_sum = data.length;
-                    for(var i = 0; i < $scope.comments.length; i ++) {
-                        if($scope.comments[i].status == 'delete'){
-                            $scope.comments.splice(i,1);
-                            i--;
-                        }else{
-                            $scope.comments[i].delete_permission = $scope.role === 'LEADER' || $scope.role === 'HR' || $scope.comments[i].poster._id === $scope.user._id;
-                            $scope.comments[i].index = data.length - i;
-                        }
-                    }
+                if(data.comments.length > 0){
+                    $scope.comments = data.comments;
+                    $scope.fixed_sum = data.comments.length;
+                    $scope.user = data.user;
                 }
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');

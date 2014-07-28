@@ -1231,6 +1231,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
 
     $scope.getNode = function(node){
         $scope.did = node._id;
+        $scope.current_node = node;
         $http({
             method : 'post',
             url : '/department/detail/'+node._id,
@@ -1490,6 +1491,15 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                         'nickname':$scope.department_user.nickname,
                         'photo':$scope.department_user.photo
                     });
+
+                    if($scope.current_node != null && $scope.current_node != undefined){
+                        $scope.current_node.manager.push({
+                            '_id':$scope.department_user._id,
+                            'nickname':$scope.department_user.nickname,
+                            'photo':$scope.department_user.photo
+                        });
+                        $scope.current_node = null;
+                    }
                 }).error(function(data, status) {
                     //TODO:更改对话框
                     alertify.alert('DATA ERROR');

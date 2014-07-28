@@ -51,13 +51,15 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         try {
             $http({
                 method: 'post',
-                url: '/comment/pull',
+                url: '/comment/pull/campaign/'+$scope.campaign_id,
                 data:{
                     host_id : $scope.campaign_id
                 }
             }).success(function(data, status) {
-                if(data.length > 0){
-                    $scope.comments = data;
+                if(data.comments.length > 0){
+                    $scope.comments = data.comments;
+                    $scope.fixed_sum = data.comments.length;
+                    $scope.user = data.user;
                 }
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');

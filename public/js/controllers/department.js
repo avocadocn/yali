@@ -342,23 +342,14 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
             try {
                 $http({
                     method: 'post',
-                    url: '/comment/pull',
+                    url: '/comment/pull/team/'+$rootScope.teamId,
                     data:{
                         host_id : $scope.group_messages[index].campaign._id
                     }
                 }).success(function(data, status) {
-                    if(data.length > 0){
-                        $scope.group_messages[index].comments = data;
-                        $scope.fixed_sum = data.length;
-                        for(var i = 0; i < $scope.group_messages[index].comments.length; i ++) {
-                            if($scope.group_messages[index].comments[i].status == 'delete'){
-                                $scope.group_messages[index].comments.splice(i,1);
-                                i--;
-                            }else{
-                                $scope.group_messages[index].comments[i].delete_permission = $scope.role === 'LEADER' || $scope.role === 'HR' || $scope.group_messages[index].comments[i].poster._id === $scope.user._id;
-                                $scope.group_messages[index].comments[i].index = data.length - i;
-                            }
-                        }
+                    if(data.comments.length > 0){
+                        $scope.group_messages[index].comments = data.comments;
+                        $scope.fixed_sum = data.comments.length;
                     }
                 }).error(function(data, status) {
                     alertify.alert('DATA ERROR');
