@@ -30,7 +30,7 @@ form(name="search_form")
           img.size_80(ng-src="{{team.logo}}")
         .dl_md_10
           .group_row_1
-            a(href="/group/home/{{team._id}}/#/group_info")
+            a(href="/group/home/{{team._id}}/#/group_info" target="_blank")
               span {{team.name}}
           .group_row
               span 队员人数: {{team.member.length}}
@@ -48,7 +48,7 @@ form(name="search_form")
             img.size_48(ng-src="{{company.logo}}")
           .dl_md_10
             .row.margin_left_15
-              a(href="/company/home/{{company._id}}/#/company_info")
+              a(href="/company/home/{{company._id}}/#/company_info" target="_blank")
                 p {{company.name}}
             .row.margin_left_10
               .dl_md_3
@@ -77,7 +77,7 @@ form(name="search_form")
           img.size_80(ng-src="{{team.logo}}")
         .dl_md_10
           .group_row_1
-            a(href="/group/home/{{team._id}}/#/group_info")
+            a(href="/group/home/{{team._id}}/#/group_info" target="_blank")
               span {{team.name}}
           .group_row
               span 队员人数: {{team.member.length}}
