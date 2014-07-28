@@ -6,7 +6,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
     $scope.private_message_content = {
         'text':""
     };
-    $scope.$watch('campaign',function(campaign){
+    $scope.$watch('campaign_id',function(campaign){
         if(campaign==null){
             return;
         }
@@ -14,13 +14,13 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
     });
     $scope.initialize = function(){
         var locationmap = new BMap.Map("mapContainer");            // 创建Map实例
-        var nowPoint = new BMap.Point($scope.campaign.location.coordinates[0],$scope.campaign.location.coordinates[1]);
+        var nowPoint = new BMap.Point($scope.location.coordinates[0],$scope.location.coordinates[1]);
         locationmap.centerAndZoom(nowPoint,15);
         locationmap.enableScrollWheelZoom(true);
         locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
         var marker = new BMap.Marker(nowPoint);  // 创建标注
         locationmap.addOverlay(marker);              // 将标注添加到地图中
-        var label = new BMap.Label($scope.campaign.location.name,{offset:new BMap.Size(20,-10)});
+        var label = new BMap.Label($scope.location.name,{offset:new BMap.Size(20,-10)});
         marker.setLabel(label);
     };
     window.initialize = $scope.initialize;
@@ -53,21 +53,11 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 method: 'post',
                 url: '/comment/pull',
                 data:{
-                    host_id : $scope.campaign._id
+                    host_id : $scope.campaign_id
                 }
             }).success(function(data, status) {
                 if(data.length > 0){
                     $scope.comments = data;
-                    $scope.fixed_sum = data.length;
-                    for(var i = 0; i < $scope.comments.length; i ++) {
-                        if($scope.comments[i].status == 'delete'){
-                            $scope.comments.splice(i,1);
-                            i--;
-                        }else{
-                            $scope.comments[i].delete_permission = $scope.role === 'LEADER' || $scope.role === 'HR' || $scope.comments[i].poster._id === $scope.user._id;
-                            $scope.comments[i].index = data.length - i;
-                        }
-                    }
                 }
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');
@@ -86,7 +76,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 data:{
                     comment_id : $scope.comments[index]._id,
                     host_type:'campaign_detail',
-                    host_id:$scope.campaign._id
+                    host_id:$scope.campaign_id
                 }
             }).success(function(data, status) {
                 if(data === 'SUCCESS'){
@@ -120,7 +110,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 method: 'post',
                 url: '/comment/push',
                 data:{
-                    host_id : $scope.campaign._id,
+                    host_id : $scope.campaign_id,
                     content : $scope.new_comment.text,
                     host_type : 'campaign_detail'
                 }
@@ -131,8 +121,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                         'content' : data.comment.content,
                         'create_date' : data.comment.create_date,
                         'poster' : data.comment.poster,
-                        'host_type' : data.comment.host_type,
-                        'index' : $scope.fixed_sum+1
+                        'host_type' : data.comment.host_type
                     });
                     $scope.new_comment.text='';
                 } else {
@@ -151,9 +140,9 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         try {
             $http({
                 method: 'post',
-                url: '/campaign/joinCampaign/'+$scope.campaign._id,
+                url: '/campaign/joinCampaign/'+$scope.campaign_id,
                 data:{
-                    campaign_id : $scope.campaign._id
+                    campaign_id : $scope.campaign_id
                 }
             }).success(function(data, status) {
                 if(data.result===1){
@@ -161,17 +150,17 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
                     $scope.join = 1;
                     if($scope.role==='HR'|| $scope.role ==='LEADER'){
-                        for(var i = 0;i < $scope.campaign.member_quit.length; i ++) {
-                            if($scope.campaign.member_quit[i].nickname === $scope.user.nickname) {
-                                $scope.campaign.member_quit.splice(i,1);
+                        for(var i = 0;i < $scope.member_quit.length; i ++) {
+                            if($scope.member_quit[i].nickname === data.member.nickname) {
+                                $scope.member_quit.splice(i,1);
                                 break;
                             }
                         }
                     }
 
-                    $scope.campaign.member.push({
-                        'nickname' : $scope.user.nickname,
-                        'photo' : $scope.user.photo
+                    $scope.member.push({
+                        'nickname' : data.member.nickname,
+                        'photo' : data.member.photo
                     });
                 }
                 else{
@@ -190,9 +179,9 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         try {
             $http({
                 method: 'post',
-                url: '/campaign/quitCampaign/'+$scope.campaign._id,
+                url: '/campaign/quitCampaign/'+$scope.campaign_id,
                 data:{
-                    campaign_id : $scope.campaign._id
+                    campaign_id : $scope.campaign_id
                 }
             }).success(function(data, status) {
                 if(data.result===1){
@@ -200,17 +189,17 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                     //alert('您已退出该活动!');
                     $scope.join = -1;
 
-                        for(var i = 0;i < $scope.campaign.member.length; i ++) {
-                            if($scope.campaign.member[i].nickname === $scope.user.nickname) {
-                                $scope.campaign.member.splice(i,1);
+                        for(var i = 0;i < $scope.member.length; i ++) {
+                            if($scope.member[i].nickname === data.member.nickname) {
+                                $scope.member.splice(i,1);
                                 break;
                             }
                         }
 
                     if($scope.role==='HR'|| $scope.role ==='LEADER'){
-                        $scope.campaign.member_quit.push({
-                            'nickname' : $scope.user.nickname,
-                            'photo' : $scope.user.photo
+                        $scope.member_quit.push({
+                            'nickname' : data.member.nickname,
+                            'photo' : data.member.photo
                         });
                     }
                 }
@@ -236,7 +225,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
               method: 'post',
               url: '/message/push/campaign',
               data:{
-                  campaign_id : $scope.campaign._id,
+                  campaign_id : $scope.campaign_id,
                   content : $scope.private_message_content.text
               }
           }).success(function(data, status) {

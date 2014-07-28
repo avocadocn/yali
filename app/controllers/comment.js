@@ -24,11 +24,14 @@ exports.getComment = function(req,res){
         return res.send(403,'forbidden');
     }
     var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一条动态、一张照片、一场比赛等等
-    Comment.find({'host_id' : req.body.host_id}).sort({'create_date':-1})
+    Comment.find({'host_id' : req.body.host_id,'status' : 'active'}).sort({'create_date':-1})
     .exec(function(err, comment) {
         if(err || !comment) {
             return res.send([]);
         } else {
+            comment.forEach(function(comment){
+                comment.set('delete_permission', req.role === 'LEADER' || req.role === 'HR' || comment.poster._id === req.user._id, {strict : false});
+            })
             return res.send(comment);
         }
     });

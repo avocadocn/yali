@@ -103,7 +103,7 @@ angular.module('starter.services', [])
 
   // callback(campaign)
   var getCampaign = function(id, callback) {
-    $http.get(Global.base_url + '/campaign/' + id)
+    $http.get(Global.base_url + '/campaign/getCampaigns/' + id)
     .success(function(data, status) {
       var campaign = data.campaign;
       setCampaignTime(campaign);

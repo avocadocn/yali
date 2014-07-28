@@ -3,6 +3,7 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/competition.css")
+  link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
   .dl_container.clearfix(ng-controller="competitionController" ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score?competition.camp[0].score:0};score_b=#{competition.camp[1].score?competition.camp[1].score:0};")
@@ -42,7 +43,7 @@ block contentExt
                 .col-xs-2.score_colon
                   span.dl_score_colon :
                   if confirm_mode === 1
-                    a.dl_btn_right.dl_left(ng-disabled="true") 等待确认
+                    a.cancel_btn.dl_left(ng-disabled="true") 等待确认
                   if confirm_mode === 3
                     a.dl_btn_right.dl_left(ng-click='scoreModify()') {{modify_caption}}
                 .col-xs-5.score_right
@@ -135,29 +136,33 @@ block contentExt
                   each teamBMember in competition.camp[1].formation
                     img.team_member_logo.teamMember.onmemberB.img_user(x-donler-member="true" draggable="false" data-camp='1' id='on_b__#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
         hr
-        if role ==='LEADER' || role==='MEMBER'
-          .dl_comment.row
-            form.dl_detail_main(name="comment_form" novalidate)
-              p.subtitle #{__("I")}#{__("WANT")}#{__("LEAVEMESSAGE")}
+        if role ==='LEADER' || role==='MEMBER' || role==='HR'
+          form.dl_detail_main(name="comment_form" novalidate)
+            p.subtitle #{__("LEAVEMESSAGE")}
+            if role !=='HR'
               textarea.dl_form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
               button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-              .dl_row(bs-popover)
-                section
-                  br
-                  div.comment.clearfix(ng-repeat="comment in comments")
-                    .comment_user_info
-                      a(href="/users/home/{{comment.poster._id}}" )
-                        img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-                      p.dl_user_name_small
-                        a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
-                    .comment_content_panel
-                      .relative
-                        .triangle_border
-                        .triangle
-                        .comment_content
-                          p(ng-cloak) {{comment.content}}
-                      label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-                      a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+            .dl_row(bs-popover)
+              section
+                br
+                div.comment.clearfix(ng-repeat="comment in comments")
+                  .comment_user_info(ng-if="comment.poster.cid=== '#{cid}'")
+                    a(href="/users/home/{{comment.poster._id}}" )
+                      img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}')
+                    p.dl_user_name_small
+                      a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
+                  .comment_user_info(ng-if="!(comment.poster.cid==='#{cid}')")
+                    img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}")
+                    p.dl_user_name_small
+                     span(ng-cloak) {{comment.poster.nickname}}
+                  .comment_content_panel
+                    .relative
+                      .triangle_border
+                      .triangle
+                      .comment_content
+                        p(ng-cloak) {{comment.content}}
+                    label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+                    a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .side
       if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish
         .pull-right

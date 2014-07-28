@@ -9,7 +9,7 @@
         <p>开始时间: {{ schedule.start_time }}</p>
         <p>截止时间: {{ schedule.end_time }}</p>
         <p>活动地点: {{ schedule.location.name }}</p>
-        <button class="button button-block" ng-click="quit(schedule.id)">退出</button>
+        <button class="button button-block" ng-click="quit(schedule._id)">退出</button>
       </ion-item>
     </ion-list>
   </ion-content>

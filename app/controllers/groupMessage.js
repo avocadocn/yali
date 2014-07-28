@@ -12,8 +12,10 @@ var mongoose = require('mongoose'),
 var pagesize = 20;
 var day_time = 24 * 60 * 60 * 1000;
 exports.renderMessageList =function(req,res){
+  var cid = req.user.provider=='company'? req.user._id :req.user.cid;
   res.render('partials/message_list',{
-    'role':req.role
+    'role':req.role,
+    'cid':cid
   });
 };
 //根据小队ID返回小组动态消息

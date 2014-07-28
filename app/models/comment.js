@@ -23,7 +23,7 @@ var Comment = new Schema({
   },
   status:{
     type: String,
-    enum:['acctive','delete']
+    enum:['active','delete']
   },
   host_type:{
     type: String,

@@ -55,13 +55,15 @@ exports.getCompetition = function(req, res){
       active: true
     }
   ];
+  var cid = req.user.provider==='company'? req.user._id : req.user.cid
   var options ={
     'title': '比赛页面',
     'competition' : competition,
     'role': req.role,
     'moment':moment,
     'photo_thumbnails': photo_album_controller.photoThumbnailList(competition.photo_album, 4),
-    'links': links
+    'links': links,
+    'cid': cid
   };
   if(req.user.provider==='user'){
     options.user={'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo};

@@ -211,7 +211,7 @@ exports.listAuthorize = function(req,res, next){
     })
     .exec(function(err, user) {
         if (err) return next(err);
-        if (!user) return next(new Error('Failed to load User ' + id));
+        if (!user) return next(new Error('Failed to load User ' + req.params.pageId));
         req.profile = user;
         exports.userAuthorize(req,res, next);
     });
@@ -223,7 +223,7 @@ exports.listAuthorize = function(req,res, next){
       })
       .exec(function(err, companyGroup) {
           if (err) return next(err);
-          if (!companyGroup) return next(new Error(' Failed to load companyGroup ' + id));
+          if (!companyGroup) return next(new Error(' Failed to load companyGroup ' + req.params.pageId));
           req.companyGroup = companyGroup;
           exports.teamAuthorize(req,res, next);
       });
@@ -235,7 +235,7 @@ exports.listAuthorize = function(req,res, next){
       })
       .exec(function(err, company) {
           if (err) return next(err);
-          if (!company) return next(new Error(' Failed to load company ' + id));
+          if (!company) return next(new Error(' Failed to load company ' + req.params.pageId));
           req.company = company;
           exports.companyAuthorize(req,res, next);
       });
