@@ -137,13 +137,17 @@ div(ng-show = '!loading')
             .dl_modal_container(bs-popover ng-if="group_message.comments.length > 0")
               .dl_row(ng-repeat="comment in group_message.comments")
                 .row.line_left
-                  .dl_md_1.photo
+                  .dl_md_1.photo(ng-if="comment.poster.cid === '#{cid}'")
                     a(href="/users/home/{{comment.poster._id}}")
                       img.size_head_list.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseover='showUserCard(comment.poster._id,comment._id)' id='pop{{comment._id}}')
+                  .dl_md_1.photo(ng-if="!(comment.poster.cid=== '#{cid}')")
+                    img.size_head_list.img_user(ng-src="{{comment.poster.photo}}")
                   .dl_md_12.comment_left.comment_box
                     .dl_row
-                      .comment_name.name
+                      .comment_name.name(ng-if="comment.poster.cid=== '#{cid}'")
                         a.dl_user_name_normal(title="{{comment.poster.nickname}}" href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
+                      .comment_name.name(ng-if="!(comment.poster.cid=== '#{cid}')")
+                        span.dl_user_name_normal {{comment.poster.nickname}}
                       .comment_time.time
                         h7 {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
                     .dl_row
