@@ -96,8 +96,7 @@ block contentExt
                 .comment_user_info
                   a(href="/users/home/{{comment.poster._id}}" )
                     img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-                  p.dl_user_name_small
-                    a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
+                  a.dl_user_name_small(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
                 .comment_content_panel
                   .relative
                     .triangle_border
