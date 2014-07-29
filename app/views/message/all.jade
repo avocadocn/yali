@@ -1,6 +1,6 @@
 .loading_div(ng-show = 'loading')
 div(ng-show = '!loading')
-  .dl_modal_container
+  .dl_modal_container.dl_messagebox
     .dl_row.message_panel(ng-repeat="all_message in all_messages" ng-if="$index >= page_all.up && $index <= page_all.down" ng-click="setToRead($index)")
       .row.line_left
         .dl_message_head.dl_message_body_font(ng-switch="all_message.message_type")

@@ -1501,7 +1501,9 @@ input.ng-invalid.ng-dirty {
 .dl_compaign_member,
 .dl_department,
 .dl_campaign_list,
-.dl_group_select {
+.dl_group_select,
+dl_messagebox,
+.dl_message_sendbox {
   width: 100%;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -1512,8 +1514,13 @@ input.ng-invalid.ng-dirty {
 .dl_compaign_member .loademp,
 .dl_department .loademp,
 .dl_campaign_list .loademp,
-.dl_group_select .loademp {
+.dl_group_select .loademp,
+dl_messagebox .loademp,
+.dl_message_sendbox .loademp {
   line-height: 120px;
+}
+.dl_messages_page .dl_container .main {
+  width: 100%;
 }
 .dl_company_container .main {
   width: 960px;
