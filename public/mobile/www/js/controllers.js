@@ -20,8 +20,8 @@ angular.module('starter.controllers', [])
   }
 
   $scope.data = {
-    username: '',
-    password: ''
+    username: 'afei@55yali.com',
+    password: '123456'
   };
 
   $scope.loginMsg = '';

@@ -400,3 +400,10 @@ body {
 .campaign_detail .campaign_time_shadow {
   width: 66.66666667%;
 }
+.dynamic_list .dynamic_side {
+  float: left;
+}
+.dynamic_list .dynamic_side .team_logo {
+  width: 56px;
+  height: 56px;
+}
