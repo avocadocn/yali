@@ -310,6 +310,51 @@ angular.module('starter.services', [])
 })
 
 
+.factory('Comment', function($http, Global){
+
+  /**
+   * 获取活动的评论
+   * @param  {String}   id       活动id
+   * @param  {Function} callback callback(comments)
+   */
+  var getCampaignComments = function(id, callback) {
+    // why post?
+    $http.post('/comment/pull/campaign/' + id, { host_id: id })
+    .success(function(data, status) {
+      callback(data.comments);
+    });
+  };
+
+  /**
+   * 发表活动的评论
+   * @param  {String}   id       活动id
+   * @param  {String}   comment  评论文本
+   * @param  {Function} callback callback(err), 成功则err为null
+   */
+  var publishCampaignComment = function(id, comment, callback) {
+    var post_data = {
+      host_type: 'campaign',
+      host_id: id,
+      content: comment
+    };
+    $http.post('/comment/push', post_data)
+    .success(function(data, status) {
+      if (data.msg === 'SUCCESS') {
+        callback(null);
+      } else {
+        callback(data.msg);
+      }
+    });
+  };
+
+  return {
+    getCampaignComments: getCampaignComments,
+    publishCampaignComment: publishCampaignComment
+  };
+
+})
+
+
 .factory('User', function($http, Global) {
 
   // callback(user)
