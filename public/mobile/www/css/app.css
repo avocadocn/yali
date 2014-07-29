@@ -403,7 +403,11 @@ body {
 .dynamic_list .dynamic_side {
   float: left;
 }
-.dynamic_list .dynamic_side .team_logo {
-  width: 56px;
-  height: 56px;
+.dynamic_list img.team_logo {
+  height: 150px;
+  width: 150px;
+  float: left;
+}
+.dynamic_list img.team_right {
+  float: right;
 }
