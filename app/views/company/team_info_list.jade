@@ -47,10 +47,10 @@ div(ng-show = '!loading')
           div(ng-if="data_type==='team'")
             .dl_row.clearfix(ng-if="role === 'HR'")
               button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}
-              //-关组
-              button.dl_btn.dl_btn_small.cancel_btn(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
               //-开组
-              button.dl_btn.dl_btn_small(ng-if="team.active" ng-click="activateGroup(false,team._id,$index)") #{__("CLOSE")}
+              button.dl_btn.dl_btn_small.cancel_btn(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
+              //-关组
+              button.dl_btn.dl_btn_small(ng-if="team.active" ng-click="closeGroup($index)" data-toggle="modal" data-target="#CloseGroupModel") #{__("CLOSE")}
             .dl_row.clearfix(ng-if="role === 'EMPLOYEE'")
               //-不属于显示加组按钮
               button.dl_btn.dl_btn_small(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
@@ -84,4 +84,29 @@ div(ng-show = '!loading')
             .clearfix
 
       //- p {{team}}
-
+div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  .modal-dialog
+    .dl-modal
+      .dl-modal-content
+        form
+          .dl-modal-header
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
+            h4.modal-title#myModalLabel #{__("CONFIRM")}
+          .dl-modal-body
+            //-span= '您确定要退出' +tname +'吗？'
+          .dl-modal-footer
+            button.dl_btn.dl_btn_small(ng-click='quitGroup()' data-dismiss="modal") #{__("CONFIRM")}
+            button.cancel_btn.dl_btn_small(data-dismiss="modal") #{__("CANCEL")}
+div.modal.fade#CloseGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  .modal-dialog
+    .dl-modal
+      .dl-modal-content
+        form
+          .dl-modal-header
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
+            h4.modal-title#myModalLabel #{__("CONFIRM")}
+          .dl-modal-body
+            span= '您确定要关闭小组吗？'
+          .modal-footer
+            button.dl_btn.dl_btn_small(ng-click='activateGroup(false,team_lists[group_index]._id,group_index)' data-dismiss="modal") #{__("CONFIRM")}
+            button.cancel_btn.dl_btn_small(data-dismiss="modal") #{__("CANCEL")}

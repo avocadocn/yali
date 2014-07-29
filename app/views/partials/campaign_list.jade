@@ -12,11 +12,11 @@
           li(ng-if="role==='EMPLOYEE'")
             a(ng-click="selectCampaign(2)") #{__("UNSELECTED_TEAM")}
           li(ng-if="role!=='EMPLOYEE'")
-            a(ng-click="selectCampaign(3)") 小组活动
+            a(ng-click="selectCampaign(3)") 小队活动
           li
             a(ng-click="selectCampaign(4)") 部门活动
           li
-            a(ng-click="selectCampaign(5)") 全部活动
+            a(ng-click="selectCampaign(5)") 所有活动
   table.table.table-hover.campaign_table
     tr(ng-repeat="campaign_item in campaigns")
       //- td.emp_col
@@ -38,7 +38,7 @@
         p #{__("LOCATION")}:
           span.content_text {{campaign_item.location.name}}
       td.operator_col
-        button.cancel_btn.dl_btn_small.operator_btn(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
+        button.cancel_btn.dl_btn_small.operator_btn.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
   .text-center(ng-if="campaigns.length>0")
     button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
     span(ng-if="loadOver_flag") 已经加载了所有的活动

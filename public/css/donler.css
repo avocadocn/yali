@@ -671,6 +671,9 @@ textarea {
 .dl_container .tab-content {
   min-height: 300px;
 }
+.dl_container .tab-content .tab-pane .dropdown-menu {
+  min-width: 100px;
+}
 .dl_container .tab-body,
 .dl_container .tab-info-form {
   background-color: #f4f4f4;

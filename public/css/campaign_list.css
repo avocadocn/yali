@@ -45,3 +45,6 @@
 .campaign_table .content_col .content_text {
   margin-left: 5px;
 }
+.campaign_table .operator_col {
+  padding: 25px !important;
+}

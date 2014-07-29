@@ -237,22 +237,22 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
             case 0:
                 $scope.campaignType = 'company';
                 _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/company/0";
-                $scope.campaign_type = "全公司活动";
+                $scope.campaign_type = "公司活动";
                 break;
             case 1:
                 $scope.campaignType = 'selected';
                 _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/selected/0";
-                $scope.campaign_type = "已加入小队的活动";
+                $scope.campaign_type = "已加入小队活动";
                 break;
             case 2:
                 $scope.campaignType = 'unselected';
                 _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/unselected/0";
-                $scope.campaign_type = "未加入小队的活动";
+                $scope.campaign_type = "未加入小队活动";
                 break;
             case 3:
                 $scope.campaignType = 'team';
                 _url = "/campaign/getCampaigns/company/"+$rootScope.cid+"/team/0";
-                $scope.campaign_type = "所有小队的活动";
+                $scope.campaign_type = "小队活动";
                 break;
             case 4:
                 $scope.campaignType = 'department';
@@ -811,10 +811,12 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }).success(function(data,status){
                 if( active===true ){
+                   $scope.team_lists[index].active = true;
                    alertify.alert('成功打开小组!');
                 }
                 else{
-                    alertify.alert('成功关闭小组!');
+                    $scope.team_lists[index].active = false;
+                    //alertify.alert('成功关闭小组!');
                 }
             }).error(function(data, status){
                 alertify.alert('DATA ERROR');
@@ -824,6 +826,13 @@ tabViewCompany.directive('masonry', function ($timeout) {
             console.log(e);
         }
     };
+
+    //确认关闭小组
+    $scope.group_index = 0;
+    $scope.closeGroup = function(index){
+        $scope.group_index = index;
+    };
+
     //加入小队
     $scope.joinGroup = function(tid){
         try{
