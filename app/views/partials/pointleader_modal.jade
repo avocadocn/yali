@@ -36,9 +36,9 @@
               .dl_row
                 .dl_cover(ng-if="user.leader")
                 a(ng-click="appointReady(user,$index)" ng-disabled="true")
-                  img.size_80(ng-src="{{user.photo}}")
-              .dl_row(style="width:80px;text-align:center")
-                label {{user.nickname}}
+                  img.size_48.img_user(ng-src="{{user.photo}}")
+              .dl_row(style="width:48px;text-align:center")
+                span.user_name {{user.nickname}}
       .dl-modal-footer
         button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointLeader()") #{__("APPOINT")}
 

@@ -77,14 +77,15 @@ block contentExt
             .label_left
               label.control-label(for="invite_code") *邀请码
             .input_right
-              input#invite_code.dl_form-Control(type="text" name="invite_code" placeholder="请输入邀请码" ng-model= "invite_code" tooltip-placement="right"  required)
+              input#invite_code.dl_form-Control(type="text" name="invite_code" placeholder="测试中,暂不对外开放注册。" ng-model= "invite_code" tooltip-placement="right"  required)
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.checkbox.$invalid && signup_form.checkbox.$dirty}")
           .col-xs-offset-3.col-xs-9
             label.dl_checkbox
               input(type="checkbox" ng-model= "checkbox" tooltip-placement="right" tooltip="{{signup_form.invite_code.$invalid && signup_form.invite_code.$dirty ? '勾选该按钮':''}}" required)
-              | 我已阅读并同意<a href="#">服务条款</a>
+              | 我已阅读并同意<a href="/about#law">《法律声明》及《隐私政策》</a>
         .form-group.dl_sm_group
           .col-xs-offset-3.col-xs-9
+            //- todo M
             button#submit.btn.btn-primary.dl_btn.btn_submit.dl_full_control(ng-disabled="!check || !reg || signup_form.$invalid") 提交申请
 append footExt
   script(src='/js/controllers/companySignUp.js')

@@ -32,17 +32,17 @@ block panel
   div(ng-init="role='#{role}'")
     ul.nav.nav-tabs(ng-init="cid='#{cid}'")
       li.tab_style(ng-class="{'active':nowTab=='team_info'}")
-        a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')") 小队信息
+        a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')") 小队
       if role === 'HR' || role === 'EMPLOYEE'
         li.tab_style(ng-class="{'active':nowTab=='company_campaign'}")
-          a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") #{__('COMPANY_CAMPAIGN')}
+          a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") 活动
         li.tab_style(ng-class="{'active':nowTab=='company_member'}")
-          a.subtitle.no_radius(href="#/company_member/#{cid}"  ng-click="addactive('company_member')") #{__('STAFF')}
+          a.subtitle.no_radius(href="#/company_member/#{cid}"  ng-click="addactive('company_member')") 成员
         li.tab_style(ng-class="{'active':nowTab=='timeLine/#{cid}'}")
-          a.subtitle.no_radius(href="#/timeLine/#{cid}"  ng-click="addactive('timeLine/#{cid}')") #{__('TIME_LINE')}
+          a.subtitle.no_radius(href="#/timeLine/#{cid}"  ng-click="addactive('timeLine/#{cid}')") 足迹
       if role === 'HR'
         li.tab_style(ng-class="{'active':nowTab=='department'}")
-          a.subtitle.no_radius(href="#/department"  ng-click="addactive('department')") 部门管理
+          a.subtitle.no_radius(href="#/department"  ng-click="addactive('department')") 部门
       //- div.margin_top_15.pull-right(ng-controller="CampaignListController")
       //-   button.btn.btn-default.dropdown-toggle(data-toggle="dropdown") 活动类型
       //-   ul.dropdown-menu(role="menu")

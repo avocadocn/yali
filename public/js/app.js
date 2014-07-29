@@ -5,6 +5,18 @@ angular.module('donler', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.
 
 var app = angular.module('donler');
 
+app.directive('match', function ($parse) {
+  return {
+    require: 'ngModel',
+    link: function(scope, elem, attrs, ctrl) {
+      scope.$watch(function() {
+        return $parse(attrs.match)(scope) === ctrl.$modelValue;
+      }, function(currentValue) {
+        ctrl.$setValidity('mismatch', currentValue);
+      });
+    }
+  };
+});
 //弹出信息卡片的控制器
 app.directive('bsPopover',function() {
   return{
