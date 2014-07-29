@@ -7,10 +7,10 @@
   </ion-pane>
 
   <ion-side-menu side="left" class="menu_wrap">
-    <header class="bar bar-header bar-stable menu_header">
-      <img class="menu_logo" src="img/logo_b.png"/>
-    </header>
-    <ion-content class="has-header">
+    <ion-content>
+      <header>
+        <img class="menu_logo" src="img/logo_b.png"/>
+      </header>
       <div class="menu_personal_info" ng-if="_id">
         <img class="menu_photo" ng-src="{{ base_url }}/logo/user/{{ _id }}/80/80"/>
         <p class="menu_nickname">{{ nickname }}</p>

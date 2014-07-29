@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                 }
             },
             stylus: {
-                files: ['public/stylus/**.styl'],
+                files: ['public/stylus/**.styl', 'public/mobile/www/css/*.styl'],
                 tasks: ['stylus']
             }
         },
@@ -45,6 +45,12 @@ module.exports = function(grunt) {
                     cwd: 'public/stylus/',
                     src: '*.styl',
                     dest: 'public/css/',
+                    ext: '.css'
+                }, {
+                    expand: true,
+                    cwd: 'public/mobile/www/css/',
+                    src: '*.styl',
+                    dest: 'public/mobile/www/css/',
                     ext: '.css'
                 }]
             }

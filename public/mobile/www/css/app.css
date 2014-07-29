@@ -75,15 +75,6 @@ body {
 .menu_wrap {
   background-color: #3abde8;
 }
-.menu_wrap .has-header {
-  overflow: visible;
-}
-.menu_wrap .menu_header {
-  background-color: #3abde8;
-  background-image: none;
-  z-index: 0;
-  border-bottom: none;
-}
 .menu_bar {
   background-image: none !important;
   background-color: #3abde8 !important;
@@ -97,20 +88,21 @@ body {
   color: #fff !important;
 }
 .menu_logo {
+  display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 3px;
+  margin-top: 7px;
   width: 75px;
   height: 20px;
 }
 .menu_personal_info {
+  margin-top: 5px;
   color: #fff;
 }
 .menu_photo {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -10px;
   border: 2px solid #fff;
   border-radius: 5px;
 }
