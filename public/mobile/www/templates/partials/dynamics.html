@@ -1,11 +1,94 @@
 <ion-list>
   <ion-item ng-repeat="dynamic in dynamic_list">
-    <p>{{ dynamic.campaign.start_time | date:'yyyy-MM-dd hh:mm' }}</p>
-    <p>{{ dynamic.campaign.location.name }}</p>
-    <p>{{ dynamic.campaign.content }}</p>
-    <div ng-if="dynamic.campaign.camp.length==2">
-      <button ng-if="!dynamic.campaign.camp[1].start_confirm" value="赞成{{ dynamic.positive }}" ng-click="vote(dynamic._id, true, $index)">赞成{{ dynamic.positive }}</button>
-      <button ng-if="!dynamic.campaign.camp[1].start_confirm" value="反对{{ dynamic.negative }}" ng-click="vote(dynamic._id, false, $index)">反对{{ dynamic.negative }}</button>
+      <!--若是公司动态-->
+    <div class="clearfix dl_messageitem">
+      <div ng-if="dynamic.message_type==1||dynamic.message_type==3||dynamic.message_type==4||dynamic.message_type==5" class="message_side"><a ng-href="/group/home/{{dynamic.team_id}}"><img ng-src="{{dynamic.logo}}" class="size_56"/></a></div>
+      <div ng-if="dynamic.message_type===9 || dynamic.message_type===10" class="message_side"><a ng-href="{{'/department/home/' + dynamic.department[0] }}"><img ng-src="{{dynamic.logo}}" class="size_56"/></a></div>
+      <div ng-if="dynamic.message_type==0||dynamic.message_type==2||dynamic.message_type==6||dynamic.message_type==7||dynamic.message_type==8" class="message_side"><img ng-if="dynamic.message_type!=6" ng-src="{{dynamic.logo}}" class="size_56"/>
+        <div ng-if="dynamic.message_type==6" class="size_56"></div>
+      </div>
+      <div ng-switch="dynamic.message_type" class="messagebox_content"><span ng-switch-when="0" class="message_head"><a ng-href="{{'/company/home/'+dynamic.company[0].cid}}">{{dynamic.company[0].name}}</a><span>有了新动态</span></span><span ng-switch-when="1" class="message_head"><a ng-href="{{'/group/home/'+dynamic.team[0].teamid}}">{{dynamic.team[0].name}}</a><span>有了新动态</span></span><span ng-switch-when="2" class="message_head"><a ng-href="{{'/company/home/'+dynamic.company[0].cid}}">{{dynamic.company[0].name}}</a><span>关闭了活动</span></span><span ng-switch-when="3" class="message_head"><a ng-href="{{'/group/home/'+dynamic.team[0].teamid}}">{{dynamic.team[0].name}}</a><span>关闭了活动</span></span><span ng-switch-when="4" class="message_head"><a ng-href="{{'/group/home/'+dynamic.team[0].teamid}}">{{dynamic.team[0].name}}</a><span>向</span><a ng-href="{{'/group/home/'+dynamic.team[1].teamid}}">{{dynamic.team[1].name}}</a><span>发出了挑战</span></span><span ng-switch-when="5" class="message_head"><a ng-href="{{'/group/home/'+dynamic.team[1].teamid}}">{{dynamic.team[1].name}}</a><span>接受了</span><a ng-href="{{'/group/home/'+dynamic.team[0].teamid}}">{{dynamic.team[0].name}}</a><span>发出的挑战</span></span><span ng-switch-when="6" class="message_head">比赛<a ng-href="/competition/{{dynamic.campaign._id}}">{{dynamic.campaign.theme}}</a><span>的结果已经确认</span></span><span ng-switch-when="7" class="message_head"><a ng-href="{{'/company/home/'+dynamic.company[0].cid}}">{{dynamic.company[0].name}}</a><span>有新成员加入</span></span><span ng-switch-when="8" class="message_head"><a ng-href="{{'/group/home/'+_team.teamid}}" ng-repeat="_team in dynamic.team" class="vertical_label">{{_team.name}}</a><span>有新成员加入</span></span><span ng-switch-when="9" class="message_head"><a ng-href="{{'/department/home/'+dynamic.department[0]}}">{{dynamic.team[0].name}}</a><span>有了新动态</span></span><span ng-switch-when="10" class="message_head"><a ng-href="{{'/department/home/'+dynamic.department[0]}}">{{dynamic.team[0].name}}</a><span>发起了一个多部门联谊活动</span></span><span ng-switch-default="ng-switch-default"></span><span class="pull-right">{{dynamic.create_time | date:'yyyy-MM-dd HH:mm'}}</span>
+        <div class="dl_message">
+          <div ng-if="dynamic.message_type!=6" class="triangle"></div>
+          <div ng-if="dynamic.message_type&gt;=0 &amp;&amp; dynamic.message_type&lt;6 || dynamic.message_type===9 || dynamic.message_type===10" class="dl_message_container">
+            <div class="message_row"><span class="message_label">主题:</span><span class="message_label"><a ng-if="dynamic.message_type!=4 &amp;&amp; dynamic.message_type!=5 " ng-href="/campaign/detail/{{dynamic.campaign._id}}">{{dynamic.campaign.theme}}</a><a ng-if="!dynamic.campaign.finish&amp;&amp;dynamic.message_type==4 || gdynamicroup_message.message_type==5 " ng-href="/competition/{{dynamic.campaign._id}}">{{dynamic.campaign.theme}}</a><span ng-if="dynamic.campaign.finish&amp;&amp;dynamic.message_type==4">{{dynamic.campaign.theme}}</span></span></div>
+            <div class="message_row"><span class="message_label">内容:</span><span class="message_label">{{dynamic.campaign.content}}</span></div>
+            <div class="message_row"><span class="message_label">地点:</span><span class="message_label">{{dynamic.campaign.location.name}}</span></div>
+            <div class="message_row"><span class="message_label">开始时间:</span><span class="message_label">{{dynamic.campaign.start_time | date:'yyyy-MM-dd HH:mm'}}</span><span class="message_label">结束时间:</span><span class="message_label">{{dynamic.campaign.end_time | date:'yyyy-MM-dd HH:mm'}}</span><span ng-if="dynamic.campaign.member_max&gt;0" class="message_label">报名人数上限:</span><span ng-if="dynamic.campaign.member_max&gt;0" class="message_label">{{dynamic.campaign.member_max}}</span></div>
+            <div class="message_row"><span ng-if="dynamic.message_type==4 &amp;&amp; dynamic.response_flag !=undefined">
+                <button ng-click="responseProvoke(dynamic.campaign.camp[1].id,dynamic.campaign._id,true)" class="dl_btn dl_btn_small operator_btn">应战</button>
+                <button ng-click="responseProvoke(dynamic.campaign.camp[1].id,dynamic.campaign._id,false)" class="dl_btn dl_btn_small operator_btn">拒绝</button></span><span ng-if="dynamic.message_type==4 &amp;&amp; dynamic.cancel_flag !=undefined">
+                <button ng-click="cancelProvoke(dynamic.campaign.camp[0].id,dynamic.campaign._id)" class="dl_btn dl_btn_small operator_btn">取消</button></span></div>
+          </div>
+          <div ng-if="dynamic.message_type ==6" class="dl_message_container">
+            <div class="message_row"><a ng-href="{{'/group/home/'+dynamic.campaign.camp[0].id}}"><img ng-src="{{dynamic.campaign.camp[0].logo}}" class="size_56"/></a><span>{{dynamic.campaign.camp[0].tname}}</span><span class="h3 margin_15">{{dynamic.campaign.camp[0].score}} : {{dynamic.campaign.camp[1].score}}</span><a ng-href="{{'/group/home/'+dynamic.campaign.camp[1].id}}"><img ng-src="{{dynamic.campaign.camp[1].logo}}" class="size_56"/></a><span>{{dynamic.campaign.camp[1].tname}}</span></div>
+            <div class="message_row"><span class="message_label">{{dynamic.create_time | date:'yyyy-MM-dd HH:mm'}}</span></div>
+          </div>
+          <div ng-if="dynamic.message_type ==7 || dynamic.message_type==8 " class="dl_message_container">
+            <div class="message_row"><span class="message_label"><a ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in dynamic.user" class="vertical_label">{{_user.name}}</a></span><span class="message_label">加入时间 {{dynamic.create_time | date:'yyyy-MM-dd HH:mm'}}</span></div>
+          </div>
+        </div>
+        <div ng-if="dynamic.message_type&gt;=0 &amp;&amp; dynamic.message_type&lt;7&amp;&amp; dynamic.message_type!=4 || dynamic.message_type===9 || dynamic.message_type===10" class="message_row"><span ng-if="dynamic.join_role &amp;&amp;dynamic.join_flag!=undefined &amp;&amp; !dynamic.both_team">
+            <button ng-click="quit(dynamic.campaign._id,$index,dynamic.campaign.camp[dynamic.camp_flag].id)" ng-if="dynamic.join_flag" class="cancel_btn dl_btn_small operator_btn">退出</button>
+            <button ng-click="join(dynamic.campaign._id,$index,dynamic.campaign.camp[dynamic.camp_flag].id)" ng-if="!dynamic.join_flag &amp;&amp; (dynamic.campaign.member_max==0 || dynamic.campaign.member_max&gt;0 &amp;&amp; dynamic.member_num&lt;dynamic.campaign.member_max)" class="dl_btn dl_btn_small operator_btn">参加</button></span><a ng-if="dynamic.both_team" href="/competition/{{dynamic.campaign._id}}"> 详情</a><span ng-if="dynamic.message_type!=6" class="message_label">已报名人数：{{dynamic.member_num ? dynamic.member_num :'0'}}</span><span ng-if="dynamic.join_role&amp;&amp;dynamic.join_flag!=undefined&amp;&amp; dynamic.message_type!=4" class="message_label">报名截止时间: {{dynamic.campaign.deadline | date:'yyyy-MM-dd HH:mm'}}</span><span ng-if="dynamic.campaign.active &amp;&amp; dynamic.join_role &amp;&amp;dynamic.join_flag==undefined&amp;&amp; dynamic.message_type!=4&amp;&amp;dynamic.message_type!=6" class="message_label">报名已截止</span><span ng-if="!dynamic.campaign.active" class="message_label">活动已关闭</span>
+          <label ng-if="role!='HR'&amp;&amp;dynamic.comment_permission" class="pull-right"><a ng-click="toggleOperate($index);getComment($index)">留言 ({{dynamic.campaign.comment_sum}})</a></label>
+        </div>
+        <div ng-if="dynamic.message_type==4" class="message_row">
+          <label ng-if="dynamic.campaign.finish" class="message_label">挑战已经结束</label>
+          <label ng-if="role!='HR'&amp;&amp;dynamic.comment_permission" class="pull-right"><a ng-click="toggleOperate($index);getComment($index)">留言 ({{dynamic.campaign.comment_sum}})</a></label>
+          <label ng-if="dynamic.vote_flag!=undefined&amp;&amp;role!='HR'&amp;&amp;dynamic.comment_permission" class="pull-right vertical_label">|</label><a ng-if="dynamic.vote_flag!=undefined" ng-click="vote(dynamic.campaign._id,true,$index)" class="pull-right">{{dynamic.vote_flag == 1 ? "取消" : "赞"}} ({{dynamic.campaign.camp[dynamic.camp_flag].vote.positive ? dynamic.campaign.camp[dynamic.camp_flag].vote.positive :'0'}})</a>
+        </div>
+        <div ng-if="toggle[$index] &amp;&amp; dynamic.comment_permission" class="message_row">
+          <div class="dl_comment_area">
+            <form name="comment_form" novalidate="novalidate" class="dl_modal_container margin_top_5">
+              <div class="dl_md_12">
+                <input type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength="140" required="required" class="dl_form-Control"/>
+              </div>
+              <div class="dl_md_1">
+                <button ng-click="comment($index)" ng-disabled="comment_form.$invalid" class="dl_btn_right">发表</button>
+              </div>
+            </form><br/><br/>
+            <hr/>
+            <div bs-popover="bs-popover" ng-if="dynamic.comments.length &gt; 0" class="dl_modal_container">
+              <div ng-repeat="comment in dynamic.comments" class="dl_row">
+                <div class="row line_left">
+                  <div ng-if="comment.poster.cid === '53aa6fc011fd597b3e1be250'" class="dl_md_1 photo"><a href="/users/home/{{comment.poster._id}}"><img ng-src="{{comment.poster.photo}}" ng-Mouseover="showUserCard(comment.poster._id,comment._id)" id="pop{{comment._id}}" class="size_head_list img_user"/></a></div>
+                  <div ng-if="!(comment.poster.cid=== '53aa6fc011fd597b3e1be250')" class="dl_md_1 photo"><img ng-src="{{comment.poster.photo}}" class="size_head_list img_user"/></div>
+                  <div class="dl_md_12 comment_left comment_box">
+                    <div class="dl_row">
+                      <div ng-if="comment.poster.cid=== '53aa6fc011fd597b3e1be250'" class="comment_name name"><a title="{{comment.poster.nickname}}" href="/users/home/{{comment.poster._id}}" class="dl_user_name_normal">{{comment.poster.nickname}}</a></div>
+                      <div ng-if="!(comment.poster.cid=== '53aa6fc011fd597b3e1be250')" class="comment_name name"><span class="dl_user_name_normal">{{comment.poster.nickname}}</span></div>
+                      <div class="comment_time time">
+                        <h7>{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</h7>
+                      </div>
+                    </div>
+                    <div class="dl_row">
+                      <div class="dl_md_8 comment_top content">
+                        <p>{{comment.content}}</p>
+                      </div>
+                      <div ng-if="comment.delete_permission" class="dl_md_2 pull-right hidden_block">
+                        <h7 class="pull-right margin_right_20"><a ng-click="deleteComment($index)" class="mouse_hidden">删除</a></h7>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="dl_row line_top">
+                  <hr class="comment_bottom"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div ng-if="dynamics.length&gt;0" class="text-center">
+      <button ng-if="loadMore_flag" ng-click="loadMore()" class="dl_btn dl_btn_small">加载更多</button><span ng-if="loadOver_flag">已经加载了所有的动态</span>
+    </div>
+    <div ng-if="dynamics.length==0" class="text-center"><span>目前没有新的动态</span></div>
+    <ul class="pager">
+      <li><a ng-if="lastPage_flag" ng-click="changePage(-1)">上一页</a></li>
+      <li><a ng-if="nextPage_flag" ng-click="changePage(1)">下一页</a></li>
+    </ul>
   </ion-item>
 </ion-list>
