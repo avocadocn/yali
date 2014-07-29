@@ -7,25 +7,28 @@ angular.module('starter.services', [])
 
 .factory('Global', function() {
   var base_url = window.location.origin;
+  var _user = {};
+
 
   return {
-    base_url: base_url
+    base_url: base_url,
+    user: _user
   };
 })
 
 .factory('Authorize', function($state, $http, Global) {
 
-
-  /**
-   * 是否经过授权
-   * @property authorize
-   * @type Boolean
-   * @default false
-   */
   var _authorize = false;
 
 
   var authorize = function() {
+    if (!Global.user._id && localStorage.user_id) {
+      _authorize = true;
+      Global.user = {
+        _id: localStorage.user_id,
+        nickname: localStorage.user_nickname
+      };
+    }
     if (_authorize === false) {
       $state.go('login');
       return false;
@@ -34,17 +37,17 @@ angular.module('starter.services', [])
     }
   };
 
-  var login = function($scope, $rootScope) {
+  var login = function($scope) {
     return function(username, password) {
       $http.post(Global.base_url + '/users/login', { username: username, password: password })
       .success(function(data, status, headers, config) {
         if (data.result === 1) {
           _authorize = true;
-          var user_info = data.data;
-          if (user_info) {
-            $rootScope._id = user_info._id;
-            $rootScope.nickname = user_info.nickname;
-            $rootScope.role = user_info.role;
+          var user = data.data;
+          if (user) {
+            Global.user = user;
+            localStorage.user_id = user._id;
+            localStorage.user_nickname = user.nickname;
           }
           $state.go('app.campaignList');
         }
@@ -62,6 +65,9 @@ angular.module('starter.services', [])
     .success(function(data, status, headers, config) {
       if (data.result === 1) {
         _authorize = false;
+        Global.user = {};
+        delete localStorage.user_id;
+        delete localStorage.user_nickname;
         $state.go('login');
       }
     });
@@ -103,8 +109,8 @@ angular.module('starter.services', [])
   };
 
   // callback(campaign_list)
-  var getUserCampaigns = function($rootScope, callback) {
-    $http.get(Global.base_url + '/campaign/user/all/app/'+$rootScope._id)
+  var getUserCampaigns = function(callback) {
+    $http.get(Global.base_url + '/campaign/user/all/app/'+ Global.user._id)
     .success(function(data, status, headers, config) {
       campaign_list = data.campaigns;
       callback(campaign_list);
@@ -152,11 +158,11 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Schedule', function($http, $rootScope, Global) {
+.factory('Schedule', function($http, Global) {
 
   // callback(schedule_list)
   var getSchedules = function(callback) {
-    $http.get(Global.base_url + '/users/schedules/' + $rootScope._id)
+    $http.get(Global.base_url + '/users/schedules/' + Global.user._id)
     .success(function(data, status, headers, config) {
       callback(data.data);
     });
@@ -179,10 +185,10 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Dynamic', function($http, $rootScope, Global) {
+.factory('Dynamic', function($http, Global) {
 
   var getDynamics = function(callback) {
-    $http.get(Global.base_url + '/groupMessage/user/' +  $rootScope._id + '/0')
+    $http.get(Global.base_url + '/groupMessage/user/' +  Global.user._id + '/0')
     .success(function(data, status, headers, config) {
       callback(data.group_messages);
     });
@@ -220,14 +226,14 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Group', function($http, $rootScope, Global) {
+.factory('Group', function($http, Global) {
 
   var joined_group_list = null,
     unjoin_group_list = null,
     group_list = [];
 
   var getGroups = function(callback) {
-    $http.get(Global.base_url + '/users/groups/' + $rootScope._id)
+    $http.get(Global.base_url + '/users/groups/' + Global.user._id)
     .success(function(data, status, headers, config) {
       joined_group_list = data.joined_groups;
       unjoin_group_list = data.unjoin_groups;
@@ -263,7 +269,7 @@ angular.module('starter.services', [])
 })
 
 
-.factory('PhotoAlbum', function($http, $rootScope, Global) {
+.factory('PhotoAlbum', function($http, Global) {
 
   // callback(photos)
   var getPhotoList = function(photo_album_id, callback) {
@@ -304,7 +310,7 @@ angular.module('starter.services', [])
 })
 
 
-.factory('User', function($http, $rootScope, Global) {
+.factory('User', function($http, Global) {
 
   // callback(user)
   var getInfo = function(user_id, callback) {
@@ -359,11 +365,11 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Timeline', function($http, $rootScope, Global) {
+.factory('Timeline', function($http, Global) {
 
   // callback(time_lines)
   var getUserTimeline = function(callback) {
-    $http.get(Global.base_url + '/users/getTimelineForApp/'+$rootScope._id)
+    $http.get(Global.base_url + '/users/getTimelineForApp/'+ Global.user._id)
     .success(function(data, status) {
       callback(data.time_lines);
     });

@@ -1,9 +1,14 @@
 angular.module('starter.controllers', [])
 
-// html template get user info from $rootScope
-.controller('AppCtrl', function($scope, Authorize, Global) {
+
+.controller('AppCtrl', function($state, $scope, Authorize, Global) {
+  if (Authorize.authorize() === true) {
+    $state.go('app.campaignList');
+  }
+
   $scope.logout = Authorize.logout;
   $scope.base_url = Global.base_url;
+  $scope.user = Global.user;
 })
 
 
@@ -26,15 +31,13 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CampaignListCtrl', function($scope, $rootScope, Authorize, Campaign, Global) {
-
-  Authorize.authorize();
+.controller('CampaignListCtrl', function($scope, $rootScope, Campaign, Global) {
 
   $scope.base_url = Global.base_url;
 
   $rootScope.campaignReturnUri = '#/app/campaign_list';
 
-  Campaign.getUserCampaigns($rootScope, function(campaign_list) {
+  Campaign.getUserCampaigns(function(campaign_list) {
     $scope.campaign_list = campaign_list;
   });
 
@@ -45,9 +48,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Authorize, Campaign, PhotoAlbum, Map, Global) {
-
-  Authorize.authorize();
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Campaign, PhotoAlbum, Map, Global) {
 
   $scope.base_url = Global.base_url;
 
@@ -96,9 +97,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ScheduleListCtrl', function($scope, Authorize, Schedule) {
-
-  Authorize.authorize();
+.controller('ScheduleListCtrl', function($scope, Schedule) {
 
   var getSchedules = function() {
     Schedule.getSchedules(function(schedule_list) {
@@ -111,9 +110,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('DynamicListCtrl', function($scope, Authorize, Dynamic) {
-
-  Authorize.authorize();
+.controller('DynamicListCtrl', function($scope, Dynamic) {
 
   Dynamic.getDynamics(function(dynamic_list) {
     $scope.dynamic_list = dynamic_list;
@@ -128,9 +125,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('GroupJoinedListCtrl', function($scope, Authorize, Group) {
-
-  Authorize.authorize();
+.controller('GroupJoinedListCtrl', function($scope, Group) {
 
   $scope.show_list = [];
 
@@ -145,9 +140,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('GroupUnjoinListCtrl', function($scope, Authorize, Group) {
-
-  Authorize.authorize();
+.controller('GroupUnjoinListCtrl', function($scope, Group) {
 
   $scope.show_list = [];
 
@@ -162,18 +155,14 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('GroupInfoCtrl', function($scope, $stateParams, Authorize, Group) {
-
-  Authorize.authorize();
+.controller('GroupInfoCtrl', function($scope, $stateParams, Group) {
 
   $scope.template = 'templates/partials/group_info.html';
   $scope.group = Group.getGroup($stateParams.id);
 
 })
 
-.controller('GroupCampaignCtrl', function($scope, $rootScope, $stateParams, Authorize, Group, Campaign) {
-
-  Authorize.authorize();
+.controller('GroupCampaignCtrl', function($scope, $rootScope, $stateParams, Group, Campaign) {
 
   $scope.template = 'templates/partials/campaigns.html';
   $rootScope.campaign_owner = 'group';
@@ -193,9 +182,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('GroupDynamicCtrl', function($scope, $stateParams, Authorize, Group, Dynamic) {
-
-  Authorize.authorize();
+.controller('GroupDynamicCtrl', function($scope, $stateParams, Group, Dynamic) {
 
   $scope.template = 'templates/partials/dynamics.html';
   $scope.group = Group.getGroup($stateParams.id);
@@ -207,9 +194,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('TimelineCtrl', function($scope, $rootScope, Authorize, Timeline) {
-
-  Authorize.authorize();
+.controller('TimelineCtrl', function($scope, $rootScope, Timeline) {
 
   Timeline.getUserTimeline(function(time_lines) {
     $rootScope.time_lines = time_lines;
@@ -218,22 +203,18 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('UserInfoCtrl', function($scope, $rootScope, Authorize, User, Global) {
-
-  Authorize.authorize();
+.controller('UserInfoCtrl', function($scope, User, Global) {
 
   $scope.base_url = Global.base_url;
 
-  User.getInfo($rootScope._id, function(user) {
+  User.getInfo(Global.user._id, function(user) {
     $scope.user = user;
   });
 
 })
 
 
-.controller('OtherUserInfoCtrl', function($scope, $stateParams, Authorize, User, Global) {
-
-  Authorize.authorize();
+.controller('OtherUserInfoCtrl', function($scope, $stateParams, User, Global) {
 
   $scope.base_url = Global.base_url;
 

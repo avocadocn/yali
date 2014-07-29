@@ -393,3 +393,10 @@ body {
   color: #fff;
   background-color: rgba(0,0,0,0.4);
 }
+.campaign_detail .campaign_time {
+  padding: 0 10px;
+  height: 150px;
+}
+.campaign_detail .campaign_time_shadow {
+  width: 66.66666667%;
+}

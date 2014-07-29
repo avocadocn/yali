@@ -11,9 +11,9 @@
       <header>
         <img class="menu_logo" src="img/logo_b.png"/>
       </header>
-      <div class="menu_personal_info" ng-if="_id">
-        <img class="menu_photo" ng-src="{{ base_url }}/logo/user/{{ _id }}/80/80"/>
-        <p class="menu_nickname">{{ nickname }}</p>
+      <div class="menu_personal_info" ng-if="user._id">
+        <img class="menu_photo" ng-src="{{ base_url }}/logo/user/{{ user._id }}/80/80"/>
+        <p class="menu_nickname">{{ user.nickname }}</p>
       </div>
       <ion-list class="menu_list">
         <ion-item nav-clear menu-close href="#/app/campaign_list">

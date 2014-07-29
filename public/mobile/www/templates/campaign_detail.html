@@ -26,9 +26,19 @@
     </ion-tab>
 
     <ion-tab title="评论" icon="ion-chatbubble">
-      <ion-content has-header="true" class="wrap">
+      <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
+        </div>
+        <div class="row campaign_time football">
+          <div class="table_wrap campaign_time_shadow">
+            <div class="table_cell">
+              <div>
+                <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
+                <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
+              </div>
+            </div>
+          </div>
         </div>
         <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
         <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
