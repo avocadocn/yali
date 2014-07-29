@@ -22,7 +22,7 @@ form(name="search_form")
     .dl_modal_container.margin_top_15(ng-show='!result')
       .dl_row
         span.head 推荐对手
-        span.warning_words.margin_left_15(ng-show='!homecourt') (请准确填写小队主场信息，否则donelr将无法为您推荐附近的小队！)
+        span.warning_words.margin_left_15(ng-show='!homecourt') (请准确填写小队主场信息，否则donler将无法为您推荐附近的小队！)
       .dl_row(ng-if='teams.length==0')
         span.margin_left_15 没有推荐的小队(￣^￣)ゞ
       .dl_row.dl_height(ng-repeat="team in teams")
