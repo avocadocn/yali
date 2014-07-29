@@ -49,12 +49,15 @@ exports.commentAuthorize = function(req, res, next) {
   if (!req.user) {
     return res.redirect('/');
   }
-  else if(req.user.provider==='user'){
+  else {
     switch(req.params.commentType){
       case 'campaign':
-          Campaign.findOne({'_id':req.params.commentId},function (err, campaign){
-            if(err || !campaign){
-              res.send(403,'forbidden!');
+        Campaign.findOne({'_id':req.params.commentId},function (err, campaign){
+          if(err || !campaign){
+            return res.send(403,'forbidden!');
+          }else{
+            if(campaign.team.indexOf(req.user._id.toString()) > -1){
+              req.role = 'HR';
               next();
             }else{
               campaign.team.forEach(function(team){
@@ -74,13 +77,13 @@ exports.commentAuthorize = function(req, res, next) {
               });
               next();
             }
-          });
+          }
+        });
         break;
       case 'team':
         CompanyGroup.findOne({'_id':req.params.commentId},function (err,company_group){
           if(err || !company_group){
-            res.send(403,'forbidden!');
-            next();
+            return res.send(403,'forbidden!');
           }else{
             if(req.user._id.toString() === company_group.cid.toString()){
               req.role === 'HR';
@@ -117,13 +120,9 @@ exports.commentAuthorize = function(req, res, next) {
         next();
         break;
       default:
-        res.send(403,'forbidden!');
-        next();
+        return res.send(403,'forbidden!');
         break;
     }
-  }else{
-    res.send(403,'forbidden!');
-    next();
   }
 }
 exports.departmentAuthorize = function(req, res, next) {

@@ -1,5 +1,5 @@
 'use strict';
-  var schedule = require('../services/schedule');
+var schedule = require('../services/schedule');
 exports.render = function(req, res) {
   // if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
   //   if(req.session.Global.role==="HR"){

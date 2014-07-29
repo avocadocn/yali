@@ -43,7 +43,7 @@ exports.setComment = function(req,res){
     if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
         return res.send(403,'forbidden');
     }
-    var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一条动态、一张照片、一场比赛等等
+    var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
     var content = req.body.content;
     var host_type = req.body.host_type;
     var comment = new Comment();
