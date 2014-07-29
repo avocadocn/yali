@@ -578,15 +578,78 @@ campaignLineHeight = 45px
     text-decoration none
 //timeline
 .dl_timeline
-  .spin
+  width 660px
+  position relative
+  overflow hidden
+  margin 0px auto
+  padding-top 20px
+  .spine
+    position absolute
+    top 0
+    bottom 100%
+    width 4px
+    border-radius 2px   
+    transition bottom 0.5s linear
+    left 20%
+    margin-left -2px
+    background-color #CCCCCC
+    height 100%
+    z-index 2
   .timeline_element
+    position relative
+    margin 10px 0px
+    clear both
+    border-radius 0px
+    padding 10px
+    color #888888
+    &:after
+      content ''
+      position absolute
+      display block
+      width 8px
+      height 8px
+      border-radius 100%
+      background-color #BBBBBB
+      border 1px solid #FFFFFF
+      box-shadow 0px 0px 2px rgba(0, 0, 0, 0.2)
+      top 10px
+      left 76px
+      z-index 3
     .title
-      .timeline_logo
-        width 20px
-        height 20px
-        float left
+      position relative
+      font-size 10px
+      overflow hidden
+      margin-bottom 0
+      text-transform uppercase
+      a
+        color #AAAAAA
+        display block
+        &:hover
+          text-decoration none
       .head
+        color #AAAAAA
+        font-size 12px
+        line-height 22px
       .date
-      .img_scroll
+        float right
+      .timeline-logo
+        margin-right 4px
+        width 30px
+        height 30px
+        float left
+    .img_scroll
+      max-height 66px
+      overflow hidden
+      .photo
+        display inline-block
+        max-width 66px
+        max-height 66px
+        margin-right 1px
     .content
-
+      p
+        margin-bottom 0
+      a
+        color #888888
+        display block
+        &:hover
+          text-decoration none
