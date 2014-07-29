@@ -109,8 +109,8 @@ angular.module('starter.services', [])
   };
 
   // callback(campaign_list)
-  var getUserCampaigns = function(callback) {
-    $http.get(Global.base_url + '/campaign/user/all/app/'+ Global.user._id)
+  var getUserCampaignsForList = function(callback) {
+    $http.get(Global.base_url + '/campaign/user/all/applist/'+ Global.user._id)
     .success(function(data, status, headers, config) {
       campaign_list = data.campaigns;
       callback(campaign_list);
@@ -118,13 +118,13 @@ angular.module('starter.services', [])
   };
 
   // callback(campaign_list)
-  var getGroupCampaigns = function(group_id, callback) {
-    $http.get(Global.base_url + '/group/' + group_id + '/campaigns')
-    .success(function(data, status, headers, config) {
-      campaign_list = data.data;
-      callback(campaign_list);
-    });
-  };
+  // var getGroupCampaigns = function(group_id, callback) {
+  //   $http.get(Global.base_url + '/group/' + group_id + '/campaigns')
+  //   .success(function(data, status, headers, config) {
+  //     campaign_list = data.data;
+  //     callback(campaign_list);
+  //   });
+  // };
 
   // callback(id)
   var join = function(callback) {
@@ -149,8 +149,8 @@ angular.module('starter.services', [])
   return {
     getCampaign: getCampaign,
     getCampaignList: getCampaignList,
-    getUserCampaigns: getUserCampaigns,
-    getGroupCampaigns: getGroupCampaigns,
+    getUserCampaignsForList: getUserCampaignsForList,
+    //getGroupCampaigns: getGroupCampaigns,
     join: join,
     quit: quit
   };
@@ -185,88 +185,88 @@ angular.module('starter.services', [])
 })
 
 
-.factory('Dynamic', function($http, Global) {
+// .factory('Dynamic', function($http, Global) {
 
-  var getDynamics = function(callback) {
-    $http.get(Global.base_url + '/groupMessage/user/' +  Global.user._id + '/0')
-    .success(function(data, status, headers, config) {
-      callback(data.group_messages);
-    });
-  };
+//   var getDynamics = function(callback) {
+//     $http.get(Global.base_url + '/groupMessage/user/' +  Global.user._id + '/0')
+//     .success(function(data, status, headers, config) {
+//       callback(data.group_messages);
+//     });
+//   };
 
-  var getGroupDynamics = function(group_id, callback) {
-    $http.get(Global.base_url + '/groupMessage/team/' + group_id + '/0')
-    .success(function(data, status, headers, config) {
-      if (callback) {
-        callback(data.group_messages);
-      }
-    });
-  };
+//   var getGroupDynamics = function(group_id, callback) {
+//     $http.get(Global.base_url + '/groupMessage/team/' + group_id + '/0')
+//     .success(function(data, status, headers, config) {
+//       if (callback) {
+//         callback(data.group_messages);
+//       }
+//     });
+//   };
 
-  // callback(positiveCount, negativeCount)
-  var vote = function(dynamic_list, callback) {
-    return function(provoke_dynamic_id, status, index) {
-      $http.post(Global.base_url + '/users/vote', {
-          provoke_message_id: provoke_dynamic_id,
-          aOr: status,
-          tid: dynamic_list[index].my_team_id
-        }
-      ).success(function(data, status) {
-        callback(data.positive, data.negative);
-      });
-    };
-  };
+//   // callback(positiveCount, negativeCount)
+//   var vote = function(dynamic_list, callback) {
+//     return function(provoke_dynamic_id, status, index) {
+//       $http.post(Global.base_url + '/users/vote', {
+//           provoke_message_id: provoke_dynamic_id,
+//           aOr: status,
+//           tid: dynamic_list[index].my_team_id
+//         }
+//       ).success(function(data, status) {
+//         callback(data.positive, data.negative);
+//       });
+//     };
+//   };
 
-  return {
-    getDynamics: getDynamics,
-    getGroupDynamics: getGroupDynamics,
-    vote: vote
-  };
+//   return {
+//     getDynamics: getDynamics,
+//     getGroupDynamics: getGroupDynamics,
+//     vote: vote
+//   };
 
-})
-
-
-.factory('Group', function($http, Global) {
-
-  var joined_group_list = null,
-    unjoin_group_list = null,
-    group_list = [];
-
-  var getGroups = function(callback) {
-    $http.get(Global.base_url + '/users/groups/' + Global.user._id)
-    .success(function(data, status, headers, config) {
-      joined_group_list = data.joined_groups;
-      unjoin_group_list = data.unjoin_groups;
-      group_list = joined_group_list.concat(unjoin_group_list);
-      callback(data.joined_groups, data.unjoin_groups);
-    });
-  };
-
-  var getGroup = function(id) {
-    for (var i = 0; i < group_list.length; i++) {
-      if (id === group_list[i]._id) {
-        return group_list[i];
-      }
-    }
-  };
-
-  var getJoinedGroups = function() {
-    return joined_group_list;
-  };
-
-  var getUnjoinGroups = function() {
-    return unjoin_group_list;
-  };
-
-  return {
-    getGroups: getGroups,
-    getGroup: getGroup,
-    getJoinedGroups: getJoinedGroups,
-    getUnjoinGroups: getUnjoinGroups
-  };
+// })
 
 
-})
+// .factory('Group', function($http, Global) {
+
+//   var joined_group_list = null,
+//     unjoin_group_list = null,
+//     group_list = [];
+
+//   var getGroups = function(callback) {
+//     $http.get(Global.base_url + '/users/groups/' + Global.user._id)
+//     .success(function(data, status, headers, config) {
+//       joined_group_list = data.joined_groups;
+//       unjoin_group_list = data.unjoin_groups;
+//       group_list = joined_group_list.concat(unjoin_group_list);
+//       callback(data.joined_groups, data.unjoin_groups);
+//     });
+//   };
+
+//   var getGroup = function(id) {
+//     for (var i = 0; i < group_list.length; i++) {
+//       if (id === group_list[i]._id) {
+//         return group_list[i];
+//       }
+//     }
+//   };
+
+//   var getJoinedGroups = function() {
+//     return joined_group_list;
+//   };
+
+//   var getUnjoinGroups = function() {
+//     return unjoin_group_list;
+//   };
+
+//   return {
+//     getGroups: getGroups,
+//     getGroup: getGroup,
+//     getJoinedGroups: getJoinedGroups,
+//     getUnjoinGroups: getUnjoinGroups
+//   };
+
+
+// })
 
 
 .factory('PhotoAlbum', function($http, Global) {

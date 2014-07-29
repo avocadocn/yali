@@ -601,7 +601,7 @@ exports.getUserUnjoinCampaignsForList = function(req, res) {
   });
 };
 
-exports.getUserAllCampaignsForApp = function(req, res) {
+exports.getUserAllCampaignsForAppList = function(req, res) {
   var team_ids = [];
   for (var i = 0; i < req.user.team.length; i++) {
     team_ids.push(req.user.team[i]._id);
@@ -617,7 +617,8 @@ exports.getUserAllCampaignsForApp = function(req, res) {
         'team': { '$in': team_ids }
       }
     ],
-    'active': true
+    'active': true,
+    'end_time': { '$gt': Date.now() }
   };
 
   Campaign

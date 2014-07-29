@@ -23,7 +23,7 @@ module.exports = function(app) {
   app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);
   app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
 
-  app.get('/campaign/user/all/app/:userId', authorization.userAuthorize, campaign.getUserAllCampaignsForApp);
+  app.get('/campaign/user/all/applist/:userId', authorization.userAuthorize, campaign.getUserAllCampaignsForAppList);
 
   app.param('campaignId', campaign.campaign);
 };

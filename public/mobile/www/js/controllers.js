@@ -37,7 +37,7 @@ angular.module('starter.controllers', [])
 
   $rootScope.campaignReturnUri = '#/app/campaign_list';
 
-  Campaign.getUserCampaigns(function(campaign_list) {
+  Campaign.getUserCampaignsForList(function(campaign_list) {
     $scope.campaign_list = campaign_list;
   });
 
@@ -112,87 +112,87 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('DynamicListCtrl', function($scope, Dynamic) {
+// .controller('DynamicListCtrl', function($scope, Dynamic) {
 
-  Dynamic.getDynamics(function(dynamic_list) {
-    $scope.dynamic_list = dynamic_list;
-  });
-
-
-  $scope.vote = Dynamic.vote($scope.dynamic_list, function(positive, negative) {
-    $scope.dynamic_list[index].positive = positive;
-    $scope.dynamic_list[index].negative = negative;
-  });
-
-})
+//   Dynamic.getDynamics(function(dynamic_list) {
+//     $scope.dynamic_list = dynamic_list;
+//   });
 
 
-.controller('GroupJoinedListCtrl', function($scope, Group) {
+//   $scope.vote = Dynamic.vote($scope.dynamic_list, function(positive, negative) {
+//     $scope.dynamic_list[index].positive = positive;
+//     $scope.dynamic_list[index].negative = negative;
+//   });
 
-  $scope.show_list = [];
+// })
 
-  var joined_list = Group.getJoinedGroups();
-  if (joined_list === null) {
-    Group.getGroups(function(joined_groups, unjoin_groups) {
-      $scope.show_list = joined_groups;
-    });
-  } else {
-    $scope.show_list = joined_list;
-  }
 
-})
+// .controller('GroupJoinedListCtrl', function($scope, Group) {
 
-.controller('GroupUnjoinListCtrl', function($scope, Group) {
+//   $scope.show_list = [];
 
-  $scope.show_list = [];
+//   var joined_list = Group.getJoinedGroups();
+//   if (joined_list === null) {
+//     Group.getGroups(function(joined_groups, unjoin_groups) {
+//       $scope.show_list = joined_groups;
+//     });
+//   } else {
+//     $scope.show_list = joined_list;
+//   }
 
-  var unjoin_list = Group.getUnjoinGroups();
-  if (unjoin_list === null) {
-    Group.getGroups(function(joined_groups, unjoin_groups) {
-      $scope.show_list = unjoin_groups;
-    });
-  } else {
-    $scope.show_list = unjoin_list;
-  }
+// })
 
-})
+// .controller('GroupUnjoinListCtrl', function($scope, Group) {
 
-.controller('GroupInfoCtrl', function($scope, $stateParams, Group) {
+//   $scope.show_list = [];
 
-  $scope.template = 'templates/partials/group_info.html';
-  $scope.group = Group.getGroup($stateParams.id);
+//   var unjoin_list = Group.getUnjoinGroups();
+//   if (unjoin_list === null) {
+//     Group.getGroups(function(joined_groups, unjoin_groups) {
+//       $scope.show_list = unjoin_groups;
+//     });
+//   } else {
+//     $scope.show_list = unjoin_list;
+//   }
 
-})
+// })
 
-.controller('GroupCampaignCtrl', function($scope, $rootScope, $stateParams, Group, Campaign) {
+// .controller('GroupInfoCtrl', function($scope, $stateParams, Group) {
 
-  $scope.template = 'templates/partials/campaigns.html';
-  $rootScope.campaign_owner = 'group';
-  $rootScope.campaignReturnUri = '#/app/group_detail/' + $stateParams.id;
-  $scope.group = Group.getGroup($stateParams.id);
+//   $scope.template = 'templates/partials/group_info.html';
+//   $scope.group = Group.getGroup($stateParams.id);
 
-  var getGroupCampaigns = function() {
-    Campaign.getGroupCampaigns($stateParams.id, function(campaign_list) {
-      $scope.campaign_list = campaign_list;
-    });
-  };
+// })
 
-  getGroupCampaigns();
+// .controller('GroupCampaignCtrl', function($scope, $rootScope, $stateParams, Group, Campaign) {
 
-  $scope.join = Campaign.join(getGroupCampaigns);
-  $scope.quit = Campaign.quit(getGroupCampaigns);
+//   $scope.template = 'templates/partials/campaigns.html';
+//   $rootScope.campaign_owner = 'group';
+//   $rootScope.campaignReturnUri = '#/app/group_detail/' + $stateParams.id;
+//   $scope.group = Group.getGroup($stateParams.id);
 
-})
+//   var getGroupCampaigns = function() {
+//     Campaign.getGroupCampaigns($stateParams.id, function(campaign_list) {
+//       $scope.campaign_list = campaign_list;
+//     });
+//   };
 
-.controller('GroupDynamicCtrl', function($scope, $stateParams, Group, Dynamic) {
+//   getGroupCampaigns();
 
-  $scope.template = 'templates/partials/dynamics.html';
-  $scope.group = Group.getGroup($stateParams.id);
+//   $scope.join = Campaign.join(getGroupCampaigns);
+//   $scope.quit = Campaign.quit(getGroupCampaigns);
 
-  Dynamic.getGroupDynamics($scope.group._id, function(dynamics) {
-    $scope.dynamic_list = dynamics;
-  })
-})
+// })
+
+// .controller('GroupDynamicCtrl', function($scope, $stateParams, Group, Dynamic) {
+
+//   $scope.template = 'templates/partials/dynamics.html';
+//   $scope.group = Group.getGroup($stateParams.id);
+
+//   Dynamic.getGroupDynamics($scope.group._id, function(dynamics) {
+//     $scope.dynamic_list = dynamics;
+//   })
+// })
 
 
 
