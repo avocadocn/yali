@@ -1369,18 +1369,20 @@ exports.getTimelineForApp = function(req,res){
           _head = campaign.team[0].name + '活动';
           _logo = campaign.team[0].logo;
         }
-        var temp_obj = {
-          _id: campaign._id,
-          head: _head,
+        var tempObj = {
+          id: campaign._id,
+          //head: _head,
+          head:campaign.theme,
+          logo:_logo,
           content: campaign.content,
           location: campaign.location,
           group_type: campaign.group_type,
           start_time: campaign.start_time,
-          provoke: campaign.provoke,
-          type: _type,
-          logo:_logo
+          provoke:campaign.camp.length>0,
+          // photo_list[i].thumbnail_uri是缩略图，200*200，photo_list[i].uri是原图
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
         };
-        time_lines.push(temp_obj);
+        time_lines.push(tempObj);
       });
       res.send({ result: 1, msg: '获取用户活动足迹成功', time_lines: time_lines });
     }

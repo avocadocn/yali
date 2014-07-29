@@ -31,10 +31,10 @@
   float: left;
 }
 .dl_detail_container .dl_detail_main .dl_detail_member {
-  width: 660px;
+  width: 642px;
   float: left;
   background-color: #fbfbfb;
-  margin: 20px -20px;
+  margin: 20px 0;
   padding: 10px 20px;
 }
 .dl_detail_container .dl_detail_main .dl_detail_member .member {

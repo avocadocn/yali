@@ -1,15 +1,29 @@
-<ion-view title="活动足迹">
+<ion-view title="活动足迹" class="dl_timeline">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-    <ul>
-      <li ng-repeat="time_line in time_lines">
-        <p>开始时间：{{ time_line.start_time | date:'yyyy-MM-dd hh:mm' }}</p>
-        <p>内容：{{ time_line.content }}</p>
-        <p>地点：{{ time_line.location.name }}</p>
-        <p>小队类型：{{ time_line.group_type[0] }}</p>
-      </li>
-    </ul>
+    <div class="spin"></div>
+    <div class="timeline_element" ng-repeat="time_line in time_lines">
+      <div class="title">
+        <a href="#/app/campaign_detail/{{ time_line.id }}">
+          <img class="timeline_logo" ng-src="{{time_line.logo}}"/>
+        </a>
+        <span class="head">
+          {{time_line.head}}
+        </span>
+        <span class="date">
+          {{time_line.start_time | date:'MM/DD'}}
+        </span>
+        <div class="img_scroll">
+          <img class="photo" ng-src="#{photo.thumbnail_uri}"ng-repeat="photo in time_line.photo_list">
+        </div>
+      </div>
+      <div class="content">
+        <a href="#/app/campaign_detail/{{ time_line._id }}">
+          <p> {{time_line.content}}
+          </p>
+        </a>
+      </div>
   </ion-content>
 </ion-view>

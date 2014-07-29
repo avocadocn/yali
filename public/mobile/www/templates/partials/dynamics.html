@@ -18,7 +18,7 @@
       </div>
       <div ng-switch="dynamic.message_type" class="messagebox_content">
         <span ng-switch-when="0" class="message_head">
-          {{dynamic.company[0].name}}有了新动态<
+          {{dynamic.company[0].name}}有了新动态
         </span>
         <span ng-switch-when="1" class="message_head">
           <a ng-href="{{'#/app/group/'+dynamic.team[0].teamid+'/info'}}">{{dynamic.team[0].name}}</a>
@@ -61,15 +61,17 @@
           {{dynamic.team[0].name}}发起了一个多部门联谊活动
         </span>
         <span ng-switch-default="ng-switch-default"></span>
-        <span class="pull-right">{{dynamic.create_time | date:'yyyy-MM-dd HH:mm'}}</span>
-        <div class="dl_message">
+        <div class="pull_right">
+          <span>{{dynamic.create_time_format}}</span>
+        </div>
+        <div class="dl_message clearfix">
           <div ng-if="dynamic.message_type!=6" class="triangle"></div>
           <div ng-if="dynamic.message_type&gt;=0 &amp;&amp; dynamic.message_type&lt;6 || dynamic.message_type===9 || dynamic.message_type===10" class="dl_message_container">
             <div class="message_row">
               <span class="message_label">主题:</span>
               <span class="message_label">
                 <a ng-if="dynamic.message_type!=4 &amp;&amp; dynamic.message_type!=5 " ng-href="/campaign/detail/{{dynamic.campaign._id}}">{{dynamic.campaign.theme}}</a>
-                <a ng-if="!dynamic.campaign.finish&amp;&amp;dynamic.message_type==4 || gdynamicroup_message.message_type==5 " ng-href="/competition/{{dynamic.campaign._id}}">{{dynamic.campaign.theme}}</a>
+                <a ng-if="!dynamic.campaign.finish&amp;&amp;dynamic.message_type==4 || dynamic.message_type==5 " ng-href="/competition/{{dynamic.campaign._id}}">{{dynamic.campaign.theme}}</a>
                 <span ng-if="dynamic.campaign.finish&amp;&amp;dynamic.message_type==4">{{dynamic.campaign.theme}}</span>
               </span>
             </div>
@@ -105,15 +107,21 @@
           </div>
           <div ng-if="dynamic.message_type ==6" class="dl_message_container">
             <div class="message_row">
-              <a ng-href="{{'/group/home/'+dynamic.campaign.camp[0].id}}">
-                <img ng-src="{{dynamic.campaign.camp[0].logo}}" class="team_logo"/>
-              </a>
-              <span>{{dynamic.campaign.camp[0].tname}}</span>
-              <span class="h3 margin_15">{{dynamic.campaign.camp[0].score}} : {{dynamic.campaign.camp[1].score}}</span>
-              <a ng-href="{{'/group/home/'+dynamic.campaign.camp[1].id}}">
-                <img ng-src="{{dynamic.campaign.camp[1].logo}}" class="team_logo team_right"/>
-              </a>
-              <span>{{dynamic.campaign.camp[1].tname}}</span>
+              <div class="pull_left">
+                <a class="team_link" ng-href="{{'/group/home/'+dynamic.campaign.camp[0].id}}">
+                  <img ng-src="{{dynamic.campaign.camp[0].logo}}" class="team_logo"/>
+                </a>
+                <p>{{dynamic.campaign.camp[0].tname}}</p>
+              </div>
+              <div class="pull_left">
+                <span class="dynamic_score">{{dynamic.campaign.camp[0].score}} : {{dynamic.campaign.camp[1].score}}</span>
+              </div>
+              <div class="pull_right">
+                <a class="pull_link" ng-href="{{'/group/home/'+dynamic.campaign.camp[1].id}}">
+                  <img ng-src="{{dynamic.campaign.camp[1].logo}}" class="team_logo"/>
+                </a>
+                <p>{{dynamic.campaign.camp[1].tname}}</p>
+              </div>
             </div>
           </div>
           <div ng-if="dynamic.message_type ==7 || dynamic.message_type==8 " class="dl_message_container">

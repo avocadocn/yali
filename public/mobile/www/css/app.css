@@ -444,15 +444,28 @@ body {
 }
 .campaign_detail .campaign_time_shadow .campaign_time_operator .btn_good {
   margin-left: 13px;
+.dynamic_list {
+  white-space: normal;
 }
 .dynamic_list .dynamic_side {
   float: left;
 }
 .dynamic_list img.team_logo {
-  height: 150px;
-  width: 150px;
+  height: 50px;
+  width: 50px;
+}
+.dynamic_list .pull_left {
   float: left;
 }
-.dynamic_list img.team_right {
+.dynamic_list .pull_right {
   float: right;
+}
+.dynamic_list .team_link {
+  display: inline-block;
+}
+.dynamic_list .dynamic_score {
+  font-size: 30px;
+}
+.dynamic_list a {
+  text-decoration: none;
 }
