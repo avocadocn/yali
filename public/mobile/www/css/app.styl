@@ -93,11 +93,42 @@ body
       padding-top 5px
       padding-bottom 5px
 
-
 .clearfix
-  clear both
+  &:after
+    clear both
+  &:before, &:after
+    display table
+    content " "
+
+.pull-left
+  display block
+  float left
+
+.pull-right
+  display block
+  float right
 
 
+.btn_radius
+  min-height 0
+  width 100%
+  height 35px
+  line-height 35px
+  font-size 14px
+  border none
+  border-radius 5px
+
+.btn_red
+  color white
+  background-color #ff7f66
+
+.btn_darkred
+  color white
+  background-color #ea6060
+
+.btn_blue
+  color white
+  background-color themeColor
 
 // menu
 
@@ -375,17 +406,6 @@ campaignLineHeight = 45px
   line-height 45px
   color white !important
 
-.campaign_operate_button
-  min-height 0
-  width 100%
-  height 35px
-  line-height 35px
-  font-size 14px
-  border none
-  border-radius 5px
-  color white
-  background-color #ff7f66
-
 .campaign_operate_share
   text-align right
 
@@ -513,7 +533,30 @@ campaignLineHeight = 45px
     height 150px
 
   .campaign_time_shadow
+    text-align center
     width 66.66666667%
+
+    .campaign_time_content
+      margin 13px 0
+
+    .campaign_time_remind
+      margin 0
+
+    .campaign_time_count
+      margin 0
+
+    .campaign_time_operator
+      margin-top 30px
+
+      .btn_operator
+        width 85px
+        height 25px
+        line-height 25px
+        font-size 11px
+
+      .btn_good
+        margin-left 13px
+
 
 //动态页
 .dynamic_list

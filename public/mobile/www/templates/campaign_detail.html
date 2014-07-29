@@ -12,14 +12,13 @@
           <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
-          <div class="campaign_members_wrap content">
+          <div class="campaign_members_wrap content clearfix">
             <a href="#/app/other_user_info/{{ user.uid }}" class="campaign_member_panel" ng-repeat="user in campaign.member">
               <div class="campaign_member_wrap">
                 <img class="campaign_member_photo" ng-src="{{ base_url + '/logo/user/' + user.uid + '/100/100' }}"/>
                 <p class="campaign_member_name">{{ user.nickname }}</p>
               </div>
             </a>
-            <div class="clearfix"></div>
           </div>
         </div>
       </ion-content>
@@ -31,17 +30,17 @@
           <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="row campaign_time football">
-          <div class="table_wrap campaign_time_shadow">
-            <div class="table_cell">
-              <div>
-                <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
-                <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
-              </div>
+          <div class="campaign_time_shadow">
+            <p class="campaign_time_content">{{ campaign.content }}</p>
+            <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
+            <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
+            <div class="campaign_time_operator">
+              <button class="btn_radius btn_darkred btn_operator" ng-if="!campaign.is_joined" ng-click="join(campaign._id)">报名参加</button>
+              <button class="btn_radius btn_darkred btn_operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出活动</button>
+              <button class="btn_radius btn_blue btn_operator btn_good">点个赞</button>
             </div>
           </div>
         </div>
-        <button ng-if="!campaign.is_join" ng-click="join(campaign._id)">参加活动</button>
-        <button ng-if="campaign.is_join" ng-click="quit(campaign._id)">退出活动</button>
       </ion-content>
     </ion-tab>
 

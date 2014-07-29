@@ -278,6 +278,8 @@ var formatCampaignForApp = function(user, campaign) {
     'logo': logo,
     'owner_name': owner_name,
     'theme': campaign.theme,
+    'content': campaign.content,
+    'campaign_type': campaign.campaign_type,
     'start_time': campaign.start_time,
     'end_time': campaign.end_time,
     'is_joined': is_joined,
