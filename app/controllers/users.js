@@ -774,7 +774,6 @@ exports.home = function(req, res) {
   var selected_teams = [];
   var unselected_teams = [];
   var user_teams = [];
-  console.log(req.user.team);
   for(var i = 0; i < req.user.team.length; i ++) {
     user_teams.push(req.user.team[i]._id.toString());
   }

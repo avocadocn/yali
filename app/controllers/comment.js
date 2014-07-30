@@ -19,7 +19,6 @@ var mongoose = require('mongoose'),
 
 //获取留言
 exports.getComment = function(req,res){
-    console.log(req.role);
     if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
         return res.send(403,'forbidden');
     }

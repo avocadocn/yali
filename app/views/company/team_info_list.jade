@@ -1,6 +1,6 @@
 .loading_div(ng-show = 'loading')
-div(ng-show = '!loading')
-  .dl_allteaminfo_container(ng-if="role === 'HR'")
+div(ng-show = '!loading' ng-if="role === 'HR'")
+  .dl_allteaminfo_container
     table.group_table
       tr
         th.noborder(rowspan="2")
@@ -51,25 +51,20 @@ div(ng-show = '!loading')
               button.dl_btn.dl_btn_small.cancel_btn(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
               //-关组
               button.dl_btn.dl_btn_small(ng-if="team.active" ng-click="closeGroup($index)" data-toggle="modal" data-target="#CloseGroupModel") #{__("CLOSE")}
-            .dl_row.clearfix(ng-if="role === 'EMPLOYEE'")
-              //-不属于显示加组按钮
-              button.dl_btn.dl_btn_small(ng-if='!team.belong' ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
-              //-属于则显示退组按钮
-              button.dl_btn.dl_btn_small.cancel_btn(ng-if='team.belong' ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
     div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal
 
-div(ng-show = '!loading')
-  .dl_allteaminfo_emp.masonry(masonry ng-if="role !== 'HR'")
+div(ng-show = '!loading' ng-if="role !== 'HR'")
+  .dl_allteaminfo_emp.masonry(masonry)
     .teamitem.masonry-item(ng-repeat="team in team_lists" masonryItem)
       .title
         a(href="/group/home/{{team._id}}")
           img.img_border.img_contain(ng-src="{{team.logo}}/20/20")
           span {{team.name}}
-        //- 不属于显示加组按钮
+      //- 不属于显示加组按钮
       button.dl_btn.dl_btn_small.btn_join(ng-if="role==='EMPLOYEE'&&!team.belong" ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
       //-属于则显示退组按钮
-      button.dl_btn.dl_btn_small.btn_join.cancel_btn(ng-if="role==='EMPLOYEE'&&team.belong" ng-click="quitGroup(team._id,$index)") #{__("QUIT_GROUP")}
+      button.dl_btn.dl_btn_small.btn_join.cancel_btn(ng-if="role==='EMPLOYEE'&&team.belong" ng-click="closeGroup($index)" data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
       .itembox
         .newcampaign(ng-if="team.campaign_theme != '' ")
           .campaign
@@ -93,9 +88,9 @@ div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myMod
             button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
             h4.modal-title#myModalLabel #{__("CONFIRM")}
           .dl-modal-body
-            //-span= '您确定要退出' +tname +'吗？'
-          .dl-modal-footer
-            button.dl_btn.dl_btn_small(ng-click='quitGroup()' data-dismiss="modal") #{__("CONFIRM")}
+            span= '您确定要退出此小组吗？'
+          .modal-footer
+            button.dl_btn.dl_btn_small(ng-click='quitGroup(team_lists[group_index]._id,group_index)' data-dismiss="modal") #{__("CONFIRM")}
             button.cancel_btn.dl_btn_small(data-dismiss="modal") #{__("CANCEL")}
 div.modal.fade#CloseGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   .modal-dialog
@@ -106,7 +101,7 @@ div.modal.fade#CloseGroupModel(tabindex="-1" role="dialog" aria-labelledby="myMo
             button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
             h4.modal-title#myModalLabel #{__("CONFIRM")}
           .dl-modal-body
-            span= '您确定要关闭小组吗？'
+            span= '您确定要关闭此小组吗？'
           .modal-footer
             button.dl_btn.dl_btn_small(ng-click='activateGroup(false,team_lists[group_index]._id,group_index)' data-dismiss="modal") #{__("CONFIRM")}
             button.cancel_btn.dl_btn_small(data-dismiss="modal") #{__("CANCEL")}

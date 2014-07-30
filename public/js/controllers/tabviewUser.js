@@ -149,6 +149,9 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
                     if(data.message_length<20){
                         $scope.loadMore_flag = false;
+                        if($scope.pageTime.length>1){
+                            $scope.lastPage_flag = true;
+                        }
                     }
                     else{
                         $scope.loadMore_flag = true;

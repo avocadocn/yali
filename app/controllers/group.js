@@ -65,25 +65,30 @@ exports.renderInfo = function (req, res) {
 
 //激活小队
 exports.activateGroup = function(req, res) {
-  var tid = req.body.tid;
-  var active = req.body.active;
-  CompanyGroup.findOne({
-    '_id':tid
-  },function(err,companyGroup){
-    if (err || !companyGroup){
-      console.log('cannot find team');
-      return res.send({'result':0,'msg':'小队查询错误'});
-    }else{
-      companyGroup.active = active;
-      companyGroup.save(function(s_err){
-        if(s_err){
-          console.log(s_err);
-          res.send({'result':0,'msg':'数据保存错误'});
-        }
-        return res.send({'result':1,'msg':'数据保存成功'});
-      });
-    }
-  });
+  if(req.role==='HR'){
+    var tid = req.body.tid;
+    var active = req.body.active;
+    CompanyGroup.findOne({
+      '_id':tid
+    },function(err,companyGroup){
+      if (err || !companyGroup){
+        console.log('cannot find team');
+        return res.send({'result':0,'msg':'小队查询错误'});
+      }else{
+        companyGroup.active = active;
+        companyGroup.save(function(s_err){
+          if(s_err){
+            console.log(s_err);
+            res.send({'result':0,'msg':'数据保存错误'});
+          }
+          return res.send({'result':1,'msg':'数据保存成功'});
+        });
+      }
+    });
+  }
+  else{
+    return res.send(403,{'msg':'forbidden'});
+  }
 };
 
 

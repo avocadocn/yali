@@ -14,6 +14,7 @@
   border: 1px solid #ddd;
   border-top-color: transparent;
   padding: 20px 10px;
+  background-color: #fbfbfb;
 }
 .dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_content {
   width: 450px;

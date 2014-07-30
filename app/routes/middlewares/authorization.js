@@ -45,7 +45,6 @@ exports.companyAuthorize = function(req, res, next){
 
 
 exports.commentAuthorize = function(req, res, next) {
-  console.log(req.user);
   if (!req.user) {
     return res.redirect('/');
   }

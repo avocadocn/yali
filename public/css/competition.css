@@ -9,36 +9,88 @@
   border-top: 0;
   background-color: #fbfbfb;
 }
+.dl_detail_main .competition_content .team_info .team_left {
+  width: 229px;
+  float: left;
+}
+.dl_detail_main .competition_content .team_info .score_panel {
+  width: 180px;
+  float: left;
+}
+.dl_detail_main .competition_content .team_info .score_panel .VS {
+  height: 30px;
+  padding-top: 10px;
+}
+.dl_detail_main .competition_content .team_info .score_panel .score {
+  width: 180px;
+  padding-top: 10px;
+  height: 60px;
+}
+.dl_detail_main .competition_content .team_info .score_panel .score .score_left {
+  text-align: right;
+  padding: 0;
+  width: 85px;
+  float: left;
+  height: 40px;
+}
+.dl_detail_main .competition_content .team_info .score_panel .score .score_colon {
+  width: 10px;
+  text-align: center;
+  float: left;
+}
+.dl_detail_main .competition_content .team_info .score_panel .score .score_right {
+  text-align: left;
+  padding: 0;
+  width: 85px;
+  float: right;
+  height: 40px;
+}
+.dl_detail_main .competition_content .team_info .score_panel .score .dl_score_input {
+  height: 40px;
+  width: 45px;
+  font-size: 30px;
+  text-align: center;
+}
+.dl_detail_main .competition_content .team_info .score_panel .score_button {
+  width: 180px;
+  height: 30px;
+  text-align: center;
+  float: left;
+}
+.dl_detail_main .competition_content .team_info .score_panel .score_button .dl_btn_right {
+  height: 30px;
+  padding: 8px;
+}
+.dl_detail_main .competition_content .team_info .team_right {
+  width: 229px;
+  float: right;
+}
+.dl_detail_main .competition_content .team_info .team_name {
+  text-align: center;
+  width: 120px;
+  float: left;
+}
 .dl_detail_main .competition_content .dl_score {
-  width: 90px;
-  height: 50px;
+  width: 85px;
+  height: 40px;
   font-size: 30px;
   line-height: 120%;
   color: #000;
 }
 .dl_detail_main .competition_content .dl_score_colon {
-  font-size: 30px;
+  font-size: 34px;
   text-align: center;
   line-height: 100%;
   padding: 0;
   color: #000;
   display: inline-block;
-  height: 60px;
-}
-.dl_detail_main .competition_content .score_left {
-  text-align: right;
-  padding: 0;
-}
-.dl_detail_main .competition_content .score_right {
-  text-align: left;
-  padding: 0;
 }
 .dl_detail_main .competition_content .dl_left {
   margin-left: -30px;
 }
 .dl_detail_main .competition_content .football {
   margin-bottom: 20px;
-  padding: 10px;
+  padding: 10px 0;
 }
 .dl_detail_main .competition_content .football .img_contain {
   width: 495px;
@@ -75,10 +127,11 @@
   border: 1px solid #ddd;
   padding: 5px;
   margin-bottom: 10px;
+  background-color: #fbfbfb;
 }
 .side .competition_detail .dl_detail_row {
   min-width: 300px;
-  min-height: 35px;
+  min-height: 30px;
   font-size: 12px;
   margin-bottom: 5px;
 }

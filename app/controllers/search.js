@@ -194,7 +194,6 @@ exports.getMember = function(req, res) {
 };
 
 exports.getUserInfo = function(req,res) {
-  console.log('id:',req.params.userId);
   User.findOne({'_id':req.params.userId},{'nickname':1,'photo':1,'realname':1,'department':1,'sex':1,'register_date':1,'introduce':1,'email':1},function(err,user){
     if(err||!user){
       console.log(err);

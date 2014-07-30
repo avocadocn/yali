@@ -179,6 +179,9 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
                     $scope.loadMore_flag = false;
+                    if($scope.pageTime.length>1){
+                        $scope.lastPage_flag = true;
+                    }
                 }
                 else{
                     $scope.loadMore_flag = true;
@@ -841,7 +844,6 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
                 else{
                     $scope.team_lists[index].active = false;
-                    //alertify.alert('成功关闭小组!');
                 }
             }).error(function(data, status){
                 alertify.alert('DATA ERROR');
@@ -852,14 +854,14 @@ tabViewCompany.directive('masonry', function ($timeout) {
         }
     };
 
-    //确认关闭小组
+    //确认关闭小组、退出小组
     $scope.group_index = 0;
     $scope.closeGroup = function(index){
         $scope.group_index = index;
     };
 
     //加入小队
-    $scope.joinGroup = function(tid){
+    $scope.joinGroup = function(tid,index){
         try{
             $http({
                 method:'post',
@@ -869,7 +871,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }).success(function(data,status){
                 alertify.alert('成功加入小队!');
-                window.location.reload();
+                $scope.team_lists[index].belong = true;
             }).error(function(data,status){
                 alertify.alert('DATA ERROR');
             });
@@ -879,7 +881,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
         }
     };
     //退出小队
-    $scope.quitGroup = function(tid){
+    $scope.quitGroup = function(tid,index){
         try{
             $http({
                 method:'post',
@@ -889,7 +891,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }).success(function(data,status){
                 alertify.alert('成功退出小队!');
-                window.location.reload();
+                $scope.team_lists[index].belong = false;
             }).error(function(data,status){
                alertify.alert('DATA ERROR');
             });

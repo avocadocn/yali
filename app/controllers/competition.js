@@ -92,7 +92,7 @@ exports.getCompetition = function(req, res){
       });
     }
   }
-  else if(competition.end_time<new Date()){
+  else if(competition.camp[0].gid===competition.camp[1].gid&&(competition.camp[0].gid==='2'||competition.camp[0].gid==='7')&&competition.end_time<new Date()){
     options.score_flag = true;
     if(req.competition_leader.length>0){
       if(req.competition_leader.length===competition.camp.length){

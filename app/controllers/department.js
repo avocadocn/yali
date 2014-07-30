@@ -55,7 +55,7 @@ exports.managerOperate = function(req, res) {
   var operate = req.body.operate;
   var department_set,team_set;
   var did = req.body.did;
-  console.log(operate);
+  //-console.log(operate);
   if(operate === 'appoint'){
     if(req.body.member.wait_for_join){
       teamOperate({
