@@ -22,7 +22,7 @@
           <div class="img_scroll">
             <img class="photo" ng-src="{{photo.thumbnail_uri}}"ng-repeat="photo in time_line.photo_list">
           </div>
-          <a href="#/app/campaign_detail/{{ time_line._id }}">
+          <a href="#/app/campaign_detail/{{ time_line.id }}">
             <p> {{time_line.content}}
             </p>
           </a>
