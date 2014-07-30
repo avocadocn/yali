@@ -100,7 +100,10 @@ angular.module('starter.controllers', [])
    * @param  {Number} month 月，0-11
    */
   var updateMonth = function(year, month) {
+    moment.lang('zh-cn');
     var mdate = moment(new Date(year, month));
+    $scope.current_year = year;
+    $scope.current_month = mdate.format('MMMM');
     $scope.month = [];
     for (var i = 0; i < mdate.daysInMonth(); i++) {
       $scope.month[i] = {
@@ -108,7 +111,8 @@ angular.module('starter.controllers', [])
         events: []
       };
       if (i === 0) {
-        $scope.month[i].first_day = 'offset-' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
+        $scope.month[i].first_day = 'offset_' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
+        $scope.current_month_offset = $scope.month[i].first_day;
       }
       var thisDay = new Date(year, month, i + 1);
       if (thisDay.getDay() === 0 || thisDay.getDay() === 6) {

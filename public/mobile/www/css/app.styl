@@ -286,6 +286,13 @@ loginInfoBgcolor = #75d1ef
 .calendar
 
   nav
+    background-color rgb(246, 246, 246)
+    border-bottom solid 1px rgb(220, 220, 220)
+
+    .operator
+      span
+        height 30px
+
     .week
       position relative
 
@@ -299,6 +306,13 @@ loginInfoBgcolor = #75d1ef
 
   .calendar_month
     position relative
+
+    .month
+      width (100 / 7)%
+      height 40px
+      padding-top 15px
+      color themeColor
+      text-align center
 
     .calendar_day
       position relative
@@ -318,10 +332,10 @@ loginInfoBgcolor = #75d1ef
 
       .today
         color white
-        background-color rgb(237, 35, 28)
+        background-color themeColor
         border-radius 50px
 
-      .event-unjoin, .event-joined
+      .event_unjoin, .event_joined
         width 0
         height 0
         margin-top 15%
@@ -332,17 +346,17 @@ loginInfoBgcolor = #75d1ef
         border-radius 30px
         font-size 0px
 
-      .event-unjoin
+      .event_unjoin
         border-color rgb(193, 193, 193)
 
-      .event-joined
+      .event_joined
         border-color themeColor
 
       .weekend
         color gray
 
     for day in (0..6)
-      .offset-{day}
+      .offset_{day}
         margin-left (100 * day / 7)%
 
 

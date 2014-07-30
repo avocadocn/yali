@@ -15,9 +15,16 @@
 
     <div class="calendar">
       <nav>
-        <button ng-click="pre()">pre</button>
-        <button ng-click="next()">next</button>
-        <div class="week text-center">
+        <div class="operator clearfix">
+          <div class="pull-left">
+            <span class="year">{{ current_year }}</span>
+          </div>
+          <div class="pull-right">
+            <span class="pre" ng-click="pre()"><i class="icon ion-chevron-left"></i></span>
+            <span class="next" ng-click="next()"><i class="icon ion-chevron-right"></i></span>
+          </div>
+        </div>
+        <div class="week text-center clearfix">
           <div class="day weekend">日</div>
           <div class="day">一</div>
           <div class="day">二</div>
@@ -29,10 +36,11 @@
       </nav>
       <div class="calendar_box">
         <div class="calendar_month clearfix">
+          <div class="month" ng-class="current_month_offset">{{ current_month }}</div>
           <div class="calendar_day text-center" ng-repeat="day in month" ng-class="day.first_day">
             <div class="calendar_date" ng-class="{weekend: day.is_weekend===true, today: day.is_today===true}">{{ day.date }}</div>
-            <div class="event-unjoin" ng-if="day.has_event && !day.has_joined_event"></div>
-            <div class="event-joined" ng-if="day.has_joined_event"></div>
+            <div class="event_unjoin" ng-if="day.has_event && !day.has_joined_event"></div>
+            <div class="event_joined" ng-if="day.has_joined_event"></div>
           </div>
         </div>
       </div>

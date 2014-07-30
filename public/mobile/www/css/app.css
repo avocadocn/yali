@@ -244,6 +244,13 @@ body {
   color: #fff;
   background-color: #75d1ef;
 }
+.calendar nav {
+  background-color: #f6f6f6;
+  border-bottom: solid 1px #dcdcdc;
+}
+.calendar nav .operator span {
+  height: 30px;
+}
 .calendar nav .week {
   position: relative;
 }
@@ -257,6 +264,13 @@ body {
 }
 .calendar .calendar_month {
   position: relative;
+}
+.calendar .calendar_month .month {
+  width: 14.285714285714286%;
+  height: 40px;
+  padding-top: 15px;
+  color: #3abde8;
+  text-align: center;
 }
 .calendar .calendar_month .calendar_day {
   position: relative;
@@ -275,11 +289,11 @@ body {
 }
 .calendar .calendar_month .calendar_day .today {
   color: #fff;
-  background-color: #ed231c;
+  background-color: #3abde8;
   border-radius: 50px;
 }
-.calendar .calendar_month .calendar_day .event-unjoin,
-.calendar .calendar_month .calendar_day .event-joined {
+.calendar .calendar_month .calendar_day .event_unjoin,
+.calendar .calendar_month .calendar_day .event_joined {
   width: 0;
   height: 0;
   margin-top: 15%;
@@ -290,34 +304,34 @@ body {
   border-radius: 30px;
   font-size: 0px;
 }
-.calendar .calendar_month .calendar_day .event-unjoin {
+.calendar .calendar_month .calendar_day .event_unjoin {
   border-color: #c1c1c1;
 }
-.calendar .calendar_month .calendar_day .event-joined {
+.calendar .calendar_month .calendar_day .event_joined {
   border-color: #3abde8;
 }
 .calendar .calendar_month .calendar_day .weekend {
   color: #808080;
 }
-.calendar .calendar_month .offset-0 {
+.calendar .calendar_month .offset_0 {
   margin-left: 0%;
 }
-.calendar .calendar_month .offset-1 {
+.calendar .calendar_month .offset_1 {
   margin-left: 14.285714285714286%;
 }
-.calendar .calendar_month .offset-2 {
+.calendar .calendar_month .offset_2 {
   margin-left: 28.571428571428573%;
 }
-.calendar .calendar_month .offset-3 {
+.calendar .calendar_month .offset_3 {
   margin-left: 42.857142857142854%;
 }
-.calendar .calendar_month .offset-4 {
+.calendar .calendar_month .offset_4 {
   margin-left: 57.142857142857146%;
 }
-.calendar .calendar_month .offset-5 {
+.calendar .calendar_month .offset_5 {
   margin-left: 71.42857142857143%;
 }
-.calendar .calendar_month .offset-6 {
+.calendar .calendar_month .offset_6 {
   margin-left: 85.71428571428571%;
 }
 .campaign {

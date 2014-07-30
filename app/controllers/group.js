@@ -1052,7 +1052,7 @@ exports.group = function(req, res, next, id) {
 
 
 exports.uploadFamily = function(req, res) {
-  if (req.role !== 'LEADER') {
+  if (req.role !== 'LEADER' && req.role !== 'HR') {
     return res.send(403);
   }
 
@@ -1170,7 +1170,7 @@ exports.getFamily = function(req, res) {
 };
 
 exports.toggleSelectFamilyPhoto = function(req, res) {
-  if (req.role !== 'LEADER') {
+  if (req.role !== 'LEADER' && req.role !== 'HR') {
     return res.send(403);
   }
   var company_group = req.companyGroup;
@@ -1195,7 +1195,7 @@ exports.toggleSelectFamilyPhoto = function(req, res) {
 };
 
 exports.deleteFamilyPhoto = function(req, res) {
-  if (req.role !== 'LEADER') {
+  if (req.role !== 'LEADER' && req.role !== 'HR') {
     return res.send(403);
   }
 
