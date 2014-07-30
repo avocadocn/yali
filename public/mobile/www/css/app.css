@@ -248,16 +248,27 @@ body {
   background-color: #f6f6f6;
   border-bottom: solid 1px #dcdcdc;
 }
-.calendar nav .operator span {
+.calendar nav .operator .btn {
+  display: inline-block;
+  line-height: 30px;
   height: 30px;
+  min-width: 30px;
+  padding: 0 10px;
+  text-align: center;
+  color: #3abde8;
+}
+.calendar nav .operator .today {
+  padding: 0;
 }
 .calendar nav .week {
   position: relative;
+  margin-top: 5px;
 }
 .calendar nav .week .day {
   float: left;
   width: 14.285714285714286%;
-  height: 30px;
+  height: 20px;
+  line-height: 20px;
 }
 .calendar nav .week .weekend {
   color: #808080;

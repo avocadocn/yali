@@ -290,16 +290,27 @@ loginInfoBgcolor = #75d1ef
     border-bottom solid 1px rgb(220, 220, 220)
 
     .operator
-      span
+      .btn
+        display inline-block
+        line-height 30px
         height 30px
+        min-width 30px
+        padding 0 10px
+        text-align center
+        color themeColor
+
+      .today
+        padding 0
 
     .week
       position relative
+      margin-top 5px
 
       .day
         float left
         width (100 / 7)%
-        height 30px
+        height 20px
+        line-height 20px
 
       .weekend
         color gray

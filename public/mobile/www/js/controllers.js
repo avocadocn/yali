@@ -173,6 +173,13 @@ angular.module('starter.controllers', [])
     updateMonth(current.year, current.month);
   };
 
+  $scope.today = function() {
+    var now = new Date();
+    current.year = now.getFullYear();
+    current.month = now.getMonth();
+    updateMonth(current.year, current.month);
+  };
+
 })
 
 

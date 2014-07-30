@@ -17,11 +17,12 @@
       <nav>
         <div class="operator clearfix">
           <div class="pull-left">
-            <span class="year">{{ current_year }}</span>
+            <div class="btn">{{ current_year }}</div>
           </div>
           <div class="pull-right">
-            <span class="pre" ng-click="pre()"><i class="icon ion-chevron-left"></i></span>
-            <span class="next" ng-click="next()"><i class="icon ion-chevron-right"></i></span>
+            <div class="btn" ng-click="pre()"><i class="icon ion-chevron-left"></i></div>
+            <div class="btn today" ng-click="today()">今天</div>
+            <div class="btn" ng-click="next()"><i class="icon ion-chevron-right"></i></div>
           </div>
         </div>
         <div class="week text-center clearfix">
