@@ -51,12 +51,15 @@ angular.module('starter.controllers', [])
 .controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Campaign, PhotoAlbum, Comment, Map, Global) {
 
   $scope.base_url = Global.base_url;
+  $scope.user_id = Global.user._id;
   Campaign.getCampaignDetail( $stateParams.id,function(campaign) {
     $scope.campaign = campaign;
     $scope.photo_album_id = $scope.campaign.photo_album;
   });
 
-  $scope.comment = '';
+  $scope.comment_content = {
+    text:''
+  };
 
   $scope.photos = [];
 
@@ -83,7 +86,22 @@ angular.module('starter.controllers', [])
 
   $scope.join = Campaign.join(updateCampaign);
   $scope.quit = Campaign.quit(updateCampaign);
-
+  $scope.publishComment =  function(){
+    if($scope.comment_content.text==''){
+      return alert('评论不能为空');
+    }
+    Comment.publishCampaignComment($stateParams.id, $scope.comment_content.text, function(msg) {
+      if(!msg){
+        $scope.comment_content.text = '';
+        Comment.getCampaignComments($stateParams.id, function(comments) {
+          $scope.comments = comments;
+        });
+      }
+      else{
+        alert(msg);
+      }
+    });
+  };
   $scope.deletePhoto = PhotoAlbum.deletePhoto($scope.photo_album_id, getPhotoList);
   $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
 

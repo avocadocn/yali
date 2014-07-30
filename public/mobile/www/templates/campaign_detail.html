@@ -44,10 +44,10 @@
         </div>
         <div  ng-if="comments.length > 0" class="comments">
           <div ng-repeat="comment in comments" class="comment">
-              <div class="comment_left">
+              <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">
                 <img ng-src="{{comment.poster.photo}}" class="comment_photo img_user"/>
               </div>
-              <div class="comment_right">
+              <div ng-class="{'comment_right':comment.poster._id!=user_id,'comment_left':comment.poster._id==user_id}">
                 <div class="">
                   <div class="comment_name">
                     <span class="">{{comment.poster.nickname}}</span>
@@ -65,8 +65,10 @@
           </div>
         </div>
         <div class="comment_edit">
-          <input class="comment_input" type="text" name="new_comment" ng-model="new_comment" placeholder="请控制在140字以内" maxlength=140 required/>
-          <button class="comment_button" ng-click="comment()" ng-disabled="comment_form.$invalid"> 发表</button>
+          <form name="comment_form">
+            <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="请控制在140字以内" maxlength=140 required/>
+            <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
+          </form>
         </div>
       </ion-content>
     </ion-tab>

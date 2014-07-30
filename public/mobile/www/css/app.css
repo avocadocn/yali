@@ -564,10 +564,38 @@ body {
   height: 50px;
   margin-left: 10px;
 }
+.campaign_detail .comments .comment .comment_left .comment_name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100px;
+  margin-left: 105px;
+}
+.campaign_detail .comments .comment .comment_left .comment_content {
+  margin-left: 20px;
+  margin-right: 70px;
+}
+.campaign_detail .comments .comment .comment_left .comment_content p {
+  white-space: pre;
+  color: #999;
+}
+.campaign_detail .comments .comment .comment_left .comment_time {
+  color: #cec7c7;
+  margin-right: 85px;
+  font-size: 10px;
+  font-weight: 300;
+  text-align: right;
+}
 .campaign_detail .comments .comment .comment_right {
   position: relative;
   left: 5%;
   margin: 10px 0;
+}
+.campaign_detail .comments .comment .comment_right .comment_photo {
+  float: right;
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
 }
 .campaign_detail .comments .comment .comment_right .comment_name {
   text-overflow: ellipsis;
@@ -634,7 +662,7 @@ body {
   position: absolute;
   display: block;
   top: -10px;
-  width: 4px;
+  width: 2px;
   height: 150%;
   border-radius: 2px;
   transition: bottom 0.5s linear;
@@ -646,15 +674,15 @@ body {
   content: '';
   position: absolute;
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 6px;
+  height: 6px;
   border-radius: 100%;
   background-color: #bbb;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
   top: 20%;
   left: 24%;
   z-index: 3;
-  margin-left: -4px;
+  margin-left: -2px;
 }
 .dl_timeline .timeline_element .timeline-left .timeline-logo {
   margin: 0 4px 5px 5px;
