@@ -552,7 +552,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     alertify.alert('保存成功');
                 }).error(function(data, status) {
                     //TODO:更改对话框
-                    $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
+                    alertify.alert('数据错误!');
                 });
             }
             catch(e){

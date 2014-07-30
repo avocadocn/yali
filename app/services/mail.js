@@ -8,7 +8,6 @@ var mailer = require('nodemailer'),
     fs = require('fs');
 var transport = mailer.createTransport('SMTP', config.MAIL_OPTION);
 
-var SITE_ROOT_URL = 'http://127.0.0.1:3000';
 var siteProtocol = 'http://';
 /**
  * Send an email
