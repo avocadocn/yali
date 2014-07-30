@@ -154,9 +154,13 @@ contentBdColor = #ededed
 
   .photo_album_panel
     display block
-    width 202px
+    width 230px
     border solid 1px contentBdColor
     text-decoration none
+    background-color #fbfbfb
+    padding 12px 12px 6px
+    .album_title
+      padding-top 10px
 
   .update_info
     width 202px
@@ -172,23 +176,25 @@ contentBdColor = #ededed
       display block
       color #5b6272
       margin-bottom 1px
-
+      width 150px
+      text-overflow ellipsis
+      overflow hidden
+      white-space nowrap
 
   .create_form
     margin-top 30px
 
   .photo_album_list_wrap
-    margin-top 20px
 
   .photo_album_container
-    margin-bottom 40px
+    margin-bottom 16px
 
     .photo_album_thumbnail
-      width 200px
-      height 200px
+      width 204px
+      height 204px
 
     .photo_album_name
-      max-width 120px
+      max-width 160px
       line-height 1
       display inline-block
       overflow hidden

@@ -51,7 +51,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
             a(href="/message/home#/message_all")
-              span.dl_msg_corner(ng-if="o>0" ng-cloak) {{o}}
+              span.dl_msg_corner(ng-if="o>0" ng-cloak)
               span.glyphicon.glyphicon-comment
               //- li
               //-   a.dl_menu_a(href="/message/home#/send") 发送消息
@@ -83,5 +83,5 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}
           li
             a(href="/message/home#/message_all")
-              span.dl_msg_corner(ng-if="o>0" ng-cloak) {{o}}
+              span.dl_msg_corner(ng-if="o>0" ng-cloak)
               span.glyphicon.glyphicon-comment

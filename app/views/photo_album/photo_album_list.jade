@@ -24,24 +24,25 @@ block contentExt
     .row.photo_album_list_wrap
       each photo_album in photo_album_list
         .col-sm-3.col-xs-3.photo_album_container
-          a(href="/photoAlbumDetailView/#{photo_album._id}").photo_album_panel.center-block
-            img.photo_album_thumbnail.img-responsive(src="#{photo_album.thumbnail}")
-            h4.text-center
-              span.photo_album_name= photo_album.name
-              | &nbsp;
-              small /&nbsp;#{photo_album.photo_count}
-          div.update_info.center-block(bs-popover)
-            if photo_album.update_user.type === 'user'
-              a(href="/users/home/#{photo_album.update_user._id}")
-                img.update_user_photo(src="/logo/user/#{photo_album.update_user._id}/36/36" ng-Mouseover="showUserCard('#{photo_album.update_user._id}','#{photo_album._id}')" id="pop#{photo_album._id}")
-              .pull-left
-                a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
-            if photo_album.update_user.type === 'hr'
-              a(href=href="/company/home/#{photo_album.update_user._id}")
-                img.update_user_photo(src="/logo/company/#{photo_album.update_user._id}/36/36")
-              .pull-left
-                a.update_user_name(href="/company/home/#{photo_album.update_user._id}")= photo_album.update_user.name
-            p.text #{moment(photo_album.update_date).format('YYYY.MM.DD')} 最后更新
+          .photo_album_panel
+            a(href="/photoAlbumDetailView/#{photo_album._id}" title="#{photo_album.name}").center-block
+              img.photo_album_thumbnail.img-responsive(src="#{photo_album.thumbnail}")
+              h5.text-center.album_title
+                span.photo_album_name= photo_album.name
+                | &nbsp;
+                span /&nbsp;#{photo_album.photo_count}
+            div.update_info.center-block(bs-popover)
+              if photo_album.update_user.type === 'user'
+                a(href="/users/home/#{photo_album.update_user._id}")
+                  img.update_user_photo.img_user(src="/logo/user/#{photo_album.update_user._id}/36/36" ng-Mouseover="showUserCard('#{photo_album.update_user._id}','#{photo_album._id}')" id="pop#{photo_album._id}")
+                .pull-left
+                  a.update_user_name(href="/users/home/#{photo_album.update_user._id}")= photo_album.update_user.name
+              if photo_album.update_user.type === 'hr'
+                a(href=href="/company/home/#{photo_album.update_user._id}")
+                  img.update_user_photo(src="/logo/company/#{photo_album.update_user._id}/36/36")
+                .pull-left
+                  a.update_user_name(href="/company/home/#{photo_album.update_user._id}")= photo_album.update_user.name
+              p.text #{moment(photo_album.update_date).format('YYYY.MM.DD')} 最后更新
 
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")

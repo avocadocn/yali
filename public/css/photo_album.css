@@ -136,9 +136,14 @@
 }
 .photo_album .photo_album_panel {
   display: block;
-  width: 202px;
+  width: 230px;
   border: solid 1px #ededed;
   text-decoration: none;
+  background-color: #fbfbfb;
+  padding: 12px 12px 6px;
+}
+.photo_album .photo_album_panel .album_title {
+  padding-top: 10px;
 }
 .photo_album .update_info {
   width: 202px;
@@ -155,22 +160,26 @@
   display: block;
   color: #5b6272;
   margin-bottom: 1px;
+  width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .photo_album .create_form {
   margin-top: 30px;
 }
-.photo_album .photo_album_list_wrap {
-  margin-top: 20px;
-}
+.photo_album .photo_album_list_wrap,
 .photo_album .photo_album_container {
-  margin-bottom: 40px;
+  margin-bottom: 16px;
 }
+.photo_album .photo_album_list_wrap .photo_album_thumbnail,
 .photo_album .photo_album_container .photo_album_thumbnail {
-  width: 200px;
-  height: 200px;
+  width: 204px;
+  height: 204px;
 }
+.photo_album .photo_album_list_wrap .photo_album_name,
 .photo_album .photo_album_container .photo_album_name {
-  max-width: 120px;
+  max-width: 160px;
   line-height: 1;
   display: inline-block;
   overflow: hidden;

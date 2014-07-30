@@ -310,6 +310,9 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
     }
 
     var photo_album_list = [];
+    company_group.photo_album_list.sort(function(a, b) {
+      return b.update_date - a.update_date;
+    });
     company_group.photo_album_list.forEach(function(photo_album) {
       if (photo_album.hidden === true) {
         return;
