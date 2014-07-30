@@ -41,10 +41,12 @@
   margin-bottom: 5px;
 }
 .cal-month-day .join_sign {
-  margin-top: 5px;
-  margin-left: 5px;
-  width: 16px;
-  height: 16px;
+  margin: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #3498db;
+  float: left;
 }
 .cal-month-day .day {
   margin-top: 5px;
@@ -58,14 +60,18 @@
   position: relative;
 }
 #cal-slide-content .event-item .join_sign {
-  position: absolute;
-  left: 0px;
-  top: -1px;
-  width: 16px;
-  height: 16px;
+  margin: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  background-color: #3498db;
+  float: left;
 }
-#cal-slide-content .event_list_logo {
-  margin-left: 24px;
+#cal-slide-content .event-item .un_join_sign {
+  margin: 9px;
+  width: 6px;
+  height: 6px;
+  float: left;
 }
 #cal-week-box {
   cursor: default;

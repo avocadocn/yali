@@ -21,11 +21,6 @@ block contentExt
         .dl_detail_content
           .dl_detail_row
             .dl_detail_label
-              span #{__("ENTRY")}#{__("DEADLINE")}:
-            .dl_detail_detail
-              span= moment(campaign.deadline).format("YYYY-MM-DD HH:mm dddd")
-          .dl_detail_row
-            .dl_detail_label
               span #{__("CAMPAIGN")}#{__("START_TIME")}:
             .dl_detail_detail
               span= moment(campaign.start_time).format("YYYY-MM-DD HH:mm dddd")
@@ -34,6 +29,11 @@ block contentExt
               span #{__("CAMPAIGN")}#{__("END_TIME")}:
             .dl_detail_detail
               span= moment(campaign.end_time).format("YYYY-MM-DD HH:mm dddd")
+          .dl_detail_row
+            .dl_detail_label
+              span #{__("ENTRY")}#{__("DEADLINE")}:
+            .dl_detail_detail
+              span= moment(campaign.deadline).format("YYYY-MM-DD HH:mm dddd")
           .dl_detail_row
             .dl_detail_label
               span #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
@@ -107,7 +107,7 @@ block contentExt
                 a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
-        #mapContainer.size_400
+        #mapContainer.map_size
       if role!=='PARTNER'
         .clearfix
           p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}

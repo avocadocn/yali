@@ -128,7 +128,7 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
 
     $rootScope.$watch("role",function(role){
         if (role && $location.hash()=='' && $location.path()==''){
-            if(role === 'GUEST'){
+            if(role === 'GUEST' || role ==='HR'){
                 $location.path('/team_info');
                 $rootScope.nowTab='team_info';
             }

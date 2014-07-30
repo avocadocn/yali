@@ -7,9 +7,14 @@
 				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
 					data-event-class="<%= event['class'] %>" class="event-item">
 					<% if (event.is_joined) { %>
-						<img class="join_sign" src="/img/icons/joined_campaign.ico"/>
+						<!-- <img class="join_sign" src="/img/icons/joined_campaign.ico"/> -->
+						<div class="join_sign"></div>
 					<% } %>
-					<img class="event_list_logo" src="<%= event.logo %>"/>
+					<% if (!event.is_joined) { %>
+						<!-- <img class="join_sign" src="/img/icons/joined_campaign.ico"/> -->
+						<div class="un_join_sign"></div>
+					<% } %>
+					<img src="<%= event.logo %>"/>
 					<span>&nbsp;&nbsp;开始: <%= moment(new Date(event.start)).format('HH:mm') %>&nbsp;&nbsp;主题: <%= event.title %></span>
 				</a>
 			</li>

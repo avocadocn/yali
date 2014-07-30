@@ -27,13 +27,13 @@ block panel
   ul.nav.nav-tabs(ng-init="uid='#{uid}';role='#{role}'")
     if role==='OWNER'
       li.tab_style(ng-class="{'active':nowTab=='group_message'}")
-        a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") #{__("LATEST_MESSAGE")}
+        a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") 动态
     //-li.tab_style(ng-class="{'active':nowTab=='campaign'}")
       a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") #{__("CAMPAIGN")}#{__("LIST")}
     li.tab_style(ng-class="{'active':nowTab=='schedule/#{uid}'}")
       a.subtitle.no_radius(href="#/schedule/#{uid}" ng-click="addactive('schedule/#{uid}')") #{__("SCHEDULE")}
     li.tab_style(ng-class="{'active':nowTab=='timeLine/#{uid}'}")
-      a.subtitle.no_radius(href="#/timeLine/#{uid}" ng-click="addactive('timeLine/#{uid}')") #{__("TIME_LINE")}
+      a.subtitle.no_radius(href="#/timeLine/#{uid}" ng-click="addactive('timeLine/#{uid}')") 足迹
   .tab-content
     .tab-pane.active
       div(ng-view).tab-body

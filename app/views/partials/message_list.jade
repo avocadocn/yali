@@ -89,11 +89,11 @@ div(ng-show = '!loading')
             .message_row
               a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}")
                 img.size_56(ng-src='{{group_message.campaign.camp[0].logo}}')
-              span {{group_message.campaign.camp[0].tname}}
+              span.margin_left_10 {{group_message.campaign.camp[0].tname}}
               span.h3.margin_15 {{group_message.campaign.camp[0].score}} : {{group_message.campaign.camp[1].score}}
               a(ng-href="{{'/group/home/'+group_message.campaign.camp[1].id}}")
                 img.size_56(ng-src='{{group_message.campaign.camp[1].logo}}')
-              span {{group_message.campaign.camp[1].tname}}
+              span.margin_left_10 {{group_message.campaign.camp[1].tname}}
           .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
             .message_row
               span.message_label
