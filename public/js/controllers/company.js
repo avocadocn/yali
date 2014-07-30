@@ -38,6 +38,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
     var _this = this;
     //$rootScope.lang_key=0;
     this.create_detail = function() {
+        alert('ok');
         try{
             $http({
                 method: 'post',
@@ -62,8 +63,8 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
 
     var check_name = false;
     var check_username = false;
-    var check_name_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.OFFICICAL_NAME_EXIST_CHECK;
-    var check_username_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.USERNAME_EXIST_CHECK;
+    var check_name_value = '正在检查公司名是否存在';
+    var check_username_value = '正在检查用户名是否存在';
     this.officialNameCheck = function() {
         try{
             $http({
@@ -79,10 +80,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                     _this.check_name = true;
                 } else {
                     _this.check_name = false;
-                    _this.check_name_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
-                                              + $rootScope.lang_for_msg[$rootScope.lang_key].value.OFFICICAL_NAME
-                                                  + $rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
-                                                      + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+                    _this.check_name_value = '该公司名已经存在!';
                 }
                 console.log('check_name:'+_this.check_username);
             }).error(function(data, status) {
@@ -109,10 +107,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                     _this.check_username = true;
                 } else {
                     _this.check_username = false;
-                    _this.check_username_value = $rootScope.lang_for_msg[$rootScope.lang_key].value.THIS
-                                                    + $rootScope.lang_for_msg[$rootScope.lang_key].value.USERNAME
-                                                        + $rootScope.lang_for_msg[$rootScope.lang_key].value.ALREADY
-                                                            + $rootScope.lang_for_msg[$rootScope.lang_key].value.SIGNUP;
+                    _this.check_username_value = '该用户名已经存在!';
                 }
                 console.log('check_username:'+_this.check_username);
             }).error(function(data, status) {

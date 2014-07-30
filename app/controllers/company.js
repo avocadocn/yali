@@ -631,6 +631,7 @@ exports.createDetail = function(req, res) {
 
     Company.findOne({_id: req.session.company_id}, function(err, company) {
         if(!company || err) {
+            console.log(req.session.company_id,company);
             res.render('company/validate/create_detail', {
                 tittle: '该公司不存在或者发生错误!'
             });
