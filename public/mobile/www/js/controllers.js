@@ -101,18 +101,80 @@ angular.module('starter.controllers', [])
 
 .controller('ScheduleListCtrl', function($scope, $ionicScrollDelegate, Campaign) {
 
-  Campaign.getUserCampaignsForCalendar(function(campaigns) {
-    $scope.campaigns = campaigns;
-  });
+  /**
+   * 更新日历的月视图
+   * @param  {Number} year  年
+   * @param  {Number} month 月，0-11
+   */
+  var updateMonth = function(year, month) {
+    var mdate = moment(new Date(year, month));
+    $scope.month = [];
+    for (var i = 0; i < mdate.daysInMonth(); i++) {
+      $scope.month[i] = {
+        date: i + 1,
+        events: []
+      };
+      if (i === 0) {
+        $scope.month[i].first_day = 'offset-' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
+      }
+      var thisDay = new Date(year, month, i + 1);
+      if (thisDay.getDay() === 0 || thisDay.getDay() === 6) {
+        $scope.month[i].is_weekend = true;
+      }
+      var now = new Date();
+      if (now.getDate() === i + 1 && now.getFullYear() === year && now.getMonth() === month) {
+        $scope.month[i].is_today = true;
+      }
+
+      $scope.campaigns.forEach(function(campaign) {
+        var start = moment(campaign.start_time);
+        var end = moment(campaign.end_time);
+        var today_end = moment(new Date(year, month, i + 1, 24));
+        if (start < today_end && today_end < end
+          || start.year() === year && start.month() === month && start.date() === i + 1
+          || end.year() === year && end.month() === month && end.date() === i + 1) {
+          $scope.month[i].events.push(campaign);
+          $scope.month[i].has_event = true;
+          if (campaign.is_joined) {
+            $scope.month[i].has_joined_event = true;
+          }
+        }
+
+      });
+
+    }
+  };
 
   var now = new Date();
+  var current = {
+    year: now.getFullYear(),
+    month: now.getMonth()
+  };
 
-  $scope.month = [];
-  for (var i = 0; i < moment(now).daysInMonth(); i++) {
-    $scope.month[i] = {
-      date: i + 1
-    };
+  Campaign.getUserCampaignsForCalendar(function(campaigns) {
+    $scope.campaigns = campaigns;
+    updateMonth(current.year, current.month);
+  });
+
+  $scope.pre = function() {
+    if (current.month === 0) {
+      current.year--;
+      current.month = 11;
+    } else {
+      current.month--;
+    }
+    updateMonth(current.year, current.month);
   }
+
+  $scope.next = function() {
+    if (current.month === 11) {
+      current.year++;
+      current.month = 0;
+    } else {
+      current.month++;
+    }
+    updateMonth(current.year, current.month);
+  };
 
 })
 

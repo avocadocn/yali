@@ -241,6 +241,82 @@ body {
   color: #fff;
   background-color: #75d1ef;
 }
+.calendar nav .week {
+  position: relative;
+}
+.calendar nav .week .day {
+  float: left;
+  width: 14.285714285714286%;
+  height: 30px;
+}
+.calendar nav .week .weekend {
+  color: #808080;
+}
+.calendar .calendar_month {
+  position: relative;
+}
+.calendar .calendar_month .calendar_day {
+  position: relative;
+  float: left;
+  width: 14.285714285714286%;
+  height: 60px;
+  border-top: solid 1px #dcdcdc;
+}
+.calendar .calendar_month .calendar_day .calendar_date {
+  margin-top: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+.calendar .calendar_month .calendar_day .today {
+  color: #fff;
+  background-color: #ed231c;
+  border-radius: 50px;
+}
+.calendar .calendar_month .calendar_day .event-unjoin,
+.calendar .calendar_month .calendar_day .event-joined {
+  width: 0;
+  height: 0;
+  margin-top: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 30px;
+  font-size: 0px;
+}
+.calendar .calendar_month .calendar_day .event-unjoin {
+  border-color: #c1c1c1;
+}
+.calendar .calendar_month .calendar_day .event-joined {
+  border-color: #3abde8;
+}
+.calendar .calendar_month .calendar_day .weekend {
+  color: #808080;
+}
+.calendar .calendar_month .offset-0 {
+  margin-left: 0%;
+}
+.calendar .calendar_month .offset-1 {
+  margin-left: 14.285714285714286%;
+}
+.calendar .calendar_month .offset-2 {
+  margin-left: 28.571428571428573%;
+}
+.calendar .calendar_month .offset-3 {
+  margin-left: 42.857142857142854%;
+}
+.calendar .calendar_month .offset-4 {
+  margin-left: 57.142857142857146%;
+}
+.calendar .calendar_month .offset-5 {
+  margin-left: 71.42857142857143%;
+}
+.calendar .calendar_month .offset-6 {
+  margin-left: 85.71428571428571%;
+}
 .campaign {
   background-color: #a3cbe2;
 /* Firefox 3.6+ */

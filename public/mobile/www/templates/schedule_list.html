@@ -14,11 +14,25 @@
     </ion-list> -->
 
     <div class="calendar">
-      <nav></nav>
+      <nav>
+        <button ng-click="pre()">pre</button>
+        <button ng-click="next()">next</button>
+        <div class="week text-center">
+          <div class="day weekend">日</div>
+          <div class="day">一</div>
+          <div class="day">二</div>
+          <div class="day">三</div>
+          <div class="day">四</div>
+          <div class="day">五</div>
+          <div class="day weekend">六</div>
+        </div>
+      </nav>
       <div class="calendar_box">
-        <div class="calendar_month">
-          <div class="calendar_day" ng-repeat="day in month">
-            <span class="calendar_date">{{ day.date }}</span>
+        <div class="calendar_month clearfix">
+          <div class="calendar_day text-center" ng-repeat="day in month" ng-class="day.first_day">
+            <div class="calendar_date" ng-class="{weekend: day.is_weekend===true, today: day.is_today===true}">{{ day.date }}</div>
+            <div class="event-unjoin" ng-if="day.has_event && !day.has_joined_event"></div>
+            <div class="event-joined" ng-if="day.has_joined_event"></div>
           </div>
         </div>
       </div>
