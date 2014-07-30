@@ -13,7 +13,8 @@
         </div>
         <div class="padding">
           <div class="campaign_members_wrap content clearfix">
-            <a href="#/app/other_user_info/{{ user.uid }}" class="campaign_member_panel" ng-repeat="user in campaign.member">
+            <!-- href="#/app/other_user_info/{{ user.uid }}" -->
+            <a class="campaign_member_panel" ng-repeat="user in campaign.member">
               <div class="campaign_member_wrap">
                 <img class="campaign_member_photo" ng-src="{{ base_url + '/logo/user/' + user.uid + '/100/100' }}"/>
                 <p class="campaign_member_name">{{ user.nickname }}</p>

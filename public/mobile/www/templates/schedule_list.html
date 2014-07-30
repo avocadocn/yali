@@ -3,7 +3,7 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-    <ion-list>
+    <!-- <ion-list>
       <ion-item ng-repeat="schedule in schedule_list">
         <p>{{ schedule.content }}</p>
         <p>开始时间: {{ schedule.start_time }}</p>
@@ -11,6 +11,17 @@
         <p>活动地点: {{ schedule.location.name }}</p>
         <button class="button button-block" ng-click="quit(schedule._id)">退出</button>
       </ion-item>
-    </ion-list>
+    </ion-list> -->
+
+    <div class="calendar">
+      <nav></nav>
+      <div class="calendar_box">
+        <div class="calendar_month">
+          <div class="calendar_day" ng-repeat="day in month">
+            <span class="calendar_date">{{ day.date }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

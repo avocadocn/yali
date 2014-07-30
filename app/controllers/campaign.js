@@ -10,7 +10,13 @@ var mongoose = require('mongoose'),
 var pagesize = 20;
 
 
-function getUserAllCampaigns(user, isCalendar, callback) {
+/**
+ * 获取用户的所有活动
+ * @param  {Object}   user       mongoose.model('User'), example:req.user
+ * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ */
+var getUserAllCampaigns = function(user, isCalendar, callback) {
   var team_ids = [];
   for (var i = 0; i < user.team.length; i++) {
     team_ids.push(user.team[i]._id);
@@ -45,9 +51,15 @@ function getUserAllCampaigns(user, isCalendar, callback) {
     console.log(err);
     callback([]);
   });
-}
+};
 
-function getUserJoinedCampaigns(user, isCalendar, callback) {
+/**
+ * 获取用户已参加的活动
+ * @param  {Object}   user       mongoose.model('User'), example:req.user
+ * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ */
+var getUserJoinedCampaigns = function(user, isCalendar, callback) {
   var team_ids = [];
   for (var i = 0; i < user.team.length; i++) {
     team_ids.push(user.team[i]._id);
@@ -74,9 +86,15 @@ function getUserJoinedCampaigns(user, isCalendar, callback) {
     console.log(err);
     callback([]);
   });
-}
+};
 
-function getUserUnjoinCampaigns(user, isCalendar, callback) {
+/**
+ * 获取用户未参加的活动
+ * @param  {Object}   user       mongoose.model('User'), example:req.user
+ * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ */
+var getUserUnjoinCampaigns = function(user, isCalendar, callback) {
   var team_ids = [];
   for (var i = 0; i < user.team.length; i++) {
     team_ids.push(user.team[i]._id);
@@ -115,9 +133,16 @@ function getUserUnjoinCampaigns(user, isCalendar, callback) {
     console.log(err);
     callback([]);
   });
-}
+};
 
-function formatCampaignForCalendar(user, campaigns) {
+
+/**
+ * 为日历视图处理活动，返回需要的数据
+ * @param  {Object} user      mongoose.model('User'), example: req.user
+ * @param  {Array} campaigns [mongoose.model('campaigns')]
+ * @return {Array}
+ */
+var formatCampaignForCalendar = function(user, campaigns) {
   var calendarCampaigns = [];
   campaigns.forEach(function(campaign) {
 
@@ -188,7 +213,7 @@ function formatCampaignForCalendar(user, campaigns) {
 /**
  * 计算用户是否参加活动，计算活动所属的公司或组及获取其logo，生成开始时间的提示文字
  * @param  {Object} user     mongoose.model('user')
- * @param  {Object} campaign mongoose.model('campaign')
+ * @param  {Object} campaign mongoose.model('campaign'), need populate(team, cid)
  * @return {Object}          处理后的对象
  */
 var formatCampaignForApp = function(user, campaign) {
@@ -290,6 +315,12 @@ var formatCampaignForApp = function(user, campaign) {
   };
 };
 
+/**
+ * 为app的活动列表处理活动数据
+ * @param  {Object} user      mongoose.model('User'), example: req.user
+ * @param  {Array} campaigns  mongoose.model('Campaign'), need populate(team, cid)
+ * @return {Array}
+ */
 var formatCampaignsForApp = function(user, campaigns) {
 
   var _campaigns = [];
@@ -634,6 +665,16 @@ exports.getUserAllCampaignsForAppList = function(req, res) {
   .then(null, function(err) {
     console.log(err);
     res.send(500);
+  });
+};
+
+exports.getUserAllCampaignsForAppCalendar = function(req, res) {
+  getUserAllCampaigns(req.user, false, function(campaigns) {
+    var format_campaigns = [];
+    campaigns.forEach(function(campaign) {
+      format_campaigns.push(formatCampaignForApp(req.user, campaign));
+    });
+    res.send({ campaigns: format_campaigns });
   });
 };
 

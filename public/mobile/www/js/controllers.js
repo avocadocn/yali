@@ -99,16 +99,21 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ScheduleListCtrl', function($scope, Schedule) {
+.controller('ScheduleListCtrl', function($scope, $ionicScrollDelegate, Campaign) {
 
-  var getSchedules = function() {
-    Schedule.getSchedules(function(schedule_list) {
-      $scope.schedule_list = schedule_list;
-    });
-  };
-  getSchedules();
+  Campaign.getUserCampaignsForCalendar(function(campaigns) {
+    $scope.campaigns = campaigns;
+  });
 
-  $scope.quit = Schedule.quit(getSchedules);
+  var now = new Date();
+
+  $scope.month = [];
+  for (var i = 0; i < moment(now).daysInMonth(); i++) {
+    $scope.month[i] = {
+      date: i + 1
+    };
+  }
+
 })
 
 
@@ -205,27 +210,27 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('UserInfoCtrl', function($scope, User, Global) {
+// .controller('UserInfoCtrl', function($scope, User, Global) {
 
-  $scope.base_url = Global.base_url;
+//   $scope.base_url = Global.base_url;
 
-  User.getInfo(Global.user._id, function(user) {
-    $scope.user = user;
-  });
+//   User.getInfo(Global.user._id, function(user) {
+//     $scope.user = user;
+//   });
 
-})
-
-
-.controller('OtherUserInfoCtrl', function($scope, $stateParams, User, Global) {
-
-  $scope.base_url = Global.base_url;
-
-  User.getInfo($stateParams.uid, function(user) {
-    $scope.user = user;
-  });
+// })
 
 
-})
+// .controller('OtherUserInfoCtrl', function($scope, $stateParams, User, Global) {
+
+//   $scope.base_url = Global.base_url;
+
+//   User.getInfo($stateParams.uid, function(user) {
+//     $scope.user = user;
+//   });
+
+
+// })
 
 
 .directive('thumbnailPhotoDirective', function() {
@@ -261,6 +266,7 @@ angular.module('starter.controllers', [])
     Map.init(attrs.id, attrs.location);
   };
 })
+
 
 
 

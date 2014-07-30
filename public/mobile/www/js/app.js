@@ -59,65 +59,65 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-    .state('app.dynamicList', {
-      url: "/dynamic_list",
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/dynamic_list.html',
-          controller: 'DynamicListCtrl'
-        }
-      }
-    })
+    // .state('app.dynamicList', {
+    //   url: "/dynamic_list",
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/dynamic_list.html',
+    //       controller: 'DynamicListCtrl'
+    //     }
+    //   }
+    // })
 
-    .state('app.groupJoinedList', {
-      url: '/group_list/joined',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/group_list.html',
-          controller: 'GroupJoinedListCtrl'
-        }
-      }
-    })
+    // .state('app.groupJoinedList', {
+    //   url: '/group_list/joined',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/group_list.html',
+    //       controller: 'GroupJoinedListCtrl'
+    //     }
+    //   }
+    // })
 
-    .state('app.groupUnjoinList', {
-      url: '/group_list/unjoin',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/group_list.html',
-          controller: 'GroupUnjoinListCtrl'
-        }
-      }
-    })
+    // .state('app.groupUnjoinList', {
+    //   url: '/group_list/unjoin',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/group_list.html',
+    //       controller: 'GroupUnjoinListCtrl'
+    //     }
+    //   }
+    // })
 
-    .state('app.groupInfo', {
-      url: '/group/:id/info',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/group_detail.html',
-          controller: 'GroupInfoCtrl'
-        }
-      }
-    })
+    // .state('app.groupInfo', {
+    //   url: '/group/:id/info',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/group_detail.html',
+    //       controller: 'GroupInfoCtrl'
+    //     }
+    //   }
+    // })
 
-    .state('app.groupCampaigns', {
-      url: '/group/:id/campaigns',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/group_detail.html',
-          controller: 'GroupCampaignCtrl'
-        }
-      }
-    })
+    // .state('app.groupCampaigns', {
+    //   url: '/group/:id/campaigns',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/group_detail.html',
+    //       controller: 'GroupCampaignCtrl'
+    //     }
+    //   }
+    // })
 
-    .state('app.groupDynamics', {
-      url: '/group/:id/dynamics',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/group_detail.html',
-          controller: 'GroupDynamicCtrl'
-        }
-      }
-    })
+    // .state('app.groupDynamics', {
+    //   url: '/group/:id/dynamics',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/group_detail.html',
+    //       controller: 'GroupDynamicCtrl'
+    //     }
+    //   }
+    // })
 
 
     .state('app.timeline', {
@@ -131,25 +131,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
 
-    .state('app.userInfo', {
-      url: '/user_info',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/user_info.html',
-          controller: 'UserInfoCtrl'
-        }
-      }
-    })
+    // .state('app.userInfo', {
+    //   url: '/user_info',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/user_info.html',
+    //       controller: 'UserInfoCtrl'
+    //     }
+    //   }
+    // })
 
-    .state('app.otherUserInfo', {
-      url: '/other_user_info/:uid',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/user_info.html',
-          controller: 'OtherUserInfoCtrl'
-        }
-      }
-    });
+    // .state('app.otherUserInfo', {
+    //   url: '/other_user_info/:uid',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/user_info.html',
+    //       controller: 'OtherUserInfoCtrl'
+    //     }
+    //   }
+    // });
 
 
 

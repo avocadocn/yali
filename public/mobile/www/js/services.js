@@ -95,7 +95,6 @@ angular.module('starter.services', [])
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id)
     .success(function(data, status) {
       var campaign = data.campaign;
-      console.log(campaign)
       for (var i = 0; i < campaign_list.length; i++) {
         if (campaign_list[i]._id === id) {
           campaign_list[i] = campaign;
@@ -117,14 +116,12 @@ angular.module('starter.services', [])
     });
   };
 
-  // callback(campaign_list)
-  // var getGroupCampaigns = function(group_id, callback) {
-  //   $http.get(Global.base_url + '/group/' + group_id + '/campaigns')
-  //   .success(function(data, status, headers, config) {
-  //     campaign_list = data.data;
-  //     callback(campaign_list);
-  //   });
-  // };
+  var getUserCampaignsForCalendar = function(callback) {
+    $http.get(Global.base_url + '/campaign/user/all/appcalendar/' + Global.user._id)
+    .success(function(data, status) {
+      callback(data.campaigns);
+    });
+  };
 
   // callback(id)
   var join = function(callback) {
@@ -150,35 +147,8 @@ angular.module('starter.services', [])
     getCampaign: getCampaign,
     getCampaignList: getCampaignList,
     getUserCampaignsForList: getUserCampaignsForList,
-    //getGroupCampaigns: getGroupCampaigns,
+    getUserCampaignsForCalendar: getUserCampaignsForCalendar,
     join: join,
-    quit: quit
-  };
-
-})
-
-
-.factory('Schedule', function($http, Global) {
-
-  // callback(schedule_list)
-  var getSchedules = function(callback) {
-    $http.get(Global.base_url + '/users/schedules/' + Global.user._id)
-    .success(function(data, status, headers, config) {
-      callback(data.data);
-    });
-  };
-
-  var quit = function(callback) {
-    return function(id) {
-      $http.post(Global.base_url + '/campaign/quitCampaign/'+id, { campaign_id: id })
-      .success(function(data, status, headers, config) {
-        callback();
-      });
-    };
-  };
-
-  return {
-    getSchedules: getSchedules,
     quit: quit
   };
 
@@ -355,23 +325,23 @@ angular.module('starter.services', [])
 })
 
 
-.factory('User', function($http, Global) {
+// .factory('User', function($http, Global) {
 
-  // callback(user)
-  var getInfo = function(user_id, callback) {
-    $http.post(Global.base_url + '/users/info/'+user_id, { _id: user_id })
-    .success(function(data, status, headers, config) {
-      if (data.result === 1) {
-        callback(data.user);
-      }
-    });
-  };
+//   // callback(user)
+//   var getInfo = function(user_id, callback) {
+//     $http.post(Global.base_url + '/users/info/'+user_id, { _id: user_id })
+//     .success(function(data, status, headers, config) {
+//       if (data.result === 1) {
+//         callback(data.user);
+//       }
+//     });
+//   };
 
-  return {
-    getInfo: getInfo
-  };
+//   return {
+//     getInfo: getInfo
+//   };
 
-})
+// })
 
 
 .factory('Map', function() {

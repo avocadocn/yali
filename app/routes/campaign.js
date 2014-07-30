@@ -24,6 +24,7 @@ module.exports = function(app) {
   app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
 
   app.get('/campaign/user/all/applist/:userId', authorization.userAuthorize, campaign.getUserAllCampaignsForAppList);
+  app.get('/campaign/user/all/appcalendar/:userId', authorization.userAuthorize, campaign.getUserAllCampaignsForAppCalendar);
 
   app.param('campaignId', campaign.campaign);
 };
