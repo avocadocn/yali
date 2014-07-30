@@ -55,6 +55,17 @@ angular.module('starter.controllers', [])
   Campaign.getCampaignDetail( $stateParams.id,function(campaign) {
     $scope.campaign = campaign;
     $scope.photo_album_id = $scope.campaign.photo_album;
+    var getPhotoList = function() {
+      PhotoAlbum.getPhotoList($scope.photo_album_id, function(photos) {
+        $scope.photos = photos;
+      });
+    };
+    getPhotoList();
+    $('#upload_form').ajaxForm(function() {
+      getPhotoList();
+    });
+    $scope.deletePhoto = PhotoAlbum.deletePhoto($scope.photo_album_id, getPhotoList);
+    $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
   });
 
   $scope.comment_content = {
@@ -63,19 +74,8 @@ angular.module('starter.controllers', [])
 
   $scope.photos = [];
 
-  var getPhotoList = function() {
-    PhotoAlbum.getPhotoList($scope.photo_album_id, function(photos) {
-      $scope.photos = photos;
-    });
-  };
-  getPhotoList();
-
   Comment.getCampaignComments($stateParams.id, function(comments) {
     $scope.comments = comments;
-  });
-
-  $('#upload_form').ajaxForm(function() {
-    getPhotoList();
   });
 
   var updateCampaign = function(id) {
@@ -102,9 +102,6 @@ angular.module('starter.controllers', [])
       }
     });
   };
-  $scope.deletePhoto = PhotoAlbum.deletePhoto($scope.photo_album_id, getPhotoList);
-  $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
-
 
 })
 
