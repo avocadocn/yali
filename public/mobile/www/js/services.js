@@ -106,7 +106,16 @@ angular.module('starter.services', [])
       }
     });
   };
-
+    // callback(campaign)
+var getCampaignDetail = function(id, callback) {
+    $http.get(Global.base_url + '/campaign/getCampaigns/' + id)
+    .success(function(data, status) {
+      var campaign = data.campaign;
+      if (callback) {
+        callback(campaign);
+      }
+    });
+  };
   // callback(campaign_list)
   var getUserCampaignsForList = function(callback) {
     $http.get(Global.base_url + '/campaign/user/all/applist/'+ Global.user._id)
@@ -149,7 +158,8 @@ angular.module('starter.services', [])
     getUserCampaignsForList: getUserCampaignsForList,
     getUserCampaignsForCalendar: getUserCampaignsForCalendar,
     join: join,
-    quit: quit
+    quit: quit,
+    getCampaignDetail: getCampaignDetail
   };
 
 })

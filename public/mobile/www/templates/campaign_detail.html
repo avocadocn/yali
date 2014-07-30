@@ -16,7 +16,7 @@
             <!-- href="#/app/other_user_info/{{ user.uid }}" -->
             <a class="campaign_member_panel" ng-repeat="user in campaign.member">
               <div class="campaign_member_wrap">
-                <img class="campaign_member_photo" ng-src="{{ base_url + '/logo/user/' + user.uid + '/100/100' }}"/>
+                <img class="campaign_member_photo img_user" ng-src="{{ base_url + '/logo/user/' + user.uid + '/100/100' }}"/>
                 <p class="campaign_member_name">{{ user.nickname }}</p>
               </div>
             </a>
@@ -35,15 +35,38 @@
             <p class="campaign_time_content">{{ campaign.content }}</p>
             <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
             <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
-            <div class="campaign_time_operator">
+            <div ng-if="campaign.active && !campaign.finish" class="campaign_time_operator">
               <button class="btn_radius btn_darkred btn_operator" ng-if="!campaign.is_joined" ng-click="join(campaign._id)">报名参加</button>
               <button class="btn_radius btn_darkred btn_operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出活动</button>
               <button class="btn_radius btn_blue btn_operator btn_good">点个赞</button>
             </div>
           </div>
         </div>
-        <div class="comments">
-          <p ng-repeat="comment in comments">{{ comment.content }}</p>
+        <div  ng-if="comments.length > 0" class="comments">
+          <div ng-repeat="comment in comments" class="comment">
+              <div class="comment_left">
+                <img ng-src="{{comment.poster.photo}}" class="comment_photo img_user"/>
+              </div>
+              <div class="comment_right">
+                <div class="">
+                  <div class="comment_name">
+                    <span class="">{{comment.poster.nickname}}</span>
+                  </div>
+                </div>
+                <div class="">
+                  <div class="comment_content">
+                    <p>{{comment.content}}</p>
+                  </div>
+                </div>
+                <div class="comment_time">
+                  <p>{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</p>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="comment_edit">
+          <input class="comment_input" type="text" name="new_comment" ng-model="new_comment" placeholder="请控制在140字以内" maxlength=140 required/>
+          <button class="comment_button" ng-click="comment()" ng-disabled="comment_form.$invalid"> 发表</button>
         </div>
       </ion-content>
     </ion-tab>

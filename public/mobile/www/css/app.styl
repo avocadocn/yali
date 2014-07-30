@@ -129,7 +129,8 @@ body
 .btn_blue
   color white
   background-color themeColor
-
+.img_user
+  border-radius 100%
 // menu
 
 oddItemBgcolor = #35add5
@@ -521,7 +522,7 @@ campaignLineHeight = 45px
     float left
     display block
     padding 5px
-    width 33.333333%
+    width 25%
     text-decoration none
     text-align center
     line-height 1
@@ -534,16 +535,15 @@ campaignLineHeight = 45px
         max-width 100%
 
       .campaign_member_name
-        position absolute
-
         // 本该是0，不知道什么原因底部多了1px空隙，暂且将bottom设为1px
         bottom 1px
         margin 0
         width 100%
+        text-overflow ellipsis
+        white-space nowrap
+        overflow hidden
+        max-width 100px
         line-height 20px
-        color white
-        background-color rgba(0, 0, 0, 0.4)
-
 
 // comments
 .campaign_detail
@@ -575,6 +575,38 @@ campaignLineHeight = 45px
 
       .btn_good
         margin-left 13px
+  .comments
+    margin 10px
+    padding 1px 10px
+    background-color white
+    .comment
+      border-bottom 1px inset #ddd
+      .comment_left
+        .comment_photo
+          float left
+          width 50px
+          height 50px
+          margin-left 10px
+      .comment_right
+        position relative
+        left 5%
+        margin 10px 0
+        .comment_name
+          text-overflow ellipsis
+          white-space nowrap
+          overflow hidden
+          max-width 100px
+        .comment_content
+          margin-left 60px
+          margin-right 40px
+          p
+            white-space pre
+            color #999
+        .comment_time
+          color #CEC7C7
+          margin-left 55px
+          font-size 10px
+          font-weight 300
 
 
 //动态页
@@ -611,21 +643,19 @@ timeline_logo_width = 50px
     margin 10px
     clear both
     border-radius 0px
-    padding 0
+    padding-bottom 15px
     color #888888
-    hr
-      clear both
-      color #888888
+    border-bottom 1px inset #ddd
     &:before
       content ''
       position absolute
       display block
       top -10px
       width 4px
-      height 125%
+      height 150%
       border-radius 2px   
       transition bottom 0.5s linear
-      left 23%
+      left 24%
       background-color #CCCCCC
       z-index 2
     &:after
@@ -638,7 +668,7 @@ timeline_logo_width = 50px
       background-color #BBBBBB
       box-shadow 0px 0px 2px rgba(0, 0, 0, 0.2)
       top 20%
-      left 23%
+      left 24%
       z-index 3
       margin-left -4px
     .timeline-left
@@ -678,12 +708,12 @@ timeline_logo_width = 50px
         text-transform uppercase
         margin-right 50px
         .img_scroll
-          max-height 66px
+          max-height 45px
           overflow hidden
           .photo
             display inline-block
-            max-width 66px
-            max-height 66px
+            max-width 45px
+            max-height 45px
             margin-right 1px
         p
           margin-bottom 0

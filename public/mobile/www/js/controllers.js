@@ -51,17 +51,10 @@ angular.module('starter.controllers', [])
 .controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Campaign, PhotoAlbum, Comment, Map, Global) {
 
   $scope.base_url = Global.base_url;
-
-  var campaigns = Campaign.getCampaignList();
-
-  for (var i = 0; i < campaigns.length; i++) {
-    if (campaigns[i]._id === $stateParams.id) {
-      $scope.campaign = campaigns[i];
-      break;
-    }
-  }
-
-  $scope.photo_album_id = $scope.campaign.photo_album;
+  Campaign.getCampaignDetail( $stateParams.id,function(campaign) {
+    $scope.campaign = campaign;
+    $scope.photo_album_id = $scope.campaign.photo_album;
+  });
 
   $scope.comment = '';
 
@@ -74,7 +67,7 @@ angular.module('starter.controllers', [])
   };
   getPhotoList();
 
-  Comment.getCampaignComments($scope.campaign._id, function(comments) {
+  Comment.getCampaignComments($stateParams.id, function(comments) {
     $scope.comments = comments;
   });
 
@@ -267,6 +260,7 @@ angular.module('starter.controllers', [])
 
   Timeline.getUserTimeline(function(time_lines) {
     $rootScope.time_lines = time_lines;
+    $rootScope.campaignReturnUri = '#/app/timeline';
   });
 
 })

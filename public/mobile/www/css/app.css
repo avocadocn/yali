@@ -106,6 +106,9 @@ body {
   color: #fff;
   background-color: #3abde8;
 }
+.img_user {
+  border-radius: 100%;
+}
 .menu_wrap {
   background-color: #3abde8;
 }
@@ -471,7 +474,7 @@ body {
   float: left;
   display: block;
   padding: 5px;
-  width: 33.333333%;
+  width: 25%;
   text-decoration: none;
   text-align: center;
   line-height: 1;
@@ -484,13 +487,14 @@ body {
   max-width: 100%;
 }
 .campaign_members_wrap .campaign_member_panel .campaign_member_wrap .campaign_member_name {
-  position: absolute;
   bottom: 1px;
   margin: 0;
   width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100px;
   line-height: 20px;
-  color: #fff;
-  background-color: rgba(0,0,0,0.4);
 }
 .campaign_detail .campaign_time {
   padding: 0 10px;
@@ -520,6 +524,45 @@ body {
 }
 .campaign_detail .campaign_time_shadow .campaign_time_operator .btn_good {
   margin-left: 13px;
+}
+.campaign_detail .comments {
+  margin: 10px;
+  padding: 1px 10px;
+  background-color: #fff;
+}
+.campaign_detail .comments .comment {
+  border-bottom: 1px inset #ddd;
+}
+.campaign_detail .comments .comment .comment_left .comment_photo {
+  float: left;
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+}
+.campaign_detail .comments .comment .comment_right {
+  position: relative;
+  left: 5%;
+  margin: 10px 0;
+}
+.campaign_detail .comments .comment .comment_right .comment_name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100px;
+}
+.campaign_detail .comments .comment .comment_right .comment_content {
+  margin-left: 60px;
+  margin-right: 40px;
+}
+.campaign_detail .comments .comment .comment_right .comment_content p {
+  white-space: pre;
+  color: #999;
+}
+.campaign_detail .comments .comment .comment_right .comment_time {
+  color: #cec7c7;
+  margin-left: 55px;
+  font-size: 10px;
+  font-weight: 300;
 }
 .dynamic_list {
   white-space: normal;
@@ -557,12 +600,9 @@ body {
   margin: 10px;
   clear: both;
   border-radius: 0px;
-  padding: 0;
+  padding-bottom: 15px;
   color: #888;
-}
-.dl_timeline .timeline_element hr {
-  clear: both;
-  color: #888;
+  border-bottom: 1px inset #ddd;
 }
 .dl_timeline .timeline_element:before {
   content: '';
@@ -570,10 +610,10 @@ body {
   display: block;
   top: -10px;
   width: 4px;
-  height: 125%;
+  height: 150%;
   border-radius: 2px;
   transition: bottom 0.5s linear;
-  left: 23%;
+  left: 24%;
   background-color: #ccc;
   z-index: 2;
 }
@@ -587,7 +627,7 @@ body {
   background-color: #bbb;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
   top: 20%;
-  left: 23%;
+  left: 24%;
   z-index: 3;
   margin-left: -4px;
 }
@@ -635,13 +675,13 @@ body {
   margin-right: 50px;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll {
-  max-height: 66px;
+  max-height: 45px;
   overflow: hidden;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photo {
   display: inline-block;
-  max-width: 66px;
-  max-height: 66px;
+  max-width: 45px;
+  max-height: 45px;
   margin-right: 1px;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content p {
