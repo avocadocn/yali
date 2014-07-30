@@ -36,6 +36,7 @@
   background-color: #fbfbfb;
   margin: 20px 0;
   padding: 10px 20px;
+  border: 1px solid #ddd;
 }
 .dl_detail_container .dl_detail_main .dl_detail_member .member {
   float: left;

@@ -9,11 +9,14 @@ block contentExt
   .dl_container.clearfix(ng-controller="competitionController" ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score?competition.camp[0].score:0};score_b=#{competition.camp[1].score?competition.camp[1].score:0};")
     include ../partials/breadcrumb
     +breadcrumb(links)
-    .main
+    .dl_detail_main
+      ul.nav.nav-tabs
+        li(ng-class="{'active':true}")
+          a.subtitle.no_radius.border_red= competition.theme
       if !competition.active&&(competition.camp[1].start_confirm || !competition.camp[0].start_confirm)
         .text-center #{__("CAMPAIGNCLOSE")}
       #competition_content.competition_content(data-nowteam="#{team}" data-id='#{competition._id}')
-        .row
+        .team_info.clearfix
           .team_left.col-xs-4
             img.pull-right.team_logo(draggable="false" src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
@@ -75,14 +78,14 @@ block contentExt
                       input.dl_btn.dl_btn_small(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[1].id}')")
                   else
                     a(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
-        .row.margin_top_20
+        .dl_row.members.clearfix
           .col-xs-5.col-xs-offset-1
             if competition.camp[1].start_confirm
               .dl_row.subtitle
                 span #{__("JOIN")}#{__("MEMBER")}
                 if competition_leader.indexOf(0)>-1
                   span |
-                  a(ng-click="modalPerticipator()") 私信
+                  a(ng-click="modalPerticipator()") 通知
               if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'&&competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1
                 each teamAMember in competition.camp[0].member
                   img.teamMember.team_member_logo.img_user(x-donler-draggable="true" draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" data-camp='0' data-tid="#{competition.camp[0].id}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
@@ -97,10 +100,10 @@ block contentExt
                 img.teamMember.team_member_logo.img_user(draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
           .col-xs-5
             if competition.camp[1].start_confirm
-              .row
+              .dl_row.clearfix
                 .dl_row.subtitle.pull-right
                   if (competition_leader.indexOf(1)>-1)
-                    a(ng-click="modalPerticipator()") 私信
+                    a(ng-click="modalPerticipator()") 通知
                     span |
                   span #{__("JOIN")}#{__("MEMBER")}
               if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'&&competition.active&&!competition.finish&&competition_leader.indexOf(1)>-1
@@ -118,10 +121,8 @@ block contentExt
                 img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
         //- 7是足球
         if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'
-          hr
-          .row
-            .col-xs-1
-            .col-xs-10.img_contain
+          .football.clearfix
+            .col-xs-10.col-xs-offset-1.img_contain
               .formatField(x-donler-drop-target="#{competition.active&&!competition.finish&&competition_leader.length>0}" draggable='false' )
                 if competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1
                   each teamAMember in competition.camp[0].formation
@@ -135,7 +136,6 @@ block contentExt
                 else
                   each teamBMember in competition.camp[1].formation
                     img.team_member_logo.teamMember.onmemberB.img_user(x-donler-member="true" draggable="false" data-camp='1' id='on_b__#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
-        hr
         if role ==='LEADER' || role==='MEMBER' || role==='HR'
           form.dl_detail_main(name="comment_form" novalidate)
             p.subtitle #{__("LEAVEMESSAGE")}
@@ -164,13 +164,12 @@ block contentExt
                     label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
                     a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .side
-      if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish
-        .pull-right
-          button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel('#{competition._id}')") 关闭活动
-      p.subtitle.text-left 活动简介
-      hr
-      .dl_detail_border.clearfix
-        .dl_detail_content
+      .competition_detail
+        if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish
+          .pull-right
+            button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel('#{competition._id}')") 关闭活动
+        h4.subtitle.text-left 活动简介
+        .dl_detail_content.clearfix
           .dl_detail_row
             .dl_detail_label
               span #{__("START_TIME")}:
@@ -208,9 +207,8 @@ block contentExt
               span #{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span= competition.content
-      hr
       p.subtitle.text-left 活动地点
-      #location.size_210
+      #location.map_size
       hr
       div
         if role!=='PARTNER'
