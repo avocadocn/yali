@@ -530,6 +530,14 @@ exports.memberOperateByRoute = function(req, res) {
   var operate = req.body.operate;
   var member = req.body.member;
 
+  var user_department;
+
+  if(req.user.provider === 'user'){
+    user_department = req.user.department;
+  }else{
+    user_department = req.body.department;
+  }
+
   var join = function(callback) {
     teamOperate({
       did: did,
@@ -557,7 +565,7 @@ exports.memberOperateByRoute = function(req, res) {
 
   var quit = function(callback) {
     teamOperate({
-      did: req.user.department._id,
+      did: user_department._id,
       operate: {
         '$pull': {
           'member': {
@@ -585,8 +593,7 @@ exports.memberOperateByRoute = function(req, res) {
 
   if (operate === 'join') {
     // 如果有加入部门，先退出之前的部门
-    if (req.user.department && req.user.department._id && req.user.department._id.toString() !== did) {
-
+    if (user_department && user_department._id && user_department._id.toString() !== did) {
       quit(function(data) {
         join(res.send);
       });
@@ -632,8 +639,6 @@ exports.memberOperateByHand = function(operate, member, did, callback) {
     }, callback);
   }
 }
-
-//下面的千万不要删啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊,以后还会用的
 
 // //处理员工申请
 // exports.applyOperate = function(req, res) {

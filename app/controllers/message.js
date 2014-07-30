@@ -870,9 +870,9 @@ exports.messageGetByHand = function(req,res){
 // }
 
 //给部门成员发站内信
-exports.sendToDepartmentMember = function(req,res){
+// exports.sendToDepartmentMember = function(req,res){
 
-}
+// }
 
 // //hr处理成员的部门加入申请后向成员发站内信
 // exports.afterUserApplyOperate = function(req,res){

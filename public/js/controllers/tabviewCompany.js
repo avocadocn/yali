@@ -447,6 +447,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                 for (var i = 0; i < $scope.options.length; i++) {
                     if (user.department) {
                         if (user.department._id && user.department._id.toString() === $scope.options[i]._id.toString()) {
+                            $scope.origin_department_id = $scope.options[i]._id;
                             $scope.department = {
                                 _id: $scope.options[i]._id
                             };
@@ -455,6 +456,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     }
                 }
                 if (!$scope.department) {
+                    $scope.origin_department_id = 0;
                     $scope.department = {
                         _id: $scope.options[0]._id
                     };
@@ -465,6 +467,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
             for (var i = 0; i < $scope.options.length; i++) {
                 if (user.department) {
                     if (user.department._id && user.department._id.toString() === $scope.options[i]._id.toString()) {
+                        $scope.origin_department_id = $scope.options[i]._id;
                         $scope.department = {
                             _id: $scope.options[i]._id
                         };
@@ -473,6 +476,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                 }
             }
             if (!$scope.department) {
+                $scope.origin_department_id = 0;
                 $scope.department = {
                     _id: $scope.options[0]._id
                 };
@@ -486,6 +490,12 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
         $http.get('/search/user/'+user_id+'?'+ Math.round(Math.random()*100)).success(function(data, status) {
             $scope.currentmember = data;
             setDepartmentOptions($scope.currentmember);
+            if($scope.currentmember.department != null && $scope.currentmember.department != undefined){
+                $scope.origin_department = {
+                    '_id':$scope.currentmember.department._id,
+                    'name':$scope.currentmember.department.name
+                };
+            }
         });
         $scope.unEdit = true;
         $scope.buttonStatus = '编辑';
@@ -520,6 +530,21 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                         department: department
                     }
                 }).success(function(data, status) {
+                    if($scope.origin_department_id.toString() !== department._id.toString()){
+                        $http
+                            .post('/department/memberOperate/' + department._id, {
+                                operate: 'join',
+                                member: {
+                                    _id: $scope.currentmember._id,
+                                    nickname: $scope.currentmember.nickname,
+                                    photo: $scope.currentmember.photo
+                                },
+                                department : $scope.origin_department
+                            })
+                            .success(function(data, status) {
+                                ;
+                            });
+                    }
                     $scope.buttonStatus = '编辑';
                     alertify.alert('保存成功');
                 }).error(function(data, status) {
