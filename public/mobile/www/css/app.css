@@ -452,8 +452,7 @@ body {
   float: left;
 }
 .dynamic_list img.team_logo {
-  height: 50px;
-  width: 50px;
+  width: 20%;
 }
 .dynamic_list .pull_left {
   float: left;
@@ -477,86 +476,106 @@ body {
   margin: 0px auto;
   padding-top: 20px;
 }
-.dl_timeline .spine {
-  position: absolute;
-  top: 0;
-  bottom: 100%;
-  width: 4px;
-  border-radius: 2px;
-  transition: bottom 0.5s linear;
-  left: 20%;
-  margin-left: -2px;
-  background-color: #ccc;
-  height: 100%;
-  z-index: 2;
-}
 .dl_timeline .timeline_element {
   position: relative;
-  margin: 10px 0px;
+  margin: 10px;
   clear: both;
   border-radius: 0px;
-  padding: 10px;
+  padding: 0;
   color: #888;
+}
+.dl_timeline .timeline_element hr {
+  clear: both;
+}
+.dl_timeline .timeline_element:before {
+  content: '';
+  position: absolute;
+  display: block;
+  top: -10px;
+  width: 4px;
+  height: 120%;
+  border-radius: 2px;
+  transition: bottom 0.5s linear;
+  left: 23%;
+  background-color: #ccc;
+  z-index: 2;
 }
 .dl_timeline .timeline_element:after {
   content: '';
   position: absolute;
   display: block;
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 100%;
   background-color: #bbb;
   border: 1px solid #fff;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
-  top: 10px;
-  left: 76px;
+  top: 20%;
+  left: 23%;
   z-index: 3;
+  margin-left: -4px;
 }
-.dl_timeline .timeline_element .title {
+.dl_timeline .timeline_element .timeline-left .timeline-logo {
+  margin: 0 4px 5px 5px;
+  width: 50px;
+  float: left;
+}
+.dl_timeline .timeline_element .timeline-right {
+  position: relative;
+  left: 40px;
+}
+.dl_timeline .timeline_element .timeline-right .title {
   position: relative;
   font-size: 10px;
   overflow: hidden;
   margin-bottom: 0;
   text-transform: uppercase;
 }
-.dl_timeline .timeline_element .title a {
+.dl_timeline .timeline_element .timeline-right .title a {
   color: #aaa;
   display: block;
 }
-.dl_timeline .timeline_element .title a:hover {
+.dl_timeline .timeline_element .timeline-right .title a:hover {
   text-decoration: none;
 }
-.dl_timeline .timeline_element .title .head {
+.dl_timeline .timeline_element .timeline-right .title .head {
   color: #aaa;
   font-size: 12px;
   line-height: 22px;
+  display: inline-block;
+  width: 165px;
 }
-.dl_timeline .timeline_element .title .date {
+.dl_timeline .timeline_element .timeline-right .title .date {
   float: right;
+  position: relative;
+  right: 45px;
 }
-.dl_timeline .timeline_element .title .timeline-logo {
-  margin-right: 4px;
-  width: 30px;
-  height: 30px;
-  float: left;
+.dl_timeline .timeline_element .timeline-right .timeline_content {
+  position: relative;
+  font-size: 10px;
+  overflow: hidden;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  margin-right: 50px;
 }
-.dl_timeline .timeline_element .img_scroll {
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll {
   max-height: 66px;
   overflow: hidden;
 }
-.dl_timeline .timeline_element .img_scroll .photo {
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photo {
   display: inline-block;
   max-width: 66px;
   max-height: 66px;
   margin-right: 1px;
 }
-.dl_timeline .timeline_element .content p {
+.dl_timeline .timeline_element .timeline-right .timeline_content p {
   margin-bottom: 0;
+  margin-right: 10px;
 }
-.dl_timeline .timeline_element .content a {
+.dl_timeline .timeline_element .timeline-right .timeline_content a {
   color: #888;
   display: block;
 }
-.dl_timeline .timeline_element .content a:hover {
+.dl_timeline .timeline_element .timeline-right .timeline_content a:hover {
   text-decoration: none;
 }

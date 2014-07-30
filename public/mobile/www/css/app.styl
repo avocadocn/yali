@@ -564,8 +564,8 @@ campaignLineHeight = 45px
   .dynamic_side
     float left
   img.team_logo
-    height 50px
-    width 50px
+    //height 50px
+    width 20%
   .pull_left
     float left
   .pull_right
@@ -576,80 +576,101 @@ campaignLineHeight = 45px
     font-size 30px
   a
     text-decoration none
+
+
+
 //timeline
+timeline_logo_width = 50px
 .dl_timeline
   width 660px
   position relative
   overflow hidden
   margin 0px auto
   padding-top 20px
-  .spine
-    position absolute
-    top 0
-    bottom 100%
-    width 4px
-    border-radius 2px   
-    transition bottom 0.5s linear
-    left 20%
-    margin-left -2px
-    background-color #CCCCCC
-    height 100%
-    z-index 2
   .timeline_element
     position relative
-    margin 10px 0px
+    margin 10px
     clear both
     border-radius 0px
-    padding 10px
+    padding 0
     color #888888
+    hr
+      clear both
+    &:before
+      content ''
+      position absolute
+      display block
+      top -10px
+      width 4px
+      height 120%
+      border-radius 2px   
+      transition bottom 0.5s linear
+      left 23%
+      background-color #CCCCCC
+      z-index 2
     &:after
       content ''
       position absolute
       display block
-      width 8px
-      height 8px
+      width 12px
+      height 12px
       border-radius 100%
       background-color #BBBBBB
       border 1px solid #FFFFFF
       box-shadow 0px 0px 2px rgba(0, 0, 0, 0.2)
-      top 10px
-      left 76px
+      top 20%
+      left 23%
       z-index 3
-    .title
-      position relative
-      font-size 10px
-      overflow hidden
-      margin-bottom 0
-      text-transform uppercase
-      a
-        color #AAAAAA
-        display block
-        &:hover
-          text-decoration none
-      .head
-        color #AAAAAA
-        font-size 12px
-        line-height 22px
-      .date
-        float right
+      margin-left -4px
+    .timeline-left
       .timeline-logo
-        margin-right 4px
-        width 30px
-        height 30px
+        margin 0 4px 5px 5px
+        width timeline_logo_width
         float left
-    .img_scroll
-      max-height 66px
-      overflow hidden
-      .photo
-        display inline-block
-        max-width 66px
-        max-height 66px
-        margin-right 1px
-    .content
-      p
+    .timeline-right
+      position relative
+      left timeline_logo_width - 10px
+      .title
+        position relative
+        font-size 10px
+        overflow hidden
         margin-bottom 0
-      a
-        color #888888
-        display block
-        &:hover
-          text-decoration none
+        text-transform uppercase
+        a
+          color #AAAAAA
+          display block
+          &:hover
+            text-decoration none
+        .head
+          color #AAAAAA
+          font-size 12px
+          line-height 22px
+          display inline-block
+          width 165px
+        .date
+          float right
+          position relative
+          right timeline_logo_width - 5px
+      .timeline_content
+        position relative
+        font-size 10px
+        overflow hidden
+        margin-bottom 0
+        text-transform uppercase
+        margin-right 50px
+        .img_scroll
+          max-height 66px
+          overflow hidden
+          .photo
+            display inline-block
+            max-width 66px
+            max-height 66px
+            margin-right 1px
+        p
+          margin-bottom 0
+          margin-right 10px
+        a
+          color #888888
+          display block
+          &:hover
+            text-decoration none

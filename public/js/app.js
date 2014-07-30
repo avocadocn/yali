@@ -113,9 +113,12 @@ app.run(['$rootScope', function ($rootScope) {
 app.filter('dateView', function() {
   return function(input) {
     var today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
     var date = new Date(input);
     var intervalMilli = date.getTime() - today.getTime();
-    var xcts = parseInt(intervalMilli / (24 * 60 * 60 * 1000));
+    var xcts = Math.floor(intervalMilli / (24 * 60 * 60 * 1000));
     var nowTime = (date.getHours()<10?('0'+date.getHours()):date.getHours())+':'+(date.getMinutes()<10?('0'+date.getMinutes()):date.getMinutes());
     // -2:前天 -1：昨天 0：今天 1：明天 2：后天， out：显示日期
     switch(xcts){
@@ -142,9 +145,12 @@ app.filter('dateView', function() {
 app.filter('day', function() {
   return function(input) {
     var today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
     var date = new Date(input);
     var intervalMilli = date.getTime() - today.getTime();
-    var xcts = parseInt(intervalMilli / (24 * 60 * 60 * 1000));
+    var xcts = Math.floor(intervalMilli / (24 * 60 * 60 * 1000));
     // -2:前天 -1：昨天 0：今天 1：明天 2：后天， out：显示日期
     switch(xcts){
     // case -2:
