@@ -609,46 +609,73 @@ exports.createPhoto = function(req, res) {
                       var crop_x = (size.width - crop_width) / 2;
                       var crop_y = (size.height - crop_height) / 2;
 
-                      gm(photos[i].path)
-                      .crop(crop_width, crop_height, crop_x, crop_y)
-                      .resize(thumbnail_width, thumbnail_height)
-                      .write(path.join(config.root, 'public', uri_dir, 'thumbnail' + photo_name),
-                        function(err) {
-                          var photo = {
-                            uri: path.join(uri_dir, photo_name),
-                            thumbnail_uri: path.join(uri_dir, 'thumbnail' + photo_name),
-                            name: photos[i].name
-                          };
-                          if (req.user.provider === 'company') {
-                            photo.upload_user = {
-                              _id: req.user._id,
-                              name: req.user.info.name,
-                              type: 'hr'
-                            };
-                          } else if (req.user.provider === 'user' ) {
-                            photo.upload_user = {
-                              _id: req.user._id,
-                              name: req.user.nickname,
-                              type: 'user'
-                            };
+                      async.waterfall([
+                        function(callback) {
+                          var handle;
+                          if (size.width > size.height) {
+                            handle = gm(photos[i].path).resize(200);
+                          } else {
+                            handle = gm(photos[i].path).resize(null, 200);
                           }
-                          photo_album.photos.push(photo);
-                          photo_album.photo_count += 1;
-                          photo_album.update_user = photo.upload_user;
-                          photo_album.save(function(err) {
-                            if (err) callback(err);
-                            else {
-                              fs.unlink(photos[i].path, function(err) {
+                          handle.write(path.join(config.root, 'public', uri_dir, 'zoom' + photo_name), function(err) {
+                            if (err) {
+                              return callback(err);
+                            }
+                            callback(null, path.join(uri_dir, 'zoom' + photo_name));
+                          });
+                        },
+
+                        function(zoom_uri, callback) {
+                          gm(photos[i].path)
+                          .crop(crop_width, crop_height, crop_x, crop_y)
+                          .resize(thumbnail_width, thumbnail_height)
+                          .write(path.join(config.root, 'public', uri_dir, 'thumbnail' + photo_name),
+                            function(err) {
+                              var photo = {
+                                uri: path.join(uri_dir, photo_name),
+                                thumbnail_uri: path.join(uri_dir, 'thumbnail' + photo_name),
+                                zoom_uri: zoom_uri,
+                                name: photos[i].name
+                              };
+                              if (req.user.provider === 'company') {
+                                photo.upload_user = {
+                                  _id: req.user._id,
+                                  name: req.user.info.name,
+                                  type: 'hr'
+                                };
+                              } else if (req.user.provider === 'user' ) {
+                                photo.upload_user = {
+                                  _id: req.user._id,
+                                  name: req.user.nickname,
+                                  type: 'user'
+                                };
+                              }
+                              photo_album.photos.push(photo);
+                              photo_album.photo_count += 1;
+                              photo_album.update_user = photo.upload_user;
+                              photo_album.save(function(err) {
                                 if (err) callback(err);
                                 else {
-                                  i++;
-                                  callback();
+                                  fs.unlink(photos[i].path, function(err) {
+                                    if (err) callback(err);
+                                    else {
+                                      callback();
+                                    }
+                                  });
                                 }
                               });
                             }
-                          });
+                          );
                         }
-                      );
+                      ], function(err, result) {
+                        if (err) {
+                          console.log(err)
+                          res.send(500);
+                        }
+                        i++;
+                        callback();
+                      });
+
                     }
                   });
 

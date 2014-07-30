@@ -10,6 +10,7 @@ var Schema = mongoose.Schema;
 var Photo = new Schema({
   uri: String,
   thumbnail_uri: String,
+  zoom_uri: String,
   upload_date: {
     type: Date,
     default: Date.now
