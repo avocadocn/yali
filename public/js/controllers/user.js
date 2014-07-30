@@ -78,7 +78,8 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
         alertify.alert('DATA ERROR');
     });
 
-    $scope.selectMainDepartment = function(){
+    $scope.selectMainDepartment = function(value){
+        $scope.main_department = value;
         $scope.main_department_id = 'null';
         $scope.main_department_name = 'null';
         $scope.child_department_id = 'null';
@@ -105,7 +106,8 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
         }
     }
 
-    $scope.selectChildDepartment = function(){
+    $scope.selectChildDepartment = function(value){
+        $scope.child_department = value;
         $scope.child_department_id = 'null';
         $scope.child_department_name = 'null';
         $scope.child_department_id = $scope.child_department._id;
