@@ -80,7 +80,7 @@
         </div>
         <div class="padding">
           <div id="photo_list" class="campaign_photos_wrap">
-            <div class="campaign_photo_panel" ng-repeat="photo in photos">
+            <div class="campaign_photo_panel" ng-repeat="photo in photos" ng-show="($index-$index%4)/4==now_page">
               <div class="campaign_photo_border">
                 <div class="campaign_photo_img_wrap">
                   <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
@@ -94,6 +94,10 @@
                 <input type="text" ng-model="comment"/>
                 <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->
               </div>
+            </div>
+            <div class="pager">
+              <span class="page"ng-repeat="photo_page in photo_pages" ng-class="{active:now_page==photo_page}"> {{photo_page}}
+              </span>
             </div>
           </div>
         </div>
