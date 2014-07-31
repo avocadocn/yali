@@ -220,8 +220,8 @@ block contentExt
               span #{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span= competition.content
-      p.subtitle.text-left 活动地点
       if competition.location.coordinates.length==2
+        p.subtitle.text-left 活动地点
         a(href="http://api.map.baidu.com/marker?location=#{competition.location.coordinates[1]},#{competition.location.coordinates[0]}&title=活动地点&content=#{competition.location.name}&output=html" target="_blank")
           img(style="margin:20px" width="290" height="290" src="http://api.map.baidu.com/staticimage?width=290&height=290&center=#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&zoom=15&markers=#{competition.location.name}|#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&markerStyles=m,A,0xff0000")
       hr
