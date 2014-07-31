@@ -392,6 +392,17 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                             'active':data[i].active
                         })
                     }
+                //未选择部门
+                }else{
+                    if($scope.members_by_department[j]._id === '0'){
+                        find = true;
+                        $scope.members_by_department[j].member.push({
+                            '_id':data[i]._id,
+                            'nickname':data[i].nickname,
+                            'photo':data[i].photo,
+                            'active':data[i].active
+                        })
+                    }
                 }
             }
             //新增部门
@@ -401,7 +412,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     _id = data[i].department._id;
                     name = data[i].department.name;
                 }else{
-                    _id = "";
+                    _id = "0";
                     name = "未选择部门";
                 }
                 $scope.members_by_department.push({
