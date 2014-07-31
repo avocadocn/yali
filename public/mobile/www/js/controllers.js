@@ -109,6 +109,7 @@ angular.module('starter.controllers', [])
 
 .controller('ScheduleListCtrl', function($scope, $ionicScrollDelegate, Campaign) {
 
+  moment.lang('zh-cn');
   /**
    * 日历视图的状态，有年、月、日三种视图
    * 'year' or 'month' or 'day'
@@ -117,12 +118,25 @@ angular.module('starter.controllers', [])
   $scope.view = 'month';
 
   /**
-   * 更新日历的月视图
-   * @param  {Number} year  年
-   * @param  {Number} month 月，0-11
+   * 日视图中，当前周的日期数组，从周日开始
+   * 每个数组元素为Date对象
+   * @type {Array}
    */
-  var updateMonth = function(year, month) {
-    moment.lang('zh-cn');
+  $scope.current_week_date = [];
+
+  /**
+   * 当前浏览的日期，用于更新视图
+   * @type {Date}
+   */
+  var current = $scope.current_date = new Date();
+
+  /**
+   * 更新日历的月视图, 不会更新current
+   * @param  {Date} date
+   */
+  var updateMonth = function(date) {
+    var year = date.getFullYear();
+    var month = date.getMonth();
     var mdate = moment(new Date(year, month));
     $scope.current_year = year;
     $scope.current_month = mdate.format('MMMM');
@@ -167,44 +181,52 @@ angular.module('starter.controllers', [])
           }
         }
 
+        campaign.format_start_time = moment(campaign.start_time).calendar();
+        campaign.format_end_time = moment(campaign.end_time).calendar();
+
       });
 
     }
   };
 
   /**
-   * 进入某一天的详情
+   * 进入某一天的详情, 会更新current
    * @param  {Date} date
    */
-  $scope.updateDay = function(date) {
+  var updateDay = $scope.updateDay = function(date) {
     $scope.view = 'day';
-    if (date.getMonth() !== current.month) {
-      updateMonth(date.getFullYear(), date.getMonth());
-      current.year = date.getFullYear();
-      current.month = date.getMonth();
+    if (date.getMonth() !== current.getMonth()) {
+      updateMonth(date);
     }
-    current.date = date.getDate();
+    current = date;
     $scope.current_day = {
-      date: date,
-      campaigns: $scope.month[date.getDate() - 1].events
+      date: current,
+      format_date: moment(current).format('ll'),
+      format_day: moment(current).format('dddd'),
+      campaigns: $scope.month[current.getDate() - 1].events
     };
+
+    var temp = new Date(date);
+    var first_day_of_week = new Date(temp.setDate(temp.getDate() - temp.getDay()));
+    $scope.current_week_date = [];
+    for (var i = 0; i < 7; i++) {
+      $scope.current_week_date.push(new Date(first_day_of_week.setDate(first_day_of_week.getDate())));
+      first_day_of_week.setDate(first_day_of_week.getDate() + 1);
+      var week_date = $scope.current_week_date[i];
+      var now = new Date();
+      if (week_date.getFullYear() === now.getFullYear() && week_date.getMonth() === now.getMonth() && week_date.getDate() === now.getDate()) {
+        week_date.is_today = true;
+      }
+      if (week_date.getFullYear() === current.getFullYear() && week_date.getMonth() === current.getMonth() && week_date.getDate() === current.getDate()) {
+        week_date.is_current = true;
+      }
+    }
   };
 
-  var now = new Date();
-
-  /**
-   * 当前浏览的日期，用于更新视图
-   * @type {Object}
-   */
-  var current = {
-    year: now.getFullYear(),
-    month: now.getMonth(),
-    date: now.getDate()
-  };
 
   Campaign.getUserCampaignsForCalendar(function(campaigns) {
     $scope.campaigns = campaigns;
-    updateMonth(current.year, current.month);
+    updateMonth(current);
   });
 
 
@@ -224,19 +246,17 @@ angular.module('starter.controllers', [])
   $scope.pre = function() {
     switch ($scope.view) {
     case 'month':
-      if (current.month === 0) {
-        current.year--;
-        current.month = 11;
-      } else {
-        current.month--;
-      }
-      updateMonth(current.year, current.month);
+      current.setMonth(current.getMonth() - 1);
+      updateMonth(current);
       break;
     case 'day':
+      var temp = new Date(current);
+      temp.setDate(temp.getDate() - 1);
+      updateDay(temp);
       break;
     }
 
-  }
+  };
 
   /**
    * 根据当前视图，向后一年、一个月、一天
@@ -244,15 +264,13 @@ angular.module('starter.controllers', [])
   $scope.next = function() {
     switch ($scope.view) {
     case 'month':
-      if (current.month === 11) {
-        current.year++;
-        current.month = 0;
-      } else {
-        current.month++;
-      }
-      updateMonth(current.year, current.month);
+      current.setMonth(current.getMonth() + 1);
+      updateMonth(current);
       break;
     case 'day':
+      var temp = new Date(current);
+      temp.setDate(temp.getDate() + 1);
+      updateDay(temp);
       break;
     }
 
@@ -262,16 +280,15 @@ angular.module('starter.controllers', [])
    * 回到今天，仅在月、日视图下起作用
    */
   $scope.today = function() {
-    var now = new Date();
-    current.year = now.getFullYear();
-    current.month = now.getMonth();
-    current.date = now.getDate();
 
     switch ($scope.view) {
     case 'month':
-      updateMonth(current.year, current.month);
+      current = new Date();
+      updateMonth(current);
       break;
     case 'day':
+      var temp = new Date();
+      updateDay(temp);
       break;
     }
 

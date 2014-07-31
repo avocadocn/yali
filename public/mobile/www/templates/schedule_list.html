@@ -26,19 +26,30 @@
           <div class="day">五</div>
           <div class="day weekend">六</div>
         </div>
+        <div class="date_list text-center clearfix" ng-if="view==='day'">
+          <div class="date_box" ng-repeat="date in current_week_date">
+            <div class="date" ng-class="{today: date.is_today===true, current_day: date.is_current===true}" ng-click="updateDay(date)">{{ date.getDate() }}</div>
+          </div>
+        </div>
+        <div class="date_bar text-center" ng-if="view==='day'">{{ current_day.format_date }}&nbsp;{{ current_day.format_day }}</div>
       </nav>
       <div class="calendar_box">
         <div class="calendar_month clearfix" ng-if="view==='month'">
           <div class="month" ng-class="current_month_offset">{{ current_month }}</div>
-          <div class="calendar_day text-center" ng-repeat="day in month" ng-class="day.first_day" ng-click="updateDay(day.full_date)">
-            <div class="calendar_date" ng-class="{weekend: day.is_weekend===true, today: day.is_today===true}" >{{ day.date }}</div>
+          <div class="calendar_day text-center" ng-repeat="day in month" ng-class="day.first_day">
+            <div class="calendar_date" ng-class="{weekend: day.is_weekend===true, today: day.is_today===true}" ng-click="updateDay(day.full_date)">{{ day.date }}</div>
             <div class="event_unjoin" ng-if="day.has_event && !day.has_joined_event"></div>
             <div class="event_joined" ng-if="day.has_joined_event"></div>
           </div>
         </div>
         <div class="calendar_day clearfix" ng-if="view==='day'">
-          <div ng-repeat="campaign in current_day.campaigns">
-            <p>{{ campaign.theme }}</p>
+          <div class="calendar_campaign clearfix" ng-repeat="campaign in current_day.campaigns">
+            <div class="logo"><img ng-src="{{ campaign.logo }}"/></div>
+            <div class="content">
+              <div class="text">{{ campaign.theme }}</div>
+              <div class="text">开始: {{ campaign.format_start_time }}</div>
+              <div class="text">结束: {{ campaign.format_end_time }}</div>
+            </div>
           </div>
         </div>
       </div>

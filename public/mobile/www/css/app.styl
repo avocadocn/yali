@@ -315,6 +315,37 @@ loginInfoBgcolor = #75d1ef
       .weekend
         color gray
 
+    .date_list
+      position relative
+      margin-top 5px
+
+      .date_box
+        float left
+        width (100 / 7)%
+        height 30px
+        line-height 30px
+
+        navDateSize = 24px
+        .date
+          margin-top 10%
+          margin-left auto
+          margin-right auto
+          width navDateSize
+          height navDateSize
+          line-height navDateSize
+
+        .current_day
+          color white
+          border-radius 50px
+          background-color black
+
+        .current_day.today
+          background-color themeColor
+
+    .date_bar
+      margin 5px auto
+
+
   .calendar_month
     position relative
 
@@ -332,14 +363,14 @@ loginInfoBgcolor = #75d1ef
       height 60px
       border-top solid 1px rgb(220, 220, 220)
 
-      dateSize = 24px
+      monthDateSize = 24px
       .calendar_date
         margin-top 15%
         margin-left auto
         margin-right auto
-        width dateSize
-        height dateSize
-        line-height dateSize
+        width monthDateSize
+        height monthDateSize
+        line-height monthDateSize
 
       .today
         color white
@@ -369,6 +400,35 @@ loginInfoBgcolor = #75d1ef
     for day in (0..6)
       .offset_{day}
         margin-left (100 * day / 7)%
+
+  .calendar_day
+    padding 5px
+
+    .calendar_campaign
+      margin 5px 0
+      height 62px
+      border solid 1px gray
+
+      campaignLogoSize = 50px
+      .logo
+        float left
+        text-align center
+        width 60px
+        height 60px
+        img
+          margin-top 5px
+          width campaignLogoSize
+          height campaignLogoSize
+
+      .content
+        float left
+        margin-left 10px
+
+        .text
+          height 20px
+          line-height 20px
+          font-size 12px
+
 
 
 // campaign list page

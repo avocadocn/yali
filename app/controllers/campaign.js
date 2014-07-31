@@ -217,6 +217,8 @@ var formatCampaignForCalendar = function(user, campaigns) {
  * @return {Object}          处理后的对象
  */
 var formatCampaignForApp = function(user, campaign) {
+  moment.lang('zh-cn');
+
   // 公司活动
   if (campaign.campaign_type === 1) {
     var logo = campaign.cid[0].info.logo;
