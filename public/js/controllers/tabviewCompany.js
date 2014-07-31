@@ -1256,6 +1256,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
     };
 
     $scope.getNode = function(node){
+        console.log(node);
         $scope.did = node._id;
         $scope.current_node = node;
         $http({
@@ -1383,7 +1384,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 // 找出没有加入任何部门的公司员工,成为部门管理员的候选人(如果选他成为管理员必须先让他加入该部门)
                 if($scope.company_users.length > 0 ){
                     for(var i = 0 ; i < $scope.company_users.length; i ++){
-                        if($scope.company_users[i].department._id == undefined || $scope.company_users[i].department._id == null){
+                        if($scope.company_users[i].department == undefined || $scope.company_users[i].department == null){
                             $scope.company_users[i].wait_for_join = true;
                             $scope.department_users.push($scope.company_users[i]);
                         }
