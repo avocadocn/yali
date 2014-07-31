@@ -217,6 +217,8 @@ var formatCampaignForCalendar = function(user, campaigns) {
  * @return {Object}          处理后的对象
  */
 var formatCampaignForApp = function(user, campaign) {
+  moment.lang('zh-cn');
+
   // 公司活动
   if (campaign.campaign_type === 1) {
     var logo = campaign.cid[0].info.logo;
@@ -233,7 +235,6 @@ var formatCampaignForApp = function(user, campaign) {
       }
     }
   }
-
 
   var is_joined = false;
 
@@ -270,20 +271,21 @@ var formatCampaignForApp = function(user, campaign) {
   } else {
     // 活动未结束
 
-    var during = moment.duration(moment(now).diff(campaign.start_time));
+    var temp_start_time = new Date(campaign.start_time);
+    var during = moment.duration(moment(now).diff(temp_start_time));
 
     var days = Math.abs(during.days());
     var hours = Math.abs(during.hours());
     var minutes = Math.abs(during.minutes());
     var seconds = Math.abs(during.seconds());
 
-    campaign.start_time.setHours(hours);
-    campaign.start_time.setMinutes(minutes);
-    campaign.start_time.setSeconds(seconds);
+    temp_start_time.setHours(hours);
+    temp_start_time.setMinutes(minutes);
+    temp_start_time.setSeconds(seconds);
 
     if (days > 0) {
       remind_text = '活动开始时间';
-      start_time_text = moment(campaign.start_time).format('YYYY-MM-DD');
+      start_time_text = moment(temp_start_time).format('YYYY-MM-DD');
     } else {
       // 活动已开始
       if (during >= 0) {
@@ -292,7 +294,7 @@ var formatCampaignForApp = function(user, campaign) {
         // 活动未开始
         remind_text = '距活动开始';
       }
-      start_time_text = moment(campaign.start_time).format('HH:mm:ss');
+      start_time_text = moment(temp_start_time).format('HH:mm:ss');
     }
 
 
@@ -311,7 +313,8 @@ var formatCampaignForApp = function(user, campaign) {
     'photo_album': campaign.photo_album,
     'member': campaign.member,
     'remind_text': remind_text,
-    'start_time_text': start_time_text
+    'start_time_text': start_time_text,
+    'location':campaign.location
   };
 };
 

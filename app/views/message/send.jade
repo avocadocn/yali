@@ -1,17 +1,17 @@
 .dl_message_sendbox
   .dl_row
-    form.dl_modal_container.margin_top_5.margin_left_30(name="comment_form" novalidate)
+    form.dl_modal_container.margin_top_20.margin_left_30(name="comment_form" novalidate)
       .dl_message_send.dl_vertical
         h5(ng-if="teamName != 'null'")
           发往 {{teamName}}:
         h5(ng-if="teamName == 'null'")
           发往全公司:
       .dl_md_8.dl_vertical
-        input.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
+        input.dl_modal_input.dl_form-Control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
       .dl_md_1.dl_vertical
-        button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll()" ng-disabled="message_form.$invalid") 发送
+        button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll(comment_form)" ng-disabled="message_form.$invalid") 发送
 
-  .dl_modal_container
+  .dl_modal_container.margin_top_50
     .dl_row.message_panel(ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
       .row.line_left
         .dl_message_head.dl_message_body_font(ng-switch="send_message.message_type")

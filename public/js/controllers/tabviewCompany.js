@@ -392,6 +392,17 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                             'active':data[i].active
                         })
                     }
+                //未选择部门
+                }else{
+                    if($scope.members_by_department[j]._id === '0'){
+                        find = true;
+                        $scope.members_by_department[j].member.push({
+                            '_id':data[i]._id,
+                            'nickname':data[i].nickname,
+                            'photo':data[i].photo,
+                            'active':data[i].active
+                        })
+                    }
                 }
             }
             //新增部门
@@ -401,7 +412,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     _id = data[i].department._id;
                     name = data[i].department.name;
                 }else{
-                    _id = "";
+                    _id = "0";
                     name = "未选择部门";
                 }
                 $scope.members_by_department.push({
@@ -498,6 +509,8 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     '_id':$scope.currentmember.department._id,
                     'name':$scope.currentmember.department.name
                 };
+            }else{
+                $scope.origin_department = null;
             }
         });
         $scope.unEdit = true;
@@ -513,15 +526,24 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
             $scope.buttonStatus = '保存';
         }
         else{
-            for (var i = 0; i < $scope.options.length; i++) {
-                if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
-                    var department = {
-                        _id: $scope.options[i]._id,
-                        name: $scope.options[i].name
-                    };
-                    $scope.currentmember.department.name = $scope.options[i].name;
-                    break;
+            if($scope.origin_department != null){
+                for (var i = 0; i < $scope.options.length; i++) {
+                    if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
+                        var department = {
+                            _id: $scope.options[i]._id,
+                            name: $scope.options[i].name
+                        };
+                        $scope.currentmember.department.name = $scope.options[i].name;
+                        break;
+                    }
                 }
+            }else{
+                var department = {
+                    _id: $scope.department._id,
+                    name: $scope.department.name
+                };
+                $scope.origin_department = department;
+                $scope.currentmember.department = department;
             }
             try{
                 $http({
@@ -1216,6 +1238,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         $scope.node = {
             _id: data._id,
             name: data.name,
+            level:data.level,
             is_company: true,
             department: data.department
         };
@@ -1319,6 +1342,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             edit_name: '',
             parent_id: node._id,
             parent: node,
+            level: node.level,
             is_creating: true
         });
     };
@@ -1372,7 +1396,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 // 找出没有加入任何部门的公司员工,成为部门管理员的候选人(如果选他成为管理员必须先让他加入该部门)
                 if($scope.company_users.length > 0 ){
                     for(var i = 0 ; i < $scope.company_users.length; i ++){
-                        if($scope.company_users[i].department._id == undefined || $scope.company_users[i].department._id == null){
+                        if($scope.company_users[i].department == undefined || $scope.company_users[i].department == null){
                             $scope.company_users[i].wait_for_join = true;
                             $scope.department_users.push($scope.company_users[i]);
                         }

@@ -62,16 +62,16 @@ div(ng-show = '!loading')
           .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
             .message_row
               span.message_label 主题:
-              span.message_label
+              span.message_content
                 a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
                 a(ng-if="!group_message.campaign.finish&&group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
                 span(ng-if="group_message.campaign.finish&&group_message.message_type==4") {{group_message.campaign.theme}}
             .message_row
               span.message_label 内容:
-              span.message_label {{group_message.campaign.content}}
+              span.message_content {{group_message.campaign.content}}
             .message_row
               span.message_label #{__("LOCATION")}:
-              span.message_label {{group_message.campaign.location.name}}
+              span.message_content {{group_message.campaign.location.name}}
             .message_row
               span.message_label 开始#{__("TIME")}:
               span.message_label {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
@@ -128,7 +128,7 @@ div(ng-show = '!loading')
               .dl_md_12
                 input.dl_form-Control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
               .dl_md_1
-                button.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
+                button.dl_btn_right(ng-click="comment($index,comment_form)" ng-disabled="comment_form.$invalid") 发表
             br
             br
             hr

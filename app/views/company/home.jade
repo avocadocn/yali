@@ -26,7 +26,7 @@ block baseInfo
         if role === 'HR'
           .score_container.margin_top_5
             button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") #{__('SPONSOR')}#{__('COMPANY')}#{__('CAMPAIGN')}
-            a.dl_btn.dl_btn_small.margin_left_5(href="/message/home#/send") 发送私信
+            a.clearLinkUnderline.dl_btn.dl_btn_small.margin_left_5(href="/message/home#/send") 消息中心
     .ad-top
 block panel
   div(ng-init="role='#{role}'")

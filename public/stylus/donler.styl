@@ -44,12 +44,12 @@ textarea
   max-height 140px
   word-break break-all
   overflow hidden
-  margin-top -20px
+  //-margin-top -20px
 
 .message_panel
   min-height 93px !important
   padding-top 20px !important
-  width 960px
+  width 958px
   &:hover
     cursor pointer
     background-color #f8f8f3
@@ -78,6 +78,7 @@ textarea
 
 .line_left
   margin-left 5px !important
+  border-bottom 1px solid #f4f4f4
 .line_top
   margin-top -20px !important
 
@@ -102,16 +103,19 @@ textarea
   margin-left 10px
 
 .dl_message_head
-  width 10%;
-  margin-left 5px;
+  width 12%
+  padding-left 50px
   float left
   min-height 71px
 
 
 .dl_message_body
-  width 840px
+  width 800px
   float left
-  margin-left 5px
+  padding-left 30px
+  .message_row
+    height 24px
+    padding 2px 0
 
 
 .dl_message_tail
@@ -665,8 +669,14 @@ textarea
     content ""
   .dl_messageitem
     padding 10px
-  .pointer
-    cursor pointer
+    .message_row
+      padding 1px 0
+      .message_label
+        margin 10px
+      .message_content
+        word-break break-all
+        margin 10px
+        width 508px
   .message_side
     width 56px
     float left
@@ -675,8 +685,7 @@ textarea
     float left
     margin-left 10px
     position relative
-  .message_row
-    padding 1px 0
+
   .vertical_label
     margin 0 8px 0 8px
   .message_head

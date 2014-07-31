@@ -64,12 +64,11 @@ textarea {
   max-height: 140px;
   word-break: break-all;
   overflow: hidden;
-  margin-top: -20px;
 }
 .message_panel {
   min-height: 93px !important;
   padding-top: 20px !important;
-  width: 960px;
+  width: 958px;
 }
 .message_panel:hover {
   cursor: pointer;
@@ -99,6 +98,7 @@ textarea {
 }
 .line_left {
   margin-left: 5px !important;
+  border-bottom: 1px solid #f4f4f4;
 }
 .line_top {
   margin-top: -20px !important;
@@ -124,15 +124,19 @@ textarea {
   margin-left: 10px;
 }
 .dl_message_head {
-  width: 10%;
-  margin-left: 5px;
+  width: 12%;
+  padding-left: 50px;
   float: left;
   min-height: 71px;
 }
 .dl_message_body {
-  width: 840px;
+  width: 800px;
   float: left;
-  margin-left: 5px;
+  padding-left: 30px;
+}
+.dl_message_body .message_row {
+  height: 24px;
+  padding: 2px 0;
 }
 .dl_message_tail {
   width: 18%;
@@ -742,8 +746,16 @@ textarea {
 .dl_messagebox .dl_messageitem {
   padding: 10px;
 }
-.dl_messagebox .pointer {
-  cursor: pointer;
+.dl_messagebox .dl_messageitem .message_row {
+  padding: 1px 0;
+}
+.dl_messagebox .dl_messageitem .message_row .message_label {
+  margin: 10px;
+}
+.dl_messagebox .dl_messageitem .message_row .message_content {
+  word-break: break-all;
+  margin: 10px;
+  width: 508px;
 }
 .dl_messagebox .message_side {
   width: 56px;
@@ -754,9 +766,6 @@ textarea {
   float: left;
   margin-left: 10px;
   position: relative;
-}
-.dl_messagebox .message_row {
-  padding: 1px 0;
 }
 .dl_messagebox .vertical_label {
   margin: 0 8px 0 8px;

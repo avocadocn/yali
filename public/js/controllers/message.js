@@ -182,6 +182,15 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
 // }
 
 var messagePreHandle = function(teams,msg,divide){
+  //message_type
+  //0: 队长给小队成员发消息/公司给某小队队员发消息
+  //1: 来自活动的消息
+  //2: 来自比赛的消息
+  //3: 公司给所有人发的消息
+  //4: 和比赛确认相关的消息(队长发送和接收)
+  //5: 一对一的私人消息(暂不可用)
+  //6: 系统消息
+  //7: 和挑战相关的消息(队长发送和接收)
   var direct_show = false;
   var detail = "";
   var content = "";
@@ -202,7 +211,7 @@ var messagePreHandle = function(teams,msg,divide){
 
           if(msg[i].message_content.sender[0].role === 'LEADER'){
             sender = {
-              'name':msg[i].message_content.team[0].name + " 队长"
+              'name':msg[i].message_content.team[0].name
             };
           }else{
             if(msg[i].message_content.sender[0].role === 'HR'){
@@ -261,7 +270,6 @@ var messagePreHandle = function(teams,msg,divide){
         if(divide){
           company_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
@@ -271,7 +279,6 @@ var messagePreHandle = function(teams,msg,divide){
         }else{
           all_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
@@ -282,7 +289,7 @@ var messagePreHandle = function(teams,msg,divide){
       }
     }
 
-    //私人
+    //私人(队长接收)
     if(msg[i].type == 'private'){
       if(msg[i].message_content.team.length > 0){
         if([2,3].indexOf(msg[i].message_content.team[0].status) > -1){
@@ -296,7 +303,6 @@ var messagePreHandle = function(teams,msg,divide){
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'sender':sender,
@@ -308,7 +314,6 @@ var messagePreHandle = function(teams,msg,divide){
           }else{
             all_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
@@ -342,36 +347,36 @@ var messagePreHandle = function(teams,msg,divide){
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
-              'team_id':msg[i].message_content.team[1]._id
+              'team_id':msg[i].message_content.team[1]._id,
+              'campaign_id':msg[i].message_content.campaign_id
             });
           }else{
             all_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
-              'team_id':msg[i].message_content.team[1]._id
+              'team_id':msg[i].message_content.team[1]._id,
+              'campaign_id':msg[i].message_content.campaign_id
             });
           }
         }
       }else{
+        // p2p
         message_type = 5;
         detail = msg[i].message_content.content;
         if(divide){
           private_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'detail':detail,
@@ -382,7 +387,6 @@ var messagePreHandle = function(teams,msg,divide){
         }else{
           all_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'detail':detail,
@@ -401,7 +405,6 @@ var messagePreHandle = function(teams,msg,divide){
       if(divide){
         private_messages.push({
           '_id':msg[i]._id,
-          'caption':msg[i].message_content.caption,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
@@ -410,7 +413,6 @@ var messagePreHandle = function(teams,msg,divide){
       }else{
         all_messages.push({
           '_id':msg[i]._id,
-          'caption':msg[i].message_content.caption,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
@@ -444,6 +446,11 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
           case 'send':
             if(!multi){
               rootScope.send_messages.splice(index,1);
+              rootScope.page_send.down --;
+              if(rootScope.page_send.down == rootScope.page_send.up - 1){
+                pageHandle(rootScope.send_messages,rootScope.page_send,'left');
+                rootScope.page_send.arrow = 'left';
+              }
             }else{
               rootScope.send_messages = [];
             }
@@ -463,6 +470,11 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
             if(_status === 'delete'){
               if(!multi){
                 rootScope.all_messages.splice(index,1);
+                rootScope.page_all.down --;
+                if(rootScope.page_all.down == rootScope.page_all.up - 1){
+                  pageHandle(rootScope.all_messages,rootScope.page_all,'left');
+                  rootScope.page_all.arrow = 'left';
+                }
               }else{
                 rootScope.all_messages = [];
                 rootScope.o =0;
@@ -661,7 +673,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
     }
   
   //队长给队员  公司给员工 发送私信
-  $scope.sendToAll = function(){
+  $scope.sendToAll = function(comment_form){
     var _url;
     var _data = {
       content : $scope.private_message_content.text,
@@ -706,6 +718,8 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
               $rootScope.o ++;
               $rootScope.receive_message_sum ++;
             }
+            $scope.private_message_content.text='';
+            comment_form.$setPristine();
             $scope.getSenderList();
           }
       }).error(function(data, status) {
@@ -771,9 +785,9 @@ var sendMessagesPre = function(messages){
           }else{
             detail = messages[i].content;
             if(messages[i].team[0].status == 0){
-              message_type = 1;
+              message_type = 1;//活动
             }else{
-              message_type = 2;
+              message_type = 2;//比赛
             }
           }
         }

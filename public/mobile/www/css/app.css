@@ -273,6 +273,35 @@ body {
 .calendar nav .week .weekend {
   color: #808080;
 }
+.calendar nav .date_list {
+  position: relative;
+  margin-top: 5px;
+}
+.calendar nav .date_list .date_box {
+  float: left;
+  width: 14.285714285714286%;
+  height: 30px;
+  line-height: 30px;
+}
+.calendar nav .date_list .date_box .date {
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+.calendar nav .date_list .date_box .current_day {
+  color: #fff;
+  border-radius: 50px;
+  background-color: #000;
+}
+.calendar nav .date_list .date_box .current_day.today {
+  background-color: #3abde8;
+}
+.calendar nav .date_bar {
+  margin: 5px auto;
+}
 .calendar .calendar_month {
   position: relative;
 }
@@ -344,6 +373,55 @@ body {
 }
 .calendar .calendar_month .offset_6 {
   margin-left: 85.71428571428571%;
+}
+.calendar .calendar_day {
+  padding: 5px;
+}
+.calendar .calendar_day .calendar_campaign {
+  display: block;
+  position: relative;
+  margin: 5px 0;
+  height: 62px;
+  color: #000;
+  border: solid 1px #0098e3;
+  background-color: #ceeffe;
+}
+.calendar .calendar_day .calendar_campaign .logo {
+  float: left;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+}
+.calendar .calendar_day .calendar_campaign .logo img {
+  margin-top: 5px;
+  width: 50px;
+  height: 50px;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content {
+  float: left;
+  margin-left: 10px;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content .text {
+  height: 18px;
+  line-height: 18px;
+  font-size: 12px;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content .text:first-child {
+  margin-top: 3px;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content .time {
+  color: #808080;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content .joined_flag {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  color: #0098e3;
+  border: solid 1px #0098e3;
+  padding: 0 6px;
+  height: 30px;
+  line-height: 28px;
+  font-size: 16px;
 }
 .campaign {
   background-color: #a3cbe2;
@@ -616,6 +694,10 @@ body {
   margin-left: 55px;
   font-size: 10px;
   font-weight: 300;
+}
+.campaign_location .location {
+  height: 260px;
+  width: 290px;
 }
 .dynamic_list {
   white-space: normal;

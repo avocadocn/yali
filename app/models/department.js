@@ -23,6 +23,7 @@ var _member = new Schema({
 });
 
 var Department = new Schema({
+  level:Number,
   name:String,
   company:{
     _id:Schema.Types.ObjectId,

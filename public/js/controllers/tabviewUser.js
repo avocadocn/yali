@@ -267,11 +267,11 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 console.log(e);
             }
         }
-        $scope.comment = function(index){
+        $scope.comment = function(index,form){
             if($scope.group_messages[index].comments.length > 0){
                 var tmp_comment = $scope.group_messages[index].comments[0];
                 if(tmp_comment.poster._id === $scope.user._id){
-                    if($scope.new_comment[index].text === tmp_comment.content){
+                    if(form.new_comment.$viewValue === tmp_comment.content){
                         alertify.alert('勿要重复留言!');
                         return;
                     }
@@ -283,7 +283,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     url: '/comment/push',
                     data:{
                         host_id : $scope.group_messages[index].campaign._id,
-                        content : $scope.new_comment[index].text,
+                        content : form.new_comment.$viewValue,
                         host_type : 'campaign'
                     }
                 }).success(function(data, status) {
@@ -299,6 +299,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                             'index' : $scope.fixed_sum+1
                         });
                         $scope.new_comment[index].text='';
+                        form.$setPristine();
                     } else {
                         alertify.alert('DATA ERROR');
                     }
@@ -567,7 +568,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
     function($scope, $http, $rootScope) {
         angular.element('.tooltip').hide();
         var markUserDepartment = function(user, department) {
-            if (department) {
+            if (department && user.department) {
                 for (var i = 0; i < department.length; i++) {
                     if (department[i]._id.toString() === user.department._id.toString()) {
                         department[i].selected = true;
@@ -665,8 +666,9 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                         });
                     };
 
-                    if (!$scope.user.department._id || $scope.user.department._id.toString() !== $scope.last_selected_node._id.toString()) {
-                        $http
+                    if (!$scope.user.department) {
+                        if($scope.last_selected_node){
+                            $http
                             .post('/department/memberOperate/' + $scope.last_selected_node._id, {
                                 operate: 'join',
                                 member: {
@@ -678,8 +680,26 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                             .success(function(data, status) {
                                 editUserInfo();
                             });
+                        }else{
+                            editUserInfo();
+                        }
                     } else {
-                        editUserInfo();
+                        if($scope.user.department._id.toString() !== $scope.last_selected_node._id.toString()){
+                            $http
+                            .post('/department/memberOperate/' + $scope.last_selected_node._id, {
+                                operate: 'join',
+                                member: {
+                                    _id: $scope.user._id,
+                                    nickname: $scope.user.nickname,
+                                    photo: $scope.user.photo
+                                }
+                            })
+                            .success(function(data, status) {
+                                editUserInfo();
+                            });
+                        }else{
+                            editUserInfo();
+                        }
                     }
                 } catch (e) {
                     console.log(e);

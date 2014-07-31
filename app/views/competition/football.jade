@@ -220,8 +220,10 @@ block contentExt
               span #{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
               span= competition.content
-      p.subtitle.text-left 活动地点
-      #location.map_size
+      if competition.location.coordinates.length==2
+        p.subtitle.text-left 活动地点
+        a(href="http://api.map.baidu.com/marker?location=#{competition.location.coordinates[1]},#{competition.location.coordinates[0]}&title=活动地点&content=#{competition.location.name}&output=html" target="_blank")
+          img(style="margin:20px" width="290" height="290" src="http://api.map.baidu.com/staticimage?width=290&height=290&center=#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&zoom=15&markers=#{competition.location.name}|#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{competition.location.name}|#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&labelStyles=#{competition.location.name},1,14,0xffffff,0x000fff,1")
       hr
       div
         if role!=='PARTNER'
@@ -237,10 +239,4 @@ block contentExt
         include ../partials/campaign_message_send
 
 append footExt
-  script.
-    var competition_location = !{JSON.stringify(competition.location)}
   script(src="/js/controllers/competition.js")
-  script.
-    var script = document.createElement("script");  
-    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
-    document.body.appendChild(script);
