@@ -182,6 +182,15 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
 // }
 
 var messagePreHandle = function(teams,msg,divide){
+  //message_type
+  //0: 队长给小队成员发消息/公司给某小队队员发消息
+  //1: 来自活动的消息
+  //2: 来自比赛的消息
+  //3: 公司给所有人发的消息
+  //4: 和比赛确认相关的消息(队长发送和接收)
+  //5: 一对一的私人消息(暂不可用)
+  //6: 系统消息
+  //7: 和挑战相关的消息(队长发送和接收)
   var direct_show = false;
   var detail = "";
   var content = "";
@@ -202,7 +211,7 @@ var messagePreHandle = function(teams,msg,divide){
 
           if(msg[i].message_content.sender[0].role === 'LEADER'){
             sender = {
-              'name':msg[i].message_content.team[0].name + " 队长"
+              'name':msg[i].message_content.team[0].name
             };
           }else{
             if(msg[i].message_content.sender[0].role === 'HR'){
@@ -261,7 +270,6 @@ var messagePreHandle = function(teams,msg,divide){
         if(divide){
           company_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
@@ -271,7 +279,6 @@ var messagePreHandle = function(teams,msg,divide){
         }else{
           all_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
@@ -296,7 +303,6 @@ var messagePreHandle = function(teams,msg,divide){
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'sender':sender,
@@ -308,7 +314,6 @@ var messagePreHandle = function(teams,msg,divide){
           }else{
             all_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
@@ -342,26 +347,26 @@ var messagePreHandle = function(teams,msg,divide){
           if(divide){
             private_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
-              'team_id':msg[i].message_content.team[1]._id
+              'team_id':msg[i].message_content.team[1]._id,
+              'campaign_id':msg[i].message_content.campaign_id
             });
           }else{
             all_messages.push({
               '_id':msg[i]._id,
-              'caption':msg[i].message_content.caption,
               'content':content,
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
-              'team_id':msg[i].message_content.team[1]._id
+              'team_id':msg[i].message_content.team[1]._id,
+              'campaign_id':msg[i].message_content.campaign_id
             });
           }
         }
@@ -371,7 +376,6 @@ var messagePreHandle = function(teams,msg,divide){
         if(divide){
           private_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'detail':detail,
@@ -382,7 +386,6 @@ var messagePreHandle = function(teams,msg,divide){
         }else{
           all_messages.push({
             '_id':msg[i]._id,
-            'caption':msg[i].message_content.caption,
             'status':msg[i].status,
             'date':msg[i].message_content.post_date,
             'detail':detail,
@@ -401,7 +404,6 @@ var messagePreHandle = function(teams,msg,divide){
       if(divide){
         private_messages.push({
           '_id':msg[i]._id,
-          'caption':msg[i].message_content.caption,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
@@ -410,7 +412,6 @@ var messagePreHandle = function(teams,msg,divide){
       }else{
         all_messages.push({
           '_id':msg[i]._id,
-          'caption':msg[i].message_content.caption,
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,

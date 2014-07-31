@@ -694,29 +694,33 @@ exports.responseProvoke = function (req, res) {
         var param = {
           'type':'private',
           'caption':'Private Message',
+          //接受挑战的小队队长作为消息的发送者
           'own':{
             '_id':req.user._id,
             'nickname':req.user.nickname,
             'photo':req.user.photo,
             'role':'LEADER'
           },
+          //发起挑战的小队队长作为消息的接受者
           'receiver':{
             '_id':rst[0].leader[0]._id
           },
           'content':null,
+          //接受挑战的小队
           'own_team':{
             '_id':rst[1]._id,
             'name':rst[1].name,
             'logo':rst[1].logo,
             'status': req.body.responseStatus ? 1 : 4
           },
+          //发起挑战的小队
           'receive_team':{
             '_id':rst[0]._id,
             'name':rst[0].name,
             'logo':rst[0].logo,
             'status': req.body.responseStatus ? 1 : 4
           },
-          'campaign_id':null,
+          'campaign_id':campaign._id,
           'auto':true
         };
         message.sendToOne(req,res,param);
@@ -765,13 +769,13 @@ exports.cancelProvoke = function (req, res) {
             '_id':rst[0]._id,
             'name':rst[0].name,
             'logo':rst[0].logo,
-            'provoke_status':4
+            'provoke_status':5
           },
           'receive_team':{
             '_id':rst[1]._id,
             'name':rst[1].name,
             'logo':rst[1].logo,
-            'provoke_status':4
+            'provoke_status':5
           },
           'campaign_id':null,
           'auto':true
