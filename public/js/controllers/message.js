@@ -112,6 +112,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
                 _type:_type
             }
         }).success(function(data, status) {
+          $rootScope.receive_message_sum = 0;
             var messages;
             if(_type!=='all'){
               messages = messagePreHandle(data.team,data.msg,true); //将站内信分类
@@ -142,6 +143,7 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
             $rootScope.uid = data.uid;
 
             if($rootScope.all_messages != undefined && $rootScope.all_messages != null){
+              $rootScope.receive_message_sum = $rootScope.all_messages.length;
               if($rootScope.all_messages.length > 0){
                 sendSet($http,'read',$rootScope,null,'all',null,true);
               }
@@ -556,7 +558,6 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
 
 messageApp.controller('messageAllController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
   $rootScope.getMessageByHand('all');
-
   $scope.pageOperate = function(arrow){
     pageHandle($rootScope.all_messages,$rootScope.page_all,arrow);
   }
@@ -576,37 +577,29 @@ messageApp.controller('messageAllController', ['$scope', '$http','$rootScope', f
 
 
 //获取一对一私信或者系统站内信
-messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-  $rootScope.getMessageByHand('private');
+// messageApp.controller('messagePrivateController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+//   $rootScope.getMessageByHand('private');
 
-  $scope.pageOperate = function(arrow){
-    pageHandle($rootScope.private_messages,$rootScope.page_private,arrow);
-  }
+//   $scope.pageOperate = function(arrow){
+//     pageHandle($rootScope.private_messages,$rootScope.page_private,arrow);
+//   }
 
-  $scope.setAllStatus = function(_status){
-    sendSet($http,_status,$rootScope,null,'private',null,true);
-  }
-  $scope.setToDelete = function(index){
-    sendSet($http,'delete',$rootScope,$rootScope.private_messages[index]._id,'private',index,false);
-  }
-  $scope.showPop = function(index){
-    popOver(index,$rootScope.private_messages[index].detail);
-  }
-  $scope.setToRead = function(index){
-    if($rootScope.private_messages[index].status === 'unread'){
-      sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id,'private',index,false);
-    }
-  }
-}]);
+//   $scope.setAllStatus = function(_status){
+//     sendSet($http,_status,$rootScope,null,'private',null,true);
+//   }
+//   $scope.setToDelete = function(index){
+//     sendSet($http,'delete',$rootScope,$rootScope.private_messages[index]._id,'private',index,false);
+//   }
+//   $scope.showPop = function(index){
+//     popOver(index,$rootScope.private_messages[index].detail);
+//   }
+//   $scope.setToRead = function(index){
+//     if($rootScope.private_messages[index].status === 'unread'){
+//       sendSet($http,'read',$rootScope,$rootScope.private_messages[index]._id,'private',index,false);
+//     }
+//   }
+// }]);
 
-var popOver = function(index,detail){
-  $('.pop').popover('destroy');
-  $('#pop_message_'+index).popover({
-    'content': detail,
-    'trigger': 'hover'
-  });
-  $('#pop_message_'+index).popover('show');
-}
 
 
 //站内信分页
@@ -711,6 +704,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
             alertify.alert('发送成功!');
             if($scope.role === 'LEADER'){
               $rootScope.o ++;
+              $rootScope.receive_message_sum ++;
             }
             $scope.getSenderList();
           }
