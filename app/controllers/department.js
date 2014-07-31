@@ -1160,14 +1160,15 @@ var doDepartment = function(department, operate) {
 };
 
 /**
- * 复制部门树(仅复制_id和name属性)
+ * 复制部门树(仅复制_id和name和level属性)
  * @param  {Object} company mongoose.model('company')
  * @return {Object}         仅包含_id,name,department属性的company对象
  */
 var cloneDepartmentTree = function(company) {
   var clone = {
     _id: company._id,
-    name: company.info.name
+    name: company.info.name,
+    level:0
   };
 
   var _clone = function(departments) {
@@ -1175,7 +1176,8 @@ var cloneDepartmentTree = function(company) {
     for (var i = 0; i < departments.length; i++) {
       clone[i] = {
         _id: departments[i]._id,
-        name: departments[i].name
+        name: departments[i].name,
+        level: departments[i].level
       };
       if (departments[i].department) {
         clone[i].department = _clone(departments[i].department);

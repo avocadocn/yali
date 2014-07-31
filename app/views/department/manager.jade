@@ -18,7 +18,7 @@ script(type="text/ng-template" id="node.html")
     ul.dropdown-menu(ng-show="!node.is_creating && !node.is_editing" role="menu")
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="/department/home/{{ node._id }}") 进入部门主页
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="getNode(node)") 任命管理员
-      li(role="presentation"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="addNode(node)") 创建子部门
+      li(role="presentation"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="addNode(node)" ng-if="node.level < 3") 创建子部门
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="editNode(node)") 修改部门名字
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="deleteNode(node)") 删除该部门
   ul(ng-if="!node.hideChild")

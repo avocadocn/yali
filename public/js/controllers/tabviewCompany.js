@@ -1238,6 +1238,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         $scope.node = {
             _id: data._id,
             name: data.name,
+            level:data.level,
             is_company: true,
             department: data.department
         };
@@ -1341,6 +1342,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             edit_name: '',
             parent_id: node._id,
             parent: node,
+            level: node.level,
             is_creating: true
         });
     };
