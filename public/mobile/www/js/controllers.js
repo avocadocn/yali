@@ -107,7 +107,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ScheduleListCtrl', function($scope, $ionicScrollDelegate, Campaign) {
+.controller('ScheduleListCtrl', function($scope, $rootScope, $ionicScrollDelegate, Campaign, Global) {
 
   moment.lang('zh-cn');
   /**
@@ -124,11 +124,18 @@ angular.module('starter.controllers', [])
    */
   $scope.current_week_date = [];
 
-  /**
-   * 当前浏览的日期，用于更新视图
-   * @type {Date}
-   */
-  var current = $scope.current_date = new Date();
+
+  if (Global.last_date) {
+    /**
+     * 当前浏览的日期，用于更新视图
+     * @type {Date}
+     */
+    var current = $scope.current_date = Global.last_date;
+    $scope.view = 'day';
+    Global.last_date = null;
+  } else {
+    var current = $scope.current_date = new Date();
+  }
 
   /**
    * 更新日历的月视图, 不会更新current
@@ -226,6 +233,9 @@ angular.module('starter.controllers', [])
   Campaign.getUserCampaignsForCalendar(function(campaigns) {
     $scope.campaigns = campaigns;
     updateMonth(current);
+    if ($scope.view === 'day') {
+      updateDay(current);
+    }
   });
 
 
@@ -291,6 +301,14 @@ angular.module('starter.controllers', [])
       break;
     }
 
+  };
+
+  /**
+   * 查看活动详情前保存当前时间，以便返回
+   */
+  $scope.saveStatus = function() {
+    Global.last_date = current;
+    $rootScope.campaignReturnUri = '#/app/schedule_list';
   };
 
 

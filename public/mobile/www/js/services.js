@@ -8,11 +8,12 @@ angular.module('starter.services', [])
 .factory('Global', function() {
   var base_url = window.location.origin;
   var _user = {};
-
+  var last_date;
 
   return {
     base_url: base_url,
-    user: _user
+    user: _user,
+    last_date: last_date
   };
 })
 

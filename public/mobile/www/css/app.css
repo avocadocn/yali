@@ -378,9 +378,11 @@ body {
   padding: 5px;
 }
 .calendar .calendar_day .calendar_campaign {
+  display: block;
   position: relative;
   margin: 5px 0;
   height: 62px;
+  color: #000;
   border: solid 1px #0098e3;
   background-color: #ceeffe;
 }
