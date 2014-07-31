@@ -1,0 +1,20 @@
+
+extends base
+
+append headExt
+
+
+
+block content
+  .wrap
+    include ../partials/home_nav
+    .baseInfo.clearfix
+      .dl_container
+        block baseInfo
+    .dl_container.clearfix.dl_integrate_container
+      .main
+        block panel
+      .side
+        block aside
+  include ../partials/user_footer
+

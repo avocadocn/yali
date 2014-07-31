@@ -1,0 +1,88 @@
+extends ../layouts/integrate
+
+append headExt
+  link(rel="stylesheet" href="/css/photo_album.css")
+  link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
+
+block baseInfo
+  .dl_container.clearfix
+    .aside
+      img.size_80.img_contain(src="#{logo}")
+    .main.top-main
+      .dl_row
+        //-小队名
+        label.head= tname
+      .dl_row
+        //-公司名
+        a.subtitle(href="/company/home/#{cid}")= cname
+      //- .dl_row
+        //签名
+        p= sign
+      .dl_row
+        .score_container
+          span.info_border #{__("TEAM_MEMBER")}
+          span.info_border.info_right_border=number 
+        .score_container
+          span.info_border #{__("SCORE")}
+          span.info_border.info_right_border= score
+        //-.score_container
+          span.info_border #{__("WIN_RATE")}
+          span.info_border.info_right_border 100%
+        if role ==='HR' || role ==='LEADER'
+          .score_container.margin_left_30
+            button.dl_btn.dl_btn_small(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
+            button.dl_btn.dl_btn_small(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel") #{__("PROVOKE")}
+            a.dl_btn.dl_btn_small.margin_left_5(href="/message/home/#{teamId}#/send") 发送私信
+            //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
+        if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
+          .score_container
+            button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+        if  role === 'PARTNERLEADER' || role==='PARTNER'
+          .score_container
+            button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") #{__("JOIN_GROUP")}
+        if role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER'
+          .score_container
+            button.pull-right.dl_btn.dl_btn_small(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel") 动一下
+block panel
+
+  div(ng-init="teamId='#{teamId}';groupId='#{gid}';teamName='#{tname}';role='#{role}'")
+    //-  ul.nav.nav-tabs
+      if (role !=='GUESTHR' && role !=='GUEST' && role !=='GUESTLEADER')
+        li.tab_style(ng-class="{'active':nowTab=='group_message'}")
+          a.subtitle.no_radius(href="#/group_message" ng-click="addactive('group_message')") #{__("TEAM_MESSAGE")}
+        li.tab_style(ng-class="{'active':nowTab=='group_campaign'}")
+          a.subtitle.no_radius(href="#/group_campaign" ng-click="addactive('group_campaign')") #{__("TEAM_CAMPAIGN")}
+      li.tab_style(ng-class="{'active':nowTab=='group_info'}")
+        a.subtitle.no_radius(href="#/group_info" ng-click="addactive('group_info')") #{__("TEAM_INFO")}
+      li.tab_style(ng-class="{'active':nowTab=='timeLine/#{teamId}'}")
+        a.subtitle.no_radius(href="#/timeLine/#{teamId}" ng-click="addactive('timeLine/#{teamId}')") #{__("TIME_LINE")}
+
+    div(ng-view)
+    if role ==='HR' || role ==='LEADER'
+      div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../campaign/campaign_modal
+    if (role ==='MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER')
+      div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../partials/quitGroup_modal
+    if (role ==='PARTNERLEADER' || role ==='MEMBERLEADER' || role ==='GUESTLEADER' || role==='HR' || role==='LEADER')
+      div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../campaign/provoke_modal_base
+block aside
+
+  p 侧栏
+  p 最新活动
+  p 主场
+    each home in home_court
+      = home
+      a(href)
+  p 相册
+    each photo_album in photo_album_thumbnails
+          a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+            img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
+            p.thumbnail_name.text-center= photo_album.name
+
+
+append footExt
+  script(src="/lib/jquery-form/jquery.form.js")
+  script(src="/js/jquery.Jcrop.min.js")
+  script(src="/js/controllers/integrateGroup.js")

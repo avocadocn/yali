@@ -125,7 +125,143 @@ exports.info =function(req,res) {
   }
 
 };
+exports.teampagetemplate =function(req,res){
+  // var cid = req.user.provider=='company'? req.user._id :req.user.cid;
+  res.render('partials/team_integrate_page',{
+    // 'role':req.role,
+    // 'cid':cid
+  });
+};
+//小队聚合首页 TODO
+exports.teampage = function(req, res) {
+  console.log('teampage render');
+  var cid = req.companyGroup.cid.toString();
+  async.waterfall([
+    function(callback) {
+      PhotoAlbum
+      .where('_id').in(req.companyGroup.photo_album_list)
+      .exec()
+      .then(function(photo_albums) {
+        if (!photo_albums) {
+          callback('not found');
+        }
+        var photo_album_thumbnails = [];
 
+        for (var i = 0; i < photo_albums.length; i++) {
+          if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
+            continue;
+          }
+          if (photo_albums[i].hidden === true) {
+            continue;
+          }
+          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
+          photo_album_thumbnails.push({
+            uri: thumbnail_uri,
+            name: photo_albums[i].name,
+            _id: photo_albums[i]._id
+          });
+          if (photo_album_thumbnails.length === 4) {
+            break;
+          }
+        }
+
+        callback(null, photo_album_thumbnails);
+      })
+      .then(null, function(err) {
+        callback(err);
+      });
+    },
+    function(photo_album_thumbnails, callback) {
+      if(req.role==='HR' || req.role ==='GUESTHR'){
+        console.log('teampage render');
+        res.render('group/teampage', {
+          'role': req.role,
+          'teamId' : req.params.teamId,
+          'tname': req.companyGroup.name,
+          'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
+          'score': req.companyGroup.score ? req.companyGroup.score : 0,
+          'logo': req.companyGroup.logo,
+          'group_id': req.companyGroup._id,
+          'cname': req.companyGroup.cname,
+          'sign': req.companyGroup.brief,
+          'gid' : req.companyGroup.gid,
+          'cid' : cid,
+          'nav_logo':req.user.info.logo,
+          'nav_name':req.user.info.name,
+          'photo_album_thumbnails': photo_album_thumbnails
+        });
+      }
+      else{//个人侧栏
+        var selected_teams = [];//参加的非队长小队
+        var unselected_teams = [];//没参加的小队
+        var leader_teams = [];//是队长的小队
+        var user_teams = [];
+        var photo_album_ids = [];
+        for(var i = 0; i < req.user.team.length; i ++) {
+          user_teams.push(req.user.team[i]._id.toString());
+        }
+        CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'logo':1,'gid':1,'name':1,'active':1,'leader':1},function(err, company_groups) {
+          if(err || !company_groups) {
+            return res.send([]);
+          } else {
+            for(var i = 0; i < company_groups.length; i ++) {
+              if(company_groups[i].gid !== '0' && company_groups[i].active === true){
+                //下面查找的是该成员加入和未加入的所有active小队
+                if(user_teams.indexOf(company_groups[i]._id.toString()) > -1) {
+                  //判断此人是否是此队队长，并作标记
+                  company_groups[i].isLeader = false;
+                  if(req.user.role === 'LEADER'){
+                    if(company_groups[i].leader.length){
+                      for(var j=0;j<company_groups[i].leader.length;j++){
+                        if(company_groups[i].leader[j]._id.toString()===req.user._id.toString()){
+                          company_groups[i].isLeader = true;
+                          leader_teams.push(company_groups[i]);
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  if(!company_groups[i].isLeader)
+                    selected_teams.push(company_groups[i]);
+                } else {
+                  unselected_teams.push(company_groups[i]);
+                }
+              }
+            }
+
+            res.render('group/teampage',{
+              'leader_teams': leader_teams,
+              'selected_teams' : selected_teams,
+              'unselected_teams' : unselected_teams,
+              'teamId' : req.params.teamId,
+              'tname': req.companyGroup.name,
+              'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
+              'score': req.companyGroup.score ? req.companyGroup.score : 0,
+              'role': req.role,
+              'logo': req.companyGroup.logo,
+              'group_id': req.companyGroup._id,
+              'cname': req.companyGroup.cname,
+              'sign': req.companyGroup.brief,
+              'gid' : req.companyGroup.gid,
+              'cid' : cid,
+              'photo': req.user.photo,
+              'realname':req.user.realname,
+              'nav_logo': req.user.photo,
+              'nav_name':req.user.nickname,
+              'photo_album_thumbnails': photo_album_thumbnails,
+              'home_court': req.companyGroup.home_court
+            });
+          };
+        });
+      };
+    }
+  ], function(err, result) {
+    console.log(err);
+    if (err === 'not found') res.send(404);
+    else res.send(500);
+  });
+
+};
 //获取小组简要信息供弹出层查看
 // exports.getBriefInfo = function(req,res) {
 //   CompanyGroup.findOne({'_id': req.params.teamId },{'_id':1,'name':1,'logo':1},function(err,companyGroup){

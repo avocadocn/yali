@@ -1655,6 +1655,12 @@ dl_messagebox .loademp,
 .registerpage {
   background: none;
 }
+.dl_integrate_container #family {
+  margin-top: 0;
+}
+.dl_integrate_container .side {
+  padding-top: 0;
+}
 
 /***
 Timeline UI Base
