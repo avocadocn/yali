@@ -284,6 +284,7 @@ loginInfoBgcolor = #75d1ef
 
 // 日程
 .calendar
+  height 100%
 
   nav
     background-color rgb(246, 246, 246)
@@ -345,6 +346,46 @@ loginInfoBgcolor = #75d1ef
     .date_bar
       margin 5px auto
 
+  .full_box
+    height 100%
+
+  .calendar_year
+    position relative
+    height 100%
+
+    yearSectionPadding = 6px
+    .year_section
+      float left
+      width (100 / 3)%
+      height 25%
+      text-align center
+      padding yearSectionPadding
+      color themeColor
+
+      &:nth-child(3n+1)
+        padding-left 2 * yearSectionPadding
+        padding-right (2 / 3) * yearSectionPadding
+      &:nth-child(3n+2)
+        padding-left (4 / 3) * yearSectionPadding
+        padding-right (4 / 3) * yearSectionPadding
+      &:nth-child(3n+3)
+        padding-left (2 / 3) * yearSectionPadding
+        padding-right 2 * yearSectionPadding
+      &:nth-child(1),&:nth-child(2),&:nth-child(3)
+        padding-top 2 * yearSectionPadding
+        padding-bottom 0.5 * yearSectionPadding
+      &:nth-child(4),&:nth-child(5),&:nth-child(6)
+        padding-top 1.5 * yearSectionPadding
+        padding-bottom yearSectionPadding
+      &:nth-child(7),&:nth-child(8),&:nth-child(9)
+        padding-top yearSectionPadding
+        padding-bottom 1.5 * yearSectionPadding
+      &:nth-child(10),&:nth-child(11),&:nth-child(12)
+        padding-top 0.5 * yearSectionPadding
+        padding-bottom 2 * yearSectionPadding
+
+      .table_wrap
+        border solid 1px themeColor
 
   .calendar_month
     position relative
@@ -410,8 +451,8 @@ loginInfoBgcolor = #75d1ef
       margin 5px 0
       height 62px
       color black
-      border solid 1px rgb(0,152,227)
-      background-color rgb(206,239,254)
+      border solid 1px rgb(0, 152, 227)
+      background-color rgb(206, 239, 254)
 
       campaignLogoSize = 50px
       .logo
@@ -443,7 +484,7 @@ loginInfoBgcolor = #75d1ef
           bottom 15px
           right 15px
           color rgb(0,152,227)
-          border solid 1px rgb(0,152,227)
+          border solid 1px rgb(0, 152, 227)
           padding 0 6px
           height 30px
           line-height 28px

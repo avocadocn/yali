@@ -133,6 +133,8 @@ angular.module('starter.controllers', [])
    */
   $scope.current_week_date = [];
 
+  $scope.year = '一月 二月 三月 四月 五月 六月 七月 八月 九月 十月 十一月 十二月'.split(' ');
+
 
   if (Global.last_date) {
     /**
@@ -251,6 +253,7 @@ angular.module('starter.controllers', [])
   $scope.back = function() {
     switch ($scope.view) {
     case 'month':
+      $scope.view = 'year';
       break;
     case 'day':
       $scope.view = 'month';
@@ -310,6 +313,17 @@ angular.module('starter.controllers', [])
       break;
     }
 
+  };
+
+  /**
+   * 进入某月的视图
+   * @param  {Number} month 月份, 0-11
+   */
+  $scope.monthView = function(month) {
+    current.setDate(1);
+    current.setMonth(month);
+    updateMonth(current);
+    $scope.view = 'month';
   };
 
   /**

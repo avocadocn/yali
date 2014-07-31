@@ -8,16 +8,16 @@
       <nav>
         <div class="operator clearfix">
           <div class="pull-left">
-            <div class="btn" ng-if="view==='month'">{{ current_year }}</div>
+            <div class="btn" ng-if="view==='month'" ng-click="back()"><i class="icon ion-chevron-left"></i>&nbsp;{{ current_year }}</div>
             <div class="btn" ng-if="view==='day'" ng-click="back()"><i class="icon ion-chevron-left"></i>&nbsp;{{ current_month }}</div>
           </div>
-          <div class="pull-right">
+          <div class="pull-right" ng-if="view!=='year'">
             <div class="btn" ng-click="pre()"><i class="icon ion-chevron-left"></i></div>
             <div class="btn today" ng-click="today()">今天</div>
             <div class="btn" ng-click="next()"><i class="icon ion-chevron-right"></i></div>
           </div>
         </div>
-        <div class="week text-center clearfix">
+        <div class="week text-center clearfix" ng-if="view!=='year'">
           <div class="day weekend">日</div>
           <div class="day">一</div>
           <div class="day">二</div>
@@ -33,7 +33,16 @@
         </div>
         <div class="date_bar text-center" ng-if="view==='day'">{{ current_day.format_date }}&nbsp;{{ current_day.format_day }}</div>
       </nav>
-      <div class="calendar_box">
+      <div class="calendar_box" ng-class="{full_box: view==='year'}">
+        <div class="calendar_year clearfix" ng-if="view==='year'">
+          <div class="year_section" ng-repeat="month in year" ng-click="monthView($index)">
+            <div class="table_wrap">
+              <div class="table_cell">
+                <div class="year_box">{{ month }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="calendar_month clearfix" ng-if="view==='month'">
           <div class="month" ng-class="current_month_offset">{{ current_month }}</div>
           <div class="calendar_day text-center" ng-repeat="day in month" ng-class="day.first_day">
