@@ -55,23 +55,26 @@ angular.module('starter.controllers', [])
   Campaign.getCampaignDetail( $stateParams.id,function(campaign) {
     $scope.campaign = campaign;
     $scope.photo_album_id = $scope.campaign.photo_album;
-    var getPhotoList = function() {
-      PhotoAlbum.getPhotoList($scope.photo_album_id, function(photos) {
-        $scope.photos = photos;
-      });
-    };
     getPhotoList();
-    $('#upload_form').ajaxForm(function() {
-      getPhotoList();
-    });
     $scope.deletePhoto = PhotoAlbum.deletePhoto($scope.photo_album_id, getPhotoList);
     $scope.commentPhoto = PhotoAlbum.commentPhoto($scope.photo_album_id, getPhotoList);
   });
-
+  var getPhotoList = function() {
+    PhotoAlbum.getPhotoList($scope.photo_album_id, function(photos) {
+      $scope.photos = photos;
+    });
+  };
   $scope.comment_content = {
     text:''
   };
-
+  $scope.initUpload = function(){
+    $('#upload_form').ajaxForm(function(ee) {
+      getPhotoList();
+      var file = $('#upload_form').find('.upload_input');
+      file.after(file.clone().val(""));
+      file.remove();
+    });
+  }
   $scope.photos = [];
 
   Comment.getCampaignComments($stateParams.id, function(comments) {
@@ -463,6 +466,11 @@ angular.module('starter.controllers', [])
 .directive('mapDirective', function(Map) {
   return function(scope, element, attrs) {
     Map.init(attrs.id, attrs.location);
+  };
+})
+.directive('uploadDirective', function() {
+  return function(scope, element, attrs) {
+    scope.initUpload();
   };
 })
 

@@ -236,7 +236,6 @@ var formatCampaignForApp = function(user, campaign) {
     }
   }
 
-
   var is_joined = false;
 
   // 活动
@@ -314,7 +313,8 @@ var formatCampaignForApp = function(user, campaign) {
     'photo_album': campaign.photo_album,
     'member': campaign.member,
     'remind_text': remind_text,
-    'start_time_text': start_time_text
+    'start_time_text': start_time_text,
+    'location':campaign.location
   };
 };
 

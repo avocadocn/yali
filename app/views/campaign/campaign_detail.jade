@@ -109,7 +109,7 @@ block contentExt
       if campaign.location.coordinates.length==2
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
         a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
-          img(style="margin:20px" width="290" height="290" src="http://api.map.baidu.com/staticimage?width=290&height=290&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000")
+          img(style="margin:20px" width="290" height="290" src="http://api.map.baidu.com/staticimage?width=290&height=290&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labelStyles=#{campaign.location.name},1,14,0xffffff,0x000fff,1")
       if role!=='PARTNER'
         .clearfix
           p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
