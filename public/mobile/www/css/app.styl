@@ -563,45 +563,65 @@ campaignLineHeight = 45px
     height 100%
 
 // photos
-.campaign_photo_panel
-
-  float left
-  width 50%
-  height 160px
-  padding-left 10px
-  margin-top 7px
-  &:nth-child(2n+2)
-    padding-right 10px
-
-  .campaign_photo_border
-    position relative
-    height 100%
-    border 1px solid #ddd
-
-  .campaign_photo_img_wrap
-    height 110px
-    text-align center
-    vertical-align middle
-    overflow hidden
-
-  .campaign_photo_ori_button_wrap
+.campaign_photos
+  .campaing_upload_form
+    
     position absolute
-    bottom 37px
-    width 100%
-    text-align center
-
-    .campaign_photo_ori_button
-      min-width 0
-      min-height 0
-      padding 0
-      width 22px
-      height 22px
-      border none
+    bottom 10px
+    .upload_input
+      width 200px
+  .campaign_photos_wrap
+    
+    .pager
+      position absolute
+      bottom 40px
+      width 100%
+      margin 0 auto
       text-align center
-      font-size 12px
-      border-radius 30px
-      color white
-      background-color rgb(91, 201, 213)
+      .page
+        width 5px
+        height 5px
+        margin 5px 10px
+        background-color rgb(91, 201, 213)
+    .campaign_photo_panel
+
+      float left
+      width 50%
+      height 120px
+      padding-left 10px
+      margin-top 7px
+      &:nth-child(2n+2)
+        padding-right 10px
+
+      .campaign_photo_border
+        position relative
+        height 100%
+        border 1px solid #ddd
+
+      .campaign_photo_img_wrap
+        height 70px
+        text-align center
+        vertical-align middle
+        overflow hidden
+
+      .campaign_photo_ori_button_wrap
+        position absolute
+        bottom 37px
+        width 100%
+        text-align center
+
+        .campaign_photo_ori_button
+          min-width 0
+          min-height 0
+          padding 0
+          width 22px
+          height 22px
+          border none
+          text-align center
+          font-size 12px
+          border-radius 30px
+          color white
+          background-color rgb(91, 201, 213)
 
   p
     text-align center

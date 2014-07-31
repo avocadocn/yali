@@ -36,11 +36,11 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
     $rootScope.global_length = 0;
     $rootScope.o = 0;
 
+    $rootScope.page_all_messages = [];
     $rootScope.page_private_messages = [];
     $rootScope.page_team_messages = [];
     $rootScope.page_company_messages = [];
     $rootScope.page_global_messages = [];
-
 
     $rootScope.page_send = {
       'type':'send',
@@ -158,28 +158,6 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
       }
     }
 }]);
-
-
-
-// var provokeStatus = function(value,name,own){
-//   switch(value){
-//     case 0:
-//       if(own){
-//         return "您的小队 "+name+"发出了一个新的挑战,快去看看吧!";
-//       }else{
-//         return "您的小队 "+name+"接受了一个新的挑战,快去看看吧!";
-//       }
-//     break;
-//     case 1:
-//       if(own){
-//         return "您的小队 "+name+"发出的挑战已经生效,快去看看吧!";
-//       }else{
-//         return "您的小队 "+name+"接受的挑战已经生效,快去看看吧!";
-//       }
-//     break;
-//     default:break;
-//   }
-// }
 
 var messagePreHandle = function(teams,msg,divide){
   //message_type
@@ -671,8 +649,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
     $scope.private_message_caption = {
       'text':''
     }
-  
-  //队长给队员  公司给员工 发送私信
+  //队长给队员  公司给所有员工/小队员工 发送私信
   $scope.sendToAll = function(comment_form){
     var _url;
     var _data = {
@@ -705,7 +682,6 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
       };
       _data.team = _team;
     }
-    
     try{
       $http({
           method: 'post',
@@ -732,6 +708,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
     }
   }
 
+  //获取已经发送的站内信
   $scope.getSenderList = function(){
      try{
       $http({
@@ -765,7 +742,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
 }]);
 
 
-
+//预处理已经发送的站内信
 var sendMessagesPre = function(messages){
   var send_messages = [];
   var message_type;
@@ -773,7 +750,6 @@ var sendMessagesPre = function(messages){
   var content;
   var direct_show;
   for(var i = 0; i < messages.length; i ++) {
-    console.log(messages[i].auto);
     //小队
     if(messages[i].auto == false || messages[i].auto == 'false'){
       if(messages[i].type == 'private'){
@@ -951,6 +927,6 @@ var sendMessagesPre = function(messages){
 // }]);
 
 //获取系统公告
-messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-  $rootScope.getMessageByHand('global');
-}]);
+// messageApp.controller('messageGlobalController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+//   $rootScope.getMessageByHand('global');
+// }]);

@@ -62,6 +62,12 @@ angular.module('starter.controllers', [])
   var getPhotoList = function() {
     PhotoAlbum.getPhotoList($scope.photo_album_id, function(photos) {
       $scope.photos = photos;
+      $scope.photo_pages = [];
+      var _length = Math.ceil(photos.length/4);
+      for(var i=0;i<_length;i++){
+        $scope.photo_pages[i]=i;
+      }
+      $scope.now_page = 0;
     });
   };
   $scope.comment_content = {

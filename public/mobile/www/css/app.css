@@ -515,34 +515,54 @@ body {
 .scroll-content .scroll {
   height: 100%;
 }
-.campaign_photo_panel {
+.campaign_photos .campaing_upload_form {
+  position: absolute;
+  bottom: 10px;
+}
+.campaign_photos .campaing_upload_form .upload_input {
+  width: 200px;
+}
+.campaign_photos .campaign_photos_wrap .pager {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+.campaign_photos .campaign_photos_wrap .pager .page {
+  width: 5px;
+  height: 5px;
+  margin: 5px 10px;
+  background-color: #5bc9d5;
+}
+.campaign_photos .campaign_photos_wrap .campaign_photo_panel {
   float: left;
   width: 50%;
-  height: 160px;
+  height: 120px;
   padding-left: 10px;
   margin-top: 7px;
 }
-.campaign_photo_panel:nth-child(2n+2) {
+.campaign_photos .campaign_photos_wrap .campaign_photo_panel:nth-child(2n+2) {
   padding-right: 10px;
 }
-.campaign_photo_panel .campaign_photo_border {
+.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_border {
   position: relative;
   height: 100%;
   border: 1px solid #ddd;
 }
-.campaign_photo_panel .campaign_photo_img_wrap {
-  height: 110px;
+.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_img_wrap {
+  height: 70px;
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
 }
-.campaign_photo_panel .campaign_photo_ori_button_wrap {
+.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_ori_button_wrap {
   position: absolute;
   bottom: 37px;
   width: 100%;
   text-align: center;
 }
-.campaign_photo_panel .campaign_photo_ori_button_wrap .campaign_photo_ori_button {
+.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_ori_button_wrap .campaign_photo_ori_button {
   min-width: 0;
   min-height: 0;
   padding: 0;
@@ -555,15 +575,15 @@ body {
   color: #fff;
   background-color: #5bc9d5;
 }
-.campaign_photo_panel p {
+.campaign_photos p {
   text-align: center;
 }
-.campaign_photo_panel .campaign_upload_user {
+.campaign_photos .campaign_upload_user {
   margin-top: 12px;
   margin-bottom: 0;
   line-height: 1;
 }
-.campaign_photo_panel .campaign_upload_date {
+.campaign_photos .campaign_upload_date {
   margin-top: 5px;
   font-size: 7px;
   line-height: 1;

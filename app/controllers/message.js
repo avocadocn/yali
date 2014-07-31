@@ -16,36 +16,47 @@ var mongoose = require('mongoose'),
     CompanyGroup = mongoose.model('CompanyGroup');
 
 
+var time_out = 72*24*3600;
 
-/*
-* collection:目标文档
-* type:      查询方式
-* condition: 查询条件
-* limit:     过滤条件
-* callback:  队查询结果进行处理的回调函数
-* sort:      排序方式
-* _err:      错误处理函数
-*/
-
-
-
+/**
+  * 数据库查询
+  * @param {String}   param.collection    待查询集合
+  * @param {Number}   param.type          查询方式(0:单文档  1:多文档)
+  * @param {Object}   param.condition     查询条件
+  * @param {Object}   param.limit         查询限制
+  * @param {Object}   param.sort          查询排序方式
+  * @param {String}   param.populate      如不为空则按照populate方式进行查询,populate即为待populate的集合名称
+  * @param {Function} param.callback      查询完返回正确结果后的处理函数
+  * @param {Function} param._err          查询出现错误的处理函数
+  * @param {Object}   param.other_param   可能需要的额外参数
+  * @param {Object}   param.req           请求变量
+  * @param {Object}   param.res           结果变量
+ */
 function get(param){
   switch(param.type){
     case 0:
       if(param.populate == undefined || param.populate == null){
         param.collection.findOne(param.condition,param.limit,function(err,message){
           if(err || !message){
-            param._err(err,param.req,param.res);
+            if(param._err!=null && typeof param._err == 'function'){
+              param._err(err,param.req,param.res);
+            }
           }else{
-            param.callback(message,param.other_param,param.req,param.res);
+            if(param.callback!=null && typeof param.callback == 'function'){
+              param.callback(message,param.other_param,param.req,param.res);
+            }
           }
         });
       }else{
         param.collection.findOne(param.condition,param.limit).populate(param.populate).exec(function(err,message){
           if(err || !message){
-            param._err(err,param.req,param.res);
+            if(param._err!=null && typeof param._err == 'function'){
+              param._err(err,param.req,param.res);
+            }
           }else{
-            param.callback(message,param.other_param,param.req,param.res);
+            if(param.callback!=null && typeof param.callback == 'function'){
+              param.callback(message,param.other_param,param.req,param.res);
+            }
           }
         });
       }
@@ -54,17 +65,25 @@ function get(param){
       if(param.populate == undefined || param.populate == null){
         param.collection.find(param.condition,param.limit).sort(param.sort).exec(function(err,messages){
           if(err || !messages){
-            param._err(err,param.req,param.res);
+            if(param._err!=null && typeof param._err == 'function'){
+              param._err(err,param.req,param.res);
+            }
           }else{
-            param.callback(messages,param.other_param,param.req,param.res);
+            if(param.callback!=null && typeof param.callback == 'function'){
+              param.callback(messages,param.other_param,param.req,param.res);
+            }
           }
         });
       }else{
         param.collection.find(param.condition,param.limit).sort(param.sort).populate(param.populate).exec(function(err,messages){
           if(err || !messages){
-            param._err(err,param.req,param.res);
+            if(param._err!=null && typeof param._err == 'function'){
+              param._err(err,param.req,param.res);
+            }
           }else{
-            param.callback(messages,param.other_param,param.req,param.res);
+            if(param.callback!=null && typeof param.callback == 'function'){
+              param.callback(messages,param.other_param,param.req,param.res);
+            }
           }
         });
       }
@@ -73,30 +92,43 @@ function get(param){
   }
 }
 
-/*
-* collection:目标文档
-* type:      更新方式
-* condition: 查询条件
-* operate:   更新方法
-* callback:  回调函数
-* _err:      错误处理函数
-*/
+
+/**
+  * 数据库更新
+  * @param {String}   param.collection    待更新集合
+  * @param {Number}   param.type          更新的方式(0:根据id单文档更新  1:根据具体条件多文档更新)
+  * @param {Object}   param.condition     更新条件
+  * @param {Object}   param.operate       更新的具体操作条件
+  * @param {Function} param.callback      更新完返回正确结果后的处理函数
+  * @param {Function} param._err          更新出现错误的处理函数
+  * @param {Object}   param.other_param   可能需要的额外参数
+  * @param {Object}   param.req           请求变量
+  * @param {Object}   param.res           结果变量
+ */
 function set(param){
   switch(param.type){
     case 0:
       param.collection.update({'_id':param.condition},param.operate,function(err,message){
         if(err || !message){
-          param._err(err,param.req,param.res);
+          if(param._err!=null && typeof param._err == 'function'){
+            param._err(err,param.req,param.res);
+          }
         }else{
-          param.callback(message,param.other_param,param.req,param.res);
+          if(param.callback!=null && typeof param.callback == 'function'){
+            param.callback(message,param.other_param,param.req,param.res);
+          }
         }
       });
     case 1:
       param.collection.update(param.condition,param.operate,{multi: true},function(err,message){
         if(err || !message){
-          param._err(err,param.req,param.res);
+          if(param._err!=null && typeof param._err == 'function'){
+            param._err(err,param.req,param.res);
+          }
         }else{
-          param.callback(message,param.other_param,param.req,param.res);
+          if(param.callback!=null && typeof param.callback == 'function'){
+            param.callback(message,param.other_param,param.req,param.res);
+          }
         }
       });
     default:break;
@@ -104,6 +136,16 @@ function set(param){
 }
 
 
+/**
+  * 数据库插入
+  * @param {String}   param.collection    待插入集合
+  * @param {Object}   param.operate       插入的具体操作条件
+  * @param {Function} param.callback      更新完返回正确结果后的处理函数
+  * @param {Function} param._err          更新出现错误的处理函数
+  * @param {Object}   param.other_param   可能需要的额外参数
+  * @param {Object}   param.req           请求变量
+  * @param {Object}   param.res           结果变量
+ */
 function _add(param){
   param.collection.create(param.operate,function(err,message){
     if(err || !message){
@@ -118,12 +160,27 @@ function _add(param){
   })
 }
 
+
+/**
+  * 数据库删除
+  * @param {String}   param.collection    待删除集合
+  * @param {Object}   param.condition     删除的查询条件
+  * @param {Function} param.callback      更新完返回正确结果后的处理函数
+  * @param {Function} param._err          更新出现错误的处理函数
+  * @param {Object}   param.other_param   可能需要的额外参数
+  * @param {Object}   param.req           请求变量
+  * @param {Object}   param.res           结果变量
+ */
 function drop(param){
   param.collection.remove(param.condition,function(err,message){
     if(err || !message){
-      param._err(err,param.req,param.res);
+      if(param._err!=null && typeof param._err == 'function'){
+        param._err(err,param.req,param.res);
+      }
     }else{
-      param.callback(message);
+      if(param.callback!=null && typeof param.callback == 'function'){
+        param.callback(message);
+      }
     }
   });
 }
@@ -241,9 +298,7 @@ exports.hrSendToMember = function(req,res){
 
 
 
-
-var time_out = 72*24*3600;
-
+//组长给组员发送站内信的具体实现
 var sendToTeamMember =function(team,content,caption,sender,req,res){
   var callback = function(company_group,team,req,res){
     if(company_group){
@@ -293,6 +348,7 @@ exports.leaderSendToMember = function(req,res){
 };
 
 
+//一对一发送站内信的具体实现
 var toOne = function(req,res,param){
   var callback = function (message_content,receiver,req,res){
     var M = {
@@ -336,13 +392,15 @@ var toOne = function(req,res,param){
   _add(_param);
 }
 
+
+//一对一发送站内信
 exports.sendToOne = function(req, res, param){
   param.team = [param.own_team,param.receive_team];
   toOne(req,res,param);
 }
 
 
-
+//给参加某活动/比赛的成员发送站内信
 exports.sendToParticipator = function(req, res){
   var callback = function(campaign,other,req,res){
 
@@ -573,7 +631,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id){
 }
 
 
-
+//按照条件获取未读站内信
 var getPublicMessage = function(req,res,cid){
   var callbackA = function(message_contents,other,req,res){
     if(message_contents.length > 0){
@@ -606,8 +664,6 @@ var getPublicMessage = function(req,res,cid){
               new_mcs.push(mcs[j]);
             }
           }
-
-
           if(new_mcs.length > 0){
             var counter = {'i':0};
             async.whilst(
@@ -721,7 +777,7 @@ var getPublicMessage = function(req,res,cid){
 
 
 
-
+//按照条件获取站内信
 var getMessage = function(req,res,condition,callback){
   var sort = {'create_date':-1};
   Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
@@ -856,28 +912,6 @@ exports.messageGetByHand = function(req,res){
   }
   getMessage(req,res,condition,null);
 }
-
-
-// //员工申请加入部门后给hr和部门管理员发站内信
-// exports.afterUserApply = function(req,res,did){
-//   Message.find({'rec_id':req.user._id,'type':'department'}).populate('MessageContent').exec(function (err,messages){
-//     if(messages){
-//       for(var i = 0; i < messages.length; i ++){
-//         if(messages)
-//       }
-//     }
-//   });
-// }
-
-//给部门成员发站内信
-// exports.sendToDepartmentMember = function(req,res){
-
-// }
-
-// //hr处理成员的部门加入申请后向成员发站内信
-// exports.afterUserApplyOperate = function(req,res){
-
-// }
 
 
 //只读取未读站内信
