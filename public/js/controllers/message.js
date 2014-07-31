@@ -444,6 +444,11 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
           case 'send':
             if(!multi){
               rootScope.send_messages.splice(index,1);
+              rootScope.page_send.down --;
+              if(rootScope.page_send.down == rootScope.page_send.up - 1){
+                pageHandle(rootScope.send_messages,rootScope.page_send,'left');
+                rootScope.page_send.arrow = 'left';
+              }
             }else{
               rootScope.send_messages = [];
             }
@@ -463,6 +468,11 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
             if(_status === 'delete'){
               if(!multi){
                 rootScope.all_messages.splice(index,1);
+                rootScope.page_all.down --;
+                if(rootScope.page_all.down == rootScope.page_all.up - 1){
+                  pageHandle(rootScope.all_messages,rootScope.page_all,'left');
+                  rootScope.page_all.arrow = 'left';
+                }
               }else{
                 rootScope.all_messages = [];
                 rootScope.o =0;
