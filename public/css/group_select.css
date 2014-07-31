@@ -61,9 +61,6 @@
   border-style: solid;
   border-color: transparent #f7f7f7 transparent transparent;
 }
-.message_label {
-  margin: 10px;
-}
 .datepicker.dropdown-menu {
   width: 250px;
   height: 270px;

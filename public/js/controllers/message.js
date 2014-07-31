@@ -289,7 +289,7 @@ var messagePreHandle = function(teams,msg,divide){
       }
     }
 
-    //私人
+    //私人(队长接收)
     if(msg[i].type == 'private'){
       if(msg[i].message_content.team.length > 0){
         if([2,3].indexOf(msg[i].message_content.team[0].status) > -1){
@@ -371,6 +371,7 @@ var messagePreHandle = function(teams,msg,divide){
           }
         }
       }else{
+        // p2p
         message_type = 5;
         detail = msg[i].message_content.content;
         if(divide){
@@ -784,9 +785,9 @@ var sendMessagesPre = function(messages){
           }else{
             detail = messages[i].content;
             if(messages[i].team[0].status == 0){
-              message_type = 1;
+              message_type = 1;//活动
             }else{
-              message_type = 2;
+              message_type = 2;//比赛
             }
           }
         }

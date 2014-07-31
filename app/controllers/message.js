@@ -894,18 +894,26 @@ exports.messageHeader = function(req,res){
 
 exports.home = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
+
     var _send = {
       'role':req.role,
-      'cid':req.user.provider === 'user'? req.user.cid : req.user._id
+      'cid':req.user.provider === 'user'? req.user.cid : req.user._id,
+      'team':req.params.teamId ? true : false,
+      'teamId': req.companyGroup != undefined ? req.companyGroup._id : 'null',
+      'teamName': req.companyGroup != undefined ? req.companyGroup.name : 'null',
+      'teamLogo': req.companyGroup != undefined ? req.companyGroup.logo : 'null',
     };
-    if(req.role === 'LEADER'){
-      _send.teamId = req.companyGroup._id;
-      _send.teamName = req.companyGroup.name;
-      _send.teamLogo = req.companyGroup.logo;
-    }else{
-      _send.teamId = req.companyGroup != undefined ? req.companyGroup._id : 'null';
-      _send.teamName = req.companyGroup != undefined ? req.companyGroup.name : 'null';
-      _send.teamLogo = req.companyGroup != undefined ? req.companyGroup.logo : 'null';
+    if(req.params.teamId){
+      _send.logo = _send.teamLogo;
+      _send.name = _send.teamName;
+    }
+    else if(req.user.provider==='user'){
+      _send.logo = req.user.photo;
+      _send.name = req.user.nickname;
+    }
+    else{
+      _send.logo = req.user.info.logo;
+      _send.name = req.user.info.official_name;
     }
     res.render('message/message',_send);
   }else{
