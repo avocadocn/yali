@@ -45,12 +45,14 @@
         <div class="calendar_day clearfix" ng-if="view==='day'">
           <div class="calendar_campaign clearfix" ng-repeat="campaign in current_day.campaigns">
             <div class="logo"><img ng-src="{{ campaign.logo }}"/></div>
-            <div class="content">
+            <div class="calendar_content">
               <div class="text">{{ campaign.theme }}</div>
-              <div class="text">开始: {{ campaign.format_start_time }}</div>
-              <div class="text">结束: {{ campaign.format_end_time }}</div>
+              <div class="text time">开始: {{ campaign.format_start_time }}</div>
+              <div class="text time">结束: {{ campaign.format_end_time }}</div>
+              <div class="joined_flag" ng-if="campaign.is_joined">已参加</div>
             </div>
           </div>
+          <div class="text-center" ng-if="current_day.campaigns.length === 0">今天没有活动哦</div>
         </div>
       </div>
     </div>

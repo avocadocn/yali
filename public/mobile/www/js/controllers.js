@@ -180,7 +180,6 @@ angular.module('starter.controllers', [])
             $scope.month[i].has_joined_event = true;
           }
         }
-
         campaign.format_start_time = moment(campaign.start_time).calendar();
         campaign.format_end_time = moment(campaign.end_time).calendar();
 

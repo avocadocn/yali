@@ -378,9 +378,11 @@ body {
   padding: 5px;
 }
 .calendar .calendar_day .calendar_campaign {
+  position: relative;
   margin: 5px 0;
   height: 62px;
-  border: solid 1px #808080;
+  border: solid 1px #0098e3;
+  background-color: #ceeffe;
 }
 .calendar .calendar_day .calendar_campaign .logo {
   float: left;
@@ -393,14 +395,31 @@ body {
   width: 50px;
   height: 50px;
 }
-.calendar .calendar_day .calendar_campaign .content {
+.calendar .calendar_day .calendar_campaign .calendar_content {
   float: left;
   margin-left: 10px;
 }
-.calendar .calendar_day .calendar_campaign .content .text {
-  height: 20px;
-  line-height: 20px;
+.calendar .calendar_day .calendar_campaign .calendar_content .text {
+  height: 18px;
+  line-height: 18px;
   font-size: 12px;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content .text:first-child {
+  margin-top: 3px;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content .time {
+  color: #808080;
+}
+.calendar .calendar_day .calendar_campaign .calendar_content .joined_flag {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  color: #0098e3;
+  border: solid 1px #0098e3;
+  padding: 0 6px;
+  height: 30px;
+  line-height: 28px;
+  font-size: 16px;
 }
 .campaign {
   background-color: #a3cbe2;

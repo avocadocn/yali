@@ -405,9 +405,11 @@ loginInfoBgcolor = #75d1ef
     padding 5px
 
     .calendar_campaign
+      position relative
       margin 5px 0
       height 62px
-      border solid 1px gray
+      border solid 1px rgb(0,152,227)
+      background-color rgb(206,239,254)
 
       campaignLogoSize = 50px
       .logo
@@ -420,14 +422,30 @@ loginInfoBgcolor = #75d1ef
           width campaignLogoSize
           height campaignLogoSize
 
-      .content
+      .calendar_content
         float left
         margin-left 10px
 
         .text
-          height 20px
-          line-height 20px
+          &:first-child
+            margin-top 3px
+          height 18px
+          line-height 18px
           font-size 12px
+
+        .time
+          color gray
+
+        .joined_flag
+          position absolute
+          bottom 15px
+          right 15px
+          color rgb(0,152,227)
+          border solid 1px rgb(0,152,227)
+          padding 0 6px
+          height 30px
+          line-height 28px
+          font-size 16px
 
 
 
