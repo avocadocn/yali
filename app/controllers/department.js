@@ -901,12 +901,27 @@ var operateFromRootAndDeleteOne = function(did, req, res) {
 var departmentFindAndUpdate = function(department, did, param) {
   stack = null;
   stack = new StackAndQueue.stack();
+  //如果department._id === did 就不用深搜了,直接在department的department里放入子部门
   if (department._id.toString() === did) {
     //操作
     switch (param.type) {
       case 0:
         param.child.parent_id = department._id;
+        var parent_level = (department.level != undefined && department.level != null) ? department.level : 0;
+        param.child.level = parent_level + 1;
+
+        //console.log(parent_level);
+
         department.department.push(param.child);
+
+        Department.update({'_id':param.child._id},{'$set':{'level':param.child.level}},function(err,department){
+          if(!department){
+            console.log({'msg':'DEPARTMENT_LEVEL_SET_NOT_FOUND'});
+          }
+          if(err){
+            console.log({'msg':'DEPARTMENT_LEVEL_SET_ERROR','date':err});
+          }
+        });
         return department;
       case 1:
         if (department.department.name != undefined) {
@@ -916,6 +931,7 @@ var departmentFindAndUpdate = function(department, did, param) {
       default:
         break;
     }
+  //did肯定在department的子部门里,因此要深度搜索找到did对应的部门,在其department中放入子部门
   } else {
     stack.push({
       '_id': department._id,
@@ -929,9 +945,21 @@ var departmentFindAndUpdate = function(department, did, param) {
             //操作
             switch (param.type) {
               case 0:
+                param.child.level = pop.department[i].level + 1;
                 param.child.parent_id = pop.department[i]._id;
                 param.child.department = [];
                 pop.department[i].department.push(param.child);
+
+                //console.log(pop.department[i].level);
+
+                Department.update({'_id':param.child._id},{'$set':{'level':param.child.level}},function(err,department){
+                  if(!department){
+                    console.log({'msg':'DEPARTMENT_LEVEL_SET_NOT_FOUND'});
+                  }
+                  if(err){
+                    console.log({'msg':'DEPARTMENT_LEVEL_SET_ERROR','date':err});
+                  }
+                });
                 return department;
               case 1:
                 pop.department[i].name = param.name;
@@ -1173,7 +1201,6 @@ var sendDepartments = function(company, department_ids, res) {
   .then(function(departments) {
 
     var departmentTree = cloneDepartmentTree(company);
-    console.log(departmentTree)
 
     doDepartment(departmentTree, function(department) {
       for (var i = 0; i < departments.length; i++) {
@@ -1270,6 +1297,7 @@ exports.createDepartment = function(req, res) {
               } else {
                 var child = {
                   '_id': department._id,
+                  'level':0,
                   'name': name,
                   'department': []
                 };

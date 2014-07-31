@@ -1256,7 +1256,6 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
     };
 
     $scope.getNode = function(node){
-        console.log(node);
         $scope.did = node._id;
         $scope.current_node = node;
         $http({
