@@ -128,7 +128,7 @@ div(ng-show = '!loading')
               .dl_md_12
                 input.dl_form-Control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
               .dl_md_1
-                button.dl_btn_right(ng-click="comment($index)" ng-disabled="comment_form.$invalid") 发表
+                button.dl_btn_right(ng-click="comment($index,comment_form)" ng-disabled="comment_form.$invalid") 发表
             br
             br
             hr

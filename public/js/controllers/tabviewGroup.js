@@ -362,7 +362,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             console.log(e);
         }
     }
-    $scope.comment = function(index){
+    $scope.comment = function(index,form){
         if($scope.group_messages[index].comments.length > 0){
             var tmp_comment = $scope.group_messages[index].comments[0];
             if(tmp_comment.poster._id === $scope.user._id){
@@ -394,6 +394,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                         'index' : $scope.fixed_sum+1
                     });
                     $scope.new_comment[index].text='';
+                    form.$setPristine();
                 } else {
                     alertify.alert('DATA ERROR');
                 }

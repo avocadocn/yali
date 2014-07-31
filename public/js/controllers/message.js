@@ -671,7 +671,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
     }
   
   //队长给队员  公司给员工 发送私信
-  $scope.sendToAll = function(){
+  $scope.sendToAll = function(comment_form){
     var _url;
     var _data = {
       content : $scope.private_message_content.text,
@@ -716,6 +716,8 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
               $rootScope.o ++;
               $rootScope.receive_message_sum ++;
             }
+            $scope.private_message_content.text='';
+            comment_form.$setPristine();
             $scope.getSenderList();
           }
       }).error(function(data, status) {

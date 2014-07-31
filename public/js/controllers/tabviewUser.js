@@ -267,11 +267,11 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 console.log(e);
             }
         }
-        $scope.comment = function(index){
+        $scope.comment = function(index,form){
             if($scope.group_messages[index].comments.length > 0){
                 var tmp_comment = $scope.group_messages[index].comments[0];
                 if(tmp_comment.poster._id === $scope.user._id){
-                    if($scope.new_comment[index].text === tmp_comment.content){
+                    if(form.new_comment.$viewValue === tmp_comment.content){
                         alertify.alert('勿要重复留言!');
                         return;
                     }
@@ -283,7 +283,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     url: '/comment/push',
                     data:{
                         host_id : $scope.group_messages[index].campaign._id,
-                        content : $scope.new_comment[index].text,
+                        content : form.new_comment.$viewValue,
                         host_type : 'campaign'
                     }
                 }).success(function(data, status) {
@@ -299,6 +299,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                             'index' : $scope.fixed_sum+1
                         });
                         $scope.new_comment[index].text='';
+                        form.$setPristine();
                     } else {
                         alertify.alert('DATA ERROR');
                     }
