@@ -105,13 +105,13 @@
     </ion-tab>
 
     <ion-tab title="活动地点" icon="ion-ios7-location-outline">
-      <ion-content has-header="true" class="wrap">
+      <ion-content has-header="true" class="wrap campaign_location">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
           <p>活动地点</p>
-          <div id="location" data-location="{{ campaign.location }}" map-directive></div>
+          <div class="location" id="location" data-location="{{ campaign.location }}" map-directive></div>
         </div>
       </ion-content>
     </ion-tab>

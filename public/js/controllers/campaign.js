@@ -12,18 +12,6 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         }
         $scope.getComment(); //获取留言
     });
-    $scope.initialize = function(){
-        var locationmap = new BMap.Map("mapContainer");            // 创建Map实例
-        var nowPoint = new BMap.Point($scope.location.coordinates[0],$scope.location.coordinates[1]);
-        locationmap.centerAndZoom(nowPoint,15);
-        locationmap.enableScrollWheelZoom(true);
-        locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var marker = new BMap.Marker(nowPoint);  // 创建标注
-        locationmap.addOverlay(marker);              // 将标注添加到地图中
-        var label = new BMap.Label($scope.location.name,{offset:new BMap.Size(20,-10)});
-        marker.setLabel(label);
-    };
-    window.initialize = $scope.initialize;
     $scope.comments = [];
 
     $scope.new_comment = {

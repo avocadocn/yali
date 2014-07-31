@@ -5,7 +5,7 @@ append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';location=#{JSON.stringify(campaign.location)};member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .dl_detail_main
@@ -107,7 +107,9 @@ block contentExt
                 a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
-        #mapContainer.map_size
+      if campaign.location.coordinates.length==2
+        a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
+          img(style="margin:20px" width="290" height="290" src="http://api.map.baidu.com/staticimage?width=290&height=290&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000")
       if role!=='PARTNER'
         .clearfix
           p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
@@ -121,7 +123,3 @@ block contentExt
       include ../partials/campaign_message_send
 append footExt
   script(src="/js/controllers/campaign.js")
-  script.
-    var script = document.createElement("script");  
-    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
-    document.body.appendChild(script);

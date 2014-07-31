@@ -617,6 +617,9 @@ body {
   font-size: 10px;
   font-weight: 300;
 }
+.campaign_location .location {
+  height: 400px;
+}
 .dynamic_list {
   white-space: normal;
 }
