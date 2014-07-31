@@ -110,6 +110,13 @@ angular.module('starter.controllers', [])
 .controller('ScheduleListCtrl', function($scope, $ionicScrollDelegate, Campaign) {
 
   /**
+   * 日历视图的状态，有年、月、日三种视图
+   * 'year' or 'month' or 'day'
+   * @type {String}
+   */
+  $scope.view = 'month';
+
+  /**
    * 更新日历的月视图
    * @param  {Number} year  年
    * @param  {Number} month 月，0-11
@@ -122,22 +129,30 @@ angular.module('starter.controllers', [])
     $scope.month = [];
     for (var i = 0; i < mdate.daysInMonth(); i++) {
       $scope.month[i] = {
+        full_date: new Date(year, month, i + 1),
         date: i + 1,
         events: []
       };
+
+      // 如果是本月第一天，计算是星期几，决定位移量
       if (i === 0) {
         $scope.month[i].first_day = 'offset_' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
         $scope.current_month_offset = $scope.month[i].first_day;
       }
+
+      // 是否是周末
       var thisDay = new Date(year, month, i + 1);
       if (thisDay.getDay() === 0 || thisDay.getDay() === 6) {
         $scope.month[i].is_weekend = true;
       }
+
+      // 是否是今天
       var now = new Date();
       if (now.getDate() === i + 1 && now.getFullYear() === year && now.getMonth() === month) {
         $scope.month[i].is_today = true;
       }
 
+      // 将活动及相关标记存入这一天
       $scope.campaigns.forEach(function(campaign) {
         var start = moment(campaign.start_time);
         var end = moment(campaign.end_time);
@@ -157,10 +172,34 @@ angular.module('starter.controllers', [])
     }
   };
 
+  /**
+   * 进入某一天的详情
+   * @param  {Date} date
+   */
+  $scope.updateDay = function(date) {
+    $scope.view = 'day';
+    if (date.getMonth() !== current.month) {
+      updateMonth(date.getFullYear(), date.getMonth());
+      current.year = date.getFullYear();
+      current.month = date.getMonth();
+    }
+    current.date = date.getDate();
+    $scope.current_day = {
+      date: date,
+      campaigns: $scope.month[date.getDate() - 1].events
+    };
+  };
+
   var now = new Date();
+
+  /**
+   * 当前浏览的日期，用于更新视图
+   * @type {Object}
+   */
   var current = {
     year: now.getFullYear(),
-    month: now.getMonth()
+    month: now.getMonth(),
+    date: now.getDate()
   };
 
   Campaign.getUserCampaignsForCalendar(function(campaigns) {
@@ -168,32 +207,76 @@ angular.module('starter.controllers', [])
     updateMonth(current.year, current.month);
   });
 
-  $scope.pre = function() {
-    if (current.month === 0) {
-      current.year--;
-      current.month = 11;
-    } else {
-      current.month--;
-    }
-    updateMonth(current.year, current.month);
-  }
 
-  $scope.next = function() {
-    if (current.month === 11) {
-      current.year++;
-      current.month = 0;
-    } else {
-      current.month++;
+  $scope.back = function() {
+    switch ($scope.view) {
+    case 'month':
+      break;
+    case 'day':
+      $scope.view = 'month';
+      break;
     }
-    updateMonth(current.year, current.month);
   };
 
+  /**
+   * 根据当前视图，向前一年、一个月、一天
+   */
+  $scope.pre = function() {
+    switch ($scope.view) {
+    case 'month':
+      if (current.month === 0) {
+        current.year--;
+        current.month = 11;
+      } else {
+        current.month--;
+      }
+      updateMonth(current.year, current.month);
+      break;
+    case 'day':
+      break;
+    }
+
+  }
+
+  /**
+   * 根据当前视图，向后一年、一个月、一天
+   */
+  $scope.next = function() {
+    switch ($scope.view) {
+    case 'month':
+      if (current.month === 11) {
+        current.year++;
+        current.month = 0;
+      } else {
+        current.month++;
+      }
+      updateMonth(current.year, current.month);
+      break;
+    case 'day':
+      break;
+    }
+
+  };
+
+  /**
+   * 回到今天，仅在月、日视图下起作用
+   */
   $scope.today = function() {
     var now = new Date();
     current.year = now.getFullYear();
     current.month = now.getMonth();
-    updateMonth(current.year, current.month);
+    current.date = now.getDate();
+
+    switch ($scope.view) {
+    case 'month':
+      updateMonth(current.year, current.month);
+      break;
+    case 'day':
+      break;
+    }
+
   };
+
 
 })
 

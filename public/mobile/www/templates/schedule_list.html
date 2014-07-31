@@ -8,7 +8,8 @@
       <nav>
         <div class="operator clearfix">
           <div class="pull-left">
-            <div class="btn">{{ current_year }}</div>
+            <div class="btn" ng-if="view==='month'">{{ current_year }}</div>
+            <div class="btn" ng-if="view==='day'" ng-click="back()"><i class="icon ion-chevron-left"></i>&nbsp;{{ current_month }}</div>
           </div>
           <div class="pull-right">
             <div class="btn" ng-click="pre()"><i class="icon ion-chevron-left"></i></div>
@@ -27,12 +28,17 @@
         </div>
       </nav>
       <div class="calendar_box">
-        <div class="calendar_month clearfix">
+        <div class="calendar_month clearfix" ng-if="view==='month'">
           <div class="month" ng-class="current_month_offset">{{ current_month }}</div>
-          <div class="calendar_day text-center" ng-repeat="day in month" ng-class="day.first_day">
-            <div class="calendar_date" ng-class="{weekend: day.is_weekend===true, today: day.is_today===true}">{{ day.date }}</div>
+          <div class="calendar_day text-center" ng-repeat="day in month" ng-class="day.first_day" ng-click="updateDay(day.full_date)">
+            <div class="calendar_date" ng-class="{weekend: day.is_weekend===true, today: day.is_today===true}" >{{ day.date }}</div>
             <div class="event_unjoin" ng-if="day.has_event && !day.has_joined_event"></div>
             <div class="event_joined" ng-if="day.has_joined_event"></div>
+          </div>
+        </div>
+        <div class="calendar_day clearfix" ng-if="view==='day'">
+          <div ng-repeat="campaign in current_day.campaigns">
+            <p>{{ campaign.theme }}</p>
           </div>
         </div>
       </div>
