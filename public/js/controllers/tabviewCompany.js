@@ -509,6 +509,8 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     '_id':$scope.currentmember.department._id,
                     'name':$scope.currentmember.department.name
                 };
+            }else{
+                $scope.origin_department = null;
             }
         });
         $scope.unEdit = true;
@@ -524,15 +526,24 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
             $scope.buttonStatus = '保存';
         }
         else{
-            for (var i = 0; i < $scope.options.length; i++) {
-                if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
-                    var department = {
-                        _id: $scope.options[i]._id,
-                        name: $scope.options[i].name
-                    };
-                    $scope.currentmember.department.name = $scope.options[i].name;
-                    break;
+            if($scope.origin_department != null){
+                for (var i = 0; i < $scope.options.length; i++) {
+                    if ($scope.department._id.toString() === $scope.options[i]._id.toString()) {
+                        var department = {
+                            _id: $scope.options[i]._id,
+                            name: $scope.options[i].name
+                        };
+                        $scope.currentmember.department.name = $scope.options[i].name;
+                        break;
+                    }
                 }
+            }else{
+                var department = {
+                    _id: $scope.department._id,
+                    name: $scope.department.name
+                };
+                $scope.origin_department = department;
+                $scope.currentmember.department = department;
             }
             try{
                 $http({

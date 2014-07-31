@@ -568,7 +568,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
     function($scope, $http, $rootScope) {
         angular.element('.tooltip').hide();
         var markUserDepartment = function(user, department) {
-            if (department) {
+            if (department && user.department) {
                 for (var i = 0; i < department.length; i++) {
                     if (department[i]._id.toString() === user.department._id.toString()) {
                         department[i].selected = true;
@@ -666,8 +666,9 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                         });
                     };
 
-                    if (!$scope.user.department._id || $scope.user.department._id.toString() !== $scope.last_selected_node._id.toString()) {
-                        $http
+                    if (!$scope.user.department) {
+                        if($scope.last_selected_node){
+                            $http
                             .post('/department/memberOperate/' + $scope.last_selected_node._id, {
                                 operate: 'join',
                                 member: {
@@ -679,8 +680,26 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
                             .success(function(data, status) {
                                 editUserInfo();
                             });
+                        }else{
+                            editUserInfo();
+                        }
                     } else {
-                        editUserInfo();
+                        if($scope.user.department._id.toString() !== $scope.last_selected_node._id.toString()){
+                            $http
+                            .post('/department/memberOperate/' + $scope.last_selected_node._id, {
+                                operate: 'join',
+                                member: {
+                                    _id: $scope.user._id,
+                                    nickname: $scope.user.nickname,
+                                    photo: $scope.user.photo
+                                }
+                            })
+                            .success(function(data, status) {
+                                editUserInfo();
+                            });
+                        }else{
+                            editUserInfo();
+                        }
                     }
                 } catch (e) {
                     console.log(e);
