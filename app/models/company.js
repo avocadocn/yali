@@ -45,6 +45,10 @@ var CompanySchema = new Schema({
     department:[_department],
     //是否激活
     status: {
+        mail_active:{
+            type: Boolean,
+            default: false
+        },
         active: {
             type: Boolean,
             default: false

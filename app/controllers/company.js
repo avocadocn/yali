@@ -640,6 +640,7 @@ exports.createDetail = function(req, res) {
             company.username = req.body.username;
             company.password = req.body.password;
             company.status.active = true;
+            company.status.mail_active = true;
 
             company.save(function (err) {
                 if(err) {

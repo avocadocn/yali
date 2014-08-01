@@ -16,6 +16,10 @@ block content
         .col-xs-12.col-sm-7
           form.signin.form-horizontal.center-block(action="/company/session" method="post")
             .form-group
+              label.col-md-4.control-label
+              .col-md-8
+                p #{msg}
+            .form-group
               label.col-md-4.control-label(for="username") #{__('USERNAME')}
               .col-md-8
                 input#username.dl_form-Control(type="text" name="username" placeholder="用户名" required)
