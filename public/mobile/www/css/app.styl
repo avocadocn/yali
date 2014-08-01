@@ -611,18 +611,36 @@ campaignLineHeight = 45px
     bottom 10px
     .upload_input
       width 200px
+      opacity 0
+      position absolute
+      left 60px
+      z-index 3
+      bottom 5px
+    .upload_input_view
+      width 200px
+      position absolute
+      left 60px
+      background-color #ff2200
+      color white
+      padding 5px 15px
+      text-align center
+      bottom 5px
   .campaign_photos_wrap
     
     .pager
       position absolute
       bottom 40px
+      left 0
       width 100%
-      margin 0 auto
       text-align center
       .page
+        display inline-block
         width 5px
         height 5px
-        margin 5px 10px
+        margin 5px
+        background-color #9C9494
+        border-radius 100%
+      .active
         background-color rgb(91, 201, 213)
     .campaign_photo_panel
 
@@ -640,17 +658,15 @@ campaignLineHeight = 45px
         border 1px solid #ddd
 
       .campaign_photo_img_wrap
-        height 70px
+        height 120px
         text-align center
         vertical-align middle
         overflow hidden
 
       .campaign_photo_ori_button_wrap
         position absolute
-        bottom 37px
-        width 100%
-        text-align center
-
+        bottom 5px
+        left 5px
         .campaign_photo_ori_button
           min-width 0
           min-height 0
@@ -658,11 +674,12 @@ campaignLineHeight = 45px
           width 22px
           height 22px
           border none
-          text-align center
+          
           font-size 12px
           border-radius 30px
           color white
           background-color rgb(91, 201, 213)
+          opacity 0.6
 
   p
     text-align center
@@ -678,7 +695,11 @@ campaignLineHeight = 45px
     line-height 1
     color #bbb
 
-
+//photo detail
+.photo_detail_img
+  width 280px
+  height 350px
+  margin 20px
 // members
 .campaign_members_wrap
   position relative

@@ -74,36 +74,36 @@
     </ion-tab>
 
     <ion-tab title="活动照片" icon="ion-camera">
-      <ion-content has-header="true" class="wrap campaign_photos">
+      <ion-content has-header="true" scroll="flase" class="wrap campaign_photos">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
           <div id="photo_list" class="campaign_photos_wrap">
-            <div class="campaign_photo_panel" ng-repeat="photo in photos" ng-show="($index-$index%4)/4==now_page">
-              <div class="campaign_photo_border">
-                <div class="campaign_photo_img_wrap">
-                  <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
+            <ion-slide-box on-slide-changed="slideChange($index)">
+              <ion-slide ng-repeat="photo_page in photos_view">
+                <div  ng-repeat="photo in photo_page" class="campaign_photo_panel">
+                  <div class="campaign_photo_border" ng-click="openModal()">
+                    <div class="campaign_photo_img_wrap">
+                      <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
+                    </div>
+                    <div class="campaign_photo_ori_button_wrap">
+                      <button class="icon ion-search campaign_photo_ori_button"></button>
+                    </div>
+    <!--                 <p class="campaign_upload_user">{{ photo.upload_user.name }}</p>
+                    <p class="campaign_upload_date">上传于：{{ photo.upload_date | date:'yyyy-M-dd HH:mm' }}</p> -->
+        <!--             <button ng-click="deletePhoto(photo.pid)">删除照片</button>
+                    <input type="text" ng-model="comment"/>
+                    <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->
+                  </div>
                 </div>
-                <div class="campaign_photo_ori_button_wrap">
-                  <button class="icon ion-search campaign_photo_ori_button"></button>
-                </div>
-                <p class="campaign_upload_user">{{ photo.upload_user.name }}</p>
-                <p class="campaign_upload_date">上传于：{{ photo.upload_date | date:'yyyy-M-dd HH:mm' }}</p>
-    <!--             <button ng-click="deletePhoto(photo.pid)">删除照片</button>
-                <input type="text" ng-model="comment"/>
-                <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->
-              </div>
-            </div>
-            <div class="pager">
-              <span class="page"ng-repeat="photo_page in photo_pages" ng-class="{active:now_page==photo_page}"> {{photo_page}}
-              </span>
-            </div>
+              </ion-slide>
+            </ion-slide-box>
           </div>
         </div>
-        <form id="upload_form" class="campaing_upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
-          <input class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*" required/>
-          <button type="submit">上传照片</button>
+        <form id="upload_form" name="upload_form" class="campaing_upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
+          <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*" ng-model="upload_file" valid-file required/>
+          <span for="upload_input" class="upload_input_view">上传照片</span>
         </form>
       </ion-content>
     </ion-tab>

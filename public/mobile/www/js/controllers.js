@@ -48,7 +48,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, Campaign, PhotoAlbum, Comment, Map, Global) {
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $timeout, Campaign, PhotoAlbum, Comment, Map, Global) {
 
   $scope.base_url = Global.base_url;
   $scope.user_id = Global.user._id;
@@ -62,12 +62,16 @@ angular.module('starter.controllers', [])
   var getPhotoList = function() {
     PhotoAlbum.getPhotoList($scope.photo_album_id, function(photos) {
       $scope.photos = photos;
-      $scope.photo_pages = [];
-      var _length = Math.ceil(photos.length/4);
+      $scope.photos_view = [];
+      var _length = photos.length;
       for(var i=0;i<_length;i++){
-        $scope.photo_pages[i]=i;
+        var index = Math.floor(i/4);
+        if(!$scope.photos_view[index]){
+          $scope.photos_view[index]=[];
+        }
+        $scope.photos_view[index].push(photos[i]);
       }
-      $scope.now_page = 0;
+      $ionicSlideBoxDelegate.update();
     });
   };
   $scope.comment_content = {
@@ -79,6 +83,7 @@ angular.module('starter.controllers', [])
       var file = $('#upload_form').find('.upload_input');
       file.after(file.clone().val(""));
       file.remove();
+      alert('图片上传成功！');
     });
   }
   $scope.photos = [];
@@ -111,7 +116,39 @@ angular.module('starter.controllers', [])
       }
     });
   };
+  $scope.changePage = function(page){
+  }
+  $scope.slideChange = function(index){
 
+  }
+  $ionicModal.fromTemplateUrl('templates/partials/photo_detail.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+  $scope.openModal = function() {
+    $ionicSlideBoxDelegate.update();
+    $scope.modal.show();
+  };
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+  //Cleanup the modal when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
+  });
+  $timeout( function() {
+    $ionicSlideBoxDelegate.update();
+  });
 })
 
 
@@ -459,7 +496,7 @@ angular.module('starter.controllers', [])
   return function(scope, element, attrs) {
 
     var thumbnail = function(img) {
-      if (img.width * 110 > img.height * 138) {
+      if (img.width * 120 > img.height * 128) {
         element[0].style.height = '100%';
       } else {
         element[0].style.width = '100%';
@@ -488,11 +525,26 @@ angular.module('starter.controllers', [])
     Map.init(attrs.id, attrs.location);
   };
 })
+
+
 .directive('uploadDirective', function() {
   return function(scope, element, attrs) {
     scope.initUpload();
   };
 })
+
+.directive('validFile',function(){
+  return {
+    require: 'ngModel',
+    link:function(scope,el,attrs,control){
+      el.bind('change',function(){
+        scope.$apply(function(){
+          $('#upload_form').submit();
+        });
+      });
+    }
+  }
+});
 
 
 
