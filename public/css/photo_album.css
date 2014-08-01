@@ -30,6 +30,7 @@
   border: 1px solid #ddd;
   width: 200px;
   height: 200px;
+  line-height: 198px;
 }
 .photo_album .photo:nth-child(4n+1) {
   margin-left: 0;
