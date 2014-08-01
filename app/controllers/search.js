@@ -14,7 +14,7 @@ var mongoose = require('mongoose'),
 exports.getCompany = function (req, res) {
     var regx = new RegExp(req.body.regx);
     var companies_rst = [];
-    Company.find({'info.name':regx}, function (err, companies) {
+    Company.find({'info.name':regx,'status.active':true}, function (err, companies) {
         if(err) {
             return res.send([]);
         } else {

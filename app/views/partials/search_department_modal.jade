@@ -10,7 +10,7 @@
           .dl_md_1.dl_vertical
             label.subtitle 选择部门
           .dl_md_8.dl_vertical
-            select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in departments" ng-change="select_department()" ng-disabled="departments.length == 0")
+            select(data-placeholder="选择部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in departments" ng-change="select_department()" ng-disabled="departments.length == 0")
         .dl_modal_container
           .dl_row
             .dl_md_12
@@ -21,8 +21,8 @@
           .groups.row
             .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="department in select_departments")
               .dl_row
-                //- .dl_cover(ng-if="department.selected")
-                a(ng-click="appointReady(user,$index)" ng-disabled="true")
+                .dl_cover_department(ng-if="department.selected")
+                a(ng-click="selectReady($index)" ng-disabled="true")
                   img.size_80(ng-src="{{department.team.logo}}")
               .dl_row(style="width:80px;text-align:center")
                 label {{department.name}}

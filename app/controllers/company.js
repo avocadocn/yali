@@ -640,6 +640,7 @@ exports.createDetail = function(req, res) {
             company.username = req.body.username;
             company.password = req.body.password;
             company.status.active = true;
+            company.status.mail_active = true;
 
             company.save(function (err) {
                 if(err) {
@@ -985,7 +986,7 @@ exports.timeLine = function(req, res){
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
           year: getYear(campaign),
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 10)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
         }
         // todo new time style
         // console.log(campaign);
