@@ -125,9 +125,8 @@
 }
 .side .competition_detail {
   border: 1px solid #ddd;
-  padding: 5px;
-  margin-bottom: 10px;
-  background-color: #fbfbfb;
+  padding: 10px;
+  background-color: #fff;
 }
 .side .competition_detail .dl_detail_row {
   min-width: 300px;
@@ -150,7 +149,23 @@
   word-break: break-all;
   white-space: normal;
 }
-.side .map_size {
-  width: 290px;
+.side .map_container {
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  padding: 10px;
+  margin-top: 20px;
+}
+.side .map_container .map_size {
+  width: 268px;
   height: 210px;
+}
+.side .photo_container {
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  padding: 20px 10px;
+  margin-top: 20px;
+}
+.side .photo_container .photo_album {
+  padding: 0;
+  border: 0;
 }
