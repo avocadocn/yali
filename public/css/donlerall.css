@@ -1666,6 +1666,7 @@ dl_messagebox .loademp,
 }
 .dl_integrate_container #family {
   margin-top: 0;
+  background-color: #fff;
 }
 .dl_integrate_container .side {
   padding-top: 0;

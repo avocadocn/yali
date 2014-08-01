@@ -70,10 +70,18 @@ block panel
 block aside
 
   p 侧栏
-  p 最新活动
+  .newcampainbox
+    span.title 活动预告
+    .bar
+    .info
+  p 
+  p
+    = campaign
+
   p 主场
     each home in home_court
-      = home
+      p
+        = home
       a(href)
   p 相册
     each photo_album in photo_album_thumbnails

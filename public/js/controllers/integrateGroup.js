@@ -1,6 +1,6 @@
 'use strict';
 
-var tabViewGroup = angular.module('donler');
+var integrateGroup = angular.module('donler');
 
 
 function tirm(arraies,str) {
@@ -15,7 +15,7 @@ function tirm(arraies,str) {
     }
     return rst;
 }
-tabViewGroup.config(['$routeProvider',
+integrateGroup.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
       .when('/teampage', {
@@ -27,7 +27,7 @@ tabViewGroup.config(['$routeProvider',
         redirectTo: '/teampage'
       });
 }]);
-tabViewGroup.directive('ngMin', function() {
+integrateGroup.directive('ngMin', function() {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -54,7 +54,7 @@ tabViewGroup.directive('ngMin', function() {
     };
 });
 
-tabViewGroup.directive('ngMax', function() {
+integrateGroup.directive('ngMax', function() {
     return {
         restrict: 'A',
         require: 'ngModel',
@@ -80,7 +80,7 @@ tabViewGroup.directive('ngMax', function() {
         }
     };
 });
-tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope, $location) {
+integrateGroup.run(['$http','$rootScope','$location', function ($http, $rootScope, $location) {
     if($location.hash()!=='')
         $rootScope.nowTab = window.location.hash.substr(2);
     else if($location.path()!=='')
@@ -193,7 +193,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 }
 
 
-tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
     $rootScope.$watch('teamId',function(tid){

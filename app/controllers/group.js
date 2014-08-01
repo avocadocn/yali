@@ -171,9 +171,32 @@ exports.teampage = function(req, res) {
         callback(err);
       });
     },
-    function(photo_album_thumbnails, callback) {
+    function(photo_album_thumbnails, callback){
+      var teamMoreInfo = {};
+      //todo add photo here
+      teamMoreInfo.photo_album_thumbnails = photo_album_thumbnails;
+
+
+      Campaign.find({'team':req.params.teamId})
+        .sort({'create_time':-1})
+        .limit(1)
+        .exec()
+        .then(function(campaign){
+            //todo
+            // console.log(campaign[0]);
+            if(campaign.length==0){
+                teamMoreInfo.campaign = '';
+            }else{
+              teamMoreInfo.campaign = campaign[0];
+            }
+            console.log(teamMoreInfo);
+            callback(null, teamMoreInfo);
+        });
+
+    },
+    function(teamMoreInfo, callback) {
       if(req.role==='HR' || req.role ==='GUESTHR'){
-        console.log('teampage render');
+        
         res.render('group/teampage', {
           'role': req.role,
           'teamId' : req.params.teamId,
@@ -248,8 +271,9 @@ exports.teampage = function(req, res) {
               'realname':req.user.realname,
               'nav_logo': req.user.photo,
               'nav_name':req.user.nickname,
-              'photo_album_thumbnails': photo_album_thumbnails,
-              'home_court': req.companyGroup.home_court
+              'photo_album_thumbnails': teamMoreInfo.photo_album_thumbnails,
+              'home_court': req.companyGroup.home_court,
+              'campaign':teamMoreInfo.campaign
             });
           };
         });
@@ -262,45 +286,7 @@ exports.teampage = function(req, res) {
   });
 
 };
-//获取小组简要信息供弹出层查看
-// exports.getBriefInfo = function(req,res) {
-//   CompanyGroup.findOne({'_id': req.params.teamId },{'_id':1,'name':1,'logo':1},function(err,companyGroup){
-//     if (err || !companyGroup){
-//       console.log('cannot find team');
-//       return res.send({'result':0,'msg':'小队查询错误'});
-//     }else{
-//       var message_theme = '';
-//       var campaign_id = '';
-//       Campaign.find({'team':req.params.teamId},{'_id':1,'theme':1})
-//       .sort({'create_time':-1})
-//       .limit(1)
-//       .exec(function(err,campaign){
-//         if(err){
-//           console.log('cannot find campaign');
-//           return res.send({'result':0,'msg':'消息查询错误'});
-//         }
-//         if(campaign.length==0)
-//           message_theme = '';
-//         else{
-//           message_theme = campaign[0].theme;
-//           campaign_id = campaign[0]._id;
-//         }
-//         // var htmlcontent ="<div class='popover_img'><a href='/group/home/"+companyGroup._id+"'><img class='size_80' src='"+companyGroup.logo+"'></img></a></div>";
-//         //   htmlcontent += "<div class='popover_content'><p><a href='/group/home/"+companyGroup._id+"'>"+companyGroup.name+"</a></p></div>";
-//         //   htmlcontent += "<div class='popover_brief'><p><span>最新活动:</span><a href='/campaign/detail/"+campaign_id+"'>"+message_theme+"</a></p></div>";
-//         // return res.send({
-//         //   result: 1,
-//         //   htmlcontent: htmlcontent
-//         // });
-//         res.render('partials/group_brief_card', {
-//           companyGroup: companyGroup,
-//           message_theme: message_theme,
-//           campaign_id: campaign_id
-//         });
-//       });
-//     }
-//   });
-// };
+
 
 
 //根据tid返回team
@@ -830,33 +816,29 @@ exports.responseProvoke = function (req, res) {
         var param = {
           'type':'private',
           'caption':'Private Message',
-          //接受挑战的小队队长作为消息的发送者
           'own':{
             '_id':req.user._id,
             'nickname':req.user.nickname,
             'photo':req.user.photo,
             'role':'LEADER'
           },
-          //发起挑战的小队队长作为消息的接受者
           'receiver':{
             '_id':rst[0].leader[0]._id
           },
           'content':null,
-          //接受挑战的小队
           'own_team':{
             '_id':rst[1]._id,
             'name':rst[1].name,
             'logo':rst[1].logo,
             'status': req.body.responseStatus ? 1 : 4
           },
-          //发起挑战的小队
           'receive_team':{
             '_id':rst[0]._id,
             'name':rst[0].name,
             'logo':rst[0].logo,
             'status': req.body.responseStatus ? 1 : 4
           },
-          'campaign_id':campaign._id,
+          'campaign_id':null,
           'auto':true
         };
         message.sendToOne(req,res,param);
@@ -905,13 +887,13 @@ exports.cancelProvoke = function (req, res) {
             '_id':rst[0]._id,
             'name':rst[0].name,
             'logo':rst[0].logo,
-            'provoke_status':5
+            'provoke_status':4
           },
           'receive_team':{
             '_id':rst[1]._id,
             'name':rst[1].name,
             'logo':rst[1].logo,
-            'provoke_status':5
+            'provoke_status':4
           },
           'campaign_id':null,
           'auto':true
