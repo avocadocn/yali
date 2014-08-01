@@ -68,15 +68,33 @@ block panel
       div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../campaign/provoke_modal_base
 block aside
-
-  p 侧栏
   .newcampainbox
     span.title 活动预告
     .bar
+      //- PK型活动
+      if (campaign.campaign_type == '4' || campaign.campaign_type == '5 '|| campaign.campaign_type == '9')
+        .event_pk
+          each camp in campaign.camp
+            p
+             = camp.tname
+            p
+             = camp.logo
+      //- 一起玩型活动
+      if (campaign.campaign_type == '3' || campaign.campaign_type == '7' || campaign.campaign_type == '8')
+        .event_play
+          each camp in campaign.camp
+            p
+             = camp.tname
+            p
+             = camp.logo
+      //- 自己玩的活动
+      if campaign.campaign_type == '1'
+        .event_solo
+        p 自己玩
+    
     .info
-  p 
-  p
-    = campaign
+      = campaign.start_time
+      = campaign.location.name
 
   p 主场
     each home in home_court
