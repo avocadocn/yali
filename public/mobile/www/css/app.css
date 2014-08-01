@@ -311,6 +311,7 @@ body {
 .calendar .calendar_year {
   position: relative;
   height: 100%;
+  padding: 6px;
 }
 .calendar .calendar_year .year_section {
   float: left;
@@ -319,42 +320,6 @@ body {
   text-align: center;
   padding: 6px;
   color: #3abde8;
-}
-.calendar .calendar_year .year_section:nth-child(3n+1) {
-  padding-left: 12px;
-  padding-right: 4.000000000000002px;
-}
-.calendar .calendar_year .year_section:nth-child(3n+2) {
-  padding-left: 7.999999999999998px;
-  padding-right: 7.999999999999998px;
-}
-.calendar .calendar_year .year_section:nth-child(3n+3) {
-  padding-left: 4.000000000000002px;
-  padding-right: 12px;
-}
-.calendar .calendar_year .year_section:nth-child(1),
-.calendar .calendar_year .year_section:nth-child(2),
-.calendar .calendar_year .year_section:nth-child(3) {
-  padding-top: 12px;
-  padding-bottom: 3px;
-}
-.calendar .calendar_year .year_section:nth-child(4),
-.calendar .calendar_year .year_section:nth-child(5),
-.calendar .calendar_year .year_section:nth-child(6) {
-  padding-top: 9px;
-  padding-bottom: 6px;
-}
-.calendar .calendar_year .year_section:nth-child(7),
-.calendar .calendar_year .year_section:nth-child(8),
-.calendar .calendar_year .year_section:nth-child(9) {
-  padding-top: 6px;
-  padding-bottom: 9px;
-}
-.calendar .calendar_year .year_section:nth-child(10),
-.calendar .calendar_year .year_section:nth-child(11),
-.calendar .calendar_year .year_section:nth-child(12) {
-  padding-top: 3px;
-  padding-bottom: 12px;
 }
 .calendar .calendar_year .year_section .table_wrap {
   border: solid 1px #3abde8;

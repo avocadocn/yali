@@ -153,7 +153,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ScheduleListCtrl', function($scope, $rootScope, $ionicScrollDelegate, Campaign, Global) {
+.controller('ScheduleListCtrl', function($scope, $rootScope, Campaign, Global) {
 
   moment.lang('zh-cn');
   /**
@@ -186,18 +186,28 @@ angular.module('starter.controllers', [])
   }
 
   /**
-   * 更新日历的月视图, 不会更新current
+   * 月视图卡片数据
+   * @type {Array}
+   */
+  $scope.month_cards = [];
+
+  /**
+   * 更新日历的月视图, 并返回该存放该月相关数据的对象, 不会更新current对象
    * @param  {Date} date
+   * @return {Object}
    */
   var updateMonth = function(date) {
     var year = date.getFullYear();
     var month = date.getMonth();
     var mdate = moment(new Date(year, month));
     $scope.current_year = year;
-    $scope.current_month = mdate.format('MMMM');
-    $scope.month = [];
+    var month = {
+      date: date,
+      format_month: mdate.format('MMMM'),
+      days: []
+    };
     for (var i = 0; i < mdate.daysInMonth(); i++) {
-      $scope.month[i] = {
+      month.days[i] = {
         full_date: new Date(year, month, i + 1),
         date: i + 1,
         events: []
@@ -205,20 +215,20 @@ angular.module('starter.controllers', [])
 
       // 如果是本月第一天，计算是星期几，决定位移量
       if (i === 0) {
-        $scope.month[i].first_day = 'offset_' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
-        $scope.current_month_offset = $scope.month[i].first_day;
+        month.days[i].first_day = 'offset_' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
+        month.offset = month.days[i].first_day;
       }
 
       // 是否是周末
       var thisDay = new Date(year, month, i + 1);
       if (thisDay.getDay() === 0 || thisDay.getDay() === 6) {
-        $scope.month[i].is_weekend = true;
+        month.days[i].is_weekend = true;
       }
 
       // 是否是今天
       var now = new Date();
       if (now.getDate() === i + 1 && now.getFullYear() === year && now.getMonth() === month) {
-        $scope.month[i].is_today = true;
+        month.days[i].is_today = true;
       }
 
       // 将活动及相关标记存入这一天
@@ -229,10 +239,10 @@ angular.module('starter.controllers', [])
         if (start < today_end && today_end < end
           || start.year() === year && start.month() === month && start.date() === i + 1
           || end.year() === year && end.month() === month && end.date() === i + 1) {
-          $scope.month[i].events.push(campaign);
-          $scope.month[i].has_event = true;
+          month.days[i].events.push(campaign);
+          month.days[i].has_event = true;
           if (campaign.is_joined) {
-            $scope.month[i].has_joined_event = true;
+            month.days[i].has_joined_event = true;
           }
         }
         campaign.format_start_time = moment(campaign.start_time).calendar();
@@ -241,6 +251,7 @@ angular.module('starter.controllers', [])
       });
 
     }
+    return month;
   };
 
   /**
@@ -280,7 +291,8 @@ angular.module('starter.controllers', [])
 
   Campaign.getUserCampaignsForCalendar(function(campaigns) {
     $scope.campaigns = campaigns;
-    updateMonth(current);
+    var month = updateMonth(current);
+    $scope.month_cards.push(month);
     if ($scope.view === 'day') {
       updateDay(current);
     }
@@ -371,6 +383,24 @@ angular.module('starter.controllers', [])
     $rootScope.campaignReturnUri = '#/app/schedule_list';
   };
 
+
+  $scope.addMonth = function(month) {
+    var temp = new Date(month.date);
+    temp.setMonth(temp.getMonth() + 1);
+    var new_month = updateMonth(temp);
+    $scope.month_cards.push(new_month);
+  };
+
+  $scope.subMonth = function(month) {
+    var temp = new Date(month.date);
+    temp.setMonth(temp.getMonth() - 1);
+    var new_month = updateMonth(temp);
+    $scope.month_cards.push(new_month);
+  };
+
+  $scope.removeMonth = function(index) {
+    $scope.month_cards.splice(index, 1);
+  };
 
 })
 
@@ -531,6 +561,18 @@ angular.module('starter.controllers', [])
   return function(scope, element, attrs) {
     scope.initUpload();
   };
+})
+.directive('noScroll', function($document) {
+
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+
+      $document.on('touchmove', function(e) {
+        e.preventDefault();
+      });
+    }
+  }
 })
 
 .directive('validFile',function(){

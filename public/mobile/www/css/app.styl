@@ -349,11 +349,12 @@ loginInfoBgcolor = #75d1ef
   .full_box
     height 100%
 
+  yearSectionPadding = 6px
   .calendar_year
     position relative
     height 100%
+    padding yearSectionPadding
 
-    yearSectionPadding = 6px
     .year_section
       float left
       width (100 / 3)%
@@ -361,28 +362,6 @@ loginInfoBgcolor = #75d1ef
       text-align center
       padding yearSectionPadding
       color themeColor
-
-      &:nth-child(3n+1)
-        padding-left 2 * yearSectionPadding
-        padding-right (2 / 3) * yearSectionPadding
-      &:nth-child(3n+2)
-        padding-left (4 / 3) * yearSectionPadding
-        padding-right (4 / 3) * yearSectionPadding
-      &:nth-child(3n+3)
-        padding-left (2 / 3) * yearSectionPadding
-        padding-right 2 * yearSectionPadding
-      &:nth-child(1),&:nth-child(2),&:nth-child(3)
-        padding-top 2 * yearSectionPadding
-        padding-bottom 0.5 * yearSectionPadding
-      &:nth-child(4),&:nth-child(5),&:nth-child(6)
-        padding-top 1.5 * yearSectionPadding
-        padding-bottom yearSectionPadding
-      &:nth-child(7),&:nth-child(8),&:nth-child(9)
-        padding-top yearSectionPadding
-        padding-bottom 1.5 * yearSectionPadding
-      &:nth-child(10),&:nth-child(11),&:nth-child(12)
-        padding-top 0.5 * yearSectionPadding
-        padding-bottom 2 * yearSectionPadding
 
       .table_wrap
         border solid 1px themeColor
