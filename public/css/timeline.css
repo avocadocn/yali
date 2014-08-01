@@ -252,9 +252,11 @@ Timeline UI Base
   position: relative;
   font-size: 10px;
   overflow: hidden;
-  margin-bottom: 0;
+  margin-bottom: 10px;
   text-transform: uppercase;
   word-break: break-all;
+  padding: 0 5px 5px;
+  border-bottom: 1px solid #ddd;
 }
 .dl_timeline .column .timeline_element .title a {
   color: #aaa;
@@ -267,22 +269,66 @@ Timeline UI Base
   color: #aaa;
   font-size: 12px;
   line-height: 22px;
+  max-width: 210px;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  float: left;
 }
 .dl_timeline .column .timeline_element .title .date {
-  float: right;
+  float: left;
+  width: 210px;
 }
 .dl_timeline .column .timeline_element .title .timeline-logo {
   margin-right: 4px;
+  height: 40px;
+  width: 40px;
 }
-.dl_timeline .column .timeline_element .img_scroll {
-  max-height: 66px;
-  overflow: hidden;
+.dl_timeline .column .timeline_element .img_scroll .photos_1 .photo_0 {
+  width: 264px;
+  height: 264px;
+}
+.dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0,
+.dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
+  width: 131px;
+  height: 131px;
+  margin-right: 1px;
+}
+.dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
+  margin-left: 1px;
+  margin-right: 0;
+}
+.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_0 {
+  width: 175px;
+  height: 175px;
+  margin-right: 1px;
+}
+.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1,
+.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
+  width: 87px;
+  height: 87px;
+  margin-bottom: 1px;
+}
+.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
+  margin-bottom: 0;
+}
+.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0 {
+  width: 263px;
+  height: 263px;
+  margin-bottom: 1px;
+}
+.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_1,
+.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2,
+.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_3 {
+  width: 87px;
+  height: 87px;
+  margin-right: 1px;
 }
 .dl_timeline .column .timeline_element .img_scroll .photo {
   display: inline-block;
-  max-width: 66px;
-  max-height: 66px;
-  margin-right: 1px;
+  float: left;
 }
 .dl_timeline .column .timeline_element .content p {
   margin-bottom: 0;

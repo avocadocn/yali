@@ -12,47 +12,58 @@ div(ng-show = '!loading')
               .timeline_element
                 .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                   a(href="/campaign/detail/#{item.id}",target="_blank")
-                    img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                    span.head= item.head
+                    img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                     span.date= moment(item.start_time).format('MM/DD')
-                    .img_scroll
-                      each imgs in item.photo_list
-                        img.photo(src="#{imgs.thumbnail_uri}")
-                .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                  img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                  span.head= item.head
-                  span.date= moment(item.start_time).format('MM/DD')
-                  .img_scroll
-                    each imgs in item.photo_list
-                      img.photo(src="#{imgs.thumbnail_uri}")
-                .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                    span.head= item.head
+                .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                   a(href="/campaign/detail/#{item.id}",target="_blank")
+                    .img_scroll
+                      div(class="photos_#{item.photo_list.length}")
+                        each imgs,img_index in item.photo_list
+                          img.photo(class="photo_#{img_index}" src="#{imgs.thumbnail_uri}")
+                .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                  img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                  span.date= moment(item.start_time).format('MM/DD')
+                  span.head= item.head
+                .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                  a(href="/campaign/detail/#{item.id}",target="_blank")
+                    div(class="photos_#{item.photo_list.length}")
+                      each imgs,img_index in item.photo_list
+                        img.photo(class="photo_#{img_index}" src="#{imgs.thumbnail_uri}")
+                div(ng-if="#{item.photo_list.length}===0")
+                  .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                    a(href="/campaign/detail/#{item.id}",target="_blank")
+                      p= item.content
+                  .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
                     p= item.content
-                .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                  p= item.content
         .column.column_right
           each item,index in years
             if index%2
               .timeline_element
                 .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                   a(href="/campaign/detail/#{item.id}",target="_blank")
-                    img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                    span.head= item.head
+                    img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                     span.date= moment(item.start_time).format('MM/DD')
-                    .img_scroll
-                      each imgs in item.photo_list
-                        img.photo(src="#{imgs.thumbnail_uri}")
-                .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                  img.timeline-logo.pull-left.size_20(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                  span.head= item.head
-                  span.date= moment(item.start_time).format('MM/DD')
-                  .img_scroll
-                    each imgs in item.photo_list
-                      img.photo(src="#{imgs.thumbnail_uri}")
-                .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                    span.head= item.head
+                .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                   a(href="/campaign/detail/#{item.id}",target="_blank")
+                    div(class="photos_#{item.photo_list.length}")
+                      each imgs,img_index in item.photo_list
+                        img.photo(class="photo_#{img_index}" src="#{imgs.thumbnail_uri}")
+                .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                  img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                  span.date= moment(item.start_time).format('MM/DD')
+                  span.head= item.head
+                .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                  a(href="/campaign/detail/#{item.id}",target="_blank")
+                    div(class="photos_#{item.photo_list.length}")
+                      each imgs,img_index in item.photo_list
+                        img.photo(class="photo_#{img_index}" src="#{imgs.thumbnail_uri}")
+                div(ng-if="#{item.photo_list.length}===0")
+                  .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                    a(href="/campaign/detail/#{item.id}",target="_blank")
+                      p= item.content
+                  .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
                     p= item.content
-                .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                  p= item.content
   else
     .loademp.emptiem.text-center #{__("NO_TIMELINE")}

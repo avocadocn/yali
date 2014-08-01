@@ -279,9 +279,11 @@ Timeline UI Base
         position relative
         font-size 10px
         overflow hidden
-        margin-bottom 0
+        margin-bottom 10px
         text-transform uppercase
         word-break break-all
+        padding 0 5px 5px
+        border-bottom 1px solid #dddddd
         a
           color #AAAAAA
           display block
@@ -291,18 +293,56 @@ Timeline UI Base
           color #AAAAAA
           font-size 12px
           line-height 22px
+          max-width 210px
+          word-break break-all
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+          display inline-block
+          float left
         .date
-          float right
+          float left
+          width 210px
         .timeline-logo
           margin-right 4px
-      .img_scroll 
-        max-height 66px
-        overflow hidden
+          height 40px
+          width 40px
+      .img_scroll
+        .photos_1
+          .photo_0
+            width 264px
+            height 264px
+        .photos_2
+          .photo_0, .photo_1
+            width 131px
+            height 131px
+            margin-right 1px
+          .photo_1
+            margin-left 1px
+            margin-right 0
+        .photos_3
+          .photo_0
+            width 175px
+            height 175px
+            margin-right 1px
+          .photo_1, .photo_2
+            width 87px
+            height 87px
+            margin-bottom 1px
+          .photo_2
+            margin-bottom 0
+        .photos_4
+          .photo_0
+            width 263px
+            height 263px
+            margin-bottom 1px
+          .photo_1, .photo_2, .photo_3
+            width 87px
+            height 87px
+            margin-right 1px
         .photo 
           display inline-block
-          max-width 66px
-          max-height 66px
-          margin-right 1px
+          float left
       .content
         p
           margin-bottom 0
