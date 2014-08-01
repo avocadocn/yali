@@ -1275,6 +1275,7 @@ exports.createDepartment = function(req, res) {
         });
       } else {
         var department_create = {
+          'parent_department': did,
           'name': name,
           'company': {
             '_id': req.user._id,

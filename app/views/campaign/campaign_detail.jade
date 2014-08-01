@@ -62,10 +62,10 @@ block contentExt
             .dl_detail_detail
               span.dl_word_break= campaign.content
       if !campaign.active
-        .dl_detail_row.text-center
+        .dl_detail_row.text-center.margin_top_30
           span #{__("CAMPAIGNCLOSE")}
       else if campaign.finish
-        .dl_detail_row.text-center
+        .dl_detail_row.text-center.margin_top_30
           span #{__("CAMPAIGNFINISH")}
       //-成员
       .dl_detail_member(bs-popover)
@@ -106,19 +106,23 @@ block contentExt
                 label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
                 a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
-      if campaign.location.coordinates.length==2
+      .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
-        a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
-          img(style="margin:20px" width="290" height="290" src="http://api.map.baidu.com/staticimage?width=290&height=290&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labelStyles=#{campaign.location.name},1,14,0xffffff,0x000fff,1")
-      if role!=='PARTNER'
-        .clearfix
-          p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
-          a.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
-        .photo_album
-          each photo in photo_thumbnails
-            a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")
-              img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
-              p.thumbnail_name.text-center= photo.name
+        if campaign.location.coordinates.length==2
+          a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
+            img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labelStyles=#{campaign.location.name},1,14,0xffffff,0x000fff,1")
+        else
+          img.map_size(src="/img/sign_bg.jpg")
+      .photo_container
+        if role!=='PARTNER'
+          .clearfix
+            p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
+            a.pull-right(href="/photoAlbumDetailView/#{campaign.photo_album._id}") 上传活动照片
+          .photo_album
+            each photo in photo_thumbnails
+              a.thumbnail_cell(href="/photoView/#{campaign.photo_album._id}/#{photo._id}")
+                img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
+                p.thumbnail_name.text-center= photo.name
     .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_message_send
 append footExt

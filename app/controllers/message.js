@@ -165,8 +165,8 @@ function _add(param){
   * 数据库删除
   * @param {String}   param.collection    待删除集合
   * @param {Object}   param.condition     删除的查询条件
-  * @param {Function} param.callback      更新完返回正确结果后的处理函数
-  * @param {Function} param._err          更新出现错误的处理函数
+  * @param {Function} param.callback      删除完返回正确结果后的处理函数
+  * @param {Function} param._err          删除出现错误的处理函数
   * @param {Object}   param.other_param   可能需要的额外参数
   * @param {Object}   param.req           请求变量
   * @param {Object}   param.res           结果变量
@@ -777,7 +777,7 @@ var getPublicMessage = function(req,res,cid){
 
 
 
-//按照条件获取站内信
+//按照条件获取所有站内信
 var getMessage = function(req,res,condition,callback){
   var sort = {'create_date':-1};
   Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){

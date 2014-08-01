@@ -59,7 +59,7 @@ div(ng-show = '!loading')
         span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
-          .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
+          .dl_message_container.clearfix(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
             .message_row
               span.message_label 主题:
               span.message_content
@@ -85,7 +85,7 @@ div(ng-show = '!loading')
                 button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id,false)") #{__("REFUSE")}
               span(ng-if="group_message.message_type==4 && group_message.cancel_flag !=undefined")
                 button.dl_btn.dl_btn_small.operator_btn(ng-click="cancelProvoke(group_message.campaign.camp[0].id,group_message.campaign._id)") #{__("CANCEL")}
-          .dl_message_container(ng-if="group_message.message_type ==6")
+          .dl_message_container.clearfix(ng-if="group_message.message_type ==6")
             .message_row
               a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}")
                 img.size_56(ng-src='{{group_message.campaign.camp[0].logo}}')
@@ -94,7 +94,7 @@ div(ng-show = '!loading')
               a(ng-href="{{'/group/home/'+group_message.campaign.camp[1].id}}")
                 img.size_56(ng-src='{{group_message.campaign.camp[1].logo}}')
                 span.margin_left_10 {{group_message.campaign.camp[1].tname}}
-          .dl_message_container(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
+          .dl_message_container.clearfix(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
             .message_row
               span.message_label
                 a.vertical_label(ng-href="/users/home/{{_user.user_id}}" ng-repeat="_user in group_message.user") {{_user.name}}

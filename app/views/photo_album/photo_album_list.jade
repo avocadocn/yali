@@ -26,11 +26,12 @@ block contentExt
         .col-sm-3.col-xs-3.photo_album_container
           .photo_album_panel
             a(href="/photoAlbumDetailView/#{photo_album._id}" title="#{photo_album.name}").center-block
-              img.photo_album_thumbnail.img-responsive(src="#{photo_album.thumbnail}")
+              .img_container
+                img.photo_album_thumbnail.img-responsive(src="#{photo_album.thumbnail}")
+                .img_number
+                  span #{photo_album.photo_count}
               h5.text-center.album_title
                 span.photo_album_name= photo_album.name
-                | &nbsp;
-                span /&nbsp;#{photo_album.photo_count}
             div.update_info.center-block(bs-popover)
               if photo_album.update_user.type === 'user'
                 a(href="/users/home/#{photo_album.update_user._id}")

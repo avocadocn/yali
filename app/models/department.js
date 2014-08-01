@@ -34,6 +34,10 @@ var Department = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'CompanyGroup'
   },
+  parent_department:{
+    type: Schema.Types.ObjectId,
+    ref: 'Department'
+  },
   manager:[_member],
   member:[_member]
 });

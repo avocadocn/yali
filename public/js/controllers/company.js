@@ -38,7 +38,6 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
     var _this = this;
     //$rootScope.lang_key=0;
     this.create_detail = function() {
-        alert('ok');
         try{
             $http({
                 method: 'post',

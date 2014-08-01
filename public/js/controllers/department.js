@@ -1009,7 +1009,7 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
 
 
 departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
-    $scope.multi = false;
+    $scope.multi = false;          //是否发起多部门会活动
     $scope.departments = [];
     $scope.select_departments = [];
     $scope.main_department = null;
@@ -1038,6 +1038,8 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
         $scope.select_departments = [];
         $scope.select_departments.push($scope.main_department);
     }
+
+    //将获取的部门格式化存入 $sacope.departments
     $scope.departmentFormat = function(departments){
         for(var i = 0 ; i < departments.length; i ++){
             if(departments[i]._id !== $scope.did){
@@ -1049,6 +1051,8 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
             }
         }
     }
+
+    //获取除了当前部门外的所有部门
     $scope.$watch('did',function(did){
         $scope.$watch('cid',function(cid){
             $http
