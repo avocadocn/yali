@@ -254,6 +254,7 @@ Timeline UI Base
   overflow: hidden;
   margin-bottom: 0;
   text-transform: uppercase;
+  word-break: break-all;
 }
 .dl_timeline .column .timeline_element .title a {
   color: #aaa;
