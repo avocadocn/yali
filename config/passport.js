@@ -52,6 +52,11 @@ module.exports = function(passport) {
                         message: 'Unknown user'
                     });
                 }
+                if (!company.status.active) {
+                    return done(null, false, {
+                        message: 'Company Not Actived!'
+                    });
+                }
                 if (!company.authenticate(password)) {
                     return done(null, false, {
                         message: 'Invalid password'
@@ -72,6 +77,11 @@ module.exports = function(passport) {
             }, function(err, user) {
                 if (err) {
                     return done(err);
+                }
+                if(!user.active){
+                    return done(null, false, {
+                        message: 'User Not Actived!'
+                    });
                 }
                 if (!user) {
                     return done(null, false, {
