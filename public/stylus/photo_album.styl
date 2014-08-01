@@ -161,10 +161,26 @@ contentBdColor = #ededed
     width 230px
     border solid 1px contentBdColor
     text-decoration none
-    background-color #fbfbfb
+    background-color #fff
     padding 12px 12px 6px
     .album_title
       padding-top 10px
+    .img_container
+      position relative
+      &:hover
+        .img_number 
+          opacity 0.6
+    .img_number
+      opacity 0
+      position absolute
+      right 0
+      bottom 0
+      width 20px
+      height 20px
+      background-color black
+      padding 2px
+      text-align center
+      color white
 
   .update_info
     width 202px
@@ -198,7 +214,7 @@ contentBdColor = #ededed
       height 204px
 
     .photo_album_name
-      max-width 160px
+      max-width 204px
       line-height 1
       display inline-block
       overflow hidden
