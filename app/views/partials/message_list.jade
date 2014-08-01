@@ -59,7 +59,7 @@ div(ng-show = '!loading')
         span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
-          .dl_message_container(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
+          .dl_message_container.clearfix(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
             .message_row
               span.message_label 主题:
               span.message_content
