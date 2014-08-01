@@ -300,7 +300,7 @@ var getCampaignDetail = function(id, callback) {
    */
   var getCampaignComments = function(id, callback) {
     // why post?
-    $http.post('/comment/pull/campaign/' + id, { host_id: id })
+    $http.post(Global.base_url + '/comment/pull/campaign/' + id, { host_id: id })
     .success(function(data, status) {
       callback(data.comments);
     });
@@ -318,7 +318,7 @@ var getCampaignDetail = function(id, callback) {
       host_id: id,
       content: comment
     };
-    $http.post('/comment/push', post_data)
+    $http.post(Global.base_url + '/comment/push', post_data)
     .success(function(data, status) {
       if (data.msg === 'SUCCESS') {
         callback(null);

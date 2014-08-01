@@ -665,10 +665,13 @@ body {
   line-height: 1;
   color: #bbb;
 }
+.slider .slider-pager .slider-pager-page {
+  width: 10px;
+}
 .photo_detail_img {
   width: 280px;
-  height: 350px;
-  margin: 20px;
+  height: 330px;
+  margin: 70px 20px 20px 20px;
 }
 .campaign_members_wrap {
   position: relative;
