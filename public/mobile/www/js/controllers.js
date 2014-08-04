@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 
-.controller('AppCtrl', function($state, $scope, Authorize, Global) {
+.controller('AppCtrl', function($state, $scope, $rootScope, Authorize, Global) {
   if (Authorize.authorize() === true) {
     $state.go('app.campaignList');
   }
@@ -9,11 +9,14 @@ angular.module('starter.controllers', [])
   $scope.logout = Authorize.logout;
   $scope.base_url = Global.base_url;
   $scope.user = Global.user;
+
+  $rootScope.enable_drag = true;
 })
 
 
 
 .controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
+  $rootScope.enable_drag = true;
 
   if (Authorize.authorize() === true) {
     $state.go('app.campaignList');
@@ -32,6 +35,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('CampaignListCtrl', function($scope, $rootScope, Campaign, Global) {
+  $rootScope.enable_drag = true;
 
   $scope.base_url = Global.base_url;
 
@@ -49,6 +53,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $timeout, Campaign, PhotoAlbum, Comment, Map, Global) {
+  $rootScope.enable_drag = true;
 
   $scope.base_url = Global.base_url;
   $scope.user_id = Global.user._id;
@@ -156,6 +161,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('ScheduleListCtrl', function($scope, $rootScope, Campaign, Global) {
+  $rootScope.enable_drag = false;
 
   moment.lang('zh-cn');
 
@@ -276,6 +282,11 @@ angular.module('starter.controllers', [])
       updateMonth(date);
     }
     current = date;
+
+    // ios safari ng-click将ng-href覆盖, 此为临时解决方案
+    Global.last_date = current;
+    $rootScope.campaignReturnUri = '#/app/schedule_list';
+
     var day = {
       date: current,
       format_date: moment(current).format('ll'),
@@ -327,7 +338,7 @@ angular.module('starter.controllers', [])
       break;
     case 'day':
       var temp = new Date();
-      var day = updateDay(date);
+      var day = updateDay(temp);
       $scope.day_cards = [day];
       break;
     }
@@ -356,13 +367,14 @@ angular.module('starter.controllers', [])
     $scope.view = 'day';
   };
 
+  // ios safari下有问题
   /**
    * 查看活动详情前保存当前时间，以便返回
    */
-  $scope.saveStatus = function() {
-    Global.last_date = current;
-    $rootScope.campaignReturnUri = '#/app/schedule_list';
-  };
+  // $scope.saveStatus = function() {
+  //   Global.last_date = current;
+  //   $rootScope.campaignReturnUri = '#/app/schedule_list';
+  // };
 
 
   $scope.nextMonth = function(month) {
@@ -502,6 +514,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('TimelineCtrl', function($scope, $rootScope, Timeline) {
+  $rootScope.enable_drag = true;
 
   Timeline.getUserTimeline(function(time_lines) {
     $rootScope.time_lines = time_lines;

@@ -308,6 +308,16 @@ body {
 .calendar .full_box {
   height: 100%;
 }
+.calendar .calendar_box {
+  position: relative;
+  height: 100%;
+}
+.calendar .calendar_box .swipe-cards {
+  height: 100%;
+}
+.calendar .calendar_box .swipe-card {
+  height: 100%;
+}
 .calendar .calendar_year {
   position: relative;
   height: 100%;
@@ -326,6 +336,7 @@ body {
 }
 .calendar .calendar_month {
   position: relative;
+  height: 100%;
 }
 .calendar .calendar_month .month {
   width: 14.285714285714286%;
@@ -398,6 +409,7 @@ body {
 }
 .calendar .calendar_day {
   padding: 5px;
+  height: 100%;
 }
 .calendar .calendar_day .calendar_campaign {
   display: block;

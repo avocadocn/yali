@@ -55,8 +55,8 @@
         </div>
         <div class="calendar_day clearfix" ng-if="view==='day'">
           <swipe-cards>
-            <swipe-cards class="clearfix" ng-repeat="day in day_cards" on-left="preDay(day)" on-right="nextDay(day)" on-destroy="removeDay($index)">
-              <a class="calendar_campaign clearfix" ng-repeat="campaign in day.campaigns" ng-href="#/app/campaign_detail/{{ campaign._id }}" ng-click="saveStatus()">
+            <swipe-card class="clearfix" ng-repeat="day in day_cards" on-left="nextDay(day)" on-right="preDay(day)" on-destroy="removeDay($index)">
+              <a class="calendar_campaign" ng-repeat="campaign in day.campaigns" ng-href="#/app/campaign_detail/{{ campaign._id }}">
                 <div class="logo"><img ng-src="{{ campaign.logo }}"/></div>
                 <div class="calendar_content">
                   <div class="text">{{ campaign.theme }}</div>
@@ -65,9 +65,9 @@
                   <div class="joined_flag" ng-if="campaign.is_joined">已参加</div>
                 </div>
               </a>
-            </swipe-cards>
+              <div class="text-center" ng-if="day.campaigns.length === 0">今天没有活动哦</div>
+            </swipe-card>
           </swipe-cards>
-          <div class="text-center" ng-if="current_day.campaigns.length === 0">今天没有活动哦</div>
         </div>
       </div>
     </div>

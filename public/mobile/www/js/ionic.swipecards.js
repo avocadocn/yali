@@ -181,15 +181,18 @@
       /**
        * 响应拖动并移除拖出去的卡片
        * @param  {Function} fn enum: [this.onUp, this.onDown, this.onLeft, this.onRight]
+       * @param {Function} callback
        */
-      var dragAndDestroy = function(fn) {
+      var dragAndDestroy = function(fn, callback) {
         if (fn && fn()) {
+          if (callback) {
+            callback();
+          }
           setTimeout(function() {
             self.onDestroy && self.onDestroy();
           }, 100);
         }
       }
-
       switch (this.direction) {
       case 'up':
         height = 0 - height;
