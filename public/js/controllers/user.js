@@ -43,10 +43,10 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
 
     var departments;
     $http.get('/departmentTree/0').success(function(data, status) {
-        $scope.main_department_id = 'null';
-        $scope.main_department_name = 'null';
-        $scope.child_department_id = 'null';
-        $scope.child_department_name = 'null';
+        $scope.main_department_id = null;
+        $scope.main_department_name = null;
+        $scope.child_department_id = null;
+        $scope.child_department_name = null;
 
         departments = data.department;
         $scope.main_departments = [];
@@ -80,10 +80,10 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
 
     $scope.selectMainDepartment = function(value){
         $scope.main_department = value;
-        $scope.main_department_id = 'null';
-        $scope.main_department_name = 'null';
-        $scope.child_department_id = 'null';
-        $scope.child_department_name = 'null';
+        $scope.main_department_id = null;
+        $scope.main_department_name = null;
+        $scope.child_department_id = null;
+        $scope.child_department_name = null;
         for(var i = 0; i < departments.length; i ++){
             if(departments[i]._id === $scope.main_department._id){
                 $scope.child_departments = [];
@@ -108,8 +108,8 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
 
     $scope.selectChildDepartment = function(value){
         $scope.child_department = value;
-        $scope.child_department_id = 'null';
-        $scope.child_department_name = 'null';
+        $scope.child_department_id = null;
+        $scope.child_department_name = null;
         $scope.child_department_id = $scope.child_department._id;
         $scope.child_department_name = $scope.child_department.name;
     }

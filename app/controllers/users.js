@@ -245,30 +245,19 @@ function userOperate(cid, key, res, req, index) {
               phone: req.body.phone,
               role: 'EMPLOYEE'
             });
+            //员工尚未激活时,他的部门信息里只能填入部门的id
+            if(req.body.main_department_id != null && req.body.main_department_id != 'null'){
+              if(req.body.child_department_id != null && req.body.child_department_id != 'null'){
+                user.department = {'_id':req.body.child_department_id,'name':null};
+              }else{
+                user.department = {'_id':req.body.main_department_id,'name':null};
+              }
+            }
             user.save(function(err) {
               if (err) {
                 console.log(err);
                 return res.send(500,{'msg':'user save err.'});
               } else {
-                //将员工加入部门
-                var member = {
-                  '_id':user._id,
-                  'nickname':user.nickname,
-                  'photo':user.photo,
-                  'apply_status':'wait'
-                };
-                if(req.body.main_department_id != 'null'){
-                  var callback = function(err, data) {
-                    if (err) {
-                      console.log(err);
-                    }
-                  }
-                  if(req.body.child_department_id != 'null'){
-                    department.memberOperateByHand('join',member,req.body.child_department_id,callback);
-                  }else{
-                    department.memberOperateByHand('join',member,req.body.main_department_id,callback);
-                  }
-                }
                 company.info.membernumber = company.info.membernumber + 1;
                 company.save(function(err){
                   if(err) {
@@ -418,6 +407,21 @@ exports.setProfile = function(req, res) {
       } else {
         if(encrypt.encrypt(uid, config.SECRET) === key) {
           user.active= true;
+          //员工激活后,要把他的具体信息加入部门
+          if(user.department != null && user.department != undefined){
+            var callback = function(err, data) {
+              if (err) {
+                console.log(err);
+              }
+            }
+            var member = {
+              '_id':user._id,
+              'nickname':user.nickname,
+              'photo':user.photo,
+              'apply_status':'pass'
+            };
+            department.memberOperateByHand('join',member,user.department._id,callback);
+          }
           user.save(function(err){
             if(err){
               console.log(err);

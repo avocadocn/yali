@@ -488,14 +488,15 @@ exports.usernameCheck = function(req, res) {
  * 创建公司基本信息
  */
 exports.create = function(req, res) {
-
+    var invite_switch = false;
     Config
     .findOne({ name: config.CONFIG_NAME })
     .exec()
     .then(function(config) {
         if (config && config.company_register_need_invite === true) {
+            invite_switch = true;
             return CompanyRegisterInviteCode
-            .findOne({ code: req.body.invite_code })
+            .findOne({ code: req.body.invite_code , status:'active'})
             .populate('company')
             .exec()
             .then(function(code) {
@@ -508,7 +509,8 @@ exports.create = function(req, res) {
                         company.register_invite_code.splice(removeIndex, 1);
                         company.save(console.log);
                     }
-                    code.remove(function(err) {
+                    code.status = 'used';
+                    code.save(function(err) {
                         if (err) {
                             console.log(err);
                             console.log('remove出错');
@@ -583,7 +585,7 @@ exports.create = function(req, res) {
                     return console.log(err);
                 }
                 //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
-                company.status.date = new Date().getTime();
+                //company.status.date = new Date().getTime();
 
                 company.save(function(err) {
                     if (err) {
@@ -603,9 +605,20 @@ exports.create = function(req, res) {
                             company: company
                         });
                     }
+                    //如果开了邀请码,必须在对应的邀请码里记录使用该邀请码的公司的信息
+                    if(invite_switch){
+                        CompanyRegisterInviteCode.update({'code':req.body.invite_code},{'$set':{'use_by_company':{'_id':company._id,'name':company.info.name,'email':company.login_email}}},function (err,code){
+                            if(!code || err){
+                                return res.status(400).send({'result':0,'msg':'邀请码修改异常!'});
+                            }else{
+                                res.redirect('/company/wait');
+                            }
+                        })
+                    }else{
+                        res.redirect('/company/wait');
+                    }
                     //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
                     //mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
-                    res.redirect('/company/wait');
                 });
             }
         );

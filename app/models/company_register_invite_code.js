@@ -19,6 +19,17 @@ var CompanyRegisterInviteCode = new Schema({
     company: {
         type: Schema.Types.ObjectId,
         ref: "Company"
+    },
+
+    use_by_company:{
+        _id:Schema.Types.ObjectId,
+        name:String,
+        email:String
+    },
+    status:{
+        type:String,
+        enum:['active','used'],
+        default:'active'
     }
 
 });
@@ -26,7 +37,7 @@ var CompanyRegisterInviteCode = new Schema({
 CompanyRegisterInviteCode.pre('save', function(next) {
     if (!this.code) {
         var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-        this.code = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 64).toString('base64');
+        this.code = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
     }
     next();
 });
