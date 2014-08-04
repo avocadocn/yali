@@ -30,7 +30,7 @@ block contentExt
                 img.photo_album_thumbnail.img-responsive(src="#{photo_album.thumbnail}")
                 .img_number
                   span #{photo_album.photo_count}
-              h5.text-center.album_title
+              h6.text-center.album_title
                 span.photo_album_name= photo_album.name
             div.update_info.center-block(bs-popover)
               if photo_album.update_user.type === 'user'
