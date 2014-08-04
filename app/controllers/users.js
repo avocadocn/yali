@@ -407,6 +407,7 @@ exports.setProfile = function(req, res) {
       } else {
         if(encrypt.encrypt(uid, config.SECRET) === key) {
           user.active= true;
+          user.mail_active = true;
           //员工激活后,要把他的具体信息加入部门
           if(user.department != null && user.department != undefined){
             var callback = function(err, data) {

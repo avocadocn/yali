@@ -44,6 +44,10 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    mail_active:{
+        type: Boolean,
+        default: false
+    },
     hashed_password: String,
     provider: {
         type: String,
