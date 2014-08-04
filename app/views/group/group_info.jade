@@ -71,8 +71,6 @@ div(ng-show = '!loading' ng-controller="infoController")
                 img.size_56.img_user(ng-src="{{leader.photo}}")
               .dl_row
                 span.user_name{{leader.nickname}}
-            .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-              img.size_56.img_user(ng-src="{{leader.photo}}")
     .dl_row.clearfix
       span.subtitle.margin_left_15 #{__("MEMBER")}
     .dl_row.clearfix
@@ -90,8 +88,6 @@ div(ng-show = '!loading' ng-controller="infoController")
                 img.size_56.img_user(ng-src="{{member.photo}}")
               .dl_row
                 span.user_name {{member.nickname}}
-            .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-              img.size_56.img_user(ng-src="{{member.photo}}")
 
     //- 此部分逻辑未做 暂时隐藏
     //- .row.dl_row
