@@ -172,22 +172,50 @@
     /**
      * Fly the card out or animate back into resting position.
      */
-    transitionOut: function(e, direction) {
-      var height = window.innerHeight;
-      if (direction.y === 'up') {
-        height = 0 - height;
-      }
+    transitionOut: function() {
+      var width = $(this.el).width();
+      var height = $(this.el).height();
       var self = this;
-      var rotateTo = (this.rotationAngle + (this.rotationDirection * 0.6)) || (Math.random() * 0.4);
-      var duration = this.rotationAngle ? 0.2 : 0.5;
-      this.el.style[TRANSITION] = '-webkit-transform ' + duration + 's ease-in-out';
-      this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + ',' + (height * 1.5) + 'px, 0)';
-      this.onSwipe && this.onSwipe(direction);
+      this.el.style[TRANSITION] = '-webkit-transform ' + 0.2 + 's ease-in-out';
 
-      // Trigger destroy after card has swiped out
-      setTimeout(function() {
-        self.onDestroy && self.onDestroy();
-      }, duration * 1000);
+      /**
+       * 响应拖动并移除拖出去的卡片
+       * @param  {Function} fn enum: [this.onUp, this.onDown, this.onLeft, this.onRight]
+       * @param {Function} callback
+       */
+      var dragAndDestroy = function(fn, callback) {
+        if (fn && fn()) {
+          callback && callback();
+          setTimeout(function() {
+            self.onDestroy && self.onDestroy();
+          }, 100);
+        }
+      }
+      switch (this.direction) {
+      case 'up':
+        dragAndDestroy(this.onUp, function() {
+          height = 0 - height;
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(0,' + (height * 1.5) + 'px, 0)';
+        });
+        break;
+      case 'down':
+        dragAndDestroy(this.onDown, function() {
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(0,' + (height * 1.5) + 'px, 0)';
+        });
+        break;
+      case 'left':
+        dragAndDestroy(this.onLeft, function() {
+          width = 0 - width;
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + (width * 1.5) + 'px, 0, 0)';
+        });
+        break;
+      case 'right':
+        dragAndDestroy(this.onRight, function() {
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + (width * 1.5) + 'px, 0, 0)';
+        });
+        break;
+      }
+
     },
 
     /**
@@ -237,33 +265,32 @@
     },
 
     _doDrag: function(e) {
-      var o = e.gesture.deltaY / 3;
+      // var o = e.gesture.deltaY / 3;
 
-      this.rotationAngle = Math.atan(o/this.touchDistance) * this.rotationDirection;
+      // this.rotationAngle = Math.atan(o/this.touchDistance) * this.rotationDirection;
 
-      if(e.gesture.deltaY < 0) {
-        this.rotationAngle = 0;
-      }
+      // if(e.gesture.deltaY < 0) {
+      //   this.rotationAngle = 0;
+      // }
 
-      this.y = this.startY + (e.gesture.deltaY * 0.4);
+      // this.y = this.startY + (e.gesture.deltaY * 0.4);
 
-      this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + 'px, ' + this.y  + 'px, 0)';
+      // this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + 'px, ' + this.y  + 'px, 0)';
     },
     _doDragEnd: function(e) {
-      var direction = {};
-      if (e.gesture.deltaY > 0) {
-        direction.y = 'down';
+      if (e.gesture.deltaY > 0 && Math.abs(e.gesture.deltaY) > Math.abs(e.gesture.deltaX)) {
+        this.direction = 'down';
       }
-      if(e.gesture.deltaY < 0) {
-        direction.y = 'up';
+      if(e.gesture.deltaY < 0 && Math.abs(e.gesture.deltaY) > Math.abs(e.gesture.deltaX)) {
+        this.direction = 'up';
       }
-      if(e.gesture.deltaX < 0) {
-        direction.x = 'left';
+      if(e.gesture.deltaX < 0 && Math.abs(e.gesture.deltaY) < Math.abs(e.gesture.deltaX)) {
+        this.direction = 'left';
       }
-      if(e.gesture.deltaX > 0) {
-        direction.x = 'right';
+      if(e.gesture.deltaX > 0 && Math.abs(e.gesture.deltaY) < Math.abs(e.gesture.deltaX)) {
+        this.direction = 'right';
       }
-      this.transitionOut(e, direction);
+      this.transitionOut();
     }
   });
 
@@ -287,25 +314,48 @@
       compile: function(element, attr) {
         return function($scope, $element, $attr, swipeCards) {
           var el = $element[0];
-
           // Instantiate our card view
           var swipeableCard = new SwipeableCardView({
             el: el,
-            onSwipe: function(direction) {
-              $timeout(function() {
-                if (direction.y === 'up') {
+            onUp: function() {
+              if (!$attr.onUp) {
+                return false;
+              } else {
+                $timeout(function() {
                   $scope.onUp();
-                }
-                if (direction.y === 'down') {
+                });
+                return true;
+              }
+            },
+            onDown: function() {
+              if (!$attr.onDown) {
+                return false;
+              } else {
+                $timeout(function() {
                   $scope.onDown();
-                }
-                if (direction.x === 'left') {
+                });
+                return true;
+              }
+            },
+            onLeft: function() {
+              if (!$attr.onLeft) {
+                return false;
+              } else {
+                $timeout(function() {
                   $scope.onLeft();
-                }
-                if (direction.x === 'right') {
+                });
+                return true;
+              }
+            },
+            onRight: function() {
+              if (!$attr.onRight) {
+                return false;
+              } else {
+                $timeout(function() {
                   $scope.onRight();
-                }
-              });
+                });
+                return true;
+              }
             },
             onDestroy: function() {
               $timeout(function() {

@@ -260,9 +260,6 @@ body {
   text-align: center;
   color: #3abde8;
 }
-.calendar nav .operator .today {
-  padding: 0;
-}
 .calendar nav .week {
   position: relative;
   margin-top: 5px;
@@ -308,6 +305,16 @@ body {
 .calendar .full_box {
   height: 100%;
 }
+.calendar .calendar_box {
+  position: relative;
+  height: 100%;
+}
+.calendar .calendar_box .swipe-cards {
+  height: 100%;
+}
+.calendar .calendar_box .swipe-card {
+  height: 100%;
+}
 .calendar .calendar_year {
   position: relative;
   height: 100%;
@@ -326,6 +333,7 @@ body {
 }
 .calendar .calendar_month {
   position: relative;
+  height: 100%;
 }
 .calendar .calendar_month .month {
   width: 14.285714285714286%;
@@ -398,6 +406,7 @@ body {
 }
 .calendar .calendar_day {
   padding: 5px;
+  height: 100%;
 }
 .calendar .calendar_day .calendar_campaign {
   display: block;
@@ -580,7 +589,7 @@ body {
 .campaign_photos .campaign_photos_wrap .campaign_photo_panel {
   float: left;
   width: 50%;
-  height: 80px;
+  height: 120px;
   padding-left: 10px;
   margin-top: 7px;
 }
@@ -593,7 +602,7 @@ body {
   border: 1px solid #ddd;
 }
 .campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_img_wrap {
-  height: 80px;
+  height: 120px;
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
@@ -635,8 +644,8 @@ body {
 }
 .photo_detail_img {
   width: 280px;
-  height: 290px;
-  margin: 20px;
+  height: 330px;
+  margin: 70px 20px 20px 20px;
 }
 .campaign_members_wrap {
   position: relative;
@@ -667,6 +676,46 @@ body {
   overflow: hidden;
   max-width: 100px;
   line-height: 20px;
+}
+.comment_edit {
+  position: absolute;
+  bottom: 60px;
+  z-index: 2;
+  width: 100%;
+}
+.comment_edit .comment_add_button {
+  display: inline-block;
+  float: right;
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/plus.png");
+  cursor: pointer;
+  background-size: contain;
+}
+.comment_edit form {
+  background-color: #3abde8;
+  padding: 5px;
+}
+.comment_edit form .comment_input {
+  float: left;
+  width: 80%;
+  background-color: #3abde8;
+  color: #fff;
+  border-bottom: 1px #fff solid;
+}
+.comment_edit form .comment_button {
+  width: 20%;
+  background-color: #3abde8;
+  color: #fff;
+  height: 34px;
+  border: 1px #fff solid;
+  border-radius: 16px;
+}
+.comment_edit form input:-moz-placeholder {
+  color: #fff;
+}
+.comment_edit form ::-webkit-input-placeholder {
+  color: #fff;
 }
 .campaign_detail .campaign_time {
   padding: 0 10px;

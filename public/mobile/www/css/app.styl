@@ -300,9 +300,6 @@ loginInfoBgcolor = #75d1ef
         text-align center
         color themeColor
 
-      .today
-        padding 0
-
     .week
       position relative
       margin-top 5px
@@ -349,6 +346,16 @@ loginInfoBgcolor = #75d1ef
   .full_box
     height 100%
 
+  .calendar_box
+    position relative
+    height 100%
+
+    .swipe-cards
+      height 100%
+
+    .swipe-card
+      height 100%
+
   yearSectionPadding = 6px
   .calendar_year
     position relative
@@ -368,6 +375,7 @@ loginInfoBgcolor = #75d1ef
 
   .calendar_month
     position relative
+    height 100%
 
     .month
       width (100 / 7)%
@@ -423,6 +431,7 @@ loginInfoBgcolor = #75d1ef
 
   .calendar_day
     padding 5px
+    height 100%
 
     .calendar_campaign
       display block
@@ -625,8 +634,7 @@ campaignLineHeight = 45px
 
       float left
       width 50%
-      //height 120px
-      height 80px
+      height 120px
       padding-left 10px
       margin-top 7px
       &:nth-child(2n+2)
@@ -638,8 +646,7 @@ campaignLineHeight = 45px
         border 1px solid #ddd
 
       .campaign_photo_img_wrap
-        //height 120px
-        height 80px
+        height 120px
         text-align center
         vertical-align middle
         overflow hidden
@@ -683,10 +690,8 @@ campaignLineHeight = 45px
 //photo detail
 .photo_detail_img
   width 280px
-  //height 330px
-  height 290px
-  //margin 70px 20px 20px 20px
-  margin 20px
+  height 330px
+  margin 70px 20px 20px 20px
 // members
 .campaign_members_wrap
   position relative
@@ -720,6 +725,40 @@ campaignLineHeight = 45px
         line-height 20px
 
 // comments
+.comment_edit
+  position absolute
+  bottom 60px
+  z-index 2
+  width 100%
+  .comment_add_button
+    display inline-block
+    float right
+    width 30px
+    height 30px
+    background-image url('../img/plus.png')
+    cursor pointer
+    background-size contain
+
+  form
+    background-color rgb(58, 189, 232)
+    padding 5px
+    .comment_input
+      float left
+      width 80%
+      background-color rgb(58, 189, 232)
+      color white
+      border-bottom 1px white solid
+    .comment_button
+      width 20%
+      background-color rgb(58, 189, 232)
+      color white
+      height 34px
+      border 1px white solid
+      border-radius 16px
+    input:-moz-placeholder
+      color white
+    ::-webkit-input-placeholder
+      color white
 .campaign_detail
   .campaign_time
     padding 0 10px

@@ -3,6 +3,7 @@
 var mailer = require('nodemailer'),
     encrypt = require('../middlewares/encrypt'),
     config = require('../config/config'),
+    error = require('../controllers/error'),
     rootConfig = require('../../config/config'),
     jade = require('jade'),
     fs = require('fs');
@@ -13,11 +14,12 @@ var siteProtocol = 'http://';
  * Send an email
  * @param {Object} data 邮件对象
  */
-var sendMail = function (data) {
+var sendMail = function (data,target,err_type) {
   transport.sendMail(data, function (err) {
     if (err) {
+      error.addErrorItem(target,err_type,err);
       // 写为日志
-      console.log(err);
+      console.log(err_type,err);
     }
   });
 };
@@ -66,7 +68,12 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
           to: to,
           subject: subject,
           html: html
-        });
+        },{
+          type:'user',
+          _id:uid,
+          name:null,
+          email:who
+        },'USER_CREATE_EMAIL_SEND_ERROR');
     });
 };
 exports.sendStaffResetPwdMail = function(who, uid, host) {
@@ -88,7 +95,12 @@ exports.sendStaffResetPwdMail = function(who, uid, host) {
           to: to,
           subject: subject,
           html: html
-        });
+        },{
+          type:'user',
+          _id:uid,
+          name:null,
+          email:who
+        },'USER_PWD_RESET_EMAIL_SEND_ERROR');
     });
 };
 exports.sendCompanyResetPwdMail = function(who, uid, host) {
@@ -109,6 +121,11 @@ exports.sendCompanyResetPwdMail = function(who, uid, host) {
           to: to,
           subject: subject,
           html: html
-        });
+        },{
+          type:'company',
+          _id:uid,
+          name:null,
+          email:who
+        },'COMPANY_PWD_RESET_EMAIL_SEND_ERROR');
     });
 };

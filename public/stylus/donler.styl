@@ -815,15 +815,14 @@ textarea
   color white
   cursor pointer
 .cancel_btn
-  background-color #e5e5e5
+  background-color #ddd
   line-height 1
   position relative
-  color #000
+  color #fff
   vertical-align middle
   display inline-block
   &:hover
-    background-color #e5e5e5
-    border-color #e5e5e5
+    background-color #bbb
 .close_btn
   background-color closeButtonColor
   color #fff
@@ -1369,32 +1368,50 @@ familyHeight = 371.25px
   background-color backgroundColor
   min-height 300px
   .teamitem
+    background-color cardbgColor
     width 290px
     min-height 80px
-    margin 8px
-    margin-bottom 60px
+    margin 20px 16px 20px 0
+    border 1px solid #ddd
+    padding 6px
     .btn_join
-      position absolute
-      right 0
-      bottom -26px
+      //- position absolute
+      //- right 0
+      //- bottom -26px
     .itembox
-      background-color cardbgColor
-      border 1px solid #ddd
+      padding 10px 0
       word-break break-word
-      padding 6px
       .memberlist
         background-color cardbgColor
-      .member
-        margin 4px
-        width auto
+        .member
+          margin 4px
+          width auto
+        .text
+          text-align right
+          color #9a9a9a
+      .photos
+        padding 4px 0
+        border-bottom 1px solid #ddd
+        .photo
+          float left
+          margin-right 4px
     .title
       padding-bottom 4px
+      border-bottom 1px solid #ddd
+      .img_container
+        float left
+        margin-right 10px
+      .text_container
+        width 150px
+        line-height 20px
+        float left
+      .button_container
+        float right
     p
       padding-bottom 4px
       margin 0
     &:hover
-      .itembox ,.btn_join
-        box-shadow 2px 2px 8px rgba(0,0,0,.2)
+      box-shadow 2px 2px 8px rgba(0,0,0,.2)
 
 
 .dl_message_body_font

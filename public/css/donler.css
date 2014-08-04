@@ -922,16 +922,15 @@ textarea {
   cursor: pointer;
 }
 .cancel_btn {
-  background-color: #e5e5e5;
+  background-color: #ddd;
   line-height: 1;
   position: relative;
-  color: #000;
+  color: #fff;
   vertical-align: middle;
   display: inline-block;
 }
 .cancel_btn:hover {
-  background-color: #e5e5e5;
-  border-color: #e5e5e5;
+  background-color: #bbb;
 }
 .close_btn {
   background-color: #ff8c00;
@@ -1614,38 +1613,57 @@ dl_messagebox .loademp,
   min-height: 300px;
 }
 .dl_allteaminfo_emp .teamitem {
+  background-color: #fff;
   width: 290px;
   min-height: 80px;
-  margin: 8px;
-  margin-bottom: 60px;
-}
-.dl_allteaminfo_emp .teamitem .btn_join {
-  position: absolute;
-  right: 0;
-  bottom: -26px;
+  margin: 20px 16px 20px 0;
+  border: 1px solid #ddd;
+  padding: 6px;
 }
 .dl_allteaminfo_emp .teamitem .itembox {
-  background-color: #fff;
-  border: 1px solid #ddd;
+  padding: 10px 0;
   word-break: break-word;
-  padding: 6px;
 }
 .dl_allteaminfo_emp .teamitem .itembox .memberlist {
   background-color: #fff;
 }
-.dl_allteaminfo_emp .teamitem .itembox .member {
+.dl_allteaminfo_emp .teamitem .itembox .memberlist .member {
   margin: 4px;
   width: auto;
 }
+.dl_allteaminfo_emp .teamitem .itembox .memberlist .text {
+  text-align: right;
+  color: #9a9a9a;
+}
+.dl_allteaminfo_emp .teamitem .itembox .photos {
+  padding: 4px 0;
+  border-bottom: 1px solid #ddd;
+}
+.dl_allteaminfo_emp .teamitem .itembox .photos .photo {
+  float: left;
+  margin-right: 4px;
+}
 .dl_allteaminfo_emp .teamitem .title {
   padding-bottom: 4px;
+  border-bottom: 1px solid #ddd;
+}
+.dl_allteaminfo_emp .teamitem .title .img_container {
+  float: left;
+  margin-right: 10px;
+}
+.dl_allteaminfo_emp .teamitem .title .text_container {
+  width: 150px;
+  line-height: 20px;
+  float: left;
+}
+.dl_allteaminfo_emp .teamitem .title .button_container {
+  float: right;
 }
 .dl_allteaminfo_emp .teamitem p {
   padding-bottom: 4px;
   margin: 0;
 }
-.dl_allteaminfo_emp .teamitem:hover .itembox,
-.dl_allteaminfo_emp .teamitem:hover .btn_join {
+.dl_allteaminfo_emp .teamitem:hover {
   box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
 }
 .dl_message_body_font {

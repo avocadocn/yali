@@ -488,14 +488,15 @@ exports.usernameCheck = function(req, res) {
  * 创建公司基本信息
  */
 exports.create = function(req, res) {
-
+    var invite_switch = false;
     Config
     .findOne({ name: config.CONFIG_NAME })
     .exec()
     .then(function(config) {
         if (config && config.company_register_need_invite === true) {
+            invite_switch = true;
             return CompanyRegisterInviteCode
-            .findOne({ code: req.body.invite_code })
+            .findOne({ code: req.body.invite_code , status:'active'})
             .populate('company')
             .exec()
             .then(function(code) {
@@ -508,7 +509,8 @@ exports.create = function(req, res) {
                         company.register_invite_code.splice(removeIndex, 1);
                         company.save(console.log);
                     }
-                    code.remove(function(err) {
+                    code.status = 'used';
+                    code.save(function(err) {
                         if (err) {
                             console.log(err);
                             console.log('remove出错');
@@ -583,7 +585,7 @@ exports.create = function(req, res) {
                     return console.log(err);
                 }
                 //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
-                company.status.date = new Date().getTime();
+                //company.status.date = new Date().getTime();
 
                 company.save(function(err) {
                     if (err) {
@@ -603,9 +605,20 @@ exports.create = function(req, res) {
                             company: company
                         });
                     }
+                    //如果开了邀请码,必须在对应的邀请码里记录使用该邀请码的公司的信息
+                    if(invite_switch){
+                        CompanyRegisterInviteCode.update({'code':req.body.invite_code},{'$set':{'use_by_company':{'_id':company._id,'name':company.info.name,'email':company.login_email}}},function (err,code){
+                            if(!code || err){
+                                return res.status(400).send({'result':0,'msg':'邀请码修改异常!'});
+                            }else{
+                                res.redirect('/company/wait');
+                            }
+                        })
+                    }else{
+                        res.redirect('/company/wait');
+                    }
                     //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
                     //mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
-                    res.redirect('/company/wait');
                 });
             }
         );
@@ -838,60 +851,61 @@ exports.getCompanyTeamsInfo = function(req, res) {
   .find(option)
   .exec()
   .then(function(teams) {
-      var output ={
+    var output ={
         'cid':req.params.companyId,
         'role':req.role
-      };
+    };
+    var _teams = [];
+    var counter = {'i':0};
+    // console.log(teams.length);
+    async.whilst(
+        function() { return counter.i < teams.length},
+        function (callback) {
+            //todo
+            // console.log(teams[counter.i]);
+            // console.log('out.waterfall.counter.i=' + counter.i);
+            async.waterfall([
+                function(callback){
+                    //campaigninfo
+                    // console.log('in.waterfall.counter.i=' + counter.i);
+                    var j = counter.i-1;
+                    var campaigninfo = {};
+                    Campaign.find({'team':teams[j]._id})
+                    .sort({'create_time':-1})
+                    .limit(1)
+                    .exec()
+                    .then(function(campaign){
+                        //todo
+                        //console.log(campaign[0]);
+                        if(campaign.length==0){
+                            campaigninfo.campaign_theme = '';
+                            campaigninfo.campaign_id = '';
+                            campaigninfo.start_time = '';
+                        }else{
+                          campaigninfo.campaign_theme = campaign[0].theme;
+                          campaigninfo.campaign_id = campaign[0]._id;
+                          campaigninfo.start_time = campaign[0].start_time;
+                        }
+                        callback(null, campaigninfo);
+                    });
+                }
+                ,function(campaigninfo, callback){
+                    var teaminfo = campaigninfo;
+                    //todo add photo here
 
-        var _teams = [];
-        var counter = {'i':0};
-        // console.log(teams.length);
-        async.whilst(
-            function() { return counter.i < teams.length},
-            function (callback) {
-                //todo
-                // console.log(teams[counter.i]);
-                // console.log('out.waterfall.counter.i=' + counter.i);
-                async.waterfall([
-                    function(callback){
-                        //campaigninfo
-                        // console.log('in.waterfall.counter.i=' + counter.i);
-                        var j = counter.i-1;
-                        var campaigninfo = {};
-                        Campaign.find({'team':teams[j]._id})
-                        .sort({'create_time':-1})
-                        .limit(1)
-                        .exec()
-                        .then(function(campaign){
-                            //todo
-                            //console.log(campaign[0]);
-                            if(campaign.length==0){
-                                campaigninfo.campaign_theme = '';
-                                campaigninfo.campaign_id = '';
-                                campaigninfo.start_time = '';
-                            }else{
-                              campaigninfo.campaign_theme = campaign[0].theme;
-                              campaigninfo.campaign_id = campaign[0]._id;
-                              campaigninfo.start_time = campaign[0].start_time;
-                            }
-                            callback(null, campaigninfo);
-                        });
-                    }
-                    ,function(campaigninfo, callback){
-                        var teaminfo = campaigninfo;
-                        //todo add photo here
-                        callback(null, teaminfo);
-                    },function(teaminfo, callback){
-                        var j = counter.i-1;
-                        var did;
-                        if (req.params.type === 'department') {
-                            for (var k = 0; k < req.departments.length; k++) {
-                                if (teams[j]._id.toString() === req.departments[k].tid.toString()) {
-                                    did = req.departments[k]._id;
-                                    break;
-                                }
+                    callback(null, teaminfo);
+                },function(teaminfo, callback){
+                    var j = counter.i-1;
+                    var did;
+                    if (req.params.type === 'department') {
+                        for (var k = 0; k < req.departments.length; k++) {
+                            if (teams[j]._id.toString() === req.departments[k].tid.toString()) {
+                                did = req.departments[k]._id;
+                                break;
                             }
                         }
+                    }
+                    photo_album_controller.getNewPhotos(teams[j]._id, 2, function(photos){
                         var _team = {
                             '_id':teams[j]._id,
                             'gid':teams[j].gid,
@@ -907,13 +921,13 @@ exports.getCompanyTeamsInfo = function(req, res) {
                             'campaign_theme':teaminfo.campaign_theme,
                             'campaign_id':teaminfo.campaign_id,
                             'campaign_start_time':teaminfo.start_time,
-                            //todo add photo in team list
-                            'photo_list':teaminfo.start_time
-                        }
-
+                            'photos': photos,
+                            'photo_list':teaminfo.start_time,
+                            'more': teams[j].member.length>7? true : false
+                            //more 为 true 可以展开
+                        };
                         teams[j].did = did;
                         teams[j].set('did', did, { strict: false });
-
                         if(model_helper.arrayObjectIndexOf(req.user.team,teams[j]._id,'_id')>-1){
                             _team.belong = true;
                         }
@@ -921,34 +935,36 @@ exports.getCompanyTeamsInfo = function(req, res) {
                             _team.belong = false;
                         }
                         _teams.push(_team);
+                        //console.log(_teams);
                         //todo
                         // console.log(campaigninfo);
                         // console.log('push to _teams');
                         // console.log(_team);
                         // console.log(_teams);
-                    }
-                ], function (err, result) {
-                   // result now equals 'done'
-                });
-                counter.i++;
-                setTimeout(callback, 60);
-            },
-            function(err){
-                if(err){
-                    return res.send({'result':1,'msg':'FAILURED'});
-                }else{
-                    // console.log('finish~');
-                    if(req.role ==='EMPLOYEE'){
-                        output.teams = _teams;
-                        }
-                      else {
-                        output.teams = teams;
-                    }
-                    return res.send(output);
+                    });
                 }
+            ], function (err, result) {
+               // result now equals 'done'
+            });
+            counter.i++;
+            setTimeout(callback, 60);
+        },
+        function(err){
+            if(err){
+                return res.send({'result':1,'msg':'FAILURED'});
+            }else{
+                // console.log('finish~');
+                if(req.role ==='EMPLOYEE'){
+                    //console.log(_teams);
+                    output.teams = _teams;
+                    }
+                  else {
+                    output.teams = teams;
+                }
+                return res.send(output);
             }
-        );
-
+        }
+    );
   });
 };
 exports.timeLine = function(req, res){
