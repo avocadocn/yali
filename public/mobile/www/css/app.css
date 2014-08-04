@@ -863,9 +863,8 @@ body {
   display: block;
   top: -10px;
   width: 2px;
-  height: 150%;
+  height: 120%;
   border-radius: 2px;
-  transition: bottom 0.5s linear;
   left: 24%;
   background-color: #ccc;
   z-index: 2;

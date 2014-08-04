@@ -6,7 +6,8 @@ angular.module('starter.services', [])
 
 
 .factory('Global', function() {
-  var base_url = window.location.origin;
+  //var base_url = window.location.origin;
+  var base_url = "http://www.donler.cn";
   var _user = {};
   var last_date;
 
