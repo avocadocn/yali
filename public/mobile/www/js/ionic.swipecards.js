@@ -185,9 +185,7 @@
        */
       var dragAndDestroy = function(fn, callback) {
         if (fn && fn()) {
-          if (callback) {
-            callback();
-          }
+          callback && callback();
           setTimeout(function() {
             self.onDestroy && self.onDestroy();
           }, 100);
@@ -195,22 +193,26 @@
       }
       switch (this.direction) {
       case 'up':
-        height = 0 - height;
-        this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + ',' + (height * 1.5) + 'px, 0)';
-        dragAndDestroy(this.onUp);
+        dragAndDestroy(this.onUp, function() {
+          height = 0 - height;
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(0,' + (height * 1.5) + 'px, 0)';
+        });
         break;
       case 'down':
-        this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + ',' + (height * 1.5) + 'px, 0)';
-        dragAndDestroy(this.onDown);
+        dragAndDestroy(this.onDown, function() {
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(0,' + (height * 1.5) + 'px, 0)';
+        });
         break;
       case 'left':
-        width = 0 - width;
-        this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + (width * 1.5) + 'px,' + this.y + ', 0)';
-        dragAndDestroy(this.onLeft);
+        dragAndDestroy(this.onLeft, function() {
+          width = 0 - width;
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + (width * 1.5) + 'px, 0, 0)';
+        });
         break;
       case 'right':
-        this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + (width * 1.5) + 'px,' + this.y + ', 0)';
-        dragAndDestroy(this.onRight);
+        dragAndDestroy(this.onRight, function() {
+          self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + (width * 1.5) + 'px, 0, 0)';
+        });
         break;
       }
 
@@ -263,17 +265,17 @@
     },
 
     _doDrag: function(e) {
-      var o = e.gesture.deltaY / 3;
+      // var o = e.gesture.deltaY / 3;
 
-      this.rotationAngle = Math.atan(o/this.touchDistance) * this.rotationDirection;
+      // this.rotationAngle = Math.atan(o/this.touchDistance) * this.rotationDirection;
 
-      if(e.gesture.deltaY < 0) {
-        this.rotationAngle = 0;
-      }
+      // if(e.gesture.deltaY < 0) {
+      //   this.rotationAngle = 0;
+      // }
 
-      this.y = this.startY + (e.gesture.deltaY * 0.4);
+      // this.y = this.startY + (e.gesture.deltaY * 0.4);
 
-      this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + 'px, ' + this.y  + 'px, 0)';
+      // this.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + this.x + 'px, ' + this.y  + 'px, 0)';
     },
     _doDragEnd: function(e) {
       if (e.gesture.deltaY > 0 && Math.abs(e.gesture.deltaY) > Math.abs(e.gesture.deltaX)) {

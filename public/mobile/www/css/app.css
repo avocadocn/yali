@@ -260,9 +260,6 @@ body {
   text-align: center;
   color: #3abde8;
 }
-.calendar nav .operator .today {
-  padding: 0;
-}
 .calendar nav .week {
   position: relative;
   margin-top: 5px;
