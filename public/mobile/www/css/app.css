@@ -580,7 +580,7 @@ body {
 .campaign_photos .campaign_photos_wrap .campaign_photo_panel {
   float: left;
   width: 50%;
-  height: 80px;
+  height: 120px;
   padding-left: 10px;
   margin-top: 7px;
 }
@@ -593,7 +593,7 @@ body {
   border: 1px solid #ddd;
 }
 .campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_img_wrap {
-  height: 80px;
+  height: 120px;
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
@@ -635,8 +635,8 @@ body {
 }
 .photo_detail_img {
   width: 280px;
-  height: 290px;
-  margin: y20px;
+  height: 330px;
+  margin: 70px 20px 20px 20px;
 }
 .campaign_members_wrap {
   position: relative;
