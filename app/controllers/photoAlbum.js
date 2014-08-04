@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var PhotoAlbum = mongoose.model('PhotoAlbum');
 var Company = mongoose.model('Company');
 var CompanyGroup = mongoose.model('CompanyGroup');
+var Comment = mongoose.model('Comment');
 
 // 3rd
 var validator = require('validator');
@@ -812,21 +813,22 @@ exports.updatePhoto = function(req, res) {
           photo.name = req.body.name;
         }
         setUpdateUser();
-      }
-      if (req.body.text) {
-        if (req.user.provider === 'company') {
-          return res.send(403);
-        }
-        photo.comments.push({
-          content: req.body.text,
-          publish_user: {
-            _id: req.user._id,
-            nickname: req.user.nickname,
-            photo: req.user.photo
-          }
-        });
-        setUpdateUser();
-      }
+       }
+      //今后评论不在photo中，待天航查看是否还有需要保留此段
+      // if (req.body.text) {
+      //   if (req.user.provider === 'company') {
+      //     return res.send(403);
+      //   }
+      //   photo.comments.push({
+      //     content: req.body.text,
+      //     publish_user: {
+      //       _id: req.user._id,
+      //       nickname: req.user.nickname,
+      //       photo: req.user.photo
+      //     }
+      //   });
+      //   setUpdateUser();
+      // }
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
@@ -1104,36 +1106,40 @@ exports.renderPhotoDetail = function(req, res) {
             console.log(err);
           }
         });
-
-        return res.render('photo_album/photo_detail', {
-          photo_detail: {
-            _id: photos[i]._id,
-            pre_id: pre_id,
-            next_id: next_id,
-            uri: photos[i].uri,
-            name: photos[i].name,
-            tags: photos[i].tags,
-            click: photos[i].click,
-            comments: photos[i].comments,
-            upload_user: photos[i].update_user,
-            upload_date: photos[i].upload_date
-          },
-          photo_album: {
-            _id: photo_album._id,
-            name: photo_album.name,
-            update_date: photo_album.update_date,
-            photo_count: photo_album.photos.length,
-            owner: {
-              name: owner_name,
-              logo: owner_logo
-            }
-          },
-          links: links,
-          return_url: return_url,
-          moment: moment,
-          editAuth: editAuth
-        });
-
+        (function(i) {
+          Comment.find({'host_id':photos[i]._id,'status':{'$ne':'delete'},'host_type':'photo'}).sort({'create_date':-1})
+          .exec(function(err, comments){
+            return res.render('photo_album/photo_detail', {
+              photo_detail: {
+                _id: photos[i]._id,
+                pre_id: pre_id,
+                next_id: next_id,
+                uri: photos[i].uri,
+                name: photos[i].name,
+                tags: photos[i].tags,
+                click: photos[i].click,
+                upload_user: photos[i].update_user,
+                upload_date: photos[i].upload_date
+              },
+              comments:comments,
+              photo_album: {
+                _id: photo_album._id,
+                name: photo_album.name,
+                update_date: photo_album.update_date,
+                photo_count: photo_album.photos.length,
+                owner: {
+                  name: owner_name,
+                  logo: owner_logo
+                }
+              },
+              links: links,
+              return_url: return_url,
+              moment: moment,
+              editAuth: editAuth,
+              user_cid:req.user.cid
+            });
+          });
+        }(i));
       }
     }
   })

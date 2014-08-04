@@ -25,18 +25,6 @@ var Photo = new Schema({
   },
   name: String,
   tags: [String],
-  comments: [{
-    content: String,
-    publish_user: {
-      _id: Schema.Types.ObjectId,
-      nickname: String,
-      photo: String
-    },
-    publish_date: {
-      type: Date,
-      default: Date.now
-    }
-  }],
   upload_user: {
     _id: Schema.Types.ObjectId,
     name: String,

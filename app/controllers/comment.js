@@ -23,7 +23,8 @@ exports.getComment = function(req,res){
         return res.send(403,'forbidden');
     }
     var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
-    Comment.find({'host_id' : req.body.host_id,'status' : {'$ne':'delete'}}).sort({'create_date':-1})
+    //todo: 判断类型
+    Comment.find({'host_id' : req.body.host_id,'status' : {'$ne':'delete'}, 'host_type': {'$ne':'photo'}}).sort({'create_date':-1})
     .exec(function(err, comment) {
         if(err || !comment) {
             return res.send([]);
