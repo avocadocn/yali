@@ -136,8 +136,8 @@ var getCampaignDetail = function(id, callback) {
 
   // callback(id)
   var join = function(callback) {
-    return function(id) {
-      $http.post(Global.base_url + '/campaign/joinCampaign/'+id, { campaign_id: id })
+    return function(id,tid) {
+      $http.post(Global.base_url + '/campaign/joinCampaign/'+id, { campaign_id: id, tid:tid})
       .success(function(data, status, headers, config) {
         callback(id);
       });
@@ -146,8 +146,8 @@ var getCampaignDetail = function(id, callback) {
 
   // callback(id)
   var quit = function(callback) {
-    return function(id) {
-      $http.post(Global.base_url + '/campaign/quitCampaign/'+id, { campaign_id: id })
+    return function(id,tid) {
+      $http.post(Global.base_url + '/campaign/quitCampaign/'+id, { campaign_id: id , tid:tid})
       .success(function(data, status, headers, config) {
         callback(id);
       });

@@ -183,11 +183,9 @@ var formatCampaignForCalendar = function(user, campaigns) {
     // 比赛
     if (campaign.campaign_type >= 3) {
       for (var i = 0; i < campaign.camp.length; i++) {
-        for (var j = 0, camp = campaign.camp[i]; j < camp.member.length; j++) {
-          if (user._id.toString() === camp.member[j].uid) {
-            is_joined = true;
-            break;
-          }
+        if(model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1){
+          is_joined = true;
+          break;
         }
       }
     }
@@ -218,7 +216,7 @@ var formatCampaignForCalendar = function(user, campaigns) {
  */
 var formatCampaignForApp = function(user, campaign) {
   moment.lang('zh-cn');
-
+  var is_joined = false,myteam=[];
   // 公司活动
   if (campaign.campaign_type === 1) {
     var logo = campaign.cid[0].info.logo;
@@ -227,16 +225,14 @@ var formatCampaignForApp = function(user, campaign) {
     // 挑战或比赛
     var logo_owner_id;
     for (var i = 0, teams = user.team; i < teams.length; i++) {
-      var owner_team = _.find(campaign.team, { '_id': teams[i]._id });
-      if (owner_team) {
-        var logo = owner_team.logo;
-        var owner_name = owner_team.name;
+      var owner_team = model_helper.arrayObjectIndexOf(campaign.team,teams[i]._id,'_id');
+      if (owner_team>-1) {
+        var logo = campaign.team[owner_team].logo;
+        var owner_name = campaign.team[owner_team].name;
         break;
       }
     }
   }
-
-  var is_joined = false;
 
   // 活动
   if (campaign.campaign_type < 3) {
@@ -251,11 +247,14 @@ var formatCampaignForApp = function(user, campaign) {
   // 比赛
   if (campaign.campaign_type >= 3) {
     for (var i = 0; i < campaign.camp.length; i++) {
-      for (var j = 0, camp = campaign.camp[i]; j < camp.member.length; j++) {
-        if (user._id.toString() === camp.member[j].uid) {
-          is_joined = true;
-          break;
-        }
+      var owner_team = model_helper.arrayObjectIndexOf(user.team,campaign.camp[i].id,'_id');
+      if (owner_team>-1) {
+        myteam.push({
+          'id':campaign.camp[i].id,
+          'name':campaign.camp[i].tname,
+          'logo':campaign.camp[i].logo,
+          'is_joined': model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1
+        });
       }
     }
   }
@@ -314,7 +313,10 @@ var formatCampaignForApp = function(user, campaign) {
     'member': campaign.member,
     'remind_text': remind_text,
     'start_time_text': start_time_text,
-    'location':campaign.location
+    'location':campaign.location,
+    'active': campaign.active,
+    'finish': campaign.finish,
+    'myteam':myteam
   };
 };
 
