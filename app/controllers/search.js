@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 
 
 //TODO
-//列出所有公司
+//根据公司名搜索公司
 exports.getCompany = function (req, res) {
     var regx = new RegExp(req.body.regx);
     var companies_rst = [];
