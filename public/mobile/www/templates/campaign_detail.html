@@ -26,6 +26,13 @@
     </ion-tab>
 
     <ion-tab title="评论" icon="ion-chatbubble">
+      <div class="comment_edit">
+        <span class="comment_add_button" ng-show="!viewFormFlag" ng-click="viewCommentForm()" ></span>
+        <form ng-show="viewFormFlag" name="comment_form">
+          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
+          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
+        </form>
+      </div>
       <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
@@ -63,12 +70,6 @@
                 </div>
               </div>
           </div>
-        </div>
-        <div class="comment_edit">
-          <form name="comment_form">
-            <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="请控制在140字以内" maxlength=140 required/>
-            <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
-          </form>
         </div>
       </ion-content>
     </ion-tab>

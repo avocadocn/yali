@@ -636,7 +636,7 @@ body {
 .photo_detail_img {
   width: 280px;
   height: 290px;
-  margin: 20px;
+  margin: y20px;
 }
 .campaign_members_wrap {
   position: relative;
@@ -667,6 +667,46 @@ body {
   overflow: hidden;
   max-width: 100px;
   line-height: 20px;
+}
+.comment_edit {
+  position: absolute;
+  bottom: 60px;
+  z-index: 2;
+  width: 100%;
+}
+.comment_edit .comment_add_button {
+  display: inline-block;
+  float: right;
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/plus.png");
+  cursor: pointer;
+  background-size: contain;
+}
+.comment_edit form {
+  background-color: #3abde8;
+  padding: 5px;
+}
+.comment_edit form .comment_input {
+  float: left;
+  width: 80%;
+  background-color: #3abde8;
+  color: #fff;
+  border-bottom: 1px #fff solid;
+}
+.comment_edit form .comment_button {
+  width: 20%;
+  background-color: #3abde8;
+  color: #fff;
+  height: 34px;
+  border: 1px #fff solid;
+  border-radius: 16px;
+}
+.comment_edit form input:-moz-placeholder {
+  color: #fff;
+}
+.comment_edit form ::-webkit-input-placeholder {
+  color: #fff;
 }
 .campaign_detail .campaign_time {
   padding: 0 10px;

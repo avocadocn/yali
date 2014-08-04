@@ -111,16 +111,16 @@ angular.module('starter.controllers', [])
         Comment.getCampaignComments($stateParams.id, function(comments) {
           $scope.comments = comments;
         });
+      $scope.viewFormFlag =false;
       }
       else{
         alert(msg);
       }
     });
   };
-  $scope.changePage = function(page){
-  }
-  $scope.slideChange = function(index){
-
+  $scope.viewFormFlag =false;
+  $scope.viewCommentForm =function(){
+    $scope.viewFormFlag =true;
   }
   $ionicModal.fromTemplateUrl('templates/partials/photo_detail.html', {
     scope: $scope,
@@ -137,9 +137,9 @@ angular.module('starter.controllers', [])
     $scope.modal.hide();
   };
   //Cleanup the modal when we're done with it!
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
+  // $scope.$on('$destroy', function() {
+  //   $scope.modal.remove();
+  // });
   // Execute action on hide modal
   $scope.$on('modal.hidden', function() {
     // Execute action

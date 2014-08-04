@@ -78,14 +78,14 @@ module.exports = function(passport) {
                 if (err) {
                     return done(err);
                 }
-                if(!user.active){
-                    return done(null, false, {
-                        message: 'User Not Actived!'
-                    });
-                }
                 if (!user) {
                     return done(null, false, {
                         message: 'Unknown user'
+                    });
+                }
+                if(!user.active){
+                    return done(null, false, {
+                        message: 'User Not Actived!'
                     });
                 }
                 if (!user.authenticate(password)) {
