@@ -48,34 +48,45 @@ div(ng-show = '!loading' ng-if="role === 'HR'")
             .dl_row.clearfix(ng-if="role === 'HR'")
               button.dl_btn.dl_btn_small(ng-click="setGroupId(team._id,team.gid,$index)" data-toggle="modal" data-target="#appointLeaderModel") #{__("EDIT")}
               //-开组
-              button.dl_btn.dl_btn_small.cancel_btn(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
+              button.dl_btn.dl_btn_small(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
               //-关组
-              button.dl_btn.dl_btn_small(ng-if="team.active" ng-click="closeGroup($index)" data-toggle="modal" data-target="#CloseGroupModel") #{__("CLOSE")}
+              button.dl_btn.dl_btn_small.cancel_btn(ng-if="team.active" ng-click="closeGroup($index)" data-toggle="modal" data-target="#CloseGroupModel") #{__("CLOSE")}
     div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal
 
 div(ng-show = '!loading' ng-if="role !== 'HR'")
   .dl_allteaminfo_emp.masonry(masonry)
     .teamitem.masonry-item(ng-repeat="team in team_lists" masonryItem)
-      .title
-        a(href="/group/home/{{team._id}}")
-          img.img_border.img_contain(ng-src="{{team.logo}}/20/20")
-          span {{team.name}}
-      //- 不属于显示加组按钮
-      button.dl_btn.dl_btn_small.btn_join(ng-if="role==='EMPLOYEE'&&!team.belong" ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
-      //-属于则显示退组按钮
-      button.dl_btn.dl_btn_small.btn_join.cancel_btn(ng-if="role==='EMPLOYEE'&&team.belong" ng-click="closeGroup($index)" data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+      .title.clearfix
+        .img_container
+          a(href="/group/home/{{team._id}}")
+            img.img_contain(ng-src="{{team.logo}}/40/40")
+        .text_container
+          a(href="/group/home/{{team._id}}") {{team.name}}
+        .button_container  
+          //- 不属于显示加组按钮
+          button.dl_btn.dl_btn_small.btn_join(ng-if="role==='EMPLOYEE'&&!team.belong" ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
+          //-属于则显示退组按钮
+          button.dl_btn_small.btn_join.cancel_btn(ng-if="role==='EMPLOYEE'&&team.belong" ng-click="closeGroup($index)" data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+        .text_container
+          span 队员:{{team.member.length}}
       .itembox
         .newcampaign(ng-if="team.campaign_theme != '' ")
           .campaign
             p 最新活动：
-              a(href="/campaign/detail/{{team.campaign_id}}" target="_blank" ) {{team.campaign_theme}} ({{team.campaign_start_time | date:'yyyy-MM-dd HH:mm' | dateView}})
+            p
+              a(href="/campaign/detail/{{team.campaign_id}}" target="_blank" ) &nbsp;&nbsp;&nbsp;&nbsp;{{team.campaign_theme}} ({{team.campaign_start_time | date:'yyyy-MM-dd' | dateView}})
+        .photos.clearfix(ng-if="team.photos")
+          p 最新照片:
+          .photo(ng-repeat="photo in team.photos")
+            img.img_contain(ng-src="{{photo.uri}}/134/134")
         .memberlist(ng-if="team.member[0].uid != '' ")
-          .dl_row 
+          .dl_row
             p 小队成员：
+              a.text.pull-right(ng-show="team.member.length >7 && team.more" ng-click="team.more = !team.more" href="javascript:void(0);" ng-cloak) 更多>
+              a.text.pull-right(ng-show="team.member.length >7 && !team.more" ng-click="team.more = !team.more" href="javascript:void(0);" ng-cloak) 收起 <
             .member(ng-repeat="member in team.member track by $index")
-
-              img.img_border.img_contain.img_user(ng-src="{{member.photo}}/36/36")
+              img.img_border.img_contain.img_user(ng-src="{{member.photo}}/30/30" ng-show="$index<7||team.more ===false")
             .clearfix
 
       //- p {{team}}

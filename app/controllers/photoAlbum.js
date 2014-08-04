@@ -184,7 +184,7 @@ var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   }
 };
 
-// 一个相册的照片缩略图
+// 一个相册的未删除照片（数组）
 var photoThumbnailList = exports.photoThumbnailList = function(photo_album, count) {
   var photo_list = [];
   if (!count) {
@@ -234,11 +234,14 @@ function getPhotoAlbumOwner(user, photo_album) {
 }
 
 // 获取一个相册未删除的照片
-function getShowPhotos(photo_album) {
+function getShowPhotos(photo_album, count) {
   var photos = [];
   for (var i = 0; i < photo_album.photos.length; i++) {
     if (photo_album.photos[i].hidden === false) {
       photos.push(photo_album.photos[i]);
+      if(count&&photos.length === count){
+        break;
+      }
     }
   }
   photos.sort(function(a, b) {
@@ -299,6 +302,7 @@ function photoProcess(res, pa_id, p_id, process) {
   }
 }
 
+//-根据小队id返回整个相册
 var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id, callback) {
   CompanyGroup
   .findById(group_id)
@@ -337,7 +341,50 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
   });
 };
 
-
+//- 根据小队ID返回该小组最新相册中的n张图片
+var getNewPhotos = exports.getNewPhotos = function(group_id, count, callback) {
+  if(!count){
+    var count= 4;
+  }
+  var count_flag = count;
+  CompanyGroup
+  .findById(group_id)
+  .populate('photo_album_list')
+  .exec()
+  .then(function(company_group) {
+    if(!company_group) {
+      throw 'company_group not found';
+    }
+    var photos = [];
+    company_group.photo_album_list.sort(function(a, b) {
+      return b.update_date - a.update_date;
+    });
+    for(var i =0; i<company_group.photo_album_list.length; i++){
+      //取count个非空相册的照片，每个相册取count张，确保得到最新count张照片
+      if(count_flag ===0 ){
+        break;
+      }
+      else {
+        if(company_group.photo_album_list.length > 0){
+          photos=photos.concat(getShowPhotos(company_group.photo_album_list[i],count));
+          count_flag -- ;
+        }
+      }
+    }
+    photos.sort(function(a,b) {//把最多count*count张图片按时间排序
+      return b.upload_date - a.upload_date;
+    });
+    if(photos.length>count){//如果超出剪裁成count张
+      photos.length = count;
+    }
+    //console.log(photos);
+    callback(photos);
+  })
+  .then(null, function(err){
+    console.log(err);
+    callback(null) ;
+  });
+};
 
 
 
