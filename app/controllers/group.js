@@ -211,7 +211,8 @@ exports.teampage = function(req, res) {
           'cid' : cid,
           'nav_logo':req.user.info.logo,
           'nav_name':req.user.info.name,
-          'photo_album_thumbnails': photo_album_thumbnails
+          'photo_album_thumbnails': photo_album_thumbnails,
+          'moment': moment
         });
       }
       else{//个人侧栏
@@ -273,7 +274,8 @@ exports.teampage = function(req, res) {
               'nav_name':req.user.nickname,
               'photo_album_thumbnails': teamMoreInfo.photo_album_thumbnails,
               'home_court': req.companyGroup.home_court,
-              'campaign':teamMoreInfo.campaign
+              'campaign':teamMoreInfo.campaign,
+              'moment': moment
             });
           };
         });

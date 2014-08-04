@@ -32,8 +32,11 @@ block baseInfo
           .score_container.margin_left_30
             button.dl_btn.dl_btn_small(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
             button.dl_btn.dl_btn_small(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel") #{__("PROVOKE")}
+            button.dl_btn.dl_btn_small(ng-show="role==='LEADER'||role==='HR'" data-toggle="modal" data-target="#upload_modal") 修改全家福
             a.dl_btn.dl_btn_small.margin_left_5(href="/message/home/#{teamId}#/send") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
+            
+
         if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
           .score_container
             button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
@@ -69,16 +72,15 @@ block panel
         include ../campaign/provoke_modal_base
 block aside
   .newcampainbox
-    span.title 活动预告
+    span.subtitle 活动预告
     .bar
       //- PK型活动
       if (campaign.campaign_type == '4' || campaign.campaign_type == '5 '|| campaign.campaign_type == '9')
         .event_pk
           each camp in campaign.camp
-            p
-             = camp.tname
-            p
-             = camp.logo
+            .team
+              img(src="#{camp.logo}/64/64")
+              span= camp.tname
       //- 一起玩型活动
       if (campaign.campaign_type == '3' || campaign.campaign_type == '7' || campaign.campaign_type == '8')
         .event_play
@@ -93,19 +95,24 @@ block aside
         p 自己玩
     
     .info
-      = campaign.start_time
+      = moment(campaign.start_time).format('YYYY-MM-DD HH:MM')
       = campaign.location.name
-
-  p 主场
+  .locationbox
+    span.subtitle 主场
     each home in home_court
       p
-        = home
-      a(href)
-  p 相册
+        = home.name
+      if home.loc.coordinates.length==2
+          a(href="http://api.map.baidu.com/marker?location=#{home.loc.coordinates[1]},#{home.loc.coordinates[0]}&title=活动地点&content=#{home.name}&output=html" target="_blank")
+            img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&zoom=16&markers=#{home.name}|#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{home.name}|#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&labelStyles=#{home.name},1,14,0xffffff,0x000fff,1")
+        else
+          img.map_size(src="/img/sign_bg.jpg")
+  .thumbnailbox
+    span.subtitle 相册
     each photo_album in photo_album_thumbnails
-          a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
-            img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
-            p.thumbnail_name.text-center= photo_album.name
+      a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+        img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
+        p.thumbnail_name.text-center= photo_album.name
 
 
 append footExt

@@ -1680,10 +1680,58 @@ dl_messagebox .loademp,
 .registerpage {
   background: none;
 }
-.dl_integrate_container #family {
-  margin-top: 0;
-  background-color: #fff;
-}
 .dl_integrate_container .side {
   padding-top: 0;
+}
+.dl_integrate_container .newcampainbox,
+.dl_integrate_container .locationbox,
+.dl_integrate_container .thumbnailbox,
+.dl_integrate_container .team_cander_box,
+.dl_integrate_container .team_member_box {
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  word-break: break-all;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.dl_integrate_container .team_family_box {
+  margin-bottom: 12px;
+  width: 660px;
+  height: 270px;
+  overflow: hidden;
+}
+.dl_integrate_container .team_family_box .team_photo {
+  width: 480px;
+  height: 270px;
+  position: relative;
+  overflow: hidden;
+  float: left;
+}
+.dl_integrate_container .team_family_box .team_photo #family {
+  margin-top: 0;
+  background-color: #fff;
+  width: 480px;
+}
+.dl_integrate_container .team_family_box .team_photo #family .carousel-img-container {
+  height: 270px;
+  width: 480px;
+}
+.dl_integrate_container .team_family_box .team_photo .slider_nav {
+  margin-bottom: 0;
+  float: left;
+  padding: 0;
+}
+.dl_integrate_container .team_family_box .team_photo .slider_nav li {
+  display: inline-block;
+}
+.dl_integrate_container .newcampainbox .bar .event_pk .team {
+  width: 40%;
+  display: inline-block;
+}
+.dl_integrate_container .subtitle {
+  display: block;
+  margin: 0 0 10px;
+}
+.dl_integrate_container .thumbnail_img {
+  border: 0;
 }

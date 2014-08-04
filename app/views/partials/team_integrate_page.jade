@@ -3,15 +3,20 @@ div(ng-show = '!loading' ng-controller="infoController")
   
   form.form-horizontal.tab-info-form(name="infoForm")
     .team_family_box
-      .dl_row(ng-if="family_photos.length !== 0")
+      .dl_row.team_photo(ng-if="family_photos.length !== 0")
         carousel#family(interval="5000")
           slide(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
             .carousel-img-container
               img.center-block(ng-src="{{ photo.uri }}")
 
+      ul.slider_nav
+        li(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
+          a
+            img(src="{{ photo.uri }}/160/90")
     .team_cander_box.clearfix
       .dl_row.clearfix
-        h5.pull-left 日历
+        h5.pull-left 近期活动
+
 
     .team_member_box.clearfix
 
@@ -59,151 +64,33 @@ div(ng-show = '!loading' ng-controller="infoController")
 
 
 
-    //- .dl_row.clearfix
-      h5.pull-left #{__("INFO")}
-      button.dl_btn.dl_btn_small.pull-right(ng-if="role==='HR' || role==='LEADER'" ng-click="editToggle()" ng-bind="buttonStatus" ng-disabled="!unEdit && infoForm.$invalid")
-    //- hr.margin_top_6
-    //- .dl_row.clearfix
-    //-   .info_side
-    //-     span.info_label #{__("TEAM_NAME")}
-    //-   .info_detail
-    //-     input.dl_input.editToggle.dl_form-Control(type="text" name ="name" ng-model="name" ng-maxlength=20 tooltip="{{infoForm.name.$invalid? '队名最长字数20字':''}}" ng-disabled="unEdit")
-    //- .dl_row.clearfix
-    //-   .info_side
-    //-     span.info_label #{__("COMPANY")}
-    //-   .info_detail_2
-    //-     span.info_label {{team.cname}}
-    //- .dl_row.clearfix
-    //-   .info_side
-    //-     span.info_label #{__("SUM")}
-    //-   .info_detail_2
-    //-     span.info_label {{team.member.length}}
-    //- .dl_row.clearfix
-    //-   .info_side
-    //-     span.info_label #{__("TEAM_LOGO")}
-    //-   .info_detail_2
-    //-     a.clearLinkUnderline.close_btn.dl_btn_small(ng-if="role==='HR'|| role==='LEADER'" href="/group/{{teamId}}/editLogo") #{__("CHANGE")}LOGO
-    //- .dl_row.clearfix(ng-show="team.home_court[0]!=undefined || !unEdit")
-    //-   .info_side
-    //-     span.info_label #{__("HOME_COURT")}一
-    //-   .info_detail
-    //-     input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_1" ng-change='changeLocation1()' ng-maxlength=40 tooltip="{{infoForm.home_court_1.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="team.home_court[0].name" ng-disabled="unEdit" tooltip-placement="right")
-    //- .dl_row.clearfix(ng-show='showMap1 && !unEdit')
-    //-   .info_side 
-    //-   #courtMap1.height_200(ng-show='showMap1')
-    //- .dl_row.clearfix(ng-show="team.home_court[1]!=undefined || !unEdit")
-    //-   .info_side
-    //-     span.info_label #{__("HOME_COURT")}二
-    //-   .info_detail
-    //-     input.dl_input.editToggle.dl_form-Control(type="text" name ="home_court_2" ng-change='changeLocation2()' ng-maxlength=40 tooltip="{{infoForm.home_court_2.$invalid? '主场最长字数40字':''}}"  ng-model="team.home_court[1].name" ng-disabled="unEdit")
-    //- .dl_row.clearfix(ng-show='showMap2 && !unEdit')
-    //-   .info_side
-    //-   #courtMap2.height_200(ng-show='showMap2')
-    //- .dl_row.clearfix(ng-show="team.brief!=undefined || !unEdit")
-    //-   .info_side
-    //-     span.info_label #{__("BRIEF")}
-    //-   .info_detail
-    //-     textarea.dl_input.editToggle.dl_form-Control(type="textarea" rows="3" name ="brief" ng-model="team.brief" ng-maxlength=140 tooltip="{{infoForm.brief.$invalid? '简介最长字数140字':''}}" tooltip-placement="right" ng-disabled="unEdit")
-    //- .dl_row.clearfix
-    //-   .info_side
-    //-     span.info_label #{__("BUILD_TIME")}
-    //-   .info_detail_2
-    //-     span.info_label {{team.create_time | date:'yyyy-MM-dd HH:mm:ss'}}
-    //- .dl_row.clearfix
-    //-   h5.pull-left 成员信息
-    //- hr.margin_top_6
-    //- .dl_row
-    //-   span.subtitle.margin_left_15 #{__("TEAM_LEADER")}
-    //- .dl_row.clearfix
-    //-   .dl_companygroup_container
-    //-     .groups
-    //-       .group( ng-repeat="leader in team.leader")
-    //-         div(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
-    //-           .dl_row(bs-popover)
-    //-             a(href="/users/home/{{leader._id}}")
-    //-               img.size_56.img_user(ng-src="{{leader.photo}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
-    //-           .dl_row
-    //-             a.user_name(href="/users/home/{{leader._id}}") {{leader.nickname}}
-    //-         div(ng-if="role==='GUESTHR'||role==='GUEST'||role==='GUESTLEADER'")
-    //-           .dl_row
-    //-             img.size_56.img_user(ng-src="{{leader.photo}}")
-    //-           .dl_row
-    //-             span.user_name{{leader.nickname}}
-    //-         .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-    //-           img.size_56.img_user(ng-src="{{leader.photo}}")
-    //- .dl_row.clearfix
-    //-   span.subtitle.margin_left_15 #{__("MEMBER")}
-    //- .dl_row.clearfix
-    //-   .dl_companygroup_container
-    //-     .groups
-    //-       .group(ng-repeat="member in members")
-    //-         div(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
-    //-           .dl_row(bs-popover)
-    //-             a(href="/users/home/{{member._id}}")
-    //-               img.size_56.img_user(ng-src="{{member.photo}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}')
-    //-           .dl_row
-    //-             a.user_name(href="/users/home/{{member._id}}") {{member.nickname}}
-    //-         div(ng-if="role==='GUESTHR'||role==='GUEST'||role==='GUESTLEADER'")
-    //-           .dl_row
-    //-             img.size_56.img_user(ng-src="{{member.photo}}")
-    //-           .dl_row
-    //-             span.user_name {{member.nickname}}
-    //-         .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-    //-           img.size_56.img_user(ng-src="{{member.photo}}")
-
-    //- 此部分逻辑未做 暂时隐藏
-    //- .row.dl_row
-    //-   h5.pull-left #{__("COMPETITION_INFO")}
-    //- hr
-    //- .row.dl_row
-    //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label #{__("COMPETITION_SEQ")}
-    //-   .col-md-5.col-sm-10.col-xs-10
-    //-     span.info_label 0
-    //- .row.dl_row
-    //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label #{__("WIN_RATE")}
-    //-   .col-md-5.col-sm-10.col-xs-10
-    //-     span.info_label 0
-    //- .row.dl_row
-    //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label #{__("SCORE")}
-    //-   .col-md-5.col-sm-10.col-xs-10
-    //-     span.info_label 0
-    //- .row.dl_row
-    //-   .col-md-2.col-sm-2.col-xs-2
-    //-     span.info_label.control-label #{__("RATE")}
-    //-   .col-md-5.col-sm-10.col-xs-10
-    //-     span.info_label 0
-
-    button.dl_btn.dl_btn_small.pull-right(ng-show="role==='LEADER'||role==='HR'" data-toggle="modal" data-target="#upload_modal") 修改全家福
-  #upload_modal.modal.fade(ng-show="role==='LEADER'||role==='HR'" tabindex="-1" role="dialog" aria-hidden="true")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          button.close(type="button" data-dismiss="modal")
-            span(aria-hidden="true") &times;
-          h4.modal-title 点击图片可切换选中状态，点击图片右上方的按钮可删除该图片
-        .modal-body
-          #family_preview_container.clearfix.family_preview_container
-            .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos"  ng-class="selected(photo)")
-              img.img-responsive(ng-src="{{ photo.uri }}" ng-click="toggleSelect(photo._id)")
-              button.remove(ng-click="deletePhoto(photo._id)"): span.glyphicon.glyphicon-remove
-              button.ok(ng-if="photo.select"): span.glyphicon.glyphicon-ok
-            .clearfix
-            button.dl_btn.dl_btn_small.pull-right.add_picture_btn(ng-click="next()") 添加图片
-          #family_jcrop_container.jcrop
-            #jcrop_img_container
-              img.jcrop_img.img-responsive
-            form#upload_family_form.upload_family_form.clearfix(action="{{ '/group/' + teamId + '/family' }}" method="post" enctype="multipart/form-data")
-              input#w(type="hidden" name="width" value="320")
-              input#h(type="hidden" name="height" value="180")
-              input#x(type="hidden" name="x" value="0")
-              input#y(type="hidden" name="y" value="0")
-              input#upload_input.hidden(type="file" name="family" accept="image/*" required)
-              //-input.remark(type="text" name="remark" placeholder="备注")
-              .upload_operator.pull-right
-                label.dl_btn.dl_btn_small(for="upload_input") 选择图片
-                button#upload_button.dl_btn.dl_btn_small(type="submit" disabled) 上传
-                button.dl_btn_small.cancel_btn(type="button" ng-click="back()") 返回
-            p {{ remind }}
+#upload_modal.modal.fade(ng-show="role==='LEADER'||role==='HR'" tabindex="-1" role="dialog" aria-hidden="true")
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type="button" data-dismiss="modal")
+          span(aria-hidden="true") &times;
+        h4.modal-title 点击图片可切换选中状态，点击图片右上方的按钮可删除该图片
+      .modal-body
+        #family_preview_container.clearfix.family_preview_container
+          .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos"  ng-class="selected(photo)")
+            img.img-responsive(ng-src="{{ photo.uri }}" ng-click="toggleSelect(photo._id)")
+            button.remove(ng-click="deletePhoto(photo._id)"): span.glyphicon.glyphicon-remove
+            button.ok(ng-if="photo.select"): span.glyphicon.glyphicon-ok
+          .clearfix
+          button.dl_btn.dl_btn_small.pull-right.add_picture_btn(ng-click="next()") 添加图片
+        #family_jcrop_container.jcrop
+          #jcrop_img_container
+            img.jcrop_img.img-responsive
+          form#upload_family_form.upload_family_form.clearfix(action="{{ '/group/' + teamId + '/family' }}" method="post" enctype="multipart/form-data")
+            input#w(type="hidden" name="width" value="320")
+            input#h(type="hidden" name="height" value="180")
+            input#x(type="hidden" name="x" value="0")
+            input#y(type="hidden" name="y" value="0")
+            input#upload_input.hidden(type="file" name="family" accept="image/*" required)
+            //-input.remark(type="text" name="remark" placeholder="备注")
+            .upload_operator.pull-right
+              label.dl_btn.dl_btn_small(for="upload_input") 选择图片
+              button#upload_button.dl_btn.dl_btn_small(type="submit" disabled) 上传
+              button.dl_btn_small.cancel_btn(type="button" ng-click="back()") 返回
+          p {{ remind }}
