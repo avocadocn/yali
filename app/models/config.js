@@ -14,7 +14,10 @@ var Config = new Schema({
         type: String,
         unique: true
     },
-
+    host: {
+        admin: String,              //动梨后台的域名
+        product: String             //动梨网站(客户使用)的域名
+    },
     // 企业注册是否需要邀请码
     company_register_need_invite: {
         type: Boolean,
