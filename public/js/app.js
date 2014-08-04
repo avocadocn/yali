@@ -164,7 +164,7 @@ app.filter('day', function() {
     // case 2:
     //   return '后天';
     default:
-      return date.getMonth() + '-' + date.getDate();
+      return (date.getMonth() + 1) + '-' + date.getDate();
     }
   }
 });

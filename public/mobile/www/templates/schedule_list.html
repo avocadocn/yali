@@ -2,7 +2,7 @@
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header" no-scroll>
+  <ion-content class="has-header" scroll="false" no-scroll>
 
     <div class="calendar">
       <nav>
@@ -45,7 +45,7 @@
         </div>
         <div class="calendar_month clearfix" ng-if="view==='month'">
           <swipe-cards>
-            <swipe-card ng-repeat="month in month_cards" on-up="subMonth(month)" on-down="addMonth(month)" on-destroy="removeMonth($index)">
+            <swipe-card class="clearfix" ng-repeat="month in month_cards" on-up="addMonth(month)" on-down="subMonth(month)" on-destroy="removeMonth($index)">
               <div class="month" ng-class="month.offset">{{ month.format_month }}</div>
               <div class="calendar_day text-center" ng-repeat="day in month.days" ng-class="day.first_day">
                 <div class="calendar_date" ng-class="{weekend: day.is_weekend===true, today: day.is_today===true}" ng-click="updateDay(day.full_date)">{{ day.date }}</div>
