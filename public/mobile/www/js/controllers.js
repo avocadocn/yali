@@ -69,6 +69,7 @@ angular.module('starter.controllers', [])
         if(!$scope.photos_view[index]){
           $scope.photos_view[index]=[];
         }
+        photos[i].index = i;
         $scope.photos_view[index].push(photos[i]);
       }
       $ionicSlideBoxDelegate.update();
@@ -127,8 +128,9 @@ angular.module('starter.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
-  $scope.openModal = function() {
+  $scope.openModal = function(index) {
     $ionicSlideBoxDelegate.update();
+    $ionicSlideBoxDelegate.slide(index);
     $scope.modal.show();
   };
   $scope.closeModal = function() {
