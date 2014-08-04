@@ -158,6 +158,7 @@ angular.module('starter.controllers', [])
 .controller('ScheduleListCtrl', function($scope, $rootScope, Campaign, Global) {
 
   moment.lang('zh-cn');
+
   /**
    * 日历视图的状态，有年、月、日三种视图
    * 'year' or 'month' or 'day'
@@ -194,22 +195,29 @@ angular.module('starter.controllers', [])
   $scope.month_cards = [];
 
   /**
+   * 日视图卡片数据
+   * @type {Array}
+   */
+  $scope.day_cards = [];
+
+  /**
    * 更新日历的月视图, 并返回该存放该月相关数据的对象, 不会更新current对象
    * @param  {Date} date
    * @return {Object}
    */
   var updateMonth = function(date) {
+    var date = new Date(date);
     var year = date.getFullYear();
     var month = date.getMonth();
     var mdate = moment(new Date(year, month));
     $scope.current_year = year;
-    var month = {
+    var month_data = {
       date: date,
       format_month: mdate.format('MMMM'),
       days: []
     };
     for (var i = 0; i < mdate.daysInMonth(); i++) {
-      month.days[i] = {
+      month_data.days[i] = {
         full_date: new Date(year, month, i + 1),
         date: i + 1,
         events: []
@@ -217,20 +225,20 @@ angular.module('starter.controllers', [])
 
       // 如果是本月第一天，计算是星期几，决定位移量
       if (i === 0) {
-        month.days[i].first_day = 'offset_' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
-        month.offset = month.days[i].first_day;
+        month_data.days[i].first_day = 'offset_' + mdate.day(); // mdate.day(): Sunday as 0 and Saturday as 6
+        month_data.offset = month_data.days[i].first_day;
       }
 
       // 是否是周末
       var thisDay = new Date(year, month, i + 1);
       if (thisDay.getDay() === 0 || thisDay.getDay() === 6) {
-        month.days[i].is_weekend = true;
+        month_data.days[i].is_weekend = true;
       }
 
       // 是否是今天
       var now = new Date();
       if (now.getDate() === i + 1 && now.getFullYear() === year && now.getMonth() === month) {
-        month.days[i].is_today = true;
+        month_data.days[i].is_today = true;
       }
 
       // 将活动及相关标记存入这一天
@@ -241,10 +249,10 @@ angular.module('starter.controllers', [])
         if (start < today_end && today_end < end
           || start.year() === year && start.month() === month && start.date() === i + 1
           || end.year() === year && end.month() === month && end.date() === i + 1) {
-          month.days[i].events.push(campaign);
-          month.days[i].has_event = true;
+          month_data.days[i].events.push(campaign);
+          month_data.days[i].has_event = true;
           if (campaign.is_joined) {
-            month.days[i].has_joined_event = true;
+            month_data.days[i].has_joined_event = true;
           }
         }
         campaign.format_start_time = moment(campaign.start_time).calendar();
@@ -253,7 +261,8 @@ angular.module('starter.controllers', [])
       });
 
     }
-    return month;
+    $scope.current_month = month_data;
+    return month_data;
   };
 
   /**
@@ -261,16 +270,17 @@ angular.module('starter.controllers', [])
    * @param  {Date} date
    */
   var updateDay = $scope.updateDay = function(date) {
+    var date = new Date(date);
     $scope.view = 'day';
     if (date.getMonth() !== current.getMonth()) {
       updateMonth(date);
     }
     current = date;
-    $scope.current_day = {
+    var day = {
       date: current,
       format_date: moment(current).format('ll'),
       format_day: moment(current).format('dddd'),
-      campaigns: $scope.month[current.getDate() - 1].events
+      campaigns: $scope.current_month.days[current.getDate() - 1].events
     };
 
     var temp = new Date(date);
@@ -288,18 +298,9 @@ angular.module('starter.controllers', [])
         week_date.is_current = true;
       }
     }
+    $scope.current_day = day;
+    return day;
   };
-
-
-  Campaign.getUserCampaignsForCalendar(function(campaigns) {
-    $scope.campaigns = campaigns;
-    var month = updateMonth(current);
-    $scope.month_cards.push(month);
-    if ($scope.view === 'day') {
-      updateDay(current);
-    }
-  });
-
 
   $scope.back = function() {
     switch ($scope.view) {
@@ -312,41 +313,6 @@ angular.module('starter.controllers', [])
     }
   };
 
-  /**
-   * 根据当前视图，向前一年、一个月、一天
-   */
-  $scope.pre = function() {
-    switch ($scope.view) {
-    case 'month':
-      current.setMonth(current.getMonth() - 1);
-      updateMonth(current);
-      break;
-    case 'day':
-      var temp = new Date(current);
-      temp.setDate(temp.getDate() - 1);
-      updateDay(temp);
-      break;
-    }
-
-  };
-
-  /**
-   * 根据当前视图，向后一年、一个月、一天
-   */
-  $scope.next = function() {
-    switch ($scope.view) {
-    case 'month':
-      current.setMonth(current.getMonth() + 1);
-      updateMonth(current);
-      break;
-    case 'day':
-      var temp = new Date(current);
-      temp.setDate(temp.getDate() + 1);
-      updateDay(temp);
-      break;
-    }
-
-  };
 
   /**
    * 回到今天，仅在月、日视图下起作用
@@ -356,11 +322,13 @@ angular.module('starter.controllers', [])
     switch ($scope.view) {
     case 'month':
       current = new Date();
-      updateMonth(current);
+      var month = updateMonth(current);
+      $scope.month_cards = [month];
       break;
     case 'day':
       var temp = new Date();
-      updateDay(temp);
+      var day = updateDay(date);
+      $scope.day_cards = [day];
       break;
     }
 
@@ -373,8 +341,19 @@ angular.module('starter.controllers', [])
   $scope.monthView = function(month) {
     current.setDate(1);
     current.setMonth(month);
-    updateMonth(current);
+    var new_month = updateMonth(current);
+    $scope.month_cards = [new_month];
     $scope.view = 'month';
+  };
+
+  /**
+   * 进入日视图
+   * @param  {Date} date
+   */
+  $scope.dayView = function(date) {
+    var day = updateDay(date);
+    $scope.day_cards = [day];
+    $scope.view = 'day';
   };
 
   /**
@@ -386,23 +365,54 @@ angular.module('starter.controllers', [])
   };
 
 
-  $scope.addMonth = function(month) {
+  $scope.nextMonth = function(month) {
     var temp = new Date(month.date);
     temp.setMonth(temp.getMonth() + 1);
+    current = new Date(temp);
     var new_month = updateMonth(temp);
     $scope.month_cards.push(new_month);
   };
 
-  $scope.subMonth = function(month) {
+  $scope.preMonth = function(month) {
     var temp = new Date(month.date);
     temp.setMonth(temp.getMonth() - 1);
+    current = new Date(temp);
     var new_month = updateMonth(temp);
     $scope.month_cards.push(new_month);
+  };
+
+  $scope.nextDay = function(day) {
+    var temp = new Date(day.date);
+    temp.setDate(temp.getDate() + 1);
+    var new_day = updateDay(temp);
+    $scope.day_cards.push(new_day);
+  };
+
+  $scope.preDay = function(day) {
+    var temp = new Date(day.date);
+    temp.setDate(temp.getDate() - 1);
+    var new_day = updateDay(temp);
+    $scope.day_cards.push(new_day);
   };
 
   $scope.removeMonth = function(index) {
     $scope.month_cards.splice(index, 1);
   };
+
+  $scope.removeDay = function(index) {
+    $scope.day_cards.splice(index, 1);
+  };
+
+
+  Campaign.getUserCampaignsForCalendar(function(campaigns) {
+    $scope.campaigns = campaigns;
+    var month = updateMonth(current);
+    $scope.month_cards = [month];
+    if ($scope.view === 'day') {
+      var day = updateDay(current);
+      $scope.day_cards = [day];
+    }
+  });
 
 })
 
