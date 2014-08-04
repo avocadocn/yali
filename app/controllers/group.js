@@ -306,7 +306,7 @@ exports.getOneTeam = function(req, res) {
 
 exports.getSimiliarTeams = function(req,res) {
   if(req.user.cid.toString()===req.companyGroup.cid.toString()){//同公司
-    CompanyGroup.find({'cid':req.user.cid,'leader._id':req.user._id},{'logo':1,'member':1,'name':1},function(err, companyGroups){
+    CompanyGroup.find({'cid':req.user.cid,'leader._id':req.user._id,'gid':{'$ne':'0'}},{'logo':1,'member':1,'name':1},function(err, companyGroups){
       if(err){
         console.log(err);
         return res.send([]);
