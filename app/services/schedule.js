@@ -18,7 +18,69 @@ var finishCampaign = function(){
     }
   });
 }
-var countCampaign = function (startTime,endTime,type){
+
+var team_time_out = 40;
+//统计所有小组的活动数、人员参与数、评论数、照片从而得出分数
+var teamPoint = function(){
+  CompanyGroup.find({'active':true}).populate('photo_album_list').exec(function(err,teams){
+    if(err){
+      console.log(err);
+    }
+    else{
+      teams.forEach(function(value){
+        var campaignNum=0;
+        var participatorNum=0;
+        var commentNum = 0;
+        var photoNum = 0;
+        var memberNum = 0;
+        memberNum = value.member.length;
+        //统计小队照片总数
+        for(var i = 0; i < value.photo_album_list.length; i ++){
+          photoNum += value.photo_album_list[i].photo_count;
+        }
+        Campaign.find({'active':true,'team':value._id,'end_time':{'$lte':new Date()}}).populate('photo_album').exec(function(err,campaigns){
+          campaigns.forEach(function(campaign){
+            if(campaign.camp.length==0){
+                campaignNum++;
+                participatorNum+=campaign.member.length;
+            }
+            else{
+              var camp_index = campaign.camp[0].id.toString()===value._id.toString() ? 0:1;
+              campaignNum++;
+              participatorNum+=campaign.camp[camp_index].member.length;
+            }
+            commentNum += campaign.comment_sum;
+            photoNum += campaign.photo_album.photo_count; //属于小队的活动的相片总数
+          });
+          var provoke;
+          if(value.score.provoke != undefined || value.score.provoke != null){
+            provoke = value.score.provoke;
+          }else{
+            provoke = 0;
+          }
+          value.score = {
+            'campaign' : campaignNum * 10,
+            'album' : parseInt(photoNum/5),
+            'comment' : parseInt(commentNum / 20),
+            'participator' : participatorNum,
+            'member' : memberNum * 10,
+            'provoke' : provoke
+          }
+          value.save(function(err){
+            if(err){
+              console.log('TEAM_POINT_FAILED!',err);
+            }else{
+              console.log('TEAM_POINT_FINISHED!');
+            }
+          });
+        });
+      });
+    }
+  });
+}
+
+
+var countCampaign = function (startTime,endTime,type,newWeek){
   CompanyGroup.find({'active':true},function(err,teams){
     if(err){
       console.log(err);
@@ -62,7 +124,6 @@ var countCampaign = function (startTime,endTime,type){
           });
         });
       });
-      
     }
   });
 }
@@ -74,7 +135,7 @@ var currentWeekCampaignCount = function(){
   startTime.setMinutes(0);
   startTime.setSeconds(0);
   startTime.setMilliseconds(0);
-  countCampaign(startTime,_nowTime,'currentWeek');
+  countCampaign(startTime,_nowTime,'currentWeek',_nowTime.getDay() === 0);
 }
 var lastWeekCampaignCount =  function(){
   var _nowTime=new Date();
@@ -110,6 +171,12 @@ var lastMonthCampaignCount =  function(){
   countCampaign(startTime,endTime,'lastMonth');
 }
 exports.init = function(){
+  //自动统计小队分数
+  var teamPointRule = new schedule.RecurrenceRule();
+  teamPointRule.minute = team_time_out;
+  var teamPointSchedule = schedule.scheduleJob(teamPointRule, function(){
+      teamPoint();
+  });
   //自动完成已经结束的活动
   var finishCampaignRule = new schedule.RecurrenceRule();
   finishCampaignRule.minute = 0;

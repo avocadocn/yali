@@ -1,6 +1,6 @@
 .loading_div(ng-show = 'loading')
 div(ng-show = '!loading' ng-controller="infoController")
-  
+
   form.form-horizontal.tab-info-form(name="infoForm")
     .team_family_box
       .dl_row.team_photo(ng-if="family_photos.length !== 0")
@@ -13,10 +13,19 @@ div(ng-show = '!loading' ng-controller="infoController")
         li(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
           a
             img(src="{{ photo.uri }}/160/90")
-    .team_cander_box.clearfix
-      .dl_row.clearfix
-        h5.pull-left 近期活动
 
+    .team_calendar_box.clearfix
+      .dl_row.clearfix
+        h5.pull-left 日历
+      .dl_row.clearfix
+        #calendar_view.pull-left
+          //-span.calendar_back.pull-left.glyphicon.glyphicon-chevron-left(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView")
+          span#calendar_title.calendar_title.pull-left
+        #calendar_nav.pull-right.calendar_nav
+          a(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
+          a(data-calendar-nav="today" href="javascript:void(0)") 今天
+          a(data-calendar-nav="next" href="javascript:void(0)") &gt;&gt;
+      #calendar
 
     .team_member_box.clearfix
 

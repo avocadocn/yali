@@ -10,6 +10,26 @@ var mongoose = require('mongoose'),
 var pagesize = 20;
 
 
+
+/**
+ * 获取一个队的所有未关闭的活动, 并按开始时间排序
+ * @param  {Object|String}   team_id  小队_id
+ * @param  {Function} callback callback(campaigns, err), campaigns为小队的所有活动, 类型为数组, 没有populate的mongoose.model('Campaign'), 没有找到则为空数组
+ */
+var getTeamAllCampaigns = function(team_id, callback) {
+  Campaign
+  .find({ 'team': team_id, 'active': true })
+  .sort('start_time')
+  .exec()
+  .then(function(campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function(err) {
+    callback([], err)
+  });
+};
+
+
 /**
  * 获取用户的所有活动
  * @param  {Object}   user       mongoose.model('User'), example:req.user
@@ -308,6 +328,7 @@ var formatCampaignForApp = function(user, campaign) {
     'campaign_type': campaign.campaign_type,
     'start_time': campaign.start_time,
     'end_time': campaign.end_time,
+    'deadline': campaign.deadline,
     'is_joined': is_joined,
     'photo_album': campaign.photo_album,
     'member': campaign.member,
@@ -637,6 +658,16 @@ exports.getUserUnjoinCampaignsForList = function(req, res) {
   });
 };
 
+exports.getTeamCampaigns = function(req, res) {
+  getTeamAllCampaigns(req.params.teamId, function(campaigns, err) {
+    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+    res.send({
+      success: 1,
+      result: format_campaigns
+    });
+  });
+};
+
 exports.getUserAllCampaignsForAppList = function(req, res) {
   var team_ids = [];
   for (var i = 0; i < req.user.team.length; i++) {
@@ -877,18 +908,6 @@ exports.quitCampaign = function (req, res) {
             if(formation_index>-1){
               campaign.camp[camp_index].member.splice(formation_index,1);
             }
-            campaign.save(function (err) {
-              if(err) {
-                return res.send(err);
-              } else {
-                return res.send({ result: 1, msg: '退出活动成功',member:{
-                  'cid':cid,
-                  'uid':uid,
-                  'nickname':req.user.nickname,
-                  'photo':req.user.photo
-                }});
-              }
-            });
             break;
           }
         }
@@ -896,6 +915,18 @@ exports.quitCampaign = function (req, res) {
           return res.send({ result: 0, msg: '您没有参加该活动'});
         }
       }
+      campaign.save(function (err) {
+        if(err) {
+          return res.send(err);
+        } else {
+          return res.send({ result: 1, msg: '退出活动成功',member:{
+            'cid':cid,
+            'uid':uid,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo
+          }});
+        }
+      });
     }
     else {
       return res.send({ result: 0, msg: '没有此活动'});

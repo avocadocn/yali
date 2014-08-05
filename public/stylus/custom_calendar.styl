@@ -102,10 +102,54 @@ logoLink()
 #cal-week-box
   cursor default
 
+
+// teampage calendar
+.team_calendar_box
+  word-break normal !important
+  .calendar_back
+    cursor pointer
+
+  .calendar_title
+    margin-top 0
+    margin-left 5px
+
+  .cal-year-box [class*="span"], .cal-month-box [class*="cal-cell"]
+    min-height 60px
+
+  span[data-cal-date]
+    cursor default
+
+  .cal-month-day
+    height 60px
+
+  .events-list
+    padding-left 0
+    bottom 5px
+    left 5px
+
+  .events-list .event.event-info
+    margin 3px
+    width 6px
+    height 6px
+
+    .join_sign
+      margin 0
+
+  #cal-slide-content
+    padding 5px
+    box-shadow none
+    border-bottom solid 1px borderColor
+
+    .custom_calendar_li
+      margin-bottom 0
+
+      .join_sign
+        margin 8px
+
 // schedule_list partials style
 .calendar_box
   margin-top 0
-  .dl_campaign_list 
+  .dl_campaign_list
     border 0px
 
 .calendar_title

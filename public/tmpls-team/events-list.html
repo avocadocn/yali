@@ -1,0 +1,15 @@
+<span id="cal-slide-tick" style="display: none"></span>
+<div id="cal-slide-content" class="cal-event-list">
+	<ul class="unstyled list-unstyled">
+		<% _.each(events, function(event) { %>
+			<li class="custom_calendar_li">
+				<!-- <span class="pull-left event <%= event['class'] %>"></span>&nbsp; -->
+				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
+					data-event-class="<%= event['class'] %>" class="event-item">
+					<div class="join_sign"></div>
+					<span><%= event.title %>&nbsp;&nbsp;开始时间: <%= moment(new Date(event.start)).calendar() %></span>
+				</a>
+			</li>
+		<% }) %>
+	</ul>
+</div>

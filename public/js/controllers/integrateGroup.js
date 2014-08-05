@@ -498,5 +498,62 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',func
             $('.jcrop-holder img').attr('src', path);
         });
     });
+
+
+    // calendar
+    $scope.isDayView = false;
+    var firstLoad = true;
+    var options = {
+        events_source: '/campaign/team/calendar/' + $rootScope.teamId,
+        view: 'weeks',
+        time_end: '24:00',
+        tmpl_path: '/tmpls-team/',
+        tmpl_cache: false,
+        language: 'zh-CN',
+        onAfterEventsLoad: function(events) {
+            if (!events) {
+                return;
+            }
+        },
+        onAfterViewLoad: function(view) {
+            $('#calendar_title').text(this.getTitle());
+            //$('#calendar_operator button').removeClass('active');
+            //$('button[data-calendar-view="' + view + '"]').addClass('active');
+            if (view === 'day') {
+                $scope.isDayView = true;
+                if (firstLoad === true) {
+                    firstLoad = false;
+                }
+                $scope.$digest();
+            } else {
+                $scope.isDayView = false;
+                if (firstLoad === false) {
+                    $scope.$digest();
+                }
+            }
+        },
+        classes: {
+            months: {
+                general: 'label'
+            }
+        }
+    };
+
+    var calendar = $('#calendar').calendar(options);
+
+    $('#calendar_nav [data-calendar-nav]').each(function() {
+        var $this = $(this);
+        $this.click(function() {
+            calendar.navigate($this.data('calendar-nav'));
+        });
+    });
+    $('#calendar_view [data-calendar-view]').each(function() {
+        var $this = $(this);
+        $this.click(function() {
+            calendar.view($this.data('calendar-view'));
+        });
+    });
+
+
 }]);
 

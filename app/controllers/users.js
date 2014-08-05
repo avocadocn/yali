@@ -941,6 +941,30 @@ exports.joinGroup = function (req, res){
               'nickname':user.nickname,
               'photo':user.photo
             });
+
+            var provoke = companyGroup.score.provoke;
+            var campaign = companyGroup.score.campaign;
+            var member = companyGroup.score.member;
+            var participator = companyGroup.score.participator;
+            var comment = companyGroup.score.comment;
+            var album = companyGroup.score.album;
+
+            provoke = (provoke == undefined || provoke == null) ? 0 : provoke;
+            campaign = (campaign == undefined || campaign == null) ? 0 : campaign;
+            member = (member == undefined || member == null) ? 0 : member + 10;
+            participator = (participator == undefined || participator == null) ? 0 : participator;
+            comment = (comment == undefined || comment == null) ? 0 : comment;
+            album = (album == undefined || album == null) ? 0 : album;
+
+            companyGroup.score = {
+              'provoke':provoke,
+              'campaign':campaign,
+              'member':member,
+              'participator':participator,
+              'comment':comment,
+              'album':album
+            }
+
             user.team.push({
               '_id' : companyGroup._id,
               'gid': companyGroup.gid,
@@ -1012,6 +1036,29 @@ exports.quitGroup = function (req, res){
         var member_index = model_helper.arrayObjectIndexOf(companyGroup.member,uid,'_id');
         if(member_index>-1){
           companyGroup.member.splice(member_index,1);
+
+          var provoke = companyGroup.score.provoke;
+          var campaign = companyGroup.score.campaign;
+          var member = companyGroup.score.member;
+          var participator = companyGroup.score.participator;
+          var comment = companyGroup.score.comment;
+          var album = companyGroup.score.album;
+
+          provoke = (provoke == undefined || provoke == null) ? 0 : provoke;
+          campaign = (campaign == undefined || campaign == null) ? 0 : campaign;
+          member = (member == undefined || member == null) ? 0 : member - 10;
+          participator = (participator == undefined || participator == null) ? 0 : participator;
+          comment = (comment == undefined || comment == null) ? 0 : comment;
+          album = (album == undefined || album == null) ? 0 : album;
+
+          companyGroup.score = {
+            'provoke':provoke,
+            'campaign':campaign,
+            'member':member,
+            'participator':participator,
+            'comment':comment,
+            'album':album
+          }
         }
         else{
           return res.send({result: 0, msg:'您没有参加该小队'});

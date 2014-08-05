@@ -76,6 +76,50 @@
 #cal-week-box {
   cursor: default;
 }
+.team_calendar_box {
+  word-break: normal !important;
+}
+.team_calendar_box .calendar_back {
+  cursor: pointer;
+}
+.team_calendar_box .calendar_title {
+  margin-top: 0;
+  margin-left: 5px;
+}
+.team_calendar_box .cal-year-box [class*="span"],
+.team_calendar_box .cal-month-box [class*="cal-cell"] {
+  min-height: 60px;
+}
+.team_calendar_box span[data-cal-date] {
+  cursor: default;
+}
+.team_calendar_box .cal-month-day {
+  height: 60px;
+}
+.team_calendar_box .events-list {
+  padding-left: 0;
+  bottom: 5px;
+  left: 5px;
+}
+.team_calendar_box .events-list .event.event-info {
+  margin: 3px;
+  width: 6px;
+  height: 6px;
+}
+.team_calendar_box .events-list .event.event-info .join_sign {
+  margin: 0;
+}
+.team_calendar_box #cal-slide-content {
+  padding: 5px;
+  box-shadow: none;
+  border-bottom: solid 1px #ddd;
+}
+.team_calendar_box #cal-slide-content .custom_calendar_li {
+  margin-bottom: 0;
+}
+.team_calendar_box #cal-slide-content .custom_calendar_li .join_sign {
+  margin: 8px;
+}
 .calendar_box {
   margin-top: 0;
 }

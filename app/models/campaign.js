@@ -68,7 +68,6 @@ var _camp = new Schema({
 /**
  * 活动
  */
-
 var Campaign = new Schema({
     team:[{
         type: Schema.Types.ObjectId,
@@ -85,17 +84,17 @@ var Campaign = new Schema({
     cid: [{
         type: Schema.Types.ObjectId,
         ref: 'Company'
-    }],                        //参加该活动的所有公司
+    }],                                 //参加该活动的所有公司
     cname: Array,
     poster: {
-        cid: String,                   //活动发起者所属的公司
+        cid: String,                    //活动发起者所属的公司
         cname: String,
         tname: String,
         uid: String,
         nickname: String,
         role: {
             type: String,
-            enum: ['HR','LEADER']     //HR 队长
+            enum: ['HR','LEADER']       //HR 队长
         },
     },
     theme:{//主题

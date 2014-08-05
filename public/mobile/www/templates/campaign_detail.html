@@ -4,8 +4,33 @@
     <a class="button icon-left ion-chevron-left button-clear button-dark" href="{{ campaignReturnUri }}">返回</a>
   </ion-nav-buttons>
 
-
   <ion-tabs tabs-type="tabs-icon-top tabs-positive" class="donler_tabs donler_tabs_bottom">
+    
+    <ion-tab title="详情" icon="ion-ios7-information-outline">
+      <ion-content has-header="true" class="wrap campaign_detail">
+        <div class="head_title">
+          <div class="title">{{ campaign.theme }}</div>
+        </div>
+        <div class="padding">
+          <div class="row campaign_time football">
+            <div class="campaign_time_shadow">
+              <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
+              <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
+              <div ng-if="campaign.active && !campaign.finish" class="campaign_time_operator">
+                <button class="btn_radius btn_darkred btn_operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id) : openselectModal()">报名参加</button>
+                <button class="btn_radius btn_darkred btn_operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出活动</button>
+                <!-- <button ng-if="campaign.campaign_type>=3" class="btn_radius btn_blue btn_operator btn_good">点个赞</button> -->
+              </div>
+            </div>
+          </div>
+          <p>结束时间:{{campaign.end_time | date:"yyyy-MM-dd HH:mm"}}</p>
+          <p>报名截止时间:{{campaign.deadline | date:"yyyy-MM-dd HH:mm"}}</p>
+          <p>活动地点:{{campaign.location.name}}</p>
+          <p>活动介绍:{{campaign.content}}</p>
+        </div>
+      </ion-content>
+    </ion-tab>
+
     <ion-tab title="参加人员" icon="ion-ios7-person-outline">
       <ion-content has-header="true" class="wrap">
         <div class="head_title">
@@ -38,33 +63,17 @@
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
         </div>
-        <div class="row campaign_time football">
-          <div class="campaign_time_shadow">
-            <p class="campaign_time_content">{{ campaign.content }}</p>
-            <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
-            <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
-            <div ng-if="campaign.active && !campaign.finish" class="campaign_time_operator">
-              <button class="btn_radius btn_darkred btn_operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id) : openselectModal()">报名参加</button>
-              <button class="btn_radius btn_darkred btn_operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出活动</button>
-              <!-- <button ng-if="campaign.campaign_type>=3" class="btn_radius btn_blue btn_operator btn_good">点个赞</button> -->
-            </div>
-          </div>
-        </div>
         <div  ng-if="comments.length > 0" class="comments">
           <div ng-repeat="comment in comments" class="comment">
               <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">
                 <img ng-src="{{base_url + comment.poster.photo}}" class="comment_photo img_user"/>
               </div>
               <div ng-class="{'comment_right':comment.poster._id!=user_id,'comment_left':comment.poster._id==user_id}">
-                <div class="">
-                  <div class="comment_name">
-                    <span class="">{{comment.poster.nickname}}</span>
-                  </div>
+                <div class="comment_name">
+                  <span class="">{{comment.poster.nickname}}</span>
                 </div>
-                <div class="">
-                  <div class="comment_content">
-                    <p>{{comment.content}}</p>
-                  </div>
+                <div class="comment_content">
+                  <p>{{comment.content}}</p>
                 </div>
                 <div class="comment_time">
                   <p>{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</p>
@@ -72,10 +81,13 @@
               </div>
           </div>
         </div>
+        <div>
+          <p ng-if="comments.length > 0">目前没有评论，快来抢沙发吧</p>
+        </div>
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="活动照片" icon="ion-camera">
+    <ion-tab title="活动照片" icon="ion-ios7-camera-outline">
       <ion-content has-header="true" scroll="flase" class="wrap campaign_photos">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
@@ -87,7 +99,7 @@
                 <div  ng-repeat="photo in photo_page" class="campaign_photo_panel">
                   <div class="campaign_photo_border" ng-click="openModal(photo.index)">
                     <div class="campaign_photo_img_wrap">
-                      <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
+                      <img class="campaign_photo" ng-src="{{ base_url + photo.uri +'/360/240'}}" thumbnail-photo-directive/>
                     </div>
                     <div class="campaign_photo_ori_button_wrap">
                       <button class="icon ion-search campaign_photo_ori_button"></button>
@@ -121,17 +133,6 @@
             <img ng-if="campaign.location.coordinates.length==2" class="location" ng-src="http://api.map.baidu.com/staticimage?width=580&height=520&center={{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&zoom=15&markers={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&markerStyles=m,A,0xff0000&labels={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&labelStyles={{campaign.location.name}},1,14,0xffffff,0x000fff,1"/>
           </a>
           <p ng-if="campaign.location.coordinates.length==0">{{campaign.location.name}}</p>
-        </div>
-      </ion-content>
-    </ion-tab>
-
-    <ion-tab title="分享" icon="ion-ios7-paperplane-outline">
-      <ion-content has-header="true" class="wrap">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
-        </div>
-        <div class="padding">
-          <h2>share</h2>
         </div>
       </ion-content>
     </ion-tab>
