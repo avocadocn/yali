@@ -1616,7 +1616,7 @@ dl_messagebox .loademp,
   background-color: #fff;
   width: 290px;
   min-height: 80px;
-  margin: 20px 16px 20px 0;
+  margin: 20px 16px 13px 0;
   border: 1px solid #ddd;
   padding: 6px;
 }
@@ -1638,6 +1638,7 @@ dl_messagebox .loademp,
 .dl_allteaminfo_emp .teamitem .itembox .photos {
   padding: 4px 0;
   border-bottom: 1px solid #ddd;
+  height: 170px;
 }
 .dl_allteaminfo_emp .teamitem .itembox .photos .photo {
   float: left;
