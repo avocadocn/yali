@@ -34,7 +34,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CampaignListCtrl', function($scope, $rootScope, Campaign, Global) {
+.controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global) {
   $rootScope.enable_drag = true;
 
   $scope.base_url = Global.base_url;
@@ -48,7 +48,20 @@ angular.module('starter.controllers', [])
 
   $scope.join = Campaign.join(Campaign.getCampaign);
   $scope.quit = Campaign.quit(Campaign.getCampaign);
-
+  $ionicModal.fromTemplateUrl('templates/partials/select_team.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.selectModal = modal;
+  });
+  $scope.openselectModal = function(campaign) {
+    $scope.campaign =campaign;
+    $scope.selectModal.show();
+  };
+  $scope.select = function(campaign_id,tid) {
+    $scope.join(campaign_id,tid);
+    $scope.selectModal.hide();
+  };
 })
 
 
@@ -141,18 +154,31 @@ angular.module('starter.controllers', [])
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
+  $ionicModal.fromTemplateUrl('templates/partials/select_team.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.selectModal = modal;
+  });
+  $scope.openselectModal = function() {
+    $scope.selectModal.show();
+  };
+  $scope.select = function(campaign_id,tid) {
+    $scope.join(campaign_id,tid);
+    $scope.selectModal.hide();
+  };
   //Cleanup the modal when we're done with it!
   // $scope.$on('$destroy', function() {
   //   $scope.modal.remove();
   // });
   // Execute action on hide modal
-  $scope.$on('modal.hidden', function() {
-    // Execute action
-  });
-  // Execute action on remove modal
-  $scope.$on('modal.removed', function() {
-    // Execute action
-  });
+  // $scope.$on('modal.hidden', function() {
+  //   // Execute action
+  // });
+  // // Execute action on remove modal
+  // $scope.$on('modal.removed', function() {
+  //   // Execute action
+  // });
   $timeout( function() {
     $ionicSlideBoxDelegate.update();
   });

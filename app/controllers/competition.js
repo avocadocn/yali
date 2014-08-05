@@ -120,13 +120,10 @@ exports.getCompetition = function(req, res){
   }
   else{
     if(req.user.provider==='user'&&req.competition_team.length>0){
-      options.join_flag=[];
+      options.join_flag=-1;
       req.competition_team.forEach(function(value){
         if(model_helper.arrayObjectIndexOf(competition.camp[value].member,req.user._id,'uid')>-1){
-          options.join_flag[value]=1;
-        }
-        else{
-          options.join_flag[value]=0;
+          options.join_flag=value;
         }
       });
     }

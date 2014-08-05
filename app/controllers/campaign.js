@@ -252,9 +252,9 @@ var formatCampaignForApp = function(user, campaign) {
         myteam.push({
           'id':campaign.camp[i].id,
           'name':campaign.camp[i].tname,
-          'logo':campaign.camp[i].logo,
-          'is_joined': model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1
+          'logo':campaign.camp[i].logo
         });
+        is_joined = is_joined || model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1;
       }
     }
   }
@@ -788,23 +788,25 @@ exports.joinCampaign = function (req, res) {
         if(camp_index==-1){
            return res.send({ result: 0, msg: '请求错误'});
         }
-        var member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
-        if(member_index<0){
-          var member_quit_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member_quit,uid,'uid');
-          if(member_quit_index>-1){
-            campaign.camp[camp_index].member_quit.splice(member_quit_index,1);
+        var member_index ;
+        for (var temp_camp_index=0;temp_camp_index<campaign.camp.length;temp_camp_index++){
+          member_index = model_helper.arrayObjectIndexOf(campaign.camp[temp_camp_index].member,uid,'uid');
+          if(member_index>-1){
+            return res.send({ result: 0, msg: '您已经参加该活动'});
           }
-          campaign.camp[camp_index].member.push({
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo,
-            'camp':camp_index===0?'A':'B'
-          });
         }
-        else {
-          return res.send({ result: 0, msg: '您已经参加该活动'});
+
+        var member_quit_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member_quit,uid,'uid');
+        if(member_quit_index>-1){
+          campaign.camp[camp_index].member_quit.splice(member_quit_index,1);
         }
+        campaign.camp[camp_index].member.push({
+          'cid':cid,
+          'uid':uid,
+          'nickname':req.user.nickname,
+          'photo':req.user.photo,
+          'camp':camp_index===0?'A':'B'
+        });
       }
       campaign.save(function (err) {
         if(err) {
@@ -860,41 +862,40 @@ exports.quitCampaign = function (req, res) {
         }
       }
       else{
-        var tid = req.body.tid;
-        var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
-        if(camp_index==-1){
-           return res.send({ result: 0, msg: '请求错误'});
-        }
-        var member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
-        if(member_index>-1){
-          campaign.camp[camp_index].member.splice(member_index,1);
-          campaign.member_quit.push({
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo
-          });
-          var formation_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].formation,uid,'uid');
-          if(formation_index>-1){
-            campaign.camp[camp_index].member.splice(formation_index,1);
+        var member_index ;
+        for (var camp_index=0;camp_index<campaign.camp.length;camp_index++){
+          member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
+          if(member_index>-1){
+            campaign.camp[camp_index].member.splice(member_index,1);
+            campaign.member_quit.push({
+              'cid':cid,
+              'uid':uid,
+              'nickname':req.user.nickname,
+              'photo':req.user.photo
+            });
+            var formation_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].formation,uid,'uid');
+            if(formation_index>-1){
+              campaign.camp[camp_index].member.splice(formation_index,1);
+            }
+            campaign.save(function (err) {
+              if(err) {
+                return res.send(err);
+              } else {
+                return res.send({ result: 1, msg: '退出活动成功',member:{
+                  'cid':cid,
+                  'uid':uid,
+                  'nickname':req.user.nickname,
+                  'photo':req.user.photo
+                }});
+              }
+            });
+            break;
           }
         }
         if(member_index<0){
           return res.send({ result: 0, msg: '您没有参加该活动'});
         }
       }
-      campaign.save(function (err) {
-        if(err) {
-          return res.send(err);
-        } else {
-          return res.send({ result: 1, msg: '退出活动成功',member:{
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo
-          }});
-        }
-      });
     }
     else {
       return res.send({ result: 0, msg: '没有此活动'});

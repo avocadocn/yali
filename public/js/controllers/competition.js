@@ -407,14 +407,13 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
         }
     };
 
-    $scope.quitCampaign = function (competition_id,tid) {
+    $scope.quitCampaign = function (competition_id) {
         try {
             $http({
                 method: 'post',
                 url: '/campaign/quitCampaign/'+competition_id,
                 data:{
-                    campaign_id : competition_id,
-                    tid:tid
+                    campaign_id : competition_id
                 }
             }).success(function(data, status) {
                 if(data.result===1){

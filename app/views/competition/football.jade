@@ -27,9 +27,9 @@ block contentExt
               if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && role!='HR' && competition.camp[0].start_confirm && team.indexOf(0)>-1
                 div
                   if competition.camp[1].start_confirm
-                    if join_flag[0]
-                      input.dl_btn.dl_btn_small.pull-right(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[0].id}')")
-                    else
+                    if join_flag == 0
+                      input.dl_btn.dl_btn_small.pull-right(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                    else if join_flag ==-1
                       input.dl_btn.dl_btn_small.pull-right(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[0].id}')")
                   else
                     a.pull-right(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
@@ -79,9 +79,9 @@ block contentExt
               if (competition.active || !competition.camp[1].start_confirm) && competition.camp[0].start_confirm&& !competition.finish && role!='HR' && team.indexOf(1)>-1
                 div
                   if competition.camp[1].start_confirm
-                    if join_flag[1]
-                      input.dl_btn.dl_btn_small(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}','#{competition.camp[1].id}')")
-                    else
+                    if join_flag == 1
+                      input.dl_btn.dl_btn_small(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                    else if join_flag == -1
                       input.dl_btn.dl_btn_small(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[1].id}')")
                   else
                     a(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
