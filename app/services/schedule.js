@@ -19,7 +19,7 @@ var finishCampaign = function(){
   });
 }
 
-var team_time_out = 40;
+var team_time_out = 30;
 //统计所有小组的活动数、人员参与数、评论数、照片从而得出分数
 var teamPoint = function(){
   CompanyGroup.find({'active':true}).populate('photo_album_list').exec(function(err,teams){
