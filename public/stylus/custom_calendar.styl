@@ -105,6 +105,7 @@ logoLink()
 
 // teampage calendar
 .team_calendar_box
+  word-break normal !important
   .calendar_back
     cursor pointer
 
@@ -114,6 +115,9 @@ logoLink()
 
   .cal-year-box [class*="span"], .cal-month-box [class*="cal-cell"]
     min-height 60px
+
+  span[data-cal-date]
+    cursor default
 
   .cal-month-day
     height 60px

@@ -76,6 +76,9 @@
 #cal-week-box {
   cursor: default;
 }
+.team_calendar_box {
+  word-break: normal !important;
+}
 .team_calendar_box .calendar_back {
   cursor: pointer;
 }
@@ -86,6 +89,9 @@
 .team_calendar_box .cal-year-box [class*="span"],
 .team_calendar_box .cal-month-box [class*="cal-cell"] {
   min-height: 60px;
+}
+.team_calendar_box span[data-cal-date] {
+  cursor: default;
 }
 .team_calendar_box .cal-month-day {
   height: 60px;
