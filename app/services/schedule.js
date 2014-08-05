@@ -64,7 +64,8 @@ var teamPoint = function(){
             'comment' : parseInt(commentNum / 20),
             'participator' : participatorNum,
             'member' : memberNum * 10,
-            'provoke' : provoke
+            'provoke' : provoke,
+            'total' : campaignNum * 10 + parseInt(photoNum/5) + parseInt(commentNum / 20) + participatorNum + memberNum * 10 + provoke
           }
           value.save(function(err){
             if(err){
