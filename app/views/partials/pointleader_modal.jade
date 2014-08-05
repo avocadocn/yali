@@ -10,7 +10,7 @@
           .dl_md_1.dl_vertical
             label.subtitle 小队名称
           .dl_md_10
-            input.dl_modal_input.form-control(type="text" name="cname" ng-model="team_lists[team_index].name" value="{{team_lists[team_index].name}}")
+            input.dl_modal_input.form-control(type="text" name="cname" ng-model="team_lists[team_index].name" maxlength=20 value="{{team_lists[team_index].name}}")
           .dl_md_1
             a.clearLinkUnderline.dl_btn_right(ng-click="saveGroupInfo()") 保存
         .dl_modal_container

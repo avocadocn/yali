@@ -831,7 +831,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
         try{
             $http({
                 method:'post',
-                url: '/company/saveGroupInfo',
+                url: '/company/saveGroupInfo/'+$rootScope.cid,
                 data:{
                     'tid': $scope.tid,
                     'tname': $scope.team_lists[$scope.team_index].name
