@@ -30,6 +30,7 @@ angular.module('starter.services', [])
         _id: localStorage.user_id,
         nickname: localStorage.user_nickname
       };
+      autologin(localStorage.user_id, localStorage.app_token);
     }
     if (_authorize === false) {
       $state.go('login');
@@ -50,6 +51,7 @@ angular.module('starter.services', [])
             Global.user = user;
             localStorage.user_id = user._id;
             localStorage.user_nickname = user.nickname;
+            localStorage.app_token = user.app_token;
           }
           $state.go('app.campaignList');
         }
@@ -61,6 +63,25 @@ angular.module('starter.services', [])
       });
     };
   };
+  var autologin = function(uid, app_token) {
+    $http.post(Global.base_url + '/users/autologin', { uid: uid, app_token: app_token})
+    .success(function(data, status, headers, config) {
+      if (data.result === 1) {
+        _authorize = true;
+        var user = data.data;
+        if (user) {
+          Global.user.app_token = user.app_token;
+          localStorage.app_token = user.app_token;
+          return true;
+        }
+      }
+    })
+    .error(function(data, status, headers, config) {
+      if (status === 401) {
+        $scope.loginMsg = '用户名或密码错误';
+      }
+    });
+  };
 
   var logout = function() {
     $http.get(Global.base_url + '/users/logout')
@@ -70,6 +91,7 @@ angular.module('starter.services', [])
         Global.user = {};
         delete localStorage.user_id;
         delete localStorage.user_nickname;
+        delete localStorage.app_token;
         $state.go('login');
       }
     });
@@ -356,40 +378,40 @@ var getCampaignDetail = function(id, callback) {
 // })
 
 
-.factory('Map', function() {
+// .factory('Map', function() {
 
-  var init = function(element_id, location) {
-    var map = new BMap.Map(element_id);            // 创建Map实例
-    var _address = location || '';
-    var _title = location;
-    var _longitude = 116.404;
-    var _latitude = 39.915;
-    var point = new BMap.Point(_longitude, _latitude);    // 创建点坐标
-    map.centerAndZoom(point, 15);                     // 初始化地图,设置中心点坐标和地图级别。
-    map.enableScrollWheelZoom();
-    map.addControl(new BMap.NavigationControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM }));
-    var marker = new BMap.Marker(point);  // 创建标注
-    map.addOverlay(marker);              // 将标注添加到地图中
-    function showInfo(e){
-      var opts = {
-        width : 200,     // 信息窗口宽度
-        height: 60,     // 信息窗口高度
-        title : _title, // 信息窗口标题
-      };
-      var infoWindow = new BMap.InfoWindow(_address, opts);  // 创建信息窗口对象
-      map.openInfoWindow(infoWindow,point); //开启信息窗口
-    }
-    map.addEventListener("click", showInfo);
-
-
-  };
-
-  return {
-    init: init
-  };
+//   var init = function(element_id, location) {
+//     var map = new BMap.Map(element_id);            // 创建Map实例
+//     var _address = location || '';
+//     var _title = location;
+//     var _longitude = 116.404;
+//     var _latitude = 39.915;
+//     var point = new BMap.Point(_longitude, _latitude);    // 创建点坐标
+//     map.centerAndZoom(point, 15);                     // 初始化地图,设置中心点坐标和地图级别。
+//     map.enableScrollWheelZoom();
+//     map.addControl(new BMap.NavigationControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM }));
+//     var marker = new BMap.Marker(point);  // 创建标注
+//     map.addOverlay(marker);              // 将标注添加到地图中
+//     function showInfo(e){
+//       var opts = {
+//         width : 200,     // 信息窗口宽度
+//         height: 60,     // 信息窗口高度
+//         title : _title, // 信息窗口标题
+//       };
+//       var infoWindow = new BMap.InfoWindow(_address, opts);  // 创建信息窗口对象
+//       map.openInfoWindow(infoWindow,point); //开启信息窗口
+//     }
+//     map.addEventListener("click", showInfo);
 
 
-})
+//   };
+
+//   return {
+//     init: init
+//   };
+
+
+// })
 
 
 .factory('Timeline', function($http, Global) {

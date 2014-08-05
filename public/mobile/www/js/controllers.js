@@ -34,7 +34,8 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global) {
+.controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global, Authorize) {
+  Authorize.authorize();
   $rootScope.enable_drag = true;
 
   $scope.base_url = Global.base_url;
@@ -65,7 +66,8 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $timeout, Campaign, PhotoAlbum, Comment, Map, Global) {
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $timeout, Campaign, PhotoAlbum, Comment, Global, Authorize) {
+  Authorize.authorize();
   $rootScope.enable_drag = true;
 
   $scope.base_url = Global.base_url;
@@ -186,7 +188,8 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ScheduleListCtrl', function($scope, $rootScope, Campaign, Global) {
+.controller('ScheduleListCtrl', function($scope, $rootScope, Campaign, Global, Authorize) {
+  Authorize.authorize();
   $rootScope.enable_drag = false;
 
   moment.lang('zh-cn');
@@ -539,7 +542,8 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('TimelineCtrl', function($scope, $rootScope, Timeline) {
+.controller('TimelineCtrl', function($scope, $rootScope, Timeline, Authorize) {
+  Authorize.authorize();
   $rootScope.enable_drag = true;
 
   Timeline.getUserTimeline(function(time_lines) {
@@ -601,11 +605,11 @@ angular.module('starter.controllers', [])
   };
 })
 
-.directive('mapDirective', function(Map) {
-  return function(scope, element, attrs) {
-    Map.init(attrs.id, attrs.location);
-  };
-})
+// .directive('mapDirective', function(Map) {
+//   return function(scope, element, attrs) {
+//     Map.init(attrs.id, attrs.location);
+//   };
+// })
 
 
 .directive('uploadDirective', function() {
