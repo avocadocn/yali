@@ -53,7 +53,7 @@ div.use_edit_info(ng-show = '!loading')
       .info_side
         span.info_label #{__("BRIEF")}
       .info_detail
-        input.dl_input.dl_form-Control.editToggle(type="text" name="introduce" ng-model="user.introduce" ng-maxlength=40 tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak)
+        textarea.dl_input.dl_form-Control.editToggle(rows="3" cols="40" name="introduce" ng-model="user.introduce" ng-maxlength=70 tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak)
     .dl_row.clearfix
       .info_side
         span.info_label #{__("REGISTER_DATE")}

@@ -91,5 +91,5 @@ div.company-info(ng-show = '!loading')
       .info_side
         span.info_label #{__("BRIEF")}
       .info_detail
-        textarea.dl_input.editToggle.dl_form-Control(type="textarea" row="4" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit" ng-maxlength=140 tooltip="{{infoForm.brief.$invalid? '简介最长字数140字':''}}" tooltip-placement="right")
+        textarea.dl_input.editToggle.dl_form-Control(cols="40" row="4" name ="brief" ng-model="info.brief" ng-disabled="infoUnEdit" ng-maxlength=70 tooltip="{{infoForm.brief.$invalid? '简介最长字数140字':''}}" tooltip-placement="right")
 

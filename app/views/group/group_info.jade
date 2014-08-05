@@ -9,7 +9,7 @@ div(ng-show = '!loading' ng-controller="infoController")
       .info_side
         span.info_label #{__("TEAM_NAME")}
       .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="name" ng-model="name" ng-maxlength=20 tooltip="{{infoForm.name.$invalid? '队名最长字数20字':''}}" ng-disabled="unEdit")
+        input.dl_input.editToggle.dl_form-Control(type="text" name ="name" ng-model="$parent.name" ng-maxlength=20 tooltip="{{infoForm.name.$invalid? '队名最长字数20字':''}}" ng-disabled="unEdit")
     .dl_row.clearfix
       .info_side
         span.info_label #{__("COMPANY")}
@@ -45,7 +45,7 @@ div(ng-show = '!loading' ng-controller="infoController")
       .info_side
         span.info_label #{__("BRIEF")}
       .info_detail
-        textarea.dl_input.editToggle.dl_form-Control(type="textarea" rows="3" name ="brief" ng-model="team.brief" ng-maxlength=140 tooltip="{{infoForm.brief.$invalid? '简介最长字数140字':''}}" tooltip-placement="right" ng-disabled="unEdit")
+        textarea.dl_input.editToggle.dl_form-Control(rows="3" cols="40" name ="brief" ng-model="team.brief" ng-maxlength=70 tooltip="{{infoForm.brief.$invalid? '简介最长字数140字':''}}" tooltip-placement="right" ng-disabled="unEdit")
     .dl_row.clearfix
       .info_side
         span.info_label #{__("BUILD_TIME")}
