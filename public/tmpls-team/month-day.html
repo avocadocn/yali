@@ -1,0 +1,25 @@
+<div class="cal-month-day <%= cls %>">
+	<span class="pull-right day" data-cal-date="<%= data_day %>" data-cal-view="day" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
+	<% if (monthTip !== '' && monthTip != null) { %>
+		<span class="pull-right month"><%= monthTip %></span>
+	<% } %>
+	<%
+		if (events.length > 0) {
+			var count = 0;
+	%>
+		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
+			<%
+				_.each(events, function(event) {
+					if (count < 6) {
+			%>
+			<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" target="_blank" data-event-id="<%= event.id %>" data-event-class="<%= event['class'] %>"
+				class="pull-left event <%= event['class'] %>" data-toggle="tooltip"
+				title="<%= event.title %>"><div class="join_sign"></div></a>
+			<%
+					}
+					count++;
+				});
+			%>
+		</div>
+	<% } %>
+</div>

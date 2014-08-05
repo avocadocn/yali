@@ -10,6 +10,26 @@ var mongoose = require('mongoose'),
 var pagesize = 20;
 
 
+
+/**
+ * 获取一个队的所有未关闭的活动, 并按开始时间排序
+ * @param  {Object|String}   team_id  小队_id
+ * @param  {Function} callback callback(campaigns, err), campaigns为小队的所有活动, 类型为数组, 没有populate的mongoose.model('Campaign'), 没有找到则为空数组
+ */
+var getTeamAllCampaigns = function(team_id, callback) {
+  Campaign
+  .find({ 'team': team_id, 'active': true })
+  .sort('start_time')
+  .exec()
+  .then(function(campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function(err) {
+    callback([], err)
+  });
+};
+
+
 /**
  * 获取用户的所有活动
  * @param  {Object}   user       mongoose.model('User'), example:req.user
@@ -635,6 +655,16 @@ exports.getUserUnjoinCampaignsForList = function(req, res) {
   getUserUnjoinCampaigns(req.profile, false, function(campaigns) {
     var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.profile);
     res.send({ result: 1, campaigns: format_campaigns });
+  });
+};
+
+exports.getTeamCampaigns = function(req, res) {
+  getTeamAllCampaigns(req.params.teamId, function(campaigns, err) {
+    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+    res.send({
+      success: 1,
+      result: format_campaigns
+    });
   });
 };
 
