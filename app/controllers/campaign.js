@@ -308,6 +308,7 @@ var formatCampaignForApp = function(user, campaign) {
     'campaign_type': campaign.campaign_type,
     'start_time': campaign.start_time,
     'end_time': campaign.end_time,
+    'deadline': campaign.deadline,
     'is_joined': is_joined,
     'photo_album': campaign.photo_album,
     'member': campaign.member,
