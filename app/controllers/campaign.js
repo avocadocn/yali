@@ -877,18 +877,6 @@ exports.quitCampaign = function (req, res) {
             if(formation_index>-1){
               campaign.camp[camp_index].member.splice(formation_index,1);
             }
-            campaign.save(function (err) {
-              if(err) {
-                return res.send(err);
-              } else {
-                return res.send({ result: 1, msg: '退出活动成功',member:{
-                  'cid':cid,
-                  'uid':uid,
-                  'nickname':req.user.nickname,
-                  'photo':req.user.photo
-                }});
-              }
-            });
             break;
           }
         }
@@ -896,6 +884,18 @@ exports.quitCampaign = function (req, res) {
           return res.send({ result: 0, msg: '您没有参加该活动'});
         }
       }
+      campaign.save(function (err) {
+        if(err) {
+          return res.send(err);
+        } else {
+          return res.send({ result: 1, msg: '退出活动成功',member:{
+            'cid':cid,
+            'uid':uid,
+            'nickname':req.user.nickname,
+            'photo':req.user.photo
+          }});
+        }
+      });
     }
     else {
       return res.send({ result: 0, msg: '没有此活动'});

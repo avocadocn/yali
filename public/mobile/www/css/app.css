@@ -701,7 +701,8 @@ body {
   width: 80%;
   background-color: #3abde8;
   color: #fff;
-  border-bottom: 1px #fff solid;
+  border: 1px #fff solid;
+  border-radius: 16px;
 }
 .comment_edit form .comment_button {
   width: 20%;

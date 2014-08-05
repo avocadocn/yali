@@ -20,7 +20,7 @@
         </div>
         <div class="timeline_content">
           <div class="img_scroll">
-            <img class="photo" ng-src="{{base_url + photo.thumbnail_uri}}"ng-repeat="photo in time_line.photo_list">
+            <img class="photo" ng-src="{{base_url + photo.thumbnail_uri + '/90/90'}}"ng-repeat="photo in time_line.photo_list">
           </div>
           <a href="#/app/campaign_detail/{{ time_line.id }}">
             <p> {{time_line.content}}

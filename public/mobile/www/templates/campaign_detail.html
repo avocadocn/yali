@@ -87,7 +87,7 @@
                 <div  ng-repeat="photo in photo_page" class="campaign_photo_panel">
                   <div class="campaign_photo_border" ng-click="openModal(photo.index)">
                     <div class="campaign_photo_img_wrap">
-                      <img class="campaign_photo" ng-src="{{ base_url + photo.uri }}" thumbnail-photo-directive/>
+                      <img class="campaign_photo" ng-src="{{ base_url + photo.uri +'/360/240'}}" thumbnail-photo-directive/>
                     </div>
                     <div class="campaign_photo_ori_button_wrap">
                       <button class="icon ion-search campaign_photo_ori_button"></button>
