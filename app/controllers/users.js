@@ -22,7 +22,8 @@ var mongoose = require('mongoose'),
 // 3rd
 var validator = require('validator'),
   async = require('async'),
-  gm = require('gm');
+  gm = require('gm'),
+  UUID= require('../middlewares/uuid');
 
 // custom
 var encrypt = require('../middlewares/encrypt'),
@@ -157,14 +158,37 @@ exports.signout = function(req, res) {
 exports.loginSuccess = function(req, res) {
   res.redirect('/users/home');
 };
+exports.autoLogin = function(req, res, next){
+  User.findOne({_id:req.body.uid,app_token: req.body.app_token}, function(err, user) {
+    if(err || !user) {
+      console.log(err);
+      return  res.send({ result: 0, msg: '登录失败'});
+    } else {
+      req.login(user, function(err) {
+        if (err) {
+         return next(err);
+        }
+        next();
+      });
+    }
+  });
+
+}
 
 exports.appLoginSuccess = function(req, res) {
+  var app_token = UUID.id();
   var data = {
     _id: req.user._id,
     nickname: req.user.nickname,
-    role: req.user.role
+    role: req.user.role,
+    app_token: app_token
   };
-  res.send({ result: 1, msg: '登录成功', data: data });
+  req.user.app_token = app_token;
+  req.user.save(function(err){
+    if(!err){
+      res.send({ result: 1, msg: '登录成功', data: data });
+    }
+  });
 }
 
 exports.appLogout = function(req, res) {

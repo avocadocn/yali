@@ -21,12 +21,12 @@
     tr(ng-repeat="campaign_item in campaigns")
       //- td.emp_col
       //-   p
-      td.time_col
+      td.year_col
         p(ng-if="judgeYear($index)").year {{campaign_item.start_time  | date:'yyyy'}}
       td.time_col
         p.text-center.day {{ campaign_item.start_time  | day }}
         p.text-center.time {{ campaign_item.start_time | date:'HH:mm' }}
-      td.logo_col.text-center
+      td.logo_col
         a(ng-href="{{campaign_item.link}}")
           img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
           img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")

@@ -19,7 +19,7 @@ var finishCampaign = function(){
   });
 }
 
-var team_time_out = 40;
+var team_time_out = 30;
 //统计所有小组的活动数、人员参与数、评论数、照片从而得出分数
 var teamPoint = function(){
   CompanyGroup.find({'active':true}).populate('photo_album_list').exec(function(err,teams){
@@ -64,7 +64,8 @@ var teamPoint = function(){
             'comment' : parseInt(commentNum / 20),
             'participator' : participatorNum,
             'member' : memberNum * 10,
-            'provoke' : provoke
+            'provoke' : provoke,
+            'total' : campaignNum * 10 + parseInt(photoNum/5) + parseInt(commentNum / 20) + participatorNum + memberNum * 10 + provoke
           }
           value.save(function(err){
             if(err){

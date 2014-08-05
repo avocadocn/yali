@@ -53,8 +53,8 @@
 
     <ion-tab title="评论" icon="ion-chatbubble">
       <div class="comment_edit">
-        <span class="comment_add_button" ng-show="!viewFormFlag" ng-click="viewCommentForm()" ></span>
-        <form ng-show="viewFormFlag" name="comment_form">
+        <span class="comment_add_button" ng-show="!viewFormFlag" ng-animate="'reverse'" ng-click="viewCommentForm()" ></span>
+        <form ng-show="viewFormFlag" ng-animate="'slide-left-right-ios7'" name="comment_form">
           <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
           <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
         </form>

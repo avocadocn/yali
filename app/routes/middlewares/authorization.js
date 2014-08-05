@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
   Company = mongoose.model('Company'),
   Campaign = mongoose.model('Campaign'),
   Department = mongoose.model('Department');
+var userController = require('../../controllers/users');
 /**
  * Generic require login routing middleware
  */
@@ -401,4 +402,44 @@ exports.campaginAuthorize = function(req, res, next){
     return res.send(403,'forbidden');
   }
   next();
+}
+exports.appToken = function(req, res, next){
+  if (!req.user) {
+    var userId,appToken;
+    if(req.params.userId){
+      userId = req.params.userId;
+      appToken = req.params.appToken;
+    }
+    else if(req.body.userId){
+      userId = req.body.userId;
+      appToken = req.body.appToken;
+    }
+    else{
+      return res.send(403,'forbidden');
+    }
+    User
+    .findOne({
+         _id: req.params.userId,
+         app_token:req.params.appToken
+    })
+    .exec(function(err, user) {
+      console.log(user);
+      if(!err&&user){
+        req.login(user, function(err) {
+          if (err) {
+          return next(err);
+          }
+          else{
+            next();
+          }
+        });
+      }
+      else{
+        return res.send(403,'forbidden');
+      }
+    });
+  }
+  else{
+    next();
+  }
 }

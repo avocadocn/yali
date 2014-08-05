@@ -101,6 +101,10 @@ var CompanyGroup = new Schema({
         provoke:{
             type: Number,
             default: 0
+        },
+        total:{
+            type: Number,
+            default: 0
         }
     },
     photo_album_list: [{

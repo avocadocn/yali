@@ -10,15 +10,15 @@ mixin group_thumbnail(teams,team_class,team_head,j)
       each team,i in teams
         div.center-block(ng-if="#{i}<4" class='group '+team_class title="#{team.name}")
           a.center-block(href="/group/home/#{team._id}")
-            if team_class === 'leader'
-              .img_div
-                img.img.center-block.size_48(src="#{team.logo}")
-            else
-              img.center-block.size_48(src="#{team.logo}")
+            //-if team_class === 'leader'
+            //-.img_div
+            img.img.center-block.size_48(ng-cloak src="#{team.logo}/48/48")
+            //- else
+            //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
         div.center-block.clearfix(ng-if="#{i}>=4" ng-show='show[#{j}]' class='group '+team_class title="#{team.name}")
           a.center-block(href="/group/home/#{team._id}")
-            if team_class === 'leader'
-              img.center-block.size_48(src="#{team.logo}")
-            else
-              img.center-block.size_48(src="#{team.logo}")
-
+            //-if team_class === 'leader'
+            img.center-block.size_48(ng-cloak src="#{team.logo}/48/48")
+            //- else
+            //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
+            //-这些if else 不知何用

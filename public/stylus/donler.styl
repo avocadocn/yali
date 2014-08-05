@@ -378,9 +378,11 @@ textarea
       float left
       clear left
       .dl_md_12
-        width 475px
+        width 485px
         float left
-        margin left 5px
+        margin-left 0
+      .dl_md_1
+        margin-left 0
       .dl_modal_half_container
         width 280px
         float left
@@ -426,7 +428,7 @@ textarea
     text-align left
 
 .dl_btn_right
-  width 75px
+  width 90px
   height 34px
   color #fff
   line-height 1
@@ -807,17 +809,23 @@ textarea
   padding-bottom 20px !important
 .padding_top_0
   padding-top 0
-.dl_btn_new
-  color #fff
-  background-color buttonColor
+.join_btn, .quit_btn, .search_btn, .provoke_btn
   text-align center
   cursor pointer
-  background-image url('/img/icons/Plaine.png')
+  background-image url('/img/icons/single_add.png')
   background-repeat no-repeat
-  height 30px
-  width 100px 
+  padding-left 30px !important
+  background-position 5px 5px
+
+.quit_btn
+  background-image url('/img/icons/single_delete.png')
+  background-color transparent
+  border 1px solid #fff
+  color #fff
+  line-height 1
   &:hover
-    background-color buttonHoverColor
+    background-color #ddd
+
 
 .dl_btn
   margin 0
@@ -855,18 +863,26 @@ textarea
   color black
   background-color #e5e5e5
   &:hover
-    color white
+    color #fff
     background-color #ea6060
 .dl_btn_red
   background-color btnActionBgColor 
   border-color btnActionBgColor
-  color white
+  color #fff
   &:hover
     background-color btnActionHoverBgColor
     border-color btnActionHoverBgColor
 .dl_btn_submit
   width 80px
   height 26px 
+.search_btn
+  background-image url('/img/icons/search.png')
+  background-size 16px 16px
+  background-position 9px 9px
+.provoke_btn
+  background-image url('/img/icons/PointerW.png')
+  background-size 16px 16px
+  background-position 9px 9px
 .dl_close
   opacity 1
 .map_btn
@@ -1440,10 +1456,6 @@ familyHeight = 371.25px
     margin 20px 16px 10px 0
     border 1px solid #ddd
     padding 6px
-    .btn_join
-      //- position absolute
-      //- right 0
-      //- bottom -26px
     .itembox
       padding 10px 0
       word-break break-word
@@ -1469,9 +1481,12 @@ familyHeight = 371.25px
         float left
         margin-right 10px
       .text_container
-        width 150px
+        width 134px
         line-height 20px
         float left
+        word-break break-all
+        overflow hidden
+
       .button_container
         float right
     p
