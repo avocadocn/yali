@@ -193,6 +193,133 @@ var messageConcat = function(messages,rootScope,scope,reset){
 }
 
 
+
+integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+    $scope.showMapFlag=false;
+    $scope.location={name:'',coordinates:[]};
+    $("#start_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setStartDate', dateUTC);
+        $('#deadline').datetimepicker('setEndDate', dateUTC);
+    });
+    $("#end_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#start_time').datetimepicker('setEndDate', dateUTC);
+
+    });
+    $("#deadline").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+    });
+    $scope.$watch('member_max + member_min',function(newValue,oldValue){
+        if($scope.member_max<$scope.member_min){
+            $scope.campaign_form.$setValidity('ngMin', false);
+            $scope.campaign_form.$setValidity('ngMax', false);
+        }
+        else{
+            $scope.campaign_form.$setValidity('ngMin', true);
+            $scope.campaign_form.$setValidity('ngMax', true);
+        };
+    });
+    $rootScope.$watch('loadMapIndex',function(value){
+        if($rootScope.loadMapIndex){
+            if(value==1){
+                //加载地图
+                if(!window.map_ready){
+                    window.campaign_map_initialize = $scope.initialize;
+                    var script = document.createElement("script");  
+                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
+                    document.body.appendChild(script);
+                }
+                else{
+                    $scope.initialize();
+                }
+            }
+        }
+
+    });
+
+    $scope.initialize = function(){
+        $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
+        $scope.locationmap.centerAndZoom('上海',15);
+        $scope.locationmap.enableScrollWheelZoom(true);
+        $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+        var options = {
+            onSearchComplete: function(results){
+                // 判断状态是否正确
+                if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
+                    $scope.locationmap.clearOverlays();
+                    var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
+                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                    $scope.locationmap.centerAndZoom(nowPoint,15);
+                    var marker = new BMap.Marker(nowPoint);  // 创建标注
+                    $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
+                    marker.enableDragging();    //可拖拽
+                    $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                    marker.addEventListener("dragend", function changePoint(){
+                        var p = marker.getPosition();
+                        $scope.location.coordinates=[p.lng , p.lat];
+                    });
+                }
+            }
+        };
+        $scope.local = new BMap.LocalSearch($scope.locationmap,options);
+        window.map_ready =true;
+    };
+
+
+    $scope.showMap = function(){
+        if($scope.location.name==''){
+            alertify.alert('请输入地点');
+            return false;
+        }
+        else if($scope.showMapFlag ==false){
+            $scope.showMapFlag =true;
+            $scope.local.search($scope.location.name);
+        }
+        else{
+            $scope.local.search($scope.location.name);
+        }
+    };
+
+    $scope.sponsor = function() {
+        if($scope.member_max < $scope.member_min){
+            alertify.alert('最少人数须小于最大人数');
+        }
+        else{
+            try{
+                $http({
+                    method: 'post',
+                    url: '/group/campaignSponsor/'+ $rootScope.teamId,
+                    data:{
+                        theme: $scope.theme,
+                        location: $scope.location,
+                        content : $scope.content,
+                        start_time : $scope.start_time,
+                        end_time : $scope.end_time,
+                        member_min: $scope.member_min,
+                        member_max: $scope.member_max,
+                        deadline: $scope.deadline
+                    }
+                }).success(function(data, status) {
+                    //发布活动后跳转到显示活动列表页面
+                    window.location.reload();
+
+                }).error(function(data, status) {
+                    //TODO:更改对话框
+                    alertify.alert('DATA ERROR');
+                });
+
+            }
+            catch(e){
+                console.log(e);
+            }
+        }
+    };
+}]);
+
 integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
@@ -557,3 +684,325 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',func
 
 }]);
 
+
+integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+    $scope.search_type="team";
+    $scope.companies = [];
+    $scope.teams = [];
+    $scope.showMapFlag=false;
+    $scope.location={name:'',coordinates:[]};
+    $scope.modal=0;
+    $scope.result=0;//是否已搜索
+    $rootScope.modalNumber=0;
+
+    $rootScope.$watch('loadMapIndex',function(value){
+        if($rootScope.loadMapIndex){
+            if(value==2){
+                //加载地图
+                if(!window.map_ready){
+                    window.campaign_map_initialize = $scope.initialize;
+                    var script = document.createElement("script");  
+                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
+                    document.body.appendChild(script);
+                }
+                else{
+                    $scope.initialize();
+                }
+            }
+        }
+    });
+
+    //决定要打开哪个挑战的modal
+    $rootScope.$watch('modalNumber',function(){
+        if($rootScope.modalNumber){
+            if($rootScope.modalNumber!==2)
+                $scope.modal = 0;
+            else{
+                $scope.modal = 2;
+                $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
+                    $scope.similarTeams = data;
+                    if(data.length===1){
+                        $scope.modal=3;//直接跳到发起挑战页面
+                        $scope.team_opposite = $scope.similarTeams[0];
+                    }
+                });
+            }
+        }
+    });
+
+    //推荐小队
+    $rootScope.$watch('recommand',function(){
+        if($rootScope.recommand)
+            $scope.recommandTeam();
+    });
+
+
+    $("#competition_start_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.competition_date = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#competition_end_time').datetimepicker('setStartDate', dateUTC);
+    });
+    $("#competition_end_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#competition_start_time').datetimepicker('setEndDate', dateUTC);
+        $('#competition_deadline').datetimepicker('setEndDate', dateUTC);
+    });
+    $("#competition_deadline").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+    });
+    
+    $scope.recommandTeam = function(){
+        $scope.homecourt = true;
+        try{
+            $http({
+                method:'post',
+                url:'/search/recommandteam',
+                data:{
+                    gid : $rootScope.groupId,
+                    tid : $rootScope.teamId
+                }
+            }).success(function(data,status){
+                if(data.result===1){
+                    $scope.teams=data.teams;
+                }
+                else if(data.result===2)//没填主场
+                    $scope.homecourt=false;
+            }).error(function(data,status){
+               console.log('推荐失败'); 
+            });
+        }
+        catch(e){
+            console.log(e);
+        }
+    };
+
+    $scope.search = function() {
+        //按公司搜索
+        if($scope.search_type==='company'){
+            $scope.getCompany();
+        //按队名搜索
+        } else {
+            $scope.getTeam();
+        }
+        $scope.result=1;//已搜索，显示搜索结果
+    };
+
+    $scope.initialize = function(){
+        $scope.locationmap = new BMap.Map("competitionMapDetail");            // 创建Map实例
+        $scope.locationmap.centerAndZoom('上海',15);
+        $scope.locationmap.enableScrollWheelZoom(true);
+        $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+        var options = {
+            onSearchComplete: function(results){
+                // 判断状态是否正确
+                if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
+                    $scope.locationmap.clearOverlays();
+                    var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
+                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
+                    var marker = new BMap.Marker(nowPoint);  // 创建标注
+                    $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
+                    marker.enableDragging();    //可拖拽
+                    $scope.locationmap.centerAndZoom(nowPoint,15);
+                    $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
+                    marker.addEventListener("dragend", function changePoint(){
+                        var p = marker.getPosition();
+                        $scope.location.coordinates=[p.lng , p.lat];
+                    });
+                }
+            }
+        };
+        $scope.local = new BMap.LocalSearch($scope.locationmap,options);
+        window.map_ready =true;
+    };
+    
+    $scope.showMap = function(){
+        if($scope.location.name==''){
+            alertify.alert('请输入地点');
+            return false;
+        }
+        else if($scope.showMapFlag ==false){
+            $scope.showMapFlag =true;
+            $scope.local.search($scope.location.name);
+        }
+        else{
+            $scope.local.search($scope.location.name);
+        }
+    };
+
+    $scope.getCompany =function() {
+        try {
+            $scope.show_team = [];
+            $http({
+                method: 'post',
+                url: '/search/company',
+                data:{
+                    regx : $scope.s_value
+                }
+            }).success(function(data, status) {
+                $scope.companies = data;
+                var tmp = 0;
+                for(var i = 0; i < $scope.companies.length; i ++) {
+                    var team_tmp = $scope.companies[i].team;
+                    $scope.companies[i].team = [];
+                    for(var j = 0; j < team_tmp.length; j ++) {
+                        if(team_tmp[j].gid === $rootScope.groupId){
+                            if(team_tmp[j].id.toString() !== $rootScope.teamId){
+                                $scope.companies[i].team.push(team_tmp[j]);
+                            }
+                        }
+                    }
+                }
+                $scope.teams=[];
+                if($scope.companies.length <= 0) {
+                    alertify.alert("没有找到符合条件的公司!");
+                }else{
+                    for(var i = 0; i < $scope.companies.length; i ++) {
+                        $scope.show_team.push(false);
+                    }
+                }
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+
+
+    $scope.toggleTeam = function(cid,index){
+        for(var i = 0; i < $scope.companies.length; i ++){
+            if(i !== index){
+                $scope.show_team[i] = false;
+            }
+        }
+        $scope.show_team[index] = !$scope.show_team[index];
+        if($scope.show_team[index]){
+            $scope.getSelectTeam(cid);
+        }
+    }
+
+    $scope.getSelectTeam = function(cid) {
+        try {
+            $scope.teams=[];
+            $http({
+                method: 'post',
+                url: '/search/team',
+                data:{
+                    cid : cid,
+                    gid : $rootScope.groupId,
+                    tid : $rootScope.teamId,
+                    operate:'part'
+                }
+            }).success(function(data, status) {
+                $scope.teams = data;
+                var len = $scope.teams.length;
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    }
+
+    $scope.getTeam = function () {
+        try {
+            $http({
+                method: 'post',
+                url: '/search/team',
+                data:{
+                    regx : $scope.s_value,
+                    gid : $rootScope.groupId,
+                    tid : $rootScope.teamId,
+                    operate:'all'
+                }
+            }).success(function(data, status) {
+                $scope.teams = data;
+                $scope.companies=[];
+                if($scope.teams.length <= 0) {
+                    alertify.alert("没有找到符合条件的小队!");
+                }
+            }).error(function(data, status) {
+                alertify.alert('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+
+    $scope.provoke_select = function (team) {
+        $scope.team_opposite = team;
+        $scope.modal++;
+        $rootScope.loadMapIndex=2;
+    };
+        //约战
+    $scope.provoke = function() {
+        if($scope.member_max < $scope.member_min){
+            alertify.alert('最少人数须小于最大人数');
+        }
+        else{
+            if($scope.modal===1){//在自己的小队约战
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/group/provoke/'+$rootScope.teamId,
+                        data:{
+                            theme : $scope.theme,
+                            team_opposite_id : $scope.team_opposite._id,
+                            content : $scope.content,
+                            location: $scope.location,
+                            start_time: $scope.start_time,
+                            end_time: $scope.end_time,
+                            deadline: $scope.deadline,
+                            member_min : $scope.member_min,
+                            member_max : $scope.member_max,
+                        }
+                    }).success(function(data, status) {
+                        window.location.reload();
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
+                }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+            else{//在其它小队约战
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/group/provoke/'+$scope.team_opposite._id,
+                        data:{
+                            theme : $scope.theme,
+                            team_opposite_id : $rootScope.teamId,
+                            content : $scope.content,
+                            location: $scope.location,
+                            start_time: $scope.start_time,
+                            end_time: $scope.end_time,
+                            deadline: $scope.deadline,
+                            member_min : $scope.member_min,
+                            member_max : $scope.member_max
+                        }
+                    }).success(function(data, status) {
+                        window.location.reload();
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
+                }
+                catch(e) {
+                    console.log(e);
+                }            
+            }
+        }
+    };
+
+    $scope.preStep = function(){
+        $scope.modal--;
+    };
+
+
+}]);
