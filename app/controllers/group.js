@@ -480,7 +480,7 @@ exports.home = function(req, res) {
           'teamId' : req.params.teamId,
           'tname': req.companyGroup.name,
           'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-          'score': req.companyGroup.score ? req.companyGroup.score : 0,
+          'score': req.companyGroup.score ? (req.companyGroup.score.member +  req.companyGroup.score.campaign +req.companyGroup.score.provoke +req.companyGroup.score.participator +req.companyGroup.score.comment +req.companyGroup.score.album) : 0,
           'logo': req.companyGroup.logo,
           'group_id': req.companyGroup._id,
           'cname': req.companyGroup.cname,
@@ -537,7 +537,7 @@ exports.home = function(req, res) {
               'teamId' : req.params.teamId,
               'tname': req.companyGroup.name,
               'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-              'score': req.companyGroup.score ? req.companyGroup.score : 0,
+              'score': req.companyGroup.score ? (req.companyGroup.score.member +  req.companyGroup.score.campaign +req.companyGroup.score.provoke +req.companyGroup.score.participator +req.companyGroup.score.comment +req.companyGroup.score.album) : 0,
               'role': req.role,
               'logo': req.companyGroup.logo,
               'group_id': req.companyGroup._id,
@@ -727,6 +727,40 @@ exports.provoke = function (req, res) {
                     if (err) {
                           console.log('保存约战动态时出错' + err);
                         }else{
+
+                          CompanyGroup.update({'_id':my_team_id},{'$inc':{'score.provoke':5}},function (err,team){
+                            if(err){
+                              console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
+                            }
+                          });
+                          // var provoke = team.score.provoke;
+                          // var campaign = team.score.campaign;
+                          // var member = team.score.member;
+                          // var participator = team.score.participator;
+                          // var comment = team.score.comment;
+                          // var album = team.score.album;
+
+                          // provoke = (provoke == undefined || provoke == null) ? 0 : (provoke + 5);
+                          // campaign = (campaign == undefined || campaign == null) ? 0 : campaign;
+                          // member = (member == undefined || member == null) ? 0 : member;
+                          // participator = (participator == undefined || participator == null) ? 0 : participator;
+                          // comment = (comment == undefined || comment == null) ? 0 : comment;
+                          // album = (album == undefined || album == null) ? 0 : album;
+
+                          // team.score = {
+                          //   'provoke':provoke,
+                          //   'campaign':campaign,
+                          //   'member':member,
+                          //   'participator':participator,
+                          //   'comment':comment,
+                          //   'album':album
+                          // }
+
+                          //console.log(team.score);
+
+                          team.save(function(err){
+                            console.log('PROVOKE_POINT_FAILED!',err);
+                          });
                           if(team_opposite.leader.length > 0){
                             var param = {
                               'type':'private',
@@ -844,6 +878,11 @@ exports.responseProvoke = function (req, res) {
           'auto':true
         };
         message.sendToOne(req,res,param);
+        CompanyGroup.update({'_id':{'$in':[rst[0]._id,rst[1]._id]}},{'$inc':{'score.provoke':15}},function (err,team){
+          if(err){
+            console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
+          }
+        });
         return res.send({'result':1,'msg':'SUCCESS'});
       }
     });
@@ -901,6 +940,11 @@ exports.cancelProvoke = function (req, res) {
           'auto':true
         };
         message.sendToOne(req,res,param);
+        CompanyGroup.update({'_id':rst[0]._id},{'$inc':{'score.provoke':-15}},function (err,team){
+          if(err){
+            console.log('CANCEL_PROVOKE_POINT_FAILED!',err);
+          }
+        });
         return res.send({'result':1,'msg':'SUCCESS'});
       }
     });

@@ -77,7 +77,32 @@ var CompanyGroup = new Schema({
     },
     entity_type: String,
     brief: String,
-    score: Number,                //和增强组件里的score相同,避免多表查询,注意保持一致性!
+    score: {
+        campaign:{
+            type: Number,
+            default: 0
+        },
+        member:{
+            type: Number,
+            default: 0
+        },
+        participator:{
+            type: Number,
+            default: 0
+        },
+        comment:{
+            type: Number,
+            default: 0
+        },
+        album:{
+            type: Number,
+            default: 0
+        },
+        provoke:{
+            type: Number,
+            default: 0
+        }
+    },
     photo_album_list: [{
         type: Schema.Types.ObjectId,
         ref: 'PhotoAlbum'
