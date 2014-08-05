@@ -414,9 +414,8 @@ textarea {
   clear: left;
 }
 .dl-modal .dl-modal-body .dl_modal_container .dl_md_12 {
-  width: 475px;
+  width: 480px;
   float: left;
-  margin: left 5px;
 }
 .dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container {
   width: 280px;
@@ -909,18 +908,19 @@ textarea {
 .padding_top_0 {
   padding-top: 0;
 }
-.dl_btn_new {
-  color: #fff;
-  background-color: #3498db;
+.join_btn,
+.quit_btn,
+.search_btn {
   text-align: center;
   cursor: pointer;
-  background-image: url("/img/icons/Plaine.png");
+  background-image: url("/img/icons/single_add.png");
   background-repeat: no-repeat;
-  height: 30px;
-  width: 100px;
+  padding-left: 30px !important;
+  background-position: 5px 5px;
 }
-.dl_btn_new:hover {
-  background-color: #2980b9;
+.quit_btn {
+  background-image: url("/img/icons/single_delete.png");
+  background-color: none;
 }
 .dl_btn {
   margin: 0;
@@ -980,6 +980,10 @@ textarea {
 .dl_btn_submit {
   width: 80px;
   height: 26px;
+}
+.search_btn {
+  background-image: url("/img/icons/search.png");
+  background-size: 24px 24px;
 }
 .dl_close {
   opacity: 1;
@@ -1722,7 +1726,7 @@ dl_messagebox,
   margin-right: 10px;
 }
 .dl_allteaminfo_emp .teamitem .title .text_container {
-  width: 150px;
+  width: 135px;
   line-height: 20px;
   float: left;
 }

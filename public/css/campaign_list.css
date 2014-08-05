@@ -1,3 +1,6 @@
+.dl_campaign_list .dl_btn {
+  margin-top: 13px;
+}
 .campaign_table tr:first-child td {
   border-top: none;
 }
@@ -21,19 +24,26 @@
   margin-top: 4px;
   font-size: 22px;
 }
-.campaign_table .time_col .year {
-  font-size: 12px;
-}
 .campaign_table .time_col .time {
   font-size: 12px;
 }
+.campaign_table .year_col {
+  width: 57px;
+  padding-right: 2px;
+}
+.campaign_table .year_col .year {
+  font-size: 12px;
+  padding: 8px 0 0 20px;
+}
 .campaign_table .logo_col {
   width: 140px;
+  padding-right: 10px;
 }
 .campaign_table .logo_col .campaign_logo {
   width: 64px;
   height: 64px;
-  margin-top: 2px;
+  margin: 3px 0;
+  margin-left: 65px;
 }
 .campaign_table .content_col p {
   margin: 0;

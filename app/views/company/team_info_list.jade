@@ -65,9 +65,9 @@ div(ng-show = '!loading' ng-if="role !== 'HR'")
           a(href="/group/home/{{team._id}}") {{team.name}}
         .button_container  
           //- 不属于显示加组按钮
-          button.dl_btn.dl_btn_small.btn_join(ng-if="role==='EMPLOYEE'&&!team.belong" ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
+          button.dl_btn.dl_btn_small.join_btn(ng-if="role==='EMPLOYEE'&&!team.belong" ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}
           //-属于则显示退组按钮
-          button.dl_btn_small.btn_join.cancel_btn(ng-if="role==='EMPLOYEE'&&team.belong" ng-click="closeGroup($index)" data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+          button.dl_btn_small.quit_btn.cancel_btn(ng-if="role==='EMPLOYEE'&&team.belong" ng-click="closeGroup($index)" data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
         .text_container
           span 队员:{{team.member.length}}
       .itembox
