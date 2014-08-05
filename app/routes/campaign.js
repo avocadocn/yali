@@ -7,7 +7,7 @@ module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:pageId/:campaignType/:start_time', authorization.listAuthorize, campaign.getCampaigns);
   app.post('/campaign/cancel/:campaignId', authorization.campaginAuthorize, campaign.cancelCampaign);
   app.get('/campaign/detail/:campaignId', authorization.campaginAuthorize, campaign.renderCampaignDetail);
-  app.get('/campaign/getCampaigns/:campaignId', authorization.campaginAuthorize, campaign.getCampaignDetail);
+
 
   app.get('/campaign/team/calendar/:teamId', campaign.getTeamCampaigns);
 
@@ -24,9 +24,10 @@ module.exports = function(app) {
   app.get('/campaign/user/all/list/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForList);
   app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);
   app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
-
-  app.get('/campaign/user/all/applist/:userId', authorization.userAuthorize, campaign.getUserAllCampaignsForAppList);
-  app.get('/campaign/user/all/appcalendar/:userId', authorization.userAuthorize, campaign.getUserAllCampaignsForAppCalendar);
+  //app
+  app.get('/campaign/getCampaigns/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignDetail);
+  app.get('/campaign/user/all/applist/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserAllCampaignsForAppList);
+  app.get('/campaign/user/all/appcalendar/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserAllCampaignsForAppCalendar);
 
   app.param('campaignId', campaign.campaign);
 };

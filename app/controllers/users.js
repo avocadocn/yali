@@ -174,6 +174,7 @@ exports.autoLogin = function(req, res, next){
   });
 
 }
+
 exports.appLoginSuccess = function(req, res) {
   var app_token = UUID.id();
   var data = {
@@ -185,7 +186,6 @@ exports.appLoginSuccess = function(req, res) {
   req.user.app_token = app_token;
   req.user.save(function(err){
     if(!err){
-      console.log(req.user);
       res.send({ result: 1, msg: '登录成功', data: data });
     }
   });

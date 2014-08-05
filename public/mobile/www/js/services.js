@@ -116,7 +116,7 @@ angular.module('starter.services', [])
 
   // callback(campaign)
   var getCampaign = function(id, callback) {
-    $http.get(Global.base_url + '/campaign/getCampaigns/' + id)
+    $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
     .success(function(data, status) {
       var campaign = data.campaign;
       for (var i = 0; i < campaign_list.length; i++) {
@@ -132,7 +132,7 @@ angular.module('starter.services', [])
   };
     // callback(campaign)
 var getCampaignDetail = function(id, callback) {
-    $http.get(Global.base_url + '/campaign/getCampaigns/' + id)
+    $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
     .success(function(data, status) {
       var campaign = data.campaign;
       if (callback) {
@@ -142,7 +142,7 @@ var getCampaignDetail = function(id, callback) {
   };
   // callback(campaign_list)
   var getUserCampaignsForList = function(callback) {
-    $http.get(Global.base_url + '/campaign/user/all/applist/'+ Global.user._id)
+    $http.get(Global.base_url + '/campaign/user/all/applist/'+ Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status, headers, config) {
       campaign_list = data.campaigns;
       callback(campaign_list);
@@ -150,7 +150,7 @@ var getCampaignDetail = function(id, callback) {
   };
 
   var getUserCampaignsForCalendar = function(callback) {
-    $http.get(Global.base_url + '/campaign/user/all/appcalendar/' + Global.user._id)
+    $http.get(Global.base_url + '/campaign/user/all/appcalendar/' + Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status) {
       callback(data.campaigns);
     });
@@ -323,7 +323,7 @@ var getCampaignDetail = function(id, callback) {
    */
   var getCampaignComments = function(id, callback) {
     // why post?
-    $http.post(Global.base_url + '/comment/pull/campaign/' + id, { host_id: id })
+    $http.post(Global.base_url + '/comment/pull/campaign/' + id, { host_id: id,userId:Global.user._id, appToken:Global.user.app_token })
     .success(function(data, status) {
       callback(data.comments);
     });
@@ -418,7 +418,7 @@ var getCampaignDetail = function(id, callback) {
 
   // callback(time_lines)
   var getUserTimeline = function(callback) {
-    $http.get(Global.base_url + '/users/getTimelineForApp/'+ Global.user._id)
+    $http.get(Global.base_url + '/users/getTimelineForApp/'+ Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status) {
       callback(data.time_lines);
     });
