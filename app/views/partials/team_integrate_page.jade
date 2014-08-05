@@ -12,7 +12,7 @@ div(ng-show = '!loading' ng-controller="infoController")
       ul.slider_nav
         li(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
           a
-            img(src="{{ photo.uri }}/160/90")
+            img(ng-src="{{ photo.uri }}/160/90")
 
     .team_calendar_box.clearfix
       .dl_row.clearfix

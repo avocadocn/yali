@@ -3,6 +3,8 @@ extends ../layouts/integrate
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
+  link(rel="stylesheet" href="/lib/bootstrap-calendar/css/calendar.css")
+  link(rel="stylesheet" href="/css/custom_calendar.css")
 
 block baseInfo
   .dl_container.clearfix
@@ -75,38 +77,46 @@ block aside
     span.subtitle 活动预告
     .bar
       //- PK型活动
-      if (campaign.campaign_type == '4' || campaign.campaign_type == '5 '|| campaign.campaign_type == '9')
-        .event_pk
-          each camp in campaign.camp
-            .team
-              img(src="#{camp.logo}/64/64")
-              span= camp.tname
-      //- 一起玩型活动
-      if (campaign.campaign_type == '3' || campaign.campaign_type == '7' || campaign.campaign_type == '8')
-        .event_play
-          each camp in campaign.camp
-            p
-             = camp.tname
-            p
-             = camp.logo
+      if (campaign.campaign_type == '4' || campaign.campaign_type == '5 '|| campaign.campaign_type == '7')
+        .event_pk.clearfix
+          .team
+            img(src="#{campaign.camp[0].logo}/64/64")
+            span= campaign.camp[0].tname
+          .vs VS
+          .team
+            img(src="#{campaign.camp[1].logo}/64/64")
+            span= campaign.camp[1].tname
       //- 自己玩的活动
-      if campaign.campaign_type == '1'
+      if campaign.campaign_type == '2'
         .event_solo
-        p 自己玩
-    
+
     .info
-      = moment(campaign.start_time).format('YYYY-MM-DD HH:MM')
-      = campaign.location.name
+      p 主题: #{campaign.theme}
+      p 内容: #{campaign.content}
+      p 时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
+      p 地点: #{campaign.location.name}
+      if campaign.campaign_type == '2'
+        p
+          if campaign.location.coordinates.length==2
+            a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
+              img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=100&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=16&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labelStyles=#{campaign.location.name},1,14,0xffffff,0x000fff,1")
+          else
+            img.map_size(src="/img/sign_bg.jpg")
+    .remindbox
+      p.remind_text 距离活动还有
+      p#remind_time.remind_time
+      p#campaign_start_time.hidden= moment(campaign.start_time).format('YYYY-MM-DD HH:mm')
+
   .locationbox
     span.subtitle 主场
     each home in home_court
       p
         = home.name
       if home.loc.coordinates.length==2
-          a(href="http://api.map.baidu.com/marker?location=#{home.loc.coordinates[1]},#{home.loc.coordinates[0]}&title=活动地点&content=#{home.name}&output=html" target="_blank")
-            img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&zoom=16&markers=#{home.name}|#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{home.name}|#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&labelStyles=#{home.name},1,14,0xffffff,0x000fff,1")
-        else
-          img.map_size(src="/img/sign_bg.jpg")
+        a(href="http://api.map.baidu.com/marker?location=#{home.loc.coordinates[1]},#{home.loc.coordinates[0]}&title=活动地点&content=#{home.name}&output=html" target="_blank")
+          img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&zoom=16&markers=#{home.name}|#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{home.name}|#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&labelStyles=#{home.name},1,14,0xffffff,0x000fff,1")
+      else
+        img.map_size(src="/img/sign_bg.jpg")
   .thumbnailbox
     span.subtitle 相册
     each photo_album in photo_album_thumbnails
@@ -119,3 +129,7 @@ append footExt
   script(src="/lib/jquery-form/jquery.form.js")
   script(src="/js/jquery.Jcrop.min.js")
   script(src="/js/controllers/integrateGroup.js")
+  script(src="/lib/underscore/underscore.js")
+  script(src="/js/language/zh-CN.js")
+  script(src="/lib/bootstrap-calendar/js/calendar.js")
+  //-script(src="/js/donler-carousel.js")

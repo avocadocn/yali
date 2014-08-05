@@ -135,6 +135,7 @@ exports.teampagetemplate =function(req,res){
 //小队聚合首页 TODO
 exports.teampage = function(req, res) {
   console.log('teampage render');
+  moment.lang('zh-cn');
   var cid = req.companyGroup.cid.toString();
   async.waterfall([
     function(callback) {
@@ -178,7 +179,7 @@ exports.teampage = function(req, res) {
 
 
       Campaign.find({'team':req.params.teamId})
-        .sort({'create_time':-1})
+        .sort('-create_time')
         .limit(1)
         .exec()
         .then(function(campaign){
@@ -196,7 +197,7 @@ exports.teampage = function(req, res) {
     },
     function(teamMoreInfo, callback) {
       if(req.role==='HR' || req.role ==='GUESTHR'){
-        
+
         res.render('group/teampage', {
           'role': req.role,
           'teamId' : req.params.teamId,

@@ -1554,17 +1554,47 @@ familyHeight = 371.25px
         margin-bottom 0
         float left
         padding 0
-        li 
+        li
           display inline-block
   .newcampainbox
+    height 270px
     .bar
       .event_pk
+        position relative
+        height 85px
+        .team, .vs
+          display block
+          float left
         .team
           width 40%
-          display inline-block
+          text-align center
+          span
+            display block
+            text-overflow ellipsis
+            overflow hidden
+            white-space nowrap
+        .vs
+          width 20%
+          text-align center
+          line-height 85px
+          font-size 36px
+    .info
+      p
+        margin 0
+      .map_size
+        width 100%
+        height 100px
+    .remindbox
+      .remind_text
+        margin 5px 0
+        text-align center
+      .remind_time
+        margin 0
+        text-align center
+        border solid 1px gray
   .subtitle
     display block
-    margin: 0 0 10px
+    margin 0 0 10px
   .thumbnail_img
     border 0
 

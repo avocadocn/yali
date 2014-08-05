@@ -681,6 +681,22 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',func
         });
     });
 
+    var remind_time = $('#remind_time');
+    var start_time = new Date($('#campaign_start_time').text());
+
+    var handle = setInterval(function() {
+
+        start_time.setSeconds(start_time.getSeconds());
+        if (start_time < Date.now()) {
+            remind_time.text('活动已开始');
+            clearInterval(handle);
+            return;
+        }
+        var during = moment.duration(moment(start_time).diff(Date.now()));
+
+        remind_time.text(during.days() + '天' + during.hours() + '小时' + during.minutes() + '分' + during.seconds() + '秒');
+    }, 1000);
+
 
 }]);
 
