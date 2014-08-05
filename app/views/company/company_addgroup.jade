@@ -7,15 +7,14 @@
     .group.col-xs-2(ng-repeat='group in groupModel.groups' ng-class="{'active':groupModel.selected==group.type, 'inactive':groupModel.selected!=group.type}")
       input(type='radio' name='group' id='{{group._id}}' value='{{group.type}}' ng-model='groupModel.selected' ng-change='groupModel.select()')
       label.img_contain(class='size_80 group_'+'{{group._id}}' for='{{group._id}}') {{group.type}}
-  .form-group.group_next.row.margin_top_15
-
+  form.form-group.group_next.row.margin_top_15(name="newgroup_form")
     label.info_label.control-label.col-md-1.col-md-offset-1 队名
     .col-md-6
-      input.dl_input.form-control(type='text' name='name' ng-model='groupModel.tname')
+      input.dl_form-Control(type='text' name='name' ng-model='groupModel.tname' ng-maxlength=20 tooltip="{{newgroup_form.name.$invalid? '队名最长字数20字':''}}" required)
     //- 将来可考虑新建队时加简介
     //- .group_next.row
     //-   .col-md-2
     //-     label.info_label.control-label 简介
     //-       input.dl_input(type='text' name='name' ng-model='tbrief')
     .col-md-4
-        button.dl_btn.dl_btn_large(ng-disabled="groupModel.tname.length===0 || groupModel.selected==='' " ng-click='groupModel.save()') 保存
+        button.dl_btn.dl_btn_large(ng-disabled="groupModel.selected==='' || newgroup_form.$invalid " ng-click='groupModel.save()' ng-disabled="newgroup_form.$invalid") 保存

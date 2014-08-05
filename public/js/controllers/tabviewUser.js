@@ -112,7 +112,8 @@ var messageConcat = function(messages,rootScope,scope,reset){
 }
 tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-         $rootScope.nowTab = window.location.hash.substr(2);
+         
+         
     }
 ]);
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',

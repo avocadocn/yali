@@ -378,8 +378,11 @@ textarea
       float left
       clear left
       .dl_md_12
-        width 480px
+        width 485px
         float left
+        margin-left 0
+      .dl_md_1
+        margin-left 0
       .dl_modal_half_container
         width 280px
         float left
@@ -425,7 +428,7 @@ textarea
     text-align left
 
 .dl_btn_right
-  width 75px
+  width 90px
   height 34px
   color #fff
   line-height 1
@@ -806,7 +809,7 @@ textarea
   padding-bottom 20px !important
 .padding_top_0
   padding-top 0
-.join_btn, .quit_btn, .search_btn
+.join_btn, .quit_btn, .search_btn, .provoke_btn
   text-align center
   cursor pointer
   background-image url('/img/icons/single_add.png')
@@ -816,7 +819,13 @@ textarea
 
 .quit_btn
   background-image url('/img/icons/single_delete.png')
-  background-color none
+  background-color transparent
+  border 1px solid #fff
+  color #fff
+  line-height 1
+  &:hover
+    background-color #ddd
+
 
 .dl_btn
   margin 0
@@ -868,7 +877,12 @@ textarea
   height 26px 
 .search_btn
   background-image url('/img/icons/search.png')
-  background-size 24px 24px
+  background-size 16px 16px
+  background-position 9px 9px
+.provoke_btn
+  background-image url('/img/icons/PointerW.png')
+  background-size 16px 16px
+  background-position 9px 9px
 .dl_close
   opacity 1
 .map_btn
@@ -1467,9 +1481,12 @@ familyHeight = 371.25px
         float left
         margin-right 10px
       .text_container
-        width 135px
+        width 134px
         line-height 20px
         float left
+        word-break break-all
+        overflow hidden
+
       .button_container
         float right
     p

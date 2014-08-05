@@ -2,42 +2,44 @@ form(name="search_form")
   .dl-modal-header
     button(class="close" data-dismiss="modal" aria-hidden="true")
       img(ng-src='/img/icons/icon_close.png')
-    .head#myModalLabel #{__("SEARCH")}#{__("COMPETITOR")}
+    .head#myModalLabel 找对手
   .dl-modal-body
-    br
+    .dl_modal_container
+        span.subtitle 搜索
     .dl_modal_container
       .dl_row
         .dl_md_12
-          input.dl_modal_input.dl_form-Control(placeholder="请输入搜索关键字,可以是公司名或者小队名" type="text" ng-model="s_value" required)
+          input.dl_form-Control(placeholder="请输入搜索关键字,可以是公司名或者小队名" type="text" name="name" ng-model="s_value" required)
         .dl_md_1
           button.dl_btn_right.search_btn(type='submit' ng-click="search()" ng-disabled="search_form.$invalid") 搜索
     .dl_modal_container
-      .dl_row
-        .dl_md_3
-          input(type="radio" name="searchRadio"  ng-model="search_type" value="team" id="searchRadio_team")
-          span(for="searchRadio_team") 按小队搜索
-        .dl_md_3
-          input(type="radio" name="searchRadio"  ng-model="search_type" value="company" id="searchRadio_company")
-          span(for="searchRadio_company") 按公司搜索
+      .dl_md_3
+        input(type="radio" name="searchRadio"  ng-model="search_type" value="team" id="searchRadio_team")
+        span(for="searchRadio_team") 按小队搜索
+      .dl_md_3
+        input(type="radio" name="searchRadio"  ng-model="search_type" value="company" id="searchRadio_company")
+        span(for="searchRadio_company") 按公司搜索
     .dl_modal_container.margin_top_15(ng-show='!result')
       .dl_row
-        span.head 推荐对手
+        span.subtitle 附近对手
         span.warning_words.margin_left_15(ng-show='!homecourt') (请准确填写小队主场信息，否则donler将无法为您推荐附近的小队！)
       .dl_row(ng-if='teams.length==0')
         span.margin_left_15 没有推荐的小队(￣^￣)ゞ
       .dl_row.dl_height(ng-repeat="team in teams")
         .dl_md_1
-          img.size_80(ng-src="{{team.logo}}")
+          img.size_56(ng-src="{{team.logo}}/56/56")
         .dl_md_10
           .group_row_1
             a(href="/group/home/{{team._id}}/#/group_info" target="_blank")
               span {{team.name}}
           .group_row
-              span 队员人数: {{team.member.length}}
-          .group_row
-              span 主场:{{team.home_court[0].name}}
+            //-以后换积分
+            //- .dl_md_5
+            //-   span 队员人数: {{team.member.length}}
+            span 主场:{{team.home_court[0].name}}
+            span(ng-if="team.home_court[1]") 、{{team.home_court[1].name}}
         .dl_md_1
-          button.dl_btn_right(ng-click="provoke_select(team)") 挑战
+          button.dl_btn_right.provoke_btn(ng-click="provoke_select(team)") 动TA一下
     .dl_modal_container.margin_top_15(ng-show='result')
       .dl_row
         span.subtitle 搜索结果
@@ -68,23 +70,22 @@ form(name="search_form")
               .dl_md_name
                 span {{team.name}}
               .dl_md_right
-                a(ng-click="provoke_select(team)") 
-                  span 挑战
+                button.dl_btn_right.provoke_btn(ng-click="provoke_select(team)") 动TA一下
           hr.dl_little_hr
     .dl_modal_container(ng-if="companies.length == 0" ng-show='result')
       .dl_row.dl_height(ng-repeat="team in teams")
         .dl_md_1
-          img.size_80(ng-src="{{team.logo}}")
+          img.size_56(ng-src="{{team.logo}}/56/56")
         .dl_md_10
           .group_row_1
             a(href="/group/home/{{team._id}}/#/group_info" target="_blank")
               span {{team.name}}
-          .group_row
-              span 队员人数: {{team.member.length}}
+          //- .group_row
+          //-     span 队员人数: {{team.member.length}}
           .group_row(ng-show="team.home_court[0].name")
               span 主场:{{team.home_court[0].name}}
         .dl_md_1
-          button.dl_btn_right(ng-click="provoke_select(team)") 挑战
+          button.dl_btn_right.provoke_btn(ng-click="provoke_select(team)") 动TA一下
   br
   br
   .dl-modal-footer.margin_top_20

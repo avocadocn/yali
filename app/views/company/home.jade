@@ -7,7 +7,7 @@ block baseInfo
   .dl_container.clearfix
     .aside
       img.size_80.img_contain(ng-src="#{logo ? logo :'/img/icons/default_company_logo.png'}")
-    .main.top-main
+    .top-main
       .dl_row
         label.head= cname
       //-.dl_row.height_60
@@ -23,10 +23,20 @@ block baseInfo
         //-.score_container.margin_top_5
           label.info_border #{__('WIN_RATE')}
           span.info_right_border 100%
-        if role === 'HR'
-          .score_container.margin_top_5
-            button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") #{__('SPONSOR')}#{__('COMPANY')}#{__('CAMPAIGN')}
-            a.clearLinkUnderline.dl_btn.dl_btn_small.margin_left_5(href="/message/home#/send") 消息中心
+    if role === 'HR'
+      .top-side
+        a.btn_container(data-toggle="modal" data-target="#sponsorCampaignModel")
+          .btn_icon
+            img(src='/img/icons/Pulse.png')
+          .btn_text
+            span.subtitle 发活动
+        //-button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") #{__('SPONSOR')}#{__('COMPANY')}#{__('CAMPAIGN')}
+        a.btn_container(href="/message/home#/send")
+          .btn_icon
+            img(src='/img/icons/Megaphone.png')
+          .btn_text
+            span.subtitle 消息站
+        //-a.clearLinkUnderline.dl_btn.dl_btn_small.margin_left_5(href="/message/home#/send") 消息中心
     .ad-top
 block panel
   div(ng-init="role='#{role}'")
