@@ -8,7 +8,7 @@ block baseInfo
   .dl_container.clearfix
     .aside
       img.size_80.img_contain(src="#{logo}")
-    .main.top-main
+    .top-main
       .dl_row
         //-小队名
         label.head= tname
@@ -28,21 +28,43 @@ block baseInfo
         //-.score_container
           span.info_border #{__("WIN_RATE")}
           span.info_border.info_right_border 100%
-        if role ==='HR' || role ==='LEADER'
-          .score_container.margin_left_30
-            button.dl_btn.dl_btn_small(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
-            button.dl_btn.dl_btn_small(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel") 找对手
-            a.clearLinkUnderline.dl_btn.dl_btn_small.margin_left_5(href="/message/home/#{teamId}#/send") 消息中心
+    .top-side
+      if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
+        .top-side
+          //-退出
+          button.pull-right.cancel_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+      if  role === 'PARTNERLEADER' || role==='PARTNER'
+        .top-side
+          //-加入
+          button.pull-right.dl_btn.dl_btn_small(ng-click="joinGroup()") #{__("JOIN_GROUP")}      
+      if role ==='HR' || role ==='LEADER'
+        //-管理
+        .group_btn_container
+          a.btn_container(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel")
+            .btn_icon
+              img(src='/img/icons/Pulse.png')
+            .btn_text
+              span.subtitle 发活动
+          a.btn_container(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel")
+            .btn_icon
+              img(src='/img/icons/Plaine.png')
+            .btn_text
+              span.subtitle 找对手
+          a.btn_container(href="/message/home/#{teamId}#/send")
+            .btn_icon
+              img(src='/img/icons/Megaphone.png')
+            .btn_text
+              span.subtitle 消息站
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
-        if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
-          .score_container
-            button.pull-right.close_btn.dl_btn_small(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
-        if  role === 'PARTNERLEADER' || role==='PARTNER'
-          .score_container
-            button.pull-right.close_btn.dl_btn_small(ng-click="joinGroup()") #{__("JOIN_GROUP")}
-        if role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER'
-          .score_container
-            button.pull-right.dl_btn.dl_btn_small(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel") 动TA一下
+
+      if role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER'
+        //-动一下
+        .group_btn_container
+          a.btn_container(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel")
+            .btn_icon
+              img(src='/img/icons/Pointer.png')
+            .btn_text
+              span.subtitle 动TA一下
 block panel
   div(ng-init="teamId='#{teamId}';groupId='#{gid}';teamName='#{tname}';role='#{role}'")
     ul.nav.nav-tabs

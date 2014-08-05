@@ -204,21 +204,21 @@ textarea
   white-space nowrap
 
 .dl_head
-    max-width 1020px
-    width auto
-    min-width miniPageWidth
-    margin 0 auto
-    padding 0 2rem
-    .user_img 
-      display inline-block
-      img
-        display block
-    .user_name
-      display inline-block
-      max-width 120px
-      overflow hidden
-      text-overflow ellipsis
-      white-space nowrap
+  max-width 1020px
+  width auto
+  min-width miniPageWidth
+  margin 0 auto
+  padding 0 2rem
+  .user_img 
+    display inline-block
+    img
+      display block
+  .user_name
+    display inline-block
+    max-width 120px
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
 
 .dl_block
   display block
@@ -377,6 +377,10 @@ textarea
       width 100%
       float left
       clear left
+      .dl_md_12
+        width 475px
+        float left
+        margin left 5px
       .dl_modal_half_container
         width 280px
         float left
@@ -570,17 +574,62 @@ textarea
   width 73.4%
   margin-left 5px
   float left
+.group_btn_container
+  padding-top 58px
+.btn_container
+  &:hover
+    -webkit-animation scaleFade 0.5s
+    animation scaleFade 0.5s
+  float left
+  .btn_icon
+    float left
+    border-radius 100%
+    border 2px solid buttonColor
+    width 44px
+    height 44px
+    padding 7px
+    background-color #fff
+    img
+      height 26px
+      width 26px
+  .btn_text
+    float left
+    padding 15px 5px 0
+    color fontColor
+
+@-webkit-keyframes scaleFade
+  50% 
+    opacity 1
+    -webkit-transform scale(1)
+  100%
+    opacity 0
+    -webkit-transform scale(1.5)
+
+@-moz-keyframes scaleFade
+  50% 
+    opacity 1
+    -moz-transform scale(1)
+  100% 
+    opacity 0
+    -moz-transform scale(1.5)
+
+@keyframes scaleFade 
+  50% 
+    opacity 1
+    transform scale(1)
+  100% 
+    opacity 0
+    transform scale(1.5)
 
 .dl_container
   width 960px
   min-width 960px
   margin 0 auto
   padding-top 15px
-  .main
-    width 660px
-    max-width 960px
-    float left
+  .top-main
+    width 560px
     margin-right 10px
+    float left
     .score_container
       margin-right 20px
       float left
@@ -592,7 +641,14 @@ textarea
     .info_text
       padding 6px 5px
       line-height 32px
-
+  .top-side
+    width 290px
+    float left
+  .main
+    width 660px
+    max-width 960px
+    float left
+    margin-right 10px
   .side
     width 290px
     float left
@@ -614,7 +670,6 @@ textarea
       .group
         display inline-block
         margin 6px
-
   .aside
     width 128px
     margin-right 20px
@@ -752,6 +807,17 @@ textarea
   padding-bottom 20px !important
 .padding_top_0
   padding-top 0
+.dl_btn_new
+  color #fff
+  background-color buttonColor
+  text-align center
+  cursor pointer
+  background-image url('/img/icons/Plaine.png')
+  background-repeat no-repeat
+  height 30px
+  width 100px 
+  &:hover
+    background-color buttonHoverColor
 
 .dl_btn
   margin 0
@@ -1307,8 +1373,8 @@ familyHeight = 371.25px
   border-top 0px
   min-height 124px
   padding 0 15px
-  .loademp
-    line-height 120px
+.loademp
+  line-height 120px
 .dl_messages_page
   .dl_container 
     .main
