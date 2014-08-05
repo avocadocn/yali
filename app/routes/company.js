@@ -22,6 +22,7 @@ module.exports = function(app, passport) {
     app.get('/company/resetPwd', company.renderResetPwd);
     app.post('/company/resetPassword', company.resetPwd);
     app.post('/company/mailCheck', company.mailCheck);
+    app.post('/company/codeCheck', company.codeCheck);
     app.post('/company/officialNameCheck', company.officialNameCheck);
     app.post('/company/usernameCheck', company.usernameCheck);
 

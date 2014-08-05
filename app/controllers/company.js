@@ -447,10 +447,24 @@ exports.validate = function(req, res) {
 };
 
 
+///邀请码唯一性
+exports.codeCheck = function(req, res) {
+    CompanyRegisterInviteCode.findOne({'code':req.body.invite_code}, function(err, code) {
+        if(err || !code) {
+            res.send(false);
+        } else {
+            if(code.status === 'active'){
+                res.send(true);
+            }else{
+                res.send(false);
+            }
+        }
+    });
+}
+
 ///防止邮箱重复注册
 exports.mailCheck = function(req, res) {
-    var login_email = req.body.login_email;
-    Company.findOne({'login_email':login_email}, function(err, company) {
+    Company.findOne({'login_email':req.body.login_email}, function(err, company) {
         if(err || company) {
             res.send(true);
         } else {
@@ -501,29 +515,32 @@ exports.create = function(req, res) {
             .exec()
             .then(function(code) {
                 if (code) {
-                    // 如果邀请码属于公司，则在公司邀请码列表中将其移除
-
-                    if (code.company) {
-                        var company = code.company;
-                        var removeIndex = company.register_invite_code.indexOf(code.code);
-                        company.register_invite_code.splice(removeIndex, 1);
-                        company.save(console.log);
+                    if(code.status === 'active'){
+                        // 如果邀请码属于公司，则在公司邀请码列表中将其移除
+                        if (code.company) {
+                            var company = code.company;
+                            var removeIndex = company.register_invite_code.indexOf(code.code);
+                            company.register_invite_code.splice(removeIndex, 1);
+                            company.save(console.log);
+                        }
+                        code.status = 'used';
+                        code.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                                console.log('remove出错');
+                                throw err;
+                            }
+                        });
+                        return Company.create({
+                            username: UUID.id(),
+                            password: UUID.id(),
+                            info: {
+                                name: req.body.name
+                            }
+                        });
+                    }else{
+                        return res.status(400).send({'result':0,'msg':'该邀请码已经被使用!'});
                     }
-                    code.status = 'used';
-                    code.save(function(err) {
-                        if (err) {
-                            console.log(err);
-                            console.log('remove出错');
-                            throw err;
-                        }
-                    });
-                    return Company.create({
-                        username: UUID.id(),
-                        password: UUID.id(),
-                        info: {
-                            name: req.body.name
-                        }
-                    });
                 } else {
                     throw new Error('邀请码不正确');
                 }
