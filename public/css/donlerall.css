@@ -723,7 +723,7 @@ textarea {
   padding-top: 41px;
 }
 .dl_container .side .photo_album {
-  padding: 20px 10px;
+  padding: 20px 10px 8px;
   background-color: #fff;
   border: 1px solid #e6e6e6;
 }

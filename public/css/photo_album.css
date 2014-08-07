@@ -212,7 +212,7 @@
 .photo_album .thumbnail_cell {
   display: inline-block;
   width: 120px;
-  height: 120px;
+  height: 140px;
 }
 .photo_album .thumbnail_cell:nth-child(2n) {
   margin-left: 20px;
@@ -225,4 +225,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin: 0;
+  line-height: 20px;
 }
