@@ -11,7 +11,7 @@
       .dl_pass_label
         span #{__("NEW")}#{__("PASSWORD")}:
       .dl_pass_input
-        input.dl_form-Control(type="password" name="newpassword" placeholder="#{__('NEW')}#{__('PASSWORD')}" ng-model="newpassword" required)
+        input.dl_form-Control(type="password" name="newpassword" placeholder="#{__('NEW')}#{__('PASSWORD')}" ng-model="newpassword" ng-minlength=6 required)
     .dl_row.margin_top_6
       .dl_pass_label
         span #{__("CONFIRM")}#{__("NEW")}#{__("PASSWORD")}:

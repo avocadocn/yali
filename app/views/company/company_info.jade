@@ -10,7 +10,7 @@ div.company-info(ng-show = '!loading')
       .info_side
         span.info_label(ng-bind="company.login_email")
       .info_side(ng-if ="role == 'HR'")
-        a(href="#/changePassword") #{__("CHANGE")}#{__("PASSWORD")}
+        a(href="#/changePassword/#{global_user._id}") #{__("CHANGE")}#{__("PASSWORD")}
     .dl_row.clearfix
       .info_side
         span.info_label #{__("REGISTER_DATE")}

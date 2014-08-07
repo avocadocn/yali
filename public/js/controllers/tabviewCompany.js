@@ -34,8 +34,10 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         },
         controller: 'TimeLineController'
       })
-      .when('/changePassword', {
-        templateUrl: '/company/change_password',
+      .when('/changePassword/:cid', {
+        templateUrl: function(params){
+            return '/company/change_password/'+params.cid;
+        },
         controller: 'PasswordFormController',
         controllerAs: 'password'
       })
