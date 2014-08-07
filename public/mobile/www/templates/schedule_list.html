@@ -57,7 +57,7 @@
           <swipe-cards>
             <swipe-card class="clearfix" ng-repeat="day in day_cards" on-left="nextDay(day)" on-right="preDay(day)" on-destroy="removeDay($index)">
               <a class="calendar_campaign" ng-repeat="campaign in day.campaigns" ng-href="#/app/campaign_detail/{{ campaign._id }}">
-                <div class="logo"><img ng-src="{{ campaign.logo }}"/></div>
+                <div class="logo"><img ng-src="{{base_url +  campaign.logo }}"/></div>
                 <div class="calendar_content">
                   <div class="text">{{ campaign.theme }}</div>
                   <div class="text time">开始: {{ campaign.format_start_time }}</div>
