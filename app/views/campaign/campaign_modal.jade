@@ -72,8 +72,8 @@
               .dl_modal_label_container
                 span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
       .dl-modal-footer
-        button.dl_btn.dl_btn_large(type='submit' ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
-        button.cancel_btn.dl_btn_large.margin_left_30(data-dismiss="modal") #{__("CANCEL")}
+        button.dl_btn.dl_btn_large(type='button' ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
+        button.cancel_btn.dl_btn_large.margin_left_30(type='button' data-dismiss="modal") #{__("CANCEL")}
   script.
     $(function() {
       $('#start_time').datetimepicker({
