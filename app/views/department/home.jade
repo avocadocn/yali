@@ -22,7 +22,7 @@ block baseInfo
         if req.role === 'HR' || req.role === 'LEADER'
           .score_container
             button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorCampaignModel") #{__("CAMPAIGN")}
-            button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorMultiCampaignModel") 多部门活动
+            //- button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorMultiCampaignModel") 多部门活动
           div(ng-controller="SponsorController" ng-init="did='#{department._id}';cid='#{department.company._id}'")
             div.modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
               include ../campaign/campaign_modal

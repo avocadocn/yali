@@ -234,7 +234,6 @@ exports.teamAuthorize = function(req, res, next) {
   }
   if(req.user.provider==="company"){
     if(req.params.cid != undefined && req.params.cid != null && req.params.cid != ""){
-      console.log(req.user._id.toString(),req.params.cid.toString());
       if(req.user._id.toString() ===req.params.cid.toString()){
         req.role = 'HR';
       }

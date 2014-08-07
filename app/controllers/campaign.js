@@ -380,7 +380,7 @@ var formatCampaign = function(campaign,pageType,role,user){
       temp.cname=_campaign.cid[0].info.name;
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
     }
-    else if(_campaign.campaign_type===2){//小队活动
+    else if(_campaign.campaign_type===2 || _campaign.campaign_type===3){//小队活动
       temp.type='teamcampaign';
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
@@ -455,7 +455,7 @@ exports.getCampaigns = function(req, res) {
       option.campaign_type = 1;
     }
     else if(campaignType==='team') {
-      option.campaign_type = 2;
+      option.campaign_type = {'$in':[2,3]};
     }
     else if(campaignType==='department'){
       option.campaign_type = {'$in':[6,8]};
