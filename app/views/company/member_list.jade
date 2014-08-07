@@ -1,11 +1,14 @@
 .loading_div(ng-show = 'loading')
 .dl_compaign_member(ng-show = '!loading')
-  .memberlist
-    .row.departmentbox(ng-repeat="department in members_by_department track by $index")
+  .memberlist(ng-init="show=[];")
+    .row.departmentbox(ng-repeat="department in members_by_department track by $index" ng-init="show[$index]=false")
       span {{department.name}}{{department.id}}
+      .text_container.pull-right(ng-if="members_by_department.length>11")
+          a.text(ng-show="!show[$index]" ng-click="show[$index]=true;" href="javascript:void(0);" ng-cloak) 更多 > 
+          a.text(ng-show='show[$index]' ng-click="show[$index]=false;" href="javascript:void(0);" ng-cloak) 收起 <
       .groups
         .member(ng-repeat="member in department.member track by $index")
-          div.member_group(ng-if='member.active')
+          div.member_group(ng-if='member.active' ng-show="$index<11||show[$parent.$parent.$index]")
             if role != 'GUESTHR' && role !='GUEST'
               .dl_row.img(bs-popover)
                 a(ng-click="userDetail(member._id)" data-toggle="modal" data-target="#sponsorUserDetailModal")

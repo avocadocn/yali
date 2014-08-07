@@ -54,12 +54,15 @@ div(ng-show = '!loading' ng-controller="infoController")
     .dl_row.clearfix
       h5.pull-left 成员信息
     hr.margin_top_6
-    .dl_row
+    .dl_row(ng-init="show=[false,false];")
       span.subtitle.margin_left_15 #{__("TEAM_LEADER")}
+      .text_container.pull-right(ng-if="team.leader.length>9")
+        a.text(ng-show="!show[1]" ng-click="show[1]=true;" href="javascript:void(0);" ng-cloak) 更多 > 
+        a.text(ng-show='show[1]' ng-click="show[1]=false;" href="javascript:void(0);" ng-cloak) 收起 <
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
-          .group( ng-repeat="leader in team.leader")
+          .group(ng-repeat="leader in team.leader track by $index" ng-show="$index<9 || show[1]" ng-cloak)
             div(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
               .dl_row(bs-popover)
                 a(href="/users/home/{{leader._id}}")
@@ -73,10 +76,13 @@ div(ng-show = '!loading' ng-controller="infoController")
                 span.user_name{{leader.nickname}}
     .dl_row.clearfix
       span.subtitle.margin_left_15 #{__("MEMBER")}
+      .text_container.pull-right(ng-if="members.length>9")
+        a.text(ng-show="!show[2]" ng-click="show[2]=true;" href="javascript:void(0);" ng-cloak) 更多 > 
+        a.text(ng-show='show[2]' ng-click="show[2]=false;" href="javascript:void(0);" ng-cloak) 收起 <
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
-          .group(ng-repeat="member in members")
+          .group(ng-repeat="member in members track by $index" ng-show="$index<9 || show[2]" ng-cloak)
             div(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
               .dl_row(bs-popover)
                 a(href="/users/home/{{member._id}}")
