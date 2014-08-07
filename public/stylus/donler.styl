@@ -377,12 +377,22 @@ textarea
       width 100%
       float left
       clear left
+      .team_select
+        cursor pointer
+        border-bottom 1px solid #ddd
+        margin-bottom 10px
+        padding 5px 0
+      .active.team_select
+        background-image url('/img/icons/ico_07.png')
+        background-position 5px 10px
+        background-size 40px 40px
+        background-repeat no-repeat
       .dl_md_12
         width 485px
         float left
         margin-left 0
-      .dl_md_1
-        margin-left 0
+      .dl_md_2
+        margin-left 60px
       .dl_modal_half_container
         width 280px
         float left
@@ -419,11 +429,15 @@ textarea
         .dl_modal_time_container
           float left
           width 159px
+          input
+            width 120px
         .dl_modal_people_container
           float left
           width 39px
           padding 7px 0
           text-align center
+          .info_label
+            padding 7px
   .dl-modal-footer
     text-align left
 
@@ -457,7 +471,7 @@ textarea
   width 250px
   float left
 .dl_height
-  height:93px
+  height 93px
 
 .dl_logo_1
   width 53px
@@ -880,10 +894,10 @@ textarea
   background-size 16px 16px
   background-position 9px 9px
 .provoke_btn
-  background-image url('/img/icons/PointerW.png')
+  background-image url('/img/icons/pointerw.png')
   background-size 16px 16px
   background-position 9px 9px
-.dl_close
+.dl_clos
   opacity 1
 .map_btn
   background-color btnActionBgColor 

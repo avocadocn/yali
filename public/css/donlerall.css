@@ -413,13 +413,25 @@ textarea {
   float: left;
   clear: left;
 }
+.dl-modal .dl-modal-body .dl_modal_container .team_select {
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 5px 0;
+}
+.dl-modal .dl-modal-body .dl_modal_container .active.team_select {
+  background-image: url("/img/icons/ico_07.png");
+  background-position: 5px 10px;
+  background-size: 40px 40px;
+  background-repeat: no-repeat;
+}
 .dl-modal .dl-modal-body .dl_modal_container .dl_md_12 {
   width: 485px;
   float: left;
   margin-left: 0;
 }
-.dl-modal .dl-modal-body .dl_modal_container .dl_md_1 {
-  margin-left: 0;
+.dl-modal .dl-modal-body .dl_modal_container .dl_md_2 {
+  margin-left: 60px;
 }
 .dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container {
   width: 280px;
@@ -467,11 +479,17 @@ textarea {
   float: left;
   width: 159px;
 }
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_time_container input {
+  width: 120px;
+}
 .dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_people_container {
   float: left;
   width: 39px;
   padding: 7px 0;
   text-align: center;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_people_container .info_label {
+  padding: 7px;
 }
 .dl-modal .dl-modal-footer {
   text-align: left;
@@ -998,11 +1016,11 @@ textarea {
   background-position: 9px 9px;
 }
 .provoke_btn {
-  background-image: url("/img/icons/PointerW.png");
+  background-image: url("/img/icons/pointerw.png");
   background-size: 16px 16px;
   background-position: 9px 9px;
 }
-.dl_close {
+.dl_clos {
   opacity: 1;
 }
 .map_btn {

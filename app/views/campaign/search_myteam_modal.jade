@@ -5,16 +5,17 @@ form(name="search_form_2")
     .head 请选择您想选择与之动一下的小队
   .dl-modal-body.clearfix
     .dl_modal_container
-      .dl_row.dl_height(ng-repeat="team in similarTeams")
-        .dl_md_1
-          img.size_80(ng-src="{{team.logo}}")
-        .dl_md_10.margin_left_5
-          .row.margin_left_15
+      .dl_row.team_select.clearfix(ng-repeat="team in similarTeams track by $index" ng-class="{'active':selected_index==$index}" ng-click="selcet_team($index)")
+        .dl_md_2
+          img.size_56(ng-src="{{team.logo}}")
+        .dl_md_10
+          .dl_row
             a(href="/group/home/{{team._id}}" target="_blank")
               span {{team.name}}
-          .row.margin_left_10
+          .dl_row
             .dl_md_3
               span 队员人数:{{team.member.length}}
             .dl_md_3
-        .dl_md_1
-          button.dl_btn_right(ng-click="provoke_select(team)") 就用它动！
+  .dl-modal-footer.margin_top_20
+    button.cancel_btn.dl_btn_large(data-dismiss="modal") #{__("CANCEL")}
+    button.dl_btn.dl_btn_large(ng-click="provoke_select(2)" ng-disabled="selected_index==-1") 就用TA动！

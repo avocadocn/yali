@@ -1175,6 +1175,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.modal=0;
     $scope.result=0;//是否已搜索
     $rootScope.modalNumber=0;
+    $scope.selected_index=-1;
 
     $rootScope.$watch('loadMapIndex',function(value){
         if($rootScope.loadMapIndex){
@@ -1269,6 +1270,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             $scope.getTeam();
         }
         $scope.result=1;//已搜索，显示搜索结果
+        $scope.selected_index = -1;
     };
 
     $scope.initialize = function(){
@@ -1353,17 +1355,16 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         }
     }
 
-
+    var show_team_index = -1;
     $scope.toggleTeam = function(cid,index){
-        for(var i = 0; i < $scope.companies.length; i ++){
-            if(i !== index){
-                $scope.show_team[i] = false;
-            }
-        }
-        $scope.show_team[index] = !$scope.show_team[index];
-        if($scope.show_team[index]){
+        if(show_team_index !== -1)
+            $scope.show_team[show_team_index]=false;
+        $scope.show_team[index] = true;
+        if($scope.show_team[index] && show_team_index!==index){
             $scope.getSelectTeam(cid);
+            $scope.selected_index = -1;
         }
+        show_team_index = index;
     }
 
     $scope.getSelectTeam = function(cid) {
@@ -1389,7 +1390,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     }
-
+    //选择小队
     $scope.getTeam = function () {
         try {
             $http({
@@ -1416,12 +1417,19 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         }
     };
 
-    $scope.provoke_select = function (team) {
-        $scope.team_opposite = team;
+    //选择对战小队
+    $scope.provoke_select = function (index) {
+        if(!index){
+            $scope.team_opposite = $scope.teams[$scope.selected_index];
+        }
+        else
+            $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
         $scope.modal++;
         $rootScope.loadMapIndex=2;
+
     };
-        //约战
+
+    //约战
     $scope.provoke = function() {
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
@@ -1486,5 +1494,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         $scope.modal--;
     };
 
-
+    $scope.selcet_team = function(index){
+        $scope.selected_index = index;
+    };
 }]);

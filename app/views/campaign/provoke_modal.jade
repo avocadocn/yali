@@ -7,10 +7,10 @@ form(name="provoke_form" novalidate)
   .dl-modal-body
     .dl_modal_container
         label.subtitle #{__("PROVOKE")}词
-        input.dl_modal_input.form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在14字以内。" tooltip="{{provoke_form.theme.$invalid ? '挑战简单描述，请控制在14字以内':''}}" maxlength=14 required)
+        input.dl_modal_input.dl_form-Control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在14字以内。" tooltip="{{provoke_form.theme.$invalid ? '挑战简单描述，请控制在14字以内':''}}" maxlength=14 required)
     .dl_modal_container
         label.subtitle 备注内容
-        textarea.dl_modal_input.form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在40字以内。" tooltip="{{provoke_form.content.$invalid ? '请输入活动内容':''}}" maxlength=40)
+        textarea.dl_modal_input.dl_form-Control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在40字以内。" tooltip="{{provoke_form.content.$invalid ? '请输入活动内容':''}}" maxlength=40)
     .dl_modal_container
       .dl_modal_half_container
         .dl_modal_half_container
@@ -32,7 +32,7 @@ form(name="provoke_form" novalidate)
       .dl_modal_container
         label.subtitle #{__("PROVOKE")}#{__("LOCATION")}
       .dl_modal_input_container
-        input.dl_modal_input(type="text" class="form-control" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" ng-maxlength=40 tooltip="{{provoke_form.location.$invalid? '请输入活动地点,最长40字':''}}" required)
+        input.dl_modal_input.dl_form-Control(type="text" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" ng-maxlength=40 tooltip="{{provoke_form.location.$invalid? '请输入活动地点,最长40字':''}}" required)
       .dl_modal_button
         a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap()") #{__("MAP")}
     .dl_modal_container
@@ -47,7 +47,7 @@ form(name="provoke_form" novalidate)
           .dl_modal_other_container
             input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.member_min" ng-min=0 ng-max="{{$parent.member_max}}" ng-maxlength=10 tooltip="{{provoke_form.minNumber.$invalid? '请正确填写最少人数':''}}")
           .dl_modal_people_container
-            span.info_label(style="padding:7px") 人
+            span.info_label 人
           .dl_modal_label_container
             span.info_label 报名截止前未达最少人数,您将收到提醒。不填默认为不提醒。
         .dl_row.clearfix
@@ -56,7 +56,7 @@ form(name="provoke_form" novalidate)
           .dl_modal_time_container
             .input-group.date.form_datetime#competition_deadline
               //img(ng-src='/img/icons/icon_date.png')
-              input.dl_form-Control(type="text" style="width:120px" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
+              input.dl_form-Control(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
               span.input-group-addon.no_radius
                 span.glyphicon.glyphicon-th
           .dl_modal_label_container
@@ -71,8 +71,8 @@ form(name="provoke_form" novalidate)
           .dl_modal_label_container
             span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
   .dl-modal-footer
-    button.dl_btn.dl_btn_large(type='button' ng-click='provoke()' data-dismiss="modal" ng-disabled="provoke_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
     button.cancel_btn.dl_btn_large(type='button' ng-click='preStep()') 上一步
+    button.dl_btn.dl_btn_large(type='button' ng-click='provoke()' data-dismiss="modal" ng-disabled="provoke_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
 script.
   $(function() {
     $('#competition_start_time').datetimepicker({
