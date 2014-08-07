@@ -6,7 +6,7 @@
     <div class="timeline_element" ng-repeat="time_line in time_lines">
       <div class="timeline-left">
         <a href="#/app/campaign_detail/{{ time_line.id }}">
-          <img class="timeline-logo" ng-src="{{time_line.logo}}"/>
+          <img class="timeline-logo" ng-src="{{base_url + time_line.logo}}"/>
         </a>
       </div>
       <div class="timeline-right">

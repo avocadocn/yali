@@ -9,14 +9,11 @@ angular.module('starter.controllers', [])
   $scope.logout = Authorize.logout;
   $scope.base_url = Global.base_url;
   $scope.user = Global.user;
-
-  $rootScope.enable_drag = true;
 })
 
 
 
 .controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
-  $rootScope.enable_drag = true;
 
   if (Authorize.authorize() === true) {
     $state.go('app.campaignList');
@@ -36,7 +33,6 @@ angular.module('starter.controllers', [])
 
 .controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global, Authorize) {
   Authorize.authorize();
-  $rootScope.enable_drag = true;
 
   $scope.base_url = Global.base_url;
 
@@ -68,7 +64,6 @@ angular.module('starter.controllers', [])
 
 .controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $timeout, Campaign, PhotoAlbum, Comment, Global, Authorize) {
   Authorize.authorize();
-  $rootScope.enable_drag = true;
 
   $scope.base_url = Global.base_url;
   $scope.user_id = Global.user._id;
@@ -191,7 +186,9 @@ angular.module('starter.controllers', [])
 .controller('ScheduleListCtrl', function($scope, $rootScope, Campaign, Global, Authorize) {
   Authorize.authorize();
   $rootScope.enable_drag = false;
-
+  $rootScope.$on('$stateChangeStart', function() {
+    $rootScope.enable_drag = true;
+  });
   moment.lang('zh-cn');
 
   /**
@@ -544,8 +541,7 @@ angular.module('starter.controllers', [])
 
 .controller('TimelineCtrl', function($scope, $rootScope, Timeline, Authorize) {
   Authorize.authorize();
-  $rootScope.enable_drag = true;
-
+  
   Timeline.getUserTimeline(function(time_lines) {
     $rootScope.time_lines = time_lines;
     $rootScope.campaignReturnUri = '#/app/timeline';
