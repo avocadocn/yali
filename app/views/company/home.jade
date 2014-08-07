@@ -46,8 +46,8 @@ block panel
       if role === 'HR' || role === 'EMPLOYEE'
         li.tab_style(ng-class="{'active':nowTab=='company_campaign'}")
           a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") 活动
-        li.tab_style(ng-class="{'active':nowTab=='company_member'}")
-          a.subtitle.no_radius(href="#/company_member/#{cid}"  ng-click="addactive('company_member')") 成员
+        li.tab_style(ng-class="{'active':nowTab=='company_member/#{cid}'}")
+          a.subtitle.no_radius(href="#/company_member/#{cid}"  ng-click="addactive('company_member/#{cid}')") 成员
         li.tab_style(ng-class="{'active':nowTab=='timeLine/#{cid}'}")
           a.subtitle.no_radius(href="#/timeLine/#{cid}"  ng-click="addactive('timeLine/#{cid}')") 足迹
       if role === 'HR'
