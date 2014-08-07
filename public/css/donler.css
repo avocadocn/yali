@@ -397,7 +397,7 @@ textarea {
 }
 .dl-modal .dl-modal-header {
   min-height: 16.42857143px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .dl-modal .dl-modal-header:close {
   margin-top: -2px;
@@ -408,6 +408,16 @@ textarea {
 .dl-modal .dl-modal-body .info_side {
   min-width: 70px;
 }
+.dl-modal .dl-modal-body .search_row {
+  margin-bottom: 10px;
+}
+.dl-modal .dl-modal-body .search_row_2 {
+  margin-top: 2px;
+}
+.dl-modal .dl-modal-body .opponent {
+  margin-top: 20px;
+  border-bottom: 1px solid #eee;
+}
 .dl-modal .dl-modal-body .dl_modal_container {
   width: 100%;
   float: left;
@@ -415,7 +425,7 @@ textarea {
 }
 .dl-modal .dl-modal-body .dl_modal_container .team_select {
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #eee;
   padding: 10px 0;
 }
 .dl-modal .dl-modal-body .dl_modal_container .team_select:hover {
@@ -423,8 +433,8 @@ textarea {
 }
 .dl-modal .dl-modal-body .dl_modal_container .active.team_select {
   background-image: url("/img/icons/ico_07.png");
-  background-position: 5px 15px;
-  background-size: 40px 40px;
+  background-position: 15px 15px;
+  background-size: 30px 30px;
   background-repeat: no-repeat;
 }
 .dl-modal .dl-modal-body .dl_modal_container .dl_md_12 {
@@ -642,11 +652,10 @@ textarea {
   float: left;
 }
 .dl_md_10 .group_row {
-  min-height: 28px;
-  padding: 4px 0;
+  min-height: 20px;
 }
 .dl_md_10 .group_row_1 {
-  min-height: 24px;
+  min-height: 20px;
   padding: 0;
 }
 .dl_md_12 {
