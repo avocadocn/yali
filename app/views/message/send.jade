@@ -7,7 +7,7 @@
         h5(ng-if="teamName == 'null'")
           发往全公司:
       .dl_md_8.dl_vertical
-        input.dl_modal_input.dl_form-Control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
+        input.dl_modal_input.dl-form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
       .dl_md_1.dl_vertical
         button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll(comment_form)" ng-disabled="message_form.$invalid") 发送
 

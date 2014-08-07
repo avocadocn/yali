@@ -21,15 +21,15 @@ block contentExt
               .input_right
                 .input_email
                   label.sr-only Email Host
-                  input.dl_form-Control(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
+                  input.dl-form-control(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
                 span.at @
                 .select_domain
                   label.sr-only Email Domain
                   if domains.length === 1
                     input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
-                    input.dl_form-control(type="text" value="#{domains[0]}" disabled="true")
+                    input.dl-form-control(type="text" value="#{domains[0]}" disabled="true")
                   if domains.length > 1
-                    select.dl_form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
+                    select.dl-form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
                       each domain in domains
                         option(value="#{domain}" selected='selected')= domain
                   input(type="text" name="index" ng-model="active" ng-show='false')
@@ -55,25 +55,25 @@ block contentExt
                 .label_left
                   label.control-label(for="nickname") ＊#{__("NICKNAME")}
                 .input_right
-                  input.dl_form-Control(type="text" name="nickname" ng-model="nickname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.nickname.$invalid && active_form.nickname.$dirty ? '请填写昵称':''}}" required)
+                  input.dl-form-control(type="text" name="nickname" ng-model="nickname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.nickname.$invalid && active_form.nickname.$dirty ? '请填写昵称':''}}" required)
             .form-group.dl_sm_group(ng-class="{'has-error':active_form.password.$invalid && active_form.password.$dirty}")
               .dl_row
                 .label_left
                   label.control-label(for="password") ＊密码
                 .input_right
-                  input.dl_form-Control(type="password" name="password" ng-model="password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
+                  input.dl-form-control(type="password" name="password" ng-model="password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
             .form-group.dl_sm_group(ng-class="{'has-error':active_form.passconf.$invalid && active_form.passconf.$dirty}")
               .dl_row
                 .label_left
                   label.control-label(for="passconf") ＊密码确认
                 .input_right
-                  input.dl_form-Control(type="password" name="passconf" ng-model="passconf" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
+                  input.dl-form-control(type="password" name="passconf" ng-model="passconf" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
             .form-group.dl_sm_group(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")
               .dl_row
                 .label_left
                   label.control-label(for="realname") ＊#{__("REALNAME")}
                 .input_right
-                  input.dl_form-Control(type="text" placeholder="仅公司成员可见" name="realname" ng-model="realname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.realName.$invalid && active_form.realName.$dirty ? '请输入真实姓名':''}}" required)
+                  input.dl-form-control(type="text" placeholder="仅公司成员可见" name="realname" ng-model="realname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.realName.$invalid && active_form.realName.$dirty ? '请输入真实姓名':''}}" required)
             .form-group.dl_sm_group
               .dl_row
                 .label_left
@@ -81,11 +81,11 @@ block contentExt
                 .input_right
                   //- input#department.form-control.dl_full_control(type="text" name="department" ng-model="department")
                   .select_box.department_select_width
-                    select.dl_form-Control.chzn-select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment(main_department)" ng-disabled="main_departments.length == 0")
+                    select.dl-form-control.chzn-select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment(main_department)" ng-disabled="main_departments.length == 0")
                     input(type="text" name="main_department_id" ng-model="main_department_id" ng-show="false")
                     input(type="text" name="main_department_name" ng-model="main_department_name" ng-show="false")
                   .select_box.department_select_width
-                    select.dl_form-Control.chzn-select(data-placeholder="选择子部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
+                    select.dl-form-control.chzn-select(data-placeholder="选择子部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
                     input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
                     input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
             .form-group.dl_sm_group
@@ -93,7 +93,7 @@ block contentExt
                 .label_left
                   label.control-label(for="phone") #{__("PHONE")}
                 .input_right
-                  input.dl_form-Control(type="text" name="phone" ng-model="phone")
+                  input.dl-form-control(type="text" name="phone" ng-model="phone")
             .form-group.dl_sm_group
               .dl_row.center_container
                 label.dl_checkbox.center_content

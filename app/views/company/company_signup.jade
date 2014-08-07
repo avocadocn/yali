@@ -19,30 +19,30 @@ block contentExt
             .label_left
               label.control-label(for="name") *公司全称
             .input_right
-              input#name.dl_form-Control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.name.$invalid && signup_form.name.$dirty ? '为了保护所有用户的权益，动梨将认真审核每家企业的信息':''}}" required)
+              input#name.dl-form-control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" ng-minlength=1 tooltip-placement="right" tooltip="{{signup_form.name.$invalid && signup_form.name.$dirty ? '为了保护所有用户的权益，动梨将认真审核每家企业的信息':''}}" required)
         .form-group.dl_sm_group(data-role="linkage-selector" data-src="/region" data-select="province city region")
           .dl_row
             .label_left
               label.control-label(for="province") *城市
             .input_right.select_right
               .select_box
-                select#province.dl_form-Control(type="text" name="province" ng-model= "province")
+                select#province.dl-form-control(type="text" name="province" ng-model= "province")
               .select_box
-                select#city.dl_form-Control(type="text" name="city" ng-model= "city")
+                select#city.dl-form-control(type="text" name="city" ng-model= "city")
               .select_box
-                select#region.dl_form-Control(type="text" name="region" ng-model= "region")
+                select#region.dl-form-control(type="text" name="region" ng-model= "region")
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.address.$invalid && signup_form.address.$dirty}")
           .dl_row
             .label_left
               label.control-label(for="address") *地址
             .input_right
-              input#address.dl_form-Control(type="text" name="address" ng-model= "address" tooltip-placement="right"  required)
+              input#address.dl-form-control(type="text" name="address" ng-model= "address" tooltip-placement="right"  required)
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.contacts.$invalid && signup_form.contacts.$dirty}")
           .dl_row
             .label_left
               label.control-label(for="contacts") *联系人
             .input_right
-              input#contacts.dl_form-Control(type="text" name="contacts" ng-model= "contacts" tooltip-placement="right" tooltip="{{signup_form.contacts.$invalid && signup_form.contacts.$dirty ? '请输入联系人':''}}" required)
+              input#contacts.dl-form-control(type="text" name="contacts" ng-model= "contacts" tooltip-placement="right" tooltip="{{signup_form.contacts.$invalid && signup_form.contacts.$dirty ? '请输入联系人':''}}" required)
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.areacode.$invalid && signup_form.areacode.$dirty || signup_form.number.$invalid && signup_form.number.$dirty || signup_form.extension.$invalid && signup_form.extension.$dirty}")
           .dl_row
             .label_left
@@ -50,34 +50,34 @@ block contentExt
             .input_right
               .dl_row.clearfix
                 .arecode_container
-                  input#lindline_areacode.dl_form-Control(type="number" name="areacode" placeholder="区号" ng-model= "areacode" tooltip-placement="right" ng-minlength=3 ng-maxlength=4 tooltip="{{signup_form.areacode.$invalid && signup_form.areacode.$dirty ? '请输入区号':''}}" required)
+                  input#lindline_areacode.dl-form-control(type="number" name="areacode" placeholder="区号" ng-model= "areacode" tooltip-placement="right" ng-minlength=3 ng-maxlength=4 tooltip="{{signup_form.areacode.$invalid && signup_form.areacode.$dirty ? '请输入区号':''}}" required)
                 .-container
                   label.control-label -
                 .number_container
-                  input#lindline_number.dl_form-Control(type="number" name="number" placeholder="电话号码" ng-model= "number" tooltip-placement="right" tooltip="{{signup_form.number.$invalid && signup_form.number.$dirty ? '请输入电话号码':''}}" required)
+                  input#lindline_number.dl-form-control(type="number" name="number" placeholder="电话号码" ng-model= "number" tooltip-placement="right" tooltip="{{signup_form.number.$invalid && signup_form.number.$dirty ? '请输入电话号码':''}}" required)
                 .-container 
                   label.control-label -
                 .arecode_container
-                  input#lindline_extension.dl_form-Control(type="number" name="extension" placeholder="分机" ng-model= "extension" tooltip-placement="right" tooltip="{{signup_form.extension.$invalid && signup_form.extension.$dirty ? '请输入分机号':''}}")
+                  input#lindline_extension.dl-form-control(type="number" name="extension" placeholder="分机" ng-model= "extension" tooltip-placement="right" tooltip="{{signup_form.extension.$invalid && signup_form.extension.$dirty ? '请输入分机号':''}}")
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.phone.$invalid && signup_form.phone.$dirty}")
           .dl_row
             .label_left
               label.control-label(for="phone") 手机号码
             .input_right
-              input#phone.dl_form-Control(type="number" name="phone" ng-minlength=11 ng-maxlength=11 tooltip-placement="right" tooltip="{{signup_form.phone.$invalid && signup_form.phone.$dirty ? '请填写您11位的手机号码，我们的工作人员可能与您联系':''}}" ng-model= "phone")
+              input#phone.dl-form-control(type="number" name="phone" ng-minlength=11 ng-maxlength=11 tooltip-placement="right" tooltip="{{signup_form.phone.$invalid && signup_form.phone.$dirty ? '请填写您11位的手机号码，我们的工作人员可能与您联系':''}}" ng-model= "phone")
         .form-group.dl_sm_group(ng-class="{'has-error':!reg}")
           .dl_row.clearfix
             .label_left
               label.control-label(for="email_host") *电子邮箱
             .input_right
-              input#email.dl_form-Control(type="text" name="email" ng-model= "email" ng-blur="mailCheck()" ng-change="mailRegCheck()" required)
+              input#email.dl-form-control(type="text" name="email" ng-model= "email" ng-blur="mailCheck()" ng-change="mailRegCheck()" required)
               span#check.dl_tip(ng-if="mail_ok") {{check_value}}
         if is_need_invite
           .form-group.dl_sm_group(ng-class="{'has-error':signup_form.invite_code.$invalid && signup_form.invite_code.$dirty}")
             .label_left
               label.control-label(for="invite_code") *邀请码
             .input_right
-              input#invite_code.dl_form-Control(type="text" name="invite_code" placeholder="测试中,暂不对外开放注册。" ng-model= "invite_code" ng-blur="codeCheck()" tooltip-placement="right"  required)
+              input#invite_code.dl-form-control(type="text" name="invite_code" placeholder="测试中,暂不对外开放注册。" ng-model= "invite_code" ng-blur="codeCheck()" tooltip-placement="right"  required)
               span#check.dl_tip(ng-if="code_ok") {{code_value}}
         .form-group.dl_sm_group(ng-class="{'has-error':signup_form.checkbox.$invalid && signup_form.checkbox.$dirty}")
           .col-xs-offset-3.col-xs-9

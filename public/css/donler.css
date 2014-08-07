@@ -361,7 +361,7 @@ textarea {
 .dl_area {
   margin-right: 15px;
 }
-.dl_form-control {
+.dl-form-control {
   display: block;
   width: 100%;
   padding: 6px 12px;
@@ -1319,11 +1319,8 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.dl_form_control,
 .dl_full_control {
   display: inline-block;
-}
-.dl_full_control {
   width: 100%;
 }
 .dl_menu {
@@ -1437,7 +1434,7 @@ input::-webkit-inner-spin-button {
   color: #999;
   margin-left: 50px;
 }
-.dl_form-Control {
+.dl-form-control {
   display: block;
   width: 100%;
   min-height: 34px;
@@ -1453,13 +1450,13 @@ input::-webkit-inner-spin-button {
   color: #999;
   float: left;
 }
-.dl_form-Control -webkit-box-shadow inset 0 1px 1px rgba(0,
-.dl_form-Control 0,
-.dl_form-Control .075) {
+.dl-form-control -webkit-box-shadow inset 0 1px 1px rgba(0,
+.dl-form-control 0,
+.dl-form-control .075) {
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
 }
-.dl_form-Control -webkit-transition border-color ease-in-out .15s,
-.dl_form-Control box-shadow ease-in-out .15s {
+.dl-form-control -webkit-transition border-color ease-in-out .15s,
+.dl-form-control box-shadow ease-in-out .15s {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .dl_err {

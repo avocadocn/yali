@@ -8,10 +8,10 @@
       .dl-modal-body
         .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
-            input.dl_modal_input.dl_form-Control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
+            input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
         .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
-            textarea.dl_modal_input.dl_form-Control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在140字以内。" tooltip="{{campaign_form.content.$invalid ? '请输入活动内容':''}}" maxlength=140)
+            textarea.dl_modal_input.dl-form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在140字以内。" tooltip="{{campaign_form.content.$invalid ? '请输入活动内容':''}}" maxlength=140)
         .dl_modal_container
           .dl_modal_half_container
             .dl_modal_half_container
@@ -20,7 +20,7 @@
               span.input-group-addon.no_radius
                 //img(ng-src='/img/icons/icon_date.png')
                 span.glyphicon.glyphicon-th
-              input.dl_form-Control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.startTime.$invalid ? '请选择活动活动开始时间':''}}" readonly required)
+              input.dl-form-control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.startTime.$invalid ? '请选择活动活动开始时间':''}}" readonly required)
           .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
             .dl_modal_half_container
               label.subtitle #{__("CAMPAIGN")}#{__("END_TIME")}
@@ -28,12 +28,12 @@
               //img(ng-src='/img/icons/icon_date.png')
               span.input-group-addon.no_radius
                 span.glyphicon.glyphicon-th
-              input.dl_form-Control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
+              input.dl-form-control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
         .dl_modal_container
           .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("LOCATION")}
           .dl_modal_input_container
-            input.dl_modal_input(type="text" class="form-control" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" maxlength=40 tooltip="{{campaign_form.location.$invalid? '请输入活动地点,最长40字':''}}" required)
+            input.dl_modal_input.dl-form-control(type="text" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" maxlength=40 tooltip="{{campaign_form.location.$invalid? '请输入活动地点,最长40字':''}}" required)
           .dl_modal_button
             a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap()") #{__("MAP")}
         .dl_modal_container
@@ -46,7 +46,7 @@
               .dl_modal_label_container
                 span.info_label #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
               .dl_modal_other_container
-                input.dl_form-Control(type="number" name="minNumber" ng-model="$parent.member_min" ng-min=0 ng-max="{{$parent.member_max}}" ng-maxlength=10 tooltip="{{campaign_form.minNumber.$invalid? '请正确填写最少人数':''}}")
+                input.dl-form-control(type="number" name="minNumber" ng-model="$parent.member_min" ng-min=0 ng-max="{{$parent.member_max}}" ng-maxlength=10 tooltip="{{campaign_form.minNumber.$invalid? '请正确填写最少人数':''}}")
               .dl_modal_people_container
                 span.info_label 人
               .dl_modal_label_container
@@ -57,7 +57,7 @@
               .dl_modal_time_container
                 .input-group.date.form_datetime#deadline
                   //img(ng-src='/img/icons/icon_date.png')
-                  input.dl_form-Control(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                  input.dl-form-control(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
               .dl_modal_label_container
@@ -66,7 +66,7 @@
               .dl_modal_label_container
                 span.info_label 报名人数上限:
               .dl_modal_other_container
-                input.dl_form-Control(type="number" name="maxNumber" ng-model="$parent.member_max" ng-min="{{$parent.member_min}}" ng-maxlength=10 tooltip="{{campaign_form.maxNumber.$invalid? '请正确填写人数上限':''}}")
+                input.dl-form-control(type="number" name="maxNumber" ng-model="$parent.member_max" ng-min="{{$parent.member_min}}" ng-maxlength=10 tooltip="{{campaign_form.maxNumber.$invalid? '请正确填写人数上限':''}}")
               .dl_modal_people_container
                 span.info_label 人
               .dl_modal_label_container

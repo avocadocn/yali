@@ -8,7 +8,7 @@
         .info_side
           span.info_label #{__("NICKNAME")}
         .info_detail
-          input.dl_input.dl_form-Control.editToggle(type="text" name ="nickname" ng-model="currentmember.nickname" ng-maxlength=20 tooltip="{{detail_form.nickname.$invalid? '最长20字':''}}" required ng-disabled="unEdit")
+          input.dl_input.dl-form-control.editToggle(type="text" name ="nickname" ng-model="currentmember.nickname" ng-maxlength=20 tooltip="{{detail_form.nickname.$invalid? '最长20字':''}}" required ng-disabled="unEdit")
       .dl_row.clearfix
         .info_side
           span.info_label #{__("REALNAME")}

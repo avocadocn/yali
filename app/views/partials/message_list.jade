@@ -126,7 +126,7 @@ div(ng-show = '!loading')
           .dl_comment_area
             form.dl_modal_container.clearfix.margin_top_5(name="comment_form" novalidate)
               .dl_md_12
-                input.dl_form-Control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
+                input.dl-form-control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
               .dl_md_1
                 button.dl_btn_right(ng-click="comment($index,comment_form)" ng-disabled="comment_form.$invalid") 发表
             hr
