@@ -35,15 +35,23 @@
   font-size: 12px;
   padding: 8px 0 0 20px;
 }
-.campaign_table .logo_col {
+.campaign_table .company_logo_col,
+.campaign_table .team_logo_col,
+.campaign_table .undefined_logo_col {
   width: 140px;
   padding-right: 10px;
 }
-.campaign_table .logo_col .campaign_logo {
+.campaign_table .company_logo_col .campaign_logo,
+.campaign_table .team_logo_col .campaign_logo,
+.campaign_table .undefined_logo_col .campaign_logo {
   width: 64px;
   height: 64px;
   margin: 3px 0;
   margin-left: 65px;
+}
+.campaign_table .team_logo_col .campaign_logo,
+.campaign_table .undefined_logo_col .campaign_logo {
+  margin-left: 10px;
 }
 .campaign_table .content_col p {
   margin: 0;

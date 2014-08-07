@@ -124,13 +124,11 @@ div(ng-show = '!loading')
           a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
         .message_row(ng-if="toggle[$index] && group_message.comment_permission")
           .dl_comment_area
-            form.dl_modal_container.margin_top_5(name="comment_form" novalidate)
+            form.dl_modal_container.clearfix.margin_top_5(name="comment_form" novalidate)
               .dl_md_12
                 input.dl_form-Control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
               .dl_md_1
                 button.dl_btn_right(ng-click="comment($index,comment_form)" ng-disabled="comment_form.$invalid") 发表
-            br
-            br
             hr
             .dl_modal_container(bs-popover ng-if="group_message.comments.length > 0")
               .dl_row(ng-repeat="comment in group_message.comments")

@@ -1,9 +1,9 @@
 form(name="search_form")
-  .dl-modal-header
+  .dl-modal-header.clearfix
     button(class="close" data-dismiss="modal" aria-hidden="true")
       img(ng-src='/img/icons/icon_close.png')
     .head#myModalLabel 找对手
-  .dl-modal-body
+  .dl-modal-body.clearfix
     .dl_modal_container
         span.subtitle 搜索
     .dl_modal_container
@@ -74,6 +74,6 @@ form(name="search_form")
             span(ng-if="team.home_court[1]") 、{{team.home_court[1].name}}
   //- br
   //- br
-  .dl-modal-footer.margin_top_20
+  .dl-modal-footer.clearfix
     button.dl_btn.dl_btn_large.cancel_btn(data-dismiss="modal") #{__("CANCEL")}
     button.dl_btn.dl_btn_large(ng-click="provoke_select()" ng-disabled="selected_index==-1") 动TA一下
