@@ -1058,6 +1058,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
     $("#deadline").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setEndDate', dateUTC);
     });
     $scope.$watch('member_max + member_min',function(newValue,oldValue){
         if($scope.member_max<$scope.member_min){
@@ -1231,6 +1232,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $("#competition_deadline").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setEndDate', dateUTC);
     });
     
     $scope.recommandTeam = function(){
