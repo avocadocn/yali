@@ -40,7 +40,7 @@ block baseInfo
     .ad-top
 block panel
   div(ng-init="role='#{role}'")
-    ul.nav.nav-tabs(ng-init="cid='#{cid}'")
+    ul.nav.nav-tabs(ng-init="cid='#{cid}'" ng-show="tabShow")
       li.tab_style(ng-class="{'active':nowTab=='team_info'}")
         a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')") 小队
       if role === 'HR' || role === 'EMPLOYEE'

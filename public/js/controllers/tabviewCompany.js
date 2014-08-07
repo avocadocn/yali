@@ -142,7 +142,7 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
     });
 
     $rootScope.cid = '';
-
+    $rootScope.tabShow = true;
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
@@ -932,7 +932,10 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
 }]);
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
-
+    $rootScope.tabShow = false;
+    $rootScope.$on("$routeChangeStart",function(){
+        $rootScope.tabShow = true;
+    });
     $http.get('/company/getAccount/'+$rootScope.cid+'?' + Math.round(Math.random()*100)).success(function(data,status){
         $scope.company = data.company;
         $scope.info = data.info;
@@ -1051,6 +1054,10 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
 }]);
 
 tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScope', function ($http,$scope, $rootScope) {
+    $rootScope.tabShow = false;
+    $rootScope.$on("$routeChangeStart",function(){
+        $rootScope.tabShow = true;
+    });
     $scope.nowpassword = '';
     $scope.newpassword = '';
     $scope.confirmpassword = '';

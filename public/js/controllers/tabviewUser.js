@@ -89,6 +89,7 @@ tabViewUser.run(['$rootScope','$location',
                 }
             }
         });
+        $rootScope.tabShow = true;
     }
 ]);
 
@@ -567,6 +568,10 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
+        $rootScope.tabShow = false;
+        $rootScope.$on("$routeChangeStart",function(){
+            $rootScope.tabShow = true;
+        });
         angular.element('.tooltip').hide();
         var markUserDepartment = function(user, department) {
             if (department && user.department) {
@@ -749,6 +754,10 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
 
 tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
+        $rootScope.tabShow = false;
+        $rootScope.$on("$routeChangeStart",function(){
+            $rootScope.tabShow = true;
+        });
         $scope.nowpassword = '';
         $scope.newpassword = '';
         $scope.confirmpassword = '';
