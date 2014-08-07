@@ -906,6 +906,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         $http
         .get('/group/'+$rootScope.teamId+'/family')
         .success(function(data, status) {
+            console.log($scope.family_photos);
             $scope.family_photos = data;
         })
         .error(function(data, status) {

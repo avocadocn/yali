@@ -605,7 +605,9 @@ tabViewCompany.directive('masonry', function ($timeout) {
         }
     };
 }).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
-
+    $scope.member_search = {
+        'value':''
+    };
     $scope.getData = function(type) {
         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
         $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
@@ -619,23 +621,26 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
 
     $scope.search = function () {
-        $scope.member_backup = $scope.users;
+        for(var i = 0; i < $scope.member_backup.length; i ++){
+            $scope.member_backup[i].leader = false;
+        }
         var find = false;
         $scope.users = [];
         for(var i = 0; i < $scope.member_backup.length; i ++) {
-            if($scope.member_backup[i].nickname.indexOf($scope.member_search) > -1){
+            console.log($scope.member_backup[i].nickname,$scope.member_search.value,$scope.member_backup[i].nickname.indexOf($scope.member_search.value));
+            if($scope.member_backup[i].nickname.indexOf($scope.member_search.value) > -1){
                 $scope.users.push($scope.member_backup[i]);
                 find = true;
             }
         }
         if(!find){
-            $scope.users = $scope.member_backup;
-            $scope.member_backup = [];
+            $scope.users = [];
             alertify.alert("未找到组员!");
         }else{
             alertify.alert("找到"+$scope.users.length+"名组员!");
         }
     }
+
     $scope.recover = function(){
         if($scope.member_backup){
             if($scope.member_backup.length > 0){
@@ -691,8 +696,6 @@ tabViewCompany.directive('masonry', function ($timeout) {
                     }
                 }
 
-                console.log($scope.users);
-
                 var leader_find = false;
                 for(var i = 0; i < $scope.users.length && !leader_find; i ++) {
                     for(var j = 0; j < $scope.leaders.length; j ++) {
@@ -704,6 +707,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                         }
                     }
                 }
+                $scope.member_backup = $scope.users;
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alertify.alert('DATA ERROR');
@@ -1072,6 +1076,7 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScop
 }]);
 // HR增加小组 controller
 tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootScope', function($http, $scope, $rootScope){
+
     var _this = this;
     _this.selected = "";
     _this.tname = "";
@@ -1130,6 +1135,13 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
 }]);
 // HR 发布公司活动 controller
 tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', function($http, $scope, $rootScope){
+
+    $scope.multi = false;          //是否发起多部门会活动
+    $scope.dOts = [];
+    $scope.select_dOts = [];
+    $scope.main_dOt = null;
+    $scope.search_dOt = null;
+
     $("#start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
@@ -1181,7 +1193,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         myCity.get(getCity);
         $scope.showMapFlag = true;
     };
-    
+
     $scope.showMap = function(){
         if($scope.location.name==''){
             alertify.alert('请输入地点');
@@ -1197,6 +1209,67 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
             $scope.local.search($scope.location.name );
         }
     };
+
+    $scope.search = function(){
+        var find = false;
+        $scope.select_dOts = [];
+        for(var i = 0 ; i < $scope.dOts.length; i ++){
+            if($scope.dOts[i].name.indexOf($scope.search_dOt) > -1){
+                $scope.dOts[i].selected = false;
+                $scope.select_dOts.push($scope.dOts[i]);
+            }
+        }
+    }
+    $scope.showCampaignSponsor = function(){
+        $scope.multi = true;
+        $('#sponsorCampaignModel').modal();
+    }
+    $scope.selectDOT = function(){
+        for(var i = 0; i < $scope.select_dOts.length; i ++){
+            if($scope.select_dOts[i]._id === $scope.main_dOt._id){
+                $scope.main_dOt.selected = true;
+                return;
+            }
+        }
+        $scope.select_dOts = [];
+        $scope.main_dOt.selected = true;
+        $scope.select_dOts.push($scope.main_dOt);
+    }
+    $scope.selectReady = function(index){
+        for(var i = 0; i < $scope.select_dOts.length; i ++){
+            if($scope.select_dOts[i].selected){
+                $scope.select_dOts[i].selected = false;
+                break;
+            }
+        }
+        for(var i = 0; i < $scope.select_dOts.length; i ++){
+            if(i === index){
+                $scope.select_dOts[i].selected = true;
+                $scope.main_dOt = $scope.select_dOts[i];
+                break;
+            }
+        }
+    }
+    //将获取的部门或者小队格式化存入 $sacope.dOts
+    $scope.dOtFormat = function(dOts){
+        for(var i = 0 ; i < dOts.length; i ++){
+            $scope.dOts.push({
+                '_id':dOts[i]._id,
+                'name':dOts[i].name,
+                'team':dOts[i].team
+            });
+        }
+    }
+    //获取除了当前部门外的所有部门
+    $scope.$watch('cid',function(cid){
+        $http
+            .get('/department/detail/multi/' + cid)
+            .success(function(data, status) {
+                $scope.dOtFormat(data.departments);
+            });
+    });
+
+
     $scope.sponsor = function() {
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
@@ -1389,7 +1462,9 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 $scope.origin_manager_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
                 $scope.department_users = data.users;
                 // wait_for_join : 是否将该员工强制加入该部门的标志
+                console.log($scope.department_users);
                 for(var i = 0 ; i < $scope.department_users.length; i ++){
+                    if($scope.department_users[i]!=null)
                     $scope.department_users[i].wait_for_join = false;
                 }
 
@@ -1413,7 +1488,12 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                         }
                     }
                 }
-              callback();
+                //没有值传递好痛苦啊
+                $scope.member_backup_department = [];
+                for(var i = 0; i < $scope.department_users.length; i ++){
+                    $scope.member_backup_department.push($scope.department_users[i]);
+                }
+                callback();
         }).error(function(data, status) {
               //TODO:更改对话框
             alertify.alert(data);
@@ -1421,7 +1501,10 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
     }
     //从员工中进一步搜索
     $scope.search = function () {
-        $scope.member_backup_department = $scope.department_users;
+        //搜索前要重置
+        for(var i = 0; i < $scope.member_backup_department.length; i ++){
+            $scope.member_backup_department[i].leader = false;
+        }
         var find = false;
         $scope.department_users = [];
         for(var i = 0; i < $scope.member_backup_department.length; i ++) {
@@ -1431,16 +1514,12 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             }
         }
         if(!find){
-            $scope.department_users = $scope.member_backup_department;
-            $scope.member_backup_department = [];
+            $scope.department_users = [];
             alertify.alert("未找到该员工!");
         }else{
             alertify.alert("找到"+$scope.department_users.length+"名员工!");
         }
     }
-
-
-
 
     $scope.recover = function(){
         if($scope.member_backup_department){
@@ -1449,17 +1528,24 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             }
         }
     }
+
     $scope.appointReady = function(index){
         $scope.department_user = $scope.department_users[index];
         $scope.department_index = index;
         $scope.department_users[index].leader = true;
 
-        if($scope.origin_manager_id != null && $scope.origin_manager_id != undefined){
-            for(var i = 0; i < $scope.department_users.length; i ++) {
-                if($scope.origin_manager_id.toString() === $scope.department_users[i]._id.toString()){
-                    $scope.department_users[i].leader = false;
-                    break;
-                }
+        // if($scope.origin_manager_id != null && $scope.origin_manager_id != undefined){
+        //     for(var i = 0; i < $scope.department_users.length; i ++) {
+        //         if($scope.origin_manager_id.toString() === $scope.department_users[i]._id.toString()){
+        //             $scope.department_users[i].leader = false;
+        //             break;
+        //         }
+        //     }
+        // }
+
+        for(var i = 0; i < $scope.department_users.length; i ++){
+            if($scope.department_users[i]._id != $scope.department_user._id){
+                $scope.department_users[i].leader = false;
             }
         }
         $scope.managers[0] = {
@@ -1468,6 +1554,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
             'photo':$scope.department_user.photo
         }
 
+        //防止重复选择的bug
         if($scope.origin_manager_id !== $scope.department_user._id){
             $scope.appoint_permission_department = true;
         }else{
@@ -1532,6 +1619,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                     });
 
                     if($scope.current_node != null && $scope.current_node != undefined){
+                        $scope.current_node.manager = [];
                         $scope.current_node.manager.push({
                             '_id':$scope.department_user._id,
                             'nickname':$scope.department_user.nickname,

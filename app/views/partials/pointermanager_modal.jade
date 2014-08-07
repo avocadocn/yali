@@ -19,10 +19,12 @@
               label.subtitle.dl_label 点选新成员任命管理员后,现任管理员自动解职
         .dl_modal_container
           .dl_row
-            .dl_md_12
+            .dl_md_10
               input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索公司成员" type="text" ng-model="member_search_department" required)
             .dl_md_1
               button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="manager_form.$invalid") 搜索
+            .dl_md_1
+              button.clearLinkUnderline.dl_btn_right(ng-click="recover()") 还原
         .dl_modal_container
           .groups.row
             .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="user in department_users")

@@ -1013,7 +1013,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
     $scope.departments = [];
     $scope.select_departments = [];
     $scope.main_department = null;
-    $scope.search_department = null,
+    $scope.search_department = null;
 
     $scope.search = function(){
         var find = false;

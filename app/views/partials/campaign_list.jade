@@ -31,11 +31,14 @@
           img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
           img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
       td.content_col
-        p 主题:
+        p
+          strong 主题:
           a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
-        p 内容:
+        p
+          strong 内容:
           span.content_text {{campaign_item.content}}
-        p #{__("LOCATION")}:
+        p
+          strong #{__("LOCATION")}:
           span.content_text {{campaign_item.location.name}}
       td.operator_col
         button.cancel_btn.dl_btn_small.operator_btn.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动

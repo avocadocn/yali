@@ -26,10 +26,12 @@
               label.subtitle.dl_label 点选新成员任命队长后,现任队长自动解职
         .dl_modal_container
           .dl_row
-            .dl_md_12
-              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索小队成员" type="text" ng-model="member_search" required)
+            .dl_md_10
+              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索小队成员" type="text" ng-model="member_search.value" required)
             .dl_md_1
-              button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-blur="recover()" ng-disabled="leader_form.$invalid") 搜索
+              button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="leader_form.$invalid") 搜索
+            .dl_md_1
+              button.clearLinkUnderline.dl_btn_right(ng-click="recover()") 还原
         .dl_modal_container
           .groups.row
             .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="user in users")

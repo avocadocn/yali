@@ -70,8 +70,6 @@ var teamPoint = function(){
           value.save(function(err){
             if(err){
               console.log('TEAM_POINT_FAILED!',err);
-            }else{
-              console.log('TEAM_POINT_FINISHED!');
             }
           });
         });
