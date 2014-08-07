@@ -1555,25 +1555,56 @@ familyHeight = 371.25px
     width 660px
     height 270px
     overflow hidden
+    background-color cardbgColor
     .team_photo
       width 480px
       height 270px
       position relative
       overflow hidden
       float left
-      #family
-        margin-top 0
-        background-color cardbgColor
+      .carousel-img-container
+        height 270px
         width 480px
-        .carousel-img-container
-          height 270px
-          width 480px
-      .slider_nav
-        margin-bottom 0
-        float left
-        padding 0
-        li
-          display inline-block
+    .slider_nav
+      position relative
+      margin-bottom 0
+      float left
+      padding 0
+      max-height 270px
+      overflow hidden
+      li
+        display block
+      .up, .down
+        position absolute
+        text-align center
+        width 100%
+        color #ffffff
+        text-align center
+        text-shadow 0 1px 2px rgba(0, 0, 0, 0.6)
+        opacity 0.5
+        &:hover, &:focus
+          color #ffffff
+          text-decoration none
+          outline none
+          opacity 0.9
+      .up
+        top 0
+        background-image -webkit-linear-gradient(top, color-stop(rgba(0, 0, 0, 0.5) 0), color-stop(rgba(0, 0, 0, 0.0001) 100%))
+        background-image linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.0001) 100%)
+        background-repeat repeat-y
+      .down
+        bottom 0
+        background-image -webkit-linear-gradient(top, color-stop(rgba(0, 0, 0, 0.0001) 0), color-stop(rgba(0, 0, 0, 0.5) 100%))
+        background-image linear-gradient(to bottom, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%)
+        background-repeat repeat-y
+
+    .rn-carousel-indicator
+      position absolute
+      bottom 0
+      background-color transparent
+      span
+        padding 0 2px !important
+
   .newcampainbox
     height 270px
     .bar

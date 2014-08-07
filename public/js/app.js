@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('donler', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.masonry']);
+angular.module('donler', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.masonry', 'angular-carousel']);
 
 
 var app = angular.module('donler');

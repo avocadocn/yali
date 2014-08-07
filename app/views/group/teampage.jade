@@ -23,7 +23,7 @@ block baseInfo
       .dl_row
         .score_container
           span.info_border #{__("TEAM_MEMBER")}
-          span.info_border.info_right_border=number 
+          span.info_border.info_right_border= number
         .score_container
           span.info_border #{__("SCORE")}
           span.info_border.info_right_border= score
@@ -37,7 +37,7 @@ block baseInfo
             button.dl_btn.dl_btn_small(ng-show="role==='LEADER'||role==='HR'" data-toggle="modal" data-target="#upload_modal") 修改全家福
             a.dl_btn.dl_btn_small.margin_left_5(href="/message/home/#{teamId}#/send") 发送私信
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
-            
+
 
         if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
           .score_container

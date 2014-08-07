@@ -194,7 +194,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 
 
-integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+integrateGroup.controller('SponsorController', ['$http', '$scope', '$rootScope', function($http, $scope, $rootScope) {
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $("#start_time").on("changeDate",function (ev) {
@@ -320,7 +320,7 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope',f
     };
 }]);
 
-integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
     $rootScope.$watch('teamId',function(tid){
@@ -481,6 +481,27 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',func
         $scope.local2.search($scope.team.home_court[1].name);
     };
 
+    // 当前全家福滚动的索引
+    $scope.slide = {
+        index: 0
+    };
+
+    $scope.prevPhoto = function() {
+        if ($scope.slide.index === 0) {
+            $scope.slide.index = $scope.family_photos.select_count - 1;
+        } else {
+            $scope.slide.index--;
+        }
+    };
+
+    $scope.nextPhoto = function() {
+        if ($scope.slide.index === $scope.family_photos.select_count - 1) {
+            $scope.slide.index = 0;
+        } else {
+            $scope.slide.index++;
+        }
+    };
+
     //---全家福
     var jcrop_api;
     // ng-show 会有BUG,不得已使用jquery show,hide
@@ -496,6 +517,12 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',func
         .success(function(data, status) {
             console.log($scope.family_photos);
             $scope.family_photos = data;
+            $scope.family_photos.select_count = 0;
+            $scope.family_photos.forEach(function(photo) {
+                if (photo.select === true) {
+                    $scope.family_photos.select_count++;
+                }
+            });
         })
         .error(function(data, status) {
             // TO DO

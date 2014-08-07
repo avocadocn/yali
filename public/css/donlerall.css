@@ -1836,6 +1836,7 @@ dl_messagebox,
   width: 660px;
   height: 270px;
   overflow: hidden;
+  background-color: #fff;
 }
 .dl_integrate_container .team_family_box .team_photo {
   width: 480px;
@@ -1844,22 +1845,59 @@ dl_messagebox,
   overflow: hidden;
   float: left;
 }
-.dl_integrate_container .team_family_box .team_photo #family {
-  margin-top: 0;
-  background-color: #fff;
-  width: 480px;
-}
-.dl_integrate_container .team_family_box .team_photo #family .carousel-img-container {
+.dl_integrate_container .team_family_box .team_photo .carousel-img-container {
   height: 270px;
   width: 480px;
 }
-.dl_integrate_container .team_family_box .team_photo .slider_nav {
+.dl_integrate_container .team_family_box .slider_nav {
+  position: relative;
   margin-bottom: 0;
   float: left;
   padding: 0;
+  max-height: 270px;
+  overflow: hidden;
 }
-.dl_integrate_container .team_family_box .team_photo .slider_nav li {
-  display: inline-block;
+.dl_integrate_container .team_family_box .slider_nav li {
+  display: block;
+}
+.dl_integrate_container .team_family_box .slider_nav .up,
+.dl_integrate_container .team_family_box .slider_nav .down {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  opacity: 0.5;
+}
+.dl_integrate_container .team_family_box .slider_nav .up:hover,
+.dl_integrate_container .team_family_box .slider_nav .down:hover,
+.dl_integrate_container .team_family_box .slider_nav .up:focus,
+.dl_integrate_container .team_family_box .slider_nav .down:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+  opacity: 0.9;
+}
+.dl_integrate_container .team_family_box .slider_nav .up {
+  top: 0;
+  background-image: -webkit-linear-gradient(top, color-stop(rgba(0,0,0,0.5) 0), color-stop(rgba(0,0,0,0) 100%));
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.5) 0, rgba(0,0,0,0) 100%);
+  background-repeat: repeat-y;
+}
+.dl_integrate_container .team_family_box .slider_nav .down {
+  bottom: 0;
+  background-image: -webkit-linear-gradient(top, color-stop(rgba(0,0,0,0) 0), color-stop(rgba(0,0,0,0.5) 100%));
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0.5) 100%);
+  background-repeat: repeat-y;
+}
+.dl_integrate_container .team_family_box .rn-carousel-indicator {
+  position: absolute;
+  bottom: 0;
+  background-color: transparent;
+}
+.dl_integrate_container .team_family_box .rn-carousel-indicator span {
+  padding: 0 2px !important;
 }
 .dl_integrate_container .newcampainbox {
   height: 270px;

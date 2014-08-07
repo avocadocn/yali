@@ -2,17 +2,19 @@
 div(ng-show = '!loading' ng-controller="infoController")
 
   form.form-horizontal.tab-info-form(name="infoForm")
-    .team_family_box
-      .dl_row.team_photo(ng-if="family_photos.length !== 0")
-        carousel#family(interval="5000")
-          slide(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
+    .team_family_box(ng-if="family_photos.length !== 0")
+      .team_photo
+        ul.ng-cloak(rn-carousel rn-carousel-indicator="true" rn-carousel-auto-slide="2" rn-carousel-pause-on-hover="true" rn-carousel-swipe="false" rn-carousel-index="slide.index")
+          li(ng-repeat="photo in family_photos | filter: {select: true}")
             .carousel-img-container
-              img.center-block(ng-src="{{ photo.uri }}")
-
-      ul.slider_nav
-        li(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
-          a
-            img(ng-src="{{ photo.uri }}/160/90")
+              img.center-block(ng-src="{{ photo.uri }}/480/270")
+      ul.slider_nav.ng-cloak
+        .up(ng-click="prevPhoto()")
+          span.glyphicon.glyphicon-chevron-up
+        li(ng-repeat="photo in family_photos | filter: {select: true}" ng-class="{'is-active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
+          img(ng-src="{{ photo.uri }}/160/90")
+        .down(ng-click="nextPhoto()")
+          span.glyphicon.glyphicon-chevron-down
 
     .team_calendar_box.clearfix
       .dl_row.clearfix
@@ -37,7 +39,7 @@ div(ng-show = '!loading' ng-controller="infoController")
       .dl_row.clearfix
         .dl_companygroup_container
           .groups
-            .group( ng-repeat="leader in team.leader")
+            .group(ng-repeat="leader in team.leader")
               div(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
                 .dl_row(bs-popover)
                   a(href="/users/home/{{leader._id}}")
@@ -82,7 +84,7 @@ div(ng-show = '!loading' ng-controller="infoController")
         h4.modal-title 点击图片可切换选中状态，点击图片右上方的按钮可删除该图片
       .modal-body
         #family_preview_container.clearfix.family_preview_container
-          .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos"  ng-class="selected(photo)")
+          .family_photo_preview_cell.img-thumbnail(ng-repeat="photo in family_photos" ng-class="selected(photo)")
             img.img-responsive(ng-src="{{ photo.uri }}" ng-click="toggleSelect(photo._id)")
             button.remove(ng-click="deletePhoto(photo._id)"): span.glyphicon.glyphicon-remove
             button.ok(ng-if="photo.select"): span.glyphicon.glyphicon-ok
