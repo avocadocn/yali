@@ -1840,6 +1840,7 @@ dl_messagebox,
   height: 270px;
 }
 .dl_integrate_container .newcampainbox .bar .event_pk {
+  margin-bottom: 10px;
   position: relative;
   height: 85px;
 }
@@ -1867,9 +1868,12 @@ dl_messagebox,
 .dl_integrate_container .newcampainbox .info p {
   margin: 0;
 }
+.dl_integrate_container .newcampainbox .info .map {
+  margin-top: 10px;
+}
 .dl_integrate_container .newcampainbox .info .map_size {
   width: 100%;
-  height: 100px;
+  height: 85px;
 }
 .dl_integrate_container .newcampainbox .remindbox .remind_text {
   margin: 5px 0;

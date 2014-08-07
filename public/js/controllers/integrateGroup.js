@@ -693,8 +693,23 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope',func
             return;
         }
         var during = moment.duration(moment(start_time).diff(Date.now()));
-
-        remind_time.text(during.days() + '天' + during.hours() + '小时' + during.minutes() + '分' + during.seconds() + '秒');
+        var remind_text = during.seconds() + '秒';
+        if (during.minutes() > 0) {
+            remind_text = during.minutes() + '分' + remind_text;
+        }
+        if (during.hours() > 0) {
+            remind_text = during.hours() + '小时' + remind_text;
+        }
+        if (during.days() > 0) {
+            remind_text = during.days() + '天' + remind_text;
+        }
+        if (during.months() > 0) {
+            remind_text = during.months() + '月' + remind_text;
+        }
+        if (during.years() > 0) {
+            remind_text = during.years() + '年' + remind_text;
+        }
+        remind_time.text(remind_text);
     }, 1000);
 
 

@@ -179,6 +179,7 @@ exports.teampage = function(req, res) {
 
 
       Campaign.find({'team':req.params.teamId})
+        .where('start_time').gt(new Date())
         .sort('-create_time')
         .limit(1)
         .exec()
