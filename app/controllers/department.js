@@ -125,14 +125,16 @@ var managerUpdate = function(did,operate,member,res){
   });
 }
 
-//部门之间互相发活动
+//多部门活动
 exports.multiCampaignSponsor = function(req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
     console.log(req.role);
     return res.send(403,'forbidden');
   }
+  var teams = [];
+  var team_ids = [];
   var poster;
-  var other_departments = req.body.select_departments;//其实只有一个
+  var other_departments = req.body.select_departments;
   if(req.user.provider === 'user'){
     poster = {
       'cid':req.user.cid,
@@ -142,6 +144,11 @@ exports.multiCampaignSponsor = function(req, res) {
       'nickname':req.user.nickname,
       'role':'LEADER'
     };
+    teams.push({
+      'teamid':req.department.team._id,
+      'name':req.department.team.name,
+      'logo':req.department.team.logo
+    });
   }else{
     poster = {
       'cid':req.user._id,
@@ -159,14 +166,7 @@ exports.multiCampaignSponsor = function(req, res) {
   department_campaign.campaign_type = 8;
   department_campaign.active = true;
   department_campaign.team.push(req.department.team);
-  var teams = [];
-  var team_ids = [];
 
-  teams.push({
-    'teamid':req.department.team._id,
-    'name':req.department.team.name,
-    'logo':req.department.team.logo
-  });
   for(var i = 0; i < other_departments.length; i ++){
     department_campaign.team.push(other_departments[i].team._id);
     team_ids.push(other_departments[i].team._id);

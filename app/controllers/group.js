@@ -952,7 +952,7 @@ exports.cancelProvoke = function (req, res) {
     });
   });
 };
-//队长发布组内活动
+//发布和小队相关的活动
 exports.sponsor = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
     return res.send(403,forbidden);
@@ -960,11 +960,11 @@ exports.sponsor = function (req, res) {
   var theme = req.body.theme;
   var content = req.body.content;//活动内容
   var location = req.body.location;//活动地点
-  var group_type = req.companyGroup.group_type;
-  var tid = req.params.teamId;
+  var multi = false;
+
   var cid = req.role ==='HR' ? req.user._id : req.user.cid;
   var cname = req.role ==='HR' ? req.user.info.name : req.user.cname;
-  var tname = req.companyGroup.name;
+  var tname;
   var member_min = req.body.member_min ? req.body.member_min : 0;
   var member_max = req.body.member_max ? req.body.member_max : 0;
   var start_time = req.body.start_time;
@@ -976,7 +976,21 @@ exports.sponsor = function (req, res) {
   }
   //生成活动
   var campaign = new Campaign();
-  campaign.team.push(tid);
+  var tids = [];
+  if(req.params.teamId != null && req.params.teamId != undefined && req.params.teamId != ""){
+    multi = false;
+    tname = req.companyGroup.name;
+    var tid = req.params.teamId;
+    tids = [req.params.teamId];
+    campaign.team.push(tid);
+  }else{
+    multi = true;
+    for(var i = 0; i < req.body.select_teams.length; i ++){
+      tids.push(req.body.select_teams[i]._id);
+      campaign.team.push(req.body.select_teams[i]._id);
+    }
+  }
+
   campaign.cid =[cid];//其实只有一个公司
   campaign.cname =[cname];
   campaign.poster.cname = cname;
@@ -994,7 +1008,7 @@ exports.sponsor = function (req, res) {
   campaign.location = location;
   campaign.theme = theme;
   campaign.active = true;
-  campaign.campaign_type = 2;
+  campaign.campaign_type = !multi ? 2 : 3;
 
   campaign.start_time = start_time;
   campaign.end_time = end_time;
@@ -1006,7 +1020,7 @@ exports.sponsor = function (req, res) {
         type: 'Campaign'
       },
       companies: [cid],
-      teams: [req.companyGroup._id]
+      teams: tids
     },
     name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme,
     update_user: {
@@ -1049,34 +1063,80 @@ exports.sponsor = function (req, res) {
             return;
         }
         else{
-          req.companyGroup.photo_album_list.push(photo_album._id);
-          req.companyGroup.save(function(err) {
-            if (err) {
-              //res.send(500);
-              return res.send({'result':0,'msg':'活动发起失败'});
-            } else {
-              //生成动态消息
-              var groupMessage = new GroupMessage();
-              groupMessage.message_type = 1;
-              groupMessage.company = {
-                cid : cid,
-                name : cname
-              };
-              groupMessage.team= {
-                teamid : tid,
-                name : tname,
-                logo : req.companyGroup.logo
-              };
-              groupMessage.campaign = campaign._id;
-              groupMessage.save(function (err) {
-                if (err) {
-                  console.log(err);
-                } else {
-                  return res.send({'result':0,'msg':'活动发起成功'});
+          if(!multi){
+            req.companyGroup.photo_album_list.push(photo_album._id);
+            req.companyGroup.save(function(err) {
+              if (err) {
+                //res.send(500);
+                return res.send({'result':0,'msg':'活动发起失败'});
+              } else {
+                //生成动态消息
+                var groupMessage = new GroupMessage();
+                groupMessage.message_type = 1;
+                groupMessage.company = {
+                  cid : cid,
+                  name : cname
+                };
+                groupMessage.team= {
+                  teamid : tid,
+                  name : tname,
+                  logo : req.companyGroup.logo
+                };
+                groupMessage.campaign = campaign._id;
+                groupMessage.save(function (err) {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    return res.send({'result':1,'msg':'活动发起成功'});
+                  }
+                });
+              }
+            });
+          }else{
+            var i = 0;;
+            async.whilst(
+              function() { return i < tids.length},
+              function(__callback){
+                CompanyGroup.update({'_id':tids[i]},{'$push':{'photo_album_list':photo_album._id}},function(err,team){
+                  if(err || !team){
+                    console.log('小队相册加入失败',err,team);
+                  }else{
+                    i++;
+                    __callback();
+                  }
+                })
+              },
+              function(err){
+                if(err){
+                  console.log('MULTI_CAMPAIGN_CAMPAIGN',err);
+                  return res.send({'result':1,'msg':'FAILURED'});
+                }else{
+                  //生成动态消息
+                  var groupMessage = new GroupMessage();
+                  groupMessage.message_type = 1;
+                  groupMessage.company = {
+                    cid : cid,
+                    name : cname
+                  };
+                  for(var i = 0; i < req.body.select_teams.length; i ++){
+                    groupMessage.team.push({
+                      'teamid':req.body.select_teams[i]._id,
+                      'name':req.body.select_teams[i].name,
+                      'logo':req.body.select_teams[i].logo
+                    });
+                  }
+                  groupMessage.campaign = campaign._id;
+                  groupMessage.save(function (err) {
+                    if (err) {
+                      console.log('MULTI_CAMPAIGN_GROUPMESSAGE_ERROR',err);
+                    } else {
+                      return res.send({'result':1,'msg':'活动发起成功'});
+                    }
+                  });
                 }
-              });
-            }
-          });
+              }
+            );
+          }
         }
       });
     });

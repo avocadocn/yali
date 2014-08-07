@@ -24,6 +24,8 @@ module.exports = function(app) {
   app.post('/department/:departmentId/sponsor', authorization.departmentAuthorize, department.sponsor);
   app.post('/department/:departmentId/multi_sponsor', authorization.departmentAuthorize, department.multiCampaignSponsor);
 
+  app.post('/department/multi_sponsor/:cid', authorization.departmentAuthorize, department.multiCampaignSponsor);
+
   app.get('/department/campaigns', department.renderCampaigns);
   app.get('/department/applylist/:departmentId', authorization.departmentAuthorize, department.renderApplyList);
 

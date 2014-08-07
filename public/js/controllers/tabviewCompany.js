@@ -613,7 +613,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
     $scope.getData = function(type) {
         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
         $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-            $scope.team_lists = data.teams;//公司的所有team
+            $rootScope.team_lists = data.teams;//公司的所有team
             $scope.cid = data.cid;
             $scope.role = data.role;
             $scope.data_type = type;
@@ -799,10 +799,10 @@ tabViewCompany.directive('masonry', function ($timeout) {
                             '_id':$scope.origin_leader_id
                         };
                         $scope.dismissLeader(_user);
-                        var _leader = $scope.team_lists[$scope.team_index].leader;
+                        var _leader = $rootScope.team_lists[$scope.team_index].leader;
                         for(var i = 0; i < _leader.length; i++){
                             if(_leader[i]._id == $scope.origin_leader_id) {
-                                $scope.team_lists[$scope.team_index].leader.splice(i,1);
+                                $rootScope.team_lists[$scope.team_index].leader.splice(i,1);
                             }
                         }
                         for(var i = 0; i < $scope.leaders.length; i ++) {
@@ -811,7 +811,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                             }
                         }
                     }
-                    $scope.team_lists[$scope.team_index].leader.push({
+                    $rootScope.team_lists[$scope.team_index].leader.push({
                         '_id':$scope._user._id,
                         'nickname':$scope._user.nickname,
                         'photo':$scope._user.photo
@@ -840,7 +840,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 url: '/company/saveGroupInfo/'+$rootScope.cid,
                 data:{
                     'tid': $scope.tid,
-                    'tname': $scope.team_lists[$scope.team_index].name
+                    'tname': $rootScope.team_lists[$scope.team_index].name
                 }
             }).success(function(data, status) {
                     //TODO:更改对话框
@@ -867,11 +867,11 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }).success(function(data,status){
                 if( active===true ){
-                   $scope.team_lists[index].active = true;
+                   $rootScope.team_lists[index].active = true;
                    alertify.alert('成功打开小组!');
                 }
                 else{
-                    $scope.team_lists[index].active = false;
+                    $rootScope.team_lists[index].active = false;
                 }
             }).error(function(data, status){
                 alertify.alert('DATA ERROR');
@@ -899,7 +899,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }).success(function(data,status){
                 alertify.alert('成功加入小队!');
-                $scope.team_lists[index].belong = true;
+                $rootScope.team_lists[index].belong = true;
             }).error(function(data,status){
                 alertify.alert('DATA ERROR');
             });
@@ -919,7 +919,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }).success(function(data,status){
                 alertify.alert('成功退出小队!');
-                $scope.team_lists[index].belong = false;
+                $rootScope.team_lists[index].belong = false;
             }).error(function(data,status){
                alertify.alert('DATA ERROR');
             });
@@ -1151,7 +1151,34 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     $scope.select_dOts = [];
     $scope.main_dOt = null;
     $scope.search_dOt = null;
+    $scope.dOt = false; // true 返回 部门    false 返回小队
+    $scope.sponsor_permission = false;
 
+    $scope.dOt_type = {
+        'dOt':$scope.dOt,
+        'name':'选择小队'
+    }
+
+    $scope.dOt_types = [];
+    $scope.dOt_types.push($scope.dOt_type);
+    $scope.dOt_types.push({
+        'dOt':true,
+        'name':'选择部门'
+    });
+
+    if($rootScope.team_lists == undefined || $rootScope.team_lists == null){
+        $scope.$watch('cid', function(cid){
+            var type = 'team';
+            $http.get('/company/getCompanyTeamsInfo/'+cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+                $rootScope.team_lists = data.teams;//公司的所有team
+                $scope.dOts = $rootScope.team_lists;
+                $scope.main_dOt = $scope.dOts[0];
+            });
+        });
+    }else{
+        $scope.dOts = $rootScope.team_lists;
+        $scope.main_dOt = $scope.dOts[0];
+    }
     $("#start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
@@ -1231,9 +1258,20 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         }
     }
     $scope.showCampaignSponsor = function(){
-        $scope.multi = true;
-        $('#sponsorCampaignModel').modal();
+        var tmp = [];
+        for(var i = 0; i < $scope.select_dOts.length; i ++){
+            if($scope.select_dOts[i].selected)tmp.push($scope.select_dOts[i]);
+        }
+        $scope.select_dOts = tmp;
+
+        if($scope.select_dOts.length > 0){
+            $scope.multi = true;
+            $('#sponsorCampaignModel').modal();
+        }else{
+            alertify.alert('请至少选择一个小队!');
+        }
     }
+    //从列表中选择小队或者部门
     $scope.selectDOT = function(){
         for(var i = 0; i < $scope.select_dOts.length; i ++){
             if($scope.select_dOts[i]._id === $scope.main_dOt._id){
@@ -1241,46 +1279,68 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
                 return;
             }
         }
-        $scope.select_dOts = [];
         $scope.main_dOt.selected = true;
         $scope.select_dOts.push($scope.main_dOt);
+        $scope.sponsor_permission = true;
     }
+    //从已经选出的小队或者部门中再次进行选择
     $scope.selectReady = function(index){
-        for(var i = 0; i < $scope.select_dOts.length; i ++){
+        $scope.select_dOts[index].selected =! $scope.select_dOts[index].selected;
+        $scope.main_dOt = $scope.select_dOts[index];
+
+        $scope.sponsor_permission = false;
+        for(var i = 0; i  < $scope.select_dOts.length; i ++){
             if($scope.select_dOts[i].selected){
-                $scope.select_dOts[i].selected = false;
-                break;
-            }
-        }
-        for(var i = 0; i < $scope.select_dOts.length; i ++){
-            if(i === index){
-                $scope.select_dOts[i].selected = true;
-                $scope.main_dOt = $scope.select_dOts[i];
+                $scope.sponsor_permission = true;
                 break;
             }
         }
     }
-    //将获取的部门或者小队格式化存入 $sacope.dOts
+    //将获取的部门或者小队格式化存入 $scope.dOts
     $scope.dOtFormat = function(dOts){
+        $scope.dOts = [];
         for(var i = 0 ; i < dOts.length; i ++){
             $scope.dOts.push({
                 '_id':dOts[i]._id,
                 'name':dOts[i].name,
-                'team':dOts[i].team
+                'team':dOts[i].team  //只有部门才会有这个属性
             });
         }
+        $scope.main_dOt = $scope.dOts[0];
     }
-    //获取除了当前部门外的所有部门
-    $scope.$watch('cid',function(cid){
-        $http
-            .get('/department/detail/multi/' + cid)
+    //获取除该公司所有部门或者小队
+    $scope.getDOT = function(dOt){
+        if(dOt){
+            $http
+            .get('/department/detail/multi/' + $rootScope.cid)
             .success(function(data, status) {
                 $scope.dOtFormat(data.departments);
             });
-    });
+        }else{
+            $scope.dOts = $rootScope.team_lists;
+            $scope.main_dOt = $scope.dOts[0];
+        }
+    }
 
 
     $scope.sponsor = function() {
+        var _url = $scope.multi ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
+        var _data = {
+            theme: $scope.theme,
+            location: $scope.location,
+            content : $scope.content,
+            start_time : $scope.start_time,
+            end_time : $scope.end_time,
+            deadline : $scope.deadline,
+            member_min : $scope.member_min,
+            member_max : $scope.member_max
+        };
+        if($scope.dOt){
+            _data.select_departments = $scope.select_dOts;
+        }else{
+            _data.select_teams = $scope.select_dOts;
+        }
+
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
         }
@@ -1288,17 +1348,8 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
             try{
                 $http({
                     method: 'post',
-                    url: '/company/campaignSponsor/'+$rootScope.cid,
-                    data:{
-                        theme: $scope.theme,
-                        location: $scope.location,
-                        content : $scope.content,
-                        start_time : $scope.start_time,
-                        end_time : $scope.end_time,
-                        deadline : $scope.deadline,
-                        member_min : $scope.member_min,
-                        member_max : $scope.member_max
-                    }
+                    url: _url,
+                    data:_data
                 }).success(function(data, status) {
                     //发布活动后跳转到显示活动列表页面
                     window.location.reload();

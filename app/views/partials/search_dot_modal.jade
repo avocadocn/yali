@@ -1,0 +1,31 @@
+.modal-dialog
+  .dl-modal
+    form(name="dOt_form" novalidate)
+      .dl-modal-header
+        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+        .head#myModalLabel 发起多小队活动
+      .dl-modal-body
+        .dl_modal_container
+          .dl_md_1.dl_vertical
+            h5 选择小队
+            //select(tabindex="2" ng-model="dOt_type" ng-options="d.name for d in dOt_types" ng-change="getDOT(dOt_type.dOt)")
+          .dl_md_8.dl_vertical
+            select(tabindex="2" ng-model="main_dOt" ng-options="d.name for d in dOts" ng-change="selectDOT()" ng-disabled="dOts.length == 0")
+        .dl_modal_container
+          .dl_row
+            .dl_md_12
+              input.dl_modal_input.form-control(placeholder="如果结果太多,您可以搜索一下" type="text" ng-model="search_dOt" required)
+            .dl_md_1
+              button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="dOt_form.$invalid") 搜索
+        .dl_modal_container
+          .groups.row
+            .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="dOt in select_dOts")
+              .dl_row
+                .dl_cover_department(ng-if="dOt.selected" ng-click="selectReady($index)")
+                a(ng-click="selectReady($index)")
+                  img.size_80(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}")
+              .dl_row.search_area_head
+                label {{dOt.name}}
+      .dl-modal-footer
+        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="showCampaignSponsor()" ng-disabled="!sponsor_permission") 发起

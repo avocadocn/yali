@@ -4,8 +4,9 @@ div(ng-show = '!loading')
     //若是公司动态
     div.clearfix.dl_messageitem
       .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")
-        a(ng-href='/group/home/{{group_message.team_id}}')
-          img.size_56(ng-src='{{group_message.logo}}')
+        img(ng-if= "group_message.campaign.campaign_type == 3").size_56(ng-src='/img/dl_doc_func_01.png')
+        a(ng-if= "group_message.campaign.campaign_type != 3" ng-href='/group/home/{{group_message.team_id}}')
+          img(ng-if= "group_message.campaign.campaign_type != 3").size_56(ng-src='{{group_message.logo}}')
       .message_side(ng-if="group_message.message_type===9 || group_message.message_type===10")
         a(ng-href="{{'/department/home/' + group_message.department[0] }}")
           img.size_56(ng-src='{{group_message.logo}}')
@@ -17,7 +18,11 @@ div(ng-show = '!loading')
           a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
           span #{__("NEW_MESSAGE")}
         span.message_head(ng-switch-when="1")
-          a(ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+          a(ng-if="group_message.campaign.campaign_type == 2" ng-href="{{'/group/home/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
+          span(ng-if="group_message.campaign.campaign_type == 2") #{__("NEW_MESSAGE")}
+          span(ng-if="group_message.campaign.campaign_type == 3 && $index <= 2" ng-repeat="team in group_message.team")&nbsp;
+            a(ng-href="{{'/group/home/'+group_message.team[$index].teamid}}") {{group_message.team[$index].name}} &nbsp;
+          span(ng-if="group_message.team.length > 3") 等
           span #{__("NEW_MESSAGE")}
         span.message_head(ng-switch-when="2")
           a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}

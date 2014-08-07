@@ -6,6 +6,9 @@
           img(ng-src='/img/icons/icon_close.png')
         .head#myModalLabel 发活动
       .dl-modal-body
+        .dl_modal_container(ng-if="multi")
+            label.subtitle 参加该活动的小队
+            p {{select_dOts[0].name}} 等
         .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
             input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)

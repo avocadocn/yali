@@ -34,8 +34,10 @@ module.exports = function(app) {
 
 
   app.post('/group/updateFormation/:teamId/:competitionId', authorization.teamAuthorize, group.updateFormation);
-  //小队发布活动
+  //小队发布组内活动
   app.post('/group/campaignSponsor/:teamId', authorization.teamAuthorize, group.sponsor);
+  //多队活动
+  app.post('/group/campaignSponsor/multi/:cid', authorization.teamAuthorize, group.sponsor);
   app.param('teamId',group.group);
   //约战、应战
   app.post('/group/provoke/:teamId', authorization.teamAuthorize, group.provoke);

@@ -129,48 +129,62 @@ exports.departmentAuthorize = function(req, res, next) {
   if (!req.user) {
     return res.redirect('/');
   }
-  Department
-  .findById(req.params.departmentId)
-  .populate('team')
-  .exec()
-  .then(function(department) {
-    if (!department) {
-      return res.send(404);
-    }
-    req.department = department;
-    if (req.user.provider === 'company') {
-      if (req.user._id.toString() === department.company._id.toString()) {
+  if(req.params.cid != undefined && req.params.cid != null && req.params.cid != ""){
+    if(req.user.provider == 'company'){
+      if(req.user._id.toString() === req.params.cid.toString()){
         req.role = 'HR';
         return next();
+      }else{
+        req.role = 'GUESTHR';
+        return next();
       }
-    } else if (req.user.provider === 'user') {
-      if (department.manager) {
-        for (var i = 0; i < department.manager.length; i++) {
-          if (req.user._id.toString() === department.manager[i]._id.toString()) {
-            req.role = 'LEADER';
+    }else{
+      return res.send(403);
+    }
+  }else{
+    Department
+    .findById(req.params.departmentId)
+    .populate('team')
+    .exec()
+    .then(function(department) {
+      if (!department) {
+        return res.send(404);
+      }
+      req.department = department;
+      if (req.user.provider === 'company') {
+        if (req.user._id.toString() === department.company._id.toString()) {
+          req.role = 'HR';
+          return next();
+        }
+      } else if (req.user.provider === 'user') {
+        if (department.manager) {
+          for (var i = 0; i < department.manager.length; i++) {
+            if (req.user._id.toString() === department.manager[i]._id.toString()) {
+              req.role = 'LEADER';
+              return next();
+            }
+          }
+        }
+        for (var i = 0, members = department.team.member; i < members.length; i++) {
+          if (req.user._id.toString() === members[i]._id.toString()) {
+            req.role = 'MEMBER';
             return next();
           }
         }
-      }
-      for (var i = 0, members = department.team.member; i < members.length; i++) {
-        if (req.user._id.toString() === members[i]._id.toString()) {
-          req.role = 'MEMBER';
+        if (req.user.cid.toString() === department.company._id.toString()) {
+          req.role = 'PARTNER';
           return next();
         }
       }
-      if (req.user.cid.toString() === department.company._id.toString()) {
-        req.role = 'PARTNER';
-        return next();
-      }
-    }
 
-    req.role = 'GUEST';
-    return next();
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send(500);
-  });
+      req.role = 'GUEST';
+      return next();
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.send(500);
+    });
+  }
 };
 
 exports.messageAuthorize = function(req,res,next){
@@ -219,11 +233,21 @@ exports.teamAuthorize = function(req, res, next) {
     return res.redirect('/');
   }
   if(req.user.provider==="company"){
-    if(req.user._id.toString() ===req.companyGroup.cid.toString()){
-      req.role = 'HR';
-    }
-    else{
-      req.role = 'GUESTHR';
+    if(req.params.cid != undefined && req.params.cid != null && req.params.cid != ""){
+      console.log(req.user._id.toString(),req.params.cid.toString());
+      if(req.user._id.toString() ===req.params.cid.toString()){
+        req.role = 'HR';
+      }
+      else{
+        req.role = 'GUESTHR';
+      }
+    }else{
+      if(req.user._id.toString() ===req.companyGroup.cid.toString()){
+        req.role = 'HR';
+      }
+      else{
+        req.role = 'GUESTHR';
+      }
     }
   }
   else if(req.user.provider==="user" && req.user.cid.toString() ===req.companyGroup.cid.toString()){

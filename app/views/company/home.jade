@@ -29,8 +29,13 @@ block baseInfo
           .btn_icon
             img(src='/img/icons/pulse.png')
           .btn_text
-            span.subtitle 发活动
+            span.subtitle 活动
         //-button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") #{__('SPONSOR')}#{__('COMPANY')}#{__('CAMPAIGN')}
+        a.btn_container(data-toggle="modal" data-target="#dOtSearchModel")
+          .btn_icon
+            img(src='/img/icons/Pulse.png')
+          .btn_text
+            span.subtitle 联谊
         a.btn_container(href="/message/home#/send")
           .btn_icon
             img(src='/img/icons/Megaphone.png')
@@ -67,8 +72,11 @@ block panel
       div(ng-view)
 
   if role === 'HR'
-    div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../campaign/campaign_modal
+    div(ng-init="cid='#{cid}'" ng-controller="SponsorController" )
+      .modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../campaign/campaign_modal
+      .modal.fade#dOtSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        include ../partials/search_dot_modal
   #bottom
 block aside
 append footExt
