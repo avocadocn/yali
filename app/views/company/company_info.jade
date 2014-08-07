@@ -1,8 +1,8 @@
 .loading_div(ng-show = 'loading')
 div.company-info(ng-show = '!loading')
+  .dl_row
+    h5.pull-left #{__("ACCOUNT")}
   form.form-horizontal(name="accountForm")
-    .dl_row
-      h5.pull-left #{__("ACCOUNT")}
     hr.margin_top_6
     .dl_row.clearfix
       .info_side
@@ -20,13 +20,13 @@ div.company-info(ng-show = '!loading')
       .info_side
         span.info_label #{__("INVATE_LINK")}
       .info_detail.col-md-9
-        .row.col-md-9
+        .row.col-md-5
           button.dl_btn.dl_btn_small.col-md-5(ng-click="inviteUrlToggle()" ng-bind="inviteUrlStatus ? '隐藏':'显示'")
         .row.col-md-12
           p
           textarea.info_label.dl_word_break.col-md-12.invite-link(ng-if="inviteUrlStatus",disabled) {{company.inviteUrl}}
           p
-  form.form-horizontal.tab-info-form(name="infoForm")
+  form.form-horizontal(name="infoForm")
     .dl_row.clearfix
       h5.pull-left #{__("ENTERPRISE_INFO")}
       button.dl_btn.dl_btn_small.pull-right(ng-if="role =='HR'" ng-click="infoEditToggle()" ng-bind="infoButtonStatus" ng-disabled="!infoUnEdit&&infoForm.$invalid")
@@ -57,8 +57,9 @@ div.company-info(ng-show = '!loading')
         span.info_label #{__("ADDRESS")}
       .info_detail_2(ng-if="infoUnEdit")
         span.info_label {{ info.city.province }} {{ info.city.city }} {{ info.city.district }}
-      .info_detail
-        input.dl_input.editToggle.dl_form-Control(type="text" name ="address" ng-maxlength=40 tooltip="{{infoForm.address.$invalid? '地址最长字数40字':''}}" tooltip-placement="right" ng-model="info.address" ng-disabled="infoUnEdit")
+      .info_detail_2
+        input.dl_input.editToggle.dl_form-Control(ng-if="!infoUnEdit" type="text" name ="address" ng-maxlength=40 tooltip="{{infoForm.address.$invalid? '地址最长字数40字':''}}" tooltip-placement="right" ng-model="info.address" ng-disabled="infoUnEdit")
+        span.info_label(ng-if="infoUnEdit") {{ info.address }}
     .dl_row.clearfix(ng-if="info.linkman!=undefined || !infoUnEdit")
       .info_side
         span.info_label #{__("LINK_MAN")}

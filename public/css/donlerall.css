@@ -308,6 +308,9 @@ textarea {
   border-style: solid;
   border-color: transparent #ededed transparent transparent;
 }
+.use_edit_info form {
+  background-color: #fff;
+}
 .use_edit_info .birthday_detail {
   width: 175px;
 }
@@ -1527,7 +1530,11 @@ input.ng-invalid.ng-dirty {
 }
 .company-info {
   min-height: 300px;
+  width: 75%;
   background-color: #f4f4f4;
+}
+.company-info form {
+  background-color: #fff;
 }
 .company-info .group_table {
   width: 100%;
