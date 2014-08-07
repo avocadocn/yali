@@ -1,46 +1,47 @@
 .modal-dialog
   .dl-modal
-    form(name="leader_form" novalidate)
-      .dl-modal-header
-        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
-          img(ng-src='/img/icons/icon_close.png')
-        .head#myModalLabel 编辑小队信息
-      .dl-modal-body
-        .dl_modal_container
+    .dl-modal-header
+      button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+        img(ng-src='/img/icons/icon_close.png')
+      .head#myModalLabel 编辑小队信息
+    .dl-modal-body.clearfix
+      .dl_modal_container
+        .dl_row.clearfix
           .dl_md_1.dl_vertical
-            label.subtitle 小队名称
-          .dl_md_10
-            input.dl_modal_input.dl-form-control(type="text" name="cname" ng-model="team_lists[team_index].name" maxlength=20 value="{{team_lists[team_index].name}}")
-          .dl_md_1
-            a.clearLinkUnderline.dl_btn_right(ng-click="saveGroupInfo()") 保存
-        .dl_modal_container
+            label.subtitle 编辑小队名
+        .dl_row.clearfix
+          form(name="tname_form" novalidate)
+            .dl_md_search
+              input.dl-form-control(type="text" name="cname" ng-model="team_lists[team_index].name" maxlength=20 value="{{team_lists[team_index].name}}" required)
+            .dl_md_1
+              button.dl_btn_right(ng-click="saveGroupInfo()" ng-disabled="tname_form.$invalid") 保存
+      .dl_modal_container.margin_top_20
+        .dl_row
           .dl_md_1.dl_vertical
-            label.subtitle 现任队长
+            span.subtitle 队长管理
+        .dl_md_1.dl_vertical
+          span 现任队长
+        .dl_md_appoint
+          input.form-control.dl-form-control(type="text" value="{{leaders[0].nickname}}" ng-disabled="true")
+      .dl_modal_container
+        .dl_md_7.dl_vertical
+          span 点选新成员任命队长后,现任队长自动解职
+        form(name="leader_form" novalidate)
+          .dl_md_5
+            input.dl_modal_input.dl-form-control(placeholder="请输入搜索关键字,搜索小队成员" type="text" ng-model="member_search.value" required)
           .dl_md_1
-            input.dl_modal_input.form-control(type="text" value="{{leaders[0].nickname}}" ng-disabled="true")
-        .dl_modal_container
-          .dl_row
-            .dl_md_1.dl_vertical
-              label.subtitle 任命新队长
-            .dl_md_10.dl_vertical
-              label.subtitle.dl_label 点选新成员任命队长后,现任队长自动解职
-        .dl_modal_container
-          .dl_row
-            .dl_md_10
-              input.dl_modal_input.dl-form-control(placeholder="请输入搜索关键字,搜索小队成员" type="text" ng-model="member_search.value" required)
-            .dl_md_1
-              button.clearLinkUnderline.dl_btn_right(ng-click="search()" ng-disabled="leader_form.$invalid") 搜索
-            .dl_md_1
-              button.clearLinkUnderline.dl_btn_right(ng-click="recover()") 还原
-        .dl_modal_container
-          .groups.row
-            .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="user in users")
-              .dl_row
-                .dl_cover(ng-if="user.leader")
-                a(ng-click="appointReady(user,$index)" ng-disabled="true")
-                  img.size_48.img_user(ng-src="{{user.photo}}")
-              .dl_row(style="width:48px;text-align:center")
-                span.user_name {{user.nickname}}
-      .dl-modal-footer
-        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointLeader()") #{__("APPOINT")}
+            button.dl_btn_right(ng-click="search()" ng-disabled="leader_form.$invalid") 搜索
+      .dl_modal_container
+        .groups
+          span(ng-if="message" ng-cloak) {{message}}
+          .group(ng-repeat="user in users")
+            .dl_row
+              .dl_cover(ng-if="user.leader")
+              a(ng-click="appointReady(user,$index)" ng-disabled="true")
+                img.size_48.img_user(ng-src="{{user.photo}}")
+            .dl_row.users
+              span.user_name {{user.nickname}}
+    .dl-modal-footer
+      button.cancel_btn.dl_btn_large(ng-click="recover()") 还原
+      button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointLeader()") #{__("APPOINT")}
 

@@ -629,19 +629,18 @@ tabViewCompany.directive('masonry', function ($timeout) {
         var find = false;
         $scope.users = [];
         for(var i = 0; i < $scope.member_backup.length; i ++) {
-            console.log($scope.member_backup[i].nickname,$scope.member_search.value,$scope.member_backup[i].nickname.indexOf($scope.member_search.value));
-            if($scope.member_backup[i].nickname.indexOf($scope.member_search.value) > -1){
+                if($scope.member_backup[i].nickname.indexOf($scope.member_search.value) > -1){
                 $scope.users.push($scope.member_backup[i]);
                 find = true;
             }
         }
         if(!find){
             $scope.users = [];
-            alertify.alert("未找到组员!");
+            $scope.message="未找到该员工";
         }else{
-            alertify.alert("找到"+$scope.users.length+"名组员!");
+            //$scope.message="找到"+$scope.users.length+"名组员!";
         }
-    }
+    };
 
     $scope.recover = function(){
         if($scope.member_backup){
@@ -793,7 +792,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                         operate:true
                     }
                 }).success(function(data, status) {
-
+                    alertify.alert('任命成功!');
                     if($scope.origin_leader_id != null){
                         var _user = {
                             '_id':$scope.origin_leader_id
@@ -844,7 +843,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 }
             }).success(function(data, status) {
                     //TODO:更改对话框
-
+                alertify.alert('小队名修改成功！');
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alertify.alert('DATA ERROR');
@@ -1523,7 +1522,6 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 $scope.origin_manager_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
                 $scope.department_users = data.users;
                 // wait_for_join : 是否将该员工强制加入该部门的标志
-                console.log($scope.department_users);
                 for(var i = 0 ; i < $scope.department_users.length; i ++){
                     if($scope.department_users[i]!=null)
                     $scope.department_users[i].wait_for_join = false;
@@ -1580,7 +1578,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         }else{
             alertify.alert("找到"+$scope.department_users.length+"名员工!");
         }
-    }
+    };
 
     $scope.recover = function(){
         if($scope.member_backup_department){
