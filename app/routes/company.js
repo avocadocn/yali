@@ -52,7 +52,7 @@ module.exports = function(app, passport) {
     app.get('/company/Info', company.Info);
     app.get('/company/teamInfo', company.renderTeamInfo);
     app.get('/company/change_password/:companyId', authorization.companyAuthorize, company.renderChangePassword);
-    app.post('/company/changePassword/:companyId/:companyId', authorization.companyAuthorize,  company.changePassword);
+    app.post('/company/changePassword/:companyId', authorization.companyAuthorize,  company.changePassword);
     app.post('/company/saveAccount/:companyId', authorization.companyAuthorize, company.saveAccount);
     //公司小队信息保存
     app.post('/company/saveGroupInfo/:companyId', authorization.companyAuthorize, company.saveGroupInfo);

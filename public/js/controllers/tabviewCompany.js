@@ -1055,7 +1055,7 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScop
     $scope.change_password = function(){
         $http({
             method : 'post',
-            url : '/company/changePassword',
+            url : '/company/changePassword/'+$rootScope.cid,
             data : {
                 'nowpassword' : $scope.nowpassword,
                 'newpassword' : $scope.newpassword
@@ -1064,6 +1064,7 @@ tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScop
             console.log(data);
             //TODO:更改对话框
             if(data.result === 1){
+                alertify.alert(data.msg);
                 window.location.href = '#/company_info';
             }
             else

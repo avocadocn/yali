@@ -755,7 +755,7 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
         $scope.change_password = function() {
             $http({
                 method: 'post',
-                url: '/users/changePassword'/+$rootScope.uid,
+                url: '/users/changePassword/'+$rootScope.uid,
                 data: {
                     'nowpassword': $scope.nowpassword,
                     'newpassword': $scope.newpassword

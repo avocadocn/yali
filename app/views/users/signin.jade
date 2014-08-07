@@ -23,7 +23,7 @@ block contentExt
         .form-group
           label.col-md-4.control-label(for="password") #{__("PASSWORD")}
           .col-md-6
-            input#password.form-control(type="password" name="password" placeholder="password" required)
+            input#password.form-control(type="password" name="password" placeholder="password" minlength=6 required)
         .form-group
           .col-md-offset-4.col-md-8
             button.btn.btn-primary(type="submit") #{__("SIGNIN")}
