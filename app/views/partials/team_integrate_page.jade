@@ -4,17 +4,18 @@ div(ng-show = '!loading' ng-controller="infoController")
   form.form-horizontal.tab-info-form(name="infoForm")
     .team_family_box(ng-if="family_photos.length !== 0")
       .team_photo
-        ul.ng-cloak(rn-carousel rn-carousel-indicator="true" rn-carousel-auto-slide="2" rn-carousel-pause-on-hover="true" rn-carousel-swipe="false" rn-carousel-index="slide.index")
+        ul.ng-cloak(rn-carousel rn-carousel-indicator="true" rn-carousel-auto-slide="2" rn-carousel-swipe="false" rn-carousel-index="slide.index")
           li(ng-repeat="photo in family_photos | filter: {select: true}")
             .carousel-img-container
               img.center-block(ng-src="{{ photo.uri }}/480/270")
-      ul.slider_nav.ng-cloak
+      .slider_nav
         .up(ng-click="prevPhoto()")
           span.glyphicon.glyphicon-chevron-up
-        li(ng-repeat="photo in family_photos | filter: {select: true}" ng-class="{'is-active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
-          img(ng-src="{{ photo.uri }}/160/90")
         .down(ng-click="nextPhoto()")
           span.glyphicon.glyphicon-chevron-down
+        ul.carousel_thumbs.ng-cloak
+          li(ng-repeat="photo in family_photos | filter: {select: true}" ng-class="{'active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
+            img(ng-src="{{ photo.uri }}/160/90")
 
     .team_calendar_box.clearfix
       .dl_row.clearfix

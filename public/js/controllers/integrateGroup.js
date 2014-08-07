@@ -486,20 +486,60 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
         index: 0
     };
 
+    
+
+
+    $scope.clickThumb = function(photo) {
+        for (var i = 0; i < $scope.family_photos.length; i++) {
+            if (photo._id === $scope.family_photos[i]._id) {
+                $scope.slide.index = i;
+                break;
+            }
+        }
+    };
+
+    $scope.$watch('slide', function(newValue, oldValue) {
+        var newIndex = newValue.index;
+        var oldIndex = oldValue.index;
+
+        if (newIndex > oldIndex) {
+            for (var i = 0; i < newIndex - oldIndex; i++) {
+                
+            }
+        }
+
+    });
+
     $scope.prevPhoto = function() {
-        if ($scope.slide.index === 0) {
-            $scope.slide.index = $scope.family_photos.select_count - 1;
-        } else {
+        if ($scope.slide.index !== 0) {
             $scope.slide.index--;
         }
     };
 
     $scope.nextPhoto = function() {
-        if ($scope.slide.index === $scope.family_photos.select_count - 1) {
-            $scope.slide.index = 0;
-        } else {
+        if ($scope.slide.index !== $scope.family_photos.select_count - 1) {
             $scope.slide.index++;
         }
+    };
+
+    $scope.showThumb = function(index) {
+        if (index === $scope.slide.index) {
+            return true;
+        }
+        if ($scope.slide.index === 0) {
+            if (index === 1 || index === $scope.family_photos.select_count - 1) {
+                return true;
+            }
+        }
+        if ($scope.slide.index === $scope.family_photos.select_count - 1) {
+            if (index === 0 || index === $scope.family_photos.select_count - 2) {
+                return true;
+            }
+        }
+        if (index === $scope.slide.index - 1 || index === $scope.slide.index + 1) {
+            return true;
+        }
+        return false;
     };
 
     //---全家福
@@ -515,7 +555,6 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
         $http
         .get('/group/'+$rootScope.teamId+'/family')
         .success(function(data, status) {
-            console.log($scope.family_photos);
             $scope.family_photos = data;
             $scope.family_photos.select_count = 0;
             $scope.family_photos.forEach(function(photo) {
@@ -523,6 +562,7 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
                     $scope.family_photos.select_count++;
                 }
             });
+            $scope.thumbs = [$scope.family_photos[0], $scope.family_photos[1], $scope.family_photos[2]];
         })
         .error(function(data, status) {
             // TO DO

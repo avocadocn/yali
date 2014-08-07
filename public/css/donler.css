@@ -1908,14 +1908,18 @@ dl_messagebox,
   max-height: 270px;
   overflow: hidden;
 }
-.dl_integrate_container .team_family_box .slider_nav li {
+.dl_integrate_container .team_family_box .slider_nav ul {
+  padding: 0;
+  margin: 0;
+}
+.dl_integrate_container .team_family_box .slider_nav ul li {
   display: block;
 }
 .dl_integrate_container .team_family_box .slider_nav .up,
 .dl_integrate_container .team_family_box .slider_nav .down {
   position: absolute;
   text-align: center;
-  width: 100%;
+  width: 160px;
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);

@@ -5,7 +5,7 @@
     "alertify.js": "latest",
     "angular": "latest",
     "angular-bootstrap": "0.10.0",
-    "angular-carousel": "0.2.5",
+    "angular-carousel": "https://github.com/CahaVar/angular-carousel.git#master",
     "angular-cookies": "latest",
     "angular-masonry": "~0.8.1",
     "angular-mocks": "latest",
