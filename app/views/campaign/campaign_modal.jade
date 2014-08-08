@@ -41,8 +41,8 @@
             input.dl_modal_input.dl-form-control(type="text" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" maxlength=40 tooltip="{{campaign_form.location.$invalid? '请输入活动地点,最长40字':''}}" required)
           .dl_modal_button
             a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap()") #{__("MAP")}
-        .dl_modal_container
-              #mapDetail.height_200(ng-show="showMapFlag")
+        .dl_modal_container.height_200(ng-show="showMapFlag")
+              #mapDetail
         .dl_modal_container
           .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("OPTIONAL")}#{__("OPTION")}
