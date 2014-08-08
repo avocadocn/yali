@@ -38,7 +38,7 @@
 .campaign_table .company_logo_col,
 .campaign_table .team_logo_col,
 .campaign_table .undefined_logo_col {
-  width: 140px;
+  width: 90px;
   padding-right: 10px;
 }
 .campaign_table .company_logo_col .campaign_logo,
@@ -46,12 +46,15 @@
 .campaign_table .undefined_logo_col .campaign_logo {
   width: 64px;
   height: 64px;
-  margin: 3px 0;
-  margin-left: 65px;
+  margin: 3px auto;
 }
 .campaign_table .team_logo_col .campaign_logo,
 .campaign_table .undefined_logo_col .campaign_logo {
   margin-left: 10px;
+}
+.campaign_table .content_col {
+  max-width: 50%;
+  width: auto;
 }
 .campaign_table .content_col p {
   margin: 0;
@@ -62,7 +65,4 @@
 }
 .campaign_table .content_col .content_text {
   margin-left: 5px;
-}
-.campaign_table .operator_col {
-  padding: 25px !important;
 }
