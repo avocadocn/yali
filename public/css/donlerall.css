@@ -446,6 +446,10 @@ textarea {
   float: left;
   clear: left;
 }
+.dl-modal .dl-modal-body .dl_modal_container .groups {
+  max-height: 300px;
+  overflow: auto;
+}
 .dl-modal .dl-modal-body .dl_modal_container .groups .group {
   float: left;
   padding-left: 20px;
@@ -2022,6 +2026,33 @@ dl_messagebox,
 }
 .dl_integrate_container .thumbnail_img {
   border: 0;
+}
+.search_form {
+  border: 1px solid #ddd;
+  height: 20px;
+  margin-right: 19px;
+}
+.search_form .search_input {
+  float: left;
+  height: 18px;
+}
+.search_form .search_input input {
+  line-height: 18px;
+  width: 100px;
+  border: 0;
+  padding: 0 1px;
+  color: #999;
+  float: left;
+}
+.search_form .search_icon {
+  cursor: pointer;
+  float: right;
+  background-image: url("/img/icons/search_g.png");
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position: 0px 2px;
+  height: 18px;
+  width: 18px;
 }
 @-moz-keyframes scaleFade {
   50% {

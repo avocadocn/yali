@@ -16,23 +16,16 @@
             .dl_md_1
               button.dl_btn_right(ng-click="saveGroupInfo()" ng-disabled="tname_form.$invalid") 保存
       .dl_modal_container.margin_top_20
-        .dl_row
-          .dl_md_1.dl_vertical
-            span.subtitle 队长管理
-        .dl_md_1.dl_vertical
-          span 现任队长
-        .dl_md_appoint
-          input.form-control.dl-form-control(type="text" value="{{leaders[0].nickname}}" ng-disabled="true")
+        .dl_row.clearfix
+          span.subtitle 队长管理
+          span.info_label 点选新成员任命队长后,现任队长自动解职
+          .search_form.pull-right
+            form(name="search_form" novalidate)
+              .search_input
+                input(placeholder="搜索成员" type="text" ng-model="member_search.value" required)
+              .search_icon(type='submit' ng-click="search()" ng-disabled="search_form.$invalid")
       .dl_modal_container
-        .dl_md_7.dl_vertical
-          span 点选新成员任命队长后,现任队长自动解职
-        form(name="leader_form" novalidate)
-          .dl_md_5
-            input.dl_modal_input.dl-form-control(placeholder="请输入搜索关键字,搜索小队成员" type="text" ng-model="member_search.value" required)
-          .dl_md_1
-            button.dl_btn_right(ng-click="search()" ng-disabled="leader_form.$invalid") 搜索
-      .dl_modal_container
-        .groups
+        .groups.clearfix
           span(ng-if="message" ng-cloak) {{message}}
           .group(ng-repeat="user in users")
             .dl_row
@@ -44,4 +37,3 @@
     .dl-modal-footer
       button.cancel_btn.dl_btn_large(ng-click="recover()") 还原
       button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointLeader()") #{__("APPOINT")}
-

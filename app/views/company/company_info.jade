@@ -58,7 +58,7 @@ div.company-info(ng-show = '!loading')
       .info_detail_2(ng-if="infoUnEdit")
         span.info_label {{ info.city.province }} {{ info.city.city }} {{ info.city.district }}
       .info_detail_2
-        input.dl_input.editToggle.dl_form-control(ng-if="!infoUnEdit" type="text" name ="address" ng-maxlength=40 tooltip="{{infoForm.address.$invalid? '地址最长字数40字':''}}" tooltip-placement="right" ng-model="info.address" ng-disabled="infoUnEdit")
+        input.dl_input.editToggle.dl-form-control(ng-if="!infoUnEdit" type="text" name ="address" ng-maxlength=40 tooltip="{{infoForm.address.$invalid? '地址最长字数40字':''}}" tooltip-placement="right" ng-model="info.address" ng-disabled="infoUnEdit")
         span.info_label(ng-if="infoUnEdit") {{ info.address }}
     .dl_row.clearfix(ng-if="info.linkman!=undefined || !infoUnEdit")
       .info_side
