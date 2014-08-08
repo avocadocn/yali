@@ -126,7 +126,7 @@ block contentExt
         //- else
         //-   img.map_size(src="/img/sign_bg.jpg")
         if campaign.location.coordinates.length==2
-          a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
+          a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
             img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labels=#{campaign.location.name},2,0,16,0xffffff,0x008000:#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&key=077eff0a89079f77e2893d6735c2f044")
         else
           img.map_size(src="/img/sign_bg.jpg")
