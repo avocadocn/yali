@@ -1733,6 +1733,7 @@ dl_messagebox,
 }
 .dl_company_container .main .group_table td {
   vertical-align: inherit;
+  height: 55px;
 }
 .dl_company_container .main .group_table .noborder {
   border: 0 !important;
