@@ -73,9 +73,9 @@ block panel
       div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../campaign/provoke_modal_base
 block aside
-  if campaign
-    .newcampainbox
-      span.subtitle 活动预告
+  .newcampainbox
+    span.subtitle 活动预告
+    if campaign
       .bar
         //- PK型活动
         if (campaign.campaign_type == '4' || campaign.campaign_type == '5 '|| campaign.campaign_type == '7')
@@ -107,6 +107,8 @@ block aside
         p.remind_text 距离活动开始还有
         p#remind_time.remind_time
         p#campaign_start_time.hidden= moment(campaign.start_time).format('YYYY-MM-DD HH:mm')
+    else
+      p 最近没有活动
 
   .locationbox
     span.subtitle 主场
