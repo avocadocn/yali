@@ -25,13 +25,13 @@ block baseInfo
           span.info_right_border 100%
     if role === 'HR'
       .hr-top-side
-        a.btn_container(data-toggle="modal" data-target="#sponsorCampaignModel")
+        a.btn_container(data-toggle="modal" data-target="#sponsorCampaignModel" ng-click="modalSwitch(false)")
           .btn_icon
             img(src='/img/icons/pulse.png')
           .btn_text
             span.subtitle 活动
         //-button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") #{__('SPONSOR')}#{__('COMPANY')}#{__('CAMPAIGN')}
-        a.btn_container(data-toggle="modal" data-target="#dOtSearchModel")
+        a.btn_container(data-toggle="modal" data-target="#dOtSearchModel" ng-click="modalSwitch(true)")
           .btn_icon
             img(src='/img/icons/Pulse.png')
           .btn_text

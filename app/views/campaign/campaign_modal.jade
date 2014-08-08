@@ -6,9 +6,11 @@
           img(ng-src='/img/icons/icon_close.png')
         .head#myModalLabel 发活动
       .dl-modal-body
-        .dl_modal_container(ng-if="multi")
+        .dl_modal_container(ng-if="dOtMulti")
             label.subtitle 参加该活动的小队
-            p {{select_dOts[0].name}} 等
+            .groups.row.dl_row.groups_box
+              .group.col-md-1(ng-repeat='select_dOt in select_dOts')
+                img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
         .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
             input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
@@ -75,6 +77,7 @@
               .dl_modal_label_container
                 span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
       .dl-modal-footer
+        button.dl_btn.dl_btn_large(type='button' ng-click='goBack()' data-dismiss="modal" ng-if="dOtMulti") 上一步
         button.dl_btn.dl_btn_large(type='button' ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
         button.cancel_btn.dl_btn_large.margin_left_30(type='button' data-dismiss="modal") #{__("CANCEL")}
   script.

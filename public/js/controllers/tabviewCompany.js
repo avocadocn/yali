@@ -143,6 +143,12 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
 
     $rootScope.cid = '';
     $rootScope.tabShow = true;
+
+    $rootScope.dOtMulti = false;          //是否发起多部门会活动
+
+    $rootScope.modalSwitch = function(value){
+        $rootScope.dOtMulti = value;
+    }
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
@@ -671,28 +677,29 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
                 $scope.origin_leader_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
 
-                // wait_for_join : 是否将该员工强制加入该部门的标志
+                // wait_for_join : 是否将该员工强制加入该小队的标志
                 for(var i = 0 ; i < $scope.users.length; i ++){
                     $scope.users[i].wait_for_join = false;
                 }
 
-                // 找出没有加入任何小队的公司员工,成为小队队长的候选人(如果选他成为队长必须先让他加入该小队)
+                // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
                 for(var i = 0 ; i < $scope.company_users.length; i ++){
                     //没有任何小队
                     if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
                         $scope.company_users[i].wait_for_join = true;
-                        $scope.users.push($scope.company_users[i]);
-                    //小队里有部门小队
+                        //$scope.users.push($scope.company_users[i]);
+                    //有小队
                     }else{
                         var team_find = false;
                         for(var j = 0; j < $scope.company_users[i].team.length; j ++){
-                            if($scope.company_users[i].team[j].gid != '0'){
+                            if($scope.company_users[i].team[j]._id.toString() === $scope.tid){
                                 team_find = true;
+                                break;
                             }
                         }
                         if(!team_find){
                             $scope.company_users[i].wait_for_join = true;
-                            $scope.users.push($scope.company_users[i]);
+                            //$scope.users.push($scope.company_users[i]);
                         }
                     }
                 }
@@ -1145,7 +1152,6 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
 // HR 发布公司活动 controller
 tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', function($http, $scope, $rootScope){
 
-    $scope.multi = false;          //是否发起多部门会活动
     $scope.dOts = [];
     $scope.select_dOts = [];
     $scope.main_dOt = null;
@@ -1248,13 +1254,24 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
 
     $scope.search = function(){
         var find = false;
-        $scope.select_dOts = [];
         for(var i = 0 ; i < $scope.dOts.length; i ++){
+            var pushin = true;
             if($scope.dOts[i].name.indexOf($scope.search_dOt) > -1){
                 $scope.dOts[i].selected = false;
-                $scope.select_dOts.push($scope.dOts[i]);
+                for(var j = 0; j < $scope.select_dOts.length; j ++){
+                    if($scope.select_dOts[j]._id === $scope.dOts[i]._id){
+                        console.log($scope.select_dOts[j].name,$scope.dOts[i].name);
+                        pushin = false;
+                        break;
+                    }
+                }
+                if(pushin)$scope.select_dOts.push($scope.dOts[i]);
             }
         }
+    }
+
+    $scope.goBack = function(){
+        $('#dOtSearchModel').modal();
     }
     $scope.showCampaignSponsor = function(){
         var tmp = [];
@@ -1264,11 +1281,13 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         $scope.select_dOts = tmp;
 
         if($scope.select_dOts.length > 0){
-            $scope.multi = true;
+            $rootScope.dOtMulti = true;
             $('#sponsorCampaignModel').modal();
         }else{
             alertify.alert('请至少选择一个小队!');
         }
+
+        console.log($scope.select_dOts);
     }
     //从列表中选择小队或者部门
     $scope.selectDOT = function(){
@@ -1323,7 +1342,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
 
 
     $scope.sponsor = function() {
-        var _url = $scope.multi ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
+        var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
         var _data = {
             theme: $scope.theme,
             location: $scope.location,

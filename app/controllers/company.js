@@ -1298,6 +1298,8 @@ exports.sponsor = function (req, res) {
                         break;
                     }
                     return;
+                }else{
+                    res.send({'result':1,'msg':'活动创建成功'});
                 }
 
                 //生成动态消息
