@@ -1890,7 +1890,7 @@ dl_messagebox,
   background-color: #fff;
 }
 .dl_integrate_container .team_family_box .team_photo {
-  width: 480px;
+  width: 500px;
   height: 270px;
   position: relative;
   overflow: hidden;
@@ -1898,7 +1898,7 @@ dl_messagebox,
 }
 .dl_integrate_container .team_family_box .team_photo .carousel-img-container {
   height: 270px;
-  width: 480px;
+  width: 500px;
 }
 .dl_integrate_container .team_family_box .slider_nav {
   position: relative;
@@ -1952,6 +1952,13 @@ dl_messagebox,
   -moz-transition: all 0.1s ease-in-out;
   -o-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
+}
+.dl_integrate_container .team_family_box .slider_nav .carousel_thumbs .active {
+  border: solid 3px #3498db;
+}
+.dl_integrate_container .team_family_box .slider_nav .carousel_thumbs .active img {
+  width: 154px;
+  height: 84px;
 }
 .dl_integrate_container .team_family_box .rn-carousel-indicator {
   position: absolute;

@@ -481,12 +481,9 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
         $scope.local2.search($scope.team.home_court[1].name);
     };
 
-    // 当前全家福滚动的索引
     $scope.slide = {
         index: 0
     };
-
-
 
 
     $scope.clickThumb = function(photo) {
@@ -520,26 +517,6 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
         if ($scope.slide.index !== $scope.family_photos.select_count - 1) {
             $scope.slide.index++;
         }
-    };
-
-    $scope.showThumb = function(index) {
-        if (index === $scope.slide.index) {
-            return true;
-        }
-        if ($scope.slide.index === 0) {
-            if (index === 1 || index === $scope.family_photos.select_count - 1) {
-                return true;
-            }
-        }
-        if ($scope.slide.index === $scope.family_photos.select_count - 1) {
-            if (index === 0 || index === $scope.family_photos.select_count - 2) {
-                return true;
-            }
-        }
-        if (index === $scope.slide.index - 1 || index === $scope.slide.index + 1) {
-            return true;
-        }
-        return false;
     };
 
     //---全家福

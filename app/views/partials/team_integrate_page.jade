@@ -7,11 +7,11 @@ div(ng-show = '!loading' ng-controller="infoController")
         ul.ng-cloak(rn-carousel rn-carousel-indicator="true" rn-carousel-auto-slide="2" rn-carousel-swipe="false" rn-carousel-index="slide.index")
           li(ng-repeat="photo in family_photos | filter: {select: true}")
             .carousel-img-container
-              img.center-block(ng-src="{{ photo.uri }}/480/270")
+              img.center-block(ng-src="{{ photo.uri }}/500/270")
       .slider_nav
-        .up(ng-click="prevPhoto()")
+        .up(ng-click="prevPhoto()" ng-if="slide.index !== 0")
           span.glyphicon.glyphicon-chevron-up
-        .down(ng-click="nextPhoto()")
+        .down(ng-click="nextPhoto()" ng-if="slide.index < family_photos.select_count-1")
           span.glyphicon.glyphicon-chevron-down
         div.carousel_thumbs.ng-cloak(height="90" count="3" scroll-index="slide.index" scroll-thumbs)
           div(ng-repeat="photo in family_photos | filter: {select: true}" ng-class="{'active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
