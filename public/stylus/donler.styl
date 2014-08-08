@@ -404,6 +404,8 @@ textarea
       float left
       clear left
       .groups
+        max-height 300px
+        overflow auto
         .group
           float left
           padding-left 20px
@@ -1605,14 +1607,14 @@ familyHeight = 371.25px
     overflow hidden
     background-color cardbgColor
     .team_photo
-      width 480px
+      width 500px
       height 270px
       position relative
       overflow hidden
       float left
       .carousel-img-container
         height 270px
-        width 480px
+        width 500px
     .slider_nav
       position relative
       margin-bottom 0
@@ -1633,6 +1635,7 @@ familyHeight = 371.25px
         text-align center
         text-shadow 0 1px 2px rgba(0, 0, 0, 0.6)
         opacity 0.5
+        z-index 1
         &:hover, &:focus
           color #ffffff
           text-decoration none
@@ -1648,6 +1651,17 @@ familyHeight = 371.25px
         background-image -webkit-linear-gradient(top, color-stop(rgba(0, 0, 0, 0.0001) 0), color-stop(rgba(0, 0, 0, 0.5) 100%))
         background-image linear-gradient(to bottom, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%)
         background-repeat repeat-y
+      .carousel_thumbs
+        -webkit-transition all 0.1s ease-in
+        -moz-transition all 0.1s ease-in-out
+        -o-transition all 0.1s ease-in-out
+        transition all 0.1s ease-in-out
+
+        .active
+          border solid 3px themeColor
+          img
+            width 154px
+            height 84px
 
     .rn-carousel-indicator
       position absolute
@@ -1701,7 +1715,30 @@ familyHeight = 371.25px
   .thumbnail_img
     border 0
 
+.search_form
+  border 1px solid #ddd
+  height 20px
+  margin-right 19px
+  .search_input
+    float left
+    height 18px
+    input
+      line-height 18px
+      width 100px
+      border 0
+      padding 0 1px
+      color #999999
+      float left
+  .search_icon
+    cursor pointer
+    float right
+    background-image url('/img/icons/search_g.png')
+    background-repeat no-repeat
+    background-size 15px 15px
+    background-position 0px 2px
+    height 18px
+    width 18px
+
     
-    
-    
+
 

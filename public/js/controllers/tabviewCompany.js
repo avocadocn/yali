@@ -709,7 +709,11 @@ tabViewCompany.directive('masonry', function ($timeout) {
                     for(var j = 0; j < $scope.leaders.length; j ++) {
                         //标记
                         if($scope.leaders[j]._id.toString() === $scope.users[i]._id.toString()){
-                            $scope.users[i].leader = true;
+                            //换到第一个
+                            var temp = $scope.users[i];
+                            $scope.users[i]=$scope.users[0];
+                            $scope.users[0]=temp;
+                            $scope.users[0].leader = true;
                             leader_find = true;
                             break;//目前一个小队只有一个组长
                         }

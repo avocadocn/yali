@@ -446,6 +446,10 @@ textarea {
   float: left;
   clear: left;
 }
+.dl-modal .dl-modal-body .dl_modal_container .groups {
+  max-height: 300px;
+  overflow: auto;
+}
 .dl-modal .dl-modal-body .dl_modal_container .groups .group {
   float: left;
   padding-left: 20px;
@@ -1897,7 +1901,7 @@ dl_messagebox,
   background-color: #fff;
 }
 .dl_integrate_container .team_family_box .team_photo {
-  width: 480px;
+  width: 500px;
   height: 270px;
   position: relative;
   overflow: hidden;
@@ -1905,7 +1909,7 @@ dl_messagebox,
 }
 .dl_integrate_container .team_family_box .team_photo .carousel-img-container {
   height: 270px;
-  width: 480px;
+  width: 500px;
 }
 .dl_integrate_container .team_family_box .slider_nav {
   position: relative;
@@ -1931,6 +1935,7 @@ dl_messagebox,
   text-align: center;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   opacity: 0.5;
+  z-index: 1;
 }
 .dl_integrate_container .team_family_box .slider_nav .up:hover,
 .dl_integrate_container .team_family_box .slider_nav .down:hover,
@@ -1952,6 +1957,19 @@ dl_messagebox,
   background-image: -webkit-linear-gradient(top, color-stop(rgba(0,0,0,0) 0), color-stop(rgba(0,0,0,0.5) 100%));
   background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0.5) 100%);
   background-repeat: repeat-y;
+}
+.dl_integrate_container .team_family_box .slider_nav .carousel_thumbs {
+  -webkit-transition: all 0.1s ease-in;
+  -moz-transition: all 0.1s ease-in-out;
+  -o-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+.dl_integrate_container .team_family_box .slider_nav .carousel_thumbs .active {
+  border: solid 3px #3498db;
+}
+.dl_integrate_container .team_family_box .slider_nav .carousel_thumbs .active img {
+  width: 154px;
+  height: 84px;
 }
 .dl_integrate_container .team_family_box .rn-carousel-indicator {
   position: absolute;
@@ -2015,6 +2033,33 @@ dl_messagebox,
 }
 .dl_integrate_container .thumbnail_img {
   border: 0;
+}
+.search_form {
+  border: 1px solid #ddd;
+  height: 20px;
+  margin-right: 19px;
+}
+.search_form .search_input {
+  float: left;
+  height: 18px;
+}
+.search_form .search_input input {
+  line-height: 18px;
+  width: 100px;
+  border: 0;
+  padding: 0 1px;
+  color: #999;
+  float: left;
+}
+.search_form .search_icon {
+  cursor: pointer;
+  float: right;
+  background-image: url("/img/icons/search_g.png");
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position: 0px 2px;
+  height: 18px;
+  width: 18px;
 }
 @-moz-keyframes scaleFade {
   50% {
