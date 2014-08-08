@@ -229,7 +229,7 @@ integrateGroup.controller('SponsorController', ['$http', '$scope', '$rootScope',
                 //加载地图
                 if(!window.map_ready){
                     window.campaign_map_initialize = $scope.initialize;
-                    var script = document.createElement("script");  
+                    var script = document.createElement("script");
                     script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
                     document.body.appendChild(script);
                 }
@@ -390,10 +390,10 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
         else {
             if(!window.map_ready){//如果没有加载过地图script则加载
                 window.court_map_initialize = function(){
-                    $scope.initialize1(); 
+                    $scope.initialize1();
                     $scope.initialize2();
                 };
-                var script = document.createElement("script");  
+                var script = document.createElement("script");
                 script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=court_map_initialize";
                 document.body.appendChild(script);
             }
@@ -486,7 +486,7 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
         index: 0
     };
 
-    
+
 
 
     $scope.clickThumb = function(photo) {
@@ -504,7 +504,7 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
 
         if (newIndex > oldIndex) {
             for (var i = 0; i < newIndex - oldIndex; i++) {
-                
+
             }
         }
 
@@ -800,7 +800,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
                 //加载地图
                 if(!window.map_ready){
                     window.campaign_map_initialize = $scope.initialize;
-                    var script = document.createElement("script");  
+                    var script = document.createElement("script");
                     script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
                     document.body.appendChild(script);
                 }
@@ -851,7 +851,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
-    
+
     $scope.recommandTeam = function(){
         $scope.homecourt = true;
         try{
@@ -869,7 +869,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
                 else if(data.result===2)//没填主场
                     $scope.homecourt=false;
             }).error(function(data,status){
-               console.log('推荐失败'); 
+               console.log('推荐失败');
             });
         }
         catch(e){
@@ -915,7 +915,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
         $scope.local = new BMap.LocalSearch($scope.locationmap,options);
         window.map_ready =true;
     };
-    
+
     $scope.showMap = function(){
         if($scope.location.name==''){
             alertify.alert('请输入地点');
@@ -1094,7 +1094,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
                 }
                 catch(e) {
                     console.log(e);
-                }            
+                }
             }
         }
     };
@@ -1105,3 +1105,48 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
 
 
 }]);
+
+
+integrateGroup.directive('scrollThumbs', function($parse) {
+    return{
+        restrict: 'A',
+        scope: {
+            scrollIndex: '='
+        },
+        compile: function(tElement, tAttrs, transclude){
+
+            var height = parseInt(tAttrs['height']) || 90;
+            var count = parseInt(tAttrs['count']) || 3;
+            var totalHeight = height * count;
+
+            var holderStyle = 'height:' + totalHeight + "px; margin:0; position:relative; top:0px";
+
+            tElement.attr('style', holderStyle);
+
+            return function(scope, element, attrs) {
+                var length = 0;
+
+                scope.$watch('scrollIndex', function(newValue, oldValue) {
+                    if (length !== element.children().length) {
+                        length = element.children().length;
+                    }
+                    if (length > count) {
+                        if (newValue > 1 && newValue < length - 1) {
+                            element.css('top', '-' + (height * (newValue - 1)) + 'px');
+                        } else if (newValue <= 1) {
+                            element.css('top', '0');
+                        } else if (newValue >= length - 1) {
+                            element.css('top', '-' + (height * (length - count)) + 'px');
+                        }
+                    }
+                });
+
+            };
+        }
+
+    }
+});
+
+
+
+
