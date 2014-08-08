@@ -1696,6 +1696,9 @@ familyHeight = 371.25px
     .info
       p
         margin 0
+        text-overflow ellipsis
+        white-space nowrap
+        overflow hidden
       .map
         margin-top 10px
       .map_size
@@ -1714,6 +1717,26 @@ familyHeight = 371.25px
     margin 0 0 10px
   .thumbnail_img
     border 0
+
+  .thumbnail_cell
+    display inline-block
+    width 120px
+    height 140px
+    margin-left 4px
+    &:nth-child(2n+1)
+      margin-left 16px
+      margin-right 4px
+
+    .thumbnail_img
+      width 120px
+      height 120px
+
+    .thumbnail_name
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+      margin 0
+      line-height 20px
 
 .search_form
   border 1px solid #ddd

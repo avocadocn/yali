@@ -2010,6 +2010,9 @@ dl_messagebox,
 }
 .dl_integrate_container .newcampainbox .info p {
   margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .dl_integrate_container .newcampainbox .info .map {
   margin-top: 10px;
@@ -2033,6 +2036,27 @@ dl_messagebox,
 }
 .dl_integrate_container .thumbnail_img {
   border: 0;
+}
+.dl_integrate_container .thumbnail_cell {
+  display: inline-block;
+  width: 120px;
+  height: 140px;
+  margin-left: 4px;
+}
+.dl_integrate_container .thumbnail_cell:nth-child(2n+1) {
+  margin-left: 16px;
+  margin-right: 4px;
+}
+.dl_integrate_container .thumbnail_cell .thumbnail_img {
+  width: 120px;
+  height: 120px;
+}
+.dl_integrate_container .thumbnail_cell .thumbnail_name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 20px;
 }
 .search_form {
   border: 1px solid #ddd;
