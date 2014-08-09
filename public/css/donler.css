@@ -169,8 +169,6 @@ textarea {
   border-color: #f22;
   border-width: 2px;
   border-radius: 100%;
-  position: absolute;
-  z-index: 1000;
   width: 48px;
   height: 48px;
 }
@@ -449,6 +447,7 @@ textarea {
 .dl-modal .dl-modal-body .dl_modal_container .groups {
   max-height: 300px;
   overflow: auto;
+  width: 579px;
 }
 .dl-modal .dl-modal-body .dl_modal_container .groups .group {
   float: left;

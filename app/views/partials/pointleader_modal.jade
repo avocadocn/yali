@@ -19,19 +19,22 @@
         .dl_row.clearfix
           span.subtitle 队长管理
           span.info_label 点选新成员任命队长后,现任队长自动解职
+          a(ng-click="showCpUser(1)" ng-if="!show_cp" ng-cloak) 显示公司成员
+          a(ng-click="showCpUser(0)" ng-if="show_cp" ng-cloak) 显示组员
           .search_form.pull-right
             form(name="search_form" novalidate)
               .search_input
                 input(placeholder="搜索成员" type="text" ng-model="member_search.value" required)
               .search_icon(type='submit' ng-click="search()" ng-disabled="search_form.$invalid")
       .dl_modal_container
-        .groups.clearfix
-          span(ng-if="message" ng-cloak) {{message}}
+        .groups.clearfix(bs-popover)
+          p(ng-if="message" ng-cloak) {{message}}
           .group(ng-repeat="user in users")
             .dl_row
-              .dl_cover(ng-if="user.leader")
-              a(ng-click="appointReady(user,$index)" ng-disabled="true")
-                img.size_48.img_user(ng-src="{{user.photo}}")
+              a(ng-if="user.leader")
+                img.size_48.img_user.dl_cover(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
+              a(ng-click="appointReady(user,$index)" ng-disabled="true" ng-if="!user.leader")
+                img.size_48.img_user(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
             .dl_row.users
               span.user_name {{user.nickname}}
     .dl-modal-footer

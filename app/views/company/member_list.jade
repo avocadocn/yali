@@ -35,19 +35,19 @@
   if role === 'HR'
     .modal.fade(id="sponsorUserDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include user_detail_modal
-    .modal.fade#UnregUserModal(tabindex='-1' role='dialog' aria-labelledby="myModalLabel" aria-hidden='true')
-      .modal-dialog
-        .dl-modal(style="width:370px")
-          .dl-modal-header
-            button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
-              img(ng-src='/img/icons/icon_close.png')
-            h4.modal-title#myModalLabel 未激活
-          .dl-modal-body
-            .dl_row.clearfix
-              .info_side
-                span.info_label Email:
-              .info_detail_2
-                span.info_label {{members[num].email}}
-          .dl-modal-footer
-            //button.dl_btn_red.dl_btn_large 删除
-            button.cancel_btn.dl_btn_large(data-dismiss="modal" aria-hidden="true") 返回
+    //- .modal.fade#UnregUserModal(tabindex='-1' role='dialog' aria-labelledby="myModalLabel" aria-hidden='true')
+    //-   .modal-dialog
+    //-     .dl-modal(style="width:370px")
+    //-       .dl-modal-header
+    //-         button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
+    //-           img(ng-src='/img/icons/icon_close.png')
+    //-         h4.modal-title#myModalLabel 未激活
+    //-       .dl-modal-body
+    //-         .dl_row.clearfix
+    //-           .info_side
+    //-             span.info_label Email:
+    //-           .info_detail_2
+    //-             span.info_label {{members[num].email}}
+    //-       .dl-modal-footer
+    //-         //button.dl_btn_red.dl_btn_large 删除
+    //-         button.cancel_btn.dl_btn_large(data-dismiss="modal" aria-hidden="true") 返回

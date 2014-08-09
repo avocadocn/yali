@@ -629,22 +629,35 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
 
     $scope.search = function () {
-        for(var i = 0; i < $scope.member_backup.length; i ++){
-            $scope.member_backup[i].leader = false;
-        }
-        var find = false;
-        $scope.users = [];
-        for(var i = 0; i < $scope.member_backup.length; i ++) {
-                if($scope.member_backup[i].nickname.indexOf($scope.member_search.value) > -1){
-                $scope.users.push($scope.member_backup[i]);
-                find = true;
+        if($scope.member_search.value){
+            for(var i = 0; i < $scope.member_backup.length; i ++){
+                $scope.member_backup[i].leader = false;
             }
-        }
-        if(!find){
+            var find = false;
             $scope.users = [];
-            $scope.message="未找到该员工";
-        }else{
-            //$scope.message="找到"+$scope.users.length+"名组员!";
+            if(!$scope.show_cp){
+                for(var i = 0; i < $scope.member_backup.length; i ++) {
+                    if($scope.member_backup[i].nickname.indexOf($scope.member_search.value) > -1){
+                        $scope.users.push($scope.member_backup[i]);
+                        find = true;
+                    }
+                }
+            }
+            else{
+                for(var i = 0; i < $scope.company_users.length; i ++) {
+                    if($scope.company_users[i].nickname.indexOf($scope.member_search.value) > -1){
+                        $scope.users.push($scope.company_users[i]);
+                        find = true;
+                    }
+                }
+            }
+            if(!find){
+                $scope.users = [];
+                $scope.message="未找到该员工";
+            }else{
+                $scope.message='';
+            }
+            $scope.member_search.value = '';
         }
     };
 
@@ -654,6 +667,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
                 $scope.users = $scope.member_backup;
             }
         }
+        $scope.message='';
     }
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
@@ -682,28 +696,6 @@ tabViewCompany.directive('masonry', function ($timeout) {
                     $scope.users[i].wait_for_join = false;
                 }
 
-                // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
-                for(var i = 0 ; i < $scope.company_users.length; i ++){
-                    //没有任何小队
-                    if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
-                        $scope.company_users[i].wait_for_join = true;
-                        //$scope.users.push($scope.company_users[i]);
-                    //有小队
-                    }else{
-                        var team_find = false;
-                        for(var j = 0; j < $scope.company_users[i].team.length; j ++){
-                            if($scope.company_users[i].team[j]._id.toString() === $scope.tid){
-                                team_find = true;
-                                break;
-                            }
-                        }
-                        if(!team_find){
-                            $scope.company_users[i].wait_for_join = true;
-                            //$scope.users.push($scope.company_users[i]);
-                        }
-                    }
-                }
-
                 var leader_find = false;
                 for(var i = 0; i < $scope.users.length && !leader_find; i ++) {
                     for(var j = 0; j < $scope.leaders.length; j ++) {
@@ -719,11 +711,22 @@ tabViewCompany.directive('masonry', function ($timeout) {
                         }
                     }
                 }
-                $scope.member_backup = $scope.users;
+                $scope.member_backup = $scope.users.slice(0);
+                //-小队没队员就直接显示公司成员
+                if($scope.users.length>0){
+                    $scope.show_cp = false;
+                    $scope.message = '';
+                }
+                else{
+                    $scope.show_cp = true;
+                    $scope.message = '该小队暂无成员，可指派公司任意成员为队长';
+                    $scope.users = $scope.company_users.slice(0);
+                }
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alertify.alert('DATA ERROR');
             });
+            //-Todo 检查此段是否需要,貌似可用index代替 不需重新发请求 -M
             $http({
                 method:'post',
                 url:'/group/oneTeam/'+tid,
@@ -740,6 +743,38 @@ tabViewCompany.directive('masonry', function ($timeout) {
         catch(e){
             console.log(e);
         }
+    };
+
+    $scope.showCpUser = function(option) {
+        if(option === 1){
+            // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
+            for(var i = 0 ; i < $scope.company_users.length; i ++){
+                //没有任何小队
+                if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
+                    $scope.company_users[i].wait_for_join = true;
+                    $scope.users.push($scope.company_users[i]);
+                //有小队
+                }else{
+                    var team_find = false;
+                    for(var j = 0; j < $scope.company_users[i].team.length; j ++){
+                        if($scope.company_users[i].team[j]._id.toString() === $scope.tid){
+                            team_find = true;
+                            break;
+                        }
+                    }
+                    if(!team_find){
+                        $scope.company_users[i].wait_for_join = true;
+                        $scope.users.push($scope.company_users[i]);
+                    }
+                }
+            }
+            $scope.show_cp = true;
+        }
+        else{
+            $scope.show_cp = false;
+            $scope.users = $scope.member_backup.slice(0);
+        }
+        $scope.message='';
     };
     $scope.appointReady = function(user,index){
         $scope._user = user;
@@ -766,7 +801,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
         }else{
             $scope.appoint_permission = false;
         }
-    }
+    };
     $scope.dismissLeader = function (_user) {
         try{
             $http({
@@ -1055,12 +1090,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
             $scope.infoButtonStatus = '保存';
         }
     };
-
-
-    
-
-
-
 }]);
 
 tabViewCompany.controller('PasswordFormController', ['$http','$scope','$rootScope', function ($http,$scope, $rootScope) {
@@ -1128,7 +1157,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
                 }
             }).success(function(data, status) {
                 //TODO:更改对话框
-                window.location.href='#/company_info';
+                window.location.href='#/team_info';
 
             }).error(function(data, status) {
                 //TODO:更改对话框
@@ -1290,8 +1319,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         }else{
             alertify.alert('请至少选择一个小队!');
         }
-
-        console.log($scope.select_dOts);
     }
     //从列表中选择小队或者部门
     $scope.selectDOT = function(){
