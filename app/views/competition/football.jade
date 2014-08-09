@@ -132,9 +132,9 @@ block contentExt
             .dl_row
               span.subtitle 阵型图
               if role ==='LEADER' || role ==='HR'
-                  span (队长可以拖动上方人员进入下方场地哟~( ´ ▽ ` )ﾉ)
+                  span (队长可以拖动上方人员进入下方场地)
               if role ==='MEMBER'
-                  span (看看你在场上的哪儿呢！(☆_☆))
+                  span (看看你在场上的哪儿呢！)
             .col-xs-10.col-xs-offset-1.img_contain
               .formatField(x-donler-drop-target="#{competition.active&&!competition.finish&&competition_leader.length>0}" draggable='false' )
                 if competition.active&&!competition.finish&&competition_leader.indexOf(0)>-1
@@ -150,15 +150,14 @@ block contentExt
                   each teamBMember in competition.camp[1].formation
                     img.team_member_logo.teamMember.onmemberB.img_user(x-donler-member="true" draggable="false" data-camp='1' id='on_b__#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
         if role ==='LEADER' || role==='MEMBER' || role==='HR'
-          form.dl_detail_main(name="comment_form" novalidate)
-            p.subtitle #{__("LEAVEMESSAGE")}
-            if role !=='HR'
-              textarea.dl-form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
-              button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-            .dl_row(bs-popover)
-              section
-                br
-                div.comment.clearfix(ng-repeat="comment in comments")
+          form.comment_form(name="comment_form" novalidate)
+            .dl_row.clearfix
+              p.subtitle 我要留言
+              if role !=='HR'
+                textarea.dl-form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
+                button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+            .dl_row.clearfix(bs-popover)
+                .comment.clearfix(ng-repeat="comment in comments")
                   .comment_user_info(ng-if="comment.poster.cid=== '#{cid}'")
                     a(href="/users/home/{{comment.poster._id}}" )
                       img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}')

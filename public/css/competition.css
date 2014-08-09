@@ -1,7 +1,7 @@
 .dl_detail_main {
-  width: 640px;
-  margin-right: 30px;
+  width: 660px;
   float: left;
+  margin-right: 10px;
 }
 .dl_detail_main .competition_content .team_info {
   padding: 20px 0;
@@ -111,7 +111,7 @@
   border: solid 1px #ccc;
 }
 .dl_detail_main .competition_content .members {
-  margin: 20px 0;
+  margin: 10px 0;
   padding: 10px 0;
   background-color: #fbfbfb;
   border: 1px solid #ddd;
@@ -122,6 +122,20 @@
 }
 .dl_detail_main .competition_content .teamMember[draggable=true] {
   cursor: move;
+}
+.dl_detail_main .commment_box {
+  width: 660px;
+  float: left;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+}
+.dl_detail_main .commment_box textarea {
+  width: 510px;
+  margin-left: 10px;
+}
+.dl_detail_main .commment_box button {
+  margin-top: 21px;
 }
 .side .competition_detail {
   border: 1px solid #ddd;
@@ -153,7 +167,7 @@
   background-color: #fff;
   border: 1px solid #e6e6e6;
   padding: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .side .map_container .map_size {
   width: 268px;
@@ -163,7 +177,7 @@
   background-color: #fff;
   border: 1px solid #e6e6e6;
   padding: 20px 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .side .photo_container .photo_album {
   padding: 0;

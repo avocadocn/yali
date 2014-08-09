@@ -3,19 +3,18 @@
     .dl-modal-header
       button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
         img(ng-src='/img/icons/icon_close.png')
-      .head#myModalLabel 编辑小队信息
+      .head#myModalLabel 管理小队
     .dl-modal-body.clearfix
       .dl_modal_container
         .dl_row.clearfix
-          .dl_md_1.dl_vertical
-            label.subtitle 编辑小队名
+          span.subtitle 编辑小队名
         .dl_row.clearfix
           form(name="tname_form" novalidate)
             .dl_md_search
               input.dl-form-control(type="text" name="cname" ng-model="team_lists[team_index].name" maxlength=20 value="{{team_lists[team_index].name}}" required)
             .dl_md_1
               button.dl_btn_right(ng-click="saveGroupInfo()" ng-disabled="tname_form.$invalid") 保存
-      .dl_modal_container.margin_top_20
+      .dl_modal_container.margin_top_30
         .dl_row.clearfix
           span.subtitle 队长管理
           span.info_label 点选新成员任命队长后,现任队长自动解职
@@ -32,9 +31,9 @@
           .group(ng-repeat="user in users")
             .dl_row
               a(ng-if="user.leader")
-                img.size_48.img_user.dl_cover(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
+                img.size_48.img_user.dl_cover(ng-src="{{user.photo}}/48/48" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
               a(ng-click="appointReady(user,$index)" ng-disabled="true" ng-if="!user.leader")
-                img.size_48.img_user(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
+                img.size_48.img_user(ng-src="{{user.photo}}/48/48" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
             .dl_row.users
               span.user_name {{user.nickname}}
     .dl-modal-footer
