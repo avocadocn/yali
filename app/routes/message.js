@@ -17,7 +17,7 @@ module.exports = function(app) {
   */
 
 
-  app.get('/message/sendlist', Message.senderList);
+  app.get('/message/sendlist/:sendType/:sendId', Message.senderList);
 	app.get('/message/home/:teamId', authorization.messageAuthorize, Message.home);
   app.get('/message/home', authorization.messageAuthorize, Message.home);
 

@@ -26,31 +26,21 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         if(campaign_team==null){
             return;
         }
-        $scope.$watch('campaign_type',function(campaign_type){
-            if(campaign_type==null){
-                return;
-            }
-            $scope.$watch('member',function(member){
-                if(member==null){
-                    return;
-                }
-                if(campaign_type == '3'){
-                    for(var i =0; i < campaign_team.length; i ++){
-                        campaign_team[i].join_member = [];
-                        for(var j = 0; j < member.length; j ++){
-                            if(campaign_team[i]._id.toString() == member[j].team._id.toString()){
-                                campaign_team[i].join_member.push({
-                                    '_id' : member[j].uid,
-                                    'nickname' : member[j].nickname,
-                                    'photo' : member[j].photo,
-                                    'team' : member[j].team
-                                });
-                            }
-                        }
+        if(campaign_type == '3'){
+            for(var i =0; i < campaign_team.length; i ++){
+                campaign_team[i].join_member = [];
+                for(var j = 0; j < member.length; j ++){
+                    if(campaign_team[i]._id.toString() == member[j].team._id.toString()){
+                        campaign_team[i].join_member.push({
+                            '_id' : member[j].uid,
+                            'nickname' : member[j].nickname,
+                            'photo' : member[j].photo,
+                            'team' : member[j].team
+                        });
                     }
                 }
-            });
-        });
+            }
+        }
     });
     $scope.cancel = function (_id) {
         try {
