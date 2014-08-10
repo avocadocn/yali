@@ -10,16 +10,10 @@
           span.subtitle 任命管理员
           span.info_label 点选新成员任命管理员后,现任管理员自动解职
           .search_form.pull-right
-            form(name="search_form" novalidate)
+            form(name="manager_form" novalidate)
               .search_input
-                input(placeholder="搜索成员" type="text" ng-model="member_search.value" required)
-              .search_icon(type='submit' ng-click="search()" ng-disabled="search_form.$invalid")
-        .dl_row
-          form(name="manager_form" novalidate)
-            .dl_md_10
-              input.dl_modal_input.form-control(placeholder="请输入搜索关键字,搜索公司成员" type="text" ng-model="member_search_department" required)
-            .dl_md_1
-              button.dl_btn_right(ng-click="search()" ng-disabled="manager_form.$invalid") 搜索
+                input(placeholder="搜索成员" type="text" ng-model="member_search_department" required)
+              .search_icon(type='submit' ng-click="search()" ng-disabled="manager_form.$invalid")
       .dl_modal_container
         .groups(bs-popover)
           p(ng-if="message" ng-cloak) {{message}}

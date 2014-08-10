@@ -1624,9 +1624,9 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         }
         if(!find){
             $scope.department_users = [];
-            alertify.alert("未找到该员工!");
+            $scope.message = "未找到该员工!";
         }else{
-            alertify.alert("找到"+$scope.department_users.length+"名员工!");
+            $scope.message = '';
         }
     };
 
@@ -1636,6 +1636,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                 $scope.department_users = $scope.member_backup_department;
             }
         }
+        $scope.message='';
     }
 
     $scope.appointReady = function(index){
