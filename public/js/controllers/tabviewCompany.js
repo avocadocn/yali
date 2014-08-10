@@ -6,13 +6,17 @@ var tabViewCompany = angular.module('donler');
 tabViewCompany.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
     $routeProvider
+      .when('/manager', {
+        templateUrl: '/company/view/manager',
+        controller: 'ManagerController'
+      })
       .when('/company_campaign', {
         templateUrl: '/company/campaigns',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
       .when('/company_member/:cid', {
-        templateUrl: function(params){ 
+        templateUrl: function(params){
             return '/company/member/'+params.cid;
         },
         controller: 'CompanyMemberController',
@@ -109,17 +113,18 @@ tabViewCompany.directive('ngMax', function() {
 });
 tabViewCompany.controller('TimeLineController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-         $rootScope.nowTab = window.location.hash.substr(2);
+         $rootScope.nowTab = 'timeline';
     }
 ]);
 tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
-    if($location.hash()!=='')
-        $rootScope.nowTab = window.location.hash.substr(2);
-    else if($location.path()!=='')
-        $rootScope.nowTab = $location.path().substr(1);
-    $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
-    };
+    // if($location.hash()!=='') {
+    //     $rootScope.nowTab = window.location.hash.substr(2);
+    // } else if($location.path()!=='') {
+    //     $rootScope.nowTab = $location.path().substr(1);
+    // }
+    // $rootScope.addactive = function(value) {
+    //     $rootScope.nowTab = value;
+    // };
 
     $rootScope.$on("$routeChangeStart",function(){
         $rootScope.loading = true;
@@ -150,9 +155,14 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
         $rootScope.dOtMulti = value;
     }
 }]);
+
+tabViewCompany.controller('ManagerController', ['$scope', '$rootScope', function($scope, $rootScope) {
+    $rootScope.nowTab = 'manager';
+}]);
+
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
-    $rootScope.nowTab='company_campaign';
+    $rootScope.nowTab = 'campaign';
     $scope.campaign_type = "所有活动";
     $rootScope.$watch('cid',function(cid){
         $http.get('/campaign/getCampaigns/company/'+cid+'/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
@@ -377,6 +387,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
 }]);
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
  function ($http, $scope, $rootScope) {
+    $rootScope.nowTab = 'member';
     $http.get('/search/'+$rootScope.cid+'/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
       //按照员工昵称的拼音排序
@@ -597,6 +608,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 
 tabViewCompany
 .controller('TeamInfoController',['$scope','$http','$rootScope','$timeout',function ($scope, $http, $rootScope, $timeout) {
+    $rootScope.nowTab = 'team_info';
     $scope.member_search = {
         'value':''
     };
@@ -1004,6 +1016,7 @@ tabViewCompany
 })
 ;
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+    $rootScope.nowTab = 'company_info';
     $rootScope.tabShow = false;
     $rootScope.$on("$routeChangeStart",function(){
         $rootScope.tabShow = true;
@@ -1463,6 +1476,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
 
 
 tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$http', function ($rootScope, $scope, $http){
+    $rootScope.nowTab = 'department';
     var formatData = function(data) {
         $scope.node = {
             _id: data._id,

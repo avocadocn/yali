@@ -1266,12 +1266,10 @@ input.ng-invalid.ng-dirty
     margin-right 3px
   .select_right
     width 266px !important
-.company-info
+.dl_company_info
   min-height 300px
-  width 75%
-  background-color backgroundColor
   form
-    background-color white
+    padding 15px
   .group_table
     width 100%
     td,th
@@ -1389,17 +1387,20 @@ input.ng-invalid.ng-dirty
       max-height 100%
 
 
-.dl_allteaminfo_container, .dl_compaign_member, .dl_department, .dl_campaign_list, .dl_group_select
+.dl_allteaminfo_container, .dl_compaign_member, .dl_department, .dl_campaign_list, .dl_group_select, .dl_company_info, .company_manager_box
   width 100%
   background-color cardbgColor
   border 1px solid #ccc
   border-top 0px
   min-height 124px
   padding 0 15px
+
+  .operator_head
+    padding-top 20px
 .loademp
   line-height 120px
 .dl_messages_page
-  .dl_container 
+  .dl_container
     .main
       width 100%
 .dl_company_container
@@ -1439,6 +1440,8 @@ input.ng-invalid.ng-dirty
 .dl_compaign_member
   padding 20px 10px 0px
   .departmentbox
+    &:first-child
+      border-top 1px solid #eee
     border-bottom 1px solid #eee
     padding 10px 20px 0px
   .groups
@@ -1713,6 +1716,7 @@ input.ng-invalid.ng-dirty
     width 18px
 
 //-动态
+
 .dl_messagebox
   padding 0
   background-color cardbgColor
@@ -1742,4 +1746,45 @@ input.ng-invalid.ng-dirty
         padding 2px 10px
         width 490px
         float left
+
+.dl_messageitem
+  padding 10px
+  .message_row
+    padding 1px 0
+    .message_label
+      padding 2px 10px
+      float left
+    .message_content
+      word-break break-all
+      padding 2px 10px
+      width 490px
+      float left
+
+.company_manager_box
+  height 600px
+  background-color cardbgColor
+
+  .link_box
+    padding-top 100px
+
+  .link
+    display block
+    border solid 1px themeColor
+    width 460px
+    height 100px
+    margin 20px auto
+
+    .logo
+      display block
+      float left
+      margin 13px 24px
+      vertical-align baseline
+
+    .text
+      display block
+      float left
+      height 98px
+      line-height 98px
+      font-size 48px
+
 

@@ -72,4 +72,6 @@ module.exports = function(app, passport) {
     app.get('/company/editLogo/:companyId', authorization.companyAuthorize, company.editLogo);
     app.param('companyId', company.company);
 
+    app.get('/company/view/manager', company.renderManager);
+
 };

@@ -78,6 +78,10 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               li
                 a.dl_menu_a(href="/company/home#/company_info") #{__("COMPANY_INFO")}
               li
+                a.dl_menu_a(href="/company/home#/department") 部门管理
+              li
+                a.dl_menu_a(href="/company/home#/company_member/#{global_user._id}") 成员管理
+              li
                 a.dl_menu_a(href="/company/signout") #{__("LOGOUT")}
               //- li(ng-repeat="language in languages")
               //-   a.dl_menu_a(ng-click="changeLanguage(language.key)") {{language.language|translate}}

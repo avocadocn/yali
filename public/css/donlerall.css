@@ -1496,19 +1496,17 @@ input.ng-invalid.ng-dirty {
 .signup_row .select_right {
   width: 266px !important;
 }
-.company-info {
+.dl_company_info {
   min-height: 300px;
-  width: 75%;
-  background-color: #f4f4f4;
 }
-.company-info form {
-  background-color: #fff;
+.dl_company_info form {
+  padding: 15px;
 }
-.company-info .group_table {
+.dl_company_info .group_table {
   width: 100%;
 }
-.company-info .group_table td,
-.company-info .group_table th {
+.dl_company_info .group_table td,
+.dl_company_info .group_table th {
   width: 50px;
 }
 .popover {
@@ -1641,13 +1639,24 @@ input.ng-invalid.ng-dirty {
 .dl_compaign_member,
 .dl_department,
 .dl_campaign_list,
-.dl_group_select {
+.dl_group_select,
+.dl_company_info,
+.company_manager_box {
   width: 100%;
   background-color: #fff;
   border: 1px solid #ccc;
   border-top: 0px;
   min-height: 124px;
   padding: 0 15px;
+}
+.dl_allteaminfo_container .operator_head,
+.dl_compaign_member .operator_head,
+.dl_department .operator_head,
+.dl_campaign_list .operator_head,
+.dl_group_select .operator_head,
+.dl_company_info .operator_head,
+.company_manager_box .operator_head {
+  padding-top: 20px;
 }
 .loademp {
   line-height: 120px;
@@ -1705,6 +1714,9 @@ input.ng-invalid.ng-dirty {
 .dl_compaign_member .departmentbox {
   border-bottom: 1px solid #eee;
   padding: 10px 20px 0px;
+}
+.dl_compaign_member .departmentbox:first-child {
+  border-top: 1px solid #eee;
 }
 .dl_compaign_member .groups {
   padding-left: 20px;
@@ -2070,6 +2082,49 @@ input.ng-invalid.ng-dirty {
   padding: 2px 10px;
   width: 490px;
   float: left;
+}
+.dl_messageitem {
+  padding: 10px;
+}
+.dl_messageitem .message_row {
+  padding: 1px 0;
+}
+.dl_messageitem .message_row .message_label {
+  padding: 2px 10px;
+  float: left;
+}
+.dl_messageitem .message_row .message_content {
+  word-break: break-all;
+  padding: 2px 10px;
+  width: 490px;
+  float: left;
+}
+.company_manager_box {
+  height: 600px;
+  background-color: #fff;
+}
+.company_manager_box .link_box {
+  padding-top: 100px;
+}
+.company_manager_box .link {
+  display: block;
+  border: solid 1px #3498db;
+  width: 460px;
+  height: 100px;
+  margin: 20px auto;
+}
+.company_manager_box .link .logo {
+  display: block;
+  float: left;
+  margin: 13px 24px;
+  vertical-align: baseline;
+}
+.company_manager_box .link .text {
+  display: block;
+  float: left;
+  height: 98px;
+  line-height: 98px;
+  font-size: 48px;
 }
 @-moz-keyframes scaleFade {
   50% {

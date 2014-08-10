@@ -1,5 +1,9 @@
 .loading_div(ng-show = 'loading')
 .dl_compaign_member(ng-show = '!loading')
+  .operator_head.clearfix
+    span.subtitle.pull-left 成员一览
+    if global_user.provider === 'company'
+      a.pull-right(href="#/manager") 返回
   .memberlist(ng-init="show=[];")
     .row.departmentbox(ng-repeat="department in members_by_department track by $index" ng-init="show[$parent.$index]=false")
       span {{department.name}}{{department.id}}

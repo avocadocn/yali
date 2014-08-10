@@ -1373,4 +1373,8 @@ exports.editLogo = function(req, res) {
 };
 exports.renderTeamInfo = function(req, res){
     return res.render('company/team_info_list');
-}
+};
+
+exports.renderManager = function(req, res) {
+    res.render('partials/company_manager');
+};
