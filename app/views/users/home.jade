@@ -32,10 +32,10 @@ block panel
       a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") #{__("CAMPAIGN")}#{__("LIST")}
     li.tab_style(ng-class="{'active':nowTab=='schedule/#{uid}'}")
       a.subtitle.no_radius(href="#/schedule/#{uid}" ng-click="addactive('schedule/#{uid}')") #{__("SCHEDULE")}
-    li.tab_style(ng-class="{'active':nowTab=='personal'}")
-      a.subtitle.no_radius(href="#/personal" ng-click="addactive('personal')") 个人资料
     li.tab_style(ng-class="{'active':nowTab=='timeLine/#{uid}'}")
       a.subtitle.no_radius(href="#/timeLine/#{uid}" ng-click="addactive('timeLine/#{uid}')") 足迹
+    li.tab_style(ng-class="{'active':nowTab=='personal'}")
+      a.subtitle.no_radius(href="#/personal" ng-click="addactive('personal')") 个人资料
   .tab-content
     .tab-pane.active
       div(ng-view).tab-body
