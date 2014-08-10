@@ -740,7 +740,7 @@ var getPublicMessage = function(req,res,cid){
                 };
                 _add(param);
               }else{
-                _counter.i++;
+                counter.i++;
                 __callback();
               }
             },
