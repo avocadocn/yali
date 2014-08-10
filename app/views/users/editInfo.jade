@@ -1,9 +1,9 @@
 .loading_div(ng-show = 'loading')
-div.use_edit_info(ng-show = '!loading')
-  .dl_row
-    h5.pull-left #{__("INFO")}
+div.user_edit_info(ng-show = '!loading')
   form.form-horizontal(name="accountForm")
-    button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="baseEditToggle()" ng-bind="baseButtonStatus" ng-disabled="accountForm.$invalid&&!baseUnEdit")
+    .dl_row
+      h5.pull-left #{__("INFO")}
+      button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="baseEditToggle()" ng-bind="baseButtonStatus" ng-disabled="accountForm.$invalid&&!baseUnEdit")
     hr.margin_top_6
     .dl_row.clearfix
       .aside
@@ -64,7 +64,7 @@ div.use_edit_info(ng-show = '!loading')
       h5.pull-left #{__("CONTACT")}
       button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="linkEditToggle()" ng-bind="linkButtonStatus" ng-disabled="linkForm.$invalid")
     hr.margin_top_6
-    .dl_row.clearfix(ng-if="user.phone !=undefined || !linkUnEdit")
+    .dl_row.clearfix(ng-if="user.phone !='' || !linkUnEdit")
       .info_side
         span.info_label #{__("PHONE")}
       .info_detail

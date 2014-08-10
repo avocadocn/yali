@@ -286,10 +286,10 @@ textarea {
   border-style: solid;
   border-color: transparent #ededed transparent transparent;
 }
-.use_edit_info form {
+.user_edit_info {
   background-color: #fff;
 }
-.use_edit_info .birthday_detail {
+.user_edit_info .birthday_detail {
   width: 175px;
 }
 .dl_comment_area {

@@ -89,7 +89,6 @@ tabViewUser.run(['$rootScope','$location',
                 }
             }
         });
-        $rootScope.tabShow = true;
     }
 ]);
 
@@ -568,10 +567,6 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
-        $rootScope.tabShow = false;
-        $rootScope.$on("$routeChangeStart",function(){
-            $rootScope.tabShow = true;
-        });
         angular.element('.tooltip').hide();
         var markUserDepartment = function(user, department) {
             if (department && user.department) {
