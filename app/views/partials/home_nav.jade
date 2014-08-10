@@ -28,10 +28,10 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
         //.collapse.navbar-collapse#personal_nav
         ul.nav.navbar-nav.pull-right
           li
-            a(href="/company/home")= __("COMPANY_HOME")
+            a(href="/company/home") #{global_user.company_offical_name}
           if global_user.department._id
             li
-              a(href="/department/home/#{global_user.department._id}") 部门主页
+              a(href="/department/home/#{global_user.department._id}") #{global_user.department.name}
           li
             a(href="/users/home")
               span.user_img
