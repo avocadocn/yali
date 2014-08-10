@@ -102,7 +102,7 @@ block aside
               a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
                 img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labels=#{campaign.location.name.replace(/ /g, '')},2,0,16,0xffffff,0x3498db:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
             else
-              img.map_size(src="/img/sign_bg.jpg")
+              img.map_size(src="/img/icons/nomap.jpg")
       .remindbox
         p.remind_text 距离活动开始还有
         p#remind_time.remind_time
@@ -118,8 +118,11 @@ block aside
       if home.loc.coordinates.length==2
         a(href="http://mo.amap.com/?q=#{home.loc.coordinates[1]},#{home.loc.coordinates[0]}&name=#{home.name}" target="_blank")
           img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&labels=#{home.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
-      else
-        img.map_size(src="/img/sign_bg.jpg")
+    if home_court.length==0
+      img.map_size(src="/img/icons/nohomecourt2.jpg/268/210")
+      img.map_size(src="/img/icons/nohomecourt.jpg/268/210")
+    else if home_court.length==1
+      img.map_size(src="/img/icons/nohomecourt2.jpg/268/210")
   .thumbnailbox
     span.subtitle 相册
     each photo_album in photo_album_thumbnails

@@ -92,13 +92,11 @@ div(ng-show = '!loading')
                 button.dl_btn.dl_btn_small.operator_btn(ng-click="cancelProvoke(group_message.campaign.camp[0].id,group_message.campaign._id)") #{__("CANCEL")}
           .dl_message_container.clearfix(ng-if="group_message.message_type ==6")
             .message_row
-              a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}")
+              a(ng-href="{{'/group/home/'+group_message.campaign.camp[0].id}}" title="{{group_message.campaign.camp[0].tname}}")
                 img.size_56(ng-src='{{group_message.campaign.camp[0].logo}}')
-                span.margin_left_10 {{group_message.campaign.camp[0].tname}}
               span.h3.margin_15 {{group_message.campaign.camp[0].score}} : {{group_message.campaign.camp[1].score}}
-              a(ng-href="{{'/group/home/'+group_message.campaign.camp[1].id}}")
+              a(ng-href="{{'/group/home/'+group_message.campaign.camp[1].id}}" title="{{group_message.campaign.camp[1].tname}}")
                 img.size_56(ng-src='{{group_message.campaign.camp[1].logo}}')
-                span.margin_left_10 {{group_message.campaign.camp[1].tname}}
           .dl_message_container.clearfix(ng-if="group_message.message_type ==7 || group_message.message_type==8 ")
             .message_row
               span.message_label
