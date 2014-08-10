@@ -663,14 +663,20 @@ tabViewCompany.directive('masonry', function ($timeout) {
         }
     };
 
-    $scope.recover = function(){
-        if($scope.member_backup){
-            if($scope.member_backup.length > 0){
-                $scope.users = $scope.member_backup;
-            }
-        }
-        $scope.message='';
-    }
+    //无此功能了,但我仍觉得需要 by M
+    // $scope.recover = function(){
+    //     if(!$scope.show_cp){
+    //         if($scope.member_backup){
+    //             if($scope.member_backup.length > 0){
+    //                 $scope.users = $scope.member_backup;
+    //             }
+    //         }
+    //     }
+    //     else{
+    //         $scope.users= $scope.company_users;
+    //     }
+    //     $scope.message='';
+    // }
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
         $scope.team_index = index;
@@ -713,6 +719,29 @@ tabViewCompany.directive('masonry', function ($timeout) {
                         }
                     }
                 }
+
+                // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
+                for(var i = 0 ; i < $scope.company_users.length; i ++){
+                    //没有任何小队
+                    if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
+                        $scope.company_users[i].wait_for_join = true;
+                        //-$scope.users.push($scope.company_users[i]);
+                    //有小队
+                    }else{
+                        var team_find = false;
+                        for(var j = 0; j < $scope.company_users[i].team.length; j ++){
+                            if($scope.company_users[i].team[j]._id.toString() === $scope.tid){
+                                team_find = true;
+                                break;
+                            }
+                        }
+                        if(!team_find){
+                            $scope.company_users[i].wait_for_join = true;
+                            //-$scope.users.push($scope.company_users[i]);
+                        }
+                    }
+                }
+
                 $scope.member_backup = $scope.users.slice(0);
                 //-小队没队员就直接显示公司成员
                 if($scope.users.length>0){
@@ -749,27 +778,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
 
     $scope.showCpUser = function(option) {
         if(option === 1){
-            // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
-            for(var i = 0 ; i < $scope.company_users.length; i ++){
-                //没有任何小队
-                if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
-                    $scope.company_users[i].wait_for_join = true;
-                    $scope.users.push($scope.company_users[i]);
-                //有小队
-                }else{
-                    var team_find = false;
-                    for(var j = 0; j < $scope.company_users[i].team.length; j ++){
-                        if($scope.company_users[i].team[j]._id.toString() === $scope.tid){
-                            team_find = true;
-                            break;
-                        }
-                    }
-                    if(!team_find){
-                        $scope.company_users[i].wait_for_join = true;
-                        $scope.users.push($scope.company_users[i]);
-                    }
-                }
-            }
+            $scope.users = $scope.company_users;
             $scope.show_cp = true;
         }
         else{

@@ -1,32 +1,32 @@
-.dl_messagebox {
+.dl_message_box {
   padding: 0 5px;
   background-color: #fff;
   line-height: 21px;
   border: 1px solid #e6e6e6;
   border-top: none;
 }
-.dl_messagebox:after {
+.dl_message_box:after {
   display: block;
   line-height: 0;
   content: "";
   border: 0;
 }
-.dl_messagebox:before {
+.dl_message_box:before {
   display: block;
   line-height: 0;
   content: "";
 }
-.dl_messagebox .message_panel {
+.dl_message_box .message_panel {
   min-height: 93px;
   padding: 20px 0;
   width: 100%;
   border-bottom: 1px solid #f4f4f4;
 }
-.dl_messagebox .message_panel:hover {
+.dl_message_box .message_panel:hover {
   cursor: pointer;
   background-color: #f8f8f3;
 }
-.dl_messagebox .message_panel .dl_message_head {
+.dl_message_box .message_panel .dl_message_head {
   width: 50px;
   margin-left: 50px;
   float: left;
@@ -34,34 +34,34 @@
   font-size: 48px;
   color: #3498db;
 }
-.dl_messagebox .message_panel .dl_message_body {
+.dl_message_box .message_panel .dl_message_body {
   width: 550px;
   float: left;
   padding-left: 30px;
 }
-.dl_messagebox .message_panel .dl_message_body .message_row {
+.dl_message_box .message_panel .dl_message_body .message_row {
   height: 24px;
   padding: 2px 0;
 }
-.dl_messagebox .message_panel .dl_message_body .dl_message_rightcorner {
+.dl_message_box .message_panel .dl_message_body .dl_message_rightcorner {
   margin-right: 20px !important;
   margin-top: 5px !important;
 }
-.dl_messagebox .message_panel .dl_message_tail {
+.dl_message_box .message_panel .dl_message_tail {
   width: 200px;
   margin-right: 50px;
   float: right;
 }
-.dl_messagebox .message_panel .dl_message_tail .dl_message_date {
+.dl_message_box .message_panel .dl_message_tail .dl_message_date {
   width: 150px;
   margin-left: 5px;
   float: left;
 }
-.dl_messagebox .comment_form {
+.dl_message_box .comment_form {
   margin-top: 20px;
   margin-left: 30px;
 }
-.dl_messagebox .comment_form .dl_message_send {
+.dl_message_box .comment_form .dl_message_send {
   width: 21%;
   margin-left: 5px;
   float: left;

@@ -732,7 +732,35 @@ textarea
     padding-top 0px
     .aside
       width 80px
-
+.dl_messagebox
+  padding 0
+  background-color cardbgColor
+  line-height 21px
+  border 1px solid #e6e6e6
+  border-top none 
+  &:hover
+    background-color #fafafa
+  &:after
+    display block
+    line-height 0
+    content ""
+    border 0
+  &:before
+    display block
+    line-height 0
+    content ""
+  .dl_messageitem
+    padding 10px
+    .message_row
+      padding 1px 0
+      .message_label
+        padding 2px 10px
+        float left
+      .message_content
+        word-break break-all
+        padding 2px 10px
+        width 490px
+        float left
   .message_side
     width 56px
     float left
@@ -1674,17 +1702,33 @@ input.ng-invalid.ng-dirty
     width 18px
 
 //-动态
-.dl_messageitem
-  padding 10px
-  .message_row
-    padding 1px 0
-    .message_label
-      padding 2px 10px
-      float left
-    .message_content
-      word-break break-all
-      padding 2px 10px
-      width 490px
-      float left
-
+.dl_messagebox
+  padding 0
+  background-color cardbgColor
+  line-height 21px
+  border 1px solid #e6e6e6
+  border-top none 
+  &:hover
+    background-color #fafafa
+  &:after
+    display block
+    line-height 0
+    content ""
+    border 0
+  &:before
+    display block
+    line-height 0
+    content ""
+  .dl_messageitem
+    padding 10px
+    .message_row
+      padding 1px 0
+      .message_label
+        padding 2px 10px
+        float left
+      .message_content
+        word-break break-all
+        padding 2px 10px
+        width 490px
+        float left
 
