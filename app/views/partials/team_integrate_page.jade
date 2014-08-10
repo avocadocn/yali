@@ -9,9 +9,9 @@ div(ng-show = '!loading')
             .carousel-img-container
               img.center-block(ng-src="{{ photo.uri }}/500/270")
       .slider_nav
-        .up(ng-click="prevPhoto()" ng-if="slide.index !== 0")
+        .up(ng-click="prevPhoto()" ng-if="slide.index !== 0 && family_photos.select_count > 3")
           span.glyphicon.glyphicon-chevron-up
-        .down(ng-click="nextPhoto()" ng-if="slide.index < family_photos.select_count-1")
+        .down(ng-click="nextPhoto()" ng-if="slide.index < family_photos.select_count-1 && family_photos.select_count > 3")
           span.glyphicon.glyphicon-chevron-down
         div.carousel_thumbs.ng-cloak(height="90" count="3" scroll-index="slide.index" scroll-thumbs)
           div(ng-repeat="photo in family_photos | filter: {select: true}" ng-class="{'active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
@@ -29,21 +29,15 @@ div(ng-show = '!loading')
             .carousel-img-container
               img.center-block(src="/img/icons/defaultfamily3.jpg/500/270")
       .slider_nav
-        .up
-          span.glyphicon.glyphicon-chevron-up
-        .down
-          span.glyphicon.glyphicon-chevron-down
         div.carousel_thumbs.ng-cloak(height="90" count="3" scroll-index="slide.index" scroll-thumbs)
-          div(ng-class="{'active': ($parent.slide.index==$index)}")
-            img.center-block(src="/img/icons/defaultfamily1.jpg")
-          div(ng-class="{'active': ($parent.slide.index==$index)}")
-            img.center-block(src="/img/icons/defaultfamily2.jpg")
-          div(ng-class="{'active': ($parent.slide.index==$index)}")
-            img.center-block(src="/img/icons/defaultfamily3.jpg")
+          div(ng-class="{'active': ($parent.slide.index==0)}" ng-click="$parent.slide.index=0")
+            img.center-block(src="/img/icons/defaultfamily1.jpg/160/90")
+          div(ng-class="{'active': ($parent.slide.index==1)}" ng-click="$parent.slide.index=1")
+            img.center-block(src="/img/icons/defaultfamily2.jpg/160/90")
+          div(ng-class="{'active': ($parent.slide.index==2)}" ng-click="$parent.slide.index=2")
+            img.center-block(src="/img/icons/defaultfamily3.jpg/160/90")
 
   .team_calendar_box.clearfix
-    .dl_row.clearfix
-      h5.pull-left 日历
     .dl_row.clearfix
       #calendar_view.pull-left
         //-span.calendar_back.pull-left.glyphicon.glyphicon-chevron-left(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView")

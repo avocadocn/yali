@@ -18,22 +18,25 @@
           //-0:小队通知
           p.subtitle(ng-switch-when="0")
             strong
-              {{all_message.sender.name}} 
-            | 通知
+              {{all_message.team.name}}
+            | 收到一条通知({{all_message.sender.nickname}})
           //-1:活动
           p.subtitle(ng-switch-when="1")
-            活动&nbsp;&nbsp;
+            您参加的活动&nbsp;&nbsp;
             a(href="/campaign/detail/{{all_message.campaign_id}}")
               {{all_message.campaign_name}}
-            的通知
+            | 收到一条新通知({{all_message.sender.nickname}})
           //-2:比赛
           p.subtitle(ng-switch-when="2")
-            来自比赛&nbsp;&nbsp;
+            您参加的比赛&nbsp;&nbsp;
             a(href="/competition/{{all_message.campaign_id}}")
               {{all_message.campaign_name}}
+            | 收到一条新通知({{all_message.sender.nickname}})
           //-3:公司通知
           p.subtitle(ng-switch-when="3")
-            公司通知
+            strong
+              {{all_message.sender}}
+            | 给您发了一条通知
           //-4:队长收到 比赛结果
           p.subtitle(ng-switch-when="4")
             strong
@@ -47,12 +50,12 @@
               {{all_message.sender.nickname}}
           //-6:系统
           p.subtitle(ng-switch-when="6")
-            系统消息
+            您收到一条系统消息
           //-7:挑战
           p.subtitle(ng-switch-when="7")
             strong
               {{all_message.sender.name}}&nbsp;&nbsp;
-            a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
+            a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
               {{all_message.content}}
           span {{all_message.detail}}
       .dl_message_tail
@@ -91,7 +94,7 @@
   //-           span.subtitle(ng-switch-when="6")
   //-             您收到了一条系统消息
   //-           span.subtitle(ng-switch-when="7")
-  //-             a(href="/group/home/{{all_message.team_id}}" ng-click="setToRead($index)")
+  //-             a(href="/group/page/{{all_message.team_id}}" ng-click="setToRead($index)")
   //-               {{all_message.content}}
   //-           span.subtitle(ng-switch-when="0")
   //-             来自 {{all_message.team.name}}

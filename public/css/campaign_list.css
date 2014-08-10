@@ -53,8 +53,7 @@
   margin-left: 10px;
 }
 .campaign_table .content_col {
-  max-width: 50%;
-  width: auto;
+  width: 50%;
 }
 .campaign_table .content_col p {
   margin: 0;

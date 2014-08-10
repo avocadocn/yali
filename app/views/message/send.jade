@@ -15,7 +15,7 @@
     .dl_message_slide
       .dl_message_item(ng-repeat="dOt in dOts")
         input(type="checkbox" ng-model="dOt.selected" value="true" ng-change="selectReady($index)")
-        span {{dOt.name}}
+        span(title="{{dOt.name}}") {{dOt.name}}
           //- .dl_cover_message(ng-if="dOt.selected" ng-click="selectReady($index)")
           //- a(ng-click="selectReady($index)")
           //-   img.size_48(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}" title="{{dOt.name}}")

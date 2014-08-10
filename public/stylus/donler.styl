@@ -94,7 +94,7 @@ textarea
   margin-left 10px
 
 .search_area_head
-  width 80px
+  width 48px
   text-align center
 
 .dl_btn_score
@@ -135,8 +135,8 @@ textarea
   border-radius 1%
   position absolute
   z-index 1000
-  width 80px
-  height 80px
+  width 48px
+  height 48px
 
 .dl_msg_corner
   margin-top -2px
@@ -1555,75 +1555,77 @@ input.ng-invalid.ng-dirty
     word-break break-all
     padding 12px
     margin-bottom 12px
-  .team_family_box
-    margin-bottom 12px
+  .team_main
     width 660px
-    height 270px
-    overflow hidden
-    background-color cardbgColor
-    .team_photo
-      width 500px
+    .team_family_box
+      margin-bottom 12px
+      width 660px
       height 270px
-      position relative
       overflow hidden
-      float left
-      .carousel-img-container
-        height 270px
+      background-color cardbgColor
+      .team_photo
         width 500px
-    .slider_nav
-      position relative
-      margin-bottom 0
-      float left
-      padding 0
-      max-height 270px
-      overflow hidden
-      ul
+        height 270px
+        position relative
+        overflow hidden
+        float left
+        .carousel-img-container
+          height 270px
+          width 500px
+      .slider_nav
+        position relative
+        margin-bottom 0
+        float left
         padding 0
-        margin 0
-        li
-          display block
-      .up, .down
-        position absolute
-        text-align center
-        width 160px
-        color #ffffff
-        text-align center
-        text-shadow 0 1px 2px rgba(0, 0, 0, 0.6)
-        opacity 0.5
-        z-index 1
-        &:hover, &:focus
+        max-height 270px
+        overflow hidden
+        ul
+          padding 0
+          margin 0
+          li
+            display block
+        .up, .down
+          position absolute
+          text-align center
+          width 160px
           color #ffffff
-          text-decoration none
-          outline none
-          opacity 0.9
-      .up
-        top 0
-        background-image -webkit-linear-gradient(top, color-stop(rgba(0, 0, 0, 0.5) 0), color-stop(rgba(0, 0, 0, 0.0001) 100%))
-        background-image linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.0001) 100%)
-        background-repeat repeat-y
-      .down
+          text-align center
+          text-shadow 0 1px 2px rgba(0, 0, 0, 0.6)
+          opacity 0.5
+          z-index 1
+          &:hover, &:focus
+            color #ffffff
+            text-decoration none
+            outline none
+            opacity 0.9
+        .up
+          top 0
+          background-image -webkit-linear-gradient(top, color-stop(rgba(0, 0, 0, 0.5) 0), color-stop(rgba(0, 0, 0, 0.0001) 100%))
+          background-image linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.0001) 100%)
+          background-repeat repeat-y
+        .down
+          bottom 0
+          background-image -webkit-linear-gradient(top, color-stop(rgba(0, 0, 0, 0.0001) 0), color-stop(rgba(0, 0, 0, 0.5) 100%))
+          background-image linear-gradient(to bottom, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%)
+          background-repeat repeat-y
+        .carousel_thumbs
+          -webkit-transition all 0.1s ease-in
+          -moz-transition all 0.1s ease-in-out
+          -o-transition all 0.1s ease-in-out
+          transition all 0.1s ease-in-out
+
+          .active
+            border solid 3px themeColor
+            img
+              width 154px
+              height 84px
+
+      .rn-carousel-indicator
+        position absolute
         bottom 0
-        background-image -webkit-linear-gradient(top, color-stop(rgba(0, 0, 0, 0.0001) 0), color-stop(rgba(0, 0, 0, 0.5) 100%))
-        background-image linear-gradient(to bottom, rgba(0, 0, 0, 0.0001) 0, rgba(0, 0, 0, 0.5) 100%)
-        background-repeat repeat-y
-      .carousel_thumbs
-        -webkit-transition all 0.1s ease-in
-        -moz-transition all 0.1s ease-in-out
-        -o-transition all 0.1s ease-in-out
-        transition all 0.1s ease-in-out
-
-        .active
-          border solid 3px themeColor
-          img
-            width 154px
-            height 84px
-
-    .rn-carousel-indicator
-      position absolute
-      bottom 0
-      background-color transparent
-      span
-        padding 0 2px !important
+        background-color transparent
+        span
+          padding 0 2px !important
 
   .newcampainbox
     height 270px
@@ -1667,6 +1669,12 @@ input.ng-invalid.ng-dirty
         margin 0
         text-align center
         border solid 1px gray
+        height 60px
+        vertical-align: middle
+        color white
+        background gray
+        line-height 60px
+        font-size 18px
   .subtitle
     display block
     margin 0 0 10px

@@ -21,18 +21,15 @@ block contentExt
             img.pull-right.team_logo(draggable="false" src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             .team_name.pull-right
-              a(href="/group/home/#{competition.camp[0].id}")= competition.camp[0].tname
+              a(href="/group/page/#{competition.camp[0].id}")= competition.camp[0].tname
             .clearfix
-            div.text-left.pull-right
-              if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && role!='HR' && competition.camp[0].start_confirm && team.indexOf(0)>-1
-                div
-                  if competition.camp[1].start_confirm
+            if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && role!='HR' && competition.camp[0].start_confirm && team.indexOf(0)>-1
+                if competition.camp[1].start_confirm
+                  .button_container.pull-right
                     if join_flag == 0
-                      input.dl_btn.dl_btn_small.pull-right(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                      button.dl_btn.dl_btn_small(ng-click="quitCampaign('#{competition._id}')") #{__('QUIT')}#{__('CAMPAIGN')}
                     else if join_flag ==-1
-                      input.dl_btn.dl_btn_small.pull-right(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[0].id}')")
-                  else
-                    a.pull-right(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
+                      button.dl_btn.dl_btn_small(ng-click="joinCampaign('#{competition._id}','#{competition.camp[0].id}')") #{__('ENTRY')}#{__('JOIN')}
           .score_panel
             if score_flag
               .text-center.VS
@@ -73,18 +70,15 @@ block contentExt
             img.pull-left.team_logo(draggable="false" src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             .team_name.pull-left
-              a(href="/group/home/#{competition.camp[1].id}")= competition.camp[1].tname
+              a(href="/group/page/#{competition.camp[1].id}")= competition.camp[1].tname
             .clearfix
-            div.text-left.pull-left
-              if (competition.active || !competition.camp[1].start_confirm) && competition.camp[0].start_confirm&& !competition.finish && role!='HR' && team.indexOf(1)>-1
-                div
-                  if competition.camp[1].start_confirm
-                    if join_flag == 1
-                      input.dl_btn.dl_btn_small(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
-                    else if join_flag == -1
-                      input.dl_btn.dl_btn_small(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[1].id}')")
-                  else
-                    a(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
+            if (competition.active || !competition.camp[1].start_confirm) && competition.camp[0].start_confirm&& !competition.finish && role!='HR' && team.indexOf(1)>-1
+              if competition.camp[1].start_confirm
+                .button_container.pull-left
+                  if join_flag == 1
+                    input.dl_btn.dl_btn_small(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign('#{competition._id}')")
+                  else if join_flag == -1
+                    input.dl_btn.dl_btn_small(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign('#{competition._id}','#{competition.camp[1].id}')")
         .dl_row.members.clearfix
           .col-xs-6
             if competition.camp[1].start_confirm
@@ -102,7 +96,9 @@ block contentExt
                 each teamAMember in competition.camp[0].member
                   img.teamMember.team_member_logo.img_user(draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
             else
-              p.subtitle #{__("POSITIVE")}#{__("MEMBER")}
+              .dl_row.clearfix
+                a(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
+                //-p.subtitle #{__("POSITIVE")}#{__("MEMBER")}
               each teamAMember in competition.camp[0].vote.positive_member
                 img.teamMember.team_member_logo.img_user(draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
           .col-xs-6
@@ -122,8 +118,9 @@ block contentExt
                 each teamBMember in competition.camp[1].member
                   img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
             else
-              .row
-                p.subtitle.pull-right #{__("POSITIVE")}#{__("MEMBER")}
+              .dl_row.clearfix
+                a.pull-right(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
+                //-p.subtitle.pull-right #{__("POSITIVE")}#{__("MEMBER")}
               each teamBMember in competition.camp[1].vote.positive_member
                 img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
         //- 7是足球
@@ -150,11 +147,11 @@ block contentExt
                   each teamBMember in competition.camp[1].formation
                     img.team_member_logo.teamMember.onmemberB.img_user(x-donler-member="true" draggable="false" data-camp='1' id='on_b__#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
         if role ==='LEADER' || role==='MEMBER' || role==='HR'
-          form.comment_form(name="comment_form" novalidate)
+          form.commment_box(name="comment_form" novalidate)
             .dl_row.clearfix
               p.subtitle 我要留言
               if role !=='HR'
-                textarea.dl-form-control(rows="3" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
+                textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
                 button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
             .dl_row.clearfix(bs-popover)
                 .comment.clearfix(ng-repeat="comment in comments")

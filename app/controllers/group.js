@@ -22,6 +22,7 @@ var mongoose = require('mongoose'),
     gm = require('gm'),
     path = require('path'),
     moment = require('moment'),
+    //mime = require('mime'),
     model_helper = require('../helpers/model_helper'),
     schedule = require('../services/schedule'),
     message = require('../controllers/message'),
@@ -700,7 +701,7 @@ exports.provoke = function (req, res) {
                           if(team_opposite.leader.length > 0){
                             var param = {
                               'type':'private',
-                              'caption':'Private Message',
+                              'caption':competition.theme,
                               'own':{
                                 '_id':req.user._id,
                                 'nickname':req.user.nickname,
@@ -723,7 +724,7 @@ exports.provoke = function (req, res) {
                                 'logo':team_opposite.logo,
                                 'status':0
                               },
-                              'campaign_id':null,
+                              'campaign_id':competition._id,
                               'auto':true
                             };
                             message.sendToOne(req,res,param);
@@ -787,7 +788,7 @@ exports.responseProvoke = function (req, res) {
         }
         var param = {
           'type':'private',
-          'caption':'Private Message',
+          'caption':campaign.theme,
           'own':{
             '_id':req.user._id,
             'nickname':req.user.nickname,
@@ -810,7 +811,7 @@ exports.responseProvoke = function (req, res) {
             'logo':rst[0].logo,
             'status': req.body.responseStatus ? 1 : 4
           },
-          'campaign_id':null,
+          'campaign_id':campaign._id,
           'auto':true
         };
         message.sendToOne(req,res,param);
@@ -849,7 +850,7 @@ exports.cancelProvoke = function (req, res) {
         var rst = campaign.team;
         var param = {
           'type':'private',
-          'caption':'Private Message',
+          'caption':campaign.theme,
           'own':{
             '_id':req.user._id,
             'nickname':req.user.nickname,
@@ -872,7 +873,7 @@ exports.cancelProvoke = function (req, res) {
             'logo':rst[1].logo,
             'provoke_status':4
           },
-          'campaign_id':null,
+          'campaign_id':campaign._id,
           'auto':true
         };
         message.sendToOne(req,res,param);
@@ -1239,7 +1240,7 @@ exports.uploadFamily = function(req, res) {
     if (!company_group) {
       throw 'not found';
     }
-
+    //var ext = mime.extension(req.files.family.type);
     var family_photo = req.files.family;
     var family_dir = '/img/group/family/';
     var photo_name = Date.now().toString() + '.png';

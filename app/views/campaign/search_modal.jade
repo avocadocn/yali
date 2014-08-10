@@ -30,7 +30,7 @@ form(name="search_form")
           img.size_40(ng-src="{{team.logo}}/40/40")
         .dl_md_10
           .group_row_1
-            a(href="/group/home/{{team._id}}/#/group_info" target="_blank")
+            a(href="/group/page/{{team._id}}" target="_blank")
               span {{team.name}}
           .group_row
             //-以后换积分
@@ -67,7 +67,7 @@ form(name="search_form")
           img.size_40(ng-src="{{team.logo}}/40/40")
         .dl_md_10
           .group_row_1
-            a(href="/group/home/{{team._id}}/#/group_info" target="_blank")
+            a(href="/group/page/{{team._id}}" target="_blank")
               span {{team.name}}
           .group_row(ng-show="team.home_court[0].name")
             span 主场:{{team.home_court[0].name}}
