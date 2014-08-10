@@ -231,7 +231,7 @@ block contentExt
           a(href="http://mo.amap.com/?q=#{competition.location.coordinates[1]},#{competition.location.coordinates[0]}&name=#{competition.location.name}" target="_blank")
             img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&labels=#{competition.location.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
         else
-          img.map_size(src="/img/sign_bg.jpg")
+          img.map_size(src="/img/icons/nomap.jpg")
       .photo_container
         if role!=='PARTNER'
           .clearfix
