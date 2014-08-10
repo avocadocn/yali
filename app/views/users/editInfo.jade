@@ -5,7 +5,7 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
       h5.pull-left #{__("INFO")}
       button.dl_btn.dl_btn_small.pull-right(ng-if="role!='PARTNER'" ng-click="baseEditToggle()" ng-bind="baseButtonStatus" ng-disabled="accountForm.$invalid&&!baseUnEdit")
     hr.margin_top_6
-    .dl_row.clearfix
+    .dl_row.clearfix(ng-if="role!='PARTNER'")
       .aside
         img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
       .dl_row.margin_top_15(ng-if="role!='PARTNER'")
@@ -28,7 +28,7 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
         span.info_label #{__("COMPANY")}
       .info_side
         span.info_label(ng-cloak) {{user.cname}}
-    .dl_row.clearfix
+    .dl_row.clearfix(ng-if="user.department !='' || ! baseUnEdit")
       .info_side
         span.info_label 部门
       .info_detail(ng-if="!baseUnEdit")
@@ -53,12 +53,20 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
       .info_side
         span.info_label #{__("BRIEF")}
       .info_detail
-        textarea.dl_input.dl-form-control.editToggle(rows="3" cols="40" name="introduce" ng-model="user.introduce" ng-maxlength=70 tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak)
+        textarea.dl_input.dl-form-control.editToggle(rows="2" cols="40" name="introduce" ng-model="user.introduce" ng-maxlength=70 tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak)
     .dl_row.clearfix
       .info_side
         span.info_label #{__("REGISTER_DATE")}
       .info_side
         span.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label  参加的小队
+      .info_side
+        .team(ng-repeat="team in user.team " ng-if="team.gid!=0")
+          a(href="/group/home/{{team._id}}")
+            img.size_48(ng-src="{{team.logo}}/48/48" title="{{team.name}}")
+          //span.info_label {{team.name}}
   form.form-horizontal(name="linkForm")
     .dl_row
       h5.pull-left #{__("CONTACT")}

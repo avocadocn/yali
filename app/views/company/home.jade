@@ -49,7 +49,7 @@ block panel
   div(ng-init="role='#{role}'")
     ul.nav.nav-tabs(ng-init="cid='#{cid}'" ng-show="tabShow")
       li.tab_style(ng-class="{'active':nowTab=='team_info'}")
-        a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')") 统计
+        a.subtitle.no_radius(href="#/team_info"  ng-click="addactive('team_info')")= role === 'HR' ? '统计' : '小队'
       if role === 'HR' || role === 'EMPLOYEE'
         li.tab_style(ng-class="{'active':nowTab=='company_campaign'}")
           a.subtitle.no_radius(href="#/company_campaign"  ng-click="addactive('company_campaign')") 活动
