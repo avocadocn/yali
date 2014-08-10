@@ -1711,12 +1711,12 @@ input.ng-invalid.ng-dirty {
 .dl_compaign_member {
   padding: 20px 10px 0px;
 }
+.dl_compaign_member .departmentbox.hr_view:first-child {
+  border-top: 1px solid #eee;
+}
 .dl_compaign_member .departmentbox {
   border-bottom: 1px solid #eee;
   padding: 10px 20px 0px;
-}
-.dl_compaign_member .departmentbox:first-child {
-  border-top: 1px solid #eee;
 }
 .dl_compaign_member .groups {
   padding-left: 20px;

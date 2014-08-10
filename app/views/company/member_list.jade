@@ -1,11 +1,11 @@
 .loading_div(ng-show = 'loading')
 .dl_compaign_member(ng-show = '!loading')
-  .operator_head.clearfix
-    span.subtitle.pull-left 成员一览
-    if global_user.provider === 'company'
+  if global_user.provider === 'company'
+    .operator_head.clearfix
+      span.subtitle.pull-left 成员一览
       a.pull-right(href="#/manager") 返回
   .memberlist(ng-init="show=[];")
-    .row.departmentbox(ng-repeat="department in members_by_department track by $index" ng-init="show[$parent.$index]=false")
+    .row.departmentbox(ng-repeat="department in members_by_department track by $index" ng-init="show[$parent.$index]=false" class="#{global_user.provider==='company' ? 'hr_view' : ''}")
       span {{department.name}}{{department.id}}
       .text_container.pull-right(ng-if="department.member.length>10")
           a.text(ng-show="!show[$index]" ng-click="show[$index]=true;" href="javascript:void(0);" ng-cloak) 更多 > 
