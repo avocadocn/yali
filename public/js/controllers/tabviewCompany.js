@@ -152,6 +152,7 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
+    $rootScope.nowTab='company_campaign';
     $scope.campaign_type = "所有活动";
     $rootScope.$watch('cid',function(cid){
         $http.get('/campaign/getCampaigns/company/'+cid+'/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
@@ -613,6 +614,7 @@ tabViewCompany.directive('masonry', function ($timeout) {
         }
     };
 }).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+    $rootScope.nowTab='team_info';
     $scope.member_search = {
         'value':''
     };
