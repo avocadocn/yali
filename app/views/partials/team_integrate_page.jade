@@ -17,7 +17,29 @@ div(ng-show = '!loading')
           div(ng-repeat="photo in family_photos | filter: {select: true}" ng-class="{'active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
             img(ng-src="{{ photo.uri }}/160/90")
     div(ng-if="family_photos.select_count === 0")
-      p 全家福还没有图片，赶紧上传吧
+      .team_photo
+        ul.ng-cloak(rn-carousel rn-carousel-indicator="true" rn-carousel-auto-slide="2" rn-carousel-swipe="false" rn-carousel-index="slide.index")
+          li
+            .carousel-img-container
+              img.center-block(src="/img/icons/defaultfamily1.jpg/500/270")
+          li
+            .carousel-img-container
+              img.center-block(src="/img/icons/defaultfamily2.jpg/500/270")
+          li
+            .carousel-img-container
+              img.center-block(src="/img/icons/defaultfamily3.jpg/500/270")
+      .slider_nav
+        .up
+          span.glyphicon.glyphicon-chevron-up
+        .down
+          span.glyphicon.glyphicon-chevron-down
+        div.carousel_thumbs.ng-cloak(height="90" count="3" scroll-index="slide.index" scroll-thumbs)
+          div(ng-class="{'active': ($parent.slide.index==$index)}")
+            img.center-block(src="/img/icons/defaultfamily1.jpg")
+          div(ng-class="{'active': ($parent.slide.index==$index)}")
+            img.center-block(src="/img/icons/defaultfamily2.jpg")
+          div(ng-class="{'active': ($parent.slide.index==$index)}")
+            img.center-block(src="/img/icons/defaultfamily3.jpg")
 
   .team_calendar_box.clearfix
     .dl_row.clearfix

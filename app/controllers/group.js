@@ -134,7 +134,6 @@ exports.teampagetemplate =function(req,res){
 };
 //小队聚合首页 TODO
 exports.teampage = function(req, res) {
-  console.log('teampage render');
   moment.lang('zh-cn');
   var cid = req.companyGroup.cid.toString();
   async.waterfall([
@@ -197,91 +196,26 @@ exports.teampage = function(req, res) {
 
     },
     function(teamMoreInfo, callback) {
-      if(req.role==='HR' || req.role ==='GUESTHR'){
 
-        res.render('group/teampage', {
-          'role': req.role,
-          'teamId' : req.params.teamId,
-          'tname': req.companyGroup.name,
-          'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-          'score': req.companyGroup.score ? req.companyGroup.score.member + req.companyGroup.score.campaign + req.companyGroup.score.participator + req.companyGroup.score.album + req.companyGroup.score.provoke + req.companyGroup.score.comment : 0,
-          'logo': req.companyGroup.logo,
-          'group_id': req.companyGroup._id,
-          'cname': req.companyGroup.cname,
-          'sign': req.companyGroup.brief,
-          'gid' : req.companyGroup.gid,
-          'cid' : cid,
-          'nav_logo':req.user.info.logo,
-          'nav_name':req.user.info.name,
-          'photo_album_thumbnails': photo_album_thumbnails,
-          'moment': moment
-        });
-      }
-      else{//个人侧栏
-        var selected_teams = [];//参加的非队长小队
-        var unselected_teams = [];//没参加的小队
-        var leader_teams = [];//是队长的小队
-        var user_teams = [];
-        var photo_album_ids = [];
-        for(var i = 0; i < req.user.team.length; i ++) {
-          user_teams.push(req.user.team[i]._id.toString());
-        }
-        CompanyGroup.find({'cid':req.user.cid}, {'_id':1,'logo':1,'gid':1,'name':1,'active':1,'leader':1},function(err, company_groups) {
-          if(err || !company_groups) {
-            return res.send([]);
-          } else {
-            for(var i = 0; i < company_groups.length; i ++) {
-              if(company_groups[i].gid !== '0' && company_groups[i].active === true){
-                //下面查找的是该成员加入和未加入的所有active小队
-                if(user_teams.indexOf(company_groups[i]._id.toString()) > -1) {
-                  //判断此人是否是此队队长，并作标记
-                  company_groups[i].isLeader = false;
-                  if(req.user.role === 'LEADER'){
-                    if(company_groups[i].leader.length){
-                      for(var j=0;j<company_groups[i].leader.length;j++){
-                        if(company_groups[i].leader[j]._id.toString()===req.user._id.toString()){
-                          company_groups[i].isLeader = true;
-                          leader_teams.push(company_groups[i]);
-                          break;
-                        }
-                      }
-                    }
-                  }
-                  if(!company_groups[i].isLeader)
-                    selected_teams.push(company_groups[i]);
-                } else {
-                  unselected_teams.push(company_groups[i]);
-                }
-              }
-            }
-
-            res.render('group/teampage',{
-              'leader_teams': leader_teams,
-              'selected_teams' : selected_teams,
-              'unselected_teams' : unselected_teams,
-              'teamId' : req.params.teamId,
-              'tname': req.companyGroup.name,
-              'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-              'score': req.companyGroup.score ? req.companyGroup.score.member + req.companyGroup.score.campaign + req.companyGroup.score.participator + req.companyGroup.score.album + req.companyGroup.score.provoke + req.companyGroup.score.comment : 0,
-              'role': req.role,
-              'logo': req.companyGroup.logo,
-              'group_id': req.companyGroup._id,
-              'cname': req.companyGroup.cname,
-              'sign': req.companyGroup.brief,
-              'gid' : req.companyGroup.gid,
-              'cid' : cid,
-              'photo': req.user.photo,
-              'realname':req.user.realname,
-              'nav_logo': req.user.photo,
-              'nav_name':req.user.nickname,
-              'photo_album_thumbnails': teamMoreInfo.photo_album_thumbnails,
-              'home_court': req.companyGroup.home_court,
-              'campaign':teamMoreInfo.campaign,
-              'moment': moment
-            });
-          };
-        });
-      };
+      res.render('group/teampage',{
+        'teamId' : req.params.teamId,
+        'tname': req.companyGroup.name,
+        'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
+        'score': req.companyGroup.score ? req.companyGroup.score.member + req.companyGroup.score.campaign + req.companyGroup.score.participator + req.companyGroup.score.album + req.companyGroup.score.provoke + req.companyGroup.score.comment : 0,
+        'role': req.role,
+        'logo': req.companyGroup.logo,
+        'group_id': req.companyGroup._id,
+        'cname': req.companyGroup.cname,
+        'sign': req.companyGroup.brief,
+        'gid' : req.companyGroup.gid,
+        'cid' : cid,
+        'photo': req.user.photo,
+        'realname':req.user.realname,
+        'photo_album_thumbnails': teamMoreInfo.photo_album_thumbnails,
+        'home_court': req.companyGroup.home_court,
+        'campaign':teamMoreInfo.campaign,
+        'moment': moment
+      });
     }
   ], function(err, result) {
     console.log(err);
