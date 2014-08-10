@@ -17,9 +17,10 @@
   content: "";
 }
 .dl_messagebox .message_panel {
-  min-height: 93px !important;
-  padding-top: 20px !important;
+  min-height: 93px;
+  padding: 20px 0;
   width: 100%;
+  border-bottom: 1px solid #f4f4f4;
 }
 .dl_messagebox .message_panel:hover {
   cursor: pointer;
@@ -86,5 +87,4 @@
 }
 .line_left {
   margin-left: 5px !important;
-  border-bottom: 1px solid #f4f4f4;
 }
