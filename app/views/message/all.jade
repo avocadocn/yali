@@ -55,7 +55,7 @@
           p.subtitle(ng-switch-when="7")
             strong
               {{all_message.sender.name}}&nbsp;&nbsp;
-            a(href="/competition/{{all_message.team_id}}" ng-click="setToRead($index)")
+            a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
               {{all_message.content}}
           span {{all_message.detail}}
       .dl_message_tail
