@@ -1367,8 +1367,8 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     }
     $scope.showCampaignSponsor = function(){
         var tmp = [];
-        for(var i = 0; i < $scope.select_dOts.length; i ++){
-            if($scope.select_dOts[i].selected)tmp.push($scope.select_dOts[i]);
+        for(var i = 0; i < $scope.dOts.length; i ++){
+            if($scope.dOts[i].selected)tmp.push($scope.dOts[i]);
         }
         $scope.select_dOts = tmp;
 
@@ -1393,12 +1393,12 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     }
     //从已经选出的小队或者部门中再次进行选择
     $scope.selectReady = function(index){
-        $scope.select_dOts[index].selected =! $scope.select_dOts[index].selected;
-        $scope.main_dOt = $scope.select_dOts[index];
+        $scope.dOts[index].selected =! $scope.dOts[index].selected;
+        $scope.main_dOt = $scope.dOts[index];
 
         $scope.sponsor_permission = false;
-        for(var i = 0; i  < $scope.select_dOts.length; i ++){
-            if($scope.select_dOts[i].selected){
+        for(var i = 0; i  < $scope.dOts.length; i ++){
+            if($scope.dOts[i].selected){
                 $scope.sponsor_permission = true;
                 break;
             }
@@ -1411,7 +1411,8 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
             $scope.dOts.push({
                 '_id':dOts[i]._id,
                 'name':dOts[i].name,
-                'team':dOts[i].team  //只有部门才会有这个属性
+                'team':dOts[i].team,  //只有部门才会有这个属性
+                'selected' : false
             });
         }
         $scope.main_dOt = $scope.dOts[0];

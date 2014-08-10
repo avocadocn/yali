@@ -430,9 +430,9 @@ textarea {
   width: 579px;
 }
 .dl-modal .dl-modal-body .dl_modal_container .groups .group {
-  float: left;
-  padding-left: 20px;
-  padding-bottom: 5px;
+  float: left !important;
+  padding-left: 20px !important;
+  padding-bottom: 5px !important;
 }
 .dl-modal .dl-modal-body .dl_modal_container .groups .group .dl_row.users {
   width: 48px;
