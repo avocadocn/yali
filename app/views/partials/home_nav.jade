@@ -28,7 +28,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
         //.collapse.navbar-collapse#personal_nav
         ul.nav.navbar-nav.pull-right
           li
-            a(href="/company/home") #{global_user.company_offical_name}
+            a(href="/company/home") #{global_user.company_official_name}
           if global_user.department._id
             li
               a(href="/department/home/#{global_user.department._id}") #{global_user.department.name}
@@ -70,7 +70,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
             a(href="/company/home")
               span
                 img.size_20(src="#{global_user.info.logo}")
-              span.m_l_5 #{global_user.info.name}
+              span.m_l_5 #{global_user.info.official_name}
           li
             a(href="#" data-toggle="dropdown")
               span.glyphicon.glyphicon-cog.m_l_5

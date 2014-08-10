@@ -9,7 +9,9 @@ block baseInfo
       img.size_80.img_contain(ng-src="#{logo ? logo :'/img/icons/default_company_logo.png'}")
     .top-main
       .dl_row
-        label.head= cname
+        label.head= official_name
+      .dl_row
+        p 公司全称: #{cname}
       //-.dl_row.height_60
       //-  p= sign
       .dl_row

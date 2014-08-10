@@ -106,12 +106,12 @@ module.exports = function(app, passport, db) {
 
         app.use(function(req, res, next) {
 
-            if (req.user && req.user.provider === 'user' && !req.user.company_offical_name) {
+            if (req.user && req.user.provider === 'user' && !req.user.company_official_name) {
                 mongoose.model('Company')
                 .findById(req.user.cid)
                 .exec()
                 .then(function(company) {
-                    req.user.company_offical_name = company.info.official_name;
+                    req.user.company_official_name = company.info.official_name;
                     console.log(req.user)
                     req.user.save(function(err) {
                         if (err) {

@@ -99,7 +99,7 @@ var UserSchema = new Schema({
         ref: 'Company'
     },
     cname: String,
-    company_offical_name: String,
+    company_official_name: String,
     team: [_team],
     app_token: String
 });
