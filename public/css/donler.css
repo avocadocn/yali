@@ -1813,9 +1813,10 @@ dl_messagebox,
   background-color: #fff;
   width: 290px;
   min-height: 80px;
-  margin: 20px 16px 10px 0;
+  margin: 20px 16px 0 0;
   border: 1px solid #ddd;
   padding: 6px;
+  box-sizing: border-box;
 }
 .dl_allteaminfo_emp .teamitem .itembox {
   padding: 10px 0;

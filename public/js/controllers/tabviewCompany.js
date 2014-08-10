@@ -130,14 +130,14 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
 
     $rootScope.$watch("role",function(role){
         if (role && $location.hash()=='' && $location.path()==''){
-            if(role === 'GUEST' || role ==='HR'){
+            // if(role === 'GUEST' || role ==='HR'){
                 $location.path('/team_info');
                 $rootScope.nowTab='team_info';
-            }
-            else{
-                $location.path('/company_campaign');
-                $rootScope.nowTab='company_campaign';
-            }
+            // }
+            // else{
+            //     $location.path('/company_campaign');
+            //     $rootScope.nowTab='company_campaign';
+            // }
         }
     });
 
@@ -593,29 +593,12 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 }]);
 
 //公司小队列表
-tabViewCompany.directive('masonry', function ($timeout) {
-    return {
-        restrict: 'AC',
-        link: function (scope, elem, attrs) {
-            scope.$watch(function () {
-                return elem[0].children.length
-            },
-            function (newVal) {
-                $timeout(function () {
-                    elem.masonry('reloadItems');
-                    elem.masonry();
-                })
-            })
-            elem.masonry({
-                itemSelector: '.masonry-item'
-            });
-            scope.masonry = elem.data('masonry');
-        }
-    };
-}).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+tabViewCompany
+.controller('TeamInfoController',['$scope','$http','$rootScope','$timeout',function ($scope, $http, $rootScope, $timeout) {
     $scope.member_search = {
         'value':''
     };
+
     $scope.getData = function(type) {
         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
         $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
@@ -623,6 +606,16 @@ tabViewCompany.directive('masonry', function ($timeout) {
             $scope.cid = data.cid;
             $scope.role = data.role;
             $scope.data_type = type;
+
+            $timeout(function () {
+                var mary = document.querySelector('.masonry');
+                console.log(mary);
+                // mary.masonry('reloadItems');
+                // mary.masonry({
+                //     itemSelector: '.masonry-item',
+                //     transitionDuration: '0s'
+                // })
+            })
         });
     };
     $scope.getData('team');
@@ -975,7 +968,30 @@ tabViewCompany.directive('masonry', function ($timeout) {
     };
 
 
-}]);
+}])
+.directive('masonry', function ($timeout) {
+    return {
+        restrict: 'AC',
+        link: function (scope, elem, attrs) {
+            scope.$watch(function () {
+                return elem[0].children.length
+            },
+            function (newVal) {
+                console.log('run masonry');
+                $timeout(function () {
+                    elem.masonry('reloadItems');
+                    elem.masonry();
+                }, 800)
+            })
+            elem.masonry({
+                itemSelector: '.masonry-item',
+                transitionDuration: '0s'
+            });
+            scope.masonry = elem.data('masonry');
+        }
+    };
+})
+;
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     $rootScope.tabShow = false;
     $rootScope.$on("$routeChangeStart",function(){
