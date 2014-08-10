@@ -235,7 +235,7 @@ exports.resultConfirm = function (req, res) {
               'logo':competition.team[req.competition_leader[0]].logo,
               'status': (competition.camp[req.competition_leader[0]].result.confirm && competition.camp[(req.competition_leader[0]+1)%2].result.confirm) ? 3 : 2
             };
-            message.resultConfirm(req,res,olid,team,competition_id);
+            message.resultConfirm(req,res,olid,team,competition_id,competition.theme);
           }
           res.send({'result':1,'msg':'SUCCESS'});
         }

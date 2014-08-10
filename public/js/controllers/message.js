@@ -205,18 +205,6 @@ var messagePreHandle = function(teams,msg,divide){
       if(msg[i].message_content.sender.length > 0){
         if(msg[i].message_content.campaign_id == null){
           message_type = 0;
-
-          if(msg[i].message_content.sender[0].role === 'LEADER'){
-            sender = {
-              'name':msg[i].message_content.team[0].name
-            };
-          }else{
-            if(msg[i].message_content.sender[0].role === 'HR'){
-              sender = {
-              'name':'公司'
-              };
-            }
-          }
           detail = msg[i].message_content.content;
           direct_show = true;
         }else{
@@ -239,9 +227,9 @@ var messagePreHandle = function(teams,msg,divide){
           'status':msg[i].status,
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
-          'team':msg[i].message_content.team[0],
-          'photo':msg[i].message_content.team[0].logo,
-          'sender':sender,
+          'team': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0] : [],
+          'photo': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0].logo : msg[i].message_content.sender[0].photo,
+          'sender':msg[i].message_content.sender[0],
           'message_type':message_type,
           'campaign_id':msg[i].message_content.campaign_id,
           'campaign_name':msg[i].message_content.caption
@@ -254,9 +242,9 @@ var messagePreHandle = function(teams,msg,divide){
           'date':msg[i].message_content.post_date,
           'detail':msg[i].message_content.content,
           'message_type':message_type,
-          'team':msg[i].message_content.team[0],
+          'team': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0] : [],
           'photo': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0].logo : msg[i].message_content.sender[0].photo,
-          'sender':sender,
+          'sender':msg[i].message_content.sender[0],
           'campaign_id':msg[i].message_content.campaign_id,
           'campaign_name':msg[i].message_content.caption
         });
@@ -275,6 +263,7 @@ var messagePreHandle = function(teams,msg,divide){
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
             'detail':detail,
+            'sender':msg[i].message_content.sender[0].nickname,
             'message_type':message_type
           });
         }else{
@@ -284,6 +273,7 @@ var messagePreHandle = function(teams,msg,divide){
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
             'detail':detail,
+            'sender':msg[i].message_content.sender[0].nickname,
             'message_type':message_type
           });
         }
@@ -305,6 +295,7 @@ var messagePreHandle = function(teams,msg,divide){
             private_messages.push({
               '_id':msg[i]._id,
               'content':content,
+              'detail':msg[i].message_content.caption,
               'status':msg[i].status,
               'sender':sender,
               'date':msg[i].message_content.post_date,
@@ -316,6 +307,7 @@ var messagePreHandle = function(teams,msg,divide){
             all_messages.push({
               '_id':msg[i]._id,
               'content':content,
+              'detail':msg[i].message_content.caption,
               'status':msg[i].status,
               'date':msg[i].message_content.post_date,
               'sender':sender,
@@ -350,6 +342,7 @@ var messagePreHandle = function(teams,msg,divide){
               '_id':msg[i]._id,
               'content':content,
               'status':msg[i].status,
+              'detail':msg[i].message_content.caption,
               'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.team[0].logo,
@@ -362,6 +355,7 @@ var messagePreHandle = function(teams,msg,divide){
               '_id':msg[i]._id,
               'content':content,
               'status':msg[i].status,
+              'detail':msg[i].message_content.caption,
               'sender':sender,
               'date':msg[i].message_content.post_date,
               'photo':msg[i].message_content.team[0].logo,
@@ -817,7 +811,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
                 $rootScope.receive_message_sum ++;
               }
               $scope.private_message_content.text='';
-              comment_form.$setPristine();
+              //comment_form.$setPristine();
               $scope.getSenderList($scope.teamId);
             }
         }).error(function(data, status) {
@@ -867,7 +861,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
                   $rootScope.receive_message_sum ++;
                 }
                 $scope.private_message_content.text='';
-                comment_form.$setPristine();
+                //comment_form.$setPristine();
                 $scope.getSenderList();
               }
           }).error(function(data, status) {
@@ -938,10 +932,14 @@ var sendMessagesPre = function(messages){
             direct_show = true;
           }else{
             detail = messages[i].content;
-            if(messages[i].team[0].status == 0){
-              message_type = 1;//活动
+            if(messages[i].team.length > 0){
+              if(messages[i].team[0].status == 0){
+                message_type = 1;//活动
+              }else{
+                message_type = 2;//比赛
+              }
             }else{
-              message_type = 2;//比赛
+              message_type = 1;//活动
             }
           }
         }

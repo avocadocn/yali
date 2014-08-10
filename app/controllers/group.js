@@ -700,7 +700,7 @@ exports.provoke = function (req, res) {
                           if(team_opposite.leader.length > 0){
                             var param = {
                               'type':'private',
-                              'caption':'Private Message',
+                              'caption':competition.theme,
                               'own':{
                                 '_id':req.user._id,
                                 'nickname':req.user.nickname,
@@ -723,7 +723,7 @@ exports.provoke = function (req, res) {
                                 'logo':team_opposite.logo,
                                 'status':0
                               },
-                              'campaign_id':null,
+                              'campaign_id':competition._id,
                               'auto':true
                             };
                             message.sendToOne(req,res,param);
@@ -787,7 +787,7 @@ exports.responseProvoke = function (req, res) {
         }
         var param = {
           'type':'private',
-          'caption':'Private Message',
+          'caption':campaign.theme,
           'own':{
             '_id':req.user._id,
             'nickname':req.user.nickname,
@@ -810,7 +810,7 @@ exports.responseProvoke = function (req, res) {
             'logo':rst[0].logo,
             'status': req.body.responseStatus ? 1 : 4
           },
-          'campaign_id':null,
+          'campaign_id':campaign._id,
           'auto':true
         };
         message.sendToOne(req,res,param);
@@ -849,7 +849,7 @@ exports.cancelProvoke = function (req, res) {
         var rst = campaign.team;
         var param = {
           'type':'private',
-          'caption':'Private Message',
+          'caption':campaign.theme,
           'own':{
             '_id':req.user._id,
             'nickname':req.user.nickname,
@@ -872,7 +872,7 @@ exports.cancelProvoke = function (req, res) {
             'logo':rst[1].logo,
             'provoke_status':4
           },
-          'campaign_id':null,
+          'campaign_id':campaign._id,
           'auto':true
         };
         message.sendToOne(req,res,param);

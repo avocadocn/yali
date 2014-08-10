@@ -405,9 +405,9 @@ exports.sendToParticipator = function(req, res){
   var callback = function(campaign,join_team,req,res){
     var sender = {
       '_id':req.user._id,
-      'nickname':req.user.nickname,
-      'photo':req.user.photo,
-      'role':'LEADER'
+      'nickname':req.user.provider == 'user' ? req.user.nickname : req.user.info.official_name,
+      'photo':req.user.provider == 'user' ? req.user.photo : req.user.info.logo,
+      'role':req.user.provider == 'user' ? 'LEADER' : 'HR'
     };
 
     if(campaign){
@@ -593,7 +593,7 @@ exports.sendToParticipator = function(req, res){
 // }
 
 //比赛结果确认时给队长发送站内信
-exports.resultConfirm = function(req,res,olid,team,competition_id){
+exports.resultConfirm = function(req,res,olid,team,competition_id,theme){
   var content = null,
       sender = {
         '_id':req.user._id,
@@ -623,7 +623,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id){
     _add(_param);
   }
   var MC={
-    'caption':'Result Confirm Message',
+    'caption':theme,
     'content':content,
     'sender':[sender],
     'team':[team],
@@ -721,23 +721,28 @@ var getPublicMessage = function(req,res,cid){
           async.whilst(
             function() { return counter.i < message_contents.length},
             function(__callback){
-              var M = {
-                'rec_id':req.user._id,
-                'MessageContent':message_contents[counter.i]._id,
-                'type':message_contents[counter.i].type,
-                'status':'unread',
-                'create_date':message_contents[counter.i].post_date
-              };
-              var param = {
-                'collection':Message,
-                'operate':M,
-                'callback':function(message,_counter,req,res){_counter.i++;__callback();},
-                '_err':_err,
-                'other_param':counter,
-                'req':req,
-                'res':res
-              };
-              _add(param);
+              if(message_contents[i].post_date > req.user.register_date){
+                var M = {
+                  'rec_id':req.user._id,
+                  'MessageContent':message_contents[counter.i]._id,
+                  'type':message_contents[counter.i].type,
+                  'status':'unread',
+                  'create_date':message_contents[counter.i].post_date
+                };
+                var param = {
+                  'collection':Message,
+                  'operate':M,
+                  'callback':function(message,_counter,req,res){_counter.i++;__callback();},
+                  '_err':_err,
+                  'other_param':counter,
+                  'req':req,
+                  'res':res
+                };
+                _add(param);
+              }else{
+                _counter.i++;
+                __callback();
+              }
             },
             function(err){
               if(err){
