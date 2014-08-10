@@ -4,13 +4,19 @@
       .dl_message_send.dl_vertical
         h5(ng-if="teamName != 'null'")
           发往 {{teamName}}:
-        h5(ng-if="teamName == 'null'")
-          发往全公司:
+        span(ng-if="teamName == 'null'")
+          select.company_message_select(tabindex="2" ng-model="company_send_select" ng-options="s.value for s in company_send_selects" ng-change="getMessageSendType(company_send_select._id)")
       .dl_md_8.dl_vertical
         input.dl_modal_input.dl-form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
       .dl_md_1.dl_vertical
         button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll(comment_form)" ng-disabled="message_form.$invalid") 发送
-
+  .dl_row(ng-if="dOts.length > 0")
+    .groups.row.message_group
+      .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="dOt in dOts")
+        .dl_row
+          .dl_cover_message(ng-if="dOt.selected" ng-click="selectReady($index)")
+          a(ng-click="selectReady($index)")
+            img.size_48(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}" title="{{dOt.name}}")
   .dl_modal_container.margin_top_50
     .dl_row.message_panel(ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
       .row.line_left

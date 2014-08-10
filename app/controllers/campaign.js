@@ -776,6 +776,9 @@ exports.renderCampaignDetail = function(req, res) {
     res.send(404);
   });
 };
+
+
+
 //员工参加活动
 //TODO 加入competition
 exports.joinCampaign = function (req, res) {
@@ -802,12 +805,15 @@ exports.joinCampaign = function (req, res) {
           if(member_quit_index>-1){
             campaign.member_quit.splice(member_quit_index,1);
           }
-          campaign.member.push({
+
+          var member_push = {
             'cid':cid,
             'uid':uid,
             'nickname':req.user.nickname,
-            'photo':req.user.photo
-          });
+            'photo':req.user.photo,
+            'team':req.body.join_team
+          };
+          campaign.member.push(member_push);
         }
         else{
           return res.send({ result: 0, msg: '您已经参加该活动'});
@@ -836,7 +842,8 @@ exports.joinCampaign = function (req, res) {
           'uid':uid,
           'nickname':req.user.nickname,
           'photo':req.user.photo,
-          'camp':camp_index===0?'A':'B'
+          'camp':camp_index===0?'A':'B',
+          'team':req.body.join_team
         });
       }
       campaign.save(function (err) {
@@ -847,7 +854,8 @@ exports.joinCampaign = function (req, res) {
             'cid':cid,
             'uid':uid,
             'nickname':req.user.nickname,
-            'photo':req.user.photo
+            'photo':req.user.photo,
+            'team':req.body.join_team
           }});
         }
       });

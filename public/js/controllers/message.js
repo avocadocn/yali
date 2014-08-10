@@ -20,8 +20,31 @@ messageApp.config(['$routeProvider', '$locationProvider',
       });
 }]);
 
-messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
-    $rootScope.nowTab = window.location.hash.substr(2);
+messageApp.run(['$http','$rootScope','$location', function ($http, $rootScope,$location) {
+    $rootScope.multi_send = false;
+    $rootScope.company_send_selects = [];
+    $rootScope.company_send_select = {
+      '_id':0,
+      'value':'发往全公司'
+    };
+    $rootScope.company_send_selects.push($rootScope.company_send_select);
+    $rootScope.company_send_selects.push({
+      '_id':1,
+      'value':'发往小队'
+    });
+    $rootScope.company_send_selects.push({
+      '_id':2,
+      'value':'发往部门'
+    });
+
+    if($location.hash()!=='')
+        $rootScope.nowTab = window.location.hash.substr(2);
+    else if($location.path()!=='')
+        $rootScope.nowTab = $location.path().substr(1);
+
+    $rootScope.addactive = function(value) {
+        $rootScope.nowTab = value;
+    };
 
     $rootScope.$on("$routeChangeStart",function(){
       $rootScope.loading = true;
@@ -85,10 +108,6 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
       'current_page':0,
       'up':0,
       'down':0
-    };
-
-    $rootScope.addactive = function(value) {
-        $rootScope.nowTab = value;
     };
 
     $rootScope.statusHandle = function(value){
@@ -640,6 +659,56 @@ var pageHandle = function(messages,page,arrow){
   }
 }
 
+var hrSendToMulti = function(url,value,http,scope){
+  if(scope.select_dOts.length > scope.dOt_send_success -1){
+    var _team = {
+      size : 1,
+      own : {
+        _id : scope.dOt ? scope.select_dOts[scope.dOt_send_success].team._id : scope.select_dOts[scope.dOt_send_success]._id,
+        name : scope.dOt ? scope.select_dOts[scope.dOt_send_success].team.name : scope.select_dOts[scope.dOt_send_success].name,
+        logo : scope.dOt ? scope.select_dOts[scope.dOt_send_success].team.logo : scope.select_dOts[scope.dOt_send_success].logo
+      }
+    };
+    value.team = _team;
+    try{
+      http({
+          method: 'post',
+          url: url,
+          data:value
+      }).success(function(data, status) {
+          if(data.msg === 'SUCCESS'){
+            console.log(1,scope.select_dOts.length,scope.dOt_send_success);
+            if(scope.select_dOts.length > scope.dOt_send_success -1){
+              console.log(2,scope.select_dOts.length,scope.dOt_send_success);
+              scope.dOt_send_success = scope.dOt_send_success + 1;
+              //递归发送
+              try{
+                hrSendToMulti(url,value,http,scope);
+              }catch(e){
+                scope.private_message_content.text='';
+                scope.getSenderList();
+                alertify.alert('发送成功!');
+                console.log(e);
+              }
+            }else{
+              scope.private_message_content.text='';
+              comment_form.$setPristine();
+              scope.getSenderList();
+              alertify.alert('发送成功!');
+            }
+          }else{
+            alertify.alert('DATA ERROR');
+          }
+      }).error(function(data, status) {
+          //TODO:更改对话框
+          alertify.alert('DATA ERROR');
+      });
+    }
+    catch(e){
+        console.log(e);
+    }
+  }
+}
 
 messageApp.controller('messageSenderController',['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
 
@@ -649,6 +718,65 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
     $scope.private_message_caption = {
       'text':''
     }
+
+    $scope.dOt = false;
+    // $http.get('/company/getCompanyTeamsInfo/'+cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+    //     $rootScope.team_lists = data.teams;//公司的所有team
+    //     $scope.dOts = $rootScope.team_lists;
+    //     $scope.main_dOt = $scope.dOts[0];
+    // });
+
+    // .get('/department/detail/multi/' + $rootScope.cid)
+    //         .success(function(data, status) {
+    //             $scope.dOtFormat(data.departments);
+    //         });
+
+  var url_team;
+  var url_department;
+  $scope.dOts = [];
+  $scope.$watch('cid',function(cid){
+    url_team = '/company/getCompanyTeamsInfo/'+cid+'/'+'team'+'?'+ (Math.round(Math.random()*100) + Date.now());
+    url_department = '/department/detail/multi/' + cid;
+  });
+  $scope.getMessageSendType = function(_id){
+    if(_id > 0){
+      $rootScope.multi_send = true;
+      switch(_id){
+        case 1:
+        $scope.dOt = false;
+          $http.get(url_team).success(function(data, status) {
+              $scope.dOts = data.teams;;
+              for(var i = 0 ; i < $scope.dOts.length; i ++){
+                $scope.dOts[i].selected = false;
+              }
+              $scope.main_dOt = $scope.dOts[0];
+          });
+        break;
+        case 2:
+        $scope.dOt = true;
+          $http.get(url_department).success(function(data, status) {
+              $scope.dOts = [];
+              for(var i = 0; i < data.departments.length; i ++){
+                $scope.dOts.push({
+                  selected:false,
+                  _id:data.departments[i]._id,
+                  name:data.departments[i].name,
+                  team:data.departments[i].team
+                });
+              }
+          });
+        break;
+        default:break;
+      }
+    }else{
+      $scope.dOts = [];
+    }
+  }
+  $scope.selectReady = function(index){
+    $scope.dOts[index].selected = ! $scope.dOts[index].selected;
+  }
+
+
   //队长给队员  公司给所有员工/小队员工 发送私信
   $scope.sendToAll = function(comment_form){
     var _url;
@@ -667,44 +795,82 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
       };
       _data.team = _team;
       _url = '/message/push/leader';
+
+      try{
+        $http({
+            method: 'post',
+            url: _url,
+            data:_data
+        }).success(function(data, status) {
+            if(data.msg === 'SUCCESS'){
+              alertify.alert('发送成功!');
+              if($scope.role === 'LEADER'){
+                $rootScope.o ++;
+                $rootScope.receive_message_sum ++;
+              }
+              $scope.private_message_content.text='';
+              comment_form.$setPristine();
+              $scope.getSenderList();
+            }
+        }).error(function(data, status) {
+            //TODO:更改对话框
+            alertify.alert('DATA ERROR');
+        });
+      }
+      catch(e){
+          console.log(e);
+      }
     }
+
 
     if($scope.role === 'HR'){
       _url = '/message/push/hr';
       _data.cid = $scope.cid;
-      var _team = {
+      //给多部门/多小队 发送站内信
+      if($rootScope.multi_send){
+        $scope.dOt_send_success = 0;
+        $scope.select_dOts = [];
+        for(var i = 0 ; i < $scope.dOts.length; i ++){
+          if($scope.dOts[i].selected){
+            $scope.select_dOts.push($scope.dOts[i]);
+          }
+        }
+        hrSendToMulti(_url,_data,$http,$scope);
+      }else{
+        var _team = {
         size : 1,
         own : {
-          _id : $scope.teamId,
-          name : $scope.teamName,
-          logo : $scope.teamLogo
-        }
-      };
-      _data.team = _team;
-    }
-    try{
-      $http({
-          method: 'post',
-          url: _url,
-          data:_data
-      }).success(function(data, status) {
-          if(data.msg === 'SUCCESS'){
-            alertify.alert('发送成功!');
-            if($scope.role === 'LEADER'){
-              $rootScope.o ++;
-              $rootScope.receive_message_sum ++;
-            }
-            $scope.private_message_content.text='';
-            comment_form.$setPristine();
-            $scope.getSenderList();
+            _id : $scope.teamId,
+            name : $scope.teamName,
+            logo : $scope.teamLogo
           }
-      }).error(function(data, status) {
-          //TODO:更改对话框
-          alertify.alert('DATA ERROR');
-      });
-    }
-    catch(e){
-        console.log(e);
+        };
+        _data.team = _team;
+        try{
+          $http({
+              method: 'post',
+              url: _url,
+              data:_data
+          }).success(function(data, status) {
+              if(data.msg === 'SUCCESS'){
+                alertify.alert('发送成功!');
+                if($scope.role === 'LEADER'){
+                  $rootScope.o ++;
+                  $rootScope.receive_message_sum ++;
+                }
+                $scope.private_message_content.text='';
+                comment_form.$setPristine();
+                $scope.getSenderList();
+              }
+          }).error(function(data, status) {
+              //TODO:更改对话框
+              alertify.alert('DATA ERROR');
+          });
+        }
+        catch(e){
+            console.log(e);
+        }
+      }
     }
   }
 

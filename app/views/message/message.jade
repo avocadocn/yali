@@ -19,11 +19,11 @@ block baseInfo
   block panel
     div(ng-init="role='#{role}';teamId='#{teamId}';cid='#{cid}';teamName='#{teamName}';teamLogo='#{teamLogo}';departmentId='#{departmentId}'")
       ul.nav.nav-tabs
-        if role === 'HR' || role === 'LEADER'
-          li.tab_style(ng-class="{'active':nowTab=='message_all'}")
-            a.subtitle.no_radius(href="#/message_all" ng-click="addactive('message_all')") 收件箱
-          li.tab_style(ng-class="{'active':nowTab=='send'}")
-            a.subtitle.no_radius(href="#/send" ng-click="addactive('send')" ) 发件箱
+        //- if role === 'HR' || role === 'LEADER'
+        //-   li.tab_style(ng-class="{'active':nowTab=='message_all'}")
+        //-     a.subtitle.no_radius(href="#/message_all" ng-click="addactive('message_all')") 收件箱
+        //-   li.tab_style(ng-class="{'active':nowTab=='send'}")
+        //-     a.subtitle.no_radius(href="#/send" ng-click="addactive('send')" ) 发件箱
       .tab-content
         .tab-pane.active
           div(ng-view)

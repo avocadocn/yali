@@ -101,6 +101,7 @@ tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope,
         $rootScope.nowTab = window.location.hash.substr(2);
     else if($location.path()!=='')
         $rootScope.nowTab = $location.path().substr(1);
+
     $rootScope.addactive = function(value) {
         $rootScope.nowTab = value;
         $rootScope.message_corner = false;

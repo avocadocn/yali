@@ -219,7 +219,7 @@ var oneToMember = function(param){
       },
       function(err){
         if(err){
-          return res.send({'result':1,'msg':'FAILURED'});
+          return res.send({'result':0,'msg':'FAILURED'});
         }else{
           return res.send({'result':1,'msg':'SUCCESS'});
         }
@@ -402,7 +402,7 @@ exports.sendToOne = function(req, res, param){
 
 //给参加某活动/比赛的成员发送站内信
 exports.sendToParticipator = function(req, res){
-  var callback = function(campaign,other,req,res){
+  var callback = function(campaign,join_team,req,res){
 
     var sender = {
       '_id':req.user._id,
@@ -430,12 +430,25 @@ exports.sendToParticipator = function(req, res){
           }
         }
       }else{
-        if([1,2,3,6,8,9].indexOf(campaign.campaign_type) > -1){
+        if([1,2,6,8,9].indexOf(campaign.campaign_type) > -1){
           team.status = 0;
           for(var i = 0; i < campaign.member.length; i ++){
             members.push({
               '_id':campaign.member[i].uid
             });
+          }
+        }
+        //多小队活动针对某一小队发消息
+        if(campaign.campaign_type == 3){
+          team._id = join_team._id;
+          team.name = join_team.name;
+          team.logo = join_team.logo;
+          for(var i = 0; i < campaign.member.length; i ++){
+            if(campaign.member[i].uid.toString() === team._id.toString()){
+              members.push({
+                '_id':campaign.member[i].uid
+              });
+            }
           }
         }
       }
@@ -463,7 +476,7 @@ exports.sendToParticipator = function(req, res){
     'sort':null,
     'callback':callback,
     '_err':_err,
-    'other_param':null,
+    'other_param':req.body.team,
     'req':req,
     'res':res
   };
@@ -944,10 +957,12 @@ exports.home = function(req,res){
     else if(req.user.provider==='user'){
       _send.logo = req.user.photo;
       _send.name = req.user.nickname;
+      _send.cid = req.user.cid;
     }
     else{
       _send.logo = req.user.info.logo;
       _send.name = req.user.info.official_name;
+      _send.cid = req.user._id;
     }
     res.render('message/message',_send);
   }else{

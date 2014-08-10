@@ -5,7 +5,7 @@ append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';campaign_type='#{campaign.campaign_type}';member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';campaign_team=#{JSON.stringify(campaign.team)};user_team=#{JSON.stringify(user.team)};")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .dl_detail_main
@@ -49,7 +49,7 @@ block contentExt
             if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish
               .margin_top_30
                 input.dl_btn.dl_btn_medium(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
-                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinCampaign()" ng-if="join!==1" ng-disabled="join==0")
+                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinReady()" ng-if="join!==1" ng-disabled="join==0")
         .dl_detail_content2
           .dl_detail_row
             .dl_detail_label
@@ -69,14 +69,27 @@ block contentExt
           span #{__("CAMPAIGNFINISH")}
       //-成员
       .dl_detail_member(bs-popover)
-        .dl_row.subtitle
-          .pull-left #{__("JOIN")}#{__("MEMBER")}:
-          a.pull-right(ng-click="modalPerticipator()") 发通知
-        div.member(ng-repeat = "_member in member")
-          a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-            img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
-            span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-        span.info_label(ng-if="!member.length") 该活动还没有人参加哦!
+        if campaign.campaign_type == 3
+          .row(ng-repeat="member_team in campaign_team")
+            .dl_row.subtitle
+              .pull-left {{member_team.name}} #{__("JOIN")}#{__("MEMBER")}:
+              a.pull-right(ng-click="modalPerticipator($index)") 发送私信
+            .dl_row
+              div.member(ng-repeat = "_member in member_team.join_member")
+                a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
+                  img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
+                  span.name(ng-cloak) {{shortTrim(_member.nickname)}}
+              span.info_label(ng-if="member_team.join_member.length == 0 || !member_team.join_member.length") 该活动还没有人参加哦!
+        else
+          .dl_row.subtitle
+            .pull-left #{__("JOIN")}#{__("MEMBER")}:
+            a.pull-right(ng-click="modalPerticipator()") 发送私信
+          .dl_row
+            div.member(ng-repeat = "_member in member")
+              a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
+                img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
+                span.name(ng-cloak) {{shortTrim(_member.nickname)}}
+            span.info_label(ng-if="!member.length") 该活动还没有人参加哦!
       if role==='HR' || role ==='LEADER'
         .dl_detail_member(ng-init="member_quit=#{JSON.stringify(campaign.member_quit)};" ng-show="member_quit.length>0" bs-popover)
           p.subtitle 退出#{__("MEMBER")}:
@@ -124,5 +137,7 @@ block contentExt
                 p.thumbnail_name.text-center= photo.name
     .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_message_send
+    .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../campaign/select_team_for_multi_campaign
 append footExt
   script(src="/js/controllers/campaign.js")

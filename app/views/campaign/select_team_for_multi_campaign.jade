@@ -1,0 +1,23 @@
+.modal-dialog
+  .dl-modal
+    form(name="mc")
+      .dl-modal-header
+        button(class="close" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+        .head 您有 {{join_teams.length}} 个小队和本次活动相关,请选择一个参加!
+      .dl-modal-body.clearfix
+        .dl_modal_container
+          .dl_row.team_select.clearfix(ng-repeat="team in join_teams" ng-click="selcetJoinTeam($index)")
+            .dl_md_2
+              img.size_56(ng-src="{{team.logo}}")
+            .dl_md_10
+              .dl_row
+                a(href="/group/home/{{team._id}}" target="_blank")
+                  span {{team.name}}
+              //- .dl_row
+              //-   .dl_md_3
+              //-     span 队员人数:{{team.member.length}}
+              //-   .dl_md_3
+      .dl-modal-footer.clearfix
+        button.cancel_btn.dl_btn_large(data-dismiss="modal") #{__("CANCEL")}
+        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="joinCampaign()" ng-disabled="selected_index==-1") 就用这个队参加!

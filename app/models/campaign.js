@@ -17,7 +17,12 @@ var _member = new Schema({
     cid: String,
     uid: String,
     nickname: String,
-    photo: String
+    photo: String,
+    team:{
+        _id: Schema.Types.ObjectId,
+        name: String,
+        logo: String
+    }
 });
 //阵形图子文档
 var _formation = new Schema({
