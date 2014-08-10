@@ -2371,7 +2371,7 @@ Timeline UI Base
   padding-top: 20px;
 }
 .dl_timeline:hover .timeline_element {
-  opacity: 0.6;
+  opacity: 1;
 }
 .dl_timeline .spine {
   position: absolute;
@@ -2390,9 +2390,8 @@ Timeline UI Base
 }
 .dl_timeline .column .timeline_element {
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   text-shadow: none;
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   width: 290px;
   position: relative;
   position: relative;
