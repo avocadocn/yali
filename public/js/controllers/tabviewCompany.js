@@ -594,32 +594,9 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 }]);
 
 //公司小队列表
-<<<<<<< HEAD
+
 tabViewCompany
 .controller('TeamInfoController',['$scope','$http','$rootScope','$timeout',function ($scope, $http, $rootScope, $timeout) {
-=======
-tabViewCompany.directive('masonry', function ($timeout) {
-    return {
-        restrict: 'AC',
-        link: function (scope, elem, attrs) {
-            scope.$watch(function () {
-                return elem[0].children.length
-            },
-            function (newVal) {
-                $timeout(function () {
-                    elem.masonry('reloadItems');
-                    elem.masonry();
-                })
-            })
-            elem.masonry({
-                itemSelector: '.masonry-item'
-            });
-            scope.masonry = elem.data('masonry');
-        }
-    };
-}).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
-    $rootScope.nowTab='team_info';
->>>>>>> 72210af4fcebd6aded1bbdb08f004ba84219c406
     $scope.member_search = {
         'value':''
     };
@@ -632,15 +609,15 @@ tabViewCompany.directive('masonry', function ($timeout) {
             $scope.role = data.role;
             $scope.data_type = type;
 
-            $timeout(function () {
-                var mary = document.querySelector('.masonry');
-                console.log(mary);
-                // mary.masonry('reloadItems');
-                // mary.masonry({
-                //     itemSelector: '.masonry-item',
-                //     transitionDuration: '0s'
-                // })
-            })
+            // $timeout(function () {
+            //     var mary = document.querySelector('.masonry');
+            //     // console.log(mary);
+            //     // mary.masonry('reloadItems');
+            //     // mary.masonry({
+            //     //     itemSelector: '.masonry-item',
+            //     //     transitionDuration: '0s'
+            //     // })
+            // })
         });
     };
     $scope.getData('team');
