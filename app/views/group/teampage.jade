@@ -130,18 +130,25 @@ block aside
       p 最近没有活动
 
   .locationbox
-    span.subtitle 主场
+    p.subtitle
+      span(ng-init="home_court_index=0" ng-show="home_court_index==0") 主场1
+      a(href="javascript:void(0)" ng-click="home_court_index=0" ng-show="home_court_index==1") 主场1
+      span &nbsp;/&nbsp;
+      span(ng-show="home_court_index==1") 主场2
+      a(href="javascript:void(0)" ng-click="home_court_index=1" ng-show="home_court_index==0") 主场2
+    - var i = 0;
     each home in home_court
-      p
+      p(ng-show="home_court_index==#{i}")
         = home.name
       if home.loc.coordinates.length==2
         a(href="http://mo.amap.com/?q=#{home.loc.coordinates[1]},#{home.loc.coordinates[0]}&name=#{home.name}" target="_blank")
           img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&labels=#{home.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
+      - i++
     if home_court.length==0
-      img.map_size(src="/img/icons/nohomecourt2.jpg/268/210")
-      img.map_size(src="/img/icons/nohomecourt.jpg/268/210")
+      img.map_size(src="/img/icons/nohomecourt2.jpg/268/210" ng-show="home_court_index==0")
+      img.map_size(src="/img/icons/nohomecourt.jpg/268/210" ng-show="home_court_index==1")
     else if home_court.length==1
-      img.map_size(src="/img/icons/nohomecourt2.jpg/268/210")
+      img.map_size(src="/img/icons/nohomecourt2.jpg/268/210" ng-show="home_court_index==1")
   .thumbnailbox
     span.subtitle 相册
     each photo_album in photo_album_thumbnails

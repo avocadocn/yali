@@ -22,7 +22,7 @@ var mongoose = require('mongoose'),
     gm = require('gm'),
     path = require('path'),
     moment = require('moment'),
-    mime = require('mime'),
+    //mime = require('mime'),
     model_helper = require('../helpers/model_helper'),
     schedule = require('../services/schedule'),
     message = require('../controllers/message'),
@@ -1240,10 +1240,10 @@ exports.uploadFamily = function(req, res) {
     if (!company_group) {
       throw 'not found';
     }
-    var ext = mime.extension(req.files.family.type);
+    //var ext = mime.extension(req.files.family.type);
     var family_photo = req.files.family;
     var family_dir = '/img/group/family/';
-    var photo_name = Date.now().toString() + '.' + ext;
+    var photo_name = Date.now().toString() + '.png';
     try{
       gm(family_photo.path).size(function(err, value) {
         if (err) {

@@ -17,7 +17,7 @@ var validator = require('validator');
 var gm = require('gm');
 var async = require('async');
 var moment = require('moment');
-var mime = require('mime');
+//var mime = require('mime');
 
 // custom
 var config = require('../../config/config');
@@ -637,8 +637,8 @@ exports.createPhoto = function(req, res) {
         function() { return i < photos.length; },
 
         function(callback) {
-          var ext = mime.extension(photos[i].type);
-          var photo_name = Date.now().toString() + '.' + ext;
+          //var ext = mime.extension(photos[i].type);
+          var photo_name = Date.now().toString() + '.png';
           var photo = {};
           try {
             gm(photos[i].path)
