@@ -18,7 +18,8 @@
 }
 .dl_message_box .message_panel {
   min-height: 83px;
-  padding: 10px 0;
+  padding-top: 10px;
+  padding-bottom: 5px;
   width: 100%;
   border-bottom: 1px solid #f4f4f4;
 }
