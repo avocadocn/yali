@@ -152,6 +152,7 @@ tabViewCompany.run(['$rootScope','$location', function ($rootScope,$location) {
 }]);
 tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScope',
   function($http,$scope,$rootScope) {
+    $rootScope.nowTab='company_campaign';
     $scope.campaign_type = "所有活动";
     $rootScope.$watch('cid',function(cid){
         $http.get('/campaign/getCampaigns/company/'+cid+'/all/0?' + Math.round(Math.random()*100)).success(function(data, status) {
@@ -593,8 +594,32 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 }]);
 
 //公司小队列表
+<<<<<<< HEAD
 tabViewCompany
 .controller('TeamInfoController',['$scope','$http','$rootScope','$timeout',function ($scope, $http, $rootScope, $timeout) {
+=======
+tabViewCompany.directive('masonry', function ($timeout) {
+    return {
+        restrict: 'AC',
+        link: function (scope, elem, attrs) {
+            scope.$watch(function () {
+                return elem[0].children.length
+            },
+            function (newVal) {
+                $timeout(function () {
+                    elem.masonry('reloadItems');
+                    elem.masonry();
+                })
+            })
+            elem.masonry({
+                itemSelector: '.masonry-item'
+            });
+            scope.masonry = elem.data('masonry');
+        }
+    };
+}).controller('TeamInfoController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
+    $rootScope.nowTab='team_info';
+>>>>>>> 72210af4fcebd6aded1bbdb08f004ba84219c406
     $scope.member_search = {
         'value':''
     };
@@ -654,14 +679,20 @@ tabViewCompany
         }
     };
 
-    $scope.recover = function(){
-        if($scope.member_backup){
-            if($scope.member_backup.length > 0){
-                $scope.users = $scope.member_backup;
-            }
-        }
-        $scope.message='';
-    }
+    //无此功能了,但我仍觉得需要 by M
+    // $scope.recover = function(){
+    //     if(!$scope.show_cp){
+    //         if($scope.member_backup){
+    //             if($scope.member_backup.length > 0){
+    //                 $scope.users = $scope.member_backup;
+    //             }
+    //         }
+    //     }
+    //     else{
+    //         $scope.users= $scope.company_users;
+    //     }
+    //     $scope.message='';
+    // }
     //根据groupId返回此companyGroup的用户及team的信息（队名、简介）供HR修改
     $scope.setGroupId = function (tid,gid,index) {
         $scope.team_index = index;
@@ -704,6 +735,29 @@ tabViewCompany
                         }
                     }
                 }
+
+                // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
+                for(var i = 0 ; i < $scope.company_users.length; i ++){
+                    //没有任何小队
+                    if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
+                        $scope.company_users[i].wait_for_join = true;
+                        //-$scope.users.push($scope.company_users[i]);
+                    //有小队
+                    }else{
+                        var team_find = false;
+                        for(var j = 0; j < $scope.company_users[i].team.length; j ++){
+                            if($scope.company_users[i].team[j]._id.toString() === $scope.tid){
+                                team_find = true;
+                                break;
+                            }
+                        }
+                        if(!team_find){
+                            $scope.company_users[i].wait_for_join = true;
+                            //-$scope.users.push($scope.company_users[i]);
+                        }
+                    }
+                }
+
                 $scope.member_backup = $scope.users.slice(0);
                 //-小队没队员就直接显示公司成员
                 if($scope.users.length>0){
@@ -740,27 +794,7 @@ tabViewCompany
 
     $scope.showCpUser = function(option) {
         if(option === 1){
-            // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
-            for(var i = 0 ; i < $scope.company_users.length; i ++){
-                //没有任何小队
-                if($scope.company_users[i].team == [] || $scope.company_users[i].team == undefined || $scope.company_users[i].team == null){
-                    $scope.company_users[i].wait_for_join = true;
-                    $scope.users.push($scope.company_users[i]);
-                //有小队
-                }else{
-                    var team_find = false;
-                    for(var j = 0; j < $scope.company_users[i].team.length; j ++){
-                        if($scope.company_users[i].team[j]._id.toString() === $scope.tid){
-                            team_find = true;
-                            break;
-                        }
-                    }
-                    if(!team_find){
-                        $scope.company_users[i].wait_for_join = true;
-                        $scope.users.push($scope.company_users[i]);
-                    }
-                }
-            }
+            $scope.users = $scope.company_users;
             $scope.show_cp = true;
         }
         else{
@@ -1248,40 +1282,59 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
     });
-    $scope.showMapFlag=false;
-    $scope.location={name:'',coordinates:[]};
+    $scope.showMapFlag = false;
+    $scope.location = {name:'',coordinates:[]};
+    var placeSearchCallBack = function(data){
+        $scope.locationmap.clearMap();
+        var lngX = data.poiList.pois[0].location.getLng();
+        var latY = data.poiList.pois[0].location.getLat();
+        $scope.location.coordinates=[lngX, latY];
+        var nowPoint = new AMap.LngLat(lngX,latY);
+        var markerOption = {
+            map: $scope.locationmap,
+            position: nowPoint,
+            draggable: true
+        };
+        var mar = new AMap.Marker(markerOption);
+        var changePoint = function (e) {
+            var p = mar.getPosition();
+            $scope.location.coordinates=[p.getLng(), p.getLat()];
+        };
+        AMap.event.addListener(mar, "dragend", changePoint);
+        $scope.locationmap.setFitView();
+    }
     $scope.initialize = function(){
-        $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-        $scope.locationmap.centerAndZoom('上海',15);
-        $scope.locationmap.enableScrollWheelZoom(true);
-        $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var getCity =function (result){
-            var cityName = result.name;
-            $scope.locationmap.centerAndZoom(cityName,15);
-            var options = {
-                onSearchComplete: function(results){
-                    // 判断状态是否正确
-                    if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
-                        $scope.locationmap.clearOverlays();
-                        var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                        //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                        var marker = new BMap.Marker(nowPoint);  // 创建标注
-                        $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
-                        marker.enableDragging();    //可拖拽
-                        $scope.locationmap.centerAndZoom(nowPoint,15);
-                        $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                        marker.addEventListener("dragend", function changePoint(){
-                            var p = marker.getPosition();
-                            $scope.location.coordinates=[p.lng , p.lat];
+        
+        $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
+        $scope.locationmap.plugin(["AMap.ToolBar"],function(){     
+            toolBar = new AMap.ToolBar();
+            $scope.locationmap.addControl(toolBar);    
+        });
+        $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+            //实例化城市查询类
+            var citysearch = new AMap.CitySearch();
+            //自动获取用户IP，返回当前城市
+            citysearch.getLocalCity();
+            //citysearch.getCityByIp("123.125.114.*");
+            AMap.event.addListener(citysearch, "complete", function(result){
+                if(result && result.city && result.bounds) {
+                    var citybounds = result.bounds;
+                    //地图显示当前城市
+                    $scope.locationmap.setBounds(citybounds);
+                    $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+                        $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                            pageSize:1,
+                            pageIndex:1,
+                            city: result.city
+
                         });
-                    }
+                        AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+                        $scope.MSearch.search($scope.location.name); //关键字查询
+                    });
                 }
-            };
-            $scope.local = new BMap.LocalSearch($scope.locationmap,options);
-            $scope.local.search($scope.location.name );
-        }
-        var myCity = new BMap.LocalCity();
-        myCity.get(getCity);
+            });
+            AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+        });
         $scope.showMapFlag = true;
     };
 
@@ -1293,11 +1346,11 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         if($scope.showMapFlag ==false){
             window.initialize = $scope.initialize;
             var script = document.createElement("script");  
-            script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=initialize";
+            script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=initialize";
             document.body.appendChild(script);
         }
         else{
-            $scope.local.search($scope.location.name );
+            $scope.MSearch.search($scope.location.name); //关键字查询
         }
     };
 

@@ -1,8 +1,9 @@
-.dl_message_sendbox
+.loading_div(ng-show = 'loading')
+.dl_message_box(ng-show = '!loading')
   .dl_row
-    form.dl_modal_container.margin_top_20.margin_left_30(name="comment_form" novalidate)
+    form.comment_form(name="comment_form" novalidate)
       .dl_message_send.dl_vertical
-        h5(ng-if="teamName != 'null'")
+        span.subtitle(ng-if="teamName != 'null'")
           发往 {{teamName}}:
         span(ng-if="teamName == 'null'")
           select.company_message_select(tabindex="2" ng-model="company_send_select" ng-options="s.value for s in company_send_selects" ng-change="getMessageSendType(company_send_select._id)")
@@ -11,8 +12,8 @@
       .dl_md_1.dl_vertical
         button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll(comment_form)" ng-disabled="message_form.$invalid") 发送
   .dl_row(ng-if="dOts.length > 0")
-    .groups.row.message_group
-      .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="dOt in dOts")
+    .groups.message_group
+      .group(ng-repeat="dOt in dOts")
         .dl_row
           .dl_cover_message(ng-if="dOt.selected" ng-click="selectReady($index)")
           a(ng-click="selectReady($index)")
@@ -30,27 +31,22 @@
           span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
           span.glyphicon.glyphicon-flash(ng-switch-when="7")
         .dl_message_body
-          .dl_row
-            .dl_message_caption(ng-switch="send_message.message_type")
-              h7(ng-switch-when="3")
+          .dl_row(ng-switch="send_message.message_type")
+              p.subtitle(ng-switch-when="3")
                 发往全公司
-              h7(ng-switch-when="1")
+              p.subtitle(ng-switch-when="1")
                 发往活动 {{send_message.campaign_name}}
-              h7(ng-switch-when="2")
+              p.subtitle(ng-switch-when="2")
                 发往比赛 {{send_message.campaign_name}}
-              h7(ng-switch-when="0")
+              p.subtitle(ng-switch-when="0")
                 发往小队 {{send_message.team.name}}
-            .dl_message_date
-              h7 {{send_message.date | date:'yyyy-MM-dd HH:mm'}}
-          .dl_row
-            .dl_md_12.message_detail
-              h5 {{send_message.detail}}
-            .dl_md_1.pull-right.dl_message_rightcorner
-                a.pull-right(ng-click="setToDelete($index)")
-                  h7 删除
+              span {{send_message.detail}}
+        .dl_message_tail
+          .dl_message_date
+            span {{send_message.date | date:'yyyy-MM-dd HH:mm'}}
+          a.pull-right(ng-click="setToDelete($index)") 删除
     .dl_row.dl_center(ng-if="send_messages.length > 10")
       button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'right' || page_send.arrow == 'none' " ng-click="pageOperate('left')") <<
       button.dl_btn.dl_btn_small(ng-disabled="page_send.arrow == 'left' || page_send.arrow == 'none' " ng-click="pageOperate('right')") >>
     .dl_row
-      hr
       button.dl_btn.dl_btn_small.margin_left_5(ng-click="deleteAll()" ng-if="send_messages.length > 0") 全部删除

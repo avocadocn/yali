@@ -692,6 +692,7 @@ exports.home = function(req, res) {
             cid:company._id,
             logo: company.info.logo,
             cname: company.info.name,
+            official_name: company.info.official_name,
             sign: company.info.brief,
             groupnumber: company.team ? company.team.length : 0,
             membernumber: company.info.membernumber,

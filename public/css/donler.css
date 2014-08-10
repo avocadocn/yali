@@ -59,21 +59,6 @@ textarea {
 .nav-tabs>li.active>a:hover {
   background-color: #fff;
 }
-.message_detail {
-  width: 364px;
-  max-height: 140px;
-  word-break: break-all;
-  overflow: hidden;
-}
-.message_panel {
-  min-height: 93px !important;
-  padding-top: 20px !important;
-  width: 958px;
-}
-.message_panel:hover {
-  cursor: pointer;
-  background-color: #f8f8f3;
-}
 .bg_change:hover {
   cursor: pointer;
   background-color: #f8f8f3;
@@ -100,10 +85,6 @@ textarea {
   margin-left: 100px;
   width: 700px;
   margin-top: 50px;
-}
-.line_left {
-  margin-left: 5px !important;
-  border-bottom: 1px solid #f4f4f4;
 }
 .line_top {
   margin-top: -20px !important;
@@ -135,30 +116,6 @@ textarea {
 .search_area_head {
   width: 80px;
   text-align: center;
-}
-.dl_message_head {
-  width: 12%;
-  padding-left: 50px;
-  float: left;
-  min-height: 71px;
-}
-.dl_message_body {
-  width: 800px;
-  float: left;
-  padding-left: 30px;
-}
-.dl_message_body .message_row {
-  height: 24px;
-  padding: 2px 0;
-}
-.dl_message_tail {
-  width: 18%;
-  margin-left: 5px;
-  float: left;
-}
-.dl_message_rightcorner {
-  margin-right: 20px !important;
-  margin-top: 5px !important;
 }
 .dl_btn_score {
   width: 100px;
@@ -329,10 +286,10 @@ textarea {
   border-style: solid;
   border-color: transparent #ededed transparent transparent;
 }
-.use_edit_info form {
+.user_edit_info {
   background-color: #fff;
 }
-.use_edit_info .birthday_detail {
+.user_edit_info .birthday_detail {
   width: 175px;
 }
 .dl_comment_area {
@@ -663,29 +620,6 @@ textarea {
 .dl_md_5 {
   width: 30%;
   margin-left: 5px;
-  float: left;
-}
-.dl_message_send {
-  width: 21%;
-  margin-left: 5px;
-  float: left;
-}
-.dl_message_date {
-  width: 13%;
-  margin-left: 5px;
-  float: left;
-}
-.dl_message_caption {
-  width: 85%;
-  margin-left: 5px;
-  float: left;
-}
-.dl_message_head_size {
-  width: 48px;
-  height: 48px;
-}
-.dl_message_status {
-  width: 1%;
   float: left;
 }
 .dl_md_time {
@@ -1160,9 +1094,6 @@ textarea {
 .margin_0 {
   margin: 0;
 }
-.margin_left_5 {
-  margin-left: 5px;
-}
 .margin_5 {
   margin: 5px;
 }
@@ -1193,6 +1124,9 @@ textarea {
 .margin_top_123 {
   margin-top: 123px;
 }
+.margin_left_5 {
+  margin-left: 5px;
+}
 .margin_left_10 {
   margin-left: 10px;
 }
@@ -1202,23 +1136,12 @@ textarea {
 .margin_left_30 {
   margin-left: 30px;
 }
-.margin_left_80 {
-  margin-left: 80px;
-}
 .margin_right_20 {
   margin-right: 20px;
 }
 .header_container {
   width: 960px;
   margin: auto;
-}
-.size_family {
-  height: 300px;
-  width: 800px;
-}
-.size_210 {
-  height: 210px;
-  width: 210px;
 }
 .size_128 {
   height: 128px;
@@ -1714,9 +1637,7 @@ input.ng-invalid.ng-dirty {
 .dl_compaign_member,
 .dl_department,
 .dl_campaign_list,
-.dl_group_select,
-dl_messagebox,
-.dl_message_sendbox {
+.dl_group_select {
   width: 100%;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -1866,10 +1787,6 @@ dl_messagebox,
 }
 .dl_allteaminfo_emp .teamitem:hover {
   box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-}
-.dl_message_body_font {
-  font-size: 48px;
-  color: #3498db;
 }
 .dl_head_font {
   font-size: 80px;
@@ -2104,6 +2021,43 @@ dl_messagebox,
   background-position: 0px 2px;
   height: 18px;
   width: 18px;
+}
+.dl_messagebox {
+  padding: 0;
+  background-color: #fff;
+  line-height: 21px;
+  border: 1px solid #e6e6e6;
+  border-top: none;
+}
+.dl_messagebox:hover {
+  background-color: #fafafa;
+}
+.dl_messagebox:after {
+  display: block;
+  line-height: 0;
+  content: "";
+  border: 0;
+}
+.dl_messagebox:before {
+  display: block;
+  line-height: 0;
+  content: "";
+}
+.dl_messagebox .dl_messageitem {
+  padding: 10px;
+}
+.dl_messagebox .dl_messageitem .message_row {
+  padding: 1px 0;
+}
+.dl_messagebox .dl_messageitem .message_row .message_label {
+  padding: 2px 10px;
+  float: left;
+}
+.dl_messagebox .dl_messageitem .message_row .message_content {
+  word-break: break-all;
+  padding: 2px 10px;
+  width: 490px;
+  float: left;
 }
 @-moz-keyframes scaleFade {
   50% {

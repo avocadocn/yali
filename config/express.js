@@ -5,6 +5,7 @@
  */
 var express = require('express'),
     consolidate = require('consolidate'),
+    mongoose = require('mongoose'),
     mongoStore = require('connect-mongo')(express),
     flash = require('connect-flash'),   //session operate
     helpers = require('view-helpers'),
@@ -104,8 +105,32 @@ module.exports = function(app, passport, db) {
         app.use(passport.session());
 
         app.use(function(req, res, next) {
-            res.locals.global_user = req.user;
-            next();
+
+            if (req.user && req.user.provider === 'user' && !req.user.company_official_name) {
+                mongoose.model('Company')
+                .findById(req.user.cid)
+                .exec()
+                .then(function(company) {
+                    req.user.company_official_name = company.info.official_name;
+                    console.log(req.user)
+                    req.user.save(function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        res.locals.global_user = req.user;
+                        next();
+                    })
+                })
+                .then(null, function(err) {
+                    console.log(err);
+                    res.locals.global_user = req.user;
+                    next();
+                })
+
+            } else {
+                res.locals.global_user = req.user;
+                next();
+            }
         });
 
         // Connect flash for flash messages

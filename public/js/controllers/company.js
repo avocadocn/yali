@@ -118,6 +118,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
             console.log(e);
         }
     };
+
 }]);
 
 //企业选择组件
@@ -191,3 +192,20 @@ companyApp.controller('inviteController',['$http','$scope',function($http,$scope
         }
     }
 }]);
+
+companyApp.directive('mixMaxlength', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, ele, attrs, ctrl) {
+            var length = parseInt(attrs['mixMaxlength']) || 10;
+            scope.$watch(attrs.ngModel, function(newValue, oldValue) {
+                if (newValue && newValue.replace(/[\u4e00-\u9fa5]/g, '**').length > 20) {
+                    ctrl.$setValidity('mixlength', false);
+                } else {
+                    ctrl.$setValidity('mixlength', true);
+                }
+            })
+        }
+    }
+})

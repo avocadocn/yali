@@ -120,9 +120,14 @@ block contentExt
     .dl_detail_side
       .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
+        //- if campaign.location.coordinates.length==2
+        //-   a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
+        //-     img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labelStyles=#{campaign.location.name},1,14,0xffffff,0x000fff,1")
+        //- else
+        //-   img.map_size(src="/img/sign_bg.jpg")
         if campaign.location.coordinates.length==2
-          a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
-            img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labelStyles=#{campaign.location.name},1,14,0xffffff,0x000fff,1")
+          a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
+            img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labels=#{campaign.location.name.replace(/ /g, '')},2,0,16,0xffffff,0x3498db:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
         else
           img.map_size(src="/img/sign_bg.jpg")
       .photo_container

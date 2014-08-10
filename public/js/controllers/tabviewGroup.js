@@ -215,6 +215,7 @@ tabViewGroup.controller('TimeLineController', ['$http', '$scope', '$rootScope',
 ]);
 tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
   function ($http, $scope,$rootScope) {
+    $rootScope.nowTab = 'group_message';
     $scope.toggle = [];
     $scope.new_comment = [];
     $rootScope.$watch('teamId',function(tid){
@@ -736,6 +737,9 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
+    $scope.city='';
+    $scope.MSearch1 = '';
+    $scope.MSearch2 = '';
     $rootScope.$watch('teamId',function(tid){
         if($rootScope.teamId){
             $http.get('/group/info/'+tid).success(function(data, status) {
@@ -764,7 +768,132 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             });
         }
     });
+    var placeSearchCallBack = function(bindMap, index){
+        return function(data){
+            bindMap.clearMap();
+            var lngX = data.poiList.pois[0].location.getLng();
+            var latY = data.poiList.pois[0].location.getLat();
+            $scope.team.home_court[index].loc.coordinates=[lngX, latY];
+            var nowPoint = new AMap.LngLat(lngX,latY);
+            var markerOption = {
+                map: bindMap,
+                position: nowPoint,
+                draggable: true
+            };
+            var mar = new AMap.Marker(markerOption);
+            bindMap.setFitView();
+            var changePoint = function (e) {
+                var p = e.lnglat;
+                $scope.team.home_court[index].loc.coordinates=[p.getLng(), p.getLat()];
+            };
+            AMap.event.addListener(mar,"dragend", changePoint);
+        }
+    }
+    var bindPlaceSearch = function(bindMap,index){
+        bindMap.plugin(["AMap.PlaceSearch"], function() {
+        if(index==0){
+            $scope.MSearch1 = new AMap.PlaceSearch({ //构造地点查询类
+                pageSize:1,
+                pageIndex:1,
+                city: $scope.city
 
+            });
+            AMap.event.addListener($scope.MSearch1, "complete", placeSearchCallBack(bindMap,index));//返回地点查询结果
+        }
+        else{
+            $scope.MSearch2 = new AMap.PlaceSearch({ //构造地点查询类
+                pageSize:1,
+                pageIndex:1,
+                city: $scope.city
+
+            });
+            AMap.event.addListener($scope.MSearch2, "complete", placeSearchCallBack(bindMap,index));//返回地点查询结果
+        }
+        });
+    }
+    //---主场地图
+    //初始化 如果有坐标则显示标注点，没有则不显示
+    $scope.initialize = function(){
+        $scope.locationmap1 = new AMap.Map("courtMap1");
+        $scope.locationmap2 = new AMap.Map("courtMap2");
+        if($scope.team.home_court[0].name!==''){
+            var piont1 = new AMap.LngLat($scope.team.home_court[0].loc.coordinates[0],$scope.team.home_court[0].loc.coordinates[1]);
+            $scope.locationmap1.setZoomAndCenter(15,piont1);
+            var markerOption = {
+                map: $scope.locationmap1,
+                position: piont1,
+                draggable: true
+            };
+            var mar = new AMap.Marker(markerOption);
+            var changePoint = function (e) {
+                var p = e.lnglat;
+                $scope.team.home_court[0].loc.coordinates=[p.getLng(), p.getLat()];
+            };
+            AMap.event.addListener(mar,"dragend", changePoint);
+        };
+
+        if($scope.team.home_court[1].name!==''){
+            var piont2 = new AMap.LngLat($scope.team.home_court[1].loc.coordinates[0],$scope.team.home_court[1].loc.coordinates[1]);
+            $scope.locationmap2.setZoomAndCenter(15,piont2);
+            var markerOption = {
+                map: $scope.locationmap2,
+                position: piont2,
+                draggable: true
+            };
+            var marker2 = new AMap.Marker(markerOption);
+            var changePoint = function (e) {
+                var p = e.lnglat;
+                $scope.team.home_court[1].loc.coordinates=[p.getLng(), p.getLat()];
+            };
+            AMap.event.addListener(marker2,"dragend", changePoint);
+        }
+        if($scope.city!=''){
+            bindPlaceSearch($scope.locationmap1,0);
+            bindPlaceSearch($scope.locationmap2,1);
+        }
+        else {
+            $scope.locationmap1.plugin(["AMap.CitySearch"], function() {
+                var citysearch = new AMap.CitySearch();
+                citysearch.getLocalCity();
+                AMap.event.addListener(citysearch, "complete", function(result){
+                    if(result && result.city && result.bounds) {
+                        var citybounds = result.bounds;
+                        $scope.city = result.city;
+                        bindPlaceSearch($scope.locationmap1,0);
+                        bindPlaceSearch($scope.locationmap2,1);
+                    }
+                });
+                AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+            });
+        }
+        window.map_ready =true;
+    };
+
+    //修改主场地址后改变地图点
+    $scope.changeLocation1 = function(){
+        $scope.showMap1 = true;
+        if ($scope.MSearch1!='') {
+            $scope.MSearch1.search($scope.team.home_court[0].name); 
+        }
+        else{
+            setTimeout(function(){
+                $scope.MSearch1.search($scope.team.home_court[0].name);
+            },0);
+        }
+    };
+
+    $scope.changeLocation2 = function(){
+        $scope.showMap2 = true;
+        if ($scope.MSearch2!='') {
+            $scope.MSearch2.search($scope.team.home_court[1].name); 
+        }
+        else{
+            setTimeout(function(){
+                $scope.MSearch2.search($scope.team.home_court[1].name);
+            },0);
+        }
+        
+    };
     $scope.editToggle = function() {
 
         $scope.unEdit = !$scope.unEdit;
@@ -803,11 +932,10 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         else {
             if(!window.map_ready){//如果没有加载过地图script则加载
                 window.court_map_initialize = function(){
-                    $scope.initialize1(); 
-                    $scope.initialize2();
+                    $scope.initialize();
                 };
                 var script = document.createElement("script");  
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=court_map_initialize";
+                script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=court_map_initialize";
                 document.body.appendChild(script);
             }
             $scope.team.home_court[0] = $scope.team.home_court[0] ? $scope.team.home_court[0] : {'name':'','loc':{'coordinates':[]}} ;
@@ -817,82 +945,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     };
 
 
-    //---主场地图
-    //初始化 如果有坐标则显示标注点，没有则不显示
-    $scope.initialize1 = function(){
-        $scope.locationmap1 = new BMap.Map("courtMap1");
-        if($scope.team.home_court[0].name!==''){
-            var piont1 = new BMap.Point($scope.team.home_court[0].loc.coordinates[0],$scope.team.home_court[0].loc.coordinates[1]);
-            $scope.locationmap1.centerAndZoom(piont1,15);
-            var marker1 = new BMap.Marker(piont1);
-            $scope.locationmap1.addOverlay(marker1);
-        }
-        $scope.locationmap1.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var options = {
-            onSearchComplete: function(results){
-                // 判断状态是否正确
-                if ($scope.local1.getStatus() == BMAP_STATUS_SUCCESS){
-                    $scope.locationmap1.clearOverlays();
-                    var nowPoint1 = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                    $scope.locationmap1.centerAndZoom(nowPoint1,15);
-                    var marker1 = new BMap.Marker(nowPoint1);  // 创建标注
-                    $scope.locationmap1.addOverlay(marker1);              // 将标注添加到地图中
-                    marker1.enableDragging();    //可拖拽
-                    $scope.team.home_court[0].loc.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                    marker1.addEventListener("dragend", function changePoint(){
-                        var p = marker1.getPosition();
-                        $scope.team.home_court[0].loc.coordinates = [p.lng , p.lat];
-                    });
-                }
-            }
-        };
-        $scope.local1 = new BMap.LocalSearch($scope.locationmap1,options);
-        window.map_ready =true;
-    };
-
-    //修改主场地址后改变地图点
-    $scope.changeLocation1 = function(){
-        $scope.showMap1 = true;
-        $scope.local1.search($scope.team.home_court[0].name);
-    };
-
-
-    $scope.initialize2 = function(){
-        $scope.locationmap2 = new BMap.Map("courtMap2");
-        if($scope.team.home_court[1].name!==''){
-            var point2 = new BMap.Point($scope.team.home_court[1].loc.coordinates[0],$scope.team.home_court[1].loc.coordinates[1]);
-            $scope.locationmap2.centerAndZoom(point2,15);
-            var marker2 = new BMap.Marker(point2);
-            $scope.locationmap2.addOverlay(marker2);
-        }
-        $scope.locationmap2.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var options = {
-            onSearchComplete: function(results){
-                // 判断状态是否正确
-                if ($scope.local2.getStatus() == BMAP_STATUS_SUCCESS){
-                    $scope.locationmap2.clearOverlays();
-                    var nowPoint2 = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                    $scope.locationmap2.centerAndZoom(nowPoint2,15);
-                    var marker2 = new BMap.Marker(nowPoint2);  // 创建标注
-                    $scope.locationmap2.addOverlay(marker2);              // 将标注添加到地图中
-                    marker2.enableDragging();    //可拖拽
-                    $scope.team.home_court[1].loc.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                    marker2.addEventListener("dragend", function changePoint(){
-                        var q = marker2.getPosition();
-                        $scope.team.home_court[1].loc.coordinates = [q.lng , q.lat];
-                    });
-                }
-            }
-        };
-        $scope.local2 = new BMap.LocalSearch($scope.locationmap2,options);
-    };
-
-    $scope.changeLocation2 = function(){
-        $scope.showMap2 = true;
-        $scope.local2.search($scope.team.home_court[1].name);
-    };
 
     //---全家福
     var jcrop_api;
@@ -907,7 +959,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         $http
         .get('/group/'+$rootScope.teamId+'/family')
         .success(function(data, status) {
-            console.log($scope.family_photos);
             $scope.family_photos = data;
         })
         .error(function(data, status) {
@@ -1072,48 +1123,71 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         };
     });
     $rootScope.$watch('loadMapIndex',function(value){
-        if($rootScope.loadMapIndex){
-            if(value==1){
-                //加载地图
-                if(!window.map_ready){
-                    window.campaign_map_initialize = $scope.initialize;
-                    var script = document.createElement("script");  
-                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
-                    document.body.appendChild(script);
-                }
-                else{
-                    $scope.initialize();
-                }
+        if(value==1){
+            //加载地图
+            if(!window.map_ready){
+                window.campaign_map_initialize = $scope.initialize;
+                var script = document.createElement("script");  
+                script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+                document.body.appendChild(script);
+            }
+            else{
+                $scope.initialize();
             }
         }
 
     });
+    var placeSearchCallBack = function(data){
+        $scope.locationmap.clearMap();
+        var lngX = data.poiList.pois[0].location.getLng();
+        var latY = data.poiList.pois[0].location.getLat();
+        $scope.location.coordinates=[lngX, latY];
+        var nowPoint = new AMap.LngLat(lngX,latY);
+        var markerOption = {
+            map: $scope.locationmap,
+            position: nowPoint,
+            draggable: true
+        };
+        var mar = new AMap.Marker(markerOption);
+        var changePoint = function (e) {
+            var p = mar.getPosition();
+            $scope.location.coordinates=[p.getLng(), p.getLat()];
+        };
+        $scope.locationmap.setFitView();
+        AMap.event.addListener(mar,"dragend", changePoint);
 
+    }
     $scope.initialize = function(){
-        $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-        $scope.locationmap.centerAndZoom('上海',15);
-        $scope.locationmap.enableScrollWheelZoom(true);
-        $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var options = {
-            onSearchComplete: function(results){
-                // 判断状态是否正确
-                if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
-                    $scope.locationmap.clearOverlays();
-                    var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                    $scope.locationmap.centerAndZoom(nowPoint,15);
-                    var marker = new BMap.Marker(nowPoint);  // 创建标注
-                    $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
-                    marker.enableDragging();    //可拖拽
-                    $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                    marker.addEventListener("dragend", function changePoint(){
-                        var p = marker.getPosition();
-                        $scope.location.coordinates=[p.lng , p.lat];
+        $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
+        $scope.locationmap.plugin(["AMap.ToolBar"],function(){     
+            toolBar = new AMap.ToolBar();
+            $scope.locationmap.addControl(toolBar);    
+        });
+        $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+            //实例化城市查询类
+            var citysearch = new AMap.CitySearch();
+            //自动获取用户IP，返回当前城市
+            citysearch.getLocalCity();
+            //citysearch.getCityByIp("123.125.114.*");
+            AMap.event.addListener(citysearch, "complete", function(result){
+                if(result && result.city && result.bounds) {
+                    var citybounds = result.bounds;
+                    //地图显示当前城市
+                    $scope.locationmap.setBounds(citybounds);
+                    $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+                        $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                            pageSize:1,
+                            pageIndex:1,
+                            city: result.city
+
+                        });
+                        AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+                        $scope.MSearch.search($scope.location.name); //关键字查询
                     });
                 }
-            }
-        };
-        $scope.local = new BMap.LocalSearch($scope.locationmap,options);
+            });
+            AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+        });
         window.map_ready =true;
     };
 
@@ -1125,10 +1199,10 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         }
         else if($scope.showMapFlag ==false){
             $scope.showMapFlag =true;
-            $scope.local.search($scope.location.name);
+            $scope.MSearch.search($scope.location.name); //关键字查询
         }
         else{
-            $scope.local.search($scope.location.name);
+           $scope.MSearch.search($scope.location.name); //关键字查询
         }
     };
 
@@ -1179,18 +1253,16 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.selected_index=-1;
 
     $rootScope.$watch('loadMapIndex',function(value){
-        if($rootScope.loadMapIndex){
-            if(value==2){
-                //加载地图
-                if(!window.map_ready){
-                    window.campaign_map_initialize = $scope.initialize;
-                    var script = document.createElement("script");  
-                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
-                    document.body.appendChild(script);
-                }
-                else{
-                    $scope.initialize();
-                }
+        if(value==2){
+            //加载地图
+            if(!window.map_ready){
+                window.campaign_map_initialize = $scope.initialize;
+                var script = document.createElement("script");  
+                script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+                document.body.appendChild(script);
+            }
+            else{
+                $scope.initialize();
             }
         }
     });
@@ -1273,32 +1345,56 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         $scope.result=1;//已搜索，显示搜索结果
         $scope.selected_index = -1;
     };
-
+    var placeSearchCallBack = function(data){
+        $scope.locationmap.clearMap();
+        var lngX = data.poiList.pois[0].location.getLng();
+        var latY = data.poiList.pois[0].location.getLat();
+        $scope.location.coordinates=[lngX, latY];
+        var nowPoint = new AMap.LngLat(lngX,latY);
+        var markerOption = {
+            map: $scope.locationmap,
+            position: nowPoint,
+            draggable: true
+        };
+        var mar = new AMap.Marker(markerOption);
+        var changePoint = function (e) {
+            var p = mar.getPosition();
+            $scope.location.coordinates=[p.getLng(), p.getLat()];
+        };
+        $scope.locationmap.setFitView();
+        AMap.event.addListener(mar,"dragend", changePoint);
+    }
     $scope.initialize = function(){
-        $scope.locationmap = new BMap.Map("competitionMapDetail");            // 创建Map实例
-        $scope.locationmap.centerAndZoom('上海',15);
-        $scope.locationmap.enableScrollWheelZoom(true);
-        $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var options = {
-            onSearchComplete: function(results){
-                // 判断状态是否正确
-                if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
-                    $scope.locationmap.clearOverlays();
-                    var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                    var marker = new BMap.Marker(nowPoint);  // 创建标注
-                    $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
-                    marker.enableDragging();    //可拖拽
-                    $scope.locationmap.centerAndZoom(nowPoint,15);
-                    $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                    marker.addEventListener("dragend", function changePoint(){
-                        var p = marker.getPosition();
-                        $scope.location.coordinates=[p.lng , p.lat];
+        $scope.locationmap = new AMap.Map("competitionMapDetail");            // 创建Map实例
+        $scope.locationmap.plugin(["AMap.ToolBar"],function(){     
+            toolBar = new AMap.ToolBar();
+            $scope.locationmap.addControl(toolBar);    
+        });
+        $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+            //实例化城市查询类
+            var citysearch = new AMap.CitySearch();
+            //自动获取用户IP，返回当前城市
+            citysearch.getLocalCity();
+            //citysearch.getCityByIp("123.125.114.*");
+            AMap.event.addListener(citysearch, "complete", function(result){
+                if(result && result.city && result.bounds) {
+                    var citybounds = result.bounds;
+                    //地图显示当前城市
+                    $scope.locationmap.setBounds(citybounds);
+                    $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+                        $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                            pageSize:1,
+                            pageIndex:1,
+                            city: result.city
+
+                        });
+                        AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+                        $scope.MSearch.search($scope.location.name); //关键字查询
                     });
                 }
-            }
-        };
-        $scope.local = new BMap.LocalSearch($scope.locationmap,options);
+            });
+            AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+        });
         window.map_ready =true;
     };
     
@@ -1309,10 +1405,10 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
         }
         else if($scope.showMapFlag ==false){
             $scope.showMapFlag =true;
-            $scope.local.search($scope.location.name);
+            $scope.MSearch.search($scope.location.name); //关键字查询
         }
         else{
-            $scope.local.search($scope.location.name);
+            $scope.MSearch.search($scope.location.name); //关键字查询
         }
     };
 
