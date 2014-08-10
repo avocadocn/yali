@@ -58,6 +58,24 @@ app.directive('match', function ($parse) {
     }
   };
 });
+
+app.directive('mixMaxlength', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, ele, attrs, ctrl) {
+            var length = parseInt(attrs['mixMaxlength']) || 10;
+            scope.$watch(attrs.ngModel, function(newValue, oldValue) {
+                if (newValue && newValue.replace(/[\u4e00-\u9fa5]/g, '**').length > length) {
+                    ctrl.$setValidity('mixlength', false);
+                } else {
+                    ctrl.$setValidity('mixlength', true);
+                }
+            })
+        }
+    }
+});
+
 app.run(['$rootScope', function ($rootScope) {
 
     $rootScope.shortTrim = function(value){
