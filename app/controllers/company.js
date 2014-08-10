@@ -867,6 +867,7 @@ exports.getCompanyTeamsInfo = function(req, res) {
   }
   CompanyGroup
   .find(option)
+  .sort({'score.total':-1})
   .exec()
   .then(function(teams) {
     var output ={
