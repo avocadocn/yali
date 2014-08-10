@@ -615,8 +615,8 @@ exports.getUserAllCampaignsForCalendar = function(req, res) {
 };
 
 exports.getUserJoinedCampaignsForCalendar = function(req, res) {
-  getUserJoinedCampaigns(req.user, true, function(campaigns) {
-    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+  getUserJoinedCampaigns(req.profile, true, function(campaigns) {
+    var format_campaigns = formatCampaignForCalendar(req.profile, campaigns);
     res.send({
       success: 1,
       result: format_campaigns
@@ -628,8 +628,8 @@ exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
   if (req.role !== 'OWNER') {
     res.send(403);
   }
-  getUserUnjoinCampaigns(req.user, true, function(campaigns) {
-    var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+  getUserUnjoinCampaigns(req.profile, true, function(campaigns) {
+    var format_campaigns = formatCampaignForCalendar(req.profile, campaigns);
     res.send({
       success: 1,
       result: format_campaigns
