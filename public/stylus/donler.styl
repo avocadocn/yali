@@ -39,20 +39,6 @@ textarea
   background-color cardbgColor
   &:hover
     background-color cardbgColor
-.message_detail
-  width 364px
-  max-height 140px
-  word-break break-all
-  overflow hidden
-  //-margin-top -20px
-
-.message_panel
-  min-height 93px !important
-  padding-top 20px !important
-  width 958px
-  &:hover
-    cursor pointer
-    background-color #f8f8f3
 
 .bg_change
   &:hover
@@ -80,9 +66,6 @@ textarea
   width 700px
   margin-top 50px
 
-.line_left
-  margin-left 5px !important
-  border-bottom 1px solid #f4f4f4
 .line_top
   margin-top -20px !important
 
@@ -110,33 +93,9 @@ textarea
   height 36px
   margin-left 10px
 
-
 .search_area_head
   width 80px
   text-align center
-
-.dl_message_head
-  width 12%
-  padding-left 50px
-  float left
-  min-height 71px
-
-.dl_message_body
-  width 800px
-  float left
-  padding-left 30px
-  .message_row
-    height 24px
-    padding 2px 0
-
-
-.dl_message_tail
-  width 18%
-  margin-left 5px
-  float left
-.dl_message_rightcorner
-  margin-right 20px !important
-  margin-top 5px !important
 
 .dl_btn_score
   width 100px
@@ -593,29 +552,6 @@ textarea
   margin-left 5px
   float left
 
-.dl_message_send
-  width 21%
-  margin-left 5px
-  float left
-
-.dl_message_date
-  width 13%
-  margin-left 5px
-  float left
-
-.dl_message_caption
-  width 85%
-  margin-left 5px
-  float left
-
-.dl_message_head_size
-  width 48px
-  height 48px
-
-.dl_message_status
-  width 1%
-  float left
-
 .dl_md_time
   width 29%
   margin-left 5px
@@ -796,35 +732,7 @@ textarea
     padding-top 0px
     .aside
       width 80px
-.dl_messagebox
-  padding 0
-  background-color cardbgColor
-  line-height 21px
-  border 1px solid #e6e6e6
-  border-top none 
-  &:hover
-    background-color #fafafa
-  &:after
-    display block
-    line-height 0
-    content ""
-    border 0
-  &:before
-    display block
-    line-height 0
-    content ""
-  .dl_messageitem
-    padding 10px
-    .message_row
-      padding 1px 0
-      .message_label
-        padding 2px 10px
-        float left
-      .message_content
-        word-break break-all
-        padding 2px 10px
-        width 490px
-        float left
+
   .message_side
     width 56px
     float left
@@ -1010,8 +918,6 @@ textarea
   border-color buttonColor
 .margin_0
   margin 0
-.margin_left_5
-  margin-left 5px
 .margin_5
   margin 5px
 .margin_15
@@ -1032,14 +938,16 @@ textarea
   margin-top 100px
 .margin_top_123
   margin-top 123px
+
+.margin_left_5
+  margin-left 5px
 .margin_left_10
   margin-left 10px
 .margin_left_15
   margin-left 15px
 .margin_left_30
   margin-left 30px
-.margin_left_80
-  margin-left 80px
+
 .margin_right_20
   margin-right 20px
 
@@ -1047,12 +955,6 @@ textarea
   width 960px
   margin auto
 
-.size_family
-  height 300px
-  width 800px
-.size_210
-  height 210px
-  width 210px
 .size_128
   height 128px
   width 128px
@@ -1374,7 +1276,6 @@ input.ng-invalid.ng-dirty
       width 230px
       padding 10px
 .memberlist
-  
   .member
     width 80px
     float left
@@ -1443,8 +1344,6 @@ input.ng-invalid.ng-dirty
   .remark
     margin-top 10px
 
-familyWidth = 660px
-familyHeight = 371.25px
 #family
   margin-top 30px
   width familyWidth
@@ -1460,7 +1359,7 @@ familyHeight = 371.25px
       max-height 100%
 
 
-.dl_allteaminfo_container, .dl_compaign_member, .dl_department, .dl_campaign_list, .dl_group_select, dl_messagebox , .dl_message_sendbox
+.dl_allteaminfo_container, .dl_compaign_member, .dl_department, .dl_campaign_list, .dl_group_select
   width 100%
   background-color cardbgColor
   border 1px solid #ccc
@@ -1580,11 +1479,6 @@ familyHeight = 371.25px
       margin 0
     &:hover
       box-shadow 2px 2px 8px rgba(0,0,0,.2)
-
-
-.dl_message_body_font
-  font-size 48px
-  color #3498db
 
 .dl_head_font
   font-size 80px
@@ -1779,7 +1673,18 @@ familyHeight = 371.25px
     height 18px
     width 18px
 
-
-    
+//-动态
+.dl_messageitem
+  padding 10px
+  .message_row
+    padding 1px 0
+    .message_label
+      padding 2px 10px
+      float left
+    .message_content
+      word-break break-all
+      padding 2px 10px
+      width 490px
+      float left
 
 
