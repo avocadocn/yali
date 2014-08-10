@@ -21,21 +21,20 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         text:''
     };
 
-
-    $scope.$watch('campaign_team',function(campaign_team){
-        if(campaign_team==null){
+    $scope.$watch('campaign_team+campaign_id+member',function(){
+        if($scope.campaign_team==null){
             return;
         }
-        if(campaign_type == '3'){
-            for(var i =0; i < campaign_team.length; i ++){
-                campaign_team[i].join_member = [];
-                for(var j = 0; j < member.length; j ++){
-                    if(campaign_team[i]._id.toString() == member[j].team._id.toString()){
-                        campaign_team[i].join_member.push({
-                            '_id' : member[j].uid,
-                            'nickname' : member[j].nickname,
-                            'photo' : member[j].photo,
-                            'team' : member[j].team
+        if($scope.campaign_type == '3'){
+            for(var i =0; i < $scope.campaign_team.length; i ++){
+                $scope.campaign_team[i].join_member = [];
+                for(var j = 0; j < $scope.member.length; j ++){
+                    if($scope.campaign_team[i]._id.toString() == $scope.member[j].team._id.toString()){
+                        $scope.campaign_team[i].join_member.push({
+                            '_id' : $scope.member[j].uid,
+                            'nickname' : $scope.member[j].nickname,
+                            'photo' : $scope.member[j].photo,
+                            'team' : $scope.member[j].team
                         });
                     }
                 }
@@ -151,14 +150,19 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         }
     }
     $scope.select_index = -1;
-    $scope.selcetJoinTeam = function($index){
+    $scope.selcetJoinTeam = function(index){
         $scope.join_team = {
-            _id : $scope.join_teams[$index]._id,
-            name : $scope.join_teams[$index].name,
-            logo : $scope.join_teams[$index].logo
+            _id : $scope.join_teams[index]._id,
+            name : $scope.join_teams[index].name,
+            logo : $scope.join_teams[index].logo
         };
-        $scope.join_teams[$index].selected = true;
-        $scope.select_index = $index;
+        $scope.join_teams[index].selected = true;
+        for(var i = 0 ; i < $scope.join_teams.length; i ++){
+            if(i !== index){
+                $scope.join_teams[i].selected = false;
+            }
+        }
+        $scope.select_index = index;
     }
     $scope.joinReady = function(){
         $scope.join_teams = [];

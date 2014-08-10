@@ -117,47 +117,6 @@ textarea {
   width: 80px;
   text-align: center;
 }
-.dl_message_head {
-  width: 12%;
-  padding-left: 50px;
-  float: left;
-  min-height: 71px;
-}
-.dl_message_body {
-  width: 800px;
-  float: left;
-  padding-left: 30px;
-}
-.dl_message_body .message_row {
-  height: 24px;
-  padding: 2px 0;
-}
-.dl_message_slide {
-  margin-bottom: 100px;
-  margin-left: 120px;
-  margin-top: 50px;
-  width: 800px;
-}
-.dl_message_slide .dl_message_item {
-  max-width: 100px;
-  width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-top: 10px;
-  margin-left: 5px;
-  width: 100px;
-  float: left;
-}
-.dl_message_tail {
-  width: 18%;
-  margin-left: 5px;
-  float: left;
-}
-.dl_message_rightcorner {
-  margin-right: 20px !important;
-  margin-top: 5px !important;
-}
 .dl_btn_score {
   width: 100px;
   height: 50px;
