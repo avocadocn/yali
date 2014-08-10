@@ -114,7 +114,7 @@ textarea {
   margin-left: 10px;
 }
 .search_area_head {
-  width: 80px;
+  width: 48px;
   text-align: center;
 }
 .dl_btn_score {
@@ -155,8 +155,8 @@ textarea {
   border-radius: 1%;
   position: absolute;
   z-index: 1000;
-  width: 80px;
-  height: 80px;
+  width: 48px;
+  height: 48px;
 }
 .dl_msg_corner {
   margin-top: -2px;
