@@ -141,7 +141,7 @@ block aside
       p(ng-show="home_court_index==#{i}")
         = home.name
       if home.loc.coordinates.length==2
-        a(href="http://mo.amap.com/?q=#{home.loc.coordinates[1]},#{home.loc.coordinates[0]}&name=#{home.name}" target="_blank")
+        a(href="http://mo.amap.com/?q=#{home.loc.coordinates[1]},#{home.loc.coordinates[0]}&name=#{home.name}" ng-show="home_court_index==#{i}" target="_blank")
           img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&labels=#{home.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{home.loc.coordinates[0]},#{home.loc.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
       - i++
     if home_court.length==0
