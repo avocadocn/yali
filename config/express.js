@@ -112,7 +112,6 @@ module.exports = function(app, passport, db) {
                 .exec()
                 .then(function(company) {
                     req.user.company_official_name = company.info.official_name;
-                    console.log(req.user)
                     req.user.save(function(err) {
                         if (err) {
                             console.log(err);
