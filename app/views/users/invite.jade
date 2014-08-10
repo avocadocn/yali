@@ -9,9 +9,10 @@ block contentExt
           h1
             small 加入
             | 动梨
-          p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
-          p 我们会对每家申请加入的团体当然也包括您在内
-          p 认真的核实资料，感谢您的配合
+          h4 欢迎来自 #{cname} 的你
+          p 您在动梨遇到的都是真实可靠的小伙伴
+          p 更多志趣相投的朋友相聚在一起
+          p 给您更加丰富多彩的生活
       .col-xs-offset-3.col-xs-9.block_right(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
         form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive' method='post')
           .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
@@ -45,7 +46,9 @@ block contentExt
                   a.subtitle(ng-click="active=4;") 再次填写信息
                   span 并查看邮箱激活。
               div(ng-show='active==3' ng-cloak)
-                span 您的邮箱已注册，请登录，若是您忘记了密码,
+                span 您的邮箱已注册,请
+                a(href='/users/signin/failure') 登录。
+                span 若是您忘记了密码,
                 a(href='/users/forgetPwd') 请点此跳转
               p
           div(ng-if="active==0 || active==1 || active ==4")
@@ -77,7 +80,7 @@ block contentExt
             .form-group.dl_sm_group
               .dl_row
                 .label_left
-                  label.control-label(for="department") #{__("DEPARTMENT")}
+                  label.control-label(for="department") ＊#{__("DEPARTMENT")}
                 .input_right
                   //- input#department.form-control.dl_full_control(type="text" name="department" ng-model="department")
                   .select_box.department_select_width

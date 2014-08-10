@@ -222,8 +222,9 @@ exports.invite = function(req, res) {
         req.session.key = key;
         req.session.key_id = cid;
         res.render('users/invite', {
-          title: 'validate',
-          domains: company.email.domain
+          title: '个人注册',
+          domains: company.email.domain,
+          cname: company.info.official_name
         });
       })
       .then(null, function(err) {
