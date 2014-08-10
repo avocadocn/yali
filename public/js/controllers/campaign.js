@@ -13,29 +13,30 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         $scope.getComment(); //获取留言
     });
 
-
+    $scope.init = true;
 
     $scope.comments = [];
 
     $scope.new_comment = {
         text:''
     };
-
     $scope.$watch('campaign_team+campaign_id+member',function(){
-        if($scope.campaign_team==null){
-            return;
-        }
-        if($scope.campaign_type == '3'){
-            for(var i =0; i < $scope.campaign_team.length; i ++){
-                $scope.campaign_team[i].join_member = [];
-                for(var j = 0; j < $scope.member.length; j ++){
-                    if($scope.campaign_team[i]._id.toString() == $scope.member[j].team._id.toString()){
-                        $scope.campaign_team[i].join_member.push({
-                            '_id' : $scope.member[j].uid,
-                            'nickname' : $scope.member[j].nickname,
-                            'photo' : $scope.member[j].photo,
-                            'team' : $scope.member[j].team
-                        });
+        if($scope.init){
+            if($scope.campaign_team==null){
+                return;
+            }
+            if($scope.campaign_type == '3'){
+                for(var i =0; i < $scope.campaign_team.length; i ++){
+                    $scope.campaign_team[i].join_member = [];
+                    for(var j = 0; j < $scope.member.length; j ++){
+                        if($scope.campaign_team[i]._id.toString() == $scope.member[j].team._id.toString()){
+                            $scope.campaign_team[i].join_member.push({
+                                '_id' : $scope.member[j].uid,
+                                'nickname' : $scope.member[j].nickname,
+                                'photo' : $scope.member[j].photo,
+                                'team' : $scope.member[j].team
+                            });
+                        }
                     }
                 }
             }
@@ -179,6 +180,12 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             }
         }
         if($scope.join_teams.length > 1 && $scope.campaign_type === '3'){
+            $scope.join_teams[0].selected = true;
+            $scope.join_team = {
+                _id : $scope.join_teams[0]._id,
+                name : $scope.join_teams[0].name,
+                logo : $scope.join_teams[0].logo
+            };
             $('#joinTeamSelectmodal').modal();
         }else{
             if($scope.campaign_type != '1'){
@@ -227,20 +234,23 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                         for(var i =0; i < $scope.campaign_team.length; i ++){
                             if($scope.campaign_team[i]._id.toString() == data.member.team._id.toString()){
                                 $scope.campaign_team[i].join_member.push({
+                                    'tt' :data.member.uid,
                                     '_id' : data.member.uid,
                                     'nickname' : data.member.nickname,
                                     'photo' : data.member.photo,
                                     'team' : data.member.team
                                 });
+                                console.log($scope.campaign_team[i].join_member);
                                 break;
                             }
                         }
                     }
-
+                    console.log($scope.campaign_team);
                 }
                 else{
                     alertify.alert('DATA ERROR');
                 }
+                $scope.init = false;
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');
             });
@@ -302,16 +312,17 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
     };
 
 
-    $scope.modalPerticipator = function(){
+    $scope.modalPerticipator = function(index){
+        $scope.team_index = index;
         $('#sponsorMessageCampaignModel').modal();
     }
-    $scope.sendToParticipator = function(index){
+    $scope.sendToParticipator = function(){
         try{
           $http({
               method: 'post',
               url: '/message/push/campaign',
               data:{
-                    team : $scope.campaign_team[index],
+                    team : $scope.campaign_team[$scope.team_index],
                     campaign_id : $scope.campaign_id,
                     content : $scope.private_message_content.text
               }

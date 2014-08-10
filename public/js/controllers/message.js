@@ -221,10 +221,14 @@ var messagePreHandle = function(teams,msg,divide){
           direct_show = true;
         }else{
           detail = msg[i].message_content.content;
-          if(msg[i].message_content.team[0].status == 0){
-            message_type = 1;
+          if(msg[i].message_content.team.length > 0){
+            if(msg[i].message_content.team[0].status == 0){
+              message_type = 1;
+            }else{
+              message_type = 2;
+            }
           }else{
-            message_type = 2;
+            message_type = 1;
           }
         }
       }
@@ -251,7 +255,7 @@ var messagePreHandle = function(teams,msg,divide){
           'detail':msg[i].message_content.content,
           'message_type':message_type,
           'team':msg[i].message_content.team[0],
-          'photo':msg[i].message_content.team[0].logo,
+          'photo': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0].logo : msg[i].message_content.sender[0].photo,
           'sender':sender,
           'campaign_id':msg[i].message_content.campaign_id,
           'campaign_name':msg[i].message_content.caption

@@ -403,7 +403,6 @@ exports.sendToOne = function(req, res, param){
 //给参加某活动/比赛的成员发送站内信
 exports.sendToParticipator = function(req, res){
   var callback = function(campaign,join_team,req,res){
-
     var sender = {
       '_id':req.user._id,
       'nickname':req.user.nickname,
@@ -413,12 +412,14 @@ exports.sendToParticipator = function(req, res){
 
     if(campaign){
       var team;
-      team = {
-        '_id':campaign.team[0]._id,
-        'name':campaign.team[0].name,
-        'logo':campaign.team[0].logo,
-        'status':0
-      };
+      if(campaign.campaign_type > 1){
+        team = {
+          '_id':campaign.team[0]._id,
+          'name':campaign.team[0].name,
+          'logo':campaign.team[0].logo,
+          'status':0
+        };
+      }
       var members = [];
       if([4,5,7].indexOf(campaign.campaign_type) > -1){
         team.status = 1;
@@ -430,13 +431,13 @@ exports.sendToParticipator = function(req, res){
           }
         }
       }else{
-        if([1,2,6,8,9].indexOf(campaign.campaign_type) > -1){
+        if([2,6,8,9].indexOf(campaign.campaign_type) > -1){
           team.status = 0;
-          for(var i = 0; i < campaign.member.length; i ++){
-            members.push({
-              '_id':campaign.member[i].uid
-            });
-          }
+        }
+        for(var i = 0; i < campaign.member.length; i ++){
+          members.push({
+            '_id':campaign.member[i].uid
+          });
         }
         //多小队活动针对某一小队发消息
         if(campaign.campaign_type == 3){
@@ -444,7 +445,7 @@ exports.sendToParticipator = function(req, res){
           team.name = join_team.name;
           team.logo = join_team.logo;
           for(var i = 0; i < campaign.member.length; i ++){
-            if(campaign.member[i].uid.toString() === team._id.toString()){
+            if(campaign.member[i].team._id.toString() === team._id.toString()){
               members.push({
                 '_id':campaign.member[i].uid
               });
@@ -452,12 +453,13 @@ exports.sendToParticipator = function(req, res){
           }
         }
       }
+      console.log(members);
       var _param = {
         'members':members,
         'caption':campaign.theme,
         'content':req.body.content,
         'sender':[sender],
-        'team':[team],
+        'team':campaign.campaign_type > 1 ? [team] : [],
         'company_id':null,
         'campaign_id':req.body.campaign_id,
         'req':req,
