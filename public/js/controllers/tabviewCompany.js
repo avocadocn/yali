@@ -1637,17 +1637,18 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                     for(var j = 0; j < $scope.managers.length; j ++) {
                         //标记
                         if($scope.managers[j]._id.toString() === $scope.department_users[i]._id.toString()){
+                            //换到第一个
+                            var temp = $scope.department_users[i];
+                            $scope.department_users[i]=$scope.department_users[0];
+                            $scope.department_users[0]=temp;
+                            $scope.department_users[0].leader = true;
                             $scope.department_users[i].leader = true;
                             manager_find = true;
                             break;//目前一个小队只有一个组长
                         }
                     }
                 }
-                //没有值传递好痛苦啊
-                $scope.member_backup_department = [];
-                for(var i = 0; i < $scope.department_users.length; i ++){
-                    $scope.member_backup_department.push($scope.department_users[i]);
-                }
+                $scope.member_backup_department = $scope.department_users.slice(0);
                 callback();
         }).error(function(data, status) {
               //TODO:更改对话框
@@ -1676,14 +1677,14 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         }
     };
 
-    $scope.recover = function(){
-        if($scope.member_backup_department){
-            if($scope.member_backup_department.length > 0){
-                $scope.department_users = $scope.member_backup_department;
-            }
-        }
-        $scope.message='';
-    }
+    // $scope.recover = function(){
+    //     if($scope.member_backup_department){
+    //         if($scope.member_backup_department.length > 0){
+    //             $scope.department_users = $scope.member_backup_department;
+    //         }
+    //     }
+    //     $scope.message='';
+    // }
 
     $scope.appointReady = function(index){
         $scope.department_user = $scope.department_users[index];

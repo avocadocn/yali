@@ -26,5 +26,5 @@
             .dl_row.users
               span.user_name {{user.nickname}}
     .dl-modal-footer
-      button.cancel_btn.dl_btn_large(ng-click="recover()") 还原
+      button.cancel_btn.dl_btn_large(data-dismiss="modal") 取消
       button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointManager()") #{__("APPOINT")}

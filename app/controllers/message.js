@@ -888,11 +888,22 @@ exports.setMessageStatus = function(req,res){
 
 //列出已发送消息
 exports.senderList = function(req,res){
-  var sid = req.user._id;
+  var _condition;
+  switch(req.params.sendType){
+    case 'private':
+      var sid = req.user._id;
+      _condition = {'sender':{'$elemMatch':{'_id':sid}},'status':'undelete'};
+    break;
+    case 'team':
+      var teamId = req.params.sendId;
+      _condition = {'team':{'$elemMatch':{'_id':teamId}},'status':'undelete'};
+    break;
+    default:break;
+  }
+
   var callback = function(message_contents,other,req,res){
     res.send({'msg':'SUCCESS','message_contents':message_contents});
   }
-  var _condition = {'sender':{'$elemMatch':{'_id':sid}},'status':'undelete'};
   var paramA = {
     'collection':MessageContent,
     'type':1,
@@ -946,13 +957,14 @@ exports.home = function(req,res){
       'role':req.role,
       'cid':req.user.provider === 'user'? req.user.cid : req.user._id,
       'team':req.params.teamId ? true : false,
-      'teamId': req.companyGroup != undefined ? req.companyGroup._id : 'null',
-      'teamName': req.companyGroup != undefined ? req.companyGroup.name : 'null',
-      'teamLogo': req.companyGroup != undefined ? req.companyGroup.logo : 'null',
+      'teamId': req.companyGroup != undefined ? req.companyGroup._id : null,
+      'teamName': req.companyGroup != undefined ? req.companyGroup.name : null,
+      'teamLogo': req.companyGroup != undefined ? req.companyGroup.logo : null
     };
     if(req.params.teamId){
       _send.logo = _send.teamLogo;
       _send.name = _send.teamName;
+      _send.teamId = req.params.teamId;
     }
     else if(req.user.provider==='user'){
       _send.logo = req.user.photo;

@@ -1,7 +1,7 @@
 .loading_div(ng-show = 'loading')
 .dl_message_box(ng-show = '!loading')
   .dl_row
-    form.comment_form(name="comment_form" novalidate)
+    form.comment_form(name="message_form" novalidate)
       .dl_message_send.dl_vertical
         span.subtitle(ng-if="teamName != 'null'")
           发往 {{teamName}}:
@@ -10,14 +10,15 @@
       .dl_md_8.dl_vertical
         input.dl_modal_input.dl-form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
       .dl_md_1.dl_vertical
-        button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll(comment_form)" ng-disabled="message_form.$invalid") 发送
+        button.dl_btn.dl_btn_right(data-dismiss="modal" ng-click="sendToAll(comment_form)" ng-disabled="message_form.$invalid || (multi_send && dOt_select_num == 0)") 发送
   .dl_row(ng-if="dOts.length > 0")
-    .groups.message_group
-      .group(ng-repeat="dOt in dOts")
-        .dl_row
-          .dl_cover_message(ng-if="dOt.selected" ng-click="selectReady($index)")
-          a(ng-click="selectReady($index)")
-            img.size_48(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}" title="{{dOt.name}}")
+    .dl_message_slide
+      .dl_message_item(ng-repeat="dOt in dOts")
+        input(type="checkbox" ng-model="dOt.selected" value="true" ng-change="selectReady($index)")
+        span {{dOt.name}}
+          //- .dl_cover_message(ng-if="dOt.selected" ng-click="selectReady($index)")
+          //- a(ng-click="selectReady($index)")
+          //-   img.size_48(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}" title="{{dOt.name}}")
   .dl_modal_container.margin_top_50
     .dl_row.message_panel(ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
       .row.line_left
