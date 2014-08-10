@@ -923,7 +923,7 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
         var links = [
           {
             text: company_group.name,
-            url: '/group/home/' + company_group._id
+            url: '/group/page/' + company_group._id
           },
           {
             text: '相册集',
@@ -986,7 +986,7 @@ exports.renderPhotoAlbumDetail = function(req, res) {
       var links = [
         {
           text: owner.team.name,
-          url: '/group/home/' + owner.team._id
+          url: '/group/page/' + owner.team._id
         },
         {
           text: '相册集',
@@ -1075,7 +1075,7 @@ exports.renderPhotoDetail = function(req, res) {
           var links = [
             {
               text: owner.team.name,
-              url: '/group/home/' + owner.team._id
+              url: '/group/page/' + owner.team._id
             },
             {
               text: '相册集',

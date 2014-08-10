@@ -41,7 +41,7 @@ exports.getCompetition = function(req, res){
     var index = competition.team.indexOf(req.role==='HR'?teams[i].id.toString():teams[i]._id.toString());
     if (index !== -1) {
       parent_name = competition.camp[index].tname;
-      parent_url = '/group/home/' + competition.team[index];
+      parent_url = '/group/page/' + competition.team[index];
       break;
     }
   }

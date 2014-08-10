@@ -704,18 +704,18 @@ function fetchCampaign(req,res,team_ids,role) {
         else{
           if(campaign[j].team.length === 1){//小队活动
             logo = campaign[j].team[0].logo;
-            link = '/group/home/'+campaign[j].team[0]._id;
+            link = '/group/page/'+campaign[j].team[0]._id;
             name = campaign[j].team[0].name;
           }
           else{                              //小队挑战
             if(team_ids.indexOf(campaign[j].team[0]._id)!== -1){ //是主办方
               logo = campaign[j].team[0].logo;
-              link = '/group/home/'+campaign[j].team[0]._id;
+              link = '/group/page/'+campaign[j].team[0]._id;
               name = campaign[j].team[0].name;
             }
             else{                             //不是主办方
               logo = campaign[j].team[1].logo;
-              link = '/group/home/'+campaign[j].team[1]._id;
+              link = '/group/page/'+campaign[j].team[1]._id;
               name = campaign[j].team[1].name;
             }
           }

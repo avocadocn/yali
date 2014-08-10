@@ -25,7 +25,7 @@ div(ng-show = "!loading&&role === 'HR'")
         th.noborder 活动/人次
       tr(ng-repeat="team in team_lists")
         td.logo
-          a(ng-show="data_type==='team'" href="/group/home/{{team._id}}")
+          a(ng-show="data_type==='team'" href="/group/page/{{team._id}}")
             img.img_border.img_contain.size_56(ng-src="{{team.logo}}")
           a(ng-show="data_type==='department'" href="/department/home/{{team.did}}")
             img.img_border.img_contain.size_56(ng-src="{{team.logo}}")
@@ -58,10 +58,10 @@ div(ng-show = "!loading&&role !== 'HR'")
     .teamitem.masonry-item(ng-repeat="team in team_lists" masonryItem)
       .title.clearfix
         .img_container
-          a(href="/group/home/{{team._id}}")
+          a(href="/group/page/{{team._id}}")
             img.img_contain(ng-src="{{team.logo}}/40/40")
         .text_container
-          a(href="/group/home/{{team._id}}") {{team.name}}
+          a(href="/group/page/{{team._id}}") {{team.name}}
         .button_container  
           //- 不属于显示加组按钮
           button.dl_btn.dl_btn_small.join_btn(ng-if="role==='EMPLOYEE'&&!team.belong" ng-click="joinGroup(team._id,$index)") #{__("JOIN_GROUP")}

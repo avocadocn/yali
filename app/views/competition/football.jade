@@ -21,7 +21,7 @@ block contentExt
             img.pull-right.team_logo(draggable="false" src='#{competition.camp[0].logo?competition.camp[0].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             .team_name.pull-right
-              a(href="/group/home/#{competition.camp[0].id}")= competition.camp[0].tname
+              a(href="/group/page/#{competition.camp[0].id}")= competition.camp[0].tname
             .clearfix
             if (competition.active || !competition.camp[1].start_confirm)&& !competition.finish && role!='HR' && competition.camp[0].start_confirm && team.indexOf(0)>-1
                 if competition.camp[1].start_confirm
@@ -70,7 +70,7 @@ block contentExt
             img.pull-left.team_logo(draggable="false" src='#{competition.camp[1].logo?competition.camp[1].logo:"/img/icons/default_group_logo.png"}')
             .clearfix
             .team_name.pull-left
-              a(href="/group/home/#{competition.camp[1].id}")= competition.camp[1].tname
+              a(href="/group/page/#{competition.camp[1].id}")= competition.camp[1].tname
             .clearfix
             if (competition.active || !competition.camp[1].start_confirm) && competition.camp[0].start_confirm&& !competition.finish && role!='HR' && team.indexOf(1)>-1
               if competition.camp[1].start_confirm
