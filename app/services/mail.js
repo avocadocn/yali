@@ -31,9 +31,9 @@ var sendMail = function (data,target,err_type) {
  * @param {String} id HR的公司id
  */
 exports.sendCompanyActiveMail = function (who, name, id, host) {
-  var from = '动梨无限<service@donler.com>';
+  var from = '动梨<service@donler.com>';
   var to = who;
-  var subject = name + ' 动梨社区公司账号激活';
+  var subject = name + ' 动梨账号激活';
   var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
     '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/company/validate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id + '">http://' + host + '/company/validate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id + '</a>';
 
@@ -51,9 +51,9 @@ exports.sendCompanyActiveMail = function (who, name, id, host) {
 };
 
 exports.sendStaffActiveMail = function(who, uid, cid, host) {
-  var from = '动梨无限<service@donler.com>';
+  var from = '动梨<service@donler.com>';
   var to = who;
-  var subject = '动梨社区员工账号激活';
+  var subject = '动梨账号激活';
   var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
     '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/setProfile?key=' + encrypt.encrypt(uid, config.SECRET) +
     '&uid=' + uid + '&cid=' + cid + '">http://' + host + '/users/setProfile?key=' + encrypt.encrypt(uid, config.SECRET) +
@@ -77,9 +77,9 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
     });
 };
 exports.sendStaffResetPwdMail = function(who, uid, host) {
-  var from = '动梨无限<service@donler.com>';
+  var from = '动梨<service@donler.com>';
   var to = who;
-  var subject = '动梨社区员工密码重置';
+  var subject = '动梨密码重置';
   var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
     '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
     '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+
@@ -104,9 +104,9 @@ exports.sendStaffResetPwdMail = function(who, uid, host) {
     });
 };
 exports.sendCompanyResetPwdMail = function(who, uid, host) {
-  var from = '动梨无限<service@donler.com>';
+  var from = '动梨<service@donler.com>';
   var to = who;
-  var subject = '动梨社区公司密码重置';
+  var subject = '动梨密码重置';
   var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
     '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
     '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+
