@@ -798,7 +798,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
 
             });
             AMap.event.addListener($scope.MSearch1, "complete", placeSearchCallBack(bindMap,index));//返回地点查询结果
-            $scope.MSearch1.search($scope.team.home_court[index].name); //关键字查询
         }
         else{
             $scope.MSearch2 = new AMap.PlaceSearch({ //构造地点查询类
@@ -808,7 +807,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
 
             });
             AMap.event.addListener($scope.MSearch2, "complete", placeSearchCallBack(bindMap,index));//返回地点查询结果
-            $scope.MSearch2.search($scope.team.home_court[index].name); //关键字查询
         }
         });
     }
@@ -816,31 +814,23 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     //初始化 如果有坐标则显示标注点，没有则不显示
     $scope.initialize = function(){
         $scope.locationmap1 = new AMap.Map("courtMap1");
-        $scope.locationmap1.plugin(["AMap.ToolBar"],function(){     
-            toolBar = new AMap.ToolBar();
-            $scope.locationmap1.addControl(toolBar);    
-        });
+        $scope.locationmap2 = new AMap.Map("courtMap2");
         if($scope.team.home_court[0].name!==''){
             var piont1 = new AMap.LngLat($scope.team.home_court[0].loc.coordinates[0],$scope.team.home_court[0].loc.coordinates[1]);
-            $scope.locationmap1.setZoomAndCenter(14,piont1);
+            $scope.locationmap1.setZoomAndCenter(15,piont1);
             var markerOption = {
                 map: $scope.locationmap1,
                 position: piont1,
                 draggable: true
             };
             var mar = new AMap.Marker(markerOption);
-            mar.setMap($scope.locationmap1);
             var changePoint = function (e) {
                 var p = e.lnglat;
                 $scope.team.home_court[0].loc.coordinates=[p.getLng(), p.getLat()];
             };
             AMap.event.addListener(mar,"dragend", changePoint);
         };
-        $scope.locationmap2 = new AMap.Map("courtMap2");
-        $scope.locationmap2.plugin(["AMap.ToolBar"],function(){     
-            toolBar = new AMap.ToolBar();
-            $scope.locationmap2.addControl(toolBar);    
-        });
+
         if($scope.team.home_court[1].name!==''){
             var piont2 = new AMap.LngLat($scope.team.home_court[1].loc.coordinates[0],$scope.team.home_court[1].loc.coordinates[1]);
             $scope.locationmap2.setZoomAndCenter(15,piont2);
@@ -850,7 +840,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
                 draggable: true
             };
             var marker2 = new AMap.Marker(markerOption);
-            marker2.setMap($scope.locationmap2);
             var changePoint = function (e) {
                 var p = e.lnglat;
                 $scope.team.home_court[1].loc.coordinates=[p.getLng(), p.getLat()];
@@ -863,11 +852,8 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
         }
         else {
             $scope.locationmap1.plugin(["AMap.CitySearch"], function() {
-                //实例化城市查询类
                 var citysearch = new AMap.CitySearch();
-                //自动获取用户IP，返回当前城市
                 citysearch.getLocalCity();
-                //citysearch.getCityByIp("123.125.114.*");
                 AMap.event.addListener(citysearch, "complete", function(result){
                     if(result && result.city && result.bounds) {
                         var citybounds = result.bounds;
