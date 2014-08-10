@@ -721,7 +721,7 @@ var getPublicMessage = function(req,res,cid){
           async.whilst(
             function() { return counter.i < message_contents.length},
             function(__callback){
-              if(message_contents[i].post_date > req.user.register_date){
+              if(message_contents[counter.i].post_date > req.user.register_date){
                 var M = {
                   'rec_id':req.user._id,
                   'MessageContent':message_contents[counter.i]._id,
