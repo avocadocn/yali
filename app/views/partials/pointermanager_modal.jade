@@ -4,11 +4,12 @@
       button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
         img(ng-src='/img/icons/icon_close.png')
       .head#myModalLabel 任命部门管理员
-    .dl-modal-body
-      .dl_modal_container.margin_top_30
+    .dl-modal-body.clearfix
+      .dl_modal_container
         .dl_row.clearfix
-          span.subtitle 任命管理员
+          //- span.subtitle 任命管理员
           span.info_label 点选新成员任命管理员后,现任管理员自动解职
+          a(ng-click="showOriginalUser()" ng-if="search_flag" ng-cloak) 显示部门成员
           .search_form.pull-right
             form(name="manager_form" novalidate)
               .search_input

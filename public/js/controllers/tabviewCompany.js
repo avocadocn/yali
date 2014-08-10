@@ -1656,7 +1656,6 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                             $scope.department_users[i]=$scope.department_users[0];
                             $scope.department_users[0]=temp;
                             $scope.department_users[0].leader = true;
-                            $scope.department_users[i].leader = true;
                             manager_find = true;
                             break;//目前一个小队只有一个组长
                         }
@@ -1689,16 +1688,20 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
         }else{
             $scope.message = '';
         }
+
+        $scope.search_flag=true;
+        $scope.member_search_department='';
     };
 
-    // $scope.recover = function(){
-    //     if($scope.member_backup_department){
-    //         if($scope.member_backup_department.length > 0){
-    //             $scope.department_users = $scope.member_backup_department;
-    //         }
-    //     }
-    //     $scope.message='';
-    // }
+    $scope.showOriginalUser = function(){
+        if($scope.member_backup_department){
+            if($scope.member_backup_department.length > 0){
+                $scope.department_users = $scope.member_backup_department;
+            }
+        }
+        $scope.message='';
+        $scope.search_flag=false;
+    }
 
     $scope.appointReady = function(index){
         $scope.department_user = $scope.department_users[index];
@@ -1798,6 +1801,7 @@ tabViewCompany.controller('DepartmentController', ['$rootScope' ,'$scope', '$htt
                         });
                         $scope.current_node = null;
                     }
+                    alertify.alert('任命成功！');
                 }).error(function(data, status) {
                     //TODO:更改对话框
                     alertify.alert('DATA ERROR');

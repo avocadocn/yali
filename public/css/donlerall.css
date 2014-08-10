@@ -871,6 +871,9 @@ textarea {
   width: 490px;
   float: left;
 }
+.dl_messagebox .dl_messageitem .message_row .line_left {
+  margin-left: 5px !important;
+}
 .dl_messagebox .message_side {
   width: 56px;
   float: left;

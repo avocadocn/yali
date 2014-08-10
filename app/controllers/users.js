@@ -333,10 +333,13 @@ function userOperate(cid, key, res, req, index) {
                           console.log(err);
                         }
                       }
-                      if(req.body.child_department_id != 'null'){
-                        department.memberOperateByHand('join',member,req.body.child_department_id,callback);
-                      }else{
-                        department.memberOperateByHand('join',member,req.body.main_department_id,callback);
+                      //员工尚未激活时,他的部门信息里只能填入部门的id
+                      if(req.body.main_department_id != null && req.body.main_department_id != 'null' && req.body.main_department_id != undefined && req.body.main_department_id != ''){
+                        if(req.body.child_department_id != null && req.body.child_department_id != 'null' && req.body.child_department_id != undefined && req.body.child_department_id != ''){
+                          user.department = {'_id':req.body.child_department_id,'name':null};
+                        }else{
+                          user.department = {'_id':req.body.main_department_id,'name':null};
+                        }
                       }
                     }
                   }
