@@ -2129,6 +2129,12 @@ input.ng-invalid.ng-dirty {
   line-height: 98px;
   font-size: 48px;
 }
+.dl_tab_group .campaign_table .content_col {
+  max-width: 280px;
+}
+.dl_tab_group .campaign_table .operator_col {
+  padding: 25px 0px;
+}
 @-moz-keyframes scaleFade {
   50% {
     opacity: 1;
