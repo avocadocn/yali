@@ -111,6 +111,12 @@ tabViewCompany.directive('ngMax', function() {
         }
     };
 });
+tabViewCompany.filter('offset', function() { 
+    return function(input, start) {
+        start = parseInt(start, 10);
+        return input.slice(start);
+    };
+});
 tabViewCompany.controller('TimeLineController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
          $rootScope.nowTab = 'timeline';
@@ -612,7 +618,34 @@ tabViewCompany
     $scope.member_search = {
         'value':''
     };
+    $scope.itemsPerPage = 20;
+    $scope.currentPage = 0;
+    $scope.prevPage = function() { 
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+        }
+    };
 
+
+    $scope.prevPageDisabled = function() {
+        return $scope.currentPage === 0 ? "disabled" : "";
+    };
+
+
+    $scope.pageCount = function() {
+        return Math.ceil($rootScope.team_lists.length/$scope.itemsPerPage)-1;
+    };
+
+
+    $scope.nextPage = function() {
+        if ($scope.currentPage < $scope.pageCount()) {
+            $scope.currentPage++;
+        }
+    };
+
+    $scope.nextPageDisabled = function() {
+        return $scope.currentPage === $scope.pageCount() ? "disabled" : "";
+    } 
     $scope.getData = function(type) {
         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
         $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
@@ -620,7 +653,13 @@ tabViewCompany
             $scope.cid = data.cid;
             $scope.role = data.role;
             $scope.data_type = type;
-
+            if(data.teams.length>$scope.itemsPerPage){
+                $scope.showPage = true;
+            }
+            else{
+                $scope.showPage = false;
+            }
+            $scope.currentPage = 0;
             // $timeout(function () {
             //     var mary = document.querySelector('.masonry');
             //     // console.log(mary);

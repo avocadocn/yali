@@ -23,7 +23,7 @@ div(ng-show = "!loading&&role === 'HR'")
         th.noborder 活动/人次
         th.noborder 活动/人次
         th.noborder 活动/人次
-      tr(ng-repeat="team in team_lists")
+      tr(ng-repeat="team in team_lists | offset: currentPage*itemsPerPage | limitTo: itemsPerPage")
         td.logo
           a(ng-show="data_type==='team'" href="/group/page/{{team._id}}")
             img.img_border.img_contain.size_56(ng-src="{{team.logo}}")
@@ -50,9 +50,13 @@ div(ng-show = "!loading&&role === 'HR'")
             button.dl_btn.dl_btn_small(ng-if="!team.active" ng-click="activateGroup(true,team._id,$index)") #{__("OPEN")}
             //-关组
             button.dl_btn.dl_btn_small.cancel_btn(ng-if="team.active" ng-click="closeGroup($index)" data-toggle="modal" data-target="#CloseGroupModel") #{__("CLOSE")}
+    ul.pager(ng-if="showPage")
+      li(ng-class="{'disabled':prevPageDisabled()}")
+        a(ng-disabled="prevPageDisabled()" ng-click="prevPage()") 上一页
+      li(ng-class="{'disabled':nextPageDisabled()}")
+        a(ng-disabled="nextPageDisabled()" ng-click="nextPage()") 下一页
     div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal
-
 div(ng-show = "!loading&&role !== 'HR'")
   .dl_allteaminfo_emp.masonry(masonry)
     .teamitem.masonry-item(ng-repeat="team in team_lists" masonryItem)
