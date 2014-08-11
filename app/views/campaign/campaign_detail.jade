@@ -74,7 +74,7 @@ block contentExt
             .dl_row.subtitle
               .pull-left {{member_team.name}} #{__("JOIN")}#{__("MEMBER")}:
               if role === 'HR' || role === 'LEADER'
-                a.pull-right(ng-click="modalPerticipator($index)" ng-if="(member_team.leader || role=='HR') && member_team.join_member.length > 0") 发送私信
+                a.pull-right(ng-click="modalPerticipator($index)" ng-if="(member_team.leader || role=='HR') && member_team.join_member.length > 0") 发通知
             .dl_row
               div.member(ng-repeat = "_member in member_team.join_member")
                 a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
@@ -85,7 +85,7 @@ block contentExt
           .dl_row.subtitle
             .pull-left #{__("JOIN")}#{__("MEMBER")}:
             if role === 'HR' || role === 'LEADER'
-              a.pull-right(ng-click="modalPerticipator()" ng-if="member.length > 0") 发送私信
+              a.pull-right(ng-click="modalPerticipator()" ng-if="member.length > 0") 发通知
           .dl_row
             div.member(ng-repeat = "_member in member")
               a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')

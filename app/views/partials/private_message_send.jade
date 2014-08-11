@@ -4,17 +4,10 @@
       .dl-modal-header
         button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
           img(ng-src='/img/icons/icon_close.png')
-        .head#myModalLabel 给您的成员发送私信
+        .head#myModalLabel 给该小队的成员发送通知
       .dl-modal-body
         .dl_modal_container
-          .dl_md_1.dl_vertical
-            label.subtitle 标题
-          .dl_md_10
-            input.dl_modal_input.form-control(type="text" name="cname" ng-model="private_message_caption.text")
-        .dl_modal_container
-          .dl_md_1.dl_vertical
-            label.subtitle 内容
-          .dl_md_10
+          .dl_md_all
             textarea.dl_modal_input.form-control(type="text" ng-model="private_message_content.text" placeholder="请控制在140字以内" maxlength=140 required)
       .dl-modal-footer
         button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="sendToAll()" ng-disabled="message_form.$invalid") 发送
