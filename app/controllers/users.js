@@ -429,7 +429,7 @@ exports.setProfile = function(req, res) {
   }
   var key = req.query.key;
   var uid = req.query.uid;
-  User.findOne({_id: uid}, function(err, user) {
+  User.findOne({_id: uid}).populate('cid').exec(function(err, user) {
     if(err) {
       console.log(err);
       res.render('users/message', message.dbError);
@@ -463,11 +463,10 @@ exports.setProfile = function(req, res) {
             else{
               var groupMessage = new GroupMessage();
               groupMessage.message_type = 7;
-              groupMessage.company.cid = user.cid;
-              groupMessage.company.name = user.cname;
               groupMessage.company={
-                cid : user.cid,
-                name : user.cname
+                cid : user.cid._id,
+                name : user.cname,
+                logo : user.cid.info.logo
               };
               groupMessage.user={
                 user_id : user._id,
