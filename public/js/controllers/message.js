@@ -564,6 +564,7 @@ var sendSet = function(http,_status,rootScope,_id,type,index,multi){
 
 
 messageApp.controller('messageAllController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+  $rootScope.nowTab = 'message_all';
   $rootScope.getMessageByHand('all');
   $scope.pageOperate = function(arrow){
     pageHandle($rootScope.all_messages,$rootScope.page_all,arrow);
@@ -709,6 +710,7 @@ var hrSendToMulti = function(url,value,http,scope){
 }
 
 messageApp.controller('messageSenderController',['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+  $rootScope.nowTab = 'send';
   $scope.dOt_select_num = 0;
     $scope.private_message_content = {
       'text':''
@@ -862,8 +864,8 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
                   $rootScope.receive_message_sum ++;
                 }
                 $scope.private_message_content.text='';
-                $scope.message_form.$setPristine();
-                $scope.getSenderList();
+                //comment_form.$setPristine();
+                $scope.getSenderList($scope.teamId);
               }
           }).error(function(data, status) {
               //TODO:更改对话框
