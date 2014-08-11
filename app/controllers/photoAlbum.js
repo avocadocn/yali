@@ -367,7 +367,8 @@ var getNewPhotos = exports.getNewPhotos = function(group_id, count, callback) {
         break;
       }
       else {
-        if(company_group.photo_album_list.length > 0){
+        //相册照片非空
+        if(company_group.photo_album_list[i].photos.length > 0){
           photos=photos.concat(getShowPhotos(company_group.photo_album_list[i],count));
           count_flag -- ;
         }

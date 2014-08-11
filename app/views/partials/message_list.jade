@@ -160,13 +160,11 @@ div(ng-show = '!loading')
                           a.mouse_hidden(ng-click="deleteComment($index)") 删除
                 .dl_row.line_top
                   hr.comment_bottom
+  br
   .text-center(ng-if="group_messages.length>0")
-    button.dl_btn.dl_btn_small(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
+    a(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
     span(ng-if="loadOver_flag") 已经加载了所有的动态
   .text-center(ng-if="group_messages.length==0")
     span 目前没有新的动态
-  ul.pager
-    li
-      a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
-    li
-      a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
+  a.pull-right(ng-if="lastPage_flag" ng-click="changePage(-1)") <<上一页
+  a.pull-right(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页>>

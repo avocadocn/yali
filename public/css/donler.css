@@ -1880,6 +1880,12 @@ input.ng-invalid.ng-dirty {
   padding: 12px;
   margin-bottom: 12px;
 }
+.dl_integrate_container .thumbnailbox .text {
+  text-align: right;
+  color: #9a9a9a;
+  font-weight: 100;
+  font-size: 12px;
+}
 .dl_integrate_container .team_main {
   width: 660px;
 }

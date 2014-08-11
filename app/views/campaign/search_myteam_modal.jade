@@ -10,12 +10,8 @@ form(name="search_form_2")
           img.size_56(ng-src="{{team.logo}}")
         .dl_md_10
           .dl_row
-            a(href="/group/home/{{team._id}}" target="_blank")
-              span {{team.name}}
-          .dl_row
-            .dl_md_3
-              span 队员人数:{{team.member.length}}
-            .dl_md_3
+            a(href="/group/home/{{team._id}}" target="_blank") {{team.name}}
+          span 队员人数:{{team.member.length}}
   .dl-modal-footer.clearfix
     button.cancel_btn.dl_btn_large(data-dismiss="modal") #{__("CANCEL")}
     button.dl_btn.dl_btn_large(ng-click="provoke_select(2)" ng-disabled="selected_index==-1") 就用TA动！
