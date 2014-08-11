@@ -17,6 +17,59 @@ app.directive('match', function ($parse) {
     }
   };
 });
+app.directive('ngMin', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attr, ctrl) {
+            scope.$watch('member_max', function(){
+                if(scope.member_min!=undefined){
+                    ctrl.$setViewValue(ctrl.$viewValue);
+                }
+            });
+            var minValidator = function(value) {
+              var min = scope.$eval(attr.ngMin) || 0;
+              if (value < min) {
+                ctrl.$setValidity('ngMin', false);
+                return value;
+              } else {
+                ctrl.$setValidity('ngMin', true);
+                return value;
+              }
+            };
+
+            ctrl.$parsers.push(minValidator);
+            ctrl.$formatters.push(minValidator);
+        }
+    };
+});
+
+app.directive('ngMax', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attr, ctrl) {
+            scope.$watch('member_min', function(){
+                if(scope.member_max!=undefined){
+                    ctrl.$setViewValue(ctrl.$viewValue);
+                }
+            });
+            var maxValidator = function(value) {
+              var max = scope.$eval(attr.ngMax) || Infinity;
+              if (value > max) {
+                ctrl.$setValidity('ngMax', false);
+                return value;
+              } else {
+                ctrl.$setValidity('ngMax', true);
+                return value;
+              }
+            };
+
+            ctrl.$parsers.push(maxValidator);
+            ctrl.$formatters.push(maxValidator);
+        }
+    };
+});
 //弹出信息卡片的控制器
 app.directive('bsPopover',function() {
   return{
@@ -44,18 +97,6 @@ app.directive('bsPopover',function() {
         }
       };
     }],
-  };
-});
-app.directive('match', function ($parse) {
-  return {
-    require: 'ngModel',
-    link: function(scope, elem, attrs, ctrl) {
-      scope.$watch(function() {
-        return $parse(attrs.match)(scope) === ctrl.$modelValue;
-      }, function(currentValue) {
-        ctrl.$setValidity('mismatch', currentValue);
-      });
-    }
   };
 });
 
