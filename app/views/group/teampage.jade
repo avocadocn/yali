@@ -92,7 +92,7 @@ block panel
         include ../campaign/provoke_modal_base
 block aside
   .newcampainbox
-    span.subtitle 活动预告
+    span.subtitle 最新活动
     if campaign
       .bar
         //- PK型活动
@@ -108,13 +108,16 @@ block aside
         //- 自己玩的活动
         if campaign.campaign_type == '2'
           .event_solo
+            .center-block.text-center
+              img(src="#{campaign.team[0].logo}/84/84")
 
       .info
-        p 
-          | 主题:
-          a(href="/campaign/detail/{{campaign._id}}" target="_blank")  #{campaign.theme}
+        p
+          | 主题:&nbsp;
+          a(href="/campaign/detail/#{campaign._id}" target="_blank") #{campaign.theme}
         p 时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
-        if campaign.campaign_type == '2'
+        p 地点: #{campaign.location.name}
+        //-if campaign.campaign_type == '2'
           p.map
             if campaign.location.coordinates.length==2
               a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")

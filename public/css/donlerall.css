@@ -1963,6 +1963,7 @@ input.ng-invalid.ng-dirty {
   height: 270px;
 }
 .dl_integrate_container .newcampainbox .bar .event_pk {
+  padding-top: 3px;
   margin-bottom: 10px;
   position: relative;
   height: 85px;
@@ -1988,6 +1989,9 @@ input.ng-invalid.ng-dirty {
   line-height: 85px;
   font-size: 36px;
 }
+.dl_integrate_container .newcampainbox .bar .event_solo {
+  margin: 10px 0;
+}
 .dl_integrate_container .newcampainbox .info p {
   margin: 0;
   text-overflow: ellipsis;
@@ -2004,16 +2008,18 @@ input.ng-invalid.ng-dirty {
 .dl_integrate_container .newcampainbox .remindbox .remind_text {
   margin: 5px 0;
   text-align: center;
+  font-size: 16px;
+  line-height: 24px;
 }
 .dl_integrate_container .newcampainbox .remindbox .remind_time {
   margin: 0;
   text-align: center;
   border: solid 1px #808080;
-  height: 60px;
+  height: 36px;
   vertical-align: middle;
   color: #fff;
   background: #808080;
-  line-height: 60px;
+  line-height: 36px;
   font-size: 18px;
 }
 .dl_integrate_container .subtitle {
