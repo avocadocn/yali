@@ -271,9 +271,9 @@ function userOperate(cid, key, res, req, index) {
               role: 'EMPLOYEE'
             });
             //员工尚未激活时,他的部门信息里只能填入部门的id
-            if(req.body.main_department_id != null && req.body.main_department_id != 'null' && req.body.main_department_id != undefined && req.body.main_department_id != ''){
-              if(req.body.child_department_id != null && req.body.child_department_id != 'null' && req.body.child_department_id != undefined && req.body.child_department_id != ''){
-                if(req.body.grandchild_department_id != null && req.body.grandchild_department_id != 'null' && req.body.grandchild_department_id != undefined && req.body.grandchild_department_id != ''){
+            if(req.body.main_department_id != ''){
+              if(req.body.child_department_id != ''){
+                if(req.body.grandchild_department_id != ''){
                   user.department = {'_id':req.body.grandchild_department_id,'name':null};
                 }else{
                   user.department = {'_id':req.body.child_department_id,'name':null};
@@ -339,9 +339,13 @@ function userOperate(cid, key, res, req, index) {
                         }
                       }
                       //员工尚未激活时,他的部门信息里只能填入部门的id
-                      if(req.body.main_department_id != null && req.body.main_department_id != 'null' && req.body.main_department_id != undefined && req.body.main_department_id != ''){
-                        if(req.body.child_department_id != null && req.body.child_department_id != 'null' && req.body.child_department_id != undefined && req.body.child_department_id != ''){
-                          user.department = {'_id':req.body.child_department_id,'name':null};
+                      if(req.body.main_department_id != ''){
+                        if(req.body.child_department_id != ''){
+                          if(req.body.grandchild_department_id != ''){
+                            user.department = {'_id':req.body.grandchild_department_id,'name':null};
+                          }else{
+                            user.department = {'_id':req.body.child_department_id,'name':null};
+                          }
                         }else{
                           user.department = {'_id':req.body.main_department_id,'name':null};
                         }
@@ -410,7 +414,7 @@ exports.mailCheck = function(req, res) {
     else if(!user){//这个邮箱没用过
       return res.send({'active':1});
     }
-    else if(user.active === false){//这个邮箱激活了没验证
+    else if(user.mail_active === false){//这个邮箱激活了没验证
       return res.send({'active':2});
     }
     else //这个邮箱已激活、并注册完毕

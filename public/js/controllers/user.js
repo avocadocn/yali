@@ -43,14 +43,6 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
 
     var departments;
     $http.get('/departmentTree/0').success(function(data, status) {
-        $scope.main_department_id = null;
-        $scope.main_department_name = null;
-
-        $scope.child_department_id = null;
-        $scope.child_department_name = null;
-
-        $scope.grandchild_department_id = null;
-        $scope.grandchild_department_name = null;
 
         departments = data.department;
         $scope.main_departments = [];
@@ -101,25 +93,31 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
 
     $scope.selectMainDepartment = function(value){
         $scope.main_department = value;
-        $scope.main_department_id = null;
-        $scope.main_department_name = null;
+        $scope.main_department_id = undefined;
+        $scope.main_department_name = undefined;
 
-        $scope.child_department_id = null;
-        $scope.child_department_name = null;
+        $scope.child_department = undefined;
+        $scope.child_department_id = undefined;
+        $scope.child_department_name = undefined;
 
-        $scope.grandchild_department_id = null;
-        $scope.grandchild_department_name = null;
+        $scope.grandchild_department = undefined;
+        $scope.grandchild_department_id = undefined;
+        $scope.grandchild_department_name = undefined;
 
         for(var i = 0; i < departments.length; i ++){
             if(departments[i]._id === $scope.main_department._id){
                 $scope.child_departments = [];
                 $scope.grandchild_departments = [];
-                for(var j = 0 ; j < departments[i].department.length; j ++){
-                    $scope.child_departments.push({
-                        '_id':departments[i].department[j]._id,
-                        'name':departments[i].department[j].name,
-                        'department':departments[i].department[j].department
-                    });
+                if(departments[i].department.length > 0){
+
+                    
+                    for(var j = 0 ; j < departments[i].department.length; j ++){
+                        $scope.child_departments.push({
+                            '_id':departments[i].department[j]._id,
+                            'name':departments[i].department[j].name,
+                            'department':departments[i].department[j].department
+                        });
+                    }
                 }
                 break;
             }
@@ -132,6 +130,7 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
             $scope.child_department = $scope.child_departments[0];
             $scope.child_department_id = $scope.child_department._id;
             $scope.child_department_name = $scope.child_department.name;
+            console.log($scope.child_department);
             if($scope.child_departments[0].department.length > 0){
                 for(var i = 0; i < $scope.child_departments[0].department.length; i ++){
                     $scope.grandchild_departments.push({
@@ -148,10 +147,12 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
 
     $scope.selectChildDepartment = function(value){
         $scope.child_department = value;
-        $scope.child_department_id = null;
-        $scope.child_department_name = null;
         $scope.child_department_id = $scope.child_department._id;
         $scope.child_department_name = $scope.child_department.name;
+
+        $scope.grandchild_department = undefined;
+        $scope.grandchild_department_id = undefined;
+        $scope.grandchild_department_name = undefined;
 
         for(var i = 0; i < $scope.child_departments.length; i ++){
             if($scope.child_departments[i]._id.toString() === $scope.child_department_id){
@@ -174,8 +175,6 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
 
     $scope.selectGrandChildDepartment = function(value){
         $scope.grandchild_department = value;
-        $scope.grandchild_department_id = null;
-        $scope.grandchild_department_name = null;
         $scope.grandchild_department_id = $scope.child_department._id;
         $scope.grandchild_department_name = $scope.child_department.name;
     }
