@@ -2,7 +2,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
   //- if Global.role == undefined || Global.role == ''
   if !global_user
     .header_container
-      a.navbar-brand(href="/"): img.logo(src="/img/logo_w.png")
+      a.navbar-brand(href="/"): img.logo(src="/img/dl_logol.png")
       .navbar-nav.nav.pull-right.dl-top-login
         form.signin.form-horizontal.ng-pristine.ng-valid(action="/users/session" method="post")
           .input-group.input-group-sm
@@ -19,7 +19,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
       if global_user.provider === 'user'
         //.navbar-header
         a.navbar-brand(href="/")
-          img.logo(src="/img/logo_w.png")
+          img.logo(src="/img/dl_logol.png")
         //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#personal_nav")
           span.sr-only Toggle navigation
           span.icon-bar
@@ -58,7 +58,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
       if global_user.provider === 'company'
         //.navbar-header
         a.navbar-brand(href="/")
-          img.logo(src="/img/logo_w.png")
+          img.logo(src="/img/dl_logol.png")
         //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav")
           span.sr-only Toggle navigation
           span.icon-bar
