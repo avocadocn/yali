@@ -108,6 +108,7 @@
 }
 .team_calendar_box .events-list .event.event-info .join_sign {
   margin: 0;
+  background-color: #aaa;
 }
 .team_calendar_box #cal-slide-content {
   padding: 5px;
@@ -119,6 +120,7 @@
 }
 .team_calendar_box #cal-slide-content .custom_calendar_li .join_sign {
   margin: 8px;
+  background-color: #aaa;
 }
 .calendar_box {
   margin-top: 0;
