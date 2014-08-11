@@ -257,7 +257,7 @@ exports.hrSendToMember = function(req,res){
   if(team.own._id == 'null'){
     var sender = {
           '_id':req.user._id,
-          'nickname':req.user.info.name,
+          'nickname':req.user.info.official_name,
           'photo':req.user.info.logo,
           'role':'HR'
         };
@@ -968,10 +968,19 @@ exports.home = function(req,res){
       'teamName': req.companyGroup != undefined ? req.companyGroup.name : null,
       'teamLogo': req.companyGroup != undefined ? req.companyGroup.logo : null
     };
+    _send.leader = false;
     if(req.params.teamId){
       _send.logo = _send.teamLogo;
       _send.name = _send.teamName;
       _send.teamId = req.params.teamId;
+      if(req.user.provider==='user'){
+        for(var i = 0 ; i < req.user.team.length; i ++){
+          if(req.user.team[i]._id.toString() === _send.teamId.toString()){
+            _send.leader = req.user.team[i].leader;
+            break;
+          }
+        }
+      }
     }
     else if(req.user.provider==='user'){
       _send.logo = req.user.photo;
@@ -996,11 +1005,7 @@ exports.renderAll = function(req,res){
   }
 }
 exports.renderSender = function(req,res){
-  if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
-    res.render('message/send');
-  }else{
-    res.send(403);
-  }
+  res.render('message/send',{'role':req.role});
 }
 
 //这些以后站内信分类时会用到的

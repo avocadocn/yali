@@ -710,6 +710,7 @@ var hrSendToMulti = function(url,value,http,scope){
 }
 
 messageApp.controller('messageSenderController',['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+
   $rootScope.nowTab = 'send';
   $scope.dOt_select_num = 0;
     $scope.private_message_content = {
@@ -901,8 +902,13 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
     }
   }
 
-  $scope.$watch('teamId',function(teamId){
-    $scope.getSenderList(teamId);
+  $scope.$watch('teamId+role+leader',function(){
+    if($scope.role == 'HR' || $scope.leader == 'true'){
+      ;
+    }else{
+      window.location.href = '/message/home#/message_all';
+    }
+    $scope.getSenderList($scope.teamId);
   });
 
   $scope.pageOperate = function(arrow){

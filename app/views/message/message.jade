@@ -18,7 +18,7 @@ block baseInfo
       h3 #{name}的信息站
 .dl_messages_page
   block panel
-    div(ng-init="role='#{role}';teamId='#{teamId}';cid='#{cid}';teamName='#{teamName}';teamLogo='#{teamLogo}';departmentId='#{departmentId}'")
+    div(ng-init="leader='#{leader}';role='#{role}';teamId='#{teamId}';cid='#{cid}';teamName='#{teamName}';teamLogo='#{teamLogo}';departmentId='#{departmentId}'")
       ul.nav.nav-tabs
         if role === 'HR'
           li.tab_style(ng-class="{'active':nowTab=='message_all'}")
