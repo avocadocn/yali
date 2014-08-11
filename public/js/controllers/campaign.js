@@ -21,22 +21,24 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         text:''
     };
     $scope.$watch('campaign_team+campaign_id+member+user_team+role',function(){
+        console.log($scope.member);
         if($scope.init){
             if($scope.campaign_team==null){
                 return;
             }
             if($scope.campaign_type == '3'){
-                console.log($scope.user_team);
                 for(var i =0; i < $scope.campaign_team.length; i ++){
                     $scope.campaign_team[i].join_member = [];
                     for(var j = 0; j < $scope.member.length; j ++){
-                        if($scope.campaign_team[i]._id.toString() == $scope.member[j].team._id.toString()){
-                            $scope.campaign_team[i].join_member.push({
-                                '_id' : $scope.member[j].uid,
-                                'nickname' : $scope.member[j].nickname,
-                                'photo' : $scope.member[j].photo,
-                                'team' : $scope.member[j].team
-                            });
+                        if($scope.member[j].team){
+                            if($scope.campaign_team[i]._id.toString() == $scope.member[j].team._id.toString()){
+                                $scope.campaign_team[i].join_member.push({
+                                    '_id' : $scope.member[j].uid,
+                                    'nickname' : $scope.member[j].nickname,
+                                    'photo' : $scope.member[j].photo,
+                                    'team' : $scope.member[j].team
+                                });
+                            }
                         }
                     }
                     for(var k = 0; k < $scope.user_team.length; k ++){
