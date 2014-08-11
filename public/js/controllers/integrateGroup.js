@@ -959,17 +959,16 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
         }
     }
 
-
+    var show_team_index = -1;
     $scope.toggleTeam = function(cid,index){
-        for(var i = 0; i < $scope.companies.length; i ++){
-            if(i !== index){
-                $scope.show_team[i] = false;
-            }
-        }
-        $scope.show_team[index] = !$scope.show_team[index];
-        if($scope.show_team[index]){
+        if(show_team_index !== -1)
+            $scope.show_team[show_team_index]=false;
+        $scope.show_team[index] = true;
+        if($scope.show_team[index] && show_team_index!==index){
             $scope.getSelectTeam(cid);
+            $scope.selected_index = -1;
         }
+        show_team_index = index;
     }
 
     $scope.getSelectTeam = function(cid) {
@@ -1022,10 +1021,16 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
         }
     };
 
-    $scope.provoke_select = function (team) {
-        $scope.team_opposite = team;
+    //选择对战小队
+    $scope.provoke_select = function (index) {
+        if(!index){
+            $scope.team_opposite = $scope.teams[$scope.selected_index];
+        }
+        else
+            $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
         $scope.modal++;
         $rootScope.loadMapIndex=2;
+
     };
         //约战
     $scope.provoke = function() {
@@ -1092,6 +1097,9 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',f
         $scope.modal--;
     };
 
+    $scope.selcet_team = function(index){
+        $scope.selected_index = index;
+    };
 
 }]);
 
