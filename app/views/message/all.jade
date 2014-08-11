@@ -4,15 +4,16 @@
     span (＞人＜;)您的收件箱暂时木有消息哦~
   .message_panel(ng-repeat="all_message in all_messages" ng-if="$index >= page_all.up && $index <= page_all.down" ng-click="setToRead($index)")
     .dl_row.clearfix.line_left
-      .dl_message_head(ng-switch="all_message.message_type")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="0")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="1")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="2")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="3")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="4")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="5")
-        span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
-        img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="7")
+      if provider == 'user'
+        .dl_message_head(ng-switch="all_message.message_type")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="0")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="1")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="2")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="3")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="4")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="5")
+          span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
+          img.size_48(ng-src="{{all_message.photo}}" ng-switch-when="7")
       .dl_message_body
         .message_row(ng-switch="all_message.message_type")
           //-0:小队通知

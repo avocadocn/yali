@@ -999,7 +999,7 @@ exports.home = function(req,res){
 }
 exports.renderAll = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
-    res.render('message/all');
+    res.render('message/all',{'provider':req.user.provider});
   }else{
     res.send(403);
   }
