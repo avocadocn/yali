@@ -38,11 +38,11 @@
               p.subtitle(ng-switch-when="3")
                 发往全公司 ({{send_message.sender.nickname}})
               p.subtitle(ng-switch-when="1")
-                发往活动 {{send_message.campaign_name}} ({{send_message.sender.nickname}})
+                发往活动 {{send_message.campaign_name}} (来自{{send_message.sender.nickname}})
               p.subtitle(ng-switch-when="2")
-                发往比赛 {{send_message.campaign_name}} ({{send_message.sender.nickname}})
+                发往比赛 {{send_message.campaign_name}} (来自{{send_message.sender.nickname}})
               p.subtitle(ng-switch-when="0")
-                发往小队 {{send_message.team.name}} ({{send_message.sender.nickname}})
+                发往小队 {{send_message.team.name}} (来自{{send_message.sender.nickname}})
               span {{send_message.detail}}
         .dl_message_tail
           .dl_message_date

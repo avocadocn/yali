@@ -263,7 +263,7 @@ var messagePreHandle = function(teams,msg,divide){
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
             'detail':detail,
-            'sender':msg[i].message_content.sender[0].nickname,
+            'sender':msg[i].message_content.sender[0],
             'message_type':message_type
           });
         }else{
@@ -273,7 +273,7 @@ var messagePreHandle = function(teams,msg,divide){
             'date':msg[i].message_content.post_date,
             'photo':msg[i].message_content.sender[0].photo,
             'detail':detail,
-            'sender':msg[i].message_content.sender[0].nickname,
+            'sender':msg[i].message_content.sender[0],
             'message_type':message_type
           });
         }
