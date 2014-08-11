@@ -1278,6 +1278,9 @@ textarea {
 .dl_sm_group {
   margin-bottom: 5px;
 }
+.dl_sm_group .signup_button_offset {
+  margin-left: 20%;
+}
 .dl_sm_group .control-label {
   line-height: 30px;
   font-size: 15px;
