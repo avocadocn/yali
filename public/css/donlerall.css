@@ -666,6 +666,7 @@ textarea {
 }
 .group_btn_container {
   padding-top: 58px;
+  float: right;
 }
 .btn_container {
   float: left;
@@ -719,7 +720,7 @@ textarea {
   padding-top: 15px;
 }
 .dl_container .top-main {
-  width: 560px;
+  width: 530px;
   margin-right: 10px;
   float: left;
 }
@@ -740,7 +741,7 @@ textarea {
 }
 .dl_container .top-side,
 .dl_container .hr-top-side {
-  width: 290px;
+  width: 320px;
   float: left;
 }
 .dl_container .hr-top-side {
