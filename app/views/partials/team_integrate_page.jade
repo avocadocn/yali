@@ -19,23 +19,13 @@ div(ng-show = '!loading')
     div(ng-if="family_photos.select_count === 0")
       .team_photo
         ul.ng-cloak(rn-carousel rn-carousel-indicator="true" rn-carousel-auto-slide="2" rn-carousel-swipe="false" rn-carousel-index="slide.index")
-          li
+          li(ng-repeat="photo in default_family")
             .carousel-img-container
-              img.center-block(src="/img/icons/defaultfamily1.jpg/500/270")
-          li
-            .carousel-img-container
-              img.center-block(src="/img/icons/defaultfamily2.jpg/500/270")
-          li
-            .carousel-img-container
-              img.center-block(src="/img/icons/defaultfamily3.jpg/500/270")
+              img.center-block(ng-src="{{photo.uri}}/500/270")
       .slider_nav
         div.carousel_thumbs.ng-cloak(height="90" count="3" scroll-index="slide.index" scroll-thumbs)
-          div(ng-class="{'active': ($parent.slide.index==0)}" ng-click="$parent.slide.index=0")
-            img.center-block(src="/img/icons/defaultfamily1.jpg/160/90")
-          div(ng-class="{'active': ($parent.slide.index==1)}" ng-click="$parent.slide.index=1")
-            img.center-block(src="/img/icons/defaultfamily2.jpg/160/90")
-          div(ng-class="{'active': ($parent.slide.index==2)}" ng-click="$parent.slide.index=2")
-            img.center-block(src="/img/icons/defaultfamily3.jpg/160/90")
+          div(ng-repeat="photo in default_family" ng-class="{'active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
+            img.center-block(ng-src="{{photo.uri}}/160/90")
 
   .team_calendar_box.clearfix
     .dl_row.clearfix

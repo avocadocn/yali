@@ -485,6 +485,18 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
         index: 0
     };
 
+    $scope.default_family = [
+        {
+            uri: '/img/icons/defaultfamily1.jpg'
+        },
+        {
+            uri: '/img/icons/defaultfamily2.jpg'
+        },
+        {
+            uri: '/img/icons/defaultfamily3.jpg'
+        }
+    ];
+
 
     $scope.clickThumb = function(photo) {
         for (var i = 0; i < $scope.family_photos.length; i++) {
