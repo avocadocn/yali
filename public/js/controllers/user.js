@@ -45,16 +45,23 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
     $http.get('/departmentTree/0').success(function(data, status) {
         $scope.main_department_id = null;
         $scope.main_department_name = null;
+
         $scope.child_department_id = null;
         $scope.child_department_name = null;
+
+        $scope.grandchild_department_id = null;
+        $scope.grandchild_department_name = null;
 
         departments = data.department;
         $scope.main_departments = [];
         $scope.child_departments = [];
+        $scope.grandchild_departments = [];
+
         for(var i = 0; i < departments.length; i ++){
             $scope.main_departments.push({
                 '_id':departments[i]._id,
-                'name':departments[i].name
+                'name':departments[i].name,
+                'department':departments[i].department
             });
         }
 
@@ -63,16 +70,30 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
             $scope.main_department_id = $scope.main_department._id;
             $scope.main_department_name = $scope.main_department.name;
         }
-        if(departments[0].department.length > 0){
-            for(var i = 0 ; i < departments[0].department.length; i ++){
+
+        if($scope.main_department.department.length > 0){
+            for(var i = 0 ; i < $scope.main_department.department.length; i ++){
                 $scope.child_departments.push({
-                    '_id':departments[0].department[i]._id,
-                    'name':departments[0].department[i].name
+                    '_id':$scope.main_department.department[i]._id,
+                    'name':$scope.main_department.department[i].name,
+                    'department':$scope.main_department.department[i].department
                 });
             }
             $scope.child_department = $scope.child_departments[0];
             $scope.child_department_id = $scope.child_department._id;
             $scope.child_department_name = $scope.child_department.name;
+
+            if($scope.child_departments[0].department.length > 0){
+                for(var i = 0; i < $scope.child_departments[0].department.length; i ++){
+                    $scope.grandchild_departments.push({
+                        '_id':$scope.child_departments[0].department[i]._id,
+                        'name':$scope.child_departments[0].department[i].name
+                    });
+                }
+                $scope.grandchild_department = $scope.grandchild_departments[0];
+                $scope.grandchild_department_id = $scope.grandchild_department._id;
+                $scope.grandchild_department_name = $scope.grandchild_department.name;
+            }
         }
     }).error(function(data,status) {
         alertify.alert('DATA ERROR');
@@ -82,27 +103,46 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
         $scope.main_department = value;
         $scope.main_department_id = null;
         $scope.main_department_name = null;
+
         $scope.child_department_id = null;
         $scope.child_department_name = null;
+
+        $scope.grandchild_department_id = null;
+        $scope.grandchild_department_name = null;
+
         for(var i = 0; i < departments.length; i ++){
             if(departments[i]._id === $scope.main_department._id){
                 $scope.child_departments = [];
+                $scope.grandchild_departments = [];
                 for(var j = 0 ; j < departments[i].department.length; j ++){
                     $scope.child_departments.push({
                         '_id':departments[i].department[j]._id,
-                        'name':departments[i].department[j].name
+                        'name':departments[i].department[j].name,
+                        'department':departments[i].department[j].department
                     });
                 }
                 break;
             }
         }
+
         $scope.main_department_id = $scope.main_department._id;
         $scope.main_department_name = $scope.main_department.name;
 
-        if(departments[0].department.length > 0){
+        if($scope.child_departments.length > 0){
             $scope.child_department = $scope.child_departments[0];
             $scope.child_department_id = $scope.child_department._id;
             $scope.child_department_name = $scope.child_department.name;
+            if($scope.child_departments[0].department.length > 0){
+                for(var i = 0; i < $scope.child_departments[0].department.length; i ++){
+                    $scope.grandchild_departments.push({
+                        '_id':$scope.child_departments[0].department[i]._id,
+                        'name':$scope.child_departments[0].department[i].name
+                    });
+                }
+                $scope.grandchild_department = $scope.grandchild_departments[0];
+                $scope.grandchild_department_id = $scope.grandchild_department._id;
+                $scope.grandchild_department_name = $scope.grandchild_department.name;
+            }
         }
     }
 
@@ -112,8 +152,33 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
         $scope.child_department_name = null;
         $scope.child_department_id = $scope.child_department._id;
         $scope.child_department_name = $scope.child_department.name;
+
+        for(var i = 0; i < $scope.child_departments.length; i ++){
+            if($scope.child_departments[i]._id.toString() === $scope.child_department_id){
+                $scope.grandchild_departments = [];
+                for(var j = 0; j < $scope.child_departments[i].department.length; j ++){
+                    $scope.grandchild_departments.push({
+                        '_id':$scope.child_departments[i].department[j]._id,
+                        'name':$scope.child_departments[i].department[j].name
+                    });
+                }
+                if($scope.grandchild_departments.length > 0){
+                    $scope.grandchild_department = $scope.grandchild_departments[0];
+                    $scope.grandchild_department_id = $scope.grandchild_departments[0]._id;
+                    $scope.grandchild_department_name = $scope.grandchild_departments[0].name;
+                }
+                break;
+            }
+        }
     }
 
+    $scope.selectGrandChildDepartment = function(value){
+        $scope.grandchild_department = value;
+        $scope.grandchild_department_id = null;
+        $scope.grandchild_department_name = null;
+        $scope.grandchild_department_id = $scope.child_department._id;
+        $scope.grandchild_department_name = $scope.child_department.name;
+    }
 }]);
 
 //员工注册后在公司组件列表里选择组件

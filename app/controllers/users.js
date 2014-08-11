@@ -273,7 +273,11 @@ function userOperate(cid, key, res, req, index) {
             //员工尚未激活时,他的部门信息里只能填入部门的id
             if(req.body.main_department_id != null && req.body.main_department_id != 'null' && req.body.main_department_id != undefined && req.body.main_department_id != ''){
               if(req.body.child_department_id != null && req.body.child_department_id != 'null' && req.body.child_department_id != undefined && req.body.child_department_id != ''){
-                user.department = {'_id':req.body.child_department_id,'name':null};
+                if(req.body.grandchild_department_id != null && req.body.grandchild_department_id != 'null' && req.body.grandchild_department_id != undefined && req.body.grandchild_department_id != ''){
+                  user.department = {'_id':req.body.grandchild_department_id,'name':null};
+                }else{
+                  user.department = {'_id':req.body.child_department_id,'name':null};
+                }
               }else{
                 user.department = {'_id':req.body.main_department_id,'name':null};
               }

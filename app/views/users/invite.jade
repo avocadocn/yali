@@ -88,9 +88,13 @@ block contentExt
                     input(type="text" name="main_department_id" ng-model="main_department_id" ng-show="false")
                     input(type="text" name="main_department_name" ng-model="main_department_name" ng-show="false")
                   .select_box.department_select_width
-                    select.dl-form-control.chzn-select(data-placeholder="选择子部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
+                    select.dl-form-control.chzn-select(data-placeholder="选择二级部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
                     input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
                     input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
+                  .select_box.department_select_width
+                    select.dl-form-control.chzn-select(data-placeholder="选择三级部门" tabindex="2" ng-model="grandchild_department" ng-options="d.name for d in grandchild_departments" ng-change="selectGrandChildDepartment(grandchild_department)" ng-disabled="grandchild_departments.length == 0")
+                    input(type="text" name="grandchild_department_id" ng-model="grandchild_department_id" ng-show="false")
+                    input(type="text" name="grandchild_department_name" ng-model="grandchild_department_name" ng-show="false")
             .form-group.dl_sm_group
               .dl_row
                 .label_left
