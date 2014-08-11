@@ -10,7 +10,7 @@ block baseInfo
   .dl_container.clearfix
     .aside
       img.size_80.img_contain(src="#{logo}")
-    .top-main
+    .top-main.team-top-main
       .dl_row
         //-小队名
         label.head= tname
@@ -30,9 +30,8 @@ block baseInfo
         //-.score_container
           span.info_border #{__("WIN_RATE")}
           span.info_border.info_right_border 100%
-    .top-side
-      .top-side
-        a(href='/group/home/#{teamId}') 更多内容>>
+    .team-top-side
+      .team-top-side
         if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
             //-退出
             button.pull-right.dl_btn_small.quit_btn(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
@@ -42,6 +41,11 @@ block baseInfo
         if role ==='HR' || role ==='LEADER'
           //-管理
           .group_btn_container
+            a.btn_container(href="/group/home/#{teamId}")
+              .btn_icon
+                img(src='/img/icons/plaine.png')
+              .btn_text
+                span.subtitle 更多内容
             a.btn_container(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel")
               .btn_icon
                 img(src='/img/icons/pulse.png')

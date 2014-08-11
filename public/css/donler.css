@@ -673,8 +673,7 @@ textarea {
   float: left;
 }
 .group_btn_container {
-  padding-top: 40px;
-  float: left;
+  padding-top: 58px;
 }
 .btn_container {
   float: left;
@@ -730,6 +729,9 @@ textarea {
 .dl_container .company-top-main {
   width: 530px !important;
 }
+.dl_container .team-top-main {
+  width: 450px !important;
+}
 .dl_container .top-main {
   width: 560px;
   margin-right: 10px;
@@ -750,7 +752,7 @@ textarea {
   padding: 6px 5px;
   line-height: 32px;
 }
-.dl_container .top-side {
+.dl_container .dep-top-side {
   width: 290px;
   float: left;
 }
@@ -758,6 +760,10 @@ textarea {
   width: 320px;
   float: left;
   margin-top: 58px;
+}
+.dl_container .team-top-side {
+  width: 400px;
+  float: left;
 }
 .dl_container .main {
   width: 660px;
