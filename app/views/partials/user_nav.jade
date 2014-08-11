@@ -1,15 +1,15 @@
 nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
   .dl_head(ng-controller="messageHeaderController")
     if Global.role !== 'HR'
-      //.navbar-header
+      //-.navbar-header
       a.navbar-brand(href="/")
         img.logo(src="/img/logo_w.png")
-      //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#personal_nav")
+      //-button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#personal_nav")
         span.sr-only Toggle navigation
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      //.collapse.navbar-collapse#personal_nav
+      //-.collapse.navbar-collapse#personal_nav
       ul.nav.navbar-nav.pull-right
         li
           a(href="/company/home") #{__("COMPANY_HOME")}
@@ -21,7 +21,8 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
 
         li
           a(href="#" data-toggle="dropdown")
-            span.glyphicon.glyphicon-cog
+            //-span.glyphicon.glyphicon-cog
+            img(src='/img/icons/setting.png/16/16')
           ul.dl_menu.dropdown-menu(role="menu")
             li
               a.dl_menu_a(href="/users/home") #{__("PERSONAL_HOME")}
@@ -32,17 +33,18 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
         li
           a(href="/message/home#/message_all")
             span.dl_msg_corner(ng-if="o>0")
-            span.glyphicon.glyphicon-comment
+            img(src='/img/icons/message.png/20/15')
+            //-span.glyphicon.glyphicon-comment
     if Global.role === 'HR'
-      //.navbar-header
+      //-.navbar-header
       a.navbar-brand(href="/")
         img.logo(src="/img/logo_w.png")
-      //button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav")
+      //-button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav")
         span.sr-only Toggle navigation
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      //.collapse.navbar-collapse#HR_nav
+      //-.collapse.navbar-collapse#HR_nav
       ul.nav.navbar-nav.pull-right
         li
           a(href="/company/home")
@@ -51,7 +53,8 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
             span.m_l_5 #{Global.nav_name}
         li
           a(href="#" data-toggle="dropdown")
-            span.glyphicon.glyphicon-cog.m_l_5
+            //-span.glyphicon.glyphicon-cog.m_l_5
+            img(src='/img/icons/setting.png/16/16')
           ul.dl_menu.dropdown-menu(role="menu")
             li
               a.dl_menu_a(href="/company/home#/company_info") #{__("COMPANY_INFO")}
@@ -60,4 +63,5 @@ nav.navbar.navbar-inverse.navbar-static-top.dl_nav(role="navigation")
         li
           a(href="/message/home#/message_all")
             span.dl_msg_corner(ng-if="o>0" ng-cloak)
-            span.glyphicon.glyphicon-comment
+            //-span.glyphicon.glyphicon-comment
+            img(src='/img/icons/message.png/20/15')

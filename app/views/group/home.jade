@@ -30,13 +30,11 @@ block baseInfo
           span.info_border.info_right_border 100%
     .team-top-side
       if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
-        .team-top-side
-          //-退出
-          button.pull-right.dl_btn_small.quit_btn(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+        //-退出
+        button.pull-right.dl_btn_small.quit_btn(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
       if  role === 'PARTNERLEADER' || role==='PARTNER'
-        .team-top-side
-          //-加入
-          button.pull-right.dl_btn.dl_btn_small.join_btn(ng-click="joinGroup()") #{__("JOIN_GROUP")}
+        //-加入
+        button.pull-right.dl_btn.dl_btn_small.join_btn(ng-click="joinGroup()") #{__("JOIN_GROUP")}
       .group_btn_container
         if role ==='HR' || role ==='LEADER'
           //-管理
@@ -58,12 +56,11 @@ block baseInfo
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
         if role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER'
           //-动一下
-          .group_btn_container
-            a.btn_container(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel")
-              .btn_icon
-                img(src='/img/icons/pointer.png')
-              .btn_text
-                span.subtitle 动TA一下
+          a.btn_container(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel")
+            .btn_icon
+              img(src='/img/icons/pointer.png')
+            .btn_text
+              span.subtitle 动TA一下
         a.btn_container(href="/group/page/#{teamId}")
           .btn_icon
             img(src='/img/icons/plaine.png')
