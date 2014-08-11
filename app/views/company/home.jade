@@ -48,9 +48,6 @@ block baseInfo
 block panel
   div(ng-init="role='#{role}'")
     ul.nav.nav-tabs(ng-init="cid='#{cid}'")
-      if role === 'HR'
-        li.tab_style(ng-class="{'active':nowTab==='manager' || nowTab==='department' || nowTab==='company_info' || nowTab==='member'}")
-          a.subtitle.no_radius(href="#/manager") 管理
       li.tab_style(ng-class="{'active':nowTab=='team_info'}")
         a.subtitle.no_radius(href="#/team_info")= role === 'HR' ? '统计' : '小队'
       if role === 'HR' || role === 'EMPLOYEE'
@@ -62,6 +59,9 @@ block panel
       if role === 'HR' || role === 'EMPLOYEE'
         li.tab_style(ng-class="{'active':nowTab=='timeline'}")
           a.subtitle.no_radius(href="#/timeLine/#{cid}") 足迹
+      if role === 'HR'
+        li.tab_style(ng-class="{'active':nowTab==='manager' || nowTab==='department' || nowTab==='company_info' || nowTab==='member'}")
+          a.subtitle.no_radius(href="#/manager") 管理
       //- if role === 'HR'
       //-   li.tab_style(ng-class="{'active':nowTab=='department'}")
       //-     a.subtitle.no_radius(href="#/department"  ng-click="addactive('department')") 部门
