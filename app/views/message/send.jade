@@ -21,7 +21,6 @@
           //-   img.size_48(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}" title="{{dOt.name}}")
   .dl_modal_container.margin_top_50
     .dl_row.send_caption
-      p 发件箱
     .dl_row.message_panel(ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
       .row.line_left
         //- .dl_message_head.dl_message_body_font(ng-switch="send_message.message_type")
@@ -36,13 +35,37 @@
         .dl_message_body
           .dl_row(ng-switch="send_message.message_type")
               p.subtitle(ng-switch-when="3")
-                发往全公司 ({{send_message.sender.nickname}})
+                发往全公司
               p.subtitle(ng-switch-when="1")
-                发往活动 {{send_message.campaign_name}} (来自{{send_message.sender.nickname}})
+                发往活动 {{send_message.campaign_name}}
+                if provider === 'user'
+                  span(ng-if="send_message.sender.role=='HR'") (来自
+                    a(href="/company/home/{{send_message.sender._id}}") {{send_message.sender.nickname}}
+                    span )
+                else
+                  span(ng-if="send_message.sender.role=='LEADER'") (来自
+                    a(href="/users/home/{{send_message.sender._id}}") {{send_message.sender.nickname}}
+                    span )
               p.subtitle(ng-switch-when="2")
-                发往比赛 {{send_message.campaign_name}} (来自{{send_message.sender.nickname}})
+                发往比赛 {{send_message.campaign_name}}
+                if provider === 'user'
+                  span(ng-if="send_message.sender.role=='HR'") (来自
+                    a(href="/company/home/{{send_message.sender._id}}") {{send_message.sender.nickname}}
+                    span )
+                else
+                  span(ng-if="send_message.sender.role=='LEADER'") (来自
+                    a(href="/users/home/{{send_message.sender._id}}") {{send_message.sender.nickname}}
+                    span )
               p.subtitle(ng-switch-when="0")
-                发往小队 {{send_message.team.name}} (来自{{send_message.sender.nickname}})
+                发往 {{send_message.team.name}}
+                if provider === 'user'
+                  span(ng-if="send_message.sender.role=='HR'") (来自
+                    a(href="/company/home/{{send_message.sender._id}}") {{send_message.sender.nickname}}
+                    span )
+                else
+                  span(ng-if="send_message.sender.role=='LEADER'") (来自
+                    a(href="/users/home/{{send_message.sender._id}}") {{send_message.sender.nickname}}
+                    span )
               span {{send_message.detail}}
         .dl_message_tail
           .dl_message_date

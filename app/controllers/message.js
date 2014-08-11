@@ -1005,7 +1005,7 @@ exports.renderAll = function(req,res){
   }
 }
 exports.renderSender = function(req,res){
-  res.render('message/send',{'role':req.role});
+  res.render('message/send',{'provider':req.user.provider});
 }
 
 //这些以后站内信分类时会用到的

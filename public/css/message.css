@@ -106,3 +106,7 @@
   width: 100px;
   float: left;
 }
+.send_caption {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
