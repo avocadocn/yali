@@ -780,7 +780,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
 
 
   //队长给队员  公司给所有员工/小队员工 发送私信
-  $scope.sendToAll = function(comment_form){
+  $scope.sendToAll = function(){
     var _url;
     var _data = {
       content : $scope.private_message_content.text,
@@ -804,19 +804,20 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
             url: _url,
             data:_data
         }).success(function(data, status) {
-            if(data.msg === 'SUCCESS'){
-              alertify.alert('发送成功!');
-              if($scope.role === 'LEADER'){
-                $rootScope.o ++;
-                $rootScope.receive_message_sum ++;
-              }
-              $scope.private_message_content.text='';
-              //comment_form.$setPristine();
-              $scope.getSenderList($scope.teamId);
+          console.log('1:',$scope.message_form);
+          if(data.msg === 'SUCCESS'){
+            if($scope.role === 'LEADER'){
+              $rootScope.o ++;
+              $rootScope.receive_message_sum ++;
             }
+            $scope.private_message_content.text='';
+            $scope.message_form.$setPristine();
+            $scope.getSenderList($scope.teamId);
+            //alertify.alert('发送成功!');
+          }
         }).error(function(data, status) {
-            //TODO:更改对话框
-            alertify.alert('DATA ERROR');
+          //TODO:更改对话框
+          alertify.alert('DATA ERROR');
         });
       }
       catch(e){
@@ -861,7 +862,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
                   $rootScope.receive_message_sum ++;
                 }
                 $scope.private_message_content.text='';
-                //comment_form.$setPristine();
+                $scope.message_form.$setPristine();
                 $scope.getSenderList();
               }
           }).error(function(data, status) {

@@ -27,23 +27,22 @@ block baseInfo
           span.info_right_border 100%
     if role === 'HR'
       .hr-top-side
-        a.btn_container(data-toggle="modal" data-target="#sponsorCampaignModel" ng-click="modalSwitch(false)")
+        a.btn_container(href="/message/home#/send")
           .btn_icon
-            img(src='/img/icons/house.png')
+            img(src='/img/icons/Megaphone.png')
           .btn_text
-            span.subtitle 公司活动
+            span.subtitle 消息站
         //-button.dl_btn.dl_btn_medium(data-toggle="modal" data-target="#sponsorCampaignModel") #{__('SPONSOR')}#{__('COMPANY')}#{__('CAMPAIGN')}
         a.btn_container(data-toggle="modal" data-target="#dOtSearchModel" ng-click="modalSwitch(true)")
           .btn_icon
             img(src='/img/icons/Pulse.png')
           .btn_text
             span.subtitle 小队活动
-        a.btn_container(href="/message/home#/send")
+        a.btn_container(data-toggle="modal" data-target="#sponsorCampaignModel" ng-click="modalSwitch(false)")
           .btn_icon
-            img(src='/img/icons/Megaphone.png')
+            img(src='/img/icons/house.png')
           .btn_text
-            span.subtitle 消息站
-        //-a.clearLinkUnderline.dl_btn.dl_btn_small.margin_left_5(href="/message/home#/send") 消息中心
+            span.subtitle 公司活动
     .ad-top
 block panel
   div(ng-init="role='#{role}'")
