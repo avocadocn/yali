@@ -1,5 +1,5 @@
-.loading_div(ng-show = 'loading')
-div(ng-show = "!loading&&role === 'HR'")
+.loading_div(ng-if = 'loading')
+div(ng-if = "!loading&&role === 'HR'")
   .dl_allteaminfo_container
     table.group_table
       tr
@@ -57,7 +57,7 @@ div(ng-show = "!loading&&role === 'HR'")
         a(ng-disabled="nextPageDisabled()" ng-click="nextPage()") 下一页
     div(class="modal fade" id="appointLeaderModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/pointleader_modal
-div(ng-show = "!loading&&role !== 'HR'")
+div(ng-if = "!loading&&role !== 'HR'")
   .dl_allteaminfo_emp.masonry(masonry)
     .teamitem.masonry-item(ng-repeat="team in team_lists" masonryItem)
       .title.clearfix

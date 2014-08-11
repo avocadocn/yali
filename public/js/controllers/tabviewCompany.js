@@ -114,7 +114,7 @@ tabViewCompany.directive('ngMax', function() {
 tabViewCompany.filter('offset', function() { 
     return function(input, start) {
         start = parseInt(start, 10);
-        return input.slice(start);
+        return input ? input.slice(start) :'';
     };
 });
 tabViewCompany.controller('TimeLineController', ['$http', '$scope', '$rootScope',
