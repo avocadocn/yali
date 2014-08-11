@@ -8,7 +8,7 @@ block baseInfo
   .dl_container.clearfix
     .aside
       img.size_80.img_contain(src="#{department.company.logo}")
-    .main.top-main
+    .top-main
       .dl_row
         //-部门名
         label.head= department.name
@@ -19,19 +19,20 @@ block baseInfo
         .score_container
           span.info_border #{__("DEPARTMENT_MEMBER")}
           span.info_border.info_right_border= department.team.member.length
-        if req.role === 'HR' || req.role === 'LEADER'
-          .score_container.pull-right
-            a.btn_container(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel")
-              .btn_icon
-                img(src='/img/icons/pulse.png')
-              .btn_text
-                span.subtitle #{__("CAMPAIGN")}
-            //- button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorMultiCampaignModel") 多部门活动
-          div(ng-controller="SponsorController" ng-init="did='#{department._id}';cid='#{department.company._id}'")
-            div.modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-              include ../campaign/campaign_modal
-            div.modal.fade#sponsorMultiCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-              include ../partials/search_department_modal
+    .top-side
+      if req.role === 'HR' || req.role === 'LEADER'
+        .group_btn_container
+          a.btn_container(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel")
+            .btn_icon
+              img(src='/img/icons/pulse.png')
+            .btn_text
+              span.subtitle 发活动
+          //- button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorMultiCampaignModel") 多部门活动
+        div(ng-controller="SponsorController" ng-init="did='#{department._id}';cid='#{department.company._id}'")
+          div.modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+            include ../campaign/campaign_modal
+          div.modal.fade#sponsorMultiCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+            include ../partials/search_department_modal
 
 block panel
   div(ng-init="teamId='#{department.team._id}'")

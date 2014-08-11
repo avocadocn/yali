@@ -21,8 +21,9 @@
           .groups.row
             .group(style="float:left;padding-left:20px;padding-bottom:5px" ng-repeat="department in select_departments")
               .dl_row
-                .dl_cover_department(ng-if="department.selected")
-                a(ng-click="selectReady($index)" ng-disabled="true")
+                a(ng-if="department.selected" ng-click="selectReady($index)" ng-disabled="true")
+                  img.size_80.dl_cover_department(ng-src="{{department.team.logo}}" ng-if="department.selected")
+                a(ng-if="!department.selected" ng-click="selectReady($index)" ng-disabled="true")
                   img.size_80(ng-src="{{department.team.logo}}")
               .dl_row(style="width:80px;text-align:center")
                 label {{department.name}}

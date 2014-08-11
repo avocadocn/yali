@@ -8,18 +8,16 @@
       .dl-modal-body
         .dl_modal_container
           .dl_row
-            .dl_md_12
-              p 请选择您需要发多活动的小队
-          .dl_row
-            hr
+            p.subtitle 请选择您需要发多活动的小队
         .dl_modal_container
-          .groups.row
-            .group(ng-repeat="dOt in dOts")
-              .dl_row
-                .dl_cover_department(ng-if="dOt.selected" ng-click="selectReady($index)")
+          .groups
+            .dOt_group(ng-repeat="dOt in dOts" ng-if="dOt.active")
+              .dl_row(title="{{dOt.name}}")
+                a(ng-if="dOt.selected" ng-click="selectReady($index)")
+                  img.size_48.dl_cover_department(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}")
                 a(ng-click="selectReady($index)")
-                  img.size_48(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}")
-              .dl_row.search_area_head
-                label {{dOt.name}}
+                  img.size_48(ng-if="!dOt.selected" ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}")
+              .dl_row
+                label.search_area_head {{dOt.name}}
       .dl-modal-footer
         button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="showCampaignSponsor()" ng-disabled="!sponsor_permission") 发起

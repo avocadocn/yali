@@ -10,9 +10,9 @@ block contentExt
             small 加入
             | 动梨
           h4 欢迎来自 #{cname} 的你
-          p 您在动梨遇到的都是真实可靠的小伙伴
-          p 更多志趣相投的朋友相聚在一起
-          p 给您更加丰富多彩的生活
+          p 动梨执行严格的身份验证，这里您遇到的都是真实可靠的伙伴
+          p 动梨是您的活动秘书，帮您规划安排行程，不错过精彩活动
+          p 动梨是展示的平台，帮您找到更多兴趣相投的好伙伴
       .col-xs-offset-3.col-xs-9.block_right(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
         form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive' method='post')
           .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
@@ -64,13 +64,13 @@ block contentExt
                 .label_left
                   label.control-label(for="password") ＊密码
                 .input_right
-                  input.dl-form-control(type="password" name="password" ng-model="password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
+                  input.dl-form-control(type="password" name="password" ng-model="$parent.password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
             .form-group.dl_sm_group(ng-class="{'has-error':active_form.passconf.$invalid && active_form.passconf.$dirty}")
               .dl_row
                 .label_left
                   label.control-label(for="passconf") ＊密码确认
                 .input_right
-                  input.dl-form-control(type="password" name="passconf" ng-model="passconf" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
+                  input.dl-form-control(type="password" name="passconf" ng-model="$parent.passconf" ng-minlength=1 tooltip-placement="right" match="$parent.password" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
             .form-group.dl_sm_group(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")
               .dl_row
                 .label_left
