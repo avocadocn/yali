@@ -35,7 +35,7 @@ exports.sendCompanyActiveMail = function (who, name, id, host) {
   var to = who;
   var subject = name + ' 动梨账号激活';
   var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
-    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/company/validate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id + '">http://' + host + '/company/validate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id + '</a>';
+    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/company/validate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id + '">激活账号</a>';
 
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
@@ -56,8 +56,7 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
   var subject = '动梨账号激活';
   var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
     '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/setProfile?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid + '&cid=' + cid + '">http://' + host + '/users/setProfile?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid + '&cid=' + cid + '</a>';
+    '&uid=' + uid + '&cid=' + cid + '">激活账号</a>';
 
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
@@ -83,8 +82,7 @@ exports.sendStaffResetPwdMail = function(who, uid, host) {
   var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
     '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
     '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+
-    '">http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+'</a>';
+    '">重置密码</a>';
 
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
@@ -110,8 +108,7 @@ exports.sendCompanyResetPwdMail = function(who, uid, host) {
   var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
     '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
     '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+
-    '">http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+'</a>';
+    '">重置密码</a>';
     fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
         if (err) throw err;
         var fn = jade.compile(data);
