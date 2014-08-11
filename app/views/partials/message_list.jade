@@ -113,8 +113,9 @@ div(ng-show = '!loading')
           //- label.pull-right.vertical_label(ng-if="group_message.member_num > 0&&role === 'LEADER'&&message_for_group") |
           span.message_label.pull-right(ng-if="role!='HR'&&group_message.comment_permission")
             span(ng-if="group_message.join_role &&group_message.join_flag!=undefined && !group_message.both_team")
-              a(ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag") 退出 |
-              a(ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")} |
+              a(ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag") 退出
+              a(ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="!group_message.join_flag && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
+              &nbsp;|
             a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
         .message_row(ng-if="group_message.message_type==4")
           label.message_label(ng-if="group_message.campaign.finish") 挑战已经结束
