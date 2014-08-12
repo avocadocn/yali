@@ -573,7 +573,6 @@ tabViewCompany
         }
     };
 
-
     $scope.prevPageDisabled = function() {
         return $scope.currentPage === 0 ? "disabled" : "";
     };
@@ -592,7 +591,7 @@ tabViewCompany
 
     $scope.nextPageDisabled = function() {
         return $scope.currentPage === $scope.pageCount() ? "disabled" : "";
-    } 
+    };
     $scope.getData = function(type) {
         //获取公司小组，若是此成员在此小组则标记此team的belong值为true
         $http.get('/company/getCompanyTeamsInfo/'+$rootScope.cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
@@ -618,7 +617,11 @@ tabViewCompany
             // })
         });
     };
-    $scope.getData('team');
+    if (!$rootScope.team_lists) {
+        $scope.getData('team');
+    } else {
+        $scope.is_reload = true;
+    }
 
 
     $scope.search = function () {
@@ -980,23 +983,33 @@ tabViewCompany
 }])
 .directive('masonry', function ($timeout) {
     return {
-        restrict: 'AC',
+        restrict: 'A',
+        scope: {
+            reload: '=',
+            items: '='
+        },
         link: function (scope, elem, attrs) {
-            scope.$watch(function () {
-                return elem[0].children.length
-            },
-            function (newVal) {
-                console.log('run masonry');
-                $timeout(function () {
-                    elem.masonry('reloadItems');
-                    elem.masonry();
-                }, 800)
-            })
-            elem.masonry({
+            var options = {
                 itemSelector: '.masonry-item',
-                transitionDuration: '0s'
+                transitionDuration: '0.2s'
+            };
+            elem.masonry(options);
+            scope.$watch('items', function(newVal, oldVal) {
+                if (newVal != oldVal) {
+                    $timeout(function () {
+                        elem.masonry('reloadItems');
+                        elem.masonry(options);
+                    });
+                }
             });
-            scope.masonry = elem.data('masonry');
+            scope.$watch('reload', function(newVal) {
+                if (newVal === true) {
+                    $timeout(function () {
+                        elem.masonry('reloadItems');
+                        elem.masonry(options);
+                    });
+                }
+            });
         }
     };
 })
