@@ -17,4 +17,4 @@
     //-     label.info_label.control-label 简介
     //-       input.dl_input(type='text' name='name' ng-model='tbrief')
     .col-md-4
-        button.dl_btn.dl_btn_large(ng-disabled="groupModel.selected==='' || newgroup_form.$invalid " ng-click='groupModel.save()' ng-disabled="newgroup_form.$invalid") 保存
+        button.dl_btn.dl_btn_large(ng-disabled="groupModel.selected==='' || newgroup_form.$invalid " ng-click='groupModel.save()' ng-disabled="groupModel.selected=='' || newgroup_form.$invalid") 保存
