@@ -1,4 +1,4 @@
-div(ng-controller="infoController")
+div(ng-controller="infoController").dl_card_tebcontent
   form.form-horizontal.tab-info-form(name="infoForm")
     .dl_row
       h5.pull-left #{__("INFO")}
@@ -101,7 +101,10 @@ div(ng-controller="infoController")
     //-     span.info_label.control-label #{__("RATE")}
     //-   .col-md-5.col-sm-10.col-xs-10
     //-     span.info_label 0
+    .clearfix
+    hr.margin_top_6
     .dl_row.clearfix
+
       span.subtitle.pull-left #{__("FAMILY")}
       button.dl_btn.dl_btn_small.pull-right(ng-show="role==='LEADER'||role==='HR'" data-toggle="modal" data-target="#upload_modal") 修改全家福
     .dl_row(ng-if="family_photos.length !== 0")
