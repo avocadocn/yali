@@ -85,7 +85,9 @@ module.exports = function(grunt) {
                     'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
                     'public/lib/alertify.js/lib/alertify.min.js',
                     'public/lib/masonry/dist/masonry.pkgd.min.js',
-                    'public/lib/angular-masonry/angular-masonry.js'
+                    'public/lib/angular-masonry/angular-masonry.js',
+                    'public/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
+                    'public/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'
 
                 ],
                 dest: 'public/js/library.js'

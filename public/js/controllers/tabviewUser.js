@@ -749,10 +749,6 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
 
 tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-        $rootScope.tabShow = false;
-        $rootScope.$on("$routeChangeStart",function(){
-            $rootScope.tabShow = true;
-        });
         $scope.nowpassword = '';
         $scope.newpassword = '';
         $scope.confirmpassword = '';

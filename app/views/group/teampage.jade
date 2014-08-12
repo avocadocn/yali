@@ -33,7 +33,7 @@ block baseInfo
     .top_side
       if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
         //-退出
-        button.pull-right.dl_btn_small.quit_btn(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+        button.pull-right.dl_btn_small.quit_btn(ng-click="quitGroup()") #{__("QUIT_GROUP")}
       if  role === 'PARTNERLEADER' || role==='PARTNER'
         //-加入
         button.pull-right.dl_btn.dl_btn_small.join_btn(ng-click="joinGroup()") #{__("JOIN_GROUP")}      
@@ -182,7 +182,5 @@ append footExt
   script(src="/js/controllers/integrateGroup.js")
   script(src="/lib/underscore/underscore.js")
   script(src="/js/language/zh-CN.js")
-  script(src="/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js")
-  script(charset="UTF-8" src="/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js")
   script(src="/lib/bootstrap-calendar/js/calendar.js")
   //-script(src="/js/donler-carousel.js")

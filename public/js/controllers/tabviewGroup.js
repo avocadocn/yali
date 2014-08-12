@@ -105,24 +105,28 @@ tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope,
 
     //退出小队
     $rootScope.quitGroup = function(){
-        try{
-            $http({
-                method:'post',
-                url: '/users/quitGroup',
-                data:{
-                    tid : $rootScope.teamId
+        alertify.confirm('确认要退出该小队吗？',function(e){
+            if(e){
+                try{
+                    $http({
+                        method:'post',
+                        url: '/users/quitGroup',
+                        data:{
+                            tid : $rootScope.teamId
+                        }
+                    }).success(function(data,status){
+                        if(data.result===1){
+                            window.location.reload();
+                        }
+                    }).error(function(data,status){
+                        alertify.alert('err');
+                    });
                 }
-            }).success(function(data,status){
-                if(data.result===1){
-                    window.location.reload();
+                catch(e){
+                    console.log(e);
                 }
-            }).error(function(data,status){
-                alertify.alert('err');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
+            }
+        });
     };
 
     //加载地图
