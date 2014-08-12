@@ -10,12 +10,12 @@
         span.info_label #{__("TEAM_NAME")}
       .info_detail
         input.dl_input.editToggle.dl-form-control(type="text" name ="name" ng-model="$parent.name" ng-maxlength=20 tooltip="{{infoForm.name.$invalid? '队名最长字数20字':''}}" ng-disabled="unEdit")
-    .dl_row.clearfix
+    //- .dl_row.clearfix
       .info_side
         span.info_label #{__("COMPANY")}
       .info_detail_2
         span.info_label {{team.cname}}
-    .dl_row.clearfix
+    //- .dl_row.clearfix
       .info_side
         span.info_label #{__("SUM")}
       .info_detail_2

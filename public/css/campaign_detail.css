@@ -35,7 +35,7 @@
   width: 660px;
   float: left;
   background-color: #fff;
-  margin: 10px 0;
+  margin: 10px 0 0;
   padding: 10px 20px;
   border: 1px solid #ddd;
 }
@@ -65,6 +65,7 @@
   background-color: #fff;
   border: 1px solid #ddd;
   padding: 10px 20px;
+  margin-top: 10px;
 }
 .dl_detail_container .dl_detail_main .commment_box textarea {
   width: 510px;
