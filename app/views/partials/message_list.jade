@@ -20,7 +20,7 @@ div(ng-show = '!loading')
         span.message_head(ng-switch-when="1")
           a(ng-if="group_message.campaign.campaign_type == 2" ng-href="{{'/group/page/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
           span(ng-if="group_message.campaign.campaign_type == 2") #{__("NEW_MESSAGE")}
-          span(ng-if="group_message.campaign.campaign_type == 3 && $index <= 2" ng-repeat="team in group_message.team")&nbsp;
+          span(ng-if="group_message.campaign.campaign_type == 3 && $index <= 2" ng-repeat="team in group_message.team") &nbsp;
             a(ng-href="{{'/group/page/'+group_message.team[$index].teamid}}") {{group_message.team[$index].name}} &nbsp;
           span(ng-if="group_message.team.length > 3") 等
           span #{__("NEW_MESSAGE")}
