@@ -13,8 +13,6 @@ block contentExt
       ul.nav.nav-tabs
         li(ng-class="{'active':true}")
           a.subtitle.no_radius.border_red= competition.theme
-      if !competition.active&&(competition.camp[1].start_confirm || !competition.camp[0].start_confirm)
-        .text-center #{__("CAMPAIGNCLOSE")}
       #competition_content.competition_content(data-nowteam="#{team}" data-id='#{competition._id}')
         .team_info.clearfix
           .team_left
@@ -96,8 +94,9 @@ block contentExt
                 each teamAMember in competition.camp[0].member
                   img.teamMember.team_member_logo.img_user(draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
             else
-              .dl_row.clearfix
-                a(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
+              if vote_flag
+                .dl_row.clearfix
+                  a(ng-click="vote('#{competition._id}','#{vote_flag[0]}','#{competition.camp[0].id}')") #{(vote_flag[0] == 1 ? "取消" : "赞")+"("+(competition.camp[0].vote.positive ? competition.camp[0].vote.positive :'0')+")"}
                 //-p.subtitle #{__("POSITIVE")}#{__("MEMBER")}
               each teamAMember in competition.camp[0].vote.positive_member
                 img.teamMember.team_member_logo.img_user(draggable="false" tooltip="#{team.indexOf(0)>-1?teamAMember.nickname:''}" src='#{teamAMember.photo}' id='a__#{teamAMember.uid}')
@@ -118,11 +117,14 @@ block contentExt
                 each teamBMember in competition.camp[1].member
                   img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
             else
-              .dl_row.clearfix
-                a.pull-right(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
+              if vote_flag
+                .dl_row.clearfix
+                  a.pull-right(ng-click="vote('#{competition._id}','#{vote_flag[1]}','#{competition.camp[1].id}')")  #{(vote_flag[1] == 1 ? "取消" : "赞")+"("+(competition.camp[1].vote.positive ? competition.camp[1].vote.positive :'0')+")"}
                 //-p.subtitle.pull-right #{__("POSITIVE")}#{__("MEMBER")}
               each teamBMember in competition.camp[1].vote.positive_member
                 img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
+        if !competition.active&&(competition.camp[1].start_confirm || !competition.camp[0].start_confirm)
+          .text-center #{__("CAMPAIGNCLOSE")}
         //- 7是足球
         if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'
           .football.clearfix
