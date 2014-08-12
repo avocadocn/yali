@@ -26,7 +26,7 @@ module.exports = function(app) {
   app.get('/photoAlbum/:photoAlbumId/photolist', photoAlbum.readPhotoList);
   app.get('/photoAlbum/:photoAlbumId/preview', photoAlbum.preview);
 
-  app.get('/:groupId/photoAlbumListView', photoAlbum.renderGroupPhotoAlbumList);
+  app.get('/:groupId/photoAlbumListView', photoAlbum.createAuth, photoAlbum.renderGroupPhotoAlbumList);
   app.get('/photoAlbumDetailView/:photoAlbumId', photoAlbum.renderPhotoAlbumDetail);
   app.get('/photoView/:photoAlbumId/:photoId', photoAlbum.renderPhotoDetail);
 

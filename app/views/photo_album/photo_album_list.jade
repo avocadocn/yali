@@ -13,13 +13,14 @@ block contentExt
           p
             img.header_logo.img-thumbnail(src="#{owner_logo}")
             = owner_name
-        form.js_ajax_form.create_form.pull-right(action="/photoAlbum" method="post")
-          input(type="hidden" name="owner_model" value="company_group")
-          input(type="hidden" name="owner_id" value="#{owner_id}")
-          input(type="hidden" name="cid" value="#{cid}")
-          input(type="hidden" name="tid" value="#{owner_id}")
-          input(type="text" name="name" required)
-          button.dl_btn.dl_btn_small(type="submit") 新建相册
+        if create_auth
+          form.js_ajax_form.create_form.pull-right(action="/photoAlbum" method="post")
+            input(type="hidden" name="owner_model" value="company_group")
+            input(type="hidden" name="owner_id" value="#{owner_id}")
+            input(type="hidden" name="cid" value="#{cid}")
+            input(type="hidden" name="tid" value="#{owner_id}")
+            input(type="text" name="name" required)
+            button.dl_btn.dl_btn_small(type="submit") 新建相册
       hr
     .row.photo_album_list_wrap
       each photo_album in photo_album_list
