@@ -1,7 +1,7 @@
 .loading_div(ng-show = 'loading')
 .dl_message_box(ng-show = '!loading')
   .dl_row
-    form.comment_form(name="message_form" novalidate)
+    form.comment_form.dl_message_send_area(name="message_form" novalidate)
       .dl_message_send.dl_vertical
         span.subtitle(ng-if="teamName != 'null'")
           发往 {{teamName}}:
@@ -14,24 +14,13 @@
   .dl_row(ng-if="dOts.length > 0")
     .dl_message_slide
       .dl_message_item(ng-repeat="dOt in dOts")
-        input(type="checkbox" ng-model="dOt.selected" value="true" ng-change="selectReady($index)")
+        input.dl_checkbox(type="checkbox" ng-model="dOt.selected" value="true" ng-change="selectReady($index)")
         span(title="{{dOt.name}}") {{dOt.name}}
-          //- .dl_cover_message(ng-if="dOt.selected" ng-click="selectReady($index)")
-          //- a(ng-click="selectReady($index)")
-          //-   img.size_48(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}" title="{{dOt.name}}")
   .dl_modal_container.margin_top_50
     .dl_row.send_caption
+      span.send_text 已发送列表
     .dl_row.message_panel(ng-repeat="send_message in send_messages" ng-if="$index >= page_send.up && $index <= page_send.down")
       .row.line_left
-        //- .dl_message_head.dl_message_body_font(ng-switch="send_message.message_type")
-        //-   span.glyphicon.glyphicon-star-empty(ng-switch-when="0")
-        //-   span.glyphicon.glyphicon-music(ng-switch-when="1")
-        //-   span.glyphicon.glyphicon-flag(ng-switch-when="2")
-        //-   span.glyphicon.glyphicon-home(ng-switch-when="3")
-        //-   span.glyphicon.glyphicon-pencil(ng-switch-when="4")
-        //-   span.glyphicon.glyphicon-user(ng-switch-when="5")
-        //-   span.glyphicon.glyphicon-info-sign(ng-switch-when="6")
-        //-   span.glyphicon.glyphicon-flash(ng-switch-when="7")
         .dl_message_body
           .dl_row(ng-switch="send_message.message_type")
               p.subtitle(ng-switch-when="3")

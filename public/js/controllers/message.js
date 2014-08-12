@@ -676,23 +676,26 @@ var hrSendToMulti = function(url,value,http,scope){
           data:value
       }).success(function(data, status) {
           if(data.msg === 'SUCCESS'){
-            console.log(1,scope.select_dOts.length,scope.dOt_send_success);
             if(scope.select_dOts.length > scope.dOt_send_success -1){
-              console.log(2,scope.select_dOts.length,scope.dOt_send_success);
               scope.dOt_send_success = scope.dOt_send_success + 1;
               //递归发送
               try{
                 hrSendToMulti(url,value,http,scope);
               }catch(e){
-                scope.private_message_content.text='';
-                scope.getSenderList();
-                alertify.alert('发送成功!');
-                console.log(e);
+                if(scope.select_dOts.length == scope.dOt_send_success){
+                  scope.private_message_content.text='';
+                  scope.getSenderList();
+                  scope.message_form.$setPristine();
+                  alertify.alert('发送成功!');
+                }else{
+                  console.log(e);
+                }
               }
             }else{
               scope.private_message_content.text='';
               comment_form.$setPristine();
               scope.getSenderList();
+              $scope.message_form.$setPristine();
               alertify.alert('发送成功!');
             }
           }else{
@@ -865,7 +868,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
                   $rootScope.receive_message_sum ++;
                 }
                 $scope.private_message_content.text='';
-                //comment_form.$setPristine();
+                $scope.message_form.$setPristine();
                 $scope.getSenderList($scope.teamId);
               }
           }).error(function(data, status) {

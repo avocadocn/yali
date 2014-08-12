@@ -113,4 +113,13 @@
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #e6e6e6;
+  margin-top: 80px;
+}
+.send_caption .send_text {
+  margin-left: 35px;
+  font-size: 15px;
+  color: #bbb;
+}
+.dl_message_send_area {
+  margin-top: 40px !important;
 }
