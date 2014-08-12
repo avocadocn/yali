@@ -78,7 +78,7 @@ div(ng-if = "!loading&&role !== 'HR'")
           .campaign
             p 最新活动：
             p
-              a(href="/campaign/detail/{{team.campaign_id}}" target="_blank" ) &nbsp;&nbsp;&nbsp;&nbsp;{{team.campaign_theme}} ({{team.campaign_start_time | date:'yyyy-MM-dd' | dateView}})
+              a(href="/campaign/detail/{{team.campaign_id}}" target="_blank" ) &nbsp;&nbsp;&nbsp;&nbsp;{{team.campaign_theme}} ({{team.campaign_start_time | date:'yyyy-MM-dd HH:mm:ss' | dateView}})
         .photos.clearfix(ng-if="team.photos")
           p 最新照片:
           .photo(ng-repeat="photo in team.photos")
