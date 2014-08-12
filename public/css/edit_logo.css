@@ -44,6 +44,9 @@
   height: 27px;
   overflow: hidden;
 }
+.preview {
+  border: solid 1px #808080;
+}
 .high_light_title {
   color: #5d5d75;
   font-size: 16px;
