@@ -1305,7 +1305,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
 
                         });
                         AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
-                        $scope.MSearch.search($scope.location.name); //关键字查询
                     });
                 }
             });
