@@ -626,7 +626,9 @@ exports.getUserJoinedCampaignsForCalendar = function(req, res) {
 
 exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
   if (req.role !== 'OWNER') {
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   getUserUnjoinCampaigns(req.profile, true, function(campaigns) {
     var format_campaigns = formatCampaignForCalendar(req.profile, campaigns);
@@ -783,7 +785,9 @@ exports.renderCampaignDetail = function(req, res) {
 //TODO 加入competition
 exports.joinCampaign = function (req, res) {
   if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var cid = req.user.cid.toString();
   var uid = req.user._id.toString();
@@ -870,7 +874,9 @@ exports.joinCampaign = function (req, res) {
 //员工退出活动
 exports.quitCampaign = function (req, res) {
   if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var cid = req.user.cid.toString();
   var uid = req.user._id.toString();
@@ -945,7 +951,9 @@ exports.quitCampaign = function (req, res) {
 //记得要做重复投票检查 TODO
 exports.vote = function (req, res) {
   if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var tid = req.body.tid;
   var cid = req.user.cid;

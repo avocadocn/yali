@@ -142,6 +142,18 @@ module.exports = function(app, passport, db) {
         app.use(express.favicon());
         app.use(express.static(config.root + '/public'));
 
+        // 403
+        app.use(function(err, req, res, next) {
+            if (res.statusCode === 403) {
+                if (!req.xhr) {
+                    return res.redirect('/');
+                } else {
+                    return res.send(403, {'msg': 'forbidden'});
+                }
+            }
+            next();
+        });
+
         // Assume "not found" in the error msgs is a 404. this is somewhat
         // silly, but valid, you can do whatever you like, set properties,
         // use instanceof etc.
@@ -153,9 +165,7 @@ module.exports = function(app, passport, db) {
             console.error(err.stack);
 
             // Error page
-            res.status(500).render('500', {
-                error: err.stack
-            });
+            res.status(500).render('500');
         });
 
         // Assume 404 since no middleware responded
@@ -165,6 +175,7 @@ module.exports = function(app, passport, db) {
                 error: 'Not found'
             });
         });
+
 
     });
 };

@@ -428,7 +428,9 @@ exports.createAuth = function(req, res, next) {
   .then(function(company) {
     // 找不到相册所属公司
     if (!company) {
-      return res.send(403);
+      res.status(403);
+      next('forbidden');
+      return;
     }
 
     // 相册所属的组不在所属公司里
@@ -438,7 +440,9 @@ exports.createAuth = function(req, res, next) {
     });
     var index = tids.indexOf(req.body.tid);
     if (index === -1) {
-      return res.send(403);
+      res.status(403);
+      next('forbidden');
+      return;
     }
 
     // 该公司的HR
@@ -461,7 +465,9 @@ exports.createAuth = function(req, res, next) {
         }
       }
       if (auth === false) {
-        return res.send(403);
+        res.status(403);
+        next('forbidden');
+        return;
       } else {
         req.create_auth = true;
         next();
@@ -567,7 +573,9 @@ exports.updatePhotoAlbum = function(req, res) {
 
   photoAlbumProcess(res, _id, function(photo_album) {
     if (photoAlbumEditAuth(req.user, photo_album) === false) {
-      return res.send(403);
+      res.status(403);
+      next('forbidden');
+      return;
     }
     if (photo_album.hidden === false) {
       photo_album.name = new_name;
@@ -595,7 +603,9 @@ exports.deletePhotoAlbum = function(req, res) {
       } else if(photo_album) {
 
         if (photoAlbumEditAuth(req.user, photo_album) === false) {
-          return res.send(403);
+          res.status(403);
+          next('forbidden');
+          return;
         }
         photo_album.hidden = true;
         photo_album.save(function(err) {
@@ -629,7 +639,9 @@ exports.createPhoto = function(req, res) {
     .exec(function(err, photo_album) {
 
       if (photoUploadAuth(req.user, photo_album) === false) {
-        return res.send(403);
+        res.status(403);
+        next('forbidden');
+        return;
       }
 
       var i = 0;
@@ -866,7 +878,9 @@ exports.deletePhoto = function(req, res) {
           if (p_id == photos[i]._id) {
 
             if (photoEditAuth(req.user, photo_album, photos[i]) === false) {
-              return res.send(403);
+              res.status(403);
+              next('forbidden');
+              return;
             }
 
             photos[i].hidden = true;

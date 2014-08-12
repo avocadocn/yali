@@ -245,7 +245,9 @@ exports.renderGroupList = function(req, res) {
 //显示企业成员列表
 exports.renderMembers = function(req,res){
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,{'msg':'forbidden'});
+    res.status(403);
+    next('forbidden');
+    return;
   }
   res.render('company/member_list',{'role':req.role,'provider':'company'});
 }
@@ -732,7 +734,9 @@ exports.Info = function(req, res) {
 
 exports.saveGroupInfo = function(req, res){
     if(req.role !=='HR' && req.role !=='LEADER'){
-        return res.send(403,'forbidden');
+        res.status(403);
+        next('forbidden');
+        return;
     }
     CompanyGroup.findOne({'_id' : req.body.tid}, function(err, companyGroup) {
         if (err) {
@@ -791,7 +795,9 @@ exports.getAccount = function(req, res) {
 
 exports.saveAccount = function(req, res) {
     if(req.role!=='HR'){
-        return res.send(403, 'forbidden!');
+        res.status(403);
+        next('forbidden');
+        return;
     }
     var _company = {};
     if(req.body.company!==undefined){
@@ -1088,8 +1094,11 @@ exports.renderCompanyCampaign = function(req, res){
 }
 
 exports.changeUser = function (req, res) {
-    if(req.role != 'HR')
-        return res.send(403,{'msg':'forbidden'});
+    if(req.role != 'HR') {
+        res.status(403);
+        next('forbidden');
+        return;
+    }
     var _user = req.body.user;
     var operate = req.body.operate;
 
@@ -1131,8 +1140,11 @@ exports.changeUser = function (req, res) {
 
 //任命/罢免队长
 exports.appointLeader = function (req, res) {
-    if(req.role !== 'HR')
-        return res.send(403,{'msg':'forbidden'});
+    if(req.role !== 'HR') {
+        res.status(403);
+        next('forbidden');
+        return;
+    }
     var user = req.body.user;
     var tid = req.body.tid;
     var operate = req.body.operate;
@@ -1230,7 +1242,9 @@ exports.appointLeader = function (req, res) {
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function (req, res) {
     if(req.role !=='HR'){
-      return res.send(403,'forbidden');
+        res.status(403);
+        next('forbidden');
+        return;
     }
     var cname = req.user.info.name;
     var cid = req.user._id.toString();    //公司id

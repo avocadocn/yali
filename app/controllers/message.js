@@ -994,14 +994,18 @@ exports.home = function(req,res){
     }
     res.render('message/message',_send);
   }else{
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 }
 exports.renderAll = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('message/all',{'provider':req.user.provider});
   }else{
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 }
 exports.renderSender = function(req,res){
@@ -1014,28 +1018,36 @@ exports.renderPrivate = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('message/private');
   }else{
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 }
 exports.renderTeam = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('message/team');
   }else{
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 }
 exports.renderCompany = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('message/company');
   }else{
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 }
 exports.renderSystem = function(req,res){
   if(req.role !=='GUESTHR' && req.role !=='GUEST' && req.role !=='GUESTLEADER'){
     res.render('message/system');
   }else{
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 }
 */

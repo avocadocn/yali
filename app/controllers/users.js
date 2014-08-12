@@ -1166,7 +1166,9 @@ exports.quitGroup = function (req, res){
 //获取账户信息
 exports.getAccount = function (req, res) {
   if(req.role !=='HR'&& req.role!=='OWNER'&&req.role!=='PARTNER' ){
-    return res.send(403, 'forbidden!');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   User.findOne({
       _id : req.params.userId
@@ -1188,7 +1190,9 @@ exports.getAccount = function (req, res) {
 //保存用户信息
 exports.saveAccount = function (req, res) {
   if(req.role !=='HR'&& req.role!=='OWNER'){
-    return res.send(403, 'forbidden!');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   User.findOneAndUpdate({
     _id : req.params.userId
@@ -1213,7 +1217,9 @@ exports.saveAccount = function (req, res) {
 //修改密码
 exports.changePassword = function (req, res) {
   if(req.role !=='HR'&& req.role!=='OWNER'){
-    return res.send(403, 'forbidden!');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   User.findOne({
       _id : req.params.userId
@@ -1253,7 +1259,9 @@ exports.changePassword = function (req, res) {
 
 exports.editPhoto = function(req, res) {
   if(req.role ==='PARTNER'){
-    return res.send(403, 'forbidden!');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   res.render('users/editPhoto', {
     photo: req.user.photo,
