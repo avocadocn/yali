@@ -318,14 +318,17 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     //         console.log(e);
     //     }
     // };
-
-    $scope.cancel = function (_id) {
+    $scope.cancelConfirm = function(_id){
+        $('#CloseCampaignModel').modal('show');
+        $scope.selectCampaignId = _id;
+    }
+    $scope.cancel = function () {
         try {
             $http({
                 method: 'post',
-                url: '/campaign/cancel/'+_id,
+                url: '/campaign/cancel/'+$scope.selectCampaignId,
                 data:{
-                    campaign_id : _id
+                    campaign_id : $scope.selectCampaignId
                 }
             }).success(function(data, status) {
                 window.location.reload();
