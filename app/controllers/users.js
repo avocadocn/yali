@@ -853,6 +853,7 @@ exports.home = function(req, res) {
       department = null;
     }
     res.render('users/home',{
+      'title': req.role ==='OWNER'? '我的Donler主页': _user.nickname+'的Donler主页',
       'uid':_user._id,
       'leader_teams': leader_teams,
       'selected_teams' : selected_teams,

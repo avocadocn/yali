@@ -200,7 +200,6 @@ exports.getUserInfo = function(req,res) {
       return res.send(500,{'msg':'no user.'});
     }
     else{
-      console.log(user);
       return res.send(user);
     }
   });

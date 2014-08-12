@@ -199,6 +199,7 @@ exports.teampage = function(req, res) {
     function(teamMoreInfo, callback) {
 
       res.render('group/teampage',{
+        'title': req.companyGroup.name,
         'teamId' : req.params.teamId,
         'tname': req.companyGroup.name,
         'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
@@ -413,6 +414,7 @@ exports.home = function(req, res) {
     function(photo_album_thumbnails, callback) {
       if(req.role==='HR' || req.role ==='GUESTHR'){
         res.render('group/home', {
+          'title': req.companyGroup.name,
           'role': req.role,
           'teamId' : req.params.teamId,
           'tname': req.companyGroup.name,
@@ -468,6 +470,7 @@ exports.home = function(req, res) {
             }
 
             res.render('group/home',{
+              'title': req.companyGroup.name,
               'leader_teams': leader_teams,
               'selected_teams' : selected_teams,
               'unselected_teams' : unselected_teams,

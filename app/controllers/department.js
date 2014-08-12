@@ -1366,6 +1366,7 @@ exports.renderHome = function(req, res) {
 
       if (req.role === 'HR') {
         return res.render('department/home', {
+          'title': department.team.cname+department.team.name,
           'department': department,
           'role': req.role,
           'tname': department.team.name,
@@ -1426,6 +1427,7 @@ exports.renderHome = function(req, res) {
             }
 
             return res.render('department/home', {
+              'title': department.team.cname+department.team.name,
               'department': department,
               'leader_teams':leader_teams,
               'selected_teams': selected_teams,

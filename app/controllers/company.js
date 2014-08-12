@@ -688,7 +688,7 @@ exports.createDetail = function(req, res) {
 exports.home = function(req, res) {
     var render = function(company) {
         return res.render('company/home', {
-            title: '公司主页',
+            title: company.info.official_name,
             cid:company._id,
             logo: company.info.logo,
             cname: company.info.name,
