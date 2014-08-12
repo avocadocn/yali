@@ -7,7 +7,7 @@ block baseInfo
   .dl_container.clearfix
     .aside
       img.size_80.img_contain(ng-src="#{logo ? logo :'/img/icons/default_company_logo.png'}")
-    .top-main.company-top-main
+    .top_main
       .dl_row
         label.head= official_name
       .dl_row
@@ -26,7 +26,7 @@ block baseInfo
           label.info_border #{__('WIN_RATE')}
           span.info_right_border 100%
     if role === 'HR'
-      .hr-top-side
+      .top_side
         a.btn_container(href="/message/home#/send")
           .btn_icon
             img(src='/img/icons/Megaphone.png')

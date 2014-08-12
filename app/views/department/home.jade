@@ -8,7 +8,7 @@ block baseInfo
   .dl_container.clearfix
     .aside
       img.size_80.img_contain(src="#{department.company.logo}")
-    .top-main
+    .top_main
       .dl_row
         //-部门名
         label.head= department.name
@@ -19,7 +19,7 @@ block baseInfo
         .score_container
           span.info_border #{__("DEPARTMENT_MEMBER")}
           span.info_border.info_right_border= department.team.member.length
-    .dep-top-side
+    .top_side
       if req.role === 'HR' || req.role === 'LEADER'
         .group_btn_container
           a.btn_container(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel")

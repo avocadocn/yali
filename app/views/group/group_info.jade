@@ -1,6 +1,6 @@
 .loading_div(ng-show = 'loading')
-div(ng-show = '!loading' ng-controller="infoController")
-  form.form-horizontal.tab-info-form(name="infoForm")
+.user_edit_info.dl_card_tebcontent(ng-show = '!loading' ng-controller="infoController")
+  form.form-horizontal(name="infoForm")
     .dl_row
       h5.pull-left #{__("INFO")}
       button.dl_btn.dl_btn_small.pull-right(ng-if="role==='HR' || role==='LEADER'" ng-click="editToggle()" ng-bind="buttonStatus" ng-disabled="!unEdit && infoForm.$invalid")
