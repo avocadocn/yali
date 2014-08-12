@@ -294,7 +294,7 @@ var getDeptDepartment = function(req,res,did,callback){
         }
       }
       if(rst.length > 0){
-        Department.find({'_id':{'$in':rst}}).populate('team').exec(function (err,departments){
+        Department.find({'_id':{'$in':rst},'status':{'$ne':'delete'}}).populate('team').exec(function (err,departments){
           if(err || !departments){
             console.log(err);
             return {
@@ -710,7 +710,7 @@ exports.memberOperateByHand = function(operate, member, did, callback) {
 exports.getDepartmentDetail = function(req, res) {
   var did = req.body.did;
   Department.findOne({
-    '_id': did
+    '_id': did,'status':{'$ne':'delete'}
   }).populate('team').exec(function(err, department) {
     if (err || !department) {
       res.send(500, {
@@ -729,7 +729,7 @@ exports.getDepartmentDetail = function(req, res) {
 exports.getMultiDepartmentDetail = function(req, res) {
   var cid = req.params.cid;
   Department.find({
-    'company._id': cid
+    'company._id': cid,'status':{'$ne':'delete'}
   }).populate('team').exec(function(err, departments) {
     if (err || !departments) {
       res.send(500, {
@@ -800,58 +800,52 @@ var deleteFromRoot = function(department, seq, req, res) {
       }, {
         'multi': true
       }, function(err, users) {
-        CompanyGroup.remove({
+        Department.update({
           '_id': {
-            '$in': team_ids
+            '$in': delete_ids
           }
-        }, function(err, company_group) {
-          Department.remove({
-            '_id': {
-              '$in': delete_ids
-            }
-          }, function(err, _department) {
-            if (err || !_department) {
-              return res.send({
-                'msg': 'DEPARTMENT_DELETE_FAILURE',
-                'department': []
-              });
+        },{'$set':{'status':'delete'}},{'multi':true}, function(err, _department) {
+          if (err || !_department) {
+            return res.send({
+              'msg': 'DEPARTMENT_DELETE_FAILURE',
+              'department': []
+            });
+          } else {
+
+            if (seq != -1) {
+              department.splice(seq, 1);
             } else {
-
-              if (seq != -1) {
-                department.splice(seq, 1);
-              } else {
-                req.user.department = [];
-              }
-
-              Company.findOne({
-                '_id': req.user._id
-              }, function(err, company) {
-                if (err || !company) {
-                  res.send({
-                    'msg': 'DEPARTMENT_DELETE_FAILURE',
-                    'department': []
-                  });
-                } else {
-                  company.department = req.user.department;
-                  company.save(function(err) {
-                    if (err) {
-                      res.send({
-                        'msg': 'DEPARTMENT_DELETE_FAILURE',
-                        'department': []
-                      });
-                    } else {
-                      res.send({
-                        'msg': 'DEPARTMENT_DELETE_SUCCESS',
-                        '_id': req.user._id,
-                        'name': req.user.info.name,
-                        'department': company.department
-                      });
-                    }
-                  })
-                }
-              })
+              req.user.department = [];
             }
-          });
+
+            Company.findOne({
+              '_id': req.user._id
+            }, function(err, company) {
+              if (err || !company) {
+                res.send({
+                  'msg': 'DEPARTMENT_DELETE_FAILURE',
+                  'department': []
+                });
+              } else {
+                company.department = req.user.department;
+                company.save(function(err) {
+                  if (err) {
+                    res.send({
+                      'msg': 'DEPARTMENT_DELETE_FAILURE',
+                      'department': []
+                    });
+                  } else {
+                    res.send({
+                      'msg': 'DEPARTMENT_DELETE_SUCCESS',
+                      '_id': req.user._id,
+                      'name': req.user.info.name,
+                      'department': company.department
+                    });
+                  }
+                })
+              }
+            })
+          }
         });
       });
     }

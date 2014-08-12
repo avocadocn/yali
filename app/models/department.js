@@ -30,6 +30,11 @@ var Department = new Schema({
     name:String,
     logo:String
   },
+  status:{
+    type:String,
+    enum:['active','closed','delete'],
+    default:'active'
+  },
   team:{
     type: Schema.Types.ObjectId,
     ref: 'CompanyGroup'
