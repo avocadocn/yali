@@ -617,7 +617,7 @@ tabViewCompany
             // })
         });
     };
-    if (!$rootScope.team_lists) {
+    if (!$rootScope.team_lists || $scope.role === 'HR') {
         $scope.getData('team');
     } else {
         $scope.is_reload = true;
