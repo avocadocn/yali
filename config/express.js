@@ -11,6 +11,7 @@ var express = require('express'),
     helpers = require('view-helpers'),
     config = require('./config'),
     middleware = require('./middleware'),
+    errorHandle = require('../app/middlewares/error_handle'),
     i18n = require('i18n'),
     fs = require('fs');
 
@@ -142,39 +143,7 @@ module.exports = function(app, passport, db) {
         app.use(express.favicon());
         app.use(express.static(config.root + '/public'));
 
-        // 403
-        app.use(function(err, req, res, next) {
-            if (res.statusCode === 403) {
-                if (!req.xhr) {
-                    return res.redirect('/');
-                } else {
-                    return res.send(403, {'msg': 'forbidden'});
-                }
-            }
-            next();
-        });
-
-        // Assume "not found" in the error msgs is a 404. this is somewhat
-        // silly, but valid, you can do whatever you like, set properties,
-        // use instanceof etc.
-        app.use(function(err, req, res, next) {
-            // Treat as 404
-            if (~err.message.indexOf('not found')) return next();
-
-            // Log it
-            console.error(err.stack);
-
-            // Error page
-            res.status(500).render('500');
-        });
-
-        // Assume 404 since no middleware responded
-        app.use(function(req, res) {
-            res.status(404).render('404', {
-                url: req.originalUrl,
-                error: 'Not found'
-            });
-        });
+        app.use(errorHandle.errorHandle);
 
 
     });
