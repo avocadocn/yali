@@ -27,7 +27,7 @@ div(ng-show = '!loading')
           div(ng-repeat="photo in default_family" ng-class="{'active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
             img.center-block(ng-src="{{photo.uri}}/160/90")
 
-  .team_calendar_box.clearfix
+  .team_calendar_box.clearfix(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
     .dl_row.clearfix
       #calendar_view.pull-left
         //-span.calendar_back.pull-left.glyphicon.glyphicon-chevron-left(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView")
@@ -58,10 +58,6 @@ div(ng-show = '!loading')
             div(ng-if="role==='GUESTHR'||role==='GUEST'||role==='GUESTLEADER'")
               .dl_row
                 img.size_56.img_user(ng-src="{{leader.photo}}")
-              .dl_row
-                span.user_name {{leader.nickname}}
-            .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-              img.size_56.img_user(ng-src="{{leader.photo}}")
     .dl_row.clearfix
       span.subtitle.margin_left_15 #{__("MEMBER")}
     .dl_row.clearfix
@@ -77,11 +73,6 @@ div(ng-show = '!loading')
             div(ng-if="role==='GUESTHR'||role==='GUEST'||role==='GUESTLEADER'")
               .dl_row
                 img.size_56.img_user(ng-src="{{member.photo}}")
-              .dl_row
-                span.user_name {{member.nickname}}
-            .dl_row(ng-if="role==='GUESTHR'|| role === 'GUEST'")
-              img.size_56.img_user(ng-src="{{member.photo}}")
-
 
 #upload_modal.modal.fade(ng-show="role==='LEADER'||role==='HR'" tabindex="-1" role="dialog" aria-hidden="true")
   .modal-dialog

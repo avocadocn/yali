@@ -54,7 +54,9 @@ exports.commentAuthorize = function(req, res, next) {
       case 'campaign':
         Campaign.findOne({'_id':req.params.commentId},function (err, campaign){
           if(err || !campaign){
-            return res.send(403,'forbidden!');
+            res.status(403);
+            next('forbidden');
+            return;
           }else{
             if(campaign.team.indexOf(req.user._id.toString()) > -1){
               req.role = 'HR';
@@ -83,7 +85,9 @@ exports.commentAuthorize = function(req, res, next) {
       case 'team':
         CompanyGroup.findOne({'_id':req.params.commentId},function (err,company_group){
           if(err || !company_group){
-            return res.send(403,'forbidden!');
+            res.status(403);
+            next('forbidden');
+            return;
           }else{
             if(req.user._id.toString() === company_group.cid.toString()){
               req.role === 'HR';
@@ -120,8 +124,9 @@ exports.commentAuthorize = function(req, res, next) {
         next();
         break;
       default:
-        return res.send(403,'forbidden!');
-        break;
+        res.status(403);
+        next('forbidden');
+        return;
     }
   }
 }
@@ -303,7 +308,9 @@ exports.userAuthorize = function(req, res, next) {
     else if(req.profile && req.profile.cid.toString() === req.user.cid.toString()){
       req.role = 'PARTNER';
     }else{
-      return res.send(403, 'forbidden!');
+      res.status(403);
+      next('forbidden');
+      return;
     }
   }
   next();
@@ -375,7 +382,9 @@ exports.logoAuthorize = function(req, res, next){
       next();
     }
     else{
-      return res.send(403, 'forbidden!');
+      res.status(403);
+      next('forbidden');
+      return;
     }
   } else {
     next();
@@ -438,7 +447,9 @@ exports.appToken = function(req, res, next){
       appToken = req.body.appToken;
     }
     else{
-      return res.send(403,'forbidden');
+      res.status(403);
+      next('forbidden');
+      return;
     }
     User
     .findOne({
@@ -458,7 +469,9 @@ exports.appToken = function(req, res, next){
         });
       }
       else{
-        return res.send(403,'forbidden');
+        res.status(403);
+        next('forbidden');
+        return;
       }
     });
   }

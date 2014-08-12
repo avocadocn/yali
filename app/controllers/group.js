@@ -54,7 +54,9 @@ exports.getGroups = function(req,res) {
 //显示企业成员列表
 exports.renderMember = function(req,res){
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,forbidden);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   res.render('partials/member_list',{'role':req.role,'provider':'company'});
 };
@@ -88,7 +90,9 @@ exports.activateGroup = function(req, res) {
     });
   }
   else{
-    return res.send(403,{'msg':'forbidden'});
+    res.status(403);
+    next('forbidden');
+    return;
   }
 };
 
@@ -270,8 +274,10 @@ exports.getSimiliarTeams = function(req,res) {
 
 //TODO
 exports.saveInfo =function(req,res) {
-    if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,forbidden);
+  if(req.role !=='HR' && req.role !=='LEADER'){
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var teamId = req.params.teamId;
   CompanyGroup.findOne({'_id' : teamId}, function(err, companyGroup) {
@@ -517,15 +523,18 @@ exports.getCompanyGroups = function(req, res) {
 
 exports.renderCampaigns = function(req,res){
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,{'msg':'forbidden'});
+    res.status(403);
+    next('forbidden');
+    return;
   }
   res.render('partials/campaign_list',{'role':req.role,'provider':'team'});
 }
 //约战
 exports.provoke = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER' && req.role !=='GUESTLEADER' && req.role !=='MEMBERLEADER' && req.role !=='PARTNERLEADER'){
-    console.log(req.role);
-    return res.send(403,{'msg':'forbidden'});
+    res.status(403);
+    next('forbidden');
+    return;
   }
 
   var my_team_id = req.params.teamId;
@@ -752,7 +761,9 @@ exports.provoke = function (req, res) {
 //应约
 exports.responseProvoke = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var competition_id = req.body.competition_id;
   Campaign.findOne({
@@ -760,7 +771,9 @@ exports.responseProvoke = function (req, res) {
     }).populate('team').exec(
   function (err, campaign) {
     if(campaign.camp[1].id!=req.params.teamId){
-      return res.send(403,'forbidden');
+      res.status(403);
+      next('forbidden');
+      return;
     }
     if(req.body.responseStatus){
       campaign.camp[1].start_confirm = true;
@@ -831,7 +844,9 @@ exports.responseProvoke = function (req, res) {
 //取消挑战
 exports.cancelProvoke = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var competition_id = req.body.competition_id;
   Campaign.findOne({
@@ -839,7 +854,9 @@ exports.cancelProvoke = function (req, res) {
     }).populate('team').exec(
   function (err, campaign) {
     if(campaign.camp[0].id!=req.params.teamId){
-      return res.send(403,'forbidden');
+      res.status(403);
+      next('forbidden');
+      return;
     }
     campaign.camp[0].start_confirm = false;
 
@@ -893,7 +910,9 @@ exports.cancelProvoke = function (req, res) {
 //发布和小队相关的活动
 exports.sponsor = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,forbidden);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var theme = req.body.theme;
   var content = req.body.content;//活动内容
@@ -1092,7 +1111,9 @@ exports.getGroupMember = function(req,res){
 //比赛
 exports.getCompetition = function(req, res){
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,forbidden);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var options ={
     'title': '比赛页面',
@@ -1130,7 +1151,9 @@ exports.getCompetition = function(req, res){
 
 exports.updateFormation = function(req, res){
   if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   Campaign.findOne({
     '_id':req.params.competitionId
@@ -1164,7 +1187,9 @@ exports.updateFormation = function(req, res){
 //某一方发送或者修改比赛成绩确认消息
 exports.resultConfirm = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,forbidden);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var competition_id = req.params.competitionId;
 
@@ -1226,7 +1251,9 @@ exports.group = function(req, res, next, id) {
 
 exports.uploadFamily = function(req, res) {
   if (req.role !== 'LEADER' && req.role !== 'HR') {
-    return res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 
   var width = Number(req.body.width);
@@ -1344,7 +1371,9 @@ exports.getFamily = function(req, res) {
 
 exports.toggleSelectFamilyPhoto = function(req, res) {
   if (req.role !== 'LEADER' && req.role !== 'HR') {
-    return res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var company_group = req.companyGroup;
 
@@ -1369,7 +1398,9 @@ exports.toggleSelectFamilyPhoto = function(req, res) {
 
 exports.deleteFamilyPhoto = function(req, res) {
   if (req.role !== 'LEADER' && req.role !== 'HR') {
-    return res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 
   var company_group = req.companyGroup;
@@ -1392,7 +1423,9 @@ exports.deleteFamilyPhoto = function(req, res) {
 
 exports.editLogo = function(req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,forbidden);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   CompanyGroup.findOne({ _id: req.params.teamId  }).exec(function(err, company_group) {
     var nav_logo, nav_name;
@@ -1422,7 +1455,9 @@ exports.editLogo = function(req, res) {
 
 exports.getCampaignsForApp = function(req, res) {
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,forbidden);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var user = req.user;
   var tid = req.params.teamId;

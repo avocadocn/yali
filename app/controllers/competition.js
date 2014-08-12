@@ -33,7 +33,9 @@ function booleanJudge(own,opposite){
 exports.getCompetition = function(req, res){
   var timeout = Config.COMPETITION_CONFIRM_TIMEOUT;
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
-    return res.send(403,forbidden);
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var competition = req.campaign;
   var parent_name, parent_url;
@@ -176,7 +178,9 @@ if(!req.user){
 //某一方发送或者修改比赛成绩确认消息
 exports.resultConfirm = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var competition_id = req.params.competitionId;
 

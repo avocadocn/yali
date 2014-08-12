@@ -421,68 +421,113 @@ exports.ownerFilter = function(req, res, next) {
   }
 };
 
-exports.createAuth = function(req, res, next) {
-  Company
-  .findById(req.body.cid)
-  .exec()
-  .then(function(company) {
-    // 找不到相册所属公司
-    if (!company) {
-      return res.send(403);
-    }
+/**
+ * 是否有相册创建权限
+ * @param  {Object}   req
+ * @param  {Function} callback callback(auth), auth: true or false or err
+ */
+var _createAuth = function(req, callback) {
 
-    // 相册所属的组不在所属公司里
-    var tids = [];
-    company.team.forEach(function(team) {
-      tids.push(team.id.toString());
-    });
-    var index = tids.indexOf(req.body.tid);
-    if (index === -1) {
-      return res.send(403);
-    }
-
-    // 该公司的HR
-    var auth = false;
-    if (req.user.provider === 'company' && req.user._id.toString() === company._id.toString()) {
-      auth = true;
-    }
-
-
-    CompanyGroup
-    .findById(tids[index])
+  /**
+   * 处理验证过程
+   * @param  {String} cid 相册所属公司_id
+   * @param  {String} tid 相册所属的队的_id
+   */
+  var deal = function(cid, tid) {
+    Company
+    .findById(cid)
     .exec()
-    .then(function(company_group) {
-      if (company_group) {
-        var leaders = company_group.leader || [];
-        for (var i = 0; i < leaders.length; i++) {
-          if (req.user._id.toString() === leaders[i]._id.toString()) {
-            auth = true;
+    .then(function(company) {
+      // 找不到相册所属公司
+      if (!company) {
+        callback(false);
+      }
+
+      // 相册所属的组不在所属公司里
+      var tids = [];
+      company.team.forEach(function(team) {
+        tids.push(team.id.toString());
+      });
+      var index = tids.indexOf(tid);
+      if (index === -1) {
+        callback(false);
+      }
+
+      // 该公司的HR
+      var auth = false;
+      if (req.user.provider === 'company' && req.user._id.toString() === company._id.toString()) {
+        auth = true;
+      }
+
+
+      CompanyGroup
+      .findById(tids[index])
+      .exec()
+      .then(function(company_group) {
+        if (company_group) {
+          var leaders = company_group.leader || [];
+          for (var i = 0; i < leaders.length; i++) {
+            if (req.user._id.toString() === leaders[i]._id.toString()) {
+              auth = true;
+            }
           }
         }
-      }
-      if (auth === false) {
-        return res.send(403);
-      } else {
-        req.create_auth = true;
-        next();
-      }
+        if (auth === false) {
+          callback(false);
+        } else {
+          callback(true);
+        }
 
+
+      })
+      .then(null, function(err) {
+        callback(err);
+      });
 
     })
     .then(null, function(err) {
-      console.log(err);
-      return res.send(500);
+      callback(err);
     });
+  };
 
-  })
-  .then(null, function(err) {
-    console.log(err);
-    return res.send(500);
+  if (req.body.cid && req.body.tid) {
+    deal(req.body.cid, req.body.tid);
+  } else {
+    CompanyGroup.findById(req.params.groupId).exec()
+    .then(function(this_team) {
+      if (!this_team) {
+        return callback('not found this company_group');
+      }
+      deal(this_team.cid, this_team._id.toString());
+    })
+    .then(null, callback);
+  }
+
+
+
+};
+
+exports.createAuth = function(req, res, next) {
+  _createAuth(req, function(auth) {
+    if (auth === true) {
+      req.create_auth = true;
+    } else {
+      if (typeof auth !== 'boolean') {
+        console.log('[PhotoAlbum create auth err]:', auth);
+      }
+      req.create_auth = false;
+    }
+    next();
   });
 };
 
 
 exports.createPhotoAlbum = function(req, res) {
+  if (!req.create_auth) {
+    res.status(403);
+    next('forbidden');
+    return;
+  }
   var photo_album = new PhotoAlbum({
     owner: {
       model: req.owner_model,
@@ -567,7 +612,9 @@ exports.updatePhotoAlbum = function(req, res) {
 
   photoAlbumProcess(res, _id, function(photo_album) {
     if (photoAlbumEditAuth(req.user, photo_album) === false) {
-      return res.send(403);
+      res.status(403);
+      next('forbidden');
+      return;
     }
     if (photo_album.hidden === false) {
       photo_album.name = new_name;
@@ -595,7 +642,9 @@ exports.deletePhotoAlbum = function(req, res) {
       } else if(photo_album) {
 
         if (photoAlbumEditAuth(req.user, photo_album) === false) {
-          return res.send(403);
+          res.status(403);
+          next('forbidden');
+          return;
         }
         photo_album.hidden = true;
         photo_album.save(function(err) {
@@ -629,7 +678,9 @@ exports.createPhoto = function(req, res) {
     .exec(function(err, photo_album) {
 
       if (photoUploadAuth(req.user, photo_album) === false) {
-        return res.send(403);
+        res.status(403);
+        next('forbidden');
+        return;
       }
 
       var i = 0;
@@ -866,7 +917,9 @@ exports.deletePhoto = function(req, res) {
           if (p_id == photos[i]._id) {
 
             if (photoEditAuth(req.user, photo_album, photos[i]) === false) {
-              return res.send(403);
+              res.status(403);
+              next('forbidden');
+              return;
             }
 
             photos[i].hidden = true;
@@ -941,7 +994,8 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
           owner_logo: company_group.logo,
           cid: company_group.cid,
           moment: moment,
-          links: links
+          links: links,
+          create_auth: req.create_auth
         });
       })
       .then(null, function(err) {

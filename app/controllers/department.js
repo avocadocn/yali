@@ -128,8 +128,9 @@ var managerUpdate = function(did,operate,member,res){
 //多部门活动
 exports.multiCampaignSponsor = function(req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
-    console.log(req.role);
-    return res.send(403,'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
   var teams = [];
   var team_ids = [];
@@ -313,7 +314,9 @@ var getDeptDepartment = function(req,res,did,callback){
 //部门发活动
 exports.sponsor = function(req, res) {
   if (req.role !== 'HR' && req.role !== 'LEADER') {
-    return res.send(403, 'forbidden');
+    res.status(403);
+    next('forbidden');
+    return;
   }
 
   var _sponsor = function(req,res,departments){
@@ -976,7 +979,9 @@ var departmentFindAndUpdate = function(department, did, param) {
 exports.modifyDepartment = function(req, res) {
 
   if (req.role !== 'HR') {
-    return res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 
   var did = req.body.did;
@@ -1053,7 +1058,9 @@ exports.modifyDepartment = function(req, res) {
 exports.deleteDepartment = function(req, res) {
 
   if (req.role !== 'HR') {
-    return res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 
   var did = req.params.departmentId;
@@ -1085,7 +1092,9 @@ exports.getDepartment = function(req, res) {
         }
       })
     } else {
-      res.send(403);
+      res.status(403);
+      next('forbidden');
+      return;
     }
   }else{
     if (req.user._id.toString() === req.params.cid) {
@@ -1251,7 +1260,9 @@ exports.createDepartment = function(req, res) {
     var cid = req.body.cid;
 
     if (req.user._id.toString() !== cid) {
-      return res.send(403);
+      res.status(403);
+      next('forbidden');
+      return;
     }
 
     var team_create = {
@@ -1324,7 +1335,9 @@ exports.createDepartment = function(req, res) {
       }
     });
   } else {
-    res.send(403);
+    res.status(403);
+    next('forbidden');
+    return;
   }
 }
 

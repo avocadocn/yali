@@ -34,16 +34,18 @@ block contentExt
               span #{__("ENTRY")}#{__("DEADLINE")}:
             .dl_detail_detail
               span= moment(campaign.deadline).format("YYYY-MM-DD HH:mm dddd")
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
-            .dl_detail_detail
-              span= campaign.member_min
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
-            .dl_detail_detail
-              span= campaign.member_max
+          if campaign.member_min>0
+            .dl_detail_row
+              .dl_detail_label
+                span #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
+              .dl_detail_detail
+                span= campaign.member_min
+          if campaign.member_max>0
+            .dl_detail_row
+              .dl_detail_label
+                span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
+              .dl_detail_detail
+                span= campaign.member_max
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
             if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish
