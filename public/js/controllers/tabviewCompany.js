@@ -318,27 +318,32 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     //         console.log(e);
     //     }
     // };
-    $scope.cancelConfirm = function(_id){
-        $('#CloseCampaignModel').modal('show');
-        $scope.selectCampaignId = _id;
-    }
-    $scope.cancel = function () {
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/cancel/'+$scope.selectCampaignId,
-                data:{
-                    campaign_id : $scope.selectCampaignId
+    $scope.cancel = function (_id) {
+        alertify.confirm('确认要关闭该活动吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/campaign/cancel/'+_id,
+                        data:{
+                            campaign_id : _id
+                        }
+                    }).success(function(data, status) {
+                        if(data.result===1){
+                            window.location.reload();
+                        }
+                        else{
+                            alertify(data.msg);
+                        }
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        });
     };
 }]);
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
@@ -910,29 +915,33 @@ tabViewCompany
 
     //激活、关闭小组
     $scope.activateGroup = function(active, tid, index){
-        try{
-            $http({
-                method:'post',
-                url: '/group/activateGroup/'+tid,
-                data:{
-                    'tid':tid,
-                    'active':active
+        var message = '您确认'+ (active ? '打开' :'关闭')+'该小组吗？';
+        alertify.confirm(message,function(e){
+            if(e){
+                try{
+                    $http({
+                        method:'post',
+                        url: '/group/activateGroup/'+tid,
+                        data:{
+                            'tid':tid,
+                            'active':active
+                        }
+                    }).success(function(data,status){
+                        if( active===true ){
+                           $rootScope.team_lists[index].active = true;
+                        }
+                        else{
+                            $rootScope.team_lists[index].active = false;
+                        }
+                    }).error(function(data, status){
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data,status){
-                if( active===true ){
-                   $rootScope.team_lists[index].active = true;
-                   alertify.alert('成功打开小组!');
+                catch(e){
+                    console.log(e);
                 }
-                else{
-                    $rootScope.team_lists[index].active = false;
-                }
-            }).error(function(data, status){
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
+            }
+        });
     };
 
     //确认关闭小组、退出小组
@@ -963,23 +972,27 @@ tabViewCompany
     };
     //退出小队
     $scope.quitGroup = function(tid,index){
-        try{
-            $http({
-                method:'post',
-                url: '/users/quitGroup',
-                data:{
-                    tid : tid
+        alertify.confirm('您确认退出该小队吗？',function(e){
+            if(e){
+                try{
+                    $http({
+                        method:'post',
+                        url: '/users/quitGroup',
+                        data:{
+                            tid : tid
+                        }
+                    }).success(function(data,status){
+                        alertify.alert('成功退出小队!');
+                        $rootScope.team_lists[index].belong = false;
+                    }).error(function(data,status){
+                       alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data,status){
-                alertify.alert('成功退出小队!');
-                $rootScope.team_lists[index].belong = false;
-            }).error(function(data,status){
-               alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
+                catch(e){
+                    console.log(e);
+                }
+            }
+        });
     };
 
 

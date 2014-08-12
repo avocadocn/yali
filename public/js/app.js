@@ -118,7 +118,13 @@ app.directive('mixMaxlength', function() {
 });
 
 app.run(['$rootScope', function ($rootScope) {
-
+    alertify.set({
+      buttonFocus: "none",
+      labels: {
+        ok: '确认',
+        cancel: '取消'
+      }
+    });
     $rootScope.shortTrim = function(value){
       //中文
       if(escape(value).indexOf("%u")>=0){
@@ -135,37 +141,6 @@ app.run(['$rootScope', function ($rootScope) {
           return value;
         }
       }
-    }
-
-    $rootScope.initAlertCss = function(){
-       var body = {
-            'border': 'solid 1px #e5e5e5',
-            'border-radius': '0px',
-            'top' : '50px',
-            'left' : '55%',
-            'width' : '350px'
-        };
-
-        var buttons = {
-            'border-top' : '0px',
-            'background' : '#fff',
-            'text-align' : 'center'
-        }
-
-        var button = {
-            'margin-left' : '0px',
-            'padding' : '6px 15px',
-            'box-shadow' : '0px 0px 0px #ffffff',
-            'background-color' : '#3498db'
-        }
-
-        $(".alertify-buttons").css(buttons);
-        $(".alertify").css(body);
-        $(".alertify-button").css(button);
-    }
-    $rootScope.donlerAlert = function(msg) {
-      alertify.alert(msg);
-      $rootScope.initAlertCss();
     }
 }]);
 

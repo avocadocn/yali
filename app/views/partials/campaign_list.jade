@@ -41,7 +41,7 @@
           strong #{__("LOCATION")}:
           span.content_text {{campaign_item.location.name}}
       td.operator_col
-        button.cancel_btn.dl_btn_small.operator_btn.pull-right(ng-if="campaign_item.close_flag" ng-click="cancelConfirm(campaign_item._id)") 关闭活动
+        button.cancel_btn.dl_btn_small.operator_btn.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
   .text-center(ng-if="campaigns.length>0")
     button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
     span(ng-if="loadOver_flag") 已经加载了所有的活动
@@ -52,16 +52,3 @@
       a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
     li
       a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
-div.modal.fade#CloseCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-  .modal-dialog
-    .dl-modal
-      .dl-modal-content
-        form
-          .dl-modal-header
-            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") X
-            h4.modal-title#myModalLabel #{__("CONFIRM")}
-          .dl-modal-body
-            span= '您确定要关闭此活动吗？'
-          .modal-footer
-            button.dl_btn.dl_btn_small(ng-click='cancel()' data-dismiss="modal") #{__("CONFIRM")}
-            button.cancel_btn.dl_btn_small(data-dismiss="modal") #{__("CANCEL")}

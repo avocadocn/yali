@@ -414,6 +414,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     };
 
     $scope.quit = function(campaign_id,index) {
+
         try {
             $http({
                 method: 'post',
@@ -442,42 +443,50 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     };
     //应战
     $scope.responseProvoke = function(tid,competition_id,status) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/responseProvoke/'+tid,
-                data:{
-                    competition_id : competition_id,
-                    responseStatus : status
+        alertify.confirm('确认要接受该挑战吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/group/responseProvoke/'+tid,
+                        data:{
+                            competition_id : competition_id,
+                            responseStatus : status
+                        }
+                    }).success(function(data, status) {
+                        window.location.reload();
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        });
     };
     //取消挑战
     $scope.cancelProvoke = function(tid,competition_id) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/cancelProvoke/'+tid,
-                data:{
-                    competition_id : competition_id
+        alertify.confirm('确认要取消挑战吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/group/cancelProvoke/'+tid,
+                        data:{
+                            competition_id : competition_id
+                        }
+                    }).success(function(data, status) {
+                        window.location.reload();
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        });
     };
 }]);
 
@@ -655,32 +664,32 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
     //         console.log(e);
     //     }
     // };
-    $scope.cancelConfirm = function(_id){
-        $('#CloseCampaignModel').modal('show');
-        $scope.selectCampaignId = _id;
-    }
-    $scope.cancel = function () {
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/cancel/'+$scope.selectCampaignId,
-                data:{
-                    campaign_id : $scope.selectCampaignId
+    $scope.cancel = function (_id) {
+        alertify.confirm('确认要关闭该活动吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/campaign/cancel/'+_id,
+                        data:{
+                            campaign_id : _id
+                        }
+                    }).success(function(data, status) {
+                        if(data.result===1){
+                            window.location.reload();
+                        }
+                        else{
+                            alertify(data.msg);
+                        }
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    window.location.reload();
+                catch(e) {
+                    console.log(e);
                 }
-                else{
-                    alertify(data.msg);
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+            }
+        });
     };
 }]);
 

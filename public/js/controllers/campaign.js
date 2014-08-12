@@ -52,22 +52,31 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         }
     });
     $scope.cancel = function (_id) {
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/cancel/'+_id,
-                data:{
-                    campaign_id : _id
+        alertify.confirm('确认要关闭该活动吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/campaign/cancel/'+_id,
+                        data:{
+                            campaign_id : _id
+                        }
+                    }).success(function(data, status) {
+                        if(data.result===1){
+                            window.location.reload();
+                        }
+                        else{
+                            alertify(data.msg);
+                        }
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        });
     };
     $scope.getComment = function(){
         try {
