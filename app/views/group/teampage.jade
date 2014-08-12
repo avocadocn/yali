@@ -63,7 +63,8 @@ block baseInfo
               img(src='/img/icons/pointer.png')
             .btn_text
               span.subtitle 动TA一下
-        a.btn_container(href="/group/home/#{teamId}")
+        if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
+          a.btn_container(href="/group/home/#{teamId}")
             .btn_icon
               img(src='/img/icons/plaine.png')
             .btn_text
@@ -117,7 +118,10 @@ block aside
       .info
         p
           | 主题:&nbsp;
-          a(href="/campaign/detail/#{campaign._id}" target="_blank") #{campaign.theme}
+          if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
+            a(href="/campaign/detail/#{campaign._id}" target="_blank") #{campaign.theme}
+          else
+            span #{campaign.theme}
         p 时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
         p 地点: #{campaign.location.name}
         //-if campaign.campaign_type == '2'
@@ -156,7 +160,8 @@ block aside
       img.map_size(src="/img/icons/nohomecourt2.jpg/268/210" ng-show="home_court_index==1")
   .thumbnailbox
     span.subtitle 相册
-      a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+      if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
+        a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
     div
       each photo_album in photo_album_thumbnails
         a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
