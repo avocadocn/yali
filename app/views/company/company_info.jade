@@ -34,9 +34,9 @@
     hr.margin_top_6
     .dl_row.clearfix
       .info_side
-        span.info_label #{__("OFFICIAL_NAME")}
+        span.info_label 官方简称
       .info_detail
-        input.dl_input.editToggle.dl-form-control(type="text" name ="username" ng-model="info.official_name" ng-disabled="true")
+        input.dl_input.editToggle.dl-form-control(type="text" name ="username" ng-model="info.official_name" ng-disabled="infoUnEdit")
       .info_side(ng-if="role =='HR'")
         a.clearLinkUnderline.dl_btn.dl_btn_small.pull-right(href="/company/editLogo/#{global_user._id}") #{__("CHANGE_LOGO")}
     .dl_row.clearfix

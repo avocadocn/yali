@@ -101,7 +101,11 @@ var UserSchema = new Schema({
     cname: String,
     company_official_name: String,
     team: [_team],
-    app_token: String
+    app_token: String,
+    disabled:{
+        type: Boolean,
+        default: false
+    },
 });
 
 /**

@@ -11,7 +11,7 @@
         .col-xs-offset-4.col-xs-8
           p 现在可以完成注册，加入动梨啦！
       .form-group.dl_sm_group(ng-class="{'has-error':createForm.official_name.$invalid && createForm.official_name.$dirty}")
-        label.col-xs-4.control-label(for="official_name" ) *企业官方名称：
+        label.col-xs-4.control-label(for="official_name" ) *官方简称：
         .col-xs-8
           input#official_name.form-control.dl_full_control(type="text" name="official_name" ng-model="detail.official_name" mix-maxlength="20" ng-pattern="/^[0-9a-zA-Z\u4e00-\u9fa5]*$/" ng-blur="detail.officialNameCheck()" placeholder="请参考企业名称/品牌名称" tooltip-placement="right" tooltip="{{createForm.official_name.$invalid && createForm.official_name.$dirty ? '您企业的简称或者品牌名称，便于识别' : ''}}" required)
           span.dl_tip(ng-if="!detail.check_name") {{detail.check_name_value}}
