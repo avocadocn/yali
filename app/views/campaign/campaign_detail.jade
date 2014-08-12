@@ -12,7 +12,7 @@ block contentExt
       //-TODO:详情页权限不正确，需要更改
       if (role==='HR' || role==='LEADER' && campaign.campaign_type != 3) && campaign.active &&!campaign.finish
         span.pull-right
-          button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_id)") 关闭活动
+          button.cancel_btn.dl_btn_small.operator_btn(data-toggle="modal" data-target="#CloseCampainModal") 关闭活动
       ul.nav.nav-tabs
         li.tab_style(ng-class="{'active':true}")
           a.subtitle.no_radius.border_red= campaign.theme
@@ -146,5 +146,7 @@ block contentExt
       include ../partials/campaign_message_send
     .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/select_team_for_multi_campaign
+    .modal.fade#CloseCampainModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../partials/close_campaign_modal
 append footExt
   script(src="/js/controllers/campaign.js")
