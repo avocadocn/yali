@@ -158,15 +158,22 @@ block aside
       img.map_size(src="/img/icons/nohomecourt.jpg/268/210" ng-show="home_court_index==1")
     else if home_court.length==1
       img.map_size(src="/img/icons/nohomecourt2.jpg/268/210" ng-show="home_court_index==1")
-  .thumbnailbox
-    span.subtitle 相册
-      if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
-        a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
-    div
-      each photo_album in photo_album_thumbnails
-        a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
-          img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
-          p.thumbnail_name.text-center= photo_album.name
+  if photo_album_thumbnails.length>0
+    .thumbnailbox
+      span.subtitle 相册
+        if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
+          a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+      div
+        if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
+          each photo_album in photo_album_thumbnails
+            a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+              img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
+              p.thumbnail_name.text-center= photo_album.name
+        else
+          each photo_album in photo_album_thumbnails
+            span.thumbnail_cell
+              img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
+              p.thumbnail_name.text-center= photo_album.name
 
 
 append footExt

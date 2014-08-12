@@ -61,7 +61,7 @@ div(ng-show = '!loading')
           a(ng-href="{{'/department/home/'+group_message.department[0]}}") {{group_message.team[0].name}}
           span 发起了一个多部门联谊活动
         span(ng-switch-default)
-        span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
+        span.pull-right {{group_message.create_time_format}}
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
           .dl_message_container.clearfix(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")

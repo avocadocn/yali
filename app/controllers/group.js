@@ -195,7 +195,6 @@ exports.teampage = function(req, res) {
             }else{
               teamMoreInfo.campaign = campaign[0];
             }
-            console.log(teamMoreInfo);
             callback(null, teamMoreInfo);
         });
 
