@@ -1232,7 +1232,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     $scope.sponsor_permission = false;
 
     $scope.multi_campaign_type = {
-        'value' : 0
+        'value' : 1
     };
 
     $scope.dOt_type = {

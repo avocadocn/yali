@@ -10,11 +10,11 @@
           .dl_row
             p.subtitle 请选择您需要发多活动的小队
           .dl_row
-            input(type="radio" ng-model="multi_campaign_type.value" value="0")
-            span 多小队一起活动
-            span &nbsp;&nbsp;&nbsp;
             input(type="radio" ng-model="multi_campaign_type.value" value="1")
-            span 每个小队单独活动
+            span 每小队的独立活动
+            span &nbsp;&nbsp;&nbsp;
+            input(type="radio" ng-model="multi_campaign_type.value" value="0")
+            span 多小队的联谊活动
         .dl_modal_container
           .groups
             .dOt_group(ng-repeat="dOt in dOts" ng-if="dOt.active")
