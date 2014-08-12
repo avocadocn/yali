@@ -80,6 +80,7 @@ module.exports = function(grunt) {
                     'public/lib/moment/lang/zh-cn.js',
                     'public/lib/bootstrap/dist/js/bootstrap.js',
                     'public/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
+                    'public/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js',
                     'public/lib/angular-translate/angular-translate.min.js',
                     'public/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
                     'public/lib/angular-bootstrap/ui-bootstrap.js',

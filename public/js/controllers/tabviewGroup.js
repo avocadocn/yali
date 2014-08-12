@@ -1107,10 +1107,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
     }
     $scope.initialize = function(){
         $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
-        $scope.locationmap.plugin(["AMap.ToolBar"],function(){     
-            toolBar = new AMap.ToolBar();
-            $scope.locationmap.addControl(toolBar);    
-        });
         $scope.locationmap.plugin(["AMap.CitySearch"], function() {
             //实例化城市查询类
             var citysearch = new AMap.CitySearch();
@@ -1130,7 +1126,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
 
                         });
                         AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
-                        $scope.MSearch.search($scope.location.name); //关键字查询
                     });
                 }
             });
@@ -1314,10 +1309,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     }
     $scope.initialize = function(){
         $scope.locationmap = new AMap.Map("competitionMapDetail");            // 创建Map实例
-        $scope.locationmap.plugin(["AMap.ToolBar"],function(){     
-            toolBar = new AMap.ToolBar();
-            $scope.locationmap.addControl(toolBar);    
-        });
         $scope.locationmap.plugin(["AMap.CitySearch"], function() {
             //实例化城市查询类
             var citysearch = new AMap.CitySearch();
@@ -1337,7 +1328,6 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
 
                         });
                         AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
-                        $scope.MSearch.search($scope.location.name); //关键字查询
                     });
                 }
             });
