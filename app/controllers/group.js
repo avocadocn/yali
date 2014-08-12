@@ -1006,7 +1006,7 @@ exports.sponsor = function (req, res) {
             req.companyGroup.save(function(err) {
               if (err) {
                 //res.send(500);
-                return res.send({'result':0,'msg':'活动发起失败'});
+                return res.send({'result':0,'msg':'FAILURED'});
               } else {
                 //生成动态消息
                 var groupMessage = new GroupMessage();
@@ -1025,7 +1025,7 @@ exports.sponsor = function (req, res) {
                   if (err) {
                     console.log(err);
                   } else {
-                    return res.send({'result':1,'msg':'活动发起成功'});
+                    return res.send({'result':1,'msg':'SUCCESS'});
                   }
                 });
               }
@@ -1047,7 +1047,7 @@ exports.sponsor = function (req, res) {
               function(err){
                 if(err){
                   console.log('MULTI_CAMPAIGN_CAMPAIGN',err);
-                  return res.send({'result':1,'msg':'FAILURED'});
+                  return res.send({'result':0,'msg':'FAILURED'});
                 }else{
                   //生成动态消息
                   var groupMessage = new GroupMessage();
@@ -1068,7 +1068,7 @@ exports.sponsor = function (req, res) {
                     if (err) {
                       console.log('MULTI_CAMPAIGN_GROUPMESSAGE_ERROR',err);
                     } else {
-                      return res.send({'result':1,'msg':'活动发起成功'});
+                      return res.send({'result':1,'msg':'SUCCESS'});
                     }
                   });
                 }

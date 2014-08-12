@@ -1231,6 +1231,10 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     $scope.dOt = false; // true 返回 部门    false 返回小队
     $scope.sponsor_permission = false;
 
+    $scope.multi_campaign_type = {
+        'value' : 0
+    };
+
     $scope.dOt_type = {
         'dOt':$scope.dOt,
         'name':'选择小队'
@@ -1430,8 +1434,48 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     }
 
 
+
+    //依次给小队发活动
+    var hrSendToTeamOneByOne = function(value,http,scope,count){
+      if(scope.select_dOts.length > count -1){
+        try{
+          http({
+              method: 'post',
+              url: '/group/campaignSponsor/'+ scope.select_dOts[count]._id,
+              data:value
+          }).success(function(data, status) {
+              if(data.msg === 'SUCCESS'){
+                if(scope.select_dOts.length > count -1){
+                  //scope.dOt_send_success = scope.dOt_send_success + 1;
+                  //递归发送
+                  try{
+                    hrSendToTeamOneByOne(value,http,scope,count+1);
+                  }catch(e){
+                    console.log(1,scope.select_dOts.length,count);
+                    console.log(e);
+                  }
+                }else{
+                  window.location.reload();
+                }
+              }else{
+                alertify.alert('DATA ERROR');
+              }
+          }).error(function(data, status) {
+              //TODO:更改对话框
+              alertify.alert('DATA ERROR');
+          });
+        }
+        catch(e){
+            if(scope.select_dOts.length === count){
+                window.location.reload();
+            }else{
+                console.log(e);
+            }
+        }
+      }
+    }
+
     $scope.sponsor = function() {
-        var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
         var _data = {
             theme: $scope.theme,
             location: $scope.location,
@@ -1442,32 +1486,38 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
             member_min : $scope.member_min,
             member_max : $scope.member_max
         };
-        if($scope.dOt){
-            _data.select_departments = $scope.select_dOts;
+        if($rootScope.dOtMulti && $scope.multi_campaign_type.value == '1'){
+            $scope.dOt_send_success = 0;
+            hrSendToTeamOneByOne(_data,$http,$scope,$scope.dOt_send_success);
         }else{
-            _data.select_teams = $scope.select_dOts;
-        }
-
-        if($scope.member_max < $scope.member_min){
-            alertify.alert('最少人数须小于最大人数');
-        }
-        else{
-            try{
-                $http({
-                    method: 'post',
-                    url: _url,
-                    data:_data
-                }).success(function(data, status) {
-                    //发布活动后跳转到显示活动列表页面
-                    window.location.reload();
-
-                }).error(function(data, status) {
-                    //TODO:更改对话框
-                    alertify.alert('DATA ERROR');
-                });
+            var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
+            if($scope.dOt){
+                _data.select_departments = $scope.select_dOts;
+            }else{
+                _data.select_teams = $scope.select_dOts;
             }
-            catch(e){
-                console.log(e);
+
+            if($scope.member_max < $scope.member_min){
+                alertify.alert('最少人数须小于最大人数');
+            }
+            else{
+                try{
+                    $http({
+                        method: 'post',
+                        url: _url,
+                        data:_data
+                    }).success(function(data, status) {
+                        //发布活动后跳转到显示活动列表页面
+                        window.location.reload();
+
+                    }).error(function(data, status) {
+                        //TODO:更改对话框
+                        alertify.alert('DATA ERROR');
+                    });
+                }
+                catch(e){
+                    console.log(e);
+                }
             }
         }
     };
