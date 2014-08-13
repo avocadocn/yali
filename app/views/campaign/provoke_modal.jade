@@ -1,3 +1,4 @@
+link(rel="stylesheet" href="/lib/pen/src/pen.css")
 form(name="provoke_form" novalidate)
   .dl-modal-header
     button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
@@ -10,7 +11,7 @@ form(name="provoke_form" novalidate)
         input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在14字以内。" tooltip="{{provoke_form.theme.$invalid ? '挑战简单描述，请控制在14字以内':''}}" maxlength=14 required)
     .dl_modal_container
         label.subtitle 备注内容
-        textarea.dl_modal_input.dl-form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在40字以内。" tooltip="{{provoke_form.content.$invalid ? '请输入活动内容':''}}" maxlength=40)
+        #provokeDetail.markdownContainer(name="content" ng-model="content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=2000 required)
     .dl_modal_container
       .dl_modal_half_container
         .dl_modal_half_container
@@ -73,6 +74,8 @@ form(name="provoke_form" novalidate)
   .dl-modal-footer
     button.cancel_btn.dl_btn_large(type='button' ng-click='preStep()') 上一步
     button.dl_btn.dl_btn_large(type='button' ng-click='provoke()' data-dismiss="modal" ng-disabled="provoke_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
+script(src="/lib/pen/src/pen.js")
+script(src="/lib/pen/src/markdown.js")
 script.
   $(function() {
     $('#competition_start_time').datetimepicker({
@@ -91,4 +94,13 @@ script.
       startDate: new Date(),
       pickerPosition: "top-left"
     });
+    var options = {
+      editor: document.getElementById('provokeDetail'), // {DOM Element} [required]
+      class: 'pen', // {String} class of the editor,
+      textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+      list: ['blockquote', 'h2', 'h3', 'p', 'insertorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+      stay: false
+    };
+
+    var editor = new Pen(options);
   });

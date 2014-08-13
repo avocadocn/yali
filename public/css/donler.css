@@ -725,6 +725,10 @@ textarea {
     -moz-transform: scale(1.5);
   }
 }
+.markdownContainer {
+  border: 1px solid #ccc;
+  min-height: 50px;
+}
 .dl_container {
   width: 960px;
   min-width: 960px;

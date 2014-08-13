@@ -28,7 +28,7 @@
   width: 128px;
 }
 .dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_content2 {
-  width: 590px;
+  width: 6300px;
   float: left;
 }
 .dl_detail_container .dl_detail_main .dl_detail_member {
@@ -101,7 +101,7 @@
   border-top: 3px solid #d12710 !important;
 }
 .dl_detail_row {
-  min-width: 450px;
+  min-width: 490px;
   min-height: 35px;
   font-size: 14px;
   margin-bottom: 5px;
@@ -115,7 +115,7 @@
 .dl_detail_row .dl_detail_detail {
   padding: 10px 15px;
   min-width: 322px;
-  max-width: 460px;
+  max-width: 360px;
   float: left;
   width: auto;
 }

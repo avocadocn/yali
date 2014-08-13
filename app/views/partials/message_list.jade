@@ -71,9 +71,9 @@ div(ng-show = '!loading')
                 a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
                 a(ng-if="!group_message.campaign.finish&&group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
                 span(ng-if="group_message.campaign.finish&&group_message.message_type==4") {{group_message.campaign.theme}}
-            .message_row
-              span.message_label 内容:
-              span.message_content {{group_message.campaign.content}}
+            //- .message_row
+            //-   span.message_label 内容:
+            //-   span.message_content {{group_message.campaign.content}}
             .message_row
               span.message_label #{__("LOCATION")}:
               span.message_content {{group_message.campaign.location.name}}
