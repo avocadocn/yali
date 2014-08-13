@@ -59,14 +59,14 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
         span.info_label #{__("REGISTER_DATE")}
       .info_side
         span.info_label {{user.register_date | date:'yyyy-MM-dd HH:mm:ss'}}
-    //- .dl_row.clearfix
-    //-   .info_side
-    //-     span.info_label  参加的小队
-    //-   .info_side
-    //-     .team(ng-repeat="team in user.team " ng-if="team.gid!=0")
-    //-       a(href="/group/page/{{team._id}}")
-    //-         img.size_48(ng-src="{{team.logo}}/48/48" title="{{team.name}}")
-    //-       //span.info_label {{team.name}}
+    .dl_row.clearfix
+      .info_side
+        span.info_label  参加的小队
+      .info_side
+        .team(ng-repeat="team in user.team " ng-if="team.gid!=0")
+          a(href="/group/page/{{team._id}}")
+            img.size_48(ng-src="{{team.logo}}/48/48" title="{{team.name}}")
+          //span.info_label {{team.name}}
   form.form-horizontal(name="linkForm")
     .dl_row
       h5.pull-left #{__("CONTACT")}
