@@ -115,7 +115,23 @@ exports.resetPwd = function(req, res){
   });
 }
 exports.signin = function(req, res) {
-    res.render('company/signin', {title: '公司登录'});
+
+  var msg = {
+    title : "公司登录"
+  };
+  if(req.params.loginStatus){
+    switch(req.params.loginStatus){
+      case 'failure':
+        msg.msg = "用户名不存在或者密码错误!";
+        break;
+      default:break;
+    }
+  }
+  if(req.user) {
+    res.redirect('/company/home');
+  } else {
+    res.render('company/signin', msg);
+  }
 };
 
 

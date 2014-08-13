@@ -10,11 +10,11 @@ module.exports = function(app, passport) {
     //显示企业小队列表
     app.get('/company/signup', company.signup);
     app.get('/company/wait', company.wait);
-
     app.get('/company/signin', company.signin);
+    app.get('/company/signin/:loginStatus', company.signin);
     app.get('/company/signout',company.signout);
     app.post('/company/session', passport.authenticate('company', {
-        failureRedirect: '/company/signin',
+        failureRedirect: '/company/signin/failure',
         failureFlash: true
     }), company.loginSuccess);
     app.get('/company/forgetPwd', company.renderForgetPwd);
