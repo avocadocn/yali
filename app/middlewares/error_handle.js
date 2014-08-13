@@ -1,27 +1,38 @@
 var mongoose = require('mongoose'),
   ErrorStatistics = mongoose.model('ErrorStatistics');
 
-exports.errorHandle = function(err, req, res, next) {
+module.exports = function(err, req, res, next) {
   if (res.statusCode === 403) {
     if (!req.xhr) {
       return res.redirect('/');
     } else {
-      return res.send(403, { msg: err });
+      return res.send(403);
     }
   } else if (res.statusCode === 404) {
     if (!req.xhr) {
       return res.status(404).render('404', {
         url: req.originalUrl,
-        error: err
+        error: 'not found'
       });
     } else {
-      return res.send(404, { msg: err });
+      return res.send(404);
     }
   } else {
+    if (res.statusCode < 500) {
+      res.status(500);
+    }
+    if (err.name !== 'Error') {
+      var _err = new Error(err);
+    } else {
+      var _err = err;
+    }
     var log = new ErrorStatistics({
       error: {
         kind: res.statusCode.toString(),
-        body: JSON.stringify(err)
+        body: _err.stack,
+        headers: req.headers,
+        method: req.method,
+        url: req.url
       }
     });
     if (req.user) {
@@ -37,11 +48,13 @@ exports.errorHandle = function(err, req, res, next) {
         log.error.target.name = req.user.nickname;
       }
     }
-    log.save(console.log);
+    log.save(function(err) {
+      if (err) console.log(err);
+    });
     if (!req.xhr) {
       return res.status(500).render('500');
     } else {
-      return res.send(500, { msg: err });
+      return res.send(500);
     }
   }
 };

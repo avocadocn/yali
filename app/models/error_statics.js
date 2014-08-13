@@ -7,28 +7,31 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var ErrorStatisticsShema = new Schema({
-  error:{
-    target:{
+  error: {
+    target: {
       kind:{
-        type:String,
-        enum:['company','user'],
+        type: String,
+        enum: ['company','user'],
       },
-      _id:Schema.Types.ObjectId,
-      name:String,
-      username:String,
-      email:String
+      _id: Schema.Types.ObjectId,
+      name: String,
+      username: String,
+      email: String
     },
-    kind:String,
-    body:String
+    kind: String,
+    body: String,
+    headers: Schema.Types.Mixed,
+    method: String,
+    url: String
   },
-  date:{
-    type:Date,
-    default:Date.now
+  date: {
+    type: Date,
+    default: Date.now
   },
-  status:{
-    'type':String,
-    enum:['active','delete'],
-    default:'active'
+  status: {
+    'type': String,
+    enum: ['active','delete'],
+    default: 'active'
   }
 });
 

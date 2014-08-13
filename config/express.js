@@ -143,7 +143,7 @@ module.exports = function(app, passport, db) {
         app.use(express.favicon());
         app.use(express.static(config.root + '/public'));
 
-        app.use(errorHandle.errorHandle);
+        app.use(errorHandle);
 
 
     });
