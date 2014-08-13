@@ -144,7 +144,9 @@ exports.departmentAuthorize = function(req, res, next) {
         return next();
       }
     }else{
-      return res.send(403);
+      res.status(403);
+      next('forbidden');
+      return;
     }
   }else{
     Department

@@ -110,15 +110,20 @@
   margin: 0;
   background-color: #aaa;
 }
-.team_calendar_box #cal-slide-content {
-  padding: 5px;
+#cal-slide-content {
+  padding: 10px 5px;
   box-shadow: none;
   border-bottom: solid 1px #ddd;
+  background-image: none;
+  background-color: #f1f1f1;
 }
-.team_calendar_box #cal-slide-content .custom_calendar_li {
+#cal-slide-content:hover {
+  background-color: #f1f1f1;
+}
+#cal-slide-content .custom_calendar_li {
   margin-bottom: 0;
 }
-.team_calendar_box #cal-slide-content .custom_calendar_li .join_sign {
+#cal-slide-content .custom_calendar_li .join_sign {
   margin: 8px;
   background-color: #aaa;
 }
@@ -160,15 +165,6 @@
   margin-right: auto;
   display: block;
 }
-#cal-slide-content {
-  background: none;
-}
 #cal-slide-content a.event-item {
   color: #666;
-}
-.cal-day-today {
-  background: #e8e8fd;
-}
-.cal-day-today span[data-cal-date] {
-  color: #00f;
 }

@@ -148,32 +148,33 @@ block contentExt
                 else
                   each teamBMember in competition.camp[1].formation
                     img.team_member_logo.teamMember.onmemberB.img_user(x-donler-member="true" draggable="false" data-camp='1' id='on_b__#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
-        if role ==='LEADER' || role==='MEMBER' || role==='HR'
-          form.commment_box(name="comment_form" novalidate)
-            .dl_row.clearfix
-              p.subtitle 我要留言
-              if role !=='HR'
-                textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
-                button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-            .dl_row.clearfix(bs-popover)
-                .comment.clearfix(ng-repeat="comment in comments")
-                  .comment_user_info(ng-if="comment.poster.cid=== '#{cid}'")
-                    a(href="/users/home/{{comment.poster._id}}" )
-                      img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}')
-                    p.dl_user_name_small
-                      a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
-                  .comment_user_info(ng-if="!(comment.poster.cid==='#{cid}')")
-                    img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}")
-                    p.dl_user_name_small
-                     span(ng-cloak) {{comment.poster.nickname}}
-                  .comment_content_panel
-                    .relative
-                      .triangle_border
-                      .triangle
-                      .comment_content
-                        p(ng-cloak) {{comment.content}}
-                    label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-                    a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+        
+        .dl_row.clearfix.commment_box(ng-if="!role=='HR'||comments.length>0" bs-popover)
+          p.subtitle 留言
+          if role ==='LEADER' || role==='MEMBER'
+            form(name="comment_form" novalidate)
+              .dl_row.clearfix
+                if role !=='HR'
+                  textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
+                  button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+          .comment.clearfix(ng-repeat="comment in comments")
+            .comment_user_info(ng-if="comment.poster.cid=== '#{cid}'")
+              a(href="/users/home/{{comment.poster._id}}" )
+                img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}')
+              p.dl_user_name_small
+                a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
+            .comment_user_info(ng-if="!(comment.poster.cid==='#{cid}')")
+              img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}")
+              p.dl_user_name_small
+               span(ng-cloak) {{comment.poster.nickname}}
+            .comment_content_panel
+              .relative
+                .triangle_border
+                .triangle
+                .comment_content
+                  p(ng-cloak) {{comment.content}}
+              label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+              a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .side
       .competition_detail
         if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish
@@ -217,7 +218,7 @@ block contentExt
             .dl_detail_label
               span #{__("SIMPLE")}#{__("INTRODUCTION")}:
             .dl_detail_detail
-              span= competition.content
+              span!= competition.content
       .map_container
         p.subtitle.text-left 活动地点
         //- if competition.location.coordinates.length==2

@@ -1,3 +1,4 @@
+link(rel="stylesheet" href="/lib/pen/src/pen.css")
 .modal-dialog
   .dl-modal
     form(name="campaign_form" novalidate)
@@ -14,9 +15,9 @@
         .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
             input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
-        .dl_modal_container
+        .dl_modal_container(ng-init="baseBrief=true;")
             label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
-            textarea.dl_modal_input.dl-form-control(rows="2" name="content" ng-model="$parent.content" ng-change="judge()" placeholder="请控制在140字以内。" tooltip="{{campaign_form.content.$invalid ? '请输入活动内容':''}}" maxlength=140)
+            #campaignDetail.markdownContainer(name="content" ng-model="content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=2000 required)
         .dl_modal_container
           .dl_modal_half_container
             .dl_modal_half_container
@@ -77,9 +78,11 @@
               .dl_modal_label_container
                 span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
       .dl-modal-footer
+        button.cancel_btn.dl_btn_large.margin_left_30(type='button' data-dismiss="modal") #{__("CANCEL")}
         button.dl_btn.dl_btn_large(type='button' ng-click='goBack()' data-dismiss="modal" ng-if="dOtMulti") 上一步
         button.dl_btn.dl_btn_large(type='button' ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
-        button.cancel_btn.dl_btn_large.margin_left_30(type='button' data-dismiss="modal") #{__("CANCEL")}
+  script(src="/lib/pen/src/pen.js")
+  script(src="/lib/pen/src/markdown.js")
   script.
     $(function() {
       $('#start_time').datetimepicker({
@@ -98,4 +101,13 @@
         startDate: new Date(),
         pickerPosition: "top-left"
       });
+      var options = {
+        editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
+        class: 'pen', // {String} class of the editor,
+        textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+        list: ['blockquote', 'h2', 'h3', 'p', 'insertorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+        stay: false
+      }
+
+      var editor = new Pen(options);
     });

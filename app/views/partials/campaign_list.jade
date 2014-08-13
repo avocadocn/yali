@@ -34,9 +34,9 @@
         p
           strong 主题:
           a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
-        p
-          strong 内容:
-          span.content_text {{campaign_item.content}}
+        //- p
+        //-   strong 内容:
+        //-   span.content_text {{campaign_item.content}}
         p
           strong #{__("LOCATION")}:
           span.content_text {{campaign_item.location.name}}

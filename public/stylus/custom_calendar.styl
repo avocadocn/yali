@@ -1,6 +1,6 @@
 borderColor = #ddd
 
-// calendar style
+//- calendar style
 .cal-day-inmonth
   span[data-cal-date]
     opacity 1
@@ -103,7 +103,7 @@ logoLink()
   cursor default
 
 
-// teampage calendar
+//- teampage calendar
 .team_calendar_box
   word-break normal !important
   .calendar_back
@@ -135,20 +135,24 @@ logoLink()
     .join_sign
       margin 0
       background-color #aaa
+//-for both teampage and personal page
+#cal-slide-content
+  padding 10px 5px
+  box-shadow none
+  border-bottom solid 1px borderColor
+  background-image none
+  background-color #f1f1f1
+  &:hover
+    background-color #f1f1f1
 
-  #cal-slide-content
-    padding 5px
-    box-shadow none
-    border-bottom solid 1px borderColor
+  .custom_calendar_li
+    margin-bottom 0
 
-    .custom_calendar_li
-      margin-bottom 0
+    .join_sign
+      margin 8px
+      background-color #aaa
 
-      .join_sign
-        margin 8px
-        background-color #aaa
-
-// schedule_list partials style
+//- schedule_list partials style
 .calendar_box
   margin-top 0
   .dl_campaign_list
@@ -185,10 +189,5 @@ logoLink()
       margin-right auto
       display block
 #cal-slide-content
-  background none
   a.event-item
     color #666
-.cal-day-today
-  background #e8e8fd
-  span[data-cal-date]
-    color blue

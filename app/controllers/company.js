@@ -115,7 +115,23 @@ exports.resetPwd = function(req, res){
   });
 }
 exports.signin = function(req, res) {
-    res.render('company/signin', {title: '公司登录'});
+
+  var msg = {
+    title : "公司登录"
+  };
+  if(req.params.loginStatus){
+    switch(req.params.loginStatus){
+      case 'failure':
+        msg.msg = req.session.flash.error[req.session.flash.error.length-1];
+        break;
+      default:break;
+    }
+  }
+  if(req.user) {
+    res.redirect('/company/home');
+  } else {
+    res.render('company/signin', msg);
+  }
 };
 
 
@@ -1131,6 +1147,40 @@ exports.changeUser = function (req, res) {
                     return res.send('ERROR');
                 } else {
                     return res.send('OK');
+                }
+            });
+            break;
+        case 'close':
+            User.findOne({'_id':_user._id},{'active':1},function (err, user) {
+                if(err || !user) {
+                    return res.send('ERROR');
+                } else {
+                    user.active = false;
+                    console.log(user);
+                    user.save(function (err) {
+                        if(err) {
+                            return res.send({'result':0,'msg':'用户信息修改失败！'});
+                        } else {
+                            console.log('cg!');
+                            return res.send({'result':1,'msg':'用户信息修改成功！'});
+                        }
+                    });
+                }
+            });
+            break;
+        case 'open':
+            User.findOne({'_id':_user._id},{'active':1},function (err, user) {
+                if(err || !user) {
+                    return res.send('ERROR');
+                } else {
+                    user.active = true;
+                    user.save(function (err) {
+                        if(err) {
+                            return res.send({'result':0,'msg':'用户信息修改失败！'});
+                        } else {
+                            return res.send({'result':1,'msg':'用户信息修改成功！'});
+                        }
+                    });
                 }
             });
             break;

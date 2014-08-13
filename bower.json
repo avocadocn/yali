@@ -23,6 +23,7 @@
     "jquery-form": "3.46.0",
     "linkage-selector": "0.1.4",
     "moment": "^2.7.0",
-    "smalot-bootstrap-datetimepicker": "latest"
+    "smalot-bootstrap-datetimepicker": "latest",
+    "pen": "~0.0.3"
   }
 }
