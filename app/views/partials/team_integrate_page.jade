@@ -27,7 +27,7 @@ div(ng-show = '!loading')
           div(ng-repeat="photo in default_family" ng-class="{'active': ($parent.slide.index==$index)}" ng-click="$parent.slide.index=$index")
             img.center-block(ng-src="{{photo.uri}}/160/90")
 
-  .team_calendar_box.clearfix(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
+  .team_calendar_box.clearfix(ng-show="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
     .dl_row.clearfix
       #calendar_view.pull-left
         //-span.calendar_back.pull-left.glyphicon.glyphicon-chevron-left(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView")

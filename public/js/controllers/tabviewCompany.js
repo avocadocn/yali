@@ -347,7 +347,7 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
     };
 }]);
 tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootScope',
- function ($http, $scope, $rootScope) {
+  function ($http, $scope, $rootScope) {
     $rootScope.nowTab = 'member';
     $http.get('/search/'+$rootScope.cid+'/member?' + Math.round(Math.random()*100)).success(function(data, status) {
       $scope.members = data;
@@ -357,32 +357,28 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
 
       //按照部门将员工分类
       $scope.members_by_department = [];
+      $scope.closed_members=[];
+      $scope.unactivated_members=[];
+      $scope.show_status={show_close: false,
+                    show_unreg:false};
       var find = false;
+
+
       for(var i = 0 ; i < data.length; i ++){
-        if(data[i].active){
+        if(data[i].mail_active&&data[i].active){
             find = false;
             for(var j = 0; j < $scope.members_by_department.length; j++){
                 //已经存在部门,直接将员工push进去
                 if(data[i].department != undefined && data[i].department != null){
                     if(data[i].department._id === $scope.members_by_department[j]._id){
                         find = true;
-                        $scope.members_by_department[j].member.push({
-                            '_id':data[i]._id,
-                            'nickname':data[i].nickname,
-                            'photo':data[i].photo,
-                            'active':data[i].active
-                        })
+                        $scope.members_by_department[j].member.push(data[i]);
                     }
                 //未选择部门
                 }else{
                     if($scope.members_by_department[j]._id === '0'){
                         find = true;
-                        $scope.members_by_department[j].member.push({
-                            '_id':data[i]._id,
-                            'nickname':data[i].nickname,
-                            'photo':data[i].photo,
-                            'active':data[i].active
-                        })
+                        $scope.members_by_department[j].member.push(data[i]);
                     }
                 }
             }
@@ -402,14 +398,22 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                     'member':[{
                         '_id':data[i]._id,
                         'nickname':data[i].nickname,
-                        'photo':data[i].photo,
-                        'active':data[i].active
+                        'photo':data[i].photo
                     }]
                 });
             }
         }
+        else if(!data[i].active){
+            $scope.closed_members.push(data[i]);
+        }
+        else if(!data[i].mail_active){
+            $scope.unactivated_members.push(data[i]);
+        }
       }
       $scope.company = true;
+      console.log('c',$scope.closed_members);
+      console.log('u',$scope.unactivated_members);
+      console.log('d',$scope.members_by_department);
     });
 
     var treeToList = function(department, level) {
@@ -496,8 +500,35 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
         });
         $scope.unEdit = true;
         $scope.buttonStatus = '编辑';
-    }
+    };
 
+    $scope.closePeople = function(operate){
+        if(operate==='close')
+            $scope.message='确定要关闭此用户吗？关闭后此用户将无法登录。';
+        else
+            $scope.message='确定要打开此用户吗？打开后此用户将恢复功能。';
+        alertify.confirm($scope.message,function(e){
+            if(e){
+                try{
+                    $http({
+                        method: 'post',
+                        url: '/company/changeUser/'+$rootScope.cid,
+                        data:{
+                            operate : operate,
+                            user : $scope.currentmember,
+                        }
+                    }).success(function(data, status){
+                        window.location.reload();
+                    }).error(function(data,status){
+                        alertify.alert("操作失败");
+                    });
+                }
+                catch(e){
+                    alertify.alert("操作失败");
+                }
+            }
+        });
+    };
 
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
@@ -552,7 +583,7 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                             });
                     }
                     $scope.buttonStatus = '编辑';
-                    alertify.alert('保存成功');
+                    window.location.reload();
                 }).error(function(data, status) {
                     //TODO:更改对话框
                     alertify.alert('数据错误!');

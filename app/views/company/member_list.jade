@@ -5,14 +5,14 @@
       span.subtitle.pull-left 成员一览
       a.pull-right(href="#/manager") 返回
   .memberlist(ng-init="show=[];")
-    .row.departmentbox(ng-repeat="department in members_by_department track by $index" ng-init="show[$parent.$index]=false" class="#{global_user.provider==='company' ? 'hr_view' : ''}")
-      span {{department.name}}{{department.id}}
+    .row.departmentbox(ng-repeat="department in members_by_department track by $index" ng-init="show[$index]=false" class="#{global_user.provider==='company' ? 'hr_view' : ''}")
+      span {{department.name}}
       .text_container.pull-right(ng-if="department.member.length>10")
-          a.text(ng-show="!show[$index]" ng-click="show[$index]=true;" href="javascript:void(0);" ng-cloak) 更多 > 
-          a.text(ng-show='show[$index]' ng-click="show[$index]=false;" href="javascript:void(0);" ng-cloak) 收起 <
+          a.text(ng-show="!show[$index]" ng-click="show[$index]=true;" ng-cloak) 更多 > 
+          a.text(ng-show='show[$index]' ng-click="show[$index]=false;" ng-cloak) 收起 <
       .groups
         .member(ng-repeat="member in department.member track by $index")
-          div.member_group(ng-if='member.active' ng-show="$index<10||show[$parent.$parent.$index]")
+          div.member_group(ng-show="$index<10||show[$parent.$index]")
             if role != 'GUESTHR' && role !='GUEST'
               .dl_row.img(bs-popover)
                 a(ng-click="userDetail(member._id)" data-toggle="modal" data-target="#sponsorUserDetailModal")
@@ -24,34 +24,50 @@
                 img.size_48.img_user(ng-src="{{member.photo}}")
               //- .dl_row.member_row
                 label.user_name {{member.nickname}
-    //-if role ==='HR'
-      .row.departmentbox.nodepartmentbox
+    if role ==='HR'
+      .row.departmentbox(ng-if="unactivated_members.length>0")
         span.subtitle 未激活成员
+        .text_container.pull-right(ng-if="unactivated_members.length>10")
+          a.text(ng-show="!show_status.show_unreg" ng-click="show_status.show_unreg=true;" ng-cloak) 更多 > 
+          a.text(ng-show='show_status.show_unreg' ng-click="show_status.show_unreg=false;" ng-cloak) 收起 <
         .groups
-          .member(ng-repeat="member in members track by $index")
-            div.member_group(ng-if='!member.active')
+          .member(ng-repeat="member in unactivated_members track by $index")
+            div.member_group(ng-show="$index<10||show_status.show_unreg")
               .dl_row.img
                 a(ng-click="userDetail(member._id)" data-toggle="modal" data-target="#UnregUserModal")
                   img.size_48.img_user(ng-src="{{member.photo}}")
               .dl_row.text.member_row
-                span.user_name {{member.email}}
+                span.user_name {{member.nickname}}
+      .row.departmentbox.nodepartmentbox(ng-if="closed_members.length>0")
+        span.subtitle 被关闭成员
+        .text_container.pull-right(ng-if="closed_members.length>10")
+          a.text(ng-show="!show_status.show_close" ng-click="show_status.show_close=true;" ng-cloak) 更多 > 
+          a.text(ng-show='show_status.show_close' ng-click="show_status.show_close=false;" ng-cloak) 收起 <
+        .groups
+          .member(ng-repeat="member in closed_members track by $index")
+            div.member_group(ng-show="$index<10||show_status.show_close")
+              .dl_row.img(bs-popover)
+                a(ng-click="userDetail(member._id)" data-toggle="modal" data-target="#sponsorUserDetailModal")
+                  img.size_48.img_user(ng-src="{{member.photo}}" ng-Mouseenter="showUserCard(member._id,member._id)" id='pop{{member._id}}')
+              .dl_row.text.member_row
+                a.user_name(href="/users/home/{{member._id}}") {{member.nickname}}
 
   if role === 'HR'
     .modal.fade(id="sponsorUserDetailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include user_detail_modal
-    //- .modal.fade#UnregUserModal(tabindex='-1' role='dialog' aria-labelledby="myModalLabel" aria-hidden='true')
-    //-   .modal-dialog
-    //-     .dl-modal(style="width:370px")
-    //-       .dl-modal-header
-    //-         button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
-    //-           img(ng-src='/img/icons/icon_close.png')
-    //-         h4.modal-title#myModalLabel 未激活
-    //-       .dl-modal-body
-    //-         .dl_row.clearfix
-    //-           .info_side
-    //-             span.info_label Email:
-    //-           .info_detail_2
-    //-             span.info_label {{members[num].email}}
-    //-       .dl-modal-footer
-    //-         //button.dl_btn_red.dl_btn_large 删除
-    //-         button.cancel_btn.dl_btn_large(data-dismiss="modal" aria-hidden="true") 返回
+    .modal.fade#UnregUserModal(tabindex='-1' role='dialog' aria-labelledby="myModalLabel" aria-hidden='true')
+      .modal-dialog
+        .dl-modal(style="width:370px")
+          .dl-modal-header
+            button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
+              img(ng-src='/img/icons/icon_close.png')
+            h4.modal-title#myModalLabel 未激活
+          .dl-modal-body
+            .dl_row.clearfix
+              .info_side
+                span.info_label Email:
+              .info_detail_2
+                span.info_label {{currentmember.email}}
+          .dl-modal-footer
+            //-button.dl_btn_red.dl_btn_large 删除
+            button.cancel_btn.dl_btn_large(data-dismiss="modal" aria-hidden="true") 返回

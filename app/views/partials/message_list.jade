@@ -20,7 +20,7 @@ div(ng-show = '!loading')
         span.message_head(ng-switch-when="1")
           a(ng-if="group_message.campaign.campaign_type == 2" ng-href="{{'/group/page/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
           span(ng-if="group_message.campaign.campaign_type == 2") #{__("NEW_MESSAGE")}
-          span(ng-if="group_message.campaign.campaign_type == 3 && $index <= 2" ng-repeat="team in group_message.team")&nbsp;
+          span(ng-if="group_message.campaign.campaign_type == 3 && $index <= 2" ng-repeat="team in group_message.team") &nbsp;
             a(ng-href="{{'/group/page/'+group_message.team[$index].teamid}}") {{group_message.team[$index].name}} &nbsp;
           span(ng-if="group_message.team.length > 3") 等
           span #{__("NEW_MESSAGE")}
@@ -61,7 +61,7 @@ div(ng-show = '!loading')
           a(ng-href="{{'/department/home/'+group_message.department[0]}}") {{group_message.team[0].name}}
           span 发起了一个多部门联谊活动
         span(ng-switch-default)
-        span.pull-right {{group_message.create_time | date:'yyyy-MM-dd HH:mm'}}
+        span.pull-right {{group_message.create_time_format}}
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
           .dl_message_container.clearfix(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")

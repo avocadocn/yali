@@ -723,6 +723,24 @@ body {
   padding: 0 10px;
   height: 150px;
 }
+.campaign_detail .head_title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
+.campaign_detail .detail_label {
+  display: inline-block;
+  width: 20%;
+  float: left;
+  margin: 0 0 10px;
+}
+.campaign_detail .detail_detail {
+  display: inline-block;
+  width: 80%;
+  float: left;
+  margin: 0 0 10px;
+}
 .campaign_detail .campaign_time_shadow {
   text-align: center;
   width: 66.66666667%;

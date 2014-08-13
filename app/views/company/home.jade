@@ -16,7 +16,7 @@ block baseInfo
       //-  p= sign
       .dl_row
         .score_container.margin_top_5
-          span.info_border #{__('STAFF')}
+          span.info_border 成员
           //-span.info_right_border  #{ membernumber>0 ? membernumber : 0 }
           span.info_border.info_right_border #{ membernumber>0 ? membernumber : 0 }
         .score_container.margin_top_5
@@ -87,6 +87,4 @@ block panel
 block aside
 append footExt
   script(src="/lib/linkage-selector/linkage-selector.js")
-  script(src="/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js")
-  script(charset="UTF-8" src="/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js")
   script(src="/js/controllers/tabviewCompany.js")

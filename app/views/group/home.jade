@@ -20,7 +20,7 @@ block baseInfo
         p= sign
       .dl_row
         .score_container
-          span.info_border #{__("TEAM_MEMBER")}
+          span.info_border 成员
           span.info_border.info_right_border=number
         .score_container
           span.info_border #{__("SCORE")}
@@ -31,7 +31,7 @@ block baseInfo
     .top_side
       if role === 'MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER'
         //-退出
-        button.pull-right.dl_btn_small.quit_btn(data-toggle="modal" data-target="#quitGroupModel") #{__("QUIT_GROUP")}
+        button.pull-right.dl_btn_small.quit_btn(ng-click="quitGroup()") #{__("QUIT_GROUP")}
       if  role === 'PARTNERLEADER' || role==='PARTNER'
         //-加入
         button.pull-right.dl_btn.dl_btn_small.join_btn(ng-click="joinGroup()") #{__("JOIN_GROUP")}
@@ -114,6 +114,4 @@ block aside
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")
   script(src="/js/jquery.Jcrop.min.js")
-  script(src="/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js")
-  script(charset="UTF-8" src="/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js")
   script(src="/js/controllers/tabviewGroup.js")

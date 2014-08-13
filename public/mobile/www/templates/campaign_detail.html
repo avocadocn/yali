@@ -25,14 +25,20 @@
           </div>
           <p>结束时间:{{campaign.end_time | date:"yyyy-MM-dd HH:mm"}}</p>
           <p>报名截止时间:{{campaign.deadline | date:"yyyy-MM-dd HH:mm"}}</p>
-          <p>活动地点:{{campaign.location.name}}</p>
-          <p>活动介绍:{{campaign.content}}</p>
+          <p>
+            <span class="detail_label">活动地点:</span>
+            <span class="detail_detail">{{campaign.location.name}}</span>
+            </p>
+          <p>
+            <span class="detail_label">活动介绍:</span>
+            <span class="detail_detail">{{campaign.content}}</span>
+          </p>
         </div>
       </ion-content>
     </ion-tab>
 
     <ion-tab title="参加人员" icon="ion-ios7-person-outline">
-      <ion-content has-header="true" class="wrap">
+      <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
         </div>
@@ -82,13 +88,13 @@
           </div>
         </div>
         <div>
-          <p ng-if="comments.length > 0">目前没有评论，快来抢沙发吧</p>
+          <p ng-if="comments.length == 0">目前没有评论，快来抢沙发吧</p>
         </div>
       </ion-content>
     </ion-tab>
 
     <ion-tab title="活动照片" icon="ion-ios7-camera-outline">
-      <ion-content has-header="true" scroll="flase" class="wrap campaign_photos">
+      <ion-content has-header="true" scroll="flase" class="wrap campaign_detail campaign_photos">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
         </div>
@@ -123,7 +129,7 @@
     </ion-tab>
 
     <ion-tab title="活动地点" icon="ion-ios7-location-outline">
-      <ion-content has-header="true" class="wrap">
+      <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
         </div>
