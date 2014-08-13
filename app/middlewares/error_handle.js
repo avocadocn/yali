@@ -2,11 +2,21 @@ var mongoose = require('mongoose'),
   ErrorStatistics = mongoose.model('ErrorStatistics');
 
 module.exports = function(err, req, res, next) {
+  if (err.name !== 'Error') {
+    var _err = err;
+    var msg = err;
+    console.log(_err);
+  } else {
+    var _err = err.stack;
+    var msg = err.message;
+    console.log(msg);
+    console.log(_err);
+  }
   if (res.statusCode === 403) {
     if (!req.xhr) {
       return res.redirect('/');
     } else {
-      return res.send(403);
+      return res.send(403, { msg: msg });
     }
   } else if (res.statusCode === 404) {
     if (!req.xhr) {
@@ -15,18 +25,13 @@ module.exports = function(err, req, res, next) {
         error: 'not found'
       });
     } else {
-      return res.send(404);
+      return res.send(404, { msg: msg });
     }
   } else {
     if (res.statusCode < 500) {
       res.status(500);
     }
-    if (err.name !== 'Error') {
-      var _err = err;
-    } else {
-      var _err = err.stack;
-    }
-    console.log(_err);
+
     var log = new ErrorStatistics({
       error: {
         kind: res.statusCode.toString(),
@@ -55,7 +60,7 @@ module.exports = function(err, req, res, next) {
     if (!req.xhr) {
       return res.status(500).render('500');
     } else {
-      return res.send(500);
+      return res.send(500, { msg: msg });
     }
   }
 };
