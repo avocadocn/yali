@@ -11,7 +11,7 @@ form(name="provoke_form" novalidate)
         input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在14字以内。" tooltip="{{provoke_form.theme.$invalid ? '挑战简单描述，请控制在14字以内':''}}" maxlength=14 required)
     .dl_modal_container
         label.subtitle 备注内容
-        #provokeDetail.markdownContainer(name="content" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=2000 required)
+        #provokeDetail.markdownContainer(name="content" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable required)
     .dl_modal_container
       .dl_modal_half_container
         .dl_modal_half_container

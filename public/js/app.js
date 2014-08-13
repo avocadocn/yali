@@ -111,11 +111,34 @@ app.directive('contenteditable',function() {
       ngModel.$render = function() {
         return element.html(ngModel.$viewValue);
       };
+      // var changeBind = function(e){
+      //   var htmlContent = $.trim(element.html());
+      //   if (ngModel.$viewValue !== htmlContent ) {
+      //     if(htmlContent.replace(/<\/?[^>]*>/g, '').length>=attr.mixMaxlength){
+      //       if(e.preventDefault){
+      //           e.preventDefault();
+      //       }else{
+      //           e.returnValue = false;
+      //       } 
+      //     }
+      //     else{
+      //       return scope.$apply(read);
+      //     }
+      //   }
+      // }
+      // element.bind('focus', function() {
+      //   element.bind('keydown',changeBind);
+
+      // });
+      // element.bind('blur', function() {
+      //   element.unbind('keydown',changeBind);
+      // });
       element.bind('blur', function() {
         if (ngModel.$viewValue !== $.trim(element.html())) {
           return scope.$apply(read);
         }
       });
+
       return read = function() {
         return ngModel.$setViewValue($.trim(element.html()));
       };
