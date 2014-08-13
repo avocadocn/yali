@@ -1134,6 +1134,40 @@ exports.changeUser = function (req, res) {
                 }
             });
             break;
+        case 'close':
+            User.findOne({'_id':_user._id},{'active':1},function (err, user) {
+                if(err || !user) {
+                    return res.send('ERROR');
+                } else {
+                    user.active = false;
+                    console.log(user);
+                    user.save(function (err) {
+                        if(err) {
+                            return res.send({'result':0,'msg':'用户信息修改失败！'});
+                        } else {
+                            console.log('cg!');
+                            return res.send({'result':1,'msg':'用户信息修改成功！'});
+                        }
+                    });
+                }
+            });
+            break;
+        case 'open':
+            User.findOne({'_id':_user._id},{'active':1},function (err, user) {
+                if(err || !user) {
+                    return res.send('ERROR');
+                } else {
+                    user.active = true;
+                    user.save(function (err) {
+                        if(err) {
+                            return res.send({'result':0,'msg':'用户信息修改失败！'});
+                        } else {
+                            return res.send({'result':1,'msg':'用户信息修改成功！'});
+                        }
+                    });
+                }
+            });
+            break;
         default:break;
     }
 };

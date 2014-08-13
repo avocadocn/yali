@@ -88,6 +88,16 @@ module.exports = function(passport) {
                         message: 'User Not Actived!'
                     });
                 }
+                if(!user.mail_active){
+                    return done(null, false, {
+                        message: 'User Not MailActived!'
+                    });
+                }
+                if(user.disabled){
+                    return done(null, false, {
+                        message: 'User Disabled!'
+                    });
+                }
                 if (!user.authenticate(password)) {
                     return done(null, false, {
                         message: 'Invalid password'

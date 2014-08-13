@@ -17,7 +17,7 @@ block baseInfo
         a.subtitle(href="/company/home/#{department.company._id}")= department.company.name
       .dl_row
         .score_container
-          span.info_border #{__("DEPARTMENT_MEMBER")}
+          span.info_border 成员
           span.info_border.info_right_border= department.team.member.length
     .top_side
       if req.role === 'HR' || req.role === 'LEADER'

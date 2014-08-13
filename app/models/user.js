@@ -40,10 +40,12 @@ var UserSchema = new Schema({
         unique: true,
         validate: [validate.email, '请填写正确的邮箱地址']
     },
+    //HR是否关闭此人
     active: {
         type: Boolean,
         default: false
     },
+    //邮件激活
     mail_active:{
         type: Boolean,
         default: false
@@ -102,6 +104,7 @@ var UserSchema = new Schema({
     company_official_name: String,
     team: [_team],
     app_token: String,
+    //本系统是否关闭此人
     disabled:{
         type: Boolean,
         default: false

@@ -1018,37 +1018,36 @@ exports.joinGroup = function (req, res){
               else{
                 //保存用户
                 user.save(function (err){
-                if(err){
-                  console.log(err);
-                  return res.send({result: 0, msg:'保存用户出错'});
-                }else{
-                  GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
-                    if(!err&&groupMessage){
-                      groupMessage.create_time = new Date();
-                      groupMessage.save();
-                    }
-                    else{
-                      var groupMessage = new GroupMessage();
-                      groupMessage.message_type = 8;
-                      groupMessage.team = {
-                        teamid : companyGroup._id,
-                        name : companyGroup.name,
-                        logo : companyGroup.logo
-                      };
-                      groupMessage.user ={
-                        user_id : user._id,
-                        name : user.nickname,
-                        logo : user.photo
-                      };
-                      groupMessage.save();
+                  if(err){
+                    console.log(err);
+                    return res.send({result: 0, msg:'保存用户出错'});
+                  }else{
+                    GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
+                      if(!err&&groupMessage){
+                        groupMessage.create_time = new Date();
+                        groupMessage.save();
+                      }
+                      else{
+                        var groupMessage = new GroupMessage();
+                        groupMessage.message_type = 8;
+                        groupMessage.team = {
+                          teamid : companyGroup._id,
+                          name : companyGroup.name,
+                          logo : companyGroup.logo
+                        };
+                        groupMessage.user ={
+                          user_id : user._id,
+                          name : user.nickname,
+                          logo : user.photo
+                        };
+                        groupMessage.save();
 
-                    }
-                  });
-                  console.log('保存用户成功');
-                  return res.send({result: 1, msg:'保存用户成功'});
-                }
-
-            });
+                      }
+                    });
+                    console.log('保存用户成功');
+                    return res.send({result: 1, msg:'保存用户成功'});
+                  }
+                });
               }
             });
           }

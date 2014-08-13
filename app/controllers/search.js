@@ -141,7 +141,7 @@ function findComapnyGroup(condition,req,res,_users)
 //根据公司id搜索成员
 exports.getUser = function(req, res) {
   var cid = req.user.provider === 'company' ? req.user._id : req.user.cid;
-  User.find({'cid':cid,'active':true},function (err,users){
+  User.find({'cid':cid,'mail_active':true},function (err,users){
     if(err || !users){
       res.send(500,[]);
     }else{
@@ -183,7 +183,7 @@ exports.getMember = function(req, res) {
   //     }
   //   }
   // });
-  User.find({'cid': cid}, {'_id':1,'nickname':1,'photo':1,'department':1,'active':1,},function (err, users){
+  User.find({'cid': cid}, {'_id':1,'nickname':1,'photo':1,'department':1,'mail_active':1,'active':1,'disabled':1},function (err, users){
     if(err || !users){
       console.log('ERROR:',err);
       return res.send([]);
@@ -194,7 +194,7 @@ exports.getMember = function(req, res) {
 };
 
 exports.getUserInfo = function(req,res) {
-  User.findOne({'_id':req.params.userId},{'nickname':1,'photo':1,'realname':1,'department':1,'sex':1,'register_date':1,'introduce':1,'email':1},function(err,user){
+  User.findOne({'_id':req.params.userId},{'nickname':1,'photo':1,'realname':1,'department':1,'sex':1,'register_date':1,'introduce':1,'email':1,'active':1,'disabled':1},function(err,user){
     if(err||!user){
       console.log(err);
       return res.send(500,{'msg':'no user.'});
