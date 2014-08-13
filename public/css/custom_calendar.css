@@ -110,15 +110,15 @@
   margin: 0;
   background-color: #aaa;
 }
-.team_calendar_box #cal-slide-content {
-  padding: 5px;
+#cal-slide-content {
+  padding: 10px 5px;
   box-shadow: none;
   border-bottom: solid 1px #ddd;
 }
-.team_calendar_box #cal-slide-content .custom_calendar_li {
+#cal-slide-content .custom_calendar_li {
   margin-bottom: 0;
 }
-.team_calendar_box #cal-slide-content .custom_calendar_li .join_sign {
+#cal-slide-content .custom_calendar_li .join_sign {
   margin: 8px;
   background-color: #aaa;
 }
