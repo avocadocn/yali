@@ -137,6 +137,12 @@
 .dl_detail_main .competition_content .teamMember[draggable=true] {
   cursor: move;
 }
+.dl_detail_main .competition_detail {
+  margin: 10px 0;
+  padding: 10px 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
 .dl_detail_main .commment_box {
   width: 660px;
   float: left;

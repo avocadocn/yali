@@ -148,7 +148,11 @@ block contentExt
                 else
                   each teamBMember in competition.camp[1].formation
                     img.team_member_logo.teamMember.onmemberB.img_user(x-donler-member="true" draggable="false" data-camp='1' id='on_b__#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
-        
+        .dl_detail_row.competition_detail
+          .subtitle
+            span #{__("SIMPLE")}#{__("INTRODUCTION")}:
+          .dl_detail_row
+            span!= competition.content
         .dl_row.clearfix.commment_box(ng-if="!role=='HR'||comments.length>0" bs-popover)
           p.subtitle 留言
           if role ==='LEADER' || role==='MEMBER'
@@ -214,11 +218,6 @@ block contentExt
               span #{__("PLACE")}#{__("LOCATION")}:
             .dl_detail_detail
               span= competition.location.name
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("SIMPLE")}#{__("INTRODUCTION")}:
-            .dl_detail_detail
-              span!= competition.content
       .map_container
         p.subtitle.text-left 活动地点
         //- if competition.location.coordinates.length==2
