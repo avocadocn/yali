@@ -1,6 +1,6 @@
 borderColor = #ddd
 
-// calendar style
+//- calendar style
 .cal-day-inmonth
   span[data-cal-date]
     opacity 1
@@ -140,6 +140,10 @@ logoLink()
   padding 10px 5px
   box-shadow none
   border-bottom solid 1px borderColor
+  background-image none
+  background-color #f1f1f1
+  &:hover
+    background-color #f1f1f1
 
   .custom_calendar_li
     margin-bottom 0
@@ -185,10 +189,5 @@ logoLink()
       margin-right auto
       display block
 #cal-slide-content
-  background none
   a.event-item
     color #666
-.cal-day-today
-  background #e8e8fd
-  span[data-cal-date]
-    color blue
