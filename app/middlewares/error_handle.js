@@ -22,14 +22,15 @@ module.exports = function(err, req, res, next) {
       res.status(500);
     }
     if (err.name !== 'Error') {
-      var _err = new Error(err);
-    } else {
       var _err = err;
+    } else {
+      var _err = err.stack;
     }
+    console.log(_err);
     var log = new ErrorStatistics({
       error: {
         kind: res.statusCode.toString(),
-        body: _err.stack,
+        body: _err,
         headers: req.headers,
         method: req.method,
         url: req.url
