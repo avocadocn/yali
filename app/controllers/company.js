@@ -122,7 +122,7 @@ exports.signin = function(req, res) {
   if(req.params.loginStatus){
     switch(req.params.loginStatus){
       case 'failure':
-        msg.msg = "用户名不存在或者密码错误!";
+        msg.msg = req.session.flash.error[req.session.flash.error.length-1];
         break;
       default:break;
     }

@@ -53,7 +53,7 @@ exports.signin = function(req, res) {
   if(req.params.status){
     switch(req.params.status){
       case 'failure':
-        msg.msg = "用户名不存在或者密码错误!";
+        msg.msg = req.session.flash.error[req.session.flash.error.length-1];
         break;
       default:break;
     }
@@ -406,7 +406,7 @@ exports.dealActive = function(req, res) {
  */
 exports.mailCheck = function(req, res) {
   var email = req.body.login_email;
-  User.findOne({email:email},{active:1},function(err,user){
+  User.findOne({email:email},{active:1,mail_active:1},function(err,user){
     if(err){
       console.log(err);
       return res.send(500,{'msg':'DatabaseError'});

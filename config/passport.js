@@ -49,17 +49,22 @@ module.exports = function(passport) {
                 }
                 if (!company) {
                     return done(null, false, {
-                        message: 'Unknown user'
+                        message: '用户不存在，请检查您的用户名'
                     });
                 }
-                if (!company.status.active) {
+                else if (!company.status.mail_active) {
                     return done(null, false, {
-                        message: 'Company Not Actived!'
+                        message: '您的公司账号尚未激活,请到邮箱内激活'
                     });
                 }
-                if (!company.authenticate(password)) {
+                else if (!company.status.active) {
                     return done(null, false, {
-                        message: 'Invalid password'
+                        message: '您的公司已被关闭'
+                    });
+                }
+                else if (!company.authenticate(password)) {
+                    return done(null, false, {
+                        message: '密码错误,请重新输入'
                     });
                 }
                 return done(null, company);
@@ -78,29 +83,29 @@ module.exports = function(passport) {
                 if (err) {
                     return done(err);
                 }
-                if (!user) {
+                else if (!user) {
                     return done(null, false, {
-                        message: 'Unknown user'
+                        message: '用户不存在，请检查您的用户名'
                     });
                 }
-                if(!user.active){
+                else if(!user.mail_active){
                     return done(null, false, {
-                        message: 'User Not Actived!'
+                        message: '账号未激活,请至邮箱激活'
                     });
                 }
-                if(!user.mail_active){
+                else if(!user.active){
                     return done(null, false, {
-                        message: 'User Not MailActived!'
+                        message: '您的账号已被管理员关闭。'
                     });
                 }
-                if(user.disabled){
+                else if(user.disabled){
                     return done(null, false, {
-                        message: 'User Disabled!'
+                        message: '账号已关闭。'
                     });
                 }
-                if (!user.authenticate(password)) {
+                else if (!user.authenticate(password)) {
                     return done(null, false, {
-                        message: 'Invalid password'
+                        message: '密码错误,请重新输入'
                     });
                 }
                 return done(null, user);

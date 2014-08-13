@@ -4,9 +4,9 @@ append headExt
 block contentExt
   if(success === '1')
     h4.head.resetPassword.text-center 链接已发送,请登陆您的邮箱进行验证
-    p.text-center 若是没有收到邮件,请点击
-      //- todo M
-      a 重新发送邮件
+    //- p.text-center 若是没有收到邮件,请点击
+    //-   //- todo M
+    //-   a 重新发送邮件
   else
     form.resetPassword.form-horizontal(action="/company/forgetPassword" method="post")
         h4.head.text-center 找回密码
