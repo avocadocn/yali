@@ -49,6 +49,8 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
         $scope.child_departments = [];
         $scope.grandchild_departments = [];
 
+        //console.log(departments,departments.length,departments[0]);
+
         for(var i = 0; i < departments.length; i ++){
             $scope.main_departments.push({
                 '_id':departments[i]._id,
@@ -61,6 +63,10 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
             $scope.main_department = $scope.main_departments[0];
             $scope.main_department_id = $scope.main_department._id;
             $scope.main_department_name = $scope.main_department.name;
+        }else{
+            $scope.main_department = {
+                department:[]
+            };
         }
 
         if($scope.main_department.department.length > 0){
