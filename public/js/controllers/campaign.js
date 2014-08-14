@@ -348,8 +348,21 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
           }).success(function(data, status) {
               if(data.msg === 'SUCCESS'){
                 $scope.private_message_content.text = "";
-                $rootScope.team_length++;
-                $rootScope.o ++;
+
+
+                if($scope.campaign_type == '3'){
+                    for(var k = 0; k < $scope.user_team.length; k ++){
+                        if($scope.user_team[k]._id.toString() == $scope.campaign_team[$scope.team_index]._id.toString()){
+                            $scope.campaign_team[i].leader = $scope.user_team[k].leader;
+                            $rootScope.team_length++;
+                            $rootScope.o ++;
+                            break;
+                        }
+                    }
+                }else{
+                    $rootScope.team_length++;
+                    $rootScope.o ++;
+                }
               }
           }).error(function(data, status) {
               //TODO:更改对话框

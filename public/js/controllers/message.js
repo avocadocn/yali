@@ -863,10 +863,6 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
           }).success(function(data, status) {
               if(data.msg === 'SUCCESS'){
                 alertify.alert('发送成功!');
-                if($scope.role === 'LEADER'){
-                  $rootScope.o ++;
-                  $rootScope.receive_message_sum ++;
-                }
                 $scope.private_message_content.text='';
                 $scope.message_form.$setPristine();
                 $scope.getSenderList($scope.teamId);
