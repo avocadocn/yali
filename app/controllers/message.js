@@ -433,11 +433,11 @@ exports.sendToParticipator = function(req, res){
       }else{
         if([2,6,8,9].indexOf(campaign.campaign_type) > -1){
           team.status = 0;
-        }
-        for(var i = 0; i < campaign.member.length; i ++){
-          members.push({
-            '_id':campaign.member[i].uid
-          });
+          for(var i = 0; i < campaign.member.length; i ++){
+            members.push({
+              '_id':campaign.member[i].uid
+            });
+          }
         }
         //多小队活动针对某一小队发消息
         if(campaign.campaign_type == 3){
@@ -447,13 +447,14 @@ exports.sendToParticipator = function(req, res){
           for(var i = 0; i < campaign.member.length; i ++){
             if(campaign.member[i].team._id.toString() === team._id.toString()){
               members.push({
-                '_id':campaign.member[i].uid
+                '_id':campaign.member[i].uid,
+                'nickname':campaign.member[i].nickname
               });
             }
           }
         }
       }
-      console.log(members);
+      console.log(campaign.campaign_type,members);
       var _param = {
         'members':members,
         'caption':campaign.theme,
