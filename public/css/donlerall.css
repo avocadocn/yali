@@ -1800,6 +1800,10 @@ input.ng-invalid.ng-dirty {
   margin: 4px;
   width: auto;
 }
+.dl_allteaminfo_emp .teamitem .itembox .memberlist .img_contain {
+  width: 30px;
+  height: 30px;
+}
 .dl_allteaminfo_emp .teamitem .itembox .memberlist .text {
   text-align: right;
   color: #9a9a9a;

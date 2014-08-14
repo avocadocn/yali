@@ -93,4 +93,5 @@ div(ng-if = "!loading&&role !== 'HR'")
             .dl_row.clearfix
               .member(ng-repeat="member in team.member track by $index" ng-if="$index<7 || team.collapse===true")
                 img.img_border.img_contain.img_user(ng-src="{{member.photo}}/30/30")
+              .clearfix
             .clearfix
