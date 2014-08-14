@@ -405,11 +405,11 @@ tabViewCompany.controller('CompanyMemberController', ['$http', '$scope','$rootSc
                 });
             }
         }
-        else if(!data[i].active){
-            $scope.closed_members.push(data[i]);
-        }
         else if(!data[i].mail_active){
             $scope.unactivated_members.push(data[i]);
+        }
+        else if(!data[i].active){
+            $scope.closed_members.push(data[i]);
         }
       }
       $scope.company = true;

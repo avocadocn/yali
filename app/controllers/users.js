@@ -287,7 +287,6 @@ function userOperate(cid, key, res, req, index) {
                 console.log(err);
                 return res.send(500,{'msg':'user save err.'});
               } else {
-                company.info.membernumber = company.info.membernumber + 1;
                 company.save(function(err){
                   if(err) {
                     console.log(err);
@@ -465,6 +464,13 @@ exports.setProfile = function(req, res) {
               return res.send(500,{'msg':'user save err.'});
             }
             else{
+              Company.update({'_id':user.cid._id},{'$inc':{'info.membernumber':1}},function(err,company){
+                if(err || !company){
+                  console.log(err);
+                }
+              });
+              //company.info.membernumber = company.info.membernumber + 1;
+
               var groupMessage = new GroupMessage();
               groupMessage.message_type = 7;
               groupMessage.company={
