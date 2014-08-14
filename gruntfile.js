@@ -154,8 +154,8 @@ module.exports = function(grunt) {
             }
         },
         karma: {
-            unit: {
-                configFile: 'test/karma/karma.conf.js'
+            e2e: {
+                configFile: 'test/karma/karma-e2e.conf.js'
             }
         }
     });
@@ -171,5 +171,8 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['jshint', 'stylus', 'concat', 'uglify', 'cssmin', 'concurrent']);
 
     //Test task.
-    grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
+    grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:e2e']);
 };
+
+
+
