@@ -48,6 +48,7 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
         $scope.main_departments = [];
         $scope.child_departments = [];
         $scope.grandchild_departments = [];
+        $scope.department_exist = false;
 
         //console.log(departments,departments.length,departments[0]);
 
@@ -60,10 +61,12 @@ userApp.controller('ActiveController',['$http','$scope',function($http,$scope){
         }
 
         if(departments.length > 0){
+            $scope.department_exist = true;
             $scope.main_department = $scope.main_departments[0];
             $scope.main_department_id = $scope.main_department._id;
             $scope.main_department_name = $scope.main_department.name;
         }else{
+            $scope.department_exist = false;
             $scope.main_department = {
                 department:[]
             };

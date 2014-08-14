@@ -83,18 +83,19 @@ block contentExt
                   label.control-label(for="department") ＊#{__("DEPARTMENT")}
                 .input_right
                   //- input#department.form-control.dl_full_control(type="text" name="department" ng-model="department")
-                  .select_box.department_select_width
+                  .select_box.department_select_width(ng-if="department_exist")
                     select.dl-form-control.chzn-select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment(main_department)" ng-disabled="main_departments.length == 0")
                     input(type="text" name="main_department_id" ng-model="main_department_id" ng-show="false")
                     input(type="text" name="main_department_name" ng-model="main_department_name" ng-show="false")
-                  .select_box.department_select_width
+                  .select_box.department_select_width(ng-if="department_exist")
                     select.dl-form-control.chzn-select(data-placeholder="选择二级部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
                     input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
                     input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
-                  .select_box.department_select_width
+                  .select_box.department_select_width(ng-if="department_exist")
                     select.dl-form-control.chzn-select(data-placeholder="选择三级部门" tabindex="2" ng-model="grandchild_department" ng-options="d.name for d in grandchild_departments" ng-change="selectGrandChildDepartment(grandchild_department)" ng-disabled="grandchild_departments.length == 0")
                     input(type="text" name="grandchild_department_id" ng-model="grandchild_department_id" ng-show="false")
                     input(type="text" name="grandchild_department_name" ng-model="grandchild_department_name" ng-show="false")
+                  span.dl_vertical(ng-if="!department_exist") 贵公司还未创建部门,请等待部门创建后再选择!
             .form-group.dl_sm_group
               .dl_row
                 .label_left
