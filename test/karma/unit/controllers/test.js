@@ -1,4 +1,4 @@
-describe("E2E",function(){
+describe("Unit",function(){
   it('should go to /', function(){
     module('donler');
     inject(function ($route) {

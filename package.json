@@ -75,6 +75,7 @@
     "karma-requirejs": "^0.2.1",
     "karma-safari-launcher": "latest",
     "karma-script-launcher": "^0.1.0",
+    "karma-junit-reporter":"latest",
     "ng-midway-tester": "2.0.5",
     "requirejs": "^2.1.11",
     "should": "3.3.1",
