@@ -202,8 +202,8 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
                 if(data.comments.length > 0){
                     $scope.comments = data.comments;
                     $scope.fixed_sum = data.comments.length;
-                    $scope.user = data.user;
                 }
+                $scope.user = data.user;
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');
             });

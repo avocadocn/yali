@@ -810,7 +810,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
             url: _url,
             data:_data
         }).success(function(data, status) {
-          console.log('1:',$scope.message_form);
+          //console.log('1:',$scope.message_form);
           if(data.msg === 'SUCCESS'){
             if($scope.role === 'LEADER'){
               $rootScope.o ++;
