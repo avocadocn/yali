@@ -154,7 +154,7 @@ block contentExt
             if role=='HR' || role=='LEADER'
               a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
           .dl_detail_row
-            #competitionContent.dl_word_break(ng-show="!editContentStatus")!= competition.content
+            #competitionContent.dl_word_break.competition_content(ng-show="!editContentStatus")!= competition.content
             #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent"  mix-maxlength=4000 contenteditable)
         .dl_row.clearfix.commment_box(ng-if="role!=='HR'||comments.length>0" bs-popover)
           p.subtitle 留言

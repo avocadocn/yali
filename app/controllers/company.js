@@ -887,7 +887,6 @@ exports.getCompanyTeamsInfo = function(req, res) {
   if(req.role !== 'HR'){
     option.active = true;
     selectOption = {
-        'did': 1,
         'logo': 1,
         'name': 1,
         'leader': 1,
@@ -948,6 +947,7 @@ exports.getCompanyTeamsInfo = function(req, res) {
                     },function(teaminfo, callback){
                         var j = counter.i-1;
                         var did;
+                        //TODO:
                         if (req.params.type === 'department') {
                             for (var k = 0; k < req.departments.length; k++) {
                                 if (teams[j]._id.toString() === req.departments[k].tid.toString()) {
@@ -1018,11 +1018,40 @@ exports.getCompanyTeamsInfo = function(req, res) {
         );
     }
     else{
-        return res.send({
-            'cid':req.params.companyId,
-            'role':req.role,
-            'teams':teams
-        });
+        if(req.params.type === 'department'){
+            var formatTeams =[];
+            var departmentLength = req.departments.length;
+            var department = req.departments;
+            teams.forEach(function(_team){
+                var _temp = {
+                    'logo': _team.logo,
+                    'name': _team.name,
+                    'leader': _team.leader,
+                    'memberLength': _team.member.length,
+                    'count': _team.count,
+                    'active': _team.active
+                }
+                for (var k = 0; k < departmentLength; k++) {
+                    if (_team._id.toString() === department[k].tid.toString()) {
+                        _temp.did = department[k]._id;
+                        break;
+                    }
+                }
+                formatTeams.push(_temp);
+            });
+            return res.send({
+                'cid':req.params.companyId,
+                'role':req.role,
+                'teams':formatTeams
+            });
+        }
+        else{
+            return res.send({
+                'cid':req.params.companyId,
+                'role':req.role,
+                'teams':teams
+            });
+        }
     }
   });
 };

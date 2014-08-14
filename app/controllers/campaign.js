@@ -7,8 +7,8 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     moment = require('moment'),
     photo_album_controller = require('./photoAlbum');
-var pagesize = 20;
-
+var pageSize = 100;
+var blockSize = 20;
 
 
 /**
@@ -357,9 +357,12 @@ var formatCampaignsForApp = function(user, campaigns) {
 
 };
 
-var formatCampaign = function(campaign,pageType,role,user){
+var formatCampaign = function(campaign,pageType,role,user,startIndex){
   var campaigns = [];
-  campaign.forEach(function(_campaign){
+  campaign.forEach(function(_campaign,_index){
+    if(_index<startIndex){
+      return;
+    }
     var temp = {
       '_id':_campaign._id,
       'active':_campaign.active,
@@ -445,10 +448,6 @@ exports.getCampaigns = function(req, res) {
       'finish':false,
       'cid' : pageId
     }
-    if(req.params.start_time!=0){
-      var _start_Date = new Date();
-      option.start_time={'$lte':_start_Date.setTime(req.params.start_time)}
-    }
     if(campaignType==='all'){
     }
     else if(campaignType==='company') {
@@ -475,7 +474,8 @@ exports.getCampaigns = function(req, res) {
     }
     Campaign
       .find(option)
-      .limit(pagesize)
+      .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
+      .limit(blockSize)
       .populate('team').populate('cid')
       .sort({'start_time':-1})
       .exec()
@@ -484,7 +484,7 @@ exports.getCampaigns = function(req, res) {
           return res.send({ result: 0, msg:'查找活动失败' });
         }
         else{
-          return res.send({ result: 1, role:req.role, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
+          return res.send({ result: 1, role:req.role, campaignLength: campaign.length, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
         }
       })
       .then(null, function(err) {
@@ -498,13 +498,10 @@ exports.getCampaigns = function(req, res) {
       'finish':false,
       'team':pageId
     }
-    if(req.params.start_time!=0){
-      var _start_Date = new Date();
-      option.start_time={'$lte':_start_Date.setTime(req.params.start_time)}
-    }
     Campaign
     .find(option)
-    .limit(pagesize)
+    .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
+    .limit(blockSize)
     .populate('team').populate('cid')
     .sort({'start_time':-1})
     .exec()
@@ -513,7 +510,7 @@ exports.getCampaigns = function(req, res) {
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
-        return res.send({ result: 1, role:req.role, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
+        return res.send({ result: 1, role:req.role, campaignLength: campaign.length, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
       }
     })
     .then(null, function(err) {
@@ -533,13 +530,10 @@ exports.getCampaigns = function(req, res) {
           'finish':false,
           '$or':[{'team':{'$in':team_ids}},{'cid':user.cid,'team':{'$size':0}}]
         }
-        if(req.params.start_time!=0){
-          var _start_Date = new Date();
-          option.start_time={'$lte':_start_Date.setTime(req.params.start_time)}
-        }
         Campaign
         .find(option)
-        .limit(pagesize)
+        .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
+        .limit(blockSize)
         .populate('team').populate('cid')
         .sort({'start_time':-1})
         .exec()
@@ -548,7 +542,7 @@ exports.getCampaigns = function(req, res) {
             return res.send({ result: 0, msg:'查找活动失败' });
           }
           else{
-            return res.send({ result: 1, role:req.role, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
+            return res.send({ result: 1, role:req.role, campaignLength: campaign.length, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
           }
         })
         .then(null, function(err) {
