@@ -3,7 +3,6 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/competition.css")
-  //- link(rel="stylesheet" href="/css/campaign_detail.css")
   if role=='HR' || role=='LEADER'
     link(rel="stylesheet" href="/lib/pen/src/pen.css")
 block contentExt
@@ -156,7 +155,7 @@ block contentExt
               a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
           .dl_detail_row
             #competitionContent.dl_word_break(ng-show="!editContentStatus")!= competition.content
-            #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent" contenteditable)
+            #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent"  mix-maxlength=4000 contenteditable)
         .dl_row.clearfix.commment_box(ng-if="role!=='HR'||comments.length>0" bs-popover)
           p.subtitle 留言
           if role ==='LEADER' || role==='MEMBER'

@@ -730,6 +730,15 @@ textarea {
   min-height: 50px;
   font-family: STHeiti, "Microsoft YaHei", MingLiu, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+.markdownContainer:focus {
+  outline: none;
+}
+.markdownContainer li {
+  list-style: inherit;
+}
+.markdownContainer.ng-dirty.ng-invalid {
+  border-color: #ffc0cb;
+}
 .pen-menu {
   z-index: 1040 !important;
 }

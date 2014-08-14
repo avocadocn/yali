@@ -390,7 +390,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
             $scope.editContentStatus = !$scope.editContentStatus;
             var options = {
                 editor: document.getElementById('competitionDetail'), // {DOM Element} [required]
-                class: 'pen', // {String} class of the editor,
+                class: 'dl_markdown', // {String} class of the editor,
                 textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
                 list: ['blockquote', 'h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
                 stay: false

@@ -447,7 +447,7 @@ exports.getCampaigns = function(req, res) {
     }
     if(req.params.start_time!=0){
       var _start_Date = new Date();
-      option.start_time={'$lt':_start_Date.setTime(req.params.start_time)}
+      option.start_time={'$lte':_start_Date.setTime(req.params.start_time)}
     }
     if(campaignType==='all'){
     }
@@ -500,7 +500,7 @@ exports.getCampaigns = function(req, res) {
     }
     if(req.params.start_time!=0){
       var _start_Date = new Date();
-      option.start_time={'$lt':_start_Date.setTime(req.params.start_time)}
+      option.start_time={'$lte':_start_Date.setTime(req.params.start_time)}
     }
     Campaign
     .find(option)
@@ -535,7 +535,7 @@ exports.getCampaigns = function(req, res) {
         }
         if(req.params.start_time!=0){
           var _start_Date = new Date();
-          option.start_time={'$lt':_start_Date.setTime(req.params.start_time)}
+          option.start_time={'$lte':_start_Date.setTime(req.params.start_time)}
         }
         Campaign
         .find(option)

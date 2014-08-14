@@ -111,34 +111,25 @@ app.directive('contenteditable',function() {
       ngModel.$render = function() {
         return element.html(ngModel.$viewValue);
       };
-      // var changeBind = function(e){
-      //   var htmlContent = $.trim(element.html());
-      //   if (ngModel.$viewValue !== htmlContent ) {
-      //     if(htmlContent.replace(/<\/?[^>]*>/g, '').length>=attr.mixMaxlength){
-      //       if(e.preventDefault){
-      //           e.preventDefault();
-      //       }else{
-      //           e.returnValue = false;
-      //       } 
-      //     }
-      //     else{
-      //       return scope.$apply(read);
-      //     }
-      //   }
-      // }
-      // element.bind('focus', function() {
-      //   element.bind('keydown',changeBind);
-
-      // });
-      // element.bind('blur', function() {
-      //   element.unbind('keydown',changeBind);
-      // });
-      element.bind('blur', function() {
-        if (ngModel.$viewValue !== $.trim(element.html())) {
+      var changeBind = function(e){
+        var htmlContent = $.trim(element.html());
+        if (ngModel.$viewValue !== htmlContent ) {
+          if(htmlContent.replace(/<\/?[^>]*>/g, '').replace(/[\u4e00-\u9fa5]/g, '**').length>attr.mixMaxlength){
+            ngModel.$setValidity('mixlength', false);
+          }
+          else{
+            ngModel.$setValidity('mixlength', true);
+          }
           return scope.$apply(read);
         }
-      });
+      }
+      element.bind('focus', function() {
+        element.bind('keydown',changeBind);
 
+      });
+      element.bind('blur', function() {
+        element.unbind('keydown',changeBind);
+      });
       return read = function() {
         return ngModel.$setViewValue($.trim(element.html()));
       };

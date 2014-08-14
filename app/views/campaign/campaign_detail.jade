@@ -65,7 +65,7 @@ block contentExt
             a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
         .dl_detail_row
             #campaignContent.dl_word_break(ng-show="!editContentStatus")!= campaign.content
-            #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent" contenteditable)
+            #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent"  mix-maxlength=4000 contenteditable)
       if !campaign.active
         .dl_detail_row.text-center.margin_top_30
           span #{__("CAMPAIGNCLOSE")}
