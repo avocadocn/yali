@@ -27,10 +27,6 @@
 .dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_aside .dl_btn_medium {
   width: 128px;
 }
-.dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_content2 {
-  width: 6300px;
-  float: left;
-}
 .dl_detail_container .dl_detail_main .dl_detail_member {
   width: 660px;
   float: left;
