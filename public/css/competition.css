@@ -143,6 +143,9 @@
   background-color: #fff;
   border: 1px solid #ddd;
 }
+.dl_detail_main .competition_detail .subtitle {
+  padding-left: 15px;
+}
 .dl_detail_main .commment_box {
   width: 660px;
   float: left;

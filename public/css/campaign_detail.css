@@ -74,30 +74,30 @@
 .dl_detail_container .dl_detail_main .commment_box button {
   margin-top: 21px;
 }
+.dl_detail_container .dl_button_container {
+  margin-top: 10px;
+}
 .dl_detail_container .dl_detail_side {
   width: 290px;
   float: right;
 }
-.dl_detail_container .dl_button_container {
-  margin-top: 10px;
-}
-.dl_detail_container .dl_button_container .map_container {
+.dl_detail_container .dl_detail_side .map_container {
   background-color: #fff;
   border: 1px solid #e6e6e6;
   padding: 10px;
   margin-top: 43px;
 }
-.dl_detail_container .dl_button_container .map_container .map_size {
+.dl_detail_container .dl_detail_side .map_container .map_size {
   width: 268px;
   height: 210px;
 }
-.dl_detail_container .dl_button_container .photo_container {
+.dl_detail_container .dl_detail_side .photo_container {
   background-color: #fff;
   border: 1px solid #e6e6e6;
   padding: 20px 10px;
   margin-top: 10px;
 }
-.dl_detail_container .dl_button_container .locationtitle {
+.dl_detail_container .dl_detail_side .locationtitle {
   margin-top: 15px;
 }
 .border_red {
