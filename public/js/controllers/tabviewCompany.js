@@ -1042,8 +1042,9 @@ tabViewCompany
             };
             elem.masonry(options);
             scope.$watch('items', function(newVal, oldVal) {
-                if (newVal != oldVal) {
+                if (newVal && newVal != oldVal) {
                     $timeout(function () {
+                        console.log('reload')
                         elem.masonry('reloadItems');
                         elem.masonry(options);
                     });
@@ -1059,8 +1060,8 @@ tabViewCompany
             });
         }
     };
-})
-;
+});
+
 tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope',function ($scope, $http, $rootScope) {
     $rootScope.nowTab = 'company_info';
     $rootScope.tabShow = false;

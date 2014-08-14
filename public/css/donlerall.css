@@ -1783,7 +1783,7 @@ input.ng-invalid.ng-dirty {
   background-color: #fff;
   width: 290px;
   min-height: 80px;
-  margin: 20px 16px 0 0;
+  margin: 16px 16px 0 0;
   border: 1px solid #ddd;
   padding: 6px;
   box-sizing: border-box;
@@ -1794,6 +1794,7 @@ input.ng-invalid.ng-dirty {
 }
 .dl_allteaminfo_emp .teamitem .itembox .memberlist {
   background-color: #fff;
+  min-height: 68px;
 }
 .dl_allteaminfo_emp .teamitem .itembox .memberlist .member {
   margin: 4px;

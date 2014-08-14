@@ -974,8 +974,10 @@ exports.getCompanyTeamsInfo = function(req, res) {
                                 'campaign_start_time':teaminfo.start_time,
                                 'photos': photos,
                                 'photo_list':teaminfo.start_time,
-                                'more': teams[j].member.length>7? true : false
                                 //more 为 true 可以展开
+                                'more': teams[j].member.length>7? true : false,
+                                //初始状态为收起
+                                'collapse': false
                             };
                             teams[j].did = did;
                             teams[j].set('did', did, { strict: false });
