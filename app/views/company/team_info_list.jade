@@ -87,8 +87,8 @@ div(ng-if = "!loading&&role !== 'HR'")
         .memberlist(ng-if="team.member[0].uid != '' ")
           .dl_row
             p 小队成员：
-              a.text.pull-right(ng-show="team.member.length >7 && team.more" ng-click="team.more = !team.more" href="javascript:void(0);" ng-cloak) 更多>
-              a.text.pull-right(ng-show="team.member.length >7 && !team.more" ng-click="team.more = !team.more" href="javascript:void(0);" ng-cloak) 收起 <
-            .member(ng-repeat="member in team.member track by $index")
-              img.img_border.img_contain.img_user(ng-src="{{member.photo}}/30/30" ng-show="$index<7||team.more ===false")
+              a.text.pull-right(ng-if="team.member.length >7 && team.more" ng-click="team.more = !team.more" href="javascript:void(0);" ng-cloak) 更多>
+              a.text.pull-right(ng-if="team.member.length >7 && !team.more" ng-click="team.more = !team.more" href="javascript:void(0);" ng-cloak) 收起 <
+            .member(ng-repeat="member in team.member track by $index" ng-if="$index<7 || team.more===false")
+              img.img_border.img_contain.img_user(ng-src="{{member.photo}}/30/30")
             .clearfix

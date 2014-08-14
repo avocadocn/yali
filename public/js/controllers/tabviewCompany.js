@@ -1050,7 +1050,7 @@ tabViewCompany
                         elem.masonry(options);
                     });
                 }
-            });
+            }, true);
             scope.$watch('reload', function(newVal) {
                 if (newVal === true) {
                     $timeout(function () {
