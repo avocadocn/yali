@@ -146,6 +146,9 @@
   background-color: #fff;
   border: 1px solid #ddd;
 }
+.dl_detail_main .competition_detail .competition_content li {
+  list-style: inherit;
+}
 .dl_detail_main .commment_box {
   width: 660px;
   float: left;

@@ -127,8 +127,9 @@ app.directive('contenteditable',function() {
         element.bind('keydown',changeBind);
 
       });
-      element.bind('blur', function() {
+      element.bind('blur', function(e) {
         element.unbind('keydown',changeBind);
+        changeBind(e);
       });
       return read = function() {
         return ngModel.$setViewValue($.trim(element.html()));
