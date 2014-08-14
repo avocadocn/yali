@@ -230,15 +230,15 @@ block contentExt
         else
           img.map_size(src="/img/icons/nomap.jpg")
       .photo_container
-        if role!=='PARTNER'
-          .clearfix
-            p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
+        .clearfix
+          p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
+          if role!=='PARTNER'
             a.pull-right(href="/photoAlbumDetailView/#{competition.photo_album._id}") 上传活动照片
-          .photo_album
-            each photo in photo_thumbnails
-              a.thumbnail_cell(href="/photoView/#{competition.photo_album._id}/#{photo._id}")
-                img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
-                p.thumbnail_name.text-center= photo.name
+        .photo_album
+          each photo in photo_thumbnails
+            a.thumbnail_cell(href="/photoView/#{competition.photo_album._id}/#{photo._id}")
+              img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
+              p.thumbnail_name.text-center= photo.name
       .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/campaign_message_send
 

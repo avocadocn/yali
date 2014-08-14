@@ -1265,7 +1265,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $("#competition_deadline").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#end_time').datetimepicker('setEndDate', dateUTC);
+        $('#competition_end_time').datetimepicker('setEndDate', dateUTC);
     });
     
     $scope.recommandTeam = function(){

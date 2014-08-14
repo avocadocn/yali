@@ -152,13 +152,12 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope',f
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
         $('#end_time').datetimepicker('setStartDate', dateUTC);
-        $('#deadline').datetimepicker('setEndDate', dateUTC);
     });
     $("#end_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
         $('#start_time').datetimepicker('setEndDate', dateUTC);
-
+        $('#deadline').datetimepicker('setEndDate', dateUTC);
     });
     $("#deadline").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));

@@ -151,6 +151,8 @@ tabViewCompany.controller('CampaignListController', ['$http','$scope','$rootScop
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
                 if(data.campaigns.length<20){
                     $scope.loadMore_flag = false;
+                    $scope.loadOver_flag = true;
+                    $scope.nextPage_flag = false;
                     if($scope.pageTime.length>1){
                         $scope.lastPage_flag = true;
                     }
@@ -1321,6 +1323,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     $("#deadline").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setEndDate', dateUTC);
     });
     $scope.showMapFlag = false;
     $scope.location = {name:'',coordinates:[]};
