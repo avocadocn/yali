@@ -161,7 +161,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
     $scope.modify_caption = "成绩确认";
     $scope.object_caption = "发出异议";
     $scope.edit = false;
-
+    $scope.editContentStatus =false;
 
     $scope.modalPerticipator = function(){
         $('#sponsorMessageCampaignModel').modal();
@@ -260,12 +260,14 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
           }).success(function(data, status) {
               if(data.msg === 'SUCCESS'){
                   $scope.comments.unshift({
+                      '_id' : data.comment._id,
                       'host_id' : data.comment.host_id,
                       'content' : data.comment.content,
                       'create_date' : data.comment.create_date,
                       'poster' : data.comment.poster,
                       'host_type' : data.comment.host_type,
-                      'index' : $scope.fixed_sum+1
+                      'index' : $scope.fixed_sum+1,
+                      'delete_permission':true
                   });
                   $scope.new_comment.text='';
               } else {
@@ -381,6 +383,45 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
             console.log(e);
         }
     };
+    $scope.editContent = function(){
+        
+        if(!$scope.editContentStatus){
+            $scope.competitionContent = angular.element('#competitionContent').html();
+            $scope.editContentStatus = !$scope.editContentStatus;
+            var options = {
+                editor: document.getElementById('competitionDetail'), // {DOM Element} [required]
+                class: 'pen', // {String} class of the editor,
+                textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+                list: ['blockquote', 'h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+                stay: false
+              }
+            var editor = new Pen(options);
+        }
+        else{
+            try {
+                $http({
+                    method: 'post',
+                    url: '/campaign/edit/'+$scope.competition_id,
+                    data:{
+                        campaign_id : $scope.competition_id,
+                        content : $scope.competitionContent
+                    }
+                }).success(function(data, status) {
+                    if(data.result===1){
+                        window.location.reload();
+                    }
+                    else{
+                        alertify.alert(data.msg);
+                    }
+                }).error(function(data, status) {
+                    alertify.alert('DATA ERROR');
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+        }
+    }
     $scope.joinCampaign = function (competition_id,tid) {
         //$rootScope.donlerAlert($scope.campaign_id);
         try {

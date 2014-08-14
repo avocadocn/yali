@@ -3,7 +3,8 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/campaign_detail.css")
-
+  if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+    link(rel="stylesheet" href="/lib/pen/src/pen.css")
 block contentExt
   .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';campaign_type='#{campaign.campaign_type}';member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';campaign_team=#{JSON.stringify(campaign.team)};user_team=#{JSON.stringify(user.team)};")
     include ../partials/breadcrumb
@@ -60,8 +61,11 @@ block contentExt
       .dl_detail_member.row
         .dl_row.subtitle
           span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
+          if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+            a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
         .dl_detail_row
-            span.dl_word_break!= campaign.content
+            #campaignContent.dl_word_break(ng-show="!editContentStatus")!= campaign.content
+            #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent" contenteditable)
       if !campaign.active
         .dl_detail_row.text-center.margin_top_30
           span #{__("CAMPAIGNCLOSE")}
@@ -120,7 +124,7 @@ block contentExt
               .comment_content
                 p(ng-cloak) {{comment.content}}
             .comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-            a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+              a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side
       .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
@@ -150,3 +154,6 @@ block contentExt
       include ../campaign/select_team_for_multi_campaign
 append footExt
   script(src="/js/controllers/campaign.js")
+  if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+    script(src="/lib/pen/src/pen.js")
+    script(src="/lib/pen/src/markdown.js")

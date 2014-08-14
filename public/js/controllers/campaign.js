@@ -12,7 +12,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         }
         $scope.getComment(); //获取留言
     });
-
+    $scope.editContentStatus =false;
     $scope.init = true;
 
     $scope.comments = [];
@@ -21,7 +21,6 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         text:''
     };
     $scope.$watch('campaign_team+campaign_id+member+user_team+role',function(){
-        console.log($scope.member);
         if($scope.init){
             if($scope.campaign_team==null){
                 return;
@@ -66,7 +65,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                             window.location.reload();
                         }
                         else{
-                            alertify(data.msg);
+                            alertify.alert(data.msg);
                         }
                     }).error(function(data, status) {
                         alertify.alert('DATA ERROR');
@@ -129,7 +128,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
 
     $scope.comment = function(){
 
-         if($scope.comments.length > 0){
+        if($scope.comments.length > 0){
             var tmp_comment = $scope.comments[0];
             if(tmp_comment.poster._id === $scope.user._id){
                 if($scope.new_comment.text === tmp_comment.content){
@@ -150,11 +149,13 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             }).success(function(data, status) {
                 if(data.msg === 'SUCCESS'){
                     $scope.comments.unshift({
+                        '_id':data.comment._id,
                         'host_id' : data.comment.host_id,
                         'content' : data.comment.content,
                         'create_date' : data.comment.create_date,
                         'poster' : data.comment.poster,
-                        'host_type' : data.comment.host_type
+                        'host_type' : data.comment.host_type,
+                        'delete_permission':true
                     });
                     $scope.new_comment.text='';
                 } else {
@@ -357,6 +358,45 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
         }
         catch(e){
             console.log(e);
+        }
+    }
+    $scope.editContent = function(){
+        
+        if(!$scope.editContentStatus){
+            $scope.campaignContent = angular.element('#campaignContent').html();
+            $scope.editContentStatus = !$scope.editContentStatus;
+            var options = {
+                editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
+                class: 'pen', // {String} class of the editor,
+                textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+                list: ['blockquote', 'h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+                stay: false
+              }
+            var editor = new Pen(options);
+        }
+        else{
+            try {
+                $http({
+                    method: 'post',
+                    url: '/campaign/edit/'+$scope.campaign_id,
+                    data:{
+                        campaign_id : $scope.campaign_id,
+                        content : $scope.campaignContent
+                    }
+                }).success(function(data, status) {
+                    if(data.result===1){
+                        window.location.reload();
+                    }
+                    else{
+                        alertify.alert(data.msg);
+                    }
+                }).error(function(data, status) {
+                    alertify.alert('DATA ERROR');
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
         }
     }
 }]);

@@ -3,8 +3,9 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/competition.css")
-  link(rel="stylesheet" href="/css/campaign_detail.css")
-
+  //- link(rel="stylesheet" href="/css/campaign_detail.css")
+  if role=='HR' || role=='LEADER'
+    link(rel="stylesheet" href="/lib/pen/src/pen.css")
 block contentExt
   .dl_container.clearfix(ng-controller="competitionController" ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score?competition.camp[0].score:0};score_b=#{competition.camp[1].score?competition.camp[1].score:0};")
     include ../partials/breadcrumb
@@ -151,9 +152,12 @@ block contentExt
         .dl_detail_row.competition_detail
           .subtitle
             span #{__("SIMPLE")}#{__("INTRODUCTION")}:
+            if role=='HR' || role=='LEADER'
+              a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
           .dl_detail_row
-            span!= competition.content
-        .dl_row.clearfix.commment_box(ng-if="!role=='HR'||comments.length>0" bs-popover)
+            #competitionContent.dl_word_break(ng-show="!editContentStatus")!= competition.content
+            #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent" contenteditable)
+        .dl_row.clearfix.commment_box(ng-if="role!=='HR'||comments.length>0" bs-popover)
           p.subtitle 留言
           if role ==='LEADER' || role==='MEMBER'
             form(name="comment_form" novalidate)
@@ -177,8 +181,8 @@ block contentExt
                 .triangle
                 .comment_content
                   p(ng-cloak) {{comment.content}}
-              label.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-              a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+              .comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+                a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .side
       .competition_detail
         if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish
@@ -220,12 +224,6 @@ block contentExt
               span= competition.location.name
       .map_container
         p.subtitle.text-left 活动地点
-        //- if competition.location.coordinates.length==2
-        //-   a(href="http://api.map.baidu.com/marker?location=#{competition.location.coordinates[1]},#{competition.location.coordinates[0]}&title=活动地点&content=#{competition.location.name}&output=html" target="_blank")
-        //-     img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&zoom=15&markers=#{competition.location.name}|#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{competition.location.name}|#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&labelStyles=#{competition.location.name},1,14,0xffffff,0x000fff,1")
-        //- else
-        //-   a(href="http://api.map.baidu.com/marker?location=#{competition.location.coordinates[1]},#{competition.location.coordinates[0]}&title=活动地点&content=#{competition.location.name}&output=html" target="_blank")
-        //-     img.map_size(src="/img/sign_bg.jpg")         
         if competition.location.coordinates.length==2
           a(href="http://mo.amap.com/?q=#{competition.location.coordinates[1]},#{competition.location.coordinates[0]}&name=#{competition.location.name}" target="_blank")
             img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&labels=#{competition.location.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{competition.location.coordinates[0]},#{competition.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
@@ -246,3 +244,6 @@ block contentExt
 
 append footExt
   script(src="/js/controllers/competition.js")
+  if role=='HR' || role=='LEADER'
+    script(src="/lib/pen/src/pen.js")
+    script(src="/lib/pen/src/markdown.js")

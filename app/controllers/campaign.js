@@ -567,14 +567,13 @@ exports.getCampaigns = function(req, res) {
 exports.cancelCampaign = function(req, res){
   Campaign
     .findOne({'_id':req.body.campaign_id})
-    .populate('team')
     .exec()
     .then(function(campaign) {
       if(!campaign){
         return res.send({ result: 0, msg:'查找活动失败' });
       }
       else{
-        if (req.role==="LEADER" || req.role==="HR"){
+        if (req.role === "HR" || campaign.campaign_type != 3 && req.role === "LEADER" ){
           campaign.active=false;
           campaign.save(function(err){
             if(!err){
@@ -592,7 +591,33 @@ exports.cancelCampaign = function(req, res){
       res.send(400);
     });
 }
-
+exports.editCampaign = function(req, res){
+  Campaign
+    .findOne({'_id':req.params.campaignId})
+    .exec()
+    .then(function(campaign) {
+      if(!campaign){
+        return res.send({ result: 0, msg:'查找活动失败' });
+      }
+      else{
+        if (req.role === "HR" || campaign.campaign_type != 3 && req.role === "LEADER" ){
+          campaign.content=req.body.content;
+          campaign.save(function(err){
+            if(!err){
+              return res.send({ result: 1, msg:'活动编辑成功' });
+            }
+          });
+        }
+        else{
+          return res.send({ result: 0, msg:'您没有权限编辑该活动' });
+        }
+      }
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.send(400);
+    });
+}
 
 exports.getUserAllCampaignsForCalendar = function(req, res) {
   if (req.role === 'OWNER') {
