@@ -44,7 +44,8 @@
       this.cards.push(card);
       this.beforeCardShow(card);
 
-      card.transitionIn(this.cardAnimation);
+      card.transitionIn(this.cardAnimation, this.dragDirection);
+      delete this.cardAnimation;
       setTimeout(function() {
         card.disableTransition(self.cardAnimation);
       }, this.cardPopInDuration + 100);
@@ -117,7 +118,7 @@
      * Set the Z-Index of the card
      */
     setZIndex: function(index) {
-      this.el.style.zIndex = index;
+      //this.el.style.zIndex = index;
     },
 
     /**
@@ -144,15 +145,39 @@
     /**
      * Transition in the card with the given animation class
      */
-    transitionIn: function(animationClass) {
+    transitionIn: function(animationClass, dragDirection) {
       var self = this;
-
       this.el.classList.add(animationClass + '-start');
       this.el.classList.add(animationClass);
       this.el.style.display = 'block';
       setTimeout(function() {
         self.el.classList.remove(animationClass + '-start');
       }, 100);
+
+      // var width = $(self.el).width();
+      // var height = $(self.el).height();
+      // self.el.style.display = 'block';
+      // self.el.style[TRANSITION] = '-webkit-transform ' + 0.2 + 's ease-in-out';
+
+      // switch(dragDirection) {
+      // case 'up':
+      //   self.el.style.marginTop = height * 1.5 + 'px';
+      //   self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(0, -' + (height * 1.5) + 'px, 0)';
+      //   break;
+      // case 'down':
+      //   self.el.style.marginTop = '-' + height * 1.5 + 'px';
+      //   self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(0,' + (height * 1.5) + 'px, 0)';
+      //   break;
+      // case 'left':
+      //   self.el.style.marginLeft = width * 1.5 + 'px';
+      //   self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(-' + (width * 1.5) + 'px, 0, 0)';
+      //   break;
+      // case 'right':
+      //   self.el.style.marginLeft = '-' + width * 1.5 + 'px';
+      //   self.el.style[ionic.CSS.TRANSFORM] = 'translate3d(' + (width * 1.5) + 'px, 0, 0)';
+      //   break;
+      // }
+
     },
 
     /**
@@ -322,6 +347,7 @@
                 return false;
               } else {
                 $timeout(function() {
+                  swipeCards.dragDirection = 'up';
                   $scope.onUp();
                 });
                 return true;
@@ -332,6 +358,7 @@
                 return false;
               } else {
                 $timeout(function() {
+                  swipeCards.dragDirection = 'down';
                   $scope.onDown();
                 });
                 return true;
@@ -342,6 +369,7 @@
                 return false;
               } else {
                 $timeout(function() {
+                  swipeCards.dragDirection = 'left';
                   $scope.onLeft();
                 });
                 return true;
@@ -352,6 +380,7 @@
                 return false;
               } else {
                 $timeout(function() {
+                  swipeCards.dragDirection = 'right';
                   $scope.onRight();
                 });
                 return true;
