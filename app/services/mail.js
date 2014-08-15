@@ -126,3 +126,32 @@ exports.sendCompanyResetPwdMail = function(who, uid, host) {
         },'COMPANY_PWD_RESET_EMAIL_SEND_ERROR');
     });
 };
+
+
+// var senderId = [0,1,2];
+// var campaignId;
+
+// var templateGenerator = function(url,body,encode,host,who,mailId){
+//   fs.readFile(url, encode, function (err, data) {
+//       if (err) throw err;
+//       var fn = jade.compile(data);
+//       var html = fn({'title':body.title,'host':siteProtocol+host,'who':who.mail,'content':body.content});
+//       var error = {
+//         type:who.provider,
+//         _id:uid,
+//         name:who.name,
+//         email:who.mail,
+//         msg:'COMPANY_PWD_RESET_EMAIL_SEND_ERROR'
+//       }
+//       sendByWebPower(mailId,html,who,error,body);
+//   });
+// }
+// var sendByWebPower = function(mailId,html,who,error,body){
+//   var data = [];
+//   data.push({
+//     'email':who.mail,
+//     'name':who.name,
+//     'template':html,
+//     'subject':body.subject
+//   });
+// }
