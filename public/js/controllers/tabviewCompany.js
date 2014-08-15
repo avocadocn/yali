@@ -55,7 +55,7 @@ tabViewCompany.config(['$routeProvider', '$locationProvider',
         controller: 'DepartmentController'
       })
       .otherwise({
-        redirectTo: '/company_campaign'
+        redirectTo: '/team_info'
       });
   }]);
 tabViewCompany.filter('offset', function() { 
