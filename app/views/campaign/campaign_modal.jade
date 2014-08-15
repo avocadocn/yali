@@ -17,6 +17,7 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
             input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
         .dl_modal_container(ng-init="baseBrief=true;")
             label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
+            #campaignDetailToolBar
             #campaignDetail.markdownContainer(name="content" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=4000 required)
         .dl_modal_container
           .dl_modal_half_container
@@ -105,8 +106,9 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
         editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
         class: 'dl_markdown', // {String} class of the editor,
         textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
-        list: ['blockquote', 'h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-        stay: false
+        list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+        stay: false,
+        toolBarId: 'campaignDetailToolBar'
       }
 
       var editor = new Pen(options);

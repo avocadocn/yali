@@ -149,6 +149,10 @@
 .dl_detail_main .competition_detail .competition_content li {
   list-style: inherit;
 }
+.dl_detail_main .competition_detail .base_content {
+  max-height: 121px;
+  overflow: hidden;
+}
 .dl_detail_main .commment_box {
   width: 660px;
   float: left;

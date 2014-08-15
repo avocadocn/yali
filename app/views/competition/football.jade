@@ -149,13 +149,17 @@ block contentExt
                   each teamBMember in competition.camp[1].formation
                     img.team_member_logo.teamMember.onmemberB.img_user(x-donler-member="true" draggable="false" data-camp='1' id='on_b__#{teamBMember.uid}' data-tid="#{competition.camp[1].id}" data-top='#{teamBMember.y}' data-left='#{teamBMember.x}')
         .dl_detail_row.competition_detail
-          .subtitle
+          .subtitle(ng-init="baseContent=true;")
             span #{__("SIMPLE")}#{__("INTRODUCTION")}:
+              a.pull-right(ng-show="showFold" ng-click="baseContent=!baseContent;")(ng-cloak) {{baseContent ? '展开' :'收缩'}}
             if role=='HR' || role=='LEADER'
+              span.pull-right(ng-show="showFold") |
               a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
           .dl_detail_row
-            #competitionContent.dl_word_break.competition_content(ng-show="!editContentStatus")!= competition.content
-            #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent"  mix-maxlength=4000 contenteditable)
+            #competitionContent.dl_word_break.competition_content(ng-class="{'base_content': baseContent}" max-height=120 ng-show="!editContentStatus")!= competition.content
+            if role=='HR' || role=='LEADER'
+              #provokeDetailToolBar
+              #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent"  mix-maxlength=4000 contenteditable)
         .dl_row.clearfix.commment_box(ng-if="role!=='HR'||comments.length>0" bs-popover)
           p.subtitle 留言
           if role ==='LEADER' || role==='MEMBER'

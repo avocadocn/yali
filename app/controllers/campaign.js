@@ -496,7 +496,8 @@ exports.getCampaigns = function(req, res) {
     option={
       'active':true,
       'finish':false,
-      'team':pageId
+      'team':pageId,
+      'cid':req.companyGroup.cid
     }
     Campaign
     .find(option)
@@ -528,7 +529,8 @@ exports.getCampaigns = function(req, res) {
         option={
           'active':true,
           'finish':false,
-          '$or':[{'team':{'$in':team_ids}},{'cid':user.cid,'team':{'$size':0}}]
+          'cid': req.profile._id,
+          '$or':[{'team':{'$in':team_ids}},{'team':{'$size':0}}]
         }
         Campaign
         .find(option)

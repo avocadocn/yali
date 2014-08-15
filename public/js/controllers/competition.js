@@ -3,6 +3,19 @@
 
 
 var groupApp = angular.module('donler');
+groupApp.directive('maxHeight', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, elem, attr, ctrl) {
+            if(elem.height()>attr.maxHeight){
+                scope.showFold =true;
+            }
+            else{
+                scope.showFold =false;
+            }
+        }
+    };
+});
 groupApp.directive('donlerMember', ['$rootScope', function($rootScope) {
       return {
           restrict: 'A',
@@ -392,8 +405,9 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
                 editor: document.getElementById('competitionDetail'), // {DOM Element} [required]
                 class: 'dl_markdown', // {String} class of the editor,
                 textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
-                list: ['blockquote', 'h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-                stay: false
+                list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+                stay: false,
+                toolBarId: 'provokeDetailToolBar'
               }
             var editor = new Pen(options);
         }

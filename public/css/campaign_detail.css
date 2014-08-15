@@ -35,6 +35,10 @@
   padding: 10px 20px;
   border: 1px solid #ddd;
 }
+.dl_detail_container .dl_detail_main .dl_detail_member .base_content {
+  max-height: 78px;
+  overflow: hidden;
+}
 .dl_detail_container .dl_detail_main .dl_detail_member .contentContainer li {
   list-style: inherit;
 }

@@ -59,13 +59,17 @@ block contentExt
                 input.dl_btn.dl_btn_medium(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
                 input.dl_btn.dl_btn_medium(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinReady()" ng-if="join!==1" ng-disabled="join==0")
       .dl_detail_member.row
-        .dl_row.subtitle
+        .dl_row.subtitle(ng-init="baseContent=true;")
           span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
+          a.pull-right(ng-show="showFold" ng-click="baseContent=!baseContent;")(ng-cloak) {{baseContent ? '展开' :'收缩'}}
           if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+            span.pull-right(ng-show="showFold") |
             a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
         .dl_detail_row
-            #campaignContent.dl_word_break.contentContainer(ng-show="!editContentStatus")!= campaign.content
-            #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent"  mix-maxlength=4000 contenteditable)
+            #campaignContent.dl_word_break.contentContainer(ng-class="{'base_content':baseContent}" max-height=77 ng-show="!editContentStatus")!= campaign.content
+            if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+              #campaignDetailToolBar
+              #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent"  mix-maxlength=4000 contenteditable)
       if !campaign.active
         .dl_detail_row.text-center.margin_top_30
           span #{__("CAMPAIGNCLOSE")}

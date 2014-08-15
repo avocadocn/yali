@@ -123,12 +123,22 @@ app.directive('contenteditable',function() {
           return scope.$apply(read);
         }
       }
+      // var clearStyle = function(e){
+      //   console.log(e.originalEvent.cliboardData.getData('text/plain'));
+      //   // var $self = $(this);
+      //   // setTimeout(function() {
+      //   //   var paste_values = $self.text();
+      //   //   paste_values=paste_values.replace(/<[^<]*>/g,'');
+      //   //   $self.text(paste_values); 
+      //   // },0);
+      // }
       element.bind('focus', function() {
         element.bind('keydown',changeBind);
-
+        // element.bind('paste', clearStyle);
       });
       element.bind('blur', function(e) {
         element.unbind('keydown',changeBind);
+        // element.unbind('paste', clearStyle);
         changeBind(e);
       });
       return read = function() {
