@@ -3,7 +3,7 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/campaign_detail.css")
-  if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+  if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
     link(rel="stylesheet" href="/lib/pen/src/pen.css")
 block contentExt
   .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';campaign_type='#{campaign.campaign_type}';member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';campaign_team=#{JSON.stringify(campaign.team)};user_team=#{JSON.stringify(user.team)};")
@@ -62,14 +62,15 @@ block contentExt
         .dl_row.subtitle(ng-init="baseContent=true;")
           span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
           a.pull-right(ng-show="showFold" ng-click="baseContent=!baseContent;")(ng-cloak) {{baseContent ? '展开' :'收缩'}}
-          if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+          if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
             span.pull-right(ng-show="showFold") |
             a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
-        .dl_detail_row
-            #campaignContent.dl_word_break.contentContainer(ng-class="{'base_content':baseContent}" max-height=77 ng-show="!editContentStatus")!= campaign.content
-            if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
-              #campaignDetailToolBar
-              #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent"  mix-maxlength=4000 contenteditable)
+        .dl_detail_row.dl_content_container
+          .base_content_gradient(ng-show="showFold && baseContent" ng-click="baseContent=!baseContent;")
+          #campaignContent.dl_word_break.content_container(ng-class="{'base_content':baseContent}" max-height=77 ng-show="!editContentStatus")!= campaign.content
+          if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
+            #campaignDetailToolBar
+            #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent"  mix-maxlength=4000 contenteditable)
       if !campaign.active
         .dl_detail_row.text-center.margin_top_30
           span #{__("CAMPAIGNCLOSE")}
@@ -158,6 +159,6 @@ block contentExt
       include ../campaign/select_team_for_multi_campaign
 append footExt
   script(src="/js/controllers/campaign.js")
-  if role=='HR' || campaign.campaign_type != 3 && role=='LEADER'
+  if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
     script(src="/lib/pen/src/pen.js")
     script(src="/lib/pen/src/markdown.js")

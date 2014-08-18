@@ -123,22 +123,38 @@ app.directive('contenteditable',function() {
           return scope.$apply(read);
         }
       }
-      // var clearStyle = function(e){
-      //   console.log(e.originalEvent.cliboardData.getData('text/plain'));
-      //   // var $self = $(this);
-      //   // setTimeout(function() {
-      //   //   var paste_values = $self.text();
-      //   //   paste_values=paste_values.replace(/<[^<]*>/g,'');
-      //   //   $self.text(paste_values); 
-      //   // },0);
-      // }
+      var clearStyle = function(e){
+        var before = e.currentTarget.innerHTML;
+        setTimeout(function(){
+            // get content after paste by a 100ms delay
+            var after = e.currentTarget.innerHTML;
+            // find the start and end position where the two differ
+            var pos1 = -1;
+            var pos2 = -1;
+            for (var i=0; i<after.length; i++) {
+                if (pos1 == -1 && before.substr(i, 1) != after.substr(i, 1)) pos1 = i;
+                if (pos2 == -1 && before.substr(before.length-i-1, 1) != after.substr(after.length-i-1, 1)) pos2 = i;
+            }
+            // the difference = pasted string with HTML:
+            var pasted = after.substr(pos1, after.length-pos2-pos1);
+            console.log(pasted);
+            // strip the tags:
+            var replace = pasted.replace(/style\s*=(['\"\s]?)[^'\"]*?\1/gi,'').replace(/class\s*=(['\"\s]?)[^'\"]*?\1/gi,'');
+            console.log(replace);
+            // build clean content:
+            var replaced = after.substr(0, pos1)+replace+after.substr(pos1+pasted.length);
+            // replace the HTML mess with the plain content
+            //console.log(replaced);
+            e.currentTarget.innerHTML = replaced;
+        }, 100);
+      }
       element.bind('focus', function() {
         element.bind('keydown',changeBind);
-        // element.bind('paste', clearStyle);
+        element.bind('paste', clearStyle);
       });
       element.bind('blur', function(e) {
         element.unbind('keydown',changeBind);
-        // element.unbind('paste', clearStyle);
+         element.unbind('paste', clearStyle);
         changeBind(e);
       });
       return read = function() {

@@ -3,13 +3,13 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/competition.css")
-  if role=='HR' || role=='LEADER'
+  if (role==='HR' || role==='LEADER') && (competition.active ||!competition.camp[1].start_confirm) &&!competition.finish
     link(rel="stylesheet" href="/lib/pen/src/pen.css")
 block contentExt
   .dl_container.clearfix(ng-controller="competitionController" ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score?competition.camp[0].score:0};score_b=#{competition.camp[1].score?competition.camp[1].score:0};")
     include ../partials/breadcrumb
     +breadcrumb(links)
-    .dl_detail_main
+    .dl_detail_main= role
       ul.nav.nav-tabs
         li(ng-class="{'active':true}")
           a.subtitle.no_radius.border_red= competition.theme
@@ -152,12 +152,13 @@ block contentExt
           .subtitle(ng-init="baseContent=true;")
             span #{__("SIMPLE")}#{__("INTRODUCTION")}:
               a.pull-right(ng-show="showFold" ng-click="baseContent=!baseContent;")(ng-cloak) {{baseContent ? '展开' :'收缩'}}
-            if role=='HR' || role=='LEADER'
+            if (role==='HR' || role==='LEADER') && (competition.active || !competition.camp[1].start_confirm)  &&!competition.finish
               span.pull-right(ng-show="showFold") |
               a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
-          .dl_detail_row
+          .dl_detail_row.dl_competition_content
+            .base_content_gradient(ng-show="showFold && baseContent" ng-click="baseContent=!baseContent;")
             #competitionContent.dl_word_break.competition_content(ng-class="{'base_content': baseContent}" max-height=120 ng-show="!editContentStatus")!= competition.content
-            if role=='HR' || role=='LEADER'
+            if (role==='HR' || role==='LEADER') && (competition.active || !competition.camp[1].start_confirm)  &&!competition.finish
               #provokeDetailToolBar
               #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent"  mix-maxlength=4000 contenteditable)
         .dl_row.clearfix.commment_box(ng-if="role!=='HR'||comments.length>0" bs-popover)
@@ -247,6 +248,6 @@ block contentExt
 
 append footExt
   script(src="/js/controllers/competition.js")
-  if role=='HR' || role=='LEADER'
+  if (role==='HR' || role==='LEADER') && (competition.active || !competition.camp[1].start_confirm)  &&!competition.finish
     script(src="/lib/pen/src/pen.js")
     script(src="/lib/pen/src/markdown.js")

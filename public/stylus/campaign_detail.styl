@@ -28,12 +28,25 @@
       margin 10px 0 0
       padding 10px 20px
       border 1px solid #ddd
-      .base_content
-        max-height 78px
-        overflow hidden
-      .contentContainer
-        li
-          list-style inherit
+      .dl_content_container
+        position relative
+        .base_content_gradient
+          height 20px
+          width 100%
+          position absolute
+          bottom 0
+          cursor pointer
+          background -webkit-linear-gradient(top,transparent,white)
+          background -moz-linear-gradient( top,transparent,white)
+          background -o-linear-gradient(top,transparent,white)
+          filter unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)")
+          -ms-filter unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)")/*IE8*/  
+        .base_content
+          max-height 78px
+          overflow hidden
+        .content_container
+          li
+            list-style inherit
       .member
         float left
         margin 4px
