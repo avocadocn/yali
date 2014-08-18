@@ -2064,7 +2064,7 @@ input.ng-invalid.ng-dirty {
   height: 140px;
   margin-left: 4px;
 }
-.dl_integrate_container .thumbnail_cell:nth-child(2n+1) {
+.dl_integrate_container .thumbnail_cell:nth-child(2n) {
   margin-left: 16px;
   margin-right: 4px;
 }
