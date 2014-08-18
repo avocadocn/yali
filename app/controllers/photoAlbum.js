@@ -17,7 +17,7 @@ var validator = require('validator');
 var gm = require('gm');
 var async = require('async');
 var moment = require('moment');
-//var mime = require('mime');
+var mime = require('mime');
 
 // custom
 var config = require('../../config/config');
@@ -689,8 +689,8 @@ exports.createPhoto = function(req, res) {
         function() { return i < photos.length; },
 
         function(callback) {
-          //var ext = mime.extension(photos[i].type);
-          var photo_name = Date.now().toString() + '.png';
+          var ext = mime.extension(photos[i].type);
+          var photo_name = Date.now().toString() + '.' + ext;
           var photo = {};
           try {
             gm(photos[i].path)
@@ -752,6 +752,7 @@ exports.createPhoto = function(req, res) {
                                   type: 'user'
                                 };
                               }
+                              photo_album.update_date = Date.now();
                               photo_album.photos.push(photo);
                               photo_album.photo_count += 1;
                               photo_album.update_user = photo.upload_user;
@@ -952,19 +953,20 @@ exports.deletePhoto = function(req, res) {
 
 
 
-exports.readGroupPhotoAlbumList = function(req, res) {
+exports.readGroupPhotoAlbumList = function(req, res, next) {
   getGroupPhotoAlbumList(req.params.groupId, function(photo_album_list) {
     if (photo_album_list !== null) {
       return res.send({ result: 1, photo_album_list: photo_album_list });
     } else {
-      return res.send(404);
+      res.status(404);
+      return next('not found');
     }
   });
 
 };
 
 
-exports.renderGroupPhotoAlbumList = function(req, res) {
+exports.renderGroupPhotoAlbumList = function(req, res, next) {
   getGroupPhotoAlbumList(req.params.groupId, function(photo_album_list) {
     if (photo_album_list !== null) {
       CompanyGroup
@@ -972,7 +974,8 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
       .exec()
       .then(function(company_group) {
         if (!company_group) {
-          throw 'not found';
+          res.status(404);
+          return next('not found');
         }
         var links = [
           {
@@ -999,18 +1002,19 @@ exports.renderGroupPhotoAlbumList = function(req, res) {
         });
       })
       .then(null, function(err) {
-        console.log(err);
-        // TO DO: temp err handle
-        return res.send(404);
+        if (err) {
+          next(err);
+        }
       });
     } else {
-      return res.send(404);
+      res.status(404);
+      return next('not found');
     }
   });
 };
 
 
-exports.renderPhotoAlbumDetail = function(req, res) {
+exports.renderPhotoAlbumDetail = function(req, res, next) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
   .populate('owner.teams')
@@ -1018,7 +1022,8 @@ exports.renderPhotoAlbumDetail = function(req, res) {
   .exec()
   .then(function(photo_album) {
     if (!photo_album) {
-      throw 'not found';
+      res.status(404)
+      return next('not found');
     }
     var photos = getShowPhotos(photo_album);
     var owner = getPhotoAlbumOwner(req.user, photo_album);
@@ -1075,19 +1080,23 @@ exports.renderPhotoAlbumDetail = function(req, res) {
     });
   })
   .then(null, function(err) {
-    console.log(err);
-    // TO DO: temp err handle
-    return res.send(404);
+    if (err) {
+      next(err);
+    }
   })
 };
 
-exports.renderPhotoDetail = function(req, res) {
+exports.renderPhotoDetail = function(req, res, next) {
   PhotoAlbum
   .findById(req.params.photoAlbumId)
   .populate('owner.teams')
   .populate('owner.companies')
   .exec()
   .then(function(photo_album) {
+    if (!photo_album) {
+      res.status(404);
+      return next('not found');
+    }
     var pre_id, next_id;
     var photos = getShowPhotos(photo_album);
     for (var i = 0; i < photos.length; i++) {
@@ -1197,13 +1206,19 @@ exports.renderPhotoDetail = function(req, res) {
             });
           });
         }(i));
+
+        return;
       }
     }
+
+    // 没有找到照片
+    res.status(404);
+    return next('not found');
   })
   .then(null, function(err) {
-    console.log(err);
-    // TO DO: temp err handle
-    return res.send(404);
+    if (err) {
+      next(err);
+    }
   });
 
 

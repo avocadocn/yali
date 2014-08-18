@@ -2,6 +2,9 @@ var mongoose = require('mongoose'),
   ErrorStatistics = mongoose.model('ErrorStatistics');
 
 module.exports = function(err, req, res, next) {
+  if (res.statusCode < 400) {
+    res.status(500);
+  }
   if (err.name !== 'Error') {
     var _err = err;
     var msg = err;
@@ -27,10 +30,7 @@ module.exports = function(err, req, res, next) {
     } else {
       return res.send(404, { msg: msg });
     }
-  } else {
-    if (res.statusCode < 500) {
-      res.status(500);
-    }
+  } else if (res.statusCode >= 500) {
 
     var log = new ErrorStatistics({
       error: {
@@ -58,9 +58,15 @@ module.exports = function(err, req, res, next) {
       if (err) console.log(err);
     });
     if (!req.xhr) {
-      return res.status(500).render('500');
+      return res.status(res.statusCode).render('500');
     } else {
-      return res.send(500, { msg: msg });
+      return res.send(res.statusCode);
+    }
+  } else {
+    if (!req.xhr) {
+      return res.redirect('/');
+    } else {
+      return res.send(res.statusCode, { msg: msg });
     }
   }
 };

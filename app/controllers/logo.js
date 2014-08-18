@@ -9,6 +9,7 @@ var fs = require('fs'),
 var mongoose = require('mongoose'),
   validator = require('validator'),
   async = require('async'),
+  mime = require('mime'),
   gm = require('gm');
 
 // mongoose model
@@ -21,7 +22,7 @@ var schedule = require('../services/schedule'),
   config = require('../../config/config');
 
 
-exports.updateLogo = function(req, res) {
+exports.updateLogo = function(req, res, next) {
 
   var target_model;
   var logo_model;  // 数据库设计不够扁平化，只能用它当对象引用了，用于company.info.logo
@@ -59,6 +60,7 @@ exports.updateLogo = function(req, res) {
             logo_model = target_model;
             callback(null);
           } else {
+            res.status(404);
             callback('not found company_group');
           }
         })
@@ -74,17 +76,19 @@ exports.updateLogo = function(req, res) {
         callback(null);
         break;
       default:
+        res.status(400);
         callback('bad request');
         break;
       }
     },
     function(callback) {
       var logo_temp_path = req.files.logo.path;
+      var ext = mime.extension(req.files.logo.type);
 
       // 存入数据库的文件名，以当前时间的加密值命名
       var shasum = crypto.createHash('sha1');
       shasum.update( Date.now().toString() + Math.random().toString() );
-      var logo_file_name = shasum.digest('hex') + '.png';
+      var logo_file_name = shasum.digest('hex') + '.' + ext;
 
       try {
         gm(logo_temp_path).size(function(err, value) {
@@ -143,9 +147,9 @@ exports.updateLogo = function(req, res) {
       }
     }
   ], function(err, result) {
-    console.log(err);
-    // TO DO: temp
-    res.send(500, 'error');
+    if (err) {
+      next(err);
+    }
   });
 
 
