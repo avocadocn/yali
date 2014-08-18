@@ -7,6 +7,8 @@ module.exports = function(config) {
     //extra testing code
     //'bower_components/angular-mocks/angular-mocks.js',
     //'public/js/app.js',
+    ANGULAR_SCENARIO,
+    ANGULAR_SCENARIO_ADAPTER,
     'public/js/controllers/tabviewUser.js',
     //mocha stuff
     //'test/mocha.conf.js',

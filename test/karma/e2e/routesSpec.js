@@ -5,7 +5,7 @@
 describe('e2e', function() {
 
   beforeEach(function() {
-    browser().navigateTo('/');
+    browser().navigateTo('/users/signin');
   });
 
   // it('should have a working / page', function() {
@@ -20,7 +20,7 @@ describe('e2e', function() {
     console.log(browser().location());
     console.log(browser().window());
     expect(browser().location().hash()).toBe(undefined);
-    expect(browser().location().path()).toBe('/');
+    expect(browser().location().path()).toBe('/users/signin');
   });
 
 });
