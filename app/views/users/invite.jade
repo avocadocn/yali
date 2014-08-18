@@ -34,7 +34,7 @@ block contentExt
                       each domain in domains
                         option(value="#{domain}" selected='selected')= domain
                   input(type="text" name="index" ng-model="active" ng-show='false')
-            .dl_row.email_tip(ng-show="(active||loading)&&active!==4")
+            .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
               p
               img(ng-show='loading' src='/img/loading.gif')
               div(ng-show='active==1' ng-cloak)

@@ -245,9 +245,9 @@ function userOperate(cid, key, res, req, index) {
       if (!company) {
         throw 'Not found company';
       }
-      var email = req.body.host + '@' + req.body.domain;
+      var email = req.body.host.toLowerCase() + '@' + req.body.domain;
       User
-      .findOne({ email: email})
+      .findOne({ username: email})
       .exec()
       .then(function(user) {
         if(index ==1){//未注册过,新建用户并保存
@@ -405,7 +405,7 @@ exports.dealActive = function(req, res) {
  */
 exports.mailCheck = function(req, res) {
   var email = req.body.login_email;
-  User.findOne({email:email},{active:1,mail_active:1},function(err,user){
+  User.findOne({username:email},{active:1,mail_active:1},function(err,user){
     if(err){
       console.log(err);
       return res.send(500,{'msg':'DatabaseError'});
@@ -464,13 +464,13 @@ exports.setProfile = function(req, res) {
               return res.send(500,{'msg':'user save err.'});
             }
             else{
+              //公司人员增加
               Company.update({'_id':user.cid._id},{'$inc':{'info.membernumber':1}},function(err,company){
                 if(err || !company){
                   console.log(err);
                 }
               });
-              //company.info.membernumber = company.info.membernumber + 1;
-
+              //给公司发动态
               var groupMessage = new GroupMessage();
               groupMessage.message_type = 7;
               groupMessage.company={
@@ -501,170 +501,6 @@ exports.setProfile = function(req, res) {
     }
   });
 };
-//***此处已不再需要
-// /**
-//  * 处理个人信息表单
-//  */
-// exports.dealSetProfile = function(req, res) {
-//   User.findOne(
-//     {_id : req.query.uid}
-//   , function(err, user) {
-//     if(err || !user) {
-//       console.log(err);
-//       res.render('users/message', message.dbError);
-//     }
-//     else {
-//       if(user.active === false) {
-//         user.nickname = req.body.nickname;
-//         user.password = req.body.password;
-//         user.realname = req.body.realName;
-//         user.phone = req.body.phone;
-//         user.role = 'EMPLOYEE';
-//         user.active = true;
-//         user.save(function(err) {
-//           if(err) {
-//             console.log(err);
-//             return res.render('users/message', message.dbError);
-//           }
-//           else {
-//             //将员工加入部门
-//             var member = {
-//               '_id':user._id,
-//               'nickname':user.nickname,
-//               'photo':user.photo,
-//               'apply_status':'wait'
-//             };
-//             if(req.body.main_department_id != 'null'){
-//               var callback = function(err, data) {
-//                 if (err) {
-//                   console.log(err);
-//                 }
-//               }
-//               if(req.body.child_department_id != 'null'){
-//                 department.memberOperateByHand('join',member,req.body.child_department_id,callback);
-//               }else{
-//                 department.memberOperateByHand('join',member,req.body.main_department_id,callback);
-//               }
-//             }
-//             var groupMessage = new GroupMessage();
-//             groupMessage.message_type = 7;
-//             groupMessage.company.cid = user.cid;
-//             groupMessage.company.name = user.cname;
-//             groupMessage.company={
-//               cid : user.cid,
-//               name : user.cname
-//             };
-//             groupMessage.user={
-//               user_id : user._id,
-//               name : user.nickname,
-//               logo : user.photo
-//             };
-//             groupMessage.save();
-//             req.session.username = user.username;
-//             res.redirect('/users/finishRegister');
-//           }
-//         });
-//       } else {
-//         res.render('users/message', message.actived);
-//       }
-//     }
-//   });
-
-// };
-
-// /**
-//  * 选择组件页面
-//  */
-// exports.selectGroup = function(req, res) {
-//   User.findOne({ username: req.session.username }, function(err, user) {
-//     if (err) {
-//       console.log(err);
-//       res.render('users/message', message.dbError);
-//     } else if(user) {
-//       if (user.active === true) {
-//         res.render('users/message', message.actived);
-//       } else {
-//         res.render('users/selectGroup', { title: '选择你的兴趣小队', group_head: '个人',cid:user.cid });
-//       }
-//     } else {
-//       res.render('users/message', message.unregister);
-//     }
-//   });
-// }
-
-// /**
-//  * 处理选择组件表单
-//  */
-// exports.dealSelectGroup = function(req, res) {
-//   if(req.body.selected == undefined) {
-//     return res.redirect('/users/selectGroup');
-//   } else {
-//     ;
-//   }
-//   User.findOne({'username': req.session.username}, function(err, user) {
-//     if (err) {
-//       return res.status(400).send('用户不存在!');
-//     }
-//     else if(user) {
-//       if(user.active === false) {
-//         user.team = req.body.selected;
-//         user.active = true;
-//         user.save(function(err){
-//           if(err){
-//             console.log(err);
-//             res.render('users/message', message.dbError);
-//           }
-//           var tids = [];
-//           var member = {
-//             '_id' : user._id,
-//             'nickname' : user.nickname,
-//             'photo' : user.photo
-//           }
-//           for( var i = 0; i < user.team.length && user.team[i].gid != '0'; i++){
-//             tids.push(user.team[i]._id);
-//             var groupMessage = new GroupMessage();
-//               groupMessage.message_type = 8;
-//               groupMessage.company={
-//                 cid : user.cid,
-//                 name : user.cname
-//               };
-//               groupMessage.team = {
-//                 teamid : user.team[i]._id,
-//                 name : user.team[i].name,
-//                 logo : user.team[i].logo
-//               };
-//               groupMessage.user= {
-//                 user_id : user._id,
-//                 name : user.nickname,
-//                 logo : user.photo
-//               };
-//               groupMessage.save();
-//           }
-//           CompanyGroup.update({'_id':{'$in':tids}},{'$push':{'member':member}},{'safe':false,'multi':true}).exec(function(err, company_group){
-//             if(err || !company_group){
-//               return res.send(err);
-//             }else{
-//               return res.redirect('/users/finishRegister');
-//             }
-//           });
-//         });
-//       } else {
-//         res.render('users/message', message.actived);
-//       }
-//     }
-//     else {
-//       res.render('users/message', message.unregister);
-//     }
-//   });
-// };
-
-// /**
-//  * 完成注册
-//  */
-// exports.finishRegister = function(req, res) {
-//   delete req.session.username;
-//   res.render('users/signin', {title: '激活成功,请登录!', message: '激活成功,请登录!'});
-// };
 
 exports.renderCampaigns = function(req, res){
   res.render('partials/campaign_list',{
