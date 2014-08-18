@@ -45,10 +45,21 @@ block contentExt
             img(src="#{photo.thumbnail_uri}")
           p.photo_name= photo.name
 
+  #loading_modal.modal.fade(role="dialog" aria-hidden="true")
+    .modal-dialog.loading_modal
+      .modal-content
+        .modal-body
+          button.close(type="button" data-dismiss="modal")
+            span(aria-hidden="true") &times;
+          .clearfix.loading_box
+            .pull-left.loading_div
+            h4.pull-left.loading_text 上传中
+
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")
   script.
     $('.js_ajax_form').ajaxForm(function(data, status) {
+      console.log(data, status)
       if (status === 'success') {
         window.location.reload();
       }
@@ -56,6 +67,7 @@ append footExt
     $('#photo').change(function() {
       if ($(this).val() !== '' || $(this).val() != null) {
         $('#upload_photo_form').submit();
+        $('#loading_modal').modal();
       }
     });
     var deleteForm = $('#delete_form');

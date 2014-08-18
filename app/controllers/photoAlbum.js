@@ -688,8 +688,17 @@ exports.createPhoto = function(req, res) {
       async.whilst(
         function() { return i < photos.length; },
 
-        function(callback) {
+        function(whilstCallback) {
+          if (photos[i].type.indexOf('image') === -1) {
+            fs.unlink(photos[i].path, function(err) {
+              if (err) console.log(err);
+              i++;
+              whilstCallback();
+            });
+            return;
+          }
           var ext = mime.extension(photos[i].type);
+
           var photo_name = Date.now().toString() + '.' + ext;
           var photo = {};
           try {
@@ -697,12 +706,12 @@ exports.createPhoto = function(req, res) {
             .write(path.join(config.root, 'public', uri_dir, photo_name),
               function(err) {
                 if (err) {
-                  callback(err);
+                  whilstCallback(err);
                 } else {
                   gm(photos[i].path)
                   .size(function(err, size) {
                     if (err) {
-                      callback(err);
+                      whilstCallback(err);
                     } else {
                       var thumbnail_width = 200;
                       var thumbnail_height = thumbnail_width;
@@ -712,7 +721,7 @@ exports.createPhoto = function(req, res) {
                       var crop_y = (size.height - crop_height) / 2;
 
                       async.waterfall([
-                        function(callback) {
+                        function(waterfallCallback) {
                           var handle;
                           if (size.width > size.height) {
                             handle = gm(photos[i].path).resize(200);
@@ -721,13 +730,13 @@ exports.createPhoto = function(req, res) {
                           }
                           handle.write(path.join(config.root, 'public', uri_dir, 'zoom' + photo_name), function(err) {
                             if (err) {
-                              return callback(err);
+                              return waterfallCallback(err);
                             }
-                            callback(null, path.join(uri_dir, 'zoom' + photo_name));
+                            waterfallCallback(null, path.join(uri_dir, 'zoom' + photo_name));
                           });
                         },
 
-                        function(zoom_uri, callback) {
+                        function(zoom_uri, waterfallCallback) {
                           gm(photos[i].path)
                           .crop(crop_width, crop_height, crop_x, crop_y)
                           .resize(thumbnail_width, thumbnail_height)
@@ -757,12 +766,12 @@ exports.createPhoto = function(req, res) {
                               photo_album.photo_count += 1;
                               photo_album.update_user = photo.upload_user;
                               photo_album.save(function(err) {
-                                if (err) callback(err);
+                                if (err) waterfallCallback(err);
                                 else {
                                   fs.unlink(photos[i].path, function(err) {
-                                    if (err) callback(err);
+                                    if (err) waterfallCallback(err);
                                     else {
-                                      callback();
+                                      waterfallCallback();
                                     }
                                   });
                                 }
@@ -776,7 +785,7 @@ exports.createPhoto = function(req, res) {
                           res.send(500);
                         }
                         i++;
-                        callback();
+                        whilstCallback();
                       });
 
                     }
