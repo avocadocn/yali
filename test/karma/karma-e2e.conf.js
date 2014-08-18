@@ -14,7 +14,7 @@ module.exports = function(config) {
 
   conf.urlRoot = '/__karma__/';
 
-  conf.frameworks = ['jasmine'];
+  conf.frameworks = ['ng-scenario'];
 
   //conf.plugins.concat('karma-ng-scenario');
   
