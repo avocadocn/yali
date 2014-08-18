@@ -782,7 +782,7 @@ exports.createPhoto = function(req, res) {
                       ], function(err, result) {
                         if (err) {
                           console.log(err)
-                          res.send(500);
+                          return res.send({ result: 0, msg: '上传照片失败，请重试。' });
                         }
                         i++;
                         whilstCallback();
@@ -796,6 +796,7 @@ exports.createPhoto = function(req, res) {
             });
           } catch (e) {
             console.log(e);
+            return res.send({ result: 0, msg: '上传照片失败，请重试。' });
           }
 
         },
@@ -803,7 +804,7 @@ exports.createPhoto = function(req, res) {
         function(err) {
           if (err) {
             console.log(err);
-            return res.send({ result: 0, msg: '添加照片失败' });
+            return res.send({ result: 0, msg: '上传照片失败，请重试。' });
           } else {
             return res.send({ result: 1, msg: '添加照片成功' });
           }

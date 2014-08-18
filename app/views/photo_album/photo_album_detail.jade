@@ -55,39 +55,18 @@ block contentExt
             .pull-left.loading_div
             h4.pull-left.loading_text 上传中
 
+  #failed_modal.modal.fade(role="dialog" aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type="button" data-dismiss="modal")
+            span(aria-hidden="true") &times;
+          h4.modal-title 上传失败
+        .modal-body
+          p#failed_msg
+
+
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")
-  script.
-    $('.js_ajax_form').ajaxForm(function(data, status) {
-      console.log(data, status)
-      if (status === 'success') {
-        window.location.reload();
-      }
-    });
-    $('#photo').change(function() {
-      if ($(this).val() !== '' || $(this).val() != null) {
-        $('#upload_photo_form').submit();
-        $('#loading_modal').modal();
-      }
-    });
-    var deleteForm = $('#delete_form');
-    deleteForm.ajaxForm(function(data, status) {
-      var returnUri = $('#returnUri').attr('href');
-      window.location.href = returnUri;
-    });
-    $('#delete_button').click(function() {
-      alertify.set({
-        buttonFocus: "none",
-        labels: {
-          ok: '确认删除',
-          cancel: '取消'
-        }
-      });
-      alertify.confirm('删除后不可恢复，您确定要删除该相册吗？', function(e) {
-        if (e) {
-          deleteForm.submit();
-        } else {
+  script(src="/js/photo_album_detail.js")
 
-        }
-      });
-    });
