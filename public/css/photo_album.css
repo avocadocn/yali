@@ -27,6 +27,7 @@
   margin-left: 53px;
   margin-bottom: 53px;
   background: url("/img/loading.gif") center center no-repeat;
+  background-color: #fff;
   border: 1px solid #ddd;
   width: 200px;
   height: 200px;
@@ -39,6 +40,7 @@
   opacity: 0.8;
 }
 .photo_album .photo img {
+  background-color: #fff;
   max-width: 100%;
   max-height: 100%;
 }
