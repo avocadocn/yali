@@ -27,9 +27,14 @@
       if (logo.val() === null || logo.val() === '') {
         save_button[0].disabled = true;
       } else {
-        if (logo[0].files[0].size > 1024 * 1024 * 5) {
+        if (logo[0].files[0].type.indexOf('image') === -1) {
+          save_button[0].disabled = true;
+          remind.text('请选择图片文件');
+          return;
+        } else if (logo[0].files[0].size > 1024 * 1024 * 5) {
           save_button[0].disabled = true;
           remind.text('上传的文件大小不可以超过5M');
+          return;
         } else {
           save_button[0].disabled = false;
         }

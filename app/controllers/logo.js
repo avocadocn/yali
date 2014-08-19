@@ -32,6 +32,12 @@ exports.updateLogo = function(req, res, next) {
   var uri_dir;  // uri路径，存入数据库的路径，供前端访问
   var updateLogo;
   var this_id;
+  if (req.files.logo.type.indexOf('image') === -1) {
+    fs.unlink(req.files.logo.path, function(err) {
+      if (err) console.log(err);
+    });
+    return res.send({ result: 0 });
+  }
 
   async.waterfall([
     function(callback) {
@@ -94,17 +100,16 @@ exports.updateLogo = function(req, res, next) {
         gm(logo_temp_path).size(function(err, value) {
           if (err) callback(err);
 
-          // req.body参数均为百分比
-          var w = req.body.width * value.width;
-          var h = req.body.height * value.height;
-          var x = req.body.x * value.width;
-          var y = req.body.y * value.height;
-
-          // 在保存新路径前，将原路径取出，以便删除旧文件
-          var ori_logo = logo_model[logo_property];
-
-
           try {
+            // req.body参数均为百分比
+            var w = req.body.width * value.width;
+            var h = req.body.height * value.height;
+            var x = req.body.x * value.width;
+            var y = req.body.y * value.height;
+
+            // 在保存新路径前，将原路径取出，以便删除旧文件
+            //var ori_logo = logo_model[logo_property];
+
             gm(logo_temp_path)
             .crop(w, h, x, y)
             .resize(150, 150)
@@ -138,17 +143,23 @@ exports.updateLogo = function(req, res, next) {
               }
             });
           } catch (e) {
+            fs.unlink(req.files.logo.path, function(err) {
+              if (err) console.log(err);
+            });
             callback(e);
           }
 
         });
       } catch (e) {
+        fs.unlink(req.files.logo.path, function(err) {
+          if (err) console.log(err);
+        });
         callback(e);
       }
     }
   ], function(err, result) {
     if (err) {
-      next(err);
+      return res.send({ result: 0 });
     }
   });
 
