@@ -210,10 +210,15 @@ function getPhotoAlbumOwner(user, photo_album) {
     for (var i = 0; i < user.team.length; i++) {
       for (var j = 0; j < photo_album.owner.teams.length; j++) {
         if (photo_album.owner.teams[j]._id.toString() === user.team[i].id.toString()) {
-          return {
+          var owner = {
             company: photo_album.owner.companies[j],
             team: photo_album.owner.teams[j]
           };
+          // 多小队活动的临时解决方案
+          if (!owner.company) {
+            owner.company = photo_album.owner.companies[0];
+          }
+          return owner;
         }
       }
     }
@@ -221,10 +226,15 @@ function getPhotoAlbumOwner(user, photo_album) {
     for (var i = 0; i < user.team.length; i++) {
       for (var j = 0; j < photo_album.owner.teams.length; j++) {
         if (photo_album.owner.teams[j]._id.toString() === user.team[i]._id.toString()) {
-          return {
+          var owner = {
             company: photo_album.owner.companies[j],
             team: photo_album.owner.teams[j]
           };
+          // 多小队活动的临时解决方案
+          if (!owner.company) {
+            owner.company = photo_album.owner.companies[0];
+          }
+          return owner;
         }
       }
     }
