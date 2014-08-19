@@ -162,7 +162,7 @@ block aside
     .thumbnailbox
       span.subtitle 相册
         if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
-          a.text.pull-right(href="/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+          a.text.pull-right(href="/team/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
       div
         if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
           each photo_album in photo_album_thumbnails

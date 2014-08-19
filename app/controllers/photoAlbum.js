@@ -322,7 +322,7 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
   .exec()
   .then(function(company_group) {
     if (!company_group) {
-      throw 'not found';
+      return callback(null);
     }
 
     var photo_album_list = [];
@@ -503,7 +503,7 @@ var _createAuth = function(req, callback) {
   if (req.body.cid && req.body.tid) {
     deal(req.body.cid, req.body.tid);
   } else {
-    CompanyGroup.findById(req.params.groupId).exec()
+    CompanyGroup.findById(req.params.tid).exec()
     .then(function(this_team) {
       if (!this_team) {
         return callback('not found this company_group');
@@ -974,7 +974,7 @@ exports.deletePhoto = function(req, res) {
 
 
 exports.readGroupPhotoAlbumList = function(req, res, next) {
-  getGroupPhotoAlbumList(req.params.groupId, function(photo_album_list) {
+  getGroupPhotoAlbumList(req.params.tid, function(photo_album_list) {
     if (photo_album_list !== null) {
       return res.send({ result: 1, photo_album_list: photo_album_list });
     } else {
@@ -987,10 +987,10 @@ exports.readGroupPhotoAlbumList = function(req, res, next) {
 
 
 exports.renderGroupPhotoAlbumList = function(req, res, next) {
-  getGroupPhotoAlbumList(req.params.groupId, function(photo_album_list) {
+  getGroupPhotoAlbumList(req.params.tid, function(photo_album_list) {
     if (photo_album_list !== null) {
       CompanyGroup
-      .findById(req.params.groupId)
+      .findById(req.params.tid)
       .exec()
       .then(function(company_group) {
         if (!company_group) {
@@ -1070,7 +1070,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
         },
         {
           text: '相册集',
-          url: '/' + owner.team._id + '/photoAlbumListView'
+          url: '/team/' + owner.team._id + '/photoAlbumListView'
         },
         {
           text: photo_album.name,
@@ -1163,7 +1163,7 @@ exports.renderPhotoDetail = function(req, res, next) {
             },
             {
               text: '相册集',
-              url: '/' + owner.team._id + '/photoAlbumListView'
+              url: '/team/' + owner.team._id + '/photoAlbumListView'
             },
             {
               text: photo_album.name,
