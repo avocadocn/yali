@@ -9,8 +9,8 @@ module.exports = function(app) {
     app.get('/privacy', index.privacy);
     app.get('/question', index.question);
     app.get('/contact', index.contact);
-    app.get('/test',index.test);
-    app.get('/count',index.count);
-    app.get('/finish',index.finish);
+    //app.get('/test',index.test);
+    //app.get('/count',index.count);
+    //app.get('/finish',index.finish);
     app.get('/index/header',index.header);
 };

@@ -26,14 +26,14 @@ exports.render = function(req, res) {
   return res.render('index');
 };
 
-exports.count = function(req,res){
-  schedule.countCampaign();
-  return res.send('小组活动统计更新成功');
-}
-exports.finish = function(req,res){
-  schedule.finishCampaign();
-  return res.send('活动自动完成更新成功');
-}
+// exports.count = function(req,res){
+//   schedule.countCampaign();
+//   return res.send('小组活动统计更新成功');
+// }
+// exports.finish = function(req,res){
+//   schedule.finishCampaign();
+//   return res.send('活动自动完成更新成功');
+// }
 exports.header = function(req,res){
   var authenticated = false;
   if(req.Global){
@@ -71,6 +71,6 @@ exports.question = function(req, res) {
 exports.contact = function(req, res) {
   res.render('contact');
 };
-exports.test = function(req, res) {
-  res.render('test');
-};
+// exports.test = function(req, res) {
+//   res.render('test');
+// };
