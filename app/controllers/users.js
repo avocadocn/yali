@@ -274,12 +274,12 @@ function userOperate(cid, key, res, req, index) {
             if(req.body.main_department_id != ''){
               if(req.body.child_department_id != ''){
                 if(req.body.grandchild_department_id != ''){
-                  user.department = {'_id':req.body.grandchild_department_id,'name':null};
+                  user.department = {'_id':req.body.grandchild_department_id};
                 }else{
-                  user.department = {'_id':req.body.child_department_id,'name':null};
+                  user.department = {'_id':req.body.child_department_id};
                 }
               }else{
-                user.department = {'_id':req.body.main_department_id,'name':null};
+                user.department = {'_id':req.body.main_department_id};
               }
             }
             user.save(function(err) {
@@ -341,12 +341,12 @@ function userOperate(cid, key, res, req, index) {
                       if(req.body.main_department_id != ''){
                         if(req.body.child_department_id != ''){
                           if(req.body.grandchild_department_id != ''){
-                            user.department = {'_id':req.body.grandchild_department_id,'name':null};
+                            user.department = {'_id':req.body.grandchild_department_id};
                           }else{
-                            user.department = {'_id':req.body.child_department_id,'name':null};
+                            user.department = {'_id':req.body.child_department_id};
                           }
                         }else{
-                          user.department = {'_id':req.body.main_department_id,'name':null};
+                          user.department = {'_id':req.body.main_department_id};
                         }
                       }
                     }
