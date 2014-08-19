@@ -861,6 +861,14 @@ textarea {
 .baseInfo .dl_container .aside {
   width: 80px;
 }
+.baseInfo .dl_container .top_cname {
+  height: 22px;
+  min-height: 22px;
+}
+.baseInfo .dl_container .top_sign {
+  max-width: 400px;
+  word-break: break-all;
+}
 .dl_messagebox {
   padding: 0;
   background-color: #fff;

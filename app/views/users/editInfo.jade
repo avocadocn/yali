@@ -28,15 +28,11 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
         span.info_label #{__("COMPANY")}
       .info_side
         span.info_label(ng-cloak) {{user.cname}}
-    .dl_row.clearfix(ng-if="user.department !='' || ! baseUnEdit")
+    .dl_row.clearfix(ng-if="user.introduce || ! baseUnEdit")
       .info_side
-        span.info_label 部门
-      .info_detail(ng-if="!baseUnEdit")
-        .tree.select_tree
-          ul
-            li(ng-include="'node.html'" ng-class="hasChild(node)")
-      .info_detail_2(ng-if="baseUnEdit")
-        span.info_label {{ user.department.name }}
+        span.info_label #{__("BRIEF")}
+      .info_detail
+        textarea.dl_input.dl-form-control.editToggle(rows="2" cols="40" name="introduce" ng-model="user.introduce" ng-maxlength="40" tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak maxlength="40")
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
       .info_side
         span.info_label #{__("GENDER")}
@@ -49,11 +45,17 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
         span.radio.info_radio.info_label
           input(type="radio" name="sex" value="女" ng-model="user.sex" ng-disabled="baseUnEdit")
           | #{__("FEMALE")}
-    .dl_row.clearfix(ng-if="user.introduce || ! baseUnEdit")
+
+    .dl_row.clearfix(ng-if="user.department !='' || ! baseUnEdit")
       .info_side
-        span.info_label #{__("BRIEF")}
-      .info_detail
-        textarea.dl_input.dl-form-control.editToggle(rows="2" cols="40" name="introduce" ng-model="user.introduce" ng-maxlength=70 tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak)
+        span.info_label 部门
+      .info_detail(ng-if="!baseUnEdit")
+        .tree.select_tree
+          ul
+            li(ng-include="'node.html'" ng-class="hasChild(node)")
+      .info_detail_2(ng-if="baseUnEdit")
+        span.info_label {{ user.department.name }}
+
     .dl_row.clearfix
       .info_side
         span.info_label #{__("REGISTER_DATE")}

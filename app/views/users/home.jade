@@ -10,16 +10,16 @@ block baseInfo
       img.size_80.img_contain.img_user(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
     .main.top-main
       //-人名
-      .dl_row
+      .dl_row.top_username
         label.head= nickname
       //-公司名
-      .dl_row
+      .dl_row.top_cname
         if (!department)
           a.subtitle(href='/company/home' ng-cloak) #{cname}
         else
           a.subtitle(href='/department/home/#{department._id}' ng-cloak) #{department.name}
       //-个性签名
-      .dl_row
+      .dl_row.top_sign
         p.subtitle= sign
     .ad-top
       //- ad banner sapace
