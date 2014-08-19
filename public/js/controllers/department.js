@@ -481,10 +481,10 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
 departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScope',
   function ($http, $scope, $rootScope) {
     $rootScope.$watch('teamId',function(teamId){
-        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/0/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.campaigns;
             $rootScope.sum = $scope.campaigns.length;
-            if(data.campaigns.length<20){
+            if(data.campaignLength<20){
                 $scope.loadMore_flag = false;
             }
             else{
@@ -495,16 +495,15 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
 
     $scope.loadMore_flag = true;
     $scope.block = 1;
-    $scope.page = 1;
-    $scope.pageTime = [0];
+    $scope.page = 0;
     $scope.lastPage_flag = false;
     $scope.nextPage_flag = false;
 
     $scope.loadMore = function(){
-        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+$scope.page+'/'+$scope.block+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 $scope.campaigns = $scope.campaigns.concat(data.campaigns);
-                if(data.campaigns.length<20){
+                if(data.campaignLength<20){
                     $scope.loadMore_flag = false;
                 }
                 else{
@@ -513,7 +512,7 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
                 if(++$scope.block==5){
                     $scope.nextPage_flag = true;
                     $scope.loadMore_flag = false;
-                    if($scope.page!=1){
+                    if($scope.page>1){
                         $scope.lastPage_flag = true;
                     }
                 }
@@ -527,12 +526,10 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
         });
     }
     $scope.changePage = function(flag){
-        var start_time = flag ==1? new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime() :$scope.pageTime[$scope.page-2];
-        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+        $http.get('/campaign/getCampaigns/team/'+teamId+'/all/'+($scope.page+flag)+'/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             if(data.result===1 && data.campaigns.length>0){
                 if(flag ==1){
                     $scope.page++;
-                    $scope.pageTime.push(new Date($scope.campaigns[$scope.campaigns.length-1].start_time).getTime());
                 }
                 else{
                     $scope.page--;
@@ -542,11 +539,23 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
                 $scope.lastPage_flag = false;
                 $scope.loadOver_flag = false;
                 $scope.block = 1;
-                if(data.campaigns.length<20){
+                if(data.campaignLength<20){
                     $scope.loadMore_flag = false;
+                    if(flag==1){
+                        $scope.lastPage_flag = true;
+                        $scope.nextPage_flag = false;
+                    }
+                    else{
+                        $scope.lastPage_flag = false;
+                        $scope.nextPage_flag = true;
+                    }
+                    $scope.loadOver_flag = true;
                 }
                 else{
                     $scope.loadMore_flag = true;
+                    $scope.nextPage_flag = false;
+                    $scope.lastPage_flag = false;
+                    $scope.loadOver_flag = false;
                 }
                 window.scroll(0,0);
             }
@@ -560,78 +569,78 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
     $scope.getId = function(cid) {
         $scope.campaign_id = cid;
     };
-    $scope.join = function(campaign_id,index) {
-        try {
-            $http({
-                method: 'post',
-                url: '/users/joinCampaign',
-                data:{
-                    campaign_id : campaign_id
-                }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    //alert('成功加入该活动!');
-                    alertify.alert('成功加入该活动!');
-                    $scope.campaigns[index].join_flag = 1;
-                    $scope.campaigns[index].member_num++;
-                }
-                else{
-                    alertify.alert(data.msg);
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // $scope.join = function(campaign_id,index) {
+    //     try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/users/joinCampaign',
+    //             data:{
+    //                 campaign_id : campaign_id
+    //             }
+    //         }).success(function(data, status) {
+    //             if(data.result===1){
+    //                 //alert('成功加入该活动!');
+    //                 alertify.alert('成功加入该活动!');
+    //                 $scope.campaigns[index].join_flag = 1;
+    //                 $scope.campaigns[index].member_num++;
+    //             }
+    //             else{
+    //                 alertify.alert(data.msg);
+    //             }
+    //         }).error(function(data, status) {
+    //             alertify.alert('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
 
-    $scope.quit = function(campaign_id,index) {
-        try {
-            $http({
-                method: 'post',
-                url: '/users/quitCampaign',
-                data:{
-                    campaign_id : campaign_id
-                }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    alertify.alert('成功退出该活动!');
-                    //alert('您已退出该活动!');
-                    $scope.campaigns[index].join_flag = -1;
-                    $scope.campaigns[index].member_num--;
-                }
-                else{
-                    alertify.alert(data.msg);
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-    //应战
-    $scope.responseProvoke = function(competition_id) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/responseProvoke',
-                data:{
-                    competition_id : competition_id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // $scope.quit = function(campaign_id,index) {
+    //     try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/users/quitCampaign',
+    //             data:{
+    //                 campaign_id : campaign_id
+    //             }
+    //         }).success(function(data, status) {
+    //             if(data.result===1){
+    //                 alertify.alert('成功退出该活动!');
+    //                 //alert('您已退出该活动!');
+    //                 $scope.campaigns[index].join_flag = -1;
+    //                 $scope.campaigns[index].member_num--;
+    //             }
+    //             else{
+    //                 alertify.alert(data.msg);
+    //             }
+    //         }).error(function(data, status) {
+    //             alertify.alert('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
+    // //应战
+    // $scope.responseProvoke = function(competition_id) {
+    //      try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/group/responseProvoke',
+    //             data:{
+    //                 competition_id : competition_id
+    //             }
+    //         }).success(function(data, status) {
+    //             window.location.reload();
+    //         }).error(function(data, status) {
+    //             alertify.alert('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
 
     $scope.cancel = function (_id) {
         try {
@@ -670,7 +679,6 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
                 $scope.name = $scope.team.name;
                 $scope.entity = data.entity;
                 $scope.role = data.role;
-                $scope.team.home_court = $scope.team.home_court.length ? $scope.team.home_court : [{'name':'','coordinates':[]},{'name':'','coordinates':[]}] ;
                 var judge = true;
                 for(var i = 0; i < data.companyGroup.member.length; i ++) {
                     for(var j = 0; j < data.companyGroup.leader.length; j ++) {
@@ -684,13 +692,10 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
                     }
                     judge = true;
                 }
-                $scope.showMap1 = $scope.team.home_court[0].name !=='' ? true : false;//以是否有主场判断是否需要显示地图
-                $scope.showMap2 = $scope.team.home_court[1].name !=='' ? true : false;
             });
         }
 
     });
-
     $scope.editToggle = function() {
         $scope.unEdit = !$scope.unEdit;
         if($scope.unEdit) {
@@ -700,13 +705,12 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
                     url : '/group/saveInfo/'+$rootScope.teamId,
                     data : {
                         'name' : $scope.name,
-                        'brief' : $scope.team.brief,
-                        'homecourt': $scope.team.home_court
+                        'brief' : $scope.team.brief
                     }
                 }).success(function(data, status) {
                     //TODO:更改对话框
                     if(data.result === 1) {
-                        //window.location.reload();
+                        window.location.reload();
                     }
                     else
                         alertify.alert(data.msg);
@@ -720,92 +724,10 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
             $scope.buttonStatus = '编辑';
         }
         else {
-            if(!window.map_ready){//如果没有加载过地图script则加载
-                window.court_map_initialize = function(){
-                    $scope.initialize1(); 
-                    $scope.initialize2();
-                };
-                var script = document.createElement("script");  
-                script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=court_map_initialize";
-                document.body.appendChild(script);
-            }
             $scope.buttonStatus = '保存';
         }
     };
 
-
-    //---主场地图
-    //初始化 如果有坐标则显示标注点，没有则不显示
-    $scope.initialize1 = function(){
-        $scope.locationmap1 = new BMap.Map("courtMap1");
-        if($scope.team.home_court[0].name!==''){
-            var piont1 = new BMap.Point($scope.team.home_court[0].coordinates[0],$scope.team.home_court[0].coordinates[1]);
-            $scope.locationmap1.centerAndZoom(piont1,15);
-        }
-        $scope.locationmap1.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var options = {
-            onSearchComplete: function(results){
-                // 判断状态是否正确
-                if ($scope.local1.getStatus() == BMAP_STATUS_SUCCESS){
-                    $scope.locationmap1.clearOverlays();
-                    var nowPoint1 = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                    $scope.locationmap1.centerAndZoom(nowPoint1,15);
-                    var marker1 = new BMap.Marker(nowPoint1);  // 创建标注
-                    $scope.locationmap1.addOverlay(marker1);              // 将标注添加到地图中
-                    marker1.enableDragging();    //可拖拽
-                    $scope.team.home_court[0].coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                    marker1.addEventListener("dragend", function changePoint(){
-                        var p = marker1.getPosition();
-                        $scope.team.home_court[0].coordinates = [p.lng , p.lat];
-                    });
-                }
-            }
-        };
-        $scope.local1 = new BMap.LocalSearch($scope.locationmap1,options);
-        window.map_ready =true;
-    };
-
-    //修改主场地址后改变地图点
-    $scope.changeLocation1 = function(){
-        $scope.showMap1 = true;
-        $scope.local1.search($scope.team.home_court[0].name);
-    };
-
-
-    $scope.initialize2 = function(){
-        $scope.locationmap2 = new BMap.Map("courtMap2");
-        if($scope.team.home_court[1].name!==''){
-            var piont2 = new BMap.Point($scope.team.home_court[1].coordinates[0],$scope.team.home_court[1].coordinates[1]);
-            $scope.locationmap2.centerAndZoom(piont2,15);
-        }
-        $scope.locationmap2.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var options = {
-            onSearchComplete: function(results){
-                // 判断状态是否正确
-                if ($scope.local2.getStatus() == BMAP_STATUS_SUCCESS){
-                    $scope.locationmap2.clearOverlays();
-                    var nowPoint2 = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                    $scope.locationmap2.centerAndZoom(nowPoint2,15);
-                    var marker2 = new BMap.Marker(nowPoint2);  // 创建标注
-                    $scope.locationmap2.addOverlay(marker2);              // 将标注添加到地图中
-                    marker2.enableDragging();    //可拖拽
-                    $scope.team.home_court[1].coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                    marker2.addEventListener("dragend", function changePoint(){
-                        var q = marker2.getPosition();
-                        $scope.team.home_court[1].coordinates = [q.lng , q.lat];
-                    });
-                }
-            }
-        };
-        $scope.local2 = new BMap.LocalSearch($scope.locationmap2,options);
-    };
-
-    $scope.changeLocation2 = function(){
-        $scope.showMap2 = true;
-        $scope.local2.search($scope.team.home_court[1].name);
-    };
 
     //---全家福
     var jcrop_api;
@@ -1045,6 +967,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
     $("#deadline").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setEndDate', dateUTC);
     });
 
     $rootScope.$watch('loadMapIndex',function(value){
