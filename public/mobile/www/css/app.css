@@ -780,16 +780,17 @@ body {
   height: 40px;
   margin-left: 10px;
 }
-.campaign_detail .comments .comment .comment_left .comment_name {
+.campaign_detail .comments .comment .comment_left .comment_name span {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 100px;
-  margin-left: 105px;
+  float: right;
+  margin-right: 10px;
 }
 .campaign_detail .comments .comment .comment_left .comment_content {
   margin-left: 20px;
   margin-right: 70px;
+  padding-top: 20px;
 }
 .campaign_detail .comments .comment .comment_left .comment_content p {
   white-space: pre;

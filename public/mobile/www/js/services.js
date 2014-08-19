@@ -6,8 +6,8 @@ angular.module('starter.services', [])
 
 
 .factory('Global', function() {
-  //var base_url = window.location.origin;
-  var base_url = "http://www.donler.com";
+  var base_url = window.location.origin;
+  //var base_url = "http://www.donler.com";
   var _user = {};
   var last_date;
 
@@ -28,7 +28,8 @@ angular.module('starter.services', [])
       _authorize = true;
       Global.user = {
         _id: localStorage.user_id,
-        nickname: localStorage.user_nickname
+        nickname: localStorage.user_nickname,
+        app_token:localStorage.app_token
       };
       autologin(localStorage.user_id, localStorage.app_token);
     }
@@ -74,6 +75,13 @@ angular.module('starter.services', [])
           localStorage.app_token = user.app_token;
           return true;
         }
+      }
+      else{
+        _authorize = false;
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_nickname");
+        localStorage.removeItem("app_token");
+        return false;
       }
     })
     .error(function(data, status, headers, config) {
