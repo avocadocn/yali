@@ -798,7 +798,12 @@ var deleteFromRoot = function(department, seq, req, res) {
         }
       }, {
         '$set': {
-          'department': null
+          'department': undefined
+        },
+        '$pull':{
+          'team':{
+            'gid':'0'
+          }
         }
       }, {
         'multi': true
