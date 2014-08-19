@@ -268,7 +268,7 @@ angular.module('starter.controllers', [])
         month_data.days[i].is_weekend = true;
 
       // 是否是今天
-      //var now = new Date();
+      var now = new Date();
       if (now.getDate() === i + 1 && now.getFullYear() === year && now.getMonth() === month) {
         month_data.days[i].is_today = true;
       }
