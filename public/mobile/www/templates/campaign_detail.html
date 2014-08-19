@@ -17,7 +17,7 @@
               <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
               <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
               <div ng-if="campaign.active && !campaign.finish" class="campaign_time_operator">
-                <button class="btn_radius btn_darkred btn_operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id) : openselectModal()">报名参加</button>
+                <button class="btn_radius btn_darkred btn_operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal()">报名参加</button>
                 <button class="btn_radius btn_darkred btn_operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出活动</button>
                 <!-- <button ng-if="campaign.campaign_type>=3" class="btn_radius btn_blue btn_operator btn_good">点个赞</button> -->
               </div>

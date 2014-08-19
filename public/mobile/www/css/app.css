@@ -175,7 +175,8 @@ body {
   height: 179px;
 }
 .login_head .logo {
-  width: 140px;
+  width: 210px;
+  height: 30px;
 }
 .login_body {
   height: 221px;
@@ -967,4 +968,8 @@ body {
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content a:hover {
   text-decoration: none;
+}
+.select_team_container {
+  background-color: #3abde8;
+  color: #fff;
 }

@@ -263,9 +263,22 @@ var formatCampaignForApp = function(user, campaign) {
       }
     }
   }
-
+  // 多小队活动
+  if (campaign.campaign_type == 3) {
+    is_joined = model_helper.arrayObjectIndexOf(campaign.member,user._id,'uid')>-1;
+    for (var i = 0; i < campaign.team.length; i++) {
+      var owner_team = model_helper.arrayObjectIndexOf(user.team,campaign.team[i]._id,'_id');
+      if (owner_team>-1) {
+        myteam.push({
+          'id':campaign.team[i]._id,
+          'name':campaign.team[i].name,
+          'logo':campaign.team[i].logo
+        });
+      }
+    }
+  }
   // 比赛
-  if (campaign.campaign_type >= 3) {
+  if (campaign.campaign_type > 3) {
     for (var i = 0; i < campaign.camp.length; i++) {
       var owner_team = model_helper.arrayObjectIndexOf(user.team,campaign.camp[i].id,'_id');
       if (owner_team>-1) {

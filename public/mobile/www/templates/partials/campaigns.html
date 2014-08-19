@@ -29,7 +29,7 @@
         </p>
       </div>
       <div class="col-33 col-40 campaign_operate_button_container">
-        <button class="btn_radius btn_red" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id) : openselectModal(campaign)">
+        <button class="btn_radius btn_red" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal(campaign)">
           参加活动
         </button>
         <button class="btn_radius btn_red" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">

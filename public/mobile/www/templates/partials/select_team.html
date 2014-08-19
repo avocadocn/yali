@@ -3,12 +3,15 @@
     <h1 class="title">请选择你要参加活动的队伍</h1>
   </ion-header-bar>
   <ion-content>
-    <div ng-repeat="team in campaign.myteam" class="">
-      <p class="campaign_team_info" ng-click="select(campaign._id,team.id)">
-        <img class="campaign_group_logo" ng-src="{{ base_url + team.logo }}"/>
-        {{ team.name }}
-      </p>
-      <hr>
+    <div class="select_team_container">
+      <div ng-repeat="team in campaign.myteam">
+        <p ng-click="select(campaign._id,team.id)">
+          <img class="campaign_group_logo" ng-src="{{ base_url + team.logo }}"/>
+          {{ team.name }}
+        </p>
+        <hr>
+      </div>
     </div>
+
   </ion-content>
 </ion-modal-view>
