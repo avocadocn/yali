@@ -96,7 +96,7 @@ exports.renderMessageList =function(req,res){
   });
 };
 //根据小队ID返回小组动态消息
-exports.getMessage = function(req, res) {
+exports.getMessage = function(req, res, next) {
   if(req.params.pageType==="team"&&(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER') || req.params.pageType==="user"&&req.role !=='OWNER' ){
     res.status(403);
     next('forbidden');

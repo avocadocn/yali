@@ -29,8 +29,10 @@ tabViewUser.config(['$routeProvider',
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
-      .when('/personal', {
-        templateUrl: '/users/editInfo',
+      .when('/personal/:uid', {
+        templateUrl: function(params){
+            return '/users/editInfo/'+params.uid;
+        },
         controller: 'AccountFormController',
         controllerAs: 'account'
       })
@@ -112,12 +114,12 @@ var messageConcat = function(messages,rootScope,scope,reset){
 }
 tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-         
-         
+        $rootScope.nowTab = 'timeLine';
     }
 ]);
 tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
+        $rootScope.nowTab = 'group_message';
         angular.element('.tooltip').hide();
         $scope.new_comment = [];
         $scope.toggle = [];
@@ -417,6 +419,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
 
 tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
+        $rootScope.nowTab = 'schedule';
         angular.element('.tooltip').hide();
         $scope.isCalendar = true;
         $scope.isDayView = false;
@@ -567,6 +570,7 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
+        $rootScope.nowTab = 'personal';
         angular.element('.tooltip').hide();
         var markUserDepartment = function(user, department) {
             if (department && user.department) {
@@ -612,7 +616,6 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
             $scope.last_selected_node = node;
         };
 
-        $rootScope.nowTab = 'personal';
         $http.get('/users/getAccount/'+$rootScope.uid).success(function(data, status) {
             if (data.result === 1) {
                 $scope.user = data.data;
@@ -749,6 +752,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
 
 tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
+        $rootScope.nowTab = 'personal';
         $scope.nowpassword = '';
         $scope.newpassword = '';
         $scope.confirmpassword = '';

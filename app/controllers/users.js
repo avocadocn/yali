@@ -714,7 +714,8 @@ exports.home = function(req, res) {
 exports.editInfo = function(req, res) {
   return res.render('users/editInfo',{
     'title': '个人资料',
-    'role':req.role
+    'role':req.role,
+    'this_user': req.profile
   });
 };
 
@@ -1105,8 +1106,8 @@ exports.editPhoto = function(req, res) {
     return;
   }
   res.render('users/editPhoto', {
-    photo: req.user.photo,
-    uid: req.user._id
+    photo: req.profile.photo,
+    uid: req.profile._id
   });
 };
 

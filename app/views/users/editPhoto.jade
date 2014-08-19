@@ -12,7 +12,7 @@ block contentExt
           | 添加或更改你的大头像
           &nbsp;
           small: a(href="/users/home#/personal") 返回
-          input#return_uri(type="hidden" value="/users/home#/personal")
+          input#return_uri(type="hidden" value="/users/home/#{uid}#/personal/#{uid}")
         .row.margin_top_20
           .col-xs-4.col-sm-4
             #jcrop_container.img_frame
