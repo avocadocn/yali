@@ -709,33 +709,34 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
 
     var remind_time = $('#remind_time');
     var start_time = new Date($('#campaign_start_time').text());
-
+    var remind_text = $('#remind_text');
     var handle = setInterval(function() {
 
         start_time.setSeconds(start_time.getSeconds());
         if (start_time < Date.now()) {
             remind_time.text('活动已开始');
+            remind_text.addClass('transparent');
             clearInterval(handle);
             return;
         }
         var during = moment.duration(moment(start_time).diff(Date.now()));
-        var remind_text = during.seconds() + '秒';
+        var remind_time_text = during.seconds() + '秒';
         if (during.minutes() > 0) {
-            remind_text = during.minutes() + '分' + remind_text;
+            remind_time_text = during.minutes() + '分' + remind_time_text;
         }
         if (during.hours() > 0) {
-            remind_text = during.hours() + '小时' + remind_text;
+            remind_time_text = during.hours() + '小时' + remind_time_text;
         }
         if (during.days() > 0) {
-            remind_text = during.days() + '天' + remind_text;
+            remind_time_text = during.days() + '天' + remind_time_text;
         }
         if (during.months() > 0) {
-            remind_text = during.months() + '月' + remind_text;
+            remind_time_text = during.months() + '月' + remind_time_text;
         }
         if (during.years() > 0) {
-            remind_text = during.years() + '年' + remind_text;
+            remind_time_text = during.years() + '年' + remind_time_text;
         }
-        remind_time.text(remind_text);
+        remind_time.text(remind_time_text);
     }, 1000);
 
 

@@ -132,7 +132,10 @@ block aside
             else
               img.map_size(src="/img/icons/nomap.jpg")
       .remindbox
-        p.remind_text 距离活动开始还有
+        if campaign.start_time > Date.now()
+          p#remind_text.remind_text 距离活动开始还有
+        else
+          p#remind_text.remind_text.transparent 活动已开始
         p#remind_time.remind_time
         p#campaign_start_time.hidden= moment(campaign.start_time).format('YYYY-MM-DD HH:mm')
     else
