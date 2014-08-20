@@ -104,6 +104,18 @@ function photoAlbumEditAuth(user, photo_album) {
   return false;
 }
 
+function photoAlbumDeleteAuth(user, photo_album) {
+  var auth = photoAlbumEditAuth(user, photo_album);
+  if (auth === false) {
+    return false;
+  }
+  // 活动, 比赛相册禁止删除
+  if (photo_album.owner.model.type === 'Campaign') {
+    return false;
+  }
+  return true;
+}
+
 // photo_album need populate owner_company_group
 function photoUploadAuth(user, photo_album) {
   // 该照片所属组的成员
@@ -630,7 +642,7 @@ exports.deletePhotoAlbum = function(req, res) {
         console.log(err);
       } else if(photo_album) {
 
-        if (photoAlbumEditAuth(req.user, photo_album) === false) {
+        if (photoAlbumDeleteAuth(req.user, photo_album) === false) {
           res.status(403);
           next('forbidden');
           return;
@@ -1027,6 +1039,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
     var photos = getShowPhotos(photo_album);
     var owner = getPhotoAlbumOwner(req.user, photo_album);
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
+    var deleteAuth = photoAlbumDeleteAuth(req.user, photo_album);
     var uploadAuth = photoUploadAuth(req.user, photo_album);
     if (!owner.team || owner.team.length === 0) {
       var links = [
@@ -1077,6 +1090,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
       return_uri: return_uri,
       moment: moment,
       editAuth: editAuth,
+      deleteAuth: deleteAuth,
       uploadAuth: uploadAuth,
       links: links
     });

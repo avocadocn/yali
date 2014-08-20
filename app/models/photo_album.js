@@ -41,7 +41,8 @@ var PhotoAlbum = new Schema({
     model: {
       _id: Schema.Types.ObjectId,
       type: {
-        type: String
+        type: String,
+        enum: ['Campaign', 'CompanyGroup']
       }
     },
     companies: [{
