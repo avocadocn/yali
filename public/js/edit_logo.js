@@ -124,6 +124,7 @@
         $(".alertify-button").css(button);
         window.location = return_uri;
       } else {
+        $('#loading_modal').modal('hide');
         alertify.alert("修改失败，请重试!");
       }
     });
