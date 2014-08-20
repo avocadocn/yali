@@ -455,11 +455,10 @@ exports.appToken = function(req, res, next){
     }
     User
     .findOne({
-         _id: req.params.userId,
-         app_token:req.params.appToken
+         _id: userId,
+         app_token:appToken
     })
     .exec(function(err, user) {
-      console.log(user);
       if(!err&&user){
         req.login(user, function(err) {
           if (err) {

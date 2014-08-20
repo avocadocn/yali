@@ -67,6 +67,7 @@ angular.module('starter.controllers', [])
 
   $scope.base_url = Global.base_url;
   $scope.user_id = Global.user._id;
+  $scope.loading = {status:false};
   Campaign.getCampaignDetail( $stateParams.id,function(campaign) {
     $scope.campaign = campaign;
     $scope.photo_album_id = $scope.campaign.photo_album;
@@ -95,15 +96,15 @@ angular.module('starter.controllers', [])
   };
   $scope.initUpload = function(){
     $('#upload_form').ajaxForm(function(ee) {
+      alert('图片上传成功！');
       getPhotoList();
       var file = $('#upload_form').find('.upload_input');
-      file.after(file.clone().val(""));
-      file.remove();
-      alert('图片上传成功！');
+      file.val("");
+      $scope.loading.status=false;
     });
+
   }
   $scope.photos = [];
-
   Comment.getCampaignComments($stateParams.id, function(comments) {
     $scope.comments = comments;
   });
@@ -126,17 +127,17 @@ angular.module('starter.controllers', [])
         Comment.getCampaignComments($stateParams.id, function(comments) {
           $scope.comments = comments;
         });
-      $scope.viewFormFlag =false;
+      //$scope.viewFormFlag =false;
       }
       else{
         alert(msg);
       }
     });
   };
-  $scope.viewFormFlag =false;
-  $scope.viewCommentForm =function(){
-    $scope.viewFormFlag =true;
-  }
+  //$scope.viewFormFlag =false;
+  // $scope.viewCommentForm =function(){
+  //   $scope.viewFormFlag =true;
+  // }
   $ionicModal.fromTemplateUrl('templates/partials/photo_detail.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -651,6 +652,8 @@ angular.module('starter.controllers', [])
     link:function(scope,el,attrs,control){
       el.bind('change',function(){
         scope.$apply(function(){
+          console.log('s');
+          scope.loading.status=true;
           $('#upload_form').submit();
         });
       });

@@ -44,6 +44,7 @@ body {
   width: 80%;
 }
 .col-30 {
+  width: 30%;
   -webkit-flex: 0 0 30%;
   -moz-box-flex: 0;
   -moz-flex: 0 0 30%;
@@ -115,6 +116,14 @@ body {
 .img_user {
   border-radius: 100%;
 }
+.loading_div {
+  background: url("/img/loading.gif") center center no-repeat;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #fff;
+  z-index: 1000;
+}
 .menu_wrap {
   background-color: #3abde8;
 }
@@ -185,7 +194,7 @@ body {
   height: 30px;
 }
 .login_body {
-  height: 221px;
+  max-height: 221px;
 }
 .login_modal {
   position: relative;
@@ -645,9 +654,9 @@ body {
   width: 10px;
 }
 .photo_detail_img {
-  width: 280px;
-  height: 330px;
-  margin: 70px 20px 20px 20px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 .campaign_members_wrap {
   position: relative;

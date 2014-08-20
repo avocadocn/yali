@@ -31,7 +31,7 @@
             </p>
           <p>
             <span class="detail_label">活动介绍:</span>
-            <span class="detail_detail">{{campaign.content}}</span>
+            <span class="detail_detail" ng-bind-html="campaign.content"></span>
           </p>
         </div>
       </ion-content>
@@ -43,7 +43,7 @@
           <div class="title">{{ campaign.theme }}</div>
         </div>
         <div class="padding">
-          <div class="campaign_members_wrap content clearfix">
+          <div ng-if="campaign.campaign_type<=3" class="campaign_members_wrap content clearfix">
             <!-- href="#/app/other_user_info/{{ user.uid }}" -->
             <a class="campaign_member_panel" ng-repeat="user in campaign.member">
               <div class="campaign_member_wrap">
@@ -53,17 +53,39 @@
             </a>
             <p ng-if="campaign.member.length==0">目前没有人员参加</p>
           </div>
+          <div ng-if="campaign.campaign_type>3" class="campaign_members_wrap content clearfix">
+            <!-- href="#/app/other_user_info/{{ user.uid }}" -->
+            <div ng-repeat="team in campaign.myteam">
+              <div class="row campaign_line">
+                <p class="campaign_team_info">
+                  <img class="campaign_group_logo" ng-src="{{ base_url + team.logo }}"/>
+                  {{ team.name }}
+                </p>
+              </div>
+              <a class="campaign_member_panel" ng-repeat="user in team.member">
+                <div class="campaign_member_wrap">
+                  <img class="campaign_member_photo img_user" ng-src="{{ base_url + '/logo/user/' + user.uid + '/100/100' }}"/>
+                  <p class="campaign_member_name">{{ user.nickname }}</p>
+                </div>
+              </a>
+              <p ng-if="team.member.length==0">目前没有人员参加</p>
+            </div>
+          </div>
         </div>
       </ion-content>
     </ion-tab>
 
     <ion-tab title="评论" icon="ion-chatbubble">
       <div class="comment_edit">
-        <span class="comment_add_button" ng-show="!viewFormFlag" ng-animate="'reverse'" ng-click="viewCommentForm()" ></span>
-        <form ng-show="viewFormFlag" ng-animate="'slide-left-right-ios7'" name="comment_form">
+<!--         <span class="comment_add_button" ng-show="!viewFormFlag" ng-animate="'reverse'" ng-click="viewCommentForm()" ></span> -->
+<!--         <form ng-show="viewFormFlag" ng-animate="'slide-left-right-ios7'" name="comment_form">
           <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
           <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
-        </form>
+        </form> -->
+        <form name="comment_form">
+          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
+          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
+        </form> 
       </div>
       <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
@@ -97,6 +119,8 @@
       <ion-content has-header="true" scroll="flase" class="wrap campaign_detail campaign_photos">
         <div class="head_title">
           <div class="title">{{ campaign.theme }}</div>
+        </div>
+        <div class="loading_div" ng-if="loading.status">
         </div>
         <div class="padding">
           <div id="photo_list" class="campaign_photos_wrap">

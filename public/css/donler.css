@@ -285,7 +285,10 @@ textarea {
 .user_edit_info .birthday_detail {
   width: 175px;
 }
-.user_edit_info .team {
+.user_edit_info .join_team {
+  max-width: 500px;
+}
+.user_edit_info .join_team .team {
   float: left;
   margin: 5px;
 }

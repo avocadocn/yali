@@ -1115,6 +1115,7 @@ exports.editPhoto = function(req, res) {
 
 
 exports.user = function(req, res, next, id) {
+  
     User
         .findOne({
              _id: id

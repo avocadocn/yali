@@ -285,7 +285,8 @@ var formatCampaignForApp = function(user, campaign) {
         myteam.push({
           'id':campaign.camp[i].id,
           'name':campaign.camp[i].tname,
-          'logo':campaign.camp[i].logo
+          'logo':campaign.camp[i].logo,
+          'member':campaign.camp[i].member
         });
         is_joined = is_joined || model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1;
       }
