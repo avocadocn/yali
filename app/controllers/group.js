@@ -711,6 +711,10 @@ exports.provoke = function (req, res) {
                           });
                           if(team_opposite.leader.length > 0){
                             var param = {
+                              'specific_type':{
+                                'value':4,
+                                'child_type':0
+                              },
                               'type':'private',
                               'caption':competition.theme,
                               'own':{
@@ -738,7 +742,7 @@ exports.provoke = function (req, res) {
                               'campaign_id':competition._id,
                               'auto':true
                             };
-                            message.sendToOne(req,res,param);
+                            message.sendToOne(req,res,param);      //挑战的站内信只要发给队长一个人即可
                           }
                       return res.send({'result':0,'msg':'SUCCESS'});
                     }
@@ -802,6 +806,10 @@ exports.responseProvoke = function (req, res) {
           });
         }
         var param = {
+          'specific_type':{
+            'value':4,
+            'child_type':req.body.responseStatus ? 1 : 2
+          },
           'type':'private',
           'caption':campaign.theme,
           'own':{
@@ -868,6 +876,10 @@ exports.cancelProvoke = function (req, res) {
       else{
         var rst = campaign.team;
         var param = {
+          'specific_type':{
+            'value':4,
+            'child_type':3
+          },
           'type':'private',
           'caption':campaign.theme,
           'own':{
@@ -884,13 +896,13 @@ exports.cancelProvoke = function (req, res) {
             '_id':rst[0]._id,
             'name':rst[0].name,
             'logo':rst[0].logo,
-            'provoke_status':4
+            'status':5
           },
           'receive_team':{
             '_id':rst[1]._id,
             'name':rst[1].name,
             'logo':rst[1].logo,
-            'provoke_status':4
+            'status':5
           },
           'campaign_id':campaign._id,
           'auto':true

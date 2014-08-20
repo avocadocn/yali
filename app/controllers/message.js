@@ -1,6 +1,7 @@
 'use strict';
 
 //站内信
+//将JavaScript的回调特性用到了极致...
 
 var mongoose = require('mongoose'),
     encrypt = require('../middlewares/encrypt'),
@@ -204,6 +205,7 @@ var oneToMember = function(param){
           'type':other[1],
           'rec_id':other[0][counter.i]._id,
           'MessageContent':message_content._id,
+          'specific_type':other[2],
           'status':'unread'
         };
         var param = {
@@ -232,6 +234,7 @@ var oneToMember = function(param){
     'content':param.content,
     'sender':param.sender,
     'team':param.team,
+    'specific_type':param.campaign_id == null ? {'value':2} : ({'value':2,'child_type':param.team[0].status}),
     'company_id':param.company_id,
     'campaign_id':param.campaign_id,
     'deadline':(new Date())+time_out
@@ -241,7 +244,7 @@ var oneToMember = function(param){
     'operate':MC,
     'callback':callback,
     '_err':_err,
-    'other_param':[param.members,param.type],
+    'other_param':[param.members,param.type,MC.specific_type],
     'req':param.req,
     'res':param.res
   };
@@ -254,25 +257,28 @@ exports.hrSendToMember = function(req,res){
   var team = req.body.team;
   var content = req.body.content;
   var cid = req.body.cid;
+  var sender = {
+    '_id':req.user._id,
+    'nickname':req.user.info.official_name,
+    'photo':req.user.info.logo,
+    'role':'HR'
+  };
+  var MC={
+    'caption':'Message From Company',
+    'content':content,
+    'sender':[sender],
+    'team':[],
+    'specific_type':{
+      'value':1
+    },
+    'type':'company',
+    'company_id':cid,
+    'deadline':(new Date())+time_out
+  };
   if(team.own._id == 'null'){
-    var sender = {
-          '_id':req.user._id,
-          'nickname':req.user.info.official_name,
-          'photo':req.user.info.logo,
-          'role':'HR'
-        };
     var callback = function (message_content,cid,req,res){
       res.send({'result':1,'msg':'SUCCESS'});
     }
-    var MC={
-      'caption':'Message From Company',
-      'content':content,
-      'sender':[sender],
-      'team':[],
-      'type':'company',
-      'company_id':cid,
-      'deadline':(new Date())+time_out
-    };
     var _param = {
       'collection':MessageContent,
       'operate':MC,
@@ -285,13 +291,16 @@ exports.hrSendToMember = function(req,res){
     _add(_param);
   //给某一小队发送站内信
   }else{
-    var sender = {
+    sender = {
       '_id':req.user._id,
       'nickname':req.user.info.name,
       'photo':req.user.info.logo,
       'role':'HR'
-    },
-    caption = 'Message From Company';
+    };
+    MC.specific_type={
+      'value':2
+    };
+    var caption = 'Message From Company';
     sendToTeamMember(team,content,caption,sender,req,res);
   }
 }
@@ -350,10 +359,11 @@ exports.leaderSendToMember = function(req,res){
 
 //一对一发送站内信的具体实现
 var toOne = function(req,res,param){
-  var callback = function (message_content,receiver,req,res){
+  var callback = function (message_content,other,req,res){
     var M = {
       'type':'private',
-      'rec_id':receiver._id,
+      'rec_id':other[0]._id,
+      'specific_type':other[1],
       'MessageContent':message_content._id,
       'status':'unread'
     };
@@ -370,6 +380,7 @@ var toOne = function(req,res,param){
   }
   var MC={
     'type':param.type,
+    'specific_type':param.specific_type,
     'caption':param.caption,
     'content':param.content,
     'sender':[param.own],
@@ -385,7 +396,7 @@ var toOne = function(req,res,param){
     'operate':MC,
     'callback':callback,
     '_err':_err,
-    'other_param':param.receiver,
+    'other_param':[param.receiver,param.specific_type],
     'req':req,
     'res':res
   };
@@ -461,7 +472,7 @@ exports.sendToParticipator = function(req, res){
         'content':req.body.content,
         'sender':[sender],
         'team':campaign.campaign_type > 1 ? [team] : [],
-        'company_id':null,
+        'company_id':req.user.provider == 'user' ? req.user.cid : req.user._id,
         'campaign_id':req.body.campaign_id,
         'req':req,
         'res':res,
@@ -602,12 +613,13 @@ exports.resultConfirm = function(req,res,olid,team,competition_id,theme){
         'photo':req.user.photo,
         'role':'LEADER'
       };
-  var callbackMC = function (message_content,olid,req,res){
+  var callbackMC = function (message_content,other,req,res){
     var callbackM = function (message_content,other,req,res){
       return {'result':1,'msg':'SUCCESS'};
     }
     var M={
-      'rec_id':olid,
+      'rec_id':other[0],
+      'specific_type':other[1],
       'MessageContent':message_content._id,
       'type':'private',
       'status':'unread'
@@ -628,6 +640,10 @@ exports.resultConfirm = function(req,res,olid,team,competition_id,theme){
     'content':content,
     'sender':[sender],
     'team':[team],
+    'specific_type':{
+      'value':5,
+      'child_type':(team.status - 2)
+    },
     'type':'private',
     'company_id':req.user.cid,
     'campaign_id':competition_id,
@@ -639,7 +655,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id,theme){
     'operate':MC,
     'callback':callbackMC,
     '_err':_err,
-    'other_param':olid,
+    'other_param':[olid,MC.specific_type],
     'req':req,
     'res':res
   };
@@ -689,6 +705,7 @@ var getPublicMessage = function(req,res,cid){
                   'rec_id':req.user._id,
                   'MessageContent':new_mcs[counter.i]._id,
                   'type':new_mcs[counter.i].type,
+                  'specific_type':new_mcs[counter.i].type == 'company' ? 1 : 0,
                   'status':'unread',
                   'create_date':new_mcs[counter.i].create_date
                 };
@@ -708,13 +725,13 @@ var getPublicMessage = function(req,res,cid){
                   return res.send({'result':1,'msg':'FAILURED'});
                 }else{
                   console.log('USER_ALREADY_HAS_MSG_AND_NEW');
-                  getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
+                  getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
                 }
               }
             );
           }else{
             console.log('USER_ALREADY_HAS_MSG_AND_OLD');
-            getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
+            getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
           }
         //该用户没有收到任何站内信
         }else{
@@ -727,6 +744,7 @@ var getPublicMessage = function(req,res,cid){
                   'rec_id':req.user._id,
                   'MessageContent':message_contents[counter.i]._id,
                   'type':message_contents[counter.i].type,
+                  'specific_type':message_contents[counter.i].type == 'company' ? 1 : 0,
                   'status':'unread',
                   'create_date':message_contents[counter.i].post_date
                 };
@@ -750,7 +768,7 @@ var getPublicMessage = function(req,res,cid){
                 return res.send({'result':1,'msg':'FAILURED'});
               }else{
                 console.log('USER_HAS_NO_MSG_AND_NEW');
-                getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
+                getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
               }
             }
           );
@@ -772,7 +790,7 @@ var getPublicMessage = function(req,res,cid){
       get(paramB);
     }else{ //没有任何公共消息
       console.log('NO_NEW_PUBLIC_MSG');
-      getMessage(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},null);
+      getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
     }
   }
   var _condition;
@@ -796,55 +814,110 @@ var getPublicMessage = function(req,res,cid){
   get(paramA);
 }
 
-
+//按照条件获取所有站内信
+var getMessageForHeader = function(req,res,condition,limit,handle){
+  var callback = function(messages,other,req,res){
+    var rst = [];
+    for(var i = 0; i < messages.length; i ++){
+      rst.push({
+        '_id':messages[i]._id,
+        'rec_id':messages[i].rec_id,
+        'status':messages[i].status
+      });
+    }
+    res.send({
+      'msg':rst,
+      'team':req.user.team,
+      'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
+      'uid':req.user._id,
+      'provider':req.user.provider
+    });
+  }
+  var _err = function(err,req,res){
+    res.send({
+      'msg':[],
+      'team':req.user.team,
+      'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
+      'uid':req.user._id,
+      'provider':req.user.provider
+    });
+  }
+  var param = {
+    'collection':Message,
+    'type':1,
+    'condition':condition,
+    'limit':limit,
+    'sort':{'create_date':-1},
+    'populate':null,
+    'callback':callback,
+    '_err':_err,
+    'other_param':null,
+    'req':req,
+    'res':res
+  };
+  get(param);
+}
 
 //按照条件获取所有站内信
-var getMessage = function(req,res,condition,callback){
-  var sort = {'create_date':-1};
-  Message.find(condition).sort(sort).populate('MessageContent').exec(function (err, messages){
-    if(err || !messages){
-      _err(err);
-      res.send({
-        'msg':[],
-        'team':req.user.team,
-        'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
-        'uid':req.user._id,
-        'provider':req.user.provider
-      });
-    }else{
-      var rst = [];
-      if(callback != null){
-        for(var i = 0; i < messages.length; i ++){
-          if(callback(messages[i].MessageContent)){
-            rst.push({
-              '_id':messages[i]._id,
-              'rec_id':messages[i].rec_id,
-              'status':messages[i].status,
-              'type':messages[i].type,
-              'message_content':messages[i].MessageContent
-            });
-          }
-        }
-      }else{
-        for(var i = 0; i < messages.length; i ++){
+var getMessage = function(req,res,condition,limit,handle){
+  var callback = function(messages,other,req,res){
+    var rst = [];
+    if(other[0] != null){
+      for(var i = 0; i < messages.length; i ++){
+        if(callback(messages[i][other[1]])){
           rst.push({
             '_id':messages[i]._id,
             'rec_id':messages[i].rec_id,
             'status':messages[i].status,
             'type':messages[i].type,
-            'message_content':messages[i].MessageContent
+            'specific_type':messages[i].specific_type,
+            'message_content':messages[i][other[1]]
           });
         }
       }
-      res.send({
-        'msg':rst,
-        'team':req.user.team,
-        'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
-        'uid':req.user._id,
-        'provider':req.user.provider
-      });
+    }else{
+      for(var i = 0; i < messages.length; i ++){
+        rst.push({
+          '_id':messages[i]._id,
+          'rec_id':messages[i].rec_id,
+          'status':messages[i].status,
+          'type':messages[i].type,
+          'specific_type':messages[i].specific_type,
+          'message_content':messages[i][other[1]]
+        });
+      }
     }
-  });
+    res.send({
+      'msg':rst,
+      'team':req.user.team,
+      'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
+      'uid':req.user._id,
+      'provider':req.user.provider
+    });
+  }
+  var _err = function(err,req,res){
+    res.send({
+      'msg':[],
+      'team':req.user.team,
+      'cid':req.user.provider === 'company' ? req.user._id : req.user.cid,
+      'uid':req.user._id,
+      'provider':req.user.provider
+    });
+  }
+  var param = {
+    'collection':Message,
+    'type':1,
+    'condition':condition,
+    'limit':limit,
+    'sort':{'create_date':-1},
+    'populate':'MessageContent',
+    'callback':callback,
+    '_err':_err,
+    'other_param':[handle,'MessageContent'],
+    'req':req,
+    'res':res
+  };
+  get(param);
 }
 
 //修改站内信状态(比如用户点击了一条站内信就把它设为已读,或者删掉这条站内信)
@@ -942,18 +1015,26 @@ exports.messageGetByHand = function(req,res){
       condition = {'type':_type,'rec_id':req.user._id,'status':{'$ne':'delete'}};
     break;
   }
-  getMessage(req,res,condition,null);
+  getMessage(req,res,condition,null,null);
 }
 
 
 //只读取未读站内信
 exports.messageHeader = function(req,res){
-  //用户可以读取各种类型的站内信
-  if(req.user.provider === 'user'){
-    getPublicMessage(req,res,req.user.cid);
-  //公司只能读取系统站内信
+  if(req.user){
+    if(req.user.provider){
+      //用户可以读取各种类型的站内信
+      if(req.user.provider === 'user'){
+        getPublicMessage(req,res,req.user.cid);
+      //公司只能读取系统站内信
+      }else{
+        getPublicMessage(req,res,null);
+      }
+    }else{
+      res.send({'msg':[]});
+    }
   }else{
-    getPublicMessage(req,res,null);
+    res.send({'msg':[]});
   }
 }
 

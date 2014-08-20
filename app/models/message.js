@@ -27,7 +27,7 @@ var Message = new Schema({
   },
   //更加细致的类型分类
   specific_type:{
-    type: Number,
+    value: Number,
     child_type: Number
   }
 });

@@ -317,7 +317,7 @@ var messagePreHandle = function(teams,msg,divide){
             });
           }
         }
-        if([0,1,4].indexOf(msg[i].message_content.team[0].status) > -1){
+        if([0,1,4,5].indexOf(msg[i].message_content.team[0].status) > -1){
           message_type = 7;
           sender = {
             'name': msg[i].message_content.team[0].name
