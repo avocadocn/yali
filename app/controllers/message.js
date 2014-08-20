@@ -456,16 +456,17 @@ exports.sendToParticipator = function(req, res){
           team.name = join_team.name;
           team.logo = join_team.logo;
           for(var i = 0; i < campaign.member.length; i ++){
-            if(campaign.member[i].team._id.toString() === team._id.toString()){
-              members.push({
-                '_id':campaign.member[i].uid,
-                'nickname':campaign.member[i].nickname
-              });
+            if(campaign.member[i].team){
+              if(campaign.member[i].team._id.toString() === team._id.toString()){
+                members.push({
+                  '_id':campaign.member[i].uid,
+                  'nickname':campaign.member[i].nickname
+                });
+              }
             }
           }
         }
       }
-      console.log(campaign.campaign_type,members);
       var _param = {
         'members':members,
         'caption':campaign.theme,
