@@ -365,7 +365,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 if($scope.campaign_type == '3'){
                     for(var k = 0; k < $scope.user_team.length; k ++){
                         if($scope.user_team[k]._id.toString() == $scope.campaign_team[$scope.team_index]._id.toString()){
-                            $scope.campaign_team[i].leader = $scope.user_team[k].leader;
+                            $scope.campaign_team[$scope.team_index].leader = $scope.user_team[k].leader;
                             $rootScope.team_length++;
                             $rootScope.o ++;
                             break;
