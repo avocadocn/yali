@@ -95,7 +95,7 @@ tabViewUser.run(['$rootScope','$location',
 ]);
 
 
-
+//留言合并
 var messageConcat = function(messages,rootScope,scope,reset){
     if(reset){
         rootScope.sum = 0;

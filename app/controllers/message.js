@@ -499,112 +499,6 @@ exports.sendToParticipator = function(req, res){
 }
 
 
-// exports.newCampaignCreate = function(req,res,team,cid){
-//   switch(team.size){
-//     //公司活动
-//     case 0:
-//       var callback = function (message_content,cid,req,res){
-//         res.send({'result':1,'msg':'SUCCESS'});
-//       }
-//       var MC={
-//         'caption':'Company Campaign Message',
-//         'content':null,
-//         'sender':[],
-//         'team':[],
-//         'type':'company',
-//         'company_id':cid,
-//         'deadline':(new Date())+time_out
-//       };
-//       var _param = {
-//         'collection':MessageContent,
-//         'operate':MC,
-//         'callback':callback,
-//         '_err':_err,
-//         'other_param':cid,
-//         'req':req,
-//         'res':res
-//       };
-//       _add(_param);
-//       break;
-//     //小队活动
-//     case 1:
-//       var condition = {'_id':team.own._id};
-//       var callback = function(company_group,team,req,res){
-//         if(company_group){
-//           var members = company_group.member;
-//           var caption = 'Team Campaign!';
-//           var _param = {
-//             'members':members,
-//             'caption':caption,
-//             'content':null,
-//             'sender':[],
-//             'team':[team.own],
-//             'company_id':null,
-//             'req':req,
-//             'res':res,
-//             'type':'team'
-//           }
-//           oneToMember(_param);
-//         }
-//       }
-//       var param= {
-//         'collection':CompanyGroup,
-//         'type':0,
-//         'condition':condition,
-//         'limit':{'member':1},
-//         'sort':null,
-//         'callback':callback,
-//         '_err':_err,
-//         'other_param':team,
-//         'req':req,
-//         'res':res
-//       };
-//       get(param);
-//       break;
-//     //小队比赛
-//     case 2:
-//       var condition = {'_id':{'$in':[team.own._id,team.opposite._id]}};
-//       var callback = function(company_groups,other,req,res){
-//         if(company_groups){
-//           var members = [];
-//           if(company_groups.length == 2){
-//             members = company_groups[0].member.concat(company_groups[1].member);
-//             console.log('成员',members);
-//           }
-//           var caption = "Competition Message!";
-
-//           var _param = {
-//             'members':members,
-//             'caption':caption,
-//             'content':null,
-//             'sender':[],
-//             'team':[team.own,team.opposite],
-//             'company_id':null,
-//             'req':req,
-//             'res':res,
-//             'type':'team'
-//           }
-//           oneToMember(_param);
-//         }
-//       }
-//       var param= {
-//         'collection':CompanyGroup,
-//         'type':1,
-//         'condition':condition,
-//         'limit':{'member':1},
-//         'sort':null,
-//         'callback':callback,
-//         '_err':_err,
-//         'other_param':null,
-//         'req':req,
-//         'res':res
-//       };
-//       get(param);
-//       break;
-//     default:break;
-//   }
-// }
-
 //比赛结果确认时给队长发送站内信
 exports.resultConfirm = function(req,res,olid,team,competition_id,theme){
   var content = null,
@@ -815,7 +709,7 @@ var getPublicMessage = function(req,res,cid){
   get(paramA);
 }
 
-//按照条件获取所有站内信
+//获取最新未读站内信
 var getMessageForHeader = function(req,res,condition,limit,handle){
   var callback = function(messages,other,req,res){
     var rst = [];
@@ -859,7 +753,17 @@ var getMessageForHeader = function(req,res,condition,limit,handle){
   get(param);
 }
 
+
+
 //按照条件获取所有站内信
+
+//specific_type
+//0 系统消息
+//1 公司消息
+//2 小队消息(结合sender来判断是公司发的还是队长发的)
+//3 活动或者比赛消息(child_type=0为活动  child_type=1为比赛   结合sender来判断是公司发的还是队长发的)
+//4 和挑战相关的消息(child_type=0为发起挑战  child_type=1为接受挑战   child_type=2为拒绝挑战  child_type=3为取消挑战)
+//5 和比赛确认相关的消息(child_type=0对方发起新的比赛确认(或者对之前的比分发出异议)  child_type=1对方接受比分确认)
 var getMessage = function(req,res,condition,limit,handle){
   var callback = function(messages,other,req,res){
     var rst = [];
