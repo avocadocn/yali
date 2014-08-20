@@ -33,14 +33,15 @@ angular.module('starter.controllers', [])
 
 .controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global, Authorize) {
   Authorize.authorize();
-
+  var page = -1;
+  $scope.moreData =true;
   $scope.base_url = Global.base_url;
 
   $rootScope.campaignReturnUri = '#/app/campaign_list';
 
-  Campaign.getUserCampaignsForList(function(campaign_list) {
-    $scope.campaign_list = campaign_list;
-  });
+  // Campaign.getUserCampaignsForList(page,function(campaign_list) {
+  //   $scope.campaign_list = campaign_list;
+  // });
 
 
   $scope.join = Campaign.join(Campaign.getCampaign);
@@ -59,6 +60,21 @@ angular.module('starter.controllers', [])
     $scope.join(campaign_id,tid);
     $scope.selectModal.hide();
   };
+  $scope.loadMore = function(){
+    page++;
+    Campaign.getUserCampaignsForList(page,function(campaign_list) {
+      if($scope.campaign_list){
+         $scope.campaign_list = $scope.campaign_list.concat(campaign_list);
+      }
+      else{
+        $scope.campaign_list = campaign_list;
+      }
+      if(campaign_list.length<20){
+        $scope.moreData =false;
+      }
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    });
+  }
 })
 
 

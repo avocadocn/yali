@@ -1,6 +1,6 @@
 <ion-list>
   <ion-item class="campaign_item" ng-repeat="campaign in campaign_list">
-    <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
+    <a href="#/app/campaign_detail/{{ campaign._id }}" ng-click="" class="campaign_link">
       <div class="row campaign_line">
         <p class="campaign_team_info">
           <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>

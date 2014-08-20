@@ -5,5 +5,7 @@
   </ion-nav-buttons>
   <ion-content class="has-header">
     <ng-include src="'templates/partials/campaigns.html'"></ng-include>
+    <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
+    <div class="head_title" ng-if="!moreData">没有更多的活动</div>
   </ion-content>
 </ion-view>

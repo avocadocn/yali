@@ -149,8 +149,8 @@ var getCampaignDetail = function(id, callback) {
     });
   };
   // callback(campaign_list)
-  var getUserCampaignsForList = function(callback) {
-    $http.get(Global.base_url + '/campaign/user/all/applist/'+ Global.user._id + '/' + Global.user.app_token)
+  var getUserCampaignsForList = function(page, callback) {
+    $http.get(Global.base_url + '/campaign/user/all/applist/'+ page +'/'+ Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status, headers, config) {
       campaign_list = data.campaigns;
       callback(campaign_list);
