@@ -162,11 +162,11 @@ block aside
     .thumbnailbox
       span.subtitle 相册
         if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
-          a.text.pull-right(href="/team/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+          a.text.pull-right(href="/photoAlbum/team/#{group_id}/listView") 更多&nbsp;&gt;
       div
         if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
           each photo_album in photo_album_thumbnails
-            a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+            a.thumbnail_cell(href="/photoAlbum/#{photo_album._id}/detailView")
               img.thumbnail_img(src="#{photo_album.uri}")
               p.thumbnail_name.text-center= photo_album.name
         else

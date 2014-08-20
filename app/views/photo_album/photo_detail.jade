@@ -13,10 +13,10 @@ block contentExt
       .col-xs-8.col-sm-8
         .relative
           if photo_detail.pre_id
-            a.left(href="/photoView/#{photo_album._id}/#{photo_detail.pre_id}") 上一张
+            a.left(href="/photoAlbum/#{photo_album._id}/photoView/#{photo_detail.pre_id}") 上一张
           p.text-center: strong= photo_detail.name
           if photo_detail.next_id
-            a.right(href="/photoView/#{photo_album._id}/#{photo_detail.next_id}") 下一张
+            a.right(href="/photoAlbum/#{photo_album._id}/photoView/#{photo_detail.next_id}") 下一张
         div
           img.photo_ori.img-responsive.center-block(src="#{photo_detail.uri}")
         p.text.margin_top_5

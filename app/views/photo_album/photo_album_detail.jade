@@ -38,7 +38,7 @@ block contentExt
     hr
     div.photo_panel.clearfix
       each photo in photo_album.photos
-        a.photo.text-center(href="/photoView/#{photo_album._id}/#{photo._id}")
+        a.photo.text-center(href="/photoAlbum/#{photo_album._id}/photoView/#{photo._id}")
           if photo.zoom_uri
             img(src="#{photo.zoom_uri}")
           else

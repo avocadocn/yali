@@ -1070,7 +1070,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
         },
         {
           text: '相册集',
-          url: '/team/' + owner.team._id + '/photoAlbumListView'
+          url: '/photoAlbum/team/' + owner.team._id + '/listView'
         },
         {
           text: photo_album.name,
@@ -1146,7 +1146,7 @@ exports.renderPhotoDetail = function(req, res, next) {
             },
             {
               text: photo_album.name,
-              url: '/photoAlbumDetailView/' + photo_album._id
+              url: '/photoAlbum/' + photo_album._id + '/detailView'
             },
             {
               text: photos[i].name,
@@ -1163,11 +1163,11 @@ exports.renderPhotoDetail = function(req, res, next) {
             },
             {
               text: '相册集',
-              url: '/team/' + owner.team._id + '/photoAlbumListView'
+              url: '/photoAlbum/team/' + owner.team._id + '/listView'
             },
             {
               text: photo_album.name,
-              url: '/photoAlbumDetailView/' + photo_album._id
+              url: '/photoAlbum/' + photo_album._id + '/detailView'
             },
             {
               text: photos[i].name,
@@ -1178,7 +1178,7 @@ exports.renderPhotoDetail = function(req, res, next) {
           var owner_logo = owner.team.logo;
         }
 
-        var return_url = '/photoAlbumDetailView/' + photo_album._id;
+        var return_url = '/photoAlbum/' + photo_album._id + '/detailView';
 
         // 旧数据无click属性
         if (!photos[i].click) {

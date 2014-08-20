@@ -237,10 +237,10 @@ block contentExt
         .clearfix
           p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
           if role!=='PARTNER'
-            a.pull-right(href="/photoAlbumDetailView/#{competition.photo_album._id}") 上传活动照片
+            a.pull-right(href="/photoAlbum/#{competition.photo_album._id}/detailView") 上传活动照片
         .photo_album
           each photo in photo_thumbnails
-            a.thumbnail_cell(href="/photoView/#{competition.photo_album._id}/#{photo._id}")
+            a.thumbnail_cell(href="/photoAlbum/#{competition.photo_album._id}/photoView/#{photo._id}")
               img.thumbnail_img.img-thumbnail(src="#{photo.thumbnail_uri}")
               p.thumbnail_name.text-center= photo.name
       .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")

@@ -22,12 +22,12 @@ module.exports = function(app) {
   app.put('/photoAlbum/:photoAlbumId/photo/:photoId', authorize, photoAlbum.updatePhoto);
   app.delete('/photoAlbum/:photoAlbumId/photo/:photoId', authorize, photoAlbum.deletePhoto);
 
-  app.get('/team/:tid/photoAlbumList', photoAlbum.readGroupPhotoAlbumList);
+  app.get('/photoAlbum/team/:tid/list', photoAlbum.readGroupPhotoAlbumList);
   app.get('/photoAlbum/:photoAlbumId/photolist', photoAlbum.readPhotoList);
   app.get('/photoAlbum/:photoAlbumId/preview', photoAlbum.preview);
 
-  app.get('/team/:tid/photoAlbumListView', photoAlbum.createAuth, photoAlbum.renderGroupPhotoAlbumList);
-  app.get('/photoAlbumDetailView/:photoAlbumId', photoAlbum.renderPhotoAlbumDetail);
-  app.get('/photoView/:photoAlbumId/:photoId', photoAlbum.renderPhotoDetail);
+  app.get('/photoAlbum/team/:tid/listView', photoAlbum.createAuth, photoAlbum.renderGroupPhotoAlbumList);
+  app.get('/photoAlbum/:photoAlbumId/detailView', photoAlbum.renderPhotoAlbumDetail);
+  app.get('/photoAlbum/:photoAlbumId/photoView/:photoId', photoAlbum.renderPhotoDetail);
 
 };

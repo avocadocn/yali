@@ -65,10 +65,10 @@ block aside
     .photo_album
       p
         span.subtitle.margin_top_15 部门相册
-        a.text.pull-right(href="/team/#{group_id}/photoAlbumListView") 更多&nbsp;&gt;
+        a.text.pull-right(href="/photoAlbum/team/#{group_id}/listView") 更多&nbsp;&gt;
       div
         each photo_album in photo_album_thumbnails
-          a.thumbnail_cell(href="/photoAlbumDetailView/#{photo_album._id}")
+          a.thumbnail_cell(href="/photoAlbum/#{photo_album._id}/detailView")
             img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}")
             p.thumbnail_name.text-center= photo_album.name
 
