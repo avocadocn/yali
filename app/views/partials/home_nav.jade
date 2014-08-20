@@ -45,7 +45,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               li
                 a.dl_menu_a(href="/users/home") #{__("PERSONAL_HOME")}
               li
-                a.dl_menu_a(href="/users/home#/personal") #{__("PERSONAL_INFO")}
+                a.dl_menu_a(href="/users/home#/personal/#{global_user._id}") #{__("PERSONAL_INFO")}
               li
                 a.dl_menu_a(href="/users/signout") #{__("LOGOUT")}
               //- li(ng-repeat="language in languages")
