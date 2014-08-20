@@ -1105,7 +1105,7 @@ exports.editPhoto = function(req, res) {
     next('forbidden');
     return;
   }
-  res.render('users/editPhoto', {
+  res.render('users/edit_photo', {
     photo: req.profile.photo,
     uid: req.profile._id
   });

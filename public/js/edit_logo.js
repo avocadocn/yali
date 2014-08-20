@@ -96,7 +96,6 @@
 
     });
 
-
     $('#edit_logo_form').ajaxForm(function(data, status) {
       if (status === 'success' && data.result === 1) {
         var body = {
@@ -127,6 +126,12 @@
       } else {
         alertify.alert("修改失败，请重试!");
       }
+    });
+
+    $('#edit_logo_form').submit(function() {
+      $('#loading_modal').modal();
+      $(this).ajaxSubmit();
+      return false;
     });
 
 

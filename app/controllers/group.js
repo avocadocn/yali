@@ -1448,7 +1448,7 @@ exports.editLogo = function(req, res) {
       nav_name = req.user.nickname;
     }
 
-    res.render('group/editLogo', {
+    res.render('group/edit_logo', {
       logo: company_group.logo,
       nav_logo: nav_logo,
       nav_name: nav_name,

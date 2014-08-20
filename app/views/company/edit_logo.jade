@@ -54,6 +54,16 @@ block contentExt
         p.text logo尺寸需要大于150x150像素
         p.text 保存成功后如果图标不更新，你可以用浏览器刷新几次。
 
+  #loading_modal.modal.fade(role="dialog" aria-hidden="true")
+    .modal-dialog.loading_modal
+      .modal-content
+        .modal-body
+          button.close(type="button" data-dismiss="modal")
+            span(aria-hidden="true") &times;
+          .clearfix.loading_box
+            .pull-left.loading_div
+            h4.pull-left.loading_text 上传中
+
 append footExt
   script(src="/js/jquery.Jcrop.min.js")
   script(src="/lib/jquery-form/jquery.form.js")
