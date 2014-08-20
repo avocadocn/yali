@@ -444,60 +444,39 @@ var _createAuth = function(req, callback) {
    * @param  {String} tid 相册所属的队的_id
    */
   var deal = function(cid, tid) {
-    Company
-    .findById(cid)
+    CompanyGroup
+    .findById(tid)
     .exec()
-    .then(function(company) {
-      // 找不到相册所属公司
-      if (!company) {
-        callback(false);
+    .then(function(team) {
+      if (!team) {
+        return callback(false);
       }
-
-      // 相册所属的组不在所属公司里
-      var tids = [];
-      company.team.forEach(function(team) {
-        tids.push(team.id.toString());
-      });
-      var index = tids.indexOf(tid);
-      if (index === -1) {
-        callback(false);
+      // 相册所属的组不在公司里
+      if (team.cid.toString() !== cid) {
+        return callback(false);
       }
 
       // 该公司的HR
       var auth = false;
-      if (req.user.provider === 'company' && req.user._id.toString() === company._id.toString()) {
+      if (req.user.provider === 'company' && req.user._id.toString() === team.cid.toString()) {
         auth = true;
       }
 
-
-      CompanyGroup
-      .findById(tids[index])
-      .exec()
-      .then(function(company_group) {
-        if (company_group) {
-          var leaders = company_group.leader || [];
-          for (var i = 0; i < leaders.length; i++) {
-            if (req.user._id.toString() === leaders[i]._id.toString()) {
-              auth = true;
-            }
-          }
+      var leaders = team.leader || [];
+      for (var i = 0; i < leaders.length; i++) {
+        if (req.user._id.toString() === leaders[i]._id.toString()) {
+          auth = true;
+          break;
         }
-        if (auth === false) {
-          callback(false);
-        } else {
-          callback(true);
-        }
+      }
 
-
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
+      return callback(auth);
 
     })
     .then(null, function(err) {
       callback(err);
     });
+
   };
 
   if (req.body.cid && req.body.tid) {
@@ -508,7 +487,7 @@ var _createAuth = function(req, callback) {
       if (!this_team) {
         return callback('not found this company_group');
       }
-      deal(this_team.cid, this_team._id.toString());
+      deal(this_team.cid.toString(), this_team._id.toString());
     })
     .then(null, callback);
   }
@@ -1060,6 +1039,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
           active: true
         }
       ];
+      var return_uri = '/company/home';
       var owner_name = owner.company.info.name;
       var owner_logo = owner.company.info.logo;
     } else {
@@ -1077,6 +1057,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
           active: true
         }
       ];
+      var return_uri = '/photoAlbum/team/' + owner.team._id + '/listView';
       var owner_name = owner.team.name;
       var owner_logo = owner.team.logo;
     }
@@ -1093,6 +1074,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
         },
         photo_count: photo_album.photo_count
       },
+      return_uri: return_uri,
       moment: moment,
       editAuth: editAuth,
       uploadAuth: uploadAuth,

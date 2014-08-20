@@ -28,6 +28,7 @@ block contentExt
       if editAuth === true
         #more.more.collapse.clearfix
           .operator
+            input#return_uri(type="hidden" value="#{return_uri}")
             form#delete_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
               input(type="hidden" name="_method" value="delete")
               button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该相册

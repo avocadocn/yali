@@ -47,8 +47,7 @@
   });
   var deleteForm = $('#delete_form');
   deleteForm.ajaxForm(function(data, status) {
-    var returnUri = $('#returnUri').attr('href');
-    window.location.href = returnUri;
+    window.location.href = $('#return_uri').val();
   });
   $('#delete_button').click(function() {
     alertify.set({
