@@ -20,9 +20,9 @@
             .dOt_group(ng-repeat="dOt in dOts" ng-if="dOt.active")
               .dl_row(title="{{dOt.name}}")
                 a(ng-if="dOt.selected" ng-click="selectReady($index)")
-                  img.size_48.dl_cover_department(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}")
+                  img.size_48.dl_cover_department(ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}/48/48")
                 a(ng-click="selectReady($index)")
-                  img.size_48(ng-if="!dOt.selected" ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}")
+                  img.size_48(ng-if="!dOt.selected" ng-src="{{dOt.team ? dOt.team.logo : dOt.logo}}/48/48")
               .dl_row
                 label.search_area_head {{dOt.name}}
       .dl-modal-footer

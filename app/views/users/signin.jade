@@ -2,7 +2,7 @@ extends ../layouts/register
 
 block contentExt
   .row.signup_row.margin_top_100
-    .col-xs-12.col-sm-5.text-right
+    .col-xs-4.col-sm-4.col-md-5.col-lg-5.text-right
       div
         h1.text-right
           small 登入
@@ -10,22 +10,21 @@ block contentExt
         p 为了保证您在动梨遇到的小伙伴们都是真实可靠的
         p 我们会对每家申请加入的团体当然也包括您在内
         p 认真的核实资料，感谢您的配合
-    .col-xs-12.col-sm-7
+    .col-xs-4.col-sm-5.col-md-6.col-lg-7
       form.signin.form-horizontal(action="/users/session" method="post")
         .form-group
-          .col-md-4
-          .col-md-6
+          .col-md-6.col-sm-6.col-xs-6.col-xs-offset-4
             label #{msg}
         .form-group
-          label.col-md-4.control-label(for="email") #{__("EMAIL")}
-          .col-md-6
+          label.col-md-4.col-sm-4.col-xs-4.control-label(for="email") #{__("EMAIL")}
+          .col-md-6.col-sm-8.col-xs-8
             input#email.form-control(type="email" name="username" placeholder="Email" required)
         .form-group
-          label.col-md-4.control-label(for="password") #{__("PASSWORD")}
-          .col-md-6
+          label.col-md-4.col-sm-4.col-xs-4.control-label(for="password") #{__("PASSWORD")}
+          .col-md-6.col-sm-8.col-xs-8
             input#password.form-control(type="password" name="password" placeholder="password" minlength=6 required)
         .form-group
-          .col-md-offset-4.col-md-8
+          .col-xs-offset-4.col-md-8.col-sm-8.col-xs-8
             button.btn.btn-primary(type="submit") #{__("SIGNIN")}
             | &nbsp;or&nbsp;
             a.show-signup(href="/company/signup") #{__("SIGNUP")}

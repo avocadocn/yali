@@ -3,7 +3,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
   if !global_user
     .header_container
       a.navbar-brand(href="/"): img.logo(src="/img/dl_logol.png")
-      .navbar-nav.nav.pull-right.dl-top-login
+      .nav.pull-right.dl-top-login
         form.signin.form-horizontal.ng-pristine.ng-valid(action="/users/session" method="post")
           .input-group.input-group-sm
             .input-group-btn

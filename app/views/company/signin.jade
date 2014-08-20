@@ -5,7 +5,7 @@ block content
     include ../partials/home_nav
     .dl_container
       .row.margin_top_123
-        .col-xs-12.col-sm-5.text-right
+        .col-xs-4.col-sm-4.col-md-5.col-lg-5.text-right
           div
             h1.text-right
               small 进入
@@ -13,22 +13,21 @@ block content
             p 您的真实可靠的同事圈,遇到更多的伙伴
             p 更多活动,展示自我,发现伙伴们工作之余的多才多艺
             p 记录分享开心的每一个瞬间
-        .col-xs-12.col-sm-7
+        .col-xs-4.col-sm-5.col-md-6.col-lg-7
           form.signin.form-horizontal.center-block(action="/company/session" method="post")
             .form-group
-              label.col-md-4.control-label
-              .col-md-8
-                p #{msg}
+              .col-md-6.col-sm-6.col-xs-6.col-xs-offset-4
+                label #{msg}
             .form-group
-              label.col-md-4.control-label(for="username") #{__('USERNAME')}
-              .col-md-8
+              label.col-md-4.col-sm-4.col-xs-4.control-label(for="username") #{__('USERNAME')}
+              .col-md-6.col-sm-8.col-xs-8
                 input#username.dl-form-control(type="text" name="username" placeholder="用户名" required)
             .form-group
-              label.col-md-4.control-label(for="password") #{__('PASSWORD')}
-              .col-md-8
+              label.col-md-4.col-sm-4.col-xs-4.control-label(for="password") #{__('PASSWORD')}
+              .col-md-6.col-sm-8.col-xs-8
                 input#password.dl-form-control(type="password" name="password" placeholder="密码" required)
             .form-group
-              .col-md-offset-4.col-md-8
+              .col-xs-offset-4.col-md-8.col-sm-8.col-xs-8
                 button.btn.btn-primary(type="submit") #{__('SIGNIN')}
                 | &nbsp;or&nbsp;
                 a.show-signup(href="/company/signup") #{__('SIGNUP')}
