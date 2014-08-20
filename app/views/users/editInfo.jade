@@ -31,7 +31,9 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
     .dl_row.clearfix(ng-if="user.introduce || ! baseUnEdit")
       .info_side
         span.info_label #{__("BRIEF")}
-      .info_detail
+      .info_detail_2(ng-if='baseUnEdit')
+        span.info_label {{user.introduce}}
+      .info_detail(ng-if="!baseUnEdit")
         textarea.dl_input.dl-form-control.editToggle(rows="2" cols="40" name="introduce" ng-model="user.introduce" ng-maxlength="40" tooltip="{{accountForm.introduce.$invalid? '个人简介最长40字':''}}" ng-disabled="baseUnEdit" tooltip-placement="right" ng-cloak maxlength="40")
     .dl_row.clearfix(ng-if="user.sex !=undefined || ! baseUnEdit")
       .info_side
@@ -64,7 +66,7 @@ div.user_edit_info.dl_card_tebcontent(ng-show = '!loading')
     .dl_row.clearfix
       .info_side
         span.info_label  参加的小队
-      .info_side
+      .info_detail_2
         .team(ng-repeat="team in user.team " ng-if="team.gid!=0")
           a(href="/group/page/{{team._id}}")
             img.size_48(ng-src="{{team.logo}}/48/48" title="{{team.name}}")

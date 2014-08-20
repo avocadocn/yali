@@ -1262,6 +1262,7 @@ textarea {
   min-height: 34px;
   padding: 7px 0;
   float: left;
+  max-width: 510px;
 }
 .m_l_5 {
   margin-left: 5px;

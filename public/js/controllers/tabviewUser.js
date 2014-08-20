@@ -86,8 +86,8 @@ tabViewUser.run(['$rootScope','$location',
                     $rootScope.nowTab='group_message';
                 }
                 else{
-                    $location.path('/timeLine/'+$rootScope.uid);
-                    $rootScope.nowTab='timeLine/'+$rootScope.uid;
+                    $location.path('/personal/'+$rootScope.uid);
+                    $rootScope.nowTab='personal/'+$rootScope.uid;
                 }
             }
         });
