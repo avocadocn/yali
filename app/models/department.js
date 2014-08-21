@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
-//员工申请
+//部门成员
 var _member = new Schema({
     _id: {
         type: Schema.Types.ObjectId,

@@ -7,7 +7,7 @@ angular.module('starter.services', [])
 
 .factory('Global', function() {
   //var base_url = window.location.origin;
-  var base_url = "http://www.donler.com";
+  var base_url = "http://127.0.0.1:3000";
   var _user = {};
   var last_date;
 
