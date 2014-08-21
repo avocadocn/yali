@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($state, $scope, $rootScope, Authorize, Global) {
   if (Authorize.authorize() === true) {
-    $state.go('app.campaignList');
+    $state.go('app.index');
   }
 
   $scope.logout = Authorize.logout;
@@ -16,7 +16,7 @@ angular.module('starter.controllers', [])
 .controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
 
   if (Authorize.authorize() === true) {
-    $state.go('app.campaignList');
+    $state.go('app.index');
   }
 
   $scope.data = {
@@ -29,7 +29,18 @@ angular.module('starter.controllers', [])
   $scope.login = Authorize.login($scope, $rootScope);
 })
 
+.controller('indexCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, Campaign, Global, Authorize) {
+  Authorize.authorize();
+  $scope.base_url = Global.base_url;
+  Campaign.getNowCampaignList(function(campaign_list) {
+    $scope.nowCampaigns = campaign_list;
+    $ionicSlideBoxDelegate.update();
+  });
+  Campaign.getNewCampaignList(function(campaign_list) {
+    $scope.newCampaigns = campaign_list;
+  });
 
+})
 
 .controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global, Authorize) {
   Authorize.authorize();
@@ -686,7 +697,6 @@ angular.module('starter.controllers', [])
     link:function(scope,el,attrs,control){
       el.bind('change',function(){
         scope.$apply(function(){
-          console.log('s');
           scope.loading.status=true;
           $('#upload_form').submit();
         });

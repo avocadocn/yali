@@ -10,11 +10,12 @@ angular.module('starter.services', [])
   var base_url = "http://www.donler.com";
   var _user = {};
   var last_date;
-
+  var last_campaign_time = localStorage.last_campaign_time ? localStorage.last_campaign_time : 0;
   return {
     base_url: base_url,
     user: _user,
-    last_date: last_date
+    last_date: last_date,
+    last_campaign_time: last_campaign_time
   };
 })
 
@@ -121,7 +122,18 @@ angular.module('starter.services', [])
   var getCampaignList = function() {
     return campaign_list;
   };
-
+  var getNowCampaignList = function(callback){
+    $http.get(Global.base_url + '/campaign/user/now/applist/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      callback(data.campaigns);
+    });
+  }
+  var getNewCampaignList = function(callback){
+    $http.get(Global.base_url + '/campaign/user/new/applist/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      callback(data.campaigns);
+    });
+  }
   // callback(campaign)
   var getCampaign = function(id, callback) {
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
@@ -139,7 +151,7 @@ angular.module('starter.services', [])
     });
   };
     // callback(campaign)
-var getCampaignDetail = function(id, callback) {
+  var getCampaignDetail = function(id, callback) {
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
     .success(function(data, status) {
       var campaign = data.campaign;
@@ -198,6 +210,8 @@ var getCampaignDetail = function(id, callback) {
     getUserCampaignsForList: getUserCampaignsForList,
     getUserJoinedCampaignsForList: getUserJoinedCampaignsForList,
     getUserCampaignsForCalendar: getUserCampaignsForCalendar,
+    getNowCampaignList: getNowCampaignList,
+    getNewCampaignList: getNewCampaignList,
     join: join,
     quit: quit,
     getCampaignDetail: getCampaignDetail

@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
     model_helper = require('../helpers/model_helper'),
     _ = require('lodash'),
     moment = require('moment'),
-    photo_album_controller = require('./photoAlbum');
+    photo_album_controller = require('./photoAlbum'),
+    systemConfig = require('../config/config');
 var pageSize = 100;
 var blockSize = 20;
 
@@ -155,7 +156,6 @@ var getUserUnjoinCampaigns = function(user, isCalendar, callback) {
   });
 };
 
-
 /**
  * 为日历视图处理活动，返回需要的数据
  * @param  {Object} user      mongoose.model('User'), example: req.user
@@ -232,9 +232,10 @@ var formatCampaignForCalendar = function(user, campaigns) {
  * 计算用户是否参加活动，计算活动所属的公司或组及获取其logo，生成开始时间的提示文字
  * @param  {Object} user     mongoose.model('user')
  * @param  {Object} campaign mongoose.model('campaign'), need populate(team, cid)
+ * @param  {Boolean} user      mongoose.model('User'), example: req.user
  * @return {Object}          处理后的对象
  */
-var formatCampaignForApp = function(user, campaign) {
+var formatCampaignForApp = function(user, campaign, nowFlag) {
   moment.lang('zh-cn');
   var is_joined = false,myteam=[];
   // 公司活动
@@ -294,7 +295,7 @@ var formatCampaignForApp = function(user, campaign) {
   }
 
 
-  var remind_text, start_time_text;
+  var remind_text, start_time_text,start_flag;
   var now = new Date();
   var diff_end = now - campaign.end_time;
   if (diff_end >= 0) {
@@ -322,9 +323,11 @@ var formatCampaignForApp = function(user, campaign) {
     } else {
       // 活动已开始
       if (during >= 0) {
+        start_flag = true;
         remind_text = '活动已开始';
       } else {
         // 活动未开始
+        start_flag = false;
         remind_text = '距活动开始';
       }
       start_time_text = moment(temp_start_time).format('HH:mm:ss');
@@ -332,8 +335,7 @@ var formatCampaignForApp = function(user, campaign) {
 
 
   }
-
-  return {
+var result = {
     '_id': campaign._id,
     'logo': logo,
     'owner_name': owner_name,
@@ -353,19 +355,25 @@ var formatCampaignForApp = function(user, campaign) {
     'finish': campaign.finish,
     'myteam':myteam
   };
+  if(nowFlag){
+    result.start_flag = start_flag;
+    result.photo_thumbnails = photo_album_controller.photoThumbnailList(campaign.photo_album, 3);
+  }
+  return result;
 };
 
 /**
  * 为app的活动列表处理活动数据
  * @param  {Object} user      mongoose.model('User'), example: req.user
  * @param  {Array} campaigns  mongoose.model('Campaign'), need populate(team, cid)
- * @return {Array}
+ * @param  {Boolean} user      mongoose.model('User'), example: req.user
+ * @return {Array} nowFlag    true:nowCampaign
  */
-var formatCampaignsForApp = function(user, campaigns) {
+var formatCampaignsForApp = function(user, campaigns, nowFlag) {
 
   var _campaigns = [];
   campaigns.forEach(function(campaign) {
-    _campaigns.push(formatCampaignForApp(user, campaign));
+    _campaigns.push(formatCampaignForApp(user, campaign,nowFlag));
   });
   return _campaigns;
 
@@ -694,7 +702,75 @@ exports.getUserUnjoinCampaignsForList = function(req, res) {
     res.send({ result: 1, campaigns: format_campaigns });
   });
 };
+exports.getUserNowCampaignsForAppList = function(req, res) {
+  var startTimeLimit = new Date();
+  startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
+  var endTimeLimit = new Date();
+  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
+  var options = {
+    'cid': req.user.cid,
+    '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
+    'active': true,
+    'start_time': { '$lt': startTimeLimit },
+    'end_time': { '$gt': endTimeLimit }
+  };
+  Campaign
+  .find(options)
+  .sort('-start_time')
+  .populate('team')
+  .populate('cid')
+  .populate('photo_album')
+  .exec()
+  .then(function(campaigns) {
+    var format_campaigns = formatCampaignsForApp(req.user, campaigns, true);
+    res.send({ result: 1, campaigns: format_campaigns });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
 
+exports.getUserNewCampaignsForAppList = function(req, res) {
+  var endTimeLimit = new Date();
+  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
+  var team_ids = [];
+  for (var i = 0; i < req.user.team.length; i++) {
+    team_ids.push(req.user.team[i]._id);
+  }
+  var options = {
+    '$or': [
+      {
+        'cid': req.user.cid,
+        'team': { '$size': 0 }
+      },
+      {
+        'cid': req.user.cid,
+        'team': { '$in': team_ids }
+      }
+    ],
+    '$nor': [
+      { 'member.uid': req.user._id },
+      { 'camp.member.uid': req.user._id }
+    ],
+    'active': true,
+    'end_time': { '$gt': endTimeLimit }
+  };
+  Campaign
+  .find(options)
+  .sort('-start_time')
+  .populate('team')
+  .populate('cid')
+  .exec()
+  .then(function(campaigns) {
+    var format_campaigns = formatCampaignsForApp(req.user, campaigns, false);
+    res.send({ result: 1, campaigns: format_campaigns });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
 exports.getTeamCampaigns = function(req, res) {
   getTeamAllCampaigns(req.params.teamId, function(campaigns, err) {
     var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
@@ -733,7 +809,7 @@ exports.getUserAllCampaignsForAppList = function(req, res) {
   .populate('cid')
   .exec()
   .then(function(campaigns) {
-    var format_campaigns = formatCampaignsForApp(req.user, campaigns);
+    var format_campaigns = formatCampaignsForApp(req.user, campaigns, false);
     res.send({ result: 1, campaigns: format_campaigns });
   })
   .then(null, function(err) {

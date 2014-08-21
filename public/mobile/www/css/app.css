@@ -255,6 +255,62 @@ body {
   color: #fff;
   background-color: #75d1ef;
 }
+.now_campaign_item .campaign_link .campaign_title {
+  width: 100%;
+  background-color: #d8d8d8;
+  height: 56px;
+  margin: 0;
+  padding: 0;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_group_logo {
+  margin: 10px;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label {
+  padding: 10px 0;
+  position: relative;
+  color: #404040;
+  line-height: 18px;
+  font-size: 14px;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label .now_campaign_now {
+  margin-bottom: 0;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label .campaign_theme {
+  position: absolute;
+  bottom: 10px;
+  margin-bottom: 0;
+  max-width: 280px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.now_campaign_item .campaign_link .now_campaign_time {
+  width: 100%;
+  height: 120px;
+  text-align: center;
+  padding: 20px;
+}
+.now_campaign_item .campaign_link .now_campaign_time .campaign_time_remind {
+  font-size: 14px;
+  color: #404040;
+}
+.now_campaign_item .campaign_link .now_campaign_time .campaign_time_count {
+  font-size: 24px;
+  color: #000;
+}
+.now_campaign_item .campaign_link .now_campaign_photos {
+  width: 100%;
+  height: 120px;
+}
+.now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo {
+  width: 106px;
+  height: 106px;
+  float: left;
+  margin-right: 1px;
+}
+.now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo:last-child {
+  margin-right: 0;
+}
 .calendar {
   height: 100%;
 }
@@ -909,7 +965,7 @@ body {
   text-decoration: none;
 }
 .dl_timeline .timeline_element .timeline-right .title .head {
-  color: #aaa;
+  color: #09f;
   font-size: 12px;
   line-height: 22px;
   display: inline-block;
@@ -928,13 +984,13 @@ body {
   font-size: 10px;
   overflow: hidden;
   margin-bottom: 0;
-  background-color: #f0f0f0;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll {
   overflow: hidden;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_1 .photo_0 {
-  width: 256px;
+  width: 200px;
+  height: 200px;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_0,
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_1 {
@@ -956,20 +1012,10 @@ body {
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_1 {
   margin-bottom: 3px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 .photo_0 {
-  width: 256px;
-  height: 256px;
-  margin-bottom: 1px;
-}
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 .photo_1,
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 .photo_2,
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 .photo_3 {
-  width: 84px;
-  height: 84px;
-}
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 .photo_1,
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 .photo_2 {
-  margin-right: 2px;
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 img {
+  width: 126px;
+  height: 126px;
+  margin: 1px;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photo {
   display: inline-block;

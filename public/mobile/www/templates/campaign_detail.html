@@ -124,7 +124,7 @@
         </div>
         <div class="padding">
           <div id="photo_list" class="campaign_photos_wrap">
-            <ion-slide-box on-slide-changed="slideChange($index)">
+            <ion-slide-box>
               <ion-slide ng-repeat="photo_page in photos_view">
                 <div  ng-repeat="photo in photo_page" class="campaign_photo_panel">
                   <div class="campaign_photo_border" ng-click="openModal(photo.index)">
