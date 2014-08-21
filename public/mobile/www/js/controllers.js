@@ -35,6 +35,7 @@ angular.module('starter.controllers', [])
   Authorize.authorize();
   var page = -1;
   $scope.moreData =true;
+  $scope.remind_text = '没有更多的活动了';
   $scope.base_url = Global.base_url;
 
   $rootScope.campaignReturnUri = '#/app/campaign_list';
@@ -62,7 +63,7 @@ angular.module('starter.controllers', [])
   };
   $scope.loadMore = function(){
     page++;
-    Campaign.getUserCampaignsForList(page,function(campaign_list) {
+    Campaign.getUserJoinedCampaignsForList(page,function(campaign_list) {
       if($scope.campaign_list){
          $scope.campaign_list = $scope.campaign_list.concat(campaign_list);
       }
@@ -71,6 +72,11 @@ angular.module('starter.controllers', [])
       }
       if(campaign_list.length<20){
         $scope.moreData =false;
+        if (campaign_list.length === 0) {
+          $scope.remind_text = '没有已参加的活动';
+        } else {
+          $scope.remind_text = '没有更多的活动了';
+        }
       }
       $scope.$broadcast('scroll.infiniteScrollComplete');
     });

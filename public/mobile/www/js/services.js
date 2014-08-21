@@ -157,6 +157,14 @@ var getCampaignDetail = function(id, callback) {
     });
   };
 
+  var getUserJoinedCampaignsForList = function(page, callback) {
+    $http.get(Global.base_url + '/campaign/user/joined/applist/'+ page +'/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      campaign_list = data.campaigns;
+      callback(campaign_list);
+    });
+  };
+
   var getUserCampaignsForCalendar = function(callback) {
     $http.get(Global.base_url + '/campaign/user/all/appcalendar/' + Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status) {
@@ -188,6 +196,7 @@ var getCampaignDetail = function(id, callback) {
     getCampaign: getCampaign,
     getCampaignList: getCampaignList,
     getUserCampaignsForList: getUserCampaignsForList,
+    getUserJoinedCampaignsForList: getUserJoinedCampaignsForList,
     getUserCampaignsForCalendar: getUserCampaignsForCalendar,
     join: join,
     quit: quit,

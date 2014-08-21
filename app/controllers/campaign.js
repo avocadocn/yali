@@ -705,6 +705,7 @@ exports.getTeamCampaigns = function(req, res) {
   });
 };
 
+
 exports.getUserAllCampaignsForAppList = function(req, res) {
   var team_ids = [];
   for (var i = 0; i < req.user.team.length; i++) {
@@ -721,6 +722,34 @@ exports.getUserAllCampaignsForAppList = function(req, res) {
         'team': { '$in': team_ids }
       }
     ],
+    'active': true,
+    'end_time': { '$gt': Date.now() }
+  };
+
+  Campaign
+  .find(options)
+  .sort('-start_time').skip(blockSize*req.params.page).limit(blockSize)
+  .populate('team')
+  .populate('cid')
+  .exec()
+  .then(function(campaigns) {
+    var format_campaigns = formatCampaignsForApp(req.user, campaigns);
+    res.send({ result: 1, campaigns: format_campaigns });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
+exports.getUserJoinedCampaignsForAppList = function(req, res) {
+  var team_ids = [];
+  for (var i = 0; i < req.user.team.length; i++) {
+    team_ids.push(req.user.team[i]._id);
+  }
+  var options = {
+    'cid': req.user.cid,
+    '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
     'active': true,
     'end_time': { '$gt': Date.now() }
   };
