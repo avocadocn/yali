@@ -15,8 +15,8 @@ block contentExt
           input#return_uri(type="hidden" value="/group/home/#{id}#/group_info")
         .row.margin_top_20
           .col-xs-4.col-sm-4
-            #jcrop_container.img_frame
-              img.jcrop_img.img-responsive(src="#{logo}")
+            .img_frame
+              img#jcrop_img.jcrop_img.img-responsive(src="#{logo}")
           .col-xs-8.col-sm-8
             p.high_light_title.margin_top_20 从电脑中选择你喜欢的照片
             p.text 你可以上传JPG、JPEG、GIF、PNG或BMP文件
@@ -50,7 +50,7 @@ block contentExt
                 img#preview_small(src="#{'/logo/group/' + id + '/27/27'}")
               p.text.size_text.text-center 17x17像素
       .col-xs-12.col-sm-5.right_aside
-        p.high_light_title 给你的小队自己扮酷
+        p.high_light_title 给你的小队扮酷
         p.text logo尺寸需要大于150x150像素
         p.text 保存成功后如果图标不更新，你可以用浏览器刷新几次。
 

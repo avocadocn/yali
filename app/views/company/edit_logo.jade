@@ -15,8 +15,8 @@ block contentExt
           input#return_uri(type="hidden" value="/company/home#/company_info")
         .row.margin_top_20
           .col-xs-4.col-sm-4
-            #jcrop_container.img_frame
-              img.jcrop_img.img-responsive(src="#{logo}")
+            .img_frame
+              img#jcrop_img.jcrop_img.img-responsive(src="#{logo}")
           .col-xs-8.col-sm-8
             p.high_light_title.margin_top_20 从电脑中选择你喜欢的照片
             p.text 你可以上传JPG、JPEG、GIF、PNG或BMP文件
