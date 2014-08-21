@@ -584,12 +584,24 @@ angular.module('starter.controllers', [])
 
 .controller('TimelineCtrl', function($scope, $rootScope, Timeline, Authorize) {
   Authorize.authorize();
-  
-  Timeline.getUserTimeline(function(time_lines) {
-    $rootScope.time_lines = time_lines;
-    $rootScope.campaignReturnUri = '#/app/timeline';
-  });
-
+  $rootScope.campaignReturnUri = '#/app/timeline';
+  $scope.moreData =true;
+  var page = -1;
+  $scope.loadMore = function(){
+    page++;
+    Timeline.getUserTimeline(page,function(time_lines) {
+      if($scope.time_lines ){
+        $scope.time_lines = $scope.time_lines.concat(time_lines);
+      }
+      else{
+        $scope.time_lines = time_lines;
+      }
+      if(time_lines.length<20){
+        $scope.moreData =false;
+      }
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    });
+  }
 })
 
 

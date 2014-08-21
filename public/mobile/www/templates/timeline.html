@@ -2,32 +2,38 @@
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header dl_timeline">
-    <div class="timeline_element" ng-repeat="time_line in time_lines">
-      <div class="timeline-left">
-        <a href="#/app/campaign_detail/{{ time_line.id }}">
-          <img class="timeline-logo" ng-src="{{base_url + time_line.logo}}"/>
-        </a>
-      </div>
-      <div class="timeline-right">
-        <div class="title">
-          <span class="head">
-            {{time_line.head}}
-          </span>
-          <span class="date">
-            {{time_line.start_time | date:'MM/dd'}}
-          </span>
-        </div>
-        <div class="timeline_content">
-          <div class="img_scroll">
-            <img class="photo" ng-src="{{base_url + photo.thumbnail_uri + '/90/90'}}"ng-repeat="photo in time_line.photo_list">
-          </div>
+  <ion-content class="has-header">
+    <div class="dl_timeline">
+      <div class="timeline_element" ng-repeat="time_line in time_lines">
+        <div class="timeline-left">
           <a href="#/app/campaign_detail/{{ time_line.id }}">
-            <p> {{time_line.content}}
-            </p>
+            <img class="timeline-logo" ng-src="{{base_url + time_line.logo}}"/>
           </a>
+        </div>
+        <div class="timeline-right">
+          <div class="title">
+            <span class="head">
+              {{time_line.head}}
+            </span>
+            <span class="date">
+              {{time_line.start_time | date:'MM/dd'}}
+            </span>
+          </div>
+          <div class="timeline_content">
+            <div class="img_scroll">
+              <div class="photos_{{time_line.photo_list.length}}">
+                <img class="photo photo_{{$index}}" ng-src="{{base_url + photo.thumbnail_uri}}" ng-repeat="photo in time_line.photo_list">
+              </div>
+            </div>
+            <a href="#/app/campaign_detail/{{ time_line.id }}">
+              <p ng-bind-html="time_line.content">
+              </p>
+            </a>
+          </div>
         </div>
       </div>
     </div>
+    <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
+    <div class="head_title" ng-if="!moreData">没有更多的足迹</div>
   </ion-content>
 </ion-view>

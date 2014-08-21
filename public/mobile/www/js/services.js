@@ -434,8 +434,8 @@ var getCampaignDetail = function(id, callback) {
 .factory('Timeline', function($http, Global) {
 
   // callback(time_lines)
-  var getUserTimeline = function(callback) {
-    $http.get(Global.base_url + '/users/getTimelineForApp/'+ Global.user._id + '/' + Global.user.app_token)
+  var getUserTimeline = function(page, callback) {
+    $http.get(Global.base_url + '/users/getTimelineForApp/' + page + '/' + Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status) {
       callback(data.time_lines);
     });
