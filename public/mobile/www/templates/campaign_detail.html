@@ -5,7 +5,42 @@
   </ion-nav-buttons>
 
   <ion-tabs tabs-type="tabs-icon-top tabs-positive" class="donler_tabs donler_tabs_bottom">
-    
+
+    <ion-tab title="评论" icon="ion-chatbubble">
+      <div class="comment_edit">
+        <form name="comment_form">
+          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
+          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
+        </form>
+      </div>
+      <ion-content has-header="true" class="wrap campaign_detail">
+        <div class="head_title">
+          <div class="title">{{ campaign.theme }}</div>
+        </div>
+        <div  ng-if="comments.length > 0" class="comments">
+          <div ng-repeat="comment in comments" class="comment">
+              <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">
+                <img ng-src="{{base_url + comment.poster.photo}}" class="comment_photo img_user"/>
+              </div>
+              <div ng-class="{'comment_right':comment.poster._id!=user_id,'comment_left':comment.poster._id==user_id}">
+                <div class="comment_name">
+                  <span class="">{{comment.poster.nickname}}</span>
+                </div>
+                <div class="comment_content">
+                  <p>{{comment.content}}</p>
+                </div>
+                <div class="comment_time">
+                  <p>{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</p>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div>
+          <p ng-if="comments.length == 0">目前没有评论，快来抢沙发吧</p>
+        </div>
+      </ion-content>
+    </ion-tab>
+
     <ion-tab title="详情" icon="ion-ios7-information-outline">
       <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
@@ -75,45 +110,7 @@
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="评论" icon="ion-chatbubble">
-      <div class="comment_edit">
-<!--         <span class="comment_add_button" ng-show="!viewFormFlag" ng-animate="'reverse'" ng-click="viewCommentForm()" ></span> -->
-<!--         <form ng-show="viewFormFlag" ng-animate="'slide-left-right-ios7'" name="comment_form">
-          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
-          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
-        </form> -->
-        <form name="comment_form">
-          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
-          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
-        </form> 
-      </div>
-      <ion-content has-header="true" class="wrap campaign_detail">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
-        </div>
-        <div  ng-if="comments.length > 0" class="comments">
-          <div ng-repeat="comment in comments" class="comment">
-              <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">
-                <img ng-src="{{base_url + comment.poster.photo}}" class="comment_photo img_user"/>
-              </div>
-              <div ng-class="{'comment_right':comment.poster._id!=user_id,'comment_left':comment.poster._id==user_id}">
-                <div class="comment_name">
-                  <span class="">{{comment.poster.nickname}}</span>
-                </div>
-                <div class="comment_content">
-                  <p>{{comment.content}}</p>
-                </div>
-                <div class="comment_time">
-                  <p>{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</p>
-                </div>
-              </div>
-          </div>
-        </div>
-        <div>
-          <p ng-if="comments.length == 0">目前没有评论，快来抢沙发吧</p>
-        </div>
-      </ion-content>
-    </ion-tab>
+    
 
     <ion-tab title="活动照片" icon="ion-ios7-camera-outline">
       <ion-content has-header="true" class="wrap campaign_detail campaign_photos">

@@ -139,7 +139,7 @@ angular.module('starter.services', [])
     });
   };
     // callback(campaign)
-var getCampaignDetail = function(id, callback) {
+  var getCampaignDetail = function(id, callback) {
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
     .success(function(data, status) {
       var campaign = data.campaign;
@@ -192,6 +192,15 @@ var getCampaignDetail = function(id, callback) {
     };
   };
 
+  var getPhotoComments = function(id, callback) {
+    $http.get(Global.base_url + '/campaign/getCampaignCommentsAndPhotos/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
+    .success(function(data, status) {
+      if (callback) {
+        callback(data.photo_comments);
+      }
+    });
+  };
+
   return {
     getCampaign: getCampaign,
     getCampaignList: getCampaignList,
@@ -200,7 +209,8 @@ var getCampaignDetail = function(id, callback) {
     getUserCampaignsForCalendar: getUserCampaignsForCalendar,
     join: join,
     quit: quit,
-    getCampaignDetail: getCampaignDetail
+    getCampaignDetail: getCampaignDetail,
+    getPhotoComments: getPhotoComments
   };
 
 })
@@ -331,7 +341,7 @@ var getCampaignDetail = function(id, callback) {
 })
 
 
-.factory('Comment', function($http, Global){
+.factory('Comment', function($http, Global) {
 
   /**
    * 获取活动的评论
@@ -374,6 +384,7 @@ var getCampaignDetail = function(id, callback) {
   };
 
 })
+
 
 
 // .factory('User', function($http, Global) {

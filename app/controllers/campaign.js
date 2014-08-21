@@ -3,6 +3,8 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Campaign = mongoose.model('Campaign'),
     Department = mongoose.model('Department'),
+    Comment = mongoose.model('Comment'),
+    PhotoAlbum = mongoose.model('PhotoAlbum'),
     model_helper = require('../helpers/model_helper'),
     _ = require('lodash'),
     moment = require('moment'),
@@ -1074,7 +1076,7 @@ exports.vote = function (req, res) {
   });
 };
 
-exports.getCampaignDetail = function(req, res) {
+exports.getCampaignDetail = function(req, res, next) {
   Campaign
   .findById(req.params.campaignId)
   .populate('team')
@@ -1090,6 +1092,88 @@ exports.getCampaignDetail = function(req, res) {
     console.log(err);
     res.send(500);
   });
+};
+
+
+/**
+ * 合并评论和照片，并按时间排序
+ * @param  {Array} comments 数组元素类型为mongoose.model('Comment')对应的Schema
+ * @param  {Array} photos   数组元素类型为mongoose.model('PhotoAlbum')对应的Schema中的photo
+ * @return {[type]}         合并后的数组
+ */
+var combine = function(comments, photos) {
+  var photo_comments = [];
+
+  comments.forEach(function(comment) {
+    photo_comments.push({
+      content: comment.content,
+      publish_date: comment.create_date,
+      publish_user: {
+        _id: comment.poster._id,
+        name: comment.poster.nickname,
+        photo: comment.poster.photo
+      }
+    });
+  });
+
+  photos.forEach(function(photo) {
+    var photo_comment = {
+      photo: photo.uri,
+      publish_date: photo.upload_date,
+      publish_user: {
+        _id: photo.upload_user._id,
+        name: photo.upload_user.name
+      }
+    };
+    if (photo.upload_user.type === 'user') {
+      photo_comment.publish_user.photo = '/logo/user/' + photo.upload_user._id;
+    } else if (photo.upload_user.type === 'hr') {
+      photo_comment.publish_user.photo = '/logo/company/' + photo.upload_user._id;
+    }
+    photo_comments.push(photo_comment)
+  });
+
+  photo_comments.sort(function(a, b) {
+    return a.publish_date - b.publish_date;
+  });
+
+  return photo_comments;
+};
+
+exports.getCampaignCommentsAndPhotos = function(req, res) {
+  Campaign
+  .findById(req.params.campaignId)
+  .exec()
+  .then(function(campaign) {
+    if (!campaign) {
+      return res.send(404);
+    }
+    Comment
+    .find({'host_id': campaign._id, 'status': {'$ne': 'delete'}})
+    .exec()
+    .then(function(comments) {
+      PhotoAlbum
+      .findById(campaign.photo_album)
+      .exec()
+      .then(function(photo_album) {
+        var photos = [];
+        if (photo_album) {
+          photos = photo_album.photos;
+        }
+        var photo_comments = combine(comments, photos);
+        res.send({ photo_comments: photo_comments });
+      })
+      .then(null, function(err) {
+        next(err);
+      })
+    })
+    .then(null, function(err) {
+      next(err);
+    })
+  })
+  .then(null, function(err) {
+    next(err);
+  })
 };
 
 exports.campaign = function(req, res, next, id){
