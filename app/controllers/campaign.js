@@ -727,7 +727,7 @@ exports.getUserAllCampaignsForAppList = function(req, res) {
 
   Campaign
   .find(options)
-  .sort('-start_time')
+  .sort('-start_time').skip(blockSize*req.params.page).limit(blockSize)
   .populate('team')
   .populate('cid')
   .exec()
