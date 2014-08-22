@@ -143,7 +143,7 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 7px;
+  margin-top: 17px;
   width: 140px;
   height: 20px;
 }
@@ -255,15 +255,16 @@ body {
   color: #fff;
   background-color: #75d1ef;
 }
-.index_footer {
-  height: 105px;
+.new_finish_campaign {
+  height: 100px;
+  padding: 0 10px;
 }
-.index_footer .new_finish_campaign .campaign_link .campaign_title {
+.new_finish_campaign .campaign_link .campaign_title {
   margin: 0;
   padding: 0;
   height: 20px;
 }
-.index_footer .new_finish_campaign .campaign_link .campaign_title .campaign_theme {
+.new_finish_campaign .campaign_link .campaign_title .campaign_theme {
   color: #000;
   font-size: 16px;
   max-width: 250px;
@@ -273,14 +274,14 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
-.index_footer .new_finish_campaign .campaign_link .campaign_photos .campaign_photo {
-  height: 72px;
-  width: 72px;
+.new_finish_campaign .campaign_link .campaign_photos .campaign_photo {
+  height: 69px;
+  width: 69px;
   float: left;
   margin-right: 7px;
   margin-bottom: 10px;
 }
-.index_footer .new_finish_campaign .campaign_link .campaign_photos .campaign_photo:last-child {
+.new_finish_campaign .campaign_link .campaign_photos .campaign_photo:last-child {
   margin-right: 0;
 }
 .now_campaign_item .campaign_link .campaign_title {
@@ -1122,20 +1123,25 @@ body {
 .dl_timeline .timeline_element .timeline-right {
   position: relative;
 }
-.dl_timeline .timeline_element .timeline-right .title {
+.dl_timeline .timeline_element .timeline-right a {
+  color: #888;
+  display: block;
+  text-decoration: none;
+}
+.dl_timeline .timeline_element .timeline-right a .title {
   position: relative;
   font-size: 10px;
   overflow: hidden;
   margin-bottom: 0;
 }
-.dl_timeline .timeline_element .timeline-right .title a {
+.dl_timeline .timeline_element .timeline-right a .title a {
   color: #aaa;
   display: block;
 }
-.dl_timeline .timeline_element .timeline-right .title a:hover {
+.dl_timeline .timeline_element .timeline-right a .title a:hover {
   text-decoration: none;
 }
-.dl_timeline .timeline_element .timeline-right .title .head {
+.dl_timeline .timeline_element .timeline-right a .title .head {
   color: #09f;
   font-size: 12px;
   line-height: 22px;
@@ -1145,61 +1151,56 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.dl_timeline .timeline_element .timeline-right .title .date {
+.dl_timeline .timeline_element .timeline-right a .title .date {
   float: right;
   position: relative;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content {
+.dl_timeline .timeline_element .timeline-right a .timeline_content {
   width: 256px;
   position: relative;
-  font-size: 10px;
+  font-size: 12px;
   overflow: hidden;
   margin-bottom: 0;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll {
   overflow: hidden;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_1 .photo_0 {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_1 .photo_0 {
   width: 200px;
   height: 200px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_0,
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_1 {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_2 .photo_0,
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_2 .photo_1 {
   width: 127px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_0 {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_2 .photo_0 {
   margin-right: 1px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_0 {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_0 {
   width: 171px;
   height: 171px;
   margin-right: 1px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_1,
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_2 {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_1,
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_2 {
   width: 84px;
   height: 84px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_1 {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_1 {
   margin-bottom: 3px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 img {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_4 img {
   width: 126px;
   height: 126px;
   margin: 1px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photo {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photo {
   display: inline-block;
   float: left;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content p {
+.dl_timeline .timeline_element .timeline-right a .timeline_content p {
   margin-bottom: 0;
   margin-right: 10px;
-}
-.dl_timeline .timeline_element .timeline-right .timeline_content a {
-  color: #888;
-  display: block;
-  text-decoration: none;
 }
 .select_team_container {
   background-color: #3abde8;

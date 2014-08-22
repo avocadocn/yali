@@ -11,25 +11,25 @@
           </a>
         </div>
         <div class="timeline-right">
-          <div class="title">
-            <span class="head">
-              {{time_line.head}}
-            </span>
-            <span class="date">
-              {{time_line.start_time | date:'MM/dd'}}
-            </span>
-          </div>
-          <div class="timeline_content">
-            <div class="img_scroll">
-              <div class="photos_{{time_line.photo_list.length}}">
-                <img class="photo photo_{{$index}}" ng-src="{{base_url + photo.thumbnail_uri}}" ng-repeat="photo in time_line.photo_list">
-              </div>
+          <a href="#/app/campaign_detail/{{ time_line.id }}">
+            <div class="title">
+              <span class="head">
+                {{time_line.head}}
+              </span>
+              <span class="date">
+                {{time_line.start_time | date:'MM/dd'}}
+              </span>
             </div>
-            <a href="#/app/campaign_detail/{{ time_line.id }}">
-              <p ng-bind-html="time_line.content">
+            <div class="timeline_content">
+              <div class="img_scroll">
+                <div class="photos_{{time_line.photo_list.length}}">
+                  <img class="photo photo_{{$index}}" ng-src="{{base_url + photo.thumbnail_uri}}" ng-repeat="photo in time_line.photo_list">
+                </div>
+              </div>
+              <p ng-if="time_line.photo_list.length==0" ng-bind-html="time_line.content">
               </p>
-            </a>
-          </div>
+            </div>
+          </a>
         </div>
       </div>
     </div>

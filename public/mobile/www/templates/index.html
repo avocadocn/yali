@@ -27,7 +27,17 @@
     </ion-slide-box>
     <ion-list>
       <ion-item class="new_campaign_item" ng-repeat="campaign in newCampaigns">
-        <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
+        <div class="new_finish_campaign" ng-if="campaign.finishStatus==true">
+          <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
+            <div class="row campaign_title">
+                <p class="campaign_theme"> {{ campaign.theme }} </p>
+            </div>
+            <div class="campaign_photos">
+              <img class="campaign_photo" ng-src="{{ base_url + photo.thumbnail_uri + '/150/150' }}" ng-repeat="photo in campaign.photo_thumbnails">
+            </div>
+          </a>
+        </div>
+        <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link" ng-if="!campaign.finishStatus">
           <div class="row campaign_title">
             <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
             <div class="campaign_label">
@@ -36,22 +46,10 @@
             </div>
           </div>
         </a>
-        <ion-option-button class="button-positive" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal(campaign)">
+        <ion-option-button class="button-positive" ng-if="campaign.active!=undefined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal(campaign)">
           参加
         </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>
-  <ion-footer-bar class="index_footer" ng-if="newFinishCampaign._id">
-    <div class="new_finish_campaign">
-      <a href="#/app/campaign_detail/{{ newFinishCampaign._id }}" class="campaign_link">
-        <div class="row campaign_title">
-            <p class="campaign_theme"> {{ newFinishCampaign.theme }} </p>
-        </div>
-        <div class="campaign_photos">
-          <img class="campaign_photo" ng-src="{{ base_url + photo.thumbnail_uri + '/150/150' }}" ng-repeat="photo in newFinishCampaign.photo_thumbnails">
-        </div>
-      </a>
-    </div>
-  </ion-footer-bar>
 </ion-view>

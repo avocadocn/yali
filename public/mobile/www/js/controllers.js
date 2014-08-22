@@ -38,11 +38,18 @@ angular.module('starter.controllers', [])
     $ionicSlideBoxDelegate.update();
   });
   Campaign.getNewCampaignList(function(campaign_list) {
-    $scope.newCampaigns = campaign_list;
+
+    Campaign.getNewFinishCampaign(function(newFinishCampaign) {
+      $scope.newCampaigns = campaign_list;
+      if($scope.newCampaigns.length>3){
+        $scope.newCampaigns.splice(3,0,newFinishCampaign);
+      }
+      else{
+        $scope.newCampaigns.push(newFinishCampaign);
+      }
+    });
   });
-  Campaign.getNewFinishCampaign(function(newFinishCampaign) {
-    $scope.newFinishCampaign = newFinishCampaign;
-  });
+
   var removeCampaign = function(id){
     var _length = $scope.newCampaigns.length;
     for(var i=0;i<_length;i++){

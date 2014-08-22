@@ -814,6 +814,7 @@ var findUserNewFinishCampaigns= function(options, skipSize, findTime, res){
     }
     else{
       var format_campaigns = {
+        'finishStatus': true,
         '_id':campaigns[campaign_index]._id,
         'theme': campaigns[campaign_index].theme,
         'photo_thumbnails': photo_album_controller.photoThumbnailList(campaigns[campaign_index].photo_album, 4)
