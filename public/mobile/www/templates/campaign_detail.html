@@ -52,7 +52,7 @@
             </div>
           </div>
         </div>
-        <div>
+        <div class="padding">
           <p ng-if="comments.length == 0">目前没有评论，快来抢沙发吧</p>
         </div>
         <div class="placeholder"></div>
@@ -90,7 +90,7 @@
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="参加人员" icon="ion-ios7-person-outline">
+    <ion-tab title="成员" icon="ion-ios7-person-outline">
       <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
           <p class="title">{{ campaign.theme }}</p>
@@ -128,7 +128,7 @@
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="活动地点" icon="ion-ios7-location-outline">
+    <ion-tab title="地点" icon="ion-ios7-location-outline">
       <ion-content has-header="true" class="wrap campaign_detail">
         <div class="head_title">
           <p class="title">{{ campaign.theme }}</p>
@@ -143,8 +143,14 @@
       </ion-content>
     </ion-tab>
 
+    <ion-tab title="参加" icon="ion-ios7-location-outline"></ion-tab>
+
   </ion-tabs>
 
+  <div class="join_box">
+    <div class="operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal()">参加</div>
+    <div class="operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出</div>
+  </div>
 
 </ion-view>
 
