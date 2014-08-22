@@ -1,6 +1,5 @@
 
 // global variables
-
 themeColor = #3abde8
 
 // 页面用于衬托内容的背景色
@@ -13,11 +12,37 @@ contentBgColor = #ffffff
 headBgColor = #ededed
 
 
+// 菜单页
+oddItemBgcolor = #35add5
+evenItemBgcolor = #37b4dd
 
+// 登陆页
+loginButtonBgcolor = #ea6060
+loginInfoBgcolor = #75d1ef
 
+// 日程页
+navDateSize = 24px
+yearSectionPadding = 6px
+monthDateSize = 24px
+campaignLogoSize = 50px
+
+// 活动列表
+campaignContentBgcolor = #a3cbe2
+campaignContentRadialColor = #cfe0eb
+campaignBgcolor = #e9f4fe
+campaignLinearColor = #cfe9f9
+operateBarBgcolor = #3abde8
+campaignLineHeight = 45px
+
+// 活动详情页
+smallCellSize = 67.5px
+cellGap = 10px
+largeCellSize = smallCellSize * 2 + cellGap
+smallBoxInnerSize = largeCellSize
+middleBoxInnerSize = smallCellSize * 3 + cellGap * 2
+largeBoxInnerSize = largeCellSize * 2 + cellGap
 
 // common style or css tools
-
 
 body
   background-color themeColor
@@ -146,11 +171,6 @@ body
 
 
 // menu
-
-oddItemBgcolor = #35add5
-evenItemBgcolor = #37b4dd
-
-
 .menu_wrap
   background-color themeColor
 
@@ -209,10 +229,6 @@ evenItemBgcolor = #37b4dd
 
 
 // login page
-
-loginButtonBgcolor = #ea6060
-loginInfoBgcolor = #75d1ef
-
 .login_wrap
   background-color themeColor
 
@@ -332,7 +348,6 @@ loginInfoBgcolor = #75d1ef
         height 30px
         line-height 30px
 
-        navDateSize = 24px
         .date
           margin-top 10%
           margin-left auto
@@ -365,7 +380,6 @@ loginInfoBgcolor = #75d1ef
     .swipe-card
       height 100%
 
-  yearSectionPadding = 6px
   .calendar_year
     position relative
     height 100%
@@ -400,7 +414,6 @@ loginInfoBgcolor = #75d1ef
       height 60px
       border-top solid 1px rgb(220, 220, 220)
 
-      monthDateSize = 24px
       .calendar_date
         margin-top 15%
         margin-left auto
@@ -451,7 +464,6 @@ loginInfoBgcolor = #75d1ef
       border solid 1px rgb(0, 152, 227)
       background-color rgb(206, 239, 254)
 
-      campaignLogoSize = 50px
       .logo
         float left
         text-align center
@@ -489,19 +501,9 @@ loginInfoBgcolor = #75d1ef
 
 
 
-// campaign list page
-
-campaignContentBgcolor = #a3cbe2
-campaignContentRadialColor = #cfe0eb
-
-campaignBgcolor = #e9f4fe
-campaignLinearColor = #cfe9f9
-
-operateBarBgcolor = #3abde8
-
-campaignLineHeight = 45px
 
 
+// 活动列表样式
 .campaign
   background-color campaignContentBgcolor
   /* Firefox 3.6+ */
@@ -595,15 +597,75 @@ campaignLineHeight = 45px
 
 
 // campaign detail page
-
 .scroll-content
   .scroll
     height 100%
 
-// photos
-.campaign_photos
-  .campaing_upload_form
-    
+
+smallCell()
+  width smallCellSize
+  height smallCellSize
+
+largeCell()
+  width largeCellSize
+  height largeCellSize
+
+.campaign_detail
+  .photo_box
+    for capacity in (1..6)
+      .inner_{capacity}
+        margin-left auto
+        margin-right auto
+    for i in (1..6)
+      .cell_{i}
+        float left
+    .inner_1
+      width smallBoxInnerSize
+      .cell_1
+        largeCell()
+    .inner_2
+      width largeBoxInnerSize
+      .cell_1, .cell_2
+        largeCell()
+      .cell_2
+        margin-left cellGap
+    .inner_3
+      width middleBoxInnerSize
+      .cell_1
+        largeCell()
+      .cell_2, .cell_3
+        margin-left cellGap
+        smallCell()
+      .cell_3
+        margin-top cellGap
+    .inner_4
+      width smallBoxInnerSize
+      .cell_1, .cell_2, .cell_3, .cell_4
+        smallCell()
+      .cell_2, .cell_4
+        margin-left cellGap
+      .cell_3, .cell_4
+        margin-top cellGap
+    .inner_5
+      width largeBoxInnerSize
+      .cell_1
+        largeCell()
+      .cell_2, .cell_3, .cell_4, .cell_5
+        margin-left cellGap
+        smallCell()
+      .cell_4, .cell_5
+        margin-top cellGap
+    .inner_6
+      width middleBoxInnerSize
+      for i in (1..6)
+        .cell_{i}
+          smallCell()
+      .cell_2, .cell_3, .cell_5, .cell_6
+        margin-left cellGap
+      .cell_4, .cell_5, .cell_6
+        margin-top cellGap
+
+  .campaign_upload_form
     position absolute
     bottom 10px
     .upload_input
@@ -623,7 +685,6 @@ campaignLineHeight = 45px
       text-align center
       bottom 5px
   .campaign_photos_wrap
-    
     .pager
       position absolute
       bottom 40px
@@ -671,7 +732,6 @@ campaignLineHeight = 45px
           width 22px
           height 22px
           border none
-          
           font-size 12px
           border-radius 30px
           color white

@@ -102,10 +102,10 @@ angular.module('starter.controllers', [])
       $scope.photos = photos;
       $scope.photos_view = [];
       var _length = photos.length;
-      for(var i=0;i<_length;i++){
-        var index = Math.floor(i/4);
-        if(!$scope.photos_view[index]){
-          $scope.photos_view[index]=[];
+      for(var i = 0; i < _length; i++){
+        var index = Math.floor(i / 6);
+        if(!$scope.photos_view[index]) {
+          $scope.photos_view[index] = [];
         }
         photos[i].index = i;
         $scope.photos_view[index].push(photos[i]);
@@ -584,7 +584,7 @@ angular.module('starter.controllers', [])
 
 .controller('TimelineCtrl', function($scope, $rootScope, Timeline, Authorize) {
   Authorize.authorize();
-  
+
   Timeline.getUserTimeline(function(time_lines) {
     $rootScope.time_lines = time_lines;
     $rootScope.campaignReturnUri = '#/app/timeline';
@@ -643,6 +643,7 @@ angular.module('starter.controllers', [])
 
   };
 })
+
 
 // .directive('mapDirective', function(Map) {
 //   return function(scope, element, attrs) {
