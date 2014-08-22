@@ -14,28 +14,28 @@
         </form>
       </div>
       <ion-content has-header="true" class="wrap campaign_detail">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
+        <div class="flat_title padding clearfix">
+          <div class="title">活动相册</div>
+          <form id="upload_form" class="upload_form pull-right" name="upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
+            <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*" ng-model="upload_file" valid-file required/>
+            <button class="button icon ion-upload upload_button"></button>
+          </form>
         </div>
         <div class="loading_div" ng-if="loading.status">
         </div>
-        <div class="padding">
-          <div id="photo_list">
-            <ion-slide-box on-slide-changed="slideChange($index)" class="photo_slide_box clearfix">
-              <ion-slide ng-repeat="photo_page in photos_view" class="photo_box" length="photos_view.length" hide-pager>
-                <div class="inner_{{photo_page.length}} clearfix">
-                  <div ng-repeat="photo in photo_page" class="cell_{{$index+1}}" ng-click="openModal(photo.index)">
-                    <img class="photo" ng-src="{{ base_url + photo.uri +'/145/145'}}" thumbnail-photo-directive/>
-                  </div>
+        <div id="photo_list" class="photo_list">
+          <ion-slide-box on-slide-changed="slideChange($index)" class="photo_slide_box clearfix">
+            <ion-slide ng-repeat="photo_page in photos_view" class="photo_box" length="photos_view.length" hide-pager>
+              <div class="inner_{{photo_page.length}} clearfix">
+                <div ng-repeat="photo in photo_page" class="cell_{{$index+1}}" ng-click="openModal(photo.index)">
+                  <img class="photo" ng-src="{{ base_url + photo.uri +'/145/145'}}" thumbnail-photo/>
                 </div>
-              </ion-slide>
-            </ion-slide-box>
-          </div>
+              </div>
+            </ion-slide>
+          </ion-slide-box>
         </div>
-        <form id="upload_form" name="upload_form" class="campaign_upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
-          <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*" ng-model="upload_file" valid-file required/>
-          <span for="upload_input" class="upload_input_view">上传照片</span>
-        </form>
+
+
         <div ng-if="comments.length > 0" class="comments">
           <div ng-repeat="comment in comments" class="comment">
               <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">

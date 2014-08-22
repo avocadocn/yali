@@ -665,11 +665,10 @@ angular.module('starter.controllers', [])
 // })
 
 
-.directive('thumbnailPhotoDirective', function() {
+.directive('thumbnailPhoto', function() {
   return function(scope, element, attrs) {
-
     var thumbnail = function(img) {
-      if (img.width * 120 > img.height * 128) {
+      if (img.width > img.height) {
         element[0].style.height = '100%';
       } else {
         element[0].style.width = '100%';
