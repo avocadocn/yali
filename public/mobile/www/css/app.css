@@ -342,6 +342,7 @@ body {
 .new_campaign_item {
   margin: 0;
   padding: 0;
+  border-bottom: 1px;
 }
 .new_campaign_item .item-options .button {
   line-height: 56px;
