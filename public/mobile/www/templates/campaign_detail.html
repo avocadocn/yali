@@ -20,10 +20,10 @@
         <div class="loading_div" ng-if="loading.status">
         </div>
         <div class="padding">
-          <div id="photo_list" class="campaign_photos_wrap">
-            <ion-slide-box on-slide-changed="slideChange($index)">
-              <ion-slide ng-repeat="photo_page in photos_view" class="photo_box">
-                <div class="inner_{{photo_page.length}}">
+          <div id="photo_list">
+            <ion-slide-box on-slide-changed="slideChange($index)" class="photo_slide_box clearfix">
+              <ion-slide ng-repeat="photo_page in photos_view" class="photo_box" length="photos_view.length" hide-pager>
+                <div class="inner_{{photo_page.length}} clearfix">
                   <div ng-repeat="photo in photo_page" class="cell_{{$index+1}}" ng-click="openModal(photo.index)">
                     <img class="photo" ng-src="{{ base_url + photo.uri +'/145/145'}}" thumbnail-photo-directive/>
                   </div>
@@ -36,7 +36,7 @@
           <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*" ng-model="upload_file" valid-file required/>
           <span for="upload_input" class="upload_input_view">上传照片</span>
         </form>
-        <div  ng-if="comments.length > 0" class="comments">
+        <div ng-if="comments.length > 0" class="comments">
           <div ng-repeat="comment in comments" class="comment">
               <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">
                 <img ng-src="{{base_url + comment.poster.photo}}" class="comment_photo img_user"/>

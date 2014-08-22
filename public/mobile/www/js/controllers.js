@@ -730,9 +730,26 @@ angular.module('starter.controllers', [])
       });
     }
   }
-});
+})
 
-
+.directive('hidePager', function() {
+  return {
+    restrict: 'A',
+    scope: {
+      length: '='
+    },
+    link: function(scope, element, attrs) {
+      var pager = $(element).parent().parent().find('.slider-pager');
+      scope.$watch('length', function(newVal, oldVal) {
+        if (newVal === 1) {
+          pager.hide();
+        } else {
+          pager.show();
+        }
+      });
+    }
+  };
+})
 
 
 

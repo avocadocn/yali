@@ -644,6 +644,13 @@ body {
 .scroll-content .scroll {
   height: 100%;
 }
+.campaign_detail .photo_slide_box {
+  overflow: visible;
+  margin-bottom: 20px;
+}
+.campaign_detail .photo_slide_box .slider-pager {
+  bottom: -20px;
+}
 .campaign_detail .photo_box .inner_1 {
   margin-left: auto;
   margin-right: auto;
