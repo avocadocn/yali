@@ -144,7 +144,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   margin-top: 7px;
-  width: 75px;
+  width: 140px;
   height: 20px;
 }
 .menu_personal_info {
@@ -254,6 +254,93 @@ body {
   font-size: 12px;
   color: #fff;
   background-color: #75d1ef;
+}
+.now_campaign_item .campaign_link .campaign_title {
+  width: 100%;
+  background-color: #d8d8d8;
+  height: 56px;
+  margin: 0;
+  padding: 0;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_group_logo {
+  margin: 10px;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label {
+  padding: 10px 0;
+  position: relative;
+  color: #404040;
+  line-height: 18px;
+  font-size: 14px;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label .now_campaign_now {
+  margin-bottom: 0;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label .campaign_theme {
+  position: absolute;
+  bottom: 10px;
+  margin-bottom: 0;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.now_campaign_item .campaign_link .now_campaign_time {
+  width: 100%;
+  height: 120px;
+  text-align: center;
+  padding: 20px;
+}
+.now_campaign_item .campaign_link .now_campaign_time .campaign_time_remind {
+  font-size: 14px;
+  color: #404040;
+}
+.now_campaign_item .campaign_link .now_campaign_time .campaign_time_count {
+  font-size: 24px;
+  color: #000;
+}
+.now_campaign_item .campaign_link .now_campaign_photos {
+  width: 100%;
+  height: 120px;
+}
+.now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo {
+  width: 106px;
+  height: 106px;
+  float: left;
+  margin-right: 1px;
+}
+.now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo:last-child {
+  margin-right: 0;
+}
+.new_campaign_item {
+  margin: 0;
+  padding: 0;
+}
+.new_campaign_item .item-options .button {
+  line-height: 56px;
+  width: 60px;
+}
+.new_campaign_item .item-content {
+  padding: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title {
+  padding: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_group_logo {
+  margin: 10px;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label {
+  padding: 10px 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label p {
+  padding: 0;
+  margin: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label .campaign_theme {
+  font-size: 16px;
+  color: #000;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label .new_campaign_time {
+  font-size: 12px;
 }
 .calendar {
   height: 100%;
@@ -885,11 +972,11 @@ body {
   padding: 0 10px;
   height: 150px;
 }
-.campaign_detail .head_title {
+.campaign_detail .head_title .title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 100%;
+  max-width: 90%;
 }
 .campaign_detail .detail_label {
   display: inline-block;
@@ -1025,7 +1112,6 @@ body {
   text-decoration: none;
 }
 .dl_timeline {
-  width: 660px;
   position: relative;
   overflow: hidden;
   margin: 0px auto;
@@ -1033,54 +1119,25 @@ body {
 }
 .dl_timeline .timeline_element {
   position: relative;
-  margin: 10px;
   clear: both;
   border-radius: 0px;
-  padding-bottom: 15px;
+  padding: 10px;
   color: #888;
   border-bottom: 1px inset #ddd;
 }
-.dl_timeline .timeline_element:before {
-  content: '';
-  position: absolute;
-  display: block;
-  top: -10px;
-  width: 2px;
-  height: 120%;
-  border-radius: 2px;
-  left: 24%;
-  background-color: #ccc;
-  z-index: 2;
-}
-.dl_timeline .timeline_element:after {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 6px;
-  height: 6px;
-  border-radius: 100%;
-  background-color: #bbb;
-  box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
-  top: 20%;
-  left: 24%;
-  z-index: 3;
-  margin-left: -2px;
-}
 .dl_timeline .timeline_element .timeline-left .timeline-logo {
   margin: 0 4px 5px 5px;
-  width: 50px;
+  width: 10%;
   float: left;
 }
 .dl_timeline .timeline_element .timeline-right {
   position: relative;
-  left: 40px;
 }
 .dl_timeline .timeline_element .timeline-right .title {
   position: relative;
   font-size: 10px;
   overflow: hidden;
   margin-bottom: 0;
-  text-transform: uppercase;
 }
 .dl_timeline .timeline_element .timeline-right .title a {
   color: #aaa;
@@ -1090,34 +1147,61 @@ body {
   text-decoration: none;
 }
 .dl_timeline .timeline_element .timeline-right .title .head {
-  color: #aaa;
+  color: #09f;
   font-size: 12px;
   line-height: 22px;
   display: inline-block;
-  width: 165px;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .dl_timeline .timeline_element .timeline-right .title .date {
   float: right;
   position: relative;
-  right: 45px;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content {
+  width: 256px;
   position: relative;
   font-size: 10px;
   overflow: hidden;
   margin-bottom: 0;
-  text-transform: uppercase;
-  margin-right: 50px;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll {
-  max-height: 45px;
   overflow: hidden;
+}
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_1 .photo_0 {
+  width: 200px;
+  height: 200px;
+}
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_0,
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_1 {
+  width: 127px;
+}
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_2 .photo_0 {
+  margin-right: 1px;
+}
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_0 {
+  width: 171px;
+  height: 171px;
+  margin-right: 1px;
+}
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_1,
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_2 {
+  width: 84px;
+  height: 84px;
+}
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_3 .photo_1 {
+  margin-bottom: 3px;
+}
+.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photos_4 img {
+  width: 126px;
+  height: 126px;
+  margin: 1px;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photo {
   display: inline-block;
-  max-width: 45px;
-  max-height: 45px;
-  margin-right: 1px;
+  float: left;
 }
 .dl_timeline .timeline_element .timeline-right .timeline_content p {
   margin-bottom: 0;
@@ -1126,8 +1210,6 @@ body {
 .dl_timeline .timeline_element .timeline-right .timeline_content a {
   color: #888;
   display: block;
-}
-.dl_timeline .timeline_element .timeline-right .timeline_content a:hover {
   text-decoration: none;
 }
 .select_team_container {

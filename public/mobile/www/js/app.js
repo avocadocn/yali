@@ -26,7 +26,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       templateUrl: 'templates/login.html',
       controller: 'LoginCtrl'
     })
-
+    .state('app.index', {
+      url: '/index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/index.html',
+          controller: 'IndexCtrl'
+        }
+      }
+    })
     .state('app.campaignList', {
       url: '/campaign_list',
       views: {

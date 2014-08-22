@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($state, $scope, $rootScope, Authorize, Global) {
   if (Authorize.authorize() === true) {
-    $state.go('app.campaignList');
+    $state.go('app.index');
   }
 
   $scope.logout = Authorize.logout;
@@ -16,7 +16,7 @@ angular.module('starter.controllers', [])
 .controller('LoginCtrl', function($scope, $rootScope, $http, $state, Authorize) {
 
   if (Authorize.authorize() === true) {
-    $state.go('app.campaignList');
+    $state.go('app.index');
   }
 
   $scope.data = {
@@ -29,7 +29,42 @@ angular.module('starter.controllers', [])
   $scope.login = Authorize.login($scope, $rootScope);
 })
 
-
+.controller('IndexCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, $ionicModal, Campaign, Global, Authorize) {
+  Authorize.authorize();
+  $scope.base_url = Global.base_url;
+  $rootScope.campaignReturnUri = '#/app/index';
+  Campaign.getNowCampaignList(function(campaign_list) {
+    $scope.nowCampaigns = campaign_list;
+    $ionicSlideBoxDelegate.update();
+  });
+  Campaign.getNewCampaignList(function(campaign_list) {
+    $scope.newCampaigns = campaign_list;
+  });
+  var removeCampaign = function(id){
+    var _length = $scope.newCampaigns.length;
+    for(var i=0;i<_length;i++){
+      if($scope.newCampaigns[i]._id==id){
+        $scope.newCampaigns.splice(i,1);
+        break;
+      }
+    }
+  }
+  $scope.join = Campaign.join(removeCampaign);
+  $ionicModal.fromTemplateUrl('templates/partials/select_team.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.selectModal = modal;
+  });
+  $scope.openselectModal = function(campaign) {
+    $scope.campaign=campaign;
+    $scope.selectModal.show();
+  };
+  $scope.select = function(campaign_id,tid) {
+    $scope.join(campaign_id,tid);
+    $scope.selectModal.hide();
+  };
+})
 
 .controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global, Authorize) {
   Authorize.authorize();
@@ -585,10 +620,24 @@ angular.module('starter.controllers', [])
 .controller('TimelineCtrl', function($scope, $rootScope, Timeline, Authorize) {
   Authorize.authorize();
 
-  Timeline.getUserTimeline(function(time_lines) {
-    $rootScope.time_lines = time_lines;
-    $rootScope.campaignReturnUri = '#/app/timeline';
-  });
+  $rootScope.campaignReturnUri = '#/app/timeline';
+  $scope.moreData =true;
+  var page = -1;
+  $scope.loadMore = function(){
+    page++;
+    Timeline.getUserTimeline(page,function(time_lines) {
+      if($scope.time_lines ){
+        $scope.time_lines = $scope.time_lines.concat(time_lines);
+      }
+      else{
+        $scope.time_lines = time_lines;
+      }
+      if(time_lines.length<20){
+        $scope.moreData =false;
+      }
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    });
+  }
 
 })
 
@@ -675,7 +724,6 @@ angular.module('starter.controllers', [])
     link:function(scope,el,attrs,control){
       el.bind('change',function(){
         scope.$apply(function(){
-          console.log('s');
           scope.loading.status=true;
           $('#upload_form').submit();
         });

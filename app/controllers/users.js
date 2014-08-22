@@ -41,7 +41,7 @@ var encrypt = require('../middlewares/encrypt'),
 
 
 
-
+var blockSize = 20;
 
 /**
  * Show login form
@@ -1288,6 +1288,8 @@ exports.getTimelineForApp = function(req,res){
   .find({ 'active' : true, 'finish' : true, '$or' : [{'member.uid' : uid}, {'camp.member.uid' : uid }]})
   .where('end_time').lt(new Date())
   .sort('-start_time')
+  .skip(req.params.page*blockSize)
+  .limit(blockSize)
   .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {

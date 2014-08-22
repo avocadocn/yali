@@ -109,6 +109,13 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    device:{
+        device_type:{
+            type:String,
+            enum:['Android','IOS','WindowsPhone']
+        },
+        device_id:String  //用户设备生成的userId,可能会经常变动
+    }
 });
 
 /**
