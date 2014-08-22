@@ -482,6 +482,18 @@ angular.module('starter.services', [])
 
 })
 
+//未读站内信
+.factory('Message', function($http, Global) {
+  var getUnreadMsg = function(callback){
+    $http.get(Global.base_url + '/message/header').success(function(data, status) {
+      callback(data.msg);
+    });
+  };
+
+  return {
+    getUnreadMsg: getUnreadMsg
+  };
+})
 
 
 
