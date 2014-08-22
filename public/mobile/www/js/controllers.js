@@ -29,7 +29,7 @@ angular.module('starter.controllers', [])
   $scope.login = Authorize.login($scope, $rootScope);
 })
 
-.controller('indexCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, Campaign, Global, Authorize) {
+.controller('IndexCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, Campaign, Global, Authorize) {
   Authorize.authorize();
   $scope.base_url = Global.base_url;
   Campaign.getNowCampaignList(function(campaign_list) {

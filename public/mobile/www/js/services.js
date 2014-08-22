@@ -55,7 +55,7 @@ angular.module('starter.services', [])
             localStorage.user_nickname = user.nickname;
             localStorage.app_token = user.app_token;
           }
-          $state.go('app.campaignList');
+          $state.go('app.index');
         }
       })
       .error(function(data, status, headers, config) {

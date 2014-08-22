@@ -302,6 +302,7 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     // 活动已结束
     remind_text = '活动已结束';
     start_time_text = '';
+    start_flag = -1;
   } else {
     // 活动未结束
 
@@ -323,11 +324,11 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     } else {
       // 活动已开始
       if (during >= 0) {
-        start_flag = true;
+        start_flag = 1;
         remind_text = '活动已开始';
       } else {
         // 活动未开始
-        start_flag = false;
+        start_flag = 0;
         remind_text = '距活动开始';
       }
       start_time_text = moment(temp_start_time).format('HH:mm:ss');

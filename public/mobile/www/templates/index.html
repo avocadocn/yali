@@ -10,16 +10,16 @@
           <div class="row campaign_title">
             <img class="campaign_group_logo" ng-src="{{ base_url + nowCampaign.logo }}"/>
             <div class="campaign_label">
-              <p class="now_campaign_now" ng-if="nowCampaign.start_flag"> 正在进行的活动 </p>
+              <p class="now_campaign_now" ng-if="nowCampaign.start_flag==1"> 正在进行的活动 </p>
               <p class="campaign_theme"> {{ nowCampaign.theme }} </p>
             </div>
 
           </div>
-          <div ng-if="!nowCampaign.start_flag || nowCampaign.photo_thumbnails.length==0" class="now_campaign_time">
+          <div ng-if="nowCampaign.start_flag==0 || nowCampaign.photo_thumbnails.length==0" class="now_campaign_time">
             <p class="campaign_time_remind">{{ nowCampaign.remind_text }}</p>
             <p class="campaign_time_count">{{ nowCampaign.start_time_text }}</p>
           </div>
-          <div ng-if="nowCampaign.start_flag && nowCampaign.photo_thumbnails.length>0" class="now_campaign_photos">
+          <div ng-if="nowCampaign.start_flag!=0 && nowCampaign.photo_thumbnails.length>0" class="now_campaign_photos">
             <img class="now_campaign_photo" ng-src="{{ base_url + photo.thumbnail_uri }}" ng-repeat="photo in nowCampaign.photo_thumbnails">
           </div>
         </a>
@@ -48,22 +48,6 @@
             </div>
           </div>
         </a>
-        <div class="row campaign_line campaign_operate_bar">
-          <div class="col-33 col-30">
-            <p class="campaign_operate_text">
-              <i class="icon ion-ios7-person-outline"></i>
-              {{ campaign.member.length }}人报名
-            </p>
-          </div>
-          <div class="col-33 col-40 campaign_operate_button_container">
-            <button class="btn_radius btn_red" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal(campaign)">
-              参加活动
-            </button>
-            <button class="btn_radius btn_red" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">
-              退出活动
-            </button>
-          </div>
-        </div>
       </ion-item>
     </ion-list>
   </ion-content>

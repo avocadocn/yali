@@ -31,7 +31,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       views: {
         'menuContent': {
           templateUrl: 'templates/index.html',
-          controller: 'indexCtrl'
+          controller: 'IndexCtrl'
         }
       }
     })
