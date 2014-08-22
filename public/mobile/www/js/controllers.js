@@ -40,6 +40,9 @@ angular.module('starter.controllers', [])
   Campaign.getNewCampaignList(function(campaign_list) {
     $scope.newCampaigns = campaign_list;
   });
+  Campaign.getNewFinishCampaign(function(newFinishCampaign) {
+    $scope.newFinishCampaign = newFinishCampaign;
+  });
   var removeCampaign = function(id){
     var _length = $scope.newCampaigns.length;
     for(var i=0;i<_length;i++){

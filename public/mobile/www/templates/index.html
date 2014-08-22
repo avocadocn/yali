@@ -42,4 +42,16 @@
       </ion-item>
     </ion-list>
   </ion-content>
+  <ion-footer-bar class="index_footer" ng-if="newFinishCampaign._id">
+    <div class="new_finish_campaign">
+      <a href="#/app/campaign_detail/{{ newFinishCampaign._id }}" class="campaign_link">
+        <div class="row campaign_title">
+            <p class="campaign_theme"> {{ newFinishCampaign.theme }} </p>
+        </div>
+        <div class="campaign_photos">
+          <img class="campaign_photo" ng-src="{{ base_url + photo.thumbnail_uri + '/150/150' }}" ng-repeat="photo in newFinishCampaign.photo_thumbnails">
+        </div>
+      </a>
+    </div>
+  </ion-footer-bar>
 </ion-view>

@@ -709,7 +709,6 @@ exports.getUserNowCampaignsForAppList = function(req, res) {
   var startTimeLimit = new Date();
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
-  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
   var options = {
     'cid': req.user.cid,
     '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
@@ -773,6 +772,71 @@ exports.getUserNewCampaignsForAppList = function(req, res) {
     console.log(err);
     res.send(500);
   });
+};
+var newFinishSize =10;
+var findLimitTime = 2;
+/**
+ * 查找新结束的newFinishSize个活动，选择照片数最大的返回，如果都为0则继续查找，最大查找findLimtiTime次
+ * @param  {[object]} options  查找条件
+ * @param  {[number]} skipSize 查找结果忽略的个数
+ * @param  {[number]} findTime 查找次数
+ * @param  {[object]} res res
+ * @return {[type]} object       返回照片最多的活动
+ */
+var findUserNewFinishCampaigns= function(options, skipSize, findTime, res){
+  Campaign
+  .find(options)
+  .skip(skipSize)
+  .limit(newFinishSize)
+  .sort('-end_time')
+  .populate('team')
+  .populate('cid')
+  .populate('photo_album')
+  .exec()
+  .then(function(campaigns) {
+    var campaign_index=0;
+    var maxPhotoCount = 0;
+    campaigns.forEach(function(_campaign,_index){
+      if(_campaign.photo_album.photo_count>maxPhotoCount){
+        campaign_index = _index;
+        maxPhotoCount = _campaign.photo_album.photo_count;
+      }
+    });
+    if(maxPhotoCount==0){
+      skipSize = skipSize+newFinishSize;
+      if(findTime>=findLimitTime){
+        return res.send({ result: 1, campaigns: {} });
+      }
+      else{
+        findTime++;
+        findUserNewFinishCampaigns(options, skipSize, findTime);
+      }
+    }
+    else{
+      var format_campaigns = {
+        '_id':campaigns[campaign_index]._id,
+        'theme': campaigns[campaign_index].theme,
+        'photo_thumbnails': photo_album_controller.photoThumbnailList(campaigns[campaign_index].photo_album, 4)
+      }
+      return res.send({ result: 1, campaigns: format_campaigns });
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+}
+exports.getUserNewFinishCampaignsForAppList = function(req, res) {
+  var endTimeLimit = new Date();
+  var options = {
+    'cid': req.user.cid,
+    '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
+    'active': true,
+    'end_time': { '$lte': endTimeLimit }
+  };
+  var skipSize=0;
+  var findTime =1;
+  var format_campaigns = findUserNewFinishCampaigns(options, skipSize, findTime, res);
 };
 exports.getTeamCampaigns = function(req, res) {
   getTeamAllCampaigns(req.params.teamId, function(campaigns, err) {

@@ -134,6 +134,13 @@ angular.module('starter.services', [])
       callback(data.campaigns);
     });
   }
+  var getNewFinishCampaign = function(callback){
+    $http.get(Global.base_url + '/campaign/user/newfinish/applist/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      callback(data.campaigns);
+    });
+  }
+  
   // callback(campaign)
   var getCampaign = function(id, callback) {
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
@@ -221,6 +228,7 @@ angular.module('starter.services', [])
     getUserCampaignsForCalendar: getUserCampaignsForCalendar,
     getNowCampaignList: getNowCampaignList,
     getNewCampaignList: getNewCampaignList,
+    getNewFinishCampaign: getNewFinishCampaign,
     join: join,
     quit: quit,
     getCampaignDetail: getCampaignDetail,

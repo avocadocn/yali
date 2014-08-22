@@ -255,6 +255,34 @@ body {
   color: #fff;
   background-color: #75d1ef;
 }
+.index_footer {
+  height: 105px;
+}
+.index_footer .new_finish_campaign .campaign_link .campaign_title {
+  margin: 0;
+  padding: 0;
+  height: 20px;
+}
+.index_footer .new_finish_campaign .campaign_link .campaign_title .campaign_theme {
+  color: #000;
+  font-size: 16px;
+  max-width: 250px;
+  margin: 0;
+  padding: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.index_footer .new_finish_campaign .campaign_link .campaign_photos .campaign_photo {
+  height: 71px;
+  width: 71px;
+  float: left;
+  margin-right: 7px;
+  margin-bottom: 10px;
+}
+.index_footer .new_finish_campaign .campaign_link .campaign_photos .campaign_photo:last-child {
+  margin-right: 0;
+}
 .now_campaign_item .campaign_link .campaign_title {
   width: 100%;
   background-color: #d8d8d8;
