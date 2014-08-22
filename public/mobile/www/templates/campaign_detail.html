@@ -35,28 +35,27 @@
           </ion-slide-box>
         </div>
 
-
+        <div class="padding clearfix">
+          <div class="pull-left">评论</div>
+        </div>
         <div ng-if="comments.length > 0" class="comments">
-          <div ng-repeat="comment in comments" class="comment">
-              <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">
-                <img ng-src="{{base_url + comment.poster.photo}}" class="comment_photo img_user"/>
+          <div ng-repeat="comment in comments" ng-class="{'self':comment.poster._id==user_id, 'other':comment.poster._id!=user_id}" class="clearfix">
+            <div class="photo_box">
+              <img ng-src="{{base_url + comment.poster.photo}}" class="photo img_user"/>
+            </div>
+            <div class="comment_body">
+              <div class="nickname">{{comment.poster.nickname}}</div>
+              <div class="clearfix">
+                <div class="content">{{comment.content}}</div>
               </div>
-              <div ng-class="{'comment_right':comment.poster._id!=user_id,'comment_left':comment.poster._id==user_id}">
-                <div class="comment_name">
-                  <span class="">{{comment.poster.nickname}}</span>
-                </div>
-                <div class="comment_content">
-                  <p>{{comment.content}}</p>
-                </div>
-                <div class="comment_time">
-                  <p>{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</p>
-                </div>
-              </div>
+              <div class="time">{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</div>
+            </div>
           </div>
         </div>
         <div>
           <p ng-if="comments.length == 0">目前没有评论，快来抢沙发吧</p>
         </div>
+        <div class="placeholder"></div>
       </ion-content>
     </ion-tab>
 

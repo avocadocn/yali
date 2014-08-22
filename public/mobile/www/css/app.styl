@@ -799,8 +799,52 @@ largeCell()
       .cell_4, .cell_5, .cell_6
         margin-top cellGap
 
-  p
-    text-align center
+  .comments
+    .self, .other
+      position relative
+      border-top inset 1px #ddd
+      padding 5px 0
+    .self
+      .photo_box, .comment_body
+        float right
+      .comment_body
+        padding-right 7px
+      .nickname
+        text-align right
+      .content
+        float right
+      .time
+        text-align right
+    .other
+      .photo_box, .comment_body
+        float left
+      .comment_body
+        padding-left 7px
+      .nickname
+        text-align left
+      .time
+        text-align left
+    .photo_box
+      width 20%
+      text-align center
+    .comment_body
+      width 80%
+      padding 0 10px
+    .photo
+      margin-top 4px
+      width 40px
+      height 40px
+    .nickname
+      text-overflow ellipsis
+      white-space nowrap
+      overflow hidden
+    .content
+      color #999
+    .time
+      color #CEC7C7
+      font-size 10px
+      font-weight 300
+
 
   .campaign_upload_user
     margin-top 12px
@@ -812,6 +856,9 @@ largeCell()
     font-size 7px
     line-height 1
     color #bbb
+
+  .placeholder
+    height 44px
 //slide
 .slider
   .slider-pager
@@ -935,63 +982,7 @@ largeCell()
 
       .btn_good
         margin-left 13px
-  .comments
-    margin 10px
-    padding 1px 10px
-    background-color white
-    .comment
-      border-bottom 1px inset #ddd
-      .comment_left
-        .comment_photo
-          float left
-          width 40px
-          height 40px
-          margin-left 10px
-        .comment_name
-          span
-            text-overflow ellipsis
-            white-space nowrap
-            overflow hidden
-            float right
-            margin-right 10px
-        .comment_content
-          margin-left 20px
-          margin-right 70px
-          padding-top 20px
-          p
-            white-space pre
-            color #999
-        .comment_time
-          color #CEC7C7
-          margin-right 85px
-          font-size 10px
-          font-weight 300
-          text-align right
-      .comment_right
-        position relative
-        left 5%
-        margin 10px 0
-        .comment_photo
-          float right
-          width 40px
-          height 40px
-          margin-right 20px
-        .comment_name
-          text-overflow ellipsis
-          white-space nowrap
-          overflow hidden
-          max-width 100px
-        .comment_content
-          margin-left 60px
-          margin-right 40px
-          p
-            white-space pre
-            color #999
-        .comment_time
-          color #CEC7C7
-          margin-left 55px
-          font-size 10px
-          font-weight 300
+
 .campaign_location
   .location
     height 260px

@@ -870,8 +870,66 @@ body {
 .campaign_detail .photo_box .inner_6 .cell_6 {
   margin-top: 10px;
 }
-.campaign_detail p {
+.campaign_detail .comments .self,
+.campaign_detail .comments .other {
+  position: relative;
+  border-top: inset 1px #ddd;
+  padding: 5px 0;
+}
+.campaign_detail .comments .self .photo_box,
+.campaign_detail .comments .self .comment_body {
+  float: right;
+}
+.campaign_detail .comments .self .comment_body {
+  padding-right: 7px;
+}
+.campaign_detail .comments .self .nickname {
+  text-align: right;
+}
+.campaign_detail .comments .self .content {
+  float: right;
+}
+.campaign_detail .comments .self .time {
+  text-align: right;
+}
+.campaign_detail .comments .other .photo_box,
+.campaign_detail .comments .other .comment_body {
+  float: left;
+}
+.campaign_detail .comments .other .comment_body {
+  padding-left: 7px;
+}
+.campaign_detail .comments .other .nickname {
+  text-align: left;
+}
+.campaign_detail .comments .other .time {
+  text-align: left;
+}
+.campaign_detail .comments .photo_box {
+  width: 20%;
   text-align: center;
+}
+.campaign_detail .comments .comment_body {
+  width: 80%;
+  padding: 0 10px;
+}
+.campaign_detail .comments .photo {
+  margin-top: 4px;
+  width: 40px;
+  height: 40px;
+}
+.campaign_detail .comments .nickname {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.campaign_detail .comments .content {
+  color: #999;
+}
+.campaign_detail .comments .time {
+  color: #cec7c7;
+  font-size: 10px;
+  font-weight: 300;
 }
 .campaign_detail .campaign_upload_user {
   margin-top: 12px;
@@ -883,6 +941,9 @@ body {
   font-size: 7px;
   line-height: 1;
   color: #bbb;
+}
+.campaign_detail .placeholder {
+  height: 44px;
 }
 .slider .slider-pager .slider-pager-page {
   width: 10px;
@@ -1010,74 +1071,6 @@ body {
 }
 .campaign_detail .campaign_time_shadow .campaign_time_operator .btn_good {
   margin-left: 13px;
-}
-.campaign_detail .comments {
-  margin: 10px;
-  padding: 1px 10px;
-  background-color: #fff;
-}
-.campaign_detail .comments .comment {
-  border-bottom: 1px inset #ddd;
-}
-.campaign_detail .comments .comment .comment_left .comment_photo {
-  float: left;
-  width: 40px;
-  height: 40px;
-  margin-left: 10px;
-}
-.campaign_detail .comments .comment .comment_left .comment_name span {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  float: right;
-  margin-right: 10px;
-}
-.campaign_detail .comments .comment .comment_left .comment_content {
-  margin-left: 20px;
-  margin-right: 70px;
-  padding-top: 20px;
-}
-.campaign_detail .comments .comment .comment_left .comment_content p {
-  white-space: pre;
-  color: #999;
-}
-.campaign_detail .comments .comment .comment_left .comment_time {
-  color: #cec7c7;
-  margin-right: 85px;
-  font-size: 10px;
-  font-weight: 300;
-  text-align: right;
-}
-.campaign_detail .comments .comment .comment_right {
-  position: relative;
-  left: 5%;
-  margin: 10px 0;
-}
-.campaign_detail .comments .comment .comment_right .comment_photo {
-  float: right;
-  width: 40px;
-  height: 40px;
-  margin-right: 20px;
-}
-.campaign_detail .comments .comment .comment_right .comment_name {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 100px;
-}
-.campaign_detail .comments .comment .comment_right .comment_content {
-  margin-left: 60px;
-  margin-right: 40px;
-}
-.campaign_detail .comments .comment .comment_right .comment_content p {
-  white-space: pre;
-  color: #999;
-}
-.campaign_detail .comments .comment .comment_right .comment_time {
-  color: #cec7c7;
-  margin-left: 55px;
-  font-size: 10px;
-  font-weight: 300;
 }
 .campaign_location .location {
   height: 260px;
