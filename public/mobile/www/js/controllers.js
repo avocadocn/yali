@@ -135,6 +135,12 @@ angular.module('starter.controllers', [])
   $scope.base_url = Global.base_url;
   $scope.user_id = Global.user._id;
   $scope.loading = {status:false};
+  $scope.publishing = false;
+
+  $scope.togglePublishing = function() {
+    $scope.publishing = !$scope.publishing;
+  };
+
   Campaign.getCampaignDetail( $stateParams.id,function(campaign) {
     $scope.campaign = campaign;
     $scope.photo_album_id = $scope.campaign.photo_album;
@@ -200,6 +206,7 @@ angular.module('starter.controllers', [])
         alert(msg);
       }
     });
+    $scope.publishing = false;
   };
   //$scope.viewFormFlag =false;
   // $scope.viewCommentForm =function(){

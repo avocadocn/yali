@@ -689,25 +689,14 @@ body {
 .campaign_detail {
   background-color: #fff;
 }
-.campaign_detail .flat_title {
-  background-color: #d8d8d8;
+.campaign_detail .simple_title {
+  border-bottom: solid 1px #ddd;
 }
-.campaign_detail .flat_title .title {
+.campaign_detail .simple_title .title {
   float: left;
 }
-.campaign_detail .flat_title .upload_form {
-  width: 20px;
-  height: 20px;
-  position: relative;
-}
-.campaign_detail .flat_title .upload_form .upload_input {
-  opacity: 0;
-  position: absolute;
-  z-index: 3;
-}
-.campaign_detail .flat_title .upload_form .upload_button {
-  position: absolute;
-  z-index: 0;
+.campaign_detail .simple_title .operator_button {
+  float: right;
   padding: 0;
   border: none;
   width: 20px;
@@ -718,9 +707,23 @@ body {
   min-height: 0;
   min-width: 0;
 }
-.campaign_detail .flat_title .upload_form .upload_button:before {
+.campaign_detail .simple_title .operator_button:before {
   font-size: 20px;
   line-height: 20px;
+}
+.campaign_detail .upload_form {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+.campaign_detail .upload_form .upload_input {
+  opacity: 0;
+  position: absolute;
+  z-index: 3;
+}
+.campaign_detail .upload_form .upload_button {
+  position: absolute;
+  z-index: 0;
 }
 .campaign_detail .photo_list {
   margin-top: 10px;
@@ -883,18 +886,22 @@ body {
 .campaign_detail .photo_box .inner_6 .cell_6 {
   margin-top: 10px;
 }
+.campaign_detail .comments {
+  margin: 0 10px;
+}
 .campaign_detail .comments .self,
 .campaign_detail .comments .other {
   position: relative;
-  border-top: inset 1px #ddd;
+  border-top: solid 1px #ddd;
   padding: 5px 0;
+}
+.campaign_detail .comments .self:first-child,
+.campaign_detail .comments .other:first-child {
+  border-top: none;
 }
 .campaign_detail .comments .self .photo_box,
 .campaign_detail .comments .self .comment_body {
   float: right;
-}
-.campaign_detail .comments .self .comment_body {
-  padding-right: 7px;
 }
 .campaign_detail .comments .self .nickname {
   text-align: right;
@@ -909,9 +916,6 @@ body {
 .campaign_detail .comments .other .comment_body {
   float: left;
 }
-.campaign_detail .comments .other .comment_body {
-  padding-left: 7px;
-}
 .campaign_detail .comments .other .nickname {
   text-align: left;
 }
@@ -924,7 +928,6 @@ body {
 }
 .campaign_detail .comments .comment_body {
   width: 80%;
-  padding: 0 10px;
 }
 .campaign_detail .comments .photo {
   margin-top: 4px;
@@ -938,6 +941,7 @@ body {
 }
 .campaign_detail .comments .content {
   color: #999;
+  word-break: break-all;
 }
 .campaign_detail .comments .time {
   color: #cec7c7;
@@ -1037,7 +1041,7 @@ body {
   background-color: #3abde8;
   color: #fff;
   border: 1px #fff solid;
-  border-radius: 16px;
+  border-radius: 0;
 }
 .comment_edit form .comment_button {
   width: 20%;
@@ -1045,7 +1049,8 @@ body {
   color: #fff;
   height: 34px;
   border: 1px #fff solid;
-  border-radius: 16px;
+  border-left: none;
+  border-radius: 0;
 }
 .comment_edit form input:-moz-placeholder {
   color: #fff;

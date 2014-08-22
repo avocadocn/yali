@@ -722,33 +722,36 @@ largeCell()
 
 .campaign_detail
   background-color white
-  .flat_title
-    background-color #D8D8D8
+  .simple_title
+    border-bottom solid 1px #ddd
     .title
       float left
-    .upload_form
+    .operator_button
+      float right
+      padding 0
+      border none
       width 20px
       height 20px
-      position relative
-      .upload_input
-        opacity 0
-        position absolute
-        z-index 3
-      .upload_button
-        position absolute
-        z-index 0
-        padding 0
-        border none
-        width 20px
-        height 20px
-        background-color transparent
-        line-height 20px
+      background-color transparent
+      line-height 20px
+      font-size 20px
+      min-height 0
+      min-width 0
+      &:before
         font-size 20px
-        min-height 0
-        min-width 0
-        &:before
-          font-size 20px
-          line-height 20px
+        line-height 20px
+
+  .upload_form
+    width 20px
+    height 20px
+    position relative
+    .upload_input
+      opacity 0
+      position absolute
+      z-index 3
+    .upload_button
+      position absolute
+      z-index 0
   .photo_list
     margin-top 10px
   .photo_slide_box
@@ -811,15 +814,16 @@ largeCell()
         margin-top cellGap
 
   .comments
+    margin 0 10px
     .self, .other
       position relative
-      border-top inset 1px #ddd
+      border-top solid 1px #ddd
       padding 5px 0
+      &:first-child
+        border-top none
     .self
       .photo_box, .comment_body
         float right
-      .comment_body
-        padding-right 7px
       .nickname
         text-align right
       .content
@@ -829,8 +833,6 @@ largeCell()
     .other
       .photo_box, .comment_body
         float left
-      .comment_body
-        padding-left 7px
       .nickname
         text-align left
       .time
@@ -840,7 +842,6 @@ largeCell()
       text-align center
     .comment_body
       width 80%
-      padding 0 10px
     .photo
       margin-top 4px
       width 40px
@@ -851,6 +852,7 @@ largeCell()
       overflow hidden
     .content
       color #999
+      word-break break-all
     .time
       color #CEC7C7
       font-size 10px
@@ -953,14 +955,15 @@ largeCell()
       background-color rgb(58, 189, 232)
       color white
       border 1px white solid
-      border-radius 16px
+      border-radius 0
     .comment_button
       width 20%
       background-color rgb(58, 189, 232)
       color white
       height 34px
       border 1px white solid
-      border-radius 16px
+      border-left none
+      border-radius 0
     input:-moz-placeholder
       color white
     ::-webkit-input-placeholder
