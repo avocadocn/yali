@@ -279,7 +279,7 @@ body {
   position: absolute;
   bottom: 10px;
   margin-bottom: 0;
-  max-width: 280px;
+  max-width: 250px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -310,6 +310,37 @@ body {
 }
 .now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo:last-child {
   margin-right: 0;
+}
+.new_campaign_item {
+  margin: 0;
+  padding: 0;
+}
+.new_campaign_item .item-options .button {
+  line-height: 56px;
+  width: 60px;
+}
+.new_campaign_item .item-content {
+  padding: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title {
+  padding: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_group_logo {
+  margin: 10px;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label {
+  padding: 10px 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label p {
+  padding: 0;
+  margin: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label .campaign_theme {
+  font-size: 16px;
+  color: #000;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label .new_campaign_time {
+  font-size: 12px;
 }
 .calendar {
   height: 100%;
@@ -790,11 +821,11 @@ body {
   padding: 0 10px;
   height: 150px;
 }
-.campaign_detail .head_title {
+.campaign_detail .head_title .title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 100%;
+  max-width: 90%;
 }
 .campaign_detail .detail_label {
   display: inline-block;

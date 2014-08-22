@@ -26,28 +26,19 @@
       </ion-slide>
     </ion-slide-box>
     <ion-list>
-      <ion-item class="campaign_item" ng-repeat="campaign in newCampaigns">
+      <ion-item class="new_campaign_item" ng-repeat="campaign in newCampaigns">
         <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
-          <div class="row campaign_line">
-            <p class="campaign_team_info">
-              <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
-              {{ campaign.owner_name }}
-            </p>
-          </div>
-          <div class="row campaign_line campaign_content">
-            <p>{{ campaign.theme }}</p>
-          </div>
-          <div class="row campaign_line campaign_time football">
-            <div class="table_wrap campaign_time_shadow">
-              <div class="table_cell">
-                <div>
-                  <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
-                  <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
-                </div>
-              </div>
+          <div class="row campaign_title">
+            <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
+            <div class="campaign_label">
+              <p class="campaign_theme"> {{ campaign.theme }} </p>
+              <p class="new_campaign_time">开始时间：{{campaign.start_time | date:"yyyy-MM-dd HH:mm"}} </p>
             </div>
           </div>
         </a>
+        <ion-option-button class="button-positive" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal(campaign)">
+          参加
+        </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>

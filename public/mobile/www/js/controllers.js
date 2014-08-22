@@ -29,9 +29,10 @@ angular.module('starter.controllers', [])
   $scope.login = Authorize.login($scope, $rootScope);
 })
 
-.controller('IndexCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, Campaign, Global, Authorize) {
+.controller('IndexCtrl', function($scope, $rootScope, $ionicSlideBoxDelegate, $ionicModal, Campaign, Global, Authorize) {
   Authorize.authorize();
   $scope.base_url = Global.base_url;
+  $rootScope.campaignReturnUri = '#/app/index';
   Campaign.getNowCampaignList(function(campaign_list) {
     $scope.nowCampaigns = campaign_list;
     $ionicSlideBoxDelegate.update();
@@ -39,7 +40,30 @@ angular.module('starter.controllers', [])
   Campaign.getNewCampaignList(function(campaign_list) {
     $scope.newCampaigns = campaign_list;
   });
-
+  var removeCampaign = function(id){
+    var _length = $scope.newCampaigns.length;
+    for(var i=0;i<_length;i++){
+      if($scope.newCampaigns[i]._id==id){
+        $scope.newCampaigns.splice(i,1);
+        break;
+      }
+    }
+  }
+  $scope.join = Campaign.join(removeCampaign);
+  $ionicModal.fromTemplateUrl('templates/partials/select_team.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.selectModal = modal;
+  });
+  $scope.openselectModal = function(campaign) {
+    $scope.campaign=campaign;
+    $scope.selectModal.show();
+  };
+  $scope.select = function(campaign_id,tid) {
+    $scope.join(campaign_id,tid);
+    $scope.selectModal.hide();
+  };
 })
 
 .controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global, Authorize) {
