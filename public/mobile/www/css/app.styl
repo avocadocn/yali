@@ -347,6 +347,7 @@ body
           margin-right 0
 .now_campaign_item
   .campaign_link
+    text-decoration none
     .campaign_title
       width 100%
       background-color #D8D8D8
@@ -355,6 +356,12 @@ body
       padding 0
       .campaign_group_logo
         margin 10px
+        width 36px
+        height 36px
+        vertical-align middle
+        border 1px solid white
+        border-radius 5px
+
       .campaign_label
         padding 10px 0
         position relative
@@ -403,10 +410,16 @@ body
   .item-content
     padding 0
     .campaign_link
+      text-decoration none
       .campaign_title
         padding 0
         .campaign_group_logo
           margin 10px
+          width 36px
+          height 36px
+          vertical-align middle
+          border 1px solid white
+          border-radius 5px
         .campaign_label
           padding 10px 0
           p
@@ -614,95 +627,59 @@ body
 
 
 // 活动列表样式
-.campaign
-  background-color campaignContentBgcolor
-  /* Firefox 3.6+ */
-  background -moz-linear-gradient(left, campaignBgcolor, campaignLinearColor 5%, campaignBgcolor, campaignLinearColor 95%, campaignBgcolor)
-  /* Safari 4-5, Chrome 1-9 */
-  background -webkit-gradient(linear, left top, right top, from(campaignBgcolor), color-stop(0.05, campaignLinearColor), color-stop(0.5, campaignBgcolor), color-stop(0.95, campaignLinearColor), to(campaignBgcolor))
-  /* Safari 5.1+, Chrome 10+ */
-  background -webkit-linear-gradient(left, campaignBgcolor, campaignLinearColor 5%, campaignBgcolor, campaignLinearColor 95%, campaignBgcolor)
-  /* Opera 11.10+ */
-  background -o-linear-gradient(left, campaignBgcolor, campaignLinearColor 5%, campaignBgcolor, campaignLinearColor 95%, campaignBgcolor)
-
 .campaign_item
-  background-color transparent
+  margin 0
   padding 0
+  border none
+  .item-options
+    .button
+      line-height 56px
+      width 60px
   .item-content
     padding 0
-    background-color transparent
-
-.campaign_link
-  text-decoration none
-
-.campaign_line
-  margin-top 0 !important
-  padding 0 10px
-  height campaignLineHeight
-
-.campaign_team_info
-  line-height campaignLineHeight
-  color #3abde8 !important
-
-.campaign_group_logo
-  width 36px
-  height 36px
-  vertical-align middle
-  border 1px solid white
-  border-radius 5px
-
-.campaign_content
-  background-color campaignContentBgcolor
-  /* Firefox 3.6+ */
-  /* -moz-radial-gradient( [ || ,]? [ || ,]? , [, ]* ) */
-  background -moz-radial-gradient(circle, campaignContentRadialColor, campaignContentBgcolor)
-  /* Safari 4-5, Chrome 1-9 */
-  background -webkit-gradient(radial, center center, 0, center center, 460, from(campaignContentRadialColor), to(campaignContentBgcolor))
-  /* Safari 5.1+, Chrome 10+ */
-  background -webkit-radial-gradient(circle, campaignContentRadialColor, campaignContentBgcolor)
-
-  p
-    line-height campaignLineHeight
-
-.campaign_time
-  padding-bottom 0
-  height 2.5 * campaignLineHeight
-
-  .campaign_time_shadow
-    margin-left auto
-    margin-right auto
-    width 40%
-    background-color rgba(0, 0, 0, 0.4)
-
-  p
-    color white
-
-  .campaign_time_remind
-    font-size 10px
     margin 0
-
-  .campaign_time_count
-    font-weight normal
-    font-size 24px
-
-// campaign type background image
-.football
-  background-size 100%
-  background-image url(../img/football.jpg)
-
-.campaign_operate_bar
-  background-color operateBarBgcolor
-
-.campaign_operate_button_container
-  padding 5px
-
-.campaign_operate_text
-  line-height 45px
-  color white !important
-
-.campaign_operate_share
-  text-align right
-
+  .campaign_link
+    text-decoration none
+    .campaign_title
+      width 100%
+      background-color #D8D8D8
+      height 56px
+      margin 0
+      padding 0
+      .campaign_group_logo
+        margin 10px
+        width 36px
+        height 36px
+        vertical-align middle
+        border 1px solid white
+        border-radius 5px
+      .campaign_label
+        padding 10px 0
+        position relative
+        color #404040
+        line-height 18px
+        font-size 14px
+        .now_campaign_now
+          margin-bottom 0
+        .campaign_theme
+          position absolute
+          bottom 10px
+          margin-bottom 0
+          max-width 250px
+          text-overflow ellipsis
+          white-space nowrap
+          overflow hidden
+    .campaign_time
+      width 100%
+      height 80px
+      text-align center
+      padding 10px
+      .campaign_time_remind
+        font-size 14px
+        color #404040
+      .campaign_time_count
+        font-size 24px
+        color black
 
 
 

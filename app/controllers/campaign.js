@@ -709,6 +709,7 @@ exports.getUserNowCampaignsForAppList = function(req, res) {
   var startTimeLimit = new Date();
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
+  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
   var options = {
     'cid': req.user.cid,
     '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
@@ -895,7 +896,7 @@ exports.getUserJoinedCampaignsForAppList = function(req, res) {
     'cid': req.user.cid,
     '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
     'active': true,
-    'end_time': { '$gt': Date.now() }
+    'start_time': { '$gt': Date.now() }
   };
 
   Campaign

@@ -33,23 +33,27 @@ angular.module('starter.controllers', [])
   Authorize.authorize();
   $scope.base_url = Global.base_url;
   $rootScope.campaignReturnUri = '#/app/index';
-  Campaign.getNowCampaignList(function(campaign_list) {
-    $scope.nowCampaigns = campaign_list;
-    $ionicSlideBoxDelegate.update();
-  });
-  Campaign.getNewCampaignList(function(campaign_list) {
-
-    Campaign.getNewFinishCampaign(function(newFinishCampaign) {
-      $scope.newCampaigns = campaign_list;
-      if($scope.newCampaigns.length>3){
-        $scope.newCampaigns.splice(3,0,newFinishCampaign);
-      }
-      else{
-        $scope.newCampaigns.push(newFinishCampaign);
-      }
+  var init = function(callback){
+    Campaign.getNowCampaignList(function(campaign_list) {
+      $scope.nowCampaigns = campaign_list;
+      $ionicSlideBoxDelegate.update();
     });
-  });
+    Campaign.getNewCampaignList(function(campaign_list) {
 
+      Campaign.getNewFinishCampaign(function(newFinishCampaign) {
+        $scope.newCampaigns = campaign_list;
+        if($scope.newCampaigns.length>3){
+          $scope.newCampaigns.splice(3,0,newFinishCampaign);
+        }
+        else{
+          $scope.newCampaigns.push(newFinishCampaign);
+        }
+        callback && callback();
+      });
+    });
+  }
+
+  init();
   var removeCampaign = function(id){
     var _length = $scope.newCampaigns.length;
     for(var i=0;i<_length;i++){
@@ -74,6 +78,11 @@ angular.module('starter.controllers', [])
     $scope.join(campaign_id,tid);
     $scope.selectModal.hide();
   };
+  $scope.doRefresh = function(){
+    init(function(){
+      $scope.$broadcast('scroll.refreshComplete');
+    });
+  }
 })
 
 .controller('CampaignListCtrl', function($scope, $rootScope, $ionicModal, Campaign, Global, Authorize) {
@@ -82,30 +91,43 @@ angular.module('starter.controllers', [])
   $scope.moreData =true;
   $scope.remind_text = '没有更多的活动了';
   $scope.base_url = Global.base_url;
-
+  $scope.doRefresh = function(){
+    $scope.moreData =true;
+    page = -1;
+    $scope.campaign_list = undefined;
+    $scope.loadMore();
+  }
   $rootScope.campaignReturnUri = '#/app/campaign_list';
 
   // Campaign.getUserCampaignsForList(page,function(campaign_list) {
   //   $scope.campaign_list = campaign_list;
   // });
 
-
-  $scope.join = Campaign.join(Campaign.getCampaign);
-  $scope.quit = Campaign.quit(Campaign.getCampaign);
-  $ionicModal.fromTemplateUrl('templates/partials/select_team.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.selectModal = modal;
-  });
-  $scope.openselectModal = function(campaign) {
-    $scope.campaign =campaign;
-    $scope.selectModal.show();
-  };
-  $scope.select = function(campaign_id,tid) {
-    $scope.join(campaign_id,tid);
-    $scope.selectModal.hide();
-  };
+  // var removeCampaign = function(id){
+  //   var _length = $scope.campaign_list.length;
+  //   for(var i=0;i<_length;i++){
+  //     if($scope.campaign_list[i]._id==id){
+  //       $scope.campaign_list.splice(i,1);
+  //       break;
+  //     }
+  //   }
+  // }
+  // $scope.join = Campaign.join(Campaign.getCampaign);
+  // $scope.quit = Campaign.quit(removeCampaign);
+  // $ionicModal.fromTemplateUrl('templates/partials/select_team.html', {
+  //   scope: $scope,
+  //   animation: 'slide-in-up'
+  // }).then(function(modal) {
+  //   $scope.selectModal = modal;
+  // });
+  // $scope.openselectModal = function(campaign) {
+  //   $scope.campaign =campaign;
+  //   $scope.selectModal.show();
+  // };
+  // $scope.select = function(campaign_id,tid) {
+  //   $scope.join(campaign_id,tid);
+  //   $scope.selectModal.hide();
+  // };
   $scope.loadMore = function(){
     page++;
     Campaign.getUserJoinedCampaignsForList(page,function(campaign_list) {
@@ -239,21 +261,6 @@ angular.module('starter.controllers', [])
     $scope.join(campaign_id,tid);
     $scope.selectModal.hide();
   };
-  //Cleanup the modal when we're done with it!
-  // $scope.$on('$destroy', function() {
-  //   $scope.modal.remove();
-  // });
-  // Execute action on hide modal
-  // $scope.$on('modal.hidden', function() {
-  //   // Execute action
-  // });
-  // // Execute action on remove modal
-  // $scope.$on('modal.removed', function() {
-  //   // Execute action
-  // });
-  $timeout( function() {
-    $ionicSlideBoxDelegate.update();
-  });
 })
 
 
@@ -640,6 +647,12 @@ angular.module('starter.controllers', [])
   $rootScope.campaignReturnUri = '#/app/timeline';
   $scope.moreData =true;
   var page = -1;
+  $scope.doRefresh = function(){
+    $scope.moreData =true;
+    page = -1;
+    $scope.time_lines = undefined;
+    $scope.loadMore();
+  }
   $scope.loadMore = function(){
     page++;
     Timeline.getUserTimeline(page,function(time_lines) {

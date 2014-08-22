@@ -1,9 +1,12 @@
 
-<ion-view title="首页">
+<ion-view title="动梨">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
+    <ion-refresher
+      on-refresh="doRefresh()">
+    </ion-refresher>
     <ion-slide-box does-continue=true auto-play=true>
       <ion-slide class="now_campaign_item" ng-repeat="nowCampaign in nowCampaigns">
         <a href="#/app/campaign_detail/{{ nowCampaign._id }}" class="campaign_link">
