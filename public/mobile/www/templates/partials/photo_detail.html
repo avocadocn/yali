@@ -1,5 +1,7 @@
-<ion-slide-box ng-click="closeModal()">
-  <ion-slide ng-repeat="photo in photos">
-    <img class="photo_detail_img" ng-src="{{ base_url + photo.uri +'/640/920'}}" />
+<ion-slide-box ng-click="closeModal()" class="photo_slide_modal">
+  <ion-slide ng-repeat="photo in photos" class="photo_slide_cell">
+    <div class="photo_wrap center_img_container">
+      <img class="photo img" ng-src="{{ base_url + photo.uri}}" />
+    </div>
   </ion-slide>
 </ion-slide-box>

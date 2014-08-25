@@ -37,6 +37,19 @@ body {
   text-align: center;
   vertical-align: middle;
 }
+.center_img_container {
+  display: block;
+  text-align: center;
+}
+.center_img_container:after {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  content: " ";
+}
+.center_img_container .img {
+  vertical-align: middle;
+}
 .col-10 {
   width: 10%;
 }
@@ -996,9 +1009,30 @@ body {
 .slider .slider-pager .slider-pager-page {
   width: 10px;
 }
-.slider-slide .photo_detail_img {
+.modal-wrapper {
+  height: 100%;
+}
+.photo_slide_modal {
+  height: 100%;
+  position: relative;
+}
+.photo_slide_modal .slider-slides {
+  height: 100%;
+  position: relative;
+}
+.photo_slide_modal .slider-slides .photo_slide_cell {
+  display: flex;
+  height: 100%;
+}
+.photo_slide_modal .slider-slides .photo_slide_cell .photo_wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+.photo_slide_modal .slider-slides .photo_slide_cell .photo_wrap .photo {
   max-width: 100%;
-  margin: 0;
+  max-height: 100%;
 }
 .campaign_members_wrap {
   position: relative;
