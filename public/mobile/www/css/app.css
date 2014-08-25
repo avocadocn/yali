@@ -40,6 +40,7 @@ body {
 .center_img_container {
   display: block;
   text-align: center;
+  white-space: nowrap;
 }
 .center_img_container:after {
   display: inline-block;
