@@ -136,6 +136,11 @@ body {
   background-color: #fff;
   z-index: 1000;
 }
+.more_data_text {
+  height: 20px;
+  text-align: center;
+  border-top: 1px solid #ededed;
+}
 .menu_wrap {
   background-color: #3abde8;
 }
@@ -301,7 +306,7 @@ body {
 }
 .now_campaign_item .campaign_link .campaign_title {
   width: 100%;
-  background-color: #d8d8d8;
+  background-color: #f0f0f0;
   height: 56px;
   margin: 0;
   padding: 0;
@@ -628,7 +633,7 @@ body {
 }
 .campaign_item .campaign_link .campaign_title {
   width: 100%;
-  background-color: #d8d8d8;
+  background-color: #f0f0f0;
   height: 56px;
   margin: 0;
   padding: 0;
@@ -671,7 +676,7 @@ body {
   color: #404040;
 }
 .campaign_item .campaign_link .campaign_time .campaign_time_count {
-  font-size: 24px;
+  font-size: 22px;
   color: #000;
 }
 .scroll-content .scroll {
@@ -1102,7 +1107,10 @@ body {
   border-radius: 0px;
   padding: 10px;
   color: #888;
-  border-bottom: 1px inset #ddd;
+  border-top: 1px solid #ededed;
+}
+.dl_timeline .timeline_element:first-child {
+  border: none;
 }
 .dl_timeline .timeline_element .timeline-left .timeline-logo {
   margin: 0 4px 5px 5px;

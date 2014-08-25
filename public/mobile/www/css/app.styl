@@ -179,7 +179,11 @@ body
   position absolute
   background-color white
   z-index 1000
-
+.more_data_text
+  //background-color #ededed
+  height 20px
+  text-align center
+  border-top 1px solid #ededed
 
 
 // menu
@@ -350,7 +354,7 @@ body
     text-decoration none
     .campaign_title
       width 100%
-      background-color #D8D8D8
+      background-color #F0F0F0
       height 56px
       margin 0
       padding 0
@@ -642,7 +646,7 @@ body
     text-decoration none
     .campaign_title
       width 100%
-      background-color #D8D8D8
+      background-color #F0F0F0
       height 56px
       margin 0
       padding 0
@@ -678,7 +682,7 @@ body
         font-size 14px
         color #404040
       .campaign_time_count
-        font-size 24px
+        font-size 22px
         color black
 
 
@@ -1039,7 +1043,9 @@ largeCell()
     border-radius 0px
     padding 10px
     color #888888
-    border-bottom 1px inset #ddd
+    border-top 1px solid #ededed
+    &:first-child
+      border none
     // &:before
     //   content ''
     //   position absolute

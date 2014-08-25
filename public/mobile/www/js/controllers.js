@@ -5,7 +5,7 @@ angular.module('starter.controllers', [])
   if (Authorize.authorize() === true) {
     $state.go('app.index');
   }
-
+  //ionic.Platform.showStatusBar(true);
   $scope.logout = Authorize.logout;
   $scope.base_url = Global.base_url;
   $scope.user = Global.user;
@@ -641,7 +641,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('TimelineCtrl', function($scope, $rootScope, Timeline, Authorize) {
+.controller('TimelineCtrl', function($scope, $rootScope, $ionicScrollDelegate, Timeline, Authorize) {
   Authorize.authorize();
 
   $rootScope.campaignReturnUri = '#/app/timeline';
@@ -651,9 +651,14 @@ angular.module('starter.controllers', [])
     $scope.moreData =true;
     page = -1;
     $scope.time_lines = undefined;
-    $scope.loadMore();
+    $scope.loadMore(function(){
+       $scope.$broadcast('scroll.refreshComplete');
+    });
   }
-  $scope.loadMore = function(){
+  $scope.loadMoreFinish = function(){
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  }
+  $scope.loadMore = function(callback){
     page++;
     Timeline.getUserTimeline(page,function(time_lines) {
       if($scope.time_lines ){
@@ -665,10 +670,14 @@ angular.module('starter.controllers', [])
       if(time_lines.length<20){
         $scope.moreData =false;
       }
-      $scope.$broadcast('scroll.infiniteScrollComplete');
+      callback();
     });
   }
-
+  $scope.rememberPosition = function(){
+    
+    console.log($ionicScrollDelegate.getScrollPosition());
+    return false;
+  }
 })
 
 

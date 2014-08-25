@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
-    <div class="head_title" ng-if="!moreData">没有更多的足迹</div>
+    <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore(loadMoreFinish)" distance="5%"></ion-infinite-scroll>
+    <div class="more_data_text" ng-if="!moreData">没有更多的足迹</div>
   </ion-content>
 </ion-view>

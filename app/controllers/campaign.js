@@ -310,7 +310,6 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
 
     var temp_start_time = new Date(campaign.start_time);
     var during = moment.duration(moment(now).diff(temp_start_time));
-
     var days = Math.abs(during.days());
     var hours = Math.abs(during.hours());
     var minutes = Math.abs(during.minutes());
@@ -320,20 +319,20 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     temp_start_time.setMinutes(minutes);
     temp_start_time.setSeconds(seconds);
 
-    if (days > 0) {
-      remind_text = '活动开始时间';
-      start_time_text = moment(temp_start_time).format('YYYY-MM-DD');
+    // 活动已开始
+    if (during >= 0) {
+      start_flag = 1;
+      remind_text = '活动已开始';
     } else {
-      // 活动已开始
-      if (during >= 0) {
-        start_flag = 1;
-        remind_text = '活动已开始';
-      } else {
-        // 活动未开始
-        start_flag = 0;
-        remind_text = '距活动开始';
+      // 活动未开始
+      start_flag = 0;
+      remind_text = '距离活动开始还有';
+      if(days>30){
+        start_time_text = moment(temp_start_time).format('YYYY-MM-DD');
       }
-      start_time_text = moment(temp_start_time).format('HH:mm:ss');
+      else {
+        start_time_text = (days ? days + '天' : '' )+ (hours ? hours + '小时' : '') + minutes + '分';
+      }
     }
 
 
@@ -896,12 +895,12 @@ exports.getUserJoinedCampaignsForAppList = function(req, res) {
     'cid': req.user.cid,
     '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
     'active': true,
-    'start_time': { '$gt': Date.now() }
+    'end_time': { '$gt': Date.now() }
   };
 
   Campaign
   .find(options)
-  .sort('-start_time').skip(blockSize*req.params.page).limit(blockSize)
+  .sort('start_time').skip(blockSize*req.params.page).limit(blockSize)
   .populate('team')
   .populate('cid')
   .exec()
