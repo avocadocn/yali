@@ -850,6 +850,18 @@ largeCell()
   .placeholder
     height 44px
 
+  .detail_list
+    .item
+      padding 10px
+      .title
+        display block
+        float left
+      .content
+        display block
+        float right
+    .intro_item
+      border-bottom none
+
 .join_box
   width 64px
   height 58px
@@ -871,10 +883,10 @@ largeCell()
     .slider-pager-page
       width 10px
 //photo detail
-.photo_detail_img
-  width 100%
-  height 100%
-  margin 0
+.slider-slide
+  .photo_detail_img
+    max-width 100%
+    margin 0
 // members
 .campaign_members_wrap
   position relative
@@ -945,50 +957,50 @@ largeCell()
       color white
     ::-webkit-input-placeholder
       color white
-.campaign_detail
-  .campaign_time
-    padding 0 10px
-    height 150px
-  .head_title
-    .title
-      text-overflow ellipsis
-      white-space nowrap
-      overflow hidden
-      max-width 90%
-  .detail_label
-    display inline-block
-    width 20%
-    float left
-    margin 0 0 10px
-  .detail_detail
-    display inline-block
-    width 80%
-    float left
-    margin 0 0 10px
-  .campaign_time_shadow
-    text-align center
-    width 66.66666667%
+// .campaign_detail
+//   .campaign_time
+//     padding 0 10px
+//     height 150px
+//   .head_title
+//     .title
+//       text-overflow ellipsis
+//       white-space nowrap
+//       overflow hidden
+//       max-width 90%
+//   .detail_label
+//     display inline-block
+//     width 20%
+//     float left
+//     margin 0 0 10px
+//   .detail_detail
+//     display inline-block
+//     width 80%
+//     float left
+//     margin 0 0 10px
+//   .campaign_time_shadow
+//     text-align center
+//     width 66.66666667%
 
-    .campaign_time_content
-      margin 13px 0
+//     .campaign_time_content
+//       margin 13px 0
 
-    .campaign_time_remind
-      margin 0
+//     .campaign_time_remind
+//       margin 0
 
-    .campaign_time_count
-      margin 0
+//     .campaign_time_count
+//       margin 0
 
-    .campaign_time_operator
-      margin-top 30px
+//     .campaign_time_operator
+//       margin-top 30px
 
-      .btn_operator
-        width 85px
-        height 25px
-        line-height 25px
-        font-size 11px
+//       .btn_operator
+//         width 85px
+//         height 25px
+//         line-height 25px
+//         font-size 11px
 
-      .btn_good
-        margin-left 13px
+//       .btn_good
+//         margin-left 13px
 
 .campaign_location
   .location
