@@ -538,7 +538,7 @@ body
       position relative
       float left
       width (100 / 7)%
-      height 60px
+      height 53px
       border-top solid 1px rgb(220, 220, 220)
 
       .calendar_date
@@ -585,11 +585,11 @@ body
     .calendar_campaign
       display block
       position relative
-      margin 5px 0
       height 62px
       color black
-      border solid 1px rgb(0, 152, 227)
-      background-color rgb(206, 239, 254)
+      border-top solid 1px #ddd
+      &:first-child
+        border-top none
 
       .logo
         float left
@@ -620,6 +620,7 @@ body
           bottom 15px
           right 15px
           color rgb(0,152,227)
+          background-color rgb(206, 239, 254)
           border solid 1px rgb(0, 152, 227)
           padding 0 6px
           height 30px
@@ -866,6 +867,10 @@ largeCell()
     .intro_item
       border-bottom none
 
+  .location
+    height 260px
+    width 300px
+
 .join_box
   width 64px
   height 58px
@@ -961,55 +966,7 @@ largeCell()
       color white
     ::-webkit-input-placeholder
       color white
-// .campaign_detail
-//   .campaign_time
-//     padding 0 10px
-//     height 150px
-//   .head_title
-//     .title
-//       text-overflow ellipsis
-//       white-space nowrap
-//       overflow hidden
-//       max-width 90%
-//   .detail_label
-//     display inline-block
-//     width 20%
-//     float left
-//     margin 0 0 10px
-//   .detail_detail
-//     display inline-block
-//     width 80%
-//     float left
-//     margin 0 0 10px
-//   .campaign_time_shadow
-//     text-align center
-//     width 66.66666667%
 
-//     .campaign_time_content
-//       margin 13px 0
-
-//     .campaign_time_remind
-//       margin 0
-
-//     .campaign_time_count
-//       margin 0
-
-//     .campaign_time_operator
-//       margin-top 30px
-
-//       .btn_operator
-//         width 85px
-//         height 25px
-//         line-height 25px
-//         font-size 11px
-
-//       .btn_good
-//         margin-left 13px
-
-.campaign_location
-  .location
-    height 260px
-    width 290px
 //动态页
 .dynamic_list
   white-space normal

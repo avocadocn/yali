@@ -396,6 +396,7 @@ angular.module('starter.controllers', [])
       campaign.format_end_time = moment(campaign.end_time).calendar();
     });
     $scope.current_month = month_data;
+
     return month_data;
   };
 
