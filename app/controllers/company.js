@@ -1387,54 +1387,48 @@ exports.sponsor = function (req, res) {
         }
     });
 
-    fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
+    photo_album.save(function(err) {
         if (err) {
             console.log(err);
             return res.send({'result':0,'msg':'活动创建失败'});
         }
-
-        photo_album.save(function(err) {
+        campaign.photo_album = photo_album._id;
+        campaign.save(function(err) {
             if (err) {
                 console.log(err);
-                return res.send({'result':0,'msg':'活动创建失败'});
+                //检查信息是否重复
+                switch (err.code) {
+                    case 11000:
+                    break;
+                case 11001:
+                    res.status(400).send('该活动已经存在!');
+                    break;
+                default:
+                    break;
+                }
+                return;
+            }else{
+                res.send({'result':1,'msg':'活动创建成功'});
             }
-            campaign.photo_album = photo_album._id;
-            campaign.save(function(err) {
+
+            //生成动态消息
+
+            var groupMessage = new GroupMessage();
+            groupMessage.message_type = 0;
+            groupMessage.company = {
+                cid : cid,
+                name: cname,
+                logo: req.user.info.logo
+            };
+            groupMessage.campaign = campaign._id;
+            groupMessage.save(function(err) {
                 if (err) {
                     console.log(err);
-                    //检查信息是否重复
-                    switch (err.code) {
-                        case 11000:
-                        break;
-                    case 11001:
-                        res.status(400).send('该活动已经存在!');
-                        break;
-                    default:
-                        break;
-                    }
-                    return;
-                }else{
-                    res.send({'result':1,'msg':'活动创建成功'});
                 }
-
-                //生成动态消息
-
-                var groupMessage = new GroupMessage();
-                groupMessage.message_type = 0;
-                groupMessage.company = {
-                    cid : cid,
-                    name: cname,
-                    logo: req.user.info.logo
-                };
-                groupMessage.campaign = campaign._id;
-                groupMessage.save(function(err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
             });
         });
     });
+
 };
 
 exports.changePassword = function(req, res){

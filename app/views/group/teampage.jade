@@ -170,12 +170,12 @@ block aside
         if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
           each photo_album in photo_album_thumbnails
             a.thumbnail_cell(href="/photoAlbum/#{photo_album._id}/detailView")
-              img.thumbnail_img(src="#{photo_album.uri}")
+              img.thumbnail_img(src="#{photo_album.uri}/120/120")
               p.thumbnail_name.text-center= photo_album.name
         else
           each photo_album in photo_album_thumbnails
             span.thumbnail_cell
-              img.thumbnail_img(src="#{photo_album.uri}")
+              img.thumbnail_img(src="#{photo_album.uri}/120/120")
               p.thumbnail_name.text-center= photo_album.name
 
 

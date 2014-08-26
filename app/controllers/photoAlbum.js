@@ -18,6 +18,7 @@ var gm = require('gm');
 var async = require('async');
 var moment = require('moment');
 var mime = require('mime');
+var mkdirp = require('mkdirp');
 
 // custom
 var config = require('../../config/config');
@@ -182,17 +183,18 @@ var sortByClick = function(a, b) {
 };
 
 
-// 一个相册的缩略图
+// 一个相册的第一张未删除的图片的uri, 没有则返回默认图
 var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   var first_photo;
-  for (var i = 0; i < photo_album.photos.length; i++) {
+  for (var i = photo_album.photos.length - 1; i >= 0; i--) {
+  //for (var i = 0; i < photo_album.photos.length; i++) {
     if (photo_album.photos[i].hidden === false) {
       first_photo = photo_album.photos[i];
       break;
     }
   }
   if (first_photo) {
-    return first_photo.thumbnail_uri;
+    return first_photo.uri;
   } else {
     return '/img/icons/default_photo_album.png';
   }
@@ -553,33 +555,26 @@ exports.createPhotoAlbum = function(req, res) {
     photo_album.update_user = photo_album.create_user;
   }
 
-  fs.mkdir(path.join(config.root, '/public/img/photo_album/', photo_album._id.toString()),
-    function(err) {
-      if (err) {
-        return res.send({ result: 0, msg: '创建相册失败' });
-      } else {
-        photo_album.save(function(err) {
-          if (err) {
-            console.log(err);
-            return res.send({ result: 0, msg: '创建相册失败' });
-          } else {
+  photo_album.save(function(err) {
+    if (err) {
+      console.log(err);
+      return res.send({ result: 0, msg: '创建相册失败' });
+    } else {
 
-            req.model.photo_album_list.push(photo_album._id);
-            req.model.save(function(err) {
-              if (err) {
-                console.log(err);
-                return res.send({ result: 0, msg: '创建相册失败' });
-              }
-              else {
-                delete req.model;
-                delete req.owner_model;
-                return res.send({ result: 1, msg: '创建相册成功' });
-              }
-            });
+      req.model.photo_album_list.push(photo_album._id);
+      req.model.save(function(err) {
+        if (err) {
+          console.log(err);
+          return res.send({ result: 0, msg: '创建相册失败' });
+        }
+        else {
+          delete req.model;
+          delete req.owner_model;
+          return res.send({ result: 1, msg: '创建相册成功' });
+        }
+      });
 
-          }
-        });
-      }
+    }
   });
 
 
@@ -668,11 +663,6 @@ exports.createPhoto = function(req, res) {
   var photos = req.files.photos;
   if (validator.isAlphanumeric(pa_id) && (photos.size > 0 || photos.length > 0)) {
 
-    var uri_dir = path.join('/img/photo_album/', pa_id);
-    if (photos.size) {
-      photos = [photos];
-    }
-
     PhotoAlbum
     .findOne({ _id: pa_id })
     .populate('owner.teams')
@@ -684,18 +674,62 @@ exports.createPhoto = function(req, res) {
         return;
       }
 
+      var cid;
+      if (req.user.provider === 'company') {
+        cid = req.user._id.toString();
+      } else if (req.user.provider === 'user') {
+        cid = req.user.cid.toString();
+      }
+
+      var now = new Date();
+      var date_dir_name = now.getFullYear().toString() + '-' + (now.getMonth() + 1);
+
+      var parent_dir = path.join(config.root, 'public');
+      var uri_dir = path.join('/img/photo_album', date_dir_name, cid);
+      var system_dir = path.join(parent_dir, uri_dir);
+
+      if (!fs.existsSync(system_dir)) {
+        mkdirp.sync(system_dir);
+      }
+
+      if (photos.size) {
+        photos = [photos];
+      }
+
+      var upload_user;
+      if (req.user.provider === 'company') {
+        upload_user = {
+          _id: req.user._id,
+          name: req.user.info.name,
+          type: 'hr'
+        };
+      } else if (req.user.provider === 'user' ) {
+        upload_user = {
+          _id: req.user._id,
+          name: req.user.nickname,
+          type: 'user'
+        };
+      }
+
+      var failed_count = 0;
       var i = 0;
 
       async.whilst(
         function() { return i < photos.length; },
 
         function(whilstCallback) {
-          if (photos[i].type.indexOf('image') === -1) {
-            fs.unlink(photos[i].path, function(err) {
+
+          var removeErrPhoto = function(photo) {
+            fs.unlink(photo.path, function(err) {
               if (err) console.log(err);
+              failed_count++;
               i++;
               whilstCallback();
             });
+          };
+
+          if (photos[i].type.indexOf('image') === -1) {
+            removeErrPhoto(photos[i]);
             return;
           }
           var ext = mime.extension(photos[i].type);
@@ -704,100 +738,30 @@ exports.createPhoto = function(req, res) {
           var photo = {};
           try {
             gm(photos[i].path)
-            .write(path.join(config.root, 'public', uri_dir, photo_name),
+            .write(path.join(system_dir, photo_name),
               function(err) {
                 if (err) {
-                  whilstCallback(err);
+                  removeErrPhoto(photos[i]);
+                  return;
                 } else {
-                  gm(photos[i].path)
-                  .size(function(err, size) {
-                    if (err) {
-                      whilstCallback(err);
-                    } else {
-                      var thumbnail_width = 200;
-                      var thumbnail_height = thumbnail_width;
-                      var crop_width = size.width > size.height ? size.height : size.width;
-                      var crop_height = crop_width;
-                      var crop_x = (size.width - crop_width) / 2;
-                      var crop_y = (size.height - crop_height) / 2;
 
-                      async.waterfall([
-                        function(waterfallCallback) {
-                          var handle;
-                          if (size.width > size.height) {
-                            handle = gm(photos[i].path).resize(200);
-                          } else {
-                            handle = gm(photos[i].path).resize(null, 200);
-                          }
-                          handle.write(path.join(config.root, 'public', uri_dir, 'zoom' + photo_name), function(err) {
-                            if (err) {
-                              return waterfallCallback(err);
-                            }
-                            waterfallCallback(null, path.join(uri_dir, 'zoom' + photo_name));
-                          });
-                        },
+                  var photo = {
+                    uri: path.join(uri_dir, photo_name),
+                    name: photos[i].name,
+                    upload_user: upload_user
+                  };
+                  photo_album.photos.push(photo);
+                  photo_album.photo_count += 1;
 
-                        function(zoom_uri, waterfallCallback) {
-                          gm(photos[i].path)
-                          .crop(crop_width, crop_height, crop_x, crop_y)
-                          .resize(thumbnail_width, thumbnail_height)
-                          .write(path.join(config.root, 'public', uri_dir, 'thumbnail' + photo_name),
-                            function(err) {
-                              var photo = {
-                                uri: path.join(uri_dir, photo_name),
-                                thumbnail_uri: path.join(uri_dir, 'thumbnail' + photo_name),
-                                zoom_uri: zoom_uri,
-                                name: photos[i].name
-                              };
-                              if (req.user.provider === 'company') {
-                                photo.upload_user = {
-                                  _id: req.user._id,
-                                  name: req.user.info.name,
-                                  type: 'hr'
-                                };
-                              } else if (req.user.provider === 'user' ) {
-                                photo.upload_user = {
-                                  _id: req.user._id,
-                                  name: req.user.nickname,
-                                  type: 'user'
-                                };
-                              }
-                              photo_album.update_date = Date.now();
-                              photo_album.photos.push(photo);
-                              photo_album.photo_count += 1;
-                              photo_album.update_user = photo.upload_user;
-                              photo_album.save(function(err) {
-                                if (err) waterfallCallback(err);
-                                else {
-                                  fs.unlink(photos[i].path, function(err) {
-                                    if (err) waterfallCallback(err);
-                                    else {
-                                      waterfallCallback();
-                                    }
-                                  });
-                                }
-                              });
-                            }
-                          );
-                        }
-                      ], function(err, result) {
-                        if (err) {
-                          console.log(err)
-                          return res.send({ result: 0, msg: '上传照片失败，请重试。' });
-                        }
-                        i++;
-                        whilstCallback();
-                      });
-
-                    }
-                  });
-
-
+                  i++;
+                  whilstCallback();
                 }
-            });
+              }
+            );
           } catch (e) {
             console.log(e);
-            return res.send({ result: 0, msg: '上传照片失败，请重试。' });
+            removeErrPhoto(photos[i]);
+            return;
           }
 
         },
@@ -807,7 +771,28 @@ exports.createPhoto = function(req, res) {
             console.log(err);
             return res.send({ result: 0, msg: '上传照片失败，请重试。' });
           } else {
-            return res.send({ result: 1, msg: '添加照片成功' });
+            photo_album.update_user = upload_user;
+            photo_album.update_date = Date.now();
+            photo_album.save(function(err) {
+              if (err) {
+                console.log(err);
+                return res.send({ result: 0, msg: '上传照片失败，请重试。' });
+              } else {
+                var result;
+                var msg;
+                if (failed_count > 0 && failed_count < photos.length) {
+                  result = 0;
+                  msg = '部分照片上传失败，请重试。';
+                } else if (failed_count === photos.length) {
+                  result = 0;
+                  msg = '上传照片失败，请重试。';
+                } else {
+                  result = 1;
+                  msg = '上传照片成功';
+                }
+                return res.send({ result: result, msg: msg });
+              }
+            });
           }
         }
       );
