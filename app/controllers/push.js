@@ -115,7 +115,7 @@ exports.pushTest = function(req,res){
                                   ', error msg: ' + error_msg +
                                   ', request id: ' + request_id);
           }
-
+          console.log(jsonObj);
           return _res.send(jsonObj);
       });
   });
