@@ -182,7 +182,7 @@ exports.teampage = function(req, res) {
       teamMoreInfo.photo_album_thumbnails = photo_album_thumbnails;
 
 
-      Campaign.find({'team':req.params.teamId})
+      Campaign.find({'team':req.params.teamId, 'active':true})
         .where('end_time').gt(new Date())
         .sort('-create_time')
         .limit(1)

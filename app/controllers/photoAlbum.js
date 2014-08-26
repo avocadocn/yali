@@ -1260,7 +1260,6 @@ exports.readPhotoList = function(req, res) {
                 _id: photo._id,
                 uri: photo.uri,
                 thumbnail_uri: photo.thumbnail_uri,
-                comments: photo.comments,
                 tags: photo.tags,
                 upload_user: photo.upload_user,
                 upload_date: photo.upload_date

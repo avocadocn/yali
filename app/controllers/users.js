@@ -41,7 +41,7 @@ var encrypt = require('../middlewares/encrypt'),
 
 
 
-
+var blockSize = 20;
 
 /**
  * Show login form
@@ -1288,6 +1288,8 @@ exports.getTimelineForApp = function(req,res){
   .find({ 'active' : true, 'finish' : true, '$or' : [{'member.uid' : uid}, {'camp.member.uid' : uid }]})
   .where('end_time').lt(new Date())
   .sort('-start_time')
+  .skip(req.params.page*blockSize)
+  .limit(blockSize)
   .populate('team').populate('cid').populate('photo_album')
   .exec()
   .then(function(campaigns) {
@@ -1359,3 +1361,49 @@ exports.applyToDepartment = function(req,res){
 }
 
 
+//手机app登录更新用户设备信息,推送相关信息等等
+var deviceRegister = function(device_info){
+  User.findOne({'_id':req.user._id},function (err,user){
+    if(err || !user){
+      //TODO 生成错误日志
+      return res.send({'result':0,'msg':'USER_DEVICE_ERROR_USERFETCHFAILED'});
+    }else{
+      //TODO 登录信息录入后台统计
+      var device = user.device;
+      var find = false;
+      if(device){
+        for(var i = 0 ; i < device.length; i ++){
+          if(device[i].platform == device_info.platform){
+            find = true;
+            device[i].version = device_info.version;
+            device[i].device_id = device_info.device_id;
+            device[i].update_date = new Date();
+            if(device_info.user_id){
+              device[i].user_id = device_info.user_id;
+            }
+            break;
+          }
+        }
+        if(!find){
+          user.device.push({
+            platform:device_info.platform,
+            version:device_info.version,
+            device_id:device_info.device_id,
+            user_id:device_info.user_id,                //只有Android的百度云推送才会用到
+            update_date:new Date()
+          });
+        }
+      }else{
+        user.device = [];
+        user.device.push({
+          platform:device_info.platform,
+            version:device_info.version,
+            device_id:device_info.device_id,
+            user_id:device_info.user_id,                //只有Android的百度云推送才会用到
+            update_date:new Date()
+        });
+      }
+      return res.send({'result':1,'msg':'USER_DEVICE_UPDATE_SUCCESS'});
+    }
+  })
+}

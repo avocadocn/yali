@@ -1,6 +1,6 @@
 // Ionic Starter App
 
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngTouch', 'ionic.contrib.ui.cards'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filter'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -26,7 +26,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       templateUrl: 'templates/login.html',
       controller: 'LoginCtrl'
     })
-
+    .state('app.index', {
+      url: '/index',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/index.html',
+          controller: 'IndexCtrl'
+        }
+      }
+    })
     .state('app.campaignList', {
       url: '/campaign_list',
       views: {

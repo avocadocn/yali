@@ -1,47 +1,96 @@
-<ion-view title="活动详情">
+<ion-view title="{{campaign.theme}}">
 
   <ion-nav-buttons side="left">
     <a class="button icon-left ion-chevron-left button-clear button-dark" href="{{ campaignReturnUri }}">返回</a>
   </ion-nav-buttons>
 
   <ion-tabs tabs-type="tabs-icon-top tabs-positive" class="donler_tabs donler_tabs_bottom">
-    
+
     <ion-tab title="详情" icon="ion-ios7-information-outline">
       <ion-content has-header="true" class="wrap campaign_detail">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
-        </div>
-        <div class="padding">
-          <div class="row campaign_time football">
-            <div class="campaign_time_shadow">
-              <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
-              <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
-              <div ng-if="campaign.active && !campaign.finish" class="campaign_time_operator">
-                <button class="btn_radius btn_darkred btn_operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal()">报名参加</button>
-                <button class="btn_radius btn_darkred btn_operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出活动</button>
-                <!-- <button ng-if="campaign.campaign_type>=3" class="btn_radius btn_blue btn_operator btn_good">点个赞</button> -->
-              </div>
-            </div>
+        <div class="list detail_list">
+          <div class="item item-divider">
+            主题: {{campaign.theme}}
           </div>
-          <p>结束时间:{{campaign.end_time | date:"yyyy-MM-dd HH:mm"}}</p>
-          <p>报名截止时间:{{campaign.deadline | date:"yyyy-MM-dd HH:mm"}}</p>
-          <p>
-            <span class="detail_label">活动地点:</span>
-            <span class="detail_detail">{{campaign.location.name}}</span>
-            </p>
-          <p>
-            <span class="detail_label">活动介绍:</span>
-            <span class="detail_detail" ng-bind-html="campaign.content"></span>
-          </p>
+          <div class="item clearfix">
+            <span class="title">开始时间:</span>
+            <span class="content">{{campaign.start_time | date:"yyyy-MM-dd HH:mm"}}</span>
+          </div>
+          <div class="item clearfix">
+            <span class="title">结束时间:</span>
+            <span class="content">{{campaign.end_time | date:"yyyy-MM-dd HH:mm"}}</span>
+          </div>
+          <div class="item clearfix">
+            <span class="title">报名截止:</span>
+            <span class="content">{{campaign.deadline | date:"yyyy-MM-dd HH:mm"}}</span>
+          </div>
+          <div class="item item-divider">
+            活动介绍:
+          </div>
+          <div class="item intro_item">
+            <div ng-bind-html="campaign.content"></div>
+          </div>
         </div>
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="参加人员" icon="ion-ios7-person-outline">
+    <ion-tab title="评论" icon="ion-chatbubble">
+      <div class="comment_edit" ng-if="publishing">
+        <form name="comment_form">
+          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
+          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
+        </form>
+      </div>
       <ion-content has-header="true" class="wrap campaign_detail">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
+        <div class="simple_title padding clearfix">
+          <div class="title">活动相册</div>
+          <form id="upload_form" class="upload_form pull-right" name="upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
+            <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*;capture=camera" ng-model="upload_file" valid-file required/>
+            <button class="button icon ion-plus upload_button operator_button"></button>
+          </form>
         </div>
+        <div id="photo_list" class="photo_list" ng-if="photos.length > 0">
+          <ion-slide-box on-slide-changed="slideChange($index)" class="photo_slide_box clearfix">
+            <ion-slide ng-repeat="photo_page in photos_view" class="photo_box" length="photos_view.length" hide-pager>
+              <div class="inner_{{photo_page.length}} clearfix">
+                <div ng-repeat="photo in photo_page" class="cell_{{$index+1}}" ng-click="openModal(photo.index)">
+                  <img class="photo" ng-src="{{ base_url + photo.uri +'/145/145'}}" thumbnail-photo/>
+                </div>
+              </div>
+            </ion-slide>
+          </ion-slide-box>
+        </div>
+        <div class="padding">
+          <p ng-if="photos.length === 0">目前还没有活动照片，快来上传吧</p>
+        </div>
+
+        <div class="padding clearfix simple_title">
+          <div class="title">评论</div>
+          <button class="button icon ion-plus pull-right operator_button" ng-click="togglePublishing()"></button>
+        </div>
+        <div ng-if="comments.length > 0" class="comments">
+          <div ng-repeat="comment in comments" ng-class="{'self':comment.poster._id==user_id, 'other':comment.poster._id!=user_id}" class="clearfix">
+            <div class="photo_box">
+              <img ng-src="{{base_url + comment.poster.photo}}" class="photo img_user"/>
+            </div>
+            <div class="comment_body">
+              <div class="nickname">{{comment.poster.nickname}}</div>
+              <div class="clearfix">
+                <div class="content">{{comment.content}}</div>
+              </div>
+              <div class="time">{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="padding">
+          <p ng-if="comments.length === 0">目前没有评论，快来抢沙发吧</p>
+        </div>
+        <div class="placeholder" ng-if="publishing"></div>
+      </ion-content>
+    </ion-tab>
+
+    <ion-tab title="成员" icon="ion-ios7-person-outline">
+      <ion-content has-header="true" class="wrap campaign_detail">
         <div class="padding">
           <div ng-if="campaign.campaign_type<=3" class="campaign_members_wrap content clearfix">
             <!-- href="#/app/other_user_info/{{ user.uid }}" -->
@@ -75,100 +124,27 @@
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="评论" icon="ion-chatbubble">
-      <div class="comment_edit">
-<!--         <span class="comment_add_button" ng-show="!viewFormFlag" ng-animate="'reverse'" ng-click="viewCommentForm()" ></span> -->
-<!--         <form ng-show="viewFormFlag" ng-animate="'slide-left-right-ios7'" name="comment_form">
-          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
-          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
-        </form> -->
-        <form name="comment_form">
-          <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
-          <button class="comment_button" ng-click="publishComment()" ng-disabled="comment_form.$invalid"> 发表</button>
-        </form> 
-      </div>
+    <ion-tab title="地点" icon="ion-ios7-location-outline">
       <ion-content has-header="true" class="wrap campaign_detail">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
-        </div>
-        <div  ng-if="comments.length > 0" class="comments">
-          <div ng-repeat="comment in comments" class="comment">
-              <div ng-class="{'comment_left':comment.poster._id!=user_id,'comment_right':comment.poster._id==user_id}">
-                <img ng-src="{{base_url + comment.poster.photo}}" class="comment_photo img_user"/>
-              </div>
-              <div ng-class="{'comment_right':comment.poster._id!=user_id,'comment_left':comment.poster._id==user_id}">
-                <div class="comment_name">
-                  <span class="">{{comment.poster.nickname}}</span>
-                </div>
-                <div class="comment_content">
-                  <p>{{comment.content}}</p>
-                </div>
-                <div class="comment_time">
-                  <p>{{comment.create_date | date:'yyyy-MM-dd HH:mm'}}</p>
-                </div>
-              </div>
-          </div>
-        </div>
-        <div>
-          <p ng-if="comments.length == 0">目前没有评论，快来抢沙发吧</p>
-        </div>
-      </ion-content>
-    </ion-tab>
-
-    <ion-tab title="活动照片" icon="ion-ios7-camera-outline">
-      <ion-content has-header="true" class="wrap campaign_detail campaign_photos">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
-        </div>
-        <div class="loading_div" ng-if="loading.status">
-        </div>
         <div class="padding">
-          <div id="photo_list" class="campaign_photos_wrap">
-            <ion-slide-box on-slide-changed="slideChange($index)">
-              <ion-slide ng-repeat="photo_page in photos_view">
-                <div  ng-repeat="photo in photo_page" class="campaign_photo_panel">
-                  <div class="campaign_photo_border" ng-click="openModal(photo.index)">
-                    <div class="campaign_photo_img_wrap">
-                      <img class="campaign_photo" ng-src="{{ base_url + photo.uri +'/360/240'}}" thumbnail-photo-directive/>
-                    </div>
-                    <div class="campaign_photo_ori_button_wrap">
-                      <button class="icon ion-search campaign_photo_ori_button"></button>
-                    </div>
-    <!--                 <p class="campaign_upload_user">{{ photo.upload_user.name }}</p>
-                    <p class="campaign_upload_date">上传于：{{ photo.upload_date | date:'yyyy-M-dd HH:mm' }}</p> -->
-        <!--             <button ng-click="deletePhoto(photo.pid)">删除照片</button>
-                    <input type="text" ng-model="comment"/>
-                    <button ng-click="commentPhoto(photo.pid, comment)">添加备注</button> -->
-                  </div>
-                </div>
-              </ion-slide>
-            </ion-slide-box>
-          </div>
-        </div>
-        <form id="upload_form" name="upload_form" class="campaing_upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
-          <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*" ng-model="upload_file" valid-file required/>
-          <span for="upload_input" class="upload_input_view">上传照片</span>
-        </form>
-      </ion-content>
-    </ion-tab>
-
-    <ion-tab title="活动地点" icon="ion-ios7-location-outline">
-      <ion-content has-header="true" class="wrap campaign_detail">
-        <div class="head_title">
-          <div class="title">{{ campaign.theme }}</div>
-        </div>
-        <div class="padding campaign_location">
           <p>活动地点</p>
-          <a ng-if="campaign.location.coordinates.length==2" href="http://api.map.baidu.com/marker?location={{campaign.location.coordinates[1]}},{{campaign.location.coordinates[0]}}&title=活动地点&content={{campaign.location.name}}&output=html" target="_blank">
-            <img ng-if="campaign.location.coordinates.length==2" class="location" ng-src="http://api.map.baidu.com/staticimage?width=580&height=520&center={{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&zoom=15&markers={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&markerStyles=m,A,0xff0000&labels={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&labelStyles={{campaign.location.name}},1,14,0xffffff,0x000fff,1"/>
+          <a ng-if="campaign.location.coordinates.length==2" href="http://mo.amap.com/?q={{campaign.location.coordinates[1]}},{{campaign.location.coordinates[0]}}&name={{campaign.location.name}}" target="_blank">
+<!--             <img ng-if="campaign.location.coordinates.length==2" class="location" ng-src="http://api.map.baidu.com/staticimage?width=580&height=520&center={{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&zoom=15&markers={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&markerStyles=m,A,0xff0000&labels={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&labelStyles={{campaign.location.name}},1,14,0xffffff,0x000fff,1"/> -->
+          <img ng-if="campaign.location.coordinates.length==2" class="location" ng-src="http://restapi.amap.com/v3/staticmap?location={{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&zoom=15&size=600*520&markers=mid,,A:{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&labels={{campaign.location.name | nospace}},2,0,12,0xffffff,0x3498db:{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044"/>
           </a>
           <p ng-if="campaign.location.coordinates.length==0">{{campaign.location.name}}</p>
         </div>
       </ion-content>
     </ion-tab>
 
+    <ion-tab title="参加" icon="ion-ios7-location-outline" ng-if="!campaign.finish"></ion-tab>
+
   </ion-tabs>
 
+  <div class="join_box" ng-if="!campaign.finish">
+    <div class="operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal()">参加</div>
+    <div class="operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出</div>
+  </div>
 
 </ion-view>
 

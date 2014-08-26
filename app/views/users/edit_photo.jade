@@ -15,8 +15,10 @@ block contentExt
           input#return_uri(type="hidden" value="/users/home/#{uid}#/personal/#{uid}")
         .row.margin_top_20
           .col-xs-4.col-sm-4
-            #jcrop_container.img_frame
-              img.jcrop_img.img-responsive(src="#{photo}")
+            //- img_container是为了修复firefox的bug
+            .img_container
+              .img_frame
+                img#jcrop_img.jcrop_img.img-responsive(src="#{photo}")
           .col-xs-8.col-sm-8
             p.high_light_title.margin_top_20 从电脑中选择你喜欢的照片
             p.text 你可以上传JPG、JPEG、GIF、PNG或BMP文件

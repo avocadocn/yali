@@ -8,9 +8,9 @@ angular.module('starter.services', [])
 .factory('Global', function() {
   //var base_url = window.location.origin;
   var base_url = "http://www.donler.com";
+  //var base_url = "http://www.55yali.com";
   var _user = {};
   var last_date;
-
   return {
     base_url: base_url,
     user: _user,
@@ -54,7 +54,7 @@ angular.module('starter.services', [])
             localStorage.user_nickname = user.nickname;
             localStorage.app_token = user.app_token;
           }
-          $state.go('app.campaignList');
+          $state.go('app.index');
         }
       })
       .error(function(data, status, headers, config) {
@@ -121,7 +121,25 @@ angular.module('starter.services', [])
   var getCampaignList = function() {
     return campaign_list;
   };
-
+  var getNowCampaignList = function(callback){
+    $http.get(Global.base_url + '/campaign/user/now/applist/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      callback(data.campaigns);
+    });
+  }
+  var getNewCampaignList = function(callback){
+    $http.get(Global.base_url + '/campaign/user/new/applist/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      callback(data.campaigns);
+    });
+  }
+  var getNewFinishCampaign = function(callback){
+    $http.get(Global.base_url + '/campaign/user/newfinish/applist/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      callback(data.campaigns);
+    });
+  }
+  
   // callback(campaign)
   var getCampaign = function(id, callback) {
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
@@ -139,7 +157,7 @@ angular.module('starter.services', [])
     });
   };
     // callback(campaign)
-var getCampaignDetail = function(id, callback) {
+  var getCampaignDetail = function(id, callback) {
     $http.get(Global.base_url + '/campaign/getCampaigns/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
     .success(function(data, status) {
       var campaign = data.campaign;
@@ -151,6 +169,14 @@ var getCampaignDetail = function(id, callback) {
   // callback(campaign_list)
   var getUserCampaignsForList = function(page, callback) {
     $http.get(Global.base_url + '/campaign/user/all/applist/'+ page +'/'+ Global.user._id + '/' + Global.user.app_token)
+    .success(function(data, status, headers, config) {
+      campaign_list = data.campaigns;
+      callback(campaign_list);
+    });
+  };
+
+  var getUserJoinedCampaignsForList = function(page, callback) {
+    $http.get(Global.base_url + '/campaign/user/joined/applist/'+ page +'/'+ Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status, headers, config) {
       campaign_list = data.campaigns;
       callback(campaign_list);
@@ -184,14 +210,28 @@ var getCampaignDetail = function(id, callback) {
     };
   };
 
+  var getPhotoComments = function(id, callback) {
+    $http.get(Global.base_url + '/campaign/getCampaignCommentsAndPhotos/' + id + '/' + Global.user._id+ '/' + Global.user.app_token)
+    .success(function(data, status) {
+      if (callback) {
+        callback(data.photo_comments);
+      }
+    });
+  };
+
   return {
     getCampaign: getCampaign,
     getCampaignList: getCampaignList,
     getUserCampaignsForList: getUserCampaignsForList,
+    getUserJoinedCampaignsForList: getUserJoinedCampaignsForList,
     getUserCampaignsForCalendar: getUserCampaignsForCalendar,
+    getNowCampaignList: getNowCampaignList,
+    getNewCampaignList: getNewCampaignList,
+    getNewFinishCampaign: getNewFinishCampaign,
     join: join,
     quit: quit,
-    getCampaignDetail: getCampaignDetail
+    getCampaignDetail: getCampaignDetail,
+    getPhotoComments: getPhotoComments
   };
 
 })
@@ -322,7 +362,7 @@ var getCampaignDetail = function(id, callback) {
 })
 
 
-.factory('Comment', function($http, Global){
+.factory('Comment', function($http, Global) {
 
   /**
    * 获取活动的评论
@@ -365,6 +405,7 @@ var getCampaignDetail = function(id, callback) {
   };
 
 })
+
 
 
 // .factory('User', function($http, Global) {
@@ -423,24 +464,63 @@ var getCampaignDetail = function(id, callback) {
 
 
 .factory('Timeline', function($http, Global) {
-
+  var timeline = [];
+  var page = -1;
+  var _cacheStatue = false;
+  var moreData = true;
+  var timelinePosition = 0;
   // callback(time_lines)
-  var getUserTimeline = function(callback) {
-    $http.get(Global.base_url + '/users/getTimelineForApp/'+ Global.user._id + '/' + Global.user.app_token)
-    .success(function(data, status) {
-      callback(data.time_lines);
-    });
+  var getUserTimeline = function(nowpage, callback) {
+    if(_cacheStatue){
+      callback(timeline, page, moreData);
+    }
+    else{
+      page = nowpage;
+      $http.get(Global.base_url + '/users/getTimelineForApp/' + page + '/' + Global.user._id + '/' + Global.user.app_token)
+      .success(function(data, status) {
+        timeline = timeline.length>0 ? timeline.concat(data.time_lines) : data.time_lines;
+        moreData = data.time_lines.length==20;
+        callback(timeline, page, moreData);
+      });
+    }
+
   };
-
-
+  var setCacheTimeline = function(cacheStatue){
+    _cacheStatue = cacheStatue;
+  }
+  var getCacheTimeline = function(){
+    return _cacheStatue;
+  }
+  var setTimelinePosition = function(position){
+    timelinePosition = position;
+  }
+  var getTimelinePosition = function(){
+    return timelinePosition;
+  }
   return {
-    getUserTimeline: getUserTimeline
+    getUserTimeline: getUserTimeline,
+    setCacheTimeline: setCacheTimeline,
+    getCacheTimeline: getCacheTimeline,
+    setTimelinePosition: setTimelinePosition,
+    getTimelinePosition: getTimelinePosition
   };
 
 
 
 })
 
+//未读站内信
+.factory('Message', function($http, Global) {
+  var getUnreadMsg = function(callback){
+    $http.get(Global.base_url + '/message/header').success(function(data, status) {
+      callback(data.msg);
+    });
+  };
+
+  return {
+    getUnreadMsg: getUnreadMsg
+  };
+})
 
 
 

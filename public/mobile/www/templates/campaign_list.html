@@ -1,11 +1,14 @@
 
-<ion-view title="活动列表" class="campaign">
+<ion-view title="我参加的活动" class="campaign">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
+    <ion-refresher
+      on-refresh="doRefresh()">
+    </ion-refresher>
     <ng-include src="'templates/partials/campaigns.html'"></ng-include>
     <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
-    <div class="head_title" ng-if="!moreData">没有更多的活动</div>
+    <div class="more_data_text" ng-if="!moreData">{{ remind_text }}</div>
   </ion-content>
 </ion-view>

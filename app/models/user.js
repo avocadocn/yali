@@ -9,7 +9,19 @@ var mongoose = require('mongoose'),
     crypto = require('crypto'),
     config = require('../../config/config');
 
-
+var _device = new Schema({
+    platform:{
+        type:String,
+        enum:['Android','IOS','WindowsPhone','BlackBerry']
+    },
+    version:String,
+    device_id:String,
+    user_id:String,                //只有Android的百度云推送才会用到
+    update_date:{
+        type: Date,
+        default: Date.now
+    }
+});
 
 var _team = new Schema({
     gid: {
@@ -109,6 +121,7 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    device:[_device]
 });
 
 /**

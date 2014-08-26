@@ -16,11 +16,14 @@
         <p class="menu_nickname">{{ user.nickname }}</p>
       </div>
       <ion-list class="menu_list">
-        <ion-item nav-clear menu-close href="#/app/schedule_list">
-          日程
+        <ion-item nav-clear menu-close href="#/app/index">
+          最新活动
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/campaign_list">
-          活动提醒
+          我的提醒
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/schedule_list">
+          我的日程
         </ion-item>
 <!--         <ion-item nav-clear menu-close href="#/app/dynamic_list">
           我的动态
@@ -29,11 +32,15 @@
           小队列表
         </ion-item> -->
         <ion-item nav-clear menu-close href="#/app/timeline">
-          我的活动足迹
+          我的足迹
         </ion-item>
 <!--         <ion-item nav-clear menu-close href="#/app/user_info">
           个人资料
         </ion-item> -->
+        <!-- <ion-item nav-clear menu-close ng-click="#/app/msg_list">
+          <span class="donler_msg_corner"></span>
+          站内信
+        </icon-item> -->
         <ion-item nav-clear menu-close ng-click="logout()">
           退出
         </icon-item>

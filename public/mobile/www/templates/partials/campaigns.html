@@ -1,47 +1,17 @@
 <ion-list>
   <ion-item class="campaign_item" ng-repeat="campaign in campaign_list">
-    <a href="#/app/campaign_detail/{{ campaign._id }}" ng-click="" class="campaign_link">
-      <div class="row campaign_line">
-        <p class="campaign_team_info">
-          <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
-          {{ campaign.owner_name }}
-        </p>
-      </div>
-      <div class="row campaign_line campaign_content">
-        <p>{{ campaign.theme }}</p>
-      </div>
-      <div class="row campaign_line campaign_time football">
-        <div class="table_wrap campaign_time_shadow">
-          <div class="table_cell">
-            <div>
-              <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
-              <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
-            </div>
-          </div>
+    <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
+      <div class="row campaign_title">
+        <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
+        <div class="campaign_label">
+          <p class="campaign_theme"> {{ campaign.theme }} </p>
         </div>
+
+      </div>
+      <div class="campaign_time" ng-class="{'start_campaign':campaign.start_flag==1}">
+        <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
+        <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
       </div>
     </a>
-    <div class="row campaign_line campaign_operate_bar">
-      <div class="col-33 col-30">
-        <p class="campaign_operate_text">
-          <i class="icon ion-ios7-person-outline"></i>
-          {{ campaign.member.length }}人报名
-        </p>
-      </div>
-      <div class="col-33 col-40 campaign_operate_button_container">
-        <button class="btn_radius btn_red" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal(campaign)">
-          参加活动
-        </button>
-        <button class="btn_radius btn_red" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">
-          退出活动
-        </button>
-      </div>
-<!--       <div class="col-33 col-30">
-        <p class="campaign_operate_text campaign_operate_share">
-          <i class="icon ion-android-share"></i>
-          share
-        </p>
-      </div> -->
-    </div>
   </ion-item>
 </ion-list>

@@ -26,8 +26,13 @@ module.exports = function(app) {
   app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
   //app
   app.get('/campaign/getCampaigns/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignDetail);
+  app.get('/campaign/getCampaignCommentsAndPhotos/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignCommentsAndPhotos);
   app.get('/campaign/user/all/applist/:page/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserAllCampaignsForAppList);
+  app.get('/campaign/user/joined/applist/:page/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserJoinedCampaignsForAppList);
   app.get('/campaign/user/all/appcalendar/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserAllCampaignsForAppCalendar);
+  app.get('/campaign/user/now/applist/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserNowCampaignsForAppList);
+  app.get('/campaign/user/new/applist/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserNewCampaignsForAppList);
+  app.get('/campaign/user/newfinish/applist/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserNewFinishCampaignsForAppList);
 
   app.param('campaignId', campaign.campaign);
 };

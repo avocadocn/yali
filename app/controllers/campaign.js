@@ -3,10 +3,13 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Campaign = mongoose.model('Campaign'),
     Department = mongoose.model('Department'),
+    Comment = mongoose.model('Comment'),
+    PhotoAlbum = mongoose.model('PhotoAlbum'),
     model_helper = require('../helpers/model_helper'),
     _ = require('lodash'),
     moment = require('moment'),
-    photo_album_controller = require('./photoAlbum');
+    photo_album_controller = require('./photoAlbum'),
+    systemConfig = require('../config/config');
 var pageSize = 100;
 var blockSize = 20;
 
@@ -155,7 +158,6 @@ var getUserUnjoinCampaigns = function(user, isCalendar, callback) {
   });
 };
 
-
 /**
  * 为日历视图处理活动，返回需要的数据
  * @param  {Object} user      mongoose.model('User'), example: req.user
@@ -232,9 +234,10 @@ var formatCampaignForCalendar = function(user, campaigns) {
  * 计算用户是否参加活动，计算活动所属的公司或组及获取其logo，生成开始时间的提示文字
  * @param  {Object} user     mongoose.model('user')
  * @param  {Object} campaign mongoose.model('campaign'), need populate(team, cid)
+ * @param  {Boolean} user      mongoose.model('User'), example: req.user
  * @return {Object}          处理后的对象
  */
-var formatCampaignForApp = function(user, campaign) {
+var formatCampaignForApp = function(user, campaign, nowFlag) {
   moment.lang('zh-cn');
   var is_joined = false,myteam=[];
   // 公司活动
@@ -294,19 +297,19 @@ var formatCampaignForApp = function(user, campaign) {
   }
 
 
-  var remind_text, start_time_text;
+  var remind_text, start_time_text,start_flag;
   var now = new Date();
   var diff_end = now - campaign.end_time;
   if (diff_end >= 0) {
     // 活动已结束
     remind_text = '活动已结束';
     start_time_text = '';
+    start_flag = -1;
   } else {
     // 活动未结束
 
     var temp_start_time = new Date(campaign.start_time);
     var during = moment.duration(moment(now).diff(temp_start_time));
-
     var days = Math.abs(during.days());
     var hours = Math.abs(during.hours());
     var minutes = Math.abs(during.minutes());
@@ -316,24 +319,25 @@ var formatCampaignForApp = function(user, campaign) {
     temp_start_time.setMinutes(minutes);
     temp_start_time.setSeconds(seconds);
 
-    if (days > 0) {
-      remind_text = '活动开始时间';
-      start_time_text = moment(temp_start_time).format('YYYY-MM-DD');
+    // 活动已开始
+    if (during >= 0) {
+      start_flag = 1;
+      remind_text = '活动已开始';
     } else {
-      // 活动已开始
-      if (during >= 0) {
-        remind_text = '活动已开始';
-      } else {
-        // 活动未开始
-        remind_text = '距活动开始';
+      // 活动未开始
+      start_flag = 0;
+      remind_text = '距离活动开始还有';
+      if(days>30){
+        start_time_text = moment(temp_start_time).format('YYYY-MM-DD');
       }
-      start_time_text = moment(temp_start_time).format('HH:mm:ss');
+      else {
+        start_time_text = (days ? days + '天' : '' )+ (hours ? hours + '小时' : '') + minutes + '分';
+      }
     }
 
 
   }
-
-  return {
+var result = {
     '_id': campaign._id,
     'logo': logo,
     'owner_name': owner_name,
@@ -346,6 +350,7 @@ var formatCampaignForApp = function(user, campaign) {
     'is_joined': is_joined,
     'photo_album': campaign.photo_album,
     'member': campaign.member,
+    'start_flag': start_flag,
     'remind_text': remind_text,
     'start_time_text': start_time_text,
     'location':campaign.location,
@@ -353,19 +358,24 @@ var formatCampaignForApp = function(user, campaign) {
     'finish': campaign.finish,
     'myteam':myteam
   };
+  if(nowFlag){
+    result.photo_thumbnails = photo_album_controller.photoThumbnailList(campaign.photo_album, 3);
+  }
+  return result;
 };
 
 /**
  * 为app的活动列表处理活动数据
  * @param  {Object} user      mongoose.model('User'), example: req.user
  * @param  {Array} campaigns  mongoose.model('Campaign'), need populate(team, cid)
- * @return {Array}
+ * @param  {Boolean} user      mongoose.model('User'), example: req.user
+ * @return {Array} nowFlag    true:nowCampaign
  */
-var formatCampaignsForApp = function(user, campaigns) {
+var formatCampaignsForApp = function(user, campaigns, nowFlag) {
 
   var _campaigns = [];
   campaigns.forEach(function(campaign) {
-    _campaigns.push(formatCampaignForApp(user, campaign));
+    _campaigns.push(formatCampaignForApp(user, campaign,nowFlag));
   });
   return _campaigns;
 
@@ -694,7 +704,141 @@ exports.getUserUnjoinCampaignsForList = function(req, res) {
     res.send({ result: 1, campaigns: format_campaigns });
   });
 };
+exports.getUserNowCampaignsForAppList = function(req, res) {
+  var startTimeLimit = new Date();
+  startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
+  var endTimeLimit = new Date();
+  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
+  var options = {
+    'cid': req.user.cid,
+    '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
+    'active': true,
+    'start_time': { '$lt': startTimeLimit },
+    'end_time': { '$gt': endTimeLimit }
+  };
+  Campaign
+  .find(options)
+  .sort('-start_time')
+  .populate('team')
+  .populate('cid')
+  .populate('photo_album')
+  .exec()
+  .then(function(campaigns) {
+    var format_campaigns = formatCampaignsForApp(req.user, campaigns, true);
+    res.send({ result: 1, campaigns: format_campaigns });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
 
+exports.getUserNewCampaignsForAppList = function(req, res) {
+  var endTimeLimit = new Date();
+  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
+  var team_ids = [];
+  for (var i = 0; i < req.user.team.length; i++) {
+    team_ids.push(req.user.team[i]._id);
+  }
+  var options = {
+    '$or': [
+      {
+        'cid': req.user.cid,
+        'team': { '$size': 0 }
+      },
+      {
+        'cid': req.user.cid,
+        'team': { '$in': team_ids }
+      }
+    ],
+    '$nor': [
+      { 'member.uid': req.user._id },
+      { 'camp.member.uid': req.user._id }
+    ],
+    'active': true,
+    'end_time': { '$gt': endTimeLimit }
+  };
+  Campaign
+  .find(options)
+  .sort('-start_time')
+  .populate('team')
+  .populate('cid')
+  .exec()
+  .then(function(campaigns) {
+    var format_campaigns = formatCampaignsForApp(req.user, campaigns, false);
+    res.send({ result: 1, campaigns: format_campaigns });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+var newFinishSize =10;
+var findLimitTime = 2;
+/**
+ * 查找新结束的newFinishSize个活动，选择照片数最大的返回，如果都为0则继续查找，最大查找findLimtiTime次
+ * @param  {[object]} options  查找条件
+ * @param  {[number]} skipSize 查找结果忽略的个数
+ * @param  {[number]} findTime 查找次数
+ * @param  {[object]} res res
+ * @return {[type]} object       返回照片最多的活动
+ */
+var findUserNewFinishCampaigns= function(options, skipSize, findTime, res){
+  Campaign
+  .find(options)
+  .skip(skipSize)
+  .limit(newFinishSize)
+  .sort('-end_time')
+  .populate('team')
+  .populate('cid')
+  .populate('photo_album')
+  .exec()
+  .then(function(campaigns) {
+    var campaign_index=0;
+    var maxPhotoCount = 0;
+    campaigns.forEach(function(_campaign,_index){
+      if(_campaign.photo_album.photo_count>maxPhotoCount){
+        campaign_index = _index;
+        maxPhotoCount = _campaign.photo_album.photo_count;
+      }
+    });
+    if(maxPhotoCount==0){
+      skipSize = skipSize+newFinishSize;
+      if(findTime>=findLimitTime){
+        return res.send({ result: 1, campaigns: {} });
+      }
+      else{
+        findTime++;
+        findUserNewFinishCampaigns(options, skipSize, findTime);
+      }
+    }
+    else{
+      var format_campaigns = {
+        'finishStatus': true,
+        '_id':campaigns[campaign_index]._id,
+        'theme': campaigns[campaign_index].theme,
+        'photo_thumbnails': photo_album_controller.photoThumbnailList(campaigns[campaign_index].photo_album, 4)
+      }
+      return res.send({ result: 1, campaigns: format_campaigns });
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+}
+exports.getUserNewFinishCampaignsForAppList = function(req, res) {
+  var endTimeLimit = new Date();
+  var options = {
+    'cid': req.user.cid,
+    '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
+    'active': true,
+    'end_time': { '$lte': endTimeLimit }
+  };
+  var skipSize=0;
+  var findTime =1;
+  var format_campaigns = findUserNewFinishCampaigns(options, skipSize, findTime, res);
+};
 exports.getTeamCampaigns = function(req, res) {
   getTeamAllCampaigns(req.params.teamId, function(campaigns, err) {
     var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
@@ -704,6 +848,7 @@ exports.getTeamCampaigns = function(req, res) {
     });
   });
 };
+
 
 exports.getUserAllCampaignsForAppList = function(req, res) {
   var team_ids = [];
@@ -728,6 +873,34 @@ exports.getUserAllCampaignsForAppList = function(req, res) {
   Campaign
   .find(options)
   .sort('-start_time').skip(blockSize*req.params.page).limit(blockSize)
+  .populate('team')
+  .populate('cid')
+  .exec()
+  .then(function(campaigns) {
+    var format_campaigns = formatCampaignsForApp(req.user, campaigns, false);
+    res.send({ result: 1, campaigns: format_campaigns });
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.send(500);
+  });
+};
+
+exports.getUserJoinedCampaignsForAppList = function(req, res) {
+  var team_ids = [];
+  for (var i = 0; i < req.user.team.length; i++) {
+    team_ids.push(req.user.team[i]._id);
+  }
+  var options = {
+    'cid': req.user.cid,
+    '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
+    'active': true,
+    'end_time': { '$gt': Date.now() }
+  };
+
+  Campaign
+  .find(options)
+  .sort('start_time').skip(blockSize*req.params.page).limit(blockSize)
   .populate('team')
   .populate('cid')
   .exec()
@@ -1045,7 +1218,7 @@ exports.vote = function (req, res) {
   });
 };
 
-exports.getCampaignDetail = function(req, res) {
+exports.getCampaignDetail = function(req, res, next) {
   Campaign
   .findById(req.params.campaignId)
   .populate('team')
@@ -1061,6 +1234,88 @@ exports.getCampaignDetail = function(req, res) {
     console.log(err);
     res.send(500);
   });
+};
+
+
+/**
+ * 合并评论和照片，并按时间排序
+ * @param  {Array} comments 数组元素类型为mongoose.model('Comment')对应的Schema
+ * @param  {Array} photos   数组元素类型为mongoose.model('PhotoAlbum')对应的Schema中的photo
+ * @return {[type]}         合并后的数组
+ */
+var combine = function(comments, photos) {
+  var photo_comments = [];
+
+  comments.forEach(function(comment) {
+    photo_comments.push({
+      content: comment.content,
+      publish_date: comment.create_date,
+      publish_user: {
+        _id: comment.poster._id,
+        name: comment.poster.nickname,
+        photo: comment.poster.photo
+      }
+    });
+  });
+
+  photos.forEach(function(photo) {
+    var photo_comment = {
+      photo: photo.uri,
+      publish_date: photo.upload_date,
+      publish_user: {
+        _id: photo.upload_user._id,
+        name: photo.upload_user.name
+      }
+    };
+    if (photo.upload_user.type === 'user') {
+      photo_comment.publish_user.photo = '/logo/user/' + photo.upload_user._id;
+    } else if (photo.upload_user.type === 'hr') {
+      photo_comment.publish_user.photo = '/logo/company/' + photo.upload_user._id;
+    }
+    photo_comments.push(photo_comment)
+  });
+
+  photo_comments.sort(function(a, b) {
+    return a.publish_date - b.publish_date;
+  });
+
+  return photo_comments;
+};
+
+exports.getCampaignCommentsAndPhotos = function(req, res) {
+  Campaign
+  .findById(req.params.campaignId)
+  .exec()
+  .then(function(campaign) {
+    if (!campaign) {
+      return res.send(404);
+    }
+    Comment
+    .find({'host_id': campaign._id, 'status': {'$ne': 'delete'}})
+    .exec()
+    .then(function(comments) {
+      PhotoAlbum
+      .findById(campaign.photo_album)
+      .exec()
+      .then(function(photo_album) {
+        var photos = [];
+        if (photo_album) {
+          photos = photo_album.photos;
+        }
+        var photo_comments = combine(comments, photos);
+        res.send({ photo_comments: photo_comments });
+      })
+      .then(null, function(err) {
+        next(err);
+      })
+    })
+    .then(null, function(err) {
+      next(err);
+    })
+  })
+  .then(null, function(err) {
+    next(err);
+  })
 };
 
 exports.campaign = function(req, res, next, id){

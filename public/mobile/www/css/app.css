@@ -37,6 +37,20 @@ body {
   text-align: center;
   vertical-align: middle;
 }
+.center_img_container {
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+}
+.center_img_container:after {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  content: " ";
+}
+.center_img_container .img {
+  vertical-align: middle;
+}
 .col-10 {
   width: 10%;
 }
@@ -75,6 +89,18 @@ body {
 .donler_tabs_bottom .tabs .tab-item {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+.donler_msg_corner {
+  margin-top: -2px;
+  margin-left: 14px;
+  font-size: 10px;
+  position: absolute;
+  z-index: 1000;
+  width: 10px;
+  height: 10px;
+  background-color: #f6f6f6;
+  border-radius: 100%;
+  color: #ededed;
 }
 .clearfix:after {
   clear: both;
@@ -124,6 +150,11 @@ body {
   background-color: #fff;
   z-index: 1000;
 }
+.more_data_text {
+  height: 20px;
+  text-align: center;
+  border-top: 1px solid #ededed;
+}
 .menu_wrap {
   background-color: #3abde8;
 }
@@ -143,8 +174,8 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 7px;
-  width: 75px;
+  margin-top: 17px;
+  width: 140px;
   height: 20px;
 }
 .menu_personal_info {
@@ -255,6 +286,139 @@ body {
   color: #fff;
   background-color: #75d1ef;
 }
+.new_finish_campaign {
+  height: 100px;
+  padding: 0 10px;
+}
+.new_finish_campaign .campaign_link .campaign_title {
+  margin: 0;
+  padding: 0;
+  height: 20px;
+}
+.new_finish_campaign .campaign_link .campaign_title .campaign_theme {
+  color: #000;
+  font-size: 16px;
+  max-width: 250px;
+  margin: 0;
+  padding: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.new_finish_campaign .campaign_link .campaign_photos .campaign_photo {
+  height: 69px;
+  width: 69px;
+  float: left;
+  margin-right: 7px;
+  margin-bottom: 10px;
+}
+.new_finish_campaign .campaign_link .campaign_photos .campaign_photo:last-child {
+  margin-right: 0;
+}
+.now_campaign_item .campaign_link {
+  text-decoration: none;
+}
+.now_campaign_item .campaign_link .campaign_title {
+  width: 100%;
+  background-color: #f0f0f0;
+  height: 56px;
+  margin: 0;
+  padding: 0;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_group_logo {
+  margin: 10px;
+  width: 36px;
+  height: 36px;
+  vertical-align: middle;
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label {
+  padding: 10px 0;
+  position: relative;
+  color: #404040;
+  line-height: 18px;
+  font-size: 14px;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label .now_campaign_now {
+  margin-bottom: 0;
+}
+.now_campaign_item .campaign_link .campaign_title .campaign_label .campaign_theme {
+  position: absolute;
+  bottom: 10px;
+  margin-bottom: 0;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.now_campaign_item .campaign_link .now_campaign_time {
+  width: 100%;
+  height: 120px;
+  text-align: center;
+  padding: 20px;
+}
+.now_campaign_item .campaign_link .now_campaign_time .campaign_time_remind {
+  font-size: 14px;
+  color: #404040;
+}
+.now_campaign_item .campaign_link .now_campaign_time .campaign_time_count {
+  font-size: 24px;
+  color: #000;
+}
+.now_campaign_item .campaign_link .now_campaign_photos {
+  width: 100%;
+  height: 120px;
+}
+.now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo {
+  width: 106px;
+  height: 106px;
+  float: left;
+  margin-right: 1px;
+}
+.now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo:last-child {
+  margin-right: 0;
+}
+.new_campaign_item {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px;
+}
+.new_campaign_item .item-options .button {
+  line-height: 56px;
+  width: 60px;
+}
+.new_campaign_item .item-content {
+  padding: 0;
+}
+.new_campaign_item .item-content .campaign_link {
+  text-decoration: none;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title {
+  padding: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_group_logo {
+  margin: 10px;
+  width: 36px;
+  height: 36px;
+  vertical-align: middle;
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label {
+  padding: 10px 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label p {
+  padding: 0;
+  margin: 0;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label .campaign_theme {
+  font-size: 16px;
+  color: #000;
+}
+.new_campaign_item .item-content .campaign_link .campaign_title .campaign_label .new_campaign_time {
+  font-size: 12px;
+}
 .calendar {
   height: 100%;
 }
@@ -357,7 +521,7 @@ body {
   position: relative;
   float: left;
   width: 14.285714285714286%;
-  height: 60px;
+  height: 53px;
   border-top: solid 1px #dcdcdc;
 }
 .calendar .calendar_month .calendar_day .calendar_date {
@@ -422,11 +586,12 @@ body {
 .calendar .calendar_day .calendar_campaign {
   display: block;
   position: relative;
-  margin: 5px 0;
   height: 62px;
   color: #000;
-  border: solid 1px #0098e3;
-  background-color: #ceeffe;
+  border-top: solid 1px #ddd;
+}
+.calendar .calendar_day .calendar_campaign:first-child {
+  border-top: none;
 }
 .calendar .calendar_day .calendar_campaign .logo {
   float: left;
@@ -459,204 +624,419 @@ body {
   bottom: 15px;
   right: 15px;
   color: #0098e3;
+  background-color: #ceeffe;
   border: solid 1px #0098e3;
   padding: 0 6px;
   height: 30px;
   line-height: 28px;
   font-size: 16px;
 }
-.campaign {
-  background-color: #a3cbe2;
-/* Firefox 3.6+ */
-  background: -moz-linear-gradient(left, #e9f4fe, #cfe9f9 5%, #e9f4fe, #cfe9f9 95%, #e9f4fe);
-/* Safari 4-5, Chrome 1-9 */
-  background: -webkit-gradient(linear, left top, right top, from(#e9f4fe), color-stop(0.05, #cfe9f9), color-stop(0.5, #e9f4fe), color-stop(0.95, #cfe9f9), to(#e9f4fe));
-/* Safari 5.1+, Chrome 10+ */
-  background: -webkit-linear-gradient(left, #e9f4fe, #cfe9f9 5%, #e9f4fe, #cfe9f9 95%, #e9f4fe);
-/* Opera 11.10+ */
-  background: -o-linear-gradient(left, #e9f4fe, #cfe9f9 5%, #e9f4fe, #cfe9f9 95%, #e9f4fe);
-}
 .campaign_item {
-  background-color: transparent;
+  margin: 0;
   padding: 0;
+  border: none;
+}
+.campaign_item .item-options .button {
+  line-height: 56px;
+  width: 60px;
 }
 .campaign_item .item-content {
   padding: 0;
-  background-color: transparent;
+  margin: 0;
 }
-.campaign_link {
+.campaign_item .campaign_link {
   text-decoration: none;
 }
-.campaign_line {
-  margin-top: 0 !important;
-  padding: 0 10px;
-  height: 45px;
+.campaign_item .campaign_link .campaign_title {
+  width: 100%;
+  background-color: #f0f0f0;
+  height: 56px;
+  margin: 0;
+  padding: 0;
 }
-.campaign_team_info {
-  line-height: 45px;
-  color: #3abde8 !important;
-}
-.campaign_group_logo {
+.campaign_item .campaign_link .campaign_title .campaign_group_logo {
+  margin: 10px;
   width: 36px;
   height: 36px;
   vertical-align: middle;
   border: 1px solid #fff;
   border-radius: 5px;
 }
-.campaign_content {
-  background-color: #a3cbe2;
-/* Firefox 3.6+ */
-/* -moz-radial-gradient( [ || ,]? [ || ,]? , [, ]* ) */
-  background: -moz-radial-gradient(circle, #cfe0eb, #a3cbe2);
-/* Safari 4-5, Chrome 1-9 */
-  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#cfe0eb), to(#a3cbe2));
-/* Safari 5.1+, Chrome 10+ */
-  background: -webkit-radial-gradient(circle, #cfe0eb, #a3cbe2);
+.campaign_item .campaign_link .campaign_title .campaign_label {
+  padding: 10px 0;
+  position: relative;
+  color: #404040;
+  line-height: 18px;
+  font-size: 14px;
 }
-.campaign_content p {
-  line-height: 45px;
+.campaign_item .campaign_link .campaign_title .campaign_label .now_campaign_now {
+  margin-bottom: 0;
 }
-.campaign_time {
-  padding-bottom: 0;
-  height: 112.5px;
+.campaign_item .campaign_link .campaign_title .campaign_label .campaign_theme {
+  position: absolute;
+  bottom: 10px;
+  margin-bottom: 0;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
-.campaign_time .campaign_time_shadow {
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
-  background-color: rgba(0,0,0,0.4);
+.campaign_item .campaign_link .campaign_time {
+  width: 100%;
+  height: 80px;
+  text-align: center;
+  padding: 10px;
 }
-.campaign_time p {
-  color: #fff;
+.campaign_item .campaign_link .campaign_time .campaign_time_remind {
+  font-size: 14px;
+  color: #404040;
 }
-.campaign_time .campaign_time_remind {
-  font-size: 10px;
-  margin: 0;
+.campaign_item .campaign_link .campaign_time .campaign_time_count {
+  font-size: 22px;
+  color: #000;
 }
-.campaign_time .campaign_time_count {
-  font-weight: normal;
-  font-size: 24px;
-}
-.football {
-  background-size: 100%;
-  background-image: url("../img/football.jpg");
-}
-.campaign_operate_bar {
-  background-color: #3abde8;
-}
-.campaign_operate_button_container {
-  padding: 5px;
-}
-.campaign_operate_text {
-  line-height: 45px;
-  color: #fff !important;
-}
-.campaign_operate_share {
-  text-align: right;
+.campaign_item .campaign_link .start_campaign {
+  height: 40px;
 }
 .scroll-content .scroll {
   height: 100%;
 }
-.campaign_photos .campaing_upload_form {
-  position: absolute;
-  bottom: 10px;
+.campaign_detail {
+  background-color: #fff;
 }
-.campaign_photos .campaing_upload_form .upload_input {
-  width: 200px;
+.campaign_detail .simple_title {
+  border-bottom: solid 1px #ddd;
+}
+.campaign_detail .simple_title .title {
+  float: left;
+}
+.campaign_detail .simple_title .operator_button {
+  float: right;
+  padding: 0;
+  border: none;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  line-height: 20px;
+  font-size: 20px;
+  min-height: 0;
+  min-width: 0;
+}
+.campaign_detail .simple_title .operator_button:before {
+  font-size: 20px;
+  line-height: 20px;
+}
+.campaign_detail .upload_form {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+.campaign_detail .upload_form .upload_input {
   opacity: 0;
   position: absolute;
-  left: 60px;
   z-index: 3;
-  bottom: 5px;
 }
-.campaign_photos .campaing_upload_form .upload_input_view {
-  width: 200px;
+.campaign_detail .upload_form .upload_button {
   position: absolute;
-  left: 60px;
-  background-color: #f20;
-  color: #fff;
-  padding: 5px 15px;
-  text-align: center;
-  bottom: 5px;
+  z-index: 0;
 }
-.campaign_photos .campaign_photos_wrap .pager {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
-  width: 100%;
-  text-align: center;
+.campaign_detail .photo_list {
+  margin-top: 10px;
 }
-.campaign_photos .campaign_photos_wrap .pager .page {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  margin: 5px;
-  background-color: #9c9494;
-  border-radius: 100%;
+.campaign_detail .photo_slide_box {
+  overflow: visible;
+  margin-bottom: 20px;
 }
-.campaign_photos .campaign_photos_wrap .pager .active {
-  background-color: #5bc9d5;
+.campaign_detail .photo_slide_box .slider-pager {
+  bottom: -20px;
 }
-.campaign_photos .campaign_photos_wrap .campaign_photo_panel {
+.campaign_detail .photo_box .inner_1 {
+  margin-left: auto;
+  margin-right: auto;
+}
+.campaign_detail .photo_box .inner_2 {
+  margin-left: auto;
+  margin-right: auto;
+}
+.campaign_detail .photo_box .inner_3 {
+  margin-left: auto;
+  margin-right: auto;
+}
+.campaign_detail .photo_box .inner_4 {
+  margin-left: auto;
+  margin-right: auto;
+}
+.campaign_detail .photo_box .inner_5 {
+  margin-left: auto;
+  margin-right: auto;
+}
+.campaign_detail .photo_box .inner_6 {
+  margin-left: auto;
+  margin-right: auto;
+}
+.campaign_detail .photo_box .cell_1 {
   float: left;
-  width: 50%;
-  height: 120px;
-  padding-left: 10px;
-  margin-top: 7px;
 }
-.campaign_photos .campaign_photos_wrap .campaign_photo_panel:nth-child(2n+2) {
-  padding-right: 10px;
+.campaign_detail .photo_box .cell_2 {
+  float: left;
 }
-.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_border {
+.campaign_detail .photo_box .cell_3 {
+  float: left;
+}
+.campaign_detail .photo_box .cell_4 {
+  float: left;
+}
+.campaign_detail .photo_box .cell_5 {
+  float: left;
+}
+.campaign_detail .photo_box .cell_6 {
+  float: left;
+}
+.campaign_detail .photo_box .inner_1 {
+  width: 145px;
+}
+.campaign_detail .photo_box .inner_1 .cell_1 {
+  width: 145px;
+  height: 145px;
+}
+.campaign_detail .photo_box .inner_2 {
+  width: 300px;
+}
+.campaign_detail .photo_box .inner_2 .cell_1,
+.campaign_detail .photo_box .inner_2 .cell_2 {
+  width: 145px;
+  height: 145px;
+}
+.campaign_detail .photo_box .inner_2 .cell_2 {
+  margin-left: 10px;
+}
+.campaign_detail .photo_box .inner_3 {
+  width: 222.5px;
+}
+.campaign_detail .photo_box .inner_3 .cell_1 {
+  width: 145px;
+  height: 145px;
+}
+.campaign_detail .photo_box .inner_3 .cell_2,
+.campaign_detail .photo_box .inner_3 .cell_3 {
+  margin-left: 10px;
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_3 .cell_3 {
+  margin-top: 10px;
+}
+.campaign_detail .photo_box .inner_4 {
+  width: 145px;
+}
+.campaign_detail .photo_box .inner_4 .cell_1,
+.campaign_detail .photo_box .inner_4 .cell_2,
+.campaign_detail .photo_box .inner_4 .cell_3,
+.campaign_detail .photo_box .inner_4 .cell_4 {
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_4 .cell_2,
+.campaign_detail .photo_box .inner_4 .cell_4 {
+  margin-left: 10px;
+}
+.campaign_detail .photo_box .inner_4 .cell_3,
+.campaign_detail .photo_box .inner_4 .cell_4 {
+  margin-top: 10px;
+}
+.campaign_detail .photo_box .inner_5 {
+  width: 300px;
+}
+.campaign_detail .photo_box .inner_5 .cell_1 {
+  width: 145px;
+  height: 145px;
+}
+.campaign_detail .photo_box .inner_5 .cell_2,
+.campaign_detail .photo_box .inner_5 .cell_3,
+.campaign_detail .photo_box .inner_5 .cell_4,
+.campaign_detail .photo_box .inner_5 .cell_5 {
+  margin-left: 10px;
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_5 .cell_4,
+.campaign_detail .photo_box .inner_5 .cell_5 {
+  margin-top: 10px;
+}
+.campaign_detail .photo_box .inner_6 {
+  width: 222.5px;
+}
+.campaign_detail .photo_box .inner_6 .cell_1 {
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_6 .cell_2 {
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_6 .cell_3 {
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_6 .cell_4 {
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_6 .cell_5 {
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_6 .cell_6 {
+  width: 67.5px;
+  height: 67.5px;
+}
+.campaign_detail .photo_box .inner_6 .cell_2,
+.campaign_detail .photo_box .inner_6 .cell_3,
+.campaign_detail .photo_box .inner_6 .cell_5,
+.campaign_detail .photo_box .inner_6 .cell_6 {
+  margin-left: 10px;
+}
+.campaign_detail .photo_box .inner_6 .cell_4,
+.campaign_detail .photo_box .inner_6 .cell_5,
+.campaign_detail .photo_box .inner_6 .cell_6 {
+  margin-top: 10px;
+}
+.campaign_detail .comments {
+  margin: 0 10px;
+}
+.campaign_detail .comments .self,
+.campaign_detail .comments .other {
   position: relative;
-  height: 100%;
-  border: 1px solid #ddd;
+  border-top: solid 1px #ddd;
+  padding: 5px 0;
 }
-.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_img_wrap {
-  height: 120px;
+.campaign_detail .comments .self:first-child,
+.campaign_detail .comments .other:first-child {
+  border-top: none;
+}
+.campaign_detail .comments .self .photo_box,
+.campaign_detail .comments .self .comment_body {
+  float: right;
+}
+.campaign_detail .comments .self .nickname {
+  text-align: right;
+}
+.campaign_detail .comments .self .content {
+  float: right;
+}
+.campaign_detail .comments .self .time {
+  text-align: right;
+}
+.campaign_detail .comments .other .photo_box,
+.campaign_detail .comments .other .comment_body {
+  float: left;
+}
+.campaign_detail .comments .other .nickname {
+  text-align: left;
+}
+.campaign_detail .comments .other .time {
+  text-align: left;
+}
+.campaign_detail .comments .photo_box {
+  width: 20%;
   text-align: center;
-  vertical-align: middle;
+}
+.campaign_detail .comments .comment_body {
+  width: 80%;
+}
+.campaign_detail .comments .photo {
+  margin-top: 4px;
+  width: 40px;
+  height: 40px;
+}
+.campaign_detail .comments .nickname {
+  text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
-.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_ori_button_wrap {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
+.campaign_detail .comments .content {
+  color: #999;
+  word-break: break-all;
 }
-.campaign_photos .campaign_photos_wrap .campaign_photo_panel .campaign_photo_ori_button_wrap .campaign_photo_ori_button {
-  min-width: 0;
-  min-height: 0;
-  padding: 0;
-  width: 22px;
-  height: 22px;
-  border: none;
-  font-size: 12px;
-  border-radius: 30px;
-  color: #fff;
-  background-color: #5bc9d5;
-  opacity: 0.6;
+.campaign_detail .comments .time {
+  color: #cec7c7;
+  font-size: 10px;
+  font-weight: 300;
 }
-.campaign_photos p {
-  text-align: center;
-}
-.campaign_photos .campaign_upload_user {
+.campaign_detail .campaign_upload_user {
   margin-top: 12px;
   margin-bottom: 0;
   line-height: 1;
 }
-.campaign_photos .campaign_upload_date {
+.campaign_detail .campaign_upload_date {
   margin-top: 5px;
   font-size: 7px;
   line-height: 1;
   color: #bbb;
 }
+.campaign_detail .placeholder {
+  height: 44px;
+}
+.campaign_detail .detail_list .item {
+  padding: 10px;
+}
+.campaign_detail .detail_list .item .title {
+  display: block;
+  float: left;
+}
+.campaign_detail .detail_list .item .content {
+  display: block;
+  float: right;
+}
+.campaign_detail .detail_list .intro_item {
+  border-bottom: none;
+}
+.campaign_detail .location {
+  height: 260px;
+  width: 300px;
+}
+.join_box {
+  width: 64px;
+  height: 58px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  background-color: #ea6060;
+}
+.join_box .operator {
+  text-align: center;
+  line-height: 58px;
+  height: 58px;
+  color: #fff;
+}
 .slider .slider-pager .slider-pager-page {
   width: 10px;
 }
-.photo_detail_img {
+.modal-wrapper {
+  height: 100%;
+}
+.photo_slide_modal {
+  height: 100%;
+  position: relative;
+}
+.photo_slide_modal .slider-slides {
+  height: 100%;
+  position: relative;
+}
+.photo_slide_modal .slider-slides .photo_slide_cell {
+  display: flex;
+  height: 100%;
+}
+.photo_slide_modal .slider-slides .photo_slide_cell .photo_wrap {
+  position: relative;
   width: 100%;
   height: 100%;
-  margin: 0;
+  background-color: #000;
+}
+.photo_slide_modal .slider-slides .photo_slide_cell .photo_wrap .photo {
+  max-width: 100%;
+  max-height: 100%;
 }
 .campaign_members_wrap {
   position: relative;
@@ -714,7 +1094,7 @@ body {
   background-color: #3abde8;
   color: #fff;
   border: 1px #fff solid;
-  border-radius: 16px;
+  border-radius: 0;
 }
 .comment_edit form .comment_button {
   width: 20%;
@@ -722,132 +1102,14 @@ body {
   color: #fff;
   height: 34px;
   border: 1px #fff solid;
-  border-radius: 16px;
+  border-left: none;
+  border-radius: 0;
 }
 .comment_edit form input:-moz-placeholder {
   color: #fff;
 }
 .comment_edit form ::-webkit-input-placeholder {
   color: #fff;
-}
-.campaign_detail .campaign_time {
-  padding: 0 10px;
-  height: 150px;
-}
-.campaign_detail .head_title {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 100%;
-}
-.campaign_detail .detail_label {
-  display: inline-block;
-  width: 20%;
-  float: left;
-  margin: 0 0 10px;
-}
-.campaign_detail .detail_detail {
-  display: inline-block;
-  width: 80%;
-  float: left;
-  margin: 0 0 10px;
-}
-.campaign_detail .campaign_time_shadow {
-  text-align: center;
-  width: 66.66666667%;
-}
-.campaign_detail .campaign_time_shadow .campaign_time_content {
-  margin: 13px 0;
-}
-.campaign_detail .campaign_time_shadow .campaign_time_remind {
-  margin: 0;
-}
-.campaign_detail .campaign_time_shadow .campaign_time_count {
-  margin: 0;
-}
-.campaign_detail .campaign_time_shadow .campaign_time_operator {
-  margin-top: 30px;
-}
-.campaign_detail .campaign_time_shadow .campaign_time_operator .btn_operator {
-  width: 85px;
-  height: 25px;
-  line-height: 25px;
-  font-size: 11px;
-}
-.campaign_detail .campaign_time_shadow .campaign_time_operator .btn_good {
-  margin-left: 13px;
-}
-.campaign_detail .comments {
-  margin: 10px;
-  padding: 1px 10px;
-  background-color: #fff;
-}
-.campaign_detail .comments .comment {
-  border-bottom: 1px inset #ddd;
-}
-.campaign_detail .comments .comment .comment_left .comment_photo {
-  float: left;
-  width: 40px;
-  height: 40px;
-  margin-left: 10px;
-}
-.campaign_detail .comments .comment .comment_left .comment_name span {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  float: right;
-  margin-right: 10px;
-}
-.campaign_detail .comments .comment .comment_left .comment_content {
-  margin-left: 20px;
-  margin-right: 70px;
-  padding-top: 20px;
-}
-.campaign_detail .comments .comment .comment_left .comment_content p {
-  white-space: pre;
-  color: #999;
-}
-.campaign_detail .comments .comment .comment_left .comment_time {
-  color: #cec7c7;
-  margin-right: 85px;
-  font-size: 10px;
-  font-weight: 300;
-  text-align: right;
-}
-.campaign_detail .comments .comment .comment_right {
-  position: relative;
-  left: 5%;
-  margin: 10px 0;
-}
-.campaign_detail .comments .comment .comment_right .comment_photo {
-  float: right;
-  width: 40px;
-  height: 40px;
-  margin-right: 20px;
-}
-.campaign_detail .comments .comment .comment_right .comment_name {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 100px;
-}
-.campaign_detail .comments .comment .comment_right .comment_content {
-  margin-left: 60px;
-  margin-right: 40px;
-}
-.campaign_detail .comments .comment .comment_right .comment_content p {
-  white-space: pre;
-  color: #999;
-}
-.campaign_detail .comments .comment .comment_right .comment_time {
-  color: #cec7c7;
-  margin-left: 55px;
-  font-size: 10px;
-  font-weight: 300;
-}
-.campaign_location .location {
-  height: 260px;
-  width: 290px;
 }
 .dynamic_list {
   white-space: normal;
@@ -874,7 +1136,6 @@ body {
   text-decoration: none;
 }
 .dl_timeline {
-  width: 660px;
   position: relative;
   overflow: hidden;
   margin: 0px auto;
@@ -882,102 +1143,101 @@ body {
 }
 .dl_timeline .timeline_element {
   position: relative;
-  margin: 10px;
   clear: both;
   border-radius: 0px;
-  padding-bottom: 15px;
+  padding: 10px;
   color: #888;
-  border-bottom: 1px inset #ddd;
+  border-top: 1px solid #ededed;
 }
-.dl_timeline .timeline_element:before {
-  content: '';
-  position: absolute;
-  display: block;
-  top: -10px;
-  width: 2px;
-  height: 120%;
-  border-radius: 2px;
-  left: 24%;
-  background-color: #ccc;
-  z-index: 2;
-}
-.dl_timeline .timeline_element:after {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 6px;
-  height: 6px;
-  border-radius: 100%;
-  background-color: #bbb;
-  box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
-  top: 20%;
-  left: 24%;
-  z-index: 3;
-  margin-left: -2px;
+.dl_timeline .timeline_element:first-child {
+  border: none;
 }
 .dl_timeline .timeline_element .timeline-left .timeline-logo {
   margin: 0 4px 5px 5px;
-  width: 50px;
+  width: 10%;
   float: left;
 }
 .dl_timeline .timeline_element .timeline-right {
   position: relative;
-  left: 40px;
 }
-.dl_timeline .timeline_element .timeline-right .title {
+.dl_timeline .timeline_element .timeline-right a {
+  color: #888;
+  display: block;
+  text-decoration: none;
+}
+.dl_timeline .timeline_element .timeline-right a .title {
   position: relative;
   font-size: 10px;
   overflow: hidden;
   margin-bottom: 0;
-  text-transform: uppercase;
 }
-.dl_timeline .timeline_element .timeline-right .title a {
+.dl_timeline .timeline_element .timeline-right a .title a {
   color: #aaa;
   display: block;
 }
-.dl_timeline .timeline_element .timeline-right .title a:hover {
+.dl_timeline .timeline_element .timeline-right a .title a:hover {
   text-decoration: none;
 }
-.dl_timeline .timeline_element .timeline-right .title .head {
-  color: #aaa;
+.dl_timeline .timeline_element .timeline-right a .title .head {
+  color: #09f;
   font-size: 12px;
   line-height: 22px;
   display: inline-block;
-  width: 165px;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.dl_timeline .timeline_element .timeline-right .title .date {
+.dl_timeline .timeline_element .timeline-right a .title .date {
   float: right;
   position: relative;
-  right: 45px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content {
+.dl_timeline .timeline_element .timeline-right a .timeline_content {
+  width: 256px;
   position: relative;
-  font-size: 10px;
+  font-size: 12px;
   overflow: hidden;
   margin-bottom: 0;
-  text-transform: uppercase;
-  margin-right: 50px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll {
-  max-height: 45px;
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll {
   overflow: hidden;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content .img_scroll .photo {
-  display: inline-block;
-  max-width: 45px;
-  max-height: 45px;
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_1 .photo_0 {
+  width: 200px;
+  height: 200px;
+}
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_2 .photo_0,
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_2 .photo_1 {
+  width: 127px;
+}
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_2 .photo_0 {
   margin-right: 1px;
 }
-.dl_timeline .timeline_element .timeline-right .timeline_content p {
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_0 {
+  width: 171px;
+  height: 171px;
+  margin-right: 1px;
+}
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_1,
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_2 {
+  width: 84px;
+  height: 84px;
+}
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_3 .photo_1 {
+  margin-bottom: 3px;
+}
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photos_4 img {
+  width: 126px;
+  height: 126px;
+  margin: 1px;
+}
+.dl_timeline .timeline_element .timeline-right a .timeline_content .img_scroll .photo {
+  display: inline-block;
+  float: left;
+}
+.dl_timeline .timeline_element .timeline-right a .timeline_content p {
   margin-bottom: 0;
   margin-right: 10px;
-}
-.dl_timeline .timeline_element .timeline-right .timeline_content a {
-  color: #888;
-  display: block;
-}
-.dl_timeline .timeline_element .timeline-right .timeline_content a:hover {
-  text-decoration: none;
 }
 .select_team_container {
   background-color: #3abde8;
