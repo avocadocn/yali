@@ -8,7 +8,7 @@
       on-refresh="doRefresh()">
     </ion-refresher>
     <ng-include src="'templates/partials/campaigns.html'"></ng-include>
-    <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore()" distance="5%"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore(loadMoreFinish)" distance="5%"></ion-infinite-scroll>
     <div class="more_data_text" ng-if="!moreData">{{ remind_text }}</div>
   </ion-content>
 </ion-view>

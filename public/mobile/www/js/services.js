@@ -5,10 +5,16 @@
 angular.module('starter.services', [])
 
 
-.factory('Global', function() {
+.factory('Global', function($state) {
   //var base_url = window.location.origin;
-  var base_url = "http://www.donler.com";
+  //var base_url = "http://www.donler.com";
   //var base_url = "http://www.55yali.com";
+  var base_url = "http://192.168.2.106:3000";
+  ionic.Platform.ready(function(){
+    window.plugin.notification.local.onclick = function (id, state, json) {
+      $state.go('app.campaignDetail',{'id':json.id});
+    };
+  });
   var _user = {};
   var last_date;
   return {
@@ -146,12 +152,59 @@ angular.module('starter.services', [])
 
 
 .factory('Campaign', function($http, Global) {
-
+  var remindTimeDay = 1000 * 60 *60 *24;//one hour
+  var remindTimeHour = 1000 * 60 *60;
   var campaign_list = [];
-
   var getCampaignList = function() {
     return campaign_list;
   };
+  var scheduleCampaign = function(){
+    campaign_list.forEach(function(campaign){
+      var scheduleTimeDay = new Date(new Date(campaign.start_time).getTime()-remindTimeDay);
+      var scheduleTimeHour = new Date(new Date(campaign.start_time).getTime()-remindTimeHour);
+      if(scheduleTimeDay>=new Date()){
+        window.plugin.notification.local.isScheduled(campaign._id+'1', function (isScheduled) {
+          if(!isScheduled){
+            window.plugin.notification.local.add({
+              id:         campaign._id + '1',  // A unique id of the notifiction
+              date:       scheduleTimeDay,    // This expects a date object
+              message:    campaign.theme,  // The message that is displayed
+              title:      '活动提醒',  // The title of the message
+              //repeat:     String,  // Either 'secondly', 'minutely', 'hourly', 'daily', 'weekly', 'monthly' or 'yearly'
+              //badge:      Number,  // Displays number badge to notification
+              //sound:      String,  // A sound to be played
+              json:       JSON.stringify({ id: campaign._id }),  // Data to be passed through the notification
+              //autoCancel: Boolean, // Setting this flag and the notification is automatically canceled when the user clicks it
+              //ongoing:    Boolean, // Prevent clearing of notification (Android only)
+            });
+          }
+        });
+      }
+      if(scheduleTimeHour>=new Date()){
+        window.plugin.notification.local.isScheduled(campaign._id+'2', function (isScheduled) {
+          if(!isScheduled){
+            window.plugin.notification.local.add({
+              id:         campaign._id + '2',  // A unique id of the notifiction
+              date:       scheduleTimeHour,    // This expects a date object
+              message:    campaign.theme,  // The message that is displayed
+              title:      '活动提醒',  // The title of the message
+              //repeat:     String,  // Either 'secondly', 'minutely', 'hourly', 'daily', 'weekly', 'monthly' or 'yearly'
+              //badge:      Number,  // Displays number badge to notification
+              //sound:      String,  // A sound to be played
+              json:       { id: campaign._id },  // Data to be passed through the notification
+              //autoCancel: Boolean, // Setting this flag and the notification is automatically canceled when the user clicks it
+              //ongoing:    Boolean, // Prevent clearing of notification (Android only)
+            });
+          }
+        });
+      }
+    });
+  }
+  var cancelScheduleCampaign = function(id){
+    window.plugin.notification.local.cancel(id, function () {
+      // The notification has been canceled
+    });
+  }
   var getNowCampaignList = function(callback){
     $http.get(Global.base_url + '/campaign/user/now/applist/'+ Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status, headers, config) {
@@ -210,6 +263,7 @@ angular.module('starter.services', [])
     $http.get(Global.base_url + '/campaign/user/joined/applist/'+ page +'/'+ Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status, headers, config) {
       campaign_list = data.campaigns;
+      scheduleCampaign();
       callback(campaign_list);
     });
   };
@@ -237,6 +291,7 @@ angular.module('starter.services', [])
       $http.post(Global.base_url + '/campaign/quitCampaign/'+id, { campaign_id: id})
       .success(function(data, status, headers, config) {
         callback(id);
+        cancelScheduleCampaign(id);
       });
     };
   };
