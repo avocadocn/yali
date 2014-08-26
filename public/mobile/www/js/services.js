@@ -8,8 +8,8 @@ angular.module('starter.services', [])
 .factory('Global', function($state) {
   //var base_url = window.location.origin;
   //var base_url = "http://www.donler.com";
-  //var base_url = "http://www.55yali.com";
-  var base_url = "http://192.168.2.106:3000";
+  var base_url = "http://www.55yali.com";
+  //var base_url = "http://192.168.2.106:3000";
   ionic.Platform.ready(function(){
     window.plugin.notification.local.onclick = function (id, state, json) {
       $state.go('app.campaignDetail',{'id':json.id});
