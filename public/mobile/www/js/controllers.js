@@ -665,18 +665,21 @@ angular.module('starter.controllers', [])
   }
   $scope.loadMore = function(callback){
     page++;
-    Timeline.getUserTimeline(page,function(time_lines) {
-      if($scope.time_lines ){
-        $scope.time_lines = $scope.time_lines.concat(time_lines);
+    Timeline.getUserTimeline(page,function(time_lines, nowpage, moreData) {
+      $scope.time_lines = time_lines;
+      if(Timeline.getCacheTimeline()){
+        $ionicScrollDelegate.$getByHandle('timelineScroll').scrollTo(0,Timeline.getTimelinePosition());
+        Timeline.setCacheTimeline(false);
       }
-      else{
-        $scope.time_lines = time_lines;
-      }
-      if(time_lines.length<20){
-        $scope.moreData =false;
-      }
+      $scope.moreData =moreData;
       callback();
     });
+  }
+  $scope.rememberPosition = function(){
+    Timeline.setTimelinePosition($ionicScrollDelegate.$getByHandle('timelineScroll').getScrollPosition().top);
+    console.log()
+    Timeline.setCacheTimeline(true);
+    return true;
   }
 })
 

@@ -464,18 +464,45 @@ angular.module('starter.services', [])
 
 
 .factory('Timeline', function($http, Global) {
-
+  var timeline = [];
+  var page = -1;
+  var _cacheStatue = false;
+  var moreData = true;
+  var timelinePosition = 0;
   // callback(time_lines)
-  var getUserTimeline = function(page, callback) {
-    $http.get(Global.base_url + '/users/getTimelineForApp/' + page + '/' + Global.user._id + '/' + Global.user.app_token)
-    .success(function(data, status) {
-      callback(data.time_lines);
-    });
+  var getUserTimeline = function(nowpage, callback) {
+    if(_cacheStatue){
+      callback(timeline, page, moreData);
+    }
+    else{
+      page = nowpage;
+      $http.get(Global.base_url + '/users/getTimelineForApp/' + page + '/' + Global.user._id + '/' + Global.user.app_token)
+      .success(function(data, status) {
+        timeline = timeline.length>0 ? timeline.concat(data.time_lines) : data.time_lines;
+        moreData = data.time_lines.length==20;
+        callback(timeline, page, moreData);
+      });
+    }
+
   };
-
-
+  var setCacheTimeline = function(cacheStatue){
+    _cacheStatue = cacheStatue;
+  }
+  var getCacheTimeline = function(){
+    return _cacheStatue;
+  }
+  var setTimelinePosition = function(position){
+    timelinePosition = position;
+  }
+  var getTimelinePosition = function(){
+    return timelinePosition;
+  }
   return {
-    getUserTimeline: getUserTimeline
+    getUserTimeline: getUserTimeline,
+    setCacheTimeline: setCacheTimeline,
+    getCacheTimeline: getCacheTimeline,
+    setTimelinePosition: setTimelinePosition,
+    getTimelinePosition: getTimelinePosition
   };
 
 

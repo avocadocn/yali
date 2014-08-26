@@ -2,7 +2,7 @@
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header">
+  <ion-content class="has-header" delegate-handle="timelineScroll">
     <ion-refresher
       on-refresh="doRefresh()">
     </ion-refresher>
@@ -14,7 +14,7 @@
           </a>
         </div>
         <div class="timeline-right">
-          <a href="#/app/campaign_detail/{{ time_line.id }}">
+          <a href="#/app/campaign_detail/{{ time_line.id }}" ng-click="rememberPosition()">
             <div class="title">
               <span class="head">
                 {{time_line.head}}
