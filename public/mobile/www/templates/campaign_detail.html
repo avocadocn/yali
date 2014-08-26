@@ -49,8 +49,6 @@
             <button class="button icon ion-plus upload_button operator_button"></button>
           </form>
         </div>
-        <div class="loading_div" ng-if="loading.status">
-        </div>
         <div id="photo_list" class="photo_list" ng-if="photos.length > 0">
           <ion-slide-box on-slide-changed="slideChange($index)" class="photo_slide_box clearfix">
             <ion-slide ng-repeat="photo_page in photos_view" class="photo_box" length="photos_view.length" hide-pager>

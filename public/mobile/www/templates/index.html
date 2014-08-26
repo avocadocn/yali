@@ -7,7 +7,7 @@
     <ion-refresher
       on-refresh="doRefresh()">
     </ion-refresher>
-    <ion-slide-box does-continue="true" slide-interval="1000">
+    <ion-slide-box does-continue="true">
       <ion-slide class="now_campaign_item" ng-repeat="nowCampaign in nowCampaigns">
         <a href="#/app/campaign_detail/{{ nowCampaign._id }}" class="campaign_link">
           <div class="row campaign_title">

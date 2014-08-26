@@ -350,6 +350,7 @@ var result = {
     'is_joined': is_joined,
     'photo_album': campaign.photo_album,
     'member': campaign.member,
+    'start_flag': start_flag,
     'remind_text': remind_text,
     'start_time_text': start_time_text,
     'location':campaign.location,
@@ -358,7 +359,6 @@ var result = {
     'myteam':myteam
   };
   if(nowFlag){
-    result.start_flag = start_flag;
     result.photo_thumbnails = photo_album_controller.photoThumbnailList(campaign.photo_album, 3);
   }
   return result;

@@ -151,7 +151,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $timeout, Campaign, PhotoAlbum, Comment, Global, Authorize) {
+.controller('CampaignDetailCtrl', function($scope, $rootScope, $state, $stateParams, $ionicModal, $ionicSlideBoxDelegate, $ionicLoading, Campaign, PhotoAlbum, Comment, Global, Authorize) {
   Authorize.authorize();
 
   $scope.base_url = Global.base_url;
@@ -195,10 +195,15 @@ angular.module('starter.controllers', [])
       getPhotoList();
       var file = $('#upload_form').find('.upload_input');
       file.val("");
-      $scope.loading.status=false;
+      $ionicLoading.hide();
     });
 
   }
+  $scope.showLoading = function() {
+    $ionicLoading.show({
+      template: '上传中...'
+    });
+  };
   $scope.photos = [];
   Comment.getCampaignComments($stateParams.id, function(comments) {
     $scope.comments = comments;
@@ -642,9 +647,8 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('TimelineCtrl', function($scope, $rootScope, $ionicScrollDelegate, Timeline, Authorize) {
+.controller('TimelineCtrl', function($scope, $rootScope, $ionicScrollDelegate, $timeout, Timeline, Authorize) {
   Authorize.authorize();
-
   $rootScope.campaignReturnUri = '#/app/timeline';
   $scope.moreData =true;
   var page = -1;
@@ -673,11 +677,6 @@ angular.module('starter.controllers', [])
       }
       callback();
     });
-  }
-  $scope.rememberPosition = function(){
-    
-    console.log($ionicScrollDelegate.getScrollPosition());
-    return false;
   }
 })
 
@@ -763,7 +762,7 @@ angular.module('starter.controllers', [])
     link:function(scope,el,attrs,control){
       el.bind('change',function(){
         scope.$apply(function(){
-          scope.loading.status=true;
+          scope.showLoading();
           $('#upload_form').submit();
         });
       });

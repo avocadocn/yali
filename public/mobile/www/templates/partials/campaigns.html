@@ -4,12 +4,11 @@
       <div class="row campaign_title">
         <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
         <div class="campaign_label">
-          <p class="campaign_now" ng-if="campaign.start_flag==1"> 正在进行的活动 </p>
           <p class="campaign_theme"> {{ campaign.theme }} </p>
         </div>
 
       </div>
-      <div class="campaign_time">
+      <div class="campaign_time" ng-class="{'start_campaign':campaign.start_flag==1}">
         <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
         <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
       </div>

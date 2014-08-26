@@ -695,6 +695,9 @@ body {
   font-size: 22px;
   color: #000;
 }
+.campaign_item .campaign_link .start_campaign {
+  height: 40px;
+}
 .scroll-content .scroll {
   height: 100%;
 }
