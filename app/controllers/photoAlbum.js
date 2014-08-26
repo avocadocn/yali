@@ -186,7 +186,8 @@ var sortByClick = function(a, b) {
 // 一个相册的第一张未删除的图片的uri, 没有则返回默认图
 var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   var first_photo;
-  for (var i = 0; i < photo_album.photos.length; i++) {
+  for (var i = photo_album.photos.length - 1; i >= 0; i--) {
+  //for (var i = 0; i < photo_album.photos.length; i++) {
     if (photo_album.photos[i].hidden === false) {
       first_photo = photo_album.photos[i];
       break;
