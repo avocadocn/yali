@@ -398,62 +398,55 @@ exports.sponsor = function(req, res) {
       photo_album.create_user = update_user;
     }
 
-
-    fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
+    photo_album.save(function(err) {
       if (err) {
         console.log(err);
         return res.send(500);
       }
-
-      photo_album.save(function(err) {
+      campaign.photo_album = photo_album._id;
+      campaign.save(function(err) {
         if (err) {
           console.log(err);
-          return res.send(500);
-        }
-        campaign.photo_album = photo_album._id;
-        campaign.save(function(err) {
-          if (err) {
-            console.log(err);
-            //检查信息是否重复
-            switch (err.code) {
-              case 11000:
-                break;
-              case 11001:
-                res.status(400).send('该活动已经存在!');
-                break;
-              default:
-                break;
-            }
-            return;
-          } else {
-            req.department.team.photo_album_list.push(photo_album._id);
-            req.department.team.save(function(err) {
-              if (err) {
-                return res.send(500);
-              } else {
-                //生成动态消息
-                var groupMessage = new GroupMessage();
-                groupMessage.message_type = 9;
-                groupMessage.company = {
-                  cid: cid,
-                  name: cname
-                };
-                groupMessage.team = all_teams;
-                groupMessage.campaign = campaign._id;
-                groupMessage.department = [req.department._id];
-                groupMessage.save(function(err) {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    return res.send(200);
-                  }
-                });
-              }
-            });
+          //检查信息是否重复
+          switch (err.code) {
+            case 11000:
+              break;
+            case 11001:
+              res.status(400).send('该活动已经存在!');
+              break;
+            default:
+              break;
           }
-        });
+          return;
+        } else {
+          req.department.team.photo_album_list.push(photo_album._id);
+          req.department.team.save(function(err) {
+            if (err) {
+              return res.send(500);
+            } else {
+              //生成动态消息
+              var groupMessage = new GroupMessage();
+              groupMessage.message_type = 9;
+              groupMessage.company = {
+                cid: cid,
+                name: cname
+              };
+              groupMessage.team = all_teams;
+              groupMessage.campaign = campaign._id;
+              groupMessage.department = [req.department._id];
+              groupMessage.save(function(err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  return res.send(200);
+                }
+              });
+            }
+          });
+        }
       });
     });
+
   }
   //为了把子部门的小队也放入该活动
   getDeptDepartment(req,res,req.department._id,_sponsor);
