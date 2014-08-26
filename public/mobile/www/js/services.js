@@ -43,25 +43,56 @@ angular.module('starter.services', [])
 
   var login = function($scope) {
     return function(username, password) {
-      $http.post(Global.base_url + '/users/login', { username: username, password: password })
-      .success(function(data, status, headers, config) {
-        if (data.result === 1) {
-          _authorize = true;
-          var user = data.data;
-          if (user) {
-            Global.user = user;
-            localStorage.user_id = user._id;
-            localStorage.user_nickname = user.nickname;
-            localStorage.app_token = user.app_token;
+      function loginPost(ids){
+        $http.post(Global.base_url + '/users/login', { 
+          username: username,
+          password: password,
+          device: ionic.Platform.device(),
+          userid: ids ? ids[0] : '',
+          channelid: ids ? ids[1] : ''
+        })
+        .success(function(data, status, headers, config) {
+            if (data.result === 1) {
+            _authorize = true;
+            var user = data.data;
+            if (user) {
+              Global.user = user;
+              localStorage.user_id = user._id;
+              localStorage.user_nickname = user.nickname;
+              localStorage.app_token = user.app_token;
+            }
+            $state.go('app.index');
           }
-          $state.go('app.index');
-        }
-      })
-      .error(function(data, status, headers, config) {
-        if (status === 401) {
-          $scope.loginMsg = '用户名或密码错误';
-        }
-      });
+        })
+        .error(function(data, status, headers, config) {
+          if (status === 401) {
+            $scope.loginMsg = '用户名或密码错误';
+          }
+        });
+      }
+
+      function onSuccess(fileEntry) {
+        fileEntry.file(function(file) {
+          var reader = new FileReader();
+          reader.readAsText(file);
+          reader.onloadend = function(evt) {
+            var login_text = evt.target.result;
+            var ids = login_text.split("=.=");
+            loginPost(ids);
+          }
+        });
+      }
+      function onError(evt) {
+        console.log('error'+evt.target.error.code);
+      }
+
+      if(ionic.Platform.device().platform == 'Android'){
+        var path = cordova.file.dataDirectory+"login.tmp";
+        window.resolveLocalFileSystemURL(path, onSuccess,onError);
+      }
+      else{
+        loginPost();
+      }
     };
   };
   var autologin = function(uid, app_token) {
