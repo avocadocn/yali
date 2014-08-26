@@ -168,8 +168,8 @@ module.exports = function(grunt) {
 
     //Default task(s).
 
-    grunt.registerTask('default', ['jshint', 'stylus', 'concat', 'uglify', 'cssmin', 'concurrent']);
-
+    grunt.registerTask('default', ['stylus', 'concat', 'uglify', 'cssmin', 'concurrent']);
+    grunt.registerTask('hint', ['jshint']);
     //Test task.
     grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:e2e']);
 };
