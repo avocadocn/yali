@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
 
 
 .controller('AppCtrl', function($state, $scope, $rootScope, Authorize, Global) {

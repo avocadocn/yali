@@ -45,7 +45,7 @@
         <div class="simple_title padding clearfix">
           <div class="title">活动相册</div>
           <form id="upload_form" class="upload_form pull-right" name="upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
-            <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*" ng-model="upload_file" valid-file required/>
+            <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*;capture=camera" ng-model="upload_file" valid-file required/>
             <button class="button icon ion-plus upload_button operator_button"></button>
           </form>
         </div>
