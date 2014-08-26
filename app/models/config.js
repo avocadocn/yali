@@ -22,6 +22,19 @@ var Config = new Schema({
     company_register_need_invite: {
         type: Boolean,
         default: true
+    },
+    push:{
+        baidu:{
+            apiKey:String,
+            secretKey:String
+        },
+        apn:{
+            gateway:String,
+            cert_path:String,
+            key_path:String,
+            passphrase:String,
+            port:Number
+        }
     }
 });
 

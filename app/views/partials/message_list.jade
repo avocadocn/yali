@@ -77,14 +77,14 @@ div(ng-show = '!loading')
             .message_row
               span.message_label #{__("LOCATION")}:
               span.message_content {{group_message.campaign.location.name}}
-            .message_row
+            .message_row.message_full
               span.message_label 开始#{__("TIME")}:
               span.message_label {{group_message.campaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
               span.message_label 结束#{__("TIME")}:
               span.message_label {{group_message.campaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
               span.message_label(ng-if="group_message.campaign.member_max>0") 报名人数上限:
               span.message_label(ng-if="group_message.campaign.member_max>0") {{group_message.campaign.member_max}}
-            .message_row
+            .message_row.message_padding
               span(ng-if="group_message.message_type==4 && group_message.response_flag !=undefined")
                 button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id,true)") #{__("FACE")}
                 button.dl_btn.dl_btn_small.operator_btn(ng-click="responseProvoke(group_message.campaign.camp[1].id,group_message.campaign._id,false)") #{__("REFUSE")}
