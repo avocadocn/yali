@@ -572,6 +572,12 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
     function($scope, $http, $rootScope) {
         $rootScope.nowTab = 'personal';
         angular.element('.tooltip').hide();
+        $scope.editing = false;
+
+        $scope.toggleEdit = function() {
+            $scope.editing = !$scope.editing;
+        }
+
         var markUserDepartment = function(user, department) {
             if (department && user.department) {
                 for (var i = 0; i < department.length; i++) {
@@ -627,125 +633,6 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
             //TODO:更改对话框
             alertify.alert('DATA ERROR');
         });
-
-        $scope.baseUnEdit = true;
-        //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
-        $scope.baseButtonStatus = '编辑';
-        $scope.linkUnEdit = true;
-        //$scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
-        $scope.linkButtonStatus = '编辑';
-        $scope.baseEditToggle = function() {
-            $scope.baseUnEdit = !$scope.baseUnEdit;
-            if ($scope.baseUnEdit) {
-                try {
-                    var _info = {
-                        email: $scope.user.email,
-                        nickname: $scope.user.nickname,
-                        realname: $scope.user.realname,
-                        position: $scope.user.position,
-                        sex: $scope.user.sex,
-                        birthday: $scope.user.birthday,
-                        bloodType: $scope.user.bloodType,
-                        introduce: $scope.user.introduce
-                    };
-
-                    var editUserInfo = function() {
-                        $http({
-                            method: 'post',
-                            url: '/users/saveAccount/'+$rootScope.uid,
-                            data: {
-                                user: _info
-                            }
-                        }).success(function(data, status) {
-                            //TODO:更改对话框
-                            if (data.result === 1) {
-                                //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.MSG_UPDATE_SUCCESS);
-                                //重新刷新页面
-                                window.location.reload();
-                            } else
-                                alertify.alert(data.msg);
-                        }).error(function(data, status) {
-                            //TODO:更改对话框
-                            //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-                        });
-                    };
-
-                    if (!$scope.user.department) {
-                        if($scope.last_selected_node){
-                            $http
-                            .post('/department/memberOperate/' + $scope.last_selected_node._id, {
-                                operate: 'join',
-                                member: {
-                                    _id: $scope.user._id,
-                                    nickname: $scope.user.nickname,
-                                    photo: $scope.user.photo
-                                }
-                            })
-                            .success(function(data, status) {
-                                editUserInfo();
-                            });
-                        }else{
-                            editUserInfo();
-                        }
-                    } else {
-                        if($scope.user.department._id.toString() !== $scope.last_selected_node._id.toString()){
-                            $http
-                            .post('/department/memberOperate/' + $scope.last_selected_node._id, {
-                                operate: 'join',
-                                member: {
-                                    _id: $scope.user._id,
-                                    nickname: $scope.user.nickname,
-                                    photo: $scope.user.photo
-                                }
-                            })
-                            .success(function(data, status) {
-                                editUserInfo();
-                            });
-                        }else{
-                            editUserInfo();
-                        }
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-                //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
-                $scope.baseButtonStatus = '编辑';
-            } else {
-                //$scope.baseButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
-                $scope.baseButtonStatus = '保存';
-            }
-        };
-        $scope.linkEditToggle = function() {
-            $scope.linkUnEdit = !$scope.linkUnEdit;
-            if ($scope.linkUnEdit) {
-                try {
-                    var _info = {
-                        phone: $scope.user.phone,
-                        email: $scope.user.email,
-                        qq: $scope.user.qq
-                    };
-                    $http({
-                        method: 'post',
-                        url: '/users/saveAccount/'+$rootScope.uid,
-                        data: {
-                            user: _info
-                        }
-                    }).success(function(data, status) {
-                        //TODO:更改对话框
-                    }).error(function(data, status) {
-                        //TODO:更改对话框
-                        alertify.alert('DATA ERROR');
-                    });
-                } catch (e) {
-                    console.log(e);
-                }
-                //$scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.EDIT;
-                $scope.linkButtonStatus = '编辑';
-            } else {
-                //scope.linkButtonStatus = $rootScope.lang_for_msg[$rootScope.lang_key].value.SAVE;
-                $scope.linkButtonStatus = '保存';
-            }
-        };
 
     }
 ]);

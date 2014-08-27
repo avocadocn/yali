@@ -712,10 +712,11 @@ exports.home = function(req, res) {
 };
 
 exports.editInfo = function(req, res) {
-  return res.render('users/editInfo',{
+  return res.render('users/editInfo', {
     'title': '个人资料',
     'role':req.role,
-    'this_user': req.profile
+    'this_user': req.profile,
+    'moment': moment
   });
 };
 
@@ -1006,7 +1007,7 @@ exports.quitGroup = function (req, res){
 };
 
 //获取账户信息
-exports.getAccount = function (req, res) {
+exports.getAccount = function (req, res, next) {
   if(req.role !=='HR'&& req.role!=='OWNER'&&req.role!=='PARTNER' ){
     res.status(403);
     next('forbidden');
@@ -1030,34 +1031,48 @@ exports.getAccount = function (req, res) {
 };
 
 //保存用户信息
-exports.saveAccount = function (req, res) {
+exports.saveAccount = function (req, res, next) {
   if(req.role !=='HR'&& req.role!=='OWNER'){
     res.status(403);
     next('forbidden');
     return;
   }
-  User.findOneAndUpdate({
-    _id : req.params.userId
-  }, req.body.user,{new:false},function(err, user) {
-    if(err) {
-        console.log(err);
-        res.send({'result':0,'msg':'数据错误'});
+  User
+  .findById(req.params.userId)
+  .exec()
+  .then(function(user) {
+    if (!user) {
+      res.status(404);
+      return next('not found');
     }
-    else {
-      if (user) {
-        if(req.body.user.nickname !== user.nickname){
-          schedule.updateUname(user._id);
-        }
-        res.send({'result':1,'msg':'修改成功'});
-      } else {
-        res.send({'result':0,'msg':'不存在该用户'});
+    for (var i in req.body.user) {
+      user[i] = req.body.user[i];
+    }
+    user.save(function(err) {
+      if (err) {
+        return next(err);
       }
-    }
+      department.memberOperateByHand('join', {
+        _id: req.body.user_id,
+        nickname: req.body.user_nickname,
+        photo: req.body.user_photo,
+        apply_status: 'pass'
+      }, req.body.did, function(err) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/users/home#/personal/' + req.params.userId);
+      })
+    });
+
+  })
+  .then(null, function(err) {
+    next(err);
   });
 };
 
 //修改密码
-exports.changePassword = function (req, res) {
+exports.changePassword = function (req, res, next) {
   if(req.role !=='HR'&& req.role!=='OWNER'){
     res.status(403);
     next('forbidden');
@@ -1099,7 +1114,7 @@ exports.changePassword = function (req, res) {
 
 
 
-exports.editPhoto = function(req, res) {
+exports.editPhoto = function(req, res, next) {
   if(req.role ==='PARTNER'){
     res.status(403);
     next('forbidden');
