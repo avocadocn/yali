@@ -26,7 +26,6 @@ var mongoose = require('mongoose'),
     model_helper = require('../helpers/model_helper'),
     schedule = require('../services/schedule'),
     message = require('../controllers/message'),
-    push = require('../controllers/push'),
     photo_album_controller = require('./photoAlbum');
 
 //返回组件模型里的所有组件(除了虚拟组),待HR选择
