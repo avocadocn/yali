@@ -17,3 +17,9 @@ temp_uploads/
 
 public/mobile/plugins/
 public/mobile/npm-debug.log
+public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVAssetLibraryFilesystem.h
+public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVAssetLibraryFilesystem.m
+public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVFile.h
+public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVFile.m
+public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVLocalFilesystem.h
+public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVLocalFilesystem.m
