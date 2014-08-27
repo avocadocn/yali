@@ -1052,17 +1052,41 @@ exports.saveAccount = function (req, res, next) {
       if (err) {
         return next(err);
       }
-      department.memberOperateByHand('join', {
-        _id: req.body.user_id,
-        nickname: req.body.user_nickname,
-        photo: req.body.user_photo,
-        apply_status: 'pass'
-      }, req.body.did, function(err) {
-        if (err) {
-          return next(err);
-        }
+      if (req.body.change_department === 'true' || req.body.change_department === true) {
+
+        var joinOrQuit = function(operate, callback) {
+          department.memberOperateByHand(operate, {
+            _id: req.body.user_id,
+            nickname: req.body.user_nickname,
+            photo: req.body.user_photo,
+            apply_status: 'pass'
+          }, req.body.did, function(err) {
+            if (err) {
+              return next(err);
+            }
+            if (callback) {
+              callback();
+            }
+          });
+        };
+
+        var join = function(callback) {
+          joinOrQuit('join', callback);
+        };
+
+        var quit = function(callback) {
+          joinOrQuit('quit', callback);
+        };
+
+        quit(function() {
+          join(function() {
+            res.redirect('/users/home#/personal/' + req.params.userId);
+          });
+        });
+
+      } else {
         res.redirect('/users/home#/personal/' + req.params.userId);
-      })
+      }
     });
 
   })
