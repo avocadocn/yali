@@ -1374,21 +1374,30 @@ var deviceRegister = function(device_info){
       if(device){
         for(var i = 0 ; i < device.length; i ++){
           if(device[i].platform == device_info.platform){
-            find = true;
-            device[i].version = device_info.version;
-            device[i].device_id = device_info.device_id;
-            device[i].update_date = new Date();
-            if(device_info.user_id){
-              device[i].user_id = device_info.user_id;
+            //如果设备类型相同并且device_id不一样就要更新设备信息(比如两台Android手机)
+            if(device[i].device_type == device_info.device_type){
+              if(device[i].device_id != device_info.device_id){
+                find = true;
+                user.device[i].version = device_info.version;
+                user.device[i].device_id = device_info.device_id;
+                user.device[i].update_date = new Date();
+                user.device[i].user_id = device_info.user_id;
+                user.device[i].device_type = device_info.device_type;
+                user.device[i].token = device_info.token;
+                break;
+              }
             }
-            break;
           }
         }
+        //以下两种情况就要新增设备信息
+        //1.不同平台(一部iPhone,一部小米)
+        //2.相同平台,不同设备类型(一部小米手机,一台三星平板,系统都是Android)
         if(!find){
           user.device.push({
             platform:device_info.platform,
             version:device_info.version,
             device_id:device_info.device_id,
+            device_type:device_info.device_type,
             user_id:device_info.user_id,                //只有Android的百度云推送才会用到
             update_date:new Date()
           });
@@ -1399,11 +1408,18 @@ var deviceRegister = function(device_info){
           platform:device_info.platform,
             version:device_info.version,
             device_id:device_info.device_id,
+            device_type:device_info.device_type,
             user_id:device_info.user_id,                //只有Android的百度云推送才会用到
             update_date:new Date()
         });
       }
-      return res.send({'result':1,'msg':'USER_DEVICE_UPDATE_SUCCESS'});
+      user.save(function(err){
+        if(err){
+          return res.send({'result':0,'msg':'USER_DEVICE_UPDATE_ERROR','data':err});
+        }else{
+          return res.send({'result':1,'msg':'USER_DEVICE_UPDATE_SUCCESS'});
+        }
+      });
     }
   })
 }
