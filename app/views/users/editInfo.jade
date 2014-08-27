@@ -1,20 +1,22 @@
 .loading_div(ng-show='loading')
 div.user_edit_info.dl_card_tebcontent(ng-show='!loading')
-  form.form-horizontal(ng-init="user={}" name="accountForm" enctype="application/json" method="post" action="/users/saveAccount/#{this_user._id}")
+  form.form-horizontal(name="accountForm" enctype="application/json" method="post" action="/users/saveAccount/#{this_user._id}")
     .dl_row
       h5.pull-left #{__("INFO")}
-      button.dl_btn.dl_btn_small.pull-right(type="button" ng-if="!editing" ng-click="toggleEdit()") 编辑
-      button.dl_btn.dl_btn_small.cancel_btn.pull-right(type="button" ng-if="editing" ng-click="toggleEdit()") 取消
-      button.dl_btn.dl_btn_small.pull-right(type="submit" ng-disabled="accountForm.$invalid&&editing" ng-if="editing") 保存
+      if role === 'OWNER'
+        button.dl_btn.dl_btn_small.pull-right(type="button" ng-if="!editing" ng-click="toggleEdit()") 编辑
+        button.dl_btn.dl_btn_small.cancel_btn.pull-right(type="button" ng-if="editing" ng-click="toggleEdit()") 取消
+        button.dl_btn.dl_btn_small.pull-right(type="submit" ng-disabled="accountForm.$invalid&&editing" ng-if="editing") 保存
     hr.margin_top_6
-    .dl_row.clearfix(ng-if="role!='PARTNER'")
-      .aside
-        img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
-      .dl_row.margin_top_15(ng-if="role!='PARTNER' && role!='HR'")
-        a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/users/editPhoto/#{this_user._id}") #{__("CHANGE")}#{__("AVATAR")}
-      .dl_row.margin_top_15(ng-if="role!='PARTNER' && role!='HR'")
-        a(href="#/changePassword/#{this_user._id}")
-          button.dl_btn.dl_btn_medium #{__("CHANGE")}#{__("PASSWORD")}
+    if role === 'OWNER'
+      .dl_row.clearfix
+        .aside
+          img.img-responsive.size_128.img-thumbnail(ng-src="{{user.photo ? user.photo :'/img/icons/default_user_photo.png'}}")
+        .dl_row.margin_top_15
+          a.clearLinkUnderline.dl_btn.dl_btn_medium(href="/users/editPhoto/#{this_user._id}") #{__("CHANGE")}#{__("AVATAR")}
+        .dl_row.margin_top_15
+          a(href="#/changePassword/#{this_user._id}")
+            button.dl_btn.dl_btn_medium #{__("CHANGE")}#{__("PASSWORD")}
     .dl_row.clearfix(ng-if="user.nickname || editing")
       .info_side
         span.info_label #{__("NICKNAME")}

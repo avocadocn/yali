@@ -11,7 +11,7 @@ block contentExt
         h3
           | 添加或更改你的大头像
           &nbsp;
-          small: a(href="/users/home#/personal") 返回
+          small: a(href="/users/home#/personal/#{uid}") 返回
           input#return_uri(type="hidden" value="/users/home/#{uid}#/personal/#{uid}")
         .row.margin_top_20
           .col-xs-4.col-sm-4
