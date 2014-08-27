@@ -711,7 +711,6 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
     var start_time = new Date($('#campaign_start_time').text());
     var remind_text = $('#remind_text');
     var handle = setInterval(function() {
-
         start_time.setSeconds(start_time.getSeconds());
         if (start_time < Date.now()) {
             remind_time.text('活动已开始');
