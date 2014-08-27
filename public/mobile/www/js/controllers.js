@@ -8,6 +8,7 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
   $scope.logout = Authorize.logout;
   $scope.base_url = Global.base_url;
   $scope.user = Global.user;
+  
 })
 
 
