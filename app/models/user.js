@@ -16,6 +16,7 @@ var _device = new Schema({
     },
     version:String,
     device_id:String,
+    device_type:String,            //同一platform设备的类型(比如ios系统有iPhone和iPad)
     token:String,                  //只有APN推送才会用到
     user_id:String,                //只有Android的百度云推送才会用到
     update_date:{

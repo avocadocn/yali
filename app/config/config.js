@@ -23,3 +23,5 @@ exports.COMPETITION_CONFIRM_TIMEOUT = 72 * 3600 * 1000;
 exports.CAMPAIGN_STAY_HOUR = 24;
 
 exports.PUSH_SECRET = 'dOnLeRHuAnGHeRoAd618'; //推送服务用到的密钥
+
+exports.PUSH_ON = false;
