@@ -107,6 +107,7 @@ div.user_edit_info.dl_card_tebcontent(ng-show='!loading')
     input(type="hidden" name="user_nickname" value="#{this_user.nickname}")
     input(type="hidden" name="user_photo" value="#{this_user.photo}")
     input(type="hidden" name="did" value="{{last_selected_node._id}}")
+    input(type="hidden" name="change_department" value="{{last_selected_node._id !== ori_selected_node._id}}")
 
   script.
     $(function() {

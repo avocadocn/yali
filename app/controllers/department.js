@@ -604,6 +604,8 @@ exports.memberOperateByRoute = function(req, res) {
   }
 }
 
+
+
 //手动调用函数
 exports.memberOperateByHand = function(operate, member, did, callback) {
   if (operate === 'join') {
@@ -622,7 +624,7 @@ exports.memberOperateByHand = function(operate, member, did, callback) {
   if (operate === 'quit') {
     //踢掉
      teamOperate({
-      did: req.user.department._id,
+      did: did,
       operate: {
         '$pull': {
           'member': {
