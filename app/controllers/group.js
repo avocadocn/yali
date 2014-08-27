@@ -635,127 +635,121 @@ exports.provoke = function (req, res) {
           type: 'user'
         }
       });
-      fs.mkdir(path.join(meanConfig.root, '/public/img/photo_album/', photo_album._id.toString()), function(err) {
-        if (err) {
-          console.log(err);
-          return res.send(500);
-        } else {
-          photo_album.save(function(err){
+      photo_album.save(function(err){
+        if(!err){
+          competition.photo_album = photo_album._id;
+
+          competition.save(function(err){
             if(!err){
-              competition.photo_album = photo_album._id;
+              var groupMessage = new GroupMessage();
+              if(type===4||type ===5)
+                groupMessage.message_type = 4;
+              else if(type === 3)
+                groupMessage.message_type = 9;
+              groupMessage.team.push({
+                teamid: my_team_id,
+                name: req.companyGroup.name,
+                logo: req.companyGroup.logo
+              });         //发起挑战方小队信息
+              groupMessage.team.push({
+                teamid: team_opposite._id,
+                name: team_opposite.name,
+                logo: team_opposite.logo
+              });  //应约方小队信息
 
-              competition.save(function(err){
-                if(!err){
-                  var groupMessage = new GroupMessage();
-                  if(type===4||type ===5)
-                    groupMessage.message_type = 4;
-                  else if(type === 3)
-                    groupMessage.message_type = 9;
-                  groupMessage.team.push({
-                    teamid: my_team_id,
-                    name: req.companyGroup.name,
-                    logo: req.companyGroup.logo
-                  });         //发起挑战方小队信息
-                  groupMessage.team.push({
-                    teamid: team_opposite._id,
-                    name: team_opposite.name,
-                    logo: team_opposite.logo
-                  });  //应约方小队信息
+              groupMessage.company.push({
+                cid: req.companyGroup.cid,
+                name: cname
+              });
+              groupMessage.company.push({
+                cid: team_opposite.cid,
+                name: team_opposite.cname
+              });
+              groupMessage.campaign = competition._id;
+              groupMessage.save(function (err) {
+                if (err) {
+                      console.log('保存约战动态时出错' + err);
+                    }else{
 
-                  groupMessage.company.push({
-                    cid: req.companyGroup.cid,
-                    name: cname
-                  });
-                  groupMessage.company.push({
-                    cid: team_opposite.cid,
-                    name: team_opposite.cname
-                  });
-                  groupMessage.campaign = competition._id;
-                  groupMessage.save(function (err) {
-                    if (err) {
-                          console.log('保存约战动态时出错' + err);
-                        }else{
+                      CompanyGroup.update({'_id':my_team_id},{'$inc':{'score.provoke':5}},function (err,team){
+                        if(err){
+                          console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
+                        }
+                      });
+                      // var provoke = team.score.provoke;
+                      // var campaign = team.score.campaign;
+                      // var member = team.score.member;
+                      // var participator = team.score.participator;
+                      // var comment = team.score.comment;
+                      // var album = team.score.album;
 
-                          CompanyGroup.update({'_id':my_team_id},{'$inc':{'score.provoke':5}},function (err,team){
-                            if(err){
-                              console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
-                            }
-                          });
-                          // var provoke = team.score.provoke;
-                          // var campaign = team.score.campaign;
-                          // var member = team.score.member;
-                          // var participator = team.score.participator;
-                          // var comment = team.score.comment;
-                          // var album = team.score.album;
+                      // provoke = (provoke == undefined || provoke == null) ? 0 : (provoke + 5);
+                      // campaign = (campaign == undefined || campaign == null) ? 0 : campaign;
+                      // member = (member == undefined || member == null) ? 0 : member;
+                      // participator = (participator == undefined || participator == null) ? 0 : participator;
+                      // comment = (comment == undefined || comment == null) ? 0 : comment;
+                      // album = (album == undefined || album == null) ? 0 : album;
 
-                          // provoke = (provoke == undefined || provoke == null) ? 0 : (provoke + 5);
-                          // campaign = (campaign == undefined || campaign == null) ? 0 : campaign;
-                          // member = (member == undefined || member == null) ? 0 : member;
-                          // participator = (participator == undefined || participator == null) ? 0 : participator;
-                          // comment = (comment == undefined || comment == null) ? 0 : comment;
-                          // album = (album == undefined || album == null) ? 0 : album;
+                      // team.score = {
+                      //   'provoke':provoke,
+                      //   'campaign':campaign,
+                      //   'member':member,
+                      //   'participator':participator,
+                      //   'comment':comment,
+                      //   'album':album
+                      // }
 
-                          // team.score = {
-                          //   'provoke':provoke,
-                          //   'campaign':campaign,
-                          //   'member':member,
-                          //   'participator':participator,
-                          //   'comment':comment,
-                          //   'album':album
-                          // }
+                      //console.log(team.score);
 
-                          //console.log(team.score);
-
-                          team.save(function(err){
-                            console.log('PROVOKE_POINT_FAILED!',err);
-                          });
-                          if(team_opposite.leader.length > 0){
-                            var param = {
-                              'specific_type':{
-                                'value':4,
-                                'child_type':0
-                              },
-                              'type':'private',
-                              'caption':competition.theme,
-                              'own':{
-                                '_id':req.user._id,
-                                'nickname':req.user.nickname,
-                                'photo':req.user.photo,
-                                'role':'LEADER'
-                              },
-                              'receiver':{
-                                '_id':team_opposite.leader[0]._id
-                              },
-                              'content':null,
-                              'own_team':{
-                                '_id':my_team_id,
-                                'name':req.companyGroup.name,
-                                'logo':req.companyGroup.logo,
-                                'status':0
-                              },
-                              'receive_team':{
-                                '_id':team_opposite._id,
-                                'name':team_opposite.name,
-                                'logo':team_opposite.logo,
-                                'status':0
-                              },
-                              'campaign_id':competition._id,
-                              'auto':true
-                            };
-                            message.sendToOne(req,res,param);      //挑战的站内信只要发给队长一个人即可
-                          }
-                      return res.send({'result':0,'msg':'SUCCESS'});
-                    }
-                  });
-                }else{
-                  console.log(err);
-                  return res.send({'result':0,'msg':'ERROR'});
+                      team.save(function(err){
+                        console.log('PROVOKE_POINT_FAILED!',err);
+                      });
+                      if(team_opposite.leader.length > 0){
+                        var param = {
+                          'specific_type':{
+                            'value':4,
+                            'child_type':0
+                          },
+                          'type':'private',
+                          'caption':competition.theme,
+                          'own':{
+                            '_id':req.user._id,
+                            'nickname':req.user.nickname,
+                            'photo':req.user.photo,
+                            'role':'LEADER'
+                          },
+                          'receiver':{
+                            '_id':team_opposite.leader[0]._id
+                          },
+                          'content':null,
+                          'own_team':{
+                            '_id':my_team_id,
+                            'name':req.companyGroup.name,
+                            'logo':req.companyGroup.logo,
+                            'status':0
+                          },
+                          'receive_team':{
+                            '_id':team_opposite._id,
+                            'name':team_opposite.name,
+                            'logo':team_opposite.logo,
+                            'status':0
+                          },
+                          'campaign_id':competition._id,
+                          'auto':true
+                        };
+                        message.sendToOne(req,res,param);      //挑战的站内信只要发给队长一个人即可
+                      }
+                  return res.send({'result':0,'msg':'SUCCESS'});
                 }
               });
+            }else{
+              console.log(err);
+              return res.send({'result':0,'msg':'ERROR'});
             }
           });
         }
-      })
+      });
+
     }
   });
 };
@@ -1003,41 +997,76 @@ exports.sponsor = function (req, res) {
     }
   });
 
-  fs.mkdir(meanConfig.root + '/public/img/photo_album/' + photo_album._id, function(err) {
+  photo_album.save(function(err) {
     if (err) {
       console.log(err);
       return res.send({'result':0,'msg':'活动创建失败'});
     }
-
-    photo_album.save(function(err) {
+    campaign.photo_album = photo_album._id;
+    campaign.save(function(err) {
       if (err) {
         console.log(err);
-        return res.send({'result':0,'msg':'活动创建失败'});
-      }
-      campaign.photo_album = photo_album._id;
-      campaign.save(function(err) {
-        if (err) {
-          console.log(err);
-          //检查信息是否重复
-          switch (err.code) {
-            case 11000:
-                break;
-            case 11001:
-                res.status(400).send('该活动已经存在!');
-                break;
-            default:
-                break;
-          }
-            return;
+        //检查信息是否重复
+        switch (err.code) {
+          case 11000:
+              break;
+          case 11001:
+              res.status(400).send('该活动已经存在!');
+              break;
+          default:
+              break;
         }
-        else{
-          if(!multi){
-            req.companyGroup.photo_album_list.push(photo_album._id);
-            req.companyGroup.save(function(err) {
-              if (err) {
-                //res.send(500);
+          return;
+      }
+      else{
+        if(!multi){
+          req.companyGroup.photo_album_list.push(photo_album._id);
+          req.companyGroup.save(function(err) {
+            if (err) {
+              //res.send(500);
+              return res.send({'result':0,'msg':'FAILURED'});
+            } else {
+              //生成动态消息
+              var groupMessage = new GroupMessage();
+              groupMessage.message_type = 1;
+              groupMessage.company = {
+                cid : cid,
+                name : cname
+              };
+              groupMessage.team= {
+                teamid : tid,
+                name : tname,
+                logo : req.companyGroup.logo
+              };
+              groupMessage.campaign = campaign._id;
+              groupMessage.save(function (err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  return res.send({'result':1,'msg':'SUCCESS'});
+                }
+              });
+            }
+          });
+        }else{
+          var i = 0;;
+          async.whilst(
+            function() { return i < tids.length},
+            function(__callback){
+              CompanyGroup.update({'_id':tids[i]},{'$push':{'photo_album_list':photo_album._id}},function(err,team){
+                if(err || !team){
+                  console.log('小队相册加入失败',err,team);
+                }else{
+                  i++;
+                  __callback();
+                }
+              })
+            },
+            function(err){
+              if(err){
+                console.log('MULTI_CAMPAIGN_CAMPAIGN',err);
                 return res.send({'result':0,'msg':'FAILURED'});
-              } else {
+              }else{
                 //生成动态消息
                 var groupMessage = new GroupMessage();
                 groupMessage.message_type = 1;
@@ -1045,70 +1074,29 @@ exports.sponsor = function (req, res) {
                   cid : cid,
                   name : cname
                 };
-                groupMessage.team= {
-                  teamid : tid,
-                  name : tname,
-                  logo : req.companyGroup.logo
-                };
+                for(var i = 0; i < req.body.select_teams.length; i ++){
+                  groupMessage.team.push({
+                    'teamid':req.body.select_teams[i]._id,
+                    'name':req.body.select_teams[i].name,
+                    'logo':req.body.select_teams[i].logo
+                  });
+                }
                 groupMessage.campaign = campaign._id;
                 groupMessage.save(function (err) {
                   if (err) {
-                    console.log(err);
+                    console.log('MULTI_CAMPAIGN_GROUPMESSAGE_ERROR',err);
                   } else {
                     return res.send({'result':1,'msg':'SUCCESS'});
                   }
                 });
               }
-            });
-          }else{
-            var i = 0;;
-            async.whilst(
-              function() { return i < tids.length},
-              function(__callback){
-                CompanyGroup.update({'_id':tids[i]},{'$push':{'photo_album_list':photo_album._id}},function(err,team){
-                  if(err || !team){
-                    console.log('小队相册加入失败',err,team);
-                  }else{
-                    i++;
-                    __callback();
-                  }
-                })
-              },
-              function(err){
-                if(err){
-                  console.log('MULTI_CAMPAIGN_CAMPAIGN',err);
-                  return res.send({'result':0,'msg':'FAILURED'});
-                }else{
-                  //生成动态消息
-                  var groupMessage = new GroupMessage();
-                  groupMessage.message_type = 1;
-                  groupMessage.company = {
-                    cid : cid,
-                    name : cname
-                  };
-                  for(var i = 0; i < req.body.select_teams.length; i ++){
-                    groupMessage.team.push({
-                      'teamid':req.body.select_teams[i]._id,
-                      'name':req.body.select_teams[i].name,
-                      'logo':req.body.select_teams[i].logo
-                    });
-                  }
-                  groupMessage.campaign = campaign._id;
-                  groupMessage.save(function (err) {
-                    if (err) {
-                      console.log('MULTI_CAMPAIGN_GROUPMESSAGE_ERROR',err);
-                    } else {
-                      return res.send({'result':1,'msg':'SUCCESS'});
-                    }
-                  });
-                }
-              }
-            );
-          }
+            }
+          );
         }
-      });
+      }
     });
   });
+
 };
 
 

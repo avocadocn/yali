@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         watch: {
             js: {
                 files: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/js/**.js', '!public/js/**min.js', '!public/js/db.js', 'test/**/*.js', '!test/coverage/**/*.js'],
-                tasks: ['jshint'],
+                //tasks: ['jshint'],
                 options: {
                     livereload: true
                 }

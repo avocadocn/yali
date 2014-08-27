@@ -5,7 +5,6 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
   if (Authorize.authorize() === true) {
     $state.go('app.index');
   }
-  //ionic.Platform.showStatusBar(true);
   $scope.logout = Authorize.logout;
   $scope.base_url = Global.base_url;
   $scope.user = Global.user;
@@ -95,10 +94,14 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
     $scope.moreData =true;
     page = -1;
     $scope.campaign_list = undefined;
-    $scope.loadMore();
+    $scope.loadMore(function(){
+       $scope.$broadcast('scroll.refreshComplete');
+    });
   }
   $rootScope.campaignReturnUri = '#/app/campaign_list';
-
+  $scope.loadMoreFinish = function(){
+    $scope.$broadcast('scroll.infiniteScrollComplete');
+  }
   // Campaign.getUserCampaignsForList(page,function(campaign_list) {
   //   $scope.campaign_list = campaign_list;
   // });
@@ -128,7 +131,7 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
   //   $scope.join(campaign_id,tid);
   //   $scope.selectModal.hide();
   // };
-  $scope.loadMore = function(){
+  $scope.loadMore = function(callback){
     page++;
     Campaign.getUserJoinedCampaignsForList(page,function(campaign_list) {
       if($scope.campaign_list){
@@ -145,7 +148,7 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
           $scope.remind_text = '没有更多的活动了';
         }
       }
-      $scope.$broadcast('scroll.infiniteScrollComplete');
+      callback();
     });
   }
 })
@@ -677,7 +680,6 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
   }
   $scope.rememberPosition = function(){
     Timeline.setTimelinePosition($ionicScrollDelegate.$getByHandle('timelineScroll').getScrollPosition().top);
-    console.log()
     Timeline.setCacheTimeline(true);
     return true;
   }
