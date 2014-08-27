@@ -15,5 +15,6 @@ public/img/photo_album/
 temp_uploads/
 
 public/mobile/platforms/
+!public/mobile/platforms/ios/Donler/Resources/
 public/mobile/plugins/
 public/mobile/npm-debug.log
