@@ -7,7 +7,7 @@
     <ion-refresher
       on-refresh="doRefresh()">
     </ion-refresher>
-    <ion-slide-box does-continue="true">
+    <ion-slide-box does-continue="true" hidePager>
       <ion-slide class="now_campaign_item" ng-repeat="nowCampaign in nowCampaigns">
         <a href="#/app/campaign_detail/{{ nowCampaign._id }}" class="campaign_link">
           <div class="row campaign_title">
@@ -49,7 +49,7 @@
             </div>
           </div>
         </a>
-        <ion-option-button class="button-positive" ng-if="campaign.active!=undefined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal(campaign)">
+        <ion-option-button class="button-positive" ng-if="campaign.active!=undefined" ng-click="campaign.myteam.length<2 ? join(campaign,campaign.myteam[0].id) : openselectModal(campaign)">
           参加
         </ion-option-button>
       </ion-item>

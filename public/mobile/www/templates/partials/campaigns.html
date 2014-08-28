@@ -1,17 +1,20 @@
 <ion-list>
-  <ion-item class="campaign_item" ng-repeat="campaign in campaign_list">
-    <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
-      <div class="row campaign_title">
-        <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
-        <div class="campaign_label">
-          <p class="campaign_theme"> {{ campaign.theme }} </p>
-        </div>
+  <ion-item ng-class="{'campaign_item': campaign.start_flag!=1,'new_campaign_item':campaign.start_flag==1}" ng-repeat="campaign in campaign_list">
+    <div class="item-content">
+      <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
+        <div class="row campaign_title">
+          <img class="campaign_group_logo" ng-src="{{ base_url + campaign.logo }}"/>
+          <div class="campaign_label">
+            <p class="campaign_theme"> {{ campaign.theme }} </p>
+            <p class="new_campaign_time">开始时间：{{campaign.start_time | date:"yyyy-MM-dd HH:mm"}} </p>
+          </div>
 
-      </div>
-      <div class="campaign_time" ng-class="{'start_campaign':campaign.start_flag==1}">
-        <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
-        <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
-      </div>
-    </a>
+        </div>
+        <div class="campaign_time" ng-if="!campaign.start_flag">
+          <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
+          <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
+        </div>
+      </a>
+    </div>
   </ion-item>
 </ion-list>

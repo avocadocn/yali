@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     model_helper = require('../helpers/model_helper'),
     _ = require('lodash'),
     moment = require('moment'),
+    async = require('async'),
     photo_album_controller = require('./photoAlbum'),
     systemConfig = require('../config/config');
 var pageSize = 100;
@@ -705,31 +706,62 @@ exports.getUserUnjoinCampaignsForList = function(req, res) {
   });
 };
 exports.getUserNowCampaignsForAppList = function(req, res) {
+  var now = new Date();
   var startTimeLimit = new Date();
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var options = {
-    'cid': req.user.cid,
-    '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
-    'active': true,
-    'start_time': { '$lt': startTimeLimit },
-    'end_time': { '$gt': endTimeLimit }
-  };
-  Campaign
-  .find(options)
-  .sort('-start_time')
-  .populate('team')
-  .populate('cid')
-  .populate('photo_album')
-  .exec()
-  .then(function(campaigns) {
-    var format_campaigns = formatCampaignsForApp(req.user, campaigns, true);
-    res.send({ result: 1, campaigns: format_campaigns });
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send(500);
+  var serchCampaign = function(startSet,endSet,limit,callback){
+    var options = {
+      'cid': req.user.cid,
+      '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
+      'active': true
+    };
+    if(startSet){
+      options.start_time = startSet;
+    }
+    if(endSet){
+      options.end_time = endSet;
+    }
+    Campaign
+    .find(options)
+    .sort('-start_time')
+    .limit(limit)
+    .populate('team')
+    .populate('cid')
+    .populate('photo_album')
+    .exec()
+    .then(function(campaigns) {
+      callback(null,formatCampaignsForApp(req.user, campaigns, true));
+    });
+  }
+  async.series([
+    function(callback){
+      serchCampaign({ '$lt': startTimeLimit,'$gte':now },undefined,1,callback);
+    },//马上开始的1个活动
+    function(callback){
+      serchCampaign({ '$lt': now},{'$gte':now },5,callback);
+    },//正在进行的5个活动
+    function(callback){
+      serchCampaign(undefined,{ '$lt': now,'$gte': endTimeLimit},5,callback);
+    }//已经完成的5个活动
+  ], function(err, values) {
+    if(err){
+      console.log(err);
+      return res.send({ result: 0, campaigns: [] });
+    }
+    else{
+      var resultCampaign = [];
+      values[0].length>0 && resultCampaign.push(values[0][0]);
+      if(values[1].length>0){
+        resultCampaign = resultCampaign.concat(values[1]);
+      }
+      if(resultCampaign.length<6 && values[2].length>0){
+        var temp = values[2].slice(0,6-resultCampaign.length);
+        resultCampaign = resultCampaign.concat(temp);
+      }
+      return res.send({ result: 1, campaigns: resultCampaign });
+    }
   });
 };
 
@@ -802,7 +834,7 @@ var findUserNewFinishCampaigns= function(options, skipSize, findTime, res){
         maxPhotoCount = _campaign.photo_album.photo_count;
       }
     });
-    if(maxPhotoCount==0){
+    if(maxPhotoCount<3){
       skipSize = skipSize+newFinishSize;
       if(findTime>=findLimitTime){
         return res.send({ result: 1, campaigns: {} });

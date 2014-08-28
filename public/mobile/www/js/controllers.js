@@ -152,6 +152,7 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
       callback();
     });
   }
+  $scope.loadMore($scope.loadMoreFinish);
 })
 
 
@@ -651,7 +652,7 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
 
 
 
-.controller('TimelineCtrl', function($scope, $rootScope, $ionicScrollDelegate, $timeout, Timeline, Authorize) {
+.controller('TimelineCtrl', function($scope, $rootScope, $ionicScrollDelegate, $state, Timeline, Authorize) {
   Authorize.authorize();
   $rootScope.campaignReturnUri = '#/app/timeline';
   $scope.moreData =true;
@@ -672,16 +673,18 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
     Timeline.getUserTimeline(page,function(time_lines, nowpage, moreData) {
       $scope.time_lines = time_lines;
       if(Timeline.getCacheTimeline()){
-        $ionicScrollDelegate.$getByHandle('timelineScroll').scrollTo(0,Timeline.getTimelinePosition());
         Timeline.setCacheTimeline(false);
+        $ionicScrollDelegate.$getByHandle('timelineScroll').scrollTo(0,Timeline.getTimelinePosition());
       }
       $scope.moreData =moreData;
       callback();
     });
   }
-  $scope.rememberPosition = function(){
+  $scope.loadMore($scope.loadMoreFinish);
+  $scope.rememberPosition = function(id){
     Timeline.setTimelinePosition($ionicScrollDelegate.$getByHandle('timelineScroll').getScrollPosition().top);
     Timeline.setCacheTimeline(true);
+    $state.go('app.campaignDetail',{'id':id});
     return true;
   }
 })

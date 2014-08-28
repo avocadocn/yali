@@ -219,7 +219,7 @@ body
   display block
   margin-left auto
   margin-right auto
-  margin-top 17px
+  margin-top 57px
   width 140px
   height 20px
 
@@ -650,6 +650,7 @@ body
   margin 0
   padding 0
   border none
+  border-top 1px solid #ddd
   .item-options
     .button
       line-height 56px
@@ -1059,27 +1060,22 @@ largeCell()
     //   left 12%
     //   z-index 3
     //   margin-left -2px
-    .timeline-left
-      .timeline-logo
-        margin 0 4px 5px 5px
-        width 10%
-        float left
-    .timeline-right
-      position relative
-      a
-        color #888888
-        display block
-        text-decoration none
+    a
+      color #888888
+      display block
+      text-decoration none
+      .timeline-left
+        .timeline-logo
+          margin 0 4px 5px 5px
+          width 10%
+          float left
+      .timeline-right
+        position relative
         .title
           position relative
           font-size 10px
           overflow hidden
           margin-bottom 0
-          a
-            color #AAAAAA
-            display block
-            &:hover
-              text-decoration none
           .head
             color #0099FF
             font-size 12px

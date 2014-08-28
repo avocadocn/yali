@@ -142,7 +142,7 @@
   </ion-tabs>
 
   <div class="join_box" ng-if="!campaign.finish">
-    <div class="operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign._id,campaign.myteam[0].id) : openselectModal()">参加</div>
+    <div class="operator" ng-if="!campaign.is_joined" ng-click="campaign.myteam.length<2 ? join(campaign,campaign.myteam[0].id) : openselectModal()">参加</div>
     <div class="operator" ng-if="campaign.is_joined" ng-click="quit(campaign._id)">退出</div>
   </div>
 

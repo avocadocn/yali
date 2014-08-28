@@ -9,10 +9,9 @@ angular.module('starter.services', [])
   //var base_url = window.location.origin;
   //var base_url = "http://www.donler.com";
   var base_url = "http://www.55yali.com";
-  //var base_url = "http://192.168.2.106:3000";
   ionic.Platform.ready(function(){
     window.plugin.notification.local.onclick = function (id, state, json) {
-      $state.go('app.campaignDetail',{'id':json.id});
+      $state.go('app.campaignDetail',{'id':JSON.parse(json).id});
     };
   });
   var _user = {};
@@ -152,56 +151,59 @@ angular.module('starter.services', [])
 
 
 .factory('Campaign', function($http, Global) {
-  var remindTimeDay = 1000 * 60 *60 *24;//one hour
-  var remindTimeHour = 1000 * 60 *60;
+  var remindTimeDay = 1000 * 60 * 60 * 24;//one day
+  var remindTimeHour = 1000 * 60 * 60;//one hour
   var campaign_list = [];
   var getCampaignList = function() {
     return campaign_list;
   };
-  var scheduleCampaign = function(){
-    campaign_list.forEach(function(campaign){
-      var scheduleTimeDay = new Date(new Date(campaign.start_time).getTime()-remindTimeDay);
-      var scheduleTimeHour = new Date(new Date(campaign.start_time).getTime()-remindTimeHour);
-      if(scheduleTimeDay>=new Date()){
-        window.plugin.notification.local.isScheduled(campaign._id+'1', function (isScheduled) {
-          if(!isScheduled){
-            window.plugin.notification.local.add({
-              id:         campaign._id + '1',  // A unique id of the notifiction
-              date:       scheduleTimeDay,    // This expects a date object
-              message:    campaign.theme,  // The message that is displayed
-              title:      '活动提醒',  // The title of the message
-              //repeat:     String,  // Either 'secondly', 'minutely', 'hourly', 'daily', 'weekly', 'monthly' or 'yearly'
-              //badge:      Number,  // Displays number badge to notification
-              //sound:      String,  // A sound to be played
-              json:       JSON.stringify({ id: campaign._id }),  // Data to be passed through the notification
-              //autoCancel: Boolean, // Setting this flag and the notification is automatically canceled when the user clicks it
-              //ongoing:    Boolean, // Prevent clearing of notification (Android only)
-            });
-          }
-        });
-      }
-      if(scheduleTimeHour>=new Date()){
-        window.plugin.notification.local.isScheduled(campaign._id+'2', function (isScheduled) {
-          if(!isScheduled){
-            window.plugin.notification.local.add({
-              id:         campaign._id + '2',  // A unique id of the notifiction
-              date:       scheduleTimeHour,    // This expects a date object
-              message:    campaign.theme,  // The message that is displayed
-              title:      '活动提醒',  // The title of the message
-              //repeat:     String,  // Either 'secondly', 'minutely', 'hourly', 'daily', 'weekly', 'monthly' or 'yearly'
-              //badge:      Number,  // Displays number badge to notification
-              //sound:      String,  // A sound to be played
-              json:       { id: campaign._id },  // Data to be passed through the notification
-              //autoCancel: Boolean, // Setting this flag and the notification is automatically canceled when the user clicks it
-              //ongoing:    Boolean, // Prevent clearing of notification (Android only)
-            });
-          }
-        });
-      }
-    });
+  var scheduleCampaign = function(campaign){
+    var scheduleTimeDay = new Date(new Date(campaign.start_time).getTime()-remindTimeDay);
+    var scheduleTimeHour = new Date(new Date(campaign.start_time).getTime()-remindTimeHour);
+    //console.log(campaign._id,new Date(campaign.start_time),new Date(),scheduleTimeDay,scheduleTimeHour);
+    if(scheduleTimeDay>=new Date()){
+      window.plugin.notification.local.isScheduled(campaign._id+'1', function (isScheduled) {
+        if(!isScheduled){
+          window.plugin.notification.local.add({
+            id:         campaign._id + '1',  // A unique id of the notifiction
+            date:       scheduleTimeDay,    // This expects a date object
+            message:    '活动' + campaign.theme +'明天就要开始了，请准时参加啊。',  // The message that is displayed
+            title:      '活动提醒',  // The title of the message
+            //repeat:     String,  // Either 'secondly', 'minutely', 'hourly', 'daily', 'weekly', 'monthly' or 'yearly'
+            //badge:      Number,  // Displays number badge to notification
+            //sound:      String,  // A sound to be played
+            json:       JSON.stringify({ id: campaign._id }),  // Data to be passed through the notification
+            autoCancel: true // Setting this flag and the notification is automatically canceled when the user clicks it
+            //ongoing:    Boolean, // Prevent clearing of notification (Android only)
+          });
+        }
+      });
+    }
+    if(scheduleTimeHour>=new Date()){
+      //console.log(scheduleTimeHour);
+      window.plugin.notification.local.isScheduled(campaign._id+'2', function (isScheduled) {
+        if(!isScheduled){
+          window.plugin.notification.local.add({
+            id:         campaign._id + '2',  // A unique id of the notifiction
+            date:       scheduleTimeHour,    // This expects a date object
+            message:    '活动' + campaign.theme + '再过一小时就要开始了，请准时参加啊。',  // The message that is displayed
+            title:      '活动提醒',  // The title of the message
+            //repeat:     String,  // Either 'secondly', 'minutely', 'hourly', 'daily', 'weekly', 'monthly' or 'yearly'
+            //badge:      Number,  // Displays number badge to notification
+            //sound:      String,  // A sound to be played
+            json:       JSON.stringify({ id: campaign._id }),  // Data to be passed through the notification
+            autoCancel: true // Setting this flag and the notification is automatically canceled when the user clicks it
+            //ongoing:    Boolean, // Prevent clearing of notification (Android only)
+          });
+        }
+      });
+    }
   }
   var cancelScheduleCampaign = function(id){
-    window.plugin.notification.local.cancel(id, function () {
+    window.plugin.notification.local.cancel(id+'1', function () {
+      // The notification has been canceled
+    });
+    window.plugin.notification.local.cancel(id + '2', function () {
       // The notification has been canceled
     });
   }
@@ -263,7 +265,6 @@ angular.module('starter.services', [])
     $http.get(Global.base_url + '/campaign/user/joined/applist/'+ page +'/'+ Global.user._id + '/' + Global.user.app_token)
     .success(function(data, status, headers, config) {
       campaign_list = data.campaigns;
-      scheduleCampaign();
       callback(campaign_list);
     });
   };
@@ -277,10 +278,11 @@ angular.module('starter.services', [])
 
   // callback(id)
   var join = function(callback) {
-    return function(id,tid) {
-      $http.post(Global.base_url + '/campaign/joinCampaign/'+id, { campaign_id: id, tid:tid})
+    return function(campaign,tid) {
+      $http.post(Global.base_url + '/campaign/joinCampaign/'+campaign._id, { campaign_id: campaign._id, tid:tid})
       .success(function(data, status, headers, config) {
-        callback(id);
+        scheduleCampaign(campaign);
+        callback(campaign._id);
       });
     };
   };

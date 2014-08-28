@@ -3,18 +3,15 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header" delegate-handle="timelineScroll">
-    <ion-refresher
-      on-refresh="doRefresh()">
+    <ion-refresher on-refresh="doRefresh()" pulling-text="下拉刷新..." refreshing-text="刷新中...">
     </ion-refresher>
     <div class="dl_timeline">
       <div class="timeline_element" ng-repeat="time_line in time_lines">
-        <div class="timeline-left">
-          <a href="#/app/campaign_detail/{{ time_line.id }}">
+        <a ng-click="rememberPosition(time_line.id)" href="">
+          <div class="timeline-left">
             <img class="timeline-logo" ng-src="{{base_url + time_line.logo}}"/>
-          </a>
-        </div>
-        <div class="timeline-right">
-          <a href="#/app/campaign_detail/{{ time_line.id }}" ng-click="rememberPosition()">
+          </div>
+          <div class="timeline-right">
             <div class="title">
               <span class="head">
                 {{time_line.head}}
@@ -30,12 +27,13 @@
                 </div>
               </div>
             </div>
-          </a>
-        </div>
+          </div>
+        </a>
+
       </div>
     </div>
 
-    <ion-infinite-scroll ng-if="moreData" on-infinite="loadMore(loadMoreFinish)" distance="5%"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-if="moreData && time_lines.length>0" on-infinite="loadMore(loadMoreFinish)" distance="5%"></ion-infinite-scroll>
     <div class="more_data_text" ng-if="!moreData">没有更多的足迹</div>
   </ion-content>
 </ion-view>
