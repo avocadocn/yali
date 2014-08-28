@@ -798,11 +798,11 @@ exports.getUserNewCampaignsForAppList = function(req, res) {
   .exec()
   .then(function(campaigns) {
     var format_campaigns = formatCampaignsForApp(req.user, campaigns, false);
-    res.send({ result: 1, campaigns: format_campaigns });
+    return res.send({ result: 1, campaigns: format_campaigns });
   })
   .then(null, function(err) {
     console.log(err);
-    res.send(500);
+    return res.send({ result: 0, campaigns: [] });
   });
 };
 var newFinishSize =10;
@@ -841,7 +841,7 @@ var findUserNewFinishCampaigns= function(options, skipSize, findTime, res){
       }
       else{
         findTime++;
-        findUserNewFinishCampaigns(options, skipSize, findTime);
+        findUserNewFinishCampaigns(options, skipSize, findTime, res);
       }
     }
     else{
@@ -869,7 +869,7 @@ exports.getUserNewFinishCampaignsForAppList = function(req, res) {
   };
   var skipSize=0;
   var findTime =1;
-  var format_campaigns = findUserNewFinishCampaigns(options, skipSize, findTime, res);
+  findUserNewFinishCampaigns(options, skipSize, findTime, res);
 };
 exports.getTeamCampaigns = function(req, res) {
   getTeamAllCampaigns(req.params.teamId, function(campaigns, err) {
