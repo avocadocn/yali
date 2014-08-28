@@ -23,3 +23,6 @@ public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVFile.h
 public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVFile.m
 public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVLocalFilesystem.h
 public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVLocalFilesystem.m
+
+test/nightwatch/lib/
+test/nightwatch/reports/

@@ -141,6 +141,11 @@ module.exports = function(grunt) {
                 logConcurrentOutput: true
             }
         },
+        shell: {
+            nightwatch: {
+                command: 'node node_modules/nightwatch/bin/nightwatch -e default,chrome'
+            }
+        },
         mochaTest: {
             options: {
                 reporter: 'spec',
@@ -151,11 +156,6 @@ module.exports = function(grunt) {
         env: {
             test: {
                 NODE_ENV: 'test'
-            }
-        },
-        karma: {
-            e2e: {
-                configFile: 'test/karma/karma-e2e.conf.js'
             }
         }
     });
@@ -171,7 +171,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['stylus', 'concat', 'uglify', 'cssmin', 'concurrent']);
     grunt.registerTask('hint', ['jshint']);
     //Test task.
-    grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:e2e']);
+    grunt.registerTask('test', ['env:test', 'mochaTest', 'shell:nightwatch']);
 };
 
 
