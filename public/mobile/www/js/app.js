@@ -170,8 +170,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 function initPushwoosh() {
   
   var pushNotification = window.plugins.pushNotification;
-    console.log('Received Event: ');
-    console.warn(pushNotification);
+//    console.log('Received Event: ');
+//    console.warn(pushNotification);
   //set push notification callback before we initialize the plugin
   document.addEventListener('push-notification', function(event) {
                 //get the notification payload
