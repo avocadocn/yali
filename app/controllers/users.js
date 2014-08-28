@@ -176,6 +176,17 @@ exports.autoLogin = function(req, res, next){
 }
 
 exports.appLoginSuccess = function(req, res) {
+  console.log(req.body.device,req.body.userid);
+  //按条件更新用户的设备信息和推送id
+  if(req.body.device && req.body.userid){
+    deviceRegister({
+      'device_type':req.body.device.model,
+      'device_id':req.body.device.uuid,
+      'user_id':req.body.userid,
+      'platform':req.body.device.platform,
+      'version':req.body.device.version
+    },req.user._id);
+  }
   var app_token = UUID.id();
   var data = {
     _id: req.user._id,
@@ -1401,11 +1412,11 @@ exports.applyToDepartment = function(req,res){
 
 
 //手机app登录更新用户设备信息,推送相关信息等等
-var deviceRegister = function(device_info){
-  User.findOne({'_id':req.user._id},function (err,user){
+var deviceRegister = function(device_info,uid){
+  User.findOne({'_id':uid},function (err,user){
     if(err || !user){
       //TODO 生成错误日志
-      return res.send({'result':0,'msg':'USER_DEVICE_ERROR_USERFETCHFAILED'});
+      console.log({'result':0,'msg':'USER_DEVICE_ERROR_USERFETCHFAILED'});
     }else{
       //TODO 登录信息录入后台统计
       var device = user.device;
@@ -1454,9 +1465,9 @@ var deviceRegister = function(device_info){
       }
       user.save(function(err){
         if(err){
-          return res.send({'result':0,'msg':'USER_DEVICE_UPDATE_ERROR','data':err});
+          console.log({'result':0,'msg':'USER_DEVICE_UPDATE_ERROR','data':err});
         }else{
-          return res.send({'result':1,'msg':'USER_DEVICE_UPDATE_SUCCESS'});
+          ;
         }
       });
     }
