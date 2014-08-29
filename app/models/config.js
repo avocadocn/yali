@@ -24,6 +24,11 @@ var Config = new Schema({
         default: true
     },
     push:{
+        status:{
+            type:String,
+            enum:['on','off'],
+            default:'off'
+        },
         baidu:{
             apiKey:String,
             secretKey:String

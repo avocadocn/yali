@@ -26,6 +26,7 @@ var mongoose = require('mongoose'),
     model_helper = require('../helpers/model_helper'),
     schedule = require('../services/schedule'),
     message = require('../controllers/message'),
+    push = require('../controllers/push'),
     photo_album_controller = require('./photoAlbum');
 
 //返回组件模型里的所有组件(除了虚拟组),待HR选择
@@ -641,6 +642,7 @@ exports.provoke = function (req, res) {
 
           competition.save(function(err){
             if(!err){
+              push.campaign(competition._id);
               var groupMessage = new GroupMessage();
               if(type===4||type ===5)
                 groupMessage.message_type = 4;
@@ -1019,6 +1021,8 @@ exports.sponsor = function (req, res) {
           return;
       }
       else{
+        //触发推送服务
+        push.campaign(campaign._id);
         if(!multi){
           req.companyGroup.photo_album_list.push(photo_album._id);
           req.companyGroup.save(function(err) {

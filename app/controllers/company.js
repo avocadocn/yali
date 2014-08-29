@@ -21,6 +21,7 @@ var mongoose = require('mongoose'),
     meanConfig = require('../../config/config'),
     gm = require('gm'),
     fs = require('fs'),
+    push = require('../controllers/push'),
     async = require('async'),
     moment = require('moment'),
     message = require('../controllers/message'),
@@ -1408,6 +1409,7 @@ exports.sponsor = function (req, res) {
                 }
                 return;
             }else{
+                push.campaign(campaign._id);
                 res.send({'result':1,'msg':'活动创建成功'});
             }
 
