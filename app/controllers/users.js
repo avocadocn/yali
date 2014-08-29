@@ -178,18 +178,16 @@ exports.autoLogin = function(req, res, next){
 exports.appLoginSuccess = function(req, res) {
   //console.log(req.body.device,req.body.userid);
   //按条件更新用户的设备信息和推送id
-  if(req.body.status == 'SUCCESS'){
-    if(req.body.device && req.body.userid){
-      deviceRegister({
-        'device_type':req.body.device.model,
-        'device_id':req.body.device.uuid,
-        'user_id':req.body.userid,
-        'platform':req.body.device.platform,
-        'version':req.body.device.version
-      },req.user._id);
-    }
+  if(req.body.device && (req.body.userid != '' || req.body.token != '')){
+    deviceRegister({
+      'device_type':req.body.device.model,
+      'device_id':req.body.device.uuid,
+      'user_id':req.body.userid,
+      'platform':req.body.device.platform,
+      'version':req.body.device.version
+    },req.user._id);
   }else{
-    console.log(req.body.error);
+    console.log(req.body.status);
   }
   var app_token = UUID.id();
   var data = {
