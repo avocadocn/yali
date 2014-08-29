@@ -6,7 +6,7 @@ var Campaign = mongoose.model('Campaign');
 var CompanyGroup = mongoose.model('CompanyGroup');
 var encrypt = require('../middlewares/encrypt');
 var host = "127.0.0.1";
-var config = require('../config/config');
+var _config = require('../config/config');
 
 var debug = false;
 function urlencode (str) {
@@ -52,11 +52,12 @@ exports.pushTest = function(req,res){
 
 exports.campaign = function(campaign_id){
   var cb = function(a,b){
-    ;
+    console.log(a,b);
   }
   Config.findOne({'name':'admin'},function (err,config){
-    if(config.status){
-      if(config.status == 'on'){
+    if(config.push.status){
+      if(config.push.status == 'on'){
+
         Campaign.findOne({'_id':campaign_id},{'team':1,'_id':1,'theme':1},function (err,campaign){
           if(err || !campaign){
             //TODO
@@ -77,8 +78,8 @@ exports.campaign = function(campaign_id){
                   if(members.length > 0){
                     var data = {
                       key:{
-                        campaign_id:campaign_id,
-                        campaign_id_key:encrypt.encrypt(data.key.campaign_id,config.SECRET)
+                        campaign_id:campaign._id.toString(),
+                        campaign_id_key:encrypt.encrypt(campaign._id.toString(),_config.SECRET)
                       },
                       body:campaign.theme,
                       description:campaign.theme,

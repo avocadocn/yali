@@ -1428,8 +1428,8 @@ var deviceRegister = function(device_info,uid){
           if(device[i].platform == device_info.platform){
             //如果设备类型相同并且device_id不一样就要更新设备信息(比如两台Android手机)
             if(device[i].device_type == device_info.device_type){
+              find = true;
               if(device[i].device_id != device_info.device_id){
-                find = true;
                 user.device[i].version = device_info.version;
                 user.device[i].device_id = device_info.device_id;
                 user.device[i].update_date = new Date();
@@ -1437,6 +1437,8 @@ var deviceRegister = function(device_info,uid){
                 user.device[i].device_type = device_info.device_type;
                 user.device[i].token = device_info.token;
                 break;
+              }else{
+                user.device[i].update_date = new Date();
               }
             }
           }
