@@ -27,7 +27,8 @@ var mongoose = require('mongoose'),
     message = require('../controllers/message'),
     schedule = require('../services/schedule'),
     photo_album_controller = require('./photoAlbum'),
-    model_helper = require('../helpers/model_helper');
+    model_helper = require('../helpers/model_helper'),
+    cache = require('../services/cache/Cache');
 
 var mail = require('../services/mail');
 var encrypt = require('../middlewares/encrypt');
@@ -870,6 +871,7 @@ exports.getCompanyDepartments = function(req, res, next) {
     });
 };
 
+//TODO -M 改缓存
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyTeamsInfo = function(req, res) {
 
@@ -896,6 +898,37 @@ exports.getCompanyTeamsInfo = function(req, res) {
         'active': 1
     }
   }
+  //是否存在此链表，否则Create
+  // if(?)
+  //   var companyGroupData = cache.createCache()
+  //查询有没有，有的话数据拿出来
+
+  //没有的话从数据库取出，并更新
+
+  //test
+  //var cGD = cache;
+  //cache.createCache("name1","LFU");
+
+  //setTimeout(function(){
+    //console.log(cache.print());
+  // cache.set("name1","key1","content1",1000*60);
+  // console.log(cache.get("name1","key1"));
+  // cache.set("name2","key2","content2",1000*60);
+  // console.log(cache.get("name2","key2"));//should error
+  
+  // cache.createCache("name2","LFU");
+  // cache.set("name2","key2","content2",1000*60);
+  // console.log(cache.get("name2","key2"));
+  // console.log(cache.get("name2","key1"));//空
+  // console.log(cache.get("name1","key2"));//空
+  //}, 1000);
+  // console.log(cGd.get("1"));
+  // var test = cache;
+  // test.createCache("test","LFU");
+  // console.log(test.get("1"));
+  // test.set("2");
+  // console.log(test.get("2"));
+  //cache.createCache("test","LFU");
   CompanyGroup
   .find(option,selectOption)
   .sort({'score.total':-1})
