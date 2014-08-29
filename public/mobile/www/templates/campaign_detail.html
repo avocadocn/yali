@@ -34,7 +34,7 @@
       </ion-content>
     </ion-tab>
 
-    <ion-tab title="评论" icon="ion-chatbubble">
+    <ion-tab title="评论" icon="ion-ios7-plus-outline">
       <div class="comment_edit" ng-if="publishing">
         <form name="comment_form">
           <input class="comment_input" type="text" name="comment" ng-model="comment_content.text" placeholder="写点什么吧" maxlength=140 required/>
@@ -44,7 +44,7 @@
       <ion-content has-header="true" class="wrap campaign_detail">
         <div class="simple_title padding clearfix">
           <div class="title">活动相册</div>
-          <form id="upload_form" class="upload_form pull-right" name="upload_form" action="{{base_url+ '/photoAlbum/' + photo_album_id + '/photo' }}" method="post" enctype="multipart/form-data" upload-directive>
+          <form id="upload_form" class="upload_form pull-right" name="upload_form" action="{{ upload_form_url }}" method="post" enctype="multipart/form-data" upload-directive>
             <input id="upload_input" class="upload_input" type="file" name="photos" multiple="multiple" accept="image/*;capture=camera" ng-model="upload_file" valid-file required/>
             <button class="button icon ion-plus upload_button operator_button"></button>
           </form>
@@ -96,7 +96,7 @@
             <!-- href="#/app/other_user_info/{{ user.uid }}" -->
             <a class="campaign_member_panel" ng-repeat="user in campaign.member">
               <div class="campaign_member_wrap">
-                <img class="campaign_member_photo img_user" ng-src="{{ base_url + '/logo/user/' + user.uid + '/100/100' }}"/>
+                <img class="campaign_member_photo img_user" ng-src="{{ base_url + '/logo/user/' + user.uid + '/40/40' }}"/>
                 <p class="campaign_member_name">{{ user.nickname }}</p>
               </div>
             </a>
@@ -104,16 +104,16 @@
           </div>
           <div ng-if="campaign.campaign_type>3" class="campaign_members_wrap content clearfix">
             <!-- href="#/app/other_user_info/{{ user.uid }}" -->
-            <div ng-repeat="team in campaign.myteam">
+            <div class="team" ng-repeat="team in campaign.myteam">
               <div class="row campaign_line">
                 <p class="campaign_team_info">
-                  <img class="campaign_group_logo" ng-src="{{ base_url + team.logo }}"/>
-                  {{ team.name }}
+                  <img class="campaign_group_logo" ng-src="{{ base_url + team.logo + '/40/40' }}"/>
+                  <span class="team_name">{{ team.name }}</span>
                 </p>
               </div>
               <a class="campaign_member_panel" ng-repeat="user in team.member">
                 <div class="campaign_member_wrap">
-                  <img class="campaign_member_photo img_user" ng-src="{{ base_url + '/logo/user/' + user.uid + '/100/100' }}"/>
+                  <img class="campaign_member_photo img_user" ng-src="{{ base_url + '/logo/user/' + user.uid + '/40/40' }}"/>
                   <p class="campaign_member_name">{{ user.nickname }}</p>
                 </div>
               </a>
@@ -128,11 +128,15 @@
       <ion-content has-header="true" class="wrap campaign_detail">
         <div class="padding">
           <p>活动地点</p>
-          <a ng-if="campaign.location.coordinates.length==2" href="http://mo.amap.com/?q={{campaign.location.coordinates[1]}},{{campaign.location.coordinates[0]}}&name={{campaign.location.name}}" target="_blank">
+          <p>{{campaign.location.name}}</p>
+          <!-- ios -->
+          <!-- <a href="http://maps.apple.com/?q=cupertino">my location</a>--> 
+          <!-- android -->
+          <!-- <a href="geo:{{campaign.location.coordinates[1]}},{{campaign.location.coordinates[0]}}">my location</a> -->
+          <a ng-if="campaign.location.coordinates.length==2" href="geo:{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}">
 <!--             <img ng-if="campaign.location.coordinates.length==2" class="location" ng-src="http://api.map.baidu.com/staticimage?width=580&height=520&center={{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&zoom=15&markers={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&markerStyles=m,A,0xff0000&labels={{campaign.location.name}}|{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&labelStyles={{campaign.location.name}},1,14,0xffffff,0x000fff,1"/> -->
           <img ng-if="campaign.location.coordinates.length==2" class="location" ng-src="http://restapi.amap.com/v3/staticmap?location={{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&zoom=15&size=600*520&markers=mid,,A:{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&labels={{campaign.location.name | nospace}},2,0,12,0xffffff,0x3498db:{{campaign.location.coordinates[0]}},{{campaign.location.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044"/>
           </a>
-          <p ng-if="campaign.location.coordinates.length==0">{{campaign.location.name}}</p>
         </div>
       </ion-content>
     </ion-tab>

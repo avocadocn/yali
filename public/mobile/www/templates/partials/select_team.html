@@ -4,13 +4,11 @@
   </ion-header-bar>
   <ion-content>
     <div class="select_team_container">
-      <div ng-repeat="team in campaign.myteam">
-        <p ng-click="select(campaign,team.id)">
-          <img class="campaign_group_logo" ng-src="{{ base_url + team.logo }}"/>
-          {{ team.name }}
-        </p>
-        <hr>
-      </div>
+      <p ng-click="select(campaign,team.id)" ng-repeat="team in campaign.myteam" class="team">
+        <img class="campaign_group_logo" ng-src="{{ base_url + team.logo +'/80/80'}}"/>
+        <span class="team_name">{{ team.name }}
+        </span>
+      </p>
     </div>
 
   </ion-content>

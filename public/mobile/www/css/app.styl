@@ -128,13 +128,16 @@ body
 
 .donler_tabs_bottom
   .tabs
-    height 60px
+    height 50px
     line-height 1
     background-image none
 
     .tab-item
       padding-top 5px
       padding-bottom 5px
+      .icon
+        height 26px
+        font-size 24px
 
 .donler_msg_corner
   margin-top -2px
@@ -342,18 +345,24 @@ body
   padding 0 10px
   .campaign_link
     .campaign_title
+      position relative
       margin 0
       padding 0
-      height 20px
+      height 30px
+      line-height 30px
       .campaign_theme
         color black
         font-size 16px
-        max-width 250px
+        max-width 76%
         margin 0
         padding 0
         text-overflow ellipsis
         white-space nowrap
         overflow hidden
+      .campaign_time
+        float right
+        position absolute
+        right 0
     .campaign_photos
       .campaign_photo
         height 69px
@@ -417,6 +426,14 @@ body
         margin-right 1px
         &:last-child
           margin-right 0
+.index_slide_box
+  .slider-pager
+    height 6px
+    .slider-pager-page
+      width 11px
+      .icon
+        font-size 6px
+        color #F0F0F0
 .new_campaign_item
   margin 0
   padding 0
@@ -601,7 +618,7 @@ body
       position relative
       height 62px
       color black
-      border-top solid 1px #ddd
+      border-bottom solid 1px #ddd
       &:first-child
         border-top none
 
@@ -890,7 +907,7 @@ largeCell()
 
 .join_box
   width 64px
-  height 58px
+  height 48px
   position absolute
   bottom 0
   right 0
@@ -899,8 +916,8 @@ largeCell()
 
   .operator
     text-align center
-    line-height 58px
-    height 58px
+    line-height 48px
+    height 48px
     color white
 
 //slide
@@ -933,7 +950,15 @@ largeCell()
 .campaign_members_wrap
   position relative
   padding 5px
-
+  .team
+    border-top 1px solid #F0F0F0
+    &:first-child
+      border none
+    .campaign_team_info
+      .campaign_group_logo
+        width 40px
+        .team_name
+          margin-left 10px
   .campaign_member_panel
     float left
     display block
@@ -1036,50 +1061,29 @@ largeCell()
     border-top 1px solid #ededed
     &:first-child
       border none
-    // &:before
-    //   content ''
-    //   position absolute
-    //   display block
-    //   top -10px
-    //   width 2px
-    //   height 120%
-    //   border-radius 2px   
-    //   left 12%
-    //   background-color #CCCCCC
-    //   z-index 2
-    // &:after
-    //   content ''
-    //   position absolute
-    //   display block
-    //   width 6px
-    //   height 6px
-    //   border-radius 100%
-    //   background-color #BBBBBB
-    //   box-shadow 0px 0px 2px rgba(0, 0, 0, 0.2)
-    //   top 20%
-    //   left 12%
-    //   z-index 3
-    //   margin-left -2px
     a
       color #888888
       display block
       text-decoration none
       .timeline-left
+        float left
+        width 10%
         .timeline-logo
-          margin 0 4px 5px 5px
-          width 10%
+          width 100%
+          margin 0 10px 5px 5px
           float left
       .timeline-right
-        position relative
+        float right
+        width 90%
+        padding-left 10px
         .title
           position relative
           font-size 10px
           overflow hidden
           margin-bottom 0
           .head
-            color #0099FF
-            font-size 12px
-            line-height 22px
+            font-size 14px
+            color #404040
             display inline-block
             max-width 80%
             overflow hidden
@@ -1130,3 +1134,10 @@ largeCell()
 .select_team_container
   background-color #3abde8
   color white
+  .team
+    margin 0
+    border-bottom 1px solid #F0F0F0
+    .campaign_group_logo
+      width 40px
+    .team_name
+      margin-left 10px

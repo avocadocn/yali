@@ -9,16 +9,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
   });
-
-  initPushwoosh(function(value){
-     $http.post('http://192.168.2.101:3000/test/plugin', { data:value})
-    .success(function(data, status, headers, config) {
-      console.log('1');
-    })
-    .error(function(data, status, headers, config) {
-      console.log('0');
-    });
-  });
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -177,11 +167,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 });
 
-// function initPushwoosh(callback) {
-//   callback(ionic.Platform);
+// function initPushwoosh() {
+  
 //   var pushNotification = window.plugins.pushNotification;
-//     console.log('Received Event: ');
-//     console.warn(pushNotification);
+// //    console.log('Received Event: ');
+// //    console.warn(pushNotification);
 //   //set push notification callback before we initialize the plugin
 //   document.addEventListener('push-notification', function(event) {
 //                 //get the notification payload
@@ -189,10 +179,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 //                 //display alert to the user for example
 //                 alert(notification.aps.alert);
+                
 //                 //clear the app badge
 //                 pushNotification.setApplicationIconBadgeNumber(0);
 //               });
 
+  
 //     //initialize the plugin
 //     pushNotification.onDeviceReady({pw_appid:"B13D4-3532F"});
 
@@ -205,7 +197,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 //                                         console.warn('failed to register : ' + JSON.stringify(status));
 //                                         navigator.notification.alert(JSON.stringify(['failed to register ', status]));
 //                   });
+    
 //   pushNotification.setApplicationIconBadgeNumber(0);
+    
 //   pushNotification.getTags(function(tags) {
 //                 console.warn('tags for the device: ' + JSON.stringify(tags));
 //                },
@@ -226,5 +220,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 //                                            console.warn('Location Tracking Started');
 //                                            });
 // }
-//initPushwoosh();
->>>>>>> 修改活动 push 逻辑
+// initPushwoosh();
+

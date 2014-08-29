@@ -1,5 +1,5 @@
 <ion-list>
-  <ion-item ng-class="{'campaign_item': campaign.start_flag!=1,'new_campaign_item':campaign.start_flag==1}" ng-repeat="campaign in campaign_list">
+  <ion-item class="campaign_item" ng-repeat="campaign in campaign_list">
     <div class="item-content">
       <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
         <div class="row campaign_title">
@@ -10,7 +10,7 @@
           </div>
 
         </div>
-        <div class="campaign_time" ng-if="!campaign.start_flag">
+        <div class="campaign_time">
           <p class="campaign_time_remind">{{ campaign.remind_text }}</p>
           <p class="campaign_time_count">{{ campaign.start_time_text }}</p>
         </div>

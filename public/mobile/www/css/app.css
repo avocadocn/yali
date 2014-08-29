@@ -82,13 +82,17 @@ body {
   color: #fff;
 }
 .donler_tabs_bottom .tabs {
-  height: 60px;
+  height: 50px;
   line-height: 1;
   background-image: none;
 }
 .donler_tabs_bottom .tabs .tab-item {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+.donler_tabs_bottom .tabs .tab-item .icon {
+  height: 26px;
+  font-size: 24px;
 }
 .donler_msg_corner {
   margin-top: -2px;
@@ -291,19 +295,26 @@ body {
   padding: 0 10px;
 }
 .new_finish_campaign .campaign_link .campaign_title {
+  position: relative;
   margin: 0;
   padding: 0;
-  height: 20px;
+  height: 30px;
+  line-height: 30px;
 }
 .new_finish_campaign .campaign_link .campaign_title .campaign_theme {
   color: #000;
   font-size: 16px;
-  max-width: 250px;
+  max-width: 76%;
   margin: 0;
   padding: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+.new_finish_campaign .campaign_link .campaign_title .campaign_time {
+  float: right;
+  position: absolute;
+  right: 0;
 }
 .new_finish_campaign .campaign_link .campaign_photos .campaign_photo {
   height: 69px;
@@ -378,6 +389,16 @@ body {
 }
 .now_campaign_item .campaign_link .now_campaign_photos .now_campaign_photo:last-child {
   margin-right: 0;
+}
+.index_slide_box .slider-pager {
+  height: 6px;
+}
+.index_slide_box .slider-pager .slider-pager-page {
+  width: 11px;
+}
+.index_slide_box .slider-pager .slider-pager-page .icon {
+  font-size: 6px;
+  color: #f0f0f0;
 }
 .new_campaign_item {
   margin: 0;
@@ -588,7 +609,7 @@ body {
   position: relative;
   height: 62px;
   color: #000;
-  border-top: solid 1px #ddd;
+  border-bottom: solid 1px #ddd;
 }
 .calendar .calendar_day .calendar_campaign:first-child {
   border-top: none;
@@ -998,7 +1019,7 @@ body {
 }
 .join_box {
   width: 64px;
-  height: 58px;
+  height: 48px;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -1007,8 +1028,8 @@ body {
 }
 .join_box .operator {
   text-align: center;
-  line-height: 58px;
-  height: 58px;
+  line-height: 48px;
+  height: 48px;
   color: #fff;
 }
 .slider .slider-pager .slider-pager-page {
@@ -1042,6 +1063,18 @@ body {
 .campaign_members_wrap {
   position: relative;
   padding: 5px;
+}
+.campaign_members_wrap .team {
+  border-top: 1px solid #f0f0f0;
+}
+.campaign_members_wrap .team:first-child {
+  border: none;
+}
+.campaign_members_wrap .team .campaign_team_info .campaign_group_logo {
+  width: 40px;
+}
+.campaign_members_wrap .team .campaign_team_info .campaign_group_logo .team_name {
+  margin-left: 10px;
 }
 .campaign_members_wrap .campaign_member_panel {
   float: left;
@@ -1158,13 +1191,19 @@ body {
   display: block;
   text-decoration: none;
 }
-.dl_timeline .timeline_element a .timeline-left .timeline-logo {
-  margin: 0 4px 5px 5px;
+.dl_timeline .timeline_element a .timeline-left {
+  float: left;
   width: 10%;
+}
+.dl_timeline .timeline_element a .timeline-left .timeline-logo {
+  width: 100%;
+  margin: 0 10px 5px 5px;
   float: left;
 }
 .dl_timeline .timeline_element a .timeline-right {
-  position: relative;
+  float: right;
+  width: 90%;
+  padding-left: 10px;
 }
 .dl_timeline .timeline_element a .timeline-right .title {
   position: relative;
@@ -1173,9 +1212,8 @@ body {
   margin-bottom: 0;
 }
 .dl_timeline .timeline_element a .timeline-right .title .head {
-  color: #09f;
-  font-size: 12px;
-  line-height: 22px;
+  font-size: 14px;
+  color: #404040;
   display: inline-block;
   max-width: 80%;
   overflow: hidden;
@@ -1236,4 +1274,14 @@ body {
 .select_team_container {
   background-color: #3abde8;
   color: #fff;
+}
+.select_team_container .team {
+  margin: 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.select_team_container .team .campaign_group_logo {
+  width: 40px;
+}
+.select_team_container .team .team_name {
+  margin-left: 10px;
 }

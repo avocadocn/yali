@@ -7,7 +7,7 @@
     <ion-refresher
       on-refresh="doRefresh()">
     </ion-refresher>
-    <ion-slide-box does-continue="true" hidePager>
+    <ion-slide-box does-continue="true" class="index_slide_box" hidePager ng-cloak>
       <ion-slide class="now_campaign_item" ng-repeat="nowCampaign in nowCampaigns">
         <a href="#/app/campaign_detail/{{ nowCampaign._id }}" class="campaign_link">
           <div class="row campaign_title">
@@ -34,6 +34,7 @@
           <a href="#/app/campaign_detail/{{ campaign._id }}" class="campaign_link">
             <div class="row campaign_title">
                 <p class="campaign_theme"> {{ campaign.theme }} </p>
+                <p class="campaign_time"> {{ campaign.formatTime }} 结束</p>
             </div>
             <div class="campaign_photos">
               <img class="campaign_photo" ng-src="{{ base_url + photo.thumbnail_uri + '/150/150' }}" ng-repeat="photo in campaign.photo_thumbnails">
@@ -54,5 +55,6 @@
         </ion-option-button>
       </ion-item>
     </ion-list>
+    <div class="more_data_text" ng-if="!moreData">您还没有活动，快去组织吧。</div>
   </ion-content>
 </ion-view>
