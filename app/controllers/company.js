@@ -1049,6 +1049,10 @@ exports.getCompanyTeamsInfo = function(req, res) {
 };
 exports.timeLine = function(req, res){
   var companyId = req.params.companyId;
+  cache.createCache("timeline");
+  if(cache.get("timeline",companyId)){
+    return res.render('partials/timeLine',cache.get("timeline",companyId));
+  }
   Campaign
   .find({'active':true,'finish':true,'cid': req.params.companyId})
   .sort('-start_time')
@@ -1102,7 +1106,9 @@ exports.timeLine = function(req, res){
           newTimeLines[i].push(tempObj);
         }
       });
-      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
+      var output = {'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment};
+      cache.set("timeline",companyId,output,1000*60*30);//半小时
+      return res.render('partials/timeLine',output);
   })
   .then(null, function(err) {
     console.log(err);

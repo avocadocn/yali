@@ -138,7 +138,7 @@ var createCache = function (buffer_name, alg_name, maxsize) {
                 }
             }
         }
-    }, 1000*60*5);//5分钟清理一次
+    }, 1000*60*60);//60分钟清理一次,查询的时候如果过期，也是会删除的～
 
     return obj;
 }
@@ -146,5 +146,3 @@ var createCache = function (buffer_name, alg_name, maxsize) {
 exports.createCache = createCache;
 exports.set = set;
 exports.get = get;
-exports.print = print;
-exports.clear = clear;
