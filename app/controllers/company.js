@@ -902,15 +902,15 @@ exports.getCompanyTeamsInfo = function(req, res) {
   };
   if(req.role==='EMPLOYEE'){
     cache.createCache("EmpTeamInfo");//是否存在EmpTeamInfo，否则Create
-    if(cache.get("EmpTeamInfo","req.params.companyId")){//查询有没有，有的话数据拿出来
-        output.teams = cache.get("EmpTeamInfo","req.params.companyId");
+    if(cache.get("EmpTeamInfo",req.params.companyId)){//查询有没有，有的话数据拿出来
+        output.teams = cache.get("EmpTeamInfo",req.params.companyId);
         return res.send(output);
     }
   }
   else if(req.role !=="HR"){
     cache.createCache("GstTeamInfo");//是否存在GstTeamInfo，否则Create
-    if(cache.get("GstTeamInfo","req.params.companyId")){//查询有没有，有的话数据拿出来
-        output.teams = cache.get("GstTeamInfo","req.params.companyId");
+    if(cache.get("GstTeamInfo",req.params.companyId)){//查询有没有，有的话数据拿出来
+        output.teams = cache.get("GstTeamInfo",req.params.companyId);
         return res.send(output);
     }
   }
@@ -997,14 +997,14 @@ exports.getCompanyTeamsInfo = function(req, res) {
             return res.send({'result':0,'msg':'FAILURED'});
         }else{
             output.teams = results;
-            cache.set("EmpTeamInfo","req.params.companyId",results,1000*60*5);
+            cache.set("EmpTeamInfo",req.params.companyId,results,1000*60*5);
             return res.send(output);
         }
       });
     }
     else if(req.role!=='HR') {//访客
         output.teams = teams;
-        cache.set("GstTeamInfo","req.params.companyId",teams,1000*60*5);
+        cache.set("GstTeamInfo",req.params.companyId,teams,1000*60*5);
         return res.send(output);
     }
     else{//是hr
