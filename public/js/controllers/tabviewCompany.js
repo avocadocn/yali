@@ -1150,12 +1150,23 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
     $scope.infoEditToggle = function() {
         $scope.infoUnEdit = !$scope.infoUnEdit;
         if($scope.infoUnEdit) {
+            var tempDomain = {};
+            for(var i=0;i<$scope.company.domain.length;i++){
+                if($scope.company.domain[i].length>0){
+                  tempDomain[$scope.company.domain[i]] = $scope.company.domain[i];
+                }
+            }
+            $scope.company.domain = [];
+            for(var j in tempDomain){
+                $scope.company.domain.push(j);
+            }
             try{
                 $http({
                     method : 'post',
                     url : '/company/saveAccount/'+$rootScope.cid,
                     data : {
-                        info : $scope.info
+                        info : $scope.info,
+                        domain : $scope.company.domain
                     }
                 }).success(function(data, status) {
                     //TODO:更改对话框

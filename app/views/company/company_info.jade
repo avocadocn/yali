@@ -44,6 +44,17 @@
         span.info_label #{__("ENTERPRISE_FULL_NAME")}
       .info_detail
         input.dl_input.editToggle.dl-form-control(type="text" name ="infoname" ng-model="info.name" ng-disabled="true")
+    .dl_row.clearfix(ng-if="role == 'HR'")
+      .info_side
+        span.info_label #{__("EMAILDOMAIN")}
+      .info_detail_2.col-md-9(ng-if="infoUnEdit")
+        span.info_label(ng-repeat="domain in company.domain") {{domain}}
+      .info_detail(ng-if="!infoUnEdit")
+        input.dl_input.editToggle.dl-form-control(type="text" ng-model="company.domain[0]")
+      .info_detail(ng-if="!infoUnEdit")
+        input.dl_input.editToggle.dl-form-control(type="text" ng-model="company.domain[1]")
+      .info_detail(ng-if="!infoUnEdit")
+        input.dl_input.editToggle.dl-form-control(type="text" ng-model="company.domain[2]")
     .dl_row.clearfix#location(ng-show = "!infoUnEdit" data-src="/region" data-select="province city district" data-init="{{linkage_init_location.province}} {{linkage_init_location.city}} {{linkage_init_location.district}}")
       .info_side
         span.info_label #{__("LOCATION")}

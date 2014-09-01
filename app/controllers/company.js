@@ -786,14 +786,15 @@ exports.saveGroupInfo = function(req, res){
 
 exports.getAccount = function(req, res) {
     var companyId = req.params.companyId;
-    Company.findOne({'_id': companyId}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1},function(err, _company) {
+    Company.findOne({'_id': companyId}, {'_id':0,'username': 1,'login_email':1, 'register_date':1,'info':1,'email':1},function(err, _company) {
         if (err) {
             console.log(err);
         }
         if(_company) {
             var _account = {
                 'login_email': _company.login_email,
-                'register_date': _company.register_date
+                'register_date': _company.register_date,
+                'domain':_company.email.domain
             };
             if(req.role==='HR'){
                 _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(companyId, config.SECRET) + '&cid=' + companyId;
@@ -817,13 +818,10 @@ exports.saveAccount = function(req, res) {
         next('forbidden');
         return;
     }
-    var _company = {};
-    if(req.body.company!==undefined){
-        _company = req.body.company;
-    }
-    else if(req.body.info!==undefined){
-        _company.info = req.body.info;
-    }
+    var _company = {
+        email : {domain:req.body.domain},
+        info : req.body.info
+    };
     // 保存公司资料，返回之前的公司资料（new为false）
     Company.findOneAndUpdate({'_id': req.user._id}, _company,{new:false}, function(err, company) {
         if (err) {

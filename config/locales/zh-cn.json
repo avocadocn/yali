@@ -153,5 +153,6 @@
 	"DEPARTMENT_MEMBER": "部门成员",
 	"CAMPAIGNCLOSE": "活动已经关闭",
 	"CAMPAIGNFINISH": "活动已经结束",
-	"REFUSE":"拒绝"
+	"REFUSE":"拒绝",
+	"EMAILDOMAIN":"邮箱后缀"
 }
