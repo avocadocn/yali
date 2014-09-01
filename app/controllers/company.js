@@ -898,162 +898,118 @@ exports.getCompanyTeamsInfo = function(req, res) {
         'active': 1
     }
   }
-  //是否存在此链表，否则Create
-  // if(?)
-  //   var companyGroupData = cache.createCache()
-  //查询有没有，有的话数据拿出来
-
-  //没有的话从数据库取出，并更新
-
-  //test
-  //var cGD = cache;
-  //cache.createCache("name1","LFU");
-
-  //setTimeout(function(){
-    //console.log(cache.print());
-  // cache.set("name1","key1","content1",1000*60);
-  // console.log(cache.get("name1","key1"));
-  // cache.set("name2","key2","content2",1000*60);
-  // console.log(cache.get("name2","key2"));//should error
-  
-  // cache.createCache("name2","LFU");
-  // cache.set("name2","key2","content2",1000*60);
-  // console.log(cache.get("name2","key2"));
-  // console.log(cache.get("name2","key1"));//空
-  // console.log(cache.get("name1","key2"));//空
-  //}, 1000);
-  // console.log(cGd.get("1"));
-  // var test = cache;
-  // test.createCache("test","LFU");
-  // console.log(test.get("1"));
-  // test.set("2");
-  // console.log(test.get("2"));
-  //cache.createCache("test","LFU");
+  var output ={
+    'cid':req.params.companyId,
+    'role':req.role
+  };
+  if(req.role==='EMPLOYEE'){
+    cache.createCache("EmpTeamInfo");//是否存在EmpTeamInfo，否则Create
+    if(cache.get("EmpTeamInfo","req.params.companyId")){//查询有没有，有的话数据拿出来
+        output.teams = cache.get("EmpTeamInfo","req.params.companyId");
+        return res.send(output);
+    }
+  }
+  else if(req.role !=="HR"){
+    cache.createCache("GstTeamInfo");//是否存在GstTeamInfo，否则Create
+    if(cache.get("GstTeamInfo","req.params.companyId")){//查询有没有，有的话数据拿出来
+        output.teams = cache.get("GstTeamInfo","req.params.companyId");
+        return res.send(output);
+    }
+  }
+  //HR就不作缓存了撒～
+  //若是没有缓存，就继续查
   CompanyGroup
   .find(option,selectOption)
   .sort({'score.total':-1})
   .exec()
   .then(function(teams) {
-    var output ={
-        'cid':req.params.companyId,
-        'role':req.role
-    };
-    var _teams = [];
-    var counter = {'i':0};
-    // console.log(teams.length);
-    if(req.role !== 'HR'){
-        async.whilst(
-            function() { return counter.i < teams.length},
-            function (callback) {
-                //todo
-                // console.log(teams[counter.i]);
-                // console.log('out.waterfall.counter.i=' + counter.i);
-                async.waterfall([
-                    function(callback){
-                        //campaigninfo
-                        // console.log('in.waterfall.counter.i=' + counter.i);
-                        var j = counter.i-1;
-                        var campaigninfo = {};
-                        Campaign.find({'team':teams[j]._id})
-                        .sort({'create_time':-1})
-                        .limit(1)
-                        .exec()
-                        .then(function(campaign){
-                            //todo
-                            //console.log(campaign[0]);
-                            if(campaign.length==0){
-                                campaigninfo.campaign_theme = '';
-                                campaigninfo.campaign_id = '';
-                                campaigninfo.start_time = '';
-                            }else{
-                              campaigninfo.campaign_theme = campaign[0].theme;
-                              campaigninfo.campaign_id = campaign[0]._id;
-                              campaigninfo.start_time = campaign[0].start_time;
-                            }
-                            callback(null, campaigninfo);
-                        });
-                    }
-                    ,function(campaigninfo, callback){
-                        var teaminfo = campaigninfo;
-                        //todo add photo here
 
-                        callback(null, teaminfo);
-                    },function(teaminfo, callback){
-                        var j = counter.i-1;
-                        var did;
-                        //TODO:
-                        if (req.params.type === 'department') {
-                            for (var k = 0; k < req.departments.length; k++) {
-                                if (teams[j]._id.toString() === req.departments[k].tid.toString()) {
-                                    did = req.departments[k]._id;
-                                    break;
-                                }
-                            }
-                        }
-                        photo_album_controller.getNewPhotos(teams[j]._id, 2, function(photos){
-                            var _team = {
-                                '_id':teams[j]._id,
-                                'gid':teams[j].gid,
-                                'did': did,
-                                'group_type':teams[j].group_type,
-                                'logo':teams[j].logo,
-                                'active':teams[j].active,
-                                'count':teams[j].count,
-                                'entity_type':teams[j].entity_type,
-                                'leader':teams[j].leader,
-                                'member':teams[j].member,
-                                'name':teams[j].name,
-                                'campaign_theme':teaminfo.campaign_theme,
-                                'campaign_id':teaminfo.campaign_id,
-                                'campaign_start_time':teaminfo.start_time,
-                                'photos': photos,
-                                'photo_list':teaminfo.start_time,
-                                //more 为 true 可以展开
-                                'more': teams[j].member.length>7? true : false,
-                                //初始状态为收起
-                                'collapse': false
-                            };
-                            teams[j].did = did;
-                            teams[j].set('did', did, { strict: false });
-                            if(model_helper.arrayObjectIndexOf(req.user.team,teams[j]._id,'_id')>-1){
-                                _team.belong = true;
-                            }
-                            else{
-                                _team.belong = false;
-                            }
-                            _teams.push(_team);
-                            //console.log(_teams);
-                            //todo
-                            // console.log(campaigninfo);
-                            // console.log('push to _teams');
-                            // console.log(_team);
-                            // console.log(_teams);
-                        });
+    if(req.role ==='EMPLOYEE'){
+      async.map(teams,function(team,allcallback){
+        async.waterfall([
+            function(callback){
+                //campaigninfo
+                var campaigninfo = {};
+                Campaign.find({'team':team._id})
+                .sort({'create_time':-1})
+                .limit(1)
+                .exec()
+                .then(function(campaign){
+                    //todo
+                    //console.log(campaign[0]);
+                    if(campaign.length==0){
+                        campaigninfo.campaign_theme = '';
+                        campaigninfo.campaign_id = '';
+                        campaigninfo.start_time = '';
+                    }else{
+                      campaigninfo.campaign_theme = campaign[0].theme;
+                      campaigninfo.campaign_id = campaign[0]._id;
+                      campaigninfo.start_time = campaign[0].start_time;
                     }
-                ], function (err, result) {
-                   // result now equals 'done'
+                    callback(null, campaigninfo);
                 });
-                counter.i++;
-                setTimeout(callback, 60);
-            },
-            function(err){
-                if(err){
-                    return res.send({'result':0,'msg':'FAILURED'});
-                }else{
-                    // console.log('finish~');
-                    if(req.role ==='EMPLOYEE'){
-                        //console.log(_teams);
-                        output.teams = _teams;
+            },function(teaminfo, callback){
+                var did;
+                if (req.params.type === 'department') {
+                    for (var k = 0; k < req.departments.length; k++) {
+                        if (team._id.toString() === req.departments[k].tid.toString()) {
+                            did = req.departments[k]._id;
+                            break;
                         }
-                      else {
-                        output.teams = teams;
                     }
-                    return res.send(output);
                 }
+                photo_album_controller.getNewPhotos(team._id, 2, function(photos){//给每个小队增加最新图片
+                    var _team = {
+                        '_id':team._id,
+                        'gid':team.gid,
+                        'did': did,
+                        'group_type':team.group_type,
+                        'logo':team.logo,
+                        'active':team.active,
+                        'count':team.count,
+                        'entity_type':team.entity_type,
+                        'leader':team.leader,
+                        'member':team.member,
+                        'name':team.name,
+                        'campaign_theme':teaminfo.campaign_theme,
+                        'campaign_id':teaminfo.campaign_id,
+                        'campaign_start_time':teaminfo.start_time,
+                        'photos': photos,
+                        'photo_list':teaminfo.start_time,
+                        //more 为 true 可以展开
+                        'more': team.member.length>7? true : false,
+                        //初始状态为收起
+                        'collapse': false
+                    };
+                    team.did = did;
+                    team.set('did', did, { strict: false });
+                    //标记是否是某队成员
+                    if(model_helper.arrayObjectIndexOf(req.user.team,team._id,'_id')>-1){
+                        _team.belong = true;
+                    }
+                    else{
+                        _team.belong = false;
+                    }
+                    allcallback(null,_team);
+                });
             }
-        );
+        ]);
+      },function(err,results){
+        if(err){
+            return res.send({'result':0,'msg':'FAILURED'});
+        }else{
+            output.teams = results;
+            cache.set("EmpTeamInfo","req.params.companyId",results,1000*60*5);
+            return res.send(output);
+        }
+      });
     }
-    else{
+    else if(req.role!=='HR') {//访客
+        output.teams = teams;
+        cache.set("GstTeamInfo","req.params.companyId",teams,1000*60*5);
+        return res.send(output);
+    }
+    else{//是hr
         if(req.params.type === 'department'){
             var formatTeams =[];
             var departmentLength = req.departments.length;

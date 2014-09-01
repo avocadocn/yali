@@ -259,7 +259,6 @@ function Link() {
 }
 
 exports.createLink = function () {
-    console.log("Link generated");
     return new Link();  
 }
 

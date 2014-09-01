@@ -102,19 +102,17 @@ var print = function () {
 var createCache = function (buffer_name, alg_name, maxsize) {
     if (cache&&cache[buffer_name])
         return null;// 如果已经创建过了就不创建。
-    if (!alg_name) alg_name = "LRU";
-    if (!maxsize) maxsize = 100 * 100 * 10;
-    var obj =  {
-        //cache: {},
-        //queue: generateQueue(buffer_name, alg_name, maxsize),
-        set: set,
-        get: get,
-        clear: clear,
-        print: print
-    }
-    if(!obj.cache){
-        obj.cache={};
-        obj.queue={};
+    if (!alg_name) alg_name = "LFU";
+    if (!maxsize) maxsize = 100 * 100 * 10 *5; //开500K 每个链表100K 待调
+    if(!obj){
+        var obj =  {
+            cache: {},
+            queue: generateQueue(buffer_name, alg_name, maxsize/5),
+            set: set,
+            get: get,
+            clear: clear,
+            print: print
+        }
     }
 
     obj.cache[buffer_name]={};
@@ -128,17 +126,16 @@ var createCache = function (buffer_name, alg_name, maxsize) {
         queue = obj.queue;
         for(var i in cache){
             for (var key in cache[i]) {
-                if (!cache[key]) continue;
-                var insertTime = cache[key].insertTime;
-                var expire = cache[key].expire;
+                if (!cache[i][key]) continue;
+                var insertTime = cache[i][key].insertTime;
+                var expire = cache[i][key].expire;
                 var curTime = +new Date();
-                var node = cache[key]["node"];
-
+                var node = cache[i][key]["node"];
                 // 如果过期时间存在并且已经过期
                 if (expire && curTime - insertTime > expire) {
-                    queue.del(node);
-                    cache[key] = null;
-                }            
+                    queue[i].del(node);
+                    cache[i][key] = null;
+                }
             }
         }
     }, 1000*60*5);//5分钟清理一次
