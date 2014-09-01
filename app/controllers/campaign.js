@@ -313,7 +313,7 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     var during = moment.duration(moment(now).diff(temp_start_time));
     var years = Math.abs(during.years());
     var months = Math.abs(during.months());
-    var days = Math.abs(during.days());
+    var days = Math.floor(Math.abs(during.asDays()));
     var hours = Math.abs(during.hours());
     var minutes = Math.abs(during.minutes());
     var seconds = Math.abs(during.seconds());
@@ -330,7 +330,15 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
       // 活动未开始
       start_flag = 0;
       remind_text = '距离活动开始还有';
-      start_time_text = (years ? years + '年' : '' ) + (months ? months + '月' : '' ) + (days ? days + '天' : '' )+ (hours ? hours + '小时' : '') + minutes + '分';
+      if(days>=3){
+        start_time_text =  days + '天';
+      }
+      else if(days>=1){
+        start_time_text = days + '天' + (hours ? hours + '小时' : '') ;
+      }
+      else{
+        start_time_text = (hours ? hours + '小时' : '') + minutes + '分';
+      }
     }
 
 
@@ -922,11 +930,13 @@ exports.getUserJoinedCampaignsForAppList = function(req, res) {
   for (var i = 0; i < req.user.team.length; i++) {
     team_ids.push(req.user.team[i]._id);
   }
+  var startLimit = new Date();
+  startLimit.setFullYear(startLimit.getFullYear()+1);
   var options = {
     'cid': req.user.cid,
     '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
     'active': true,
-    'start_time': { '$gt': Date.now() }
+    'start_time': { '$gt': Date.now(),'$lte':startLimit }
   };
 
   Campaign

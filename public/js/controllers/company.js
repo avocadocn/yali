@@ -166,7 +166,6 @@ companyApp.controller('GroupsController',['$http',function($http) {
 companyApp.controller('inviteController',['$http','$scope',function($http,$scope){
     $scope.domains = [{'index':0,'domain':'','status':false},{'index':1,'domain':'','status':false}];
     $scope.addDomain = function(index){
-        console.log($scope.domains[index].domain);
         try{
             $http({
                 method : 'post',
