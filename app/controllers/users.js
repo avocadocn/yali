@@ -184,7 +184,8 @@ exports.appLoginSuccess = function(req, res) {
       'device_id':req.body.device.uuid,
       'user_id':req.body.userid,
       'platform':req.body.device.platform,
-      'version':req.body.device.version
+      'version':req.body.device.version,
+      'token':req.body.token
     },req.user._id);
   }else{
     console.log(req.body.status);
@@ -205,6 +206,15 @@ exports.appLoginSuccess = function(req, res) {
 }
 
 exports.appLogout = function(req, res) {
+  if(req.body.device && (req.body.userid != '' || req.body.token != '')){
+    deviceUnregister({
+      'device_id':req.body.device.uuid,
+      'user_id':req.body.userid,
+      'platform':req.body.device.platform
+    },req.user._id);
+  }else{
+    console.log(req.body.status);
+  }
   req.logout();
   res.send({ result: 1, msg: '注销成功' });
 }
@@ -1423,30 +1433,23 @@ var deviceRegister = function(device_info,uid){
       //TODO 登录信息录入后台统计
       var device = user.device;
       var find = false;
-      if(device){
+      if(device){//曾经绑定过
         for(var i = 0 ; i < device.length; i ++){
-          if(device[i].platform == device_info.platform){
-            //如果设备类型相同并且device_id不一样就要更新设备信息(比如两台Android手机)
-            if(device[i].device_type == device_info.device_type){
-              find = true;
-              if(device[i].device_id != device_info.device_id){
-                user.device[i].version = device_info.version;
-                user.device[i].device_id = device_info.device_id;
+          if(device[i].platform === device_info.platform){
+            if(device[i].device_type === device_info.device_type){
+              if(device[i].device_id === device_info.device_id){    //如果device_id一样就要更新时间(比如两台Android手机)
+                find = true;
                 user.device[i].update_date = new Date();
-                user.device[i].user_id = device_info.user_id;
-                user.device[i].device_type = device_info.device_type;
-                user.device[i].token = device_info.token;
                 break;
-              }else{
-                user.device[i].update_date = new Date();
               }
             }
           }
         }
         //以下两种情况就要新增设备信息
-        //1.不同平台(一部iPhone,一部小米)
-        //2.相同平台,不同设备类型(一部小米手机,一台三星平板,系统都是Android)
+        //1.不同平台(一部iPhone,一部安卓)
+        //2.相同平台,不同设备id
         if(!find){
+          //如果不一样，就push
           user.device.push({
             platform:device_info.platform,
             version:device_info.version,
@@ -1456,7 +1459,7 @@ var deviceRegister = function(device_info,uid){
             update_date:new Date()
           });
         }
-      }else{
+      }else{//第一次绑定
         user.device = [];
         user.device.push({
           platform:device_info.platform,
@@ -1475,5 +1478,41 @@ var deviceRegister = function(device_info,uid){
         }
       });
     }
-  })
+  });
+}
+
+//手机app退出 解绑用户设备信息,推送相关信息等等
+var deviceUnregister = function(device_info,uid){
+  User.findOne({'_id':uid},function (err,user){
+    if(err || !user){
+      //TODO 生成错误日志
+      console.log({'result':0,'msg':'USER_DEVICE_ERROR_USERFETCHFAILED'});
+    }else{
+      //TODO 登录信息录入后台统计
+      var device = user.device;
+      if(device){
+        for(var i = 0 ; i < device.length; i ++){
+          if(device[i].platform == device_info.platform){
+            if(device[i].platform==='Android'){
+              if(device[i].user_id === device_info.user_id){
+                user.device.splice(i,1);
+              }
+            }
+            else{
+              if(device[i].token === device_info.token){
+                user.device.splice(i,1);
+              }
+            }
+          }
+        }
+        user.save(function(err){
+          if(err){
+            console.log({'result':0,'msg':'USER_DEVICE_UPDATE_ERROR','data':err});
+          }else{
+            ;
+          }
+        });
+      }
+    }
+  });
 }
