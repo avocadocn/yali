@@ -1207,7 +1207,7 @@ exports.renderPhotoDetail = function(req, res, next) {
               return_url: return_url,
               moment: moment,
               editAuth: editAuth,
-              user_cid:req.user.cid
+              user_cid: req.user.provider === 'user' ? req.user.cid : req.user._id
             });
           });
         }(i));

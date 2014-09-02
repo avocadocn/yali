@@ -23,17 +23,18 @@ block contentExt
           each tag in photo_detail.tags
             span.tag= tag
         .comment_panel
-          h4 我要留言
-          form.js_ajax_form(action="/comment/push" method="post")
-            input(type="hidden" name="host_id" value="#{photo_detail._id}")
-            input(type="hidden" name="host_type" value="photo")
-            textarea.comment_textarea.form-control(type="text" name="content" required)
-            .clearfix
-              button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
+          if global_user.provider === 'user'
+            h4 我要留言
+            form.js_ajax_form(action="/comment/push" method="post")
+              input(type="hidden" name="host_id" value="#{photo_detail._id}")
+              input(type="hidden" name="host_type" value="photo")
+              textarea.comment_textarea.form-control(type="text" name="content" required)
+              .clearfix
+                button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
           section(bs-popover)
             each comment in comments
               div.comment.clearfix
-                if user_cid.toString()===comment.poster.cid.toString()
+                if comment.poster && comment.poster.cid && user_cid.toString() === comment.poster.cid.toString()
                   .comment_user_info
                     a(href="/users/home/#{comment.poster._id}")
                      img.user_photo.img_user(src="#{comment.poster.photo}" ng-Mouseenter="showUserCard('#{comment.poster._id}','#{comment._id}')" id="pop#{comment._id}")

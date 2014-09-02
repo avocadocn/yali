@@ -117,7 +117,11 @@ exports.commentAuthorize = function(req, res, next) {
         });
         break;
       case 'album':
-        //暂时不用做
+        if (req.user.provider === 'company') {
+          res.status(403);
+          next('forbidden');
+          return;
+        }
         next();
         break;
       case 'user':
