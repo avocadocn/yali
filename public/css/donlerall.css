@@ -75,10 +75,11 @@ textarea {
   max-height: 190px;
 }
 .mouse_hidden {
-  color: transparent;
+  opacity: 0.3;
 }
 .mouse_hidden:hover {
-  color: #666;
+  opacity: 1;
+  text-decoration: none;
 }
 .comment_right {
   float: right;
