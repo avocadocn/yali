@@ -29,47 +29,69 @@ exports.resizeWithCrop = function(req, res) {
     return res.send(404);
   }
 
-  var sendImg = function(err, stdout, stderr) {
-    if (err) {
-      console.log(err);
-      res.send(500);
-    }
-    else {
-      stdout.pipe(res);
-    }
-  };
+  // var sendImg = function(err, stdout, stderr) {
+  //   if (err) {
+  //     console.log(err);
+  //     res.send(500);
+  //   }
+  //   else {
+  //     stdout.pipe(res);
+  //   }
+  // };
 
-  gm(file_path)
-  .size(function(err, value) {
-    var ori_width = value.width;
-    var ori_height = value.height;
+  var file_args = file_path.split('.');
+  var file_name = file_args[0];
+  var file_ext = file_args[1];
+  var new_file_path = file_name + '-' + target_width + '-' + target_height + '.' + file_ext;
 
-    // tw/th - ow/oh => (tw*oh-th*ow)/(th*oh), 和0比较可忽略分母
-    var compare_result = target_width * ori_height - target_height * ori_width;
+  if (!fs.existsSync(new_file_path)) {
+    gm(file_path)
+    .size(function(err, value) {
+      var ori_width = value.width;
+      var ori_height = value.height;
 
-    if (compare_result < 0) {
+      // tw/th - ow/oh => (tw*oh-th*ow)/(th*oh), 和0比较可忽略分母
+      var compare_result = target_width * ori_height - target_height * ori_width;
 
-      var resize_width = ori_width * target_height / ori_height;
-      var crop_x = (resize_width - target_width) / 2;
+      if (compare_result < 0) {
 
-      gm(file_path)
-      .resize(resize_width, target_height)
-      .crop(target_width, target_height, crop_x, 0)
-      .stream(sendImg);
+        var resize_width = ori_width * target_height / ori_height;
+        var crop_x = (resize_width - target_width) / 2;
 
-    } else {
+        gm(file_path)
+        .resize(resize_width, target_height)
+        .crop(target_width, target_height, crop_x, 0)
+        .write(new_file_path, function(err) {
+          if (err) {
+            console.log(err);
+            return res.send(500);
+          }
+          res.sendfile(new_file_path);
+        });
 
-      var resize_height = ori_height * target_width / ori_width;
-      var crop_y = (resize_height - target_height) / 2;
+      } else {
 
-      gm(file_path)
-      .resize(target_width, resize_height)
-      .crop(target_width, target_height, 0, crop_y)
-      .stream(sendImg);
+        var resize_height = ori_height * target_width / ori_width;
+        var crop_y = (resize_height - target_height) / 2;
 
-    }
+        gm(file_path)
+        .resize(target_width, resize_height)
+        .crop(target_width, target_height, 0, crop_y)
+        .write(new_file_path, function(err) {
+          if (err) {
+            console.log(err);
+            return res.send(500);
+          }
+          res.sendfile(new_file_path);
+        });
 
-  });
+
+      }
+
+    });
+  } else {
+    res.sendfile(new_file_path);
+  }
 
 
 };
@@ -93,50 +115,89 @@ exports.resizeWithoutCrop = function(req, res) {
     return res.send(404);
   }
 
-  var sendImg = function(err, stdout, stderr) {
-    if (err) {
-      console.log(err);
-      res.send(500);
-    }
-    else {
-      stdout.pipe(res);
-    }
-  };
+  // var sendImg = function(err, stdout, stderr) {
+  //   if (err) {
+  //     console.log(err);
+  //     res.send(500);
+  //   }
+  //   else {
+  //     stdout.pipe(res);
+  //   }
+  // };
+
+  var file_args = file_path.split('.');
+  var file_name = file_args[0];
+  var file_ext = file_args[1];
 
   if (stretch) {
-    gm(file_path)
-    .resize(target_width, target_height)
-    .stream(sendImg);
+
+    var new_file_path = file_name + '-resize-stretch' + target_width + '-' + target_height + '.' + file_ext;
+
+    if (!fs.existsSync(new_file_path)) {
+      gm(file_path)
+      .resize(target_width, target_height)
+      .write(new_file_path, function(err) {
+        if (err) {
+          console.log(err);
+          return res.send(500);
+        }
+        res.sendfile(new_file_path);
+      });
+    } else {
+      res.sendfile(new_file_path);
+    }
+
   } else {
-    gm(file_path)
-    .size(function(err, value) {
-      var ori_width = value.width;
-      var ori_height = value.height;
 
-      // tw/th - ow/oh => (tw*oh-th*ow)/(th*oh), 和0比较可忽略分母
-      var compare_result = target_width * ori_height - target_height * ori_width;
+    var new_file_path = file_name + '-resize-' + target_width + '-' + target_height + '.' + file_ext;
 
-      if (compare_result < 0) {
+    if (!fs.existsSync(new_file_path)) {
+      gm(file_path)
+      .size(function(err, value) {
+        var ori_width = value.width;
+        var ori_height = value.height;
 
-        var resize_width = target_width;
+        // tw/th - ow/oh => (tw*oh-th*ow)/(th*oh), 和0比较可忽略分母
+        var compare_result = target_width * ori_height - target_height * ori_width;
 
-        gm(file_path)
-        .resize(resize_width)
-        .stream(sendImg);
+        if (compare_result < 0) {
 
-      } else {
+          var resize_width = target_width;
 
-        var resize_height = target_height;
+          gm(file_path)
+          .resize(resize_width)
+          .write(new_file_path, function(err) {
+            if (err) {
+              console.log(err);
+              return res.send(500);
+            }
+            res.sendfile(new_file_path);
+          });
 
-        gm(file_path)
-        .resize(null, resize_height)
-        .stream(sendImg);
+        } else {
 
-      }
+          var resize_height = target_height;
 
-    });
+          gm(file_path)
+          .resize(null, resize_height)
+          .write(new_file_path, function(err) {
+            if (err) {
+              console.log(err);
+              return res.send(500);
+            }
+            res.sendfile(new_file_path);
+          });
+        }
+
+      });
+    } else {
+      res.sendfile(new_file_path);
+    }
+
   }
 
 
 };
+
+
 
