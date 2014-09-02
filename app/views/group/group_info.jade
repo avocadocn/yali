@@ -64,18 +64,18 @@
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
-          .group(ng-repeat="leader in team.leader track by $index" ng-show="$index<9 || show[1]" ng-cloak)
+          .group(ng-repeat="leader in team.leader track by $index" ng-show="$index<8 || show[1]" ng-cloak)
             div(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
               .dl_row(bs-popover)
                 a(href="/users/home/{{leader._id}}")
-                  img.size_56.img_user(ng-src="{{leader.photo}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
+                  img.size_48.img_user(ng-src="{{leader.photo}}" ng-Mouseover='showUserCard(leader._id,leader._id)' id='pop{{leader._id}}')
               .dl_row
                 a.user_name(href="/users/home/{{leader._id}}") {{leader.nickname}}
             div(ng-if="role==='GUESTHR'||role==='GUEST'||role==='GUESTLEADER'")
               .dl_row
-                img.size_56.img_user(ng-src="{{leader.photo}}")
+                img.size_48.img_user(ng-src="{{leader.photo}}")
               .dl_row
-                span.user_name{{leader.nickname}}
+                span.user_name {{leader.nickname}}
     .dl_row.clearfix
       span.subtitle.margin_left_15 #{__("MEMBER")}
       .text_container.pull-right(ng-if="members.length>9")
@@ -84,16 +84,16 @@
     .dl_row.clearfix
       .dl_companygroup_container
         .groups
-          .group(ng-repeat="member in members track by $index" ng-show="$index<9 || show[2]" ng-cloak)
+          .group(ng-repeat="member in members track by $index" ng-show="$index<8 || show[2]" ng-cloak)
             div(ng-if="role!=='GUESTHR'&&role!=='GUEST'&&role!=='GUESTLEADER'")
               .dl_row(bs-popover)
                 a(href="/users/home/{{member._id}}")
-                  img.size_56.img_user(ng-src="{{member.photo}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}')
+                  img.size_48.img_user(ng-src="{{member.photo}}" ng-Mouseenter='showUserCard(member._id,member._id)' id='pop{{member._id}}')
               .dl_row
                 a.user_name(href="/users/home/{{member._id}}") {{member.nickname}}
             div(ng-if="role==='GUESTHR'||role==='GUEST'||role==='GUESTLEADER'")
               .dl_row
-                img.size_56.img_user(ng-src="{{member.photo}}")
+                img.size_48.img_user(ng-src="{{member.photo}}")
               .dl_row
                 span.user_name {{member.nickname}}
 
@@ -131,7 +131,7 @@
       carousel#family(interval="5000")
         slide(ng-repeat="photo in family_photos" ng-if="photo.select" active="photo.active")
           .carousel-img-container
-            img.center-block(ng-src="{{ photo.uri }}")
+            img.center-block(ng-src="{{ photo.uri + '/1100/700' }}")
 
   #upload_modal.modal.fade(ng-show="role==='LEADER'||role==='HR'" tabindex="-1" role="dialog" aria-hidden="true")
     .modal-dialog

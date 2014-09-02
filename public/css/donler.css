@@ -1679,7 +1679,6 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 30px;
   width: 100%;
   position: relative;
-  background-color: #000;
 }
 #family .carousel-img-container {
   display: table-cell;
