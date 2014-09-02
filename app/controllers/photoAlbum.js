@@ -661,6 +661,9 @@ exports.deletePhotoAlbum = function(req, res) {
 exports.createPhoto = function(req, res) {
   var pa_id = req.params.photoAlbumId;
   var photos = req.files.photos;
+  if (!photos) {
+    return res.send({ result: 0, msg: '请求错误' });
+  }
   if (validator.isAlphanumeric(pa_id) && (photos.size > 0 || photos.length > 0)) {
 
     PhotoAlbum
@@ -728,15 +731,16 @@ exports.createPhoto = function(req, res) {
             });
           };
 
-          if (photos[i].type.indexOf('image') === -1) {
-            removeErrPhoto(photos[i]);
-            return;
-          }
-          var ext = mime.extension(photos[i].type);
-
-          var photo_name = Date.now().toString() + '.' + ext;
-          var photo = {};
           try {
+            if (photos[i].type.indexOf('image') === -1) {
+              removeErrPhoto(photos[i]);
+              return;
+            }
+            var ext = mime.extension(photos[i].type);
+
+            var photo_name = Date.now().toString() + '.' + ext;
+            var photo = {};
+
             gm(photos[i].path)
             .write(path.join(system_dir, photo_name),
               function(err) {
