@@ -789,10 +789,6 @@ exports.getUserNewCampaignsForAppList = function(req, res) {
         'team': { '$in': team_ids }
       }
     ],
-    '$nor': [
-      { 'member.uid': req.user._id },
-      { 'camp.member.uid': req.user._id }
-    ],
     'active': true,
     'end_time': { '$gt': endTimeLimit }
   };
@@ -843,7 +839,7 @@ var findUserNewFinishCampaigns= function(options, skipSize, findTime, res){
     if(maxPhotoCount<3){
       skipSize = skipSize+newFinishSize;
       if(findTime>=findLimitTime){
-        return res.send({ result: 1, campaigns: {} });
+        return res.send({ result: 1, campaigns: null });
       }
       else{
         findTime++;
