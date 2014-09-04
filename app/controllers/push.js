@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Config = mongoose.model('Config');
 var Campaign = mongoose.model('Campaign');
 var CompanyGroup = mongoose.model('CompanyGroup');
+var User = mongoose.model('User');
 var encrypt = require('../middlewares/encrypt');
 var host = "127.0.0.1";
 var _config = require('../config/config');
@@ -58,12 +59,32 @@ exports.campaign = function(campaign_id){
     if(config.push.status){
       if(config.push.status == 'on'){
 
-        Campaign.findOne({'_id':campaign_id},{'team':1,'_id':1,'theme':1},function (err,campaign){
+        Campaign.findOne({'_id':campaign_id},{'team':1,'_id':1,'theme':1,'cid':1},function (err,campaign){
           if(err || !campaign){
             //TODO
             //错误日志
           }else{
-            if(campaign.team){
+            if(campaign.team.length===0){//公司
+              User.find({'cid':campaign.cid[0]},{'_id':1},function (err ,users){
+                if(err || !users){
+                  //TODO
+                  //错误日志
+                }else{
+                  var data = {
+                    key:{
+                      campaign_id:campaign._id.toString(),
+                      campaign_id_key:encrypt.encrypt(campaign._id.toString(),_config.SECRET)
+                    },
+                    body:campaign.theme,
+                    description:campaign.theme,
+                    title:'您的公司有新活动',
+                    members:users
+                  }
+                  pushCampaign(data,cb);
+                }
+              })
+            }
+            else if(campaign.team){
               CompanyGroup.find({'_id':{'$in':campaign.team}},{'member':1,'_id':1},function (err,teams){
                 if(err || !teams){
                   //TODO
@@ -83,7 +104,7 @@ exports.campaign = function(campaign_id){
                       },
                       body:campaign.theme,
                       description:campaign.theme,
-                      title:'NEW CAMPAIGN',
+                      title:'您的小队有新活动',
                       members:members
                     }
                     pushCampaign(data,cb);

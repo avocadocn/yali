@@ -642,7 +642,6 @@ exports.provoke = function (req, res) {
 
           competition.save(function(err){
             if(!err){
-              push.campaign(competition._id);
               var groupMessage = new GroupMessage();
               if(type===4||type ===5)
                 groupMessage.message_type = 4;
@@ -790,6 +789,7 @@ exports.responseProvoke = function (req, res) {
       }
       else{
         var rst = campaign.team;
+        push.campaign(competition_id);
         if(req.body.responseStatus){
           GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
             groupMessage.message_type = 5;
