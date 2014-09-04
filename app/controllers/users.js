@@ -190,6 +190,7 @@ exports.appLoginSuccess = function(req, res) {
   }else{
     console.log(req.body.status);
   }
+
   var app_token = UUID.id();
   var data = {
     _id: req.user._id,
@@ -1177,7 +1178,6 @@ exports.editPhoto = function(req, res, next) {
 
 
 exports.user = function(req, res, next, id) {
-  
     User
         .findOne({
              _id: id
@@ -1456,7 +1456,8 @@ var deviceRegister = function(device_info,uid){
             device_id:device_info.device_id,
             device_type:device_info.device_type,
             user_id:device_info.user_id,                //只有Android的百度云推送才会用到
-            update_date:new Date()
+            update_date:new Date(),
+            token: device_info.token ? device_info.token : null
           });
         }
       }else{//第一次绑定
@@ -1467,7 +1468,8 @@ var deviceRegister = function(device_info,uid){
             device_id:device_info.device_id,
             device_type:device_info.device_type,
             user_id:device_info.user_id,                //只有Android的百度云推送才会用到
-            update_date:new Date()
+            update_date:new Date(),
+            token: device_info.token ? device_info.token : null
         });
       }
       user.save(function(err){

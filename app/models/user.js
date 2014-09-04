@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 var _device = new Schema({
     platform:{
         type:String,
-        enum:['Android','IOS','WindowsPhone','BlackBerry']
+        enum:['Android','iOS','WindowsPhone','BlackBerry']
     },
     version:String,
     device_id:String,
