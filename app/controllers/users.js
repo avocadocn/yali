@@ -1440,6 +1440,9 @@ var deviceRegister = function(device_info,uid){
               if(device[i].device_id === device_info.device_id){    //如果device_id一样就要更新时间(比如两台Android手机)
                 find = true;
                 user.device[i].update_date = new Date();
+                if (device_info.token && device_info.token !== user.device[i].token) {
+                  user.device[i].token = device_info.token;
+                }
                 break;
               }
             }

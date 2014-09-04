@@ -75,10 +75,10 @@ exports.campaign = function(campaign_id){
                       campaign_id:campaign._id.toString(),
                       campaign_id_key:encrypt.encrypt(campaign._id.toString(),_config.SECRET)
                     },
-                    body:campaign.theme,
-                    description:campaign.theme,
-                    title:'您的公司有新活动',
-                    members:users
+                    body: '您有新活动: ' + campaign.theme,
+                    description: '您有新活动: ' + campaign.theme,
+                    title: '您的公司有新活动',
+                    members: users
                   }
                   pushCampaign(data,cb);
                 }
@@ -102,10 +102,10 @@ exports.campaign = function(campaign_id){
                         campaign_id:campaign._id.toString(),
                         campaign_id_key:encrypt.encrypt(campaign._id.toString(),_config.SECRET)
                       },
-                      body:campaign.theme,
-                      description:campaign.theme,
-                      title:'您的小队有新活动',
-                      members:members
+                      body: '您有新活动: ' + campaign.theme,
+                      description: '您有新活动: ' + campaign.theme,
+                      title: '您的小队有新活动',
+                      members: members
                     }
                     pushCampaign(data,cb);
                   }
