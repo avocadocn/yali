@@ -92,10 +92,10 @@ div.user_edit_info.dl_card_tebcontent(ng-show='!loading')
     .dl_row.clearfix(ng-if="user.email || editing")
       .info_side
         span.info_label #{__("EMAIL")}
-      .info_detail_2(ng-if="!editing")
+      .info_detail_2
         span.info_label #{this_user.email}
-      .info_detail(ng-if="editing")
-        input.dl_input.dl-form-control.editToggle(type="email" name="user[email]" ng-model="user.email")
+      //- .info_detail(ng-if="editing")
+      //-   input.dl_input.dl-form-control.editToggle(type="email" name="user[email]" ng-model="user.email")
     .dl_row.clearfix(ng-if="user.qq || editing")
       .info_side
         span.info_label #{__("QQ")}
