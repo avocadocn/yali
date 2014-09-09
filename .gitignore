@@ -14,6 +14,7 @@ public/img/company/
 public/img/photo_album/
 temp_uploads/
 
+public/**/size/
 
 public/mobile/plugins/
 public/mobile/npm-debug.log

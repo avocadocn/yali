@@ -5,7 +5,8 @@ var path = require('path'),
   fs = require('fs');
 
 // 3rd
-var gm = require('gm');
+var gm = require('gm'),
+  mkdirp = require('mkdirp');
 
 // custom
 var config = require('../../config/config');
@@ -39,12 +40,22 @@ exports.resizeWithCrop = function(req, res) {
   //   }
   // };
 
-  var file_args = file_path.split('.');
+
+
+  var file_dir = (file_path.match(/(.*?)[\w\d]*\.[\w]*/))[1];
+  var file_name_with_ext = (file_path.match(/[\w\d]*\.[\w]*/))[0];
+
+  var file_args = file_name_with_ext.split('.');
   var file_name = file_args[0];
   var file_ext = file_args[1];
-  var new_file_path = file_name + '-' + target_width + '-' + target_height + '.' + file_ext;
-
+  var new_file_name = file_name + '-' + target_width + '-' + target_height + '.' + file_ext;
+  var new_file_path = path.join(file_dir, 'size', new_file_name);
   if (!fs.existsSync(new_file_path)) {
+    var new_dir = path.join(file_dir, 'size/');
+    if (!fs.existsSync(new_dir)) {
+      mkdirp.sync(new_dir);
+    }
+
     gm(file_path)
     .size(function(err, value) {
       var ori_width = value.width;
@@ -115,23 +126,22 @@ exports.resizeWithoutCrop = function(req, res) {
     return res.send(404);
   }
 
-  // var sendImg = function(err, stdout, stderr) {
-  //   if (err) {
-  //     console.log(err);
-  //     res.send(500);
-  //   }
-  //   else {
-  //     stdout.pipe(res);
-  //   }
-  // };
+  var file_dir = (file_path.match(/(.*?)[\w\d]*\.[\w]*/))[1];
+  var file_name_with_ext = (file_path.match(/[\w\d]*\.[\w]*/))[0];
 
-  var file_args = file_path.split('.');
+  var file_args = file_name_with_ext.split('.');
   var file_name = file_args[0];
   var file_ext = file_args[1];
 
+  var new_dir = path.join(file_dir, 'size/');
+  if (!fs.existsSync(new_dir)) {
+    mkdirp.sync(new_dir);
+  }
+
   if (stretch) {
 
-    var new_file_path = file_name + '-resize-stretch' + target_width + '-' + target_height + '.' + file_ext;
+    var new_file_name = file_name + '-resize-stretch-' + target_width + '-' + target_height + '.' + file_ext;
+    var new_file_path = path.join(file_dir, 'size', new_file_name);
 
     if (!fs.existsSync(new_file_path)) {
       gm(file_path)
@@ -149,7 +159,8 @@ exports.resizeWithoutCrop = function(req, res) {
 
   } else {
 
-    var new_file_path = file_name + '-resize-' + target_width + '-' + target_height + '.' + file_ext;
+    var new_file_name = file_name + '-resize-' + target_width + '-' + target_height + '.' + file_ext;
+    var new_file_path = path.join(file_dir, 'size', new_file_name);
 
     if (!fs.existsSync(new_file_path)) {
       gm(file_path)
