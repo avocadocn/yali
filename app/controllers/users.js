@@ -1288,7 +1288,7 @@ exports.getSchedules = function(req, res) {
 
 exports.getUserInfo = function(req, res) {
   User
-  .findOne({ _id: req.body._id })
+  .findOne({ _id: req.body._id },{'nickname':1,'realname':1,'introduce':1,'cname':1,'department.name':1,'phone':1,'photo':1})
   .populate('cid')
   .exec()
   .then(function(user) {
@@ -1296,13 +1296,7 @@ exports.getUserInfo = function(req, res) {
       res.send({
         result: 1,
         msg: '获取用户信息成功',
-        user: {
-          photo: user.photo,
-          email: user.email,
-          nickname: user.nickname,
-          realname: user.realname,
-          company: user.cid.info.name
-        }
+        user: user
       });
     } else {
       throw 'not found';
