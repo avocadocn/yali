@@ -66,6 +66,7 @@ var CompanyGroup = new Schema({
         type: String,
         ref: 'Group'
     },
+    department: Schema.Types.Mixed,
     group_type: String,
     cname: String,
     name: String,

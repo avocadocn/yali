@@ -140,6 +140,9 @@ exports.teampagetemplate =function(req,res){
 };
 //小队聚合首页 TODO
 exports.teampage = function(req, res) {
+  if (req.companyGroup.department) {
+    return res.redirect('/department/home/' + req.companyGroup.department);
+  }
   moment.lang('zh-cn');
   var cid = req.companyGroup.cid.toString();
   async.waterfall([
@@ -1238,16 +1241,43 @@ exports.resultConfirm = function (req, res) {
 
 
 exports.group = function(req, res, next, id) {
-  CompanyGroup
-    .findOne({
-      _id: id
-    })
-    .exec(function(err, companyGroup) {
-        if (err) return next(err);
-        if (!companyGroup) return next(new Error(' Failed to load companyGroup ' + id));
-        req.companyGroup = companyGroup;
+  CompanyGroup.findById(id).exec()
+  .then(function (company_group) {
+    if (!company_group) {
+      return next(new Error(' Failed to load companyGroup ' + id));
+    } else {
+      // may equal false
+      if (company_group.department == undefined && company_group.department == null) {
+        mongoose.model('Department').findOne({
+          team: company_group._id
+        }).exec()
+        .then(function (department) {
+          if (!department) {
+            company_group.department = false;
+          } else {
+            company_group.department = department._id;
+          }
+          company_group.save(function (err) {
+            if (err) {
+              return next(err);
+            } else {
+              req.companyGroup = company_group;
+              next();
+            }
+          });
+        })
+        .then(null, function (err) {
+          next(err);
+        });
+      } else {
+        req.companyGroup = company_group;
         next();
-    });
+      }
+    }
+  })
+  .then(null, function (err) {
+    next(err);
+  });
 };
 
 
