@@ -1289,7 +1289,6 @@ exports.getSchedules = function(req, res) {
 exports.getUserInfo = function(req, res) {
   User
   .findOne({ _id: req.body._id },{'nickname':1,'realname':1,'introduce':1,'cname':1,'department.name':1,'phone':1,'photo':1})
-  .populate('cid')
   .exec()
   .then(function(user) {
     if (user) {
@@ -1305,6 +1304,32 @@ exports.getUserInfo = function(req, res) {
   .then(null, function(err) {
     console.log(err);
     res.send({ result: 0, msg: '获取用户信息失败' });
+  });
+};
+
+exports.editUserInfo = function(req, res, next) {
+  User.findOne({_id: req.body._id},function(err,user) {
+    if(err || !user){
+      console.log('cannot find user');
+      res.send({result:0, msg:'获取用户失败'});
+    }
+    if(req.body.editName==='nickname')
+      user.nickname = req.body.editValue;
+    else if (req.body.editName==='realname')
+      user.realname = req.body.editValue;
+    else if (req.body.editName==='introduce')
+      user.introduce = req.body.editValue;
+    else if (req.body.editName==='phone')
+      user.phone = req.body.editValue;
+    //todo photo
+    user.save(function(err){
+      if (!err) {
+        res.send({result:1, msg:'修改成功'});
+      }
+      else{
+        next(err);
+      }
+    });
   });
 };
 

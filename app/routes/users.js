@@ -66,6 +66,7 @@ module.exports = function(app, passport) {
     app.get('/users/getTimelineForApp/:page/:userId/:appToken',authorization.appToken, authorization.userAuthorize, users.getTimelineForApp);
 
     app.post('/users/info/:userId', authorization.userAuthorize, users.getUserInfo);
+    app.post('/users/editUserInfo/:userId', authorization.userAuthorize, users.editUserInfo);
     app.get('/users/briefInfo/:userId', users.getBriefInfo);
     app.param('userId', users.user);
 
