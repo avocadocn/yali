@@ -123,7 +123,11 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    device:[_device]
+    device:[_device],
+    push_toggle:{                   //推送开关
+        type:Boolean,
+        default:false
+    }
 });
 
 /**
