@@ -94,6 +94,7 @@ exports.forgetPwd = function(req, res){
         req.headers.host,
         function (err) {
           if (err) {
+            // TO DO: 发送失败待处理
             console.log(err);
           }
           res.render('users/forgetPwd', {

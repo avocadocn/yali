@@ -16,6 +16,9 @@ var global_config = {
   mail: {
     user: {
       reset_pwd: 12
+    },
+    company: {
+      reset_pwd: 13
     }
   }
 };
@@ -154,6 +157,21 @@ exports.sendStaffResetPwdMail = function (email, uid, host, callback) {
 
 };
 
+exports.sendCompanyResetPwdMail = function (email, uid, host, callback) {
 
+  var reset_link = 'http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, website_config.SECRET) + '&uid=' + uid + '&time=' + encrypt.encrypt(new Date().toString(), website_config.SECRET);
+
+  var reset_config = {
+    login: global_config.login,
+    campaignID: global_config.campaignID,
+    mailingID: global_config.mail.company.reset_pwd
+  };
+
+  sendMail(reset_config, email, [{
+    name: 'company_reset_pwd_link',
+    value: reset_link
+  }], callback);
+
+};
 
 

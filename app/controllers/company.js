@@ -31,12 +31,13 @@ var mongoose = require('mongoose'),
     cache = require('../services/cache/Cache');
 
 var mail = require('../services/mail');
+var webpower = require('../services/webpower');
 var encrypt = require('../middlewares/encrypt');
 /**
  * Auth callback
  */
 exports.authCallback = function(req, res) {
-    res.redirect('/');
+  res.redirect('/');
 };
 
 /*
@@ -55,10 +56,16 @@ exports.forgetPwd = function(req, res){
                 err: '您输入的账号不存在'
               });
     } else {
-      mail.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host);
-      res.render('company/forgetPwd', {
-        title: '忘记密码',
-        success:'1'
+      webpower.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host, function (err) {
+        if (err) {
+            // TO DO: 发送失败待处理
+            console.log(err);
+        } else {
+            res.render('company/forgetPwd', {
+                title: '忘记密码',
+                success:'1'
+            });
+        }
       });
     }
   });
