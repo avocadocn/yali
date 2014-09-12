@@ -29,6 +29,7 @@ var validator = require('validator'),
 var encrypt = require('../middlewares/encrypt'),
   department = require('../controllers/department'),
   mail = require('../services/mail'),
+  webpower = require('../services/webpower'),
   schedule = require('../services/schedule'),
   moment = require('moment'),
   config = require('../config/config'),
@@ -86,11 +87,21 @@ exports.forgetPwd = function(req, res){
                 err: '您输入的账号不存在'
               });
     } else {
-      mail.sendStaffResetPwdMail(user.email, user._id.toString(), req.headers.host);
-      res.render('users/forgetPwd', {
-        title: '忘记密码',
-        success:'1'
-      });
+
+      webpower.sendStaffResetPwdMail(
+        user.email,
+        user._id.toString(),
+        req.headers.host,
+        function (err) {
+          if (err) {
+            console.log(err);
+          }
+          res.render('users/forgetPwd', {
+            title: '忘记密码',
+            success:'1'
+          });
+        }
+      );
     }
   });
 }
@@ -1288,24 +1299,15 @@ exports.getSchedules = function(req, res) {
 
 exports.getUserInfo = function(req, res) {
   User
-  .findOne({ _id: req.body._id },{'nickname':1,'realname':1,'introduce':1,'cname':1,'department.name':1,'phone':1,'photo':1,'push_toggle':1})
+  .findOne({ _id: req.body._id },{'nickname':1,'realname':1,'introduce':1,'cname':1,'department.name':1,'phone':1,'photo':1})
   .exec()
   .then(function(user) {
     if (user) {
-      if(req.body.push){
-        res.send({
-          result:1,
-          msg: '获取用户推送开关成功',
-          user:{push_toggle:user.push_toggle}
-        });
-      }
-      else{
-        res.send({
-          result: 1,
-          msg: '获取用户信息成功',
-          user: user
-        });
-      }
+      res.send({
+        result: 1,
+        msg: '获取用户信息成功',
+        user: user
+      });
     } else {
       throw 'not found';
     }
@@ -1330,8 +1332,6 @@ exports.editUserInfo = function(req, res, next) {
       user.introduce = req.body.editValue;
     else if (req.body.editName==='phone')
       user.phone = req.body.editValue;
-    else if (req.body.editName==='push_toggle')
-      user.push_toggle = req.body.editValue;
     //todo photo
     user.save(function(err){
       if (!err) {
