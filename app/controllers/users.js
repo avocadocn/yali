@@ -328,7 +328,9 @@ function userOperate(cid, key, res, req, index) {
                     console.log(err);
                   } else {
                     //系统再给员工发一封激活邮件
-                    mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
+                    webpower.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
+                      if (err) { console.log(err); }
+                    });
                     delete req.session.key;
                     delete req.session.key_id;
                     delete req.session.cid;
@@ -390,7 +392,9 @@ function userOperate(cid, key, res, req, index) {
                 });
               }
               //重发邮件
-              mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+              webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
+                if (err) { console.log(err); }
+              });
               delete req.session.key;
               delete req.session.key_id;
               delete req.session.cid;

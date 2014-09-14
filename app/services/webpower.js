@@ -15,9 +15,11 @@ var global_config = {
   campaignID: 1,
   mail: {
     user: {
+      active: 14,
       reset_pwd: 12
     },
     company: {
+      active: 6, // not correct
       reset_pwd: 13
     }
   }
@@ -39,7 +41,6 @@ var global_config = {
  * @param  {Function} callback callback(err)
  */
 var sendMail = function (config, email, fields, callback) {
-
   var end_callback = callback;
 
   soap.createClient(global_config.wsdl, function (err, client) {
@@ -84,20 +85,22 @@ var sendMail = function (config, email, fields, callback) {
               if (result.editRecipient_result.status === 'OK') {
                 callback(null, result.editRecipient_result.id);
               } else {
+                console.log(result);
                 callback('editRecipient failed');
               }
             }
           });
         } else {
+          fields.push({
+            name: 'email',
+            value: email
+          });
           client.addRecipient({
             login: config.login,
             campaignID: config.campaignID,
             groupIDs: { 'xsd:int': [81] },
             recipientData: {
-              fields: fields.push({
-                name: 'email',
-                value: email
-              })
+              fields: fields
             }
           }, function(err, result) {
             if (err) { return callback(err); }
@@ -105,6 +108,7 @@ var sendMail = function (config, email, fields, callback) {
               if (result.addRecipient_result.status === 'OK') {
                 callback(null, result.addRecipient_result.id);
               } else {
+                console.log(result);
                 callback('addRecipient failed');
               }
             }
@@ -124,6 +128,7 @@ var sendMail = function (config, email, fields, callback) {
             if (result.sendSingleMailing_result) {
               callback(null);
             } else {
+              console.log(result);
               callback('sendSingleMailing failed');
             }
           }
@@ -132,7 +137,9 @@ var sendMail = function (config, email, fields, callback) {
       }
 
     ], function (err, result) {
-      end_callback(err);
+      if (end_callback) {
+        end_callback(err);
+      }
     });
 
   });
@@ -142,7 +149,8 @@ var sendMail = function (config, email, fields, callback) {
 
 exports.sendStaffResetPwdMail = function (email, uid, host, callback) {
 
-  var reset_link = 'http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, website_config.SECRET) + '&uid=' + uid + '&time=' + encrypt.encrypt(new Date().toString(), website_config.SECRET);
+  var reset_link = 'http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, website_config.SECRET)
+    + '&uid=' + uid + '&time=' + encrypt.encrypt(new Date().toString(), website_config.SECRET);
 
   var reset_config = {
     login: global_config.login,
@@ -159,7 +167,8 @@ exports.sendStaffResetPwdMail = function (email, uid, host, callback) {
 
 exports.sendCompanyResetPwdMail = function (email, uid, host, callback) {
 
-  var reset_link = 'http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, website_config.SECRET) + '&uid=' + uid + '&time=' + encrypt.encrypt(new Date().toString(), website_config.SECRET);
+  var reset_link = 'http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, website_config.SECRET)
+    + '&uid=' + uid + '&time=' + encrypt.encrypt(new Date().toString(), website_config.SECRET);
 
   var reset_config = {
     login: global_config.login,
@@ -173,5 +182,27 @@ exports.sendCompanyResetPwdMail = function (email, uid, host, callback) {
   }], callback);
 
 };
+
+
+exports.sendStaffActiveMail = function (email, uid, cid, host, callback) {
+
+  var active_link = 'http://' + host + '/users/setProfile?key=' + encrypt.encrypt(uid, website_config.SECRET)
+    + '&uid=' + uid + '&cid=' + cid;
+
+  var active_config = {
+    login: global_config.login,
+    campaignID: global_config.campaignID,
+    mailingID: global_config.mail.user.active
+  };
+
+  sendMail(active_config, email, [{
+    name: 'user_active_link',
+    value: active_link
+  }], callback);
+
+};
+
+
+
 
 
