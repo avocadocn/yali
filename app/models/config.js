@@ -40,6 +40,11 @@ var Config = new Schema({
             passphrase:String,
             port:Number
         }
+    },
+
+    smtp: {
+        type: String,
+        enum: ['163', 'webpower']
     }
 });
 

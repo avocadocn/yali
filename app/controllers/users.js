@@ -88,21 +88,41 @@ exports.forgetPwd = function(req, res){
               });
     } else {
 
-      webpower.sendStaffResetPwdMail(
-        user.email,
-        user._id.toString(),
-        req.headers.host,
-        function (err) {
-          if (err) {
-            // TO DO: 发送失败待处理
-            console.log(err);
+      var sendByWebpower = function () {
+        webpower.sendStaffResetPwdMail(
+          user.email,
+          user._id.toString(),
+          req.headers.host,
+          function (err) {
+            if (err) {
+              // TO DO: 发送失败待处理
+              console.log(err);
+            }
+            res.render('users/forgetPwd', {
+              title: '忘记密码',
+              success:'1'
+            });
           }
+        );
+      };
+
+      mongoose.model('Config').findOne({ name: config.CONFIG_NAME }).exec()
+      .then(function (config) {
+        if (!config || !config.smtp || config.smtp === 'webpower') {
+          sendByWebpower();
+        } else if (config.smtp === '163') {
+          mail.sendStaffResetPwdMail(user.email, user._id.toString(), req.headers.host);
           res.render('users/forgetPwd', {
             title: '忘记密码',
             success:'1'
           });
         }
-      );
+      })
+      .then(null, function (err) {
+        console.log(err);
+        sendByWebpower();
+      });
+
     }
   });
 }
@@ -328,9 +348,16 @@ function userOperate(cid, key, res, req, index) {
                     console.log(err);
                   } else {
                     //系统再给员工发一封激活邮件
-                    webpower.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
-                      if (err) { console.log(err); }
+                    mongoose.model('Config').findOne({ name: config.CONFIG_NAME }, function (err, config) {
+                      if (err || !config || !config.smtp || config.smtp === 'webpower') {
+                        webpower.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
+                          if (err) { console.log(err); }
+                        });
+                      } else if (config.smtp === '163') {
+                        mail.sendStaffActiveMail(user.email, user._id.toString(), company._id.toString(), req.headers.host);
+                      }
                     });
+
                     delete req.session.key;
                     delete req.session.key_id;
                     delete req.session.cid;
@@ -392,8 +419,14 @@ function userOperate(cid, key, res, req, index) {
                 });
               }
               //重发邮件
-              webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
-                if (err) { console.log(err); }
+              mongoose.model('Config').findOne({ name: config.CONFIG_NAME }, function (err, config) {
+                if (err || !config || !config.smtp || config.smtp === 'webpower') {
+                  webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
+                    if (err) { console.log(err); }
+                  });
+                } else if (config.smtp === '163') {
+                  mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                }
               });
               delete req.session.key;
               delete req.session.key_id;

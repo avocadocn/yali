@@ -19,7 +19,7 @@ var global_config = {
       reset_pwd: 12
     },
     company: {
-      active: 6, // not correct
+      active: 15,
       reset_pwd: 13
     }
   }
