@@ -16,6 +16,7 @@ temp_uploads/
 
 public/**/size/
 
+public/mobile/
 public/mobile/plugins/
 public/mobile/npm-debug.log
 public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVAssetLibraryFilesystem.h
