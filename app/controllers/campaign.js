@@ -336,9 +336,13 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
       else if(days>=1){
         start_time_text = days + '天' + (hours ? hours + '小时' : '') ;
       }
-      else{
-        start_time_text = (hours ? hours + '小时' : '') + minutes + '分';
+      else if(hours>=1){
+        start_time_text = hours + '小时'  + minutes + '分';
       }
+      else{
+        start_time_text = (minutes ?  minutes + '分' : '' ) + seconds + '秒';
+      }
+
     }
 
 
