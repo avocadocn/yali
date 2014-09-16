@@ -967,6 +967,10 @@ exports.readGroupPhotoAlbumList = function(req, res, next) {
 
 
 exports.renderGroupPhotoAlbumList = function(req, res, next) {
+  if (!req.user) {
+    res.status(403);
+    return next('forbidden');
+  }
   getGroupPhotoAlbumList(req.params.tid, function(photo_album_list) {
     if (photo_album_list !== null) {
       CompanyGroup
@@ -976,6 +980,11 @@ exports.renderGroupPhotoAlbumList = function(req, res, next) {
         if (!company_group) {
           res.status(404);
           return next('not found');
+        }
+        if (req.user.provider === 'company' && req.user._id.toString() !== company_group.cid.toString()
+          || req.user.provider === 'user' && req.user.cid.toString() !== company_group.cid.toString()) {
+          res.status(403);
+          return next('forbidden');
         }
         var links = [
           {
@@ -1015,6 +1024,10 @@ exports.renderGroupPhotoAlbumList = function(req, res, next) {
 
 
 exports.renderPhotoAlbumDetail = function(req, res, next) {
+  if (!req.user) {
+    res.status(403);
+    return next('forbidden');
+  }
   PhotoAlbum
   .findById(req.params.photoAlbumId)
   .populate('owner.teams')
@@ -1030,6 +1043,11 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
     var deleteAuth = photoAlbumDeleteAuth(req.user, photo_album);
     var uploadAuth = photoUploadAuth(req.user, photo_album);
+    if (req.user.provider === 'user' && req.user.cid.toString() !== owner.company._id.toString()
+      || req.user.provider === 'company' && req.user._id.toString() !== owner.company._id.toString()) {
+      res.status(403);
+      return next('forbidden');
+    }
     if (!owner.team || owner.team.length === 0) {
       var links = [
         {
@@ -1092,6 +1110,10 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
 };
 
 exports.renderPhotoDetail = function(req, res, next) {
+  if (!req.user) {
+    res.status(403);
+    return next('forbidden');
+  }
   PhotoAlbum
   .findById(req.params.photoAlbumId)
   .populate('owner.teams')
@@ -1122,6 +1144,12 @@ exports.renderPhotoDetail = function(req, res, next) {
 
         var owner = getPhotoAlbumOwner(req.user, photo_album);
         var editAuth = photoEditAuth(req.user, photo_album, photos[i]);
+
+        if (req.user.provider === 'user' && req.user.cid.toString() !== owner.company._id.toString()
+          || req.user.provider === 'company' && req.user._id.toString() !== owner.company._id.toString()) {
+          res.status(403);
+          return next('forbidden');
+        }
 
         if (!owner.team || owner.team.length === 0) {
           var links = [
