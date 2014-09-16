@@ -322,7 +322,7 @@ function userOperate(cid, key, res, req, index) {
               cname: company.info.name,
               nickname:req.body.nickname,
               password:req.body.password,
-              realname: req.body.realName,
+              realname: req.body.realname,
               phone: req.body.phone,
               role: 'EMPLOYEE'
             });
