@@ -954,9 +954,29 @@ exports.deletePhoto = function(req, res) {
 
 
 exports.readGroupPhotoAlbumList = function(req, res, next) {
+  if (!req.user) {
+    res.status(403);
+    return next('forbidden');
+  }
   getGroupPhotoAlbumList(req.params.tid, function(photo_album_list) {
     if (photo_album_list !== null) {
-      return res.send({ result: 1, photo_album_list: photo_album_list });
+      CompanyGroup.findById(req.params.tid).exec()
+      .then(function (company_group) {
+        if (!company_group) {
+          res.status(404);
+          return next('not found');
+        }
+        if (req.user.provider === 'company' && req.user._id.toString() !== company_group.cid.toString()
+          || req.user.provider === 'user' && req.user.cid.toString() !== company_group.cid.toString()) {
+          res.status(403);
+          return next('forbidden');
+        }
+        return res.send({ result: 1, photo_album_list: photo_album_list });
+      })
+      .then(null, function (err) {
+        res.status(500);
+        return next('err');
+      });
     } else {
       res.status(404);
       return next('not found');
@@ -1257,19 +1277,33 @@ exports.renderPhotoDetail = function(req, res, next) {
 
 };
 
-exports.readPhotoList = function(req, res) {
+exports.readPhotoList = function(req, res, next) {
+  if (!req.user) {
+    res.status(403);
+    return next('forbidden');
+  }
   var _id = req.params.photoAlbumId;
 
   if (validator.isAlphanumeric(_id)) {
 
     PhotoAlbum
     .findOne({ _id: _id })
+    .populate('owner.teams')
+    .populate('owner.companies')
     .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
         return res.send({ result: 0, msg: '获取相册照片失败' });
       } else {
         if (photo_album) {
+
+          var owner = getPhotoAlbumOwner(req.user, photo_album);
+          if (req.user.provider === 'user' && req.user.cid.toString() !== owner.company._id.toString()
+            || req.user.provider === 'company' && req.user._id.toString() !== owner.company._id.toString()) {
+            res.status(403);
+            return next('forbidden');
+          }
+
           var photos = [];
           photo_album.photos.forEach(function(photo) {
             if (photo.hidden === false) {
@@ -1298,16 +1332,30 @@ exports.readPhotoList = function(req, res) {
 
 
 exports.preview = function(req, res) {
+  if (!req.user) {
+    return res.send(403);
+  }
   var _id = req.params.photoAlbumId;
 
   if (validator.isAlphanumeric(_id)) {
 
-    PhotoAlbum.findOne({ _id: _id }).exec(function(err, photo_album) {
+    PhotoAlbum
+    .findOne({ _id: _id })
+    .populate('owner.teams')
+    .populate('owner.companies')
+    .exec(function(err, photo_album) {
       if (err) {
         console.log(err);
-        return res.send({ result: 0, msg: '获取相册照片失败' });
+        return res.send(500);
       } else {
         if (photo_album) {
+
+          var owner = getPhotoAlbumOwner(req.user, photo_album);
+          if (req.user.provider === 'user' && req.user.cid.toString() !== owner.company._id.toString()
+            || req.user.provider === 'company' && req.user._id.toString() !== owner.company._id.toString()) {
+            res.send(403);
+          }
+
           var first_photo;
           for (var i = 0; i < photo_album.photos.length; i++) {
             if (photo_album.photos[i].hidden === false) {
@@ -1338,13 +1386,13 @@ exports.preview = function(req, res) {
           }
 
         } else {
-          return res.send({ result: 0, msg: '相册不存在' });
+          return res.send(404);
         }
       }
     });
 
   } else {
-    return res.send({ result: 0, msg: '请求错误' });
+    return res.send(404);
   }
 }
 
