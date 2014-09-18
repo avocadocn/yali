@@ -91,14 +91,12 @@ exports.deleteComment = function(req,res){
         return;
     }
     var comment_id = req.body.comment_id;
-    var host_type = req.body.host_type;
-    var host_id = req.body.host_id;
     Comment.findByIdAndUpdate({'_id':comment_id},{'$set':{'status':'delete'}},function (err,comment){
         if(err || !comment) {
             return res.send("COMMENT_NOT_FOUND");
         } else {
-            if(host_type === "campaign" || host_type === "campaign_detail") {
-                Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':-1}},function(err,message){
+            if(comment.host_type === "campaign" || comment.host_type === "campaign_detail") {
+                Campaign.findByIdAndUpdate(comment.host_id,{'$inc':{'comment_sum':-1}},function(err,message){
                     if(err || !message) {
                         return res.send("ERROR");
                     } else {

@@ -1334,7 +1334,8 @@ exports.readPhotoList = function(req, res, next) {
                 thumbnail_uri: photo.thumbnail_uri,
                 tags: photo.tags,
                 upload_user: photo.upload_user,
-                upload_date: photo.upload_date
+                upload_date: photo.upload_date,
+                delete_permission: req.user._id.toString() === photo.upload_user._id.toString() || (photo_album.owner.teams.length === 1 && photo_album.owner.teams[0].leader.length>0 && photo_album.owner.teams[0].leader[0]._id.toString() === req.user._id.toString())
               };
               photos.push(temp_photo);
             }

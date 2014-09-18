@@ -251,9 +251,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     method: 'post',
                     url: '/comment/delete',
                     data:{
-                        comment_id : $scope.group_messages[$scope.message_index].comments[index]._id,
-                        host_type:'campaign',
-                        host_id:$scope.group_messages[$scope.message_index].campaign._id
+                        comment_id : $scope.group_messages[$scope.message_index].comments[index]._id
                     }
                 }).success(function(data, status) {
                     if(data === 'SUCCESS'){

@@ -232,9 +232,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope',fun
                 method: 'post',
                 url: '/comment/delete',
                 data:{
-                    comment_id : $scope.comments[index]._id,
-                    host_type:'competition',
-                    host_id:$scope.competition_id
+                    comment_id : $scope.comments[index]._id
                 }
             }).success(function(data, status) {
                 if(data === 'SUCCESS'){

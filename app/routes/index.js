@@ -12,5 +12,6 @@ module.exports = function(app) {
     //app.get('/test',index.test);
     //app.get('/count',index.count);
     //app.get('/finish',index.finish);
+    // app.get('/feedback',index.feedback);
     app.get('/index/header',index.header);
 };

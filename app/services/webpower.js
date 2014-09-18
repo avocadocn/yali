@@ -202,7 +202,21 @@ exports.sendStaffActiveMail = function (email, uid, cid, host, callback) {
 
 };
 
+// exports.sendFeedBackMail = function (email, uid, host, callback) {
 
+
+//   var active_config = {
+//     login: global_config.login,
+//     campaignID: global_config.campaignID,
+//     mailingID: global_config.mail.user.active
+//   };
+
+//   sendMail(active_config, email, [{
+//     name: 'user_active_link',
+//     value: active_link
+//   }], callback);
+
+// };
 
 
 

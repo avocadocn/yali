@@ -118,9 +118,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                 method: 'post',
                 url: '/comment/delete',
                 data:{
-                    comment_id : $scope.comments[index]._id,
-                    host_type:'campaign_detail',
-                    host_id:$scope.campaign_id
+                    comment_id : $scope.comments[index]._id
                 }
             }).success(function(data, status) {
                 if(data === 'SUCCESS'){
