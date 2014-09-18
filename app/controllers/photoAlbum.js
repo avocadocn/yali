@@ -762,6 +762,14 @@ exports.createPhoto = function(req, res) {
                     upload_user: upload_user
                   };
                   photo_album.photos.push(photo);
+
+                  var photo_id = photo_album.photos[photo_album.photos.length - 1]._id;
+                  var dir = path.join(config.root, 'ori_img', date_dir_name);
+                  if (!fs.existsSync(dir)) {
+                    mkdirp.sync(dir);
+                  }
+                  fs.renameSync(photos[i].path, path.join(dir, photo_id + '.' + ext));
+
                   photo_album.photo_count += 1;
 
                   i++;
