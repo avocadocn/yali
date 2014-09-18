@@ -584,10 +584,17 @@ exports.createPhotoAlbum = function(req, res) {
 
 
 
-exports.readPhotoAlbum = function(req, res) {
+exports.readPhotoAlbum = function(req, res, next) {
   var _id = req.params.photoAlbumId;
 
   photoAlbumProcess(res, _id, function(photo_album) {
+    var owner = getPhotoAlbumOwner(req.user, photo_album);
+    if (req.user.provider === 'company' && req.user._id.toString() !== owner.company.toString()
+      || req.user.provider === 'user' && req.user.cid.toString() !== owner.company.toString()) {
+      res.status(403);
+      return next('forbidden');
+    }
+
     if (photo_album.hidden === false) {
       var data = {
         name: photo_album.name,
@@ -810,11 +817,17 @@ exports.createPhoto = function(req, res) {
 
 
 
-exports.readPhoto = function(req, res) {
+exports.readPhoto = function(req, res, next) {
   var pa_id = req.params.photoAlbumId;
   var p_id = req.params.photoId;
 
   photoProcess(res, pa_id, p_id, function(photo_album, photo) {
+    var owner = getPhotoAlbumOwner(req.user, photo_album);
+    if (req.user.provider === 'company' && req.user._id.toString() !== owner.company.toString()
+      || req.user.provider === 'user' && req.user.cid.toString() !== owner.company.toString()) {
+      res.status(403);
+      return next('forbidden');
+    }
     if (photo.hidden === false) {
       return res.send({ result: 1, msg: '获取照片成功',
         data: {
