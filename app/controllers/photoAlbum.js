@@ -183,6 +183,16 @@ var sortByClick = function(a, b) {
 };
 
 
+var sortByUploadDate = function(a, b) {
+  return  b.upload_date - a.upload_date;
+};
+
+var sortByUpdateDate = function(a, b) {
+  return b.update_date - a.update_date;
+};
+
+
+
 // 一个相册的第一张未删除的图片的uri, 没有则返回默认图
 var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
   var first_photo;
@@ -214,7 +224,9 @@ var photoThumbnailList = exports.photoThumbnailList = function(photo_album, coun
       }
     }
   }
-  return photo_list.sort(sortByClick);
+  photo_list.sort(sortByUploadDate);
+  photo_list.sort(sortByClick);
+  return photo_list;
 };
 
 // 根据当前登录的用户获取相册的所有者
@@ -270,9 +282,7 @@ function getShowPhotos(photo_album, count) {
       }
     }
   }
-  photos.sort(function(a, b) {
-    return b.upload_date - a.upload_date;
-  });
+  photos.sort(sortByUploadDate);
   return photos;
 }
 
@@ -340,9 +350,7 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
     }
 
     var photo_album_list = [];
-    company_group.photo_album_list.sort(function(a, b) {
-      return b.update_date - a.update_date;
-    });
+    company_group.photo_album_list.sort(sortByUpdateDate);
     company_group.photo_album_list.forEach(function(photo_album) {
       if (photo_album.hidden === true) {
         return;
@@ -382,9 +390,7 @@ var getNewPhotos = exports.getNewPhotos = function(group_id, count, callback) {
       throw 'company_group not found';
     }
     var photos = [];
-    company_group.photo_album_list.sort(function(a, b) {
-      return b.update_date - a.update_date;
-    });
+    company_group.photo_album_list.sort(sortByUpdateDate);
     for(var i =0; i<company_group.photo_album_list.length; i++){
       //取count个非空相册的照片，每个相册取count张，确保得到最新count张照片
       if(count_flag ===0 ){
@@ -398,9 +404,7 @@ var getNewPhotos = exports.getNewPhotos = function(group_id, count, callback) {
         }
       }
     }
-    photos.sort(function(a,b) {//把最多count*count张图片按时间排序
-      return b.upload_date - a.upload_date;
-    });
+    photos.sort(sortByUploadDate);
     if(photos.length>count){//如果超出剪裁成count张
       photos.length = count;
     }
@@ -1340,6 +1344,7 @@ exports.readPhotoList = function(req, res, next) {
               photos.push(temp_photo);
             }
           });
+          photos.sort(sortByUploadDate);
           return res.send({ result: 1, msg: '获取相册照片成功', data: photos });
         } else {
           return res.send({ result: 0, msg: '相册不存在' });
