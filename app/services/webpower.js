@@ -21,7 +21,8 @@ var global_config = {
     company: {
       active: 15,
       reset_pwd: 13
-    }
+    },
+    feedback: 17
   }
 };
 
@@ -202,21 +203,24 @@ exports.sendStaffActiveMail = function (email, uid, cid, host, callback) {
 
 };
 
-// exports.sendFeedBackMail = function (email, uid, host, callback) {
+exports.sendFeedBackMail = function (email, content, callback) {
 
 
-//   var active_config = {
-//     login: global_config.login,
-//     campaignID: global_config.campaignID,
-//     mailingID: global_config.mail.user.active
-//   };
+  var active_config = {
+    login: global_config.login,
+    campaignID: global_config.campaignID,
+    mailingID: global_config.mail.feedback
+  };
 
-//   sendMail(active_config, email, [{
-//     name: 'user_active_link',
-//     value: active_link
-//   }], callback);
+  sendMail(active_config, 'service@donler.com', [{
+    name: 'feedback_user_email',
+    value: email
+  },{
+    name: 'feedback_content',
+    value: content
+  }], callback);
 
-// };
+};
 
 
 

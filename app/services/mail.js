@@ -17,7 +17,7 @@ var siteProtocol = 'http://';
 var sendMail = function (data,target,err_type) {
   transport.sendMail(data, function (err) {
     if (err) {
-      error.addErrorItem(target,err_type,err);
+      target && error.addErrorItem(target,err_type,err);
       // 写为日志
       console.log(err_type,err);
     }
@@ -155,3 +155,16 @@ exports.sendCompanyResetPwdMail = function(who, uid, host) {
 //     'subject':body.subject
 //   });
 // }
+
+exports.sendFeedBackMail = function(email, content) {
+  var from = '动梨<service@donler.com>';
+  var to = 'service@donler.com';
+  var subject = '动梨用户反馈';
+  var content = '<p>'+content+'</p>' + '<p>来自--'+email+'</p>';
+  sendMail({
+    from: from,
+    to: to,
+    subject: subject,
+    html: content
+  });
+};

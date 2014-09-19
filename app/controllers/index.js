@@ -1,6 +1,7 @@
 'use strict';
 var schedule = require('../services/schedule'),
-    mongoose = require('mongoose')
+    mongoose = require('mongoose'),
+    config = require('../config/config'),
     mail = require('../services/mail'),
     webpower = require('../services/webpower');
     
@@ -75,41 +76,36 @@ exports.question = function(req, res) {
 exports.contact = function(req, res) {
   res.render('contact');
 };
-// exports.feedback = function(rew, res) {
-//   var sendByWebpower = function () {
-//     webpower.sendStaffResetPwdMail(
-//       user.email,
-//       user._id.toString(),
-//       req.headers.host,
-//       function (err) {
-//         if (err) {
-//           // TO DO: 发送失败待处理
-//           console.log(err);
-//         }
-//         res.render('users/forgetPwd', {
-//           title: '忘记密码',
-//           success:'1'
-//         });
-//       }
-//     );
-//   };
-//   mongoose.model('Config').findOne({ name: config.CONFIG_NAME }).exec()
-//   .then(function (config) {
-//     if (!config || !config.smtp || config.smtp === 'webpower') {
-//       sendByWebpower();
-//     } else if (config.smtp === '163') {
-//       mail.sendStaffResetPwdMail(user.email, user._id.toString(), req.headers.host);
-//       res.render('users/forgetPwd', {
-//         title: '忘记密码',
-//         success:'1'
-//       });
-//     }
-//   })
-//   .then(null, function (err) {
-//     console.log(err);
-//     sendByWebpower();
-//   });
-// }
-// exports.test = function(req, res) {
-//   res.render('test');
-// };
+
+exports.feedback = function(req, res) {
+  var sendByWebpower = function () {
+    webpower.sendFeedBackMail(
+      req.body.username,
+      req.body.content,
+      function (err) {
+        if (err) {
+          // TO DO: 发送失败待处理
+          console.log(err);
+          res.send({result:0,msg:'发送失败'});
+        }
+        res.send({result:1,msg:'发送成功'});
+      }
+    );
+  };
+  mongoose.model('Config').findOne({ name: config.CONFIG_NAME }).exec()
+  .then(function (config) {
+    if (!config || !config.smtp || config.smtp === 'webpower') {
+      sendByWebpower();
+    } else if (config.smtp === '163') {
+      mail.sendFeedBackMail(req.body.username, req.body.content);
+      res.send({result:1,msg:'发送成功'});
+    }
+  })
+  .then(null, function (err) {
+    console.log(err);
+    sendByWebpower();
+  });
+}
+exports.test = function(req, res) {
+  res.render('test');
+};
