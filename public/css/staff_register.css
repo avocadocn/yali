@@ -78,7 +78,8 @@ textarea {
   opacity: 0.3;
 }
 .mouse_hidden:hover {
-  opacity: 0.3;
+  opacity: 1;
+  text-decoration: none;
 }
 .comment_right {
   float: right;
@@ -937,6 +938,31 @@ textarea {
 .dl_messagebox .message_head {
   font-size: 14px;
 }
+.dl_messagebox .join_status_contain {
+  position: absolute;
+  top: -10px;
+  right: -12px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent #3498db transparent transparent;
+  border-width: 0 53px 53px;
+}
+.dl_messagebox .join_status_contain.joined {
+  border-color: transparent #3498db transparent transparent;
+}
+.dl_messagebox .join_status_contain.campaign,
+.dl_messagebox .join_status_text {
+  position: absolute;
+  top: -1px;
+  right: -11px;
+  color: #fff;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+}
+.message_pager {
+  margin-top: 5px;
+}
 .campaigns_list {
   background-color: #f4f4f4;
 }
@@ -1678,7 +1704,6 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 30px;
   width: 100%;
   position: relative;
-  background-color: #000;
 }
 #family .carousel-img-container {
   display: table-cell;

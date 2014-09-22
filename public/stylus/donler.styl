@@ -822,6 +822,28 @@ textarea
     margin 0 8px 0 8px
   .message_head
     font-size 14px
+  .join_status_contain
+    position absolute
+    top -10px
+    right -12px
+    width 0
+    height 0
+    border-style solid
+    border-color transparent #3498db transparent transparent
+    border-width 0 53px 53px
+  // .join_status_contain.joined
+  //   border-color transparent #43cee6 transparent transparent
+  .join_status_contain.campaign
+    border-color transparent #43cee6 transparent transparent
+  .join_status_text
+    position absolute
+    top -3px
+    right -8px
+    color white
+    -webkit-transform rotate(45deg)
+    -moz-transform rotate(45deg)
+.message_pager
+  margin-top 5px
 .campaigns_list
   background-color backgroundColor
 

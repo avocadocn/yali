@@ -161,6 +161,9 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     else{
                         $scope.loadMore_flag = true;
                     }
+                    if($scope.pageTime.length>1){
+                        $scope.lastPage_flag = true;
+                    }
                     if(++$scope.block==5){
                         $scope.nextPage_flag = true;
                         $scope.loadMore_flag = false;
@@ -191,14 +194,6 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
                     if(data.message_length<20){
                         $scope.loadMore_flag = false;
-                        if(flag==1){
-                            $scope.lastPage_flag = true;
-                            $scope.nextPage_flag = false;
-                        }
-                        else{
-                            $scope.lastPage_flag = false;
-                            $scope.nextPage_flag = true;
-                        }
                         $scope.loadOver_flag = true;
                     }
                     else{
@@ -206,6 +201,14 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         $scope.nextPage_flag = false;
                         $scope.lastPage_flag = false;
                         $scope.loadOver_flag = false;
+                    }
+                    if(flag==1){
+                        $scope.lastPage_flag = true;
+                        $scope.nextPage_flag = false;
+                    }
+                    else{
+                        $scope.lastPage_flag = false;
+                        $scope.nextPage_flag = true;
                     }
                     $scope.block = 1;
                     window.scroll(0,0);
@@ -635,12 +638,7 @@ tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope
         };
         $scope.selcetJoinTeam = function(index){
             $scope.join_team = $scope.join_teams[index];
-            $scope.join_teams[index].selected = true;
-            for(var i = 0 ; i < $scope.join_teams.length; i ++){
-                if(i !== index){
-                    $scope.join_teams[i].selected = false;
-                }
-            }
+            $scope.select_index = index;
         };
         $scope.joinCampaign = function(){
             $scope.join($scope.campaign_id,$scope.campaign_index,[$scope.join_team]);

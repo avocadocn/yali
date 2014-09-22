@@ -569,19 +569,19 @@ exports.setProfile = function(req, res) {
                 }
               });
               //给公司发动态
-              var groupMessage = new GroupMessage();
-              groupMessage.message_type = 7;
-              groupMessage.company={
-                cid : user.cid._id,
-                name : user.cname,
-                logo : user.cid.info.logo
-              };
-              groupMessage.user={
-                user_id : user._id,
-                name : user.nickname,
-                logo : user.photo
-              };
-              groupMessage.save();
+              // var groupMessage = new GroupMessage();
+              // groupMessage.message_type = 7;
+              // groupMessage.company={
+              //   cid : user.cid._id,
+              //   name : user.cname,
+              //   logo : user.cid.info.logo
+              // };
+              // groupMessage.user={
+              //   user_id : user._id,
+              //   name : user.nickname,
+              //   logo : user.photo
+              // };
+              // groupMessage.save();
               //req.session.username = user.username;
             }
           });
@@ -964,29 +964,29 @@ exports.joinGroup = function (req, res){
                     console.log(err);
                     return res.send({result: 0, msg:'保存用户出错'});
                   }else{
-                    GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
-                      if(!err&&groupMessage){
-                        groupMessage.create_time = new Date();
-                        groupMessage.save();
-                      }
-                      else{
-                        var groupMessage = new GroupMessage();
-                        groupMessage.message_type = 8;
-                        groupMessage.team = {
-                          teamid : companyGroup._id,
-                          name : companyGroup.name,
-                          logo : companyGroup.logo
-                        };
-                        groupMessage.user ={
-                          user_id : user._id,
-                          name : user.nickname,
-                          logo : user.photo
-                        };
-                        groupMessage.save();
+                    // GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
+                    //   if(!err&&groupMessage){
+                    //     groupMessage.create_time = new Date();
+                    //     groupMessage.save();
+                    //   }
+                    //   else{
+                    //     var groupMessage = new GroupMessage();
+                    //     groupMessage.message_type = 8;
+                    //     groupMessage.team = {
+                    //       teamid : companyGroup._id,
+                    //       name : companyGroup.name,
+                    //       logo : companyGroup.logo
+                    //     };
+                    //     groupMessage.user ={
+                    //       user_id : user._id,
+                    //       name : user.nickname,
+                    //       logo : user.photo
+                    //     };
+                    //     groupMessage.save();
 
-                      }
-                    });
-                    console.log('保存用户成功');
+                    //   }
+                    // });
+                    // console.log('保存用户成功');
                     return res.send({result: 1, msg:'保存用户成功'});
                   }
                 });
