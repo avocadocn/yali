@@ -20,10 +20,10 @@ module.exports = function(app) {
   app.get('/campaign/user/all/calendar/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
-
-  app.get('/campaign/user/all/list/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForList);
-  app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);
-  app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
+  //已全部用getCampaigns M
+  // app.get('/campaign/user/all/list/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForList);
+  // app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);
+  // app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
   //app
   app.get('/campaign/getCampaigns/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignDetail);
   app.get('/campaign/getCampaignCommentsAndPhotos/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignCommentsAndPhotos);

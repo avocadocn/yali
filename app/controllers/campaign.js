@@ -571,7 +571,7 @@ exports.getCampaigns = function(req, res) {
         option={
           'active':true,
           'finish':false,
-          'cid': req.profile._id,
+          'cid': req.profile.cid,
           '$or':[{'team':{'$in':team_ids}},{'team':{'$size':0}}]
         }
         Campaign
@@ -579,7 +579,7 @@ exports.getCampaigns = function(req, res) {
         .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
         .limit(blockSize)
         .populate('team').populate('cid')
-        .sort({'start_time':-1})
+        .sort({'start_time':1})
         .exec()
         .then(function(campaign) {
           if(campaign===[]){
@@ -701,27 +701,27 @@ exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
     });
   });
 };
+//已全部用getCampaigns M
+// exports.getUserAllCampaignsForList = function(req, res) {
+//   getUserAllCampaigns(req.profile, false, function(campaigns) {
+//     var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.profile);
+//     res.send({ result: 1, campaigns: format_campaigns });
+//   });
+// };
 
-exports.getUserAllCampaignsForList = function(req, res) {
-  getUserAllCampaigns(req.profile, false, function(campaigns) {
-    var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.profile);
-    res.send({ result: 1, campaigns: format_campaigns });
-  });
-};
+// exports.getUserJoinedCampaignsForList = function(req, res) {
+//   getUserJoinedCampaigns(req.profile, false, function(campaigns) {
+//     var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.profile);
+//     res.send({ result: 1, campaigns: format_campaigns });
+//   });
+// };
 
-exports.getUserJoinedCampaignsForList = function(req, res) {
-  getUserJoinedCampaigns(req.profile, false, function(campaigns) {
-    var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.profile);
-    res.send({ result: 1, campaigns: format_campaigns });
-  });
-};
-
-exports.getUserUnjoinCampaignsForList = function(req, res) {
-  getUserUnjoinCampaigns(req.profile, false, function(campaigns) {
-    var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.profile);
-    res.send({ result: 1, campaigns: format_campaigns });
-  });
-};
+// exports.getUserUnjoinCampaignsForList = function(req, res) {
+//   getUserUnjoinCampaigns(req.profile, false, function(campaigns) {
+//     var format_campaigns = formatCampaign(campaigns, 'user', req.role, req.profile);
+//     res.send({ result: 1, campaigns: format_campaigns });
+//   });
+// };
 var firstLength = 1;
 var twoLength =6;
 var threeLength = 3;

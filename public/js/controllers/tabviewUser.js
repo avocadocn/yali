@@ -509,16 +509,22 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
 tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
         $rootScope.nowTab = 'campaign';
-        $scope.company = false; // 作用？
-        $scope.getCampaigns = function(attr) {
-            $scope.campaignsType = attr;
-            $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
-              $scope.campaigns = data.campaigns;
-              $scope.company = false;
-            });
-        };
-        $scope.getCampaigns('all');
-
+        $scope.company = false;
+        $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/0/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+            $scope.campaigns = data.campaigns;
+            $rootScope.sum = $scope.campaigns.length;
+            if(data.campaignLength<20){
+                $scope.loadMore_flag = false;
+            }
+            else{
+                $scope.loadMore_flag = true;
+            }
+        });
+        $scope.loadMore_flag = true;
+        $scope.block = 1;
+        $scope.page = 0;
+        $scope.lastPage_flag = false;
+        $scope.nextPage_flag = false;
         $scope.judgeYear = function(index){
             if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
                 return true;
@@ -527,7 +533,73 @@ tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope
                 return false;
             }
         };
+        $scope.loadMore = function(){
+            $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+$scope.page+'/'+$scope.block+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+                if(data.result===1 && data.campaigns.length>0){
+                    $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+                    if(data.campaignLength<20){
+                        $scope.loadMore_flag = false;
+                    }
+                    else{
+                        $scope.loadMore_flag = true;
+                    }
+                    if(++$scope.block==5){
+                        $scope.nextPage_flag = true;
+                        $scope.loadMore_flag = false;
+                        if($scope.page>1){
+                            $scope.lastPage_flag = true;
+                        }
+                    }
 
+                }
+                else{
+                    $scope.loadOver_flag = true;
+                    $scope.loadMore_flag = false;
+                    $scope.nextPage_flag = false;
+                }
+            });
+        };
+        $scope.changePage = function(flag){
+            $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+($scope.page+flag)+'/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+                if(data.result===1 && data.campaigns.length>0){
+                    if(flag ==1){
+                        $scope.page++;
+                    }
+                    else{
+                        $scope.page--;
+                    }
+                    $scope.campaigns = data.campaigns;
+                    $scope.nextPage_flag = false;
+                    $scope.lastPage_flag = false;
+                    $scope.loadOver_flag = false;
+                    $scope.block = 1;
+                    if(data.campaignLength<20){
+                        $scope.loadMore_flag = false;
+                        if(flag==1){
+                            $scope.lastPage_flag = true;
+                            $scope.nextPage_flag = false;
+                        }
+                        else{
+                            $scope.lastPage_flag = false;
+                            $scope.nextPage_flag = true;
+                        }
+                        $scope.loadOver_flag = true;
+                    }
+                    else{
+                        $scope.loadMore_flag = true;
+                        $scope.nextPage_flag = false;
+                        $scope.lastPage_flag = false;
+                        $scope.loadOver_flag = false;
+                    }
+                    window.scroll(0,0);
+                }
+                else{
+                    $scope.nextPage_flag = false;
+                    $scope.loadMore_flag = false;
+                    $scope.loadOver_flag = true;
+                }
+            });
+        };
         $scope.join = function(campaign_id,index,tid) {
             try {
                 $http({
