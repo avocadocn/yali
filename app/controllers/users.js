@@ -238,12 +238,37 @@ exports.appLoginSuccess = function(req, res) {
   });
 }
 
+exports.appSetToken = function (req, res) {
+  if (req.role != 'OWNER') {
+    res.status(403);
+    next('forbidden');
+    return;
+  }
+  if (req.body.device && req.body.token) {
+    deviceRegister({
+      'device_type':req.body.device.model,
+      'device_id':req.body.device.uuid,
+      'user_id':req.body.userid,
+      'platform':req.body.device.platform,
+      'version':req.body.device.version,
+      'token':req.body.token
+    }, req.user._id, function (err) {
+      if (err) {
+        res.send({ result: 0 });
+      } else {
+        res.send({ result: 1 });
+      }
+    });
+  }
+};
+
 exports.appLogout = function(req, res) {
   if(req.body.device && (req.body.userid != '' || req.body.token != '')){
     deviceUnregister({
       'device_id':req.body.device.uuid,
       'user_id':req.body.userid,
-      'platform':req.body.device.platform
+      'platform': req.body.device.platform,
+      'token': req.body.token
     },req.user._id);
   }else{
     console.log(req.body.status);
@@ -1492,7 +1517,7 @@ exports.applyToDepartment = function(req,res){
 
 
 //手机app登录更新用户设备信息,推送相关信息等等
-var deviceRegister = function(device_info,uid){
+var deviceRegister = function (device_info, uid, callback){
   User.findOne({'_id':uid},function (err,user){
     if(err || !user){
       //TODO 生成错误日志
@@ -1546,8 +1571,9 @@ var deviceRegister = function(device_info,uid){
       user.save(function(err){
         if(err){
           console.log({'result':0,'msg':'USER_DEVICE_UPDATE_ERROR','data':err});
+          callback && callback(err);
         }else{
-          ;
+          callback && callback(null);
         }
       });
     }
@@ -1563,8 +1589,10 @@ var deviceUnregister = function(device_info,uid){
     }else{
       //TODO 登录信息录入后台统计
       var device = user.device;
+      console.log(device, device_info, 'dv,dvinfo');
       if(device){
         for(var i = 0 ; i < device.length; i ++){
+          console.log(device[i].platform, device_info.platform, 'cp platform')
           if(device[i].platform == device_info.platform){
             if(device[i].platform==='Android'){
               if(device[i].user_id === device_info.user_id){
@@ -1572,6 +1600,7 @@ var deviceUnregister = function(device_info,uid){
               }
             }
             else{
+              console.log(device[i].token, device_info.token, 'cp token')
               if(device[i].token === device_info.token){
                 user.device.splice(i,1);
               }
