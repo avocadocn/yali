@@ -1,12 +1,12 @@
 .schedulebox
   .clearfix.schedule_operator
     if role === 'OWNER'
-      p.pull-left.view_type
-        a(ng-if="!isCalendar" ng-click="calendar(true)" href="javascript:void(0)") 日历
-        span.active(ng-if="isCalendar") 日历
-        span |
-        a(ng-if="isCalendar" ng-click="calendar(false)" href="javascript:void(0)") 列表
-        span.active(ng-if="!isCalendar") 列表
+      //- p.pull-left.view_type
+      //-   a(ng-if="!isCalendar" ng-click="calendar(true)" href="javascript:void(0)") 日历
+      //-   span.active(ng-if="isCalendar") 日历
+      //-   span |
+      //-   a(ng-if="isCalendar" ng-click="calendar(false)" href="javascript:void(0)") 列表
+      //-   span.active(ng-if="!isCalendar") 列表
       p.pull-left.schedule_type
         a(ng-if="campaignsType!=='joined'" ng-click="getCampaigns('joined')" href="javascript:void(0)") 已参加
         span.active(ng-if="campaignsType==='joined'") 已参加

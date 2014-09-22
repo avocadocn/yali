@@ -28,8 +28,8 @@ block panel
     if role==='OWNER'
       li.tab_style(ng-class="{'active':nowTab=='group_message'}")
         a.subtitle.no_radius(href="#/group_message") 动态
-    //-li.tab_style(ng-class="{'active':nowTab=='campaign'}")
-      a.subtitle.no_radius(href="#/campaign" ng-click="addactive('campaign')") #{__("CAMPAIGN")}#{__("LIST")}
+      li.tab_style(ng-class="{'active':nowTab=='campaign'}")
+        a.subtitle.no_radius(href="#/campaign/#{uid}") #{__("CAMPAIGN")}#{__("LIST")}
     li.tab_style(ng-class="{'active':nowTab=='schedule'}")
       a.subtitle.no_radius(href="#/schedule/#{uid}") #{__("SCHEDULE")}
     li.tab_style(ng-class="{'active':nowTab=='timeLine'}")

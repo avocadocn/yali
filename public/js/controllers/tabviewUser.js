@@ -24,8 +24,10 @@ tabViewUser.config(['$routeProvider',
         controller: 'GroupMessageController',
         controllerAs: 'messages'
       })
-      .when('/campaign', {
-        templateUrl: '/users/campaign',
+      .when('/campaign/:uid', {
+        templateUrl: function(params){
+            return '/users/campaign/'+params.uid;
+        },
         controller: 'CampaignListController',
         controllerAs: 'campaign'
       })
@@ -485,87 +487,74 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         };
 
 
-        $scope.company = false; // 作用？
+        $scope.company = false; 
         $scope.getCampaigns = function(attr) {
-            if ($scope.isCalendar === true) {
+            // if ($scope.isCalendar === true) {
                 $scope.campaignsType = attr;
                 var events_source = '/campaign/user/' + attr + '/calendar/'+$rootScope.uid;
                 initCalendar(events_source);
-            } else {
-                $scope.campaignsType = attr;
-                $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
-                  $scope.campaigns = data.campaigns;
-                  $scope.company = false;
-                });
-            }
+            // } else {
+            //     $scope.campaignsType = attr;
+            //     $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
+            //       $scope.campaigns = data.campaigns;
+            //       $scope.company = false;
+            //     });
+            // }
         };
 
         $scope.getCampaigns($scope.campaignsType);
-        $scope.judgeYear = function(index){
-        if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-        // $scope.join = function(campaign_id,index) {
-        //     try {
-        //         $http({
-        //             method: 'post',
-        //             url: '/users/joinCampaign',
-        //             data:{
-        //                 campaign_id : campaign_id
-        //             }
-        //         }).success(function(data, status) {
-        //             if(data.result===1){
-        //                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
-        //                 $scope.campaigns[index].join = true;
-        //                 $scope.campaigns[index].member_length++;
-        //             }
-        //             else{
-        //                 alert(data.msg);
-        //             }
-        //         }).error(function(data, status) {
-        //             $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-        //         });
-        //     }
-        //     catch(e) {
-        //         console.log(e);
-        //     }
-        // };
-
-        // $scope.quit = function(campaign_id,index) {
-        //     try {
-        //         $http({
-        //             method: 'post',
-        //             url: '/users/quitCampaign',
-        //             data:{
-        //                 campaign_id : campaign_id
-        //             }
-        //         }).success(function(data, status) {
-        //             if(data.result===1){
-        //                 $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
-        //                 $scope.campaigns[index].join = false;
-        //                 $scope.campaigns[index].member_length--;
-        //             }
-        //             else{
-        //                 alert(data.msg);
-        //             }
-        //         }).error(function(data, status) {
-        //             $rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.DATA_ERROR);
-        //         });
-        //     }
-        //     catch(e) {
-        //         console.log(e);
-        //     }
-        // };
-
-
     }
 ]);
 
+tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope',
+    function($scope, $http, $rootScope) {
+        $rootScope.nowTab = 'campaign';
+        $scope.company = false; // 作用？
+        $scope.getCampaigns = function(attr) {
+            $scope.campaignsType = attr;
+            $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
+              $scope.campaigns = data.campaigns;
+              $scope.company = false;
+            });
+        };
+        $scope.getCampaigns('all');
+
+        $scope.judgeYear = function(index){
+            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+
+        $scope.join = function(campaign_id,index,tid) {
+            try {
+                $http({
+                    method: 'post',
+                    url: '/campaign/joinCampaign/'+campaign_id,
+                    data:{
+                        campaign_id : campaign_id,
+                        tid : tid
+                    }
+                }).success(function(data, status) {
+                    if(data.result===1){
+                        alertify.alert('成功加入该活动!');
+                        $scope.campaigns[index].join_flag = 1;
+                    }
+                    else{
+                        alertify.alert(data.msg);
+                    }
+                }).error(function(data, status) {
+                    alertify.alert('DATA ERROR');
+                });
+            }
+            catch(e) {
+                console.log(e);
+            }
+        };
+    }
+]);
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
         $rootScope.nowTab = 'personal';

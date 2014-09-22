@@ -416,6 +416,14 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
       temp.cid = _campaign.cid[0]._id;
       temp.cname=_campaign.cid[0].info.name;
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
+      if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
+        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
+          temp.join_flag = 1;
+        }
+        else{
+          temp.join_flag = -1;
+        }
+      }
     }
     else if(_campaign.campaign_type===2 || _campaign.campaign_type===3){//小队活动
       temp.type='teamcampaign';
@@ -1050,7 +1058,7 @@ exports.joinCampaign = function (req, res) {
         return res.send({ result: 0, msg: '活动已经结束'});
       }
       var camp_length = campaign.camp.length;
-      //从campaign里删除该员工信息
+      //从campaign的member_quit里删除该员工信息
       if(camp_length===0){
         var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
         if(member_index<0){
@@ -1058,7 +1066,7 @@ exports.joinCampaign = function (req, res) {
           if(member_quit_index>-1){
             campaign.member_quit.splice(member_quit_index,1);
           }
-
+          //并在member里增加此人
           var member_push = {
             'cid':cid,
             'uid':uid,
