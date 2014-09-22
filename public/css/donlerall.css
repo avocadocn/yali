@@ -2474,19 +2474,16 @@ Timeline UI Base
   width: 4px;
   border-radius: 2px;
   transition: bottom 0.5s linear;
-  left: 50%;
+  left: 75px;
   margin-left: -2px;
   background-color: #ccc;
   height: 100%;
-}
-.dl_timeline .column {
-  width: 50%;
 }
 .dl_timeline .column .timeline_element {
   background-color: #fff;
   border: 1px solid #ddd;
   text-shadow: none;
-  width: 290px;
+  width: 545px;
   position: relative;
   position: relative;
   margin: 10px 0px;
@@ -2550,56 +2547,19 @@ Timeline UI Base
 }
 .dl_timeline .column .timeline_element .title .date {
   float: left;
-  width: 210px;
+  width: 460px;
 }
 .dl_timeline .column .timeline_element .title .timeline-logo {
   margin-right: 4px;
   height: 40px;
   width: 40px;
 }
-.dl_timeline .column .timeline_element .img_scroll .photos_1 .photo_0 {
-  width: 264px;
-  height: 264px;
-}
-.dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0,
-.dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
-  width: 131px;
-  height: 131px;
-  margin-right: 1px;
-}
-.dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
-  margin-left: 1px;
-  margin-right: 0;
-}
-.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_0 {
-  width: 175px;
-  height: 175px;
-  margin-right: 1px;
-}
-.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1,
-.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
-  width: 87px;
-  height: 87px;
-  margin-bottom: 1px;
-}
-.dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
-  margin-bottom: 0;
-}
-.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0 {
-  width: 263px;
-  height: 263px;
-  margin-bottom: 1px;
-}
-.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_1,
-.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2,
-.dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_3 {
-  width: 87px;
-  height: 87px;
-  margin-right: 1px;
-}
 .dl_timeline .column .timeline_element .img_scroll .photo {
-  display: inline-block;
+  display: block;
   float: left;
+  width: 86px;
+  height: 86px;
+  margin-right: 1px;
 }
 .dl_timeline .column .timeline_element .content p {
   margin-bottom: 0;
@@ -2627,8 +2587,9 @@ Timeline UI Base
   right: -35px;
 }
 .dl_timeline .column_right {
-  float: right;
+  float: left;
   margin-top: 32px;
+  margin-left: 75px;
 }
 .dl_timeline .column_right .timeline_element {
   float: left;
@@ -2649,7 +2610,6 @@ Timeline UI Base
   position: relative;
 }
 .dl_timeline .date_separator .span {
-  position: absolute;
   display: block;
   width: 150px;
   height: 30px;
@@ -2659,8 +2619,6 @@ Timeline UI Base
   border: 1px solid #bbb;
   background-color: #fff;
   color: #666;
-  left: 50%;
-  margin-left: -75px;
 }
 .emptiem {
   width: 660px;

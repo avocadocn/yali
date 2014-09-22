@@ -6,64 +6,64 @@ div(ng-show = '!loading')
       each years in newTimeLines
         .date_separator(id='year' + "#{years[0].year}")
           span.span= years[0].year
-        .column.column_left
-          each item,index in years
-            if index%2==0
-              .timeline_element
-                .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                  a(href="/campaign/detail/#{item.id}",target="_blank")
-                    img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                    span.date= moment(item.start_time).format('MM/DD')
-                    span.head= item.head
-                .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                  a(href="/campaign/detail/#{item.id}",target="_blank")
-                    .img_scroll
-                      div(class="photos_#{item.photo_list.length}")
-                        each imgs,img_index in item.photo_list
-                          img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
-                .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                  img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                  span.date= moment(item.start_time).format('MM/DD')
-                  span.head= item.head
-                .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                  a(href="/campaign/detail/#{item.id}",target="_blank")
-                    div(class="photos_#{item.photo_list.length}")
-                      each imgs,img_index in item.photo_list
-                        img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
-                //- div(ng-if="#{item.photo_list.length}===0")
-                //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                //-     a(href="/campaign/detail/#{item.id}",target="_blank")
-                //-       p= item.content
-                //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                //-     p= item.content
+        //- .column.column_left
+        //-   each item,index in years
+        //-     if index%2==0
+        //-       .timeline_element
+        //-         .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+        //-           a(href="/campaign/detail/#{item.id}",target="_blank")
+        //-             img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+        //-             span.date= moment(item.start_time).format('MM/DD')
+        //-             span.head= item.head
+        //-         .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+        //-           a(href="/campaign/detail/#{item.id}",target="_blank")
+        //-             .img_scroll
+        //-               div(class="photos_#{item.photo_list.length}")
+        //-                 each imgs,img_index in item.photo_list
+        //-                   img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
+        //-         .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+        //-           img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+        //-           span.date= moment(item.start_time).format('MM/DD')
+        //-           span.head= item.head
+        //-         .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+        //-           a(href="/campaign/detail/#{item.id}",target="_blank")
+        //-             div(class="photos_#{item.photo_list.length}")
+        //-               each imgs,img_index in item.photo_list
+        //-                 img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
+        //-         //- div(ng-if="#{item.photo_list.length}===0")
+        //-         //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+        //-         //-     a(href="/campaign/detail/#{item.id}",target="_blank")
+        //-         //-       p= item.content
+        //-         //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+        //-         //-     p= item.content
         .column.column_right
           each item,index in years
-            if index%2
-              .timeline_element
-                .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                  a(href="/campaign/detail/#{item.id}",target="_blank")
-                    img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                    span.date= moment(item.start_time).format('MM/DD')
-                    span.head= item.head
-                .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                  a(href="/campaign/detail/#{item.id}",target="_blank")
-                    div(class="photos_#{item.photo_list.length}")
-                      each imgs,img_index in item.photo_list
-                        img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
-                .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+            //- if index%2
+            .timeline_element
+              .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                a(href="/campaign/detail/#{item.id}",target="_blank")
                   img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                   span.date= moment(item.start_time).format('MM/DD')
                   span.head= item.head
-                .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                  a(href="/campaign/detail/#{item.id}",target="_blank")
-                    div(class="photos_#{item.photo_list.length}")
-                      each imgs,img_index in item.photo_list
-                        img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
-                //- div(ng-if="#{item.photo_list.length}===0")
-                //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                //-     a(href="/campaign/detail/#{item.id}",target="_blank")
-                //-       p= item.content
-                //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                //-     p= item.content
+              .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                a(href="/campaign/detail/#{item.id}",target="_blank")
+                  div
+                    each imgs,img_index in item.photo_list
+                      img.photo(src="#{imgs.uri}/86/86")
+              .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                span.date= moment(item.start_time).format('MM/DD')
+                span.head= item.head
+              .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                a(href="/campaign/detail/#{item.id}",target="_blank")
+                  div
+                    each imgs,img_index in item.photo_list
+                      img.photo(src="#{imgs.uri}/86/86")
+              //- div(ng-if="#{item.photo_list.length}===0")
+              //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+              //-     a(href="/campaign/detail/#{item.id}",target="_blank")
+              //-       p= item.content
+              //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+              //-     p= item.content
   else
     .loademp.text-center #{__("NO_TIMELINE")}
