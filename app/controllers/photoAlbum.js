@@ -768,7 +768,7 @@ exports.createPhoto = function(req, res) {
                   photo_album.photos.push(photo);
 
                   var photo_id = photo_album.photos[photo_album.photos.length - 1]._id;
-                  var dir = path.join(config.root, 'ori_img', date_dir_name);
+                  var dir = path.join(config.root, 'ori_img', date_dir_name, cid);
                   if (!fs.existsSync(dir)) {
                     mkdirp.sync(dir);
                   }
