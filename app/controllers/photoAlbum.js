@@ -19,9 +19,28 @@ var async = require('async');
 var moment = require('moment');
 var mime = require('mime');
 var mkdirp = require('mkdirp');
+var multiparty = require('multiparty');
 
 // custom
 var config = require('../../config/config');
+
+
+exports.getPhotoAlbum = function (req, res, next) {
+  PhotoAlbum.findById(req.params.photoAlbumId).populate('owner.teams').exec()
+  .then(function (photo_album) {
+    if (!photo_album) {
+      res.status(404);
+      next('not found');
+      return;
+    } else {
+      req.photo_album = photo_album;
+      next();
+    }
+  })
+  .then(null, function (err) {
+    next(err);
+  });
+};
 
 
 // photo_album need populate owner_company_group
@@ -667,6 +686,130 @@ exports.deletePhotoAlbum = function(req, res) {
   } else {
     return res.send({ result: 0, msg: '请求错误' });
   }
+};
+
+exports.createSinglePhoto = function(req, res, next) {
+  if (photoUploadAuth(req.user, req.photo_album) === false) {
+    res.status(403);
+    next('forbidden');
+    return;
+  }
+
+  var cid;
+  if (req.user.provider === 'company') {
+    cid = req.user._id.toString();
+  } else if (req.user.provider === 'user') {
+    cid = req.user.cid.toString();
+  }
+
+  var now = new Date();
+  var date_dir_name = now.getFullYear().toString() + '-' + (now.getMonth() + 1);
+
+  var parent_dir = path.join(config.root, 'public');
+  var uri_dir = path.join('/img/photo_album', date_dir_name, cid);
+  var system_dir = path.join(parent_dir, uri_dir);
+
+  if (!fs.existsSync(system_dir)) {
+    mkdirp.sync(system_dir);
+  }
+
+  var upload_user;
+  if (req.user.provider === 'company') {
+    upload_user = {
+      _id: req.user._id,
+      name: req.user.info.name,
+      type: 'hr'
+    };
+  } else if (req.user.provider === 'user') {
+    upload_user = {
+      _id: req.user._id,
+      name: req.user.nickname,
+      type: 'user'
+    };
+  }
+
+  var form = new multiparty.Form();
+
+  form.on('error', function (err) {
+    console.log(err.stack);
+    res.send({ result: 0, msg: 'error' });
+  });
+
+  var fileCount = 0; // 处理过的文件数
+  var photo;
+
+  var closeHandle = function () {
+    if (fileCount === 0) {
+      return res.send({ result: 0, msg: '上传照片失败，请重试。' });
+    }
+  };
+
+  form.on('part', function (part) {
+    if (!part.filename || fileCount >= 1) {
+      return part.resume();
+    }
+    form.removeListener('close', closeHandle);
+    var buffers = [];
+    part.on('data', function (buffer) {
+      buffers.push(buffer);
+    });
+
+    part.on('end', function() {
+      if (fileCount >= 1) {
+        return part.resume();
+      }
+      var size = part.byteCount - part.byteOffset;
+      console.log(size);
+      if (size > 5 * 1024 * 1024) {
+        res.send({ result: 0, msg: '上传的照片不能大于5MB' });
+        return part.resume();
+      }
+      try {
+        var ext = mime.extension(part.headers['content-type']);
+        var photo_name = Date.now().toString() + '.' + ext;
+
+        var data = Buffer.concat(buffers);
+        gm(data).write(path.join(system_dir, photo_name), function(err) {
+          if (err) {
+            console.log(err);
+            return part.resume();
+          }
+
+          photo = {
+            uri: path.join(uri_dir, photo_name),
+            name: part.filename,
+            upload_user: upload_user
+          };
+          req.photo_album.photos.push(photo);
+
+          var photo_id = req.photo_album.photos[req.photo_album.photos.length - 1]._id;
+          var dir = path.join(config.root, 'ori_img', date_dir_name, cid);
+          if (!fs.existsSync(dir)) {
+            mkdirp.sync(dir);
+          }
+          fs.writeFileSync(path.join(dir, photo_id + '.' + ext), data);
+          req.photo_album.save(function (err) {
+            if (err) {
+              console.log(err);
+              return res.send({ result: 0, msg: '上传照片失败，请重试。' });
+            }
+            return res.send({ result: 1, msg: '上传成功' });
+          });
+          part.resume();
+        });
+      } catch (e) {
+        console.log(e);
+        return part.resume();
+      }
+      fileCount += 1;
+    });
+
+
+  });
+
+  form.on('close', closeHandle);
+
+  form.parse(req);
 };
 
 exports.createPhoto = function(req, res) {

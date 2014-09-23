@@ -18,6 +18,7 @@ module.exports = function(app) {
   app.delete('/photoAlbum/:photoAlbumId', authorize, photoAlbum.deletePhotoAlbum);
 
   app.post('/photoAlbum/:photoAlbumId/photo', authorize, photoBodyParser, photoAlbum.createPhoto);
+  app.post('/photoAlbum/:photoAlbumId/photo/single', authorize, photoAlbum.getPhotoAlbum, photoAlbum.createSinglePhoto);
   app.get('/photoAlbum/:photoAlbumId/photo/:photoId', photoAlbum.readPhoto);
   app.put('/photoAlbum/:photoAlbumId/photo/:photoId', authorize, photoAlbum.updatePhoto);
   app.delete('/photoAlbum/:photoAlbumId/photo/:photoId', authorize, photoAlbum.deletePhoto);
