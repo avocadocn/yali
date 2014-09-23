@@ -143,7 +143,7 @@ var Campaign = new Schema({
         type:Number,
         default:0
     },
-    campaign_type:Number
+    campaign_type:Number,
     //总分类: 1,2,3,6,8是活动  4,5,7,9是挑战
     //type:活动类型
     //1:公司活动
@@ -155,6 +155,31 @@ var Campaign = new Schema({
     //7:动一下 (一个小队向另一个小队发起挑战,这两个小队不分类型也不分公司)
     //8:部门间活动 (公司的两个部门一起搞活动)
     //9:部门间相互挑战
+    competition_type:{
+    //挑战分类，就算不同类型小组也可以有增强组件
+    //此参数可为空，为空时为普通活动，单队多队都可
+        type:String,
+        enum:[
+            'afternoonTea',
+            'badminton',//有比分
+            'basketball',//有比分
+            'bicycle',//公里？
+            'boardGame',
+            'chess',//棋牌记分?
+            'fitness',
+            'football',//有比分
+            'kids',
+            'ktv',
+            'movie',
+            'other',
+            'photography',
+            'reading',
+            'running',//公里?
+            'travel',
+        ]
+        //其它的可以加一些新参数，比如跑步、自行车的公里数等
+    }
+
 });
 
 

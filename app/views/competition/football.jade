@@ -9,7 +9,7 @@ block contentExt
   .dl_container.clearfix(ng-controller="competitionController" ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score?competition.camp[0].score:0};score_b=#{competition.camp[1].score?competition.camp[1].score:0};")
     include ../partials/breadcrumb
     +breadcrumb(links)
-    .dl_detail_main= role
+    .dl_detail_main
       ul.nav.nav-tabs
         li(ng-class="{'active':true}")
           a.subtitle.no_radius.border_red= competition.theme

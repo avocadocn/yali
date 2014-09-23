@@ -601,29 +601,49 @@ tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope
             });
         };
         $scope.join = function(campaign_id,index,tid) {
-            try {
-                $http({
-                    method: 'post',
-                    url: '/campaign/joinCampaign/'+campaign_id,
-                    data:{
-                        campaign_id : campaign_id,
-                        tid : tid
-                    }
-                }).success(function(data, status) {
-                    if(data.result===1){
-                        alertify.alert('成功加入该活动!');
-                        $scope.campaigns[index].join_flag = 1;
-                    }
-                    else{
-                        alertify.alert(data.msg);
-                    }
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
+            if(!tid||tid.length<2){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/campaign/joinCampaign/'+campaign_id,
+                        data:{
+                            campaign_id : campaign_id,
+                            tid : tid?tid[0]._id : null
+                        }
+                    }).success(function(data, status) {
+                        if(data.result===1){
+                            alertify.alert('成功加入该活动!');
+                            $scope.campaigns[index].join_flag = 1;
+                        }
+                        else{
+                            alertify.alert(data.msg);
+                        }
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
+                }
+                catch(e) {
+                    console.log(e);
+                }
             }
-            catch(e) {
-                console.log(e);
+            else{
+                $scope.join_teams=tid;
+                $('#joinTeamSelectmodal').modal();
+                $scope.campaign_id = campaign_id;
+                $scope.campaign_index = index;
             }
+        };
+        $scope.selcetJoinTeam = function(index){
+            $scope.join_team = $scope.join_teams[index];
+            $scope.join_teams[index].selected = true;
+            for(var i = 0 ; i < $scope.join_teams.length; i ++){
+                if(i !== index){
+                    $scope.join_teams[i].selected = false;
+                }
+            }
+        };
+        $scope.joinCampaign = function(){
+            $scope.join($scope.campaign_id,$scope.campaign_index,[$scope.join_team]);
         };
     }
 ]);

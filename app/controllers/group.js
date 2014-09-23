@@ -547,12 +547,16 @@ exports.provoke = function (req, res) {
       return res.send(500,'error');
     }
     else{
-      var team_opposite = team;
-      var theme = req.body.theme;
-      var location = req.body.location;
       var start_time = req.body.start_time;
       var end_time = req.body.end_time;
       var deadline = req.body.deadline ? req.body.deadline : end_time;
+      var _now = new Date();
+      if (start_time < _now || end_time < _now || deadline < _now ) {
+        return res.send({'result':0,'msg':'活动的时间比现在更早'});
+      }
+      var team_opposite = team;
+      var theme = req.body.theme;
+      var location = req.body.location;
       var content = req.body.content;
       var member_min = req.body.member_min;
       var member_max = req.body.member_max;
@@ -560,10 +564,6 @@ exports.provoke = function (req, res) {
       var cid = req.user.provider==="company" ? req.user._id : req.user.cid;
       var cname = req.user.provider==="company" ? req.user.info.name : req.user.cname;
       var type = 0;
-      var _now = new Date();
-      if (start_time < _now || end_time < _now || deadline < _now ) {
-        return res.send({'result':0,'msg':'活动的时间比现在更早'});
-      }
       if(team_opposite.cid === req.companyGroup.cid){//同公司
         if(team_opposite.gid === req.companyGroup.gid)//同类型
           type= 4;

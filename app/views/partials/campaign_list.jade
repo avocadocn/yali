@@ -54,3 +54,5 @@
       a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
     li
       a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
+.modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  include ../campaign/select_team_for_multi_campaign

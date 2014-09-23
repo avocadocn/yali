@@ -269,12 +269,12 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
                                     'photo' : data.member.photo,
                                     'team' : data.member.team
                                 });
-                                console.log($scope.campaign_team[i].join_member);
+                                // console.log($scope.campaign_team[i].join_member);
                                 break;
                             }
                         }
                     }
-                    console.log($scope.campaign_team);
+                    // console.log($scope.campaign_team);
                 }
                 else{
                     alertify.alert('DATA ERROR');

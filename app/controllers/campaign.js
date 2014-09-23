@@ -192,9 +192,8 @@ var formatCampaignForCalendar = function(user, campaigns) {
     // }
 
     var is_joined = false;
-
     // 活动
-    if (campaign.campaign_type < 3) {
+    if (campaign.campaign_type < 3 || campaign.campaign_type ===6) {
       for (var i = 0, members = campaign.member; i < members.length; i++) {
         if (user._id.toString() === members[i].uid) {
           is_joined = true;
@@ -204,7 +203,7 @@ var formatCampaignForCalendar = function(user, campaigns) {
     }
 
     // 比赛
-    if (campaign.campaign_type >= 3) {
+    else {
       for (var i = 0; i < campaign.camp.length; i++) {
         if(model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1){
           is_joined = true;
@@ -430,7 +429,7 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
       temp.link = '/group/page/'+_campaign.team[0]._id;
-      temp.team_id = _campaign.team[0]._id;
+      temp.team_id = [{'_id':_campaign.team[0]._id}];
       if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
         if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
           temp.join_flag = 1;
@@ -445,7 +444,7 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
       temp.link = '/group/page/'+_campaign.team[0]._id;
-      temp.team_id = _campaign.team[0]._id;
+      temp.team_id = [{'_id':_campaign.team[0]._id}];
       if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
         if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
           temp.join_flag = 1;
@@ -455,19 +454,23 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
         }
       }
     }
-    else if(_campaign.campaign_type !== 7){//动一下
+    else{
       temp.type = 'provoke';
-      var camp_index = _campaign.camp[0].cid== user.cid ? 0:1;
-      temp.member_num = _campaign.camp[camp_index].member.length >0 ? _campaign.camp[camp_index].member.length :0;
-      temp.logo=_campaign.camp[camp_index].logo;
-      temp.link = '/group/page/'+_campaign.camp[camp_index].id;
-      temp.team_id =_campaign.camp[camp_index].id;
-      if(model_helper.arrayObjectIndexOf(_campaign.camp[camp_index].member,user._id,'uid')>-1){
-        temp.join_flag = 1;
-      }
-      else{
-        temp.join_flag = 0;
-      }
+      temp.join_flag = 0;
+      temp.team_id = [];
+      _campaign.camp.forEach(function(camp){
+        if(model_helper.arrayObjectIndexOf(camp.member,user._id,'uid')>-1){//user在这个camp的member里
+          temp.join_flag = 1;
+        }
+        for(var i = 0; i<user.team.length; i++){//遍历得出这个camp是否为user参加的小队
+          if(camp.id.toString() == user.team[i]._id.toString()){
+            temp.team_id.push({'_id':camp.id,'name':camp.tname,'logo':camp.logo});
+            temp.logo=camp.logo;
+            temp.link='/group/page/'+camp.id.toString();
+          }
+        };
+      })
+
     }
     if(temp.type != 'provoke' && pageType==='team'&&(role ==='LEADER' ||role ==='HR' ) || pageType==='company'&&role ==='HR'){
       temp.close_flag=true;
@@ -1059,7 +1062,7 @@ exports.joinCampaign = function (req, res) {
       }
       var camp_length = campaign.camp.length;
       //从campaign的member_quit里删除该员工信息
-      if(camp_length===0){
+      if(camp_length===0){//是活动
         var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
         if(member_index<0){
           var member_quit_index = model_helper.arrayObjectIndexOf(campaign.member_quit,uid,'uid');
@@ -1086,6 +1089,8 @@ exports.joinCampaign = function (req, res) {
         if(camp_index==-1){
            return res.send({ result: 0, msg: '请求错误'});
         }
+
+        //已参加时提示
         var member_index ;
         for (var temp_camp_index=0;temp_camp_index<campaign.camp.length;temp_camp_index++){
           member_index = model_helper.arrayObjectIndexOf(campaign.camp[temp_camp_index].member,uid,'uid');
@@ -1094,10 +1099,12 @@ exports.joinCampaign = function (req, res) {
           }
         }
 
+        //从退出人员中删除
         var member_quit_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member_quit,uid,'uid');
         if(member_quit_index>-1){
           campaign.camp[camp_index].member_quit.splice(member_quit_index,1);
         }
+        //camp中增加此人
         campaign.camp[camp_index].member.push({
           'cid':cid,
           'uid':uid,
