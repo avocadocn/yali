@@ -947,6 +947,7 @@ textarea {
   border-style: solid;
   border-color: transparent #3498db transparent transparent;
   border-width: 0 53px 53px;
+  cursor: pointer;
 }
 .dl_messagebox .join_status_contain.campaign {
   border-color: transparent #43cee6 transparent transparent;
@@ -958,6 +959,7 @@ textarea {
   color: #fff;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
+  cursor: pointer;
 }
 .message_pager {
   margin-top: 5px;
@@ -1711,6 +1713,35 @@ input.ng-invalid.ng-dirty {
   height: 371.25px;
 }
 #family .carousel-img-container img {
+  max-height: 100%;
+}
+.recent_campaigns_container {
+  background-color: #ddd;
+  width: 100%;
+  height: 371.25px;
+  margin-top: 41px;
+}
+.recent_campaigns_container .carousel {
+  height: 371.25px;
+}
+.recent_campaigns_container .item {
+  height: 371.25px;
+  margin-top: 20px;
+}
+.recent_campaigns_container .item .campaign_theme {
+  font-size: 16px;
+}
+.recent_campaigns_container .item .now_campaign_now {
+  font-size: 16px;
+}
+.recent_campaigns_container .item .campaign_time_remind {
+  font-size: 16px;
+}
+.recent_campaigns_container .item .campaign_time_count {
+  margin-top: 50px;
+  font-size: 50px;
+}
+.recent_campaigns_container img {
   max-height: 100%;
 }
 .dl_allteaminfo_container,

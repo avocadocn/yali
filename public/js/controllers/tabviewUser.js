@@ -114,6 +114,31 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
+tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope',
+    function($http, $scope, $rootScope) {
+        $scope.recentCampaigns = [];
+        $rootScope.$watch('uid',function(uid){
+            if(!uid)
+                return;
+            try{
+                $http({
+                    method:'get',
+                    url: '/campaign/user/recent/list/'+uid +'?'+Math.random()*10000,
+                }).success(function(data,status){
+                    if(data.result===1){
+                        $scope.recentCampaigns = data.campaigns;
+                    }
+                }).error(function(data,status){
+                    alertify.alert('DATA ERROR');
+                });
+            }
+            catch(e){
+                console.log(e);
+            }
+        });
+        
+    }
+]);
 tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
         $rootScope.nowTab = 'timeLine';

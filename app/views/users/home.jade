@@ -24,6 +24,20 @@ block baseInfo
     .ad-top
       //- ad banner sapace
 block panel
+  .recent_campaigns_container(ng-controller="recentCampaignController")
+    carousel(interval="5000")
+      slide(ng-repeat="recentCampaign in recentCampaigns")
+        a.campaign_link.clearLinkUnderline(href="/campaign/detail/{{ recentCampaign._id }}")
+          .campaign_title
+            img.campaign_group_logo(ng-src="{{ img_url + recentCampaign.logo + '/72/72'}}")
+            p.campaign_theme {{ recentCampaign.theme }}
+            p.now_campaign_now(ng-if="recentCampaign.start_flag==1") 正在进行的活动
+          .now_campaign_time(ng-if="recentCampaign.start_flag==0 || recentCampaign.photo_thumbnails.length==0")
+            p.campaign_time_remind {{ recentCampaign.remind_text }}
+            p.campaign_time_count(ng-if="recentCampaign.start_flag!=0") 快来传照片吧
+            p.campaign_time_count(ng-if="recentCampaign.start_flag==0") {{ recentCampaign.start_time_text }}
+          .now_campaign_photos(ng-if="recentCampaign.start_flag!=0 && recentCampaign.photo_thumbnails.length>0")
+            img.now_campaign_photo(ng-src="{{ photo.uri + '/150/150'}}" ng-repeat="photo in recentCampaign.photo_thumbnails")
   ul.nav.nav-tabs(ng-init="uid='#{uid}';role='#{role}'")
     if role==='OWNER'
       li.tab_style(ng-class="{'active':nowTab=='group_message'}")

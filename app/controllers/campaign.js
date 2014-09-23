@@ -728,6 +728,7 @@ exports.getUserUnjoinCampaignsForCalendar = function(req, res) {
 var firstLength = 1;
 var twoLength =6;
 var threeLength = 3;
+
 exports.getUserNowCampaignsForAppList = function(req, res) {
   var now = new Date();
   var startTimeLimit = new Date();
