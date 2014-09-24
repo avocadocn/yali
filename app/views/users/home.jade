@@ -38,7 +38,7 @@ block panel
             p.campaign_time_count(ng-if="recentCampaign.start_flag==0") {{ recentCampaign.start_time_text }}
           .now_campaign_photos(ng-if="recentCampaign.start_flag!=0 && recentCampaign.photo_thumbnails.length>0")
             img.now_campaign_photo(ng-src="{{ photo.uri + '/150/150'}}" ng-repeat="photo in recentCampaign.photo_thumbnails")
-      slide(ng-if="recentCampaigns.length==0" ng-cloak)
+      slide(ng-if="recentCampaigns.length==0&&showCampaign" ng-cloak)
         p.campaign_time_count 您近期没有活动，快去参加吧
   ul.nav.nav-tabs(ng-init="uid='#{uid}';role='#{role}'")
     if role==='OWNER'

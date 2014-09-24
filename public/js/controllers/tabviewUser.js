@@ -117,6 +117,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
         $scope.recentCampaigns = [];
+        $scope.showCampaign = false;
         $rootScope.$watch('uid',function(uid){
             if(!uid)
                 return;
@@ -127,6 +128,7 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
                 }).success(function(data,status){
                     if(data.result===1){
                         $scope.recentCampaigns = data.campaigns;
+                        $scope.showCampaign = true;
                     }
                 }).error(function(data,status){
                     alertify.alert('DATA ERROR');
