@@ -4,69 +4,96 @@ append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
 
 block contentExt
-  .dl_container.photo_album
-    header.clearfix
-      include ../partials/breadcrumb
-      +breadcrumb(links)
-      div.relative
-        .media
-          .pull-left
-            img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.logo}")
-          .media-body
-            h4.media-heading
-                = photo_album.owner.name
-            p.text 相册名:&nbsp;#{photo_album.name}
-            p.text 照片数:&nbsp;#{photo_album.photo_count}
-            p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
-        form#upload_photo_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo" method="post" enctype="multipart/form-data")
-          input#photo.hidden(type="file" name="photos" multiple="multiple" required="required" accept="image/*")
-        .right_down
-          if uploadAuth === true
-            label.dl_btn.dl_btn_small(for="photo") 上传照片
-          if editAuth === true || deleteAuth === true
-            button.dl_btn.dl_btn_small(data-toggle="collapse" data-target="#more") 更多操作
-      if editAuth === true || deleteAuth === true
-        #more.more.collapse.clearfix
-          .operator
-            input#return_uri(type="hidden" value="#{return_uri}")
-            if deleteAuth === true
-              form#delete_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
-                input(type="hidden" name="_method" value="delete")
-                button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该相册
-            if editAuth === true
-              form.js_ajax_form.pull-right(action="/photoAlbum/#{photo_album._id}" method="post")
-                input(type="hidden" name="_method" value="put")
-                input.dl_input(type="text" name="name" value="#{photo_album.name}")
-                button.dl_btn.dl_btn_small(type="submit") 修改相册名字
-    hr
-    div.photo_panel.clearfix
-      each photo in photo_album.photos
-        a.photo.text-center(href="/photoAlbum/#{photo_album._id}/photoView/#{photo._id}")
-          img(src="#{photo.uri}/resize/200/200")
-          p.photo_name= photo.name
+  .dl_container(ng-app="photoAlbumApp")
+    .photo_album(ng-controller="PhotoAlbumDetailCtrl")
+      header.clearfix
+        include ../partials/breadcrumb
+        +breadcrumb(links)
+        div.relative
+          .media
+            .pull-left
+              img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.logo}")
+            .media-body
+              h4.media-heading
+                  = photo_album.owner.name
+              p.text 相册名:&nbsp;#{photo_album.name}
+              p.text 照片数:&nbsp;#{photo_album.photo_count}
+              p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
+          .right_down
+            if uploadAuth === true
+              label.dl_btn.dl_btn_small(for="photo") 上传照片
+              input.hidden#photo(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
+            if editAuth === true || deleteAuth === true
+              button.dl_btn.dl_btn_small(data-toggle="collapse" data-target="#more") 更多操作
+        if editAuth === true || deleteAuth === true
+          #more.more.collapse.clearfix
+            .operator
+              input#return_uri(type="hidden" value="#{return_uri}")
+              if deleteAuth === true
+                button#delete_button.pull-right.dl_btn.dl_btn_small.dl_btn_danger(type="button" ng-click="deletePhotoAlbum()") 删除该相册
+              if editAuth === true
+                .pull-right
+                  input.dl_input(type="text" ng-model="photo_album_name")
+                  button.dl_btn.dl_btn_small(type="button" ng-click="changeName(photo_album_name)") 修改相册名字
+      div(ng-show="uploader.queue.length > 0")
+        hr
+        table.table
+          thead
+            tr
+              th 文件名
+              th(ng-show="uploader.isHTML5") 大小
+              th(ng-show="uploader.isHTML5") 上传进度
+              th 状态
+              th 操作
+          tbody
+            tr(ng-repeat="item in uploader.queue")
+              td
+                strong {{ item.file.name }}
+                div(ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }")
+              td(ng-show="uploader.isHTML5" nowrap)
+                {{ item.file.size/1024/1024|number:2 }} MB
+              td(ng-show="uploader.isHTML5")
+                .progress
+                  .progress-bar(role="progressbar" ng-style="{ 'width': item.progress + '%' }")
+              td.text-center
+                span(ng-show="item.isSuccess"): i.glyphicon.glyphicon-ok
+                span(ng-show="item.isCancel"): i.glyphicon.glyphicon-ban-circle
+                span(ng-show="item.isError"): i.glyphicon.glyphicon-remove
+                span(ng-show="item.errorMsg") {{item.errorMsg}}
+              td(nowrap)
+                button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.denyUpload")
+                  span.glyphicon.glyphicon-upload
+                  | &nbsp;上传
+                button.btn.btn-warning.btn-xs(type="button" ng-click="item.cancel()" ng-disabled="!item.isUploading")
+                  span.glyphicon.glyphicon-ban-circle
+                  | &nbsp;停止上传
+                button.btn.btn-danger.btn-xs(type="button" ng-click="remove(item)")
+                  span.glyphicon.glyphicon-trash
+                  | &nbsp;取消
+        div
+          div 上传进度：
+            .progress
+              .progress-bar(role="progressbar" ng-style="{ 'width': uploader.progress + '%' }")
+          label.btn.btn-primary.btn-s(for="photo") 添加照片
+          button.btn.btn-success.btn-s(type="button" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length || uploader.denyCount > 0")
+            span.glyphicon.glyphicon-upload
+            | &nbsp;全部上传
+          button.btn.btn-warning.btn-s(type="button" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading")
+            span.glyphicon.glyphicon-ban-circle
+            | &nbsp;全部停止上传
+          button.btn.btn-danger.btn-s(type="button" ng-click="removeAll(uploader)" ng-disabled="!uploader.queue.length")
+            | &nbsp;关闭
 
-  #loading_modal.modal.fade(role="dialog" aria-hidden="true")
-    .modal-dialog.loading_modal
-      .modal-content
-        .modal-body
-          button.close(type="button" data-dismiss="modal")
-            span(aria-hidden="true") &times;
-          .clearfix.loading_box
-            .pull-left.loading_div
-            h4.pull-left.loading_text 上传中
 
-  #failed_modal.modal.fade(role="dialog" aria-hidden="true")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          button.close(type="button" data-dismiss="modal")
-            span(aria-hidden="true") &times;
-          h4.modal-title 上传失败
-        .modal-body
-          p#failed_msg
+
+      hr
+      div.photo_panel.clearfix
+        a.photo.text-center(ng-repeat="photo in photos" ng-href="/photoAlbum/{{photo_album_id}}/photoView/{{photo._id}}")
+          img(ng-src="{{photo.uri}}/resize/200/200")
+          p.photo_name {{photo.name}}
 
 
 append footExt
-  script(src="/lib/jquery-form/jquery.form.js")
-  script(src="/js/photo_album_detail.js")
+  script(src="/lib/angular-file-upload/angular-file-upload.min.js")
+  script(src="/js/controllers/photo_album.js")
 
