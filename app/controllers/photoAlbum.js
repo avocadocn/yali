@@ -744,11 +744,19 @@ exports.createSinglePhoto = function(req, res, next) {
     }
   };
 
+  var uploadFailed = function (msg) {
+    if (!msg) {
+      var msg = '上传照片失败，请重试。';
+    }
+    res.send({ result: 0, msg: msg });
+  };
+
   form.on('part', function (part) {
     if (!part.filename || fileCount >= 1) {
       return part.resume();
     }
     form.removeListener('close', closeHandle);
+
     var buffers = [];
     part.on('data', function (buffer) {
       buffers.push(buffer);
@@ -759,9 +767,8 @@ exports.createSinglePhoto = function(req, res, next) {
         return part.resume();
       }
       var size = part.byteCount - part.byteOffset;
-      console.log(size);
       if (size > 5 * 1024 * 1024) {
-        res.send({ result: 0, msg: '上传的照片不能大于5MB' });
+        uploadFailed('上传的照片不能大于5MB');
         return part.resume();
       }
       try {
@@ -772,6 +779,7 @@ exports.createSinglePhoto = function(req, res, next) {
         gm(data).write(path.join(system_dir, photo_name), function(err) {
           if (err) {
             console.log(err);
+            uploadFailed();
             return part.resume();
           }
 
@@ -791,7 +799,7 @@ exports.createSinglePhoto = function(req, res, next) {
           req.photo_album.save(function (err) {
             if (err) {
               console.log(err);
-              return res.send({ result: 0, msg: '上传照片失败，请重试。' });
+              return uploadFailed();
             }
             return res.send({ result: 1, msg: '上传成功' });
           });
@@ -799,6 +807,7 @@ exports.createSinglePhoto = function(req, res, next) {
         });
       } catch (e) {
         console.log(e);
+        uploadFailed();
         return part.resume();
       }
       fileCount += 1;
@@ -1036,22 +1045,7 @@ exports.updatePhoto = function(req, res) {
           photo.name = req.body.name;
         }
         setUpdateUser();
-       }
-      //今后评论不在photo中，待天航查看是否还有需要保留此段
-      // if (req.body.text) {
-      //   if (req.user.provider === 'company') {
-      //     return res.send(403);
-      //   }
-      //   photo.comments.push({
-      //     content: req.body.text,
-      //     publish_user: {
-      //       _id: req.user._id,
-      //       nickname: req.user.nickname,
-      //       photo: req.user.photo
-      //     }
-      //   });
-      //   setUpdateUser();
-      // }
+      }
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
