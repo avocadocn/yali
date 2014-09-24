@@ -68,7 +68,7 @@ block contentExt
             button.dl_btn.dl_btn_small(type="submit") 添加标签
           form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
             input(type="hidden" name="_method" value="put")
-            input.form-control.edit_photo_input(type="text" name="name" required)
+            input.form-control.edit_photo_input(type="text" name="name" value="#{photo_detail.name}" required)
             button.dl_btn.dl_btn_small(type="submit") 更改照片名字
           form#delete_form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
             input(type="hidden" name="_method" value="delete")

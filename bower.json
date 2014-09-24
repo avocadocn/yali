@@ -16,6 +16,7 @@
     "angular-translate-loader-static-files": "~2.1.0",
     "angular-translate-loader-url": "~2.1.0",
     "angular-ui-router": "#master",
+    "angular-file-upload": "https://github.com/nervgh/angular-file-upload.git#v1.1.1",
     "bootstrap": "3.0.3",
     "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.5",
     "imagesloaded": "~3.1.8",

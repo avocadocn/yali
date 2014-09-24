@@ -648,7 +648,12 @@ exports.updatePhotoAlbum = function(req, res) {
         if (err) {
           console.log(err);
         } else {
-          return res.send({ result: 1, msg: '更新相册成功' });
+          var data = {
+            name: photo_album.name,
+            update_date: photo_album.update_date,
+            update_user: photo_album.update_user
+          };
+          return res.send({ result: 1, msg: '更新相册成功', data: data });
         }
       });
     } else {
@@ -732,7 +737,7 @@ exports.createSinglePhoto = function(req, res, next) {
 
   form.on('error', function (err) {
     console.log(err.stack);
-    res.send({ result: 0, msg: 'error' });
+    res.send(500);
   });
 
   var fileCount = 0; // 处理过的文件数
@@ -740,79 +745,73 @@ exports.createSinglePhoto = function(req, res, next) {
 
   var closeHandle = function () {
     if (fileCount === 0) {
-      return res.send({ result: 0, msg: '上传照片失败，请重试。' });
+      return res.send(500);
     }
-  };
-
-  var uploadFailed = function (msg) {
-    if (!msg) {
-      var msg = '上传照片失败，请重试。';
-    }
-    res.send({ result: 0, msg: msg });
   };
 
   form.on('part', function (part) {
     if (!part.filename || fileCount >= 1) {
       return part.resume();
     }
-    form.removeListener('close', closeHandle);
+    (function(fileCount) {
+      form.removeListener('close', closeHandle);
 
-    var buffers = [];
-    part.on('data', function (buffer) {
-      buffers.push(buffer);
-    });
+      var buffers = [];
+      part.on('data', function (buffer) {
+        buffers.push(buffer);
+      });
 
-    part.on('end', function() {
-      if (fileCount >= 1) {
-        return part.resume();
-      }
-      var size = part.byteCount - part.byteOffset;
-      if (size > 5 * 1024 * 1024) {
-        uploadFailed('上传的照片不能大于5MB');
-        return part.resume();
-      }
-      try {
-        var ext = mime.extension(part.headers['content-type']);
-        var photo_name = Date.now().toString() + '.' + ext;
+      part.on('end', function() {
+        if (fileCount >= 1) {
+          return part.resume();
+        }
+        var size = part.byteCount - part.byteOffset;
+        if (size > 5 * 1024 * 1024) {
+          res.send(413);
+          return part.resume();
+        }
+        try {
+          var ext = mime.extension(part.headers['content-type']);
+          var photo_name = Date.now().toString() + '.' + ext;
 
-        var data = Buffer.concat(buffers);
-        gm(data).write(path.join(system_dir, photo_name), function(err) {
-          if (err) {
-            console.log(err);
-            uploadFailed();
-            return part.resume();
-          }
-
-          photo = {
-            uri: path.join(uri_dir, photo_name),
-            name: part.filename,
-            upload_user: upload_user
-          };
-          req.photo_album.photos.push(photo);
-
-          var photo_id = req.photo_album.photos[req.photo_album.photos.length - 1]._id;
-          var dir = path.join(config.root, 'ori_img', date_dir_name, cid);
-          if (!fs.existsSync(dir)) {
-            mkdirp.sync(dir);
-          }
-          fs.writeFileSync(path.join(dir, photo_id + '.' + ext), data);
-          req.photo_album.save(function (err) {
+          var data = Buffer.concat(buffers);
+          gm(data).write(path.join(system_dir, photo_name), function(err) {
             if (err) {
               console.log(err);
-              return uploadFailed();
+              res.send(500);
+              return part.resume();
             }
-            return res.send({ result: 1, msg: '上传成功' });
-          });
-          part.resume();
-        });
-      } catch (e) {
-        console.log(e);
-        uploadFailed();
-        return part.resume();
-      }
-      fileCount += 1;
-    });
 
+            photo = {
+              uri: path.join(uri_dir, photo_name),
+              name: part.filename,
+              upload_user: upload_user
+            };
+            req.photo_album.photos.push(photo);
+
+            var photo_id = req.photo_album.photos[req.photo_album.photos.length - 1]._id;
+            var dir = path.join(config.root, 'ori_img', date_dir_name, cid);
+            if (!fs.existsSync(dir)) {
+              mkdirp.sync(dir);
+            }
+            fs.writeFileSync(path.join(dir, photo_id + '.' + ext), data);
+            req.photo_album.save(function (err) {
+              if (err) {
+                console.log(err);
+                return res.send(500);
+              }
+              return res.send({ result: 1, msg: '上传成功' });
+            });
+            part.resume();
+          });
+        } catch (e) {
+          console.log(e);
+          res.send(500);
+          return part.resume();
+        }
+      });
+    })(fileCount);
+    fileCount += 1;
 
   });
 
@@ -1473,6 +1472,7 @@ exports.readPhotoList = function(req, res, next) {
                 _id: photo._id,
                 uri: photo.uri,
                 thumbnail_uri: photo.thumbnail_uri,
+                name: photo.name,
                 tags: photo.tags,
                 upload_user: photo.upload_user,
                 upload_date: photo.upload_date,
