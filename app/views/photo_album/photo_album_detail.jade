@@ -63,12 +63,12 @@ block contentExt
               button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.denyUpload")
                 span.glyphicon.glyphicon-upload
                 | &nbsp;上传
-              button.btn.btn-warning.btn-xs(type="button" ng-click="item.cancel()" ng-disabled="!item.isUploading")
-                span.glyphicon.glyphicon-ban-circle
-                | &nbsp;停止上传
-              button.btn.btn-danger.btn-xs(type="button" ng-click="remove(item)")
+              //- button.btn.btn-warning.btn-xs(type="button" ng-click="item.cancel()" ng-disabled="!item.isUploading")
+              //-   span.glyphicon.glyphicon-ban-circle
+              //-   | &nbsp;停止上传
+              button.btn.btn-danger.btn-xs(ng-show="!item.isUploading && !item.isUploaded" type="button" ng-click="remove(item)" ng-disabled="item.isUploading")
                 span.glyphicon.glyphicon-trash
-                | &nbsp;取消
+                | &nbsp;移除
       div
         div 上传进度：
           .progress
@@ -77,10 +77,10 @@ block contentExt
         button.btn.btn-success.btn-s(type="button" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length || uploader.denyCount > 0")
           span.glyphicon.glyphicon-upload
           | &nbsp;全部上传
-        button.btn.btn-warning.btn-s(type="button" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading")
-          span.glyphicon.glyphicon-ban-circle
-          | &nbsp;全部停止上传
-        button.btn.btn-danger.btn-s(type="button" ng-click="removeAll(uploader)" ng-disabled="!uploader.queue.length")
+        //- button.btn.btn-warning.btn-s(type="button" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading")
+        //-   span.glyphicon.glyphicon-ban-circle
+        //-   | &nbsp;全部停止上传
+        button.btn.btn-danger.btn-s(type="button" ng-click="removeAll(uploader)" ng-disabled="!uploader.queue.length || uploader.isUploading")
           | &nbsp;关闭
 
 
