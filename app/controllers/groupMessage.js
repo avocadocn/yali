@@ -190,13 +190,20 @@ exports.getMessage = function(req, res, next) {
             if(join_role&& new Date()<group_message[i].campaign.deadline){
               //没有参加为false，参加为true
               var join_flag = false;
-              if(group_message[i].campaign.camp[camp_flag].member.length>0){
-                group_message[i].campaign.camp[camp_flag].member.forEach(function(member){
-                  if(member.uid.toString() === req.user._id.toString()){
-                    join_flag = true;
+              for(var _camp_index=0;_camp_index<group_message[i].campaign.camp.length;_camp_index++){
+                if(group_message[i].campaign.camp[_camp_index].member.length>0){
+                  group_message[i].campaign.camp[_camp_index].member.forEach(function(member){
+                    if(member.uid.toString() === req.user._id.toString()){
+                      join_flag = true;
+                      return;
+                    }
+                  });
+                  if(join_flag){
+                    break;
                   }
-                });
+                }
               }
+
             //是同类型的 grouptype_flag = true 不是则为false 
             //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
               _group_message.join_flag = join_flag;
