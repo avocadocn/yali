@@ -26,7 +26,7 @@ block baseInfo
 block panel
   .recent_campaigns_container(ng-controller="recentCampaignController")
     carousel(interval="5000")
-      slide(ng-repeat="recentCampaign in recentCampaigns")
+      slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)
         a.campaign_link.clearLinkUnderline(href="/campaign/detail/{{ recentCampaign._id }}")
           .campaign_title
             img.campaign_group_logo(ng-src="{{ img_url + recentCampaign.logo + '/72/72'}}")
@@ -38,6 +38,8 @@ block panel
             p.campaign_time_count(ng-if="recentCampaign.start_flag==0") {{ recentCampaign.start_time_text }}
           .now_campaign_photos(ng-if="recentCampaign.start_flag!=0 && recentCampaign.photo_thumbnails.length>0")
             img.now_campaign_photo(ng-src="{{ photo.uri + '/150/150'}}" ng-repeat="photo in recentCampaign.photo_thumbnails")
+      slide(ng-if="recentCampaigns.length==0" ng-cloak)
+        p.campaign_time_count 您近期没有活动，快去参加吧
   ul.nav.nav-tabs(ng-init="uid='#{uid}';role='#{role}'")
     if role==='OWNER'
       li.tab_style(ng-class="{'active':nowTab=='group_message'}")

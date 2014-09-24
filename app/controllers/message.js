@@ -692,7 +692,7 @@ var getPublicMessage = function(req,res,cid){
   if(req.user.provider==='company'){
     _condition = {'type':'global'};//公司只获取系统消息
   }else{
-    _condition = {'$or':[{'type':'company','company_id':cid},{'type':'global'}]};//用户获取公司和系统消息
+    _condition = {'$or':[{'type':'company','company_id':cid},{'type':'global'}],'post_date':{'$gte':req.user.register_date}};//用户获取公司和系统消息
   }
   var paramA = {
     'collection':MessageContent,
