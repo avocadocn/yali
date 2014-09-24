@@ -674,6 +674,8 @@ tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope
             }
             else{
                 $scope.join_teams=tid;
+                $scope.select_index = 0;
+                $scope.join_team = $scope.join_teams[0];
                 $('#joinTeamSelectmodal').modal();
                 $scope.campaign_id = campaign_id;
                 $scope.campaign_index = index;
