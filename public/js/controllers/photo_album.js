@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('photoAlbumApp', ['angularFileUpload'])
+angular.module('donler')
 
 .controller('PhotoAlbumDetailCtrl', ['$scope', 'PhotoAlbum', 'FileUploader',
   function($scope, PhotoAlbum, FileUploader) {

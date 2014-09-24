@@ -737,7 +737,7 @@ exports.createSinglePhoto = function(req, res, next) {
 
   form.on('error', function (err) {
     console.log(err.stack);
-    res.send({ result: 0, msg: 'error' });
+    res.send(500);
   });
 
   var fileCount = 0; // 处理过的文件数
