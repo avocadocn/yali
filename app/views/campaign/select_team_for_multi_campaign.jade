@@ -14,7 +14,7 @@
               .dl_row
                 a(href="/group/page/{{team._id}}" target="_blank")
                   span {{team.name}}
-            .dl_md_1(ng-if="team.selected")
+            .dl_md_1(ng-if="$index==select_index")
               .glyphicon.glyphicon-ok
       .dl-modal-footer.clearfix
         button.cancel_btn.dl_btn_large(data-dismiss="modal") #{__("CANCEL")}

@@ -179,19 +179,13 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             console.log(e);
         }
     }
-    $scope.select_index = -1;
+    $scope.select_index = 0;
     $scope.selcetJoinTeam = function(index){
         $scope.join_team = {
             _id : $scope.join_teams[index]._id,
             name : $scope.join_teams[index].name,
             logo : $scope.join_teams[index].logo
         };
-        $scope.join_teams[index].selected = true;
-        for(var i = 0 ; i < $scope.join_teams.length; i ++){
-            if(i !== index){
-                $scope.join_teams[i].selected = false;
-            }
-        }
         $scope.select_index = index;
     }
     $scope.joinReady = function(){

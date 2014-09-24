@@ -105,9 +105,9 @@ exports.getMessage = function(req, res, next) {
               _group_message.myteam = [];
               group_message[i].team.forEach(function(_team){
                 if(model_helper.arrayObjectIndexOf(req.user.team,_team.teamid,'_id')>-1){
-                  _group_message.myteam.push({  id : _team.teamid,              //小队id
+                  _group_message.myteam.push({  _id : _team.teamid,              //小队id
                                                 logo: _team.logo,                            //队徽路径
-                                                tname: _team.name
+                                                name: _team.name
                                               });
                 }
               })
@@ -173,13 +173,13 @@ exports.getMessage = function(req, res, next) {
               camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
               if(camp_flag===0&&model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[1].id,'_id')>-1){
                 _group_message.both_team=true;
-                _group_message.myteam = [{  id : group_message[i].campaign.camp[0].id,              //小队id
+                _group_message.myteam = [{  _id : group_message[i].campaign.camp[0].id,              //小队id
                                             logo: group_message[i].campaign.camp[0].logo,                            //队徽路径
-                                            tname: group_message[i].campaign.camp[0].tname
+                                            name: group_message[i].campaign.camp[0].tname
                                           },
-                                          {  id : group_message[i].campaign.camp[1].id,              //小队id
+                                          {  _id : group_message[i].campaign.camp[1].id,              //小队id
                                             logo: group_message[i].campaign.camp[1].logo,                            //队徽路径
-                                            tname: group_message[i].campaign.camp[1].tname
+                                            name: group_message[i].campaign.camp[1].tname
                                           }];
               }
             }

@@ -173,3 +173,5 @@ div(ng-show = '!loading')
     span(ng-if="loadOver_flag") 已经加载了所有的动态
   .dl_campaign_list.text-center(ng-if="group_messages.length==0")
     span.loademp 目前没有新的动态
+.modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  include ../campaign/select_team_for_multi_campaign
