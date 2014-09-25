@@ -921,10 +921,11 @@ exports.cancelProvoke = function (req, res) {
 //获取小队热门标签
 exports.getTags = function (req, res) {
   Campaign.aggregate()
+  .project({"tags":1,"team":1,"camp.id":1})
   .match({'$or': [
     {'team' : mongoose.Types.ObjectId(req.params.teamId)},
-    {'camp' : mongoose.Types.ObjectId(req.params.teamId)}
-    ]})
+    {'camp.id' : mongoose.Types.ObjectId(req.params.teamId)}
+    ]})//可在查询条件中加入时间
   .unwind("tags")
   .group({_id : "$tags", number: { $sum : 1} })
   .sort({number:-1})

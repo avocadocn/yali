@@ -1089,9 +1089,10 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
     };
 
     $scope.getTags = function() {
-        $http.get('/group/getTags/'+$rootScope.teamId).success(function(data, status) {
-            console.log(data);
-        });
+        // $http.get('/group/getTags/'+$rootScope.teamId).success(function(data, status) {
+        //     console.log(data);
+        // });
+        console.log($scope.tags);
     }
 
     $scope.sponsor = function() {
