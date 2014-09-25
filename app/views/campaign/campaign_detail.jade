@@ -9,6 +9,7 @@ block contentExt
   .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';campaign_type='#{campaign.campaign_type}';member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';campaign_team=#{JSON.stringify(campaign.team)};user_team=#{JSON.stringify(user.team)};")
     include ../partials/breadcrumb
     +breadcrumb(links)
+    #campaign_data(data-photo-album-id="#{campaign.photo_album._id}" data-host-id="#{campaign._id}")
     .dl_detail_main
       //-TODO:详情页权限不正确，需要更改
       if (role==='HR' || role==='LEADER' && campaign.campaign_type != 3) && campaign.active &&!campaign.finish
@@ -113,10 +114,15 @@ block contentExt
       .dl_row.clearfix.commment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
         p.subtitle 留言
         if role==='MEMBER' || role ==='LEADER'
-          form(name="comment_form" novalidate)
+          //- form(name="comment_form" novalidate)
             .dl_row.clearfix
               textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
               button.dl_btn.dl_btn_submit.pull-right(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+          form(name="comment_form" novalidate)
+            .dl_row.clearfix
+              textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
+              input(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
+              button.dl_btn.dl_btn_submit.pull-right(ng-click="publish(new_comment.text)" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
         .comment.clearfix(ng-repeat="comment in comments")
           .comment_user_info
             a(href="/users/home/{{comment.poster._id}}" )
@@ -128,6 +134,7 @@ block contentExt
               .triangle
               .comment_content
                 p(ng-cloak) {{comment.content}}
+                img(ng-if="comment.photos" ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}")
             .comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
               a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
     .dl_detail_side

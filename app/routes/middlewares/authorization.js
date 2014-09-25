@@ -52,7 +52,7 @@ exports.commentAuthorize = function(req, res, next) {
   else {
     switch(req.params.commentType){
       case 'campaign':
-        Campaign.findOne({'_id':req.params.commentId},function (err, campaign){
+        Campaign.findOne({'_id':req.params.hostId},function (err, campaign){
           if(err || !campaign){
             res.status(403);
             next('forbidden');
@@ -83,7 +83,7 @@ exports.commentAuthorize = function(req, res, next) {
         });
         break;
       case 'team':
-        CompanyGroup.findOne({'_id':req.params.commentId},function (err,company_group){
+        CompanyGroup.findOne({'_id':req.params.hostId},function (err,company_group){
           if(err || !company_group){
             res.status(403);
             next('forbidden');

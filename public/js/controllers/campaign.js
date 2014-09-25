@@ -14,7 +14,7 @@ campaignApp.directive('maxHeight', function() {
         }
     };
 });
-campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'Comment', function ($scope, $http, $rootScope, Comment) {
     $scope.private_message_content = {
         'text':""
     };
@@ -417,4 +417,36 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', fu
             }
         }
     }
+    $scope.photos = null;
+
+    var campaign_data = $('#campaign_data');
+    var cbox = new Comment.CommentBox({
+        host_type: 'campaign_detail',
+        host_id: campaign_data.data('hostId'),
+        photo_album_id: campaign_data.data('photoAlbumId')
+    }, function (uploader) {
+        $scope.uploader = uploader;
+    });
+
+    $scope.publish = function (content) {
+        cbox.publish(content, function (err, comment) {
+            if (err) {
+                console.log(err);
+            } else {
+                $scope.comments.unshift({
+                    '_id':comment._id,
+                    'host_id' : comment.host_id,
+                    'content' : comment.content,
+                    'create_date' : comment.create_date,
+                    'poster' : comment.poster,
+                    'photos': comment.photos,
+                    'host_type' : comment.host_type,
+                    'delete_permission':true
+                });
+                $scope.new_comment.text='';
+            }
+
+        });
+    };
+
 }]);
