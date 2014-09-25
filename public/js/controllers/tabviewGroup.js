@@ -1088,6 +1088,12 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         }
     };
 
+    $scope.getTags = function() {
+        $http.get('/group/getTags/'+$rootScope.teamId).success(function(data, status) {
+            console.log(data);
+        });
+    }
+
     $scope.sponsor = function() {
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
@@ -1105,7 +1111,8 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
                         end_time : $scope.end_time,
                         member_min: $scope.member_min,
                         member_max: $scope.member_max,
-                        deadline: $scope.deadline
+                        deadline: $scope.deadline,
+                        tags: $scope.tags.split(",")
                     }
                 }).success(function(data, status) {
                     //发布活动后跳转到显示活动列表页面

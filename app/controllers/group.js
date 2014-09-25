@@ -917,6 +917,29 @@ exports.cancelProvoke = function (req, res) {
     });
   });
 };
+
+//获取小队热门标签
+exports.getTags = function (req, res) {
+  Campaign.aggregate()
+  .match({'$or': [
+    {'team' : mongoose.Types.ObjectId(req.params.teamId)},
+    {'camp' : mongoose.Types.ObjectId(req.params.teamId)}
+    ]})
+  .unwind("tags")
+  .group({_id : "$tags", number: { $sum : 1} })
+  .sort({number:-1})
+  .limit(10)
+  .exec(function(err,result){
+      if (err) {
+        console.log(err);
+      }
+      else{
+        console.log(result);
+        return res.send(result);
+      }
+  });
+};
+
 //发布和小队相关的活动
 exports.sponsor = function (req, res) {
   if(req.role !=='HR' && req.role !=='LEADER'){
@@ -976,6 +999,7 @@ exports.sponsor = function (req, res) {
   campaign.theme = theme;
   campaign.active = true;
   campaign.campaign_type = !multi ? 2 : 3;
+  campaign.tags = req.body.tags;
 
   campaign.start_time = start_time;
   campaign.end_time = end_time;

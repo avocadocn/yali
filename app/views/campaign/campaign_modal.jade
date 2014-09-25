@@ -8,17 +8,20 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
         .head#myModalLabel 发活动
       .dl-modal-body
         .dl_modal_container(ng-if="dOtMulti")
-            label.subtitle 参加该活动的小队
-            .groups.row.dl_row.groups_box
-              .group.col-md-1(ng-repeat='select_dOt in select_dOts')
-                img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
+          label.subtitle 参加该活动的小队
+          .groups.row.dl_row.groups_box
+            .group.col-md-1(ng-repeat='select_dOt in select_dOts')
+              img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
         .dl_modal_container
-            label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
-            input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
+          label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
+          input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
         .dl_modal_container(ng-init="baseBrief=true;")
-            label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
-            #campaignDetailToolBar
-            #campaignDetail.markdownContainer(name="content" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=4000 required)
+          label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
+          #campaignDetailToolBar
+          #campaignDetail.markdownContainer(name="content" ng-blur="getTags()" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=4000 required)
+        .dl_modal_container
+          label.subtitle Tags
+          input.dl_modal_input.dl-form-control(type="text" name="tags" ng-model="$parent.tags" placeholder="请用逗号','分割，最多5个" maxlength=40)
         .dl_modal_container
           .dl_modal_half_container
             .dl_modal_half_container
@@ -48,7 +51,10 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
         .dl_modal_container
           .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("OPTIONAL")}#{__("OPTION")}
-          .dl_modal_option_container
+            span (设置人数、报名时间限制)
+            a(ng-show="!show_options" ng-click="show_options=true;")   展开>>
+            a(ng-show="show_options" ng-click="show_options=false")   <<收起
+          .dl_modal_option_container(ng-show="show_options")
             .dl_row.clearfix
               .dl_modal_label_container
                 span.info_label #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:

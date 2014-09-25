@@ -96,7 +96,7 @@ block panel
         include ../campaign/provoke_modal_base
 block aside
   .newcampainbox
-    span.subtitle 最新活动
+    span.subtitle.line 最新活动
     if campaign
       .bar
         //- PK型活动
@@ -142,7 +142,7 @@ block aside
       p 暂时没有活动
 
   .locationbox
-    p.subtitle
+    p.subtitle.line
       span(ng-init="home_court_index=0" ng-show="home_court_index==0") 主场1
       a(href="javascript:void(0)" ng-click="home_court_index=0" ng-show="home_court_index==1") 主场1
       span &nbsp;/&nbsp;
@@ -163,7 +163,7 @@ block aside
       img.map_size(src="/img/icons/nohomecourt2.jpg/268/210" ng-show="home_court_index==1")
   if photo_album_thumbnails.length>0
     .thumbnailbox
-      span.subtitle 相册
+      span.subtitle.line 相册
         if role !=='GUESTHR' && role !=='GUESTLEADER' && role !=='GUEST'
           a.text.pull-right(href="/photoAlbum/team/#{group_id}/listView") 更多&nbsp;&gt;
       div

@@ -31,7 +31,8 @@ module.exports = function(app) {
   app.get('/group/getSimiliarTeams/:teamId',authorization.teamAuthorize,group.getSimiliarTeams);
   app.get('/group/competition/:teamId/:competitionId', authorization.teamAuthorize, group.getCompetition);
 
-
+  //获取小队的tags
+  app.get('/group/getTags/:teamId', authorization.teamAuthorize, group.getTags);
 
   app.post('/group/updateFormation/:teamId/:competitionId', authorization.teamAuthorize, group.updateFormation);
   //小队发布组内活动
