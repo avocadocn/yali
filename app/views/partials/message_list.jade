@@ -62,7 +62,7 @@ div(ng-show = '!loading')
           a(ng-href="{{'/department/home/'+group_message.department[0]}}") {{group_message.team[0].name}}
           span 发起了一个多部门联谊活动
         span(ng-switch-default)
-        span.pull-right.join_status_contain(ng-if="group_message.join_role && group_message.join_flag!=undefined" ng-class="{'joined':group_message.join_flag,'campaign':group_message.comment_permission}")
+        span.pull-right.join_status_contain(ng-if="group_message.join_role && group_message.join_flag!=undefined" ng-class="{'joined':group_message.join_flag,'campaign':group_message.campaign_flag}")
         span.pull-right.join_status_text(ng-if="group_message.join_flag && group_message.join_role" ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)") 退出
         span.pull-right.join_status_text(ng-if="group_message.join_flag==false && group_message.join_role" ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)") 参加
         .dl_message

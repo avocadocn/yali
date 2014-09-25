@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
 
 var pagesize = 20;
 var day_time = 24 * 60 * 60 * 1000;
-
+var campaign_list = [1,2,3,6,8];
 exports.renderMessageList =function(req,res){
   var cid = req.user.provider=='company'? req.user._id :req.user.cid;
   res.render('partials/message_list',{
@@ -87,6 +87,7 @@ exports.getMessage = function(req, res, next) {
               }
             });
             _group_message.join_flag = join_flag;
+            _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
           }
           break;
           case 1://发起小队活动
@@ -112,6 +113,7 @@ exports.getMessage = function(req, res, next) {
                 }
               })
             }
+            _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
           break;
           case 2://关闭公司活动
             _group_message.logo = group_message[i].company[0].logo;
@@ -208,6 +210,7 @@ exports.getMessage = function(req, res, next) {
             //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
               _group_message.join_flag = join_flag;
             }
+            _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
           break;
           case 6:
             var camp_flag;
@@ -219,6 +222,7 @@ exports.getMessage = function(req, res, next) {
             }
             _group_message.camp_flag =camp_flag;
             _group_message.logo = group_message[i].team[camp_flag ].logo;
+            _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
           break;
           case 7:
             if(last_company_index!=undefined && group_message[i].company[0].cid.toString()===group_messages[last_company_index].company[0].cid.toString()&&group_messages[last_company_index].create_time-group_message[i].create_time<day_time){
@@ -263,6 +267,7 @@ exports.getMessage = function(req, res, next) {
               _group_message.join_flag = join_flag;
               _group_message.department_id = group_message[i].department;
             }
+            _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
             break;
           case 10:
             _group_message.logo = group_message[i].team[0].logo;
@@ -278,6 +283,7 @@ exports.getMessage = function(req, res, next) {
               });
               _group_message.join_flag = join_flag;
             }
+            _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
             break;
           default:
           break;
