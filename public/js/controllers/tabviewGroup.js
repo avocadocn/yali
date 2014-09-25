@@ -1024,6 +1024,9 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         }
 
     });
+    $http.get('/group/getTags/'+$rootScope.teamId).success(function(data, status) {
+        $scope.recommand_tags = data;
+    });
     var placeSearchCallBack = function(data){
         $scope.locationmap.clearMap();
         var lngX = data.poiList.pois[0].location.getLng();
@@ -1088,11 +1091,12 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
         }
     };
 
-    $scope.getTags = function() {
-        // $http.get('/group/getTags/'+$rootScope.teamId).success(function(data, status) {
-        //     console.log(data);
-        // });
-        console.log($scope.tags);
+    $scope.addTag = function(index) {
+        $scope.recommand_tags[index].disabled = true;
+        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
+        // console.log($scope.recommand_tags[index]._id);
+        // $scope.tags = $scope.tags ?$scope.tags + ',' + $scope.recommand_tags[index]._id : $scope.recommand_tags[index]._id;
+        // console.log($scope.tags);
     }
 
     $scope.sponsor = function() {

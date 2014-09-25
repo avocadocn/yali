@@ -1,4 +1,4 @@
-.bootstrap-tagsinput {
+.bootstrap-tagsinput{
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -53,6 +53,27 @@
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 .bootstrap-tagsinput .label {
+  font-size: 100%;
+  padding: .3em .6em .3em;
+  border-radius: 0;
+}
+
+.bootstrap-recommandtags {
+  vertical-align: middle;
+  padding: 4px 6px;
+  line-height: 22px;
+  cursor: pointer;
+  float: left
+}
+.bootstrap-recommandtags .tag {
+  margin-right: 2px;
+  color: white;
+}
+.bootstrap-recommandtags .tag:before {
+  content: "+";
+  padding: 0px 2px;
+}
+.bootstrap-recommandtags .label {
   font-size: 100%;
   padding: .3em .6em .3em;
   border-radius: 0;
