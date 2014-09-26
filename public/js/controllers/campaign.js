@@ -390,6 +390,9 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
     });
     $scope.uploader = cbox.uploader;
 
+    $scope.new_comment = {
+        text: ''
+    };
     $scope.publish = function (content) {
         cbox.publish(content, function (err, comment) {
             if (err) {
@@ -405,7 +408,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                     'host_type' : comment.host_type,
                     'delete_permission':true
                 });
-                $scope.new_comment = '';
+                $scope.new_comment.text = '';
             }
 
         });
