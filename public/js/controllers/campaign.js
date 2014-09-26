@@ -442,7 +442,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
             nickname: nickname
         };
     };
-    $scope.reply = function (comment) {
+    $scope.reply = function (comment, form) {
         if (!comment.new_reply || comment.new_reply === '') return;
         Comment.reply(comment._id, $scope.now_reply_to._id, comment.new_reply, function (err, reply) {
             if (err) {
@@ -453,6 +453,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                 }
                 comment.replies.push(reply);
                 comment.new_reply = "";
+                form.$setPristine();
             }
         });
     };

@@ -146,9 +146,9 @@ block contentExt
                 span.comment_divider(ng-if="comment.delete_permission") &nbsp;
                 a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
             .replies(ng-if="comment.replying")
-              .reply_box
+              form.reply_box(name="reply_form")
                 input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
-                button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment)" ng-disabled="!comment.new_reply") 回复
+                button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
               p.reply(ng-repeat="reply in comment.replies")
                 a(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.from._id, reply.from.nickname)")
                   span {{reply.from.nickname}}
