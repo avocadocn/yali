@@ -56,7 +56,7 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
               .dl_modal_label_container
                 span.info_label 活动标签:
               input#tagsinput(type="text" name="tags" ng-blur="getTags()" ng-model="$parent.tags" data-role="tagsinput")
-            .dl_row.clearfix
+            .dl_row.clearfix(ng-if="recommand_tags")
               .dl_modal_label_container
                 span.info_label 常用标签:
               .bootstrap-recommandtags(ng-repeat="tag in recommand_tags" ) 
@@ -76,7 +76,6 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
                   span.info_label 报名截止时间:
                 .dl_modal_time_container
                   .input-group.date.form_datetime#deadline
-                    //img(ng-src='/img/icons/icon_date.png')
                     input.dl-form-control(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
                     span.input-group-addon.no_radius
                       span.glyphicon.glyphicon-th
