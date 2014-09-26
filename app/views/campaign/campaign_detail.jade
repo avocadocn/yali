@@ -116,11 +116,11 @@ block contentExt
         if role==='MEMBER' || role ==='LEADER'
           .dl_row.clearfix
             form.dl_rich_comment_form(name="comment_form" novalidate)
-              textarea.dl-form-control.comment_textarea(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
+              textarea.dl-form-control.comment_textarea(rows="2" name="content" ng-model="new_comment" placeholder="留言请控制在140字以内" maxlength=140 required)
               .operator.clearfix
                 label.btn.btn-default.btn-xs(for="photos"): i.glyphicon.glyphicon-picture
                 input.hidden#photos(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
-                button.dl_btn.dl_btn_submit.pull-right(ng-click="publish(new_comment.text)" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+                button.dl_btn.dl_btn_submit.pull-right(ng-click="publish(new_comment)" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
                 .preview_box.clearfix(ng-show="uploader.isHTML5")
                   .preview_img_wrap(ng-repeat="item in uploader.queue")
                     .close(ng-click="item.remove()") &times;
@@ -136,9 +136,26 @@ block contentExt
               .triangle
               .comment_content
                 p(ng-cloak) {{comment.content}}
-                img(ng-if="comment.photos" ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}")
-            .comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-              a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+                .dl_comment_img_box
+                  .img_list_box.clearfix
+                    img.list_img(ng-if="comment.photos" ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/100/100")
+            .comment_footer.clearfix
+              span.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+              .pull-right
+                a.text(ng-click="toggleComment(comment)") 回复({{comment.replies.length || 0}})
+                span.comment_divider(ng-if="comment.delete_permission") &nbsp;
+                a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+            .replies(ng-if="comment.replying")
+              .reply_box
+                input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
+                button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment)" ng-disabled="!comment.new_reply") 回复
+              p.reply(ng-repeat="reply in comment.replies")
+                a(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.from._id, reply.from.nickname)")
+                  span {{reply.from.nickname}}
+                span &nbsp;:&nbsp;
+                span(ng-if="reply.to._id!==comment.poster._id") 回复 {{reply.to.nickname}}:&nbsp;
+                span {{reply.content}}
+                span &nbsp;({{reply.publish_date | date:'yyyy-MM-dd HH:mm' | dateView }})
     .dl_detail_side
       .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}

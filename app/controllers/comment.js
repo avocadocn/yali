@@ -41,7 +41,7 @@ exports.getComment = function(req,res){
     // 加 '|| req.params.hostId'完全是为了不破坏以前的代码，这两个如果有的话其实相等！完全不需要req.body.host_id
     var host_id = req.body.host_id || req.params.hostId;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
     //todo: 判断类型
-    Comment.find({'host_id' : req.body.host_id,'status' : {'$ne':'delete'}, 'host_type': {'$ne':'photo'}}).sort({'create_date':-1})
+    Comment.find({'host_id' : host_id,'status' : {'$ne':'delete'}, 'host_type': {'$ne':'photo'}}).sort({'create_date':-1})
     .exec(function(err, comment) {
         if(err || !comment) {
             return res.send([]);
@@ -115,18 +115,23 @@ exports.reply = function (req, res, next) {
         return res.send(400);
     }
     var comment = req.comment;
+    var to = {
+        _id: req.body.to
+    };
     var reply = {
-        to: req.body.to,
+        to: to,
         content: req.body.content
     };
     // 如果回复的目标不是该评论的发表者，则搜寻回复列表是否存在该目标
     var findTarget = true;
-    if (reply.to !== comment.poster._id.toString()) {
+    to.nickname = comment.poster.nickname;
+    if (reply.to._id !== comment.poster._id.toString()) {
         findTarget = false;
         if (comment.replies) {
             for (var i = 0; i < comment.replies.length; i++) {
-                if (reply.to === comment.replies[i].from._id.toString()) {
+                if (reply.to._id === comment.replies[i].from._id.toString()) {
                     findTarget = true;
+                    to.nickname = comment.replies[i].from.nickname;
                 }
             }
         }
@@ -140,14 +145,14 @@ exports.reply = function (req, res, next) {
         cname: req.user.cname,
         nickname: req.user.nickname,
         realname: req.user.realname,
-        photo: req.user.photo
+        photo: req.user.photo,
     };
     comment.replies.push(reply);
     comment.save(function (err) {
         if (err) {
             return next(err);
         } else {
-            return res.send({ result: 1 });
+            return res.send({ result: 1 , reply: comment.replies[comment.replies.length - 1] });
         }
     });
 };

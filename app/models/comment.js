@@ -49,6 +49,10 @@ var Comment = new Schema({
       type: String,
       enum:['active','delete'],
       default: 'active'
+    },
+    publish_date: {
+      type: Date,
+      default: Date.now
     }
   }],
   photos: [{

@@ -253,7 +253,7 @@ textarea {
   width: 450px;
   min-height: 50px;
   word-break: break-all;
-  max-height: 140px;
+  max-height: 400px;
   overflow: hidden;
   margin-bottom: 4px;
 }
@@ -2306,6 +2306,17 @@ input.ng-invalid.ng-dirty {
 }
 .dl_rich_comment_form .operator .preview_box .preview_img_wrap:hover .close {
   display: block;
+}
+.dl_comment_img_box .img_list_box {
+  width: 350px;
+}
+.dl_comment_img_box .img_list_box .list_img {
+  display: block;
+  float: left;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 100px;
+  height: 100px;
 }
 @-moz-keyframes scaleFade {
   50% {

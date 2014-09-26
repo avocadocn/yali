@@ -86,6 +86,19 @@
   padding: 10px 20px;
   margin-top: 10px;
 }
+.dl_detail_container .dl_detail_main .comment_box .replies {
+  width: 450px;
+  margin-top: 5px;
+  padding: 10px;
+  background-color: #fbfbfb;
+}
+.dl_detail_container .dl_detail_main .comment_box .reply_box {
+  margin-bottom: 15px;
+  display: flex;
+}
+.dl_detail_container .dl_detail_main .comment_box .reply_box .reply_input {
+  flex: 1;
+}
 .dl_detail_container .dl_button_container {
   margin-top: 10px;
 }

@@ -29,6 +29,21 @@ angular.module('donler')
     });
   };
 
+  var reply = function (comment_id, to, content, callback) {
+    $http.post('/comment/' + comment_id + '/reply', {
+      to: to,
+      content: content
+    }).success(function (data, status) {
+      if (data.result === 1) {
+        callback(null, data.reply);
+      } else {
+        callback('error');
+      }
+    }).error(function (data, status) {
+      callback('error');
+    });
+  };
+
   var CommentBox = function (args) {
     this.host_type = args.host_type;
     this.host_id = args.host_id;
@@ -49,6 +64,7 @@ angular.module('donler')
   };
 
   CommentBox.prototype.publish = function (content, callback) {
+    if (!content && content === '') return;
     var self = this;
     if (self.uploader.getNotUploadedItems().length > 0) {
       self.upload_photos = [];
@@ -82,6 +98,7 @@ angular.module('donler')
 
   return {
     get: get,
+    reply: reply,
     CommentBox: CommentBox
   };
 
