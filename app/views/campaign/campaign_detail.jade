@@ -136,9 +136,16 @@ block contentExt
               .triangle
               .comment_content
                 p(ng-cloak) {{comment.content}}
-                .dl_comment_img_box
-                  .img_list_box.clearfix
-                    img.list_img(ng-if="comment.photos" ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/100/100")
+                .dl_comment_img_box(ng-if="comment.photos.length > 1")
+                  .img_list_box.clearfix(ng-if="!comment.preview")
+                    img.list_img(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/100/100" ng-click="comment.preview=true")
+                  .img_slider_box.clearfix(ng-if="comment.preview")
+                    .preview
+                      img.img-responsive(ng-src="{{comment.preview_img || comment.photos[0].uri}}" ng-click="comment.preview=false")
+                    .nav
+                      img.thumb(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/40/40" ng-click="comment.preview_img=photo.uri")
+                .dl_comment_img_box(ng-if="comment.photos.length === 1")
+                  img.img-responsive(ng-src="{{comment.photos[0].uri}}")
             .comment_footer.clearfix
               span.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
               .pull-right
