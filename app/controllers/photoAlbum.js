@@ -800,7 +800,15 @@ exports.createSinglePhoto = function(req, res, next) {
                 console.log(err);
                 return res.send(500);
               }
-              return res.send({ result: 1, msg: '上传成功' });
+              var new_photo = req.photo_album.photos[req.photo_album.photos.length - 1];
+              return res.send({
+                result: 1,
+                msg: '上传成功',
+                photo: {
+                  _id: new_photo._id,
+                  uri: new_photo.uri
+                }
+              });
             });
             part.resume();
           });

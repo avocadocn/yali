@@ -214,7 +214,7 @@ textarea
   .comment_user_info
     float left
     max-width 50px
-    p 
+    p
       text-align center
 
     .user_photo
@@ -235,7 +235,7 @@ textarea
       width 450px
       min-height 50px
       word-break break-all
-      max-height 140px
+      max-height 400px
       overflow hidden
       margin-bottom 4px
 
@@ -292,7 +292,7 @@ textarea
       width 24%
       margin-right -15px
       float right
-      
+
   .hidden_block
     margin-top -5px
     margin-right -15px
@@ -1926,3 +1926,33 @@ input.ng-invalid.ng-dirty
   .loading_text
     line-height 100px
     margin 0
+
+.dl_rich_comment_form
+  .comment_textarea
+    float none
+  .operator
+    margin-top 5px
+    .preview_box
+      margin-top 5px
+      .preview_img_wrap
+        position relative
+        float left
+        margin-right 5px
+        .close
+          display none
+          position absolute
+          top 0
+          right 0
+        &:hover
+          .close
+            display block
+.dl_comment_img_box
+  .img_list_box
+    width 350px
+    .list_img
+      display block
+      float left
+      margin-top 5px
+      margin-left 5px
+      width 100px
+      height 100px

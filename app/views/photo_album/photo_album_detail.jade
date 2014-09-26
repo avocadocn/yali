@@ -13,8 +13,7 @@ block contentExt
           .pull-left
             img.media-object.header_logo.img-thumbnail(src="#{photo_album.owner.logo}")
           .media-body
-            h4.media-heading
-                = photo_album.owner.name
+            h4.media-heading= photo_album.owner.name
             p.text 相册名:&nbsp;#{photo_album.name}
             p.text 照片数:&nbsp;#{photo_album.photo_count}
             p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
