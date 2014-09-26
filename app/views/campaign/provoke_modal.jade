@@ -38,7 +38,7 @@ form(name="provoke_form" novalidate)
       .dl_modal_button
         a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap()") #{__("MAP")}
     .dl_modal_container.height_200(ng-show="showMapFlag")
-          #competitionMapDetail
+      #competitionMapDetail.height_200
     .dl_modal_container
       .dl_modal_container
         label.subtitle #{__("PROVOKE")}#{__("OPTIONAL")}#{__("OPTION")}

@@ -44,13 +44,13 @@ tabViewUser.config(['$routeProvider',
         },
         controller: 'TimeLineController'
       })
-      .when('/schedule/:uid', {
-        templateUrl: function(params){
-            return '/users/getScheduleList/'+params.uid;
-        },
-        controller: 'ScheduleListController',
-        controllerAs: 'schedule'
-      })
+      // .when('/schedule/:uid', {
+      //   templateUrl: function(params){
+      //       return '/users/getScheduleList/'+params.uid;
+      //   },
+      //   controller: 'ScheduleListController',
+      //   controllerAs: 'schedule'
+      // })
       .when('/changePassword/:uid', {
         templateUrl: function(params) {
             return '/users/change_password/' + params.uid;
@@ -465,9 +465,99 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
     }
 ]);
 
-tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope',
+// tabViewUser.controller('ScheduleModalController', ['$scope', '$http', '$rootScope',
+//     function($scope, $http, $rootScope) {
+//         $rootScope.nowTab = 'schedule';
+//         angular.element('.tooltip').hide();
+//         $scope.isCalendar = true;
+//         $scope.isDayView = false;
+
+//         // 判断是否是第一次加载视图，用于$scope.$digest()
+//         var firstLoad = true;
+//         $scope.campaignsType = 'joined';
+// $rootScope.$on('updateUser', function() {
+//     $scope.user = Global.user;
+//     $scope.logoRandom = new Date().getTime();
+//   });
+//         $scope.calendar = function(isCalendar) {
+//             $scope.isCalendar = isCalendar;
+//             $scope.getCampaigns($scope.campaignsType);
+//         };
+
+//         var initCalendar = function(events_source) {
+//             var options = {
+//                 events_source: events_source,
+//                 view: 'weeks',
+//                 time_end: '24:00',
+//                 tmpl_path: '/tmpls/',
+//                 tmpl_cache: false,
+//                 language: 'zh-CN',
+//                 onAfterEventsLoad: function(events) {
+//                     if (!events) {
+//                         return;
+//                     }
+//                 },
+//                 onAfterViewLoad: function(view) {
+//                     $('#calendar_title_modal').text(this.getTitle());
+//                     //$('#calendar_operator button').removeClass('active');
+//                     //$('button[data-calendar-view="' + view + '"]').addClass('active');
+//                     if (view === 'day') {
+//                         $scope.isDayView = true;
+//                         if (firstLoad === true) {
+//                             firstLoad = false;
+//                         }
+//                         $scope.$digest();
+//                     } else {
+//                         $scope.isDayView = false;
+//                         if (firstLoad === false) {
+//                             $scope.$digest();
+//                         }
+//                     }
+//                 },
+//                 classes: {
+//                     months: {
+//                         general: 'label'
+//                     }
+//                 }
+//             };
+
+//             var calendar = $('#calendar_modal').calendar(options);
+
+//             $('#calendar_nav_modal [data-calendar-nav]').each(function() {
+//                 var $this = $(this);
+//                 $this.click(function() {
+//                     calendar.navigate($this.data('calendar-nav'));
+//                 });
+//             });
+//             $('#calendar_view_modal [data-calendar-view]').each(function() {
+//                 var $this = $(this);
+//                 $this.click(function() {
+//                     calendar.view($this.data('calendar-view'));
+//                 });
+//             });
+//         };
+
+
+//         $scope.company = false; 
+//         $scope.getCampaigns = function(attr) {
+//             // if ($scope.isCalendar === true) {
+//                 $scope.campaignsType = attr;
+//                 var events_source = '/campaign/user/' + attr + '/calendar/'+$rootScope.uid;
+//                 initCalendar(events_source);
+//             // } else {
+//             //     $scope.campaignsType = attr;
+//             //     $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
+//             //       $scope.campaigns = data.campaigns;
+//             //       $scope.company = false;
+//             //     });
+//             // }
+//         };
+
+//         $scope.getCampaigns($scope.campaignsType);
+//     }
+// ]);
+tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
-        $rootScope.nowTab = 'schedule';
         angular.element('.tooltip').hide();
         $scope.isCalendar = true;
         $scope.isDayView = false;
@@ -484,11 +574,12 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         var initCalendar = function(events_source) {
             var options = {
                 events_source: events_source,
-                view: 'weeks',
+                view: 'month',
                 time_end: '24:00',
-                tmpl_path: '/tmpls/',
+                tmpl_path: '/tmpls-small/',
                 tmpl_cache: false,
                 language: 'zh-CN',
+                modal: '#events-modal',
                 onAfterEventsLoad: function(events) {
                     if (!events) {
                         return;
@@ -510,6 +601,20 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
                             $scope.$digest();
                         }
                     }
+                    $('#calendar_nav').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
+                        calendar.navigate($(this).data('calendar-nav'));
+                    });
+                    $('#calendar_view').undelegate('[data-calendar-view]','click').delegate('[data-calendar-view]','click',function() {
+                        calendar.view($(this).data('calendar-view'));
+                    });
+                    $('#calendar').undelegate('.cal-month-day','click').delegate('.cal-month-day','click',function(e){
+                        $rootScope.$broadcast('updateUser', true);
+
+                        $('#events-modal').modal('show');
+                        initModalCalendar(events_source,calendar.getStartDate());
+                        // $('#calendar_modal').view($(this).data('calendar-view'));
+                        // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
+                    });
                 },
                 classes: {
                     months: {
@@ -519,22 +624,53 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
             };
 
             var calendar = $('#calendar').calendar(options);
-
-            $('#calendar_nav [data-calendar-nav]').each(function() {
-                var $this = $(this);
-                $this.click(function() {
-                    calendar.navigate($this.data('calendar-nav'));
-                });
-            });
-            $('#calendar_view [data-calendar-view]').each(function() {
-                var $this = $(this);
-                $this.click(function() {
-                    calendar.view($this.data('calendar-view'));
-                });
-            });
         };
+        var initModalCalendar = function(events_source,start_time) {
+            var modalOptions = {
+                events_source: events_source,
+                view: 'month',
+                time_end: '24:00',
+                tmpl_path: '/tmpls/',
+                tmpl_cache: false,
+                language: 'zh-CN',
+                modal: '#events-modal',
+                onAfterEventsLoad: function(events) {
+                    if (!events) {
+                        return;
+                    }
+                },
+                onAfterViewLoad: function(view) {
+                    $('#calendar_title').text(this.getTitle());
+                    //$('#calendar_operator button').removeClass('active');
+                    //$('button[data-calendar-view="' + view + '"]').addClass('active');
+                    if (view === 'day') {
+                        $scope.isDayView = true;
+                        if (firstLoad === true) {
+                            firstLoad = false;
+                        }
+                        $scope.$digest();
+                    } else {
+                        $scope.isDayView = false;
+                        if (firstLoad === false) {
+                            $scope.$digest();
+                        }
+                    }
+                    $('#calendar_nav_modal').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
+                        modalCalendar.navigate($(this).data('calendar-nav'));
+                    });
+                    $('#calendar_view_modal').undelegate('[data-calendar-view]','click').delegate('[data-calendar-view]','click',function() {
+                        modalCalendar.view($(this).data('calendar-view'));
+                    });
+                },
+                classes: {
+                    months: {
+                        general: 'label'
+                    }
+                }
+            };
 
-
+            var modalCalendar = $('#calendar_modal').calendar(modalOptions);
+        };
         $scope.company = false; 
         $scope.getCampaigns = function(attr) {
             // if ($scope.isCalendar === true) {
@@ -553,7 +689,6 @@ tabViewUser.controller('ScheduleListController', ['$scope', '$http', '$rootScope
         $scope.getCampaigns($scope.campaignsType);
     }
 ]);
-
 tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
         $rootScope.nowTab = 'campaign';

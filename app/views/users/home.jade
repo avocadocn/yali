@@ -46,8 +46,8 @@ block panel
         a.subtitle.no_radius(href="#/group_message") 动态
       li.tab_style(ng-class="{'active':nowTab=='campaign'}")
         a.subtitle.no_radius(href="#/campaign/#{uid}") #{__("CAMPAIGN")}#{__("LIST")}
-    li.tab_style(ng-class="{'active':nowTab=='schedule'}")
-      a.subtitle.no_radius(href="#/schedule/#{uid}") #{__("SCHEDULE")}
+    //- li.tab_style(ng-class="{'active':nowTab=='schedule'}")
+    //-   a.subtitle.no_radius(href="#/schedule/#{uid}") #{__("SCHEDULE")}
     li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
       a.subtitle.no_radius(href="#/timeLine/#{uid}") 足迹
     li.tab_style(ng-class="{'active':nowTab=='personal'}")
@@ -65,6 +65,9 @@ block aside
       +group_thumbnail(selected_teams,'active','加入的小队',2)
     if (unselected_teams.length)
       +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'),3)
+    .schedule_small(ng-controller="ScheduleSmallController")
+      include ../partials/schedule_list
+      include ../partials/calendar_modal
 
 append footExt
   script(src="/js/controllers/tabviewUser.js")

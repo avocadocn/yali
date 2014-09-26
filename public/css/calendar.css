@@ -395,6 +395,9 @@
 .cal-month-day {
   height: 100px;
 }
+.cal-month-day-small {
+  height: 50px;
+}
 [class*="cal-cell"]:hover {
   background-color: #ededed;
 }
@@ -403,6 +406,10 @@
   min-height: 100px;
   border-right: 1px solid #e1e1e1;
   position: relative;
+}
+.cal-year-box-small [class*="span"],
+.cal-month-box-small [class*="cal-cell"] {
+  min-height: 50px;
 }
 .cal-year-box [class*="span"] {
   min-height: 60px;

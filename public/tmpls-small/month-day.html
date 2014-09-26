@@ -1,0 +1,17 @@
+<div class="cal-month-day cal-month-day-small <%= cls %>">
+	<% if (events.length > 0) { %>
+		<%
+			var joined = false;
+			_.each(events, function(event) {
+				if (event.is_joined === true) {
+					joined = true;
+				}
+			});
+		%>
+		<% if (joined) { %>
+			<!-- <img class="join_sign" src="/img/icons/joined_campaign.ico"/> -->
+			<div class="join_sign"></div>
+		<% } %>
+	<% } %>
+	<span class="pull-right day" data-cal-date="<%= data_day %>" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
+</div>

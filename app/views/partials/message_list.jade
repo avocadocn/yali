@@ -1,6 +1,6 @@
 .loading_div(ng-show = 'loading')
 div(ng-show = '!loading')
-  .dl_messagebox.clearfix(ng-repeat="group_message in group_messages")
+  .dl_messagebox.clearfix(ng-repeat="group_message in group_messages" ng-class="{'campaign':group_message.campaign_flag}" ng-cloak)
     //若是公司动态
     div.clearfix.dl_messageitem
       .message_side(ng-if="group_message.message_type==1||group_message.message_type==3||group_message.message_type==4||group_message.message_type==5")

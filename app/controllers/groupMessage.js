@@ -11,6 +11,7 @@ var mongoose = require('mongoose'),
 
 var pagesize = 20;
 var day_time = 24 * 60 * 60 * 1000;
+//属于活动的活动类型
 var campaign_list = [1,2,3,6,8];
 exports.renderMessageList =function(req,res){
   var cid = req.user.provider=='company'? req.user._id :req.user.cid;

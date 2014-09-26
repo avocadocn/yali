@@ -14,9 +14,6 @@
 		<% } %>
 	<% } %>
 	<span class="pull-right day" data-cal-date="<%= data_day %>" data-cal-view="day" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
-	<% if (monthTip !== '' && monthTip != null) { %>
-		<span class="pull-right month"><%= monthTip %></span>
-	<% } %>
 	<%
 		if (events.length > 0) {
 			var count = 0;
