@@ -606,7 +606,7 @@ exports.provoke = function (req, res) {
       competition.cid=[req.companyGroup.cid, team_opposite.cid];
       competition.team=[my_team_id,team_opposite._id];
       competition.campaign_type=type;
-
+      competition.tags = req.body.tags;
       competition.poster.cname = cname;
       competition.poster.cid = cid;
       if(req.role==='PARTNERLEADER' || req.role === 'GUESTLEADER' || req.role ==='MEMBERLEADER')

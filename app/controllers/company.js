@@ -1560,7 +1560,7 @@ exports.sponsor = function(req, res) {
   campaign.content = content;
   campaign.location = location;
   campaign.theme = theme;
-
+  campaign.tags = req.body.tags;
   campaign.start_time = start_time;
   campaign.end_time = end_time;
   campaign.deadline = deadline;

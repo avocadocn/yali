@@ -128,18 +128,15 @@ tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope,
             }
         });
     };
-
-    //加载地图
-    $rootScope.loadMap = function(index){
-        $rootScope.loadMapIndex = index;
-    };
-
-    $rootScope.dongIt = function(){
-        $rootScope.modalNumber = 2;
-    };
-
-    $rootScope.provokeRecommand =function(){
-        $rootScope.recommand = true;
+    $rootScope.sponsorIndex =function(index) {
+        $rootScope.modal_index=index;
+        if(index===1){//活动
+            $rootScope.loadMapIndex = index;
+            $('#sponsorCampaignModel').modal('show');
+        }
+        else{
+            $('#sponsorProvokeModel').modal('show');
+        }
     };
 }]);
 
@@ -979,7 +976,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     });
 }]);
 
-tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Group',function($http, $scope, $rootScope, Group) {
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $("#start_time").on("changeDate",function (ev) {
@@ -1022,10 +1019,11 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
                 $scope.initialize();
             }
         }
-
     });
-    $http.get('/group/getTags/'+$rootScope.teamId).success(function(data, status) {
-        $scope.recommand_tags = data;
+    Group.getTags($rootScope.teamId,function(status,data){
+        if(!status){
+            $scope.recommand_tags = data;
+        }
     });
     var placeSearchCallBack = function(data){
         $scope.locationmap.clearMap();
@@ -1094,48 +1092,35 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope',fun
     $scope.addTag = function(index) {
         $scope.recommand_tags[index].disabled = true;
         $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
-        // console.log($scope.recommand_tags[index]._id);
-        // $scope.tags = $scope.tags ?$scope.tags + ',' + $scope.recommand_tags[index]._id : $scope.recommand_tags[index]._id;
-        // console.log($scope.tags);
-    }
+    };
 
     $scope.sponsor = function() {
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
         }
         else{
-            try{
-                $http({
-                    method: 'post',
-                    url: '/group/campaignSponsor/'+ $rootScope.teamId,
-                    data:{
-                        theme: $scope.theme,
-                        location: $scope.location,
-                        content : $scope.content,
-                        start_time : $scope.start_time,
-                        end_time : $scope.end_time,
-                        member_min: $scope.member_min,
-                        member_max: $scope.member_max,
-                        deadline: $scope.deadline,
-                        tags: $scope.tags.split(",")
-                    }
-                }).success(function(data, status) {
-                    //发布活动后跳转到显示活动列表页面
+            var _data = {
+                theme: $scope.theme,
+                location: $scope.location,
+                content : $scope.content,
+                start_time : $scope.start_time,
+                end_time : $scope.end_time,
+                member_min: $scope.member_min,
+                member_max: $scope.member_max,
+                deadline: $scope.deadline,
+                tags: $scope.tags.split(',')
+            };
+            Group.sponsor($rootScope.teamId,_data,function(status,data){
+                if(!status){
                     window.location.reload();
-
-                }).error(function(data, status) {
-                    //TODO:更改对话框
-                    alertify.alert('DATA ERROR');
-                });
-
-            }
-            catch(e){
-                console.log(e);
-            }
+                }else{
+                    alertify.alert('活动发布出错');
+                }
+            });
         }
     };
 }]);
-tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Group',function($http, $scope, $rootScope, Group) {
     $scope.search_type="team";
     $scope.companies = [];
     $scope.teams = [];
@@ -1143,9 +1128,12 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     $scope.location={name:'',coordinates:[]};
     $scope.modal=0;
     $scope.result=0;//是否已搜索
-    $rootScope.modalNumber=0;
     $scope.selected_index=-1;
-
+    Group.getTags($rootScope.teamId,function(status,data){
+        if(!status){
+            $scope.recommand_tags = data;
+        }
+    });
     $rootScope.$watch('loadMapIndex',function(value){
         if(value==2){
             //加载地图
@@ -1162,29 +1150,21 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
     });
 
     //决定要打开哪个挑战的modal
-    $rootScope.$watch('modalNumber',function(){
-        if($rootScope.modalNumber){
-            if($rootScope.modalNumber!==2)
-                $scope.modal = 0;
-            else{
-                $scope.modal = 2;
-                $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
-                    $scope.similarTeams = data;
-                    if(data.length===1){
-                        $scope.modal=3;//直接跳到发起挑战页面
-                        $scope.team_opposite = $scope.similarTeams[0];
-                    }
-                });
-            }
+    $rootScope.$watch('modal_index',function(){
+        if($rootScope.modal_index===3){
+            $scope.modal = 2;
+            $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
+                $scope.similarTeams = data;
+                if(data.length===1){
+                    $scope.modal=3;//直接跳到发起挑战页面
+                    $scope.team_opposite = $scope.similarTeams[0];
+                }
+            });
+        }
+        else if($rootScope.modal_index===2){
+            $scope.recommandTeam();
         }
     });
-
-    //推荐小队
-    $rootScope.$watch('recommand',function(){
-        if($rootScope.recommand)
-            $scope.recommandTeam();
-    });
-
 
     $("#competition_start_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
@@ -1412,66 +1392,43 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope',fun
             $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
         $scope.modal++;
         $rootScope.loadMapIndex=2;
-
     };
-
+    $scope.addTag = function(index) {
+        $scope.recommand_tags[index].disabled = true;
+        $('#comptagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
+    };
     //约战
     $scope.provoke = function() {
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
         }
         else{
+            var _data = {
+                theme : $scope.theme,
+                content : $scope.content,
+                location: $scope.location,
+                start_time: $scope.start_time,
+                end_time: $scope.end_time,
+                deadline: $scope.deadline,
+                member_min : $scope.member_min,
+                member_max : $scope.member_max,
+                tags: $scope.tags.split(',')
+            };
+            var callback = function(status,data){
+                if(!status){
+                    window.location.reload();
+                }
+                else{
+                    alertify.alert('挑战发起失败');
+                }                
+            }
             if($scope.modal===1){//在自己的小队约战
-                try {
-                    $http({
-                        method: 'post',
-                        url: '/group/provoke/'+$rootScope.teamId,
-                        data:{
-                            theme : $scope.theme,
-                            team_opposite_id : $scope.team_opposite._id,
-                            content : $scope.content,
-                            location: $scope.location,
-                            start_time: $scope.start_time,
-                            end_time: $scope.end_time,
-                            deadline: $scope.deadline,
-                            member_min : $scope.member_min,
-                            member_max : $scope.member_max,
-                        }
-                    }).success(function(data, status) {
-                        window.location.reload();
-                    }).error(function(data, status) {
-                        alertify.alert('DATA ERROR');
-                    });
-                }
-                catch(e) {
-                    console.log(e);
-                }
+                _data.team_opposite_id =$scope.team_opposite._id
+                Group.provoke($rootScope.teamId,_data,callback);
             }
             else{//在其它小队约战
-                try {
-                    $http({
-                        method: 'post',
-                        url: '/group/provoke/'+$scope.team_opposite._id,
-                        data:{
-                            theme : $scope.theme,
-                            team_opposite_id : $rootScope.teamId,
-                            content : $scope.content,
-                            location: $scope.location,
-                            start_time: $scope.start_time,
-                            end_time: $scope.end_time,
-                            deadline: $scope.deadline,
-                            member_min : $scope.member_min,
-                            member_max : $scope.member_max
-                        }
-                    }).success(function(data, status) {
-                        window.location.reload();
-                    }).error(function(data, status) {
-                        alertify.alert('DATA ERROR');
-                    });
-                }
-                catch(e) {
-                    console.log(e);
-                }            
+                _data.team_opposite_id = $rootScope.teamId;
+                Group.provoke($scope.team_opposite._id,_data,callback);
             }
         }
     };

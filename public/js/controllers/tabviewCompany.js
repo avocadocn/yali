@@ -1544,7 +1544,8 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
             end_time : $scope.end_time,
             deadline : $scope.deadline,
             member_min : $scope.member_min,
-            member_max : $scope.member_max
+            member_max : $scope.member_max,
+            tags: $scope.tags.split(',')
         };
         if($rootScope.dOtMulti && $scope.multi_campaign_type.value == '1'){
             $scope.dOt_send_success = 0;

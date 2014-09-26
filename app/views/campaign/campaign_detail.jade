@@ -52,6 +52,13 @@ block contentExt
                 span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
               .dl_detail_detail
                 span= campaign.member_max
+          if campaign.tags.length>0
+            .dl_detail_row
+              .dl_detail_row
+                .dl_detail_detail
+                  each tag in campaign.tags
+                    span.glyphicon.glyphicon-tag
+                    span #{tag}  
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
             if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish

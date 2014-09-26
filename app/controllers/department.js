@@ -190,7 +190,7 @@ exports.multiCampaignSponsor = function(req, res) {
   department_campaign.start_time = time.start;
   department_campaign.end_time = time.end;
   department_campaign.deadline = time.deadline ? time.deadline : time.start;
-
+  department_campaign.tags = req.body.tags;
   var photo_album = new PhotoAlbum({
     owner: {
       model: {
@@ -367,7 +367,7 @@ exports.sponsor = function(req, res) {
     campaign.theme = theme;
     campaign.active = true;
     campaign.campaign_type = 6; // 部门活动
-
+    campaign.tags = req.body.tags;
     campaign.start_time = start_time;
     campaign.end_time = end_time;
     campaign.deadline = deadline;

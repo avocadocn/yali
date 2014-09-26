@@ -60,13 +60,13 @@
 
 .bootstrap-recommandtags {
   vertical-align: middle;
-  padding: 4px 6px;
+  padding: 4px 0;
   line-height: 22px;
   cursor: pointer;
   float: left
 }
 .bootstrap-recommandtags .tag {
-  margin-right: 2px;
+  margin-right: 5px;
   color: white;
 }
 .bootstrap-recommandtags .tag:before {

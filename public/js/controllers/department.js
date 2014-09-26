@@ -1047,9 +1047,10 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
                 member_num:{
                     min:$scope.member_min,
                     max:$scope.member_max
-                }
+                },
+                tags:$scope.tags.split(',')
             }
-            console.log($scope.deadline);
+            // console.log($scope.deadline);
         }else{
             _url = '/department/'+$scope.did+'/sponsor';
             _data = {
@@ -1060,9 +1061,10 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
                 end_time : $scope.end_time,
                 member_min: $scope.member_min,
                 member_max: $scope.member_max,
-                deadline: $scope.deadline
+                deadline: $scope.deadline,
+                tags:$scope.tags.split(',')
             }
-            console.log($scope.deadline);
+            // console.log($scope.deadline);
         }
         try{
             $http({
