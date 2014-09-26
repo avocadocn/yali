@@ -861,9 +861,7 @@ exports.timeLine = function(req,res){
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
           year: getYear(campaign),
-
-          // photo_list[i].thumbnail_uri是缩略图，200*200，photo_list[i].uri是原图
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
         }
         // todo new time style
         // console.log(campaign);
