@@ -2284,6 +2284,29 @@ input.ng-invalid.ng-dirty {
   line-height: 100px;
   margin: 0;
 }
+.dl_rich_comment_form .comment_textarea {
+  float: none;
+}
+.dl_rich_comment_form .operator {
+  margin-top: 5px;
+}
+.dl_rich_comment_form .operator .preview_box {
+  margin-top: 5px;
+}
+.dl_rich_comment_form .operator .preview_box .preview_img_wrap {
+  position: relative;
+  float: left;
+  margin-right: 5px;
+}
+.dl_rich_comment_form .operator .preview_box .preview_img_wrap .close {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.dl_rich_comment_form .operator .preview_box .preview_img_wrap:hover .close {
+  display: block;
+}
 @-moz-keyframes scaleFade {
   50% {
     opacity: 1;

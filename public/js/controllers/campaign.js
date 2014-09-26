@@ -424,9 +424,8 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         host_type: 'campaign_detail',
         host_id: campaign_data.data('hostId'),
         photo_album_id: campaign_data.data('photoAlbumId')
-    }, function (uploader) {
-        $scope.uploader = uploader;
     });
+    $scope.uploader = cbox.uploader;
 
     $scope.publish = function (content) {
         cbox.publish(content, function (err, comment) {

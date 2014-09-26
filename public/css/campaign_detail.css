@@ -78,20 +78,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.dl_detail_container .dl_detail_main .commment_box {
+.dl_detail_container .dl_detail_main .comment_box {
   width: 660px;
   float: left;
   background-color: #fff;
   border: 1px solid #ddd;
   padding: 10px 20px;
   margin-top: 10px;
-}
-.dl_detail_container .dl_detail_main .commment_box textarea {
-  width: 510px;
-  margin-left: 10px;
-}
-.dl_detail_container .dl_detail_main .commment_box button {
-  margin-top: 21px;
 }
 .dl_detail_container .dl_button_container {
   margin-top: 10px;

@@ -111,18 +111,20 @@ block contentExt
             a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
               img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
               span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-      .dl_row.clearfix.commment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
+      .dl_row.clearfix.comment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
         p.subtitle 留言
         if role==='MEMBER' || role ==='LEADER'
-          //- form(name="comment_form" novalidate)
-            .dl_row.clearfix
-              textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
-              button.dl_btn.dl_btn_submit.pull-right(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-          form(name="comment_form" novalidate)
-            .dl_row.clearfix
-              textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
-              input(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
-              button.dl_btn.dl_btn_submit.pull-right(ng-click="publish(new_comment.text)" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+          .dl_row.clearfix
+            form.dl_rich_comment_form(name="comment_form" novalidate)
+              textarea.dl-form-control.comment_textarea(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
+              .operator.clearfix
+                label.btn.btn-default.btn-xs(for="photos"): i.glyphicon.glyphicon-picture
+                input.hidden#photos(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
+                button.dl_btn.dl_btn_submit.pull-right(ng-click="publish(new_comment.text)" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+                .preview_box.clearfix(ng-show="uploader.isHTML5")
+                  .preview_img_wrap(ng-repeat="item in uploader.queue")
+                    .close(ng-click="item.remove()") &times;
+                    div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
         .comment.clearfix(ng-repeat="comment in comments")
           .comment_user_info
             a(href="/users/home/{{comment.poster._id}}" )
