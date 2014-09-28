@@ -795,6 +795,7 @@ exports.createSinglePhoto = function(req, res, next) {
               mkdirp.sync(dir);
             }
             fs.writeFileSync(path.join(dir, photo_id + '.' + ext), data);
+            req.photo_album.photo_count += 1;
             req.photo_album.save(function (err) {
               if (err) {
                 console.log(err);
