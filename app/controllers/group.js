@@ -935,7 +935,7 @@ exports.getTags = function (req, res) {
         console.log(err);
       }
       else{
-        console.log(result);
+        // console.log(result);
         return res.send(result);
       }
   });
@@ -1000,7 +1000,8 @@ exports.sponsor = function (req, res) {
   campaign.theme = theme;
   campaign.active = true;
   campaign.campaign_type = !multi ? 2 : 3;
-  campaign.tags = req.body.tags;
+  if(req.body.tags.length>0)
+    campaign.tags = req.body.tags;
 
   campaign.start_time = start_time;
   campaign.end_time = end_time;

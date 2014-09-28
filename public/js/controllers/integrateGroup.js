@@ -113,12 +113,9 @@ integrateGroup.run(['$http','$rootScope','$location', function ($http, $rootScop
     $rootScope.sponsorIndex =function(index) {
         $rootScope.modal_index=index;
         if(index===1){//活动
-            $rootScope.sponsor_title="活动";
-            $rootScope.loadMapIndex = index;
             $('#sponsorCampaignModel').modal('show');
         }
         else{
-            $rootScope.sponsor_title="挑战";
             $('#sponsorProvokeModel').modal('show');
         }
     };
@@ -146,23 +143,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Group',function($http, $scope, $rootScope, Group) {
     $scope.showMapFlag=false;
-    $scope.location={name:'',coordinates:[]};
-    $("#start_time").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#end_time').datetimepicker('setStartDate', dateUTC);
-    });
-    $("#end_time").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#start_time').datetimepicker('setEndDate', dateUTC);
-        $('#deadline').datetimepicker('setEndDate', dateUTC);
-    });
-    $("#deadline").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#end_time').datetimepicker('setEndDate', dateUTC);
-    });
+
     $scope.$watch('member_max + member_min',function(newValue,oldValue){
         if($scope.member_max<$scope.member_min){
             $scope.campaign_form.$setValidity('ngMin', false);
@@ -173,26 +154,44 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
             $scope.campaign_form.$setValidity('ngMax', true);
         };
     });
-    $rootScope.$watch('loadMapIndex',function(value){
-        if(value==1){
-            //加载地图
-            if(!window.map_ready){
-                window.campaign_map_initialize = $scope.initialize;
-                var script = document.createElement("script");  
-                script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
-                document.body.appendChild(script);
-            }
-            else{
-                $scope.initialize();
-            }
-        }
 
-    });
-    Group.getTags($rootScope.teamId,function(status,data){
-        if(!status){
-            $scope.recommand_tags = data;
+    //打开发活动modal时
+    $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
+        //获取Tag
+        Group.getTags($rootScope.teamId,function(status,data){
+            if(!status){
+                $scope.recommand_tags = data;
+            }
+        });
+        //加载地图
+        if(!window.map_ready){
+            window.campaign_map_initialize = $scope.initialize;
+            var script = document.createElement("script");  
+            script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+            document.body.appendChild(script);
         }
+        else{
+            $scope.initialize();
+        }
+        $scope.location={name:'',coordinates:[]};
+        $("#start_time").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+            $('#end_time').datetimepicker('setStartDate', dateUTC);
+        });
+        $("#end_time").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+            $('#start_time').datetimepicker('setEndDate', dateUTC);
+            $('#deadline').datetimepicker('setEndDate', dateUTC);
+        });
+        $("#deadline").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+            $('#end_time').datetimepicker('setEndDate', dateUTC);
+        });
     });
+
     var placeSearchCallBack = function(data){
         $scope.locationmap.clearMap();
         var lngX = data.poiList.pois[0].location.getLng();
@@ -694,13 +693,28 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
     $scope.modal=0;
     $scope.result=0;//是否已搜索
     $scope.selected_index=-1;
-    Group.getTags($rootScope.teamId,function(status,data){
-        if(!status){
-            $scope.recommand_tags = data;
+
+    //决定要打开哪个挑战的modal
+    $rootScope.$watch('modal_index',function(value){
+        if(value===3){
+            $scope.modal = 2;
+            $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
+                $scope.similarTeams = data;
+                if(data.length===1){
+                    $scope.modal=3;//直接跳到发起挑战页面
+                    $scope.team_opposite = $scope.similarTeams[0];
+                    Group.getTags($scope.team_opposite._id,function(status,data){
+                        if(!status){
+                            $scope.recommand_tags = data;
+                        }
+                    });
+                }
+            });
         }
-    });
-    $rootScope.$watch('loadMapIndex',function(value){
-        if(value==2){
+        else if(value===2){
+            $scope.recommandTeam();
+        }
+        if(value===2||value===3){
             //加载地图
             if(!window.map_ready){
                 window.campaign_map_initialize = $scope.initialize;
@@ -710,24 +724,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
             }
             else{
                 $scope.initialize();
-            }
-        }
-    });
-
-    //决定要打开哪个挑战的modal
-    $rootScope.$watch('modal_index',function(){
-        if($rootScope.modal_index===3){
-            $scope.modal = 2;
-            $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
-                $scope.similarTeams = data;
-                if(data.length===1){
-                    $scope.modal=3;//直接跳到发起挑战页面
-                    $scope.team_opposite = $scope.similarTeams[0];
-                }
-            });
-        }
-        else if($rootScope.modal_index===2){
-            $scope.recommandTeam();
+            }            
         }
     });
 
@@ -750,6 +747,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
     
     $scope.recommandTeam = function(){
         $scope.homecourt = true;
+
         try{
             $http({
                 method:'post',
@@ -950,15 +948,26 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
 
     //选择对战小队
     $scope.provoke_select = function (index) {
-        if(!index){
-            $scope.team_opposite = $scope.teams[$scope.selected_index];
+        if(!index){//在自己队发挑战
+            $scope.team_opposite = $scope.teams[$scope.selected_index]; 
+                Group.getTags($rootScope.teamId,function(status,data){
+                    if(!status){
+                        $scope.recommand_tags = data;
+                    }
+                });
         }
-        else
+        else{//到对方队动
             $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
+            Group.getTags($scope.team_opposite._id,function(status,data){
+                if(!status){
+                    $scope.recommand_tags = data;
+                }
+            });
+        }
         $scope.modal++;
         $rootScope.loadMapIndex=2;
-
     };
+
 
     $scope.addTag = function(index) {
         $scope.recommand_tags[index].disabled = true;

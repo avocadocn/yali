@@ -1281,7 +1281,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
     };
 }]);
 // HR 发布公司活动 controller
-tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', function($http, $scope, $rootScope){
+tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Company', function($http, $scope, $rootScope, Company){
 
     $scope.dOts = [];
     $scope.select_dOts = [];
@@ -1359,10 +1359,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
     $scope.initialize = function(){
         
         $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
-        $scope.locationmap.plugin(["AMap.ToolBar"],function(){     
-            toolBar = new AMap.ToolBar();
-            $scope.locationmap.addControl(toolBar);    
-        });
         $scope.locationmap.plugin(["AMap.CitySearch"], function() {
             //实例化城市查询类
             var citysearch = new AMap.CitySearch();
@@ -1390,6 +1386,14 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope', fu
         $scope.showMapFlag = true;
     };
 
+
+    $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
+        Company.getTags($rootScope.cid,function(status,data){
+            if(!status){
+                $scope.recommand_tags = data;
+            }
+        });
+    })
     $scope.showMap = function(){
         if($scope.location.name==''){
             alertify.alert('请输入地点');

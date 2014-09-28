@@ -367,7 +367,8 @@ exports.sponsor = function(req, res) {
     campaign.theme = theme;
     campaign.active = true;
     campaign.campaign_type = 6; // 部门活动
-    campaign.tags = req.body.tags;
+    if(req.body.tags.length>0)
+      campaign.tags = req.body.tags;
     campaign.start_time = start_time;
     campaign.end_time = end_time;
     campaign.deadline = deadline;
