@@ -111,20 +111,19 @@ block contentExt
             a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
               img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
               span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-      .dl_row.clearfix.comment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
+      .rich_comment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
         p.subtitle 留言
         if role==='MEMBER' || role ==='LEADER'
-          .dl_row.clearfix
-            form.dl_rich_comment_form(name="comment_form" novalidate)
-              textarea.dl-form-control.comment_textarea(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
-              .operator.clearfix
-                label.btn.btn-default.btn-xs(for="photos"): i.glyphicon.glyphicon-picture
-                input.hidden#photos(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
-                button.dl_btn.dl_btn_submit.pull-right(ng-click="publish(new_comment.text)" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-                .preview_box.clearfix(ng-show="uploader.isHTML5")
-                  .preview_img_wrap(ng-repeat="item in uploader.queue")
-                    .close(ng-click="item.remove()") &times;
-                    div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
+          form.rich_comment_form(name="comment_form" novalidate)
+            textarea.dl-form-control.comment_textarea(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
+            .operator.clearfix
+              label.btn.btn-default.btn-xs(for="photos"): i.glyphicon.glyphicon-picture
+              input.hidden#photos(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
+              button.dl_btn.dl_btn_submit.pull-right(ng-click="publish(new_comment.text)" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
+              .preview_box.clearfix(ng-show="uploader.isHTML5")
+                .preview_img_wrap(ng-repeat="item in uploader.queue")
+                  .close(ng-click="item.remove()") &times;
+                  div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
         .comment.clearfix(ng-repeat="comment in comments")
           .comment_user_info
             a(href="/users/home/{{comment.poster._id}}" )
@@ -136,7 +135,7 @@ block contentExt
               .triangle
               .comment_content
                 p(ng-cloak) {{comment.content}}
-                .dl_comment_img_box(ng-if="comment.photos.length > 1")
+                .comment_img_box(ng-if="comment.photos.length > 1")
                   .img_list_box.clearfix(ng-if="!comment.preview")
                     img.list_img(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/100/100" ng-click="comment.preview=true")
                   .img_slider_box.clearfix(ng-if="comment.preview")
@@ -144,7 +143,7 @@ block contentExt
                       img.img-responsive(ng-src="{{comment.preview_img || comment.photos[0].uri}}" ng-click="comment.preview=false")
                     .nav
                       img.thumb(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/40/40" ng-click="comment.preview_img=photo.uri")
-                .dl_comment_img_box(ng-if="comment.photos.length === 1")
+                .comment_img_box(ng-if="comment.photos.length === 1")
                   img.img-responsive(ng-src="{{comment.photos[0].uri}}")
             .comment_footer.clearfix
               span.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
@@ -153,7 +152,7 @@ block contentExt
                 span.comment_divider(ng-if="comment.delete_permission") &nbsp;
                 a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
             .replies(ng-if="comment.replying")
-              form.reply_box(name="reply_form")
+              form.reply_form(name="reply_form")
                 input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
                 button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
               p.reply(ng-repeat="reply in comment.replies")

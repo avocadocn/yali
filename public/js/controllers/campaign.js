@@ -24,14 +24,14 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         }
         Comment.get('campaign', $scope.campaign_id, function (err, comments) {
             if (err) {
-
+                alertify.alert('获取评论失败，请刷新页面重试');
             } else {
                 if(comments.length > 0){
                     $scope.comments = comments;
                     $scope.fixed_sum = comments.length;
                 }
             }
-        })
+        });
     });
     $scope.editContentStatus =false;
     $scope.init = true;
@@ -95,28 +95,6 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
             }
         });
     };
-    // $scope.getComment = function(){
-    //     try {
-    //         $http({
-    //             method: 'post',
-    //             url: '/comment/pull/campaign/'+$scope.campaign_id,
-    //             data:{
-    //                 host_id : $scope.campaign_id
-    //             }
-    //         }).success(function(data, status) {
-    //             if(data.comments.length > 0){
-    //                 $scope.comments = data.comments;
-    //                 $scope.fixed_sum = data.comments.length;
-    //             }
-    //             $scope.user = data.user;
-    //         }).error(function(data, status) {
-    //             alertify.alert('DATA ERROR');
-    //         });
-    //     }
-    //     catch(e) {
-    //         console.log(e);
-    //     }
-    // }
 
     $scope.deleteComment = function(index){
         try {
