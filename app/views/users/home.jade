@@ -65,7 +65,7 @@ block aside
       +group_thumbnail(selected_teams,'active','加入的小队',2)
     if (unselected_teams.length)
       +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'),3)
-    .schedule_small(ng-controller="ScheduleSmallController")
+    .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/schedule_list
       include ../partials/calendar_modal
 
