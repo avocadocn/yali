@@ -72,8 +72,7 @@ form(name="search_form")
           .group_row(ng-show="team.home_court[0].name")
             span 主场:{{team.home_court[0].name}}
             span(ng-if="team.home_court[1]") 、{{team.home_court[1].name}}
-  //- br
-  //- br
+
   .dl-modal-footer.clearfix
     button.dl_btn.dl_btn_large.cancel_btn(data-dismiss="modal") #{__("CANCEL")}
     button.dl_btn.dl_btn_large(ng-click="provoke_select()" ng-disabled="selected_index==-1") 动TA一下

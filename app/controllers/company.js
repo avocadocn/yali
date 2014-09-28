@@ -1522,7 +1522,7 @@ exports.appointLeader = function(req, res) {
 //获取公司活动的Tags
 exports.getTags = function (req,res) {
   Campaign.aggregate()
-  .project({"tags":1,"campaign_type":1,"camp.id":1,"cid":1})
+  .project({"tags":1,"campaign_type":1,"cid":1})
   .match({$and: [
     {'cid' : mongoose.Types.ObjectId(req.params.companyId)},
     {'campaign_type':1}

@@ -2,10 +2,10 @@
 
 angular.module('donler')
 
-.factory('Company', ['$http', function($http) {
+.factory('Department', ['$http', function($http) {
 
-  var getTags = function(cid,callback){
-    $http.get('/company/getTags/'+cid).success(function(data, status) {
+  var getTags = function(did,callback){
+    $http.get('/department/getTags/'+did).success(function(data, status) {
       callback(null,data);
     }).error(function(data, status){
       callback('error');

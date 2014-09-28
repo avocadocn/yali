@@ -313,6 +313,39 @@ var getDeptDepartment = function(req,res,did,callback){
   });
 }
 
+//获取部门活动的Tags
+exports.getTags = function (req,res) {
+  Department.findOne({'_id':req.params.departmentId,'status':{'$ne':'delete'}},{'team':1}).populate('team').exec(function (err,department){
+    if(err || !department){
+      console.log(err);
+      return {
+        'msg':'ERROR',
+        'data':[]
+      };
+    }else{
+      Campaign.aggregate()
+      .project({"tags":1,"campaign_type":1,"team":1})
+      .match({$and: [
+        {'team' : mongoose.Types.ObjectId(department.team._id)},
+        {'campaign_type':6}
+        ]})//可在查询条件中加入时间
+      .unwind("tags")
+      .group({_id : "$tags", number: { $sum : 1} })
+      .sort({number:-1})
+      .limit(10)
+      .exec(function(err,result){
+          if (err) {
+            console.log(err);
+          }
+          else{
+            // console.log(result);
+            return res.send(result);
+          }
+      });
+    }
+  });
+
+};
 //部门发活动
 exports.sponsor = function(req, res) {
   if (req.role !== 'HR' && req.role !== 'LEADER') {
@@ -1481,5 +1514,4 @@ exports.renderDepartmentInfo = function(req, res) {
 exports.renderDepartmentManager = function(req, res) {
   res.render('department/manager');
 };
-
 

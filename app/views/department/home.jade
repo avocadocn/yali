@@ -22,7 +22,7 @@ block baseInfo
     .top_side
       if req.role === 'HR' || req.role === 'LEADER'
         .group_btn_container
-          a.btn_container(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel")
+          a.btn_container(data-toggle="modal" data-target="#sponsorCampaignModel")
             .btn_icon
               img(src='/img/icons/pulse.png')
             .btn_text
@@ -75,5 +75,6 @@ block aside
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")
   script(src="/js/jquery.Jcrop.min.js")
+  script(src="/js/service/department.js")
   script(src="/js/controllers/department.js")
   script(src="/js/bootstrap-tagsinput.js")

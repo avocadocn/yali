@@ -1538,7 +1538,10 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Co
         }
       }
     }
-
+    $scope.addTag = function(index) {
+        $scope.recommand_tags[index].disabled = true;
+        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
+    };
     $scope.sponsor = function() {
         var _data = {
             theme: $scope.theme,
