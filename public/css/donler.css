@@ -825,6 +825,7 @@ textarea {
   border: 1px solid #ccc;
   min-height: 50px;
   font-family: STHeiti, "Microsoft YaHei", MingLiu, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-bottom: 10px;
 }
 .markdownContainer:focus {
   outline: none;
@@ -837,6 +838,12 @@ textarea {
 }
 .pen-menu {
   z-index: 1040 !important;
+  box-shadow: none !important;
+  height: 20px !important;
+}
+.pen-menu .pen-icon {
+  font: 14px Georgia serif !important;
+  height: 20px !important;
 }
 .dl_container {
   width: 960px;
@@ -1928,6 +1935,12 @@ input.ng-invalid.ng-dirty {
 .dl_campaign_list .table {
   margin-bottom: 0px;
 }
+.dl_campaign_list .campaign_table .joined {
+  background-image: url("/img/compaign_joined.png");
+  background-repeat: no-repeat;
+  background-size: 90px 90px;
+  background-position: 10px 0px;
+}
 .dl_group_select {
   padding: 20px 40px;
 }
@@ -2219,7 +2232,7 @@ input.ng-invalid.ng-dirty {
   line-height: 36px;
   font-size: 18px;
 }
-.dl_integrate_container .subtitle {
+.dl_integrate_container .line {
   display: block;
   margin: 0 0 10px;
 }

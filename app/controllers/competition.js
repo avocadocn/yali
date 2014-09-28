@@ -57,7 +57,7 @@ exports.getCompetition = function(req, res){
       active: true
     }
   ];
-  var cid = req.user.provider==='company'? req.user._id : req.user.cid
+  var cid = req.user.provider==='company'? req.user._id : req.user.cid;
   var options ={
     'title': '比赛页面',
     'competition' : competition,

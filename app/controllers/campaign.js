@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
     Department = mongoose.model('Department'),
     Comment = mongoose.model('Comment'),
     PhotoAlbum = mongoose.model('PhotoAlbum'),
+    MessageContent = mongoose.model('MessageContent'),
     model_helper = require('../helpers/model_helper'),
     _ = require('lodash'),
     moment = require('moment'),
@@ -993,19 +994,46 @@ exports.getUserAllCampaignsForAppCalendar = function(req, res) {
 };
 
 exports.renderCampaignDetail = function(req, res) {
-  Campaign
-  .findById(req.params.campaignId)
-  .populate('photo_album')
-  .populate('team')
-  .populate('cid')
-  .exec()
-  .then(function(campaign) {
-    if (!campaign) {
-      throw 'not found';
+  async.parallel([
+    function(callback){
+      Campaign
+      .findById(req.params.campaignId)
+      .populate('photo_album')
+      .populate('team')
+      .populate('cid')
+      .exec()
+      .then(function(campaign) {
+        callback(null,campaign);
+      })
+      .then(null, function(err) {
+        callback(err);
+      });
+    },
+    function(callback){
+      MessageContent.find({'campaign_id':req.params.campaignId,'status':'undelete'}).sort('-post_date').exec().then(function(messageContent){
+        callback(null,messageContent);
+      })
+      .then(null, function(err) {
+        callback(err);
+      });;
     }
+  ],
+  // optional callback
+  function(err, results){
+    // the results array will equal ['one','two'] even though
+    // the second function had a shorter timeout.
+    if(err){
+      return res.send(404);
+    }
+    var campaign = results[0];
+    if (!campaign) {
+      return res.send(404);
+    }
+
     if(campaign.camp.length >= 2){
       res.redirect("/competition/"+req.params.campaignId);
     }else{
+
       //join: 1已经参加，0报名人数已满，-1未参加
       if((req.role ==='MEMBER' ||req.role ==='LEADER' ) && model_helper.arrayObjectIndexOf(campaign.member,req.user._id,'uid')>-1){
         req.join = 1;
@@ -1035,6 +1063,15 @@ exports.renderCampaignDetail = function(req, res) {
         }
       ];
       moment.lang('zh-cn');
+      var _messageContent =[];
+      if(results[1]){
+        results[1].forEach(function(_message){
+          _messageContent.push({
+            content: _message.content,
+            post_date:_message.post_date
+          });
+        })
+      }
       return res.render('campaign/campaign_detail', {
         over : campaign.deadline<new Date(),
         join: req.join,
@@ -1044,15 +1081,12 @@ exports.renderCampaignDetail = function(req, res) {
         campaign: campaign,
         links: links,
         photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4),
-        moment : moment
+        moment : moment,
+        messageContent : _messageContent
       });
     }
-
-  })
-  .then(null, function(err) {
-    console.log(err);
-    res.send(404);
   });
+
 };
 
 

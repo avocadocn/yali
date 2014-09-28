@@ -37,4 +37,6 @@ module.exports = function(app) {
 
   app.post('/department/detail/:departmentId', authorization.departmentAuthorize, department.getDepartmentDetail);
   app.get('/department/detail/multi/:cid', department.getMultiDepartmentDetail);
+
+  app.get('/department/getTags/:departmentId', authorization.departmentAuthorize, department.getTags);
 };

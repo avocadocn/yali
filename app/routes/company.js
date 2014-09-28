@@ -66,6 +66,7 @@ module.exports = function(app, passport) {
 
     app.get('/company/home', authorization.companyAuthorize, company.home);
     app.get('/company/home/:companyId', authorization.companyAuthorize, company.home);
+    app.get('/company/getTags/:companyId', authorization.companyAuthorize, company.getTags);
     // Setting up the companyId param
 
 

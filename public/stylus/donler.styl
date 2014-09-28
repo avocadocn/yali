@@ -736,6 +736,7 @@ textarea
   border 1px solid #ccc
   min-height 50px
   font-family STHeiti,"Microsoft YaHei",MingLiu,"Helvetica Neue",Helvetica,Arial,sans-serif
+  margin-bottom 10px
   &:focus
     outline none
   li
@@ -744,6 +745,11 @@ textarea
   border-color pink
 .pen-menu
   z-index 1040 !important
+  box-shadow none !important
+  height 20px !important
+  .pen-icon
+    font 14px Georgia serif !important
+    height 20px !important
 .dl_container
   width 960px
   min-width 960px
@@ -1626,8 +1632,10 @@ input.ng-invalid.ng-dirty
     margin-bottom 0px
   .campaign_table
     .joined
-      //- background-color #bae3f9
-      //- todo M
+      background-image url('/img/compaign_joined.png')
+      background-repeat no-repeat
+      background-size 90px 90px
+      background-position 10px 0px
 .dl_group_select
   padding 20px 40px
   .img_contain
@@ -1865,7 +1873,7 @@ input.ng-invalid.ng-dirty
         background gray
         line-height 36px
         font-size 18px
-  .subtitle
+  .line
     display block
     margin 0 0 10px
   .thumbnail_img

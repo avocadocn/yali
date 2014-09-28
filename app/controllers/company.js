@@ -1519,7 +1519,28 @@ exports.appointLeader = function(req, res) {
   });
 };
 
-
+//获取公司活动的Tags
+exports.getTags = function (req,res) {
+  Campaign.aggregate()
+  .project({"tags":1,"campaign_type":1,"cid":1})
+  .match({$and: [
+    {'cid' : mongoose.Types.ObjectId(req.params.companyId)},
+    {'campaign_type':1}
+    ]})//可在查询条件中加入时间
+  .unwind("tags")
+  .group({_id : "$tags", number: { $sum : 1} })
+  .sort({number:-1})
+  .limit(10)
+  .exec(function(err,result){
+      if (err) {
+        console.log(err);
+      }
+      else{
+        // console.log(result);
+        return res.send(result);
+      }
+  });
+};
 //HR发布一个活动(可能是多个企业)
 exports.sponsor = function(req, res) {
   if (req.role !== 'HR') {
@@ -1560,7 +1581,8 @@ exports.sponsor = function(req, res) {
   campaign.content = content;
   campaign.location = location;
   campaign.theme = theme;
-
+  if(req.body.tags.length>0)
+    campaign.tags = req.body.tags;
   campaign.start_time = start_time;
   campaign.end_time = end_time;
   campaign.deadline = deadline;

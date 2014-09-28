@@ -53,6 +53,13 @@ block contentExt
                 span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
               .dl_detail_detail
                 span= campaign.member_max
+          if campaign.tags.length>0
+            .dl_detail_row
+              .dl_detail_row
+                .dl_detail_detail
+                  each tag in campaign.tags
+                    span.glyphicon.glyphicon-tag
+                    span #{tag}  
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
             if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish
@@ -78,7 +85,14 @@ block contentExt
       else if campaign.finish
         .dl_detail_row.text-center.margin_top_30
           span #{__("CAMPAIGNFINISH")}
-
+      if messageContent.length>0
+        .dl_detail_member.row
+          .dl_row.subtitle
+            span 活动通知:
+          each _message in messageContent
+            .message_item
+              .message_content= _message.content
+              .pull-right= moment(_message.post_date).format("YYYY-MM-DD HH:mm")
       if campaign.campaign_type == 3
         //-成员
         .dl_detail_member.row(ng-repeat="member_team in campaign_team")

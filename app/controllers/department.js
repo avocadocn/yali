@@ -190,7 +190,7 @@ exports.multiCampaignSponsor = function(req, res) {
   department_campaign.start_time = time.start;
   department_campaign.end_time = time.end;
   department_campaign.deadline = time.deadline ? time.deadline : time.start;
-
+  department_campaign.tags = req.body.tags;
   var photo_album = new PhotoAlbum({
     owner: {
       model: {
@@ -313,6 +313,39 @@ var getDeptDepartment = function(req,res,did,callback){
   });
 }
 
+//获取部门活动的Tags
+exports.getTags = function (req,res) {
+  Department.findOne({'_id':req.params.departmentId,'status':{'$ne':'delete'}},{'team':1}).populate('team').exec(function (err,department){
+    if(err || !department){
+      console.log(err);
+      return {
+        'msg':'ERROR',
+        'data':[]
+      };
+    }else{
+      Campaign.aggregate()
+      .project({"tags":1,"campaign_type":1,"team":1})
+      .match({$and: [
+        {'team' : mongoose.Types.ObjectId(department.team._id)},
+        {'campaign_type':6}
+        ]})//可在查询条件中加入时间
+      .unwind("tags")
+      .group({_id : "$tags", number: { $sum : 1} })
+      .sort({number:-1})
+      .limit(10)
+      .exec(function(err,result){
+          if (err) {
+            console.log(err);
+          }
+          else{
+            // console.log(result);
+            return res.send(result);
+          }
+      });
+    }
+  });
+
+};
 //部门发活动
 exports.sponsor = function(req, res) {
   if (req.role !== 'HR' && req.role !== 'LEADER') {
@@ -367,7 +400,8 @@ exports.sponsor = function(req, res) {
     campaign.theme = theme;
     campaign.active = true;
     campaign.campaign_type = 6; // 部门活动
-
+    if(req.body.tags.length>0)
+      campaign.tags = req.body.tags;
     campaign.start_time = start_time;
     campaign.end_time = end_time;
     campaign.deadline = deadline;
@@ -1480,5 +1514,4 @@ exports.renderDepartmentInfo = function(req, res) {
 exports.renderDepartmentManager = function(req, res) {
   res.render('department/manager');
 };
-
 

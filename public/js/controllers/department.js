@@ -78,60 +78,20 @@ departmentApp.run(['$http','$rootScope', '$location', function ($http, $rootScop
     $rootScope.messageTypeChange = function(value){
         $rootScope.message_for_group = value;
     }
-    //加入小队
-    $rootScope.joinGroup = function(){
-        try{
-            $http({
-                method:'post',
-                url: '/users/joinGroup',
-                data:{
-                    tid : $rootScope.teamId
-                }
-            }).success(function(data,status){
-                $rootScope.number += 1;
-                $rootScope.isMember = true;
-            }).error(function(data,status){
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
-
-    //退出小队
-    $rootScope.quitGroup = function(){
-        try{
-            $http({
-                method:'post',
-                url: '/users/quitGroup',
-                data:{
-                    tid : $rootScope.teamId
-                }
-            }).success(function(data,status){
-                $rootScope.number --;
-                $rootScope.isMember = false;
-            }).error(function(data,status){
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e){
-            console.log(e);
-        }
-    };
 
     //加载地图
-    $rootScope.loadMap = function(index){
-        $rootScope.loadMapIndex = index;
-    };
+    // $rootScope.loadMap = function(index){
+    //     $rootScope.loadMapIndex = index;
+    // };
 
-    $rootScope.dongIt = function(){
-        $rootScope.modalNumber = 2;
-    };
+    //暂时么有部门挑战
+    // $rootScope.dongIt = function(){
+    //     $rootScope.modalNumber = 2;
+    // };
 
-    $rootScope.provokeRecommand =function(){
-        $rootScope.recommand = true;
-    };
+    // $rootScope.provokeRecommand =function(){
+    //     $rootScope.recommand = true;
+    // };
 }]);
 
 
@@ -875,7 +835,7 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
 
 
 
-departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','Department',function($http, $scope, $rootScope, Department) {
     $scope.multi = false;          //是否发起多部门会活动
     $scope.departments = [];
     $scope.select_departments = [];
@@ -949,72 +909,90 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
     });
 
     $scope.showMapFlag=false;
-    $scope.location={name:'',coordinates:[]};
-    $("#start_time").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#end_time').datetimepicker('setStartDate', dateUTC);
-        $('#deadline').datetimepicker('setEndDate', dateUTC);
-    });
-    $("#end_time").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#start_time').datetimepicker('setEndDate', dateUTC);
 
-    });
-    $("#deadline").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#end_time').datetimepicker('setEndDate', dateUTC);
-    });
-
-    $rootScope.$watch('loadMapIndex',function(value){
-        if($rootScope.loadMapIndex){
-            if(value==1){
-                //加载地图
-                if(!window.map_ready){
-                    window.campaign_map_initialize = $scope.initialize;
-                    var script = document.createElement("script");  
-                    script.src = "http://api.map.baidu.com/api?v=2.0&ak=krPnXlL3wNORRa1KYN1RAx3c&callback=campaign_map_initialize";
-                    document.body.appendChild(script);
-                }
-                else{
-                    $scope.initialize();
-                }
-            }
+    $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
+        //加载地图
+        if(!window.map_ready){
+            window.campaign_map_initialize = $scope.initialize;
+            var script = document.createElement("script");  
+            script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+            document.body.appendChild(script);
         }
+        else{
+            $scope.initialize();
+        }
+        Department.getTags($scope.did,function(status,data){
+            if(!status){
+                $scope.recommand_tags = data;
+            }
+        });
+        $scope.location={name:'',coordinates:[]};
+        $("#start_time").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+            $('#end_time').datetimepicker('setStartDate', dateUTC);
+            $('#deadline').datetimepicker('setEndDate', dateUTC);
+        });
+        $("#end_time").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+            $('#start_time').datetimepicker('setEndDate', dateUTC);
 
+        });
+        $("#deadline").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+            $('#end_time').datetimepicker('setEndDate', dateUTC);
+        });
     });
+    var placeSearchCallBack = function(data){
+        $scope.locationmap.clearMap();
+        var lngX = data.poiList.pois[0].location.getLng();
+        var latY = data.poiList.pois[0].location.getLat();
+        $scope.location.coordinates=[lngX, latY];
+        var nowPoint = new AMap.LngLat(lngX,latY);
+        var markerOption = {
+            map: $scope.locationmap,
+            position: nowPoint,
+            draggable: true
+        };
+        var mar = new AMap.Marker(markerOption);
+        var changePoint = function (e) {
+            var p = mar.getPosition();
+            $scope.location.coordinates=[p.getLng(), p.getLat()];
+        };
+        $scope.locationmap.setFitView();
+        AMap.event.addListener(mar,"dragend", changePoint);
 
+    };
     $scope.initialize = function(){
-        $scope.locationmap = new BMap.Map("mapDetail");            // 创建Map实例
-        $scope.locationmap.centerAndZoom('上海',15);
-        $scope.locationmap.enableScrollWheelZoom(true);
-        $scope.locationmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
-        var options = {
-            onSearchComplete: function(results){
-                // 判断状态是否正确
-                if ($scope.local.getStatus() == BMAP_STATUS_SUCCESS){
-                    $scope.locationmap.clearOverlays();
-                    var nowPoint = new BMap.Point(results.getPoi(0).point.lng,results.getPoi(0).point.lat);
-                    //var myIcon = new BMap.Icon("/img/icons/favicon.ico", new BMap.Size(30,30));
-                    $scope.locationmap.centerAndZoom(nowPoint,15);
-                    var marker = new BMap.Marker(nowPoint);  // 创建标注
-                    $scope.locationmap.addOverlay(marker);              // 将标注添加到地图中
-                    marker.enableDragging();    //可拖拽
-                    $scope.location.coordinates=[results.getPoi(0).point.lng,results.getPoi(0).point.lat];
-                    marker.addEventListener("dragend", function changePoint(){
-                        var p = marker.getPosition();
-                        $scope.location.coordinates=[p.lng , p.lat];
+        $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
+        $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+            //实例化城市查询类
+            var citysearch = new AMap.CitySearch();
+            //自动获取用户IP，返回当前城市
+            citysearch.getLocalCity();
+            //citysearch.getCityByIp("123.125.114.*");
+            AMap.event.addListener(citysearch, "complete", function(result){
+                if(result && result.city && result.bounds) {
+                    var citybounds = result.bounds;
+                    //地图显示当前城市
+                    $scope.locationmap.setBounds(citybounds);
+                    $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+                        $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                            pageSize:1,
+                            pageIndex:1,
+                            city: result.city
+
+                        });
+                        AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
                     });
                 }
-            }
-        };
-        $scope.local = new BMap.LocalSearch($scope.locationmap,options);
+            });
+            AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+        });
         window.map_ready =true;
     };
-
-
     $scope.showMap = function(){
         if($scope.location.name==''){
             alertify.alert('请输入地点');
@@ -1022,47 +1000,45 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope',fu
         }
         else if($scope.showMapFlag ==false){
             $scope.showMapFlag =true;
-            $scope.local.search($scope.location.name);
+            $scope.MSearch.search($scope.location.name); //关键字查询
         }
         else{
-            $scope.local.search($scope.location.name);
+           $scope.MSearch.search($scope.location.name); //关键字查询
         }
     };
-
+    $scope.addTag = function(index) {
+        $scope.recommand_tags[index].disabled = true;
+        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
+    };
     $scope.sponsor = function() {
-        var _data;
+        var _data = {
+            theme: $scope.theme,
+            location: $scope.location,
+            content : $scope.content,
+            tags: $scope.tags ? $scope.tags.split(',') :[]
+        };
         var _url;
         if($scope.multi){
             _url = '/department/'+$scope.did+'/multi_sponsor';
-            _data = {
-                select_departments:[$scope.main_department],
-                theme: $scope.theme,
-                location: $scope.location,
-                content : $scope.content,
-                time:{
-                    start:$scope.start_time,
-                    end:$scope.end_time,
-                    deadline:$scope.deadline
-                },
-                member_num:{
-                    min:$scope.member_min,
-                    max:$scope.member_max
-                }
-            }
-            console.log($scope.deadline);
+            _data.select_departments=[$scope.main_department];
+            data.time={
+                start:$scope.start_time,
+                end:$scope.end_time,
+                deadline:$scope.deadline
+            };
+            _data.member_num = {
+                min:$scope.member_min,
+                max:$scope.member_max
+            };
+            // console.log($scope.deadline);
         }else{
             _url = '/department/'+$scope.did+'/sponsor';
-            _data = {
-                theme: $scope.theme,
-                location: $scope.location,
-                content : $scope.content,
-                start_time : $scope.start_time,
-                end_time : $scope.end_time,
-                member_min: $scope.member_min,
-                member_max: $scope.member_max,
-                deadline: $scope.deadline
-            }
-            console.log($scope.deadline);
+            _data.start_time = $scope.start_time;
+            _data.end_time = $scope.end_time;
+            _data.member_min = $scope.member_min;
+            _data.member_max = $scope.member_max;
+            _data.deadline = $scope.deadline;
+            // console.log($scope.deadline);
         }
         try{
             $http({
