@@ -3,6 +3,7 @@ extends ../layouts/manager
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
+  link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
 
 block baseInfo
   .dl_container.clearfix
@@ -43,12 +44,12 @@ block baseInfo
               img(src='/img/icons/megaphone.png')
             .btn_text
               span.subtitle 消息站
-          a.btn_container(ng-click='provokeRecommand()' data-toggle="modal" data-target="#sponsorProvokeModel")
+          a.btn_container(ng-click='sponsorIndex(2)')
             .btn_icon
               img(src='/img/icons/focus.png')
             .btn_text
               span.subtitle 找对手
-          a.btn_container(ng-click='loadMap(1)' data-toggle="modal" data-target="#sponsorCampaignModel")
+          a.btn_container(ng-click='sponsorIndex(1)')
             .btn_icon
               img(src='/img/icons/pulse.png')
             .btn_text
@@ -56,7 +57,7 @@ block baseInfo
             //button.dl_btn.dl_btn_small(onclick="{location.href='/arena/home'}") #{__("ARENA")}
         if role === 'GUESTLEADER' || role === 'PARTNERLEADER' || role === 'MEMBERLEADER'
           //-动一下
-          a.btn_container(ng-click='dongIt()' data-toggle="modal" data-target="#sponsorProvokeModel")
+          a.btn_container(ng-click='sponsorIndex(3)')
             .btn_icon
               img(src='/img/icons/pointer.png')
             .btn_text
@@ -114,4 +115,6 @@ block aside
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")
   script(src="/js/jquery.Jcrop.min.js")
+  script(src="/js/service/group.js")
   script(src="/js/controllers/tabviewGroup.js")
+  script(src="/js/bootstrap-tagsinput.js")

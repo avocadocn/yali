@@ -8,17 +8,17 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
         .head#myModalLabel 发活动
       .dl-modal-body
         .dl_modal_container(ng-if="dOtMulti")
-            label.subtitle 参加该活动的小队
-            .groups.row.dl_row.groups_box
-              .group.col-md-1(ng-repeat='select_dOt in select_dOts')
-                img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
+          label.subtitle 参加该活动的小队
+          .groups.row.dl_row.groups_box
+            .group.col-md-1(ng-repeat='select_dOt in select_dOts')
+              img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
         .dl_modal_container
-            label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
-            input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
+          label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
+          input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
         .dl_modal_container(ng-init="baseBrief=true;")
-            label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
-            #campaignDetailToolBar
-            #campaignDetail.markdownContainer(name="content" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=4000 required)
+          label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
+          #campaignDetailToolBar
+          #campaignDetail.markdownContainer(name="content" ng-blur="getTags()" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=4000 required)
         .dl_modal_container
           .dl_modal_half_container
             .dl_modal_half_container
@@ -48,36 +48,49 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
         .dl_modal_container
           .dl_modal_container
             label.subtitle #{__("CAMPAIGN")}#{__("OPTIONAL")}#{__("OPTION")}
+            span (设置人数、报名时间限制)
+            a(ng-show="!show_options" ng-click="show_options=true;")   展开>>
+            a(ng-show="show_options" ng-click="show_options=false")   <<收起
           .dl_modal_option_container
             .dl_row.clearfix
               .dl_modal_label_container
-                span.info_label #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
-              .dl_modal_other_container
-                input.dl-form-control(type="number" name="minNumber" ng-model="$parent.member_min" ng-min=0 ng-max="{{$parent.member_max}}" ng-maxlength=10 tooltip="{{campaign_form.minNumber.$invalid? '请正确填写最少人数':''}}")
-              .dl_modal_people_container
-                span.info_label 人
+                span.info_label 活动标签:
+              input#tagsinput(type="text" name="tags" ng-blur="getTags()" ng-model="$parent.tags" data-role="tagsinput")
+            .dl_row.clearfix(ng-if="recommand_tags")
               .dl_modal_label_container
-                span.info_label 报名截止前未达最少人数,您将收到提醒。不填默认为不提醒。
-            .dl_row.clearfix
-              .dl_modal_label_container
-                span.info_label 报名截止时间:
-              .dl_modal_time_container
-                .input-group.date.form_datetime#deadline
-                  //img(ng-src='/img/icons/icon_date.png')
-                  input.dl-form-control(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
-                  span.input-group-addon.no_radius
-                    span.glyphicon.glyphicon-th
-              .dl_modal_label_container
-                span.info_label 如果不选，默认为活动结束停止报名。
-            .dl_row.clearfix
-              .dl_modal_label_container
-                span.info_label 报名人数上限:
-              .dl_modal_other_container
-                input.dl-form-control(type="number" name="maxNumber" ng-model="$parent.member_max" ng-min="{{$parent.member_min}}" ng-maxlength=10 tooltip="{{campaign_form.maxNumber.$invalid? '请正确填写人数上限':''}}")
-              .dl_modal_people_container
-                span.info_label 人
-              .dl_modal_label_container
-                span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
+                span.info_label 常用标签:
+              .bootstrap-recommandtags(ng-repeat="tag in recommand_tags" ) 
+                span.label.label-info.tag(ng-if="!tag.disabled" ng-click="addTag($index)") {{tag._id}}
+                span.label.label-default.tag(ng-if="tag.disabled") {{tag._id}}
+            div(ng-show="show_options")
+              .dl_row.clearfix
+                .dl_modal_label_container
+                  span.info_label #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
+                .dl_modal_other_container
+                  input.dl-form-control(type="number" name="minNumber" ng-model="$parent.member_min" ng-min=0 ng-max="{{$parent.member_max}}" ng-maxlength=10 tooltip="{{campaign_form.minNumber.$invalid? '请正确填写最少人数':''}}")
+                .dl_modal_people_container
+                  span.info_label 人
+                .dl_modal_label_container
+                  span.info_label 报名截止前未达最少人数,您将收到提醒。不填默认为不提醒。
+              .dl_row.clearfix
+                .dl_modal_label_container
+                  span.info_label 报名截止时间:
+                .dl_modal_time_container
+                  .input-group.date.form_datetime#deadline
+                    input.dl-form-control(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                    span.input-group-addon.no_radius
+                      span.glyphicon.glyphicon-th
+                .dl_modal_label_container
+                  span.info_label 如果不选，默认为活动结束停止报名。
+              .dl_row.clearfix
+                .dl_modal_label_container
+                  span.info_label 报名人数上限:
+                .dl_modal_other_container
+                  input.dl-form-control(type="number" name="maxNumber" ng-model="$parent.member_max" ng-min="{{$parent.member_min}}" ng-maxlength=10 tooltip="{{campaign_form.maxNumber.$invalid? '请正确填写人数上限':''}}")
+                .dl_modal_people_container
+                  span.info_label 人
+                .dl_modal_label_container
+                  span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
       .dl-modal-footer
         button.cancel_btn.dl_btn_large.margin_left_30(type='button' data-dismiss="modal") #{__("CANCEL")}
         button.dl_btn.dl_btn_large(type='button' ng-click='goBack()' data-dismiss="modal" ng-if="dOtMulti") 上一步

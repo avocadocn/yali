@@ -178,7 +178,10 @@ var Campaign = new Schema({
             'travel',
         ]
         //其它的可以加一些新参数，比如跑步、自行车的公里数等
-    }
+    },
+    tags:[{
+        type:String
+    }]
 
 });
 

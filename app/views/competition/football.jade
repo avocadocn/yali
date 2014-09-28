@@ -202,6 +202,11 @@ block contentExt
               span #{__("PLACE")}#{__("LOCATION")}:
             .dl_detail_detail
               span= competition.location.name
+          if competition.tags.length>0
+            .dl_detail_row
+              each tag in competition.tags
+                span.glyphicon.glyphicon-tag
+                span #{tag}  
       .map_container
         p.subtitle.text-left 活动地点
         if competition.location.coordinates.length==2
