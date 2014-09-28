@@ -1936,8 +1936,8 @@ input.ng-invalid.ng-dirty {
 .dl_campaign_list .campaign_table .joined {
   background-image: url("/img/compaign_joined.png");
   background-repeat: no-repeat;
-  background-size: 100px 100px;
-  background-position: 5px -5px;
+  background-size: 90px 90px;
+  background-position: 10px 0px;
 }
 .dl_group_select {
   padding: 20px 40px;

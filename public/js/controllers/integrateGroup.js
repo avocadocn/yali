@@ -271,11 +271,12 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
                 member_min: $scope.member_min,
                 member_max: $scope.member_max,
                 deadline: $scope.deadline,
-                tags: $scope.tags.split(',')
+                tags: $scope.tags?$scope.tags.split(','):[]
             };
             Group.sponsor($rootScope.teamId,_data,function(status,data){
                 if(!status){
-                    window.location.reload();
+                    // window.location.reload();
+                    alertify.alert('活动发布成功!');
                 }else{
                     alertify.alert('活动发布出错');
                 }
@@ -988,7 +989,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
                 deadline: $scope.deadline,
                 member_min : $scope.member_min,
                 member_max : $scope.member_max,
-                tags: $scope.tags.split(',')
+                tags: $scope.tags?$scope.tags.split(','):[]
             };
             var callback = function(status,data){
                 if(!status){
@@ -997,7 +998,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
                 else{
                     alertify.alert('挑战发起失败');
                 }                
-            }
+            };
             if($scope.modal===1){//在自己的小队约战
                 _data.team_opposite_id =$scope.team_opposite._id
                 Group.provoke($rootScope.teamId,_data,callback);

@@ -1107,7 +1107,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Gr
                 member_min: $scope.member_min,
                 member_max: $scope.member_max,
                 deadline: $scope.deadline,
-                tags: $scope.tags.split(',')
+                tags: $scope.tags?$scope.tags.split(','):[]
             };
             Group.sponsor($rootScope.teamId,_data,function(status,data){
                 if(!status){
@@ -1420,7 +1420,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Gr
                 deadline: $scope.deadline,
                 member_min : $scope.member_min,
                 member_max : $scope.member_max,
-                tags: $scope.tags.split(',')
+                tags: $scope.tags?$scope.tags.split(','):[]
             };
             var callback = function(status,data){
                 if(!status){
