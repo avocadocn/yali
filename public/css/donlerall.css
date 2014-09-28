@@ -117,6 +117,12 @@ textarea {
   height: 36px;
   margin-left: 10px;
 }
+.magnifying {
+  cursor: url("/img/magnifying.png"), auto;
+}
+.shrink {
+  cursor: url("/img/shrink.png"), auto;
+}
 .dl_btn_score {
   width: 100px;
   height: 50px;
@@ -224,43 +230,128 @@ textarea {
   color: #cc847f;
   font-size: 12px !important;
 }
-.comment {
+.rich_comment_box {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px 20px !important;
+  margin-top: 10px;
+}
+.rich_comment_box .rich_comment_form .comment_textarea {
+  float: none;
+  height: 60px;
+  background-color: #fbfbfb;
+  border-color: #ededed;
+  border-radius: 0;
+}
+.rich_comment_box .rich_comment_form .operator {
+  margin-top: 5px;
+}
+.rich_comment_box .rich_comment_form .operator .preview_box {
+  margin-top: 5px;
+}
+.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap {
+  position: relative;
+  float: left;
+  margin-right: 5px;
+}
+.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap .close {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap:hover .close {
+  display: block;
+}
+.rich_comment_box .comment {
   position: relative;
   margin-top: 20px;
+  display: flex;
 }
-.comment .comment_user_info {
+.rich_comment_box .comment .comment_user_info {
   float: left;
   max-width: 50px;
 }
-.comment .comment_user_info p {
+.rich_comment_box .comment .comment_user_info p {
   text-align: center;
 }
-.comment .comment_user_info .user_photo {
+.rich_comment_box .comment .comment_user_info .user_photo {
   width: 50px;
   height: 50px;
 }
-.comment .comment_user_info .user_name {
+.rich_comment_box .comment .comment_user_info .user_name {
   text-decoration: none;
 }
-.comment .comment_content_panel {
+.rich_comment_box .comment .comment_content_panel {
   float: left;
   margin-left: 20px;
+  flex: 1;
 }
-.comment .comment_content_panel .comment_content {
+.rich_comment_box .comment .comment_content_panel .comment_content {
   padding: 10px;
   background-color: #fbfbfb;
   border: solid 1px #ededed;
-  width: 548px;
   min-height: 50px;
   word-break: break-all;
   overflow: hidden;
   margin-bottom: 4px;
 }
-.comment_textarea {
-  height: 60px;
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
+  width: 350px;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_list_box .list_img {
+  display: block;
+  float: left;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 100px;
+  height: 100px;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
+  position: relative;
+  margin-bottom: 10px;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 1;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_pre {
+  flex: 1;
+  cursor: w-resize;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_shrink {
+  flex: 2;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_next {
+  flex: 1;
+  cursor: e-resize;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav {
+  text-align: center;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav .thumb {
+  margin-right: 5px;
+}
+.rich_comment_box .comment .comment_content_panel .replies {
+  margin-top: 5px;
+  padding: 10px;
   background-color: #fbfbfb;
-  border-color: #ededed;
-  border-radius: 0;
+}
+.rich_comment_box .comment .comment_content_panel .replies .reply_form {
+  margin-bottom: 15px;
+  display: flex;
+}
+.rich_comment_box .comment .comment_content_panel .replies .reply_form .reply_input {
+  flex: 1;
+}
+.rich_comment_box .comment .comment_content_panel .replies .reply {
+  word-break: break-all;
 }
 .triangle {
   position: absolute;
@@ -2282,40 +2373,6 @@ input.ng-invalid.ng-dirty {
 .loading_modal .loading_text {
   line-height: 100px;
   margin: 0;
-}
-.dl_rich_comment_form .comment_textarea {
-  float: none;
-}
-.dl_rich_comment_form .operator {
-  margin-top: 5px;
-}
-.dl_rich_comment_form .operator .preview_box {
-  margin-top: 5px;
-}
-.dl_rich_comment_form .operator .preview_box .preview_img_wrap {
-  position: relative;
-  float: left;
-  margin-right: 5px;
-}
-.dl_rich_comment_form .operator .preview_box .preview_img_wrap .close {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.dl_rich_comment_form .operator .preview_box .preview_img_wrap:hover .close {
-  display: block;
-}
-.dl_comment_img_box .img_list_box {
-  width: 350px;
-}
-.dl_comment_img_box .img_list_box .list_img {
-  display: block;
-  float: left;
-  margin-top: 5px;
-  margin-left: 5px;
-  width: 100px;
-  height: 100px;
 }
 @-moz-keyframes scaleFade {
   50% {

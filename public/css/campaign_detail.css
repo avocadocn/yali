@@ -17,7 +17,7 @@
   background-color: #fff;
 }
 .dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_content {
-  width: 548px;
+  width: 450px;
   float: left;
 }
 .dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_aside {
@@ -29,7 +29,6 @@
 }
 .dl_detail_container .dl_detail_main .dl_detail_member {
   width: 660px;
-  float: left;
   background-color: #fff;
   margin: 10px 0 0;
   padding: 10px 20px;
@@ -77,32 +76,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.dl_detail_container .dl_detail_main .comment_box {
-  width: 660px;
-  float: left;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 10px 20px;
-  margin-top: 10px;
-}
-.dl_detail_container .dl_detail_main .comment_box .dl_comment_img_box .img_slider_box .nav .thumb {
-  display: block;
-  float: left;
-  margin-right: 5px;
-}
-.dl_detail_container .dl_detail_main .comment_box .replies {
-  width: 548px;
-  margin-top: 5px;
-  padding: 10px;
-  background-color: #fbfbfb;
-}
-.dl_detail_container .dl_detail_main .comment_box .reply_box {
-  margin-bottom: 15px;
-  display: flex;
-}
-.dl_detail_container .dl_detail_main .comment_box .reply_box .reply_input {
-  flex: 1;
 }
 .dl_detail_container .dl_button_container {
   margin-top: 10px;

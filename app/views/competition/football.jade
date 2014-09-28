@@ -9,6 +9,7 @@ block contentExt
   .dl_container.clearfix(ng-controller="competitionController" ng-init="role='#{role}';user = #{JSON.stringify(user)};competition_id='#{competition._id}';confirm_mode='#{confirm_mode}';score_a=#{competition.camp[0].score?competition.camp[0].score:0};score_b=#{competition.camp[1].score?competition.camp[1].score:0};")
     include ../partials/breadcrumb
     +breadcrumb(links)
+    #competition_data(data-photo-album-id="#{competition.photo_album._id}" data-host-id="#{competition._id}")
     .dl_detail_main
       ul.nav.nav-tabs
         li(ng-class="{'active':true}")
@@ -161,32 +162,7 @@ block contentExt
             if (role==='HR' || role==='LEADER') && (competition.active || !competition.camp[1].start_confirm)  &&!competition.finish
               #provokeDetailToolBar
               #competitionDetail.markdownContainer(ng-show="editContentStatus" ng-model="competitionContent"  mix-maxlength=4000 contenteditable)
-        .dl_row.clearfix.commment_box(ng-if="role!=='HR'||comments.length>0" bs-popover)
-          p.subtitle 留言
-          if role ==='LEADER' || role==='MEMBER'
-            form(name="comment_form" novalidate)
-              .dl_row.clearfix
-                if role !=='HR'
-                  textarea.dl-form-control(rows="2" name="content" ng-model="new_comment.text" ng-change="judge()" placeholder="请控制在140字以内" maxlength=140 required)
-                  button.dl_btn.pull-right.dl_btn_submit(ng-click="comment()" ng-disabled="comment_form.$invalid") #{__("SUBMIT")}#{__("LEAVEMESSAGE")}
-          .comment.clearfix(ng-repeat="comment in comments")
-            .comment_user_info(ng-if="comment.poster.cid=== '#{cid}'")
-              a(href="/users/home/{{comment.poster._id}}" )
-                img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}')
-              p.dl_user_name_small
-                a(href="/users/home/{{comment.poster._id}}")(ng-cloak) {{comment.poster.nickname}}
-            .comment_user_info(ng-if="!(comment.poster.cid==='#{cid}')")
-              img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}")
-              p.dl_user_name_small
-               span(ng-cloak) {{comment.poster.nickname}}
-            .comment_content_panel
-              .relative
-                .triangle_border
-                .triangle
-                .comment_content
-                  p(ng-cloak) {{comment.content}}
-              .comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-                a.mouse_hidden.comment_date.text.pull-right(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+        include ../partials/rich_comment_box
     .side
       .competition_detail
         if (role==='HR' || role==='LEADER') && competition.active &&!competition.finish

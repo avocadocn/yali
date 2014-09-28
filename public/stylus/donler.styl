@@ -51,7 +51,7 @@ textarea
 .loading_div
   background url('/img/loading.gif') center 38px no-repeat
   min-height 100px
-  
+
 .comment_height_limit
   height auto
   max-height 190px
@@ -96,7 +96,10 @@ textarea
   height 36px
   margin-left 10px
 
-
+.magnifying
+  cursor url("/img/magnifying.png"),auto
+.shrink
+  cursor url("/img/shrink.png"),auto
 
 .dl_btn_score
   width 100px
@@ -207,42 +210,118 @@ textarea
   color #cc847f
   font-size 12px !important
 
-.comment
-  position relative
-  margin-top 20px
 
-  .comment_user_info
-    float left
-    max-width 50px
-    p
-      text-align center
+.rich_comment_box
+  width 100%
+  background-color #fff
+  border 1px solid #ddd
+  padding 10px 20px !important
+  margin-top 10px
 
-    .user_photo
-      width 50px
-      height 50px
-
-    .user_name
-      text-decoration none
-
-  .comment_content_panel
-    float left
-    margin-left 20px
-
-    .comment_content
-      padding 10px
+  .rich_comment_form
+    .comment_textarea
+      float none
+      height 60px
       background-color contentBgColor
-      border solid 1px contentBdColor
-      width 548px
-      min-height 50px
-      word-break break-all
-      overflow hidden
-      margin-bottom 4px
+      border-color contentBdColor
+      border-radius 0
+    .operator
+      margin-top 5px
+      .preview_box
+        margin-top 5px
+        .preview_img_wrap
+          position relative
+          float left
+          margin-right 5px
+          .close
+            display none
+            position absolute
+            top 0
+            right 0
+          &:hover
+            .close
+              display block
 
-.comment_textarea
-    height 60px
-    background-color contentBgColor
-    border-color contentBdColor
-    border-radius 0
+  .comment
+    position relative
+    margin-top 20px
+    display flex
+
+    .comment_user_info
+      float left
+      max-width 50px
+      p
+        text-align center
+
+      .user_photo
+        width 50px
+        height 50px
+
+      .user_name
+        text-decoration none
+
+    .comment_content_panel
+      float left
+      margin-left 20px
+      flex 1
+
+      .comment_content
+        padding 10px
+        background-color contentBgColor
+        border solid 1px contentBdColor
+        min-height 50px
+        word-break break-all
+        overflow hidden
+        margin-bottom 4px
+
+        .comment_img_box
+          .img_list_box
+            width 350px
+            .list_img
+              display block
+              float left
+              margin-top 5px
+              margin-left 5px
+              width 100px
+              height 100px
+          .img_slider_box
+            .preview
+              position relative
+              margin-bottom 10px
+              .operator
+                position absolute
+                top 0
+                left 0
+                width 100%
+                height 100%
+                display flex
+                z-index 1
+                .img_pre
+                  flex 1
+                  cursor w-resize
+                .img_shrink
+                  flex 2
+                .img_next
+                  flex 1
+                  cursor e-resize
+            .nav
+              text-align center
+              .thumb
+                margin-right 5px
+      .replies
+        margin-top 5px
+        padding 10px
+        background-color contentBgColor
+        .reply_form
+          margin-bottom 15px
+          display flex
+          .reply_input
+            flex 1
+        .reply
+          word-break break-all
+
+
+
 
 .triangle
     position absolute
@@ -1925,32 +2004,4 @@ input.ng-invalid.ng-dirty
     line-height 100px
     margin 0
 
-.dl_rich_comment_form
-  .comment_textarea
-    float none
-  .operator
-    margin-top 5px
-    .preview_box
-      margin-top 5px
-      .preview_img_wrap
-        position relative
-        float left
-        margin-right 5px
-        .close
-          display none
-          position absolute
-          top 0
-          right 0
-        &:hover
-          .close
-            display block
-.dl_comment_img_box
-  .img_list_box
-    width 350px
-    .list_img
-      display block
-      float left
-      margin-top 5px
-      margin-left 5px
-      width 100px
-      height 100px
+
