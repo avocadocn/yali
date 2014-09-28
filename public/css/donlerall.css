@@ -117,6 +117,12 @@ textarea {
   height: 36px;
   margin-left: 10px;
 }
+.magnifying {
+  cursor: url("/img/magnifying.png"), auto;
+}
+.shrink {
+  cursor: url("/img/shrink.png"), auto;
+}
 .dl_btn_score {
   width: 100px;
   height: 50px;
@@ -302,9 +308,34 @@ textarea {
   width: 100px;
   height: 100px;
 }
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
+  position: relative;
+  margin-bottom: 10px;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 1;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_pre {
+  flex: 1;
+  cursor: w-resize;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_shrink {
+  flex: 2;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_next {
+  flex: 1;
+  cursor: e-resize;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav {
+  text-align: center;
+}
 .rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav .thumb {
-  display: block;
-  float: left;
   margin-right: 5px;
 }
 .rich_comment_box .comment .comment_content_panel .replies {
@@ -318,6 +349,9 @@ textarea {
 }
 .rich_comment_box .comment .comment_content_panel .replies .reply_form .reply_input {
   flex: 1;
+}
+.rich_comment_box .comment .comment_content_panel .replies .reply {
+  word-break: break-all;
 }
 .triangle {
   position: absolute;

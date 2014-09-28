@@ -51,7 +51,7 @@ textarea
 .loading_div
   background url('/img/loading.gif') center 38px no-repeat
   min-height 100px
-  
+
 .comment_height_limit
   height auto
   max-height 190px
@@ -96,7 +96,10 @@ textarea
   height 36px
   margin-left 10px
 
-
+.magnifying
+  cursor url("/img/magnifying.png"),auto
+.shrink
+  cursor url("/img/shrink.png"),auto
 
 .dl_btn_score
   width 100px
@@ -282,10 +285,28 @@ textarea
               width 100px
               height 100px
           .img_slider_box
+            .preview
+              position relative
+              margin-bottom 10px
+              .operator
+                position absolute
+                top 0
+                left 0
+                width 100%
+                height 100%
+                display flex
+                z-index 1
+                .img_pre
+                  flex 1
+                  cursor w-resize
+                .img_shrink
+                  flex 2
+                .img_next
+                  flex 1
+                  cursor e-resize
             .nav
+              text-align center
               .thumb
-                display block
-                float left
                 margin-right 5px
       .replies
         margin-top 5px
@@ -296,6 +317,8 @@ textarea
           display flex
           .reply_input
             flex 1
+        .reply
+          word-break break-all
 
 
 
