@@ -64,7 +64,18 @@
             overflow hidden
             text-overflow ellipsis
             white-space nowrap
-
+      .message_item
+        position relative
+        border-bottom 1px solid #ccc
+        min-height 50px
+        padding 5px 20px 20px 20px
+        margin 0 -20px
+        &:first-of-type
+          padding-top 0
+        &:last-child
+          border none
+        .message_content
+          font-size 14px
   .dl_button_container
     margin-top 10px
   .dl_detail_side
