@@ -336,6 +336,8 @@ textarea {
   text-align: center;
 }
 .rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav .thumb {
+  width: 40px;
+  height: 40px;
   margin-right: 5px;
 }
 .rich_comment_box .comment .comment_content_panel .replies {

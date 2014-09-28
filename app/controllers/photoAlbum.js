@@ -1092,6 +1092,33 @@ exports.deletePhoto = function(req, res) {
               return;
             }
 
+            var result = photos[i].uri.match(/^([\s\S]+)\/(([-\w]+)\.[\w]+)$/);
+            var img_path = result[1], img_filename = result[2], img_name = result[3];
+
+            var ori_path = path.join(config.root, 'public', img_path);
+            var size_path = path.join(ori_path, 'size');
+
+            var remove_size_files = fs.readdirSync(size_path).filter(function (item) {
+              if (item.indexOf(img_name) === -1) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+
+            remove_size_files.forEach(function (filename) {
+              fs.unlinkSync(path.join(size_path, filename));
+            });
+
+            var now = new Date();
+            var date_dir_name = now.getFullYear().toString() + '-' + (now.getMonth() + 1);
+            var move_targe_dir = path.join(config.root, 'img_trash', date_dir_name);
+            if (!fs.existsSync(move_targe_dir)) {
+              mkdirp.sync(move_targe_dir);
+            }
+            // 将上传的图片移至备份目录
+            fs.renameSync(path.join(config.root, 'public', photos[i].uri), path.join(move_targe_dir, img_filename));
+
             photos[i].hidden = true;
             photo_album.photo_count -= 1;
             photo_album.save(function(err) {
