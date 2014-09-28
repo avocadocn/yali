@@ -18,7 +18,7 @@
           li
             a(ng-click="selectCampaign(5)") 所有活动
   table.table.table-hover.campaign_table
-    tr(ng-repeat="campaign_item in campaigns")
+    tr(ng-repeat="campaign_item in campaigns" ng-click="")
       //- td.emp_col
       //-   p
       td.year_col
@@ -31,15 +31,16 @@
           img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
           img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
       td.content_col
-        p
-          strong 主题:
-          a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
-        //- p
-        //-   strong 内容:
-        //-   span.content_text {{campaign_item.content}}
-        p
-          strong #{__("LOCATION")}:
-          span.content_text {{campaign_item.location.name}}
+        a(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}")
+          p
+            strong 主题:
+            span.theme_text {{campaign_item.theme}}
+          //- p
+          //-   strong 内容:
+          //-   span.content_text {{campaign_item.content}}
+          p
+            strong #{__("LOCATION")}:
+            span.content_text {{campaign_item.location.name}}
       td.operator_col(ng-class="{'joined':campaign_item.join_flag===1}")
         button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
         if provider=='user'

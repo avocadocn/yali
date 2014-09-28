@@ -55,6 +55,12 @@
 .campaign_table .content_col {
   width: 50%;
 }
+.campaign_table .content_col a {
+  color: #888;
+}
+.campaign_table .content_col a:hover {
+  text-decoration: none;
+}
 .campaign_table .content_col p {
   margin: 0;
   line-height: 21px;
