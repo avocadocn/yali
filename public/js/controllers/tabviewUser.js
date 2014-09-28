@@ -608,10 +608,8 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                         calendar.view($(this).data('calendar-view'));
                     });
                     $('#calendar').undelegate('.cal-month-day','click').delegate('.cal-month-day','click',function(e){
-                        $rootScope.$broadcast('updateUser', true);
-
                         $('#events-modal').modal('show');
-                        initModalCalendar(events_source,calendar.getStartDate());
+                        initModalCalendar(events_source,$(this).children('span[data-cal-date]').attr('data-cal-date'));
                         // $('#calendar_modal').view($(this).data('calendar-view'));
                         // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
                     });
@@ -633,7 +631,6 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                 tmpl_path: '/tmpls/',
                 tmpl_cache: false,
                 language: 'zh-CN',
-                modal: '#events-modal',
                 onAfterEventsLoad: function(events) {
                     if (!events) {
                         return;
@@ -661,6 +658,9 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                     $('#calendar_view_modal').undelegate('[data-calendar-view]','click').delegate('[data-calendar-view]','click',function() {
                         modalCalendar.view($(this).data('calendar-view'));
                     });
+                    if(start_time){
+                        $('#calendar_view_modal').find("[data-cal-date='"+start_time+"']").parent().mouseenter().click();
+                    }
                 },
                 classes: {
                     months: {
@@ -668,15 +668,25 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                     }
                 }
             };
-
+            if(start_time){
+                modalOptions.day = start_time;
+            } 
             var modalCalendar = $('#calendar_modal').calendar(modalOptions);
         };
         $scope.company = false; 
-        $scope.getCampaigns = function(attr) {
+        //attr为未参加，已参加，全部
+        //type为modal,small
+        $scope.getCampaigns = function(attr,type) {
             // if ($scope.isCalendar === true) {
                 $scope.campaignsType = attr;
                 var events_source = '/campaign/user/' + attr + '/calendar/'+$rootScope.uid;
-                initCalendar(events_source);
+                if(type=='modal'){
+                    initModalCalendar(events_source);
+                }
+                else{
+                    initCalendar(events_source);
+                }
+
             // } else {
             //     $scope.campaignsType = attr;
             //     $http.get('/campaign/user/' + attr + '/list/'+$rootScope.uid).success(function(data, status) {
