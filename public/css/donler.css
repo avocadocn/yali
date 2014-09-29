@@ -307,10 +307,14 @@ textarea {
   margin-left: 5px;
   width: 100px;
   height: 100px;
+  background: url("/img/loading.gif") center center no-repeat;
 }
 .rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
   position: relative;
   margin-bottom: 10px;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .preview_img {
+  background: url("/img/loading.gif") center center no-repeat;
 }
 .rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
   position: absolute;
@@ -339,6 +343,13 @@ textarea {
   width: 40px;
   height: 40px;
   margin-right: 5px;
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_single_thumb {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
+  background: url("/img/loading.gif") center center no-repeat;
 }
 .rich_comment_box .comment .comment_content_panel .replies {
   margin-top: 5px;
