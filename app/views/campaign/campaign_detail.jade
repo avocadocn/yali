@@ -92,6 +92,7 @@ block contentExt
           each _message in messageContent
             .message_item
               .message_content= _message.content
+              .pull-right= '来自--' + _message.sender.nickname + '(' + _message.sender.role + ')'
               .pull-right= moment(_message.post_date).format("YYYY-MM-DD HH:mm")
       if campaign.campaign_type == 3
         //-成员

@@ -1068,7 +1068,8 @@ exports.renderCampaignDetail = function(req, res) {
         results[1].forEach(function(_message){
           _messageContent.push({
             content: _message.content,
-            post_date:_message.post_date
+            post_date:_message.post_date,
+            sender: _message.sender[0]
           });
         })
       }
