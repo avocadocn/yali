@@ -123,6 +123,8 @@
   border-bottom: solid 1px #ddd;
   background-image: none;
   background-color: #f1f1f1;
+  max-height: 190px;
+  overflow-y: auto;
 }
 #cal-slide-content:hover {
   background-color: #f1f1f1;

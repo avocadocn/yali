@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
     photo_album_controller = require('./photoAlbum'),
     message = require('../controllers/message.js'),
     Campaign = mongoose.model('Campaign'),
+    MessageContent = mongoose.model('MessageContent'),
     model_helper = require('../helpers/model_helper');
 
 
@@ -130,6 +131,21 @@ exports.getCompetition = function(req, res){
       });
     }
   }
+  MessageContent.find({'campaign_id':req.params.campaignId,'status':'undelete'}).sort('-post_date').exec().then(function(messageContent){
+    var _messageContent =[];
+      if(messageContent){
+        results[1].forEach(function(_message){
+          _messageContent.push({
+            content: _message.content,
+            post_date:_message.post_date
+          });
+        })
+      }
+      options.messageContent = _messageContent;
+  })
+  .then(null, function(err) {
+    return res.render('competition/football', options);
+  });
   //console.log(options);
   return res.render('competition/football', options);
 };

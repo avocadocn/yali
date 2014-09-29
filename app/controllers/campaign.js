@@ -1015,7 +1015,7 @@ exports.renderCampaignDetail = function(req, res) {
       })
       .then(null, function(err) {
         callback(err);
-      });;
+      });
     }
   ],
   // optional callback

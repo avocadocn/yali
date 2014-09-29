@@ -412,32 +412,35 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
     };
 
     $scope.quit = function(campaign_id,index) {
-
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/quitCampaign/'+campaign_id,
-                data:{
-                    campaign_id : campaign_id,
-                    tid : $rootScope.teamId
+        alertify.confirm('确认要退出活动吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/campaign/quitCampaign/'+campaign_id,
+                        data:{
+                            campaign_id : campaign_id,
+                            tid : $rootScope.teamId
+                        }
+                    }).success(function(data, status) {
+                        if(data.result===1){
+                            alertify.alert('成功退出活动!');
+                            //alert('您已退出该活动!');
+                            $scope.group_messages[index].join_flag = false;
+                            $scope.group_messages[index].member_num--;
+                        }
+                        else{
+                            alertify.alert(data.msg);
+                        }
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    alertify.alert('成功退出活动!');
-                    //alert('您已退出该活动!');
-                    $scope.group_messages[index].join_flag = false;
-                    $scope.group_messages[index].member_num--;
+                catch(e) {
+                    console.log(e);
                 }
-                else{
-                    alertify.alert(data.msg);
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+            }
+        });
     };
     //应战
     $scope.responseProvoke = function(tid,competition_id,status) {

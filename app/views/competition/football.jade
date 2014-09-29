@@ -126,6 +126,14 @@ block contentExt
                 img.teamMember.team_member_logo.pull-right.img_user(draggable="false" tooltip="#{team.indexOf(1)>-1?teamBMember.nickname:''}" src='#{teamBMember.photo}' id='b__#{teamBMember.uid}')
         if !competition.active&&(competition.camp[1].start_confirm || !competition.camp[0].start_confirm)
           .text-center #{__("CAMPAIGNCLOSE")}
+        if messageContent && messageContent.length>0
+          .dl_detail_member.row
+            .dl_row.subtitle
+              span 活动通知:
+            each _message in messageContent
+              .message_item
+                .message_content= _message.content
+                .pull-right= moment(_message.post_date).format("YYYY-MM-DD HH:mm")
         //- 7是足球
         if competition.camp[0].gid === '7'&&competition.camp[1].gid === '7'
           .football.clearfix

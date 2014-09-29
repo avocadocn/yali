@@ -417,51 +417,55 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
         };
 
         $scope.quit = function(campaign_id,index,tid) {
-            try {
-                $http({
-                    method: 'post',
-                    url: '/campaign/quitCampaign/'+campaign_id,
-                    data:{
-                        campaign_id : campaign_id,
-                        tid : tid
+            alertify.confirm('确认要退出活动吗？',function(e){
+                if(e){
+                    try {
+                        $http({
+                            method: 'post',
+                            url: '/campaign/quitCampaign/'+campaign_id,
+                            data:{
+                                campaign_id : campaign_id,
+                                tid : tid
+                            }
+                        }).success(function(data, status) {
+                            if(data.result===1){
+                                alertify.alert('成功退出该活动!');
+                                //alert('您已退出该活动!');
+                                $scope.group_messages[index].join_flag = false;
+                                $scope.group_messages[index].member_num--;
+                            }
+                            else{
+                                alertify.alert(data.msg);
+                            }
+                        }).error(function(data, status) {
+                            alertify.alert('DATA ERROR');
+                        });
                     }
-                }).success(function(data, status) {
-                    if(data.result===1){
-                        alertify.alert('成功退出该活动!');
-                        //alert('您已退出该活动!');
-                        $scope.group_messages[index].join_flag = false;
-                        $scope.group_messages[index].member_num--;
+                    catch(e) {
+                        console.log(e);
                     }
-                    else{
-                        alertify.alert(data.msg);
-                    }
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
+                }
+            });
         };
         //应战
-        $scope.responseProvoke = function(tid,provoke_message_id) {
-            try {
-                $http({
-                    method: 'post',
-                    url: '/group/responseProvoke/'+tid,
-                    data:{
-                        provoke_message_id : provoke_message_id
-                    }
-                }).success(function(data, status) {
-                    window.location.reload();
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-        };
+        // $scope.responseProvoke = function(tid,provoke_message_id) {
+        //     try {
+        //         $http({
+        //             method: 'post',
+        //             url: '/group/responseProvoke/'+tid,
+        //             data:{
+        //                 provoke_message_id : provoke_message_id
+        //             }
+        //         }).success(function(data, status) {
+        //             window.location.reload();
+        //         }).error(function(data, status) {
+        //             alertify.alert('DATA ERROR');
+        //         });
+        //     }
+        //     catch(e) {
+        //         console.log(e);
+        //     }
+        // };
     }
 ]);
 
@@ -631,6 +635,8 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                 tmpl_path: '/tmpls/',
                 tmpl_cache: false,
                 language: 'zh-CN',
+                eventShow: 1,
+                eventShowContainer: '#cal-modal-event-box',
                 onAfterEventsLoad: function(events) {
                     if (!events) {
                         return;

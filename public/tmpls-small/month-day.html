@@ -1,4 +1,5 @@
 <div class="cal-month-day cal-month-day-small <%= cls %>">
+	<span class="pull-right day" data-cal-date="<%= data_day %>" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
 	<% if (events.length > 0) { %>
 		<%
 			var joined = false;
@@ -13,5 +14,4 @@
 			<div class="join_sign"></div>
 		<% } %>
 	<% } %>
-	<span class="pull-right day" data-cal-date="<%= data_day %>" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
 </div>
