@@ -15,7 +15,7 @@ block contentExt
           .media-body
             h4.media-heading= photo_album.owner.name
             p.text 相册名:&nbsp;#{photo_album.name}
-            p.text 照片数:&nbsp;#{photo_album.photo_count}
+            p.text 照片数:&nbsp;{{photos.length}}
             p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
         .right_down
           if uploadAuth === true

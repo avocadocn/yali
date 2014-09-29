@@ -437,6 +437,66 @@ var getNewPhotos = exports.getNewPhotos = function(group_id, count, callback) {
 };
 
 
+/**
+ * 删除一个相册中的照片
+ * @param  {Array}   photos   照片id数组，要求在同一个相册中
+ * @param  {Function} callback callback(err)
+ */
+exports.deletePhotos = function (photos, callback) {
+  PhotoAlbum.findOne({ 'photos._id': photos[0] }).exec()
+  .then(function (photo_album) {
+    if (!photo_album) {
+      callback && callback('not found');
+    } else {
+      photos.forEach(function (comment_photo) {
+        for (var i = 0; i < photo_album.photos.length; i++) {
+          var photo = photo_album.photos[i];
+          if (comment_photo._id.toString() === photo._id.toString()) {
+            var result = photo.uri.match(/^([\s\S]+)\/(([-\w]+)\.[\w]+)$/);
+            var img_path = result[1], img_filename = result[2], img_name = result[3];
+
+            var ori_path = path.join(config.root, 'public', img_path);
+            var size_path = path.join(ori_path, 'size');
+
+            var remove_size_files = fs.readdirSync(size_path).filter(function (item) {
+              if (item.indexOf(img_name) === -1) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+
+            remove_size_files.forEach(function (filename) {
+              fs.unlinkSync(path.join(size_path, filename));
+            });
+
+            var now = new Date();
+            var date_dir_name = now.getFullYear().toString() + '-' + (now.getMonth() + 1);
+            var move_targe_dir = path.join(config.root, 'img_trash', date_dir_name);
+            if (!fs.existsSync(move_targe_dir)) {
+              mkdirp.sync(move_targe_dir);
+            }
+            // 将上传的图片移至备份目录
+            fs.renameSync(path.join(config.root, 'public', photo.uri), path.join(move_targe_dir, img_filename));
+
+            photo.hidden = true;
+            photo_album.photo_count -= 1;
+            photo_album.save(function (err) {
+              if (err) {
+                callback && callback(err);
+              } else {
+                callback && callback();
+              }
+            })
+          }
+        }
+      })
+    }
+  })
+  .then(null, function (err) {
+    callback && callback(err);
+  });
+};
 
 
 

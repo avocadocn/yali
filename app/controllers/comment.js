@@ -14,7 +14,8 @@ var mongoose = require('mongoose'),
     CompanyGroup = mongoose.model('CompanyGroup'),
     Comment = mongoose.model('Comment'),
     moment = require('moment'),
-    model_helper = require('../helpers/model_helper');
+    model_helper = require('../helpers/model_helper'),
+    photo_album_ctrl = require('./photoAlbum.js');
 
 
 
@@ -180,6 +181,14 @@ exports.deleteComment = function(req,res){
                 });
             } else {
                 return res.send("SUCCESS");
+            }
+            // 同时在相册移除相应的照片
+            if (comment.photos && comment.photos.length > 0) {
+                photo_album_ctrl.deletePhotos(comment.photos, function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             }
         }
     });
