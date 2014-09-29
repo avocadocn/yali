@@ -704,6 +704,7 @@ exports.updatePhotoAlbum = function(req, res) {
     }
     if (photo_album.hidden === false) {
       photo_album.name = new_name;
+      photo_album.correctPhotoCount();
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
@@ -1114,6 +1115,7 @@ exports.updatePhoto = function(req, res) {
         }
         setUpdateUser();
       }
+      photo_album.correctPhotoCount();
       photo_album.save(function(err) {
         if (err) {
           console.log(err);
@@ -1181,7 +1183,7 @@ exports.deletePhoto = function(req, res) {
             fs.renameSync(path.join(config.root, 'public', photos[i].uri), path.join(move_targe_dir, img_filename));
 
             photos[i].hidden = true;
-            photo_album.photo_count -= 1;
+            photo_album.correctPhotoCount();
             photo_album.save(function(err) {
               if (err) {
                 console.log(err);
@@ -1502,7 +1504,7 @@ exports.renderPhotoDetail = function(req, res, next) {
                 _id: photo_album._id,
                 name: photo_album.name,
                 update_date: photo_album.update_date,
-                photo_count: photo_album.photos.length,
+                photo_count: photo_album.photo_count,
                 owner: {
                   name: owner_name,
                   logo: owner_logo

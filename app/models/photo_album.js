@@ -93,6 +93,18 @@ var PhotoAlbum = new Schema({
   }
 });
 
+PhotoAlbum.methods = {
+  // 校正照片计数
+  correctPhotoCount: function () {
+    var count = 0;
+    for (var i = 0; i < this.photos.length; i++) {
+      if (!this.photos[i].hidden) {
+        count++;
+      }
+    }
+    this.photo_count = count;
+  }
+};
 
 mongoose.model('PhotoAlbum', PhotoAlbum);
 
