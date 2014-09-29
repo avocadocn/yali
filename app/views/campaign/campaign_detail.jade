@@ -121,10 +121,11 @@ block contentExt
       if role==='HR' || role ==='LEADER'
         .dl_detail_member(ng-init="member_quit=#{JSON.stringify(campaign.member_quit)};" ng-show="member_quit.length>0" bs-popover)
           p.subtitle 退出#{__("MEMBER")}:
-          div.member(ng-repeat = "_member in member_quit")
-            a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-              img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
-              span.name(ng-cloak) {{shortTrim(_member.nickname)}}
+          .dl_row.clearfix
+            div.member(ng-repeat = "_member in member_quit")
+              a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
+                img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
+                span.name(ng-cloak) {{shortTrim(_member.nickname)}}
       include ../partials/rich_comment_box
     .dl_detail_side
       .map_container
