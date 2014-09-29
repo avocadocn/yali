@@ -1935,7 +1935,13 @@ input.ng-invalid.ng-dirty {
 .dl_campaign_list .table {
   margin-bottom: 0px;
 }
-.dl_campaign_list .campaign_table .joined {
+.dl_campaign_list .table tr:hover .cancel_btn {
+  display: block;
+}
+.dl_campaign_list .table tr .cancel_btn {
+  display: none;
+}
+.dl_campaign_list .table .joined {
   background-image: url("/img/compaign_joined.png");
   background-repeat: no-repeat;
   background-size: 90px 90px;

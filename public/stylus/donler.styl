@@ -1630,7 +1630,12 @@ input.ng-invalid.ng-dirty
 .dl_campaign_list
   .table
     margin-bottom 0px
-  .campaign_table
+    tr
+      &:hover
+        .cancel_btn
+          display block
+      .cancel_btn
+        display none
     .joined
       background-image url('/img/compaign_joined.png')
       background-repeat no-repeat
