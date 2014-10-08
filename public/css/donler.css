@@ -366,6 +366,12 @@ textarea {
 .rich_comment_box .comment .comment_content_panel .replies .reply {
   word-break: break-all;
 }
+.rich_comment_box .pager .pagination {
+  margin: 0;
+}
+.rich_comment_box .pager .novisible {
+  opacity: 0;
+}
 .rich_comment_box .pager li>a {
   border-radius: 0;
 }

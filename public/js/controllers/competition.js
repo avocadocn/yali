@@ -194,8 +194,8 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
                     var page = {
                         has_next: has_next
                     };
+                    page.this_create_date = $scope.pages[$scope.now_page - 1].next_create_date;
                     if (has_next === true) {
-                        page.last_create_date = comments[0].create_time;
                         page.next_create_date = comments[comments.length - 1].create_date;
                     }
                     $scope.pages.push(page);
@@ -212,8 +212,19 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
                 $scope.comments = comments;
                 $scope.now_page--;
             }
-        }, $scope.pages[$scope.now_page].last_create_date);
+        }, $scope.pages[$scope.now_page - 1].last_create_date);
     };
+
+    $scope.changePage = function (index) {
+        Comment.get('campaign', $scope.competition_id, function (err, comments) {
+            if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+            } else {
+                $scope.comments = comments;
+                $scope.now_page = index;
+            }
+        }, $scope.pages[index].this_create_date);
+    }
 
     $scope.updateFlag = false;
     $scope.comments = [];
