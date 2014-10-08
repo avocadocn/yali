@@ -209,7 +209,7 @@ var formatCampaignForCalendar = function(user, campaigns) {
 
     var is_joined = false;
     // 活动
-    if (campaign.campaign_type < 3 || campaign.campaign_type ===6) {
+    if (campaign.campaign_type < 4 || campaign.campaign_type ===6) {
       for (var i = 0, members = campaign.member; i < members.length; i++) {
         if (user._id.toString() === members[i].uid) {
           is_joined = true;

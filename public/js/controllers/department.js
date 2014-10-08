@@ -361,7 +361,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
             console.log(e);
         }
     };
-    var joinCommit = function(campaign_id,index,tid){
+    $scope.join = function(campaign_id,index) {
         try {
             $http({
                 method: 'post',

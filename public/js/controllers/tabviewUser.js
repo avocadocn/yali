@@ -399,11 +399,11 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             }
         }
         $scope.join = function(campaign_id,index,tid) {
+            $scope.join_teams=$scope.group_messages[index].myteam;
+            $scope.join_campaign_id = campaign_id;
+            $scope.join_index = index;
+            $scope.select_index = 0;
             if($scope.group_messages[index].myteam.length>1){
-                $scope.join_teams=$scope.group_messages[index].myteam;
-                $scope.join_campaign_id = campaign_id;
-                $scope.join_index = index;
-                $scope.select_index = 0;
                 $('#joinTeamSelectmodal').modal();
             }
             else{
