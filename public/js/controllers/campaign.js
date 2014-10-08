@@ -15,25 +15,78 @@ campaignApp.directive('maxHeight', function() {
     };
 });
 campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'Comment', function ($scope, $http, $rootScope, Comment) {
+    var page_size = 20;
     $scope.private_message_content = {
         'text':""
     };
+    $scope.pages = [];
+    $scope.now_page = 0;
     $scope.$watch('campaign_id',function(campaign){
         if(campaign==null){
             return;
         }
-        Comment.get('campaign', $scope.campaign_id, function (err, comments) {
+        Comment.get('campaign', $scope.campaign_id, function (err, comments, has_next) {
             if (err) {
                 alertify.alert('获取评论失败，请刷新页面重试');
             } else {
                 if(comments.length > 0){
                     $scope.comments = comments;
-                    $scope.fixed_sum = comments.length;
+                    var page = {
+                        has_next: has_next
+                    };
+                    if (has_next === true) {
+                        page.next_create_date = comments[comments.length - 1].create_date;
+                    }
+                    $scope.pages.push(page);
                 }
             }
         });
 
     });
+
+    $scope.nextPage = function () {
+        Comment.get('campaign', $scope.campaign_id, function (err, comments, has_next) {
+            if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+            } else {
+                $scope.comments = comments;
+                $scope.now_page++;
+                if (!$scope.pages[$scope.now_page]) {
+                    var page = {
+                        has_next: has_next
+                    };
+                    page.this_create_date = $scope.pages[$scope.now_page - 1].next_create_date;
+                    if (has_next === true) {
+                        page.next_create_date = comments[comments.length - 1].create_date;
+                    }
+                    $scope.pages.push(page);
+                }
+            }
+        }, $scope.pages[$scope.now_page].next_create_date);
+    };
+
+    $scope.lastPage = function () {
+        Comment.get('campaign', $scope.campaign_id, function (err, comments) {
+            if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+            } else {
+                $scope.comments = comments;
+                $scope.now_page--;
+            }
+        }, $scope.pages[$scope.now_page - 1].this_create_date);
+    };
+
+    $scope.changePage = function (index) {
+        Comment.get('campaign', $scope.campaign_id, function (err, comments) {
+            if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+            } else {
+                $scope.comments = comments;
+                $scope.now_page = index;
+            }
+        }, $scope.pages[index].this_create_date);
+    }
+
     $scope.editContentStatus =false;
 
     $scope.comments = [];
@@ -189,7 +242,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         }
     }
     $scope.editContent = function(){
-        
+
         if(!$scope.editContentStatus){
             $scope.campaignContent = angular.element('#campaignContent').html();
             $scope.editContentStatus = !$scope.editContentStatus;

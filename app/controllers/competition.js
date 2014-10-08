@@ -31,7 +31,7 @@ function booleanJudge(own,opposite){
   }
 }
 //比赛
-exports.getCompetition = function(req, res){
+exports.getCompetition = function(req, res, next){
   var timeout = Config.COMPETITION_CONFIRM_TIMEOUT;
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     res.status(403);
@@ -133,21 +133,21 @@ exports.getCompetition = function(req, res){
   }
   MessageContent.find({'campaign_id':req.params.campaignId,'status':'undelete'}).sort('-post_date').exec().then(function(messageContent){
     var _messageContent =[];
-      if(messageContent){
-        results[1].forEach(function(_message){
-          _messageContent.push({
-            content: _message.content,
-            post_date:_message.post_date
-          });
-        })
-      }
-      options.messageContent = _messageContent;
+    if(messageContent){
+      results[1].forEach(function(_message){
+        _messageContent.push({
+          content: _message.content,
+          post_date:_message.post_date
+        });
+      })
+    }
+    options.messageContent = _messageContent;
+    return res.render('competition/football', options);
   })
   .then(null, function(err) {
     return res.render('competition/football', options);
   });
-  //console.log(options);
-  return res.render('competition/football', options);
+  
 };
 
 
@@ -191,7 +191,7 @@ if(!req.user){
 };
 
 //某一方发送或者修改比赛成绩确认消息
-exports.resultConfirm = function (req, res) {
+exports.resultConfirm = function (req, res, next) {
   if(req.role !=='HR' && req.role !=='LEADER'){
     res.status(403);
     next('forbidden');

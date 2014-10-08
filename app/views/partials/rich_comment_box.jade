@@ -1,4 +1,4 @@
-.rich_comment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
+.rich_comment_box#rich_comment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
   p.subtitle 留言
   if role==='MEMBER' || role ==='LEADER' || role==='PARTNER'
     form.rich_comment_form(name="comment_form" novalidate)
@@ -55,3 +55,11 @@
           span(ng-if="reply.to._id!==comment.poster._id") 回复 {{reply.to.nickname}}:&nbsp;
           span {{reply.content}}
           span &nbsp;({{reply.publish_date | date:'yyyy-MM-dd HH:mm' | dateView }})
+  ul.pager(ng-if="pages[0].has_next===true")
+    li.previous
+      a(href="#rich_comment_box" ng-click="lastPage()" ng-class="{'novisible': now_page === 0}") <<上一页
+    li.next
+      a(href="#rich_comment_box" ng-click="nextPage()" ng-class="{'novisible': pages[now_page].has_next === false}") 下一页>>
+    ul.pagination(ng-if="pages.length > 1")
+      li(ng-repeat="page in pages" ng-class="{'active': now_page===$index}")
+        a(href="#rich_comment_box" ng-click="changePage($index)") {{$index + 1}}
