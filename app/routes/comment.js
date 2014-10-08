@@ -9,6 +9,6 @@ module.exports = function(app, passport) {
   app.post('/comment/pull/:commentType/:hostId', authorization.appToken, authorization.commentAuthorize, comment.getComment);
   app.post('/comment/push/:commentType/:hostId', authorization.appToken, authorization.commentAuthorize, comment.setComment);
   app.post('/comment/:commentId/reply', comment.getCommentById, comment.reply);
-  app.post('/comment/delete', comment.deleteComment);
+  app.post('/comment/delete/:commentType/:hostId', authorization.appToken, authorization.commentAuthorize, comment.deleteComment);
   //app
 };

@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   Company = mongoose.model('Company'),
   Campaign = mongoose.model('Campaign'),
-  Department = mongoose.model('Department');
+  Department = mongoose.model('Department'),
+  Comment = mongoose.model('Comment');
 var userController = require('../../controllers/users');
 /**
  * Generic require login routing middleware
@@ -59,63 +60,81 @@ exports.commentAuthorize = function(req, res, next) {
   else {
     switch(req.params.commentType){
       case 'delete'://删除
-        //todo -M
-        //删除有这几种可能：
-        //1..在个人动态自己删除; 
-        //2..小队动态自己、队长删除、HR删除;
-        //3..活动/比赛详情页队长、HR能删除本公司、自己能删除
-        //4..相册HR、相册所在小队队长、自己发的能删
-        //需要:评论poster跟队长、HR在不在一个公司,在的话就能删除
-        //另外:需要传个人的id和team或campaign的id
-              // var ct = campaign.campaign_type;
-              // if(ct===1){//公司活动
-              // }
-              // else if(ct<4 || ct===6 || ct===8){//多小队活动、小队活动、部门活动
-                //小队信息都放在team里
-                // campaign.team.forEach(function(team){
-                //   var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
-                //   if (team_index>-1){
-                //     if(req.user.team[team_index].leader ===true){
-                //       req.role = 'LEADER';//在本活动中的team的leader
-                //     }
-                //     else{
-                //       req.role = 'MEMBER';
-                //     }
-                // }
-                //  // 没加这个team的本公司成员
-                //   else if(campaign.cid.indexOf(req.user.cid.toString())>-1){
-                //     req.role = 'PARTNER';
-                //   }
-                // });
-                // //不是这两个组的公司的任何人
-                // if(req.role === undefined)
-                //   req.role = 'GUEST';
-                // next();
-              // }
-              // else if(ct===4 || ct===5 || ct===7 || ct===9){//小队活动、挑战
-              //   //小队信息在camp里
-              //   campaign.camp.forEach(function(team){
-              //   for(team in campaign.camp){
+        //不管在哪，判断这个活动内，这个人是否有权限去删除它
+        //故需要传：操作者req.user,commentid->活动id(由comment的host_id去取)
+        //reply???
+        Comment.findOne({'_id':req.params.hostId},function (err, comment){
+          if(err || !comment){
+            res.status(403);
+            next('forbidden');
+            return;
+          }
+          else if(req.user._id.toString()===comment.poster._id.toString()){
+            req.role = 'OWNER';
+            next();
+          }
+          else if(req.user._id.toString() === comment.poster.cid.toString()) {
+            req.role = 'HR';
+            next();
+          }
+          else if(req.user.cid.toString()!==comment.poster.cid.toString()){
+            req.role = 'GUEST';
+            next();
+          }
+          else if(req.user.role==='LEADER'){
+            Campaign.findOne({'_id':comment.host_id},function(err,campaign){
+              if(err || !campaign){
+                res.status(403);
+                next('forbidden');
+                return;
+              };
+              var ct = campaign.campaign_type;
+              if(ct === 1){//公司活动，直接partner
+                req.role = 'PARTNER';
+                next();
+              }
+              else if(ct === 6){//部门管理员todo
 
+              }
+              else {//如果是活动非competition，看这个人是否是某个team的队长即可
+                var _teamIndex = null;
+                for(var i=0;i<campaign.team.length;i++){
+                  _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i]._id,'_id');
+                  if(_teamIndex>-1 && req.user.team[_teamIndex].leader === true){
+                    req.role = 'LEADER';
+                    next();
+                  }
+                }
+                if(req.role!='LEADER'){
+                  req.role = 'PARTNER';
+                  next();
+                }
+              }
+              // else{//如果是competition
+              //   var teamIds = [];
+              //   for(var i=0;i<campaign.camp.length;i++){
+              //     teamIds.push(campaign.camp.team[i]._id);
               //   }
-              //     var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
-              //     if (team_index>-1){
-              //       if(req.user.team[team_index].leader ===true){
-              //         req.role = 'LEADER';//在本活动中的team的leader
-              //       }
-              //       else{
-              //         req.role = 'MEMBER';
-              //       }
+              //   CompanyGroup.find({'_id':{$in:teamIds}},function(err,companyGroups){
+              //     if(err||!companyGroups){
+              //       res.status(403);
+              //       next('forbidden');
+              //       return;
               //     }
-              //     //没加这个team的本公司成员
-              //     else if(campaign.cid.indexOf(req.user.cid.toString())>-1){
-              //       req.role = 'PARTNER';
+              //     for(var i=0;i<companyGroups.length;i++){
+              //       if(model_helper.arrayObjectIndexOf(companyGroups[i].leader,req.user._id,'_id')>-1 ){
+              //         req.role = 'LEADER';
+              //         next();
+              //       }
               //     }
               //   });
-              //   //不是这两个组的公司的任何人
-              //   if(req.role === undefined)
-              //     req.role = 'GUEST';
-              //   next();
+              // }
+            });
+          }
+          else{
+            req.role = 'PARTNER';
+          }
+        });
         break;
       case 'campaign'://活动详情
         Campaign.findOne({'_id':req.params.hostId},function (err, campaign){

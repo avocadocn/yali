@@ -291,7 +291,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         try {
             $http({
                 method: 'post',
-                url: '/comment/delete',
+                url: '/comment/delete/delete/'+$scope.group_messages[$scope.message_index].comments[index]._id,
                 data:{
                     comment_id : $scope.group_messages[$scope.message_index].comments[index]._id
                 }
@@ -320,6 +320,8 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 }
             }
         }
+        var message_type = $scope.group_messages[index].message_type;
+        var host_type = message_type>3 && message_type<7? 'competition' : 'campaign';
         try {
             $http({
                 method: 'post',
@@ -327,7 +329,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
                 data:{
                     host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,
-                    host_type : 'campaign'
+                    host_type : host_type
                 }
             }).success(function(data, status) {
                 if(data.msg === 'SUCCESS'){

@@ -108,7 +108,7 @@ var UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['LEADER','EMPLOYEE']      //HR 队长 普通员工
+        enum: ['LEADER','EMPLOYEE']      //队长 普通员工
     },
     cid: {
         type: Schema.Types.ObjectId,

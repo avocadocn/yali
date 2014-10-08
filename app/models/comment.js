@@ -38,6 +38,7 @@ var Comment = new Schema({
     type: String,
     enum: ['message', 'album', 'campaign', 'competition', 'campaign_detail', 'photo']
   },
+  //2014/10以后代码中不会有message、campaign_detail了～
   replies: [{
     content: String,
     from: user_brief,

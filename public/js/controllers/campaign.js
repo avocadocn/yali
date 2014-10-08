@@ -122,7 +122,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         try {
             $http({
                 method: 'post',
-                url: '/comment/delete',
+                url: '/comment/delete/delete/'+$scope.comments[index]._id,
                 data:{
                     comment_id : $scope.comments[index]._id
                 }

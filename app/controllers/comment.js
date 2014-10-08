@@ -185,7 +185,7 @@ exports.reply = function (req, res, next) {
 //删除留言
 exports.deleteComment = function(req,res){
     //本人、队长、HR可删
-    if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
+    if(req.role ==='GUEST' || req.role ==='PARTNER'){
         res.status(403);
         next('forbidden');
         return;

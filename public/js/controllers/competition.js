@@ -266,7 +266,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
         try {
             $http({
                 method: 'post',
-                url: '/comment/delete',
+                url: '/comment/delete/delete/'+$scope.comments[index]._id,
                 data:{
                     comment_id : $scope.comments[index]._id
                 }
@@ -617,7 +617,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
 
   var competition_data = $('#competition_data');
   var cbox = new Comment.CommentBox({
-    host_type: 'campaign',
+    host_type: 'competition',
     host_id: competition_data.data('hostId'),
     photo_album_id: competition_data.data('photoAlbumId')
   });
