@@ -124,7 +124,7 @@ module.exports = function(grunt) {
                 script: 'server.js',
                 options: {
                     args: [],
-                    ignore: ['public/**'],
+                    ignore: ['public/**', 'node_modules/**'],
                     ext: 'js,jade',
                     nodeArgs: ['--debug'],
                     delayTime: 1,

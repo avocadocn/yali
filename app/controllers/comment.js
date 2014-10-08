@@ -42,15 +42,35 @@ exports.getComment = function(req,res){
     // 加 '|| req.params.hostId'完全是为了不破坏以前的代码，这两个如果有的话其实相等！完全不需要req.body.host_id
     var host_id = req.body.host_id || req.params.hostId;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
     //todo: 判断类型
-    Comment.find({'host_id' : host_id,'status' : {'$ne':'delete'}, 'host_type': {'$ne':'photo'}}).sort({'create_date':-1})
+    var page_size = 20;
+    var options = {
+        'host_id': host_id,
+        'status': {
+            '$ne': 'delete'
+        },
+        'host_type': {
+            '$ne': 'photo'
+        }
+    };
+    if (req.body.create_date) {
+        options.create_date = {'$lt': new Date(req.body.create_date) }
+    }
+    Comment.find(options)
+    .sort({'create_date':-1})
+    .limit(page_size + 1)
     .exec(function(err, comment) {
         if(err || !comment) {
             return res.send([]);
         } else {
+            var has_next = false;
+            if (comment.length === page_size + 1) {
+                comment.pop();
+                has_next = true;
+            }
             comment.forEach(function(comment){
                 comment.set('delete_permission', req.role === 'LEADER' || req.role === 'HR' || comment.poster._id.toString() === req.user._id.toString(), {strict : false});
             });
-            return res.send({'comments':comment,'user':{'_id':req.user._id}});
+            return res.send({'comments':comment, has_next: has_next,'user':{'_id':req.user._id}});
         }
     });
 }

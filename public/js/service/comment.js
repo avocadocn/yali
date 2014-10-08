@@ -4,10 +4,10 @@ angular.module('donler')
 
 .factory('Comment', ['$http', 'FileUploader', function ($http, FileUploader) {
 
-  var get = function (type, id, callback) {
-    $http.post('/comment/pull/' + type + '/' + id)
+  var get = function (type, id, callback, create_date) {
+    $http.post('/comment/pull/' + type + '/' + id, { create_date: create_date })
     .success(function (data, status) {
-      callback(null, data.comments);
+      callback(null, data.comments, data.has_next);
     })
     .error(function (data, status) {
       callback('error');
