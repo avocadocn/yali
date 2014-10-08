@@ -347,7 +347,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
 
     var campaign_data = $('#campaign_data');
     var cbox = new Comment.CommentBox({
-        host_type: 'campaign_detail',
+        host_type: 'campaign',
         host_id: campaign_data.data('hostId'),
         photo_album_id: campaign_data.data('photoAlbumId')
     });

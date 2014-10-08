@@ -25,7 +25,8 @@ block contentExt
         .comment_panel
           if global_user.provider === 'user'
             h4 我要留言
-            form.js_ajax_form(action="/comment/push" method="post")
+            //-pushcomment logic todo -M
+            form.js_ajax_form(action="/comment/push/album/0" method="post")
               input(type="hidden" name="host_id" value="#{photo_detail._id}")
               input(type="hidden" name="host_type" value="photo")
               textarea.comment_textarea.form-control(type="text" name="content" required)

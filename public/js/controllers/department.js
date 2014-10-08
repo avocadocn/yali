@@ -304,7 +304,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         try {
             $http({
                 method: 'post',
-                url: '/comment/push',
+                url: '/comment/push/team/'+$rootScope.teamId,
                 data:{
                     host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,

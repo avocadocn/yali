@@ -36,7 +36,7 @@ exports.getCommentById = function (req, res, next) {
 
 //获取留言
 exports.getComment = function(req,res){
-    if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
+    if(req.role ==='GUEST'){
         return res.send(403);
     }
     // 加 '|| req.params.hostId'完全是为了不破坏以前的代码，这两个如果有的话其实相等！完全不需要req.body.host_id
@@ -57,8 +57,8 @@ exports.getComment = function(req,res){
 
 //发表留言
 exports.setComment = function(req,res){
-    // 没用验证中间件，哪来的role！
-    if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
+    // 非Guest、非HR都能发表
+    if(req.role ==='GUEST' || req.role ==='HR'){
         return res.send(403);
     }
     var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
@@ -111,7 +111,10 @@ exports.setComment = function(req,res){
  *     content: String //回复内容
  */
 exports.reply = function (req, res, next) {
-    // to do: 权限待定
+    //非Guest、HR皆可评,包括比赛对方小队成员
+    if(req.role ==='GUEST' || req.role ==='HR'){
+        return res.send(403);
+    }
     if (!req.body.to || !req.body.content) {
         return res.send(400);
     }
@@ -161,6 +164,7 @@ exports.reply = function (req, res, next) {
 
 //删除留言
 exports.deleteComment = function(req,res){
+    //本人、队长、HR可删
     if(req.role ==='GUESTHR' || req.role ==='GUEST' || req.role ==='GUESTLEADER'){
         res.status(403);
         next('forbidden');

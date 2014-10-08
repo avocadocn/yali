@@ -46,43 +46,100 @@ exports.companyAuthorize = function(req, res, next){
 
 
 exports.commentAuthorize = function(req, res, next) {
+  //pull、push评论不需要分队长非队长，只需cid一样即可，但是为了以防万一以后需要还是设一下member、leader
+  //Owner: 个人 本人
+  //Guest: 非本公司,不论是否是HR
+  //HR: HR
+  //Partner: 本公司成员
+  //Member: 以防万一先作添加,某team/某活动的teams的member
+  //Leader: 以防万一先作添加,某team/某活动的teams的leader
   if (!req.user) {
     return res.redirect('/');
   }
   else {
     switch(req.params.commentType){
-      case 'campaign':
+      case 'delete'://删除
+        //todo -M
+        //删除有这几种可能：
+        //1..在个人动态自己删除; 
+        //2..小队动态自己、队长删除、HR删除;
+        //3..活动/比赛详情页队长、HR能删除本公司、自己能删除
+        //4..相册HR、相册所在小队队长、自己发的能删
+        //需要:评论poster跟队长、HR在不在一个公司,在的话就能删除
+        //另外:需要传个人的id和team或campaign的id
+              // var ct = campaign.campaign_type;
+              // if(ct===1){//公司活动
+              // }
+              // else if(ct<4 || ct===6 || ct===8){//多小队活动、小队活动、部门活动
+                //小队信息都放在team里
+                // campaign.team.forEach(function(team){
+                //   var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
+                //   if (team_index>-1){
+                //     if(req.user.team[team_index].leader ===true){
+                //       req.role = 'LEADER';//在本活动中的team的leader
+                //     }
+                //     else{
+                //       req.role = 'MEMBER';
+                //     }
+                // }
+                //  // 没加这个team的本公司成员
+                //   else if(campaign.cid.indexOf(req.user.cid.toString())>-1){
+                //     req.role = 'PARTNER';
+                //   }
+                // });
+                // //不是这两个组的公司的任何人
+                // if(req.role === undefined)
+                //   req.role = 'GUEST';
+                // next();
+              // }
+              // else if(ct===4 || ct===5 || ct===7 || ct===9){//小队活动、挑战
+              //   //小队信息在camp里
+              //   campaign.camp.forEach(function(team){
+              //   for(team in campaign.camp){
+
+              //   }
+              //     var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
+              //     if (team_index>-1){
+              //       if(req.user.team[team_index].leader ===true){
+              //         req.role = 'LEADER';//在本活动中的team的leader
+              //       }
+              //       else{
+              //         req.role = 'MEMBER';
+              //       }
+              //     }
+              //     //没加这个team的本公司成员
+              //     else if(campaign.cid.indexOf(req.user.cid.toString())>-1){
+              //       req.role = 'PARTNER';
+              //     }
+              //   });
+              //   //不是这两个组的公司的任何人
+              //   if(req.role === undefined)
+              //     req.role = 'GUEST';
+              //   next();
+        break;
+      case 'campaign'://活动详情
         Campaign.findOne({'_id':req.params.hostId},function (err, campaign){
           if(err || !campaign){
             res.status(403);
             next('forbidden');
             return;
           }else{
-            if(campaign.team.indexOf(req.user._id.toString()) > -1){
+            if(campaign.cid.indexOf(req.user._id.toString()) > -1){
               req.role = 'HR';
               next();
             }else{
-              campaign.team.forEach(function(team){
-                var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
-                if (team_index>-1){
-                  if(req.user.team[team_index].leader ===true){
-                    req.role = 'LEADER';
-                  }
-                  else if(req.role !== 'LEADER'){
-                    req.role = 'MEMBER';
-                  }
-
-                }
-                else if(req.role==undefined){
-                  req.role = 'PARTNER';
-                }
-              });
+              //tnnd拉评论、发评论不管是不是leader是不是member了!
+              if(campaign.cid.indexOf(req.user.cid.toString())>-1){ //是这个公司的员工
+                req.role = 'PARTNER';
+              }else{
+                req.role = 'GUEST';
+              }
               next();
             }
           }
         });
         break;
-      case 'team':
+      case 'team'://小队动态等
         CompanyGroup.findOne({'_id':req.params.hostId},function (err,company_group){
           if(err || !company_group){
             res.status(403);
@@ -96,27 +153,25 @@ exports.commentAuthorize = function(req, res, next) {
               var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,company_group._id,'_id');
               if(_teamIndex>-1){
                 if(req.user.team[_teamIndex].leader === true){
-                  req.role = 'LEADER';
+                  req.role = 'LEADER';//这个team的leader
                 }
                 else{
-                  if(req.user.role==='LEADER')
-                    req.role = 'MEMBERLEADER';
-                  else
-                    req.role = 'MEMBER';
+                  req.role = 'MEMBER';//这个team的member
                 }
               }
-              else{
-                if(req.user.role==='LEADER')
-                  req.role = 'PARTNERLEADER'
-                else
-                  req.role = 'PARTNER';
+              else if (company_group.cid.toString() === req.user.cid.toString()){
+                req.role = 'PARTNER';//本公司非本组成员
               }
+              else
+                req.role = 'GUEST';//非此公司的人
               next();
             }
           }
         });
         break;
       case 'album':
+        //???
+        //应该也是只要是本公司的就能评论.
         if (req.user.provider === 'company') {
           res.status(403);
           next('forbidden');
@@ -125,7 +180,29 @@ exports.commentAuthorize = function(req, res, next) {
         next();
         break;
       case 'user':
-        next();
+        User.findOne({'_id':req.params.hostId},function (err,user){
+          if(err || !user){
+            res.status(403);
+            next('forbidden');
+            return;
+          }else{
+            if(req.user._id.toString() === user.cid.toString()){
+              req.role='HR';
+              next();
+            }
+            else{
+              if(req.user._id.toString() === user._id.toString()){
+                req.role = 'OWNER';
+              }
+              else if(req.user.cid.toString() === user.cid.toString()){
+                req.role = 'PARTNER';
+              }
+              else
+                req.role = 'GRUEST';
+              next();
+            }
+          }
+        });
         break;
       default:
         res.status(403);

@@ -15,7 +15,7 @@ angular.module('donler')
   };
 
   var publish = function (data, callback) {
-    $http.post('/comment/push', data)
+    $http.post('/comment/push/'+data.host_type+'/'+data.host_id, data)
     .success(function (data, status) {
       // ugly api
       if (data.msg === 'SUCCESS') {
