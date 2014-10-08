@@ -362,7 +362,7 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
 
 
   }
-var result = {
+  var result = {
     '_id': campaign._id,
     'logo': logo,
     'owner_name': owner_name,
@@ -1062,6 +1062,34 @@ exports.renderCampaignDetail = function(req, res) {
           active: true
         }
       ];
+      var _formatMember = {};
+      var myteamLength = 0;
+      if(campaign.campaign_type!==1){
+        for( var i = 0; i < campaign.team.length; i++ ){
+          var _index = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i]._id,'_id');
+          var _id = campaign.team[i]._id;
+          _formatMember[_id]= {
+            _id: _id,
+            name: campaign.team[i].name,
+            logo: campaign.team[i].logo,
+            leader: _index>-1&& req.user.team[_index].leader,
+            member_flag: _index>-1,
+            member:[]
+          };
+          if(_index>-1){
+            myteamLength++;
+          }
+        }
+        for(var j =0; j < campaign.member.length; j ++){
+          var _id = campaign.member[j].team._id;
+          _formatMember[_id].member.push({
+            'uid' : campaign.member[j].uid,
+            'nickname' : campaign.member[j].nickname,
+            'photo' : campaign.member[j].photo,
+            'team' : campaign.member[j].team
+          });
+        }
+      }
       moment.lang('zh-cn');
       var _messageContent =[];
       if(results[1]){
@@ -1071,7 +1099,7 @@ exports.renderCampaignDetail = function(req, res) {
             post_date:_message.post_date,
             sender: _message.sender[0]
           });
-        })
+        });
       }
       return res.render('campaign/campaign_detail', {
         over : campaign.deadline<new Date(),
@@ -1080,6 +1108,8 @@ exports.renderCampaignDetail = function(req, res) {
         user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
         campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo,
         campaign: campaign,
+        campaignMember:_formatMember,
+        myteamLength:myteamLength,
         links: links,
         photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4),
         moment : moment,

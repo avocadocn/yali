@@ -381,14 +381,15 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             console.log(e);
         }
     };
-    $scope.join = function(campaign_id,index) {
+    var joinCommit = function(campaign_id,index,tid){
         try {
             $http({
                 method: 'post',
                 url: '/campaign/joinCampaign/'+campaign_id,
                 data:{
                     campaign_id : campaign_id,
-                    tid : $rootScope.teamId
+                    tid : tid,
+                    join_team : $scope.join_teams[$scope.select_index]
                 }
             }).success(function(data, status) {
                 if(data.result===1){
@@ -409,6 +410,25 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         catch(e) {
             console.log(e);
         }
+    }
+    $scope.join = function(campaign_id,index,tid) {
+        if($scope.group_messages[index].myteam.length>1){
+            $scope.join_teams=$scope.group_messages[index].myteam;
+            $scope.join_campaign_id = campaign_id;
+            $scope.join_index = index;
+            $scope.select_index = 0;
+            $('#joinTeamSelectmodal').modal();
+        }
+        else{
+            joinCommit(campaign_id,index,tid);
+        }
+    };
+    $scope.selcetJoinTeam = function(index){
+        $scope.select_index = index;
+    };
+    $scope.joinCampaign = function(){
+        joinCommit($scope.join_campaign_id,$scope.join_index,$scope.join_teams[$scope.select_index]._id);
+
     };
 
     $scope.quit = function(campaign_id,index) {

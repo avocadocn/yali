@@ -6,7 +6,7 @@ append headExt
   if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
     link(rel="stylesheet" href="/lib/pen/src/pen.css")
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';campaign_type='#{campaign.campaign_type}';member=#{JSON.stringify(campaign.member)};join=#{join};role='#{role}';campaign_team=#{JSON.stringify(campaign.team)};user_team=#{JSON.stringify(user.team)};")
+  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';campaign_type='#{campaign.campaign_type}';join=#{join};role='#{role}';")
     include ../partials/breadcrumb
     +breadcrumb(links)
     #campaign_data(data-photo-album-id="#{campaign.photo_album._id}" data-host-id="#{campaign._id}")
@@ -59,13 +59,15 @@ block contentExt
                 .dl_detail_detail
                   each tag in campaign.tags
                     span.glyphicon.glyphicon-tag
-                    span #{tag}  
+                    span #{tag}
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
             if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish
               .dl_button_container
                 input.dl_btn.dl_btn_medium(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
-                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="joinReady()" ng-if="join!==1" ng-disabled="join==0")
+                - var myJoinTeam = {};
+                - if(campaign.campaign_type!==1) { myJoinTeam = {_id:campaign.team[0]._id,name:campaign.team[0].name,logo:campaign.team[0].logo}}
+                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="(#{myteamLength}>1&&#{campaign.campaign_type} !== 1)?joinReady():joinCampaign(#{JSON.stringify(myJoinTeam)})" ng-if="join!==1")
       .dl_detail_member.row
         .dl_row.subtitle(ng-init="baseContent=true;")
           span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
@@ -94,39 +96,45 @@ block contentExt
               .message_content= _message.content
               .pull-right= '来自--' + _message.sender.nickname + '(' + _message.sender.role + ')'
               .pull-right= moment(_message.post_date).format("YYYY-MM-DD HH:mm")
-      if campaign.campaign_type == 3
+      if campaign.campaign_type !== 1
         //-成员
-        .dl_detail_member.row(ng-repeat="member_team in campaign_team")
-          .dl_row.subtitle(bs-popover)
-            .pull-left {{member_team.name}} #{__("JOIN")}#{__("MEMBER")}:
-            if role === 'HR' || role === 'LEADER'
-              a.pull-right(ng-click="modalPerticipator($index)" ng-if="(member_team.leader || role=='HR') && member_team.join_member.length > 0") 发通知
-          .dl_row
-            div.member(ng-repeat = "_member in member_team.join_member")
-              a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-                img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
-                span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-            span.info_label(ng-if="member_team.join_member.length == 0 || !member_team.join_member.length") 该队还没有人参加哦!
+        each member_team in campaignMember
+          .dl_detail_member.row
+            .dl_row.subtitle(bs-popover)
+              .pull-left #{member_team.name} #{__("JOIN")}#{__("MEMBER")}:
+              if (role === 'HR' || member_team.leader ) && member_team.member.length>0 
+                a.pull-right(ng-click="modalPerticipator(#{JSON.stringify(member_team)})") 发通知
+            .dl_row
+              each _member in member_team.member
+                div.member
+                  a.item(href="/users/home/#{_member.uid}" ng-Mouseenter="showUserCard('#{_member.uid}','#{_member.uid}')" id='pop#{_member.uid}' rel='popover')
+                    img.img_contain.detail_photo.img_user(src="#{_member.photo}")
+                    span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
+              if member_team.member.length == 0
+                span.info_label 该队还没有人参加哦!
       else
         .dl_detail_member(bs-popover)
           .dl_row.subtitle
             .pull-left #{__("JOIN")}#{__("MEMBER")}:
-            if role === 'HR' || role === 'LEADER'
-              a.pull-right(ng-click="modalPerticipator()" ng-if="member.length > 0") 发通知
+            if (role === 'HR' || role === 'LEADER') && campaign.member.length>0
+              a.pull-right(ng-click="modalPerticipator(#{JSON.stringify(campaign.team)})") 发通知
           .dl_row.clearfix
-            div.member(ng-repeat = "_member in member")
-              a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-                img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
-                span.name(ng-cloak) {{shortTrim(_member.nickname)}}
-            span.info_label(ng-if="!member.length") 该活动还没有人参加哦!
-      if role==='HR' || role ==='LEADER'
-        .dl_detail_member(ng-init="member_quit=#{JSON.stringify(campaign.member_quit)};" ng-show="member_quit.length>0" bs-popover)
+            each _member in campaign.member
+              div.member
+                a.item(href="/users/home/#{_member.uid}" ng-Mouseenter="showUserCard('#{_member.uid}','#{_member.uid}')" id='pop#{_member.uid}' rel='popover')
+                  img.img_contain.detail_photo.img_user(src="#{_member.photo}")
+                  span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
+            if campaign.member.length==0
+              span.info_label 该活动还没有人参加哦!
+      if (role==='HR' || role ==='LEADER') && campaign.member_quit.length>0
+        .dl_detail_member(bs-popover)
           p.subtitle 退出#{__("MEMBER")}:
           .dl_row.clearfix
-            div.member(ng-repeat = "_member in member_quit")
-              a.item(href="/users/home/{{_member.uid}}" ng-Mouseenter="showUserCard(_member.uid,_member.uid)" id='pop{{_member.uid}}' rel='popover')
-                img.img_contain.detail_photo.img_user(ng-src="{{_member.photo}}")
-                span.name(ng-cloak) {{shortTrim(_member.nickname)}}
+            each _member in campaign.member_quit
+              div.member
+                a.item(href="/users/home/#{_member.uid}" ng-Mouseenter="showUserCard('#{_member.uid}','#{_member.uid}')" id='pop#{_member.uid}' rel='popover')
+                  img.img_contain.detail_photo.img_user(src="#{_member.photo}")
+                  span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
       include ../partials/rich_comment_box
     .dl_detail_side
       .map_container
@@ -154,7 +162,7 @@ block contentExt
     .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_message_send
     .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../campaign/select_team_for_multi_campaign
+      include ../partials/select_team_modal_jade
 append footExt
   script(src="/js/controllers/campaign.js")
   if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')

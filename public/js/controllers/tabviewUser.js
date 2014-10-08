@@ -377,7 +377,8 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     url: '/campaign/joinCampaign/'+campaign_id,
                     data:{
                         campaign_id : campaign_id,
-                        tid : tid
+                        tid : tid,
+                        join_team : $scope.join_teams[$scope.select_index]
                     }
                 }).success(function(data, status) {
                     if(data.result===1){

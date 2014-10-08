@@ -32,42 +32,11 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                 }
             }
         });
+
     });
     $scope.editContentStatus =false;
-    $scope.init = true;
 
     $scope.comments = [];
-
-    $scope.$watch('campaign_team+campaign_id+member+user_team+role',function(){
-        if($scope.init){
-            if($scope.campaign_team==null){
-                return;
-            }
-            if($scope.campaign_type == '3'){
-                for(var i =0; i < $scope.campaign_team.length; i ++){
-                    $scope.campaign_team[i].join_member = [];
-                    for(var j = 0; j < $scope.member.length; j ++){
-                        if($scope.member[j].team){
-                            if($scope.campaign_team[i]._id.toString() == $scope.member[j].team._id.toString()){
-                                $scope.campaign_team[i].join_member.push({
-                                    '_id' : $scope.member[j].uid,
-                                    'nickname' : $scope.member[j].nickname,
-                                    'photo' : $scope.member[j].photo,
-                                    'team' : $scope.member[j].team
-                                });
-                            }
-                        }
-                    }
-                    for(var k = 0; k < $scope.user_team.length; k ++){
-                        if($scope.user_team[k]._id.toString() == $scope.campaign_team[i]._id.toString()){
-                            $scope.campaign_team[i].leader = $scope.user_team[k].leader;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    });
     $scope.cancel = function (_id) {
         alertify.confirm('确认要关闭该活动吗？',function(e){
             if(e){
@@ -121,100 +90,38 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
     }
 
     $scope.select_index = 0;
-    $scope.selcetJoinTeam = function(index){
+    $scope.selcetJoinTeam = function(index,team){
         $scope.join_team = {
-            _id : $scope.join_teams[index]._id,
-            name : $scope.join_teams[index].name,
-            logo : $scope.join_teams[index].logo
+            _id : team._id,
+            name : team.name,
+            logo : team.logo
         };
         $scope.select_index = index;
     }
     $scope.joinReady = function(){
-        $scope.join_teams = [];
-        for(var i = 0; i < $scope.user_team.length; i ++){
-            for(var j = 0; j < $scope.campaign_team.length; j ++){
-                if($scope.campaign_team[j]._id.toString() === $scope.user_team[i]._id.toString()){
-                    $scope.join_teams.push({
-                        _id:$scope.user_team[i]._id,
-                        name:$scope.user_team[i].name,
-                        logo:$scope.user_team[i].logo
-                    });
-                    break;
-                }
-            }
-        }
-        if($scope.join_teams.length > 1 && $scope.campaign_type === '3'){
-            $scope.join_teams[0].selected = true;
-            $scope.join_team = {
-                _id : $scope.join_teams[0]._id,
-                name : $scope.join_teams[0].name,
-                logo : $scope.join_teams[0].logo
-            };
-            $('#joinTeamSelectmodal').modal();
-        }else{
-            if($scope.campaign_type != '1'){
-                $scope.join_team = {
-                    _id : $scope.join_teams[0]._id,
-                    name : $scope.join_teams[0].name,
-                    logo : $scope.join_teams[0].logo
-                };
-            }else{
-                $scope.join_team = null;
-            }
-            $scope.joinCampaign();
-        }
+        $scope.select_index = 0;
+        $('#joinTeamSelectmodal').modal();
     }
-    $scope.joinCampaign = function () {
-        //$rootScope.donlerAlert($scope.campaign_id);
+    $scope.joinCampaign = function (join_team) {
+        if(!join_team){
+            join_team = $scope.join_team;
+        }
         try {
             $http({
                 method: 'post',
                 url: '/campaign/joinCampaign/'+$scope.campaign_id,
                 data:{
                     campaign_id : $scope.campaign_id,
-                    join_team : $scope.join_team
+                    join_team : join_team
                 }
             }).success(function(data, status) {
                 if(data.result===1){
-                    //alert('成功加入该活动!');
-                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
-                    $scope.join = 1;
-                    if($scope.role==='HR'|| $scope.role ==='LEADER'){
-                        for(var i = 0;i < $scope.member_quit.length; i ++) {
-                            if($scope.member_quit[i].nickname === data.member.nickname) {
-                                $scope.member_quit.splice(i,1);
-                                break;
-                            }
-                        }
-                    }
-                    $scope.member.push({
-                        '_id' : data.member._id,
-                        'nickname' : data.member.nickname,
-                        'photo' : data.member.photo,
-                        'team' : data.member.team
-                    });
-
-                    if($scope.campaign_type == '3'){
-                        for(var i =0; i < $scope.campaign_team.length; i ++){
-                            if($scope.campaign_team[i]._id.toString() == data.member.team._id.toString()){
-                                $scope.campaign_team[i].join_member.push({
-                                    'tt' :data.member.uid,
-                                    '_id' : data.member.uid,
-                                    'nickname' : data.member.nickname,
-                                    'photo' : data.member.photo,
-                                    'team' : data.member.team
-                                });
-                                // console.log($scope.campaign_team[i].join_member);
-                                break;
-                            }
-                        }
-                    }
-                    // console.log($scope.campaign_team);
+                    alertify.alert('参加活动成功');
+                    window.location.reload();
                 }
                 else{
                     alertify.alert('DATA ERROR');
                 }
-                $scope.init = false;
             }).error(function(data, status) {
                 alertify.alert('DATA ERROR');
             });
@@ -225,59 +132,37 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
     };
 
     $scope.quitCampaign = function () {
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/quitCampaign/'+$scope.campaign_id,
-                data:{
-                    campaign_id : $scope.campaign_id
-                }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
-                    //alert('您已退出该活动!');
-                    $scope.join = -1;
-
-                    for(var i = 0;i < $scope.member.length; i ++) {
-                        if($scope.member[i].nickname === data.member.nickname) {
-                            $scope.member.splice(i,1);
-                            break;
+        alertify.confirm('确认要退出活动吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/campaign/quitCampaign/'+$scope.campaign_id,
+                        data:{
+                            campaign_id : $scope.campaign_id
                         }
-                    }
-
-                    if($scope.campaign_type == '3'){
-                        for(var i = 0;i < $scope.campaign_team.length; i ++){
-                            console.log($scope.campaign_team[i].join_member,data.member.uid.toString());
-                            for(var j = 0; j < $scope.campaign_team[i].join_member.length; j++){
-                                if($scope.campaign_team[i].join_member[j]._id.toString() == data.member.uid.toString()){
-                                    $scope.campaign_team[i].join_member.splice(j,1);
-                                    break;
-                                }
-                            }
+                    }).success(function(data, status) {
+                        if(data.result===1){
+                            alertify.alert('退出活动成功');
+                            window.location.reload();
                         }
-                    }
-                    if($scope.role==='HR'|| $scope.role ==='LEADER'){
-                        $scope.member_quit.push({
-                            'nickname' : data.member.nickname,
-                            'photo' : data.member.photo
-                        });
-                    }
+                        else{
+                            alertify.alert(data.msg);
+                        }
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-                else{
-                    alertify.alert(data.msg);
+                catch(e) {
+                    console.log(e);
                 }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+            }
+        });
     };
 
 
-    $scope.modalPerticipator = function(index){
-        $scope.team_index = index;
+    $scope.modalPerticipator = function(team){
+        $scope.select_team = team;
         $('#sponsorMessageCampaignModel').modal();
     }
     $scope.sendToParticipator = function(){
@@ -286,7 +171,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
               method: 'post',
               url: '/message/push/campaign',
               data:{
-                    team : $scope.campaign_team[$scope.team_index],
+                    team : $scope.select_team,
                     campaign_id : $scope.campaign_id,
                     content : $scope.private_message_content.text
               }
