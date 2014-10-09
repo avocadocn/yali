@@ -1064,7 +1064,7 @@ exports.renderCampaignDetail = function(req, res) {
       ];
       var _formatMember = {};
       var myteamLength = 0;
-      if(campaign.campaign_type!==1){
+      if(campaign.campaign_type==3){
         for( var i = 0; i < campaign.team.length; i++ ){
           var _index = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i]._id,'_id');
           var _id = campaign.team[i]._id;

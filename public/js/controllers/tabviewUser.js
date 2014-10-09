@@ -380,7 +380,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                     data:{
                         campaign_id : campaign_id,
                         tid : tid,
-                        join_team : $scope.join_teams[$scope.select_index]
+                        join_team : tid ? $scope.join_teams[$scope.select_index] :tid
                     }
                 }).success(function(data, status) {
                     if(data.result===1){
@@ -405,7 +405,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             $scope.join_campaign_id = campaign_id;
             $scope.join_index = index;
             $scope.select_index = 0;
-            if($scope.group_messages[index].myteam.length>1){
+            if($scope.group_messages[index].myteam && $scope.group_messages[index].myteam.length>1){
                 $('#joinTeamSelectmodal').modal();
             }
             else{
