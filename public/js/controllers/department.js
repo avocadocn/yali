@@ -245,7 +245,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         $scope.message_index = index;
     }
     $scope.getComment = function(index){
-        if($scope.toggle){
+        if($scope.toggle[index]){
             try {
                 $http({
                     method: 'post',
@@ -269,27 +269,31 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
     }
 
     $scope.deleteComment = function(index){
-        try {
-            $http({
-                method: 'post',
-                url: '/comment/delete/delete/'+$scope.group_messages[$scope.message_index].comments[index]._id,
-                data:{
-                    comment_id : $scope.group_messages[$scope.message_index].comments[index]._id
+        alertify.confirm('确认要删除该评论吗？',function(e){
+            if(e){
+                try {
+                    $http({
+                        method: 'post',
+                        url: '/comment/delete/delete/'+$scope.group_messages[$scope.message_index].comments[index]._id,
+                        data:{
+                            comment_id : $scope.group_messages[$scope.message_index].comments[index]._id
+                        }
+                    }).success(function(data, status) {
+                        if(data === 'SUCCESS'){
+                            $scope.group_messages[$scope.message_index].comments.splice(index,1);
+                            $scope.group_messages[$scope.message_index].campaign.comment_sum --;
+                        } else {
+                            alertify.alert('DATA ERROR');
+                        }
+                    }).error(function(data, status) {
+                        alertify.alert('DATA ERROR');
+                    });
                 }
-            }).success(function(data, status) {
-                if(data === 'SUCCESS'){
-                    $scope.group_messages[$scope.message_index].comments.splice(index,1);
-                    $scope.group_messages[$scope.message_index].campaign.comment_sum --;
-                } else {
-                    alertify.alert('DATA ERROR');
+                catch(e) {
+                    console.log(e);
                 }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
+            }
+        });
     }
     $scope.comment = function(index){
         if($scope.group_messages[index].comments.length > 0){
@@ -322,7 +326,8 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                         'create_date' : data.comment.create_date,
                         'poster' : data.comment.poster,
                         'host_type' : data.comment.host_type,
-                        'index' : $scope.fixed_sum+1
+                        'index' : $scope.fixed_sum+1,
+                        'delete_permission':true
                     });
                     $scope.new_comment[index].text='';
                 } else {
@@ -338,7 +343,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
     }
     //消除ajax缓存
     $scope.vote = function(competition_id, vote_status, index) {
-         try {
+        try {
             $http({
                 method: 'post',
                 url: '/users/vote',
