@@ -40,7 +40,7 @@
       .comment_footer.clearfix
         span.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
         .pull-right
-          a.text(ng-click="toggleComment(comment)") 回复({{comment.replies.length || 0}})
+          a.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
           span.comment_divider(ng-if="comment.delete_permission") &nbsp;
           a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
       .replies(ng-if="comment.replying")
@@ -49,12 +49,12 @@
             input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
             button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
         p.reply(ng-repeat="reply in comment.replies")
-          a(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.from._id, reply.from.nickname)")
-            span {{reply.from.nickname}}
+          a(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.poster._id, reply.poster.nickname)")
+            span {{reply.poster.nickname}}
           span &nbsp;:&nbsp;
-          span(ng-if="reply.to._id!==comment.poster._id") 回复 {{reply.to.nickname}}:&nbsp;
+          span(ng-if="reply.reply_to._id!==comment.poster._id") 回复 {{reply.reply_to.nickname}}:&nbsp;
           span {{reply.content}}
-          span &nbsp;({{reply.publish_date | date:'yyyy-MM-dd HH:mm' | dateView }})
+          span &nbsp;({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})
   ul.pager(ng-if="pages[0].has_next===true")
     li.previous
       a(href="#rich_comment_box" ng-click="lastPage()" ng-class="{'novisible': now_page === 0}") <<上一页
