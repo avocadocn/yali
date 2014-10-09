@@ -179,8 +179,8 @@ exports.commentAuthorize = function(req, res, next) {
             next('forbidden');
             return;
           }else{
-            if(req.user._id.toString() === company_group.cid.toString()){
-              req.role === 'HR';
+            if(req.user._id.toString() === company_group.cid.toString()) {
+              req.role = 'HR';
               next();
             }else{
               var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,company_group._id,'_id');

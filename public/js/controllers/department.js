@@ -321,6 +321,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                     $scope.group_messages[index].campaign.comment_sum ++;
                     $scope.group_messages[index].comments.unshift({
                         'show':true,
+                        '_id' : data.comment._id,
                         'host_id' : data.comment.host_id,
                         'content' : data.comment.content,
                         'create_date' : data.comment.create_date,
