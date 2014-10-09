@@ -44,6 +44,20 @@ angular.module('donler')
     });
   };
 
+  var getReplies = function (comment_id, callback) {
+    $http.get('/comment/' + comment_id + '/replies')
+    .success(function (data, status) {
+      if (data.result === 1) {
+        callback(null, data.replies);
+      } else {
+        callback('error');
+      }
+    })
+    .error(function (data, status) {
+      callback('error');
+    });
+  };
+
   var CommentBox = function (args) {
     this.host_type = args.host_type;
     this.host_id = args.host_id;
@@ -99,6 +113,7 @@ angular.module('donler')
   return {
     get: get,
     reply: reply,
+    getReplies: getReplies,
     CommentBox: CommentBox
   };
 

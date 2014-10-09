@@ -140,46 +140,86 @@ exports.reply = function (req, res, next) {
     if (!req.body.to || !req.body.content) {
         return res.send(400);
     }
+
     var comment = req.comment;
-    var to = {
-        _id: req.body.to
+
+    var createReply = function (target_nickname) {
+        // 创建评论并保存
+        var reply = new Comment({
+            host_type: 'comment',
+            host_id: comment._id,
+            content: req.body.content,
+            poster: {
+                _id: req.user._id,
+                cid: req.user.cid,
+                cname: req.user.cname,
+                nickname: req.user.nickname,
+                realname: req.user.realname,
+                photo: req.user.photo
+            },
+            reply_to: {
+                _id: req.body.to,
+                nickname: target_nickname
+            }
+        });
+        reply.save(function (err) {
+            if (err) {
+                return next(err);
+            } else {
+                if (!comment.reply_count) {
+                    comment.reply_count = 0;
+                }
+                comment.reply_count++;
+                comment.save(function (err) {
+                    if (err) console.log(err);
+                });
+                // 该回复已保存成功，所以不需要判断目标留言的回复数是否保存成功，都直接返回回复成功信息。
+                // 如果计数偶然保存失败，再回复时还有机会校正。
+                return res.send({ result: 1 , reply: reply });
+            }
+        });
     };
-    var reply = {
-        to: to,
-        content: req.body.content
-    };
-    // 如果回复的目标不是该评论的发表者，则搜寻回复列表是否存在该目标
-    var findTarget = true;
-    to.nickname = comment.poster.nickname;
-    if (reply.to._id !== comment.poster._id.toString()) {
-        findTarget = false;
-        if (comment.replies) {
-            for (var i = 0; i < comment.replies.length; i++) {
-                if (reply.to._id === comment.replies[i].from._id.toString()) {
-                    findTarget = true;
-                    to.nickname = comment.replies[i].from.nickname;
+
+    var target_nickname;
+    if (req.body.to === comment.poster._id.toString()) {
+        // 如果回复的是该留言，则获取poster的nickname
+        target_nickname = comment.poster.nickname;
+        createReply(target_nickname);
+    } else {
+        Comment.find({ 'host_type': 'comment', 'host_id': comment._id }).exec()
+        .then(function (replies) {
+            // 判断回复目标的合法性，并获取目标昵称
+            var reply_target_validation = false;
+            for (var i = 0; i < replies.length; i++) {
+                var reply = replies[i];
+                if (req.body.to === reply.poster._id.toString()) {
+                    reply_target_validation = true;
+                    target_nickname = reply.poster.nickname;
+                    break;
                 }
             }
-        }
-    }
-    if (findTarget === false) {
-        return res.send(400);
-    }
-    reply.from = {
-        _id: req.user._id,
-        cid: req.user.cid,
-        cname: req.user.cname,
-        nickname: req.user.nickname,
-        realname: req.user.realname,
-        photo: req.user.photo,
-    };
-    comment.replies.push(reply);
-    comment.save(function (err) {
-        if (err) {
+            if (reply_target_validation === false) {
+                return res.send(400);
+            }
+
+            createReply(target_nickname);
+
+        })
+        .then(null, function (err) {
             return next(err);
-        } else {
-            return res.send({ result: 1 , reply: comment.replies[comment.replies.length - 1] });
-        }
+        });
+    }
+
+};
+
+
+exports.getReplies = function (req, res, next) {
+    Comment.find({ 'host_type': 'comment', 'host_id': req.params.commentId, 'status': 'active' }).exec()
+    .then(function (replies) {
+        return res.send({ result: 1, replies: replies });
+    })
+    .then(null, function (err) {
+        return next(err);
     });
 };
 

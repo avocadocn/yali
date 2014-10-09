@@ -315,6 +315,13 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         });
     };
 
+    var getReplies = function (comment) {
+        Comment.getReplies(comment._id, function (err, replies) {
+            comment.replies = replies;
+            comment.reply_count = replies.length;
+        });
+    };
+
     $scope.last_reply_comment;
     $scope.toggleComment = function (comment) {
         if ($scope.last_reply_comment && $scope.last_reply_comment != comment) {
@@ -323,6 +330,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         comment.replying = !comment.replying;
         $scope.last_reply_comment = comment;
         if (comment.replying) {
+            getReplies(comment);
             $scope.now_reply_to = {
                 _id: comment.poster._id,
                 nickname: comment.poster.nickname
@@ -354,9 +362,12 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                 }
                 comment.replies.push(reply);
                 comment.new_reply = "";
+                comment.reply_count++;
                 form.$setPristine();
             }
         });
     };
+
+    
 
 }]);
