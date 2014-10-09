@@ -68,7 +68,9 @@ exports.getComment = function(req,res){
                 has_next = true;
             }
             comment.forEach(function(comment){
-                comment.set('delete_permission', req.role === 'LEADER' || req.role === 'HR' || comment.poster._id.toString() === req.user._id.toString(), {strict : false});
+                comment.set('delete_permission', (req.role === 'LEADER' && comment.poster.cid.toString()===req.user.cid.toString())
+                    || (req.role === 'HR' && comment.poster.cid.toString()===req.user._id.toString())
+                    || comment.poster._id.toString() === req.user._id.toString(), {strict : false});
             });
             return res.send({'comments':comment, has_next: has_next,'user':{'_id':req.user._id}});
         }

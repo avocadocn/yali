@@ -99,7 +99,7 @@ exports.commentAuthorize = function(req, res, next) {
               else {//如果是活动非competition，看这个人是否是某个team的队长即可
                 var _teamIndex = null;
                 for(var i=0;i<campaign.team.length;i++){
-                  _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i]._id,'_id');
+                  _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i],'_id');
                   if(_teamIndex>-1 && req.user.team[_teamIndex].leader === true){
                     req.role = 'LEADER';
                     next();
@@ -147,8 +147,22 @@ exports.commentAuthorize = function(req, res, next) {
               req.role = 'HR';
               next();
             }else{
-              //tnnd拉评论、发评论不管是不是leader是不是member了!
-              if(campaign.cid.indexOf(req.user.cid.toString())>-1){ //是这个公司的员工
+              if(req.user.role==='LEADER'){
+                var _teamIndex;
+                for(var i=0;i<campaign.team.length;i++){
+                  _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i],'_id')
+                  if(_teamIndex>-1){
+                    if(req.user.team[_teamIndex].leader===true){
+                      req.role = 'LEADER';
+                      break;
+                    }
+                  }
+                }
+                if(req.role!=='LEADER'){
+                  req.role = 'PARTNER';
+                }
+              }
+              else if(campaign.cid.indexOf(req.user.cid.toString())>-1){ //是这个公司的员工
                 req.role = 'PARTNER';
               }else{
                 req.role = 'GUEST';
@@ -189,7 +203,7 @@ exports.commentAuthorize = function(req, res, next) {
         });
         break;
       case 'album':
-        //???
+        //通过album来判断是否是leader...感累不爱...想办法通过team来判断好了~~~photo也一样
         //应该也是只要是本公司的就能评论.
         if (req.user.provider === 'company') {
           res.status(403);

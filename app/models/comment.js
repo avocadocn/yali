@@ -32,7 +32,7 @@ var Comment = new Schema({
   },
   status:{
     type: String,
-    enum:['active','delete']
+    enum:['active','delete','shield']
   },
   host_type:{
     type: String,
@@ -48,7 +48,7 @@ var Comment = new Schema({
     },
     status:{
       type: String,
-      enum:['active','delete'],
+      enum:['active','delete','shield'],
       default: 'active'
     },
     publish_date: {
