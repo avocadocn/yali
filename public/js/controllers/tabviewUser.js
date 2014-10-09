@@ -578,6 +578,8 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
             $scope.getCampaigns($scope.campaignsType);
         };
 
+        var calendar_data = {}, modal_data = {};
+
         var initCalendar = function(events_source) {
             var options = {
                 events_source: events_source,
@@ -591,6 +593,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                     if (!events) {
                         return;
                     }
+                    calendar_data.start = this.getStartDate();
                 },
                 onAfterViewLoad: function(view) {
                     $('#calendar_title').text(this.getTitle());
@@ -628,6 +631,10 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                 }
             };
 
+            if (calendar_data.start) {
+                options.day = moment(calendar_data.start).format('YYYY-MM-DD');
+            }
+
             var calendar = $('#calendar').calendar(options);
         };
         var initModalCalendar = function(events_source,start_time) {
@@ -644,6 +651,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                     if (!events) {
                         return;
                     }
+                    modal_data.start = this.getStartDate();
                 },
                 onAfterViewLoad: function(view) {
                     $('#calendar_title').text(this.getTitle());
@@ -677,9 +685,12 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                     }
                 }
             };
+            if (modal_data.start) {
+                modalOptions.day = moment(modal_data.start).format('YYYY-MM-DD');
+            }
             if(start_time){
                 modalOptions.day = start_time;
-            } 
+            }
             var modalCalendar = $('#calendar_modal').calendar(modalOptions);
         };
         $scope.company = false; 
