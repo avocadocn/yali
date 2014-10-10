@@ -98,17 +98,20 @@ contentBdColor = #ededed
   .comment
     position relative
     margin-top 20px
-
     .comment_user_info
       float left
-
+      width 50px
       .user_photo
         width 50px
         height 50px
 
       .user_name
+        display inline-block
+        max-width 50px
         text-decoration none
-
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
     .comment_content_panel
       float left
       margin-left 20px

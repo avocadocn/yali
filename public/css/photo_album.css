@@ -87,13 +87,19 @@
 }
 .photo_album .comment .comment_user_info {
   float: left;
+  width: 50px;
 }
 .photo_album .comment .comment_user_info .user_photo {
   width: 50px;
   height: 50px;
 }
 .photo_album .comment .comment_user_info .user_name {
+  display: inline-block;
+  max-width: 50px;
   text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .photo_album .comment .comment_content_panel {
   float: left;
