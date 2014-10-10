@@ -9,12 +9,10 @@ var mongoose = require('mongoose'),
 /**
  * 映射表
  */
-var CampaignMap = new Schema({
-    map:[{
-        campaign_type:String,
-        campaign_module:[{type:String}]
-    }]
+var CampaignMold = new Schema({
+    name:String,
+    module:[String]
 });
 
 
-mongoose.model('CampaignMap', CampaignMap);
+mongoose.model('CampaignMold', CampaignMold);
