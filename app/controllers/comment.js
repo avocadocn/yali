@@ -47,11 +47,15 @@ exports.getComment = function(req,res){
         'host_id': host_id,
         'status': {
             '$ne': 'delete'
-        },
-        'host_type': {
-            '$ne': 'photo'
         }
     };
+    switch (req.params.commentType){
+        case 'photo':
+            options.host_type='photo';
+            break;
+        default:
+            options.host_type={'$ne':'photo'};
+    }
     if (req.body.create_date) {
         options.create_date = {'$lt': new Date(req.body.create_date) }
     }

@@ -131,7 +131,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                     }).success(function(data, status) {
                         if(data === 'SUCCESS'){
                             $scope.comments.splice(index,1);
-                            $scope.campaign.comment_sum --;
+                            // $scope.campaign.comment_sum --;
                         } else {
                             alertify.alert('DATA ERROR');
                         }

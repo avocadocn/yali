@@ -249,7 +249,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
             try {
                 $http({
                     method: 'post',
-                    url: '/comment/pull/team/'+$rootScope.teamId,
+                    url: '/comment/pull/campaign/'+$scope.group_messages[index].campaign._id,
                     data:{
                         host_id : $scope.group_messages[index].campaign._id
                     }
@@ -295,7 +295,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
             }
         });
     }
-    $scope.comment = function(index){
+    $scope.comment = function(index,form){
         if($scope.group_messages[index].comments.length > 0){
             var tmp_comment = $scope.group_messages[index].comments[0];
             if(tmp_comment.poster._id === $scope.user._id){
@@ -310,7 +310,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         try {
             $http({
                 method: 'post',
-                url: '/comment/push/team/'+$rootScope.teamId,
+                url: '/comment/push/'+host_type+'/'+$scope.group_messages[index].campaign._id,
                 data:{
                     host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,
@@ -331,6 +331,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                         'delete_permission':true
                     });
                     $scope.new_comment[index].text='';
+                    form.$setPristine();
                 } else {
                     alertify.alert('DATA ERROR');
                 }

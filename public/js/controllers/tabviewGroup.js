@@ -268,7 +268,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             try {
                 $http({
                     method: 'post',
-                    url: '/comment/pull/team/'+$rootScope.teamId,
+                    url: '/comment/pull/campaign/'+$scope.group_messages[index].campaign._id,
                     data:{
                         host_id : $scope.group_messages[index].campaign._id
                     }
@@ -329,7 +329,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         try {
             $http({
                 method: 'post',
-                url: '/comment/push/team/'+$rootScope.teamId,
+                url: '/comment/push/'+host_type+'/'+$scope.group_messages[index].campaign._id,
                 data:{
                     host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,
