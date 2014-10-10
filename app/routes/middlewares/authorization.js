@@ -144,34 +144,30 @@ exports.commentAuthorize = function(req, res, next) {
             res.status(403);
             next('forbidden');
             return;
-          }else{
-            if(campaign.cid.indexOf(req.user._id.toString()) > -1){
-              req.role = 'HR';
-              next();
-            }else{
-              if(req.user.role==='LEADER'){
-                var _teamIndex;
-                for(var i=0;i<campaign.team.length;i++){
-                  _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i],'_id')
-                  if(_teamIndex>-1){
-                    if(req.user.team[_teamIndex].leader===true){
-                      req.role = 'LEADER';
-                      break;
-                    }
+          }
+          else if(campaign.cid.indexOf(req.user._id.toString()) > -1){
+            req.role = 'HR';
+          }
+          else if(req.user.cid && campaign.cid.indexOf(req.user.cid.toString())>-1){//是这个公司的员工
+            if(req.user.role==='LEADER'){
+              var _teamIndex;
+              for(var i=0;i<campaign.team.length;i++){
+                _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i],'_id')
+                if(_teamIndex>-1){
+                  if(req.user.team[_teamIndex].leader===true){
+                    req.role = 'LEADER';
+                    break;
                   }
                 }
-                if(req.role!=='LEADER'){
-                  req.role = 'PARTNER';
-                }
               }
-              else if(req.user.cid && campaign.cid.indexOf(req.user.cid.toString())>-1){ //是这个公司的员工
-                req.role = 'PARTNER';
-              }else{
-                req.role = 'GUEST';
-              }
-              next();
             }
+            if(req.role!=='LEADER'){
+              req.role = 'PARTNER';
+            }
+          }else{
+            req.role = 'GUEST';
           }
+          next();
         });
         break;
       case 'photo':
