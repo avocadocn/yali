@@ -33,7 +33,7 @@ block contentExt
               .clearfix
                 button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
           section(bs-popover)
-            div.comment.clearfix(ng-repeat="comment in comments")
+            div.comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments")
               //- span {{comment}}
               .comment_user_info(ng-if="'#{user_cid}'===comment.poster.cid")
                 a(href="/users/home/{{comment.poster._id}}")
@@ -51,7 +51,7 @@ block contentExt
                 p.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
                   h7.pull-right
                     a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
-                    a(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
+                    a.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
             ul.pager(ng-if="pages[0].has_next===true")
               li.previous
                 a(href="#comment_panel" ng-click="lastPage()" ng-class="{'novisible': now_page === 0}") <<上一页

@@ -2,7 +2,7 @@
 
 angular.module('donler')
 
-.controller('PhotoDetailCtrl', ['$scope','$http','Comment', function($scope,$http,Comment) {
+.controller('PhotoDetailCtrl', ['$scope','$http','Comment', 'Report', function($scope,$http,Comment, Report) {
   $('.js_ajax_form').ajaxForm(function(data, status) {
     if (status === 'success') {
       window.location.reload();
