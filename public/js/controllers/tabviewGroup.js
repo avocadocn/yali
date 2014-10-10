@@ -166,8 +166,8 @@ tabViewGroup.controller('TimeLineController', ['$http', '$scope', '$rootScope',
          $rootScope.nowTab = window.location.hash.substr(2);
     }
 ]);
-tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope', 'Report',
-  function ($http, $scope, $rootScope, Report) {
+tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope', 'Report', 'Comment',
+  function ($http, $scope, $rootScope, Report, Comment) {
     $rootScope.nowTab = 'group_message';
     $scope.toggle = [];
     $scope.new_comment = [];

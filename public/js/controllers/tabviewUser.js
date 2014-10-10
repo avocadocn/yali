@@ -151,8 +151,8 @@ tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
         $rootScope.nowTab = 'timeLine';
     }
 ]);
-tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope', 'Report',
-    function($http, $scope, $rootScope, Report) {
+tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope', 'Report', 'Comment',
+    function($http, $scope, $rootScope, Report, Comment) {
         $rootScope.nowTab = 'group_message';
         angular.element('.tooltip').hide();
         $scope.new_comment = [];
