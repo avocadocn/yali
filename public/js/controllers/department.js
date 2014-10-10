@@ -43,7 +43,7 @@ departmentApp.config(['$routeProvider',
         redirectTo: '/message'
       });
 }]);
-departmentApp.run(['$http','$rootScope', '$location', function ($http, $rootScope, $location) {
+departmentApp.run(['$http','$rootScope', '$location', 'Report', function ($http, $rootScope, $location, Report) {
     if($location.hash()!=='')
         $rootScope.nowTab = window.location.hash.substr(2);
     else if($location.path()!=='')
@@ -78,7 +78,11 @@ departmentApp.run(['$http','$rootScope', '$location', function ($http, $rootScop
     $rootScope.messageTypeChange = function(value){
         $rootScope.message_for_group = value;
     }
-
+    $rootScope.pushReport = function(){
+        Report.publish($rootScope.reportContent,function(err,msg){
+            alertify.alert(msg);
+        });
+    }
     //加载地图
     // $rootScope.loadMap = function(index){
     //     $rootScope.loadMapIndex = index;
@@ -442,6 +446,19 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
             console.log(e);
         }
     };
+    $scope.getReport = function(groupMessageIndx,CommentIndex){
+        $rootScope.reportContent = {
+            hostType: 'comment',
+            hostContent:{
+                _id:$scope.group_messages[groupMessageIndx].comments[CommentIndex]._id,
+                content:$scope.group_messages[groupMessageIndx].comments[CommentIndex].content,
+                poster:$scope.group_messages[groupMessageIndx].comments[CommentIndex].poster
+            },
+            reportType:''
+
+        }
+        $('#reportModal').modal('show');
+    }
 }]);
 
 

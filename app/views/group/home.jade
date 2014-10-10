@@ -82,6 +82,7 @@ block panel
     .tab-content.dl_tab_group
       .tab-pane.active
         div(ng-view)
+    include ../partials/report_modal
     if role ==='HR' || role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../campaign/campaign_modal

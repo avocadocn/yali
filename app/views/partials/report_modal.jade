@@ -1,0 +1,46 @@
+.modal.fade#reportModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  .modal-dialog
+    .dl-modal
+      form.report_form(name="report_form" novalidate)
+        .dl-modal-header
+          button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+            img(ng-src='/img/icons/icon_close.png')
+          .head 举报
+        .dl-modal-body.clearfix
+          .dl_modal_container
+            .dl_row.clearfix
+              .info_label 我要举报的是
+                span.reported_user {{reportContent.hostContent.poster.nickname}}
+                | 发表的评论
+              .report_content
+                {{reportContent.hostContent.content}}
+          .dl_modal_container
+            .dl_row.clearfix
+              .info_label 请选择要举报的类型:
+            .radio
+              label
+                input(type="radio" name="reportType" value="0" ng-model="reportContent.reportType")
+                | 淫秽色情
+            .radio
+              label
+                input(type="radio" name="reportType" value="1" ng-model="reportContent.reportType")
+                | 敏感信息
+            .radio
+              label
+                input(type="radio" name="reportType" value="2" ng-model="reportContent.reportType")
+                | 垃圾营销
+            .radio
+              label
+                input(type="radio" name="reportType" value="3" ng-model="reportContent.reportType")
+                | 诈骗
+            .radio
+              label
+                input(type="radio" name="reportType" value="4" ng-model="reportContent.reportType")
+                | 人身攻击
+            .radio
+              label
+                input(type="radio" name="reportType" value="5" ng-model="reportContent.reportType")
+                | 泄露我的隐私
+        .dl-modal-footer
+          button.cancel_btn.dl_btn_large(data-dismiss="modal") 取消
+          button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="pushReport()" ng-disabled="reportContent.reportType==''") 提交

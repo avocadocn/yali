@@ -230,6 +230,12 @@ textarea {
   color: #cc847f;
   font-size: 12px !important;
 }
+.dl_mouse_hover_block .dl_mouse_hover {
+  visibility: hidden;
+}
+.dl_mouse_hover_block:hover .dl_mouse_hover {
+  visibility: visible;
+}
 .rich_comment_box {
   width: 100%;
   background-color: #fff;
@@ -1653,7 +1659,6 @@ input.ng-invalid.ng-dirty {
 }
 .clearLinkUnderline:hover {
   text-decoration: none;
-  color: #fff;
 }
 .dl-top-login {
   width: 480px;
@@ -2464,6 +2469,12 @@ input.ng-invalid.ng-dirty {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.report_form .report_content {
+  background-color: #ccc;
+}
+.report_form .reported_user {
+  color: #3498db;
 }
 @-moz-keyframes scaleFade {
   50% {
