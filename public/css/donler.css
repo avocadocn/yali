@@ -231,10 +231,10 @@ textarea {
   font-size: 12px !important;
 }
 .dl_mouse_hover_block .dl_mouse_hover {
-  visibility: hidden;
+  display: none;
 }
 .dl_mouse_hover_block:hover .dl_mouse_hover {
-  visibility: visible;
+  display: block;
 }
 .rich_comment_box {
   width: 100%;

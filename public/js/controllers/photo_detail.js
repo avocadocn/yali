@@ -123,4 +123,21 @@ angular.module('donler')
       }
     });
   };
+  $scope.getReport = function(index){
+      $scope.reportContent = {
+          hostType: 'comment',
+          hostContent:{
+              _id:$scope.comments[index]._id,
+              content:$scope.comments[index].content,
+              poster:$scope.comments[index].poster
+          },
+          reportType:''
+      }
+      $('#reportModal').modal('show');
+  }
+  $scope.pushReport = function(){
+      Report.publish($scope.reportContent,function(err,msg){
+          alertify.alert(msg);
+      });
+  }
 }]);

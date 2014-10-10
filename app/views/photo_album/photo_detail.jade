@@ -51,6 +51,7 @@ block contentExt
                 p.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
                   h7.pull-right
                     a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+                    a(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
             ul.pager(ng-if="pages[0].has_next===true")
               li.previous
                 a(href="#comment_panel" ng-click="lastPage()" ng-class="{'novisible': now_page === 0}") <<上一页
@@ -82,7 +83,7 @@ block contentExt
           form#delete_form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
             input(type="hidden" name="_method" value="delete")
             button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该照片
-
+      include ../partials/report_modal
 append footExt
   script(src="/lib/jquery-form/jquery.form.js")
   script(src="/js/controllers/photo_detail.js")

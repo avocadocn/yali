@@ -40,7 +40,7 @@
       .comment_footer.clearfix
         span.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
         .pull-right
-          a.comment_date.text.dl_mouse_hover(ng-click="getReport($index)") 举报
+          a.comment_date.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
           span.comment_divider &nbsp;
           a.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
           span.comment_divider(ng-if="comment.delete_permission") &nbsp;

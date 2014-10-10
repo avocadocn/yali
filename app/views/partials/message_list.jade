@@ -160,10 +160,8 @@ div(ng-show = '!loading')
                       .dl_md_8.comment_top.content
                         p {{comment.content}}
                       .dl_md_2.pull-right.hidden_block(ng-if="comment.delete_permission")
-                        h7.pull-right.margin_right_20
-                          a.mouse_hidden(ng-click="deleteComment($index)") 删除
-                      .dl_md_2.pull-right.hidden_block.dl_mouse_hover(ng-if="comment.delete_permission")
-                        h7.pull-right.margin_right_20
+                          a(ng-click="deleteComment($index)") 删除
+                      .dl_md_2.pull-right.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission")
                           a(ng-click="getReport($parent.$parent.$parent.$index,$index)") 举报
                 .dl_row.line_top
                   hr.comment_bottom

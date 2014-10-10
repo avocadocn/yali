@@ -18,6 +18,7 @@ var mongoose = require('mongoose'),
     photo_album_ctrl = require('./photoAlbum.js');
 
 
+var shieldTip ="该评论已经被系统屏蔽";
 /**
  * 为comments的每个comment设置权限
  * @param {Object} data 用户和评论的相关数据
@@ -52,6 +53,9 @@ var setDeleteAuth = function (data, callback) {
             }
             comment.set('delete_permission', can_delete, {strict : false});
             comment.delete_permission = can_delete;
+            if(comment.status==='shield'){
+                comment.set('content', shieldTip, {strict : false});
+            }
         }
     };
 
@@ -99,7 +103,6 @@ var setDeleteAuth = function (data, callback) {
     }
 
 };
-
 
 exports.getCommentById = function (req, res, next) {
     Comment.findById(req.params.commentId).exec()

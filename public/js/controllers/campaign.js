@@ -365,7 +365,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         });
     };
     $scope.getReport = function(index){
-        $rootScope.reportContent = {
+        $scope.reportContent = {
             hostType: 'comment',
             hostContent:{
                 _id:$scope.comments[index]._id,
@@ -377,7 +377,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         $('#reportModal').modal('show');
     }
     $scope.pushReport = function(){
-        Report.publish($rootScope.reportContent,function(err,msg){
+        Report.publish($scope.reportContent,function(err,msg){
             alertify.alert(msg);
         });
     }
