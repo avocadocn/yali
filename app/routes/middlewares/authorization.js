@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
   Company = mongoose.model('Company'),
   Campaign = mongoose.model('Campaign'),
   Department = mongoose.model('Department'),
-  Comment = mongoose.model('Comment');
+  Comment = mongoose.model('Comment'),
+  PhotoAlbum = mongoose.model('PhotoAlbum');
 var userController = require('../../controllers/users');
 /**
  * Generic require login routing middleware
@@ -59,104 +60,72 @@ exports.commentAuthorize = function(req, res, next) {
   }
   else {
     switch(req.params.commentType) {
+      case 'competition':
       case 'campaign'://活动详情
         Campaign.findOne({'_id':req.params.hostId},function (err, campaign){
           if(err || !campaign){
             res.status(403);
             next('forbidden');
             return;
-          }else{
-            if(campaign.cid.indexOf(req.user._id.toString()) > -1){
-              req.role = 'HR';
-              next();
-            }else{
-              if(req.user.role==='LEADER'){
-                var _teamIndex;
-                for(var i=0;i<campaign.team.length;i++){
-                  _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i],'_id')
-                  if(_teamIndex>-1){
-                    if(req.user.team[_teamIndex].leader===true){
-                      req.role = 'LEADER';
-                      break;
-                    }
+          }
+          else if(campaign.cid.indexOf(req.user._id.toString()) > -1){
+            req.role = 'HR';
+          }
+          else if(req.user.cid && campaign.cid.indexOf(req.user.cid.toString())>-1){//是这个公司的员工
+            if(req.user.role==='LEADER'){
+              var _teamIndex;
+              for(var i=0;i<campaign.team.length;i++){
+                _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i],'_id')
+                if(_teamIndex>-1){
+                  if(req.user.team[_teamIndex].leader===true){
+                    req.role = 'LEADER';
+                    break;
                   }
                 }
-                if(req.role!=='LEADER'){
-                  req.role = 'PARTNER';
-                }
               }
-              else if(campaign.cid.indexOf(req.user.cid.toString())>-1){ //是这个公司的员工
-                req.role = 'PARTNER';
-              }else{
-                req.role = 'GUEST';
-              }
-              next();
             }
+            if(req.role!=='LEADER'){
+              req.role = 'PARTNER';
+            }
+          }else{
+            req.role = 'GUEST';
           }
+          next();
         });
         break;
-      case 'team'://小队动态等
-        CompanyGroup.findOne({'_id':req.params.hostId},function (err,company_group){
-          if(err || !company_group){
+      case 'photo':
+        //通过album来判断是否是leader
+        PhotoAlbum.findOne({'photos':{"$elemMatch":{'_id':req.params.hostId}}},function (err, photoAlbum){
+          if(err || !photoAlbum){
             res.status(403);
             next('forbidden');
             return;
-          }else{
-            if(req.user._id.toString() === company_group.cid.toString()) {
-              req.role = 'HR';
-              next();
-            }else{
-              var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,company_group._id,'_id');
-              if(_teamIndex>-1){
-                if(req.user.team[_teamIndex].leader === true){
-                  req.role = 'LEADER';//这个team的leader
-                }
-                else{
-                  req.role = 'MEMBER';//这个team的member
-                }
-              }
-              else if (company_group.cid.toString() === req.user.cid.toString()){
-                req.role = 'PARTNER';//本公司非本组成员
-              }
-              else
-                req.role = 'GUEST';//非此公司的人
-              next();
-            }
           }
-        });
-        break;
-      case 'album':
-        //通过album来判断是否是leader...感累不爱...想办法通过team来判断好了~~~photo也一样
-        //应该也是只要是本公司的就能评论.
-        if (req.user.provider === 'company') {
-          res.status(403);
-          next('forbidden');
-          return;
-        }
-        next();
-        break;
-      case 'user':
-        User.findOne({'_id':req.params.hostId},function (err,user){
-          if(err || !user){
-            res.status(403);
-            next('forbidden');
-            return;
-          }else{
-            if(req.user._id.toString() === user.cid.toString()){
-              req.role='HR';
-              next();
-            }
-            else{
-              if(req.user._id.toString() === user._id.toString()){
-                req.role = 'OWNER';
+          else if(photoAlbum.owner.companies.indexOf(req.user._id.toString())>-1){
+            req.role = 'HR';
+            next();
+          }
+          else if(req.user.cid && photoAlbum.owner.companies.indexOf(req.user.cid)>-1){//是此相册所属公司员工
+            if(req.user.role==='LEADER'){
+              var _teamIndex;
+              for(var i=0;i<photoAlbum.owner.teams.length;i++){
+                _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,photoAlbum.owner.teams[i],'_id')
+                if(_teamIndex>-1){
+                  if(req.user.team[_teamIndex].leader===true){
+                    req.role = 'LEADER';
+                    break;
+                  }
+                }
               }
-              else if(req.user.cid.toString() === user.cid.toString()){
-                req.role = 'PARTNER';
-              }
-              else
-                req.role = 'GRUEST';
-              next();
             }
+            if(req.role!=='LEADER'){
+              req.role = 'PARTNER';
+            }
+            next();
+          }
+          else{
+            req.role = 'GUEST';
+            next();
           }
         });
         break;

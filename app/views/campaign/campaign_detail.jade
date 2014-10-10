@@ -163,6 +163,7 @@ block contentExt
       include ../partials/campaign_message_send
     .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/select_team_modal_jade
+    include ../partials/report_modal
 append footExt
   script(src="/js/controllers/campaign.js")
   if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')

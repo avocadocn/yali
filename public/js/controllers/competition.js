@@ -695,6 +695,22 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
       }
     });
   };
-
+  $scope.getReport = function(index){
+      $rootScope.reportContent = {
+          hostType: 'comment',
+          hostContent:{
+              _id:$scope.comments[index]._id,
+              content:$scope.comments[index].content,
+              poster:$scope.comments[index].poster
+          },
+          reportType:''
+      }
+      $('#reportModal').modal('show');
+  }
+  $scope.pushReport = function(){
+      Report.publish($rootScope.reportContent,function(err,msg){
+          alertify.alert(msg);
+      });
+  }
 
 }]);

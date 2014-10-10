@@ -11,7 +11,7 @@
           .preview_img_wrap(ng-repeat="item in uploader.queue")
             .close(ng-click="item.remove()") &times;
             div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
-  .comment.clearfix(ng-repeat="comment in comments")
+  .comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments")
     .comment_user_info
       a(href="/users/home/{{comment.poster._id}}" )
         img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
@@ -40,9 +40,11 @@
       .comment_footer.clearfix
         span.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
         .pull-right
+          a.comment_date.text.dl_mouse_hover(ng-click="getReport($index)") 举报
+          span.comment_divider &nbsp;
           a.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
           span.comment_divider(ng-if="comment.delete_permission") &nbsp;
-          a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+          a.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
       .replies(ng-if="comment.replying")
         if role === 'MEMBER' || role === 'LEADER' || role==='PARTNER'
           form.reply_form(name="reply_form")

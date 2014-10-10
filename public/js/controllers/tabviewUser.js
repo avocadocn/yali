@@ -63,8 +63,8 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location',
-    function($rootScope,$location) {
+tabViewUser.run(['$rootScope','$location','Report',
+    function($rootScope,$location,Report) {
         if($location.hash()!=='')
             $rootScope.nowTab = window.location.hash.substr(2);
         else if($location.path()!=='')
@@ -93,6 +93,11 @@ tabViewUser.run(['$rootScope','$location',
                 }
             }
         });
+        $rootScope.pushReport = function(){
+            Report.publish($rootScope.reportContent,function(err,msg){
+                alertify.alert(msg);
+            });
+        }
     }
 ]);
 
@@ -146,8 +151,8 @@ tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
         $rootScope.nowTab = 'timeLine';
     }
 ]);
-tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope',
-    function($http, $scope, $rootScope) {
+tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope', 'Report',
+    function($http, $scope, $rootScope, Report) {
         $rootScope.nowTab = 'group_message';
         angular.element('.tooltip').hide();
         $scope.new_comment = [];
@@ -253,11 +258,11 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             $scope.message_index = index;
         }
         $scope.getComment = function(index){
-            if($scope.toggle[index]){
+            if($scope.toggle){
                 try {
                     $http({
                         method: 'post',
-                        url: '/comment/pull/user/'+$rootScope.uid,
+                        url: '/comment/pull/campaign/'+$scope.group_messages[index].campaign._id,
                         data:{
                             host_id : $scope.group_messages[index].campaign._id
                         }
@@ -311,7 +316,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             try {
                 $http({
                     method: 'post',
-                    url: '/comment/push/user/'+$rootScope.uid,
+                    url: '/comment/push/'+host_type+'/'+$scope.group_messages[index].campaign._id,
                     data:{
                         host_id : $scope.group_messages[index].campaign._id,
                         content : form.new_comment.$viewValue,
@@ -322,14 +327,13 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                         $scope.group_messages[index].campaign.comment_sum ++;
                         $scope.group_messages[index].comments.unshift({
                             'show':true,
-                            '_id':data.comment._id,
                             'host_id' : data.comment.host_id,
                             'content' : data.comment.content,
                             'create_date' : data.comment.create_date,
                             'poster' : data.comment.poster,
                             'host_type' : data.comment.host_type,
                             'index' : $scope.fixed_sum+1,
-                            'delete_permission': true
+                            'delete_permission' : true
                         });
                         $scope.new_comment[index].text='';
                         form.$setPristine();
@@ -448,6 +452,19 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 }
             });
         };
+        $scope.getReport = function(groupMessageIndx,CommentIndex){
+            $rootScope.reportContent = {
+                hostType: 'comment',
+                hostContent:{
+                    _id:$scope.group_messages[groupMessageIndx].comments[CommentIndex]._id,
+                    content:$scope.group_messages[groupMessageIndx].comments[CommentIndex].content,
+                    poster:$scope.group_messages[groupMessageIndx].comments[CommentIndex].poster
+                },
+                reportType:''
+
+            }
+            $('#reportModal').modal('show');
+        }
         //应战
         // $scope.responseProvoke = function(tid,provoke_message_id) {
         //     try {

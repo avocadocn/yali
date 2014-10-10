@@ -51,7 +51,7 @@ block panel
     .tab-content
       .tab-pane.active
         div(ng-view)
-
+    include ../partials/report_modal
 block aside
   if (role !=='GUESTHR' && role !=='HR')
     include ../partials/group_thumbnail

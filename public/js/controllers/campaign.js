@@ -14,7 +14,7 @@ campaignApp.directive('maxHeight', function() {
         }
     };
 });
-campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'Comment', function ($scope, $http, $rootScope, Comment) {
+campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'Comment', 'Report', function ($scope, $http, $rootScope, Comment, Report) {
     var page_size = 20;
     $scope.private_message_content = {
         'text':""
@@ -311,13 +311,6 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         });
     };
 
-    var getReplies = function (comment) {
-        Comment.getReplies(comment._id, function (err, replies) {
-            comment.replies = replies;
-            comment.reply_count = replies.length;
-        });
-    };
-
     $scope.last_reply_comment;
     $scope.toggleComment = function (comment) {
         if ($scope.last_reply_comment && $scope.last_reply_comment != comment) {
@@ -326,7 +319,6 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         comment.replying = !comment.replying;
         $scope.last_reply_comment = comment;
         if (comment.replying) {
-            getReplies(comment);
             $scope.now_reply_to = {
                 _id: comment.poster._id,
                 nickname: comment.poster.nickname
@@ -358,12 +350,25 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                 }
                 comment.replies.push(reply);
                 comment.new_reply = "";
-                comment.reply_count++;
                 form.$setPristine();
             }
         });
     };
-
-    
-
+    $scope.getReport = function(index){
+        $rootScope.reportContent = {
+            hostType: 'comment',
+            hostContent:{
+                _id:$scope.comments[index]._id,
+                content:$scope.comments[index].content,
+                poster:$scope.comments[index].poster
+            },
+            reportType:''
+        }
+        $('#reportModal').modal('show');
+    }
+    $scope.pushReport = function(){
+        Report.publish($rootScope.reportContent,function(err,msg){
+            alertify.alert(msg);
+        });
+    }
 }]);

@@ -44,7 +44,7 @@ tabViewGroup.config(['$routeProvider',
       });
 }]);
 
-tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope, $location) {
+tabViewGroup.run(['$http','$rootScope','$location', 'Report', function ($http, $rootScope, $location, Report) {
     if($location.hash()!=='')
         $rootScope.nowTab = window.location.hash.substr(2);
     else if($location.path()!=='')
@@ -137,6 +137,11 @@ tabViewGroup.run(['$http','$rootScope','$location', function ($http, $rootScope,
             $('#sponsorProvokeModel').modal('show');
         }
     };
+    $rootScope.pushReport = function(){
+        Report.publish($rootScope.reportContent,function(err,msg){
+            alertify.alert(msg);
+        });
+    }
 }]);
 
 
@@ -161,8 +166,8 @@ tabViewGroup.controller('TimeLineController', ['$http', '$scope', '$rootScope',
          $rootScope.nowTab = window.location.hash.substr(2);
     }
 ]);
-tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope',
-  function ($http, $scope, $rootScope) {
+tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope', 'Report',
+  function ($http, $scope, $rootScope, Report) {
     $rootScope.nowTab = 'group_message';
     $scope.toggle = [];
     $scope.new_comment = [];
@@ -268,7 +273,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             try {
                 $http({
                     method: 'post',
-                    url: '/comment/pull/team/'+$rootScope.teamId,
+                    url: '/comment/pull/campaign/'+$scope.group_messages[index].campaign._id,
                     data:{
                         host_id : $scope.group_messages[index].campaign._id
                     }
@@ -322,7 +327,7 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         try {
             $http({
                 method: 'post',
-                url: '/comment/push/team/'+$rootScope.teamId,
+                url: '/comment/push/'+host_type+'/'+$scope.group_messages[index].campaign._id,
                 data:{
                     host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,
@@ -510,6 +515,19 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
             }
         });
     };
+    $scope.getReport = function(groupMessageIndx,CommentIndex){
+        $rootScope.reportContent = {
+            hostType: 'comment',
+            hostContent:{
+                _id:$scope.group_messages[groupMessageIndx].comments[CommentIndex]._id,
+                content:$scope.group_messages[groupMessageIndx].comments[CommentIndex].content,
+                poster:$scope.group_messages[groupMessageIndx].comments[CommentIndex].poster
+            },
+            reportType:''
+
+        }
+        $('#reportModal').modal('show');
+    }
 }]);
 
 

@@ -1484,40 +1484,40 @@ exports.renderPhotoDetail = function(req, res, next) {
             console.log(err);
           }
         });
-        (function(i) {
-          Comment.find({'host_id':photos[i]._id,'status':{'$ne':'delete'},'host_type':'photo'}).sort({'create_date':-1})
-          .exec(function(err, comments){
-            return res.render('photo_album/photo_detail', {
-              photo_detail: {
-                _id: photos[i]._id,
-                pre_id: pre_id,
-                next_id: next_id,
-                uri: photos[i].uri,
-                name: photos[i].name,
-                tags: photos[i].tags,
-                click: photos[i].click,
-                upload_user: photos[i].update_user,
-                upload_date: photos[i].upload_date
-              },
-              comments:comments,
-              photo_album: {
-                _id: photo_album._id,
-                name: photo_album.name,
-                update_date: photo_album.update_date,
-                photo_count: photo_album.photo_count,
-                owner: {
-                  name: owner_name,
-                  logo: owner_logo
-                }
-              },
-              links: links,
-              return_url: return_url,
-              moment: moment,
-              editAuth: editAuth,
-              user_cid: req.user.provider === 'user' ? req.user.cid : req.user._id
-            });
-          });
-        }(i));
+        // (function(i) {
+        //   Comment.find({'host_id':photos[i]._id,'status':{'$ne':'delete'},'host_type':'photo'}).sort({'create_date':-1})
+        //   .exec(function(err, comments){
+        return res.render('photo_album/photo_detail', {
+          photo_detail: {
+            _id: photos[i]._id,
+            pre_id: pre_id,
+            next_id: next_id,
+            uri: photos[i].uri,
+            name: photos[i].name,
+            tags: photos[i].tags,
+            click: photos[i].click,
+            upload_user: photos[i].update_user,
+            upload_date: photos[i].upload_date
+          },
+          //comments:comments,
+          photo_album: {
+            _id: photo_album._id,
+            name: photo_album.name,
+            update_date: photo_album.update_date,
+            photo_count: photo_album.photo_count,
+            owner: {
+              name: owner_name,
+              logo: owner_logo
+            }
+          },
+          links: links,
+          return_url: return_url,
+          moment: moment,
+          editAuth: editAuth,
+          user_cid: req.user.provider === 'user' ? req.user.cid : req.user._id
+        });
+          // });
+        // }(i));
 
         return;
       }

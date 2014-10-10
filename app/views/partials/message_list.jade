@@ -141,7 +141,7 @@ div(ng-show = '!loading')
                 button.dl_btn_right(ng-click="comment($index,comment_form)" ng-disabled="comment_form.$invalid") 发表
             hr(ng-if="role!=='HR'")
             .dl_modal_container(bs-popover ng-if="group_message.comments.length > 0")
-              .dl_row(ng-repeat="comment in group_message.comments")
+              .dl_row.dl_mouse_hover_block(ng-repeat="comment in group_message.comments")
                 .row.line_left
                   .dl_md_1.photo(ng-if="comment.poster.cid === '#{cid}'")
                     a(href="/users/home/{{comment.poster._id}}")
@@ -162,6 +162,9 @@ div(ng-show = '!loading')
                       .dl_md_2.pull-right.hidden_block(ng-if="comment.delete_permission")
                         h7.pull-right.margin_right_20
                           a.mouse_hidden(ng-click="deleteComment($index)") 删除
+                      .dl_md_2.pull-right.hidden_block.dl_mouse_hover(ng-if="comment.delete_permission")
+                        h7.pull-right.margin_right_20
+                          a(ng-click="getReport($parent.$parent.$parent.$index,$index)") 举报
                 .dl_row.line_top
                   hr.comment_bottom
   .text-center.message_pager(ng-if="group_messages.length>0")
