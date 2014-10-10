@@ -120,8 +120,8 @@ departmentApp.controller('TimeLineController', ['$http', '$scope', '$rootScope',
 
 
 
-departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope',
-  function ($http, $scope,$rootScope) {
+departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope', 'Comment',
+  function ($http, $scope,$rootScope, Comment) {
     $scope.private_message_content = {
         'text':""
     };
@@ -272,21 +272,13 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         alertify.confirm('确认要删除该评论吗？',function(e){
             if(e){
                 try {
-                    $http({
-                        method: 'post',
-                        url: '/comment/delete/delete/'+$scope.group_messages[$scope.message_index].comments[index]._id,
-                        data:{
-                            comment_id : $scope.group_messages[$scope.message_index].comments[index]._id
-                        }
-                    }).success(function(data, status) {
-                        if(data === 'SUCCESS'){
+                    Comment.remove($scope.group_messages[$scope.message_index].comments[index]._id, function (err) {
+                        if (err) {
+                            alertify.alert('删除失败，请重试。');
+                        } else {
                             $scope.group_messages[$scope.message_index].comments.splice(index,1);
                             $scope.group_messages[$scope.message_index].campaign.comment_sum --;
-                        } else {
-                            alertify.alert('DATA ERROR');
                         }
-                    }).error(function(data, status) {
-                        alertify.alert('DATA ERROR');
                     });
                 }
                 catch(e) {
@@ -294,7 +286,8 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                 }
             }
         });
-    }
+    };
+
     $scope.comment = function(index){
         if($scope.group_messages[index].comments.length > 0){
             var tmp_comment = $scope.group_messages[index].comments[0];

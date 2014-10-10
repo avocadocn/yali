@@ -277,33 +277,25 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
         }
 
 
-        $scope.deleteComment = function(index){
-            alertify.confirm('确认要删除该评论吗？',function(e){
-                if(e){
+        $scope.deleteComment = function(index) {
+            alertify.confirm('确认要删除该评论吗？', function(e) {
+                if (e) {
                     try {
-                        $http({
-                            method: 'post',
-                            url: '/comment/delete/delete/'+$scope.group_messages[$scope.message_index].comments[index]._id,
-                            data:{
-                                comment_id : $scope.group_messages[$scope.message_index].comments[index]._id
-                            }
-                        }).success(function(data, status) {
-                            if(data === 'SUCCESS'){
-                                $scope.group_messages[$scope.message_index].comments.splice(index,1);
-                                $scope.group_messages[$scope.message_index].campaign.comment_sum --;
+                        Comment.remove($scope.group_messages[$scope.message_index].comments[index]._id, function(err) {
+                            if (err) {
+                                alertify.alert('删除失败，请重试。');
                             } else {
-                                alertify.alert('DATA ERROR');
+                                $scope.group_messages[$scope.message_index].comments.splice(index, 1);
+                                $scope.group_messages[$scope.message_index].campaign.comment_sum--;
                             }
-                        }).error(function(data, status) {
-                            alertify.alert('DATA ERROR');
                         });
-                    }
-                    catch(e) {
+                    } catch (e) {
                         console.log(e);
                     }
                 }
             });
-        }
+        };
+
         $scope.comment = function(index,form){
             if($scope.group_messages[index].comments.length > 0){
                 var tmp_comment = $scope.group_messages[index].comments[0];

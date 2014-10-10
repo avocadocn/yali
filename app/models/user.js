@@ -197,6 +197,29 @@ UserSchema.methods = {
         if (!password || !this.salt) return '';
         var salt = new Buffer(this.salt, 'base64');
         return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+    },
+
+    /**
+     * 是否是某个队的成员
+     * @param  {String}  tid
+     * @return {Boolean}
+     */
+    isTeamMember: function (tid) {
+        for (var i = 0; i < this.team.length; i++) {
+            if (tid === this.team[i]._id.toString()) {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    isTeamLeader: function (tid) {
+        for (var i = 0; i < this.team.length; i++) {
+            if (tid === this.team[i]._id.toString()) {
+                return this.team[i].leader;
+            }
+        }
+        return false;
     }
 };
 

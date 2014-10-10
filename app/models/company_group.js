@@ -151,4 +151,27 @@ var CompanyGroup = new Schema({
     family: [familyPhoto]
 });
 
+CompanyGroup.methods = {
+    /**
+     * 用户是否是这个队的成员
+     * @param  {String}  uid
+     * @return {Boolean}
+     */
+    hasMember: function (uid) {
+        for (var i = 0; i < this.member.length; i++) {
+            if (uid === this.member[i]._id.toString()) {
+                return true;
+            }
+        }
+        for (var i = 0; i < this.leader.length; i++) {
+            if (uid === this.leader[i]._id.toString()) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+
+
 mongoose.model('CompanyGroup', CompanyGroup);

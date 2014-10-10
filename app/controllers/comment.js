@@ -18,6 +18,88 @@ var mongoose = require('mongoose'),
     photo_album_ctrl = require('./photoAlbum.js');
 
 
+/**
+ * 为comments的每个comment设置权限
+ * @param {Object} data 用户和评论的相关数据
+ * data: {
+ *     host_type: String, // 留言或评论目标对象类型, campaign or photo
+ *     host_id: String, // 目标对象id
+ *     user: Object, // req.user
+ *     comments: Array // 数组元素类型为mongoose.model('Comment')
+ * }
+ * @param {Function} callback 设置结束的回调, callback(err)
+ */
+var setDeleteAuth = function (data, callback) {
+    var user = data.user;
+
+    var _auth = function (callback) {
+        for (var i = 0; i < data.comments.length; i++) {
+            var comment = data.comments[i];
+            var can_delete = false;
+
+            if (user.provider === 'company') {
+                if (comment.poster.cid.toString() === user._id.toString()) {
+                    can_delete = true;
+                }
+            } else if (user.provider === 'user') {
+                if (comment.poster._id.toString() === user._id.toString()) {
+                    can_delete = true;
+                }
+                // 其它情况，如user是队长
+                if (callback) {
+                    can_delete = !!callback(comment);
+                }
+            }
+            comment.set('delete_permission', can_delete, {strict : false});
+            comment.delete_permission = can_delete;
+        }
+    };
+
+    switch (data.host_type) {
+    case 'campaign_detail':
+        // waterfall
+    case 'campaign':
+        // 评论目标是活动
+        Campaign.findById(data.host_id).exec()
+        .then(function (campaign) {
+            var is_leader = false;
+            if (campaign.team) {
+                for (var i = 0; i < campaign.team.length; i++) {
+                    if (user.isTeamLeader(campaign.team[i].toString())) {
+                        is_leader = true;
+                        break;
+                    }
+                }
+            }
+            if (is_leader) {
+                _auth(function (comment) {
+                    // 是leader可以删除活动中自己公司成员发的评论
+                    if (comment.poster.cid.toString() === user.cid.toString()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                callback && callback();
+            } else {
+                _auth();
+                callback && callback();
+            }
+        })
+        .then(null, function (err) {
+            _auth();
+            callback(err);
+        });
+        break;
+    case 'photo':
+        // to do: 评论目标是照片
+        _auth();
+        callback();
+        break;
+    }
+
+};
+
 
 exports.getCommentById = function (req, res, next) {
     Comment.findById(req.params.commentId).exec()
@@ -67,12 +149,16 @@ exports.getComment = function(req,res){
                 comment.pop();
                 has_next = true;
             }
-            comment.forEach(function(comment){
-                comment.set('delete_permission', (req.role === 'LEADER' && comment.poster.cid.toString()===req.user.cid.toString())
-                    || (req.role === 'HR' && comment.poster.cid.toString()===req.user._id.toString())
-                    || comment.poster._id.toString() === req.user._id.toString(), {strict : false});
+            setDeleteAuth({
+                host_type: req.params.commentType,
+                host_id: req.params.hostId,
+                user: req.user,
+                comments: comment
+            }, function (err) {
+                if (err) console.log(err);
+                // 即使错误依然会做基本的权限设置（公司可删自己员工的，自己可以删自己的），所以依旧返回数据
+                res.send({'comments':comment, has_next: has_next,'user':{'_id':req.user._id}});
             });
-            return res.send({'comments':comment, has_next: has_next,'user':{'_id':req.user._id}});
         }
     });
 }
@@ -225,55 +311,53 @@ exports.getReplies = function (req, res, next) {
 
 
 //删除留言
-exports.deleteComment = function(req,res){
-    //本人、队长、HR可删
-    if(req.role ==='GUEST' || req.role ==='PARTNER'){
-        res.status(403);
-        next('forbidden');
-        return;
-    }
-    var comment_id = req.body.comment_id;
-    Comment.findByIdAndUpdate({'_id':comment_id},{'$set':{'status':'delete'}},function (err,comment){
-        if(err || !comment) {
-            return res.send("COMMENT_NOT_FOUND");
+exports.deleteComment = function(req, res, next){
+
+    var comment = req.comment;
+    setDeleteAuth({
+        host_type: comment.host_type,
+        host_id: comment.host_id,
+        user: req.user,
+        comments: [comment]
+    }, function (err) {
+        if (err) { console.log(err); }
+
+        if (comment.delete_permission) {
+            comment.status = 'delete';
+            comment.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    return next(err);
+                }
+                if (comment.host_type === "campaign" || comment.host_type === "campaign_detail") {
+                    Campaign.findByIdAndUpdate(comment.host_id, {
+                        '$inc': {
+                            'comment_sum': -1
+                        }
+                    }, function(err, message) {
+                        if (err || !message) {
+                            return res.send({ result: 0, msg: 'error' });
+                        } else {
+                            return res.send({ result: 1, msg: 'success' });
+                        }
+                    });
+                } else {
+                    return res.send({ result: 1, msg: 'success' });
+                }
+                // 同时在相册移除相应的照片
+                if (comment.photos && comment.photos.length > 0) {
+                    photo_album_ctrl.deletePhotos(comment.photos, function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+            });
         } else {
-            if(comment.host_type === "campaign" || comment.host_type === "campaign_detail") {
-                Campaign.findByIdAndUpdate(comment.host_id,{'$inc':{'comment_sum':-1}},function(err,message){
-                    if(err || !message) {
-                        return res.send("ERROR");
-                    } else {
-                        return res.send("SUCCESS");
-                    }
-                });
-            } else {
-                return res.send("SUCCESS");
-            }
-            // 同时在相册移除相应的照片
-            if (comment.photos && comment.photos.length > 0) {
-                photo_album_ctrl.deletePhotos(comment.photos, function (err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-            }
+            res.status(403);
+            return next('forbidden');
         }
     });
-    // Comment.remove({'_id':comment_id},function (err, comment) {
-    //     if(err || !comment) {
-    //         return res.send("{{'COMMENT_NOT_FOUND'|translate}}");
-    //     } else {
-    //         if(host_type === "campaign" || host_type === "campaign_detail") {
-    //             Campaign.findByIdAndUpdate(host_id,{'$inc':{'comment_sum':-1}},function(err,message){
-    //                 if(err || !message) {
-    //                     return res.send("ERROR");
-    //                 } else {
-    //                     return res.send("SUCCESS");
-    //                 }
-    //             });
-    //         } else {
-    //             return res.send("SUCCESS");
-    //         }
-    //     }
-    // });
+
 }
 

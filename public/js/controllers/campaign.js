@@ -118,25 +118,17 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
         });
     };
 
-    $scope.deleteComment = function(index){
-        alertify.confirm('确认要删除该评论吗？',function(e){
+    $scope.deleteComment = function (index) {
+        alertify.confirm('确认要删除该评论吗？',function (e) {
             if(e){
                 try {
-                    $http({
-                        method: 'post',
-                        url: '/comment/delete/delete/'+$scope.comments[index]._id,
-                        data:{
-                            comment_id : $scope.comments[index]._id
-                        }
-                    }).success(function(data, status) {
-                        if(data === 'SUCCESS'){
-                            $scope.comments.splice(index,1);
-                            $scope.campaign.comment_sum --;
+                    Comment.remove($scope.comments[index]._id, function (err) {
+                        if (err) {
+                            alertify.alert('删除失败，请重试。');
                         } else {
-                            alertify.alert('DATA ERROR');
+                            $scope.comments.splice(index,1);
+                            $scope.campaign.comment_sum--;
                         }
-                    }).error(function(data, status) {
-                        alertify.alert('DATA ERROR');
                     });
                 }
                 catch(e) {
@@ -144,7 +136,7 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                 }
             }
         });
-    }
+    };
 
     $scope.select_index = 0;
     $scope.selcetJoinTeam = function(index,team){

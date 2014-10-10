@@ -16,7 +16,7 @@ angular.module('donler')
 
   var publish = function (data, callback) {
     $http.post('/comment/push/'+data.host_type+'/'+data.host_id, data)
-    .success(function (data, status) {
+    .success(function (data) {
       // ugly api
       if (data.msg === 'SUCCESS') {
         callback(null, data.comment);
@@ -24,7 +24,21 @@ angular.module('donler')
         callback('error');
       }
     })
-    .error(function (data, status) {
+    .error(function () {
+      callback('error');
+    });
+  };
+
+  var remove = function (comment_id, callback) {
+    $http.delete('/comment/' + comment_id)
+    .success(function (data) {
+      if (data.result === 1) {
+        callback();
+      } else {
+        callback('error');
+      }
+    })
+    .error(function () {
       callback('error');
     });
   };
@@ -113,6 +127,7 @@ angular.module('donler')
   return {
     get: get,
     reply: reply,
+    remove: remove,
     getReplies: getReplies,
     CommentBox: CommentBox
   };

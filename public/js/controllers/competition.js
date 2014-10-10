@@ -262,32 +262,24 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
         }
     }
 
-    $scope.deleteComment = function(index){
-      alertify.confirm('确认要删除该评论吗？',function(e){
-        if(e){
-          try {
-              $http({
-                  method: 'post',
-                  url: '/comment/delete/delete/'+$scope.comments[index]._id,
-                  data:{
-                      comment_id : $scope.comments[index]._id
-                  }
-              }).success(function(data, status) {
-                  if(data === 'SUCCESS'){
-                      $scope.comments.splice(index,1);
-                  } else {
-                      alertify.alert('DATA ERROR');
-                  }
-              }).error(function(data, status) {
-                  alertify.alert('DATA ERROR');
-              });
-          }
-          catch(e) {
-              console.log(e);
-          }
-        }
-      });
-    }
+    $scope.deleteComment = function (index) {
+        alertify.confirm('确认要删除该评论吗？',function (e) {
+            if(e){
+                try {
+                    Comment.remove($scope.comments[index]._id, function (err) {
+                        if (err) {
+                            alertify.alert('删除失败，请重试。');
+                        } else {
+                            $scope.comments.splice(index,1);
+                        }
+                    });
+                }
+                catch(e) {
+                    console.log(e);
+                }
+            }
+        });
+    };
 
     $scope.comment = function(){
       if($scope.comments.length > 0){
