@@ -9,9 +9,11 @@
         .dl-modal-body.clearfix
           .dl_modal_container
             .dl_row.clearfix
-              .info_label 我要举报的是
+              .info_label(ng-switch="reportContent.hostType")
+                span 我要举报的是
                 span.reported_user {{reportContent.hostContent.poster.nickname}}
-                | 发表的评论
+                span(ng-switch-when="comment") 发表的评论
+                span(ng-switch-default)
               .report_content
                 {{reportContent.hostContent.content}}
           .dl_modal_container
