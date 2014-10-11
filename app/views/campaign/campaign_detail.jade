@@ -136,6 +136,9 @@ block contentExt
                   img.img_contain.detail_photo.img_user(src="#{_member.photo}")
                   span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
       include ../partials/rich_comment_box
+      each component in campaign.components
+        if component.name === 'RichComment'
+          rich-comment(component-id="#{component._id}")
     .dl_detail_side
       .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
@@ -150,15 +153,15 @@ block contentExt
         else
           img.map_size(src="/img/icons/nomap.jpg")
       .photo_container
-          .clearfix
-            p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
-            if role!=='PARTNER'
-              a.pull-right(href="/photoAlbum/#{campaign.photo_album._id}/detailView") 上传活动照片
-          .photo_album
-            each photo in photo_thumbnails
-              a.thumbnail_cell(href="/photoAlbum/#{campaign.photo_album._id}/photoView/#{photo._id}")
-                img.thumbnail_img.img-thumbnail(src="#{photo.uri}/120/120")
-                p.thumbnail_name.text-center= photo.name
+        .clearfix
+          p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
+          if role!=='PARTNER'
+            a.pull-right(href="/photoAlbum/#{campaign.photo_album._id}/detailView") 上传活动照片
+        .photo_album
+          each photo in photo_thumbnails
+            a.thumbnail_cell(href="/photoAlbum/#{campaign.photo_album._id}/photoView/#{photo._id}")
+              img.thumbnail_img.img-thumbnail(src="#{photo.uri}/120/120")
+              p.thumbnail_name.text-center= photo.name
     .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../partials/campaign_message_send
     .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")

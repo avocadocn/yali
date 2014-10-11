@@ -1003,7 +1003,31 @@ exports.renderCampaignDetail = function(req, res) {
       .populate('cid')
       .exec()
       .then(function(campaign) {
-        callback(null,campaign);
+        if (!campaign.modularization) {
+          var RichComment = mongoose.model('RichComment');
+          var richComment = new RichComment({
+            host_type: 'campaign',
+            host_id: campaign._id
+          });
+          richComment.save(function (err) {
+            if (err) {
+              return callback(err);
+            }
+            campaign.components.push({
+              name: 'RichComment',
+              _id: richComment._id
+            });
+            campaign.modularization = true;
+            campaign.save(function (err) {
+              if (err) {
+                return callback(err);
+              }
+              callback(null, campaign);
+            });
+          })
+        } else {
+          callback(null,campaign);
+        }
       })
       .then(null, function(err) {
         callback(err);
@@ -1018,10 +1042,7 @@ exports.renderCampaignDetail = function(req, res) {
       });
     }
   ],
-  // optional callback
   function(err, results){
-    // the results array will equal ['one','two'] even though
-    // the second function had a shorter timeout.
     if(err){
       return res.send(404);
     }

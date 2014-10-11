@@ -11,8 +11,8 @@
   <!--</form>-->
   <div class="comment" ng-repeat="comment in comments">
     <div class="comment_user_info">
-      <a ng-href="/users/home/{{comment.poster_id}}">
-        <img class="user_photo" ng-src="{{comment.poster._id}}" alt=""/>
+      <a ng-href="/users/home/{{comment.poster._id}}">
+        <img class="user_photo" ng-src="{{comment.poster.photo}}"/>
       </a>
       <a class="dl_user_name_small" ng-href="/users/home/{{comment.poster._id}}">{{comment.poster.nickname}}</a>
     </div>
