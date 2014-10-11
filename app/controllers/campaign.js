@@ -1454,6 +1454,58 @@ exports.getCampaignCommentsAndPhotos = function(req, res) {
     next(err);
   })
 };
+//发活动接口
+exports.newCampaign = function(basicInfo, providerInfo, photoInfo, campInfo, callback){
+//basicInfo: req.body,
+//provider_info: for poster、cid、team、cname、campaign_type etc
+//photoInfo: photo_album needed
+//campInfo: info of competition
+
+  //---basicInfo
+  var campaign = new Campaign();
+  campaign.theme = basicInfo.theme;//主题
+  campaign.content = basicInfo.content; //活动内容
+  campaign.location = basicInfo.location; //活动地点
+  campaign.start_time = basicInfo.start_time;
+  campaign.end_time = basicInfo.end_time;
+  campaign.member_min = basicInfo.member_min ? basicInfo.member_min : 0;
+  campaign.member_max = basicInfo.member_max ? basicInfo.member_max : 0;
+  campaign.start_time = basicInfo.start_time;
+  campaign.end_time = basicInfo.end_time;
+  campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.start_time;
+  campaign.active = true;
+  if(basicInfo.tags.length>0)
+    campaign.tags = basicInfo.tags;
+  var _now = new Date();
+  if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {
+    callback(400,'活动的时间比现在更早');
+  }
+  //---providerInfo
+  for (var attr in providerInfo) {
+    campaign[attr] = providerInfo[attr];
+  }
+
+  //---camp
+  if(campInfo){
+
+  }
+
+  //---Photo
+  var photo_album = new PhotoAlbum();
+  for (var attr in photoInfo){
+    photo_album[attr]=photoInfo[attr];
+  }
+  photo_album.owner.model._id=campaign._id;
+  //---save
+  photo_album.save(function(err) {
+    if(err) callback(500,'保存相册失败');
+    campaign.photo_album = photo_album._id;
+    campaign.save(function(err) {
+      if(err) callback(500,'保存活动失败');
+      else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
+    })
+  });
+};
 
 exports.campaign = function(req, res, next, id){
   Campaign
@@ -1466,8 +1518,4 @@ exports.campaign = function(req, res, next, id){
           req.campaign = campaign;
           next();
       });
-};
-//发活动接口
-exports.newCampaign = function(){
-
 };
