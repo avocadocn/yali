@@ -34,6 +34,10 @@ var Report = new Schema({
     default: Date.now
   },
   poster:{
+    poster_type:{
+      type:String,
+      enum:['user','company']
+    },
     uid:Schema.Types.ObjectId,
     cid:Schema.Types.ObjectId
   },
