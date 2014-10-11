@@ -1,0 +1,29 @@
+<div class="rich_comment_box" id="{{componentId}}">
+  <!--<form class="rich_comment_form">-->
+    <!--<textarea class="comment_textarea" name="content" placeholder="留言请控制在140字以内"></textarea>-->
+    <!--<div class="operator clearfix">-->
+      <!--<label class="btn btn-default btn-xs" for="photos">-->
+        <!--<i class="glyphicon glyphicon-picture"></i>-->
+      <!--</label>-->
+      <!--<input class="hidden" id="photos" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple/>-->
+      <!--<button>提交</button>-->
+    <!--</div>-->
+  <!--</form>-->
+  <div class="comment" ng-repeat="comment in comments">
+    <div class="comment_user_info">
+      <a ng-href="/users/home/{{comment.poster_id}}">
+        <img class="user_photo" ng-src="{{comment.poster._id}}" alt=""/>
+      </a>
+      <a class="dl_user_name_small" ng-href="/users/home/{{comment.poster._id}}">{{comment.poster.nickname}}</a>
+    </div>
+    <div class="comment_content_panel">
+      <div class="relative">
+        <div class="triangle_border"></div>
+        <div class="triangle"></div>
+        <div class="comment_content">
+          <p ng-cloak>{{comment.content}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
