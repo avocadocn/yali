@@ -17,7 +17,8 @@ exports.pushReport = function  (req, res) {
     post_type:req.user.provider
   }
   var _option = {
-    host_id: req.body.hostContent._id
+    host_id: req.body.hostContent._id,
+    status:'verifying'
   }
   if(req.user.provider ==='company'){
     _poster.cid = req.user._id;
