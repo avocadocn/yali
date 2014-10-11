@@ -28,7 +28,8 @@ var mongoose = require('mongoose'),
   schedule = require('../services/schedule'),
   photo_album_controller = require('./photoAlbum'),
   model_helper = require('../helpers/model_helper'),
-  cache = require('../services/cache/Cache');
+  cache = require('../services/cache/Cache'),
+  campaign_controller =require('../controllers/campaign');
 
 var mail = require('../services/mail');
 var webpower = require('../services/webpower');
@@ -1551,55 +1552,29 @@ exports.sponsor = function(req, res) {
   var cname = req.user.info.name;
   var cid = req.user._id.toString(); //公司id
 
-  var company_in_campaign = req.body.company_in_campaign; //公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是次hr所在的公司!
+  var company_in_campaign = req.body.company_in_campaign; //公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是此hr所在的公司!
 
   if (company_in_campaign === undefined || company_in_campaign === null) {
     company_in_campaign = [cid];
   }
-  var content = req.body.content; //活动内容
-  var location = req.body.location; //活动地点
-  var theme = req.body.theme;
-  var start_time = req.body.start_time;
-  var end_time = req.body.end_time;
-  var deadline = req.body.deadline ? req.body.deadline : req.body.end_time;
-  var member_min = req.body.member_min;
-  var member_max = req.body.member_max;
-  var _now = new Date();
-  if (start_time < _now || end_time < _now || deadline < _now) {
-    return res.send({
-      'result': 0,
-      'msg': '活动的时间比现在更早'
-    });
+  var providerInfo = {
+    'cid':company_in_campaign,
+    'cname':[cname],
+    'poster':{
+      cname:cname,
+      cid:cid,
+      role:'HR'
+    },
+    'campaign_type':1
   }
-  var campaign = new Campaign();
-  campaign.cname = cname;
-  campaign.cid = company_in_campaign; //参加活动的所有公司的id
-  campaign.poster.cname = cname;
-  campaign.poster.cid = cid;
-  campaign.poster.role = 'HR';
-  campaign.active = true;
-  campaign.content = content;
-  campaign.location = location;
-  campaign.theme = theme;
-  if(req.body.tags.length>0)
-    campaign.tags = req.body.tags;
-  campaign.start_time = start_time;
-  campaign.end_time = end_time;
-  campaign.deadline = deadline;
-  campaign.member_min = member_min;
-  campaign.member_max = member_max;
-
-  campaign.campaign_type = 1;
-
-  var photo_album = new PhotoAlbum({
+  var photoInfo = {
     owner: {
       model: {
-        _id: campaign._id,
         type: 'Campaign'
       },
       companies: [req.user._id]
     },
-    name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme,
+    name: moment(req.body.start_time).format("YYYY-MM-DD ") + req.body.theme,
     update_user: {
       _id: req.user._id,
       name: req.user.info.name,
@@ -1610,41 +1585,19 @@ exports.sponsor = function(req, res) {
       name: req.user.info.name,
       type: 'hr'
     }
-  });
-
-  photo_album.save(function(err) {
-    if (err) {
-      console.log(err);
-      return res.send({
-        'result': 0,
-        'msg': '活动创建失败'
-      });
+  };
+  campaign_controller.newCampaign(req.body,providerInfo,photoInfo,function(status,data){
+    if(status){
+      return res.send({'result':0,'msg':data});
     }
-    campaign.photo_album = photo_album._id;
-    campaign.save(function(err) {
-      if (err) {
-        console.log(err);
-        //检查信息是否重复
-        switch (err.code) {
-          case 11000:
-            break;
-          case 11001:
-            res.status(400).send('该活动已经存在!');
-            break;
-          default:
-            break;
-        }
-        return;
-      } else {
-        push.campaign(campaign._id);
-        res.send({
-          'result': 1,
-          'msg': '活动创建成功'
-        });
-      }
+    else{
+      push.campaign(data.campaign_id);
+      res.send({
+        'result': 1,
+        'msg': '活动创建成功'
+      });
 
       //生成动态消息
-
       var groupMessage = new GroupMessage();
       groupMessage.message_type = 0;
       groupMessage.company = {
@@ -1652,15 +1605,14 @@ exports.sponsor = function(req, res) {
         name: cname,
         logo: req.user.info.logo
       };
-      groupMessage.campaign = campaign._id;
+      groupMessage.campaign = data.campaign_id;
       groupMessage.save(function(err) {
         if (err) {
           console.log(err);
         }
       });
-    });
+    }
   });
-
 };
 
 exports.changePassword = function(req, res) {
