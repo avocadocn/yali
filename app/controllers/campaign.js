@@ -1466,4 +1466,8 @@ exports.campaign = function(req, res, next, id){
           req.campaign = campaign;
           next();
       });
-}
+};
+//发活动接口
+exports.newCampaign = function(){
+
+};
