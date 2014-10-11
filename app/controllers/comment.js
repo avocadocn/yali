@@ -30,9 +30,8 @@ var shieldTip ="该评论已经被系统屏蔽";
  * }
  * @param {Function} callback 设置结束的回调, callback(err)
  */
-var setDeleteAuth = function (data, callback) {
+var setDeleteAuth = function setDeleteAuth (data, callback) {
     var user = data.user;
-
     var _auth = function (callback) {
         for (var i = 0; i < data.comments.length; i++) {
             var comment = data.comments[i];
@@ -97,6 +96,27 @@ var setDeleteAuth = function (data, callback) {
         break;
     case 'photo':
         // to do: 评论目标是照片
+        _auth();
+        callback();
+        break;
+    case 'comment':
+        Comment.findById(data.host_id).exec()
+        .then(function (comment) {
+            if (!comment) {
+                return callback('not found');
+            }
+            setDeleteAuth({
+                host_type: comment.host_type,
+                host_id: comment.host_id,
+                user: user,
+                comments: data.comments
+            }, callback);
+        })
+        .then(null, function (err) {
+            callback(err);
+        });
+        break;
+    default:
         _auth();
         callback();
         break;
@@ -309,7 +329,15 @@ exports.reply = function (req, res, next) {
 exports.getReplies = function (req, res, next) {
     Comment.find({ 'host_type': 'comment', 'host_id': req.params.commentId, 'status': 'active' }).exec()
     .then(function (replies) {
-        return res.send({ result: 1, replies: replies });
+        setDeleteAuth({
+            host_type: req.comment.host_type,
+            host_id: req.comment.host_id,
+            user: req.user,
+            comments: replies
+        }, function (err) {
+            if (err) { console.log(err); }
+            return res.send({ result: 1, replies: replies });
+        });
     })
     .then(null, function (err) {
         return next(err);
@@ -319,7 +347,6 @@ exports.getReplies = function (req, res, next) {
 
 //删除留言
 exports.deleteComment = function(req, res, next){
-
     var comment = req.comment;
     setDeleteAuth({
         host_type: comment.host_type,
@@ -328,32 +355,43 @@ exports.deleteComment = function(req, res, next){
         comments: [comment]
     }, function (err) {
         if (err) { console.log(err); }
-
         if (comment.delete_permission) {
             comment.status = 'delete';
             comment.save(function (err) {
                 if (err) {
                     console.log(err);
-                    return next(err);
+                    return res.send({ result: 0, msg: 'error' });
                 }
+                // save成功就意味着已经改为delete状态，后续操作不影响已经成功这个事实，故直接返回成功状态
+                res.send({ result: 1, msg: 'success' });
+
+                // 计数-1
                 if (comment.host_type === "campaign" || comment.host_type === "campaign_detail") {
                     Campaign.findByIdAndUpdate(comment.host_id, {
                         '$inc': {
                             'comment_sum': -1
                         }
                     }, function(err, message) {
-                        if (err || !message) {
-                            return res.send({ result: 0, msg: 'error' });
-                        } else {
-                            return res.send({ result: 1, msg: 'success' });
+                        if (err) {
+                            console.log(err);
                         }
                     });
-                } else {
-                    return res.send({ result: 1, msg: 'success' });
                 }
                 // 同时在相册移除相应的照片
                 if (comment.photos && comment.photos.length > 0) {
                     photo_album_ctrl.deletePhotos(comment.photos, function(err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+                // 如果comment的目标类型是comment，将comment的计数-1
+                if (comment.host_type === 'comment') {
+                    Comment.findByIdAndUpdate(comment.host_id, {
+                        '$inc': {
+                            'reply_count': -1
+                        }
+                    }, function(err) {
                         if (err) {
                             console.log(err);
                         }

@@ -127,13 +127,28 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                             alertify.alert('删除失败，请重试。');
                         } else {
                             $scope.comments.splice(index,1);
-                            $scope.campaign.comment_sum--;
                         }
                     });
                 }
                 catch(e) {
                     console.log(e);
                 }
+            }
+        });
+    };
+
+    $scope.removeReply = function (comment, index) {
+        alertify.confirm('确认要删除该回复吗？', function (e) {
+            if (e) {
+                var reply = comment.replies[index];
+                Comment.remove(reply._id, function (err) {
+                    if (err) {
+                        alertify.alert('删除失败，请重试。');
+                    } else {
+                        comment.replies.splice(index, 1);
+                        comment.reply_count--;
+                    }
+                });
             }
         });
     };
