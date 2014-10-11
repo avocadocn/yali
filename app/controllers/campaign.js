@@ -1455,9 +1455,9 @@ exports.getCampaignCommentsAndPhotos = function(req, res) {
   })
 };
 //发活动接口
-exports.newCampaign = function(basicInfo, providerInfo, photoInfo, campInfo, callback){
+exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 //basicInfo: req.body,
-//provider_info: for poster、cid、team、cname、campaign_type etc
+//provider_info: for poster、cid、team、cname、campaign_type、camp etc
 //photoInfo: photo_album needed
 //campInfo: info of competition
 
@@ -1480,15 +1480,12 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, campInfo, cal
   if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {
     callback(400,'活动的时间比现在更早');
   }
-  //---providerInfo
+
+  //---providerInfo including campInfo
   for (var attr in providerInfo) {
     campaign[attr] = providerInfo[attr];
   }
 
-  //---camp
-  if(campInfo){
-
-  }
 
   //---Photo
   var photo_album = new PhotoAlbum();
