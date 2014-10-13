@@ -107,10 +107,11 @@ exports.getMessage = function(req, res, next) {
               _group_message.myteam = [];
               group_message[i].team.forEach(function(_team){
                 if(model_helper.arrayObjectIndexOf(req.user.team,_team.teamid,'_id')>-1){
-                  _group_message.myteam.push({  _id : _team.teamid,              //小队id
-                                                logo: _team.logo,                            //队徽路径
-                                                name: _team.name
-                                              });
+                  _group_message.myteam.push({
+                    _id : _team.teamid,              //小队id
+                    logo: _team.logo,                            //队徽路径
+                    name: _team.name
+                  });
                 }
               })
             }
@@ -124,29 +125,33 @@ exports.getMessage = function(req, res, next) {
             _group_message.team_id = group_message[i].team[0].teamid;
           break;
           case 4://发起挑战
-            var camp_flag;
-            if(pageType==="team"){
-              camp_flag = group_message[i].campaign.camp[0].id== pageId? 0 : 1;
+            _group_message.myteam =[];
+            for(var ii =0;ii<group_message[i].campaign.camp.length;ii++){
+              if(model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[ii].id,'_id')>-1){
+                _group_message.myteam.push( {
+                  index:ii,
+                  _id : group_message[i].campaign.camp[ii].id,              //小队id
+                  logo: group_message[i].campaign.camp[ii].logo,                            //队徽路径
+                  name: group_message[i].campaign.camp[ii].tname
+                });
+              }
             }
-            else{
-              camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
-            }
-            _group_message.camp_flag =camp_flag;
-            _group_message.logo = group_message[i].team[camp_flag].logo;
-            _group_message.team_id = group_message[i].team[camp_flag].teamid;
-            _group_message.member_num = group_message[i].campaign.camp[camp_flag].member.length;
+
+            _group_message.logo = group_message[i].team[_group_message.myteam[0].index ].logo;
+            _group_message.team_id = group_message[i].team[_group_message.myteam[0].index ].teamid;
+            _group_message.member_num = group_message[i].campaign.camp[_group_message.myteam[0].index ].member.length;
             if(!_group_message.campaign.finish &&join_role&&group_message[i].campaign.camp[0].start_confirm){
               //0：未投票，1：赞成，-1反对
               var vote_flag = 0;
-              if(group_message[i].campaign.camp[camp_flag].vote.positive>0 ){
-                group_message[i].campaign.camp[camp_flag].vote.positive_member.forEach(function(member){
+              if(group_message[i].campaign.camp[_group_message.myteam[0].index ].vote.positive>0 ){
+                group_message[i].campaign.camp[_group_message.myteam[0].index ].vote.positive_member.forEach(function(member){
                   if(member.uid.toString() === req.user._id.toString()){
                     vote_flag = 1;
                   }
                 });
               }
-              if(group_message[i].campaign.camp[camp_flag].vote.negative>0 ){
-                group_message[i].campaign.camp[camp_flag].vote.negative_member.forEach(function(member){
+              if(group_message[i].campaign.camp[_group_message.myteam[0].index ].vote.negative>0 ){
+                group_message[i].campaign.camp[_group_message.myteam[0].index ].vote.negative_member.forEach(function(member){
                   if(member.uid.toString() === req.user._id.toString()){
                     vote_flag = -1;
                   }
@@ -159,7 +164,7 @@ exports.getMessage = function(req, res, next) {
             //console.log(i,group_message.grouptype_flag);
             //要到小队主页、是HR\LEADER才有应战按钮->response_flag = true;
             if(!_group_message.campaign.finish &&pageType==="team" &&(req.role === 'HR' || req.role ==='LEADER')&& group_message[i].campaign.camp[1].start_confirm===false&&group_message[i].campaign.camp[0].start_confirm){
-              if(camp_flag===1 ){
+              if(_group_message.myteam[0] ===1 ){
                 _group_message.response_flag = true;
               }
               else{
@@ -168,28 +173,20 @@ exports.getMessage = function(req, res, next) {
             }
           break;
           case 5://接受应战
-            var camp_flag;
-            if(pageType==="team"){
-              camp_flag = group_message[i].campaign.camp[0].id== pageId? 0 : 1;
-            }
-            else{
-              camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
-              if(camp_flag===0&&model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[1].id,'_id')>-1){
-                _group_message.both_team=true;
-                _group_message.myteam = [{  _id : group_message[i].campaign.camp[0].id,              //小队id
-                                            logo: group_message[i].campaign.camp[0].logo,                            //队徽路径
-                                            name: group_message[i].campaign.camp[0].tname
-                                          },
-                                          {  _id : group_message[i].campaign.camp[1].id,              //小队id
-                                            logo: group_message[i].campaign.camp[1].logo,                            //队徽路径
-                                            name: group_message[i].campaign.camp[1].tname
-                                          }];
+            _group_message.myteam =[];
+            for(var ii =0;ii<group_message[i].campaign.camp.length;ii++){
+              if(model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[ii].id,'_id')>-1){
+                _group_message.myteam.push( {
+                  index:ii,
+                  _id : group_message[i].campaign.camp[ii].id,              //小队id
+                  logo: group_message[i].campaign.camp[ii].logo,                            //队徽路径
+                  name: group_message[i].campaign.camp[ii].tname
+                });
               }
             }
-            _group_message.camp_flag =camp_flag;
-            _group_message.logo = group_message[i].team[camp_flag ].logo;
-            _group_message.team_id = group_message[i].team[camp_flag ].teamid;
-            _group_message.member_num = group_message[i].campaign.camp[camp_flag].member.length;
+            _group_message.logo = group_message[i].team[_group_message.myteam[0].index ].logo;
+            _group_message.team_id = group_message[i].team[_group_message.myteam[0].index ].teamid;
+            _group_message.member_num = group_message[i].campaign.camp[_group_message.myteam[0].index].member.length;
             if(join_role&& new Date()<group_message[i].campaign.deadline){
               //没有参加为false，参加为true
               var join_flag = false;
@@ -214,15 +211,18 @@ exports.getMessage = function(req, res, next) {
             _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
           break;
           case 6:
-            var camp_flag;
-            if(pageType==="team"){
-              camp_flag = group_message[i].campaign.camp[0].id== pageId? 0 : 1;
+            _group_message.myteam =[];
+            for(var ii =0;ii<group_message[i].campaign.camp.length;ii++){
+              if(model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[ii].id,'_id')>-1){
+                _group_message.myteam.push( {
+                  index:ii,
+                  _id : group_message[i].campaign.camp[ii].id,              //小队id
+                  logo: group_message[i].campaign.camp[ii].logo,                            //队徽路径
+                  name: group_message[i].campaign.camp[ii].tname
+                });
+              }
             }
-            else{
-              camp_flag = model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[0].id,'_id')>-1?0:1;
-            }
-            _group_message.camp_flag =camp_flag;
-            _group_message.logo = group_message[i].team[camp_flag ].logo;
+            _group_message.logo = group_message[i].team[_group_message.myteam[0].index  ].logo;
             _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
           break;
           case 7:

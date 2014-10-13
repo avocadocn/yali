@@ -374,6 +374,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                 console.log(e);
             }
         };
+        
         var joinCommit = function(campaign_id,index,tid){
             try {
                 $http({
@@ -403,10 +404,11 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             }
         }
         $scope.join = function(campaign_id,index,tid) {
-            $scope.join_teams=$scope.group_messages[index].myteam;
+            $scope.join_teams= $scope.group_messages[index].myteam;
             $scope.join_campaign_id = campaign_id;
             $scope.join_index = index;
             $scope.select_index = 0;
+            console.log(campaign_id,index,tid,$scope.group_messages[index].myteam);
             if($scope.group_messages[index].myteam && $scope.group_messages[index].myteam.length>1){
                 $('#joinTeamSelectmodal').modal();
             }
@@ -421,7 +423,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
             joinCommit($scope.join_campaign_id,$scope.join_index,$scope.join_teams[$scope.select_index]._id);
         };
 
-        $scope.quit = function(campaign_id,index,tid) {
+        $scope.quit = function(campaign_id,index) {
             alertify.confirm('确认要退出活动吗？',function(e){
                 if(e){
                     try {
@@ -429,8 +431,7 @@ tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope
                             method: 'post',
                             url: '/campaign/quitCampaign/'+campaign_id,
                             data:{
-                                campaign_id : campaign_id,
-                                tid : tid
+                                campaign_id : campaign_id
                             }
                         }).success(function(data, status) {
                             if(data.result===1){
