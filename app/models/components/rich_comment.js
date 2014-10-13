@@ -26,14 +26,17 @@ var RichComment = new Schema({
  * @param {Function} callback callback(err, comments, nextStartDate)
  */
 var getComments = function (hostData, pageStartDate, callback) {
-  if (hostData.hostType === 'campaign_detail') {
-    hostData.hostType = 'campaign';
+  var hostType = hostData.hostType;
+
+  // 兼容旧的数据, 现在只有campaign
+  if (hostData.hostType === 'campaign_detail' || hostData.hostType === 'campaign') {
+    hostType = { '$in': ['campaign', 'campaign_detail'] };
   }
   Comment
     .find({
-      host_type: hostData.hostType,
+      host_type: hostType,
       host_id: hostData.hostId,
-      status: 'active',
+      status: { '$ne': 'delete' },
       create_date: {
         '$lte': pageStartDate || Date.now()
       }
@@ -73,6 +76,7 @@ RichComment.methods = {
    * @param callback callback(data)
    */
   getData: function (callback) {
+    var self = this;
     getComments({
       hostType: this.host_type,
       hostId: this.host_id
@@ -81,6 +85,8 @@ RichComment.methods = {
         return callback(err);
       }
       callback({
+        hostType: self.host_type,
+        hostId: self.host_id,
         comments: comments,
         nextStartDate: nextStartDate
       });

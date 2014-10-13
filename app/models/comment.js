@@ -32,6 +32,8 @@ var Comment = new Schema({
   status:{
     type: String,
     enum:['active','delete','shield'],
+    // 此默认值是后来才加上的, 此处有大坑, 之前的数据没有默认值, 所以不能用status==active的查询条件
+    // 但在查询结果中, 如果没有此属性, mongoose会设为'active'
     default: 'active'
   },
   host_type:{

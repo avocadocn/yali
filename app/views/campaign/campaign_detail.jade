@@ -135,10 +135,10 @@ block contentExt
                 a.item(href="/users/home/#{_member.uid}" ng-Mouseenter="showUserCard('#{_member.uid}','#{_member.uid}')" id='pop#{_member.uid}' rel='popover')
                   img.img_contain.detail_photo.img_user(src="#{_member.photo}")
                   span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
-      include ../partials/rich_comment_box
+      //-include ../partials/rich_comment_box
       each component in campaign.components
         if component.name === 'RichComment'
-          rich-comment(component-id="#{component._id}")
+          rich-comment(component-id="#{component._id}" role="#{req.role}" photo-album-id="#{campaign.photo_album._id}")
     .dl_detail_side
       .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}

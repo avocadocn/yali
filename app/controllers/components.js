@@ -22,4 +22,9 @@ exports.getComponentData = function (req, res, next) {
 
 };
 
+exports.renderTemplate = function (req, res) {
+  // to do: 验证请求参数的合法性
+
+  res.render('components/' + req.params.directiveName.toLowerCase());
+}
 
