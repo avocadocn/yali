@@ -1281,7 +1281,7 @@ tabViewCompany.controller('CompanyGroupFormController',['$http','$scope','$rootS
     };
 }]);
 // HR 发布公司活动 controller
-tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Company', function($http, $scope, $rootScope, Company){
+tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Campaign', function($http, $scope, $rootScope, Campaign){
 
     $scope.dOts = [];
     $scope.select_dOts = [];
@@ -1388,7 +1388,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Co
 
 
     $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
-        Company.getTags($rootScope.cid,function(status,data){
+        Campaign.getTags('company',$rootScope.cid,function(status,data){
             if(!status){
                 $scope.recommand_tags = data;
             }
@@ -1500,44 +1500,26 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Co
 
 
     //依次给小队发活动
-    var hrSendToTeamOneByOne = function(value,http,scope,count){
-      if(scope.select_dOts.length > count -1){
-        try{
-          http({
-              method: 'post',
-              url: '/group/campaignSponsor/'+ scope.select_dOts[count]._id,
-              data:value
-          }).success(function(data, status) {
-              if(data.msg === 'SUCCESS'){
-                if(scope.select_dOts.length > count -1){
-                  //scope.dOt_send_success = scope.dOt_send_success + 1;
-                  //递归发送
-                  try{
-                    hrSendToTeamOneByOne(value,http,scope,count+1);
-                  }catch(e){
-                    console.log(1,scope.select_dOts.length,count);
-                    console.log(e);
-                  }
-                }else{
-                  window.location.reload();
+    var hrSendToTeamOneByOne = function(value,select_dOts,count){
+        if(select_dOts.length > count -1){
+            Campaign.sponsor('/group/campaignSponsor/'+ select_dOts[count]._id,value,function(status,data){
+                if(!status){
+                    if(select_dOts.length > count -1){
+                        //scope.dOt_send_success = scope.dOt_send_success + 1;
+                        //递归发送
+                        try{
+                          hrSendToTeamOneByOne(value,select_dOts,count+1);
+                        }catch(e){
+                            console.log(1,select_dOts.length,count);
+                            console.log(e);
+                        }
+                    }else{
+                      window.location.reload();
+                    }
                 }
-              }else{
-                alertify.alert('DATA ERROR');
-              }
-          }).error(function(data, status) {
-              //TODO:更改对话框
-              alertify.alert('DATA ERROR');
-          });
+            });
         }
-        catch(e){
-            if(scope.select_dOts.length === count){
-                window.location.reload();
-            }else{
-                console.log(e);
-            }
-        }
-      }
-    }
+    };
     $scope.addTag = function(index) {
         $scope.recommand_tags[index].disabled = true;
         $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
@@ -1556,7 +1538,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Co
         };
         if($rootScope.dOtMulti && $scope.multi_campaign_type.value == '1'){
             $scope.dOt_send_success = 0;
-            hrSendToTeamOneByOne(_data,$http,$scope,$scope.dOt_send_success);
+            hrSendToTeamOneByOne(_data,$scope.select_dOts,$scope.dOt_send_success);
         }else{
             var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
             if($scope.dOt){

@@ -141,7 +141,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 
 
-integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Group',function($http, $scope, $rootScope, Group) {
+integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Campaign',function($http, $scope, $rootScope, Campaign) {
     $scope.showMapFlag=false;
 
     $scope.$watch('member_max + member_min',function(newValue,oldValue){
@@ -158,7 +158,7 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
     //打开发活动modal时
     $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
         //获取Tag
-        Group.getTags($rootScope.teamId,function(status,data){
+        Campaign.getTags('group',$rootScope.teamId,function(status,data){
             if(!status){
                 $scope.recommand_tags = data;
             }
@@ -273,7 +273,8 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
                 deadline: $scope.deadline,
                 tags: $scope.tags?$scope.tags.split(','):[]
             };
-            Group.sponsor($rootScope.teamId,_data,function(status,data){
+            var _url = '/group/campaignSponsor/'+ $rootScope.teamId
+            Campaign.sponsor(_url,_data,function(status,data){
                 if(!status){
                     // window.location.reload();
                     alertify.alert('活动发布成功!');
@@ -685,7 +686,7 @@ integrateGroup.controller('infoController', ['$http', '$scope','$rootScope', fun
 }]);
 
 
-integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Group',function($http, $scope, $rootScope, Group) {
+integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Campaign',function($http, $scope, $rootScope, Campaign) {
     $scope.search_type="team";
     $scope.companies = [];
     $scope.teams = [];
@@ -704,7 +705,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
                 if(data.length===1){
                     $scope.modal=3;//直接跳到发起挑战页面
                     $scope.team_opposite = $scope.similarTeams[0];
-                    Group.getTags($scope.team_opposite._id,function(status,data){
+                    Campaign.getTags('group',$scope.team_opposite._id,function(status,data){
                         if(!status){
                             $scope.recommand_tags = data;
                         }
@@ -951,7 +952,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
     $scope.provoke_select = function (index) {
         if(!index){//在自己队发挑战
             $scope.team_opposite = $scope.teams[$scope.selected_index]; 
-                Group.getTags($rootScope.teamId,function(status,data){
+                Campaign.getTags('group',$rootScope.teamId,function(status,data){
                     if(!status){
                         $scope.recommand_tags = data;
                     }
@@ -959,7 +960,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
         }
         else{//到对方队动
             $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
-            Group.getTags($scope.team_opposite._id,function(status,data){
+            Campaign.getTags('group',$scope.team_opposite._id,function(status,data){
                 if(!status){
                     $scope.recommand_tags = data;
                 }
@@ -1001,11 +1002,11 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
             };
             if($scope.modal===1){//在自己的小队约战
                 _data.team_opposite_id =$scope.team_opposite._id
-                Group.provoke($rootScope.teamId,_data,callback);
+                Campaign.sponsor('/group/provoke/'+$rootScope.teamId,_data,callback);
             }
             else{//在其它小队约战
                 _data.team_opposite_id = $rootScope.teamId;
-                Group.provoke($scope.team_opposite._id,_data,callback);
+                Campaign.sponsor('/group/provoke/'+$scope.team_opposite._id,_data,callback);
             }
         }
     };

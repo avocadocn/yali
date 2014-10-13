@@ -421,24 +421,24 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         }
     };
     //应战
-    $scope.responseProvoke = function(tid,competition_id) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/responseProvoke/'+$rootScope.teamId,
-                data:{
-                    competition_id : competition_id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // $scope.responseProvoke = function(tid,competition_id) {
+    //      try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/group/responseProvoke/'+$rootScope.teamId,
+    //             data:{
+    //                 competition_id : competition_id
+    //             }
+    //         }).success(function(data, status) {
+    //             window.location.reload();
+    //         }).error(function(data, status) {
+    //             alertify.alert('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
     $scope.getReport = function(groupMessageIndx,CommentIndex){
         $rootScope.reportContent = {
             hostType: 'comment',
@@ -854,7 +854,7 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
 
 
 
-departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','Department',function($http, $scope, $rootScope, Department) {
+departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','Campaign',function($http, $scope, $rootScope, Campaign) {
     $scope.multi = false;          //是否发起多部门会活动
     $scope.departments = [];
     $scope.select_departments = [];
@@ -940,7 +940,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
         else{
             $scope.initialize();
         }
-        Department.getTags($scope.did,function(status,data){
+        Campaign.getTags('department',$scope.did,function(status,data){
             if(!status){
                 $scope.recommand_tags = data;
             }
