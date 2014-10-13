@@ -1,21 +1,20 @@
-mixin group_thumbnail(teams,team_class,team_head,j)
-  .groupsbox
-    .dl_row(ng-init="show=[];show[#{j}]=false;")
-      span.subtitle(style="float:left")= team_head
-      if (teams.length>4)
-        .text_container.pull-right
-          a.text(ng-show="!show[#{j}]" ng-click="show[#{j}]=true;" href="javascript:void(0);" ng-cloak) 更多 > 
-          a.text(ng-show='show[#{j}]' ng-click="show[#{j}]=false;" href="javascript:void(0);" ng-cloak) 收起 <
-    .groups
-      each team,i in teams
-        div.center-block(ng-if="#{i}<4" class='group '+team_class title="#{team.name}")
+mixin group_thumbnail(teams)
+  .dl_row
+    span.pull-left.subtitle 我的小队
+    a.text.pull-right(href="/company/home#/team_info" ng-cloak) 添加更多 > 
+  .groups
+    each team,i in teams
+      if team.gid !=='0'
+        div.center-block.group(ng-if="#{i}<4" title="#{team.name}")
+          if team.leader
+            span.group_leader
           a.center-block(href="/group/page/#{team._id}")
             //-if team_class === 'leader'
             //-.img_div
             img.img.center-block.size_48(ng-cloak src="#{team.logo}/48/48")
             //- else
             //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
-        div.center-block.clearfix(ng-if="#{i}>=4" ng-show='show[#{j}]' class='group '+team_class title="#{team.name}")
+        div.center-block.clearfix.group(ng-if="#{i}>=4" ng-show='show[#{j}]' class=(team.leader==true)?'leader':'member' title="#{team.name}")
           a.center-block(href="/group/page/#{team._id}")
             //-if team_class === 'leader'
             img.center-block.size_48(ng-cloak src="#{team.logo}/48/48")

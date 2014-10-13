@@ -802,7 +802,7 @@ textarea
   .side
     width 290px
     float left
-    padding-top 41px
+    padding-top 61px
     .photo_album
       padding 20px 10px 8px
       background-color #fff
@@ -820,6 +820,14 @@ textarea
       .group
         display inline-block
         margin 6px
+        position relative
+        .group_leader
+          position absolute
+          background-color red
+          width 20px
+          height 20px
+          right -5px
+          top -5px
   .aside
     width 128px
     margin-right 20px
@@ -1294,7 +1302,9 @@ input::-webkit-inner-spin-button
   border-radius 0px
   margin-bottom 0px
   min-width miniPageWidth
-  
+  position fixed
+  width 100%
+  z-index 50
   .header_container
     max-width 1280px
     width auto
@@ -1562,28 +1572,78 @@ input.ng-invalid.ng-dirty
     img
       max-height 100%
 
-.recent_campaigns_container
-  background-color #DDD
-  width 100%
-  height familyHeight
-  margin-top 41px
-  .carousel
-    height familyHeight
-  .item
-    height familyHeight
-    margin-top 20px
-    .campaign_theme
-      font-size 16px
-    .now_campaign_now
-      font-size 16px
-    .campaign_time_remind
-      font-size 16px
-    .campaign_time_count
-      margin-top 50px
-      font-size 50px
-  img
-      max-height 100%
+.campaigns_container
+  margin-top 61px
+  .user_campaigns_container
+    background-color #ffffff
+    float left
+    border 1px solid #e6e6e6
+    margin 5px 0
+    -moz-box-shadow 5px 5px 5px #cccc /* 老的 Firefox */
+    box-shadow 5px 5px 5px #cccc
+    padding 10px
+    hr
+      margin 5px -10px
+    .campaign
+      clear both
+      div
+        float left
+        width 50px
+      .logo_col,.content_col
+        width 100px
 
+        
+  .top
+    width 660px
+    padding 0
+    .campgin_head
+      background-color #FFD700
+      min-height 30px
+      color #ffffff
+      line-height 30px
+      font-size 18px
+  .recent_unjoin
+    width 325px
+    float left
+    .campgin_head
+      color themeColor
+      line-height 20px
+      font-size 18px
+      a
+        font-size 14px
+  .recent_join
+    width 325px
+    float right
+    .campgin_head
+      color #009999
+      line-height 20px
+      font-size 18px
+      a
+        font-size 14px
+  .now
+    width 660px
+  .now_head
+    width 660px
+    height 40px
+    .campgin_head_left
+      display inline
+      width 514px
+      background-color #97d7c6
+      color #ffffff
+      line-height 20px
+      font-size 18px
+      float left
+    .campgin_head_right
+      display inline
+      width 124px
+      background-color #74baa7
+      color #ffffff
+      line-height 20px
+      font-size 18px
+      float right
+      a
+        color #ffffff
+        font-size 14px
 .dl_allteaminfo_container, .dl_compaign_member, .dl_department, .dl_campaign_list, .dl_group_select, .dl_company_info, .company_manager_box
   width 100%
   background-color cardbgColor

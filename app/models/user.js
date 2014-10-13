@@ -127,6 +127,10 @@ var UserSchema = new Schema({
     push_toggle:{                   //推送开关
         type:Boolean,
         default:false
+    },
+    top_campaign:{
+        type: Schema.Types.ObjectId,
+        ref: 'Campaign'
     }
 });
 

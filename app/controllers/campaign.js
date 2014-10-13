@@ -676,6 +676,60 @@ exports.editCampaign = function(req, res){
     });
 }
 
+
+exports.getUserCampaignsForHome = function(req, res) {
+  var now = new Date();
+  var startTimeLimit = new Date();
+  startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
+  var endTimeLimit = new Date();
+  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
+  var serchCampaign = function(startSet, endSet, join_flag, callback){
+    var options = {
+      'cid': req.user.cid,
+      'active': true
+    };
+    if(startSet){
+      options.start_time = startSet;
+    }
+    if(endSet){
+      options.end_time = endSet;
+    }
+    if(join_flag){
+      options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }]
+    }
+    else{
+      options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }]
+    }
+    Campaign
+    .find(options)
+    .sort('-start_time')
+    .populate('team')
+    .populate('cid')
+    .exec()
+    .then(function(campaigns) {
+      callback(null,formatCampaignsForApp(req.user, campaigns, false));
+    });
+  }
+  async.series([
+    function(callback){
+      serchCampaign({'$gte':now },undefined, false, callback);
+    },//所有新活动的活动，（未参加）
+    function(callback){
+      serchCampaign({ '$gte':now }, undefined, true, callback);
+    },//马上开始的活动,（已参加）
+    function(callback){
+      serchCampaign({ '$lt': now},{'$gte':now }, true, callback);
+    },//正在进行的活动
+  ], function(err, values) {
+    if(err){
+      console.log(err);
+      return res.send({ result: 0, campaigns: [] });
+    }
+    else{
+      return res.send({ result: 1, campaigns: values });
+    }
+  });
+};
 exports.getUserAllCampaignsForCalendar = function(req, res) {
   if (req.role === 'OWNER') {
     getUserAllCampaigns(req.user, true, req.query, function(campaigns) {

@@ -912,7 +912,7 @@ textarea {
 .dl_container .side {
   width: 290px;
   float: left;
-  padding-top: 41px;
+  padding-top: 61px;
 }
 .dl_container .side .photo_album {
   padding: 20px 10px 8px;
@@ -934,6 +934,15 @@ textarea {
 .dl_container .side .groupsbox .group {
   display: inline-block;
   margin: 6px;
+  position: relative;
+}
+.dl_container .side .groupsbox .group .group_leader {
+  position: absolute;
+  background-color: #f00;
+  width: 20px;
+  height: 20px;
+  right: -5px;
+  top: -5px;
 }
 .dl_container .aside {
   width: 128px;
@@ -1522,6 +1531,9 @@ input::-webkit-inner-spin-button {
   border-radius: 0px;
   margin-bottom: 0px;
   min-width: 960px;
+  position: fixed;
+  width: 100%;
+  z-index: 50;
 }
 .dl_nav .header_container {
   max-width: 1280px;
@@ -1839,34 +1851,96 @@ input.ng-invalid.ng-dirty {
 #family .carousel-img-container img {
   max-height: 100%;
 }
-.recent_campaigns_container {
-  background-color: #ddd;
-  width: 100%;
-  height: 371.25px;
-  margin-top: 41px;
+.campaigns_container {
+  margin-top: 61px;
 }
-.recent_campaigns_container .carousel {
-  height: 371.25px;
+.campaigns_container .user_campaigns_container {
+  background-color: #fff;
+  float: left;
+  border: 1px solid #e6e6e6;
+  margin: 5px 0;
+  -moz-box-shadow: 5px 5px 5px rgba(204,204,204,0.8);
+/* 老的 Firefox */
+  box-shadow: 5px 5px 5px rgba(204,204,204,0.8);
+  padding: 10px;
 }
-.recent_campaigns_container .item {
-  height: 371.25px;
-  margin-top: 20px;
+.campaigns_container .user_campaigns_container hr {
+  margin: 5px -10px;
 }
-.recent_campaigns_container .item .campaign_theme {
-  font-size: 16px;
+.campaigns_container .user_campaigns_container .campaign {
+  clear: both;
 }
-.recent_campaigns_container .item .now_campaign_now {
-  font-size: 16px;
+.campaigns_container .user_campaigns_container .campaign div {
+  float: left;
+  width: 50px;
 }
-.recent_campaigns_container .item .campaign_time_remind {
-  font-size: 16px;
+.campaigns_container .user_campaigns_container .campaign .logo_col,
+.campaigns_container .user_campaigns_container .campaign .content_col {
+  width: 100px;
 }
-.recent_campaigns_container .item .campaign_time_count {
-  margin-top: 50px;
-  font-size: 50px;
+.campaigns_container .top {
+  width: 660px;
+  padding: 0;
 }
-.recent_campaigns_container img {
-  max-height: 100%;
+.campaigns_container .top .campgin_head {
+  background-color: #ffd700;
+  min-height: 30px;
+  color: #fff;
+  line-height: 30px;
+  font-size: 18px;
+}
+.campaigns_container .recent_unjoin {
+  width: 325px;
+  float: left;
+}
+.campaigns_container .recent_unjoin .campgin_head {
+  color: #3498db;
+  line-height: 20px;
+  font-size: 18px;
+}
+.campaigns_container .recent_unjoin .campgin_head a {
+  font-size: 14px;
+}
+.campaigns_container .recent_join {
+  width: 325px;
+  float: right;
+}
+.campaigns_container .recent_join .campgin_head {
+  color: #099;
+  line-height: 20px;
+  font-size: 18px;
+}
+.campaigns_container .recent_join .campgin_head a {
+  font-size: 14px;
+}
+.campaigns_container .now {
+  width: 660px;
+}
+.campaigns_container .now_head {
+  width: 660px;
+  height: 40px;
+}
+.campaigns_container .now_head .campgin_head_left {
+  display: inline;
+  width: 514px;
+  background-color: #97d7c6;
+  color: #fff;
+  line-height: 20px;
+  font-size: 18px;
+  float: left;
+}
+.campaigns_container .now_head .campgin_head_right {
+  display: inline;
+  width: 124px;
+  background-color: #74baa7;
+  color: #fff;
+  line-height: 20px;
+  font-size: 18px;
+  float: right;
+}
+.campaigns_container .now_head .campgin_head_right a {
+  color: #fff;
+  font-size: 14px;
 }
 .dl_allteaminfo_container,
 .dl_compaign_member,
