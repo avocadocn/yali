@@ -102,7 +102,7 @@ var Campaign = new Schema({
     role: {
       type: String,
       enum: ['HR', 'LEADER']       //HR 队长
-    },
+    }
   },
   theme: {//主题
     type: String,

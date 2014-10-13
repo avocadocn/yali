@@ -1,6 +1,6 @@
 .rich_comment_box#rich_comment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
   p.subtitle 留言
-  form.rich_comment_form(name="comment_form" novalidate ng-if="role==='MEMBER' || role ==='LEADER' || role==='PARTNER'")
+  form.rich_comment_form(name="comment_form" ng-if="role==='MEMBER' || role ==='LEADER' || role==='PARTNER'" novalidate)
     textarea.dl-form-control.comment_textarea(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
     .operator.clearfix
       label.btn.btn-default.btn-xs(for="photos"): i.glyphicon.glyphicon-picture
