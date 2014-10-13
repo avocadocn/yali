@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 exports.getComponentData = function (req, res, next) {
 
-  // to do: 验证请求参数的合法性
+  // todo: 验证请求参数的合法性
 
   // 获取组件数据
   mongoose.model(req.params.componentName).findById(req.params.componentId).exec()
@@ -23,7 +23,7 @@ exports.getComponentData = function (req, res, next) {
 };
 
 exports.renderTemplate = function (req, res) {
-  // to do: 验证请求参数的合法性
+  // todo: 验证请求参数的合法性
 
   res.render('components/' + req.params.directiveName.toLowerCase());
 }

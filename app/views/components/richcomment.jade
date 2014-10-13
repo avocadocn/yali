@@ -59,11 +59,11 @@
           a(ng-if="reply.delete_permission" ng-click="removeReply(comment, $index)")
             span 删除
 
-  ul.pager(ng-if="pages[0].has_next===true")
+  ul.pager(ng-if="pages[0].nextStartDate")
     li.previous
-      a(href="#rich_comment_box" ng-click="lastPage()" ng-class="{'novisible': now_page === 0}") <<上一页
+      a(href="#rich_comment_box" ng-click="lastPage()" ng-class="{'novisible': nowPage === 0}") <<上一页
     li.next
-      a(href="#rich_comment_box" ng-click="nextPage()" ng-class="{'novisible': pages[now_page].has_next === false}") 下一页>>
+      a(href="#rich_comment_box" ng-click="nextPage()" ng-class="{'novisible': !pages[nowPage].nextStartDate}") 下一页>>
     ul.pagination(ng-if="pages.length > 1")
-      li(ng-repeat="page in pages" ng-class="{'active': now_page===$index}")
+      li(ng-repeat="page in pages" ng-class="{'active': nowPage===$index}")
         a(href="#rich_comment_box" ng-click="changePage($index)") {{$index + 1}}

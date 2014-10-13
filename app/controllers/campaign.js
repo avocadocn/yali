@@ -1015,7 +1015,8 @@ exports.renderCampaignDetail = function(req, res) {
           var RichComment = mongoose.model('RichComment');
           var richComment = new RichComment({
             host_type: 'campaign',
-            host_id: campaign._id
+            host_id: campaign._id,
+            photo_album_id: campaign.photo_album
           });
           richComment.save(function (err) {
             if (err) {

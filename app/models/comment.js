@@ -47,4 +47,45 @@ var Comment = new Schema({
   }]
 });
 
+Comment.statics = {
+  /**
+   * 获取评论内容
+   * @param {Object} hostData
+   * @param {Date} pageStartDate 该页第一个评论的createDate
+   * @param {Function} callback callback(err, comments, nextStartDate)
+   */
+  getComments: function (hostData, pageStartDate, callback) {
+    var pageSize = 20;
+    var hostType = hostData.hostType;
+
+    // 兼容旧的数据, 现在只有campaign
+    if (hostData.hostType === 'campaign_detail' || hostData.hostType === 'campaign') {
+      hostType = { '$in': ['campaign', 'campaign_detail'] };
+    }
+    this.find({
+      host_type: hostType,
+      host_id: hostData.hostId,
+      status: { '$ne': 'delete' },
+      create_date: {
+        '$lte': pageStartDate || Date.now()
+      }
+    })
+      .limit(pageSize + 1)
+      .sort('-create_date')
+      .exec()
+      .then(function (comments) {
+        if (comments.length === pageSize + 1) {
+          var nextComment = comments.pop();
+          callback(null, comments, nextComment.create_date);
+        } else {
+          callback(null, comments);
+        }
+      })
+      .then(null, function (err) {
+        callback(err);
+      });
+  }
+};
+
+
 mongoose.model('Comment', Comment);

@@ -5,12 +5,25 @@ angular.module('donler.components.rich_comment', ['angularFileUpload'])
   .controller('RichCommentCtrl', ['$scope', '$http', '$element', 'Comment', 'FileUploader',
     function ($scope, $http, $element, Comment, FileUploader) {
 
+      $scope.pages = [];
+      $scope.nowPage = 0;
+
       var CommentBox = function (args) {
-        this.host_type = args.host_type;
-        this.host_id = args.host_id;
-        this.photo_album_id = args.photo_album_id;
+
+        Object.defineProperty(this, 'photo_album_id', {
+          set: function (value) {
+            this.uploader.url = '/photoAlbum/' + value + '/photo/single';
+          }
+        });
+
+        if (args) {
+          this.host_type = args.host_type;
+          this.host_id = args.host_id;
+          this.photo_album_id = args.photo_album_id;
+        }
+
         var uploader = new FileUploader({
-          url: '/photoAlbum/' + this.photo_album_id + '/photo/single',
+          url: this.photo_album_id ? '/photoAlbum/' + this.photo_album_id + '/photo/single' : null,
           queueLimit: 9
         });
 
@@ -28,6 +41,7 @@ angular.module('donler.components.rich_comment', ['angularFileUpload'])
         if (!content && content === '') return;
         var self = this;
         if (self.uploader.getNotUploadedItems().length > 0) {
+          if (!this.uploader.url || this.uploader.url === '') return;
           self.upload_photos = [];
           self.uploader.uploadAll();
           self.uploader.onSuccessItem = function (item, data, status, headers) {
@@ -57,9 +71,7 @@ angular.module('donler.components.rich_comment', ['angularFileUpload'])
 
       };
 
-      var cbox = new CommentBox({
-        photo_album_id: $scope.photoAlbumId
-      });
+      var cbox = new CommentBox();
       $scope.uploader = cbox.uploader;
 
 
@@ -85,16 +97,30 @@ angular.module('donler.components.rich_comment', ['angularFileUpload'])
       };
 
       $http.get('/components/RichComment/id/' + $scope.componentId)
-        .success(function (data, status) {
+        .success(function (data) {
           if (data.result === 1) {
-            $scope.comments = data.componentData.comments;
-            $scope.nextStartDate = data.componentData.nextStartDate;
             cbox.host_type = data.componentData.hostType;
             cbox.host_id = data.componentData.hostId;
+            cbox.photo_album_id = data.componentData.photoAlbumId;
+
+            Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
+              if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+              } else {
+                $scope.comments = comments;
+                if (!$scope.pages[$scope.nowPage]) {
+                  var page = {
+                    thisStartDate: $scope.comments[0].create_date,
+                    nextStartDate: nextStartDate
+                  };
+                  $scope.pages.push(page);
+                }
+              }
+            });
           }
         })
         .error(function (data, status) {
-          // to do: error handle
+          alertify.alert('获取评论失败，请刷新页面重试');
         });
 
       $scope.new_comment = {
@@ -156,6 +182,43 @@ angular.module('donler.components.rich_comment', ['angularFileUpload'])
         });
       };
 
+
+      $scope.deleteComment = function (index) {
+        alertify.confirm('确认要删除该评论吗？',function (e) {
+          if(e){
+            try {
+              Comment.remove($scope.comments[index]._id, function (err) {
+                if (err) {
+                  alertify.alert('删除失败，请重试。');
+                } else {
+                  $scope.comments.splice(index,1);
+                }
+              });
+            }
+            catch(e) {
+              console.log(e);
+            }
+          }
+        });
+      };
+
+      $scope.removeReply = function (comment, index) {
+        alertify.confirm('确认要删除该回复吗？', function (e) {
+          if (e) {
+            var reply = comment.replies[index];
+            Comment.remove(reply._id, function (err) {
+              if (err) {
+                alertify.alert('删除失败，请重试。');
+              } else {
+                comment.replies.splice(index, 1);
+                comment.reply_count--;
+              }
+            });
+          }
+        });
+      };
+
+
       $scope.getReport = function(index){
         $scope.reportContent = {
           hostType: 'comment',
@@ -168,93 +231,51 @@ angular.module('donler.components.rich_comment', ['angularFileUpload'])
         };
         $('#reportModal').modal('show');
       };
-      $scope.pushReport = function(){
-        Report.publish($scope.reportContent,function(err,msg){
-          alertify.alert(msg);
-        });
+
+
+      $scope.nextPage = function () {
+        Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
+          if (err) {
+            alertify.alert('获取评论失败，请刷新页面重试');
+          } else {
+            $scope.comments = comments;
+            $scope.nowPage++;
+            if (!$scope.pages[$scope.nowPage]) {
+              var page = {
+                thisStartDate: $scope.pages[$scope.nowPage - 1].nextStartDate,
+                nextStartDate: nextStartDate
+              };
+              $scope.pages.push(page);
+            }
+          }
+        }, $scope.pages[$scope.nowPage].nextStartDate);
+      };
+
+      $scope.lastPage = function () {
+        Comment.get('campaign', cbox.host_id, function (err, comments) {
+          if (err) {
+            alertify.alert('获取评论失败，请刷新页面重试');
+          } else {
+            $scope.comments = comments;
+            $scope.nowPage--;
+          }
+        }, $scope.pages[$scope.nowPage - 1].thisStartDate);
+      };
+
+      $scope.changePage = function (index) {
+        Comment.get('campaign', cbox.host_id, function (err, comments) {
+          if (err) {
+            alertify.alert('获取评论失败，请刷新页面重试');
+          } else {
+            $scope.comments = comments;
+            $scope.nowPage = index;
+          }
+        }, $scope.pages[index].thisStartDate);
       }
 
     }])
 
-  .factory('Comment', ['$http', 'FileUploader', function ($http, FileUploader) {
 
-    var get = function (type, id, callback, create_date) {
-      $http.post('/comment/pull/' + type + '/' + id, { create_date: create_date })
-        .success(function (data, status) {
-          callback(null, data.comments, data.has_next);
-        })
-        .error(function (data, status) {
-          callback('error');
-        });
-    };
-
-    var publish = function (data, callback) {
-      $http.post('/comment/push/'+data.host_type+'/'+data.host_id, data)
-        .success(function (data) {
-          // ugly api
-          if (data.msg === 'SUCCESS') {
-            callback(null, data.comment);
-          } else {
-            callback('error');
-          }
-        })
-        .error(function () {
-          callback('error');
-        });
-    };
-
-    var remove = function (comment_id, callback) {
-      $http.delete('/comment/' + comment_id)
-        .success(function (data) {
-          if (data.result === 1) {
-            callback();
-          } else {
-            callback('error');
-          }
-        })
-        .error(function () {
-          callback('error');
-        });
-    };
-
-    var reply = function (comment_id, to, content, callback) {
-      $http.post('/comment/' + comment_id + '/reply', {
-        to: to,
-        content: content
-      }).success(function (data, status) {
-        if (data.result === 1) {
-          callback(null, data.reply);
-        } else {
-          callback('error');
-        }
-      }).error(function (data, status) {
-        callback('error');
-      });
-    };
-
-    var getReplies = function (comment_id, callback) {
-      $http.get('/comment/' + comment_id + '/replies')
-        .success(function (data, status) {
-          if (data.result === 1) {
-            callback(null, data.replies);
-          } else {
-            callback('error');
-          }
-        })
-        .error(function (data, status) {
-          callback('error');
-        });
-    };
-
-    return {
-      get: get,
-      publish: publish,
-      reply: reply,
-      remove: remove,
-      getReplies: getReplies
-    };
-
-  }])
 
   .directive('richComment', function () {
     return {
@@ -266,14 +287,9 @@ angular.module('donler.components.rich_comment', ['angularFileUpload'])
         photoAlbumId: '@',
         role: '@'
       },
-      templateUrl: '/components/RichComment/template',
-      link: function (scope, element, attrs, ctrl) {
-        // to do
-
-
-      }
+      templateUrl: '/components/RichComment/template'
     }
-  })
+  });
 
 
 
