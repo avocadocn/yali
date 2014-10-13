@@ -1100,7 +1100,6 @@ exports.renderCampaignDetail = function(req, res) {
           });
         });
       }
-      console.log(new Date,campaign.deadline);
       return res.render('campaign/campaign_detail', {
         over : campaign.deadline<new Date(),
         join: req.join,
