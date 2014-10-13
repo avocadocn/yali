@@ -1035,30 +1035,18 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
             location: $scope.location,
             content : $scope.content,
             tags: $scope.tags ? $scope.tags.split(',') :[]
+            start_time:$scope.start_time,
+            end_time:$scope.end_time,
+            deadline:$scope.deadline,
+            member_min: $scope.member_min,
+            member_max: $scope.member_max
         };
         var _url;
         if($scope.multi){
             _url = '/department/'+$scope.did+'/multi_sponsor';
             _data.select_departments=[$scope.main_department];
-            data.time={
-                start:$scope.start_time,
-                end:$scope.end_time,
-                deadline:$scope.deadline
-            };
-            _data.member_num = {
-                min:$scope.member_min,
-                max:$scope.member_max
-            };
-            // console.log($scope.deadline);
-        }else{
+        }else
             _url = '/department/'+$scope.did+'/sponsor';
-            _data.start_time = $scope.start_time;
-            _data.end_time = $scope.end_time;
-            _data.member_min = $scope.member_min;
-            _data.member_max = $scope.member_max;
-            _data.deadline = $scope.deadline;
-            // console.log($scope.deadline);
-        }
         try{
             $http({
                 method: 'post',
@@ -1078,7 +1066,4 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
             console.log(e);
         }
     };
-}]);
-departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
-
 }]);

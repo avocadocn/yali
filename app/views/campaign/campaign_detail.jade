@@ -62,7 +62,7 @@ block contentExt
                     span #{tag}
         .dl_detail_aside
             img.img_contain.size_128(ng-src="#{campaignLogo}")
-            if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish
+            if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !campaign.finish && !over
               .dl_button_container
                 input.dl_btn.dl_btn_medium(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
                 - var myJoinTeam = {};

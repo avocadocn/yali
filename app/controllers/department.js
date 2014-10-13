@@ -159,19 +159,10 @@ exports.multiCampaignSponsor = function(req, res) {
       'role':'HR'
     };
   }
-  var theme = req.body.theme;
-  var content = req.body.content;
-  var member_num = req.body.member_num;
-  var location = req.body.location;
-  var time = req.body.time;
 
-  var department_campaign = new Campaign();
-  department_campaign.campaign_type = 8;
-  department_campaign.active = true;
-  department_campaign.team.push(req.department.team);
-
+  team_ids.push(req.department.team);
   for(var i = 0; i < other_departments.length; i ++){
-    department_campaign.team.push(other_departments[i].team._id);
+    // department_campaign.team.push(other_departments[i].team._id);
     team_ids.push(other_departments[i].team._id);
     teams.push({
       'teamid':other_departments[i].team._id,
@@ -180,78 +171,60 @@ exports.multiCampaignSponsor = function(req, res) {
     });
   }
 
-  department_campaign.cid.push(req.department.company._id);
-  department_campaign.cname.push(req.department.company.name);
-  department_campaign.poster = poster;
-  department_campaign.theme = theme;
-  department_campaign.content = content;
-  department_campaign.member_min = member_num.min;
-  department_campaign.member_max = member_num.max;
-  department_campaign.location = location;
-  department_campaign.start_time = time.start;
-  department_campaign.end_time = time.end;
-  department_campaign.deadline = time.deadline ? time.deadline : time.start;
-  department_campaign.tags = req.body.tags;
-  var photo_album = new PhotoAlbum({
+  var providerInfo = {
+    cid:[req.department.company._id],
+    cname:[req.department.company.name],
+    poster:poster,
+    campaign_type:8,
+    team:team_ids
+  };
+
+  var create_user = {
+    _id: poster._id,
+    name:req.role==='HR'? poster.cname:poster.nickname,
+    type:req.role==='HR'? 'hr':'user'
+  }
+  var photoInfo = {
     owner: {
       model: {
-        _id: department_campaign._id,
+        // _id: department_campaign._id,
         type: 'Campaign'
       },
       companies: [req.department.company._id],
       teams: team_ids
     },
-    name: moment(department_campaign.start_time).format("YYYY-MM-DD ") + department_campaign.theme,
-    update_user: {
-      _id: department_campaign.poster._id,
-      name: department_campaign.poster.nickname,
-      type: 'user'
-    },
-    create_user: {
-      _id: department_campaign.poster._id,
-      name: department_campaign.poster.nickname,
-      type: 'user'
+    name: moment(req.body.start_time).format("YYYY-MM-DD ") + req.body.theme,
+    update_user: create_user,
+    create_user: create_user
+  };
+  campaign_controller.newCampaign(req.body,providerInfo,photoInfo,function(status,data){
+    if(status){
+      return res.send({'result':0,'msg':data});
     }
-  });
-  fs.mkdir(path.join(meanConfig.root, '/public/img/photo_album/', photo_album._id.toString()), function(err) {
-    if (err) {
-      console.log(err);
-      return res.send(500);
-    } else {
-      photo_album.save(function(err){
-        if(!err){
-          department_campaign.photo_album = photo_album._id;
+    else{
+      push.campaign(data.campaign_id);
+      var groupMessage = new GroupMessage();
+      groupMessage.message_type = 10;
+      groupMessage.team = teams;
 
-          department_campaign.save(function(err){
-            if(!err){
-              push.campaign(department_campaign._id);
-              var groupMessage = new GroupMessage();
-              groupMessage.message_type = 10;
-              groupMessage.team = teams;
+      groupMessage.company.push({
+        cid: req.department.company._id,
+        name: req.department.company.name
+      });
+      groupMessage.campaign = data.campaign_id;
 
-              groupMessage.company.push({
-                cid: req.department.company._id,
-                name: req.department.company.name
-              });
-              groupMessage.campaign = department_campaign._id;
-
-              // 暂时只有一个其它部门
-              groupMessage.department = [req.department._id, other_departments[0]._id];
-              groupMessage.save(function (err) {
-                if (err) {
-                  console.log('保存约战动态时出错' + err);
-                }else{
-                  return res.send({'result':0,'msg':'SUCCESS'});
-                }
-              });
-            }else{
-              return res.send({'result':0,'msg':'ERROR'});
-            }
-          });
+      // 暂时只有一个其它部门
+      groupMessage.department = [req.department._id, other_departments[0]._id];
+      groupMessage.save(function (err) {
+        if (err) {
+          console.log('保存约战动态时出错' + err);
+        }else{
+          return res.send({'result':0,'msg':'SUCCESS'});
         }
       });
     }
   });
+  //缺少给部门加相册
 }
 
 //深度搜索部门信息
@@ -363,7 +336,6 @@ exports.sponsor = function(req, res) {
     var tname = req.department.name;
 
     //生成活动
-    var campaign = new Campaign();
     var all_teams = [];
     var all_team_ids = [];
     for(var i = 0 ; i < departments.length; i ++){
@@ -374,9 +346,6 @@ exports.sponsor = function(req, res) {
         'logo':departments[i].team.logo
       });
     }
-    campaign.team = all_team_ids;
-
-    campaign.campaign_type = 6; // 部门活动
     var providerInfo = {
       'cid':[cid],
       'cname':[cname],

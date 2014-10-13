@@ -184,10 +184,10 @@ campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'C
                     window.location.reload();
                 }
                 else{
-                    alertify.alert('DATA ERROR');
+                    alertify.alert(data.msg);
                 }
             }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
+                alertify.alert(data.msg);
             });
         }
         catch(e) {
