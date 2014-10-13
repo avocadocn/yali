@@ -98,6 +98,14 @@ tabViewUser.run(['$rootScope','$location','Report',
                 alertify.alert(msg);
             });
         }
+        $rootScope.judgeYear = function(index){
+            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
     }
 ]);
 
@@ -121,7 +129,11 @@ var messageConcat = function(messages,rootScope,scope,reset){
 }
 tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-        $scope.recentCampaigns = [];
+        $scope.recentUnjoinedCampaigns = [];
+        $scope.recentJoinedCampaigns = [];
+        $scope.nowCampaigns = [];
+
+        $scope.newReply =[null];
         $scope.showCampaign = false;
         $rootScope.$watch('uid',function(uid){
             if(!uid)
@@ -133,6 +145,9 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
                 }).success(function(data,status){
                     if(data.result===1){
                         $scope.recentCampaigns = data.campaigns;
+                        $scope.recentUnjoinedCampaigns = data.campaigns[0];
+                        $scope.recentJoinedCampaigns = data.campaigns[1];
+                        $scope.nowCampaigns = data.campaigns[2];
                         $scope.showCampaign = true;
                     }
                 }).error(function(data,status){
@@ -754,14 +769,6 @@ tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope
         $scope.page = 0;
         $scope.lastPage_flag = false;
         $scope.nextPage_flag = false;
-        $scope.judgeYear = function(index){
-            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
-                return true;
-            }
-            else {
-                return false;
-            }
-        };
         $scope.loadMore = function(){
             $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+$scope.page+'/'+$scope.block+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
                 if(data.result===1 && data.campaigns.length>0){
