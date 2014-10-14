@@ -16,6 +16,38 @@ var RichComment = new Schema({
   }
 });
 
+RichComment.statics = {
+
+  /**
+   * 创建组件并初始化数据
+   * @param {Object} host 活动对象
+   * @param {Function} callback 创建成功后的回调函数，形式为callback(err, richComment)。创建成功是指保存至数据库成功。
+   */
+  establish: function (host, callback) {
+    var modelName = host.constructor.modelName;
+    var hostType;
+    switch (modelName) {
+      case 'Campaign':
+        hostType = 'campaign';
+        break;
+      case 'PhotoAlbum':
+        hostType = 'photo';
+        break;
+      default:
+        return callback(err);
+    }
+    var richComment = new this({
+      host_type: hostType,
+      host_id: host._id,
+      photo_album_id: host.populated('photo_album') || host.photo_album
+    });
+
+    richComment.save(function (err) {
+      if (err) { return callback(err); }
+      else { callback (null, richComment); }
+    });
+  }
+};
 
 RichComment.methods = {
 

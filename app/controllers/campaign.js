@@ -1013,27 +1013,19 @@ exports.renderCampaignDetail = function(req, res) {
       .then(function(campaign) {
         if (!campaign.modularization) {
           var RichComment = mongoose.model('RichComment');
-          var richComment = new RichComment({
-            host_type: 'campaign',
-            host_id: campaign._id,
-            photo_album_id: campaign.photo_album
-          });
-          richComment.save(function (err) {
-            if (err) {
-              return callback(err);
-            }
+
+          RichComment.establish(campaign, function (err, richComment) {
             campaign.components.push({
               name: 'RichComment',
               _id: richComment._id
             });
             campaign.modularization = true;
             campaign.save(function (err) {
-              if (err) {
-                return callback(err);
-              }
+              if (err) { return callback(err); }
               callback(null, campaign);
             });
-          })
+          });
+
         } else {
           callback(null,campaign);
         }
