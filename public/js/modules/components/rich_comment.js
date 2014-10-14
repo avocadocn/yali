@@ -285,7 +285,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
       scope: {
         componentId: '@',
         photoAlbumId: '@',
-        role: '@'
+        allowPublish: '@'
       },
       templateUrl: '/components/RichComment/template'
     }

@@ -1,17 +1,18 @@
 'use strict';
 var mongoose = require('mongoose'),
-    User = mongoose.model('User'),
-    Campaign = mongoose.model('Campaign'),
-    Department = mongoose.model('Department'),
-    Comment = mongoose.model('Comment'),
-    PhotoAlbum = mongoose.model('PhotoAlbum'),
-    MessageContent = mongoose.model('MessageContent'),
-    model_helper = require('../helpers/model_helper'),
-    _ = require('lodash'),
-    moment = require('moment'),
-    async = require('async'),
-    photo_album_controller = require('./photoAlbum'),
-    systemConfig = require('../config/config');
+  User = mongoose.model('User'),
+  Campaign = mongoose.model('Campaign'),
+  Department = mongoose.model('Department'),
+  Comment = mongoose.model('Comment'),
+  PhotoAlbum = mongoose.model('PhotoAlbum'),
+  MessageContent = mongoose.model('MessageContent'),
+  model_helper = require('../helpers/model_helper'),
+  _ = require('lodash'),
+  moment = require('moment'),
+  async = require('async'),
+  photo_album_controller = require('./photoAlbum'),
+  auth = require('../services/auth'),
+  systemConfig = require('../config/config');
 var pageSize = 100;
 var blockSize = 20;
 
@@ -1123,6 +1124,12 @@ exports.renderCampaignDetail = function(req, res) {
           });
         });
       }
+
+      var allow = auth(req.user, {
+        companies: [campaign.populated('cid')],
+        teams: [campaign.populated('team')]
+      }, ['publishComment']);
+
       return res.render('campaign/campaign_detail', {
         over : campaign.deadline<new Date(),
         join: req.join,
@@ -1135,7 +1142,8 @@ exports.renderCampaignDetail = function(req, res) {
         links: links,
         photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4),
         moment : moment,
-        messageContent : _messageContent
+        messageContent : _messageContent,
+        allow: allow
       });
     }
   });

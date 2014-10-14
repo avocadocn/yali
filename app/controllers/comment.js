@@ -66,7 +66,7 @@ var setDeleteAuth = function setDeleteAuth(data, callback) {
       Campaign.findById(data.host_id).exec()
         .then(function (campaign) {
           var is_leader = false;
-          if (campaign.team) {
+          if (campaign.team && user.provider === 'user') {
             for (var i = 0; i < campaign.team.length; i++) {
               if (user.isTeamLeader(campaign.team[i].toString())) {
                 is_leader = true;

@@ -138,7 +138,7 @@ block contentExt
       //-include ../partials/rich_comment_box
       each component in campaign.components
         if component.name === 'RichComment'
-          rich-comment(component-id="#{component._id}" role="#{req.role}")
+          rich-comment(component-id="#{component._id}" allow-publish="#{allow.publishComment}")
     .dl_detail_side
       .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}

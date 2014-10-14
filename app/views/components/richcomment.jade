@@ -1,6 +1,6 @@
-.rich_comment_box#rich_comment_box(ng-if="role!='HR' || comments.length>0" bs-popover)
+.rich_comment_box#rich_comment_box(ng-if="comments.length>0" bs-popover)
   p.subtitle 留言
-  form.rich_comment_form(name="comment_form" ng-if="role==='MEMBER' || role ==='LEADER' || role==='PARTNER'" novalidate)
+  form.rich_comment_form(name="comment_form" ng-if="allowPublish" novalidate)
     textarea.dl-form-control.comment_textarea(rows="2" name="content" ng-model="new_comment.text" placeholder="留言请控制在140字以内" maxlength=140 required)
     .operator.clearfix
       label.btn.btn-default.btn-xs(for="photos"): i.glyphicon.glyphicon-picture
@@ -45,7 +45,7 @@
           span.comment_divider(ng-if="comment.delete_permission") &nbsp;
           a.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
       .replies(ng-if="comment.replying")
-        form.reply_form(name="reply_form" ng-if="role === 'MEMBER' || role === 'LEADER' || role==='PARTNER'")
+        form.reply_form(name="reply_form" ng-if="allowPublish")
           input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
           button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
         p.reply(ng-repeat="reply in comment.replies")
