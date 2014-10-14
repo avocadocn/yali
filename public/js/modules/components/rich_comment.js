@@ -110,9 +110,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
                 $scope.comments = comments;
                 if (!$scope.pages[$scope.nowPage]) {
                   var page = {
-                    thisStartDate: $scope.comments[0].create_date,
                     nextStartDate: nextStartDate
                   };
+                  if ($scope.comments[0]) {
+                    page.thisStartDate = $scope.comments[0].create_date;
+                  }
                   $scope.pages.push(page);
                 }
               }

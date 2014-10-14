@@ -1129,7 +1129,6 @@ exports.renderCampaignDetail = function(req, res) {
         companies: [campaign.populated('cid')],
         teams: [campaign.populated('team')]
       }, ['publishComment']);
-
       return res.render('campaign/campaign_detail', {
         over : campaign.deadline<new Date(),
         join: req.join,

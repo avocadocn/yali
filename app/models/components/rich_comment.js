@@ -4,6 +4,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var RichComment = new Schema({
+  owner: {
+    companies: [Schema.Types.ObjectId],
+    teams: [Schema.Types.ObjectId]
+  },
   host_type: {
     type: String,
     enum: ['campaign', 'photo']
@@ -29,14 +33,23 @@ RichComment.statics = {
     switch (modelName) {
       case 'Campaign':
         hostType = 'campaign';
+        var owner = {
+          companies: host.populated('cid') || host.cid,
+          teams: host.populated('team') || host.team
+        };
         break;
       case 'PhotoAlbum':
         hostType = 'photo';
+        var owner = {
+          companies: host.populated('companies') || host.companies,
+          teams: host.populated('teams') || host.teams
+        };
         break;
       default:
         return callback(err);
     }
     var richComment = new this({
+      owner: owner,
       host_type: hostType,
       host_id: host._id,
       photo_album_id: host.populated('photo_album') || host.photo_album
