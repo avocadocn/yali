@@ -795,14 +795,14 @@ textarea
     float right
     max-width 500px
   .main
-    width 660px
+    width 700px
     max-width 960px
     float left
-    margin-right 10px
+    margin-right 20px
   .side
-    width 290px
+    width 240px
     float left
-    padding-top 61px
+    padding-top 55px
     .photo_album
       padding 20px 10px 8px
       background-color #fff
@@ -814,6 +814,20 @@ textarea
       overflow hidden
       border 1px solid #e6e6e6
       padding 12px
+      .info_left
+        float left
+        .user_logo
+          width 54px
+          height 54px
+      .info_right
+        float left
+        margin-left 20px
+        font-size 12px
+        .username
+          color themeColor
+        .cname
+          a
+            color #ccc
       .subtitle
         display block
         margin 0 0 10px
@@ -821,13 +835,17 @@ textarea
         display inline-block
         margin 6px
         position relative
+        .group_logo
+          width 32px
+          height 32px
         .group_leader
           position absolute
-          background-color red
-          width 20px
-          height 20px
-          right -5px
-          top -5px
+          background-image url('/img/icons/crown.png')
+          width 24px
+          height 24px
+          right -10px
+          top -10px
+          background-size contain
   .aside
     width 128px
     margin-right 20px
@@ -1573,77 +1591,219 @@ input.ng-invalid.ng-dirty
       max-height 100%
 
 .campaigns_container
-  margin-top 61px
+  margin-top 55px
   .user_campaigns_container
     background-color #ffffff
     float left
-    border 1px solid #e6e6e6
     margin 5px 0
-    -moz-box-shadow 5px 5px 5px #cccc /* 老的 Firefox */
-    box-shadow 5px 5px 5px #cccc
+    -moz-box-shadow 3px 3px 3px #cccc /* 老的 Firefox */
+    box-shadow 3px 3px 3px #cccc
     padding 10px
-    hr
-      margin 5px -10px
     .campaign
       clear both
+      height 70px
+      padding 10px
       div
         float left
         width 50px
-      .logo_col,.content_col
-        width 100px
-
-        
+      .year_col
+        color #ccc
+        font-size 12px
+      .time_col
+        font-size 14px
+      .logo_col
+        width 60px
+        .campaign_logo
+          width 47px
+          height 47px
+      .content_col
+        width 160px
+        color #ccc
+        font-size 12px
+        p
+          max-width 130px
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+        a
+          color #ccc
   .top
-    width 660px
+    width 700px
     padding 0
+    margin-top 0
     .campgin_head
-      background-color #FFD700
-      min-height 30px
-      color #ffffff
-      line-height 30px
-      font-size 18px
-  .recent_unjoin
-    width 325px
-    float left
-    .campgin_head
-      color themeColor
-      line-height 20px
-      font-size 18px
-      a
-        font-size 14px
-  .recent_join
-    width 325px
-    float right
-    .campgin_head
-      color #009999
-      line-height 20px
-      font-size 18px
-      a
-        font-size 14px
-  .now
-    width 660px
-  .now_head
-    width 660px
-    height 40px
-    .campgin_head_left
-      display inline
-      width 514px
-      background-color #97d7c6
+      padding 3px 30px
+      background-color #e7ce23
+      height 26px
       color #ffffff
       line-height 20px
-      font-size 18px
-      float left
-    .campgin_head_right
-      display inline
-      width 124px
-      background-color #74baa7
-      color #ffffff
-      line-height 20px
-      font-size 18px
-      float right
+      font-size 14px
+      .star
+        background-image url('/img/icons/star.png')
+        height 16px
+        width 16px
+        display inline-block
+        float left
+      .title
+        width 30%
+        margin-left 20px
+      .time_count
+        width 30%
       a
         color #ffffff
+    .campaign
+      padding 10px
+      height 100px
+      .info_left
+        width 200px
+        .year_col
+          color #ccc
+          font-size 14px
+          height 40px
+          line-height 40px
+        .time_col
+          font-size 24px
+          width 150px
+          height 40px
+          line-height 40px
+        .theme
+          font-size 18px
+          clear both
+          width 100%
+          text-align center
+          height 40px
+          line-height 40px
+      .logo_col
+        width 200px
+        .team
+          width 100px
+          .campaign_logo
+            width 47px
+            height 47px
+            display block
+            margin 0 auto
+          .team_name
+            text-align center
+            margin-top 15px
+            max-width 100px
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
+            color borderColor
+      .content_col
+        width 260px
+        color #ccc
+        font-size 12px
+        p
+          max-width 260px
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+          margin 0
+        a
+          color #ccc
+  .recent_unjoin
+    width 345px
+    float left
+    height 186px
+    .campaign
+      border-top 1px solid borderColor
+      margin 0 -10px
+    .campgin_head
+      color themeColor
+      height 34px
+      line-height 34px
+      font-size 18px
+      a
         font-size 14px
+        color #ccc
+  .recent_join
+    width 345px
+    float right
+    height 186px
+    .campgin_head
+      color #009999
+      height 34px
+      line-height 34px
+      font-size 18px
+      a
+        font-size 14px
+        color #ccc
+    .campaign
+      border-top 1px solid borderColor
+      margin 0 -10px
+      .time_col
+          width 100px
+          span
+            font-size 14px
+            line-height 44px
+          .time_count
+            color #009999
+  .now
+    width 700px
+    .user_campaigns_container
+      width 345px
+    .odd
+      float left
+      margin-right 10px
+    .even
+      float right
+    .photos
+      clear both
+      .photo
+        img
+          height 80px
+          width 80px
+          float left
+    .comments
+      clear both
+  .now_head
+    width 700px
+    height 33px
+    padding 0
+    .campgin_head
+      display inline
+      color #ffffff
+      line-height 33px
+      height 33px
+      padding 0 20px
+    .left
+      font-size 18px
+      margin-right -124px
+      width 100%
+      float left
+      background-color #97d7c6
+    .right
+      width 124px
+      float right
+      background-color #74baa7
+      a
+        color #ffffff
+        font-size 12px
+.side.user_page
+  .old_campaign_container
+    background-color #8dd4e6
+    height 40px
+    color #ffffff
+    line-height 20px
+    font-size 18px
+    padding 10px
+    a
+      background-color #f3939e
+      height 20px
+      width 20px
+      color #ffffff
+      line-height 20px
+      font-size 14px
+      text-align center
+      .footprint
+        background-image url('/img/icons/footprint.png')
+        height 23px
+        width 34px
+        display inline-block
+        float left
+  .groupsbox
+    margin-top 10px
 .dl_allteaminfo_container, .dl_compaign_member, .dl_department, .dl_campaign_list, .dl_group_select, .dl_company_info, .company_manager_box
   width 100%
   background-color cardbgColor

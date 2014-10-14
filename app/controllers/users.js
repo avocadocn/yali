@@ -766,7 +766,7 @@ exports.home = function(req, res) {
       for(var i = 0; i < myteamLength; i ++) {
         if(myteam[i].gid !== '0'){
           //下面查找的是该成员加入和未加入的所有active小队
-          if(myteam.leader) {
+          if(myteam[i].leader) {
             //判断此人是否是此队队长，并作标记
             _myteam.unshift({
               _id:myteam[i]._id,

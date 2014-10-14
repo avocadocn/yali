@@ -70,6 +70,8 @@ tabViewUser.run(['$rootScope','$location','Report',
         else if($location.path()!=='')
             $rootScope.nowTab = $location.path().substr(1);
         $rootScope.message_for_group = false;
+        //TODO:
+        $rootScope.old_campaign =[null];
         $rootScope.addactive = function(value) {
             $rootScope.nowTab = value;
             $rootScope.message_corner = false;
@@ -149,6 +151,7 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
                         $scope.recentJoinedCampaigns = data.campaigns[1];
                         $scope.nowCampaigns = data.campaigns[2];
                         $scope.showCampaign = true;
+                        $scope.topCampaign = data.campaigns[0][0];
                     }
                 }).error(function(data,status){
                     alertify.alert('DATA ERROR');

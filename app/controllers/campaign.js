@@ -373,7 +373,7 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     'end_time': campaign.end_time,
     'deadline': campaign.deadline,
     'is_joined': is_joined,
-    'photo_album': campaign.photo_album,
+    //'photo_album': campaign.photo_album,
     'member': campaign.member,
     'start_flag': start_flag,
     'remind_text': remind_text,
@@ -381,7 +381,8 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     'location':campaign.location,
     'active': campaign.active,
     'finish': campaign.finish,
-    'myteam':myteam
+    'myteam':myteam,
+    'comment_sum':campaign.comment_sum
   };
   if(nowFlag){
     result.photo_thumbnails = photo_album_controller.photoThumbnailList(campaign.photo_album, 3);
@@ -683,42 +684,48 @@ exports.getUserCampaignsForHome = function(req, res) {
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var serchCampaign = function(startSet, endSet, join_flag, callback){
+  var serchCampaign = function(startSet, endSet, join_flag, photo_flag, callback){
     var options = {
       'cid': req.user.cid,
       'active': true
     };
+    var _populate = 'team cid';
+    var _sort;
     if(startSet){
       options.start_time = startSet;
     }
     if(endSet){
       options.end_time = endSet;
     }
+    if(photo_flag){
+      _populate+=' photo_album';
+    }
     if(join_flag){
-      options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }]
+      options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      _sort ='-start_time';
     }
     else{
-      options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }]
+      options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      _sort ='-create_time';
     }
     Campaign
     .find(options)
-    .sort('-start_time')
-    .populate('team')
-    .populate('cid')
+    .sort(_sort)
+    .populate(_populate)
     .exec()
     .then(function(campaigns) {
-      callback(null,formatCampaignsForApp(req.user, campaigns, false));
+      callback(null,formatCampaignsForApp(req.user, campaigns, photo_flag));
     });
   }
   async.series([
     function(callback){
-      serchCampaign({'$gte':now },undefined, false, callback);
+      serchCampaign({'$gte':now },undefined, false, false, callback);
     },//所有新活动的活动，（未参加）
     function(callback){
-      serchCampaign({ '$gte':now }, undefined, true, callback);
+      serchCampaign({ '$gte':now }, undefined, true, false, callback);
     },//马上开始的活动,（已参加）
     function(callback){
-      serchCampaign({ '$lt': now},{'$gte':now }, true, callback);
+      serchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
     },//正在进行的活动
   ], function(err, values) {
     if(err){

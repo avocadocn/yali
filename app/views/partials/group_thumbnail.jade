@@ -11,13 +11,13 @@ mixin group_thumbnail(teams)
           a.center-block(href="/group/page/#{team._id}")
             //-if team_class === 'leader'
             //-.img_div
-            img.img.center-block.size_48(ng-cloak src="#{team.logo}/48/48")
+            img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
             //- else
             //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
-        div.center-block.clearfix.group(ng-if="#{i}>=4" ng-show='show[#{j}]' class=(team.leader==true)?'leader':'member' title="#{team.name}")
-          a.center-block(href="/group/page/#{team._id}")
-            //-if team_class === 'leader'
-            img.center-block.size_48(ng-cloak src="#{team.logo}/48/48")
-            //- else
-            //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
-            //-这些if else 不知何用
+        //- div.center-block.clearfix.group(ng-if="#{i}>=4" ng-show='show[#{j}]' class=(team.leader==true)?'leader':'member' title="#{team.name}")
+        //-   a.center-block(href="/group/page/#{team._id}")
+        //-     //-if team_class === 'leader'
+        //-     img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
+        //-     //- else
+        //-     //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
+        //-     //-这些if else 不知何用

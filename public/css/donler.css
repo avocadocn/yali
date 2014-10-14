@@ -904,15 +904,15 @@ textarea {
   max-width: 500px;
 }
 .dl_container .main {
-  width: 660px;
+  width: 700px;
   max-width: 960px;
   float: left;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 .dl_container .side {
-  width: 290px;
+  width: 240px;
   float: left;
-  padding-top: 61px;
+  padding-top: 55px;
 }
 .dl_container .side .photo_album {
   padding: 20px 10px 8px;
@@ -927,6 +927,24 @@ textarea {
   border: 1px solid #e6e6e6;
   padding: 12px;
 }
+.dl_container .side .groupsbox .info_left {
+  float: left;
+}
+.dl_container .side .groupsbox .info_left .user_logo {
+  width: 54px;
+  height: 54px;
+}
+.dl_container .side .groupsbox .info_right {
+  float: left;
+  margin-left: 20px;
+  font-size: 12px;
+}
+.dl_container .side .groupsbox .info_right .username {
+  color: #3498db;
+}
+.dl_container .side .groupsbox .info_right .cname a {
+  color: #ccc;
+}
 .dl_container .side .groupsbox .subtitle {
   display: block;
   margin: 0 0 10px;
@@ -936,13 +954,18 @@ textarea {
   margin: 6px;
   position: relative;
 }
+.dl_container .side .groupsbox .group .group_logo {
+  width: 32px;
+  height: 32px;
+}
 .dl_container .side .groupsbox .group .group_leader {
   position: absolute;
-  background-color: #f00;
-  width: 20px;
-  height: 20px;
-  right: -5px;
-  top: -5px;
+  background-image: url("/img/icons/crown.png");
+  width: 24px;
+  height: 24px;
+  right: -10px;
+  top: -10px;
+  background-size: contain;
 }
 .dl_container .aside {
   width: 128px;
@@ -1852,95 +1875,273 @@ input.ng-invalid.ng-dirty {
   max-height: 100%;
 }
 .campaigns_container {
-  margin-top: 61px;
+  margin-top: 55px;
 }
 .campaigns_container .user_campaigns_container {
   background-color: #fff;
   float: left;
-  border: 1px solid #e6e6e6;
   margin: 5px 0;
-  -moz-box-shadow: 5px 5px 5px rgba(204,204,204,0.8);
+  -moz-box-shadow: 3px 3px 3px rgba(204,204,204,0.8);
 /* 老的 Firefox */
-  box-shadow: 5px 5px 5px rgba(204,204,204,0.8);
+  box-shadow: 3px 3px 3px rgba(204,204,204,0.8);
   padding: 10px;
-}
-.campaigns_container .user_campaigns_container hr {
-  margin: 5px -10px;
 }
 .campaigns_container .user_campaigns_container .campaign {
   clear: both;
+  height: 70px;
+  padding: 10px;
 }
 .campaigns_container .user_campaigns_container .campaign div {
   float: left;
   width: 50px;
 }
-.campaigns_container .user_campaigns_container .campaign .logo_col,
+.campaigns_container .user_campaigns_container .campaign .year_col {
+  color: #ccc;
+  font-size: 12px;
+}
+.campaigns_container .user_campaigns_container .campaign .time_col {
+  font-size: 14px;
+}
+.campaigns_container .user_campaigns_container .campaign .logo_col {
+  width: 60px;
+}
+.campaigns_container .user_campaigns_container .campaign .logo_col .campaign_logo {
+  width: 47px;
+  height: 47px;
+}
 .campaigns_container .user_campaigns_container .campaign .content_col {
-  width: 100px;
+  width: 160px;
+  color: #ccc;
+  font-size: 12px;
+}
+.campaigns_container .user_campaigns_container .campaign .content_col p {
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.campaigns_container .user_campaigns_container .campaign .content_col a {
+  color: #ccc;
 }
 .campaigns_container .top {
-  width: 660px;
+  width: 700px;
   padding: 0;
+  margin-top: 0;
 }
 .campaigns_container .top .campgin_head {
-  background-color: #ffd700;
-  min-height: 30px;
+  padding: 3px 30px;
+  background-color: #e7ce23;
+  height: 26px;
   color: #fff;
-  line-height: 30px;
+  line-height: 20px;
+  font-size: 14px;
+}
+.campaigns_container .top .campgin_head .star {
+  background-image: url("/img/icons/star.png");
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  float: left;
+}
+.campaigns_container .top .campgin_head .title {
+  width: 30%;
+  margin-left: 20px;
+}
+.campaigns_container .top .campgin_head .time_count {
+  width: 30%;
+}
+.campaigns_container .top .campgin_head a {
+  color: #fff;
+}
+.campaigns_container .top .campaign {
+  padding: 10px;
+  height: 100px;
+}
+.campaigns_container .top .campaign .info_left {
+  width: 200px;
+}
+.campaigns_container .top .campaign .info_left .year_col {
+  color: #ccc;
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+}
+.campaigns_container .top .campaign .info_left .time_col {
+  font-size: 24px;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+}
+.campaigns_container .top .campaign .info_left .theme {
   font-size: 18px;
+  clear: both;
+  width: 100%;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+}
+.campaigns_container .top .campaign .logo_col {
+  width: 200px;
+}
+.campaigns_container .top .campaign .logo_col .team {
+  width: 100px;
+}
+.campaigns_container .top .campaign .logo_col .team .campaign_logo {
+  width: 47px;
+  height: 47px;
+  display: block;
+  margin: 0 auto;
+}
+.campaigns_container .top .campaign .logo_col .team .team_name {
+  text-align: center;
+  margin-top: 15px;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #ccc;
+}
+.campaigns_container .top .campaign .content_col {
+  width: 260px;
+  color: #ccc;
+  font-size: 12px;
+}
+.campaigns_container .top .campaign .content_col p {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+.campaigns_container .top .campaign .content_col a {
+  color: #ccc;
 }
 .campaigns_container .recent_unjoin {
-  width: 325px;
+  width: 345px;
   float: left;
+  height: 186px;
+}
+.campaigns_container .recent_unjoin .campaign {
+  border-top: 1px solid #ccc;
+  margin: 0 -10px;
 }
 .campaigns_container .recent_unjoin .campgin_head {
   color: #3498db;
-  line-height: 20px;
+  height: 34px;
+  line-height: 34px;
   font-size: 18px;
 }
 .campaigns_container .recent_unjoin .campgin_head a {
   font-size: 14px;
+  color: #ccc;
 }
 .campaigns_container .recent_join {
-  width: 325px;
+  width: 345px;
   float: right;
+  height: 186px;
 }
 .campaigns_container .recent_join .campgin_head {
   color: #099;
-  line-height: 20px;
+  height: 34px;
+  line-height: 34px;
   font-size: 18px;
 }
 .campaigns_container .recent_join .campgin_head a {
   font-size: 14px;
+  color: #ccc;
+}
+.campaigns_container .recent_join .campaign {
+  border-top: 1px solid #ccc;
+  margin: 0 -10px;
+}
+.campaigns_container .recent_join .campaign .time_col {
+  width: 100px;
+}
+.campaigns_container .recent_join .campaign .time_col span {
+  font-size: 14px;
+  line-height: 44px;
+}
+.campaigns_container .recent_join .campaign .time_col .time_count {
+  color: #099;
 }
 .campaigns_container .now {
-  width: 660px;
+  width: 700px;
 }
-.campaigns_container .now_head {
-  width: 660px;
-  height: 40px;
+.campaigns_container .now .user_campaigns_container {
+  width: 345px;
 }
-.campaigns_container .now_head .campgin_head_left {
-  display: inline;
-  width: 514px;
-  background-color: #97d7c6;
-  color: #fff;
-  line-height: 20px;
-  font-size: 18px;
+.campaigns_container .now .odd {
   float: left;
+  margin-right: 10px;
 }
-.campaigns_container .now_head .campgin_head_right {
-  display: inline;
-  width: 124px;
-  background-color: #74baa7;
-  color: #fff;
-  line-height: 20px;
-  font-size: 18px;
+.campaigns_container .now .even {
   float: right;
 }
-.campaigns_container .now_head .campgin_head_right a {
+.campaigns_container .now .photos {
+  clear: both;
+}
+.campaigns_container .now .photos .photo img {
+  height: 80px;
+  width: 80px;
+  float: left;
+}
+.campaigns_container .now .comments {
+  clear: both;
+}
+.campaigns_container .now_head {
+  width: 700px;
+  height: 33px;
+  padding: 0;
+}
+.campaigns_container .now_head .campgin_head {
+  display: inline;
   color: #fff;
+  line-height: 33px;
+  height: 33px;
+  padding: 0 20px;
+}
+.campaigns_container .now_head .left {
+  font-size: 18px;
+  margin-right: -124px;
+  width: 100%;
+  float: left;
+  background-color: #97d7c6;
+}
+.campaigns_container .now_head .right {
+  width: 124px;
+  float: right;
+  background-color: #74baa7;
+}
+.campaigns_container .now_head .right a {
+  color: #fff;
+  font-size: 12px;
+}
+.side.user_page .old_campaign_container {
+  background-color: #8dd4e6;
+  height: 40px;
+  color: #fff;
+  line-height: 20px;
+  font-size: 18px;
+  padding: 10px;
+}
+.side.user_page .old_campaign_container a {
+  background-color: #f3939e;
+  height: 20px;
+  width: 20px;
+  color: #fff;
+  line-height: 20px;
   font-size: 14px;
+  text-align: center;
+}
+.side.user_page .old_campaign_container a .footprint {
+  background-image: url("/img/icons/footprint.png");
+  height: 23px;
+  width: 34px;
+  display: inline-block;
+  float: left;
+}
+.side.user_page .groupsbox {
+  margin-top: 10px;
 }
 .dl_allteaminfo_container,
 .dl_compaign_member,

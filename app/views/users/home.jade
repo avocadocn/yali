@@ -5,13 +5,44 @@ append headExt
 
 block panel
   .campaigns_container.clearfix(ng-controller="recentCampaignController")
-    .user_campaigns_container.top
-      .campgin_head 置顶新活动
+    .user_campaigns_container.top(ng-cloak)
+      .campgin_head
+        span.star
+        label.title 置顶
+        label.time_count(ng-if="topCampaign") 还剩 {{topCampaign.start_time_text}}
+        a.clearLinkUnderline.pull-right(ng-if="topCampaign") 编辑
+      .campaign(ng-if="topCampaign")
+        .info_left
+          .year_col
+            //- (ng-if="judgeYear($index)")
+            p.year {{topCampaign.start_time  | date:'yyyy'}}
+          .time_col
+            p.text-center.day {{ topCampaign.start_time  | day }} {{ topCampaign.start_time | date:'HH:mm' }}
+          .theme
+            p {{topCampaign.theme}}
+        .logo_col
+          .team
+            a.clearLinkUnderline(ng-href="{{topCampaign.link}}")
+              img.campaign_logo(ng-src="{{topCampaign.logo}}/64/64")
+              p.team_name {{topCampaign.owner_name}}
+        .content_col
+          a.clearLinkUnderline(ng-href="/{{(topCampaign.type=='provoke'?'competition/':'campaign/detail/')+topCampaign._id}}")
+            //- p
+            //-   strong 主题:
+            //-   span.theme_text {{topCampaign.theme}}
+            p.campaign_info
+              strong 开始时间:
+              span.content_text {{topCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            p.campaign_info
+              strong 结束时间:
+              span.content_text {{topCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            p.campaign_info
+              strong #{__("LOCATION")}:
+              span.content_text {{topCampaign.location.name}}
     .user_campaigns_container.recent_unjoin
       .campgin_head(ng-cloak)
         label {{recentUnjoinedCampaigns.length}} 个新活动
         a.pull-right(href="") 更多
-      hr
       .campaign(ng-repeat="recentUnjoinedCampaign in recentUnjoinedCampaigns" ng-if="$index<2" ng-cloak)
         .year_col
           //- (ng-if="judgeYear($index)")
@@ -24,7 +55,7 @@ block panel
             img.campaign_logo(ng-if="recentUnjoinedCampaign.type==='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/64/64")
             img.campaign_logo(ng-if="recentUnjoinedCampaign.type!=='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/64/64")
         .content_col
-          a(ng-href="/{{(recentUnjoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentUnjoinedCampaign._id}}")
+          a.clearLinkUnderline(ng-href="/{{(recentUnjoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentUnjoinedCampaign._id}}")
             p
               strong 主题:
               span.theme_text {{recentUnjoinedCampaign.theme}}
@@ -38,20 +69,13 @@ block panel
       .campgin_head(ng-cloak)
         label {{recentJoinedCampaigns.length}} 个活动即将开始
         a.pull-right(href="") 更多
-      hr
       .campaign(ng-repeat="recentJoinedCampaign in recentJoinedCampaigns" ng-if="$index<2" ng-cloak)
-        .year_col
-          //- (ng-if="judgeYear($index)")
-          p.year {{recentJoinedCampaign.start_time  | date:'yyyy'}}
-        .time_col
-          p.text-center.day {{ recentJoinedCampaign.start_time  | day }}
-          p.text-center.time {{ recentJoinedCampaign.start_time | date:'HH:mm' }}
         .logo_col
           a(ng-href="{{recentJoinedCampaign.link}}")
             img.campaign_logo(ng-if="recentJoinedCampaign.type==='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/64/64")
             img.campaign_logo(ng-if="recentJoinedCampaign.type!=='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/64/64")
         .content_col
-          a(ng-href="/{{(recentJoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentJoinedCampaign._id}}")
+          a.clearLinkUnderline(ng-href="/{{(recentJoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentJoinedCampaign._id}}")
             p
               strong 主题:
               span.theme_text {{recentJoinedCampaign.theme}}
@@ -61,14 +85,44 @@ block panel
             p
               strong #{__("LOCATION")}:
               span.content_text {{recentJoinedCampaign.location.name}}
+        .time_col
+          span.text-center 还剩
+          span.text-center.time_count.pull-right {{ recentJoinedCampaign.start_time_text}}
     .user_campaigns_container.now_head
-      .campgin_head_left(ng-cloak)
+      .campgin_head.left(ng-cloak)
         label {{nowCampaigns.length}} 个活动正在进行
-      .campgin_head_right(ng-cloak)
+      .campgin_head.right(ng-cloak)
         a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href="") {{newReply.length}}条未查看回复
-    .user_campaigns_container.now
-      .campaign(ng-repeat="nowCampaign in nowCampaigns" ng-cloak)
-        p {{nowCampaign.theme}}
+    .now
+      .user_campaigns_container(ng-repeat="nowCampaign in nowCampaigns" ng-class-odd="'odd'" ng-class-even="'even'" ng-cloak)
+        .campgin_head(ng-cloak)
+        label {{nowCampaign.theme}}
+        .campaign
+          .logo_col
+            .team
+              a.clearLinkUnderline(ng-href="{{nowCampaign.link}}")
+                img.campaign_logo(ng-src="{{nowCampaign.logo}}/64/64")
+                p.team_name {{nowCampaign.owner_name}}
+          .content_col
+            a.clearLinkUnderline(ng-href="/{{(nowCampaign.type=='provoke'?'competition/':'campaign/detail/')+nowCampaign._id}}")
+              //- p
+              //-   strong 主题:
+              //-   span.theme_text {{topCampaign.theme}}
+              p.campaign_info
+                strong 开始时间:
+                span.content_text {{nowCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+              p.campaign_info
+                strong 结束时间:
+                span.content_text {{nowCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+              p.campaign_info
+                strong #{__("LOCATION")}:
+                span.content_text {{nowCampaign.location.name}}
+        .photos
+          .photo(ng-repeat="photo in nowCampaign.photo_thumbnails")
+            img(ng-src="{{photo.uri}}/80/80")
+        .comments
+          a 回复{{nowCampaign.comment_sum}}
+        //- a.pull-right(href="") 退出
     //- carousel(interval="5000")
     //-   slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)
     //-     a.campaign_link.clearLinkUnderline(href="/campaign/detail/{{ recentCampaign._id }}")
@@ -101,36 +155,43 @@ block panel
   //-     div(ng-view).tab-body
   include ../partials/report_modal
 block aside
+  .old_campaign_container
+    label 热门过往活动讨论  >>
+    a.clearLinkUnderline.pull-right(ng-if="old_campaign.length>0" ng-cloak) {{old_campaign.length}}
   .groupsbox
-    label 热门过往活动讨论
-  .groupsbox
-    .aside
+    .subtitle 
+      label 个人资料
+      a.clearLinkUnderline.pull-right 编辑
+    .info_left
       //-用户头像
-      img.size_80.img_contain.img_user(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
-    .top-main
+      img.user_logo.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+    .info_right
       //-人名
-      .dl_row.top_username
-        label.head= nickname
+      .username
+        label= nickname
       //-公司名
-      .dl_row.top_cname
+      .cname
         if (!department)
-          a.subtitle(href='/company/home' ng-cloak) #{cname}
+          a.clearLinkUnderline(href='/company/home' ng-cloak) #{cname}
         else
-          a.subtitle(href='/department/home/#{department._id}' ng-cloak) #{department.name}
-      //-个性签名
-      .dl_row.top_sign
-        p.subtitle= sign
-    .ad-top
-      //- ad banner sapace
+          a.clearLinkUnderline(href='/department/home/#{department._id}' ng-cloak) #{department.name}
+    //-   //-个性签名
+    //-   .dl_row.top_sign
+    //-     p.subtitle= sign
+    //- .ad-top
+    //-   //- ad banner sapace
   if role !== 'HR'
-    .groupsbox
-      include ../partials/group_thumbnail
-      +group_thumbnail(myteam)
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/schedule_list
       include ../partials/calendar_modal
-  .groupsbox
-    label 活动足迹
+    .groupsbox
+      include ../partials/group_thumbnail
+      +group_thumbnail(myteam)
+  .old_campaign_container
+    a
+      span.footprint
+      label.pull-right 活动足迹 >>
+
 
 append footExt
   script(src="/js/controllers/tabviewUser.js")
