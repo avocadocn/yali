@@ -11,8 +11,13 @@ var mongoose = require('mongoose'),
  */
 var CampaignMold = new Schema({
     name:String,
-    module:[String]
+    module:[String],
+    enable: {
+      type: Boolean,
+      default: true
+    }
 });
 
 
 mongoose.model('CampaignMold', CampaignMold);
+											
