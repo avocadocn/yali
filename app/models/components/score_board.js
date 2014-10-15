@@ -121,7 +121,73 @@ ScoreBoard.methods = {
       playingTeams: this.playing_teams,
       allConfirm: this.all_confirm
     });
+  },
+
+  /**
+   * 选择加入比分的小队
+   * @param teamId 小队的id
+   * @returns {boolean} 设置成功返回true，失败返回false
+   */
+  selectTeam: function (teamId) {
+    var selectedCount = 0;
+
+    // 如果已经有两个队加入计分了，则不再允许添加小队
+    for (var i = 0; i < this.playing_teams.length; i++) {
+      if (this.playing_teams[i].selected === true) {
+        selectedCount++;
+      }
+      if (selectedCount === 2) {
+        return false;
+      }
+    }
+
+    for (var i = 0; i < this.playing_teams.length; i++) {
+      var team = this.playing_teams[i];
+
+      if (team._id.toString() === teamId.toString()) {
+        team.selected = true;
+        return true;
+      }
+    }
+
+    return false;
+  },
+
+  /**
+   * 设置比分，设置后会清除确认，全部确认后无法设置
+   * @param {Array} scores 计分板比分，必须是长度为2的数组，数组元素为数字，例如[1, 2]
+   * @returns {boolean} 设置成功返回true，失败返回false
+   */
+  setScore: function (scores) {
+    if (this.all_confirm === true) { return false; }
+    if (scores.length !== 2) { return false; }
+    for (var i = 0; i < 2; i++) {
+      this.playing_teams[i].score = scores[i];
+      this.playing_teams[i].confirm = false;
+    }
+    return true;
+  },
+
+  confirm: function (cid, tid) {
+    var confirmCount = 0;
+    for (var i = 0; i < this.playing_teams.length; i++) {
+      if (this.playing_teams[i].tid) {
+        if (this.playing_teams[i].tid.toString() === tid.toString()) {
+          this.playing_teams[i].confirm = true;
+        }
+      } else if (this.playing_teams[i].cid.toString() === cid.toString()) {
+        this.playing_teams[i].confirm = true;
+      }
+      if (this.playing_teams[i].confirm === true) {
+        confirmCount++;
+      }
+    }
+    if (confirmCount === 2) {
+      this.all_confirm = true;
+    }
   }
+
+
 };
 
 mongoose.model('ScoreBoard', ScoreBoard);
