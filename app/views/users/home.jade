@@ -165,27 +165,28 @@ block aside
     label 热门过往活动讨论  >>
     a.clearLinkUnderline.pull-right.news_count(ng-if="old_campaign.length>0" ng-cloak) {{old_campaign.length}}
   .groupsbox
-    .subtitle 
-      label 个人资料
-      a.clearLinkUnderline.pull-right 编辑
-    .info_left
-      //-用户头像
-      img.user_logo.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
-    .info_right
-      //-人名
-      .username
-        label= nickname
-      //-公司名
-      .cname
-        if (!department)
-          a.clearLinkUnderline(href='/company/home' ng-cloak) #{cname}
-        else
-          a.clearLinkUnderline(href='/department/home/#{department._id}' ng-cloak) #{department.name}
-    //-   //-个性签名
-    //-   .dl_row.top_sign
-    //-     p.subtitle= sign
-    //- .ad-top
-    //-   //- ad banner sapace
+    .infobox
+      .subtitle 
+        label 个人资料
+        a.clearLinkUnderline.pull-right 编辑
+      .info_left
+        //-用户头像
+        img.user_logo.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+      .info_right
+        //-人名
+        .username
+          label= nickname
+        //-公司名
+        .cname
+          if (!department)
+            a.clearLinkUnderline(href='/company/home' ng-cloak) #{cname}
+          else
+            a.clearLinkUnderline(href='/department/home/#{department._id}' ng-cloak) #{department.name}
+      //-   //-个性签名
+      //-   .dl_row.top_sign
+      //-     p.subtitle= sign
+      //- .ad-top
+      //-   //- ad banner sapace
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/schedule_list
