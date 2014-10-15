@@ -23,8 +23,8 @@ block panel
         .logo_col
           .team
             a.clearLinkUnderline(ng-href="{{topCampaign.link}}")
-              img.campaign_logo(ng-src="{{topCampaign.logo}}/64/64")
-              p.team_name {{topCampaign.owner_name}}
+              img.campaign_logo(ng-src="{{topCampaign.logo}}/47/47")
+              p.team_name {{topCampaign.name}}
         .content_col
           a.clearLinkUnderline(ng-href="/{{(topCampaign.type=='provoke'?'competition/':'campaign/detail/')+topCampaign._id}}")
             //- p
@@ -52,8 +52,8 @@ block panel
           p.text-center.time {{ recentUnjoinedCampaign.start_time | date:'HH:mm' }}
         .logo_col
           a(ng-href="{{recentUnjoinedCampaign.link}}")
-            img.campaign_logo(ng-if="recentUnjoinedCampaign.type==='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/64/64")
-            img.campaign_logo(ng-if="recentUnjoinedCampaign.type!=='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/64/64")
+            img.campaign_logo(ng-if="recentUnjoinedCampaign.type==='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/47/47")
+            img.campaign_logo(ng-if="recentUnjoinedCampaign.type!=='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/47/47")
         .content_col
           a.clearLinkUnderline(ng-href="/{{(recentUnjoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentUnjoinedCampaign._id}}")
             p
@@ -72,8 +72,8 @@ block panel
       .campaign(ng-repeat="recentJoinedCampaign in recentJoinedCampaigns" ng-if="$index<2" ng-cloak)
         .logo_col
           a(ng-href="{{recentJoinedCampaign.link}}")
-            img.campaign_logo(ng-if="recentJoinedCampaign.type==='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/64/64")
-            img.campaign_logo(ng-if="recentJoinedCampaign.type!=='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/64/64")
+            img.campaign_logo(ng-if="recentJoinedCampaign.type==='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/47/47")
+            img.campaign_logo(ng-if="recentJoinedCampaign.type!=='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/47/47")
         .content_col
           a.clearLinkUnderline(ng-href="/{{(recentJoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentJoinedCampaign._id}}")
             p
@@ -94,34 +94,40 @@ block panel
       .campgin_head.right(ng-cloak)
         a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href="") {{newReply.length}}条未查看回复
     .now
-      .user_campaigns_container(ng-repeat="nowCampaign in nowCampaigns" ng-class-odd="'odd'" ng-class-even="'even'" ng-cloak)
-        .campgin_head(ng-cloak)
-        label {{nowCampaign.theme}}
-        .campaign
-          .logo_col
-            .team
-              a.clearLinkUnderline(ng-href="{{nowCampaign.link}}")
-                img.campaign_logo(ng-src="{{nowCampaign.logo}}/64/64")
-                p.team_name {{nowCampaign.owner_name}}
-          .content_col
-            a.clearLinkUnderline(ng-href="/{{(nowCampaign.type=='provoke'?'competition/':'campaign/detail/')+nowCampaign._id}}")
-              //- p
-              //-   strong 主题:
-              //-   span.theme_text {{topCampaign.theme}}
-              p.campaign_info
-                strong 开始时间:
-                span.content_text {{nowCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-              p.campaign_info
-                strong 结束时间:
-                span.content_text {{nowCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-              p.campaign_info
-                strong #{__("LOCATION")}:
-                span.content_text {{nowCampaign.location.name}}
-        .photos
-          .photo(ng-repeat="photo in nowCampaign.photo_thumbnails")
-            img(ng-src="{{photo.uri}}/80/80")
-        .comments
-          a 回复{{nowCampaign.comment_sum}}
+      .campaigns(masonry reload="is_reload" items="nowCampaigns")
+        .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns" ng-cloak)
+          .campgin_head(ng-cloak)
+            label {{nowCampaign.theme}}
+          .campaign(ng-class="{'provoke':nowCampaign.type=='provoke'}")
+            .logo_col(ng-if="nowCampaign.type=='provoke'" )
+              .team(ng-repeat="camp in nowCampaign.camp")
+                a.clearLinkUnderline(ng-href="group/page/{{camp.id}}")
+                  img.campaign_logo(ng-src="{{camp.logo}}/70/70")
+                  p.team_name {{camp.tname}}
+            .logo_col(ng-if="nowCampaign.type!='provoke'" )
+              .team
+                a.clearLinkUnderline(ng-href="{{nowCampaign.link}}")
+                  img.campaign_logo(ng-src="{{nowCampaign.logo}}/70/70")
+                  p.team_name {{nowCampaign.name}}
+            .content_col
+              a.clearLinkUnderline(ng-href="/{{(nowCampaign.type=='provoke'?'competition/':'campaign/detail/')+nowCampaign._id}}")
+                //- p
+                //-   strong 主题:
+                //-   span.theme_text {{topCampaign.theme}}
+                p.campaign_info
+                  strong 开始时间:
+                  span.content_text {{nowCampaign.start_time | date:'yyyy-MM-dd HH:mm'}}
+                p.campaign_info
+                  strong 结束时间:
+                  span.content_text {{nowCampaign.end_time | date:'yyyy-MM-dd HH:mm'}}
+                p.campaign_info
+                  strong #{__("LOCATION")}:
+                  span.content_text {{nowCampaign.location.name}}
+          .photos
+            .photo(ng-repeat="photo in nowCampaign.photo_thumbnails")
+              img(ng-src="{{photo.uri}}/80/80")
+          .comments
+            a.pull-right(ng-click="") 留言 ({{nowCampaign.comment_sum}})
         //- a.pull-right(href="") 退出
     //- carousel(interval="5000")
     //-   slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)
@@ -157,7 +163,7 @@ block panel
 block aside
   .old_campaign_container
     label 热门过往活动讨论  >>
-    a.clearLinkUnderline.pull-right(ng-if="old_campaign.length>0" ng-cloak) {{old_campaign.length}}
+    a.clearLinkUnderline.pull-right.news_count(ng-if="old_campaign.length>0" ng-cloak) {{old_campaign.length}}
   .groupsbox
     .subtitle 
       label 个人资料

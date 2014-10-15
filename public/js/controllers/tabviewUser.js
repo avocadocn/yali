@@ -110,7 +110,39 @@ tabViewUser.run(['$rootScope','$location','Report',
         };
     }
 ]);
-
+tabViewUser.directive('masonry', function ($timeout) {
+    return {
+        restrict: 'A',
+        scope: {
+            reload: '=',
+            items: '='
+        },
+        link: function (scope, elem, attrs) {
+            var options = {
+                itemSelector: '.masonry-item',
+                transitionDuration: '0.2s',
+                gutter: 10
+            };
+            elem.masonry(options);
+            scope.$watch('items', function(newVal, oldVal) {
+                if (newVal && newVal != oldVal) {
+                    $timeout(function () {
+                        elem.masonry('reloadItems');
+                        elem.masonry(options);
+                    });
+                }
+            }, true);
+            scope.$watch('reload', function(newVal) {
+                if (newVal === true) {
+                    $timeout(function () {
+                        elem.masonry('reloadItems');
+                        elem.masonry(options);
+                    });
+                }
+            });
+        }
+    };
+});
 
 //留言合并
 var messageConcat = function(messages,rootScope,scope,reset){
@@ -129,6 +161,7 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
+
 tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
         $scope.recentUnjoinedCampaigns = [];
@@ -164,6 +197,7 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
         
     }
 ]);
+
 tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
         $rootScope.nowTab = 'timeLine';

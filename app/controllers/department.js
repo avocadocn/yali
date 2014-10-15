@@ -1424,72 +1424,48 @@ exports.renderHome = function(req, res) {
           'photo_album_thumbnails': photo_album_thumbnails
         });
       } else {
-        var leader_teams = [];
-        var selected_teams = [];
-        var unselected_teams = [];
-        var user_teams = [];
-        var photo_album_ids = [];
-        for (var i = 0; i < req.user.team.length; i++) {
-          user_teams.push(req.user.team[i]._id.toString());
-        }
-        CompanyGroup.find({
-          'cid': req.user.cid
-        }, {
-          '_id': 1,
-          'gid': 1,
-          'logo': 1,
-          'name': 1,
-          'active': 1,
-          'leader':1
-        }, function(err, company_groups) {
-          if (err || !company_groups) {
-            return res.send([]);
-          } else {
-            for (var i = 0; i < company_groups.length; i++) {
-              if(company_groups[i].gid !== '0' && company_groups[i].active === true){
-                //下面查找的是该成员加入和未加入的所有active小队
-                if(user_teams.indexOf(company_groups[i]._id.toString()) > -1) {
-                  //判断此人是否是此队队长，并作标记
-                  company_groups[i].isLeader = false;
-                  if(req.user.role === 'LEADER'){
-                    if(company_groups[i].leader.length){
-                      for(var j=0;j<company_groups[i].leader.length;j++){
-                        if(company_groups[i].leader[j]._id.toString()===req.user._id.toString()){
-                          company_groups[i].isLeader = true;
-                          leader_teams.push(company_groups[i]);
-                          break;
-                        }
-                      }
-                    }
-                  }
-                  if(!company_groups[i].isLeader)
-                    selected_teams.push(company_groups[i]);
-                } else {
-                  unselected_teams.push(company_groups[i]);
-                }
-              }
+        var myteam = req.user.team;
+        var _myteam = [];
+        var myteamLength= myteam.length;
+        for(var i = 0; i < myteamLength; i ++) {
+          if(myteam[i].gid !== '0'){
+            //下面查找的是该成员加入和未加入的所有active小队
+            if(myteam[i].leader) {
+              //判断此人是否是此队队长，并作标记
+              _myteam.unshift({
+                _id:myteam[i]._id,
+                name:myteam[i].name,
+                logo:myteam[i].logo,
+                leader:myteam[i].leader
+              });
             }
+            else{
+              _myteam.push({
+                _id:myteam[i]._id,
+                name:myteam[i].name,
+                logo:myteam[i].logo,
+                leader:myteam[i].leader
+              });
+            }
+          }
+        }
 
-            return res.render('department/home', {
-              'title': department.team.cname+department.team.name,
-              'department': department,
-              'leader_teams':leader_teams,
-              'selected_teams': selected_teams,
-              'unselected_teams': unselected_teams,
-              'tname': department.team.name,
-              'number': department.team.member ? department.team.member.length : 0,
-              'score': department.team.score ? department.team.score : 0,
-              'role': req.role,
-              'logo': department.team.logo,
-              'group_id': department.team._id,
-              'cname': department.team.cname,
-              'sign': department.team.brief,
-              'gid': department.team.gid,
-              'photo': req.user.photo,
-              'realname': req.user.realname,
-              'photo_album_thumbnails': photo_album_thumbnails
-            });
-          };
+        return res.render('department/home', {
+          'title': department.team.cname+department.team.name,
+          'department': department,
+          'myteam':_myteam,
+          'tname': department.team.name,
+          'number': department.team.member ? department.team.member.length : 0,
+          'score': department.team.score ? department.team.score : 0,
+          'role': req.role,
+          'logo': department.team.logo,
+          'group_id': department.team._id,
+          'cname': department.team.cname,
+          'sign': department.team.brief,
+          'gid': department.team.gid,
+          'photo': req.user.photo,
+          'realname': req.user.realname,
+          'photo_album_thumbnails': photo_album_thumbnails
         });
       }
 
