@@ -925,40 +925,38 @@ textarea {
   position: relative;
   overflow: hidden;
   border: 1px solid #e6e6e6;
-  padding: 12px;
+  padding: 20px;
 }
-.dl_container .side .groupsbox .info_left {
-  float: left;
+.dl_container .side .groupsbox .box_head {
+  border-bottom: 1px solid #ddd;
+  margin: 0;
+  padding: 0;
+  height: 44px;
+  line-height: 44px;
 }
-.dl_container .side .groupsbox .info_left .user_logo {
-  width: 54px;
-  height: 54px;
-}
-.dl_container .side .groupsbox .info_right {
-  float: left;
-  margin-left: 20px;
-  font-size: 12px;
-}
-.dl_container .side .groupsbox .info_right .username {
+.dl_container .side .groupsbox .box_head .head_title {
   color: #3498db;
+  font-size: 18px;
+  line-height: 24px;
 }
-.dl_container .side .groupsbox .info_right .cname a {
+.dl_container .side .groupsbox .box_head a {
+  line-height: 24px;
+  font-size: 14px;
   color: #ccc;
 }
-.dl_container .side .groupsbox .subtitle {
-  display: block;
-  margin: 0 0 10px;
+.dl_container .side .groupsbox .groups {
+  padding: 0;
 }
-.dl_container .side .groupsbox .group {
+.dl_container .side .groupsbox .groups .group {
+  margin: 4px;
   display: inline-block;
-  margin: 6px;
   position: relative;
 }
-.dl_container .side .groupsbox .group .group_logo {
+.dl_container .side .groupsbox .groups .group .group_logo {
   width: 32px;
   height: 32px;
 }
-.dl_container .side .groupsbox .group .group_leader {
+.dl_container .side .groupsbox .groups .group .group_leader {
   position: absolute;
   background-image: url("/img/icons/crown.png");
   width: 24px;
@@ -2543,11 +2541,11 @@ input.ng-invalid.ng-dirty {
   margin-top: 0;
 }
 .user_page .dl_container .main .campaigns_container .top .campgin_head {
-  padding: 3px 30px;
+  padding: 5px 30px;
   background-color: #e7ce23;
   height: 26px;
   color: #fff;
-  line-height: 20px;
+  line-height: 16px;
   font-size: 14px;
 }
 .user_page .dl_container .main .campaigns_container .top .campgin_head .star {
@@ -2683,10 +2681,10 @@ input.ng-invalid.ng-dirty {
   clear: both;
 }
 .user_page .dl_container .main .campaigns_container .now .campgin_head {
-  padding: 4px 30px;
+  padding: 0 30px;
   height: 34px;
   color: #3498db;
-  line-height: 20px;
+  line-height: 24px;
   font-size: 18px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container {
@@ -2793,6 +2791,40 @@ input.ng-invalid.ng-dirty {
 /* 老的 Firefox */
   box-shadow: 3px 3px 3px #ddd;
 }
+.user_page .dl_container .side .schedule_small .schedulebox {
+  padding: 0;
+}
+.user_page .dl_container .side .schedule_small .calendar_nav {
+  background-color: #3498db;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 10px;
+  margin: 0;
+}
+.user_page .dl_container .side .schedule_small .calendar_nav .calendar_title {
+  width: 170px;
+  text-align: center;
+  font-size: 16px;
+  margin: 0;
+}
+.user_page .dl_container .side .schedule_small .calendar_nav a {
+  color: #fff;
+}
+.user_page .dl_container .side .schedule_small .cal-context div {
+  border: none;
+}
+.user_page .dl_container .side .schedule_small .cal-context .joined {
+  background: none;
+  color: #fff;
+}
+.user_page .dl_container .side .schedule_small .cal-context .cal-day-inmonth span[data-cal-date] {
+  width: 15px;
+  height: 15px;
+  text-align: center;
+}
+.user_page .dl_container .side .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
+  font-size: 1.2em;
+}
 .user_page .dl_container .side .old_campaign_container {
   background-color: #8dd4e6;
   height: 40px;
@@ -2828,6 +2860,24 @@ input.ng-invalid.ng-dirty {
   -moz-box-shadow: 3px 3px 3px #ddd;
 /* 老的 Firefox */
   box-shadow: 3px 3px 3px #ddd;
+}
+.user_page .dl_container .side .groupsbox .info_left {
+  float: left;
+}
+.user_page .dl_container .side .groupsbox .info_left .user_logo {
+  width: 54px;
+  height: 54px;
+}
+.user_page .dl_container .side .groupsbox .info_right {
+  float: left;
+  margin-left: 20px;
+  font-size: 12px;
+}
+.user_page .dl_container .side .groupsbox .info_right .username {
+  color: #3498db;
+}
+.user_page .dl_container .side .groupsbox .info_right .cname a {
+  color: #ccc;
 }
 @-moz-keyframes scaleFade {
   50% {

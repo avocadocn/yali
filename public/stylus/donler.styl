@@ -813,39 +813,38 @@ textarea
       position relative
       overflow hidden
       border 1px solid #e6e6e6
-      padding 12px
-      .info_left
-        float left
-        .user_logo
-          width 54px
-          height 54px
-      .info_right
-        float left
-        margin-left 20px
-        font-size 12px
-        .username
+      padding 20px
+      .box_head
+        border-bottom 1px solid borderColor
+        margin 0
+        padding 0
+        height 44px
+        line-height 44px
+        .head_title
           color themeColor
-        .cname
-          a
-            color #ccc
-      .subtitle
-        display block
-        margin 0 0 10px
-      .group
-        display inline-block
-        margin 6px
-        position relative
-        .group_logo
-          width 32px
-          height 32px
-        .group_leader
-          position absolute
-          background-image url('/img/icons/crown.png')
-          width 24px
-          height 24px
-          right -10px
-          top -10px
-          background-size contain
+          font-size 18px
+          line-height 24px
+        a
+          line-height 24px
+          font-size 14px
+          color secondaryfontColor
+      .groups
+        padding 0
+        .group
+          margin 4px
+          display inline-block
+          position relative
+          .group_logo
+            width 32px
+            height 32px
+          .group_leader
+            position absolute
+            background-image url('/img/icons/crown.png')
+            width 24px
+            height 24px
+            right -10px
+            top -10px
+            background-size contain
   .aside
     width 128px
     margin-right 20px
@@ -2137,11 +2136,11 @@ input.ng-invalid.ng-dirty
           padding 0
           margin-top 0
           .campgin_head
-            padding 3px 30px
+            padding 5px 30px
             background-color #e7ce23
             height 26px
             color #ffffff
-            line-height 20px
+            line-height 16px
             font-size 14px
             .star
               background-image url('/img/icons/star.png')
@@ -2248,10 +2247,10 @@ input.ng-invalid.ng-dirty
           width 700px
           clear both
           .campgin_head
-            padding 4px 30px
+            padding 0 30px
             height 34px
             color themeColor
-            line-height 20px
+            line-height 24px
             font-size 18px
           .user_campaigns_container
             width 345px
@@ -2335,6 +2334,35 @@ input.ng-invalid.ng-dirty
       .schedule_small
         -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
         box-shadow 3px 3px 3px borderColor
+        .schedulebox
+          padding 0
+        .calendar_nav
+          background-color themeColor
+          height 38px
+          line-height 38px
+          padding 0 10px
+          margin 0
+          .calendar_title
+            width 170px
+            text-align center
+            font-size 16px
+            margin 0
+          a
+            color navbarFontColor
+        .cal-context
+          div
+            border none
+          .joined
+            background none
+            color navbarFontColor
+          .cal-day-inmonth span[data-cal-date]
+            width 15px
+            height 15px
+            text-align center
+          .cal-month-box
+            .cal-day-today
+              span[data-cal-date]
+                font-size 1.2em
       .old_campaign_container
         background-color #8dd4e6
         height 40px
@@ -2364,3 +2392,17 @@ input.ng-invalid.ng-dirty
         margin-top 10px
         -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
         box-shadow 3px 3px 3px borderColor
+        .info_left
+          float left
+          .user_logo
+            width 54px
+            height 54px
+        .info_right
+          float left
+          margin-left 20px
+          font-size 12px
+          .username
+            color themeColor
+          .cname
+            a
+              color #ccc
