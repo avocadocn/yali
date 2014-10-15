@@ -15,6 +15,7 @@ var mongoose = require('mongoose'),
   Comment = mongoose.model('Comment'),
   moment = require('moment'),
   model_helper = require('../helpers/model_helper'),
+  auth = require('../services/auth'),
   photo_album_ctrl = require('./photoAlbum.js');
 
 
@@ -95,7 +96,7 @@ var setDeleteAuth = function setDeleteAuth(data, callback) {
         });
       break;
     case 'photo':
-      // to do: 评论目标是照片
+      // todo: 评论目标是照片
       _auth();
       callback();
       break;

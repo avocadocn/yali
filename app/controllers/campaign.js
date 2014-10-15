@@ -1525,10 +1525,32 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   photo_album.save(function(err) {
     if(err) callback(500,'保存相册失败');
     campaign.photo_album = photo_album._id;
-    campaign.save(function(err) {
-      if(err) callback(500,'保存活动失败');
-      else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
-    })
+
+    campaign.components = [];
+    campaign.modularization = true;
+    var componentNames = ['RichComment'];
+
+    async.map(componentNames, function (componentName, asyncCallback) {
+      mongoose.model(componentName).establish(campaign, function (err, component) {
+        if (err) { asyncCallback(err); }
+        else {
+          campaign.components.push({
+            name: componentName,
+            _id: component._id
+          });
+          asyncCallback(null, component);
+        }
+      });
+    }, function (err, results) {
+      if (err) { callback(500, '创建活动组件失败'); }
+      else {
+        campaign.save(function(err) {
+          if(err) callback(500,'保存活动失败');
+          else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
+        });
+      }
+    });
+
   });
 };
 

@@ -24,10 +24,6 @@
 var registeredTasks = {
   publishComment: {
     company: ['member']
-  },
-  uploadPhoto: {
-    company: ['hr', 'member'],
-    team: ['leader', 'member']
   }
 };
 
@@ -137,6 +133,18 @@ var _auth = function (role, tasks) {
   return taskCando;
 };
 
+/**
+ * 权限验证
+ * @param user req.user
+ * @param owner 资源的所属者, 部门资源视为部门的组的资源
+ *  owner: {
+ *    companies: [{Mongoose.Schema.Types.ObjectId|String}],
+ *    teams: [{Mongoose.Schema.Types.ObjectId|String}],
+ *    users: [{Mongoose.Schema.Types.ObjectId|String}]
+ *  }
+ * @param tasks 需要判断的任务列表, 例如:['uploadPhoto', 'createPhotoAlbum']
+ * @returns {Object}
+ */
 module.exports = function (user, owner, tasks) {
   var role = getRole(user, owner);
   return _auth(role, tasks);
