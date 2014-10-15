@@ -46,7 +46,7 @@ RichComment.statics = {
         };
         break;
       default:
-        return callback(err);
+        return callback('不允许评论该对象');
     }
     var richComment = new this({
       owner: owner,

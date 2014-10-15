@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('donler.components', ['donler.components.richComment']);
+angular.module('donler.components', ['donler.components.richComment', 'donler.components.scoreBoard']);
