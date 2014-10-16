@@ -1056,7 +1056,6 @@ exports.renderCampaignDetail = function(req, res) {
     if(campaign.camp.length >= 2){
       res.redirect("/competition/"+req.params.campaignId);
     }else{
-
       //join: 1已经参加，0报名人数已满，-1未参加
       if((req.role ==='MEMBER' ||req.role ==='LEADER' ) && model_helper.arrayObjectIndexOf(campaign.member,req.user._id,'uid')>-1){
         req.join = 1;
@@ -1133,6 +1132,7 @@ exports.renderCampaignDetail = function(req, res) {
         over : campaign.deadline<new Date(),
         join: req.join,
         role:req.role,
+        can_join:req.canJoin,
         user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
         campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo,
         campaign: campaign,
@@ -1167,7 +1167,7 @@ exports.joinCampaign = function (req, res) {
   function (err, campaign) {
     if (!err && campaign) {
       if(campaign.deadline<new Date){
-        return res.send({ result: 0, msg: '活动报名已截止'});
+        return res.send({ result: 0, msg: '活动报名已经截止'});
       }
       var camp_length = campaign.camp.length;
       //从campaign的member_quit里删除该员工信息

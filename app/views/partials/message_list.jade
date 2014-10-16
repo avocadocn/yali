@@ -63,8 +63,8 @@ div(ng-show = '!loading')
           span 发起了一个多部门联谊活动
         span(ng-switch-default)
         span.pull-right.join_status_contain(ng-if="group_message.join_role && group_message.join_flag!=undefined" ng-class="{'joined':group_message.join_flag,'campaign':group_message.campaign_flag}")
-        span.pull-right.join_status_text(ng-if="group_message.join_flag && group_message.join_role" ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)") 退出
-        span.pull-right.join_status_text(ng-if="group_message.join_flag==false && group_message.join_role" ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)") 参加
+        span.pull-right.join_status_text(ng-if="group_message.join_flag && group_message.join_role" ng-click="quit(group_message.campaign._id,$index)") 退出
+        span.pull-right.join_status_text(ng-if="group_message.join_flag==false && group_message.join_role" ng-click="join(group_message.campaign._id,$index,group_message.myteam[0]._id)") 参加
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
           .dl_message_container.clearfix(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
@@ -117,10 +117,6 @@ div(ng-show = '!loading')
           //-   a(ng-click="modalPerticipator($index)") 私信
           //- label.pull-right.vertical_label(ng-if="group_message.member_num > 0&&role === 'LEADER'&&message_for_group") |
           span.message_label.pull-right(ng-if="group_message.comment_permission")
-            //- span(ng-if="group_message.join_role &&group_message.join_flag!=undefined && !group_message.both_team && group_message.campaign.campaign_type!=3")
-            //-   a.dl_btn.dl_btn_small(ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag") 退出
-            //-   a.dl_btn.dl_btn_small(ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag==false && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
-            //-   &nbsp;|
             a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
         .message_row(ng-if="group_message.message_type==4")
           span.message_label {{group_message.create_time_format}}
@@ -131,7 +127,7 @@ div(ng-show = '!loading')
           label.pull-right(ng-if="group_message.comment_permission")
             a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
           label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined&&role!='HR'&&group_message.comment_permission") |
-          a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
+          a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.myteam[0]].vote.positive ? group_message.campaign.camp[group_message.myteam[0]].vote.positive :'0'}})
         .message_row(ng-if="toggle[$index] && group_message.comment_permission")
           .dl_comment_area
             form.dl_modal_container.clearfix.margin_top_5(ng-if="role!=='HR'" name="comment_form" novalidate)
@@ -161,7 +157,7 @@ div(ng-show = '!loading')
                         p {{comment.content}}
                       .dl_md_2.pull-right.hidden_block(ng-if="comment.delete_permission")
                           a(ng-click="deleteComment($index)") 删除
-                      .dl_md_2.pull-right.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission")
+                      .dl_md_2.pull-right.hidden_block.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission")
                           a(ng-click="getReport($parent.$parent.$parent.$index,$index)") 举报
                 .dl_row.line_top
                   hr.comment_bottom

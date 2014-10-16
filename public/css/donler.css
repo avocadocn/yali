@@ -234,7 +234,7 @@ textarea {
   display: none;
 }
 .dl_mouse_hover_block:hover .dl_mouse_hover {
-  display: block;
+  display: inline-block;
 }
 .rich_comment_box {
   width: 100%;
