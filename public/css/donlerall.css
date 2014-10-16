@@ -2489,8 +2489,15 @@ input.ng-invalid.ng-dirty {
   width: 700px;
   margin-right: 20px;
 }
+.user_page .dl_container .main .tab-body .dl_card_tebcontent,
+.user_page .dl_container .main .tab-body .dl_campaign_list {
+  border: none;
+}
+.user_page .dl_container .main .tab-body .dl_timeline {
+  width: 590px;
+}
 .user_page .dl_container .main .campaigns_container {
-  margin-top: 55px;
+  margin-top: 45px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container {
   background-color: #fff;
@@ -2511,11 +2518,12 @@ input.ng-invalid.ng-dirty {
   width: 50px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .year_col {
-  color: #ccc;
+  color: #ddd;
   font-size: 12px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .time_col {
   font-size: 14px;
+  color: #ccc;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .logo_col {
   width: 60px;
@@ -2541,7 +2549,7 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .top {
   width: 700px;
   padding: 0;
-  margin-top: 0;
+  margin-top: 10px;
 }
 .user_page .dl_container .main .campaigns_container .top .campgin_head {
   padding: 5px 10px 5px 30px;
@@ -2598,6 +2606,7 @@ input.ng-invalid.ng-dirty {
   text-align: center;
   height: 40px;
   line-height: 40px;
+  color: #ccc;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .logo_col {
   width: 200px;
@@ -2631,6 +2640,7 @@ input.ng-invalid.ng-dirty {
   text-overflow: ellipsis;
   white-space: nowrap;
   margin: 0;
+  line-height: 24px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .content_col a {
   color: #ccc;
@@ -2647,7 +2657,7 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head {
   color: #3498db;
   height: 34px;
-  line-height: 34px;
+  line-height: 24px;
   font-size: 18px;
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head a {
@@ -2662,7 +2672,7 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_join .campgin_head {
   color: #099;
   height: 34px;
-  line-height: 34px;
+  line-height: 24px;
   font-size: 18px;
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campgin_head a {
@@ -2682,6 +2692,14 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col .time_count {
   color: #099;
+}
+.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head {
+  height: 54px;
+  line-height: 24px;
+  font-size: 18px;
+}
+.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head a {
+  color: #3498db;
 }
 .user_page .dl_container .main .campaigns_container .now {
   width: 700px;
@@ -2790,7 +2808,7 @@ input.ng-invalid.ng-dirty {
   font-size: 12px;
 }
 .user_page .dl_container .side {
-  padding-top: 55px;
+  padding-top: 45px;
   width: 240px;
 }
 .user_page .dl_container .side .schedule_small {
@@ -2819,20 +2837,20 @@ input.ng-invalid.ng-dirty {
   line-height: 10px;
   margin: 10px 5px;
 }
-.user_page .dl_container .side .schedule_small .calendar_nav {
-  background-color: #3498db;
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_nav {
+  background-color: #73a5dd;
   height: 38px;
   line-height: 38px;
   padding: 0 10px;
   margin: 0;
 }
-.user_page .dl_container .side .schedule_small .calendar_nav .calendar_title {
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_nav .calendar_title {
   width: 170px;
   text-align: center;
   font-size: 16px;
   margin: 0;
 }
-.user_page .dl_container .side .schedule_small .calendar_nav a {
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_nav a {
   color: #fff;
 }
 .user_page .dl_container .side .schedule_small .cal-context div {
@@ -2858,16 +2876,14 @@ input.ng-invalid.ng-dirty {
   line-height: 20px;
   font-size: 18px;
   padding: 10px;
+  margin-top: 10px;
   -moz-box-shadow: 3px 3px 3px #ddd;
 /* 老的 Firefox */
   box-shadow: 3px 3px 3px #ddd;
 }
-.user_page .dl_container .side .old_campaign_container a {
-  background-color: #f3939e;
-  height: 20px;
-  width: 20px;
+.user_page .dl_container .side .old_campaign_container a label {
+  font-size: 18px;
   color: #fff;
-  line-height: 20px;
   font-size: 18px;
   text-align: center;
 }
@@ -2880,6 +2896,10 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .side .old_campaign_container .news_count {
   font-size: 14px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  background-color: #f3939e;
 }
 .user_page .dl_container .side .groupsbox {
   margin-top: 10px;

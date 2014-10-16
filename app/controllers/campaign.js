@@ -726,7 +726,7 @@ exports.getUserCampaignsForHome = function(req, res) {
     }
     if(joinFlag){
       options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
-      _sort ='-start_time';
+      _sort ='start_time';
     }
     else{
       options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];

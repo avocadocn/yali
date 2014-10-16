@@ -2097,8 +2097,13 @@ input.ng-invalid.ng-dirty
     .main
       width 700px
       margin-right 20px
+      .tab-body
+        .dl_card_tebcontent,.dl_campaign_list
+          border none
+        .dl_timeline
+          width 590px
       .campaigns_container
-        margin-top 55px
+        margin-top 45px
         .user_campaigns_container
           background-color #ffffff
           float left
@@ -2114,10 +2119,11 @@ input.ng-invalid.ng-dirty
               float left
               width 50px
             .year_col
-              color #ccc
+              color borderColor
               font-size 12px
             .time_col
               font-size 14px
+              color secondaryfontColor
             .logo_col
               width 60px
               .campaign_logo
@@ -2137,7 +2143,7 @@ input.ng-invalid.ng-dirty
         .top
           width 700px
           padding 0
-          margin-top 0
+          margin-top 10px
           .campgin_head
             padding 5px 10px 5px 30px
             background-color #e7ce23
@@ -2183,6 +2189,7 @@ input.ng-invalid.ng-dirty
                 text-align center
                 height 40px
                 line-height 40px
+                color secondaryfontColor
             .logo_col
               width 200px
               .team
@@ -2210,6 +2217,7 @@ input.ng-invalid.ng-dirty
                 text-overflow ellipsis
                 white-space nowrap
                 margin 0
+                line-height 24px
               a
                 color #ccc
         .recent_unjoin
@@ -2222,7 +2230,7 @@ input.ng-invalid.ng-dirty
           .campgin_head
             color themeColor
             height 34px
-            line-height 34px
+            line-height 24px
             font-size 18px
             a
               font-size 14px
@@ -2234,7 +2242,7 @@ input.ng-invalid.ng-dirty
           .campgin_head
             color #009999
             height 34px
-            line-height 34px
+            line-height 24px
             font-size 18px
             a
               font-size 14px
@@ -2243,12 +2251,19 @@ input.ng-invalid.ng-dirty
             border-top 1px solid borderColor
             margin 0 -10px
             .time_col
-                width 100px
-                span
-                  font-size 14px
-                  line-height 44px
-                .time_count
-                  color #009999
+              width 100px
+              span
+                font-size 14px
+                line-height 44px
+              .time_count
+                color #009999
+        .recommend_team
+          .campgin_head
+            height 54px
+            line-height 24px
+            font-size 18px
+            a
+              color themeColor
         .now
           width 700px
           clear both
@@ -2335,7 +2350,7 @@ input.ng-invalid.ng-dirty
               color #ffffff
               font-size 12px
     .side
-      padding-top 55px
+      padding-top 45px
       width 240px
       .schedule_small
         -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
@@ -2357,19 +2372,19 @@ input.ng-invalid.ng-dirty
             .campaign_label
               line-height 10px
               margin 10px 5px
-        .calendar_nav
-          background-color themeColor
-          height 38px
-          line-height 38px
-          padding 0 10px
-          margin 0
-          .calendar_title
-            width 170px
-            text-align center
-            font-size 16px
+          .calendar_nav
+            background-color #73a5dd
+            height 38px
+            line-height 38px
+            padding 0 10px
             margin 0
-          a
-            color navbarFontColor
+            .calendar_title
+              width 170px
+              text-align center
+              font-size 16px
+              margin 0
+            a
+              color navbarFontColor
         .cal-context
           div
             border none
@@ -2392,16 +2407,15 @@ input.ng-invalid.ng-dirty
         line-height 20px
         font-size 18px
         padding 10px
+        margin-top 10px
         -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
         box-shadow 3px 3px 3px borderColor
         a
-          background-color #f3939e
-          height 20px
-          width 20px
-          color #ffffff
-          line-height 20px
-          font-size 18px
-          text-align center
+          label
+            font-size 18px
+            color #ffffff
+            font-size 18px
+            text-align center
           .footprint
             background-image url('/img/icons/footprint.png')
             height 23px
@@ -2410,6 +2424,10 @@ input.ng-invalid.ng-dirty
             float left
         .news_count
           font-size 14px
+          height 20px
+          width 20px
+          line-height 20px
+          background-color #f3939e
       .groupsbox
         margin-top 10px
         -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */

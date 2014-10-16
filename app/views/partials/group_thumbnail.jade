@@ -1,11 +1,11 @@
 mixin group_thumbnail(teams)
   .dl_row.box_head
     span.pull-left.head_title 我的小队(#{teams.length}个)
-    a.text.pull-right(href="/company/home#/team_info" ng-cloak) 添加更多 > 
+    a.text.pull-right.clearLinkUnderline(href="/company/home#/team_info" ng-cloak) 添加更多 > 
   .groups
     each team,i in teams
       if team.gid !=='0'
-        div.center-block.group(title="#{team.name}")
+        div.center-block.group(data-toggle="tooltip" title="#{team.name}")
           if team.leader
             span.group_leader
           a.center-block(href="/group/page/#{team._id}")

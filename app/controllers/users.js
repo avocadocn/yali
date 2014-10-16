@@ -756,35 +756,35 @@ exports.home = function(req, res) {
   for(var i = 0; i < req.user.team.length; i ++) {
     user_teams.push(req.user.team[i]._id.toString());
   }
-    var department = _user.department;
-    if (!_user.department || !_user.department._id) {
-      department = null;
-    }
-    var myteam = req.user.team;
-    var _myteam = [];
-    var myteamLength= myteam.length;
-      for(var i = 0; i < myteamLength; i ++) {
-        if(myteam[i].gid !== '0'){
-          //下面查找的是该成员加入和未加入的所有active小队
-          if(myteam[i].leader) {
-            //判断此人是否是此队队长，并作标记
-            _myteam.unshift({
-              _id:myteam[i]._id,
-              name:myteam[i].name,
-              logo:myteam[i].logo,
-              leader:myteam[i].leader
-            });
-          }
-          else{
-            _myteam.push({
-              _id:myteam[i]._id,
-              name:myteam[i].name,
-              logo:myteam[i].logo,
-              leader:myteam[i].leader
-            });
-          }
-        }
+  var department = _user.department;
+  if (!_user.department || !_user.department._id) {
+    department = null;
+  }
+  var myteam = req.user.team;
+  var _myteam = [];
+  var myteamLength= myteam.length;
+  for(var i = 0; i < myteamLength; i ++) {
+    if(myteam[i].gid !== '0'){
+      //下面查找的是该成员加入和未加入的所有active小队
+      if(myteam[i].leader) {
+        //判断此人是否是此队队长，并作标记
+        _myteam.unshift({
+          _id:myteam[i]._id,
+          name:myteam[i].name,
+          logo:myteam[i].logo,
+          leader:myteam[i].leader
+        });
       }
+      else{
+        _myteam.push({
+          _id:myteam[i]._id,
+          name:myteam[i].name,
+          logo:myteam[i].logo,
+          leader:myteam[i].leader
+        });
+      }
+    }
+  }
   res.render('users/home',{
     'title': req.role ==='OWNER'? '我的Donler主页': _user.nickname+'的Donler主页',
     'uid':_user._id,
