@@ -139,6 +139,8 @@ block contentExt
       each component in campaign.components
         if component.name === 'RichComment'
           rich-comment(component-id="#{component._id}" allow-publish="#{allow.publishComment}")
+        if component.name === 'ScoreBoard'
+          score-board(component-id="#{component._id}" allow-edit="#{allow.setScoreBoardScore}")
     .dl_detail_side
       .map_container
         p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}

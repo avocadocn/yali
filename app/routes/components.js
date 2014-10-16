@@ -8,4 +8,9 @@ module.exports = function (app, passport) {
 
   app.get('/components/:directiveName/template', componentCtrl.renderTemplate);
 
+
+  // 比分组件
+  app.post('/components/ScoreBoard/id/:componentId/setScore', componentCtrl.ScoreBoard.setScore);
+  app.post('/components/ScoreBoard/id/:componentId/confirmScore', componentCtrl.ScoreBoard.confirmScore);
+
 };

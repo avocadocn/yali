@@ -1128,7 +1128,7 @@ exports.renderCampaignDetail = function(req, res) {
       var allow = auth(req.user, {
         companies: [campaign.populated('cid')],
         teams: [campaign.populated('team')]
-      }, ['publishComment']);
+      }, ['publishComment', 'setScoreBoardScore']);
       return res.render('campaign/campaign_detail', {
         over : campaign.deadline<new Date(),
         join: req.join,
@@ -1448,20 +1448,21 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 
     campaign.components = [];
     campaign.modularization = true;
-    var componentNames = ['RichComment'];
+    var componentNames = ['RichComment']; // 'ScoreBoard'已可用，可在比赛中使用
 
     // todo component data
     // 如果是公司活动，不提供team属性。
-//    campaign.playing_teams = [{
+    // 这是测试数据
+//    campaign.teams = [{
 //      company: {
-//        _id: '123',
-//        name: 'donler',
-//        logo: 'url'
+//        _id: campaign.cid[0],
+//        name: campaign.cname[0],
+//        logo: '/logo/company/' + campaign.cid[0] + '/48/48'
 //      },
 //      team: {
-//        _id: '1234',
-//        name: 'football',
-//        logo: 'url'
+//        _id: campaign.team[0],
+//        name: 'test',
+//        logo: '/logo/group/' + campaign.team[0] + '/48/48'
 //      }
 //    }];
 

@@ -168,16 +168,17 @@ ScoreBoard.methods = {
     return true;
   },
 
-  confirm: function (cid, tid) {
+  /**
+   * 确认比分
+   * @param {Array} indexArray 要确认的小队的索引数组，只可以是[],[0],[1],[0,1]
+   */
+  confirm: function (indexArray) {
+    for (var i = 0; i < indexArray.length; i++) {
+      var index = indexArray[i];
+      this.playing_teams[index].confirm = true;
+    }
     var confirmCount = 0;
     for (var i = 0; i < this.playing_teams.length; i++) {
-      if (this.playing_teams[i].tid) {
-        if (this.playing_teams[i].tid.toString() === tid.toString()) {
-          this.playing_teams[i].confirm = true;
-        }
-      } else if (this.playing_teams[i].cid.toString() === cid.toString()) {
-        this.playing_teams[i].confirm = true;
-      }
       if (this.playing_teams[i].confirm === true) {
         confirmCount++;
       }

@@ -3,12 +3,19 @@
     h4 比分板
   .score_board_body
     .playing_team
-      .team_logo
-      .team_name
+      img.team_logo(ng-src="{{scoreBoard.playingTeams[0].logo}}")
+      span.team_name(ng-bind="scoreBoard.playingTeams[0].name")
     .team_score
+      div(ng-if="!editing")
+        span.score(ng-bind="scoreBoard.playingTeams[0].score")
+        span.score(ng-bind="scoreBoard.playingTeams[1].score")
+      div(ng-if="editing && allowEdit && !scoreBoard.allConfirm")
+        input.score(type="text" placeholder="{{scoreBoard.playingTeams[0].score}}" ng-model="scores[0]")
+        input.score(type="text" placeholder="{{scoreBoard.playingTeams[1].score}}" ng-model="scores[1]")
     .playing_team
-      .team_logo
-      .team_name
-  .score_board_footer
-    a.operator 编辑
-    a.operator 确认
+      img.team_logo(ng-src="{{scoreBoard.playingTeams[1].logo}}")
+      span.team_name(ng-bind="scoreBoard.playingTeams[1].name")
+  .score_board_footer(ng-if="allowEdit && !scoreBoard.allConfirm")
+    a.operator(ng-if="!editing" ng-click="editScore()") 编辑
+    a.operator(ng-if="editing" ng-click="setScore()") 保存修改
+    a.operator(ng-click="confirmScore()") 确认比分

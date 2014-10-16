@@ -24,6 +24,14 @@
 var registeredTasks = {
   publishComment: {
     company: ['member']
+  },
+  setScoreBoardScore: {
+    company: ['hr'],
+    team: ['leader']
+  },
+  confirmScoreBoardScore: {
+    company: ['hr'],
+    team: ['leader']
   }
 };
 
