@@ -1,6 +1,6 @@
 mixin group_thumbnail(teams)
   .dl_row.box_head
-    span.pull-left.head_title 我的小队
+    span.pull-left.head_title 我的小队(#{teams.length}个)
     a.text.pull-right(href="/company/home#/team_info" ng-cloak) 添加更多 > 
   .groups
     each team,i in teams

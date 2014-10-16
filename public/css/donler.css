@@ -927,17 +927,19 @@ textarea {
   border: 1px solid #e6e6e6;
   padding: 20px;
 }
-.dl_container .side .groupsbox .box_head {
-  border-bottom: 1px solid #ddd;
-  margin: 0;
-  padding: 0;
-  height: 44px;
-  line-height: 44px;
-}
-.dl_container .side .groupsbox .box_head .head_title {
+.dl_container .side .groupsbox .head_title {
   color: #3498db;
   font-size: 18px;
   line-height: 24px;
+}
+.dl_container .side .groupsbox .head_title a {
+  font-size: 14px;
+}
+.dl_container .side .groupsbox .box_head {
+  border-bottom: 1px solid #ddd;
+  margin: -20px;
+  padding: 10px 20px;
+  height: 44px;
 }
 .dl_container .side .groupsbox .box_head a {
   line-height: 24px;
@@ -945,7 +947,8 @@ textarea {
   color: #ccc;
 }
 .dl_container .side .groupsbox .groups {
-  padding: 0;
+  padding-top: 30px;
+  margin-bottom: -10px;
 }
 .dl_container .side .groupsbox .groups .group {
   margin: 4px;
@@ -2541,7 +2544,7 @@ input.ng-invalid.ng-dirty {
   margin-top: 0;
 }
 .user_page .dl_container .main .campaigns_container .top .campgin_head {
-  padding: 5px 30px;
+  padding: 5px 10px 5px 30px;
   background-color: #e7ce23;
   height: 26px;
   color: #fff;
@@ -2564,6 +2567,10 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .top .campgin_head a {
   color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .top .campgin_head .add {
+  font-size: 24pt;
+  line-height: 21px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign {
   padding: 10px;
@@ -2794,6 +2801,24 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .side .schedule_small .schedulebox {
   padding: 0;
 }
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_tips {
+  height: 30px;
+  font-size: 12px;
+  border-top: 1px solid #ddd;
+  margin-top: 5px;
+  color: #3498db;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_tips .join_sign {
+  height: 10px;
+  width: 10px;
+  background-color: #3498db;
+  margin: 10px;
+  float: left;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_tips .campaign_label {
+  line-height: 10px;
+  margin: 10px 5px;
+}
 .user_page .dl_container .side .schedule_small .calendar_nav {
   background-color: #3498db;
   height: 38px;
@@ -2818,9 +2843,10 @@ input.ng-invalid.ng-dirty {
   color: #fff;
 }
 .user_page .dl_container .side .schedule_small .cal-context .cal-day-inmonth span[data-cal-date] {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   text-align: center;
+  margin: 5px 10px;
 }
 .user_page .dl_container .side .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.2em;
@@ -2860,23 +2886,33 @@ input.ng-invalid.ng-dirty {
   -moz-box-shadow: 3px 3px 3px #ddd;
 /* 老的 Firefox */
   box-shadow: 3px 3px 3px #ddd;
+  padding: 20px 10px;
 }
-.user_page .dl_container .side .groupsbox .info_left {
+.user_page .dl_container .side .groupsbox .infobox .head_title {
+  padding-bottom: 20px;
+  margin-top: -7px;
+  color: #ccc;
+}
+.user_page .dl_container .side .groupsbox .infobox .head_title a {
+  color: #3498db;
+}
+.user_page .dl_container .side .groupsbox .infobox .info_left {
   float: left;
 }
-.user_page .dl_container .side .groupsbox .info_left .user_logo {
+.user_page .dl_container .side .groupsbox .infobox .info_left .user_logo {
   width: 54px;
   height: 54px;
 }
-.user_page .dl_container .side .groupsbox .info_right {
+.user_page .dl_container .side .groupsbox .infobox .info_right {
   float: left;
   margin-left: 20px;
   font-size: 12px;
 }
-.user_page .dl_container .side .groupsbox .info_right .username {
+.user_page .dl_container .side .groupsbox .infobox .info_right .username {
   color: #3498db;
+  font-size: 14px;
 }
-.user_page .dl_container .side .groupsbox .info_right .cname a {
+.user_page .dl_container .side .groupsbox .infobox .info_right .cname a {
   color: #ccc;
 }
 @-moz-keyframes scaleFade {

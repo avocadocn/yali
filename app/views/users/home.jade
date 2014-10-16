@@ -11,6 +11,7 @@ block panel
         label.title 置顶
         label.time_count(ng-if="topCampaign") 还剩 {{topCampaign.start_time_text}}
         a.clearLinkUnderline.pull-right(ng-if="topCampaign") 编辑
+        a.clearLinkUnderline.pull-right.add(ng-if="!topCampaign") +
       .campaign(ng-if="topCampaign")
         .info_left
           .year_col
@@ -166,7 +167,7 @@ block aside
     a.clearLinkUnderline.pull-right.news_count(ng-if="old_campaign.length>0" ng-cloak) {{old_campaign.length}}
   .groupsbox
     .infobox
-      .subtitle 
+      .head_title 
         label 个人资料
         a.clearLinkUnderline.pull-right 编辑
       .info_left

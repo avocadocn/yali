@@ -814,22 +814,25 @@ textarea
       overflow hidden
       border 1px solid #e6e6e6
       padding 20px
+      .head_title
+        color themeColor
+        font-size 18px
+        line-height 24px
+        a
+          font-size 14px
       .box_head
         border-bottom 1px solid borderColor
-        margin 0
-        padding 0
+        margin -20px
+        padding 10px 20px
         height 44px
-        line-height 44px
-        .head_title
-          color themeColor
-          font-size 18px
-          line-height 24px
+
         a
           line-height 24px
           font-size 14px
           color secondaryfontColor
       .groups
-        padding 0
+        padding-top 30px
+        margin-bottom -10px
         .group
           margin 4px
           display inline-block
@@ -2136,7 +2139,7 @@ input.ng-invalid.ng-dirty
           padding 0
           margin-top 0
           .campgin_head
-            padding 5px 30px
+            padding 5px 10px 5px 30px
             background-color #e7ce23
             height 26px
             color #ffffff
@@ -2155,6 +2158,9 @@ input.ng-invalid.ng-dirty
               width 30%
             a
               color #ffffff
+            .add
+              font-size 24pt
+              line-height 21px
           .campaign
             padding 10px
             height 100px
@@ -2336,6 +2342,21 @@ input.ng-invalid.ng-dirty
         box-shadow 3px 3px 3px borderColor
         .schedulebox
           padding 0
+          .calendar_tips
+            height 30px
+            font-size 12px
+            border-top 1px solid borderColor
+            margin-top 5px
+            color themeColor
+            .join_sign
+              height 10px
+              width 10px
+              background-color themeColor
+              margin 10px
+              float left
+            .campaign_label
+              line-height 10px
+              margin 10px 5px
         .calendar_nav
           background-color themeColor
           height 38px
@@ -2356,9 +2377,10 @@ input.ng-invalid.ng-dirty
             background none
             color navbarFontColor
           .cal-day-inmonth span[data-cal-date]
-            width 15px
-            height 15px
+            width 14px
+            height 14px
             text-align center
+            margin 5px 10px
           .cal-month-box
             .cal-day-today
               span[data-cal-date]
@@ -2392,17 +2414,26 @@ input.ng-invalid.ng-dirty
         margin-top 10px
         -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
         box-shadow 3px 3px 3px borderColor
-        .info_left
-          float left
-          .user_logo
-            width 54px
-            height 54px
-        .info_right
-          float left
-          margin-left 20px
-          font-size 12px
-          .username
-            color themeColor
-          .cname
+        padding 20px 10px
+        .infobox
+          .head_title
+            padding-bottom 20px
+            margin-top -7px
+            color secondaryfontColor
             a
-              color #ccc
+              color themeColor
+          .info_left
+            float left
+            .user_logo
+              width 54px
+              height 54px
+          .info_right
+            float left
+            margin-left 20px
+            font-size 12px
+            .username
+              color themeColor
+              font-size 14px
+            .cname
+              a
+                color #ccc

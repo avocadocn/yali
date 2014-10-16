@@ -64,9 +64,9 @@
   height: 40px;
 }
 .cal-month-day-small .join_sign {
-  margin: 5px;
-  width: 15px;
-  height: 15px;
+  margin: 0 10px;
+  width: 14px;
+  height: 13px;
   color: #fff;
   background-color: #3498db;
   text-align: center;
@@ -148,6 +148,7 @@
 }
 .calendar_box {
   margin-top: 0;
+  padding: 0 10px;
 }
 .calendar_box .dl_campaign_list {
   border: 0px;
