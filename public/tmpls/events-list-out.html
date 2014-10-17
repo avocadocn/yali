@@ -9,17 +9,31 @@
       <li class="custom_calendar_li">
         <!-- <span class="pull-left event <%= event['class'] %>"></span>&nbsp; -->
         <a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
-          data-event-class="<%= event['class'] %>" class="event-item">
-          <% if (event.is_joined) { %>
-            <!-- <img class="join_sign" src="/img/icons/joined_campaign.ico"/> -->
-            <div class="join_sign"></div>
-          <% } %>
-          <% if (!event.is_joined) { %>
-            <!-- <img class="join_sign" src="/img/icons/joined_campaign.ico"/> -->
-            <div class="un_join_sign"></div>
-          <% } %>
-          <img src="<%= event.logo %>"/>
-          <span>&nbsp;&nbsp;开始: <%= moment(new Date(event.start)).format('HH:mm') %>&nbsp;&nbsp;主题: <%= event.title %></span>
+          data-event-class="<%= event['class'] %>" class="event-item clearLinkUnderline">
+          <p class="campaign_head">
+            <span class="content_text"><%= event.title %></span>
+          </p>
+          <div class="campaign_content">
+            <div class="info_left">
+              <img class="team_logo" src="<%= event.logo %>"/>
+            </div>
+            <div class="info_right">
+              <p class="campaign_info">
+                <span>开始时间:</span>
+                <span class="content_text"><%= moment(new Date(event.start)).format('YYYY-MM-DD HH:mm') %></span>
+              </p>
+              <p class="campaign_info">
+                <span>结束时间:</span>
+                <span class="content_text"><%= moment(new Date(event.end)).format('YYYY-MM-DD HH:mm') %></span>
+              </p>
+              <p class="campaign_info">
+                <span>地点:</span>
+                <span class="content_text"><%=event.location.name%></span>
+              </p>
+            </div>
+
+          </div>
+          
         </a>
       </li>
     <% }) %>

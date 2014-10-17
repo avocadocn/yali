@@ -188,14 +188,14 @@ var formatCampaignForCalendar = function(user, campaigns) {
     // 公司活动
     if (campaign.campaign_type === 1) {
       var logo_owner_id = campaign.cid[0];
-      var logo = '/logo/company/' + logo_owner_id + '/27/27';
+      var logo = '/logo/company/' + logo_owner_id + '/47/47';
     } else {
       // 挑战或比赛
       var logo_owner_id;
       for (var i = 0, teams = user.team; i < teams.length; i++) {
         if (campaign.team.indexOf(teams[i]._id) !== -1) {
           logo_owner_id = teams[i]._id;
-          var logo = '/logo/group/' + logo_owner_id + '/27/27';
+          var logo = '/logo/group/' + logo_owner_id + '/47/47';
           break;
         }
       }
@@ -238,7 +238,7 @@ var formatCampaignForCalendar = function(user, campaigns) {
       'end': campaign.end_time.valueOf(),
       //'count': count,
       'is_joined': is_joined,
-      'location':campaign.location,
+      'location':campaign.location
     });
   });
   return calendarCampaigns;
