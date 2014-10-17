@@ -49,47 +49,44 @@ ScoreBoard.statics = {
       case 'Campaign':
         var owner = {
           companies: host.cid,
-          teams: host.team
+          teams: host.tid
         };
 
-        if (host.teams.length === 1) {
-          if (!host.teams[0].team) {
+        if (host.campaign_unit.length === 1) {
+          // 只有一个参加活动的单位
+          var unit = host.campaign_unit[0];
+
+          var team = {
+            cid: unit.company._id,
+            selected: true
+          };
+
+          if (host.campaign_type === 1) {
             // 公司活动
-            var team = {
-              cid: host.teams[0].company._id,
-              name: host.teams[0].company.name,
-              logo: host.teams[0].company.logo,
-              selected: true
-            };
-            // 计分板至少需要两个队
-            playingTeams = [team, team];
+            team.name = unit.company.name;
+            team.logo = unit.company.logo;
           } else {
-            // 小队或部门内部活动
-            var team = {
-              cid: host.teams[0].company._id,
-              tid: host.teams[0].team._id,
-              name: host.teams[0].team.name,
-              logo: host.teams[0].team.logo,
-              selected: true
-            };
-            playingTeams = [team, team];
+            // 非公司活动
+            team.tid = unit.team._id;
+            team.name = unit.team.name;
+            team.logo = unit.team.logo;
           }
-        } else if (host.teams.length >= 2) {
-          // 两个以上的小队参与的计分
-          for (var i = 0; i < host.teams.length; i++) {
-            var team = {
-              cid: host.teams[i].company._id,
-              tid: host.teams[i].team._id,
-              name: host.teams[i].team.name,
-              logo: host.teams[i].team.logo
-            };
-            playingTeams.push(team);
-          }
+          playingTeams = [team, team];
+        } else {
+          host.campaign_unit.forEach(function (unit) {
+            playingTeams.push({
+              cid: unit.company._id,
+              tid: unit.team._id,
+              name: unit.team.name,
+              logo: unit.team.logo
+            });
+          });
 
           // 正好两个队的时候，把这两个队都加入计分板中
           if (playingTeams.length === 2) {
-            playingTeams[0].selected = true;
-            playingTeams[1].selected = true;
+            playingTeams.forEach(function (team) {
+              team.selected = true;
+            });
           }
         }
 

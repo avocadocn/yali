@@ -34,8 +34,8 @@ RichComment.statics = {
       case 'Campaign':
         hostType = 'campaign';
         var owner = {
-          companies: host.populated('cid') || host.cid,
-          teams: host.populated('team') || host.team
+          companies: host.cid,
+          teams: host.tid
         };
         break;
       case 'PhotoAlbum':

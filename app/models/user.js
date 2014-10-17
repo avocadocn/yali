@@ -201,10 +201,11 @@ UserSchema.methods = {
 
     /**
      * 是否是某个队的成员
-     * @param  {String}  tid
+     * @param  {Object|String}  tid
      * @return {Boolean}
      */
     isTeamMember: function (tid) {
+        tid = tid.toString();
         for (var i = 0; i < this.team.length; i++) {
             if (tid === this.team[i]._id.toString()) {
                 return true;
@@ -214,6 +215,7 @@ UserSchema.methods = {
     },
 
     isTeamLeader: function (tid) {
+        tid = tid.toString();
         for (var i = 0; i < this.team.length; i++) {
             if (tid === this.team[i]._id.toString()) {
                 return this.team[i].leader;

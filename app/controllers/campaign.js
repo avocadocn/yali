@@ -1002,150 +1002,195 @@ exports.getUserAllCampaignsForAppCalendar = function(req, res) {
   });
 };
 
+
+exports.addRichCommentIfNot = function (req, res, next) {
+  var campaign = req.campaign;
+  if (!campaign.modularization) {
+    var RichComment = mongoose.model('RichComment');
+
+    RichComment.establish(campaign, function (err, richComment) {
+      campaign.components.push({
+        name: 'RichComment',
+        _id: richComment._id
+      });
+      campaign.modularization = true;
+      campaign.save(function (err) {
+        if (err) { next(err); }
+        else { next(); }
+      });
+    });
+
+  } else {
+    next();
+  }
+};
+
 exports.renderCampaignDetail = function(req, res) {
-  async.parallel([
-    function(callback){
-      Campaign
-      .findById(req.params.campaignId)
-      .populate('photo_album')
-      .populate('team')
-      .populate('cid')
-      .exec()
-      .then(function(campaign) {
-        if (!campaign.modularization) {
-          var RichComment = mongoose.model('RichComment');
+  var campaign = req.campaign;
+  moment.lang('zh-cn');
 
-          RichComment.establish(campaign, function (err, richComment) {
-            campaign.components.push({
-              name: 'RichComment',
-              _id: richComment._id
-            });
-            campaign.modularization = true;
-            campaign.save(function (err) {
-              if (err) { return callback(err); }
-              callback(null, campaign);
-            });
-          });
-
-        } else {
-          callback(null,campaign);
-        }
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
-    },
-    function(callback){
-      MessageContent.find({'campaign_id':req.params.campaignId,'status':'undelete'}).sort('-post_date').exec().then(function(messageContent){
-        callback(null,messageContent);
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
-    }
-  ],
-  function(err, results){
-    if(err){
-      return res.send(404);
-    }
-    var campaign = results[0];
-    if (!campaign) {
-      return res.send(404);
-    }
-
-    if(campaign.camp.length >= 2){
-      res.redirect("/competition/"+req.params.campaignId);
-    }else{
-      //join: 1已经参加，0报名人数已满，-1未参加
-      if((req.role ==='MEMBER' ||req.role ==='LEADER' ) && model_helper.arrayObjectIndexOf(campaign.member,req.user._id,'uid')>-1){
-        req.join = 1;
-      }
-      else if(campaign.member_max!==0 && campaign.member_max<=campaign.member.length){
-        req.join = 0
-      }
-      else{
-        req.join = -1;
-      }
-      var parent_name, parent_url;
-      if (campaign.team.length === 0 || campaign.campaign_type === 6) {
-        parent_name = campaign.cid[0].info.name;
-        parent_url = '/company/home';
-      }else {
-        parent_name = campaign.team[0].name;
-        parent_url = '/group/page/' + campaign.team[0]._id;
-      }
-      var links = [
-        {
-          text: parent_name,
-          url: parent_url
-        },
-        {
-          text: campaign.theme,
-          active: true
-        }
-      ];
-      var _formatMember = {};
-      var myteamLength = 0;
-      if(campaign.campaign_type==3){
-        for( var i = 0; i < campaign.team.length; i++ ){
-          var _index = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i]._id,'_id');
-          var _id = campaign.team[i]._id;
-          _formatMember[_id]= {
-            _id: _id,
-            name: campaign.team[i].name,
-            logo: campaign.team[i].logo,
-            leader: _index>-1&& req.user.team[_index].leader,
-            member_flag: _index>-1,
-            member:[]
-          };
-          if(_index>-1){
-            myteamLength++;
-          }
-        }
-        for(var j =0; j < campaign.member.length; j ++){
-          var _id = campaign.member[j].team._id;
-          _formatMember[_id].member.push({
-            'uid' : campaign.member[j].uid,
-            'nickname' : campaign.member[j].nickname,
-            'photo' : campaign.member[j].photo,
-            'team' : campaign.member[j].team
-          });
-        }
-      }
-      moment.lang('zh-cn');
-      var _messageContent =[];
-      if(results[1]){
-        results[1].forEach(function(_message){
-          _messageContent.push({
-            content: _message.content,
-            post_date:_message.post_date,
-            sender: _message.sender[0]
-          });
-        });
-      }
-
-      var allow = auth(req.user, {
-        companies: [campaign.populated('cid')],
-        teams: [campaign.populated('team')]
-      }, ['publishComment', 'setScoreBoardScore']);
-      return res.render('campaign/campaign_detail', {
-        over : campaign.deadline<new Date(),
-        join: req.join,
-        role:req.role,
-        can_join:req.canJoin,
-        user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
-        campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo,
-        campaign: campaign,
-        campaignMember:_formatMember,
-        myteamLength:myteamLength,
-        links: links,
-        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4),
-        moment : moment,
-        messageContent : _messageContent,
-        allow: allow
-      });
-    }
+  // todo 权限处理
+  var memberIds = [];
+  campaign.members.forEach(function (member) {
+    memberIds.push(member._id);
   });
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid,
+    users: memberIds
+  }, [
+    'publishComment',
+    'setScoreBoardScore',
+    'confirmScoreBoardScore'
+  ]);
+
+  // todo 面包屑
+
+  // todo 渲染视图，此功能尚未完成
+  res.render('campaign/campaign_detail', {
+    campaign: campaign,
+    moment: moment,
+    allow: allow
+  });
+
+
+//  async.parallel([
+//    function(callback){
+//      Campaign
+//      .findById(req.params.campaignId)
+//      .populate('photo_album')
+//      .exec()
+//      .then(function(campaign) {
+//        if (!campaign.modularization) {
+//          var RichComment = mongoose.model('RichComment');
+//
+//          RichComment.establish(campaign, function (err, richComment) {
+//            campaign.components.push({
+//              name: 'RichComment',
+//              _id: richComment._id
+//            });
+//            campaign.modularization = true;
+//            campaign.save(function (err) {
+//              if (err) { return callback(err); }
+//              callback(null, campaign);
+//            });
+//          });
+//
+//        } else {
+//          callback(null,campaign);
+//        }
+//      })
+//      .then(null, function(err) {
+//        callback(err);
+//      });
+//    },
+//    function(callback){
+//      MessageContent.find({'campaign_id':req.params.campaignId,'status':'undelete'}).sort('-post_date').exec().then(function(messageContent){
+//        callback(null,messageContent);
+//      })
+//      .then(null, function(err) {
+//        callback(err);
+//      });
+//    }
+//  ],
+//  function(err, results){
+//    if(err){
+//      return res.send(404);
+//    }
+//    var campaign = results[0];
+//    if (!campaign) {
+//      return res.send(404);
+//    }
+//
+//
+//    //join: 1已经参加，0报名人数已满，-1未参加
+//    if ((req.role === 'MEMBER' || req.role === 'LEADER' ) && model_helper.arrayObjectIndexOf(campaign.member, req.user._id, 'uid') > -1) {
+//      req.join = 1;
+//    }
+//    else if (campaign.member_max !== 0 && campaign.member_max <= campaign.member.length) {
+//      req.join = 0
+//    }
+//    else {
+//      req.join = -1;
+//    }
+//    var parent_name, parent_url;
+//    if (campaign.team.length === 0 || campaign.campaign_type === 6) {
+//      parent_name = campaign.cid[0].info.name;
+//      parent_url = '/company/home';
+//    } else {
+//      parent_name = campaign.team[0].name;
+//      parent_url = '/group/page/' + campaign.team[0]._id;
+//    }
+//    var links = [
+//      {
+//        text: parent_name,
+//        url: parent_url
+//      },
+//      {
+//        text: campaign.theme,
+//        active: true
+//      }
+//    ];
+//    var _formatMember = {};
+//    var myteamLength = 0;
+//    if (campaign.campaign_type == 3) {
+//      for (var i = 0; i < campaign.team.length; i++) {
+//        var _index = model_helper.arrayObjectIndexOf(req.user.team, campaign.team[i]._id, '_id');
+//        var _id = campaign.team[i]._id;
+//        _formatMember[_id] = {
+//          _id: _id,
+//          name: campaign.team[i].name,
+//          logo: campaign.team[i].logo,
+//          leader: _index > -1 && req.user.team[_index].leader,
+//          member_flag: _index > -1,
+//          member: []
+//        };
+//        if (_index > -1) {
+//          myteamLength++;
+//        }
+//      }
+//      for (var j = 0; j < campaign.member.length; j++) {
+//        var _id = campaign.member[j].team._id;
+//        _formatMember[_id].member.push({
+//          'uid': campaign.member[j].uid,
+//          'nickname': campaign.member[j].nickname,
+//          'photo': campaign.member[j].photo,
+//          'team': campaign.member[j].team
+//        });
+//      }
+//    }
+//    moment.lang('zh-cn');
+//    var _messageContent = [];
+//    if (results[1]) {
+//      results[1].forEach(function (_message) {
+//        _messageContent.push({
+//          content: _message.content,
+//          post_date: _message.post_date,
+//          sender: _message.sender[0]
+//        });
+//      });
+//    }
+//
+//    var allow = auth(req.user, {
+//      companies: [campaign.populated('cid')],
+//      teams: [campaign.populated('team')]
+//    }, ['publishComment', 'setScoreBoardScore']);
+//    return res.render('campaign/campaign_detail', {
+//      over: campaign.deadline < new Date(),
+//      join: req.join,
+//      role: req.role,
+//      user: {'_id': req.user._id, 'nickname': req.user.nickname, 'photo': req.user.photo, 'team': req.user.team},
+//      campaignLogo: campaign.team.length > 0 ? campaign.team[0].logo : campaign.cid[0].info.logo,
+//      campaign: campaign,
+//      campaignMember: _formatMember,
+//      myteamLength: myteamLength,
+//      links: links,
+//      photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4),
+//      moment: moment,
+//      messageContent: _messageContent,
+//      allow: allow
+//    });
+//  });
 
 };
 
@@ -1478,13 +1523,18 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 
 exports.campaign = function(req, res, next, id){
   Campaign
-      .findOne({
-           _id: id
-      })
-      .exec(function(err, campaign) {
-          if (err) return next(err);
-          if (!campaign) return next(new Error('Failed to load Campaign ' + id));
-          req.campaign = campaign;
-          next();
-      });
+    .findById(id)
+    .populate('photo_album')
+    .exec()
+    .then(function (campaign) {
+      if (!campaign) {
+        res.status(404);
+        return next('not found');
+      }
+      req.campaign = campaign;
+      next();
+    })
+    .then(null, function (err) {
+      next(err);
+    });
 };

@@ -195,5 +195,12 @@ var Campaign = new Schema({
 
 });
 
+Campaign.virtual('members').get(function () {
+  var members = [];
+  this.campaign_unit.forEach(function (unit) {
+    members = members.concat(unit.member);
+  });
+  return members;
+});
 
 mongoose.model('Campaign', Campaign);
