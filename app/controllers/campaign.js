@@ -439,14 +439,14 @@ var formatCampaign = function(campaign,pageType,role,user,other){
     };
     if(_campaign.campaign_type===1){//公司活动
       temp.type='companycampaign';
-      temp.logo=_campaign.cid[0].info.logo;
-      temp.link = '/company/home/'+_campaign.cid[0]._id;
-      temp.name = _campaign.cid[0].info.name;
-      temp.cid = _campaign.cid[0]._id;
-      temp.cname=_campaign.cid[0].info.name;
-      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
+      temp.logo=_campaign.campaign_unit[0].company.logo;
+      temp.link = '/company/home/'+_campaign.campaign_unit[0].company._id;
+      temp.name = campaign.campaign_unit[0].company.name;
+      temp.cid = campaign.campaign_unit[0].company._id;
+      temp.cname=_campaign.campaign_unit[0].company.name;
+      temp.member_num = _campaign.campaign_unit[0].member.length > 0 ? _campaign.campaign_unit[0].member.length : 0;
       if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
-        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
+        if(model_helper.arrayObjectIndexOf(_campaign.campaign_unit[0].member,user._id,'_id')>-1){
           temp.join_flag = 1;
           if(new Date()<_campaign.deadline)
             temp.due_flag = 1;//已不能报名
@@ -723,16 +723,12 @@ exports.getUserCampaignsForHome = function(req, res) {
       'cid': req.user.cid,
       'active': true
     };
-    var _populate = 'team cid';
     var _sort;
     if(startSet){
       options.start_time = startSet;
     }
     if(endSet){
       options.end_time = endSet;
-    }
-    if(photoFlag){
-      _populate+=' photo_album';
     }
     if(joinFlag){
       options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
@@ -742,11 +738,13 @@ exports.getUserCampaignsForHome = function(req, res) {
       options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
       _sort ='-create_time';
     }
-    Campaign
-    .find(options)
-    .sort(_sort)
-    .populate(_populate)
-    .exec()
+
+    var query = Campaign.find(options).sort(_sort);
+    if(photoFlag){
+      query = query.populate('photo_album');
+    }
+
+    query.exec()
     .then(function(campaigns){
       callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:photoFlag,nowFlag:joinFlag}));
     });
@@ -760,7 +758,7 @@ exports.getUserCampaignsForHome = function(req, res) {
     },//马上开始的活动,（已参加）
     function(callback){
       serchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
-    },//正在进行的活动
+    }//正在进行的活动
   ], function(err, values) {
     if(err){
       console.log(err);

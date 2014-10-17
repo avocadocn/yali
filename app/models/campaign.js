@@ -210,14 +210,33 @@ Campaign.virtual('members').get(function () {
 
 Campaign.methods = {
 
-
+  /**
+   * 判断用户参加了哪个阵营的活动
+   * @param {Object|String} uid 用户id，ObjectId和String均可
+   * @returns {Object|Boolean} 返回用户所在的阵营对象，如果没有，返回false
+   */
   whichUnit: function (uid) {
+    uid = uid.toString();
     for (var i = 0; i < this.campaign_unit.length; i++) {
+      var unit = this.campaign_unit[i];
+
+      for (var j = 0; j < unit.member.length; j++) {
+        if (uid === unit.member[j]._id.toString()) {
+          return unit;
+        }
+      }
+
+      for (var j = 0; j < unit.member_quit.length; j++) {
+        if (uid === unit.member_quit[j]._id.toString()) {
+          return unit;
+        }
+      }
 
     }
+    return false;
   }
 
-}
+};
 
 
 mongoose.model('Campaign', Campaign);
