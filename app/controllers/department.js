@@ -138,10 +138,12 @@ exports.multiCampaignSponsor = function(req, res) {
   var team_ids = [];
   var poster;
   var other_departments = req.body.select_departments;
+  var _compaignUnits =[];
+  var cname = req.user.provider === 'user'? req.user.cname:req.user.info.official_name;
   if(req.user.provider === 'user'){
     poster = {
       'cid':req.user.cid,
-      'cname':req.user.cname,
+      'cname':cname,
       'tname':req.department.team.name,
       'uid':req.user._id,
       'nickname':req.user.nickname,
@@ -152,10 +154,22 @@ exports.multiCampaignSponsor = function(req, res) {
       'name':req.department.team.name,
       'logo':req.department.team.logo
     });
+    _compaignUnits.push({
+      'company':{
+        '_id':req.user.cid,
+        'name':req.user.cname,
+        'logo':req.department.company.logo
+      },
+      'team':{
+        '_id':req.department.team._id,
+        'name':req.department.team.name,
+        'logo':req.department.team.logo
+      }
+    });
   }else{
     poster = {
       'cid':req.user._id,
-      'cname':req.user.info.name,
+      'cname':cname,
       'role':'HR'
     };
   }
@@ -169,21 +183,34 @@ exports.multiCampaignSponsor = function(req, res) {
       'name':other_departments[i].team.name,
       'logo':other_departments[i].team.logo
     });
+    _compaignUnits.push({
+      'company':{//暂时只有一个公司
+        '_id':req.user.provider === 'user'?req.user.cid:req.user._id,
+        'name':cname,
+        'logo':req.department.company.logo
+      },
+      'team':{
+        '_id':other_departments[i].team._id,
+        'name':other_departments[i].team.name,
+        'logo':other_departments[i].team.logo
+      }
+    });
   }
 
   var providerInfo = {
+    tid:team_ids,
     cid:[req.department.company._id],
-    cname:[req.department.company.name],
+    // cname:[req.department.company.name],
     poster:poster,
     campaign_type:8,
-    team:team_ids
+    campaign_unit:_compaignUnits
   };
 
   var create_user = {
     _id: poster._id,
     name:req.role==='HR'? poster.cname:poster.nickname,
     type:req.role==='HR'? 'hr':'user'
-  }
+  };
   var photoInfo = {
     owner: {
       model: {
@@ -337,6 +364,7 @@ exports.sponsor = function(req, res) {
 
     //生成活动
     var all_teams = [];
+    var campaignUnits = [];
     var all_team_ids = [];
     for(var i = 0 ; i < departments.length; i ++){
       all_team_ids.push(departments[i].team._id);
@@ -345,10 +373,21 @@ exports.sponsor = function(req, res) {
         'name':departments[i].team.name,
         'logo':departments[i].team.logo
       });
+      campaignUnits.push({
+        'company':{
+          '_id':cid,
+          'name':cname,
+          'logo':req.department.company.logo
+        },
+        'team':{
+          '_id':departments[i].team._id,
+          'name':departments[i].team.name,
+          'logo':departments[i].team.logo
+        }
+      });
     }
     var providerInfo = {
       'cid':[cid],
-      'cname':[cname],
       'poster':{
         cname:cname,
         cid:cid,
@@ -356,7 +395,8 @@ exports.sponsor = function(req, res) {
         tname:tname
       },
       'team':all_team_ids,
-      'campaign_type':6
+      'campaign_type':6,
+      'campaign_unit':campaignUnits
     };
     var photoInfo = {
       owner: {
@@ -381,7 +421,7 @@ exports.sponsor = function(req, res) {
         _id: req.user._id,
         name: req.user.info.official_name,
         type: 'hr'
-      }
+      };
     }
     photoInfo.update_user= _user;
     photoInfo.create_user= _user;
@@ -420,7 +460,8 @@ exports.sponsor = function(req, res) {
   }
   //为了把子部门的小队也放入该活动
   getDeptDepartment(req,res,req.department._id,_sponsor);
-}
+};
+
 var teamOperate = function(options, callback){
   var did = options.did;
   var operate = options.operate;

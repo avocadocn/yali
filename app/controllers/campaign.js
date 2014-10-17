@@ -1407,7 +1407,6 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 //basicInfo: req.body,
 //provider_info: for poster、campaign_type、campaignUnit、tid、cid etc
 //photoInfo: photo_album needed
-//campInfo: info of competition
 
   //---basicInfo
   var campaign = new Campaign();
@@ -1429,11 +1428,10 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
     callback(400,'活动的时间比现在更早');
   }
   else{
-    //---providerInfo including campInfo
+    //---providerInfo
     for (var attr in providerInfo) {
       campaign[attr] = providerInfo[attr];
     }
-
 
     //---Photo
     var photo_album = new PhotoAlbum();
@@ -1441,6 +1439,7 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
       photo_album[attr]=photoInfo[attr];
     }
     photo_album.owner.model._id=campaign._id;
+
     //---save
 
     photo_album.save(function(err) {
@@ -1468,7 +1467,6 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
         if (err) { callback(500, '创建活动组件失败'); }
         else {
           campaign.save(function(err) {
-            console.log('done');
             if(err) callback(500,'保存活动失败');
             else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
           });

@@ -1009,7 +1009,6 @@ exports.getCompanyDepartments = function(req, res, next) {
     });
 };
 
-//TODO -M 改缓存
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyTeamsInfo = function(req, res) {
 
@@ -1565,9 +1564,17 @@ exports.sponsor = function(req, res) {
       cid:cid,
       role:'HR'
     },
-    'campaign_type':1
-  }
+    'campaign_type':1,
+    'campaign_unit':[{
+      'company':{
+        _id:req.user._id,
+        name:req.user.info.name,
+        logo:req.user.info.logo
+      }
+    }]//暂时只有一个公司的活动
+  };
   var photoInfo = {
+    cid:[cid],
     owner: {
       model: {
         type: 'Campaign'

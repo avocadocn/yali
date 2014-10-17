@@ -1034,7 +1034,7 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','C
             theme: $scope.theme,
             location: $scope.location,
             content : $scope.content,
-            tags: $scope.tags ? $scope.tags.split(',') :[]
+            tags: $scope.tags ? $scope.tags.split(',') :[],
             start_time:$scope.start_time,
             end_time:$scope.end_time,
             deadline:$scope.deadline,
