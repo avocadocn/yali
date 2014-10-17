@@ -207,4 +207,17 @@ Campaign.virtual('members').get(function () {
   return members;
 });
 
+
+Campaign.methods = {
+
+
+  whichUnit: function (uid) {
+    for (var i = 0; i < this.campaign_unit.length; i++) {
+
+    }
+  }
+
+}
+
+
 mongoose.model('Campaign', Campaign);

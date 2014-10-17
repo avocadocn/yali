@@ -152,6 +152,11 @@ var _auth = function (role, tasks) {
  *  }
  * @param tasks 需要判断的任务列表, 例如:['uploadPhoto', 'createPhotoAlbum']
  * @returns {Object}
+ * 例如:
+ *  {
+ *    uploadPhoto: true,
+ *    createPhotoAlbum: false
+ *  }
  */
 module.exports = function (user, owner, tasks) {
   var role = getRole(user, owner);

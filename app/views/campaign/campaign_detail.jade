@@ -1,176 +1,38 @@
 extends ../layouts/user_base
 
 append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/campaign_detail.css")
-  if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
-    link(rel="stylesheet" href="/lib/pen/src/pen.css")
 block contentExt
-  .dl_detail_container.clearfix(ng-controller="campaignController" ng-init="campaign_id='#{campaign._id}';campaign_type='#{campaign.campaign_type}';join=#{join};role='#{role}';")
-    include ../partials/breadcrumb
-    +breadcrumb(links)
-    #campaign_data(data-photo-album-id="#{campaign.photo_album._id}" data-host-id="#{campaign._id}")
-    .dl_detail_main
-      //-TODO:详情页权限不正确，需要更改
-      if (role==='HR' || role==='LEADER' && campaign.campaign_type != 3) && campaign.active &&!campaign.finish
-        span.pull-right
-          button.cancel_btn.dl_btn_small.operator_btn(ng-click="cancel(campaign_id)") 关闭活动
-      ul.nav.nav-tabs
-        li.tab_style(ng-class="{'active':true}")
-          a.subtitle.no_radius.border_red= campaign.theme
+  .campaign_detail.dl_container
+    .breadcrumb
+    .main_panel
+      .component
+        .component_head
+          span.title #{campaign.theme}
+          span.sub_title #{campaign.campaign_unit[0].team.name}
+        .component_body
+          img(src="#{campaign.campaign_unit[0].team.logo}")
+          p 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm dddd')}
+          p 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm dddd')}
+          p 活动地点: #{campaign.location.name}
+          p 活动类型: #{campaign.campaign_mold}
+          p: span.title 最新公告
+          if notice
+            p #{notice.content}
+            p #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
+          hr
+          p: span.title 活动简介
+          div #{campaign.content}
+          p: span.title 活动标签
+          .tags
+            each tag in campaign.tags
+              span.tag #{tag}
+          p: span.title 报名信息
+          p 报名人数上限: #{campaign.members.length}/#{campaign.member_max}
+          p 报名人数下限: #{campaign.member_min}
+          p 报名截止日期: #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm dddd')}
+    .side_panel
 
-      .dl_detail_border.clearfix
-        .dl_detail_content
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("START_TIME")}:
-            .dl_detail_detail
-              span= moment(campaign.start_time).format("YYYY-MM-DD HH:mm dddd")
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("END_TIME")}:
-            .dl_detail_detail
-              span= moment(campaign.end_time).format("YYYY-MM-DD HH:mm dddd")
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("ENTRY")}#{__("DEADLINE")}:
-            .dl_detail_detail
-              span= moment(campaign.deadline).format("YYYY-MM-DD HH:mm dddd")
-          .dl_detail_row
-            .dl_detail_label
-              span #{__("CAMPAIGN")}#{__("PLACE")}#{__("LOCATION")}:
-            .dl_detail_detail
-              span= campaign.location.name
-          if campaign.member_min>0
-            .dl_detail_row
-              .dl_detail_label
-                span #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
-              .dl_detail_detail
-                span= campaign.member_min
-          if campaign.member_max>0
-            .dl_detail_row
-              .dl_detail_label
-                span #{__("ENTRY")}#{__("SUM")}#{__("LIMIT")}:
-              .dl_detail_detail
-                span= campaign.member_max
-          if campaign.tags.length>0
-            .dl_detail_row
-              .dl_detail_row
-                .dl_detail_detail
-                  each tag in campaign.tags
-                    span.glyphicon.glyphicon-tag
-                    span #{tag}
-        .dl_detail_aside
-            img.img_contain.size_128(ng-src="#{campaignLogo}")
-            if campaign.active && (role==='MEMBER' ||role ==='LEADER') && !over
-              .dl_button_container
-                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('QUIT')}#{__('CAMPAIGN')}" ng-click="quitCampaign()" ng-if="join==1")
-                - var myJoinTeam = {};
-                - if(campaign.campaign_type!==1) { myJoinTeam = {_id:campaign.team[0]._id,name:campaign.team[0].name,logo:campaign.team[0].logo}}
-                input.dl_btn.dl_btn_medium(type = "button" value = "#{__('ENTRY')}#{__('JOIN')}" ng-click="(#{myteamLength}>1&&#{campaign.campaign_type} !== 1)?joinReady():joinCampaign(#{JSON.stringify(myJoinTeam)})" ng-if="join!==1")
-      .dl_detail_member.row
-        .dl_row.subtitle(ng-init="baseContent=true;")
-          span #{__("CAMPAIGN")}#{__("SIMPLE")}#{__("INTRODUCTION")}:
-          a.pull-right(ng-show="showFold" ng-click="baseContent=!baseContent;")(ng-cloak) {{baseContent ? '展开' :'收缩'}}
-          if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
-            span.pull-right(ng-show="showFold") |
-            a.pull-right(ng-click="editContent()")(ng-cloak) {{editContentStatus ? '保存' :'编辑'}}
-        .dl_detail_row.dl_content_container
-          .base_content_gradient(ng-show="showFold && baseContent" ng-click="baseContent=!baseContent;")
-          #campaignContent.dl_word_break.content_container(ng-class="{'base_content':baseContent}" max-height=77 ng-show="!editContentStatus")!= campaign.content
-          if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
-            #campaignDetailToolBar
-            #campaignDetail.markdownContainer(ng-show="editContentStatus" ng-model="campaignContent"  mix-maxlength=4000 contenteditable)
-      if !campaign.active
-        .dl_detail_row.text-center.margin_top_30
-          span #{__("CAMPAIGNCLOSE")}
-      else if campaign.finish
-        .dl_detail_row.text-center.margin_top_30
-          span #{__("CAMPAIGNFINISH")}
-      if messageContent.length>0
-        .dl_detail_member.row
-          .dl_row.subtitle
-            span 活动通知:
-          each _message in messageContent
-            .message_item
-              .message_content= _message.content
-              .pull-right= '来自--' + _message.sender.nickname + '(' + _message.sender.role + ')'
-              .pull-right= moment(_message.post_date).format("YYYY-MM-DD HH:mm")
-      if campaign.campaign_type == 3
-        //-成员
-        each member_team in campaignMember
-          .dl_detail_member.row
-            .dl_row.subtitle(bs-popover)
-              .pull-left #{member_team.name} #{__("JOIN")}#{__("MEMBER")}:
-              if (role === 'HR' || member_team.leader ) && member_team.member.length>0 
-                a.pull-right(ng-click="modalPerticipator(#{JSON.stringify(member_team)})") 发通知
-            .dl_row
-              each _member in member_team.member
-                div.member
-                  a.item(href="/users/home/#{_member.uid}" ng-Mouseenter="showUserCard('#{_member.uid}','#{_member.uid}')" id='pop#{_member.uid}' rel='popover')
-                    img.img_contain.detail_photo.img_user(src="#{_member.photo}")
-                    span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
-              if member_team.member.length == 0
-                span.info_label 该队还没有人参加哦!
-      else
-        .dl_detail_member(bs-popover)
-          .dl_row.subtitle
-            .pull-left #{__("JOIN")}#{__("MEMBER")}:
-            if (role === 'HR' || role === 'LEADER') && campaign.member.length>0
-              a.pull-right(ng-click="modalPerticipator(#{JSON.stringify(campaign.team)})") 发通知
-          .dl_row.clearfix
-            each _member in campaign.member
-              div.member
-                a.item(href="/users/home/#{_member.uid}" ng-Mouseenter="showUserCard('#{_member.uid}','#{_member.uid}')" id='pop#{_member.uid}' rel='popover')
-                  img.img_contain.detail_photo.img_user(src="#{_member.photo}")
-                  span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
-            if campaign.member.length==0
-              span.info_label 该活动还没有人参加哦!
-      if (role==='HR' || role ==='LEADER') && campaign.member_quit.length>0
-        .dl_detail_member(bs-popover)
-          p.subtitle 退出#{__("MEMBER")}:
-          .dl_row.clearfix
-            each _member in campaign.member_quit
-              div.member
-                a.item(href="/users/home/#{_member.uid}" ng-Mouseenter="showUserCard('#{_member.uid}','#{_member.uid}')" id='pop#{_member.uid}' rel='popover')
-                  img.img_contain.detail_photo.img_user(src="#{_member.photo}")
-                  span.name(ng-cloak) {{shortTrim('#{_member.nickname}')}}
-      //-include ../partials/rich_comment_box
-      each component in campaign.components
-        if component.name === 'RichComment'
-          rich-comment(component-id="#{component._id}" allow-publish="#{allow.publishComment}")
-        if component.name === 'ScoreBoard'
-          score-board(component-id="#{component._id}" allow-edit="#{allow.setScoreBoardScore}")
-    .dl_detail_side
-      .map_container
-        p.subtitle.locationtitle #{__("CAMPAIGN")}#{__("LOCATION")}
-        //- if campaign.location.coordinates.length==2
-        //-   a(href="http://api.map.baidu.com/marker?location=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&title=活动地点&content=#{campaign.location.name}&output=html" target="_blank")
-        //-     img.map_size(src="http://api.map.baidu.com/staticimage?width=268&height=210&center=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&markers=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&markerStyles=m,A,0xff0000&labels=#{campaign.location.name}|#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labelStyles=#{campaign.location.name},1,14,0xffffff,0x000fff,1")
-        //- else
-        //-   img.map_size(src="/img/sign_bg.jpg")
-        if campaign.location.coordinates.length==2
-          a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
-            img.map_size(src="http://restapi.amap.com/v3/staticmap?location=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labels=#{campaign.location.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
-        else
-          img.map_size(src="/img/icons/nomap.jpg")
-      .photo_container
-        .clearfix
-          p.subtitle.pull-left #{__("CAMPAIGN")}#{__("WONDERFUL")}#{__("PHOTO")}
-          if role!=='PARTNER'
-            a.pull-right(href="/photoAlbum/#{campaign.photo_album._id}/detailView") 上传活动照片
-        .photo_album
-          each photo in photo_thumbnails
-            a.thumbnail_cell(href="/photoAlbum/#{campaign.photo_album._id}/photoView/#{photo._id}")
-              img.thumbnail_img.img-thumbnail(src="#{photo.uri}/120/120")
-              p.thumbnail_name.text-center= photo.name
-    .modal.fade#sponsorMessageCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../partials/campaign_message_send
-    .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../partials/select_team_modal_jade
-    include ../partials/report_modal
+
 append footExt
   script(src="/js/controllers/campaign.js")
-  if campaign.active &&!campaign.finish && (role=='HR' || campaign.campaign_type != 3 && role=='LEADER')
-    script(src="/lib/pen/src/pen.js")
-    script(src="/lib/pen/src/markdown.js")
