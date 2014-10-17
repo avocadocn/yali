@@ -82,6 +82,15 @@ tabViewUser.run(['$rootScope','$location','Report',
         $rootScope.openModal = function(){
             $('#user_modal').modal();
         }
+        $rootScope.judgeYear = function(index){
+            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+
     }
 ]);
 tabViewUser.directive('masonry', function ($timeout) {
@@ -659,6 +668,12 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                         // $('#calendar_modal').view($(this).data('calendar-view'));
                         // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
                     });
+                    $('#calendar').find('span[data-cal-date]').click(function(e){
+                        $('#events-modal').modal('show');
+                        initModalCalendar(events_source,$(this).attr('data-cal-date'));
+                        // $('#calendar_modal').view($(this).data('calendar-view'));
+                        // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
+                    });
                 },
                 classes: {
                     months: {
@@ -690,7 +705,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                     modal_data.start = this.getStartDate();
                 },
                 onAfterViewLoad: function(view) {
-                    $('#calendar_title').text(this.getTitle());
+                    $('#calendar_title_modal').text(this.getTitle());
                     //$('#calendar_operator button').removeClass('active');
                     //$('button[data-calendar-view="' + view + '"]').addClass('active');
                     if (view === 'day') {

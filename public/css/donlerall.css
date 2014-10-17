@@ -2437,36 +2437,97 @@ input.ng-invalid.ng-dirty {
   display: table;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box {
-  width: 620px;
+  width: 420px;
   float: left;
 }
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .schedule_btn {
+  width: 135px;
+  margin: -2px;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  color: #999;
+  background-color: #eee;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .schedule_btn[disabled] {
+  color: #fff;
+  background-color: #ccc;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .join {
+  border-bottom-left-radius: 1em;
+  border-top-left-radius: 1em;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .unjoin {
+  border-left: 1px solid #ccc;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .all {
+  border-left: 1px solid #ccc;
+  border-bottom-right-radius: 1em;
+  border-top-right-radius: 1em;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .calendar_nav a {
+  width: 100px;
+  text-align: center;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .calendar_nav a .calendar_title {
+  width: 165px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .join_sign {
+  width: 17px;
+  height: 20px;
+  color: #fff;
+  text-align: center;
+  border-radius: 0;
+  font-size: 14px;
+  font-family: Arial;
+  line-height: 24px;
+  margin: 10px 20px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal {
+  border: 1px solid #ddd;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .cal-month-box [class*="cal-cell"] {
+  min-height: 50px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day {
+  height: 65px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips {
+  height: 45px;
+  -moz-box-shadow: 0 3px 3px #ddd;
+/* 老的 Firefox */
+  box-shadow: 0 3px 3px #ddd;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .campaign_label {
+  line-height: 24px;
+  font-size: 14px;
+}
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box {
-  width: 300px;
+  width: 510px;
   float: right;
   margin-left: 20px;
-  margin-top: 43px;
+  margin-top: 30px;
   padding-top: 10px;
-  border: 1px solid #ccc;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-time {
   padding: 10px;
+  color: #3498db;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-time .date {
-  font-size: 100px;
+  font-size: 36px;
   line-height: 0.9em;
-  color: #000;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-time .time {
-  font-size: 16px;
+  font-size: 14px;
+  margin-left: 10px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .title {
   padding: 10px;
-  font-size: 24px;
-  border-top: 1px solid;
+  font-size: 14px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-list {
-  max-height: 298px;
-  min-height: 298px;
+  border: 1px solid #ddd;
+  max-height: 380px;
+  min-height: 380px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-list .custom_calendar_li {
   margin: 10px 0;
@@ -2488,6 +2549,9 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main {
   width: 700px;
   margin-right: 20px;
+}
+.user_page .dl_container .main .campaign_table .time_col {
+  padding: 0;
 }
 .user_page .dl_container .main .tab-body .dl_card_tebcontent,
 .user_page .dl_container .main .tab-body .dl_campaign_list {
@@ -2818,6 +2882,7 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .side .schedule_small .schedulebox {
   padding: 0;
+  border: none;
 }
 .user_page .dl_container .side .schedule_small .schedulebox .calendar_tips {
   height: 30px;
@@ -2843,6 +2908,7 @@ input.ng-invalid.ng-dirty {
   line-height: 38px;
   padding: 0 10px;
   margin: 0;
+  clear: both;
 }
 .user_page .dl_container .side .schedule_small .schedulebox .calendar_nav .calendar_title {
   width: 170px;
@@ -2860,11 +2926,11 @@ input.ng-invalid.ng-dirty {
   background: none;
   color: #fff;
 }
-.user_page .dl_container .side .schedule_small .cal-context .cal-day-inmonth span[data-cal-date] {
-  width: 14px;
+.user_page .dl_container .side .schedule_small .cal-context .cal-month-day span[data-cal-date] {
+  width: 100%;
   height: 14px;
   text-align: center;
-  margin: 5px 10px;
+  margin: 5px 0;
 }
 .user_page .dl_container .side .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.2em;

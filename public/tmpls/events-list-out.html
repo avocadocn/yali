@@ -1,8 +1,8 @@
 <div class="cal-event-time">
-  <p class="date"><%= time.date %></p>
-  <p class="time"><%= time.time %></p>
+  <span class="date"><%= time.date %></span>
+  <span class="time"><%= time.time %></span>
+  <span class="pull-right title"><%= events.length %>个活动 </span>
 </div>
-<p class="title">今日活动(<%= events.length %>) </p>
 <div id="cal-slide-content" class="cal-event-list">
   <ul class="unstyled list-unstyled">
     <% _.each(events, function(event) { %>

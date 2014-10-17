@@ -237,7 +237,8 @@ var formatCampaignForCalendar = function(user, campaigns) {
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
       //'count': count,
-      'is_joined': is_joined
+      'is_joined': is_joined,
+      'location':campaign.location,
     });
   });
   return calendarCampaigns;

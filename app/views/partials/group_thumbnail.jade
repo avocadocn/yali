@@ -5,7 +5,7 @@ mixin group_thumbnail(teams)
   .groups
     each team,i in teams
       if team.gid !=='0'
-        div.center-block.group(data-toggle="tooltip" title="#{team.name}")
+        div.center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
           if team.leader
             span.group_leader
           a.center-block(href="/group/page/#{team._id}")
