@@ -19,11 +19,11 @@ tabViewUser.directive('match', function($parse) {
 tabViewUser.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
-      .when('/group_message', {
-        templateUrl: '/message_list',
-        controller: 'GroupMessageController',
-        controllerAs: 'messages'
-      })
+      // .when('/group_message', {
+      //   templateUrl: '/message_list',
+      //   controller: 'GroupMessageController',
+      //   controllerAs: 'messages'
+      // })
       .when('/campaign/:uid', {
         templateUrl: function(params){
             return '/users/campaign/'+params.uid;
@@ -41,8 +41,7 @@ tabViewUser.config(['$routeProvider',
       .when('/timeLine/:uid', {
         templateUrl: function(params){
             return '/users/timeline/'+params.uid;
-        },
-        controller: 'TimeLineController'
+        }
       })
       // .when('/schedule/:uid', {
       //   templateUrl: function(params){
@@ -58,49 +57,75 @@ tabViewUser.config(['$routeProvider',
         controller: 'PasswordFormController',
         controllerAs: 'password'
       })
+      .when('/', {
+        template: ""
+      })
       .otherwise({
-        redirectTo: '/group_message'
+        redirectTo: '/'
       });
   }]);
 
 tabViewUser.run(['$rootScope','$location','Report',
     function($rootScope,$location,Report) {
-        if($location.hash()!=='')
-            $rootScope.nowTab = window.location.hash.substr(2);
-        else if($location.path()!=='')
-            $rootScope.nowTab = $location.path().substr(1);
         $rootScope.message_for_group = false;
-        $rootScope.addactive = function(value) {
-            $rootScope.nowTab = value;
-            $rootScope.message_corner = false;
-            angular.element('.tooltip').hide();
-        };
         $rootScope.$on("$routeChangeStart",function(){
             $rootScope.loading = true;
         });
         $rootScope.$on("$routeChangeSuccess",function(){
             $rootScope.loading = false;
         });
-        $rootScope.$watch("role",function(role){
-            if (role && $location.hash()=='' && $location.path()==''){
-                if(role === 'OWNER'){
-                    $location.path('/group_message');
-                    $rootScope.nowTab='group_message';
-                }
-                else{
-                    $location.path('/personal/'+$rootScope.uid);
-                    $rootScope.nowTab='personal/'+$rootScope.uid;
-                }
-            }
-        });
         $rootScope.pushReport = function(){
             Report.publish($rootScope.reportContent,function(err,msg){
                 alertify.alert(msg);
             });
         }
+        $rootScope.openModal = function(){
+            $('#user_modal').modal();
+        }
+        $rootScope.judgeYear = function(index){
+            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+
     }
 ]);
-
+tabViewUser.directive('masonry', function ($timeout) {
+    return {
+        restrict: 'A',
+        scope: {
+            reload: '=',
+            items: '='
+        },
+        link: function (scope, elem, attrs) {
+            var options = {
+                itemSelector: '.masonry-item',
+                transitionDuration: '0.2s',
+                gutter: 10
+            };
+            elem.masonry(options);
+            scope.$watch('items', function(newVal, oldVal) {
+                if (newVal && newVal != oldVal) {
+                    $timeout(function () {
+                        elem.masonry('reloadItems');
+                        elem.masonry(options);
+                    });
+                }
+            }, true);
+            scope.$watch('reload', function(newVal) {
+                if (newVal === true) {
+                    $timeout(function () {
+                        elem.masonry('reloadItems');
+                        elem.masonry(options);
+                    });
+                }
+            });
+        }
+    };
+});
 
 //留言合并
 var messageConcat = function(messages,rootScope,scope,reset){
@@ -119,9 +144,14 @@ var messageConcat = function(messages,rootScope,scope,reset){
     }
     return new_messages;
 }
+
 tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-        $scope.recentCampaigns = [];
+        $scope.recentUnjoinedCampaigns = [];
+        $scope.recentJoinedCampaigns = [];
+        $scope.nowCampaigns = [];
+
+        $scope.newReply =[];
         $scope.showCampaign = false;
         $rootScope.$watch('uid',function(uid){
             if(!uid)
@@ -133,7 +163,11 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
                 }).success(function(data,status){
                     if(data.result===1){
                         $scope.recentCampaigns = data.campaigns;
+                        $scope.recentUnjoinedCampaigns = data.campaigns[0];
+                        $scope.recentJoinedCampaigns = data.campaigns[1];
+                        $scope.nowCampaigns = data.campaigns[2];
                         $scope.showCampaign = true;
+                        $scope.topCampaign = data.campaigns[1][0];
                     }
                 }).error(function(data,status){
                     alertify.alert('DATA ERROR');
@@ -146,347 +180,342 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
         
     }
 ]);
-tabViewUser.controller('TimeLineController', ['$http', '$scope', '$rootScope',
-    function($http, $scope, $rootScope) {
-        $rootScope.nowTab = 'timeLine';
-    }
-]);
-tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope', 'Report', 'Comment',
-    function($http, $scope, $rootScope, Report, Comment) {
-        $rootScope.nowTab = 'group_message';
-        angular.element('.tooltip').hide();
-        $scope.new_comment = [];
-        $scope.toggle = [];
-        $scope.message_role = "user";
-        $rootScope.nowTab = 'group_message';
-        $rootScope.$watch('uid',function(uid){
-            $http.get('/groupMessage/user/'+uid+'/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
-                $scope.user = data.user;
-                $rootScope.message_corner = true;
-                $scope.role = data.role;
-                if(data.message_length<20){
-                    $scope.loadMore_flag = false;
-                }
-                else{
-                    $scope.loadMore_flag = true;
-                }
-                $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
-            });
-        });
 
-        $scope.loadMore_flag = false;
-        $scope.block = 1;
-        $scope.page = 1;
-        $scope.pageTime = [0];
-        $scope.lastPage_flag = false;
-        $scope.nextPage_flag = false;
-        $scope.loadMore = function(){
-            $http.get('/groupMessage/user/'+$rootScope.uid+'/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-                if(data.result===1 && data.group_messages.length>0){
-                    $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
-                    if(data.message_length<20){
-                        $scope.loadMore_flag = false;
-                        if($scope.pageTime.length>1){
-                            $scope.lastPage_flag = true;
-                        }
-                    }
-                    else{
-                        $scope.loadMore_flag = true;
-                    }
-                    if($scope.pageTime.length>1){
-                        $scope.lastPage_flag = true;
-                    }
-                    if(++$scope.block==5){
-                        $scope.nextPage_flag = true;
-                        $scope.loadMore_flag = false;
-                        if($scope.page!=1){
-                            $scope.lastPage_flag = true;
-                        }
-                    }
-                }
-                else{
-                    $scope.loadOver_flag = true;
-                    $scope.loadMore_flag = false;
-                    $scope.nextPage_flag = false;
-                }
-            });
-        }
-        $scope.changePage = function(flag){
-            var start_time = flag ==1? new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime() :$scope.pageTime[$scope.page-2];
-            $http.get('/groupMessage/user/'+$rootScope.uid+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-                if(data.result===1 && data.group_messages.length>0){
-                    if(flag ==1){
-                        $scope.page++;
-                        $scope.pageTime.push(new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime());
-                    }
-                    else{
-                        $scope.page--;
-                        $scope.pageTime.pop();
-                    }
-                    $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
-                    if(data.message_length<20){
-                        $scope.loadMore_flag = false;
-                        $scope.loadOver_flag = true;
-                    }
-                    else{
-                        $scope.loadMore_flag = true;
-                        $scope.nextPage_flag = false;
-                        $scope.lastPage_flag = false;
-                        $scope.loadOver_flag = false;
-                    }
-                    if(flag==1){
-                        $scope.lastPage_flag = true;
-                        $scope.nextPage_flag = false;
-                    }
-                    else{
-                        $scope.lastPage_flag = false;
-                        $scope.nextPage_flag = true;
-                    }
-                    $scope.block = 1;
-                    window.scroll(0,0);
-                }
-                else{
-                    $scope.nextPage_flag = false;
-                    $scope.loadMore_flag = false;
-                    $scope.loadOver_flag = true;
-                }
-            });
-        }
+// tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope', 'Report', 'Comment',
+//     function($http, $scope, $rootScope, Report, Comment) {
+//         $rootScope.nowTab = 'group_message';
+//         angular.element('.tooltip').hide();
+//         $scope.new_comment = [];
+//         $scope.toggle = [];
+//         $scope.message_role = "user";
+//         $rootScope.$watch('uid',function(uid){
+//             $http.get('/groupMessage/user/'+uid+'/0?' + (Math.round(Math.random() * 100) + Date.now())).success(function(data, status) {
+//                 $scope.user = data.user;
+//                 $rootScope.message_corner = true;
+//                 $scope.role = data.role;
+//                 if(data.message_length<20){
+//                     $scope.loadMore_flag = false;
+//                 }
+//                 else{
+//                     $scope.loadMore_flag = true;
+//                 }
+//                 $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
+//             });
+//         });
 
-        $scope.toggleOperate = function(index){
-            $scope.toggle[index] = !$scope.toggle[index];
-            $scope.message_index = index;
-        }
-        $scope.getComment = function(index){
-            if($scope.toggle){
-                try {
-                    $http({
-                        method: 'post',
-                        url: '/comment/pull/campaign/'+$scope.group_messages[index].campaign._id,
-                        data:{
-                            host_id : $scope.group_messages[index].campaign._id
-                        }
-                    }).success(function(data, status) {
-                        if(data.comments.length > 0){
-                            $scope.group_messages[index].comments = data.comments;
-                            $scope.fixed_sum = data.comments.length;
-                        }
-                    }).error(function(data, status) {
-                        alertify.alert('DATA ERROR');
-                    });
-                }
-                catch(e) {
-                    console.log(e);
-                }
-            }
-        }
+//         $scope.loadMore_flag = false;
+//         $scope.block = 1;
+//         $scope.page = 1;
+//         $scope.pageTime = [0];
+//         $scope.lastPage_flag = false;
+//         $scope.nextPage_flag = false;
+//         $scope.loadMore = function(){
+//             $http.get('/groupMessage/user/'+$rootScope.uid+'/'+new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime()+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+//                 if(data.result===1 && data.group_messages.length>0){
+//                     $scope.group_messages = $scope.group_messages.concat(messageConcat(data.group_messages,$rootScope,$scope,false));
+//                     if(data.message_length<20){
+//                         $scope.loadMore_flag = false;
+//                         if($scope.pageTime.length>1){
+//                             $scope.lastPage_flag = true;
+//                         }
+//                     }
+//                     else{
+//                         $scope.loadMore_flag = true;
+//                     }
+//                     if($scope.pageTime.length>1){
+//                         $scope.lastPage_flag = true;
+//                     }
+//                     if(++$scope.block==5){
+//                         $scope.nextPage_flag = true;
+//                         $scope.loadMore_flag = false;
+//                         if($scope.page!=1){
+//                             $scope.lastPage_flag = true;
+//                         }
+//                     }
+//                 }
+//                 else{
+//                     $scope.loadOver_flag = true;
+//                     $scope.loadMore_flag = false;
+//                     $scope.nextPage_flag = false;
+//                 }
+//             });
+//         }
+//         $scope.changePage = function(flag){
+//             var start_time = flag ==1? new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime() :$scope.pageTime[$scope.page-2];
+//             $http.get('/groupMessage/user/'+$rootScope.uid+'/'+start_time+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+//                 if(data.result===1 && data.group_messages.length>0){
+//                     if(flag ==1){
+//                         $scope.page++;
+//                         $scope.pageTime.push(new Date($scope.group_messages[$scope.group_messages.length-1].create_time).getTime());
+//                     }
+//                     else{
+//                         $scope.page--;
+//                         $scope.pageTime.pop();
+//                     }
+//                     $scope.group_messages = messageConcat(data.group_messages,$rootScope,$scope,true);
+//                     if(data.message_length<20){
+//                         $scope.loadMore_flag = false;
+//                         $scope.loadOver_flag = true;
+//                     }
+//                     else{
+//                         $scope.loadMore_flag = true;
+//                         $scope.nextPage_flag = false;
+//                         $scope.lastPage_flag = false;
+//                         $scope.loadOver_flag = false;
+//                     }
+//                     if(flag==1){
+//                         $scope.lastPage_flag = true;
+//                         $scope.nextPage_flag = false;
+//                     }
+//                     else{
+//                         $scope.lastPage_flag = false;
+//                         $scope.nextPage_flag = true;
+//                     }
+//                     $scope.block = 1;
+//                     window.scroll(0,0);
+//                 }
+//                 else{
+//                     $scope.nextPage_flag = false;
+//                     $scope.loadMore_flag = false;
+//                     $scope.loadOver_flag = true;
+//                 }
+//             });
+//         }
+
+//         $scope.toggleOperate = function(index){
+//             $scope.toggle[index] = !$scope.toggle[index];
+//             $scope.message_index = index;
+//         }
+//         $scope.getComment = function(index){
+//             if($scope.toggle){
+//                 try {
+//                     $http({
+//                         method: 'post',
+//                         url: '/comment/pull/campaign/'+$scope.group_messages[index].campaign._id,
+//                         data:{
+//                             host_id : $scope.group_messages[index].campaign._id
+//                         }
+//                     }).success(function(data, status) {
+//                         if(data.comments.length > 0){
+//                             $scope.group_messages[index].comments = data.comments;
+//                             $scope.fixed_sum = data.comments.length;
+//                         }
+//                     }).error(function(data, status) {
+//                         alertify.alert('DATA ERROR');
+//                     });
+//                 }
+//                 catch(e) {
+//                     console.log(e);
+//                 }
+//             }
+//         }
 
 
-        $scope.deleteComment = function(index) {
-            alertify.confirm('确认要删除该评论吗？', function(e) {
-                if (e) {
-                    try {
-                        Comment.remove($scope.group_messages[$scope.message_index].comments[index]._id, function(err) {
-                            if (err) {
-                                alertify.alert('删除失败，请重试。');
-                            } else {
-                                $scope.group_messages[$scope.message_index].comments.splice(index, 1);
-                                $scope.group_messages[$scope.message_index].campaign.comment_sum--;
-                            }
-                        });
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
-            });
-        };
+//         $scope.deleteComment = function(index) {
+//             alertify.confirm('确认要删除该评论吗？', function(e) {
+//                 if (e) {
+//                     try {
+//                         Comment.remove($scope.group_messages[$scope.message_index].comments[index]._id, function(err) {
+//                             if (err) {
+//                                 alertify.alert('删除失败，请重试。');
+//                             } else {
+//                                 $scope.group_messages[$scope.message_index].comments.splice(index, 1);
+//                                 $scope.group_messages[$scope.message_index].campaign.comment_sum--;
+//                             }
+//                         });
+//                     } catch (e) {
+//                         console.log(e);
+//                     }
+//                 }
+//             });
+//         };
 
-        $scope.comment = function(index,form){
-            if($scope.group_messages[index].comments.length > 0){
-                var tmp_comment = $scope.group_messages[index].comments[0];
-                if(tmp_comment.poster._id === $scope.user._id){
-                    if(form.new_comment.$viewValue === tmp_comment.content){
-                        alertify.alert('勿要重复留言!');
-                        return;
-                    }
-                }
-            }
-            var message_type = $scope.group_messages[index].message_type;
-            var host_type = message_type>3 && message_type<7? 'competition' : 'campaign';
-            try {
-                $http({
-                    method: 'post',
-                    url: '/comment/push/'+host_type+'/'+$scope.group_messages[index].campaign._id,
-                    data:{
-                        host_id : $scope.group_messages[index].campaign._id,
-                        content : form.new_comment.$viewValue,
-                        host_type : host_type
-                    }
-                }).success(function(data, status) {
-                    if(data.msg === 'SUCCESS'){
-                        $scope.group_messages[index].campaign.comment_sum ++;
-                        $scope.group_messages[index].comments.unshift({
-                            'show':true,
-                            'host_id' : data.comment.host_id,
-                            'content' : data.comment.content,
-                            'create_date' : data.comment.create_date,
-                            'poster' : data.comment.poster,
-                            'host_type' : data.comment.host_type,
-                            'index' : $scope.fixed_sum+1,
-                            'delete_permission' : true
-                        });
-                        $scope.new_comment[index].text='';
-                        form.$setPristine();
-                    } else {
-                        alertify.alert('DATA ERROR');
-                    }
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-        }
+//         $scope.comment = function(index,form){
+//             if($scope.group_messages[index].comments.length > 0){
+//                 var tmp_comment = $scope.group_messages[index].comments[0];
+//                 if(tmp_comment.poster._id === $scope.user._id){
+//                     if(form.new_comment.$viewValue === tmp_comment.content){
+//                         alertify.alert('勿要重复留言!');
+//                         return;
+//                     }
+//                 }
+//             }
+//             var message_type = $scope.group_messages[index].message_type;
+//             var host_type = message_type>3 && message_type<7? 'competition' : 'campaign';
+//             try {
+//                 $http({
+//                     method: 'post',
+//                     url: '/comment/push/'+host_type+'/'+$scope.group_messages[index].campaign._id,
+//                     data:{
+//                         host_id : $scope.group_messages[index].campaign._id,
+//                         content : form.new_comment.$viewValue,
+//                         host_type : host_type
+//                     }
+//                 }).success(function(data, status) {
+//                     if(data.msg === 'SUCCESS'){
+//                         $scope.group_messages[index].campaign.comment_sum ++;
+//                         $scope.group_messages[index].comments.unshift({
+//                             'show':true,
+//                             'host_id' : data.comment.host_id,
+//                             'content' : data.comment.content,
+//                             'create_date' : data.comment.create_date,
+//                             'poster' : data.comment.poster,
+//                             'host_type' : data.comment.host_type,
+//                             'index' : $scope.fixed_sum+1,
+//                             'delete_permission' : true
+//                         });
+//                         $scope.new_comment[index].text='';
+//                         form.$setPristine();
+//                     } else {
+//                         alertify.alert('DATA ERROR');
+//                     }
+//                 }).error(function(data, status) {
+//                     alertify.alert('DATA ERROR');
+//                 });
+//             }
+//             catch(e) {
+//                 console.log(e);
+//             }
+//         }
 
-        $scope.vote = function(competition_id, vote_status, index) {
-            try {
-                $http({
-                    method: 'post',
-                    url: '/campaign/vote/'+competition_id,
-                    data:{
-                        competition_id : competition_id,
-                        aOr : vote_status,
-                        tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
-                    }
-                }).success(function(data, status) {
-                    if(data.result===0) {
-                        alertify.alert(data.msg);
-                    } else {
-                        $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
-                        $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
-                        $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
-                        $scope.loadMore_flag = false;
-                    }
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-        };
+//         $scope.vote = function(competition_id, vote_status, index) {
+//             try {
+//                 $http({
+//                     method: 'post',
+//                     url: '/campaign/vote/'+competition_id,
+//                     data:{
+//                         competition_id : competition_id,
+//                         aOr : vote_status,
+//                         tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
+//                     }
+//                 }).success(function(data, status) {
+//                     if(data.result===0) {
+//                         alertify.alert(data.msg);
+//                     } else {
+//                         $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
+//                         $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
+//                         $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
+//                         $scope.loadMore_flag = false;
+//                     }
+//                 });
+//             }
+//             catch(e) {
+//                 console.log(e);
+//             }
+//         };
         
-        var joinCommit = function(campaign_id,index,tid){
-            try {
-                $http({
-                    method: 'post',
-                    url: '/campaign/joinCampaign/'+campaign_id,
-                    data:{
-                        campaign_id : campaign_id,
-                        tid : tid,
-                        join_team : tid ? $scope.join_teams[$scope.select_index] :tid
-                    }
-                }).success(function(data, status) {
-                    if(data.result===1){
-                        //alert('成功加入该活动!');
-                        alertify.alert('成功加入该活动!');
-                        $scope.group_messages[index].join_flag = true;
-                        $scope.group_messages[index].member_num++;
-                    }
-                    else{
-                        alertify.alert(data.msg);
-                    }
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-        }
-        $scope.join = function(campaign_id,index,tid) {
-            $scope.join_teams= $scope.group_messages[index].myteam;
-            $scope.join_campaign_id = campaign_id;
-            $scope.join_index = index;
-            $scope.select_index = 0;
-            console.log(campaign_id,index,tid,$scope.group_messages[index].myteam);
-            if($scope.group_messages[index].myteam && $scope.group_messages[index].myteam.length>1){
-                $('#joinTeamSelectmodal').modal();
-            }
-            else{
-                joinCommit(campaign_id,index,tid);
-            }
-        };
-        $scope.selcetJoinTeam = function(index){
-            $scope.select_index = index;
-        };
-        $scope.joinCampaign = function(){
-            joinCommit($scope.join_campaign_id,$scope.join_index,$scope.join_teams[$scope.select_index]._id);
-        };
+//         var joinCommit = function(campaign_id,index,tid){
+//             try {
+//                 $http({
+//                     method: 'post',
+//                     url: '/campaign/joinCampaign/'+campaign_id,
+//                     data:{
+//                         campaign_id : campaign_id,
+//                         tid : tid,
+//                         join_team : tid ? $scope.join_teams[$scope.select_index] :tid
+//                     }
+//                 }).success(function(data, status) {
+//                     if(data.result===1){
+//                         //alert('成功加入该活动!');
+//                         alertify.alert('成功加入该活动!');
+//                         $scope.group_messages[index].join_flag = true;
+//                         $scope.group_messages[index].member_num++;
+//                     }
+//                     else{
+//                         alertify.alert(data.msg);
+//                     }
+//                 }).error(function(data, status) {
+//                     alertify.alert('DATA ERROR');
+//                 });
+//             }
+//             catch(e) {
+//                 console.log(e);
+//             }
+//         }
+//         $scope.join = function(campaign_id,index,tid) {
+//             $scope.join_teams= $scope.group_messages[index].myteam;
+//             $scope.join_campaign_id = campaign_id;
+//             $scope.join_index = index;
+//             $scope.select_index = 0;
+//             console.log(campaign_id,index,tid,$scope.group_messages[index].myteam);
+//             if($scope.group_messages[index].myteam && $scope.group_messages[index].myteam.length>1){
+//                 $('#joinTeamSelectmodal').modal();
+//             }
+//             else{
+//                 joinCommit(campaign_id,index,tid);
+//             }
+//         };
+//         $scope.selcetJoinTeam = function(index){
+//             $scope.select_index = index;
+//         };
+//         $scope.joinCampaign = function(){
+//             joinCommit($scope.join_campaign_id,$scope.join_index,$scope.join_teams[$scope.select_index]._id);
+//         };
 
-        $scope.quit = function(campaign_id,index) {
-            alertify.confirm('确认要退出活动吗？',function(e){
-                if(e){
-                    try {
-                        $http({
-                            method: 'post',
-                            url: '/campaign/quitCampaign/'+campaign_id,
-                            data:{
-                                campaign_id : campaign_id
-                            }
-                        }).success(function(data, status) {
-                            if(data.result===1){
-                                alertify.alert('成功退出该活动!');
-                                //alert('您已退出该活动!');
-                                $scope.group_messages[index].join_flag = false;
-                                $scope.group_messages[index].member_num--;
-                            }
-                            else{
-                                alertify.alert(data.msg);
-                            }
-                        }).error(function(data, status) {
-                            alertify.alert('DATA ERROR');
-                        });
-                    }
-                    catch(e) {
-                        console.log(e);
-                    }
-                }
-            });
-        };
-        $scope.getReport = function(groupMessageIndx,CommentIndex){
-            $rootScope.reportContent = {
-                hostType: 'comment',
-                hostContent:{
-                    _id:$scope.group_messages[groupMessageIndx].comments[CommentIndex]._id,
-                    content:$scope.group_messages[groupMessageIndx].comments[CommentIndex].content,
-                    poster:$scope.group_messages[groupMessageIndx].comments[CommentIndex].poster
-                },
-                reportType:''
+//         $scope.quit = function(campaign_id,index) {
+//             alertify.confirm('确认要退出活动吗？',function(e){
+//                 if(e){
+//                     try {
+//                         $http({
+//                             method: 'post',
+//                             url: '/campaign/quitCampaign/'+campaign_id,
+//                             data:{
+//                                 campaign_id : campaign_id
+//                             }
+//                         }).success(function(data, status) {
+//                             if(data.result===1){
+//                                 alertify.alert('成功退出该活动!');
+//                                 //alert('您已退出该活动!');
+//                                 $scope.group_messages[index].join_flag = false;
+//                                 $scope.group_messages[index].member_num--;
+//                             }
+//                             else{
+//                                 alertify.alert(data.msg);
+//                             }
+//                         }).error(function(data, status) {
+//                             alertify.alert('DATA ERROR');
+//                         });
+//                     }
+//                     catch(e) {
+//                         console.log(e);
+//                     }
+//                 }
+//             });
+//         };
+//         $scope.getReport = function(groupMessageIndx,CommentIndex){
+//             $rootScope.reportContent = {
+//                 hostType: 'comment',
+//                 hostContent:{
+//                     _id:$scope.group_messages[groupMessageIndx].comments[CommentIndex]._id,
+//                     content:$scope.group_messages[groupMessageIndx].comments[CommentIndex].content,
+//                     poster:$scope.group_messages[groupMessageIndx].comments[CommentIndex].poster
+//                 },
+//                 reportType:''
 
-            }
-            $('#reportModal').modal('show');
-        }
-        //应战
-        // $scope.responseProvoke = function(tid,provoke_message_id) {
-        //     try {
-        //         $http({
-        //             method: 'post',
-        //             url: '/group/responseProvoke/'+tid,
-        //             data:{
-        //                 provoke_message_id : provoke_message_id
-        //             }
-        //         }).success(function(data, status) {
-        //             window.location.reload();
-        //         }).error(function(data, status) {
-        //             alertify.alert('DATA ERROR');
-        //         });
-        //     }
-        //     catch(e) {
-        //         console.log(e);
-        //     }
-        // };
-    }
-]);
+//             }
+//             $('#reportModal').modal('show');
+//         }
+//         //应战
+//         // $scope.responseProvoke = function(tid,provoke_message_id) {
+//         //     try {
+//         //         $http({
+//         //             method: 'post',
+//         //             url: '/group/responseProvoke/'+tid,
+//         //             data:{
+//         //                 provoke_message_id : provoke_message_id
+//         //             }
+//         //         }).success(function(data, status) {
+//         //             window.location.reload();
+//         //         }).error(function(data, status) {
+//         //             alertify.alert('DATA ERROR');
+//         //         });
+//         //     }
+//         //     catch(e) {
+//         //         console.log(e);
+//         //     }
+//         // };
+//     }
+// ]);
 
 // tabViewUser.controller('ScheduleModalController', ['$scope', '$http', '$rootScope',
 //     function($scope, $http, $rootScope) {
@@ -587,7 +616,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
 
         // 判断是否是第一次加载视图，用于$scope.$digest()
         var firstLoad = true;
-        $scope.campaignsType = 'joined';
+        $scope.campaignsType = 'all';
 
         $scope.calendar = function(isCalendar) {
             $scope.isCalendar = isCalendar;
@@ -639,6 +668,12 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                         // $('#calendar_modal').view($(this).data('calendar-view'));
                         // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
                     });
+                    $('#calendar').find('span[data-cal-date]').click(function(e){
+                        $('#events-modal').modal('show');
+                        initModalCalendar(events_source,$(this).attr('data-cal-date'));
+                        // $('#calendar_modal').view($(this).data('calendar-view'));
+                        // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
+                    });
                 },
                 classes: {
                     months: {
@@ -670,7 +705,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                     modal_data.start = this.getStartDate();
                 },
                 onAfterViewLoad: function(view) {
-                    $('#calendar_title').text(this.getTitle());
+                    $('#calendar_title_modal').text(this.getTitle());
                     //$('#calendar_operator button').removeClass('active');
                     //$('button[data-calendar-view="' + view + '"]').addClass('active');
                     if (view === 'day') {
@@ -737,7 +772,6 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
 ]);
 tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
-        $rootScope.nowTab = 'campaign';
         $scope.company = false;
         $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/0/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
             $scope.campaigns = data.campaigns;
@@ -754,14 +788,6 @@ tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope
         $scope.page = 0;
         $scope.lastPage_flag = false;
         $scope.nextPage_flag = false;
-        $scope.judgeYear = function(index){
-            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
-                return true;
-            }
-            else {
-                return false;
-            }
-        };
         $scope.loadMore = function(){
             $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+$scope.page+'/'+$scope.block+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
                 if(data.result===1 && data.campaigns.length>0){
@@ -875,7 +901,6 @@ tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope
 ]);
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
     function($scope, $http, $rootScope) {
-        $rootScope.nowTab = 'personal';
         angular.element('.tooltip').hide();
         $scope.editing = false;
 
@@ -944,7 +969,6 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
 
 tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope',
     function($http, $scope, $rootScope) {
-        $rootScope.nowTab = 'personal';
         $scope.nowpassword = '';
         $scope.newpassword = '';
         $scope.confirmpassword = '';

@@ -19,7 +19,7 @@
 }
 .cal-year-box-small [class*="span"],
 .cal-month-box-small [class*="cal-cell"] {
-  min-height: 50px;
+  min-height: 40px;
 }
 .cal-year-box .row-fluid,
 .cal-month-box .cal-row-fluid {
@@ -61,7 +61,20 @@
   margin-right: 5px;
 }
 .cal-month-day-small {
-  height: 50px;
+  height: 40px;
+}
+.cal-month-day-small .join_sign {
+  margin: 0 10px;
+  width: 14px;
+  height: 13px;
+  color: #fff;
+  background-color: #3498db;
+  text-align: center;
+  float: right;
+  border-radius: 0;
+  font-size: 10px;
+  font-family: Arial;
+  line-height: 14px;
 }
 #cal-slide-content .event-item {
   position: relative;
@@ -138,6 +151,7 @@
 }
 .calendar_box {
   margin-top: 0;
+  padding: 0 10px;
 }
 .calendar_box .dl_campaign_list {
   border: 0px;

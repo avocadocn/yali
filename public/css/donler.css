@@ -925,15 +925,48 @@ textarea {
   position: relative;
   overflow: hidden;
   border: 1px solid #e6e6e6;
-  padding: 12px;
+  padding: 20px;
 }
-.dl_container .side .groupsbox .subtitle {
-  display: block;
-  margin: 0 0 10px;
+.dl_container .side .groupsbox .head_title {
+  color: #3498db;
+  font-size: 18px;
+  line-height: 24px;
 }
-.dl_container .side .groupsbox .group {
+.dl_container .side .groupsbox .head_title a {
+  font-size: 14px;
+}
+.dl_container .side .groupsbox .box_head {
+  border-bottom: 1px solid #ddd;
+  margin: -20px;
+  padding: 10px 20px;
+  height: 44px;
+}
+.dl_container .side .groupsbox .box_head a {
+  line-height: 24px;
+  font-size: 14px;
+  color: #ccc;
+}
+.dl_container .side .groupsbox .groups {
+  padding-top: 30px;
+  margin-bottom: -10px;
+}
+.dl_container .side .groupsbox .groups .group {
+  margin: 4px;
   display: inline-block;
-  margin: 6px;
+  position: relative;
+}
+.dl_container .side .groupsbox .groups .group .group_logo {
+  width: 32px;
+  height: 32px;
+}
+.dl_container .side .groupsbox .groups .group .group_leader {
+  position: absolute;
+  background-image: url("/img/icons/crown.png");
+  width: 24px;
+  height: 24px;
+  right: -10px;
+  top: -10px;
+  background-size: contain;
 }
 .dl_container .aside {
   width: 128px;
@@ -1839,35 +1872,6 @@ input.ng-invalid.ng-dirty {
 #family .carousel-img-container img {
   max-height: 100%;
 }
-.recent_campaigns_container {
-  background-color: #ddd;
-  width: 100%;
-  height: 371.25px;
-  margin-top: 41px;
-}
-.recent_campaigns_container .carousel {
-  height: 371.25px;
-}
-.recent_campaigns_container .item {
-  height: 371.25px;
-  margin-top: 20px;
-}
-.recent_campaigns_container .item .campaign_theme {
-  font-size: 16px;
-}
-.recent_campaigns_container .item .now_campaign_now {
-  font-size: 16px;
-}
-.recent_campaigns_container .item .campaign_time_remind {
-  font-size: 16px;
-}
-.recent_campaigns_container .item .campaign_time_count {
-  margin-top: 50px;
-  font-size: 50px;
-}
-.recent_campaigns_container img {
-  max-height: 100%;
-}
 .dl_allteaminfo_container,
 .dl_compaign_member,
 .dl_department,
@@ -2433,36 +2437,97 @@ input.ng-invalid.ng-dirty {
   display: table;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box {
-  width: 620px;
+  width: 420px;
   float: left;
 }
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .schedule_btn {
+  width: 135px;
+  margin: -2px;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  color: #999;
+  background-color: #eee;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .schedule_btn[disabled] {
+  color: #fff;
+  background-color: #ccc;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .join {
+  border-bottom-left-radius: 1em;
+  border-top-left-radius: 1em;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .unjoin {
+  border-left: 1px solid #ccc;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .schedule_type .all {
+  border-left: 1px solid #ccc;
+  border-bottom-right-radius: 1em;
+  border-top-right-radius: 1em;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .calendar_nav a {
+  width: 100px;
+  text-align: center;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .calendar_nav a .calendar_title {
+  width: 165px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .join_sign {
+  width: 17px;
+  height: 20px;
+  color: #fff;
+  text-align: center;
+  border-radius: 0;
+  font-size: 14px;
+  font-family: Arial;
+  line-height: 24px;
+  margin: 10px 20px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal {
+  border: 1px solid #ddd;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .cal-month-box [class*="cal-cell"] {
+  min-height: 50px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day {
+  height: 65px;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips {
+  height: 45px;
+  -moz-box-shadow: 0 3px 3px #ddd;
+/* 老的 Firefox */
+  box-shadow: 0 3px 3px #ddd;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .campaign_label {
+  line-height: 24px;
+  font-size: 14px;
+}
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box {
-  width: 300px;
+  width: 510px;
   float: right;
   margin-left: 20px;
-  margin-top: 43px;
+  margin-top: 30px;
   padding-top: 10px;
-  border: 1px solid #ccc;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-time {
   padding: 10px;
+  color: #3498db;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-time .date {
-  font-size: 100px;
+  font-size: 36px;
   line-height: 0.9em;
-  color: #000;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-time .time {
-  font-size: 16px;
+  font-size: 14px;
+  margin-left: 10px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .title {
   padding: 10px;
-  font-size: 24px;
-  border-top: 1px solid;
+  font-size: 14px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-list {
-  max-height: 298px;
-  min-height: 298px;
+  border: 1px solid #ddd;
+  max-height: 380px;
+  min-height: 380px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-list .custom_calendar_li {
   margin: 10px 0;
@@ -2475,6 +2540,466 @@ input.ng-invalid.ng-dirty {
 }
 .report_form .reported_user {
   color: #3498db;
+}
+.user_page .dl_nav {
+  position: fixed;
+  width: 100%;
+  z-index: 50;
+}
+.user_page .dl_container .main {
+  width: 700px;
+  margin-right: 20px;
+}
+.user_page .dl_container .main .campaign_table .time_col {
+  padding: 0;
+}
+.user_page .dl_container .main .tab-body .dl_card_tebcontent,
+.user_page .dl_container .main .tab-body .dl_campaign_list {
+  border: none;
+}
+.user_page .dl_container .main .tab-body .dl_timeline {
+  width: 590px;
+}
+.user_page .dl_container .main .campaigns_container {
+  margin-top: 45px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container {
+  background-color: #fff;
+  float: left;
+  margin: 5px 0;
+  -moz-box-shadow: 3px 3px 3px #ddd;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #ddd;
+  padding: 10px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
+  clear: both;
+  height: 70px;
+  padding: 10px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign div {
+  float: left;
+  width: 50px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .year_col {
+  color: #ddd;
+  font-size: 12px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .time_col {
+  font-size: 14px;
+  color: #ccc;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .logo_col {
+  width: 60px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .logo_col .campaign_logo {
+  width: 47px;
+  height: 47px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col {
+  width: 160px;
+  color: #ccc;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col p {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a {
+  color: #ccc;
+}
+.user_page .dl_container .main .campaigns_container .top {
+  width: 700px;
+  padding: 0;
+  margin-top: 10px;
+}
+.user_page .dl_container .main .campaigns_container .top .campgin_head {
+  padding: 5px 10px 5px 30px;
+  background-color: #e7ce23;
+  height: 26px;
+  color: #fff;
+  line-height: 16px;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .top .campgin_head .star {
+  background-image: url("/img/icons/star.png");
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  float: left;
+}
+.user_page .dl_container .main .campaigns_container .top .campgin_head .title {
+  width: 30%;
+  margin-left: 20px;
+}
+.user_page .dl_container .main .campaigns_container .top .campgin_head .time_count {
+  width: 30%;
+}
+.user_page .dl_container .main .campaigns_container .top .campgin_head a {
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .top .campgin_head .add {
+  font-size: 24pt;
+  line-height: 21px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign {
+  padding: 10px;
+  height: 100px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .info_left {
+  width: 200px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .info_left .year_col {
+  color: #ccc;
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .info_left .time_col {
+  font-size: 24px;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .info_left .theme {
+  font-size: 18px;
+  clear: both;
+  width: 100%;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  color: #ccc;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .logo_col {
+  width: 200px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team {
+  width: 100px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team .campaign_logo {
+  width: 47px;
+  height: 47px;
+  display: block;
+  margin: 0 auto;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team .team_name {
+  text-align: center;
+  margin-top: 15px;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #ddd;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .content_col {
+  width: 260px;
+  color: #ccc;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .content_col p {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 24px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .content_col a {
+  color: #ccc;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin {
+  width: 345px;
+  float: left;
+  height: 186px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign {
+  border-top: 1px solid #ddd;
+  margin: 0 -10px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head {
+  color: #3498db;
+  height: 34px;
+  line-height: 24px;
+  font-size: 18px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head a {
+  font-size: 14px;
+  color: #ccc;
+}
+.user_page .dl_container .main .campaigns_container .recent_join {
+  width: 345px;
+  float: right;
+  height: 186px;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campgin_head {
+  color: #099;
+  height: 34px;
+  line-height: 24px;
+  font-size: 18px;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campgin_head a {
+  font-size: 14px;
+  color: #ccc;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign {
+  border-top: 1px solid #ddd;
+  margin: 0 -10px;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col {
+  width: 100px;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col span {
+  font-size: 14px;
+  line-height: 44px;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col .time_count {
+  color: #099;
+}
+.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head {
+  height: 54px;
+  line-height: 24px;
+  font-size: 18px;
+}
+.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head a {
+  color: #3498db;
+}
+.user_page .dl_container .main .campaigns_container .now {
+  width: 700px;
+  clear: both;
+}
+.user_page .dl_container .main .campaigns_container .now .campgin_head {
+  padding: 0 30px;
+  height: 34px;
+  color: #3498db;
+  line-height: 24px;
+  font-size: 18px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container {
+  width: 345px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign {
+  margin: 0 -10px;
+  background-color: #fcfcfc;
+  height: 132px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col {
+  width: 70px;
+  margin-right: 30px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .team {
+  width: 70px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .team .campaign_logo {
+  width: 70px;
+  height: 70px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .team .team_name {
+  padding: 10px 0;
+  font-size: 14px;
+  text-align: center;
+  color: #ccc;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .content_col {
+  width: 200px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col {
+  clear: both;
+  width: 100%;
+  padding: 10px 30px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .team {
+  float: left;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .team:last-child {
+  float: right;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .content_col {
+  padding: 10px;
+  width: 100%;
+  max-width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos {
+  clear: both;
+  margin: 20px 10px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photo {
+  float: left;
+  margin: 0 6px 10px 0;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photo img {
+  height: 70px;
+  width: 70px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments {
+  clear: both;
+}
+.user_page .dl_container .main .campaigns_container .now_head {
+  width: 700px;
+  height: 33px;
+  padding: 0;
+}
+.user_page .dl_container .main .campaigns_container .now_head .campgin_head {
+  display: inline;
+  color: #fff;
+  line-height: 33px;
+  height: 33px;
+  padding: 0 20px;
+}
+.user_page .dl_container .main .campaigns_container .now_head .left {
+  font-size: 18px;
+  margin-right: -124px;
+  width: 100%;
+  float: left;
+  background-color: #97d7c6;
+}
+.user_page .dl_container .main .campaigns_container .now_head .right {
+  width: 124px;
+  float: right;
+  background-color: #74baa7;
+}
+.user_page .dl_container .main .campaigns_container .now_head .right a {
+  color: #fff;
+  font-size: 12px;
+}
+.user_page .dl_container .side {
+  padding-top: 45px;
+  width: 240px;
+}
+.user_page .dl_container .side .schedule_small {
+  -moz-box-shadow: 3px 3px 3px #ddd;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #ddd;
+}
+.user_page .dl_container .side .schedule_small .schedulebox {
+  padding: 0;
+  border: none;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_tips {
+  height: 30px;
+  font-size: 12px;
+  border-top: 1px solid #ddd;
+  margin-top: 5px;
+  color: #3498db;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_tips .join_sign {
+  height: 10px;
+  width: 10px;
+  background-color: #3498db;
+  margin: 10px;
+  float: left;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_tips .campaign_label {
+  line-height: 10px;
+  margin: 10px 5px;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_nav {
+  background-color: #73a5dd;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 10px;
+  margin: 0;
+  clear: both;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_nav .calendar_title {
+  width: 170px;
+  text-align: center;
+  font-size: 16px;
+  margin: 0;
+}
+.user_page .dl_container .side .schedule_small .schedulebox .calendar_nav a {
+  color: #fff;
+}
+.user_page .dl_container .side .schedule_small .cal-context div {
+  border: none;
+}
+.user_page .dl_container .side .schedule_small .cal-context .joined {
+  background: none;
+  color: #fff;
+}
+.user_page .dl_container .side .schedule_small .cal-context .cal-month-day span[data-cal-date] {
+  width: 100%;
+  height: 14px;
+  text-align: center;
+  margin: 5px 0;
+}
+.user_page .dl_container .side .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
+  font-size: 1.2em;
+}
+.user_page .dl_container .side .old_campaign_container {
+  background-color: #8dd4e6;
+  height: 40px;
+  color: #fff;
+  line-height: 20px;
+  font-size: 18px;
+  padding: 10px;
+  margin-top: 10px;
+  -moz-box-shadow: 3px 3px 3px #ddd;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #ddd;
+}
+.user_page .dl_container .side .old_campaign_container a label {
+  font-size: 18px;
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+}
+.user_page .dl_container .side .old_campaign_container a .footprint {
+  background-image: url("/img/icons/footprint.png");
+  height: 23px;
+  width: 34px;
+  display: inline-block;
+  float: left;
+}
+.user_page .dl_container .side .old_campaign_container .news_count {
+  font-size: 14px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  background-color: #f3939e;
+}
+.user_page .dl_container .side .groupsbox {
+  margin-top: 10px;
+  -moz-box-shadow: 3px 3px 3px #ddd;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #ddd;
+  padding: 20px 10px;
+}
+.user_page .dl_container .side .groupsbox .infobox .head_title {
+  padding-bottom: 20px;
+  margin-top: -7px;
+  color: #ccc;
+}
+.user_page .dl_container .side .groupsbox .infobox .head_title a {
+  color: #3498db;
+}
+.user_page .dl_container .side .groupsbox .infobox .info_left {
+  float: left;
+}
+.user_page .dl_container .side .groupsbox .infobox .info_left .user_logo {
+  width: 54px;
+  height: 54px;
+}
+.user_page .dl_container .side .groupsbox .infobox .info_right {
+  float: left;
+  margin-left: 20px;
+  font-size: 12px;
+}
+.user_page .dl_container .side .groupsbox .infobox .info_right .username {
+  color: #3498db;
+  font-size: 14px;
+}
+.user_page .dl_container .side .groupsbox .infobox .info_right .cname a {
+  color: #ccc;
 }
 @-moz-keyframes scaleFade {
   50% {

@@ -238,13 +238,65 @@ var formatCampaignForCalendar = function(user, campaigns) {
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
       //'count': count,
-      'is_joined': is_joined
+      'is_joined': is_joined,
+      'location':campaign.location,
     });
   });
   return calendarCampaigns;
 }
 
+var formatTime = function(start_time,end_time){
+  var remind_text, start_time_text,start_flag;
+  var now = new Date();
+  var diff_end = now - end_time;
+  if (diff_end >= 0) {
+    // 活动已结束
+    remind_text = '活动已结束';
+    start_time_text = '';
+    start_flag = -1;
+  } else {
+    // 活动未结束
+    var temp_start_time = new Date(start_time);
+    var during = moment.duration(moment(now).diff(temp_start_time));
+    var years = Math.abs(during.years());
+    var months = Math.abs(during.months());
+    var days = Math.floor(Math.abs(during.asDays()));
+    var hours = Math.abs(during.hours());
+    var minutes = Math.abs(during.minutes());
+    var seconds = Math.abs(during.seconds());
 
+    temp_start_time.setHours(hours);
+    temp_start_time.setMinutes(minutes);
+    temp_start_time.setSeconds(seconds);
+
+    // 活动已开始
+    if (during >= 0) {
+      start_flag = 1;
+      remind_text = '活动已开始';
+    } else {
+      // 活动未开始
+      start_flag = 0;
+      remind_text = '距离活动开始还有';
+      if(days>=3){
+        start_time_text =  days + '天';
+      }
+      else if(days>=1){
+        start_time_text = days + '天' + (hours ? hours + '小时' : '') ;
+      }
+      else if(hours>=1){
+        start_time_text = hours + '小时'  + minutes + '分';
+      }
+      else{
+        start_time_text = (minutes ?  minutes + '分' : '' ) + seconds + '秒';
+      }
+
+    }
+  }
+  return { start_flag:start_flag,
+            remind_text:remind_text,
+            start_time_text: start_time_text
+          }
+}
 
 
 /**
@@ -284,7 +336,7 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     }
   }
   // 多小队活动
-  if (campaign.campaign_type == 3) {
+  else if (campaign.campaign_type == 3) {
     is_joined = model_helper.arrayObjectIndexOf(campaign.member,user._id,'uid')>-1;
     for (var i = 0; i < campaign.team.length; i++) {
       var owner_team = model_helper.arrayObjectIndexOf(user.team,campaign.team[i]._id,'_id');
@@ -298,7 +350,7 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     }
   }
   // 比赛
-  if (campaign.campaign_type > 3) {
+  else {
     for (var i = 0; i < campaign.camp.length; i++) {
       var owner_team = model_helper.arrayObjectIndexOf(user.team,campaign.camp[i].id,'_id');
       if (owner_team>-1) {
@@ -314,55 +366,8 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
   }
 
 
-  var remind_text, start_time_text,start_flag;
-  var now = new Date();
-  var diff_end = now - campaign.end_time;
-  if (diff_end >= 0) {
-    // 活动已结束
-    remind_text = '活动已结束';
-    start_time_text = '';
-    start_flag = -1;
-  } else {
-    // 活动未结束
+  var _formatTime = formatTime(campaign.start_time,campaign.end_time);
 
-    var temp_start_time = new Date(campaign.start_time);
-    var during = moment.duration(moment(now).diff(temp_start_time));
-    var years = Math.abs(during.years());
-    var months = Math.abs(during.months());
-    var days = Math.floor(Math.abs(during.asDays()));
-    var hours = Math.abs(during.hours());
-    var minutes = Math.abs(during.minutes());
-    var seconds = Math.abs(during.seconds());
-
-    temp_start_time.setHours(hours);
-    temp_start_time.setMinutes(minutes);
-    temp_start_time.setSeconds(seconds);
-
-    // 活动已开始
-    if (during >= 0) {
-      start_flag = 1;
-      remind_text = '活动已开始';
-    } else {
-      // 活动未开始
-      start_flag = 0;
-      remind_text = '距离活动开始还有';
-      if(days>=3){
-        start_time_text =  days + '天';
-      }
-      else if(days>=1){
-        start_time_text = days + '天' + (hours ? hours + '小时' : '') ;
-      }
-      else if(hours>=1){
-        start_time_text = hours + '小时'  + minutes + '分';
-      }
-      else{
-        start_time_text = (minutes ?  minutes + '分' : '' ) + seconds + '秒';
-      }
-
-    }
-
-
-  }
   var result = {
     '_id': campaign._id,
     'logo': logo,
@@ -374,15 +379,16 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     'end_time': campaign.end_time,
     'deadline': campaign.deadline,
     'is_joined': is_joined,
-    'photo_album': campaign.photo_album,
+    //'photo_album': campaign.photo_album,
     'member': campaign.member,
-    'start_flag': start_flag,
-    'remind_text': remind_text,
-    'start_time_text': start_time_text,
+    'start_flag': _formatTime.start_flag,
+    'remind_text': _formatTime.remind_text,
+    'start_time_text': _formatTime.start_time_text,
     'location':campaign.location,
     'active': campaign.active,
     'finish': campaign.finish,
-    'myteam':myteam
+    'myteam':myteam,
+    'comment_sum':campaign.comment_sum
   };
   if(nowFlag){
     result.photo_thumbnails = photo_album_controller.photoThumbnailList(campaign.photo_album, 3);
@@ -406,13 +412,19 @@ var formatCampaignsForApp = function(user, campaigns, nowFlag) {
   return _campaigns;
 
 };
-
-var formatCampaign = function(campaign,pageType,role,user,startIndex){
+/**
+ * [formatCampaign description]
+ * @param  {[type]} campaign [description]
+ * @param  {[type]} pageType [description]
+ * @param  {[type]} role     [description]
+ * @param  {[type]} user     [description]
+ * @param  {[type]} other    [description]
+ * @return {[type]}          [description]
+ */
+var formatCampaign = function(campaign,pageType,role,user,other){
   var campaigns = [];
+  var _other = other ? other :{};
   campaign.forEach(function(_campaign,_index){
-    if(_index<startIndex){
-      return;
-    }
     var temp = {
       '_id':_campaign._id,
       'active':_campaign.active,
@@ -429,6 +441,7 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
       temp.type='companycampaign';
       temp.logo=_campaign.cid[0].info.logo;
       temp.link = '/company/home/'+_campaign.cid[0]._id;
+      temp.name = _campaign.cid[0].info.name;
       temp.cid = _campaign.cid[0]._id;
       temp.cname=_campaign.cid[0].info.name;
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
@@ -448,6 +461,7 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
       temp.link = '/group/page/'+_campaign.team[0]._id;
+      temp.name=_campaign.team[0].name;
       temp.team_id = [{'_id':_campaign.team[0]._id}];
       if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
         if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
@@ -465,6 +479,7 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
       temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
       temp.logo=_campaign.team[0].logo;
       temp.link = '/group/page/'+_campaign.team[0]._id;
+      temp.name = _campaign.team[0].name;
       temp.team_id = [{'_id':_campaign.team[0]._id}];
       if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
         if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
@@ -491,6 +506,7 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
           if(camp.id.toString() == user.team[i]._id.toString()){
             temp.team_id.push({'_id':camp.id,'name':camp.tname,'logo':camp.logo});
             temp.logo=camp.logo;
+            temp.name = camp.tname;
             temp.link='/group/page/'+camp.id.toString();
           }
         };
@@ -499,6 +515,16 @@ var formatCampaign = function(campaign,pageType,role,user,startIndex){
     }
     if(temp.type != 'provoke' && pageType==='team'&&(role ==='LEADER' ||role ==='HR' ) || pageType==='company'&&role ==='HR'){
       temp.close_flag=true;
+    }
+    if(_other.photoFlag){
+      temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
+      temp.camp = _campaign.camp;
+    }
+    if(_other.nowFlag){
+      var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
+      temp.start_flag = _formatTime.start_flag;
+      temp.remind_text =_formatTime.remind_text;
+      temp.start_time_text = _formatTime.start_time_text;
     }
     campaigns.push(temp);
   });
@@ -685,6 +711,66 @@ exports.editCampaign = function(req, res){
     });
 }
 
+
+exports.getUserCampaignsForHome = function(req, res) {
+  var now = new Date();
+  var startTimeLimit = new Date();
+  startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
+  var endTimeLimit = new Date();
+  endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
+  var serchCampaign = function(startSet, endSet, joinFlag, photoFlag, callback){
+    var options = {
+      'cid': req.user.cid,
+      'active': true
+    };
+    var _populate = 'team cid';
+    var _sort;
+    if(startSet){
+      options.start_time = startSet;
+    }
+    if(endSet){
+      options.end_time = endSet;
+    }
+    if(photoFlag){
+      _populate+=' photo_album';
+    }
+    if(joinFlag){
+      options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      _sort ='start_time';
+    }
+    else{
+      options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      _sort ='-create_time';
+    }
+    Campaign
+    .find(options)
+    .sort(_sort)
+    .populate(_populate)
+    .exec()
+    .then(function(campaigns){
+      callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:photoFlag,nowFlag:joinFlag}));
+    });
+  }
+  async.series([
+    function(callback){
+      serchCampaign({'$gte':now },undefined, false, false, callback);
+    },//所有新活动的活动，（未参加）
+    function(callback){
+      serchCampaign({ '$gte':now }, undefined, true, false, callback);
+    },//马上开始的活动,（已参加）
+    function(callback){
+      serchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
+    },//正在进行的活动
+  ], function(err, values) {
+    if(err){
+      console.log(err);
+      return res.send({ result: 0, campaigns: [] });
+    }
+    else{
+      return res.send({ result: 1, campaigns: values });
+    }
+  });
+};
 exports.getUserAllCampaignsForCalendar = function(req, res) {
   if (req.role === 'OWNER') {
     getUserAllCampaigns(req.user, true, req.query, function(campaigns) {

@@ -1,73 +1,213 @@
-extends ../layouts/manager
+extends ../layouts/user
 
 append headExt
   link(rel="stylesheet" href="/css/tree.css")
 
-block baseInfo
-  .dl_container.clearfix
-    .aside
-      //-用户头像
-      img.size_80.img_contain.img_user(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
-    .main.top-main
-      //-人名
-      .dl_row.top_username
-        label.head= nickname
-      //-公司名
-      .dl_row.top_cname
-        if (!department)
-          a.subtitle(href='/company/home' ng-cloak) #{cname}
-        else
-          a.subtitle(href='/department/home/#{department._id}' ng-cloak) #{department.name}
-      //-个性签名
-      .dl_row.top_sign
-        p.subtitle= sign
-    .ad-top
-      //- ad banner sapace
 block panel
-  .recent_campaigns_container(ng-controller="recentCampaignController")
-    carousel(interval="5000")
-      slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)
-        a.campaign_link.clearLinkUnderline(href="/campaign/detail/{{ recentCampaign._id }}")
-          .campaign_title
-            img.campaign_group_logo(ng-src="{{ img_url + recentCampaign.logo + '/72/72'}}")
-            p.campaign_theme {{ recentCampaign.theme }}
-            p.now_campaign_now(ng-if="recentCampaign.start_flag==1") 正在进行的活动
-          .now_campaign_time(ng-if="recentCampaign.start_flag==0 || recentCampaign.photo_thumbnails.length==0")
-            p.campaign_time_remind {{ recentCampaign.remind_text }}
-            p.campaign_time_count(ng-if="recentCampaign.start_flag!=0") 快来传照片吧
-            p.campaign_time_count(ng-if="recentCampaign.start_flag==0") {{ recentCampaign.start_time_text }}
-          .now_campaign_photos(ng-if="recentCampaign.start_flag!=0 && recentCampaign.photo_thumbnails.length>0")
-            img.now_campaign_photo(ng-src="{{ photo.uri + '/150/150'}}" ng-repeat="photo in recentCampaign.photo_thumbnails")
-      slide(ng-if="recentCampaigns.length==0&&showCampaign" ng-cloak)
-        p.campaign_time_count 您近期没有活动，快去参加吧
-  ul.nav.nav-tabs(ng-init="uid='#{uid}';role='#{role}'")
-    if role==='OWNER'
-      li.tab_style(ng-class="{'active':nowTab=='group_message'}")
-        a.subtitle.no_radius(href="#/group_message") 动态
-      li.tab_style(ng-class="{'active':nowTab=='campaign'}")
-        a.subtitle.no_radius(href="#/campaign/#{uid}") #{__("CAMPAIGN")}#{__("LIST")}
-    //- li.tab_style(ng-class="{'active':nowTab=='schedule'}")
-    //-   a.subtitle.no_radius(href="#/schedule/#{uid}") #{__("SCHEDULE")}
-    li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
-      a.subtitle.no_radius(href="#/timeLine/#{uid}") 足迹
-    li.tab_style(ng-class="{'active':nowTab=='personal'}")
-      a.subtitle.no_radius(href="#/personal/#{uid}") 个人资料
-  .tab-content
-    .tab-pane.active
-      div(ng-view).tab-body
-  include ../partials/report_modal
+  .user(ng-init="uid='#{uid}';role='#{role}'" )
+  .campaigns_container.clearfix(ng-controller="recentCampaignController")
+    .user_campaigns_container.top(ng-cloak)
+      .campgin_head
+        span.star
+        label.title 置顶
+        label.time_count(ng-if="topCampaign && topCampaign.start_time_text") 还剩 {{topCampaign.start_time_text}}
+        //- a.clearLinkUnderline.pull-right(ng-if="topCampaign"  ng-click="openModal()") 编辑
+        //- a.clearLinkUnderline.pull-right.add(ng-if="!topCampaign"  ng-click="openModal()") +
+      .campaign(ng-if="topCampaign" ng-cloak)
+        .info_left
+          .year_col
+            //- (ng-if="judgeYear($index)")
+            p.year {{topCampaign.start_time  | date:'yyyy'}}
+          .time_col
+            p.text-center.day {{ topCampaign.start_time  | day }} {{ topCampaign.start_time | date:'HH:mm' }}
+          .theme
+            p {{topCampaign.theme}}
+        .logo_col
+          .team
+            a.clearLinkUnderline(ng-href="{{topCampaign.link}}")
+              img.campaign_logo(ng-src="{{topCampaign.logo}}/47/47")
+              p.team_name {{topCampaign.name}}
+        .content_col
+          a.clearLinkUnderline(ng-href="/{{(topCampaign.type=='provoke'?'competition/':'campaign/detail/')+topCampaign._id}}")
+            //- p
+            //-   strong 主题:
+            //-   span.theme_text {{topCampaign.theme}}
+            p.campaign_info
+              span 开始时间:
+              span.content_text {{topCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            p.campaign_info
+              span 结束时间:
+              span.content_text {{topCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            p.campaign_info
+              span #{__("LOCATION")}:
+              span.content_text {{topCampaign.location.name}}
+    .user_campaigns_container.recent_unjoin(ng-if="recentJoinedCampaigns.length>0 || recentUnjoinedCampaigns.length>0")
+      .campgin_head(ng-cloak)
+        label {{recentUnjoinedCampaigns.length}} 个新活动
+        a.pull-right(ng-if="recentUnjoinedCampaigns.length>0" href="#/campaign/#{uid}" ng-click="openModal()") 更多
+      .campaign(ng-if="recentUnjoinedCampaigns.length==0" ng-cloak)
+        label 您现在没有新活动，快去找队长组织活动吧！
+      .campaign(ng-if="recentUnjoinedCampaigns.length>0" ng-repeat="recentUnjoinedCampaign in recentUnjoinedCampaigns" ng-if="$index<2" ng-cloak)
+        .year_col
+          //- (ng-if="judgeYear($index)")
+          p.year {{recentUnjoinedCampaign.start_time  | date:'yyyy'}}
+        .time_col
+          p.text-center.day {{ recentUnjoinedCampaign.start_time  | day }}
+          p.text-center.time {{ recentUnjoinedCampaign.start_time | date:'HH:mm' }}
+        .logo_col
+          a(ng-href="{{recentUnjoinedCampaign.link}}")
+            img.campaign_logo(ng-if="recentUnjoinedCampaign.type==='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/47/47")
+            img.campaign_logo(ng-if="recentUnjoinedCampaign.type!=='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/47/47")
+        .content_col
+          a.clearLinkUnderline(ng-href="/{{(recentUnjoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentUnjoinedCampaign._id}}")
+            p
+              span 主题:
+              span.theme_text {{recentUnjoinedCampaign.theme}}
+            //- p
+            //-   span 内容:
+            //-   span.content_text {{recentUnjoinedCampaign.content}}
+            p
+              span #{__("LOCATION")}:
+              span.content_text {{recentUnjoinedCampaign.location.name}}
+    .user_campaigns_container.recent_join(ng-if="recentJoinedCampaigns.length>0 || recentUnjoinedCampaigns.length>0")
+      .campgin_head(ng-cloak)
+        label {{recentJoinedCampaigns.length}} 个活动即将开始
+        a.pull-right(ng-if="recentJoinedCampaigns.length>0" href="#/campaign/#{uid}" ng-click="openModal()") 更多
+      .campaign(ng-if="recentJoinedCampaigns.length==0" ng-cloak)
+        label 您没有即将开始的活动，快去参加活动吧！
+      .campaign(ng-if="recentJoinedCampaigns.length>0" ng-repeat="recentJoinedCampaign in recentJoinedCampaigns" ng-if="$index<2" ng-cloak)
+        .logo_col
+          a(ng-href="{{recentJoinedCampaign.link}}")
+            img.campaign_logo(ng-if="recentJoinedCampaign.type==='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/47/47")
+            img.campaign_logo(ng-if="recentJoinedCampaign.type!=='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/47/47")
+        .content_col
+          a.clearLinkUnderline(ng-href="/{{(recentJoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentJoinedCampaign._id}}")
+            p
+              span 主题:
+              span.theme_text {{recentJoinedCampaign.theme}}
+            //- p
+            //-   strong 内容:
+            //-   span.content_text {{recentUnjoinedCampaign.content}}
+            p
+              span #{__("LOCATION")}:
+              span.content_text {{recentJoinedCampaign.location.name}}
+        .time_col
+          span.text-center 还剩
+          span.text-center.time_count.pull-right {{ recentJoinedCampaign.start_time_text}}
+    if myteam.length == 0
+      .user_campaigns_container.recommend_team(ng-if="recentJoinedCampaigns.length==0 && recentUnjoinedCampaigns.length==0" ng-cloak)
+        .campgin_head
+          a.text.pull-right.clearLinkUnderline(href="/company/home#/team_info" ng-cloak)
+            p 您还没有加入任何小队
+            p 加入小队参与更多精彩的活动吧！
+    .user_campaigns_container.now_head
+      .campgin_head.left(ng-cloak)
+        label {{nowCampaigns.length}} 个活动正在进行
+      //- .campgin_head.right(ng-cloak)
+      //-   a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href=""  ng-click="openModal()") {{newReply.length}}条未查看回复
+    .now
+      .campaigns(masonry reload="is_reload" items="nowCampaigns")
+        .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns" ng-cloak)
+          .campgin_head(ng-cloak)
+            label {{nowCampaign.theme}}
+          .campaign(ng-class="{'provoke':nowCampaign.type=='provoke'}")
+            .logo_col(ng-if="nowCampaign.type=='provoke'" )
+              .team(ng-repeat="camp in nowCampaign.camp")
+                a.clearLinkUnderline(ng-href="group/page/{{camp.id}}")
+                  img.campaign_logo(ng-src="{{camp.logo}}/70/70")
+                  p.team_name {{camp.tname}}
+            .logo_col(ng-if="nowCampaign.type!='provoke'" )
+              .team
+                a.clearLinkUnderline(ng-href="{{nowCampaign.link}}")
+                  img.campaign_logo(ng-src="{{nowCampaign.logo}}/70/70")
+                  p.team_name {{nowCampaign.name}}
+            .content_col
+              a.clearLinkUnderline(ng-href="/{{(nowCampaign.type=='provoke'?'competition/':'campaign/detail/')+nowCampaign._id}}")
+                //- p
+                //-   strong 主题:
+                //-   span.theme_text {{topCampaign.theme}}
+                p.campaign_info
+                  span 开始时间:
+                  span.content_text {{nowCampaign.start_time | date:'yyyy-MM-dd HH:mm'}}
+                p.campaign_info
+                  span 结束时间:
+                  span.content_text {{nowCampaign.end_time | date:'yyyy-MM-dd HH:mm'}}
+                p.campaign_info
+                  span #{__("LOCATION")}:
+                  span.content_text {{nowCampaign.location.name}}
+          .photos
+            .photo(ng-repeat="photo in nowCampaign.photo_thumbnails")
+              img(ng-src="{{photo.uri}}/80/80")
+          .comments
+            a.pull-right(ng-click="") 留言 ({{nowCampaign.comment_sum}})
+        //- a.pull-right(href="") 退出
+    //- carousel(interval="5000")
+    //-   slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)
+    //-     a.campaign_link.clearLinkUnderline(href="/campaign/detail/{{ recentCampaign._id }}")
+    //-       .campaign_title
+    //-         img.campaign_group_logo(ng-src="{{ img_url + recentCampaign.logo + '/72/72'}}")
+    //-         p.campaign_theme {{ recentCampaign.theme }}
+    //-         p.now_campaign_now(ng-if="recentCampaign.start_flag==1") 正在进行的活动
+    //-       .now_campaign_time(ng-if="recentCampaign.start_flag==0 || recentCampaign.photo_thumbnails.length==0")
+    //-         p.campaign_time_remind {{ recentCampaign.remind_text }}
+    //-         p.campaign_time_count(ng-if="recentCampaign.start_flag!=0") 快来传照片吧
+    //-         p.campaign_time_count(ng-if="recentCampaign.start_flag==0") {{ recentCampaign.start_time_text }}
+    //-       .now_campaign_photos(ng-if="recentCampaign.start_flag!=0 && recentCampaign.photo_thumbnails.length>0")
+    //-         img.now_campaign_photo(ng-src="{{ photo.uri + '/150/150'}}" ng-repeat="photo in recentCampaign.photo_thumbnails")
+    //-   slide(ng-if="recentCampaigns.length==0&&showCampaign" ng-cloak)
+    //-     p.campaign_time_count 您近期没有活动，快去参加吧
+  //-   if role==='OWNER'
+  //-     li.tab_style(ng-class="{'active':nowTab=='group_message'}")
+  //-       a.subtitle.no_radius(href="#/group_message") 动态
+  //-     li.tab_style(ng-class="{'active':nowTab=='campaign'}")
+  //-       a.subtitle.no_radius(href="#/campaign/#{uid}") #{__("CAMPAIGN")}#{__("LIST")}
+  //-   //- li.tab_style(ng-class="{'active':nowTab=='schedule'}")
+  //-   //-   a.subtitle.no_radius(href="#/schedule/#{uid}") #{__("SCHEDULE")}
+  //-   li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
+  //-     a.subtitle.no_radius(href="#/timeLine/#{uid}") 足迹
+  //-   li.tab_style(ng-class="{'active':nowTab=='personal'}")
+  //-     a.subtitle.no_radius(href="#/personal/#{uid}") 个人资料
+  //- .tab-content
+  //-   .tab-pane.active
+  //-     div(ng-view).tab-body
+    include ../partials/calendar_modal
+  include ../users/user_modal
 block aside
+  .old_campaign_container
+    a(href="#/campaign/#{uid}" ng-click="openModal()")
+      label 热门活动讨论  >>
+      label.clearLinkUnderline.pull-right.news_count(ng-if="newReply.length>0" ng-cloak) {{newReply.length}}
+  .groupsbox
+    .infobox
+      .head_title 
+        label 个人资料
+        a.clearLinkUnderline.pull-right(href="#/personal/#{uid}" ng-click="openModal()") 编辑
+      .info_left
+        //-用户头像
+        img.user_logo.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+      .info_right
+        //-人名
+        .username
+          label= nickname
+        //-公司名
+        .cname
+          if (!department)
+            a.clearLinkUnderline(href='/company/home' ng-cloak) #{cname}
+          else
+            a.clearLinkUnderline(href='/department/home/#{department._id}' ng-cloak) #{department.name}
   if role !== 'HR'
-    include ../partials/group_thumbnail
-    if (leader_teams.length)
-      +group_thumbnail(leader_teams,'leader','管理的小队',1)
-    if (selected_teams.length)
-      +group_thumbnail(selected_teams,'active','加入的小队',2)
-    if (unselected_teams.length)
-      +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'),3)
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/schedule_list
       include ../partials/calendar_modal
+    if myteam.length > 0
+      .groupsbox
+        include ../partials/group_thumbnail
+        +group_thumbnail(myteam)
+  .old_campaign_container
+    a.clearLinkUnderline(href="#/timeLine/#{uid}" ng-click="openModal()")
+      span.footprint
+      label.pull-right 活动足迹 >>
+
 
 append footExt
   script(src="/js/controllers/tabviewUser.js")

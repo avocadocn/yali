@@ -1,0 +1,13 @@
+.modal.fade#user_modal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  .modal-dialog
+    .dl-modal
+      .dl-modal-header
+        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true")
+          img(ng-src='/img/icons/icon_close.png')
+      .dl-modal-body.clearfix
+        .tab-content
+          .tab-pane.active
+            .tab-body(ng-view)
+        //- .dl-modal-footer
+        //-   button.cancel_btn.dl_btn_large(data-dismiss="modal") 取消
+        //-   button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="") 确定

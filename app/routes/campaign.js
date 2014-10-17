@@ -25,7 +25,7 @@ module.exports = function(app) {
   // app.get('/campaign/user/all/list/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForList);
   // app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);
   // app.get('/campaign/user/unjoin/list/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForList);
-  app.get('/campaign/user/recent/list/:userId', authorization.userAuthorize, campaign.getUserNowCampaignsForAppList);
+  app.get('/campaign/user/recent/list/:userId', authorization.userAuthorize, campaign.getUserCampaignsForHome);
   //app
   app.get('/campaign/getCampaigns/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignDetail);
   app.get('/campaign/user/all/applist/:page/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserAllCampaignsForAppList);

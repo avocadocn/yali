@@ -688,13 +688,41 @@ textarea
       position relative
       overflow hidden
       border 1px solid #e6e6e6
-      padding 12px
-      .subtitle
-        display block
-        margin 0 0 10px
-      .group
-        display inline-block
-        margin 6px
+      padding 20px
+      .head_title
+        color themeColor
+        font-size 18px
+        line-height 24px
+        a
+          font-size 14px
+      .box_head
+        border-bottom 1px solid borderColor
+        margin -20px
+        padding 10px 20px
+        height 44px
+
+        a
+          line-height 24px
+          font-size 14px
+          color secondaryfontColor
+      .groups
+        padding-top 30px
+        margin-bottom -10px
+        .group
+          margin 4px
+          display inline-block
+          position relative
+          .group_logo
+            width 32px
+            height 32px
+          .group_leader
+            position absolute
+            background-image url('/img/icons/crown.png')
+            width 24px
+            height 24px
+            right -10px
+            top -10px
+            background-size contain
   .aside
     width 128px
     margin-right 20px
@@ -1169,7 +1197,6 @@ input::-webkit-inner-spin-button
   border-radius 0px
   margin-bottom 0px
   min-width miniPageWidth
-  
   .header_container
     max-width 1280px
     width auto
@@ -1436,29 +1463,6 @@ input.ng-invalid.ng-dirty
     height familyHeight
     img
       max-height 100%
-
-.recent_campaigns_container
-  background-color #DDD
-  width 100%
-  height familyHeight
-  margin-top 41px
-  .carousel
-    height familyHeight
-  .item
-    height familyHeight
-    margin-top 20px
-    .campaign_theme
-      font-size 16px
-    .now_campaign_now
-      font-size 16px
-    .campaign_time_remind
-      font-size 16px
-    .campaign_time_count
-      margin-top 50px
-      font-size 50px
-  img
-      max-height 100%
-
 .dl_allteaminfo_container, .dl_compaign_member, .dl_department, .dl_campaign_list, .dl_group_select, .dl_company_info, .company_manager_box
   width 100%
   background-color cardbgColor
@@ -1922,30 +1926,81 @@ input.ng-invalid.ng-dirty
       .dl-modal-body
         display table
         .calendar_box
-          width 620px
+          width 420px
           float left
+          .schedule_type
+            .schedule_btn
+              width 135px
+              margin -2px
+              border-bottom 1px solid secondaryfontColor
+              border-radius 0
+              color #999
+              background-color #eee
+
+            .schedule_btn[disabled]
+              color #fff
+              background-color secondaryfontColor
+            .join
+              border-bottom-left-radius 1em
+              border-top-left-radius 1em
+            .unjoin
+              border-left 1px solid secondaryfontColor
+            .all
+              border-left 1px solid secondaryfontColor
+              border-bottom-right-radius 1em
+              border-top-right-radius 1em
+          .calendar_nav
+            a
+              width 100px
+              text-align center
+              .calendar_title
+                width 165px
+            
+          .join_sign
+            width 17px
+            height 20px
+            color #fff;
+            text-align center
+            border-radius 0
+            font-size 14px
+            font-family Arial
+            line-height 24px
+            margin 10px 20px
+        .calendar_view_modal
+          border 1px solid borderColor
+          .cal-month-box [class*="cal-cell"]
+            min-height 50px
+            .cal-month-day
+              height 65px
+          .calendar_tips
+            height 45px
+            -moz-box-shadow 0 3px 3px borderColor /* 老的 Firefox */
+            box-shadow 0 3px 3px borderColor
+            .campaign_label
+              line-height 24px
+              font-size 14px
         .calendar_event_box
-          width 300px
+          width 510px
           float right
           margin-left 20px
-          margin-top 43px
+          margin-top 30px
           padding-top 10px
-          border 1px solid #ccc
           .cal-event-time
             padding 10px
+            color themeColor
             .date
-              font-size 100px
+              font-size 36px
               line-height 0.9em
-              color black
             .time
-              font-size 16px
+              font-size 14px
+              margin-left 10px
           .title
             padding 10px
-            font-size 24px
-            border-top 1px solid
+            font-size 14px
           .cal-event-list
-            max-height 298px
-            min-height 298px
+            border 1px solid borderColor
+            max-height 380px
+            min-height 380px
             .custom_calendar_li
               margin 10px 0
               overflow hidden
@@ -1956,3 +2011,377 @@ input.ng-invalid.ng-dirty
     background-color #ccc
   .reported_user
     color themeColor
+
+
+//用户首页
+.user_page
+  .dl_nav
+    position fixed
+    width 100%
+    z-index 50
+  .dl_container
+    .main
+      width 700px
+      margin-right 20px
+      .campaign_table .time_col
+        padding 0
+      .tab-body
+        .dl_card_tebcontent,.dl_campaign_list
+          border none
+        .dl_timeline
+          width 590px
+      .campaigns_container
+        margin-top 45px
+        .user_campaigns_container
+          background-color #ffffff
+          float left
+          margin 5px 0
+          -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
+          box-shadow 3px 3px 3px borderColor
+          padding 10px
+          .campaign
+            clear both
+            height 70px
+            padding 10px
+            div
+              float left
+              width 50px
+            .year_col
+              color borderColor
+              font-size 12px
+            .time_col
+              font-size 14px
+              color secondaryfontColor
+            .logo_col
+              width 60px
+              .campaign_logo
+                width 47px
+                height 47px
+            .content_col
+              width 160px
+              color #ccc
+              font-size 14px
+              p
+                max-width 100%
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+              a
+                color #ccc
+        .top
+          width 700px
+          padding 0
+          margin-top 10px
+          .campgin_head
+            padding 5px 10px 5px 30px
+            background-color #e7ce23
+            height 26px
+            color #ffffff
+            line-height 16px
+            font-size 14px
+            .star
+              background-image url('/img/icons/star.png')
+              height 16px
+              width 16px
+              display inline-block
+              float left
+            .title
+              width 30%
+              margin-left 20px
+            .time_count
+              width 30%
+            a
+              color #ffffff
+            .add
+              font-size 24pt
+              line-height 21px
+          .campaign
+            padding 10px
+            height 100px
+            .info_left
+              width 200px
+              .year_col
+                color #ccc
+                font-size 14px
+                height 40px
+                line-height 40px
+              .time_col
+                font-size 24px
+                width 150px
+                height 40px
+                line-height 40px
+              .theme
+                font-size 18px
+                clear both
+                width 100%
+                text-align center
+                height 40px
+                line-height 40px
+                color secondaryfontColor
+            .logo_col
+              width 200px
+              .team
+                width 100px
+                .campaign_logo
+                  width 47px
+                  height 47px
+                  display block
+                  margin 0 auto
+                .team_name
+                  text-align center
+                  margin-top 15px
+                  max-width 100px
+                  overflow hidden
+                  text-overflow ellipsis
+                  white-space nowrap
+                  color borderColor
+            .content_col
+              width 260px
+              color #ccc
+              font-size 14px
+              p
+                max-width 100%
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+                margin 0
+                line-height 24px
+              a
+                color #ccc
+        .recent_unjoin
+          width 345px
+          float left
+          height 186px
+          .campaign
+            border-top 1px solid borderColor
+            margin 0 -10px
+          .campgin_head
+            color themeColor
+            height 34px
+            line-height 24px
+            font-size 18px
+            a
+              font-size 14px
+              color #ccc
+        .recent_join
+          width 345px
+          float right
+          height 186px
+          .campgin_head
+            color #009999
+            height 34px
+            line-height 24px
+            font-size 18px
+            a
+              font-size 14px
+              color #ccc
+          .campaign
+            border-top 1px solid borderColor
+            margin 0 -10px
+            .time_col
+              width 100px
+              span
+                font-size 14px
+                line-height 44px
+              .time_count
+                color #009999
+        .recommend_team
+          .campgin_head
+            height 54px
+            line-height 24px
+            font-size 18px
+            a
+              color themeColor
+        .now
+          width 700px
+          clear both
+          .campgin_head
+            padding 0 30px
+            height 34px
+            color themeColor
+            line-height 24px
+            font-size 18px
+          .user_campaigns_container
+            width 345px
+            .campaign
+              margin 0 -10px
+              background-color #fcfcfc
+              height 132px
+              .logo_col
+                width 70px
+                margin-right 30px
+                .team
+                  width 70px
+                  .campaign_logo
+                    width 70px
+                    height 70px
+                  .team_name
+                    padding 10px 0
+                    font-size 14px
+                    text-align center
+                    color secondaryfontColor
+                    max-width 70px
+                    overflow hidden
+                    text-overflow ellipsis
+                    white-space nowrap
+              .content_col
+                width 200px
+                max-width 200px
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+            .provoke
+              .logo_col
+                clear both
+                width 100%
+                padding 10px 30px
+                .team
+                  float left
+                  &:last-child
+                    float right
+              .content_col
+                padding 10px
+                width 100%
+                max-width 100%
+            .photos
+              clear both
+              margin 20px 10px
+              .photo
+                float left
+                margin 0 6px 10px 0
+                img
+                  height 70px
+                  width 70px
+            .comments
+              clear both
+        .now_head
+          width 700px
+          height 33px
+          padding 0
+          .campgin_head
+            display inline
+            color #ffffff
+            line-height 33px
+            height 33px
+            padding 0 20px
+          .left
+            font-size 18px
+            margin-right -124px
+            width 100%
+            float left
+            background-color #97d7c6
+          .right
+            width 124px
+            float right
+            background-color #74baa7
+            a
+              color #ffffff
+              font-size 12px
+    .side
+      padding-top 45px
+      width 240px
+      .schedule_small
+        -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
+        box-shadow 3px 3px 3px borderColor
+        .schedulebox
+          padding 0
+          border none
+          .calendar_tips
+            height 30px
+            font-size 12px
+            border-top 1px solid borderColor
+            margin-top 5px
+            color themeColor
+            .join_sign
+              height 10px
+              width 10px
+              background-color themeColor
+              margin 10px
+              float left
+            .campaign_label
+              line-height 10px
+              margin 10px 5px
+          .calendar_nav
+            background-color #73a5dd
+            height 38px
+            line-height 38px
+            padding 0 10px
+            margin 0
+            clear both
+            .calendar_title
+              width 170px
+              text-align center
+              font-size 16px
+              margin 0
+            a
+              color navbarFontColor
+        .cal-context
+          div
+            border none
+          .joined
+            background none
+            color navbarFontColor
+          .cal-month-day span[data-cal-date]
+            width 100%
+            height 14px
+            text-align center
+            margin 5px 0
+          .cal-month-box
+            .cal-day-today
+              span[data-cal-date]
+                font-size 1.2em
+      .old_campaign_container
+        background-color #8dd4e6
+        height 40px
+        color #ffffff
+        line-height 20px
+        font-size 18px
+        padding 10px
+        margin-top 10px
+        -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
+        box-shadow 3px 3px 3px borderColor
+        a
+          label
+            font-size 18px
+            color #ffffff
+            font-size 18px
+            text-align center
+          .footprint
+            background-image url('/img/icons/footprint.png')
+            height 23px
+            width 34px
+            display inline-block
+            float left
+        .news_count
+          font-size 14px
+          height 20px
+          width 20px
+          line-height 20px
+          background-color #f3939e
+      .groupsbox
+        margin-top 10px
+        -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
+        box-shadow 3px 3px 3px borderColor
+        padding 20px 10px
+        .infobox
+          .head_title
+            padding-bottom 20px
+            margin-top -7px
+            color secondaryfontColor
+            a
+              color themeColor
+          .info_left
+            float left
+            .user_logo
+              width 54px
+              height 54px
+          .info_right
+            float left
+            margin-left 20px
+            font-size 12px
+            .username
+              color themeColor
+              font-size 14px
+            .cname
+              a
+                color #ccc
