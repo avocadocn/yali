@@ -1405,7 +1405,7 @@ exports.getCampaignDetail = function(req, res, next) {
 //发活动接口
 exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 //basicInfo: req.body,
-//provider_info: for poster、cid、team、cname、campaign_type、camp etc
+//provider_info: for poster、campaign_type、campaignUnit、tid、cid etc
 //photoInfo: photo_album needed
 //campInfo: info of competition
 
@@ -1428,66 +1428,54 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {
     callback(400,'活动的时间比现在更早');
   }
+  else{
+    //---providerInfo including campInfo
+    for (var attr in providerInfo) {
+      campaign[attr] = providerInfo[attr];
+    }
 
-  //---providerInfo including campInfo
-  for (var attr in providerInfo) {
-    campaign[attr] = providerInfo[attr];
-  }
 
+    //---Photo
+    var photo_album = new PhotoAlbum();
+    for (var attr in photoInfo){
+      photo_album[attr]=photoInfo[attr];
+    }
+    photo_album.owner.model._id=campaign._id;
+    //---save
 
-  //---Photo
-  var photo_album = new PhotoAlbum();
-  for (var attr in photoInfo){
-    photo_album[attr]=photoInfo[attr];
-  }
-  photo_album.owner.model._id=campaign._id;
-  //---save
-  photo_album.save(function(err) {
-    if(err) callback(500,'保存相册失败');
-    campaign.photo_album = photo_album._id;
+    photo_album.save(function(err) {
+      if(err) callback(500,'保存相册失败');
+      campaign.photo_album = photo_album._id;
 
-    campaign.components = [];
-    campaign.modularization = true;
-    var componentNames = ['RichComment']; // 'ScoreBoard'已可用，可在比赛中使用
+      campaign.components = [];
+      campaign.modularization = true;
+      var componentNames = ['RichComment']; // 'ScoreBoard'已可用，可在比赛中使用
 
-    // todo component data
-    // 如果是公司活动，不提供team属性。
-    // 这是测试数据
-//    campaign.teams = [{
-//      company: {
-//        _id: campaign.cid[0],
-//        name: campaign.cname[0],
-//        logo: '/logo/company/' + campaign.cid[0] + '/48/48'
-//      },
-//      team: {
-//        _id: campaign.team[0],
-//        name: 'test',
-//        logo: '/logo/group/' + campaign.team[0] + '/48/48'
-//      }
-//    }];
+      // todo component data
 
-    async.map(componentNames, function (componentName, asyncCallback) {
-      mongoose.model(componentName).establish(campaign, function (err, component) {
-        if (err) { asyncCallback(err); }
+      async.map(componentNames, function (componentName, asyncCallback) {
+        mongoose.model(componentName).establish(campaign, function (err, component) {
+          if (err) { asyncCallback(err); }
+          else {
+            campaign.components.push({
+              name: componentName,
+              _id: component._id
+            });
+            asyncCallback(null, component);
+          }
+        });
+      }, function (err, results) {
+        if (err) { callback(500, '创建活动组件失败'); }
         else {
-          campaign.components.push({
-            name: componentName,
-            _id: component._id
+          campaign.save(function(err) {
+            console.log('done');
+            if(err) callback(500,'保存活动失败');
+            else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
           });
-          asyncCallback(null, component);
         }
       });
-    }, function (err, results) {
-      if (err) { callback(500, '创建活动组件失败'); }
-      else {
-        campaign.save(function(err) {
-          if(err) callback(500,'保存活动失败');
-          else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
-        });
-      }
     });
-
-  });
+  }
 };
 
 exports.campaign = function(req, res, next, id){

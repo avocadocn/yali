@@ -997,7 +997,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
                     window.location.reload();
                 }
                 else{
-                    alertify.alert('挑战发起失败');
+                    alertify.alert(data.msg);
                 }                
             };
             if($scope.modal===1){//在自己的小队约战

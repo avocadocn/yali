@@ -9,75 +9,100 @@ var mongoose = require('mongoose'),
 /**
  * 用于子文档嵌套
  */
-var _member = new Schema({
-  camp: {                //阵营
-    type: String,
-    enum: ['A', 'B']
-  },
-  cid: String,
-  uid: String,
+var _member = {
+  // camp: {                //阵营
+  //   type: String,
+  //   enum: ['A', 'B']
+  // },
+  // cid: String,
+  _id: Schema.Types.ObjectId,
   nickname: String,
-  photo: String,
-  team: {
-    _id: Schema.Types.ObjectId,
-    name: String,
-    logo: String
-  }
-});
+  photo: String
+  // team: {
+  //   _id: Schema.Types.ObjectId,
+  //   name: String,
+  //   logo: String
+  // }
+};
+
+//旧数据，不用了
 //阵形图子文档
-var _formation = new Schema({
-  uid: String,
-  x: Number,
-  y: Number
-});
-//阵营
-var _camp = new Schema({
-  id: Schema.Types.ObjectId,              //小队id
-  logo: String,                            //队徽路径
-  tname: String,
-  member: [_member],
+// var _formation = new Schema({
+//   uid: String,
+//   x: Number,
+//   y: Number
+// });
+// //阵营
+// var _camp = new Schema({
+//   id: Schema.Types.ObjectId,               //小队id
+//   logo: String,                            //队徽路径
+//   tname: String,
+//   member: [_member],
+//   member_quit: [_member],
+//   cid: String,
+//   gid: String,
+//   start_confirm: {                         //双方组长都确认后才能开战
+//     type: Boolean,
+//     default: false
+//   },
+//   formation: [_formation],
+//   result: {                                //比赛结果确认
+//     confirm: {
+//       type: Boolean,
+//       default: false
+//     },
+//     content: String,
+//     start_date: Date
+//   },
+//   score: Number,
+//   vote: {
+//     positive: {                             //赞成员工投票数
+//       type: Number,
+//       default: 0
+//     },
+//     positive_member: [_member],             //赞成员工id,cid
+//     negative: {                             //反对员工投票数
+//       type: Number,
+//       default: 0
+//     },
+//     negative_member: [_member]              //反对员工id,cid
+//   }
+// });
+
+//新阵营
+var _campaignUnit={
+  company:{
+    _id:Schema.Types.ObjectId,
+    name:String,
+    logo:String
+  },
+  team:{
+    _id:Schema.Types.ObjectId,
+    name:String,
+    logo:String
+  },
+  member:[_member],
   member_quit: [_member],
-  cid: String,
-  gid: String,
-  start_confirm: {                         //双方组长都确认后才能开战
-    type: Boolean,
-    default: false
-  },
-  formation: [_formation],
-  result: {                                //比赛结果确认
-    confirm: {
-      type: Boolean,
-      default: false
-    },
-    content: String,
-    start_date: Date
-  },
-  score: Number,
-  vote: {
+  vote:{
     positive: {                             //赞成员工投票数
       type: Number,
       default: 0
     },
-    positive_member: [_member],             //赞成员工id,cid
+    positive_member: [_member],             //赞成员工id
     negative: {                             //反对员工投票数
       type: Number,
       default: 0
     },
-    negative_member: [_member]              //反对员工id,cid
+    negative_member: [_member]              //反对员工id
   }
-});
-
-
+};
 /**
  * 活动
  */
 var Campaign = new Schema({
-  team: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'CompanyGroup'
-    }
-  ],
+  tid: [Schema.Types.ObjectId],     //参加该活动的所有组
+  cid: [Schema.Types.ObjectId],     //参加该活动的所有公司
+  campaign_unit:[_campaignUnit],     //新阵营
   active: {
     type: Boolean,
     default: false
@@ -86,22 +111,17 @@ var Campaign = new Schema({
     type: Boolean,
     default: false
   },
-  cid: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Company'
-    }
-  ],                                 //参加该活动的所有公司
-  cname: Array,
+  
+  // cname: Array,                     //旧数据
   poster: {
-    cid: String,                    //活动发起者所属的公司
+    cid: String,                       //活动发起者所属的公司
     cname: String,
     tname: String,
     uid: String,
     nickname: String,
     role: {
       type: String,
-      enum: ['HR', 'LEADER']       //HR 队长
+      enum: ['HR', 'LEADER']
     }
   },
   theme: {//主题
@@ -134,13 +154,13 @@ var Campaign = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'PhotoAlbum'
   },
-  member: [_member],
-  member_quit: [_member],
+  // member: [_member],              //旧数据
+  // member_quit: [_member],         //旧数据
   create_time: {
     type: Date,
     default: Date.now
   },
-  camp: [_camp],    //阵营
+  // camp: [_camp],                   //阵营 旧数据
   comment_sum: {
     type: Number,
     default: 0
