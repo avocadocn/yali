@@ -94,6 +94,10 @@ var _campaignUnit={
       default: 0
     },
     negative_member: [_member]              //反对员工id
+  },
+  start_confirm: {                         //双方组长都确认后才能开战
+    type: Boolean,
+    default: false
   }
 };
 /**

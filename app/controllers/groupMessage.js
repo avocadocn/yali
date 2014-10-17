@@ -79,10 +79,10 @@ exports.getMessage = function(req, res, next) {
         switch (group_message[i].message_type){
           case 0://发起公司活动
           _group_message.logo = group_message[i].company[0].logo;
-          _group_message.member_num = group_message[i].campaign.member.length;
+          _group_message.member_num = group_message[i].campaign.members.length;
           if(group_message[i].campaign.active && join_role&& new Date()<group_message[i].campaign.deadline){
             var join_flag = false;
-            group_message[i].campaign.member.forEach(function(member){
+            group_message[i].campaign.members.forEach(function(member){
               if(member.uid.toString() === req.user._id.toString()){
                 join_flag = true;
               }
@@ -151,7 +151,7 @@ exports.getMessage = function(req, res, next) {
                     vote_flag = 1;
                   }
                 });
-              }
+              } 
               if (campaign.campaign_unit[_group_message.myteam[0].index ].vote.negative > 0) {
                 campaign.campaign_unit[_group_message.myteam[0].index ].vote.negative_member.forEach(function (member) {
                   if (member._id.toString() === req.user._id.toString()) {
@@ -165,6 +165,7 @@ exports.getMessage = function(req, res, next) {
             //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
             //console.log(i,group_message.grouptype_flag);
             //要到小队主页、是HR\LEADER才有应战按钮->response_flag = true;
+            // 有了auth(...)就可以在个人页应战了~ -M
             if (!_group_message.campaign.finish && pageType === "team" && (req.role === 'HR' || req.role === 'LEADER') && group_message[i].campaign.campaign_unit[1].start_confirm === false && group_message[i].campaign.campaign_unit[0].start_confirm) {
               if (_group_message.myteam[0] === 1) {
                 _group_message.response_flag = true;
@@ -194,7 +195,7 @@ exports.getMessage = function(req, res, next) {
             if (join_role && new Date() < campaign.deadline) {
               //没有参加为false，参加为true
               var join_flag = false;
-              for (var _camp_index = 0; _camp_index < campaign.camp.length; _camp_index++) {
+              for (var _camp_index = 0; _camp_index < campaign.campaign_unit.length; _camp_index++) {
                 if (campaign.campaign_unit[_camp_index].member.length > 0) {
                   campaign.campaign_unit[_camp_index].member.forEach(function (member) {
                     if (member._id.toString() === req.user._id.toString()) {
@@ -214,15 +215,15 @@ exports.getMessage = function(req, res, next) {
             }
             _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type) > -1;
             break;
-          case 6:
+          case 6://比赛确认
             _group_message.myteam =[];
-            for(var ii =0;ii<group_message[i].campaign.camp.length;ii++){
-              if(model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.camp[ii].id,'_id')>-1){
+            for(var ii =0;ii<group_message[i].campaign.campaign_unit.length;ii++){
+              if(model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.campaign_unit[ii].team._id,'_id')>-1){
                 _group_message.myteam.push( {
                   index:ii,
-                  _id : group_message[i].campaign.camp[ii].id,              //小队id
-                  logo: group_message[i].campaign.camp[ii].logo,                            //队徽路径
-                  name: group_message[i].campaign.camp[ii].tname
+                  _id : group_message[i].campaign.campaign_unit[ii].team._id,              //小队id
+                  logo: group_message[i].campaign.campaign_unit[ii].team.logo,                            //队徽路径
+                  name: group_message[i].campaign.campaign_unit[ii].team.name
                 });
               }
             }
@@ -263,12 +264,12 @@ exports.getMessage = function(req, res, next) {
             _group_message.team_id=group_message[i].team[0].teamid;
             if(group_message[i].campaign.active && join_role&& new Date()<group_message[i].campaign.deadline){
               var join_flag = false;
-              group_message[i].campaign.member.forEach(function(member){
+              group_message[i].campaign.members.forEach(function(member){
                 if(member.uid.toString() === req.user._id.toString()){
                   join_flag = true;
                 }
               });
-              _group_message.member_num = group_message[i].campaign.member.length;
+              _group_message.member_num = group_message[i].campaign.members.length;
               _group_message.join_flag = join_flag;
               _group_message.department_id = group_message[i].department;
             }
@@ -277,11 +278,11 @@ exports.getMessage = function(req, res, next) {
           case 10:
             _group_message.logo = group_message[i].team[0].logo;
             _group_message.team_id=group_message[i].team[0].teamid;
-            _group_message.member_num = group_message[i].campaign.member.length;
+            _group_message.member_num = group_message[i].campaign.members.length;
 
             if(join_role&& new Date()<group_message[i].campaign.deadline){
               var join_flag = false;
-              group_message[i].campaign.member.forEach(function(member){
+              group_message[i].campaign.members.forEach(function(member){
                 if(member.uid.toString() === req.user._id.toString()){
                   join_flag = true;
                 }
