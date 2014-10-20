@@ -699,8 +699,13 @@ exports.getUserCampaignsForHome = function(req, res) {
   });
 };
 exports.getUserAllCampaignsForCalendar = function(req, res) {
-  if (req.role === 'OWNER') {
-
+  var allow = auth(req.user,{
+    users:[req.params.userId]
+  },[
+    'getUserAllCampaignsForCalendar'
+  ]);
+  console.log(allow);
+  if(allow.getUserAllCampaignsForCalendar === ture){
     getUserAllCampaigns(req.user, true, req.query, function(campaigns) {
       var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
       res.send({

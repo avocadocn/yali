@@ -32,6 +32,9 @@ var registeredTasks = {
   confirmScoreBoardScore: {
     company: ['hr'],
     team: ['leader']
+  },
+  getUserAllCampaignsForCalendar:{
+    user: ['self']
   }
 };
 
