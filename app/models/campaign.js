@@ -255,8 +255,9 @@ Campaign.methods = {
 
     if (this.deadline < Date.now()) {
       return {
-        result:
-      }
+        result: 0,
+        msg: '活动报名已经截止'
+      };
     }
 
     for (var i = 0; i < this.campaing_unit.length; i++) {
