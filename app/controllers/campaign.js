@@ -704,8 +704,7 @@ exports.getUserAllCampaignsForCalendar = function(req, res) {
   },[
     'getUserAllCampaignsForCalendar'
   ]);
-  console.log(allow);
-  if(allow.getUserAllCampaignsForCalendar === ture){
+  if(allow.getUserAllCampaignsForCalendar === true){
     getUserAllCampaigns(req.user, true, req.query, function(campaigns) {
       var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
       res.send({
