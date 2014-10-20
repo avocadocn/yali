@@ -660,7 +660,7 @@ exports.getUserCampaignsForHome = function(req, res) {
       options.end_time = endSet;
     }
     if(joinFlag){
-      options['campaign_unit.member'] = req.user._id ;
+      options['campaign_unit.member._id'] = req.user._id ;
       _sort ='start_time';
     }
     else{
