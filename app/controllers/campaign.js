@@ -24,7 +24,7 @@ var blockSize = 20;
  */
 var getTeamAllCampaigns = function(team_id, callback) {
   Campaign
-  .find({ 'team': team_id, 'active': true })
+  .find({ 'tid': team_id, 'active': true })
   .sort('start_time')
   .exec()
   .then(function(campaigns) {
@@ -41,7 +41,7 @@ var getTeamAllCampaigns = function(team_id, callback) {
  * @param  {Object}   user       mongoose.model('User'), example:req.user
  * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
  * @param  {Object}   _query 包括from和to分别为活动的开始和结束时间
- * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 出错或没有找到活动则campaigns为[]
  */
 var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
   var team_ids = [];
@@ -52,11 +52,11 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
     '$or': [
       {
         'cid': user.cid,
-        'team': { '$size': 0 }
+        'tid': { '$size': 0 }
       },
       {
         'cid': user.cid,
-        'team': { '$in': team_ids }
+        'tid': { '$in': team_ids }
       }
     ],
     'active': true
@@ -69,9 +69,6 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
     options.end_time = { '$gte': new Date(parseInt(_query.from)) };
   }
   var query = Campaign.find(options).sort('start_time');
-  if (isCalendar === false) {
-    query = query.populate('team').populate('cid');
-  }
 
   query
   .exec()
@@ -89,7 +86,7 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
  * @param  {Object}   user       mongoose.model('User'), example:req.user
  * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
  * @param  {Object}   _query 包括from和to分别为活动的开始和结束时间
- * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 出错或没有找到活动则campaigns为[]
  */
 var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
   var team_ids = [];
@@ -98,7 +95,7 @@ var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
   }
   var options = {
     'cid': user.cid,
-    '$or': [{ 'member.uid': user._id }, { 'camp.member.uid': user._id }],
+    'campaign_unit.member._id': user._id,
     'active': true
   };
   if (isCalendar === false) {
@@ -109,9 +106,6 @@ var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
     options.end_time = { '$gte': new Date(parseInt(_query.from)) };
   }
   var query = Campaign.find(options).sort('start_time');
-  if (isCalendar === false) {
-    query = query.populate('team').populate('cid');
-  }
 
   query
   .exec()
@@ -129,7 +123,7 @@ var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
  * @param  {Object}   user       mongoose.model('User'), example:req.user
  * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
  * @param  {Object}   _query 包括from和to分别为活动的开始和结束时间
- * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 出错或没有找到活动则campaigns为[]
  */
 var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
   var team_ids = [];
@@ -161,9 +155,6 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
     options.end_time = { '$gte': new Date(parseInt(_query.from)) };
   }
   var query = Campaign.find(options).sort('start_time');
-  if (isCalendar === false) {
-    query = query.populate('team').populate('cid');
-  }
 
   query
   .exec()
@@ -185,7 +176,6 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
 var formatCampaignForCalendar = function(user, campaigns) {
   var calendarCampaigns = [];
   campaigns.forEach(function(campaign) {
-
     // 公司活动
     if (campaign.campaign_type === 1) {
       var logo_owner_id = campaign.cid[0];
@@ -194,7 +184,7 @@ var formatCampaignForCalendar = function(user, campaigns) {
       // 挑战或比赛
       var logo_owner_id;
       for (var i = 0, teams = user.team; i < teams.length; i++) {
-        if (campaign.team.indexOf(teams[i]._id) !== -1) {
+        if (campaign.tid.indexOf(teams[i]._id) !== -1) {
           logo_owner_id = teams[i]._id;
           var logo = '/logo/group/' + logo_owner_id + '/27/27';
           break;
@@ -202,31 +192,9 @@ var formatCampaignForCalendar = function(user, campaigns) {
       }
     }
 
-
-    // var count = 0;
-    // if (campaign.member) {
-    //   count = campaign.member.length;
-    // }
-
     var is_joined = false;
-    // 活动
-    if (campaign.campaign_type < 4 || campaign.campaign_type ===6) {
-      for (var i = 0, members = campaign.member; i < members.length; i++) {
-        if (user._id.toString() === members[i].uid) {
-          is_joined = true;
-          break;
-        }
-      }
-    }
-
-    // 比赛
-    else {
-      for (var i = 0; i < campaign.camp.length; i++) {
-        if(model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1){
-          is_joined = true;
-          break;
-        }
-      }
+    if(model_helper.arrayObjectIndexOf(campaign.members,user._id,'_id')>-1){
+      is_joined = true;
     }
 
     calendarCampaigns.push({
@@ -237,7 +205,6 @@ var formatCampaignForCalendar = function(user, campaigns) {
       'class': 'event-info',
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
-      //'count': count,
       'is_joined': is_joined,
       'location':campaign.location,
     });
@@ -733,6 +700,7 @@ exports.getUserCampaignsForHome = function(req, res) {
 };
 exports.getUserAllCampaignsForCalendar = function(req, res) {
   if (req.role === 'OWNER') {
+
     getUserAllCampaigns(req.user, true, req.query, function(campaigns) {
       var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
       res.send({
