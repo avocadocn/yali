@@ -234,6 +234,71 @@ Campaign.methods = {
 
     }
     return false;
+  },
+
+  /**
+   * 参加活动，已参加、活动报名截止、活动已结束都会导致失败
+   * example:
+   *  campaign.join({
+   *    cid: company._id,
+   *    tid: team._id
+   *  }, req.user);
+   * @param {Object} targetUnit 参加的阵营的基本信息，包括cid,tid(tid没有可省略)
+   * @param {Object} user req.user
+   * @returns {Object} 参加结果对象，包括result, msg两个属性
+   *  return: {
+   *    result: Boolean, // 成功为true, 失败为false
+   *    msg: String // 失败后的消息
+   *  }
+   */
+  join: function (targetUnit, user) {
+
+    if (this.deadline < Date.now()) {
+      return {
+        result:
+      }
+    }
+
+    for (var i = 0; i < this.campaing_unit.length; i++) {
+      var unit = this.campaign_unit[i];
+
+      var _join = function (unit) {
+        for (var i = 0; i < unit.member.length; i++) {
+          if (user._id.toString() === unit.member[i]._id.toString()) {
+            // 用户已经参加该活动
+            return {
+              result: false,
+              msg: '您已经参加该活动'
+            };
+          }
+        }
+        // 用户没有参加
+        unit.member.push({
+          _id: user._id,
+          nickname: user.nickname,
+          photo: user.photo
+        });
+        return {
+          result: true
+        };
+      };
+
+      // 非公司活动
+      if (targetUnit.tid && targetUnit.tid.toString() === unit.team._id.toString()) {
+
+        return _join(unit);
+      }
+
+      // 公司活动
+      if (targetUnit.cid.toString() === unit.company._id.toString()) {
+        return _join(unit);
+      }
+
+    }
+    return {
+      result: false,
+      msg: '没有找到目标阵营'
+    };
   }
 
 };

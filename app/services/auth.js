@@ -67,13 +67,16 @@ var getRole = function (user, owner) {
   } else if (user.provider === 'user') {
 
     // 判断是否是公司成员
-    var cid = user.populated('cid') || user.cid;
-    cid = cid.toString();
-    for (var i = 0; i < owner.companies.length; i++) {
-      if (cid === owner.companies[i].toString()) {
-        role.company = 'member';
+    if (owner.companies) {
+      var cid = user.populated('cid') || user.cid;
+      cid = cid.toString();
+      for (var i = 0; i < owner.companies.length; i++) {
+        if (cid === owner.companies[i].toString()) {
+          role.company = 'member';
+        }
       }
     }
+
 
     if (owner.teams) {
       // 判断是否是小队成员, 用户可能同属于这两个小队，所以owner.teams需要完全遍历
