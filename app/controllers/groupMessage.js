@@ -92,7 +92,6 @@ exports.getMessage = function(req, res, next) {
           }
           break;
           case 1://发起小队活动
-            //_group_message.team_id = 
             _group_message.logo = group_message[i].team[0].logo;
             _group_message.team_id=group_message[i].team[0].teamid;
             _group_message.member_num = group_message[i].campaign.members.length;

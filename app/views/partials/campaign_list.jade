@@ -28,8 +28,7 @@
         p.text-center.time {{ campaign_item.start_time | date:'HH:mm' }}
       td(class="#{provider}_logo_col")
         a(ng-href="{{campaign_item.link}}")
-          img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
-          img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
+          img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
       td.content_col
         a(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}")
           p

@@ -422,9 +422,11 @@ var formatCampaignsForApp = function(user, campaigns, nowFlag) {
  * @return {[type]}          [description]
  */
 var formatCampaign = function(campaign,pageType,role,user,other){
-  var campaigns = [];
   var _other = other ? other :{};
+  var campaigns = [];
+  var a = new Date();
   campaign.forEach(function(_campaign,_index){
+    var ct = _campaign.campaign_type;
     var temp = {
       '_id':_campaign._id,
       'active':_campaign.active,
@@ -435,90 +437,51 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       'start_time':_campaign.start_time,
       'end_time':_campaign.end_time,
       'deadline':_campaign.deadline,
-      'comment_sum':_campaign.comment_sum
+      'comment_sum':_campaign.comment_sum,
+      'join_flag':model_helper.arrayObjectIndexOf(_campaign.members,user._id,'_id')>-1?1:-1,
+      'due_flag':new Date()<_campaign.deadline?1:0
     };
-    if(_campaign.campaign_type===1){//公司活动
+    if(ct===1){//公司活动
       temp.type='companycampaign';
       temp.logo=_campaign.campaign_unit[0].company.logo;
-      temp.link = '/company/home/'+_campaign.campaign_unit[0].company._id;
-      temp.name = campaign.campaign_unit[0].company.name;
-      temp.cid = campaign.campaign_unit[0].company._id;
-      temp.cname=_campaign.campaign_unit[0].company.name;
-      temp.member_num = _campaign.campaign_unit[0].member.length > 0 ? _campaign.campaign_unit[0].member.length : 0;
-      if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
-        if(model_helper.arrayObjectIndexOf(_campaign.campaign_unit[0].member,user._id,'_id')>-1){
-          temp.join_flag = 1;
-          if(new Date()<_campaign.deadline)
-            temp.due_flag = 1;//已不能报名
-        }
-        else{
-          temp.join_flag = -1;
-        }
-      }
+      temp.link = '/company/home/'+_campaign.cid[0];
+      temp.name = _campaign.campaign_unit[0].company.name;
+      temp.cid = _campaign.campaign_unit[0].company._id;
+      temp.cname=_campaign.campaign_unit[0].company.info.name;
+      temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
     }
-    else if(_campaign.campaign_type===2 || _campaign.campaign_type===3){//小队活动
+    else if(ct===2 || ct===3){//小队活动
       temp.type='teamcampaign';
-      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
-      temp.logo=_campaign.team[0].logo;
-      temp.link = '/group/page/'+_campaign.team[0]._id;
-      temp.name=_campaign.team[0].name;
-      temp.team_id = [{'_id':_campaign.team[0]._id}];
-      if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
-        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
-          temp.join_flag = 1;
-          if(new Date()<_campaign.deadline)
-            temp.due_flag = 1;//已不能报名
-        }
-        else{
-          temp.join_flag = -1;
-        }
-      }
     }
-    else if (_campaign.campaign_type === 6 || _campaign.campaign_type === 8) {
+    else if (ct === 6 || ct === 8) {//部门
       temp.type = 'departmentcampaign';
-      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
-      temp.logo=_campaign.team[0].logo;
-      temp.link = '/group/page/'+_campaign.team[0]._id;
-      temp.name = _campaign.team[0].name;
-      temp.team_id = [{'_id':_campaign.team[0]._id}];
-      if(pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE'){
-        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
-          temp.join_flag = 1;
-          if(new Date()<_campaign.deadline)
-            temp.due_flag = 1;
-        }
-        else{
-          temp.join_flag = -1;
-        }
-      }
     }
-    else{
+    if(ct===2||ct===3||ct===6||ct===8) {
+      temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
+      temp.logo=_campaign.campaign_unit[0].team.logo;
+      temp.link = '/group/page/'+_campaign.tid[0];
+      temp.name=_campaign.campaign_unit[0].team.name;
+      temp.team_id = [{'_id':_campaign.tid[0]}];
+    }
+    else if(ct!==1) {//挑战
       temp.type = 'provoke';
       temp.join_flag = 0;
       temp.team_id = [];
-      _campaign.camp.forEach(function(camp){
-        if(model_helper.arrayObjectIndexOf(camp.member,user._id,'uid')>-1){//user在这个camp的member里
-          temp.join_flag = 1;
-          if(new Date()<_campaign.deadline)
-            temp.due_flag = 1;
+      for(var i =0;i<_campaign.campaign_unit.length;i++){
+        if(model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id')>-1){//这个unit是否为user参加的小队
+          temp.team_id.push(_campaign.campaign_unit[i].team._id);
+          temp.logo = _campaign.campaign_unit[i].team.logo;
+          temp.name = _campaign.campaign_unit[i].team.name;
+          temp.link = '/group/page/'+_campaign.campaign_unit[i].team._id.toString();
         }
-        for(var i = 0; i<user.team.length; i++){//遍历得出这个camp是否为user参加的小队
-          if(camp.id.toString() == user.team[i]._id.toString()){
-            temp.team_id.push({'_id':camp.id,'name':camp.tname,'logo':camp.logo});
-            temp.logo=camp.logo;
-            temp.name = camp.tname;
-            temp.link='/group/page/'+camp.id.toString();
-          }
-        };
-      })
-
+      }
     }
     if(temp.type != 'provoke' && pageType==='team'&&(role ==='LEADER' ||role ==='HR' ) || pageType==='company'&&role ==='HR'){
       temp.close_flag=true;
     }
     if(_other.photoFlag){
       temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
-      temp.camp = _campaign.camp;
+      temp.camp = _campaign.camp;//...
     }
     if(_other.nowFlag){
       var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
@@ -550,10 +513,10 @@ exports.getCampaigns = function(req, res) {
       option.campaign_type = 1;
     }
     else if(campaignType==='team') {
-      option.campaign_type = {'$in':[2,3]};
+      option.campaign_type = {'$in':[2,3,4,5,7]};//4?5?7?
     }
     else if(campaignType==='department'){
-      option.campaign_type = {'$in':[6,8]};
+      option.campaign_type = {'$in':[6,8]};//9?
     }
     else if(req.role ==='EMPLOYEE')  {
       var team_ids = [];
@@ -561,45 +524,44 @@ exports.getCampaigns = function(req, res) {
         team_ids.push(req.user.team[i]._id.toString());
       }
       if(campaignType==='selected') {
-        option.team={'$in':team_ids};
+        option.tid={'$in':team_ids};
       }
       else if(campaignType==='unselected') {
-        option.team = {'$nin':team_ids};
+        option.tid = {'$nin':team_ids};
         option.campaign_type = 2;
       }
     }
     Campaign
-      .find(option)
-      .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
-      .limit(blockSize)
-      .populate('team').populate('cid')
-      .sort({'start_time':-1})
-      .exec()
-      .then(function(campaign) {
-        if(campaign===[]){
-          return res.send({ result: 0, msg:'查找活动失败' });
-        }
-        else{
-          return res.send({ result: 1, role:req.role, campaignLength: campaign.length, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
-        }
-      })
-      .then(null, function(err) {
-        console.log(err);
-        return res.send(400);
-      });
+    .find(option)
+    .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
+    .limit(blockSize)
+    .sort({'start_time':-1})
+    .exec()
+    .then(function(campaign) {
+      if(campaign===[]){
+        return res.send({ result: 0, msg:'查找活动失败' });
+      }
+      else{
+        return res.send({ result: 1, role:req.role, campaignLength: campaign.length, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
+      }
+    })
+    .then(null, function(err) {
+      console.log(err);
+      return res.send(400);
+    });
   }
   else if(pageType==='team' && campaignType==='all') {
     option={
       'active':true,
       'finish':false,
-      'team':pageId,
+      'tid':pageId,
       'cid':req.companyGroup.cid
     }
     Campaign
     .find(option)
     .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
     .limit(blockSize)
-    .populate('team').populate('cid')
+    // .populate('team').populate('cid')
     .sort({'start_time':-1})
     .exec()
     .then(function(campaign) {
@@ -626,13 +588,13 @@ exports.getCampaigns = function(req, res) {
           'active':true,
           'finish':false,
           'cid': req.profile.cid,
-          '$or':[{'team':{'$in':team_ids}},{'team':{'$size':0}}]
+          '$or':[{'tid':{'$in':team_ids}},{'tid':{'$size':0}}]
         }
         Campaign
         .find(option)
         .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
         .limit(blockSize)
-        .populate('team').populate('cid')
+        // .populate('team').populate('cid')
         .sort({'start_time':1})
         .exec()
         .then(function(campaign) {
