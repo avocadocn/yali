@@ -1,31 +1,55 @@
 @require('variables')
 
+clearfix()
+  &:before, &:after
+    display table
+    content " "
+  &:after
+    clear both
+
 .campaign_detail
 
   .component
-    border solid 1px gray
     .component_head
+      clearfix()
       height 30px
       background-color themeColor
+      .component_logo
+        margin-left 10px
+        height 14px
       .title
-        color #ffffff
-        font-size 16px
-      .sub_title
+        margin-left 10px
         color #ffffff
         font-size 14px
+        line-height 30px
+      .head_button
+        margin-top 5px
+        margin-right 10px
+        padding 0
+        width 35px
+        height 20px
+        font-size 12px
+        line-height 20px
+        color #ffffff
+        float right
+        text-align center
+        text-decoration none
     .component_body
       padding 15px
+      background-color #ffffff
+      border solid 1px #e0e0e0
+      border-top none
 
   .campaign_panel
     display flex
 
     .component
-      margin-bottom 15px
+      margin-bottom 10px
       &:last-child
         margin-bottom 0
 
     .panel_divider
-      width 15px
+      width 20px
 
     .main_panel
       flex 3
@@ -34,25 +58,74 @@
       flex 1
 
   .detail_card
-    .base_info
-      display flex
+    .component_head
+      height 35px
+      background-color #73a5dd
+      .title
+        margin-left 15px
+        margin-right 15px
+        line-height 35px
+        font-size 18px
+      .sub_title
+        line-height 35px
+        color #ffffff
+        font-size 14px
+      .head_button
+        margin-top 8px
+        margin-right 15px
+        width 50px
+        height 20px
+        font-size 14px
+        color #ffffff
+        background-color #e7ce23
+    .component_body
+      .base_info
+        display flex
 
-      .logo_container
-        width 100px
-        text-align center
+        .logo_container
+          width 100px
+          text-align center
 
-        .logo
-          width 64px
-          height 64px
+          .logo
+            width 64px
+            height 64px
 
-      .info_container
-        flex 1
+        .info_container
+          flex 1
+          .title
+            font-size 14px
+            color #e7ce23
+          .start_info
+            display flex
 
-        .start_info
-          display flex
+            .campaign_info
+              flex 1
 
-          .campaign_info
-            flex 1
+            .time_info
+              flex 1
 
-          .time_info
-            flex 1
+      .title
+        font-size 14px
+        color #73a5dd
+
+      .text
+        font-size 14px
+        color #cccccc
+
+  .map_card
+    .component_head
+      background-color #8dd4e6
+      .head_button
+        background-color #5eb0c5
+
+  .member_card
+    .component_head
+      background-color #73a5dd
+      .head_button
+        background-color #4e83be
+
+  .brief_card
+    .component_head
+      background-color #73a5dd
+      .head_button
+        background-color #4e83be

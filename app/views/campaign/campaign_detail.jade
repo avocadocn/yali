@@ -34,22 +34,23 @@ block contentExt
                   p #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
             hr
             p: span.title 活动简介
-            div #{campaign.content}
+            div.text #{campaign.content}
             p: span.title 活动标签
             .tags
               each tag in campaign.tags
                 span.tag #{tag}
             p: span.title 报名信息
-            p 报名人数上限: #{campaign.members.length}/#{campaign.member_max}
-            p 报名人数下限: #{campaign.member_min}
-            p 报名截止日期: #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm dddd')}
+            p.text 报名人数上限: #{campaign.members.length}/#{campaign.member_max}
+            p.text 报名人数下限: #{campaign.member_min}
+            p.text 报名截止日期: #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm dddd')}
 
       .panel_divider
 
       .side_panel
 
-        .component
+        .component.map_card
           .component_head
+            img.component_logo(src="/img/map-pin-circle.png")
             span.title 活动地点
             a.head_button(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank") 大图
           .component_body
@@ -61,6 +62,7 @@ block contentExt
 
         .component.member_card
           .component_head
+            img.component_logo(src="/img/people-general.png")
             span.title 活动成员(#{campaign.members.length})
             button.head_button 查看
           .component_body
@@ -68,7 +70,7 @@ block contentExt
               each member in membersForCard
                 img.member(src="#{member.photo}")
 
-        .component
+        .component.brief_card
           .component_head
             span.title 活动信息
             button.head_button 详情
