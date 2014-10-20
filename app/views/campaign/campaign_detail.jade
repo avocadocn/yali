@@ -47,15 +47,17 @@ block contentExt
       .panel_divider
 
       .side_panel
+
         .component
           .component_head
-            span.title 活动信息
-            button.head_button 详情
+            span.title 活动地点
+            a.head_button(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank") 大图
           .component_body
-            p 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm dddd')}
-            p 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm dddd')}
-            p 活动地点: #{campaign.location.name}
-            p 活动类型: #{campaign.campaign_mold}
+            if campaign.location.coordinates.length==2
+              a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
+                img.img-responsive(src="http://restapi.amap.com/v3/staticmap?location=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labels=#{campaign.location.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
+            else
+              img.img-responsive(src="/img/icons/nomap.jpg")
 
         .component
           .component_head
@@ -66,6 +68,7 @@ block contentExt
             p 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm dddd')}
             p 活动地点: #{campaign.location.name}
             p 活动类型: #{campaign.campaign_mold}
+
     #campaign_data(data-id="#{campaign._id}" data-start="#{isStart}" data-end="#{isEnd}" data-join="#{isJoin}")
 
 append footExt
