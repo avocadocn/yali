@@ -172,6 +172,9 @@ block panel
   //-     div(ng-view).tab-body
     include ../partials/calendar_modal
   include ../users/user_modal
+  if role !== 'HR'
+    .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
+      include ../partials/calendar_modal
 block aside
   .old_campaign_container
     a(href="#/campaign/#{uid}" ng-click="openModal()")

@@ -82,14 +82,14 @@ tabViewUser.run(['$rootScope','$location','Report',
         $rootScope.openModal = function(){
             $('#user_modal').modal();
         }
-        $rootScope.judgeYear = function(index){
-            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
-                return true;
-            }
-            else {
-                return false;
-            }
-        };
+        // $rootScope.judgeYear = function(index){
+        //     if(index ==0 || new Date($rootScope.campaigns[index].start_time).getFullYear()!=new Date($rootScope.campaigns[index-1].start_time).getFullYear()){
+        //         return true;
+        //     }
+        //     else {
+        //         return false;
+        //     }
+        // };
 
     }
 ]);
@@ -633,7 +633,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                 tmpl_path: '/tmpls-small/',
                 tmpl_cache: false,
                 language: 'zh-CN',
-                modal: '#events-modal',
+                modal: '#user_modal',
                 onAfterEventsLoad: function(events) {
                     if (!events) {
                         return;
