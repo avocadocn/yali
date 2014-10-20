@@ -1084,6 +1084,7 @@ exports.renderCampaignDetail = function (req, res) {
 
 
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
+  var membersForCard = campaign.members.slice(0, 5);
 
   res.render('campaign/campaign_detail', {
     campaign: campaign,
@@ -1091,6 +1092,7 @@ exports.renderCampaignDetail = function (req, res) {
     isStart: campaign.start_time < Date.now(),
     isEnd: campaign.end_time < Date.now(),
     isJoin: isJoin,
+    membersForCard: membersForCard,
     notice: req.notice,
     moment: moment,
     allow: allow
