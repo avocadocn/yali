@@ -12,8 +12,8 @@ module.exports = function(app) {
   app.get('/campaign/team/calendar/:teamId', campaign.getTeamCampaigns);
 
       //加入、退出活动
-  app.post('/campaign/joinCampaign/:campaignId', authorization.campaginAuthorize, campaign.joinCampaign);
-  app.post('/campaign/quitCampaign/:campaignId', authorization.campaginAuthorize, campaign.quitCampaign);
+  app.post('/campaign/joinCampaign/:campaignId', campaign.joinCampaign);
+  app.post('/campaign/quitCampaign/:campaignId', campaign.quitCampaign);
   app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
 
 

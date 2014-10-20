@@ -33,7 +33,16 @@ var registeredTasks = {
     company: ['hr'],
     team: ['leader']
   },
-  getUserAllCampaignsForCalendar:{
+  getUserAllCampaignsForCalendar: {
+    user: ['self']
+  },
+  joinCompanyCampaign: {
+    company: ['member']
+  },
+  joinTeamCampaign: {
+    team: ['leader', 'member']
+  },
+  quitCampaign: {
     user: ['self']
   }
 };

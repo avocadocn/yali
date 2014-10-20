@@ -3,7 +3,7 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
 block contentExt
-  .campaign_detail.dl_container
+  .campaign_detail.dl_container(ng-controller="campaignController")
     .breadcrumb
     .campaign_panel
       .main_panel
@@ -11,6 +11,8 @@ block contentExt
           .component_head
             span.title #{campaign.theme}
             span.sub_title #{campaign.campaign_unit[0].team.name}
+            button.head_button(ng-if="!isJoin" ng-click="join('#{campaign.campaign_unit[0].company._id}', '#{campaign.campaign_unit[0].team._id}')") 参加
+            button.head_button(ng-if="isJoin" ng-click="quit()") 退出
           .component_body
             .base_info
               .logo_container
@@ -64,6 +66,7 @@ block contentExt
             p 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm dddd')}
             p 活动地点: #{campaign.location.name}
             p 活动类型: #{campaign.campaign_mold}
+    #campaign_data(data-id="#{campaign._id}" data-start="#{isStart}" data-end="#{isEnd}" data-join="#{isJoin}")
 
 append footExt
   script(src="/js/controllers/campaign.js")

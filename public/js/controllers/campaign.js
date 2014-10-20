@@ -14,7 +14,7 @@ campaignApp.directive('maxHeight', function () {
     }
   };
 });
-campaignApp.controller('campaignController', ['$scope', 'Report', function ($scope, Report) {
+campaignApp.controller('campaignController', ['$scope', 'Report', 'Campaign', function ($scope, Report, Campaign) {
 //  $scope.private_message_content = {
 //    'text': ""
 //  };
@@ -198,5 +198,36 @@ campaignApp.controller('campaignController', ['$scope', 'Report', function ($sco
 //    });
 //  }
 
+  var data = document.getElementById('campaign_data').dataset;
+  var campaignId = data.id;
+  var isStart = data.start === 'true' ? true : false;
+  var isEnd = data.end === 'true' ? true : false;
+  $scope.isJoin = data.join === 'true' ? true : false;
+
+  $scope.join = function (cid, tid) {
+    Campaign.join({
+      campaignId: campaignId,
+      cid: cid,
+      tid: tid
+    }, function (err) {
+      if (err) {
+        alertify.alert(err);
+      } else {
+        $scope.isJoin = true;
+        alertify.alert('参加活动成功');
+      }
+    });
+  };
+
+  $scope.quit = function () {
+    Campaign.quit(campaignId, function (err) {
+      if (err) {
+        alertify.alert(err);
+      } else {
+        $scope.isJoin = false;
+        alertify.alert('退出活动成功');
+      }
+    });
+  };
 
 }]);

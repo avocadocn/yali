@@ -1080,15 +1080,17 @@ exports.renderCampaignDetail = function (req, res) {
     'confirmScoreBoardScore'
   ]);
 
-
   // todo 面包屑
 
 
-
+  var isJoin = Boolean(campaign.whichUnit(req.user._id));
 
   res.render('campaign/campaign_detail', {
     campaign: campaign,
     over: campaign.deadline < Date.now(),
+    isStart: campaign.start_time < Date.now(),
+    isEnd: campaign.end_time < Date.now(),
+    isJoin: isJoin,
     notice: req.notice,
     moment: moment,
     allow: allow
@@ -1101,173 +1103,76 @@ exports.renderCampaignDetail = function (req, res) {
 
 //员工参加活动
 exports.joinCampaign = function (req, res) {
-  if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
+  var campaign = req.campaign;
+
+  if (campaign.campaign_type === 1) {
+    var allow = auth(req.user, {
+      companies: campaign.cid
+    }, ['joinCompanyCampaign']);
+    if (!allow.joinCompanyCampaign) {
+      return res.send(403);
+    }
+  } else {
+    var allow = auth(req.user, {
+      teams: campaign.tid
+    }, ['joinTeamCampaign']);
+    if (!allow.joinTeamCampaign) {
+      return res.send(403);
+    }
   }
-  var cid = req.user.cid.toString();
-  var uid = req.user._id.toString();
-  var campaign_id = req.body.campaign_id; //该活动的id
-  Campaign.findOne({
-    _id : campaign_id
-  },
-  function (err, campaign) {
-    if (!err && campaign) {
-      if(campaign.deadline<new Date){
-        return res.send({ result: 0, msg: '活动报名已经截止'});
-      }
-      var camp_length = campaign.camp.length;
-      //从campaign的member_quit里删除该员工信息
-      if(camp_length===0){//是活动
-        var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
-        if(member_index<0){
-          var member_quit_index = model_helper.arrayObjectIndexOf(campaign.member_quit,uid,'uid');
-          if(member_quit_index>-1){
-            campaign.member_quit.splice(member_quit_index,1);
-          }
-          //并在member里增加此人
-          var member_push = {
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo,
-            'team':req.body.join_team
-          };
-          campaign.member.push(member_push);
-        }
-        else{
-          return res.send({ result: 0, msg: '您已经参加该活动'});
-        }
-      }
-      else{
-        var tid = req.body.tid;
-        var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
-        if(camp_index==-1){
-           return res.send({ result: 0, msg: '请求错误'});
-        }
 
-        //已参加时提示
-        var member_index ;
-        for (var temp_camp_index=0;temp_camp_index<campaign.camp.length;temp_camp_index++){
-          member_index = model_helper.arrayObjectIndexOf(campaign.camp[temp_camp_index].member,uid,'uid');
-          if(member_index>-1){
-            return res.send({ result: 0, msg: '您已经参加该活动'});
-          }
-        }
+  var joinResult = campaign.join({
+    cid: req.body.cid,
+    tid: req.body.tid
+  }, req.user);
 
-        //从退出人员中删除
-        var member_quit_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member_quit,uid,'uid');
-        if(member_quit_index>-1){
-          campaign.camp[camp_index].member_quit.splice(member_quit_index,1);
-        }
-        //camp中增加此人
-        campaign.camp[camp_index].member.push({
-          'cid':cid,
-          'uid':uid,
-          'nickname':req.user.nickname,
-          'photo':req.user.photo,
-          'camp':camp_index===0?'A':'B',
-          'team':req.body.join_team
-        });
+  if (!joinResult.success) {
+    return res.send({ result: 0, msg: joinResult.msg });
+  } else {
+    campaign.save(function (err) {
+      if (err) {
+        console.log(err);
+        return res.send({ result: 0, msg: '参加失败，请重试' });
+      } else {
+        return res.send({ result: 1 });
       }
-      campaign.save(function (err) {
-        if(err) {
-          return res.send({ result: 0, msg: '保存错误'});
-        } else {
-          return res.send({ result: 1, msg: '退出活动成功',member:{
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo,
-            'team':req.body.join_team
-          }});
-        }
-      });
-    }
-    else {
-      return res.send({ result: 0, msg: '没有此活动'});
-    }
-  });
+    });
+  }
+
 };
 
 
 //员工退出活动
 exports.quitCampaign = function (req, res) {
-  if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
-  }
-  var cid = req.user.cid.toString();
-  var uid = req.user._id.toString();
-  var campaign_id = req.body.campaign_id; //该活动的id
-  Campaign.findOne({
-        _id : campaign_id
-    },
-  function (err, campaign) {
-    if (!err && campaign) {
-      if(campaign.end_time<new Date){
-        return res.send({ result: 0, msg: '活动已经结束'});
-      }
-      var camp_length = campaign.camp.length;
-      //从campaign里删除该员工信息
-      if(camp_length===0){
-        var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
-        if(member_index>-1){
-          campaign.member.splice(member_index,1);
-          campaign.member_quit.push({
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo
-          });
-        }
-        else{
-          return res.send({ result: 0, msg: '您没有参加该活动'});
-        }
-      }
-      else{
-        var member_index ;
-        for (var camp_index=0;camp_index<campaign.camp.length;camp_index++){
-          member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
-          if(member_index>-1){
-            campaign.camp[camp_index].member.splice(member_index,1);
-            campaign.member_quit.push({
-              'cid':cid,
-              'uid':uid,
-              'nickname':req.user.nickname,
-              'photo':req.user.photo
-            });
-            var formation_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].formation,uid,'uid');
-            if(formation_index>-1){
-              campaign.camp[camp_index].member.splice(formation_index,1);
-            }
-            break;
-          }
-        }
-        if(member_index<0){
-          return res.send({ result: 0, msg: '您没有参加该活动'});
-        }
-      }
-      campaign.save(function (err) {
-        if(err) {
-          return res.send(err);
-        } else {
-          return res.send({ result: 1, msg: '退出活动成功',member:{
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo
-          }});
-        }
-      });
-    }
-    else {
-      return res.send({ result: 0, msg: '没有此活动'});
-    }
+  var campaign = req.campaign;
+
+  var uids = [];
+  campaign.members.forEach(function (member) {
+    uids.push(member._id);
   });
+  var allow = auth(req.user, {
+    users: uids
+  }, ['quitCampaign']);
+  if (!allow.quitCampaign) {
+    return res.send(403);
+  }
+
+  var quitResult = campaign.quit(req.user._id);
+  if (quitResult) {
+    campaign.save(function (err) {
+      if (err) {
+        res.send({ result: 0, msg: '退出活动失败，请重试。' });
+      } else {
+        res.send({ result: 1 });
+      }
+    });
+  } else {
+    res.send({ result: 0, msg: '退出活动失败，请重试。' });
+  }
 };
+
+
+
 //员工投票是否参加约战
 //记得要做重复投票检查 TODO
 exports.vote = function (req, res) {

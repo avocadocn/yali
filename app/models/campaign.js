@@ -226,12 +226,6 @@ Campaign.methods = {
         }
       }
 
-      for (var j = 0; j < unit.member_quit.length; j++) {
-        if (uid === unit.member_quit[j]._id.toString()) {
-          return unit;
-        }
-      }
-
     }
     return false;
   },
@@ -247,7 +241,7 @@ Campaign.methods = {
    * @param {Object} user req.user
    * @returns {Object} 参加结果对象，包括result, msg两个属性
    *  return: {
-   *    result: Boolean, // 成功为true, 失败为false
+   *    success: Boolean, // 成功为true, 失败为false
    *    msg: String // 失败后的消息
    *  }
    */
@@ -255,12 +249,12 @@ Campaign.methods = {
 
     if (this.deadline < Date.now()) {
       return {
-        result: 0,
+        success: 0,
         msg: '活动报名已经截止'
       };
     }
 
-    for (var i = 0; i < this.campaing_unit.length; i++) {
+    for (var i = 0; i < this.campaign_unit.length; i++) {
       var unit = this.campaign_unit[i];
 
       var _join = function (unit) {
@@ -268,7 +262,7 @@ Campaign.methods = {
           if (user._id.toString() === unit.member[i]._id.toString()) {
             // 用户已经参加该活动
             return {
-              result: false,
+              success: false,
               msg: '您已经参加该活动'
             };
           }
@@ -280,7 +274,7 @@ Campaign.methods = {
           photo: user.photo
         });
         return {
-          result: true
+          success: true
         };
       };
 
@@ -297,9 +291,44 @@ Campaign.methods = {
 
     }
     return {
-      result: false,
+      success: false,
       msg: '没有找到目标阵营'
     };
+  },
+
+  /**
+   * 退出活动
+   * @param {Object} uid
+   * @returns {boolean} 成功返回true，失败返回false
+   */
+  quit: function (uid) {
+
+    if (this.end_time < Date.now()) {
+      return false;
+    }
+
+    uid = uid.toString();
+    var _quit = function (unit) {
+      for (var i = 0; i < unit.member.length; i++) {
+        if (uid === unit.member[i]._id.toString()) {
+          var member = (unit.member.splice(i, 1))[0];
+          if (!unit.member_quit) {
+            unit.member_quit = [];
+          }
+          unit.member_quit.push(member);
+          return true;
+        }
+      }
+      return false;
+    };
+
+    for (var i = 0; i < this.campaign_unit.length; i++) {
+      var unit = this.campaign_unit[i];
+      if (_quit(unit)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 };
