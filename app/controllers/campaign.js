@@ -414,7 +414,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       temp.link = '/company/home/'+_campaign.cid[0];
       temp.name = _campaign.campaign_unit[0].company.name;
       temp.cid = _campaign.campaign_unit[0].company._id;
-      temp.cname=_campaign.campaign_unit[0].company.info.name;
+      temp.cname=_campaign.campaign_unit[0].company.name;
       temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
     }
     else if(ct===2 || ct===3){//小队活动
@@ -448,7 +448,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
     }
     if(_other.photoFlag){
       temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
-      temp.camp = _campaign.camp;//...
+      // temp.camp = _campaign.camp;//...
     }
     if(_other.nowFlag){
       var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
@@ -647,7 +647,7 @@ exports.getUserCampaignsForHome = function(req, res) {
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var serchCampaign = function(startSet, endSet, joinFlag, photoFlag, callback){
+  var searchCampaign = function(startSet, endSet, joinFlag, photoFlag, callback){
     var options = {
       'cid': req.user.cid,
       'active': true
@@ -660,11 +660,17 @@ exports.getUserCampaignsForHome = function(req, res) {
       options.end_time = endSet;
     }
     if(joinFlag){
-      options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      options['campaign_unit.member'] = req.user._id ;
       _sort ='start_time';
     }
     else{
-      options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      //筛选出未参加的公司活动或小队活动
+      var teamIds = [];
+      for(var i = 0;i<req.user.team.length;i++){
+        teamIds.push(req.user.team[i]._id.toString());
+      }
+      options['$or']=[{'tid': {'$in':teamIds}},{'campaign_type':1}];
+      options['$nor'] = [{'campaign_unit.member._id':req.user._id}];
       _sort ='-create_time';
     }
 
@@ -676,17 +682,21 @@ exports.getUserCampaignsForHome = function(req, res) {
     query.exec()
     .then(function(campaigns){
       callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:photoFlag,nowFlag:joinFlag}));
+    })
+    .then(null,function(err){
+      console.log(err);
+      callback(null);
     });
   }
   async.series([
     function(callback){
-      serchCampaign({'$gte':now },undefined, false, false, callback);
+      searchCampaign({'$gte':now },undefined, false, false, callback);
     },//所有新活动的活动，（未参加）
     function(callback){
-      serchCampaign({ '$gte':now }, undefined, true, false, callback);
+      searchCampaign({ '$gte':now }, undefined, true, false, callback);
     },//马上开始的活动,（已参加）
     function(callback){
-      serchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
+      searchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
     }//正在进行的活动
   ], function(err, values) {
     if(err){
@@ -778,7 +788,7 @@ exports.getUserNowCampaignsForAppList = function(req, res) {
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var serchCampaign = function(startSet, endSet, limit, sort, callback){
+  var searchCampaign = function(startSet, endSet, limit, sort, callback){
     var options = {
       'cid': req.user.cid,
       '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
@@ -804,13 +814,13 @@ exports.getUserNowCampaignsForAppList = function(req, res) {
   }
   async.series([
     function(callback){
-      serchCampaign({ '$lt': startTimeLimit,'$gte':now }, undefined, firstLength, 'start_time', callback);
+      searchCampaign({ '$lt': startTimeLimit,'$gte':now }, undefined, firstLength, 'start_time', callback);
     },//马上开始的1个活动
     function(callback){
-      serchCampaign({ '$lt': now},{'$gte':now }, twoLength, 'start_time', callback);
+      searchCampaign({ '$lt': now},{'$gte':now }, twoLength, 'start_time', callback);
     },//正在进行的6个活动
     function(callback){
-      serchCampaign(undefined,{ '$lt': now,'$gte': endTimeLimit}, threeLength, '-end_time', callback);
+      searchCampaign(undefined,{ '$lt': now,'$gte': endTimeLimit}, threeLength, '-end_time', callback);
     }//已经完成的3个活动
   ], function(err, values) {
     if(err){
