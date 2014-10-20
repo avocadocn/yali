@@ -38,17 +38,10 @@ var teamPoint = function(){
         for(var i = 0; i < value.photo_album_list.length; i ++){
           photoNum += value.photo_album_list[i].photo_count;
         }
-        Campaign.find({'active':true,'team':value._id,'end_time':{'$lte':new Date()}}).populate('photo_album').exec(function(err,campaigns){
+        Campaign.find({'active':true,'tid':value._id,'end_time':{'$lte':new Date()}}).populate('photo_album').exec(function(err,campaigns){
           campaigns.forEach(function(campaign){
-            if(campaign.camp.length==0){
-                campaignNum++;
-                participatorNum+=campaign.member.length;
-            }
-            else{
-              var camp_index = campaign.camp[0].id.toString()===value._id.toString() ? 0:1;
-              campaignNum++;
-              participatorNum+=campaign.camp[camp_index].member.length;
-            }
+            campaignNum++;
+            participatorNum+=campaign.members.length;
             commentNum += campaign.comment_sum;
             photoNum += campaign.photo_album.photo_count; //属于小队的活动的相片总数
           });
@@ -88,17 +81,10 @@ var countCampaign = function (startTime,endTime,type,newWeek){
       teams.forEach(function(value){
         var campaignNum=0;
         var memberNum=0;
-        Campaign.find({'active':true,'team':value._id,'end_time':{'$lte':endTime,'$gt':startTime}},function(err,campaigns){
+        Campaign.find({'active':true,'tid':value._id,'end_time':{'$lte':endTime,'$gt':startTime}},function(err,campaigns){
           campaigns.forEach(function(campaign){
-            if(campaign.camp.length==0){
-                campaignNum++;
-                memberNum+=campaign.member.length;
-            }
-            else{
-              var camp_index = campaign.camp[0].id.toString()===value._id.toString() ? 0:1;
-              campaignNum++;
-              memberNum+=campaign.camp[camp_index].member.length;
-            }
+            campaignNum++;
+            memberNum+=campaign.members.length;
           });
           switch(type){
             case 'currentWeek':
@@ -125,7 +111,7 @@ var countCampaign = function (startTime,endTime,type,newWeek){
       });
     }
   });
-}
+};
 var currentWeekCampaignCount = function(){
   var _nowTime=new Date();
   var startTime=new Date();
@@ -209,27 +195,27 @@ exports.finishCampaign = finishCampaign;
 //同步公司名
 exports.updateCname =function (cid){
   Company.findOne({_id: cid}).exec().then(function(company){
-    User.update({cid: cid},{$set:{cname:company.info.name}},{multi: true},function(err,num){
+    User.update({cid: cid},{$set:{cname:company.info.official_name}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
     });
-    CompanyGroup.update({cid: cid},{$set:{cname:company.info.name}},{multi: true},function(err,num){
+    CompanyGroup.update({cid: cid},{$set:{cname:company.info.official_name}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
     });
-    GroupMessage.update({'poster.cid': cid},{$set:{'poster.cname':company.info.name}},{multi: true},function(err,num){
+    GroupMessage.update({'poster.cid': cid},{$set:{'poster.cname':company.info.official_name}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
     });
-    Campaign.update({'poster.cid': cid},{$set:{'poster.cname':company.info.name}},{multi: true},function(err,num){
+    Campaign.update({'poster.cid': cid},{$set:{'poster.cname':company.info.official_name}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
     });
-    Campaign.update({'cid': cid},{$set:{'cname.$':company.info.name}},{multi: true},function(err,num){
+    Campaign.update({'cid': cid},{$set:{'cname.$':company.info.official_name}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
