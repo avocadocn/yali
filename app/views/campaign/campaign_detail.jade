@@ -19,30 +19,38 @@ block contentExt
                 each unit in campaign.campaign_unit
                   img.logo(src="#{unit.team.logo}")
               .info_container
-                .start_info
-                  .campaign_info
-                    p 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm dddd')}
-                    p 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm dddd')}
-                    p 活动地点: #{campaign.location.name}
-                    p 活动类型: #{campaign.campaign_mold}
-                  .time_info
-                    p 距活动开始还有
-                    p(count-down="#{campaign.start_time}")
-                p: span.title 最新公告
-                if notice
-                  p #{notice.content}
-                  p #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
-            hr
-            p: span.title 活动简介
-            div.text #{campaign.content}
-            p: span.title 活动标签
-            .tags
-              each tag in campaign.tags
-                span.tag #{tag}
-            p: span.title 报名信息
-            p.text 报名人数上限: #{campaign.members.length}/#{campaign.member_max}
-            p.text 报名人数下限: #{campaign.member_min}
-            p.text 报名截止日期: #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm dddd')}
+                if !isStart
+                  .start_info
+                    .campaign_info
+                      p.main_text 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
+                      p.main_text 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
+                      p.main_text 活动地点: #{campaign.location.name}
+                      p.main_text 活动类型: #{campaign.campaign_mold}
+                    .time_info
+                      p.text 距活动开始还有
+                      p.remind(count-down="#{campaign.start_time}")
+                .notice
+                  p: span.title 最新公告
+                  if notice
+                    p.main_text #{notice.content}
+                    p.text #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
+                  else
+                    p.main_text 没有最新公告
+            if !isStart
+              hr
+              h4.title 活动简介
+              div.text #{campaign.content}
+              h4.title 活动标签
+              .tags
+                each tag in campaign.tags
+                  span.tag #{tag}
+              h4.title 报名信息
+              if campaign.member_max
+                p.text 报名人数上限: #{campaign.members.length}/#{campaign.member_max}
+              if campaign.member_min
+                p.text 报名人数下限: #{campaign.member_min}人
+              if campaign.deadline
+                p.text 报名截止日期: #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
 
       .panel_divider
 
@@ -56,7 +64,7 @@ block contentExt
           .component_body
             if campaign.location.coordinates.length==2
               a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
-                img.img-responsive(src="http://restapi.amap.com/v3/staticmap?location=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&size=268*210&markers=mid,,A:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labels=#{campaign.location.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
+                img.img-responsive(src="http://restapi.amap.com/v3/staticmap?location=#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&zoom=15&size=240*170&markers=mid,,A:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&labels=#{campaign.location.name.replace(/ /g, '')},2,0,12,0xffffff,0x3498db:#{campaign.location.coordinates[0]},#{campaign.location.coordinates[1]}&key=077eff0a89079f77e2893d6735c2f044")
             else
               img.img-responsive(src="/img/icons/nomap.jpg")
 
@@ -68,17 +76,18 @@ block contentExt
           .component_body
             .member_list
               each member in membersForCard
-                img.member(src="#{member.photo}")
+                img.member(src="#{member.photo}/32/32")
 
-        .component.brief_card
-          .component_head
-            span.title 活动信息
-            button.head_button 详情
-          .component_body
-            p 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm dddd')}
-            p 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm dddd')}
-            p 活动地点: #{campaign.location.name}
-            p 活动类型: #{campaign.campaign_mold}
+        if isStart
+          .component.brief_card
+            .component_head
+              span.title 活动信息
+              button.head_button 详情
+            .component_body
+              p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
+              p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
+              p.text 地点: #{campaign.location.name}
+              p.text 类型: #{campaign.campaign_mold}
 
     #campaign_data(data-id="#{campaign._id}" data-start="#{isStart}" data-end="#{isEnd}" data-join="#{isJoin}")
 

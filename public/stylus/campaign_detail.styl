@@ -9,7 +9,21 @@ clearfix()
 
 .campaign_detail
 
+  .campaign_panel
+    display flex
+    .component
+      margin-bottom 10px
+      &:last-child
+        margin-bottom 0
+    .panel_divider
+      width 20px
+    .main_panel
+      width 700px
+    .side_panel
+      width 240px
+
   .component
+    box-shadow 3px 3px 3px #ddd
     .component_head
       clearfix()
       height 30px
@@ -35,27 +49,19 @@ clearfix()
         text-align center
         text-decoration none
     .component_body
-      padding 15px
+      padding 20px
       background-color #ffffff
-      border solid 1px #e0e0e0
-      border-top none
+      .main_text, .text
+        font-size 14px
+        line-height 18px
+        margin 0
+        word-break break-all
+      .main_text
+        color #999999
+      .text
+        color #cccccc
 
-  .campaign_panel
-    display flex
 
-    .component
-      margin-bottom 10px
-      &:last-child
-        margin-bottom 0
-
-    .panel_divider
-      width 20px
-
-    .main_panel
-      flex 3
-
-    .side_panel
-      flex 1
 
   .detail_card
     .component_head
@@ -84,11 +90,9 @@ clearfix()
 
         .logo_container
           width 100px
-          text-align center
-
           .logo
-            width 64px
-            height 64px
+            width 80px
+            height 80px
 
         .info_container
           flex 1
@@ -97,32 +101,40 @@ clearfix()
             color #e7ce23
           .start_info
             display flex
-
+            margin-bottom 20px
             .campaign_info
-              flex 1
-
+              width 300px
             .time_info
-              flex 1
+              padding-left 10px
+              width 270px
+              .remind
+                margin-top 15px
+                font-size 28px
+                color #97d7c6
 
       .title
         font-size 14px
         color #73a5dd
-
-      .text
-        font-size 14px
-        color #cccccc
 
   .map_card
     .component_head
       background-color #8dd4e6
       .head_button
         background-color #5eb0c5
+    .component_body
+      padding 0
 
   .member_card
     .component_head
       background-color #73a5dd
       .head_button
         background-color #4e83be
+    .component_body
+      .member
+        margin-right 9px
+        &:last-child
+          margin-right 0
+
 
   .brief_card
     .component_head

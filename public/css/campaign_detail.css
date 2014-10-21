@@ -1,3 +1,24 @@
+.campaign_detail .campaign_panel {
+  display: flex;
+}
+.campaign_detail .campaign_panel .component {
+  margin-bottom: 10px;
+}
+.campaign_detail .campaign_panel .component:last-child {
+  margin-bottom: 0;
+}
+.campaign_detail .campaign_panel .panel_divider {
+  width: 20px;
+}
+.campaign_detail .campaign_panel .main_panel {
+  width: 700px;
+}
+.campaign_detail .campaign_panel .side_panel {
+  width: 240px;
+}
+.campaign_detail .component {
+  box-shadow: 3px 3px 3px #ddd;
+}
 .campaign_detail .component .component_head {
   height: 30px;
   background-color: #3498db;
@@ -34,28 +55,21 @@
   text-decoration: none;
 }
 .campaign_detail .component .component_body {
-  padding: 15px;
+  padding: 20px;
   background-color: #fff;
-  border: solid 1px #e0e0e0;
-  border-top: none;
 }
-.campaign_detail .campaign_panel {
-  display: flex;
+.campaign_detail .component .component_body .main_text,
+.campaign_detail .component .component_body .text {
+  font-size: 14px;
+  line-height: 18px;
+  margin: 0;
+  word-break: break-all;
 }
-.campaign_detail .campaign_panel .component {
-  margin-bottom: 10px;
+.campaign_detail .component .component_body .main_text {
+  color: #999;
 }
-.campaign_detail .campaign_panel .component:last-child {
-  margin-bottom: 0;
-}
-.campaign_detail .campaign_panel .panel_divider {
-  width: 20px;
-}
-.campaign_detail .campaign_panel .main_panel {
-  flex: 3;
-}
-.campaign_detail .campaign_panel .side_panel {
-  flex: 1;
+.campaign_detail .component .component_body .text {
+  color: #ccc;
 }
 .campaign_detail .detail_card .component_head {
   height: 35px;
@@ -86,11 +100,10 @@
 }
 .campaign_detail .detail_card .component_body .base_info .logo_container {
   width: 100px;
-  text-align: center;
 }
 .campaign_detail .detail_card .component_body .base_info .logo_container .logo {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container {
   flex: 1;
@@ -101,20 +114,23 @@
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info {
   display: flex;
+  margin-bottom: 20px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .campaign_info {
-  flex: 1;
+  width: 300px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .time_info {
-  flex: 1;
+  padding-left: 10px;
+  width: 270px;
+}
+.campaign_detail .detail_card .component_body .base_info .info_container .start_info .time_info .remind {
+  margin-top: 15px;
+  font-size: 28px;
+  color: #97d7c6;
 }
 .campaign_detail .detail_card .component_body .title {
   font-size: 14px;
   color: #73a5dd;
-}
-.campaign_detail .detail_card .component_body .text {
-  font-size: 14px;
-  color: #ccc;
 }
 .campaign_detail .map_card .component_head {
   background-color: #8dd4e6;
@@ -122,11 +138,20 @@
 .campaign_detail .map_card .component_head .head_button {
   background-color: #5eb0c5;
 }
+.campaign_detail .map_card .component_body {
+  padding: 0;
+}
 .campaign_detail .member_card .component_head {
   background-color: #73a5dd;
 }
 .campaign_detail .member_card .component_head .head_button {
   background-color: #4e83be;
+}
+.campaign_detail .member_card .component_body .member {
+  margin-right: 9px;
+}
+.campaign_detail .member_card .component_body .member:last-child {
+  margin-right: 0;
 }
 .campaign_detail .brief_card .component_head {
   background-color: #73a5dd;
