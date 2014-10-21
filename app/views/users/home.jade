@@ -105,7 +105,7 @@ block panel
         label {{nowCampaigns.length}} 个活动正在进行
       //- .campaign_head.right(ng-cloak)
       //-   a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href=""  ng-click="openModal()") {{newReply.length}}条未查看回复
-    .now(ng-if="nowCampaigns.length>0" ng-cloak)
+    .now(ng-cloak)
       .campaigns(masonry reload="is_reload" items="nowCampaigns")
         .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns" ng-cloak)
           .campaign_head(ng-cloak)

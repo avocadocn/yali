@@ -63,6 +63,7 @@ textarea
   &:hover
     opacity 1
     text-decoration none
+
 .comment_right
   float right
   margin-right 10px
@@ -2020,32 +2021,102 @@ input.ng-invalid.ng-dirty
     width 100%
     z-index 50
   .dl_container
+    label
+      font-weight normal
     .main
       width 700px
       margin-right 20px
+      #user_modal
+        .modal-dialog
+          width 900px
+          .dl-modal
+            width 900px
+            .tab-body
+              min-height 10px
+              .dl_card_tebcontent
+                border none
+              .dl_timeline
+                width 590px
+              .recent_unjoin
+                color themeColor
+              .recent_join
+                color #009999
+              .dl_campaign_list
+                border none
+                .campaign_head
+                  height 34px
+                  line-height 24px
+                  font-size 18px
+                  margin 0 -35px
+                  padding 0 20px
+                  border-bottom 1px solid borderColor
+                .campaigns_content
+                  max-height 600px
+                  overflow-y auto
+                  .campaign_table
+                    .time_col
+                      width 200px
+                      color secondaryfontColor
+                    .year_col
+                      .campaign_logo
+                        width 30px
+                        height 30px
+                        margin 8px auto
+                        background-color themeColor
+                    .content_col
+                      .campaign_detail
+                        margin-left -80px
+                        margin-right -90px
+                        padding-left 80px
+                        padding-right 90px
+                        background-color #f4f4f4
+                        width 460px
+                        .content_text
+                          max-width 100%
+                          overflow hidden
+                          text-overflow ellipsis
+                          white-space nowrap
+                          padding 5px
+                        .tags
+                          margin 5px
+                          padding 5px
+                          .tag
+                            background-color #c2d3e7
+                            color #fff
+                            display inline
+                            margin 5px
+                            padding 5px
+                        .member_text
+                          .progress_text
+                            float left
+                            width 80px
+                            margin 0 10px
+                            line-height 20px
+                          .progress_num
+                            float left
+                            width 60px
+                            line-height 20px
+                            margin 0 10px
+                          .progress
+                            float left
+                            width 100px
+                            margin-bottom 0
+                          .max_num
+                            color #009999
+                        .time_text
+                          clear both
+                          margin 5px
+                          padding 5px
+                          .rest_time
+                            color #009999
+                            font-size 14px
+                            margin 10px
+                    .operator_col
+                      .dl_btn
+                        margin-right 30px
       .campaign_table
         .time_col
           padding 0
-      .tab-body
-        .dl_card_tebcontent
-          border none
-        .dl_timeline
-          width 590px
-        .dl_campaign_list
-          border none
-          .campaign_head
-            height 34px
-            line-height 24px
-            font-size 18px
-          .campaign_table
-            .time_col
-              width 200px
-            .year_col
-              .campaign_logo
-                width 30px
-                height 30px
-                margin 8px auto
-                background-color themeColor
       .campaigns_container
         margin-top 45px
         .user_campaigns_container
@@ -2074,7 +2145,7 @@ input.ng-invalid.ng-dirty
                 width 47px
                 height 47px
             .content_col
-              width 160px
+              width 150px
               color #ccc
               font-size 14px
               p
@@ -2195,7 +2266,7 @@ input.ng-invalid.ng-dirty
             border-top 1px solid borderColor
             margin 0 -10px
             .time_col
-              width 100px
+              width 110px
               span
                 font-size 14px
                 line-height 44px

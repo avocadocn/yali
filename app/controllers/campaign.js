@@ -264,7 +264,32 @@ var formatTime = function(start_time,end_time){
             start_time_text: start_time_text
           }
 }
+var formatrestTime = function(start_time,end_time){
+  var restTime;
+  var temp_start_time = new Date(start_time);
+  var temp_end_time = new Date(end_time);
+  var during = moment.duration(moment(temp_end_time).diff(temp_start_time));
+  var years = Math.abs(during.years());
+  var months = Math.abs(during.months());
+  var days = Math.floor(Math.abs(during.asDays()));
+  var hours = Math.abs(during.hours());
+  var minutes = Math.abs(during.minutes());
+  var seconds = Math.abs(during.seconds());
 
+  if(days>=3){
+    restTime =  days + '天';
+  }
+  else if(days>=1){
+    restTime = days + '天' + (hours ? hours + '小时' : '') ;
+  }
+  else if(hours>=1){
+    restTime = hours + '小时'  + minutes + '分';
+  }
+  else{
+    restTime = (minutes ?  minutes + '分' : '' ) + seconds + '秒';
+  }
+  return restTime;
+}
 
 /**
  * 计算用户是否参加活动，计算活动所属的公司或组及获取其logo，生成开始时间的提示文字
@@ -398,15 +423,18 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       '_id':_campaign._id,
       'active':_campaign.active,
       'theme':_campaign.theme,
-      'content':_campaign.content,
+      'content':_campaign.content.replace(/<\/?[^>]*>/g, ''),
       'member_max':_campaign.member_max,
       'location':_campaign.location,
       'start_time':_campaign.start_time,
       'end_time':_campaign.end_time,
       'deadline':_campaign.deadline,
+      'deadline_rest':formatrestTime(new Date(),_campaign.deadline),
       'comment_sum':_campaign.comment_sum,
       'join_flag':model_helper.arrayObjectIndexOf(_campaign.members,user._id,'_id')>-1?1:-1,
-      'due_flag':new Date()>_campaign.deadline?1:0
+      'due_flag':new Date()>_campaign.deadline ? 1 : 0,
+      'tags':_campaign.tags,
+      'campaign_mold':_campaign.mold
     };
     if(ct===1){//公司活动
       temp.type='companycampaign';

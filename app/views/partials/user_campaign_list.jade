@@ -2,43 +2,64 @@
 .dl_campaign_list(ng-class="{'recent_unjoin':showedType=='recentUnjoinedCampaigns','recent_join':showedType=='recentJoinedCampaigns'}" ng-show = '!loading')
   .campaign_head(ng-cloak)
     label {{showedCampaign.length}} {{showedType=='recentUnjoinedCampaigns'?'个最新活动':'个活动即将开始'}}
-  table.table.table-hover.campaign_table
-    tr(ng-repeat="campaign_item in showedCampaign")
-      //- td.emp_col
-      //-   p
-      td.year_col
-        //- p(ng-if="judgeYear($index)").year {{campaign_item.start_time  | date:'yyyy'}}
-        .campaign_logo(class="{{campaign_item.campaign_mold}}")
-      td.time_col
-        p.text-center.day {{ campaign_item.start_time  | day }}
-        p.text-center.time {{ campaign_item.start_time | date:'HH:mm' }}
-      td(class="#{provider}_logo_col")
-        a(ng-href="{{campaign_item.link}}")
-          img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
-      td.content_col
-        a(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}")
-          p
-            strong {{campaign_item.name}} :
-            span.theme_text {{campaign_item.theme}}
-          //- p
-          //-   strong 内容:
-          //-   span.content_text {{campaign_item.content}}
-          p
-            strong #{__("LOCATION")}:
-            span.content_text {{campaign_item.location.name}}
-      td.operator_col(ng-class="{'joined':campaign_item.join_flag===1}")
-        button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
-        if provider=='user'
-          button.dl_btn.dl_btn_small.pull-right(ng-if="campaign_item.join_flag !== 1 && !campaign_item.due_flag" ng-click="join(campaign_item._id,$index,campaign_item.team_id)") 我要报名
-  .text-center(ng-if="campaigns.length>0")
-    button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
-    span(ng-if="loadOver_flag") 已经加载了所有的活动
-  .text-center(ng-if="campaigns.length==0")
-    span.loademp 目前没有新的活动
-  ul.pager(ng-if="nextPage_flag")
-    li
-      a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
-    li
-      a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
+  .campaigns_content
+    table.table.table-hover.campaign_table
+      tr(ng-repeat="campaign_item in showedCampaign")
+        //- td.emp_col
+        //-   p
+        td.year_col
+          //- p(ng-if="judgeYear($index)").year {{campaign_item.start_time  | date:'yyyy'}}
+          //-.campaign_logo(class="{{campaign_item.campaign_mold}}")
+        td.time_col
+          p.text-center.day {{ campaign_item.start_time  | day }}
+          p.text-center.time {{ campaign_item.start_time | date:'HH:mm' }}
+        td(class="#{provider}_logo_col")
+          a(ng-href="{{campaign_item.link}}")
+            img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
+        td.content_col
+          a(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}")
+            p(ng-class="{'recent_unjoin':showedType=='recentUnjoinedCampaigns','recent_join':showedType=='recentJoinedCampaigns'}")
+              strong {{campaign_item.name}} :
+              span.theme_text {{campaign_item.theme}}
+            p
+              strong 开始时间 :
+              span.time_text {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
+            p
+              strong 结束时间 :
+              span.time_text {{campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
+            //- p
+            //-   strong 内容:
+            //-   span.content_text {{campaign_item.content}}
+            p
+              strong #{__("LOCATION")}:
+              span.content_text {{campaign_item.location.name}}    
+            .campaign_detail
+              .content_text {{campaign_item.content}}
+              .tags(ng-if="tags.length>0")
+                .tag(ng-repeat="tag in campaign_item.tags") {{tag}}
+              .member_text(ng-if="campaign_item.member_max>0")
+                .progress_text 报名人数上限:
+                .progress
+                  .progress-bar(role="progressbar" aria-valuenow="{{campaign_item.member_num}}" aria-valuemin="0" aria-valuemax="{{campaign_item.member_max}}"  style="width: {{100 * campaign_item.member_num/campaign_item.member_max}}%;")
+                .progress_num
+                  span.now_num {{campaign_item.member_num}}
+                  span /
+                  span.max_num {{campaign_item.member_max}}
+              .time_text 
+                span 距报名截止还有:
+                span.rest_time {{campaign_item.deadline_rest}}
+        td.operator_col(ng-class="{'joined':campaign_item.join_flag===1}")
+          button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
+          button.dl_btn.dl_btn_small.pull-right(ng-if="campaign_item.join_flag !== 1 && !campaign_item.due_flag" ng-click="join(campaign_item._id,$index,campaign_item.team_id)") 参加
+    .text-center(ng-if="campaigns.length>0")
+      button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
+      span(ng-if="loadOver_flag") 已经加载了所有的活动
+    .text-center(ng-if="campaigns.length==0")
+      span.loademp 目前没有新的活动
+    ul.pager(ng-if="nextPage_flag")
+      li
+        a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
+      li
+        a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
 .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
   include ../campaign/select_team_for_multi_campaign
