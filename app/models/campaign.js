@@ -231,7 +231,7 @@ Campaign.methods = {
   },
 
   /**
-   * 参加活动，已参加、活动报名截止、活动已结束都会导致失败
+   * 参加活动，已参加、活动报名截止会导致失败
    * example:
    *  campaign.join({
    *    cid: company._id,

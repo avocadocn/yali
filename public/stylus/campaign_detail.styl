@@ -9,36 +9,40 @@ clearfix()
 
 .campaign_detail
 
+  for order in (1..10)
+    .order-{order}
+      order order
+
   .campaign_panel
     display flex
     .component
       margin-bottom 10px
-      &:last-child
-        margin-bottom 0
     .panel_divider
       width 20px
     .main_panel
       width 700px
     .side_panel
+      display flex
+      flex-flow column
       width 240px
 
   .component
     box-shadow 3px 3px 3px #ddd
     .component_head
+      padding-left 20px
+      padding-right 5px
       clearfix()
       height 30px
       background-color themeColor
       .component_logo
-        margin-left 10px
+        margin-right 10px
         height 14px
       .title
-        margin-left 10px
         color #ffffff
         font-size 14px
         line-height 30px
       .head_button
         margin-top 5px
-        margin-right 10px
         padding 0
         width 35px
         height 20px
@@ -67,8 +71,8 @@ clearfix()
     .component_head
       height 35px
       background-color #73a5dd
+      padding-right 15px
       .title
-        margin-left 15px
         margin-right 15px
         line-height 35px
         font-size 18px
@@ -76,9 +80,15 @@ clearfix()
         line-height 35px
         color #ffffff
         font-size 14px
+        opacity 0.6
+      .right_title
+        float right
+      .starting_title
+        font-size 14px
+      .operator
+        cursor pointer
       .head_button
         margin-top 8px
-        margin-right 15px
         width 50px
         height 20px
         font-size 14px
@@ -111,6 +121,30 @@ clearfix()
                 margin-top 15px
                 font-size 28px
                 color #97d7c6
+      .more_info
+        .sub_title
+          margin-right 10px
+
+        .progress
+          margin 0
+          margin-right 10px
+          display inline-block
+          width 200px
+          height 14px
+          border-radius 15px
+          background-color #4b6f97
+          .progress-bar
+            background-color #97d7c6
+            box-shadow none
+
+        .tags
+          .tag
+            margin-right 10px
+            padding 4px 10px
+            border-radius 5px
+            color #ffffff
+            background-color #73a5dd
+
 
       .title
         font-size 14px

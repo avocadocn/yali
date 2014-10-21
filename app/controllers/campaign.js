@@ -1094,18 +1094,37 @@ exports.renderCampaignDetail = function (req, res) {
 
 
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
+  var isStart = campaign.start_time < Date.now();
+  var isEnd = campaign.end_time < Date.now();
   var membersForCard = campaign.members.slice(0, 5);
+
+  // 视图辅助函数
+  var helper = {
+
+    // 活动已开始但没有结束
+    start: function (str) {
+      if (isStart && !isEnd) { return str; }
+      else { return ''; }
+    },
+
+    // 活动已结束
+    end: function (str) {
+      if (isEnd) { return str; }
+      else { return ''; }
+    }
+  };
 
   res.render('campaign/campaign_detail', {
     campaign: campaign,
     over: campaign.deadline < Date.now(),
-    isStart: campaign.start_time < Date.now(),
-    isEnd: campaign.end_time < Date.now(),
+    isStart: isStart,
+    isEnd: isEnd,
     isJoin: isJoin,
     membersForCard: membersForCard,
     notice: req.notice,
     moment: moment,
-    allow: allow
+    allow: allow,
+    helper: helper
   });
 
 
@@ -1284,7 +1303,7 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   campaign.member_max = basicInfo.member_max ? basicInfo.member_max : 0;
   campaign.start_time = basicInfo.start_time;
   campaign.end_time = basicInfo.end_time;
-  campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.start_time;
+  campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.end_time;
   campaign.active = true;
   if(basicInfo.tags.length>0)
     campaign.tags = basicInfo.tags;
