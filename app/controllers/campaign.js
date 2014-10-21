@@ -613,32 +613,35 @@ exports.cancelCampaign = function(req, res){
     });
 }
 exports.editCampaign = function(req, res){
-  Campaign
-    .findOne({'_id':req.params.campaignId})
-    .exec()
-    .then(function(campaign) {
-      if(!campaign){
-        return res.send({ result: 0, msg:'查找活动失败' });
-      }
-      else{
-        if (req.role === "HR" || campaign.campaign_type != 3 && req.role === "LEADER" ){
-          campaign.content=req.body.content;
-          campaign.save(function(err){
-            if(!err){
-              return res.send({ result: 1, msg:'活动编辑成功' });
-            }
-          });
-        }
-        else{
-          return res.send({ result: 0, msg:'您没有权限编辑该活动' });
-        }
-      }
-    })
-    .then(null, function(err) {
-      console.log(err);
-      res.send(400);
-    });
-}
+  var campaign = req.campaign;
+
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid,
+  }, [
+    'editTeamCampaign',
+    'editCompanyCampaign'
+  ]);
+
+  if (campaign.type === 1) {
+    if (!allow.editCompanyCampaign) {
+      return res.send(403);
+    }
+  } else {
+    if (!allow.editTeamCampaign) {
+      return res.send(403);
+    }
+  }
+
+  campaign.content=req.body.content;
+  campaign.save(function (err) {
+    if (err) {
+      return res.send({ result: 0, msg:'编辑活动失败，请重试' });
+    } else {
+      return res.send({ result: 1, msg:'活动编辑成功' });
+    }
+  });
+};
 
 
 exports.getUserCampaignsForHome = function(req, res) {

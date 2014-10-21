@@ -12,7 +12,7 @@ block contentExt
             span.title #{campaign.theme}
             span.sub_title #{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}
             if allow.edit
-              span.sub_title.right_title.operator 编辑
+              span.sub_title.right_title.operator(ng-click="toggleEdit()") 编辑
             if !isEnd
               span.sub_title.right_title.operator(ng-if="isJoin" ng-click="quit()") 退出
             if isStart && !isEnd
@@ -50,7 +50,8 @@ block contentExt
             if !isStart
               .more_info
                 h4.title 活动简介
-                div.text #{campaign.content}
+                div.text(ng-if="!editing") #{campaign.content}
+                input(ng-if="editing" type="text" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content" required)
                 h4.title 活动标签
                 .tags
                   each tag in campaign.tags
@@ -70,6 +71,10 @@ block contentExt
                   p.text
                     span.sub_title 报名截止日期:
                     span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
+                .operator(ng-if="editing")
+                  button.cancel(ng-click="toggleEdit()") 取消
+                  button.save(ng-click="save()") 保存
+
       .panel_divider
 
       .side_panel

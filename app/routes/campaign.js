@@ -7,7 +7,7 @@ module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:pageId/:campaignType/:campaignPage/:campaignBlock', authorization.listAuthorize, campaign.getCampaigns);
   app.post('/campaign/cancel/:campaignId', authorization.campaginAuthorize, campaign.cancelCampaign);
   app.get('/campaign/detail/:campaignId', campaign.addRichCommentIfNot, campaign.renderCampaignDetail);
-  app.post('/campaign/edit/:campaignId', authorization.campaginAuthorize, campaign.editCampaign);
+  app.post('/campaign/edit/:campaignId', campaign.editCampaign);
 
   app.get('/campaign/team/calendar/:teamId', campaign.getTeamCampaigns);
 

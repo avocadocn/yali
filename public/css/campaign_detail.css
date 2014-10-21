@@ -230,6 +230,31 @@
   color: #fff;
   background-color: #73a5dd;
 }
+.campaign_detail .detail_card .component_body .more_info .operator:before,
+.campaign_detail .detail_card .component_body .more_info .operator:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .detail_card .component_body .more_info .operator:after {
+  clear: both;
+}
+.campaign_detail .detail_card .component_body .more_info .operator .save,
+.campaign_detail .detail_card .component_body .more_info .operator .cancel {
+  float: right;
+  padding: 0;
+  width: 52px;
+  height: 20px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.campaign_detail .detail_card .component_body .more_info .operator .save {
+  color: #fff;
+  background-color: #3498db;
+}
+.campaign_detail .detail_card .component_body .more_info .operator .cancel {
+  color: #fff;
+  background-color: #a9a9a9;
+}
 .campaign_detail .detail_card .component_body .title {
   font-size: 14px;
   color: #73a5dd;

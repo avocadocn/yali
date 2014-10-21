@@ -230,4 +230,27 @@ campaignApp.controller('campaignController', ['$scope', 'Report', 'Campaign', fu
     });
   };
 
+
+
+  $scope.editing = false;
+  $scope.campaignData = {
+    content: ''
+  };
+
+  $scope.save = function () {
+    Campaign.edit(campaignId, $scope.campaignData, function (err) {
+      if (err) {
+        alertify.alert(err);
+      } else {
+        alertify.alert('编辑成功', function (e) {
+          window.location.reload();
+        });
+      }
+    })
+  };
+
+  $scope.toggleEdit = function () {
+    $scope.editing = !$scope.editing;
+  }
+
 }]);

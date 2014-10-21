@@ -88,11 +88,32 @@ angular.module('donler')
         });
     };
 
+    /**
+     * 编辑活动
+     * @param campaignId 活动id
+     * @param campaignData 活动数据
+     * @param callback
+     */
+    var edit = function (campaignId, campaignData, callback) {
+      $http.post('/campaign/edit/' + campaignId, campaignData)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('编辑失败，请重试。');
+        });
+    };
+
     return {
       sponsor: sponsor,
       getTags: getTags,
       join: join,
-      quit: quit
+      quit: quit,
+      edit: edit
       // provoke:provoke
     };
   }]);
