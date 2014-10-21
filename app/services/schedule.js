@@ -195,7 +195,7 @@ exports.finishCampaign = finishCampaign;
 //同步公司名
 exports.updateCname =function (cid){
   Company.findOne({_id: cid}).exec().then(function(company){
-    User.update({cid: cid},{$set:{cname:company.info.official_name}},{multi: true},function(err,num){
+    User.update({cid: cid},{$set:{cname:company.info.name}},{multi: true},function(err,num){
       if(err){
         console.log(err);
       }
