@@ -907,13 +907,12 @@ exports.sponsor = function (req, res) {
     next('forbidden');
     return;
   }
-
   var multi = false;
   var cid = req.role ==='HR' ? req.user._id : req.user.cid;
   var cname = req.role ==='HR' ? req.user.info.name : req.user.cname;
-  var tname = req.companyGroup.name;
   var tids = [];
   if(req.params.teamId != null && req.params.teamId != undefined && req.params.teamId != ""){
+    var tname = req.companyGroup.name;
     multi = false;
     var tid = req.params.teamId;
     tids = [req.params.teamId];
@@ -957,7 +956,7 @@ exports.sponsor = function (req, res) {
       cname:cname,
       cid:cid,
       role:req.role,
-      tname:tname,
+      tname:!multi ? tname:'',
       uid:req.role==='LEADER'? req.user._id : null,
       nickname: req.role==='LEADER'? req.user.nickname : null
     },
