@@ -200,9 +200,9 @@ campaignApp.controller('campaignController', ['$scope', 'Report', 'Campaign', fu
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;
-  var isStart = data.start === 'true' ? true : false;
-  var isEnd = data.end === 'true' ? true : false;
-  $scope.isJoin = data.join === 'true' ? true : false;
+  var isStart = data.start === 'true';
+  var isEnd = data.end === 'true';
+  $scope.isJoin = data.join === 'true';
 
   $scope.join = function (cid, tid) {
     Campaign.join({

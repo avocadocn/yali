@@ -277,7 +277,6 @@ Campaign.methods = {
           success: true
         };
       };
-
       // 非公司活动
       if (targetUnit.tid && targetUnit.tid.toString() === unit.team._id.toString()) {
 

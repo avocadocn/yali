@@ -10,21 +10,39 @@ block contentExt
         .component.detail_card
           .component_head
             span.title #{campaign.theme}
-            span.sub_title #{campaign.campaign_unit[0].team.name}
+            span.sub_title #{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}
             if !isStart
-              button.head_button(ng-if="!isJoin" ng-click="join('#{campaign.campaign_unit[0].company._id}', '#{campaign.campaign_unit[0].team._id}')") 参加
+              if isOneUnit
+                if campaign.campaign_unit[0].team._id
+                  button.head_button(ng-if="!isJoin" ng-click="join('#{campaign.campaign_unit[0].company._id}', '#{campaign.campaign_unit[0].team._id}')") 参加
+                else
+                  button.head_button(ng-if="!isJoin" ng-click="join('#{campaign.campaign_unit[0].company._id}')") 参加
               button.head_button(ng-if="isJoin" ng-click="quit()") 退出
             if isStart && !isEnd
-              span.sub_title.right_title.operator(ng-if="!isJoin" ng-click="join('#{campaign.campaign_unit[0].company._id}', '#{campaign.campaign_unit[0].team._id}')") 参加
+              if isOneUnit
+                if campaign.campaign_unit[0].team._id
+                  span.sub_title.right_title.operator(ng-if="!isJoin" ng-click="join('#{campaign.campaign_unit[0].company._id}', '#{campaign.campaign_unit[0].team._id}')") 参加
+                else
+                  span.sub_title.right_title.operator(ng-if="!isJoin" ng-click="join('#{campaign.campaign_unit[0].company._id}')") 参加
               span.sub_title.right_title.operator(ng-if="isJoin" ng-click="quit()") 退出
               span.title.right_title.starting_title 活动正在进行中
             if isEnd
               span.sub_title.right_title 活动已结束
           .component_body
-            .base_info
+            .base_info(class="#{helper.multiUnit('multi_team')}")
               .logo_container
-                each unit in campaign.campaign_unit
-                  img.logo(src="#{unit.team.logo}")
+                if campaign.campaign_unit.length === 1
+                  .unit
+                    img.logo(src="#{campaign.campaign_unit[0].team.logo || campaign.campaign_unit[0].company.logo}/80/80")
+                else
+                  each unit in campaign.campaign_unit
+                    .unit
+                      img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
+                      if !isJoin
+                        if unit.team._id
+                          button.join(ng-if="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
+                        else
+                          button.join(ng-if="!isJoin" ng-click="join('#{unit.company._id}')") 参加
               .info_container
                 if !isStart
                   .start_info
@@ -45,7 +63,6 @@ block contentExt
                     p.main_text 没有最新公告
             if !isStart
               .more_info
-                hr
                 h4.title 活动简介
                 div.text #{campaign.content}
                 h4.title 活动标签

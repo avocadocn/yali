@@ -1076,6 +1076,7 @@ exports.renderCampaignDetail = function (req, res) {
   var campaign = req.campaign;
   moment.lang('zh-cn');
 
+  // 权限判断
   var memberIds = [];
   campaign.members.forEach(function (member) {
     memberIds.push(member._id);
@@ -1096,6 +1097,7 @@ exports.renderCampaignDetail = function (req, res) {
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
   var isStart = campaign.start_time < Date.now();
   var isEnd = campaign.end_time < Date.now();
+  var isOneUnit = campaign.campaign_unit.length === 1;
   var membersForCard = campaign.members.slice(0, 5);
 
   // 视图辅助函数
@@ -1111,6 +1113,15 @@ exports.renderCampaignDetail = function (req, res) {
     end: function (str) {
       if (isEnd) { return str; }
       else { return ''; }
+    },
+
+    // 是否是多个小队
+    multiUnit: function (str) {
+      if (campaign.campaign_unit.length > 2) {
+        return str;
+      } else {
+        return '';
+      }
     }
   };
 
@@ -1120,6 +1131,7 @@ exports.renderCampaignDetail = function (req, res) {
     isStart: isStart,
     isEnd: isEnd,
     isJoin: isJoin,
+    isOneUnit: isOneUnit,
     membersForCard: membersForCard,
     notice: req.notice,
     moment: moment,

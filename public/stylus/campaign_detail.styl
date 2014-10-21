@@ -95,17 +95,41 @@ clearfix()
         color #ffffff
         background-color #e7ce23
     .component_body
+
+      .multi_team
+        display flex
+        flex-flow column
+
       .base_info
         display flex
 
         .logo_container
           width 100px
-          .logo
+          border-right 1px solid #eee
+          .unit
+            display inline-block
             width 80px
-            height 80px
+            margin-bottom 20px
+            .logo
+              width 80px
+              height 80px
+            .join
+              display block
+              margin-left auto
+              margin-right auto
+              margin-top 10px
+              padding 0
+              width 52px
+              height 20px
+              font-size 14px
+              line-height 20px
+              color white
+              background-color themeColor
 
         .info_container
           flex 1
+          padding-left 20px
+          padding-bottom 20px
           .title
             font-size 14px
             color #e7ce23
@@ -120,8 +144,11 @@ clearfix()
               .remind
                 margin-top 15px
                 font-size 28px
+                line-height 30px
                 color #97d7c6
       .more_info
+        padding-top 20px
+        border-top 1px solid #eee
         .sub_title
           margin-right 10px
 
