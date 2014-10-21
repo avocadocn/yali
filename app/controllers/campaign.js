@@ -1070,7 +1070,7 @@ exports.getOneNotice = function (req, res, next) {
       // 获取公告失败依然渲染活动页面
       next();
     });
-}
+};
 
 exports.renderCampaignDetail = function (req, res) {
   var campaign = req.campaign;
@@ -1088,8 +1088,17 @@ exports.renderCampaignDetail = function (req, res) {
   }, [
     'publishComment',
     'setScoreBoardScore',
-    'confirmScoreBoardScore'
+    'confirmScoreBoardScore',
+    'editTeamCampaign',
+    'editCompanyCampaign'
   ]);
+
+  // 公司活动
+  if (campaign.campaign_type === 1) {
+    allow.edit = allow.editCompanyCampaign;
+  } else {
+    allow.edit = allow.editTeamCampaign;
+  }
 
   // todo 面包屑
 

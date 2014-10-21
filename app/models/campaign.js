@@ -267,6 +267,17 @@ Campaign.methods = {
             };
           }
         }
+
+        for (var i = 0; i < unit.member_quit.length; i++) {
+          if (user._id.toString() === unit.member_quit[i]._id.toString()) {
+            var member = (unit.member_quit.splice(i, 1))[0];
+            unit.member.push(member);
+            return {
+              success: true
+            };
+          }
+        }
+
         // 用户没有参加
         unit.member.push({
           _id: user._id,

@@ -44,6 +44,13 @@ var registeredTasks = {
   },
   quitCampaign: {
     user: ['self']
+  },
+  editTeamCampaign: {
+    company: ['hr'],
+    team: ['leader']
+  },
+  editCompanyCampaign: {
+    company: ['hr']
   }
 };
 
