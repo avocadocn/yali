@@ -2023,13 +2023,29 @@ input.ng-invalid.ng-dirty
     .main
       width 700px
       margin-right 20px
-      .campaign_table .time_col
-        padding 0
+      .campaign_table
+        .time_col
+          padding 0
       .tab-body
-        .dl_card_tebcontent,.dl_campaign_list
+        .dl_card_tebcontent
           border none
         .dl_timeline
           width 590px
+        .dl_campaign_list
+          border none
+          .campaign_head
+            height 34px
+            line-height 24px
+            font-size 18px
+          .campaign_table
+            .time_col
+              width 200px
+            .year_col
+              .campaign_logo
+                width 30px
+                height 30px
+                margin 8px auto
+                background-color themeColor
       .campaigns_container
         margin-top 45px
         .user_campaigns_container
@@ -2072,7 +2088,7 @@ input.ng-invalid.ng-dirty
           width 700px
           padding 0
           margin-top 10px
-          .campgin_head
+          .campaign_head
             padding 5px 10px 5px 30px
             background-color #e7ce23
             height 26px
@@ -2155,7 +2171,7 @@ input.ng-invalid.ng-dirty
           .campaign
             border-top 1px solid borderColor
             margin 0 -10px
-          .campgin_head
+          .campaign_head
             color themeColor
             height 34px
             line-height 24px
@@ -2167,7 +2183,7 @@ input.ng-invalid.ng-dirty
           width 345px
           float right
           height 186px
-          .campgin_head
+          .campaign_head
             color #009999
             height 34px
             line-height 24px
@@ -2186,7 +2202,7 @@ input.ng-invalid.ng-dirty
               .time_count
                 color #009999
         .recommend_team
-          .campgin_head
+          .campaign_head
             height 54px
             line-height 24px
             font-size 18px
@@ -2195,7 +2211,7 @@ input.ng-invalid.ng-dirty
         .now
           width 700px
           clear both
-          .campgin_head
+          .campaign_head
             padding 0 30px
             height 34px
             color themeColor
@@ -2258,7 +2274,7 @@ input.ng-invalid.ng-dirty
           width 700px
           height 33px
           padding 0
-          .campgin_head
+          .campaign_head
             display inline
             color #ffffff
             line-height 33px

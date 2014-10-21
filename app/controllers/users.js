@@ -601,7 +601,7 @@ exports.setProfile = function(req, res) {
 };
 
 exports.renderCampaigns = function(req, res){
-  res.render('partials/campaign_list',{
+  res.render('partials/user_campaign_list',{
       'provider':'user',
       'role':req.role
   });
@@ -881,7 +881,7 @@ exports.timeLine = function(req,res){
         }
       });
       //console.log(newTimeLines);
-      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
+      return res.render('users/user_timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);

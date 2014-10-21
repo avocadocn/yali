@@ -183,7 +183,7 @@ var Campaign = new Schema({
   campaign_type: Number,
 
   //活动类型,篮球等
-  campaign_mold: [String],
+  campaign_mold: String,
   tags: [String],
 
   //活动组件

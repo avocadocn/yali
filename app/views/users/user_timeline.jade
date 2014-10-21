@@ -1,0 +1,114 @@
+extends ../layouts/user
+
+append headExt
+  link(rel="stylesheet" href="/css/tree.css")
+
+block panel
+  .loading_div(ng-show = 'loading')
+  div(ng-show = '!loading')
+    if length>0
+      .dl_timeline
+        .spine
+        each years in newTimeLines
+          .date_separator(id='year' + "#{years[0].year}")
+            span.span= years[0].year
+          //- .column.column_left
+          //-   each item,index in years
+          //-     if index%2==0
+          //-       .timeline_element
+          //-         .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+          //-           a(href="/campaign/detail/#{item.id}",target="_blank")
+          //-             img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+          //-             span.date= moment(item.start_time).format('MM/DD')
+          //-             span.head= item.head
+          //-         .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+          //-           a(href="/campaign/detail/#{item.id}",target="_blank")
+          //-             .img_scroll
+          //-               div(class="photos_#{item.photo_list.length}")
+          //-                 each imgs,img_index in item.photo_list
+          //-                   img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
+          //-         .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+          //-           img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+          //-           span.date= moment(item.start_time).format('MM/DD')
+          //-           span.head= item.head
+          //-         .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+          //-           a(href="/campaign/detail/#{item.id}",target="_blank")
+          //-             div(class="photos_#{item.photo_list.length}")
+          //-               each imgs,img_index in item.photo_list
+          //-                 img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
+          //-         //- div(ng-if="#{item.photo_list.length}===0")
+          //-         //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+          //-         //-     a(href="/campaign/detail/#{item.id}",target="_blank")
+          //-         //-       p= item.content
+          //-         //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+          //-         //-     p= item.content
+          .column.column_right
+            each item,index in years
+              //- if index%2
+              .timeline_element
+                .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                  a(href="/campaign/detail/#{item.id}",target="_blank")
+                    img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                    span.date= moment(item.start_time).format('MM/DD')
+                    span.head= item.head
+                .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                  a(href="/campaign/detail/#{item.id}",target="_blank")
+                    div
+                      each imgs,img_index in item.photo_list
+                        img.photo(src="#{imgs.uri}/86/86")
+                .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                  img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                  span.date= moment(item.start_time).format('MM/DD')
+                  span.head= item.head
+                .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                  a(href="/campaign/detail/#{item.id}",target="_blank")
+                    div
+                      each imgs,img_index in item.photo_list
+                        img.photo(src="#{imgs.uri}/86/86")
+                //- div(ng-if="#{item.photo_list.length}===0")
+                //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+                //-     a(href="/campaign/detail/#{item.id}",target="_blank")
+                //-       p= item.content
+                //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+                //-     p= item.content
+    else
+      .loademp.text-center #{__("NO_TIMELINE")}
+//- block aside
+//-   .old_campaign_container
+//-     a(href="#/campaign/#{uid}" ng-click="openModal()")
+//-       label 热门活动讨论  >>
+//-       label.clearLinkUnderline.pull-right.news_count(ng-if="newReply.length>0" ng-cloak) {{newReply.length}}
+//-   .groupsbox
+//-     .infobox
+//-       .head_title 
+//-         label 个人资料
+//-         a.clearLinkUnderline.pull-right(href="#/personal/#{uid}" ng-click="openModal()") 编辑
+//-       .info_left
+//-         //-用户头像
+//-         img.user_logo.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+//-       .info_right
+//-         //-人名
+//-         .username
+//-           label= nickname
+//-         //-公司名
+//-         .cname
+//-           if (!department)
+//-             a.clearLinkUnderline(href='/company/home' ng-cloak) #{cname}
+//-           else
+//-             a.clearLinkUnderline(href='/department/home/#{department._id}' ng-cloak) #{department.name}
+//-   if role !== 'HR'
+//-     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
+//-       include ../partials/schedule_list
+//-       include ../partials/calendar_modal
+//-     if myteam.length > 0
+//-       .groupsbox
+//-         include ../partials/group_thumbnail
+//-         +group_thumbnail(myteam)
+//-   .old_campaign_container
+//-     a.clearLinkUnderline(href="timeLine/#{uid}")
+//-       span.footprint
+//-       label.pull-right 活动足迹 >>
+
+
+append footExt
+  script(src="/js/controllers/tabviewUser.js")

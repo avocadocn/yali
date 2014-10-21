@@ -64,6 +64,9 @@
   word-break: break-all;
   overflow: hidden;
   margin-bottom: 4px;
+  margin-top: 5px;
+  padding: 10px;
+  background-color: #fbfbfb;
 }
 .rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
   width: 350px;
@@ -119,19 +122,14 @@
 .rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
   background: url("/img/loading.gif") center center no-repeat;
 }
-.rich_comment_box .comment .comment_content_panel .replies {
-  margin-top: 5px;
-  padding: 10px;
-  background-color: #fbfbfb;
-}
-.rich_comment_box .comment .comment_content_panel .replies .reply_form {
+.rich_comment_box .comment .comment_content_panel .comment_content .reply_form {
   margin-bottom: 15px;
   display: flex;
 }
-.rich_comment_box .comment .comment_content_panel .replies .reply_form .reply_input {
+.rich_comment_box .comment .comment_content_panel .comment_content .reply_form .reply_input {
   flex: 1;
 }
-.rich_comment_box .comment .comment_content_panel .replies .reply {
+.rich_comment_box .comment .comment_content_panel .comment_content .reply {
   word-break: break-all;
 }
 .rich_comment_box .pager .pagination {

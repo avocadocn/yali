@@ -236,151 +236,6 @@ textarea {
 .dl_mouse_hover_block:hover .dl_mouse_hover {
   display: inline-block;
 }
-.rich_comment_box {
-  width: 100%;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 10px 20px !important;
-  margin-top: 10px;
-}
-.rich_comment_box .rich_comment_form .comment_textarea {
-  float: none;
-  height: 60px;
-  background-color: #fbfbfb;
-  border-color: #ededed;
-  border-radius: 0;
-}
-.rich_comment_box .rich_comment_form .operator {
-  margin-top: 5px;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box {
-  margin-top: 5px;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap {
-  position: relative;
-  float: left;
-  margin-right: 5px;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap .close {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap:hover .close {
-  display: block;
-}
-.rich_comment_box .comment {
-  position: relative;
-  margin-top: 20px;
-  display: flex;
-}
-.rich_comment_box .comment .comment_user_info {
-  float: left;
-  max-width: 50px;
-}
-.rich_comment_box .comment .comment_user_info p {
-  text-align: center;
-}
-.rich_comment_box .comment .comment_user_info .user_photo {
-  width: 50px;
-  height: 50px;
-}
-.rich_comment_box .comment .comment_user_info .user_name {
-  text-decoration: none;
-}
-.rich_comment_box .comment .comment_content_panel {
-  float: left;
-  margin-left: 20px;
-  flex: 1;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content {
-  padding: 10px;
-  background-color: #fbfbfb;
-  border: solid 1px #ededed;
-  min-height: 50px;
-  word-break: break-all;
-  overflow: hidden;
-  margin-bottom: 4px;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
-  width: 350px;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_list_box .list_img {
-  display: block;
-  float: left;
-  margin-top: 5px;
-  margin-left: 5px;
-  width: 100px;
-  height: 100px;
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
-  position: relative;
-  margin-bottom: 10px;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .preview_img {
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  z-index: 1;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_pre {
-  flex: 1;
-  cursor: w-resize;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_shrink {
-  flex: 2;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_next {
-  flex: 1;
-  cursor: e-resize;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav {
-  text-align: center;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav .thumb {
-  width: 40px;
-  height: 40px;
-  margin-right: 5px;
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_single_thumb {
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .replies {
-  margin-top: 5px;
-  padding: 10px;
-  background-color: #fbfbfb;
-}
-.rich_comment_box .comment .comment_content_panel .replies .reply_form {
-  margin-bottom: 15px;
-  display: flex;
-}
-.rich_comment_box .comment .comment_content_panel .replies .reply_form .reply_input {
-  flex: 1;
-}
-.rich_comment_box .comment .comment_content_panel .replies .reply {
-  word-break: break-all;
-}
-.rich_comment_box .pager .pagination {
-  margin: 0;
-}
-.rich_comment_box .pager .novisible {
-  opacity: 0;
-}
-.rich_comment_box .pager li>a {
-  border-radius: 0;
-}
 .triangle {
   position: absolute;
   top: 16px;
@@ -2553,12 +2408,28 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaign_table .time_col {
   padding: 0;
 }
-.user_page .dl_container .main .tab-body .dl_card_tebcontent,
-.user_page .dl_container .main .tab-body .dl_campaign_list {
+.user_page .dl_container .main .tab-body .dl_card_tebcontent {
   border: none;
 }
 .user_page .dl_container .main .tab-body .dl_timeline {
   width: 590px;
+}
+.user_page .dl_container .main .tab-body .dl_campaign_list {
+  border: none;
+}
+.user_page .dl_container .main .tab-body .dl_campaign_list .campaign_head {
+  height: 34px;
+  line-height: 24px;
+  font-size: 18px;
+}
+.user_page .dl_container .main .tab-body .dl_campaign_list .campaign_table .time_col {
+  width: 200px;
+}
+.user_page .dl_container .main .tab-body .dl_campaign_list .campaign_table .year_col .campaign_logo {
+  width: 30px;
+  height: 30px;
+  margin: 8px auto;
+  background-color: #3498db;
 }
 .user_page .dl_container .main .campaigns_container {
   margin-top: 45px;
@@ -2615,7 +2486,7 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   margin-top: 10px;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head {
+.user_page .dl_container .main .campaigns_container .top .campaign_head {
   padding: 5px 10px 5px 30px;
   background-color: #e7ce23;
   height: 26px;
@@ -2623,24 +2494,24 @@ input.ng-invalid.ng-dirty {
   line-height: 16px;
   font-size: 14px;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .star {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .star {
   background-image: url("/img/icons/star.png");
   height: 16px;
   width: 16px;
   display: inline-block;
   float: left;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .title {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .title {
   width: 30%;
   margin-left: 20px;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .time_count {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .time_count {
   width: 30%;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head a {
+.user_page .dl_container .main .campaigns_container .top .campaign_head a {
   color: #fff;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .add {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .add {
   font-size: 24pt;
   line-height: 21px;
 }
@@ -2718,13 +2589,13 @@ input.ng-invalid.ng-dirty {
   border-top: 1px solid #ddd;
   margin: 0 -10px;
 }
-.user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head {
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_head {
   color: #3498db;
   height: 34px;
   line-height: 24px;
   font-size: 18px;
 }
-.user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head a {
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_head a {
   font-size: 14px;
   color: #ccc;
 }
@@ -2733,13 +2604,13 @@ input.ng-invalid.ng-dirty {
   float: right;
   height: 186px;
 }
-.user_page .dl_container .main .campaigns_container .recent_join .campgin_head {
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_head {
   color: #099;
   height: 34px;
   line-height: 24px;
   font-size: 18px;
 }
-.user_page .dl_container .main .campaigns_container .recent_join .campgin_head a {
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_head a {
   font-size: 14px;
   color: #ccc;
 }
@@ -2757,19 +2628,19 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col .time_count {
   color: #099;
 }
-.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head {
+.user_page .dl_container .main .campaigns_container .recommend_team .campaign_head {
   height: 54px;
   line-height: 24px;
   font-size: 18px;
 }
-.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head a {
+.user_page .dl_container .main .campaigns_container .recommend_team .campaign_head a {
   color: #3498db;
 }
 .user_page .dl_container .main .campaigns_container .now {
   width: 700px;
   clear: both;
 }
-.user_page .dl_container .main .campaigns_container .now .campgin_head {
+.user_page .dl_container .main .campaigns_container .now .campaign_head {
   padding: 0 30px;
   height: 34px;
   color: #3498db;
@@ -2848,7 +2719,7 @@ input.ng-invalid.ng-dirty {
   height: 33px;
   padding: 0;
 }
-.user_page .dl_container .main .campaigns_container .now_head .campgin_head {
+.user_page .dl_container .main .campaigns_container .now_head .campaign_head {
   display: inline;
   color: #fff;
   line-height: 33px;

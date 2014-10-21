@@ -28,8 +28,8 @@ tabViewUser.config(['$routeProvider',
         templateUrl: function(params){
             return '/users/campaign/'+params.uid;
         },
-        controller: 'CampaignListController',
-        controllerAs: 'campaign'
+        controller: 'recentCampaignController',
+        controllerAs: 'recentCampaign'
       })
       .when('/personal/:uid', {
         templateUrl: function(params){
@@ -79,17 +79,6 @@ tabViewUser.run(['$rootScope','$location','Report',
                 alertify.alert(msg);
             });
         }
-        $rootScope.openModal = function(){
-            $('#user_modal').modal();
-        }
-        $rootScope.judgeYear = function(index){
-            if(index ==0 || new Date($scope.campaigns[index].start_time).getFullYear()!=new Date($scope.campaigns[index-1].start_time).getFullYear()){
-                return true;
-            }
-            else {
-                return false;
-            }
-        };
 
     }
 ]);
@@ -177,7 +166,19 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
                 console.log(e);
             }
         });
-        
+        $scope.judgeYear = function(index){
+            if(index ==0 || new Date($scope.showedCampaign[index].start_time).getFullYear()!=new Date($scope.showedCampaign[index-1].start_time).getFullYear()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+        $rootScope.openModal = function(type){
+            $scope.showedType = type;
+            $scope.showedCampaign = $scope[type];
+            $('#user_modal').modal();
+        }
     }
 ]);
 
