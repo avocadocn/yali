@@ -406,7 +406,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum,
       'join_flag':model_helper.arrayObjectIndexOf(_campaign.members,user._id,'_id')>-1?1:-1,
-      'due_flag':new Date()<_campaign.deadline?1:0
+      'due_flag':new Date()>_campaign.deadline?1:0
     };
     if(ct===1){//公司活动
       temp.type='companycampaign';
