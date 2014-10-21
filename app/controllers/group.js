@@ -1002,7 +1002,11 @@ exports.sponsor = function (req, res) {
           for(i=0;i<teams.length;i++){
             providerInfo.campaign_unit.push({
               'company':_company,//发小队活动,无论是否为多小队活动,公司暂时都是一样的
-              'team':teams[i]
+              'team':{
+                '_id':teams[i]._id,
+                'name':teams[i].name,
+                'logo':teams[i].logo
+              }
             });
           }
           cb(null,null);
