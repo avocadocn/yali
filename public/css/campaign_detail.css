@@ -137,17 +137,26 @@
   display: flex;
   flex-flow: column;
 }
+.campaign_detail .detail_card .component_body .multi_team .logo_container {
+  border-right: none !important;
+  border-bottom: 1px solid #eee;
+}
+.campaign_detail .detail_card .component_body .multi_team .logo_container .unit {
+  display: inline-block !important;
+}
+.campaign_detail .detail_card .component_body .multi_team .info_container {
+  padding-top: 20px;
+}
 .campaign_detail .detail_card .component_body .base_info {
   display: flex;
 }
 .campaign_detail .detail_card .component_body .base_info .logo_container {
-  width: 100px;
   border-right: 1px solid #eee;
 }
 .campaign_detail .detail_card .component_body .base_info .logo_container .unit {
-  display: inline-block;
-  width: 80px;
+  margin-right: 20px;
   margin-bottom: 20px;
+  width: 80px;
 }
 .campaign_detail .detail_card .component_body .base_info .logo_container .unit .logo {
   width: 80px;

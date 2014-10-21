@@ -1074,6 +1074,7 @@ exports.getOneNotice = function (req, res, next) {
 
 exports.renderCampaignDetail = function (req, res) {
   var campaign = req.campaign;
+  console.log(campaign)
   moment.lang('zh-cn');
 
   // 权限判断

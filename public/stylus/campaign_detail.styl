@@ -99,17 +99,23 @@ clearfix()
       .multi_team
         display flex
         flex-flow column
+        .logo_container
+          border-right none !important
+          border-bottom 1px solid #eee
+          .unit
+            display inline-block !important
+        .info_container
+          padding-top 20px
 
       .base_info
         display flex
 
         .logo_container
-          width 100px
           border-right 1px solid #eee
           .unit
-            display inline-block
-            width 80px
+            margin-right 20px
             margin-bottom 20px
+            width 80px
             .logo
               width 80px
               height 80px
