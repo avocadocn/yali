@@ -1536,13 +1536,8 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         var _data = {
             theme: $scope.theme,
             location: $scope.location,
-            content : $scope.content,
             start_time : $scope.start_time,
             end_time : $scope.end_time,
-            deadline : $scope.deadline,
-            member_min : $scope.member_min,
-            member_max : $scope.member_max,
-            tags: $scope.tags?$scope.tags.split(','):[],
             campaign_mold: $scope.mold
         };
         if($rootScope.dOtMulti && $scope.multi_campaign_type.value == '1'){

@@ -128,7 +128,7 @@ exports.getMessage = function(req, res, next) {
             var campaign = group_message[i].campaign;
             for (var j = 0; j < campaign.campaign_unit.length; j++) {
               var unit = campaign.campaign_unit[j];
-              if (req.user.isTeamMember(unit.team._id)) {
+              if ((req.role!=='HR'&&req.user.isTeamMember(unit.team._id))||(req.role==='HR'&&req.user._id.toString() === unit.company._id.toString())) {
                 _group_message.myteam.push({
                   index: j,
                   _id: unit.team._id,
@@ -175,11 +175,12 @@ exports.getMessage = function(req, res, next) {
             }
             break;
           case 5://接受应战
+
             _group_message.myteam = [];
             var campaign = group_message[i].campaign;
             for (var j = 0; j < campaign.campaign_unit.length; j++) {
               var unit = campaign.campaign_unit[j];
-              if (req.user.isTeamMember(unit.team._id)) {
+              if ((req.role!=='HR'&&req.user.isTeamMember(unit.team._id))||(req.role==='HR'&&req.user._id.toString() === unit.company._id.toString())) {
                 _group_message.myteam.push({
                   index: j,
                   _id: unit.team._id,

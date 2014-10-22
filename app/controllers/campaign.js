@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
   PhotoAlbum = mongoose.model('PhotoAlbum'),
   MessageContent = mongoose.model('MessageContent'),
   CampaignMold = mongoose.model('CampaignMold'),
+  CompanyGroup = mongoose.model('CompanyGroup'),
   model_helper = require('../helpers/model_helper'),
   _ = require('lodash'),
   moment = require('moment'),
@@ -540,11 +541,9 @@ exports.getCampaigns = function(req, res) {
       option.campaign_type = 1;
     }
     else if(campaignType==='team') {
-      option.campaign_type = {'$in':[2,3,4,5,7]};//4?5?7?
+      option.campaign_type = {'$nin':[1]};
     }
-    else if(campaignType==='department'){
-      option.campaign_type = {'$in':[6,8]};//9?
-    }
+    //department也请求team
     else if(req.role ==='EMPLOYEE')  {
       var team_ids = [];
       for( var i = 0; i < req.user.team.length; i ++) {
@@ -1411,11 +1410,32 @@ exports.getMolds = function(req, res){
     }
     else{
       if(req.params.hostType==='team'){
-        // for(var i=0;i<molds.length;i++){
-        //   molds[i].
-        // }
+        CompanyGroup.findOne({'_id':req.params.hostId},{'group_type':1},function(err,team){
+          if(err){
+            console.log(err);
+            return res.send({'result':0,'msg':'查找失败'});
+          }
+          else{
+            //把跟自己小组类型相同的mold换到第0个
+            for(var i=0;i<molds.length;i++){
+              if(molds[i].name===team.group_type){
+                if(i===0)
+                  break;
+                else{
+                  var temp = molds[0];
+                  molds[0]=molds[i];
+                  molds[i]=temp;
+                  break;
+                }
+              }
+            }
+            return res.send({'result':1,'molds':molds});
+          }
+        });
       }
-      return res.send({'result':1,'molds':molds});
+      else{
+        return res.send({'result':1,'molds':molds});
+      }
     }
   })
 };
@@ -1438,7 +1458,7 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.end_time;
   campaign.active = true;
   campaign.campaign_mold = basicInfo.campaign_mold
-  if(basicInfo.tags.length>0)
+  if(basicInfo.tags&&basicInfo.tags.length>0)
     campaign.tags = basicInfo.tags;
   var _now = new Date();
   if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {

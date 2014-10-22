@@ -318,26 +318,19 @@ exports.saveInfo =function(req,res) {
 exports.timeLine = function(req, res){
   var teamId = req.params.teamId;
   Campaign
-  .find({ 'active':true,'finish':true,'team': teamId})
+  .find({ 'active':true,'finish':true,'tid': teamId})
   .sort('-start_time')
-  .populate('team').populate('cid').populate('photo_album')
+  .populate('photo_album')
   .exec()
   .then(function(campaigns) {
       // todo new time style
       var newTimeLines = [];
       // todo new time style
       campaigns.forEach(function(campaign) {
-
-
-        var _head,_logo;
-        if(campaign.camp.length>0){
-          _head = campaign.camp[0].name +'对' + campaign.camp[1].name +'的比赛';
-          _logo = campaign.camp[0].id ==teamId ? campaign.camp[0].logo:campaign.camp[1].logo ;
-        }
-        else{
-          _head = campaign.team[0].name + '活动';
-          _logo = campaign.team[0].logo;
-        }
+        var ct = campaign.campaign_type;
+        //反正logo都是这个小队的……
+        var _logo = req.companyGroup.logo;
+      
         var tempObj = {
           id: campaign._id,
           //head: _head,
@@ -347,7 +340,7 @@ exports.timeLine = function(req, res){
           location: campaign.location,
           group_type: campaign.group_type,
           start_time: campaign.start_time,
-          provoke:campaign.camp.length>0,
+          provoke:ct===4||ct===5||ct===7||ct===9,
           year: getYear(campaign),
           photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
         }

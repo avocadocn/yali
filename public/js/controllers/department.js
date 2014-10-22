@@ -937,14 +937,16 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','C
             script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
             document.body.appendChild(script);
         }
-        else{
-            $scope.initialize();
+        if(!$scope.moldsgot){
+            Campaign.getMolds('department',0,function(status,data){
+                if(!status){
+                    $scope.molds = data;
+                    $scope.moldsgot = true;
+                    $scope.mold = '其它';
+                }
+            });
         }
-        Campaign.getTags('department',$scope.did,function(status,data){
-            if(!status){
-                $scope.recommand_tags = data;
-            }
-        });
+        Campaign.get
         $scope.location={name:'',coordinates:[]};
         $("#start_time").on("changeDate",function (ev) {
             var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
@@ -1025,21 +1027,17 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','C
            $scope.MSearch.search($scope.location.name); //关键字查询
         }
     };
-    $scope.addTag = function(index) {
-        $scope.recommand_tags[index].disabled = true;
-        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
-    };
+    $scope.selectMold=function(name){
+        $scope.mold = name;
+    }
     $scope.sponsor = function() {
         var _data = {
             theme: $scope.theme,
             location: $scope.location,
-            content : $scope.content,
             tags: $scope.tags ? $scope.tags.split(',') :[],
             start_time:$scope.start_time,
             end_time:$scope.end_time,
-            deadline:$scope.deadline,
-            member_min: $scope.member_min,
-            member_max: $scope.member_max
+            campaign_mold:$scope.mold
         };
         var _url;
         if($scope.multi){

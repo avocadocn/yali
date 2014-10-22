@@ -157,12 +157,15 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
 
     //打开发活动modal时
     $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
-        //获取Tag
-        Campaign.getTags('group',$rootScope.teamId,function(status,data){
-            if(!status){
-                $scope.recommand_tags = data;
-            }
-        });
+        if(!$scope.moldsgot){
+            Campaign.getMolds('team',$rootScope.teamId,function(status,data){
+                if(!status){
+                    $scope.molds = data;
+                    $scope.moldsgot = true;
+                    $scope.mold = $scope.molds[0].name;
+                }
+            });
+        }
         //加载地图
         if(!window.map_ready){
             window.campaign_map_initialize = $scope.initialize;
@@ -253,10 +256,11 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
            $scope.MSearch.search($scope.location.name); //关键字查询
         }
     };
-    $scope.addTag = function(index) {
-        $scope.recommand_tags[index].disabled = true;
-        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
+
+    $scope.selectMold=function(name){
+        $scope.mold = name;
     };
+
     $scope.sponsor = function() {
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
@@ -265,13 +269,9 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
             var _data = {
                 theme: $scope.theme,
                 location: $scope.location,
-                content : $scope.content,
                 start_time : $scope.start_time,
                 end_time : $scope.end_time,
-                member_min: $scope.member_min,
-                member_max: $scope.member_max,
-                deadline: $scope.deadline,
-                tags: $scope.tags?$scope.tags.split(','):[]
+                campaign_mold:$scope.mold
             };
             var _url = '/group/campaignSponsor/'+ $rootScope.teamId
             Campaign.sponsor(_url,_data,function(status,data){
