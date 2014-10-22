@@ -347,6 +347,24 @@ Campaign.methods = {
       }
     }
     return false;
+  },
+
+  /**
+   * 整理活动组件
+   * @return {Object} 活动组件对象
+   *  return: {
+   *    componentName: [mongoose.Schema.Types.ObjectId]
+   *  }
+   */
+  formatComponents: function () {
+    var result = {};
+    this.components.forEach(function (component) {
+      if (!result[component.name]) {
+        result[component.name] = [];
+      }
+      result[component.name].push(component._id);
+    });
+    return result;
   }
 
 };

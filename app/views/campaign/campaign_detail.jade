@@ -95,6 +95,8 @@ block contentExt
                 button.save(ng-click="save()") 保存
                 button.cancel(ng-click="toggleEdit()") 取消
 
+        rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment}")
+
       .panel_divider
 
       .side_panel

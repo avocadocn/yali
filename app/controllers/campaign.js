@@ -1171,6 +1171,7 @@ exports.renderCampaignDetail = function (req, res) {
 
   res.render('campaign/campaign_detail', {
     campaign: campaign,
+    components: campaign.formatComponents(),
     over: campaign.deadline < Date.now(),
     isStart: isStart,
     isEnd: isEnd,
