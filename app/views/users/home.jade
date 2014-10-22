@@ -28,7 +28,7 @@ block panel
               img.campaign_logo(ng-src="{{topCampaign.logo}}/47/47")
               p.team_name {{topCampaign.name}}
         .content_col
-          a.clearLinkUnderline(ng-href="/{{(topCampaign.type=='provoke'?'competition/':'campaign/detail/')+topCampaign._id}}")
+          a.clearLinkUnderline(ng-href="/campaign/detail/{{topCampaign._id}}")
             //- p
             //-   strong 主题:
             //-   span.theme_text {{topCampaign.theme}}
@@ -59,7 +59,7 @@ block panel
             img.campaign_logo(ng-if="recentUnjoinedCampaign.type==='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/47/47")
             img.campaign_logo(ng-if="recentUnjoinedCampaign.type!=='teamcampaign'" ng-src="{{recentUnjoinedCampaign.logo}}/47/47")
         .content_col
-          a.clearLinkUnderline(ng-href="/{{(recentUnjoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentUnjoinedCampaign._id}}")
+          a.clearLinkUnderline(ng-href="/campaign/detail/{{recentUnjoinedCampaign._id}}")
             p
               span 主题:
               span.theme_text {{recentUnjoinedCampaign.theme}}
@@ -81,7 +81,7 @@ block panel
             img.campaign_logo(ng-if="recentJoinedCampaign.type==='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/47/47")
             img.campaign_logo(ng-if="recentJoinedCampaign.type!=='teamcampaign'" ng-src="{{recentJoinedCampaign.logo}}/47/47")
         .content_col
-          a.clearLinkUnderline(ng-href="/{{(recentJoinedCampaign.type=='provoke'?'competition/':'campaign/detail/')+recentJoinedCampaign._id}}")
+          a.clearLinkUnderline(ng-href="/campaign/detail/{{recentJoinedCampaign._id}}")
             p
               span 主题:
               span.theme_text {{recentJoinedCampaign.theme}}
@@ -108,21 +108,27 @@ block panel
     .now(ng-cloak)
       .campaigns(masonry reload="is_reload" items="nowCampaigns")
         .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns" ng-cloak)
-          .campaign_head(ng-cloak)
+          .campaign_head(ng-class="{'unconfrim':!nowCampaign.confirm_status}" ng-cloak)
             label {{nowCampaign.theme}}
+            label.pull-right(ng-if="!nowCampaign.confirm_status") 挑战
           .campaign(ng-class="{'provoke':nowCampaign.type=='provoke'}")
             .logo_col(ng-if="nowCampaign.type=='provoke'" )
-              .team(ng-repeat="camp in nowCampaign.camp")
-                a.clearLinkUnderline(ng-href="group/page/{{camp.id}}")
-                  img.campaign_logo(ng-src="{{camp.logo}}/70/70")
-                  p.team_name {{camp.tname}}
+              .team(ng-repeat="campaign_unit in nowCampaign.campaign_unit")
+                a.clearLinkUnderline(ng-href="group/page/{{campaign_unit.team._id}}")
+                  img.campaign_logo(ng-src="{{campaign_unit.team.logo}}/70/70")
+                  p.team_name {{campaign_unit.team.name}}
+              .operator(ng-if="!nowCampaign.confirm_status" )
+                button.dl_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.length==0" ng-click="vote(nowCampaign._id)") 赞成
+                button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(0)>-1" ng-click="cancel(campaign_item._id)") 取消
+                button.dl_btn.dl_btn_small.pull-right.btn_red(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="cancel(campaign_item._id)") 接受
+                button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="cancel(campaign_item._id)") 拒绝
             .logo_col(ng-if="nowCampaign.type!='provoke'" )
               .team
                 a.clearLinkUnderline(ng-href="{{nowCampaign.link}}")
                   img.campaign_logo(ng-src="{{nowCampaign.logo}}/70/70")
                   p.team_name {{nowCampaign.name}}
             .content_col
-              a.clearLinkUnderline(ng-href="/{{(nowCampaign.type=='provoke'?'competition/':'campaign/detail/')+nowCampaign._id}}")
+              a.clearLinkUnderline(ng-href="/campaign/detail/{{nowCampaign._id}}")
                 //- p
                 //-   strong 主题:
                 //-   span.theme_text {{topCampaign.theme}}
@@ -139,7 +145,9 @@ block panel
             .photo(ng-repeat="photo in nowCampaign.photo_thumbnails")
               img(ng-src="{{photo.uri}}/80/80")
           .comments
-            a.pull-right(ng-click="") 留言 ({{nowCampaign.comment_sum}})
+            a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
+            a.clearLinkUnderline.pull-right.comment(ng-click="nowCampaign.showComment=true;") {{nowCampaign.comment_sum}}条评论
+            simple-comment(ng-if="nowCampaign.showComment" component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}")
         //- a.pull-right(href="") 退出
     //- carousel(interval="5000")
     //-   slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)

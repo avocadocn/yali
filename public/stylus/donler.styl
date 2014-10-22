@@ -2300,6 +2300,8 @@ input.ng-invalid.ng-dirty
             color themeColor
             line-height 24px
             font-size 18px
+          .unconfrim
+            color red
           .user_campaigns_container
             width 345px
             .campaign
@@ -2334,10 +2336,16 @@ input.ng-invalid.ng-dirty
                 clear both
                 width 100%
                 padding 10px 30px
+                .operator
+                  margin 20px 10px
+                  width 85px
+                  .dl_btn
+                    margin 5px
+                  .btn_red
+                    background-color red
                 .team
                   float left
-                  &:last-child
-                    float right
+                  margin 5px
               .content_col
                 padding 10px
                 width 100%
@@ -2353,6 +2361,9 @@ input.ng-invalid.ng-dirty
                   width 70px
             .comments
               clear both
+              a
+                color secondaryfontColor
+                margin 0 10px
         .now_head
           width 700px
           height 33px

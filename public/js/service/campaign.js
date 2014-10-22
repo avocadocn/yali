@@ -161,7 +161,66 @@ angular.module('donler')
           callback('关闭活动失败，请重试。');
         });
     };
-
+    var vote = function(campaignId, vote_status, callback) {
+         try {
+            $http({
+                method: 'post',
+                url: '/campaign/vote/'+campaignId,
+                data:{
+                    campaignId : campaignId,
+                    aOr : vote_status
+                }
+            }).success(function(data, status) {
+                if(data.result===1) {
+                  callback();
+                } else {
+                  callback(data.msg);
+                }
+            }).error(function(data, status) {
+                callback('DATA ERROR');
+            });
+        }
+        catch(e) {
+            console.log(e);
+        }
+    };
+    //应战
+    var responseProvoke = function(campaignId,tid,status) {
+        $http({
+            method: 'post',
+            url: '/group/responseProvoke/'+tid,
+            data:{
+                campaignId : campaignId,
+                responseStatus : status
+            }
+        }).success(function(data, status) {
+          if(data.result===1) {
+            callback();
+          } else {
+            callback(data.msg);
+          }
+        }).error(function(data, status) {
+          callback('DATA ERROR');
+        });
+    };
+    //取消挑战
+    var cancelProvoke = function(campaignId,tid) {
+      $http({
+          method: 'post',
+          url: '/group/cancelProvoke/'+tid,
+          data:{
+              campaignId : campaignId
+          }
+      }).success(function(data, status) {
+        if(data.result===1) {
+          callback();
+        } else {
+          callback(data.msg);
+        }
+      }).error(function(data, status) {
+        callback('DATA ERROR');
+      });
+    };
 
     return {
       sponsor: sponsor,
@@ -171,6 +230,9 @@ angular.module('donler')
       edit: edit,
       cancel: cancel,
       getMolds: getMolds
+      vote: vote,
+      responseProvoke: responseProvoke,
+      cancelProvoke: cancelProvoke
       // provoke:provoke
     };
   }]);

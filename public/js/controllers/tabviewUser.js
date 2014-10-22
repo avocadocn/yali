@@ -119,6 +119,43 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
                 }
             });
         };
+        $rootScope.vote = function(campaignId) {
+            Campaign.vote(campaignId, vote_status, function (err) {
+                if (err) {
+                    alertify.alert(err);
+                } else {
+
+                }
+            });
+        };
+        //应战
+    $rootScope.responseProvoke = function(campaignId, tid, status) {
+        alertify.confirm('确认要接受该挑战吗？',function(e){
+            if(e){
+                Campaign.responseProvoke(campaignId, tid, status, function (err) {
+                    if (err) {
+                        alertify.alert(err);
+                    } else {
+
+                    }
+                });
+            }
+        });
+    };
+    //取消挑战
+    $rootScope.cancelProvoke = function(campaignId, tid) {
+        alertify.confirm('确认要取消挑战吗？',function(e){
+            if(e){
+                Campaign.cancelProvoke(campaignId, tid, function (err) {
+                    if (err) {
+                        alertify.alert(err);
+                    } else {
+
+                    }
+                });
+            }
+        });
+    };
     }
 ]);
 tabViewUser.directive('masonry', function ($timeout) {

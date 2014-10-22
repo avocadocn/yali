@@ -111,6 +111,10 @@ var Campaign = new Schema({
     type: Boolean,
     default: false
   },
+  confirm_status: {
+    type: Boolean,
+    default: true
+  },
   finish: {
     type: Boolean,
     default: false

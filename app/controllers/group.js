@@ -556,6 +556,7 @@ exports.provoke = function (req, res) {
     var providerInfo = {
       'tid':[my_team_id,team_opposite._id],
       'cid':req.companyGroup.cid === team_opposite.cid ? [req.companyGroup.cid] : [req.companyGroup.cid, team_opposite.cid],
+      'confirm_status':false,
       'poster':{
         cname:cname,
         cid:cid,

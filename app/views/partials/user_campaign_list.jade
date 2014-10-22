@@ -17,7 +17,7 @@
           a(ng-href="{{campaign_item.link}}")
             img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
         td.content_col
-          a(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}")
+          a(ng-href="/campaign/detail/{{campaign_item._id}}")
             p(ng-class="{'recent_unjoin':showedType=='recentUnjoinedCampaigns','recent_join':showedType=='recentJoinedCampaigns'}")
               strong {{campaign_item.name}} :
               span.theme_text {{campaign_item.theme}}
@@ -53,13 +53,13 @@
                 span.rest_time {{campaign_item.deadline_rest}}
         td.operator_col
           button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
-          button.dl_btn.dl_btn_small.pull-right(ng-if="campaign_item.join_flag !== 1 && !campaign_item.due_flag && campaign_item.team.length<=1" ng-click="join($index,campaign_item.team[0]._id)") 参加
+          button.dl_btn.dl_btn_small.pull-right(ng-if="campaign_item.join_flag !== 1 && !campaign_item.due_flag && campaign_item.team.length<=1" ng-click="join($index,campaign_item.campaign_unit[campaign_item.team[0]].team._id)") 参加
           .btn-group(ng-if="campaign_item.join_flag !== 1 && !campaign_item.due_flag &&campaign_item.team.length>1")
             button.dl_btn.btn-primary.dl_btn_small.dropdown-toggle(type="button" data-toggle="dropdown") 参加
               span.caret
             ul.dropdown-menu(role="menu")
               li(ng-repeat="_team in campaign_item.team")
-                a(ng-click="join($parent.$parent.$index,_team._id)") {{_team.name}}
+                a(ng-click="join($parent.$parent.$index,campaign_item.campaign_unit[_team].team._id)") {{campaign_item.campaign_unit[_team].team.name}}
           button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="campaign_item.join_flag == 1 && !campaign_item.due_flag" ng-click="quit($index)") 退出
     //- .text-center(ng-if="campaigns.length>0")
     //-   button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
@@ -71,5 +71,5 @@
     //-     a(ng-if="lastPage_flag" ng-click="changePage(-1)") 上一页
     //-   li
     //-     a(ng-if="nextPage_flag" ng-click="changePage(1)") 下一页
-.modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-  include ../campaign/select_team_for_multi_campaign
+//- .modal.fade#joinTeamSelectmodal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+//-   include ../campaign/select_team_for_multi_campaign

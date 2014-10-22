@@ -3013,6 +3013,9 @@ input.ng-invalid.ng-dirty {
   line-height: 24px;
   font-size: 18px;
 }
+.user_page .dl_container .main .campaigns_container .now .unconfrim {
+  color: #f00;
+}
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container {
   width: 345px;
 }
@@ -3054,11 +3057,19 @@ input.ng-invalid.ng-dirty {
   width: 100%;
   padding: 10px 30px;
 }
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator {
+  margin: 20px 10px;
+  width: 85px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator .dl_btn {
+  margin: 5px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator .btn_red {
+  background-color: #f00;
+}
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .team {
   float: left;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .team:last-child {
-  float: right;
+  margin: 5px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .content_col {
   padding: 10px;
@@ -3079,6 +3090,10 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments {
   clear: both;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments a {
+  color: #ccc;
+  margin: 0 10px;
 }
 .user_page .dl_container .main .campaigns_container .now_head {
   width: 700px;

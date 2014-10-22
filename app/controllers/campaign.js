@@ -437,6 +437,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
     var temp = {
       '_id':_campaign._id,
       'active':_campaign.active,
+      'confirm_status':_campaign.confirm_status,
       'theme':_campaign.theme,
       'content':_campaign.content.replace(/<\/?[^>]*>/g, ''),
       'member_max':_campaign.member_max,
@@ -473,31 +474,25 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       temp.name=_campaign.campaign_unit[0].team.name;
       for(var i =0;i<_campaign.campaign_unit.length;i++){
         if(model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id')>-1){//这个unit是否为user参加的小队
-          temp.team.push({
-            _id:_campaign.campaign_unit[i].team._id,
-            logo : _campaign.campaign_unit[i].team.logo,
-            name : _campaign.campaign_unit[i].team.name,
-            link : '/group/page/'+_campaign.campaign_unit[i].team._id.toString()
-          });
+          temp.team.push(i);
         }
       }
     }
     else if(ct!==1) {//挑战
       temp.type = 'provoke';
       temp.join_flag = 0;
-      temp.team = [];
       temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
       temp.logo=_campaign.campaign_unit[0].team.logo;
       temp.link = '/group/page/'+_campaign.campaign_unit[0].team._id;
       temp.name=_campaign.campaign_unit[0].team.name;
+      temp.leader =[];
       for(var i =0;i<_campaign.campaign_unit.length;i++){
-        if(model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id')>-1){//这个unit是否为user参加的小队
-          temp.team.push({
-            _id:_campaign.campaign_unit[i].team._id,
-            logo : _campaign.campaign_unit[i].team.logo,
-            name : _campaign.campaign_unit[i].team.name,
-            link : '/group/page/'+_campaign.campaign_unit[i].team._id.toString()
-          });
+        var _index = model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id');
+        if(_index>-1){//这个unit是否为user参加的小队
+          temp.team.push(i);
+          if(user.team[_index].leader){
+            temp.leader.push(i);
+          }
         }
       }
     }
@@ -508,11 +503,63 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
       // temp.camp = _campaign.camp;//...
     }
+    if(_other.unConfirm){
+      temp.campaign_unit =[];
+      _campaign.campaign_unit.forEach(function(_campaign_unit){
+        temp.campaign_unit.push({
+          team:{
+            _id:_campaign_unit.team._id,
+            name:_campaign_unit.team.name,
+            logo:_campaign_unit.team.logo,
+            link : '/group/page/'+_campaign_unit.team._id.toString()
+          },
+          positive: _campaign_unit.vote.positive,
+          start_confirm:_campaign_unit.start_confirm
+        })
+      });
+      var memberIds = [];
+      _campaign.members.forEach(function (member) {
+        memberIds.push(member._id);
+      });
+      temp.components = _campaign.formatComponents();
+      var allow = auth(user, {
+        companies: _campaign.cid,
+        teams: _campaign.tid,
+        users: memberIds
+      }, [
+        'publishComment'
+      ]);
+      temp.allow = allow;
+    }
     if(_other.nowFlag){
+      temp.campaign_unit =[];
+      _campaign.campaign_unit.forEach(function(_campaign_unit){
+        temp.campaign_unit.push({
+          team:{
+            _id:_campaign_unit.team._id,
+            name:_campaign_unit.team.name,
+            logo:_campaign_unit.team.logo
+          },
+          member: _campaign_unit.member
+        })
+      });
       var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
       temp.start_flag = _formatTime.start_flag;
       temp.remind_text =_formatTime.remind_text;
       temp.start_time_text = _formatTime.start_time_text;
+      var memberIds = [];
+      _campaign.members.forEach(function (member) {
+        memberIds.push(member._id);
+      });
+      temp.components = _campaign.formatComponents();
+      var allow = auth(user, {
+        companies: _campaign.cid,
+        teams: _campaign.tid,
+        users: memberIds
+      }, [
+        'publishComment'
+      ]);
+      temp.allow = allow;
     }
     else{
       temp.deadline_rest = formatrestTime(new Date(),_campaign.deadline);
@@ -724,7 +771,8 @@ exports.getUserCampaignsForHome = function(req, res) {
   var searchCampaign = function(startSet, endSet, joinFlag, photoFlag, callback){
     var options = {
       'cid': req.user.cid,
-      'active': true
+      'active': true,
+      'confirm_status':true
     };
     var _sort;
     if(startSet){
@@ -777,14 +825,15 @@ exports.getUserCampaignsForHome = function(req, res) {
     },//刚刚结束的活动
     function(callback){
       var options = {
-        'campaign_unit.start_confirm' : false,
+        'active':true,
+        'confirm_status' : false,
         'start_time' : { '$gte': now},
         'campaign_type':{'$in':[4,5,7,9]}
       }
       var query = Campaign.find(options).sort('-create_time');
       query.exec()
       .then(function(campaigns){
-        callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:true,nowFlag:true}));
+        callback(null,formatCampaign(campaigns,'user',req.role,req.user,{unConfirm:true}));
       })
       .then(null,function(err){
         console.log(err);
@@ -804,6 +853,7 @@ exports.getUserCampaignsForHome = function(req, res) {
       else{
         _result.push(values[3]);
       }
+      // console.log(values[4]);
       if(values[4]){
         _result[2] = values[4].concat(_result[2]);
       }
@@ -895,7 +945,8 @@ exports.getUserNowCampaignsForAppList = function(req, res) {
     var options = {
       'cid': req.user.cid,
       '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
-      'active': true
+      'active': true,
+      'confirm_status':true
     };
     if(startSet){
       options.start_time = startSet;
@@ -1384,7 +1435,6 @@ exports.vote = function (req, res) {
     next('forbidden');
     return;
   }
-  var tid = req.body.tid;
   var cid = req.user.cid;
   var uid = req.user._id;
   var aOr = req.body.aOr;
@@ -1397,28 +1447,33 @@ exports.vote = function (req, res) {
   function (err, campaign) {
     if (campaign) {
 
-      var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
-      var positive_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.positive_member,uid,'uid');
-      var negative_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.negative_member,uid,'uid');
-      if(aOr && negative_index > -1 || !aOr && positive_index > -1){
-        return res.send({result: 0, msg:'您已经投过票，无法再次投票'});
-      }
-      else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
-        campaign.camp[camp_index].vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
-        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']-1;
-      }
-      else if(aOr && positive_index <0 || !aOr && negative_index <0){
-        campaign.camp[camp_index].
-          vote[aOr?'positive_member':'negative_member'].
-            push({
-                  'cid':cid,
-                  'uid':uid,
-                  'nickname':req.user.nickname,
-                  'photo':req.user.photo
-                });
-        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']+1;
-      }
+      
+      campaign.campaign_unit.forEach(function(_campaign_unit){
+        if(req.user.isTeamMember(_campaign_unit.team._id)){
+          var positive_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,uid,'_id');
+          var negative_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.negative_member,uid,'_id');
+          if(aOr && negative_index > -1 || !aOr && positive_index > -1){
+            return res.send({result: 0, msg:'您已经投过票，无法再次投票'});
+          }
+          else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
+            _campaign_unit.vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
+            _campaign_unit.vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']-1;
+          }
+          else if(aOr && positive_index <0 || !aOr && negative_index <0){
+            campaign.camp[camp_index].
+              vote[aOr?'positive_member':'negative_member'].
+                push({
+                      'cid':cid,
+                      'uid':uid,
+                      'nickname':req.user.nickname,
+                      'photo':req.user.photo
+                    });
+            campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']+1;
+          }
 
+        }
+
+      });
       campaign.save(function (err) {
         if(err) {
           return res.send({result: 0, msg:'投票发生错误'});
@@ -1497,7 +1552,7 @@ exports.getMolds = function(req, res){
 //发活动接口
 exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 //basicInfo: req.body,
-//provider_info: for poster、campaign_type、campaignUnit、tid、cid etc
+//providerInfo: for poster、campaign_type、campaignUnit、tid、cid etc
 //photoInfo: photo_album needed
 
   //---basicInfo
@@ -1514,6 +1569,9 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   campaign.campaign_mold = basicInfo.campaign_mold
   if(basicInfo.tags&&basicInfo.tags.length>0)
     campaign.tags = basicInfo.tags;
+  if(providerInfo.confirm_status==false){
+    campaign.confirm_status = false;
+  }
   var _now = new Date();
   if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {
     callback(400,'活动的时间比现在更早');
