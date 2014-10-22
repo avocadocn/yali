@@ -1214,7 +1214,7 @@ exports.timeLine = function(req, res) {
       'cid': req.params.companyId
     })
     .sort('-start_time')
-    .populate('team').populate('cid').populate('photo_album')
+    .populate('photo_album')
     .exec()
     .then(function(campaigns) {
       // todo new time style
@@ -1222,15 +1222,26 @@ exports.timeLine = function(req, res) {
       // todo new time style
       campaigns.forEach(function(campaign) {
         var _head, _logo;
-        if (campaign.camp.length > 0) {
-          _head = campaign.camp[0].name + '对' + campaign.camp[1].name + '的比赛';
-          _logo = campaign.camp[0].cid == companyId ? campaign.camp[0].logo : campaign.camp[1].logo;
-        } else if (campaign.team.length === 0) {
-          _head = '公司活动';
-          _logo = campaign.cid[0].logo;
-        } else {
-          _head = campaign.team[0].name + '活动';
-          _logo = campaign.team[0].logo;
+        var ct = campaign.campaign_type;
+        
+        //公司活动
+        if(ct===1){
+          // _head = '公司活动';
+          _logo = campaign.campaign_unit[0].company.logo;
+        }
+        //多队
+        else if(ct!==6&&ct!==2){
+          // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
+          for(var i = 0;i<campaign.campaign_unit.length;i++){
+            var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].company,companyId,'_id');
+            if(index>-1)
+              _logo = campaign.campaign_unit[i].team.logo;
+          }
+        }
+        //单队
+        else {
+          // _head = campaign.compaign_unit.team.name + '活动';
+          _logo = campaign.campaign_unit[0].team.logo;
         }
         var tempObj = {
             id: campaign._id,
@@ -1240,7 +1251,7 @@ exports.timeLine = function(req, res) {
             content: campaign.content,
             location: campaign.location,
             start_time: campaign.start_time,
-            provoke: campaign.camp.length > 0,
+            provoke: ct===4||ct===5||ct===7||ct===9,
             year: getYear(campaign),
             photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
           }

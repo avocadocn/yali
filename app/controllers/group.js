@@ -552,7 +552,7 @@ exports.provoke = function (req, res) {
           // _id: campaign._id,
           type: 'Campaign'
         },
-        companies: [req.companyGroup.cid, team_opposite.cid],
+        companies: req.companyGroup.cid === team_opposite.cid ? [req.companyGroup.cid] : [req.companyGroup.cid, team_opposite.cid],
         teams: [req.companyGroup._id, team_opposite._id]
       },
       name: moment(req.body.start_time).format("YYYY-MM-DD ") + req.body.theme,
@@ -562,7 +562,7 @@ exports.provoke = function (req, res) {
 
     var providerInfo = {
       'tid':[my_team_id,team_opposite._id],
-      'cid':[req.companyGroup.cid, team_opposite.cid],
+      'cid':req.companyGroup.cid === team_opposite.cid ? [req.companyGroup.cid] : [req.companyGroup.cid, team_opposite.cid],
       'poster':{
         cname:cname,
         cid:cid,
@@ -597,7 +597,8 @@ exports.provoke = function (req, res) {
             '_id':team_opposite._id,
             'name':team_opposite.name,
             'logo':team_opposite.logo
-          }
+          },
+          'start_confirm':true
         });
         //对方unit
         providerInfo.campaign_unit.push({

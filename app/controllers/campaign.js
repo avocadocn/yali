@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
   Comment = mongoose.model('Comment'),
   PhotoAlbum = mongoose.model('PhotoAlbum'),
   MessageContent = mongoose.model('MessageContent'),
+  CampaignMold = mongoose.model('CampaignMold'),
   model_helper = require('../helpers/model_helper'),
   _ = require('lodash'),
   moment = require('moment'),
@@ -1403,6 +1404,21 @@ exports.getCampaignDetail = function(req, res, next) {
   });
 };
 
+exports.getMolds = function(req, res){
+  CampaignMold.find(null,{name:1},function(err,molds){
+    if(err){
+      return res.send({'result':0,'msg':'获取活动类型失败!'});
+    }
+    else{
+      if(req.params.hostType==='team'){
+        // for(var i=0;i<molds.length;i++){
+        //   molds[i].
+        // }
+      }
+      return res.send({'result':1,'molds':molds});
+    }
+  })
+};
 
 //发活动接口
 exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
@@ -1413,16 +1429,15 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   //---basicInfo
   var campaign = new Campaign();
   campaign.theme = basicInfo.theme;//主题
-  campaign.content = basicInfo.content; //活动内容
+  campaign.content = basicInfo.content ? basicInfo.content : ''; //活动内容
   campaign.location = basicInfo.location; //活动地点
   campaign.start_time = basicInfo.start_time;
   campaign.end_time = basicInfo.end_time;
   campaign.member_min = basicInfo.member_min ? basicInfo.member_min : 0;
   campaign.member_max = basicInfo.member_max ? basicInfo.member_max : 0;
-  campaign.start_time = basicInfo.start_time;
-  campaign.end_time = basicInfo.end_time;
   campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.end_time;
   campaign.active = true;
+  campaign.campaign_mold = basicInfo.campaign_mold
   if(basicInfo.tags.length>0)
     campaign.tags = basicInfo.tags;
   var _now = new Date();
@@ -1450,27 +1465,30 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 
       campaign.components = [];
       campaign.modularization = true;
-      var componentNames = ['RichComment']; // 'ScoreBoard'已可用，可在比赛中使用
-
-      // todo component data
-
-      async.map(componentNames, function (componentName, asyncCallback) {
-        mongoose.model(componentName).establish(campaign, function (err, component) {
-          if (err) { asyncCallback(err); }
-          else {
-            campaign.components.push({
-              name: componentName,
-              _id: component._id
+      var componentNames = [];
+      CampaignMold.findOne({'name':campaign.campaign_mold},function(err,mold){
+        if(err) callback(500,'查找活动类型失败');
+        else{
+          componentNames = mold.module;
+          async.map(componentNames, function (componentName, asyncCallback) {
+            mongoose.model(componentName).establish(campaign, function (err, component) {
+              if (err) { asyncCallback(err); }
+              else {
+                campaign.components.push({
+                  name: componentName,
+                  _id: component._id
+                });
+                asyncCallback(null, component);
+              }
             });
-            asyncCallback(null, component);
-          }
-        });
-      }, function (err, results) {
-        if (err) { callback(500, '创建活动组件失败'); }
-        else {
-          campaign.save(function(err) {
-            if(err) callback(500,'保存活动失败');
-            else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
+          }, function (err, results) {
+            if (err) { callback(500, '创建活动组件失败'); }
+            else {
+              campaign.save(function(err) {
+                if(err) callback(500,'保存活动失败');
+                else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
+              });
+            }
           });
         }
       });

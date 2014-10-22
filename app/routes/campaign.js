@@ -10,7 +10,7 @@ module.exports = function(app) {
   app.post('/campaign/edit/:campaignId', campaign.editCampaign);
 
   app.get('/campaign/team/calendar/:teamId', campaign.getTeamCampaigns);
-
+  app.get('/campaign/getMolds/:hostType/:hostId',campaign.getMolds);
       //加入、退出活动
   app.post('/campaign/joinCampaign/:campaignId', campaign.joinCampaign);
   app.post('/campaign/quitCampaign/:campaignId', campaign.quitCampaign);

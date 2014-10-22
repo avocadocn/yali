@@ -2,37 +2,37 @@
 //活动组件脚本Todo
 var campaign_modules = [
     {
-        '_id':0,
+        // '_id':0,
         'name':'RichComment',
         'note':'评论',
         'enable':true
     },
     {
-        '_id':1,
+        // '_id':1,
         'name':'ScoreBoard',
         'note':'比分扳',
         'enable':true
     },
     {
-        '_id':2,
+        // '_id':2,
         'name':'TodoList',
         'note':'目标列表',
         'enable':true,
     },
     {
-        '_id':3,
+        // '_id':3,
         'name':'Formation',
         'note':'阵型图',
         'enable':true
     },
     {
-        '_id':4,
+        // '_id':4,
         'name':'LiteralResult',
         'note':'结果描述',
         'enable':true
     },
     {
-        '_id':5,
+        // '_id':5,
         'name':'RunningStatistic',
         'note':'跑步统计',
         'enable':true
@@ -49,110 +49,110 @@ try{
 //活动类型脚本Todo
 var molds = [
     {
-        '_id':1,
+        // '_id':1,
         'name':'羽毛球',
-        'module':['RichComment'],
+        'module':['RichComment','ScoreBoard'],
         'enable':true
     },
     {
-        '_id':2,
+        // '_id':2,
         'name':'篮球',
-        'module':['RichComment'],
+        'module':['RichComment','ScoreBoard'],
         'enable':true
     },
     {
-        '_id':3,
+        // '_id':3,
         'name':'阅读',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':4,
+        // '_id':4,
         'name':'自行车',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':5,
+        // '_id':5,
         'name':'下午茶',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':6,
+        // '_id':6,
         'name':'棋牌',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':7,
+        // '_id':7,
         'name':'足球',
-        'module':['RichComment','Formation','ScoreBoard'],
+        'module':['RichComment','ScoreBoard'],
         'enable':true
     },
     {
-        '_id':8,
+        // '_id':8,
         'name':'k歌',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':9,
+        // '_id':9,
         'name':'健身',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':10,
+        // '_id':10,
         'name':'美食',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':11,
+        // '_id':11,
         'name':'跑步',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':12,
+        // '_id':12,
         'name':'亲子',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':13,
+        // '_id':13,
         'name':'影视',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':14,
+        // '_id':14,
         'name':'摄影',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':15,
+        // '_id':15,
         'name':'旅行',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':16,
+        // '_id':16,
         'name':'桌游',
         'module':['RichComment'],
         'enable':true
     },
     {
-        '_id':17,
+        // '_id':17,
         'name':'其它',
         'module':['RichComment'],
         'enable':true
     },
 ];
 try{
-    // db.campaignmodules.drop();
+    // db.campaignmolds.drop();
     molds.forEach(function (mold) {
         db.campaignmolds.insert(mold);
     });

@@ -830,7 +830,7 @@ exports.timeLine = function(req,res){
         var ct = campaign.campaign_type;
         
         //公司活动
-        if(campaign.campaign_type===1){
+        if(ct===1){
           // _head = '公司活动';
           _logo = campaign.campaign_unit[0].company.logo;
         }

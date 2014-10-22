@@ -1356,6 +1356,22 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         AMap.event.addListener(mar, "dragend", changePoint);
         $scope.locationmap.setFitView();
     }
+    
+    $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
+        if(!$scope.moldsgot){
+            Campaign.getMolds('company','0',function(status,data){
+                if(!status){
+                    $scope.molds = data;
+                    $scope.moldsgot = true;
+                }
+            });
+        }
+        $scope.mold = '其它';
+    });
+
+    $scope.selectMold=function(name){
+        $scope.mold = name;
+    }
     $scope.initialize = function(){
         
         $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
@@ -1386,14 +1402,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         $scope.showMapFlag = true;
     };
 
-
-    $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
-        Campaign.getTags('company',$rootScope.cid,function(status,data){
-            if(!status){
-                $scope.recommand_tags = data;
-            }
-        });
-    })
     $scope.showMap = function(){
         if($scope.location.name==''){
             alertify.alert('请输入地点');
@@ -1534,7 +1542,8 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
             deadline : $scope.deadline,
             member_min : $scope.member_min,
             member_max : $scope.member_max,
-            tags: $scope.tags?$scope.tags.split(','):[]
+            tags: $scope.tags?$scope.tags.split(','):[],
+            campaign_mold: $scope.mold
         };
         if($rootScope.dOtMulti && $scope.multi_campaign_type.value == '1'){
             $scope.dOt_send_success = 0;
