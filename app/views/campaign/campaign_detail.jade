@@ -6,7 +6,8 @@ append headExt
 
 block contentExt
   .campaign_detail.dl_container(ng-controller="campaignController")
-    .breadcrumb
+    include ../partials/breadcrumb
+    +breadcrumb(links)
     .campaign_panel
       .main_panel
         .component.detail_card

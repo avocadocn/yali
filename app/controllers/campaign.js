@@ -1199,17 +1199,54 @@ exports.renderCampaignDetail = function (req, res) {
     allow.edit = allow.editTeamCampaign;
   }
 
-  // todo 面包屑
-  // var links = [
-  //   {
-  //     text: 'company_group.name',
-  //     url: '/group/page/' + 'company_group._id'
-  //   },
-  //   {
-  //     text: '相册集',
-  //     active: true
-  //   }
-  // ];
+  // 默认值，显示为公司活动的链接，以防以下判断会遗漏
+  var parentNode = {
+    text: campaign.campaign_unit[0].company.name,
+    url: '/company/home/' + campaign.campaign_unit[0].company._id
+  };
+
+  if (req.user.provider === 'user') {
+    // 个人
+    if (campaign.campaign_type !== 1) {
+      for (var i = 0; i < campaign.campaign_unit.length; i++) {
+        var unit = campaign.campaign_unit[i];
+        if (req.user.isTeamMember(unit.team._id)) {
+          parentNode = {
+            text: unit.team.name,
+            url: '/group/page/' + unit.team._id
+          };
+          break;
+        } else if (req.user.cid.toString() === unit.company._id.toString()) {
+          parentNode = {
+            text: unit.team.name,
+            url: '/group/page/' + unit.team._id
+          };
+        }
+      }
+    }
+  } else {
+    // 公司账号
+    if (campaign.campaign_type !== 1) {
+      for (var i = 0; i < campaign.campaign_unit.length; i++) {
+        var unit = campaign.campaign_unit[i];
+        if (req.user._id.toString() === unit.company._id.toString()) {
+          parentNode = {
+            text: unit.team.name,
+            url: '/group/page/' + unit.team._id
+          };
+          break;
+        }
+      }
+    }
+  }
+
+  var links = [
+    parentNode,
+    {
+      text: campaign.theme,
+      active: true
+    }
+  ];
 
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
   var isStart = campaign.start_time < Date.now();
@@ -1255,7 +1292,8 @@ exports.renderCampaignDetail = function (req, res) {
     notice: req.notice,
     moment: moment,
     allow: allow,
-    helper: helper
+    helper: helper,
+    links: links
   });
 
 
