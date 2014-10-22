@@ -298,12 +298,13 @@ Campaign.methods = {
         };
       };
       // 非公司活动
-      if (targetUnit.tid && targetUnit.tid.toString() === unit.team._id.toString()) {
-        return _join(unit);
+      if (targetUnit.tid) {
+        if(targetUnit.tid.toString() === unit.team._id.toString()){
+          return _join(unit);
+        }
       }
-
       // 公司活动
-      if (targetUnit.cid.toString() === unit.company._id.toString()) {
+      else if (targetUnit.cid && targetUnit.cid.toString() === unit.company._id.toString()) {
         return _join(unit);
       }
 

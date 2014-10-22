@@ -709,21 +709,35 @@ textarea
       .groups
         padding-top 30px
         margin-bottom -10px
+        .group_label
+          line-height 24px
+          font-size 14px
+          color secondaryfontColor
         .group
           margin 4px
           display inline-block
           position relative
+          .add_group
+            font-size: 24px
+            color #fff
+            background-color #73a5dd
+            line-height 32px
+            text-align center
+            position relative
+            top -11px
           .group_logo
             width 32px
             height 32px
           .group_leader
             position absolute
-            background-image url('/img/icons/crown.png')
-            width 24px
-            height 24px
-            right -10px
-            top -10px
+            background-image url('/img/icons/tieman.png')
+            width 17px
+            height 20px
+            right -2px
+            bottom -2px
             background-size contain
+      .secend
+        padding-top 10px
   .aside
     width 128px
     margin-right 20px
@@ -1542,6 +1556,9 @@ input.ng-invalid.ng-dirty
       background-position 10px 0px
     .operator_col
       min-width 96px
+      .dropdown-menu
+        right 0
+        left inherit
 .dl_group_select
   padding 20px 40px
   .img_contain
@@ -2026,6 +2043,8 @@ input.ng-invalid.ng-dirty
     .main
       width 700px
       margin-right 20px
+      .dl_timeline
+        margin-top 30px
       #user_modal
         .modal-dialog
           width 900px
@@ -2055,8 +2074,10 @@ input.ng-invalid.ng-dirty
                   overflow-y auto
                   .campaign_table
                     .time_col
-                      width 200px
+                      width 60px
                       color secondaryfontColor
+                    .user_logo_col
+                      width 83px
                     .year_col
                       .campaign_logo
                         width 30px
@@ -2065,32 +2086,32 @@ input.ng-invalid.ng-dirty
                         background-color themeColor
                     .content_col
                       .campaign_detail
-                        margin-left -80px
+                        margin-left -100px
                         margin-right -90px
-                        padding-left 80px
+                        padding-left 100px
                         padding-right 90px
                         background-color #f4f4f4
-                        width 460px
+                        width 650px
                         .content_text
                           max-width 100%
                           overflow hidden
                           text-overflow ellipsis
                           white-space nowrap
-                          padding 5px
+                          padding 5px 0
+                          margin-left 0
                         .tags
-                          margin 5px
-                          padding 5px
+                          margin 5px 0
+                          padding 5px 0
                           .tag
                             background-color #c2d3e7
                             color #fff
                             display inline
-                            margin 5px
+                            margin-right 10px
                             padding 5px
                         .member_text
                           .progress_text
                             float left
                             width 80px
-                            margin 0 10px
                             line-height 20px
                           .progress_num
                             float left
@@ -2100,18 +2121,25 @@ input.ng-invalid.ng-dirty
                           .progress
                             float left
                             width 100px
-                            margin-bottom 0
+                            height 14px
+                            margin 3px 10px
+                            border-radius 15px
+                            background-color #4b6f97
+
+                            .progress-bar
+                              background-color #97d7c6
+                              box-shadow none
                           .max_num
                             color #009999
                         .time_text
                           clear both
-                          margin 5px
-                          padding 5px
+                          padding 5px 0
                           .rest_time
                             color #009999
                             font-size 14px
                             margin 10px
                     .operator_col
+                      width 100px
                       .dl_btn
                         margin-right 30px
       .campaign_table
@@ -2408,11 +2436,14 @@ input.ng-invalid.ng-dirty
           .joined
             background none
             color navbarFontColor
-          .cal-month-day span[data-cal-date]
-            width 100%
-            height 14px
-            text-align center
-            margin 5px 0
+          .cal-month-day
+            span[data-cal-date]
+              width 100%
+              height 14px
+              text-align center
+              margin 5px 0
+              color secondaryfontColor
+              font-size 12px
           .cal-month-box
             .cal-day-today
               span[data-cal-date]

@@ -1006,10 +1006,24 @@ textarea {
   padding-top: 30px;
   margin-bottom: -10px;
 }
+.dl_container .side .groupsbox .groups .group_label {
+  line-height: 24px;
+  font-size: 14px;
+  color: #ccc;
+}
 .dl_container .side .groupsbox .groups .group {
   margin: 4px;
   display: inline-block;
   position: relative;
+}
+.dl_container .side .groupsbox .groups .group .add_group {
+  font-size: 24px;
+  color: #fff;
+  background-color: #73a5dd;
+  line-height: 32px;
+  text-align: center;
+  position: relative;
+  top: -11px;
 }
 .dl_container .side .groupsbox .groups .group .group_logo {
   width: 32px;
@@ -1017,12 +1031,15 @@ textarea {
 }
 .dl_container .side .groupsbox .groups .group .group_leader {
   position: absolute;
-  background-image: url("/img/icons/crown.png");
-  width: 24px;
-  height: 24px;
-  right: -10px;
-  top: -10px;
+  background-image: url("/img/icons/tieman.png");
+  width: 17px;
+  height: 20px;
+  right: -2px;
+  bottom: -2px;
   background-size: contain;
+}
+.dl_container .side .groupsbox .secend {
+  padding-top: 10px;
 }
 .dl_container .aside {
   width: 128px;
@@ -2035,6 +2052,10 @@ input.ng-invalid.ng-dirty {
 .dl_campaign_list .table .operator_col {
   min-width: 96px;
 }
+.dl_campaign_list .table .operator_col .dropdown-menu {
+  right: 0;
+  left: inherit;
+}
 .dl_group_select {
   padding: 20px 40px;
 }
@@ -2609,6 +2630,9 @@ input.ng-invalid.ng-dirty {
   width: 700px;
   margin-right: 20px;
 }
+.user_page .dl_container .main .dl_timeline {
+  margin-top: 30px;
+}
 .user_page .dl_container .main #user_modal .modal-dialog {
   width: 900px;
 }
@@ -2646,8 +2670,11 @@ input.ng-invalid.ng-dirty {
   overflow-y: auto;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .time_col {
-  width: 200px;
+  width: 60px;
   color: #ccc;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .user_logo_col {
+  width: 83px;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .year_col .campaign_logo {
   width: 30px;
@@ -2656,35 +2683,35 @@ input.ng-invalid.ng-dirty {
   background-color: #3498db;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail {
-  margin-left: -80px;
+  margin-left: -100px;
   margin-right: -90px;
-  padding-left: 80px;
+  padding-left: 100px;
   padding-right: 90px;
   background-color: #f4f4f4;
-  width: 460px;
+  width: 650px;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .content_text {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 5px;
+  padding: 5px 0;
+  margin-left: 0;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .tags {
-  margin: 5px;
-  padding: 5px;
+  margin: 5px 0;
+  padding: 5px 0;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .tags .tag {
   background-color: #c2d3e7;
   color: #fff;
   display: inline;
-  margin: 5px;
+  margin-right: 10px;
   padding: 5px;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress_text {
   float: left;
   width: 80px;
-  margin: 0 10px;
   line-height: 20px;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress_num {
@@ -2696,20 +2723,29 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress {
   float: left;
   width: 100px;
-  margin-bottom: 0;
+  height: 14px;
+  margin: 3px 10px;
+  border-radius: 15px;
+  background-color: #4b6f97;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress .progress-bar {
+  background-color: #97d7c6;
+  box-shadow: none;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .max_num {
   color: #099;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .time_text {
   clear: both;
-  margin: 5px;
-  padding: 5px;
+  padding: 5px 0;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .time_text .rest_time {
   color: #099;
   font-size: 14px;
   margin: 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .operator_col {
+  width: 100px;
 }
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .operator_col .dl_btn {
   margin-right: 30px;
@@ -3088,6 +3124,8 @@ input.ng-invalid.ng-dirty {
   height: 14px;
   text-align: center;
   margin: 5px 0;
+  color: #ccc;
+  font-size: 12px;
 }
 .user_page .dl_container .side .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.2em;

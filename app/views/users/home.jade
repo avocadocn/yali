@@ -200,7 +200,7 @@ block aside
       include ../partials/schedule_list
       include ../partials/calendar_modal
     if myteam.length > 0
-      .groupsbox
+      .groupsbox(ng-init="showFlag=false;")
         include ../partials/group_thumbnail
         +group_thumbnail(myteam)
   .old_campaign_container

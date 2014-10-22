@@ -27,9 +27,7 @@ tabViewUser.config(['$routeProvider',
       .when('/campaign/:uid', {
         templateUrl: function(params){
             return '/users/campaign/'+params.uid;
-        },
-        controller: 'recentCampaignController',
-        controllerAs: 'recentCampaign'
+        }
       })
       .when('/personal/:uid', {
         templateUrl: function(params){
@@ -65,8 +63,8 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location','Report',
-    function($rootScope,$location,Report) {
+tabViewUser.run(['$rootScope','$location','Report','Campaign',
+    function($rootScope,$location,Report,Campaign) {
         $rootScope.message_for_group = false;
         $rootScope.$on("$routeChangeStart",function(){
             $rootScope.loading = true;
@@ -79,7 +77,48 @@ tabViewUser.run(['$rootScope','$location','Report',
                 alertify.alert(msg);
             });
         }
+        $rootScope.judgeYear = function(index){
+            if(index ==0 || new Date($rootScope.showedCampaign[index].start_time).getFullYear()!=new Date($rootScope.showedCampaign[index-1].start_time).getFullYear()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+        $rootScope.openModal = function(type){
+            $rootScope.showedType = type;
+            $rootScope.showedCampaign = $rootScope[type];
+            $('#user_modal').modal();
+        }
+        $rootScope.join = function (index,tid) {
+            Campaign.join({
+                campaignId: $rootScope.recentUnjoinedCampaigns[index]._id,
+                cid: $rootScope.recentUnjoinedCampaigns[index].cid,
+                tid: tid
+            }, function (err) {
+                if (err) {
+                    alertify.alert(err);
+                } else {
+                    $rootScope.recentUnjoinedCampaigns[index].join_flag =1;
+                    var _temp = $rootScope.recentUnjoinedCampaigns.splice(index,1);
+                    $rootScope.recentJoinedCampaigns.push(_temp[0]);
+                    alertify.alert('参加活动成功');
+                }
+            });
+          };
 
+        $rootScope.quit = function (index) {
+            Campaign.quit($rootScope.recentJoinedCampaigns[index]._id, function (err) {
+                if (err) {
+                    alertify.alert(err);
+                } else {
+                    $rootScope.recentJoinedCampaigns[index].join_flag = 0;
+                    var _temp = $rootScope.recentJoinedCampaigns.splice(index,1);
+                    $rootScope.recentUnjoinedCampaigns.push(_temp[0]);
+                    alertify.alert('退出活动成功');
+                }
+            });
+        };
     }
 ]);
 tabViewUser.directive('masonry', function ($timeout) {
@@ -134,11 +173,11 @@ var messageConcat = function(messages,rootScope,scope,reset){
     return new_messages;
 }
 
-tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope',
-    function($http, $scope, $rootScope) {
-        $scope.recentUnjoinedCampaigns = [];
-        $scope.recentJoinedCampaigns = [];
-        $scope.nowCampaigns = [];
+tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope','$location', 'Campaign',
+    function($http, $scope, $rootScope, $location, Campaign) {
+        $rootScope.recentUnjoinedCampaigns = [];
+        $rootScope.recentJoinedCampaigns = [];
+        $rootScope.nowCampaigns = [];
 
         $scope.newReply =[];
         $scope.showCampaign = false;
@@ -151,10 +190,10 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
                     url: '/campaign/user/recent/list/'+uid +'?'+Math.random()*10000,
                 }).success(function(data,status){
                     if(data.result===1){
-                        $scope.recentCampaigns = data.campaigns;
-                        $scope.recentUnjoinedCampaigns = data.campaigns[0];
-                        $scope.recentJoinedCampaigns = data.campaigns[1];
-                        $scope.nowCampaigns = data.campaigns[2];
+                        $rootScope.recentCampaigns = data.campaigns;
+                        $rootScope.recentUnjoinedCampaigns = data.campaigns[0];
+                        $rootScope.recentJoinedCampaigns = data.campaigns[1];
+                        $rootScope.nowCampaigns = data.campaigns[2];
                         $scope.showCampaign = true;
                         $scope.topCampaign = data.campaigns[1][0];
                     }
@@ -166,19 +205,6 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
                 console.log(e);
             }
         });
-        $scope.judgeYear = function(index){
-            if(index ==0 || new Date($scope.showedCampaign[index].start_time).getFullYear()!=new Date($scope.showedCampaign[index-1].start_time).getFullYear()){
-                return true;
-            }
-            else {
-                return false;
-            }
-        };
-        $rootScope.openModal = function(type){
-            $scope.showedType = type;
-            $scope.showedCampaign = $scope[type];
-            $('#user_modal').modal();
-        }
     }
 ]);
 

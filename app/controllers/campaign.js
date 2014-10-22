@@ -211,7 +211,14 @@ var formatCampaignForCalendar = function(user, campaigns) {
   });
   return calendarCampaigns;
 }
-
+/**
+ * 格式化距离开始时间还有多久
+ * @param  {Date} start_time 活动开始时间
+ * @param  {Date} end_time   活动结束时间
+ * @return {Object}          start_flag:活动是否已经开始,
+                              remind_text:提示文字,
+                              start_time_text: 距离开始的时间
+ */
 var formatTime = function(start_time,end_time){
   var remind_text, start_time_text,start_flag;
   var now = new Date();
@@ -264,6 +271,12 @@ var formatTime = function(start_time,end_time){
             start_time_text: start_time_text
           }
 }
+/**
+ * 格式化两个时间距离还有多久
+ * @param  {Date} start_time 开始时间
+ * @param  {Date} end_time   结束时间
+ * @return {String}          相差时间的中文格式化
+ */
 var formatrestTime = function(start_time,end_time){
   var restTime;
   var temp_start_time = new Date(start_time);
@@ -429,12 +442,12 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       'start_time':_campaign.start_time,
       'end_time':_campaign.end_time,
       'deadline':_campaign.deadline,
-      'deadline_rest':formatrestTime(new Date(),_campaign.deadline),
       'comment_sum':_campaign.comment_sum,
       'join_flag':model_helper.arrayObjectIndexOf(_campaign.members,user._id,'_id')>-1?1:-1,
       'due_flag':new Date()>_campaign.deadline ? 1 : 0,
       'tags':_campaign.tags,
-      'campaign_mold':_campaign.mold
+      'campaign_mold':_campaign.mold,
+      'team':[]
     };
     if(ct===1){//公司活动
       temp.type='companycampaign';
@@ -454,20 +467,35 @@ var formatCampaign = function(campaign,pageType,role,user,other){
     if(ct===2||ct===3||ct===6||ct===8) {
       temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
       temp.logo=_campaign.campaign_unit[0].team.logo;
-      temp.link = '/group/page/'+_campaign.tid[0];
+      temp.link = '/group/page/'+_campaign.campaign_unit[0].team._id;
       temp.name=_campaign.campaign_unit[0].team.name;
-      temp.team_id = [{'_id':_campaign.tid[0]}];
+      for(var i =0;i<_campaign.campaign_unit.length;i++){
+        if(model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id')>-1){//这个unit是否为user参加的小队
+          temp.team.push({
+            _id:_campaign.campaign_unit[i].team._id,
+            logo : _campaign.campaign_unit[i].team.logo,
+            name : _campaign.campaign_unit[i].team.name,
+            link : '/group/page/'+_campaign.campaign_unit[i].team._id.toString()
+          });
+        }
+      }
     }
     else if(ct!==1) {//挑战
       temp.type = 'provoke';
       temp.join_flag = 0;
-      temp.team_id = [];
+      temp.team = [];
+      temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
+      temp.logo=_campaign.campaign_unit[0].team.logo;
+      temp.link = '/group/page/'+_campaign.campaign_unit[0].team._id;
+      temp.name=_campaign.campaign_unit[0].team.name;
       for(var i =0;i<_campaign.campaign_unit.length;i++){
         if(model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id')>-1){//这个unit是否为user参加的小队
-          temp.team_id.push(_campaign.campaign_unit[i].team._id);
-          temp.logo = _campaign.campaign_unit[i].team.logo;
-          temp.name = _campaign.campaign_unit[i].team.name;
-          temp.link = '/group/page/'+_campaign.campaign_unit[i].team._id.toString();
+          temp.team.push({
+            _id:_campaign.campaign_unit[i].team._id,
+            logo : _campaign.campaign_unit[i].team.logo,
+            name : _campaign.campaign_unit[i].team.name,
+            link : '/group/page/'+_campaign.campaign_unit[i].team._id.toString()
+          });
         }
       }
     }
@@ -483,6 +511,9 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       temp.start_flag = _formatTime.start_flag;
       temp.remind_text =_formatTime.remind_text;
       temp.start_time_text = _formatTime.start_time_text;
+    }
+    else{
+      temp.deadline_rest = formatrestTime(new Date(),_campaign.deadline);
     }
     campaigns.push(temp);
   });
@@ -732,14 +763,43 @@ exports.getUserCampaignsForHome = function(req, res) {
     },//马上开始的活动,（已参加）
     function(callback){
       searchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
-    }//正在进行的活动
+    },//正在进行的活动
+    function(callback){
+      searchCampaign(undefined,{'$lt':startTimeLimit,'$gte': now }, true, true, callback);
+    },//刚刚结束的活动
+    function(callback){
+      var options = {
+        'campaign_unit.start_confirm' : false,
+        'start_time' : { '$gte': now},
+        'campaign_type':{'$in':[4,5,7,9]}
+      }
+      var query = Campaign.find(options).sort('-create_time');
+      query.exec()
+      .then(function(campaigns){
+        callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:true,nowFlag:true}));
+      })
+      .then(null,function(err){
+        console.log(err);
+        callback(null);
+      });
+    }//未确认的挑战
   ], function(err, values) {
     if(err){
       console.log(err);
       return res.send({ result: 0, campaigns: [] });
     }
     else{
-      return res.send({ result: 1, campaigns: values });
+      var _result = [values[0],values[1]];
+      if(values[2]){
+        _result.push(values[2]);
+      }
+      else{
+        _result.push(values[3]);
+      }
+      if(values[4]){
+        _result[2] = values[4].concat(_result[2]);
+      }
+      return res.send({ result: 1, campaigns: _result });
     }
   });
 };
