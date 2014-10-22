@@ -19,8 +19,8 @@
   display: flex;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .user_photo {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .content {
   padding: 6px 10px;
@@ -57,7 +57,7 @@
 .rich_comment .component_body .rich_comment_form .preview_box {
   display: flex;
   margin-top: 5px;
-  padding-left: 42px;
+  padding-left: 40px;
 }
 .rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap {
   position: relative;
@@ -73,40 +73,33 @@
   display: block;
 }
 .rich_comment .component_body .comment {
-  position: relative;
-  margin-top: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
   display: flex;
 }
-.rich_comment .component_body .comment .comment_user_info {
-  float: left;
-  max-width: 50px;
+.rich_comment .component_body .comment .user_name {
+  text-decoration: none;
+  color: #b1c6d2;
 }
-.rich_comment .component_body .comment .comment_user_info p {
-  text-align: center;
+.rich_comment .component_body .comment .comment_user_info {
+  padding-top: 3px;
+  width: 40px;
 }
 .rich_comment .component_body .comment .comment_user_info .user_photo {
-  width: 50px;
-  height: 50px;
-}
-.rich_comment .component_body .comment .comment_user_info .user_name {
-  text-decoration: none;
+  width: 30px;
+  height: 30px;
 }
 .rich_comment .component_body .comment .comment_content_panel {
-  float: left;
-  margin-left: 20px;
   flex: 1;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content {
-  padding: 10px;
-  background-color: #fbfbfb;
-  border: solid 1px #ededed;
-  min-height: 50px;
   word-break: break-all;
   overflow: hidden;
   margin-bottom: 4px;
-  margin-top: 5px;
-  padding: 10px;
-  background-color: #fbfbfb;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
   width: 350px;
@@ -114,8 +107,8 @@
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box .list_img {
   display: block;
   float: left;
-  margin-top: 5px;
-  margin-left: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
   width: 100px;
   height: 100px;
   background: url("/img/loading.gif") center center no-repeat;
@@ -162,15 +155,37 @@
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
   background: url("/img/loading.gif") center center no-repeat;
 }
-.rich_comment .component_body .comment .comment_content_panel .comment_content .reply_form {
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .text {
+  font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .text {
+  margin-left: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply {
+  color: #73a5dd;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f7f7;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form {
   margin-bottom: 15px;
   display: flex;
 }
-.rich_comment .component_body .comment .comment_content_panel .comment_content .reply_form .reply_input {
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form .reply_input {
   flex: 1;
 }
-.rich_comment .component_body .comment .comment_content_panel .comment_content .reply {
+.rich_comment .component_body .comment .comment_content_panel .replies .reply {
+  margin: 8px 0;
   word-break: break-all;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .reply_date {
+  font-size: 12px;
+}
+.rich_comment .component_body .pager {
+  margin: 0;
+  padding: 20px;
 }
 .rich_comment .component_body .pager .pagination {
   margin: 0;

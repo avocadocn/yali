@@ -27,8 +27,8 @@ input()
       .comment_control
         display flex
         .user_photo
-          width 32px
-          height 32px
+          width 30px
+          height 30px
         .content
           input()
           margin-left 10px
@@ -56,7 +56,7 @@ input()
       .preview_box
         display flex
         margin-top 5px
-        padding-left 42px
+        padding-left 40px
         .preview_img_wrap
           position relative
           margin-right 5px
@@ -69,40 +69,35 @@ input()
             .close
               display block
     .comment
-      position relative
-      margin-top 20px
+      padding 20px
+      border-bottom 1px solid #eee
       display flex
+      .user_name
+        text-decoration none
+        color #b1c6d2
+      
       .comment_user_info
-        float left
-        max-width 50px
-        p
-          text-align center
+        padding-top 3px
+        width 40px
         .user_photo
-          width 50px
-          height 50px
-        .user_name
-          text-decoration none
+          width 30px
+          height 30px
       .comment_content_panel
-        float left
-        margin-left 20px
         flex 1
         .comment_content
-          padding 10px
-          background-color contentBgColor
-          border solid 1px contentBdColor
-          min-height 50px
           word-break break-all
           overflow hidden
           margin-bottom 4px
-          
           .comment_img_box
+            margin-top 20px
+            margin-bottom 10px
             .img_list_box
               width 350px
               .list_img
                 display block
                 float left
-                margin-top 5px
-                margin-left 5px
+                margin-bottom 5px
+                margin-right 5px
                 width 100px
                 height 100px
                 background url(/img/loading.gif) center center no-repeat
@@ -139,18 +134,34 @@ input()
               background url("/img/loading.gif") center center no-repeat
             .preview_img
               background url("/img/loading.gif") center center no-repeat
-          margin-top 5px
+
+        .comment_footer
+          .text
+            font-size 12px
+          .operator
+            .text
+              margin-left 10px
+            .reply
+              color #73a5dd
+
+        .replies
+          margin-top 20px
           padding 10px
-          background-color contentBgColor
+          background-color #f8f7f7
           .reply_form
             margin-bottom 15px
             display flex
             .reply_input
               flex 1
           .reply
+            margin 8px 0
             word-break break-all
+            .reply_date
+              font-size 12px
 
     .pager
+      margin 0
+      padding 20px
       .pagination
         margin 0
       .novisible

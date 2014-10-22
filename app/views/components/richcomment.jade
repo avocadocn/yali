@@ -5,7 +5,7 @@
     form.rich_comment_form(name="comment_form" ng-if="allowPublish" novalidate)
       .comment_control
         .user_photo
-          img(src="#{global_user.photo}/32/32")
+          img(src="#{global_user.photo}/30/30")
         input.content(name="content" ng-model="new_comment.text" placeholder="输入内容请控制在140字以内" maxlength=140 required)
         label.img_selector(for="photos")
           img.upload_img(src="/img/upload_img.png")
@@ -19,48 +19,43 @@
     .comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments")
       .comment_user_info
         a(href="/users/home/{{comment.poster._id}}" )
-          img.user_photo.size_56.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-        a.dl_user_name_small(href="/users/home/{{comment.poster._id}}" ng-cloak) {{comment.poster.nickname}}
+          img.user_photo(ng-src="{{comment.poster.photo}}/30/30" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
       .comment_content_panel
-        .relative
-          .triangle_border
-          .triangle
-          .comment_content
-            p(ng-cloak) {{comment.content}}
-            .comment_img_box(ng-if="comment.photos.length > 1" ng-init="comment.preview_index=0")
-              .img_list_box.clearfix(ng-if="!comment.preview")
-                img.list_img.magnifying(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/100/100" onError="this.src='/img/not_found.jpg';" ng-click="comment.preview=true;comment.preview_img=photo.uri;comment.preview_index=$index")
-              .img_slider_box.clearfix(ng-if="comment.preview")
-                .preview
-                  img.preview_img.img-responsive.center-block(ng-src="{{comment.preview_img || comment.photos[0].uri}}" onError="this.src='/img/not_found.jpg';")
-                  .operator
-                    .img_pre(ng-if="comment.preview_index!=0" ng-click="comment.preview_img=comment.photos[comment.preview_index-1].uri;comment.preview_index=comment.preview_index-1")
-                    .img_shrink.shrink(ng-click="comment.preview=false")
-                    .img_next(ng-if="comment.preview_index!=comment.photos.length-1" ng-click="comment.preview_img=comment.photos[comment.preview_index+1].uri;comment.preview_index=comment.preview_index+1")
-                .nav
-                  img.thumb(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/40/40" onError="this.src='/img/holder_trash_small.jpg';" ng-click="comment.preview_img=photo.uri;comment.preview_index=$index")
-            .comment_img_box(ng-if="comment.photos.length === 1")
-              img.img_single_thumb.magnifying(ng-src="{{comment.photos[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-if="!comment.preview" ng-click="comment.preview=true")
-              img.preview_img.img-responsive.shrink(ng-src="{{comment.photos[0].uri}}" onError="this.src='/img/not_found.jpg';" ng-if="comment.preview" ng-click="comment.preview=false")
+        .comment_content
+          a.user_name(href="/users/home/{{comment.poster._id}}" ng-cloak) {{comment.poster.nickname}}
+          p.text(ng-cloak) {{comment.content}}
+          .comment_img_box(ng-if="comment.photos.length > 1" ng-init="comment.preview_index=0")
+            .img_list_box.clearfix(ng-if="!comment.preview")
+              img.list_img.magnifying(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/100/100" onError="this.src='/img/not_found.jpg';" ng-click="comment.preview=true;comment.preview_img=photo.uri;comment.preview_index=$index")
+            .img_slider_box.clearfix(ng-if="comment.preview")
+              .preview
+                img.preview_img.img-responsive.center-block(ng-src="{{comment.preview_img || comment.photos[0].uri}}" onError="this.src='/img/not_found.jpg';")
+                .operator
+                  .img_pre(ng-if="comment.preview_index!=0" ng-click="comment.preview_img=comment.photos[comment.preview_index-1].uri;comment.preview_index=comment.preview_index-1")
+                  .img_shrink.shrink(ng-click="comment.preview=false")
+                  .img_next(ng-if="comment.preview_index!=comment.photos.length-1" ng-click="comment.preview_img=comment.photos[comment.preview_index+1].uri;comment.preview_index=comment.preview_index+1")
+              .nav
+                img.thumb(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/40/40" onError="this.src='/img/holder_trash_small.jpg';" ng-click="comment.preview_img=photo.uri;comment.preview_index=$index")
+          .comment_img_box(ng-if="comment.photos.length === 1")
+            img.img_single_thumb.magnifying(ng-src="{{comment.photos[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-if="!comment.preview" ng-click="comment.preview=true")
+            img.preview_img.img-responsive.shrink(ng-src="{{comment.photos[0].uri}}" onError="this.src='/img/not_found.jpg';" ng-if="comment.preview" ng-click="comment.preview=false")
         .comment_footer.clearfix
-          span.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-          .pull-right
-            a.comment_date.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
-            span.comment_divider &nbsp;
-            a.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
-            span.comment_divider(ng-if="comment.delete_permission") &nbsp;
-            a.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+          span.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+          .pull-right.operator
+            a.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
+            a.delete.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+            a.reply.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
         .replies(ng-if="comment.replying")
           form.reply_form(name="reply_form" ng-if="allowPublish")
             input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
             button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
-          p.reply(ng-repeat="reply in comment.replies")
-            a(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.poster._id, reply.poster.nickname)")
+          p.reply.text(ng-repeat="reply in comment.replies")
+            a.user_name(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.poster._id, reply.poster.nickname)")
               span {{reply.poster.nickname}}
             span &nbsp;:&nbsp;
             span(ng-if="reply.reply_to._id!==comment.poster._id") 回复 {{reply.reply_to.nickname}}:&nbsp;
             span {{reply.content}}
-            span &nbsp;({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})
+            span.reply_date &nbsp;({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})
             span &nbsp;
             a(ng-if="reply.delete_permission" ng-click="removeReply(comment, $index)")
               span 删除
