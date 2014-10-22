@@ -2,6 +2,8 @@ extends ../layouts/user_base
 
 append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
+  link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
+
 block contentExt
   .campaign_detail.dl_container(ng-controller="campaignController")
     .breadcrumb
@@ -55,9 +57,11 @@ block contentExt
               .text(ng-if="!editing") #{campaign.content}
               input(ng-if="editing" type="text" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content")
               h4.title 活动标签
-              .tags
+              .tags(ng-show="!editing")
                 each tag in campaign.tags
                   span.tag #{tag}
+              div(ng-show="editing")
+                input#taginput(name="tags" type="text" ng-blur="getTags()" ng-init="campaignData.tags='#{campaign.tags||''}'" ng-model="campaignData.tags" data-role="tagsinput")
               h4.title 报名信息
               if campaign.member_max
                 .text(ng-if="!editing")
@@ -188,3 +192,4 @@ block contentExt
 append footExt
   script(src="/js/controllers/campaign.js")
   script(src="/js/directives/count_down.js")
+  script(src="/js/bootstrap-tagsinput.js")

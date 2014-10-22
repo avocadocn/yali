@@ -699,6 +699,9 @@ exports.editCampaign = function(req, res){
   if (!isNaN(min)) {
     campaign.member_min = min;
   }
+  if(req.body.tags) {
+    campaign.tags = req.body.tags.split(',');
+  }
   campaign.save(function (err) {
     if (err) {
       return res.send({ result: 0, msg:'编辑活动失败，请重试' });
