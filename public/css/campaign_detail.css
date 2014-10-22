@@ -230,6 +230,10 @@
   color: #fff;
   background-color: #73a5dd;
 }
+.campaign_detail .detail_card .component_body .more_info .deadline #deadline {
+  width: 140px;
+  margin-right: 10px;
+}
 .campaign_detail .detail_card .component_body .more_info input {
   padding: 6px 10px;
   width: 100%;

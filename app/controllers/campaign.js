@@ -702,6 +702,9 @@ exports.editCampaign = function(req, res){
   if(req.body.tags) {
     campaign.tags = req.body.tags.split(',');
   }
+  if(req.body.deadline) {
+    campaign.deadline = req.body.deadline;
+  }
   campaign.save(function (err) {
     if (err) {
       return res.send({ result: 0, msg:'编辑活动失败，请重试' });

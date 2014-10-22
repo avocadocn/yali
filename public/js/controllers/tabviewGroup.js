@@ -1150,7 +1150,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Ca
                 end_time : $scope.end_time,
                 campaign_mold:$scope.mold
             };
-            var _url = '/group/campaignSponsor/'+teamId;
+            var _url = '/group/campaignSponsor/'+$rootScope.teamId;
             Campaign.sponsor(_url,_data,function(status,data){
                 if(!status){
                     window.location.reload();

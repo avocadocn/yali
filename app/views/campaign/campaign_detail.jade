@@ -83,16 +83,16 @@ block contentExt
                 input.people_count(type="number" ng-model="campaignData.member_min")
                 span.line_text 人 (报名截止前未达最少人数，您将收到提醒)
               if campaign.deadline
-                p.text
-                  span.sub_title 报名截止日期:
+                p.text(ng-show="!editing")
+                  span.sub_title 报名截止时间:
                   span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
-              //- .deadline.text.editing(ng-show="editing")
-              //-   span.sub_title.line_text 报名截止时间:
-              //-   .input-group.date_picker#deadline
-              //-     input(type="text" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
-              //-     span.input-group-addon.no_radius
-              //-       span.glyphicon.glyphicon-th
-              //-   span.line_text 如果不选，默认为活动结束停止报名
+              .deadline.text.editing(ng-show="editing")
+                span.sub_title.line_text 报名截止时间:
+                .input-group.date.form_datetime#deadline
+                  input(type="text" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                  span.input-group-addon.no_radius
+                    span.glyphicon.glyphicon-th
+                span.line_text 如果不选，默认为活动结束停止报名
               .operator(ng-if="editing")
                 span.close_campaign(ng-click="cancel()")
                   img.icon_close(src="/img/warning.png")
@@ -190,8 +190,18 @@ block contentExt
                     .member
                       img.photo(src="#{member.photo}/57/57")
                       span.nickname #{member.nickname}
+    div
 
 append footExt
   script(src="/js/controllers/campaign.js")
   script(src="/js/directives/count_down.js")
   script(src="/js/bootstrap-tagsinput.js")
+  script.
+    $(function(){
+      $('#deadline').datetimepicker({
+        autoclose: true,
+        language: 'zh-CN',
+        startDate: new Date(),
+        pickerPosition: "top-left"
+      });
+    });
