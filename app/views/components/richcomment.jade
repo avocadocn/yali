@@ -18,7 +18,7 @@
           div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
     .comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments")
       .comment_user_info
-        a(href="/users/home/{{comment.poster._id}}" )
+        a(href="/users/home/{{comment.poster._id}}")
           img.user_photo(ng-src="{{comment.poster.photo}}/30/30" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
       .comment_content_panel
         .comment_content

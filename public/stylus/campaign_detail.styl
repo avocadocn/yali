@@ -256,3 +256,73 @@ clearfix()
       background-color #73a5dd
       .head_button
         background-color #4e83be
+
+  .member_modal
+    .modal-content
+      border-radius 0
+      .component
+        height 400px
+        box-shadow none
+        .component_head
+          background-color #73a5dd
+          .dl_close
+            padding 2px
+            .icon_close
+              width 14px
+              height 14px
+        .component_body
+          .unit_panel
+            clearfix()
+            .unit_list
+              clearfix()
+              display block
+              float left
+              padding 0
+              height 20px
+              border-radius 12px
+              .unit
+                display block
+                float left
+                padding-left 30px
+                padding-right 30px
+                font-size 12px
+                line-height 20px
+                border-left solid 1px #cccccc
+                background-color #fbfbfb
+                &:first-child
+                  border-left none
+                .tab
+                  text-decoration none
+                  color #cccccc
+                  background-color #fbfbfb
+              .unit.active
+                background-color #cccccc
+                .tab
+                  color white
+                  background-color #cccccc
+          .tab-content
+            min-height 0
+            margin-top 10px
+
+          .member_list
+            clearfix()
+            display block
+            .member
+              float left
+              margin-bottom 18px
+              margin-right 10px
+              width 57px
+              &:nth-child(8n)
+                margin-right 0
+              .photo
+                width 57px
+                height 57px
+              .nickname
+                display block
+                margin-top 10px
+                color #cccccc
+                font-size 12px
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+

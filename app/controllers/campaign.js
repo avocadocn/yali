@@ -1171,7 +1171,7 @@ exports.getOneNotice = function (req, res, next) {
 exports.renderCampaignDetail = function (req, res) {
   var campaign = req.campaign;
   moment.lang('zh-cn');
-
+  console.log(campaign.campaign_unit)
   // 权限判断
   var memberIds = [];
   campaign.members.forEach(function (member) {

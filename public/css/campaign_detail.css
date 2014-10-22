@@ -325,3 +325,105 @@
 .campaign_detail .brief_card .component_head .head_button {
   background-color: #4e83be;
 }
+.campaign_detail .member_modal .modal-content {
+  border-radius: 0;
+}
+.campaign_detail .member_modal .modal-content .component {
+  height: 400px;
+  box-shadow: none;
+}
+.campaign_detail .member_modal .modal-content .component .component_head {
+  background-color: #73a5dd;
+}
+.campaign_detail .member_modal .modal-content .component .component_head .dl_close {
+  padding: 2px;
+}
+.campaign_detail .member_modal .modal-content .component .component_head .dl_close .icon_close {
+  width: 14px;
+  height: 14px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel:before,
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel:after {
+  clear: both;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list {
+  display: block;
+  float: left;
+  padding: 0;
+  height: 20px;
+  border-radius: 12px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list:before,
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list:after {
+  clear: both;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit {
+  display: block;
+  float: left;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 12px;
+  line-height: 20px;
+  border-left: solid 1px #ccc;
+  background-color: #fbfbfb;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit:first-child {
+  border-left: none;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit .tab {
+  text-decoration: none;
+  color: #ccc;
+  background-color: #fbfbfb;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit.active {
+  background-color: #ccc;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit.active .tab {
+  color: #fff;
+  background-color: #ccc;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .tab-content {
+  min-height: 0;
+  margin-top: 10px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list {
+  display: block;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list:before,
+.campaign_detail .member_modal .modal-content .component .component_body .member_list:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list:after {
+  clear: both;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member {
+  float: left;
+  margin-bottom: 18px;
+  margin-right: 10px;
+  width: 57px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member:nth-child(8n) {
+  margin-right: 0;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member .photo {
+  width: 57px;
+  height: 57px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member .nickname {
+  display: block;
+  margin-top: 10px;
+  color: #ccc;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

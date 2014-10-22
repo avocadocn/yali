@@ -27,7 +27,7 @@ block contentExt
                 each unit in campaign.campaign_unit
                   .unit
                     img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
-                    if isActive
+                    if isActive && !isEnd
                       if unit.team._id
                         button.join(ng-if="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
                       else
@@ -95,7 +95,7 @@ block contentExt
                 button.save(ng-click="save()") 保存
                 button.cancel(ng-click="toggleEdit()") 取消
 
-        rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment}")
+        rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment&&isActive}")
 
       .panel_divider
 
@@ -118,7 +118,7 @@ block contentExt
           .component_head
             img.component_logo(src="/img/people-general.png")
             span.title 活动成员(#{campaign.members.length})
-            button.head_button 查看
+            button.head_button(data-toggle="modal" data-target="#memberListModal") 查看
           .component_body
             .member_list
               each member in membersForCard
@@ -136,6 +136,51 @@ block contentExt
               p.text 类型: #{campaign.campaign_mold}
 
     #campaign_data(data-id="#{campaign._id}" data-start="#{isStart}" data-end="#{isEnd}" data-join="#{isJoin}")
+
+    .member_modal.modal.fade#memberListModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .component
+            .component_head
+              img.component_logo(src="/img/people-general.png")
+              span.title 活动成员&nbsp;(#{campaign.members.length})
+              button.close.dl_close(data-dismiss="modal" aria-hidden="true")
+                img.icon_close(src="/img/icons/icon_close.png")
+            .component_body
+              if campaign.campaign_unit.length > 1
+                .unit_panel
+                  ul.unit_list(role="tablist")
+                    - var i = 0;
+                    each unit in campaign.campaign_unit
+                      if i === 0
+                        li.unit.active
+                          a.tab(href="##{unit.team._id}" role="tab" data-toggle="tab") #{unit.team.name}
+                      else
+                        li.unit
+                          a.tab(href="##{unit.team._id}" role="tab" data-toggle="tab") #{unit.team.name}
+                      - i++;
+                .tab-content
+                  - var i = 0;
+                  each unit in campaign.campaign_unit
+                    if i === 0
+                      .member_list.fade.in.active.tab-pane(id="#{unit.team._id}")
+                        each member in unit.member
+                          .member
+                            img.photo(src="#{member.photo}/57/57")
+                            span.nickname #{member.nickname}
+                    else
+                      .member_list.fade.tab-pane(id="#{unit.team._id}")
+                        each member in unit.member
+                          .member
+                            img.photo(src="#{member.photo}/57/57")
+                            span.nickname #{member.nickname}
+                    - i++;
+              else
+                .member_list
+                  each member in campaign.campaign_unit[0].member
+                    .member
+                      img.photo(src="#{member.photo}/57/57")
+                      span.nickname #{member.nickname}
 
 append footExt
   script(src="/js/controllers/campaign.js")
