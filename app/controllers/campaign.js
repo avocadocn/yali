@@ -1200,7 +1200,16 @@ exports.renderCampaignDetail = function (req, res) {
   }
 
   // todo 面包屑
-
+  // var links = [
+  //   {
+  //     text: 'company_group.name',
+  //     url: '/group/page/' + 'company_group._id'
+  //   },
+  //   {
+  //     text: '相册集',
+  //     active: true
+  //   }
+  // ];
 
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
   var isStart = campaign.start_time < Date.now();
