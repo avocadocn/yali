@@ -159,7 +159,6 @@ clearfix()
         border-top 1px solid #eee
         .sub_title
           margin-right 10px
-
         .progress
           margin 0
           margin-right 10px
@@ -190,13 +189,21 @@ clearfix()
           font-size 14px
 
         .editing
+          display flex
           margin 15px 0
+          .line_text
+            line-height 30px
           .people_count
             margin-right 10px
             width 45px
-
+          .date_picker
+            margin-right 10px
+            width 150px
+            input
+              display block
 
         .operator
+          margin-top 20px
           clearfix()
           .save, .cancel
             float right
@@ -206,11 +213,18 @@ clearfix()
             font-size 14px
             line-height 20px
           .save
+            margin-left 10px
             color #fff
-            background-color #3498db
+            background-color #97d7c6
           .cancel
             color #ffffff
-            background-color darkgray
+            background-color #cccccc
+          .close_campaign
+            float left
+            color #f3939e
+            cursor pointer
+            .icon_close
+              margin-right 5px
 
 
       .title

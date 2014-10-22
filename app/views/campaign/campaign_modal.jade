@@ -59,7 +59,7 @@ link(rel="stylesheet" href="/lib/pen/src/pen.css")
             .dl_row.clearfix(ng-if="recommand_tags")
               .dl_modal_label_container
                 span.info_label 常用标签:
-              .bootstrap-recommandtags(ng-repeat="tag in recommand_tags" ) 
+              .bootstrap-recommandtags(ng-repeat="tag in recommand_tags" )
                 span.label.label-info.tag(ng-if="!tag.disabled" ng-click="addTag($index)") {{tag._id}}
                 span.label.label-default.tag(ng-if="tag.disabled") {{tag._id}}
             div(ng-show="show_options")

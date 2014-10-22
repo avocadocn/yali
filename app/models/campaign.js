@@ -249,9 +249,18 @@ Campaign.methods = {
 
     if (this.deadline < Date.now()) {
       return {
-        success: 0,
+        success: false,
         msg: '活动报名已经截止'
       };
+    }
+
+    if (this.member_max > 0) {
+      if (this.members.length >= this.member_max) {
+        return {
+          success: false,
+          msg: '报名人数已达上限'
+        };
+      }
     }
 
     for (var i = 0; i < this.campaign_unit.length; i++) {
@@ -290,7 +299,6 @@ Campaign.methods = {
       };
       // 非公司活动
       if (targetUnit.tid && targetUnit.tid.toString() === unit.team._id.toString()) {
-
         return _join(unit);
       }
 

@@ -200,8 +200,8 @@ campaignApp.controller('campaignController', ['$scope', 'Report', 'Campaign', fu
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;
-  var isStart = data.start === 'true';
-  var isEnd = data.end === 'true';
+  $scope.isStart = data.start === 'true';
+  $scope.isEnd = data.end === 'true';
   $scope.isJoin = data.join === 'true';
 
   $scope.join = function (cid, tid) {
@@ -234,7 +234,9 @@ campaignApp.controller('campaignController', ['$scope', 'Report', 'Campaign', fu
 
   $scope.editing = false;
   $scope.campaignData = {
-    content: ''
+    content: '',
+    member_max: 0,
+    member_min: 0
   };
 
   $scope.save = function () {
@@ -246,11 +248,30 @@ campaignApp.controller('campaignController', ['$scope', 'Report', 'Campaign', fu
           window.location.reload();
         });
       }
-    })
+    });
   };
 
   $scope.toggleEdit = function () {
     $scope.editing = !$scope.editing;
-  }
+  };
+
+  $scope.cancel = function () {
+    alertify.confirm('活动关闭后，不能再编辑该活动、发表评论、上传照片，并且不能重新打开，确定要关闭该活动吗？', function (e) {
+      if (e) {
+        Campaign.cancel(campaignId, function (err) {
+          if (err) {
+            alertify.alert(err);
+          } else {
+            alertify.alert('关闭活动成功', function (e) {
+              window.location.reload();
+            });
+          }
+        });
+      }
+    });
+  };
+
 
 }]);
+
+

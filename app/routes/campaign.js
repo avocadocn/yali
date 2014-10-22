@@ -5,7 +5,7 @@ var authorization = require('./middlewares/authorization');
 
 module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:pageId/:campaignType/:campaignPage/:campaignBlock', authorization.listAuthorize, campaign.getCampaigns);
-  app.post('/campaign/cancel/:campaignId', authorization.campaginAuthorize, campaign.cancelCampaign);
+  app.post('/campaign/cancel/:campaignId', campaign.cancelCampaign);
   app.get('/campaign/detail/:campaignId', campaign.addRichCommentIfNot, campaign.renderCampaignDetail);
   app.post('/campaign/edit/:campaignId', campaign.editCampaign);
 

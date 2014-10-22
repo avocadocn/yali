@@ -51,6 +51,10 @@ var registeredTasks = {
   },
   editCompanyCampaign: {
     company: ['hr']
+  },
+  cancelCampaign: {
+    company: ['hr'],
+    team: ['leader']
   }
 };
 

@@ -92,7 +92,7 @@ angular.module('donler')
      * 编辑活动
      * @param campaignId 活动id
      * @param campaignData 活动数据
-     * @param callback
+     * @param callback callback(err)
      */
     var edit = function (campaignId, campaignData, callback) {
       $http.post('/campaign/edit/' + campaignId, campaignData)
@@ -108,12 +108,28 @@ angular.module('donler')
         });
     };
 
+    var cancel = function (campaignId, callback) {
+      $http.post('/campaign/cancel/' + campaignId)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('关闭活动失败，请重试。');
+        });
+    };
+
+
     return {
       sponsor: sponsor,
       getTags: getTags,
       join: join,
       quit: quit,
-      edit: edit
+      edit: edit,
+      cancel: cancel
       // provoke:provoke
     };
   }]);

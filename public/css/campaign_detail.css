@@ -240,11 +240,25 @@
   font-size: 14px;
 }
 .campaign_detail .detail_card .component_body .more_info .editing {
+  display: flex;
   margin: 15px 0;
+}
+.campaign_detail .detail_card .component_body .more_info .editing .line_text {
+  line-height: 30px;
 }
 .campaign_detail .detail_card .component_body .more_info .editing .people_count {
   margin-right: 10px;
   width: 45px;
+}
+.campaign_detail .detail_card .component_body .more_info .editing .date_picker {
+  margin-right: 10px;
+  width: 150px;
+}
+.campaign_detail .detail_card .component_body .more_info .editing .date_picker input {
+  display: block;
+}
+.campaign_detail .detail_card .component_body .more_info .operator {
+  margin-top: 20px;
 }
 .campaign_detail .detail_card .component_body .more_info .operator:before,
 .campaign_detail .detail_card .component_body .more_info .operator:after {
@@ -264,12 +278,21 @@
   line-height: 20px;
 }
 .campaign_detail .detail_card .component_body .more_info .operator .save {
+  margin-left: 10px;
   color: #fff;
-  background-color: #3498db;
+  background-color: #97d7c6;
 }
 .campaign_detail .detail_card .component_body .more_info .operator .cancel {
   color: #fff;
-  background-color: #a9a9a9;
+  background-color: #ccc;
+}
+.campaign_detail .detail_card .component_body .more_info .operator .close_campaign {
+  float: left;
+  color: #f3939e;
+  cursor: pointer;
+}
+.campaign_detail .detail_card .component_body .more_info .operator .close_campaign .icon_close {
+  margin-right: 5px;
 }
 .campaign_detail .detail_card .component_body .title {
   font-size: 14px;

@@ -614,32 +614,26 @@ exports.getCampaigns = function(req, res) {
 }
 
 exports.cancelCampaign = function(req, res){
-  Campaign
-    .findOne({'_id':req.body.campaign_id})
-    .exec()
-    .then(function(campaign) {
-      if(!campaign){
-        return res.send({ result: 0, msg:'查找活动失败' });
-      }
-      else{
-        if (req.role === "HR" || campaign.campaign_type != 3 && req.role === "LEADER" ){
-          campaign.active=false;
-          campaign.save(function(err){
-            if(!err){
-              return res.send({ result: 1, msg:'活动关闭成功' });
-            }
-          });
-        }
-        else{
-          return res.send({ result: 0, msg:'您没有权限关闭该活动' });
-        }
-      }
-    })
-    .then(null, function(err) {
-      console.log(err);
-      res.send(400);
-    });
-}
+  var campaign = req.campaign;
+
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid
+  }, ['cancelCampaign']);
+  if (!allow.cancelCampaign) {
+    return res.send(403);
+  }
+
+  campaign.active = false;
+  campaign.save(function (err) {
+    if (err) {
+      return res.send({ result: 0, msg: '关闭活动失败' });
+    } else {
+      return res.send({ result: 1, msg: '关闭活动成功' });
+    }
+  });
+};
+
 exports.editCampaign = function(req, res){
   var campaign = req.campaign;
 
@@ -661,7 +655,17 @@ exports.editCampaign = function(req, res){
     }
   }
 
-  campaign.content=req.body.content;
+  if (req.body.content) {
+    campaign.content=req.body.content;
+  }
+  var max = Number(req.body.member_max);
+  if (!isNaN(max)) {
+    campaign.member_max = max;
+  }
+  var min = Number(req.body.member_min);
+  if (!isNaN(min)) {
+    campaign.member_min = min;
+  }
   campaign.save(function (err) {
     if (err) {
       return res.send({ result: 0, msg:'编辑活动失败，请重试' });
@@ -1172,6 +1176,7 @@ exports.renderCampaignDetail = function (req, res) {
     isEnd: isEnd,
     isJoin: isJoin,
     isOneUnit: isOneUnit,
+    isActive: campaign.active,
     membersForCard: membersForCard,
     notice: req.notice,
     moment: moment,
