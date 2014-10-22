@@ -94,17 +94,24 @@ angular.module('donler.components.scoreBoard', [])
        * @param callback callback(err)
        */
       confirmScore: function (id, callback) {
-        $http.post('/components/ScoreBoard/id/' + id + '/confirmScore')
-          .success(function (data, status) {
-            if (data.result === 1) {
-              callback();
-            } else {
-              callback(data.msg);
-            }
-          })
-          .error(function (data, status) {
-            callback('操作失败，请重试。这可能是由于网络原因导致的。')
-          });
+
+        var remindMsg = '提示：双方都确认比分后将无法再修改；如果对方在您确认后修改过比分，您需要重新确认。确定要修改比分吗？';
+        alertify.confirm(remindMsg, function (e) {
+          if (e) {
+            $http.post('/components/ScoreBoard/id/' + id + '/confirmScore')
+              .success(function (data, status) {
+                if (data.result === 1) {
+                  callback();
+                } else {
+                  callback(data.msg);
+                }
+              })
+              .error(function (data, status) {
+                callback('操作失败，请重试。这可能是由于网络原因导致的。')
+              });
+          }
+        });
+
       }
 
     };
@@ -118,7 +125,7 @@ angular.module('donler.components.scoreBoard', [])
       templateUrl: '/components/ScoreBoard/template',
       scope: {
         componentId: '@',
-        allowEdit: '@'
+        allowEdit: '='
       }
     }
   })
