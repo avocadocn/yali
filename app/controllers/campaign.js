@@ -541,9 +541,11 @@ exports.getCampaigns = function(req, res) {
       option.campaign_type = 1;
     }
     else if(campaignType==='team') {
-      option.campaign_type = {'$nin':[1]};
+      option.campaign_type = {'$in':[2,3,4,5,7]};//4?5?7?
     }
-    //department也请求team
+    else if(campaignType==='department'){
+      option.campaign_type = {'$in':[6,8]};//9?
+    }
     else if(req.role ==='EMPLOYEE')  {
       var team_ids = [];
       for( var i = 0; i < req.user.team.length; i ++) {
@@ -1170,7 +1172,7 @@ exports.getOneNotice = function (req, res, next) {
 exports.renderCampaignDetail = function (req, res) {
   var campaign = req.campaign;
   moment.lang('zh-cn');
-  console.log(campaign.campaign_unit)
+
   // 权限判断
   var memberIds = [];
   campaign.members.forEach(function (member) {

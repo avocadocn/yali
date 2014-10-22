@@ -394,7 +394,7 @@ exports.sponsor = function(req, res) {
         role:req.session.role,
         tname:tname
       },
-      'team':all_team_ids,
+      'tid':all_team_ids,
       'campaign_type':6,
       'campaign_unit':campaignUnits
     };
