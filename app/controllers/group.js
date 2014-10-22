@@ -1007,7 +1007,8 @@ exports.sponsor = function (req, res) {
                 '_id':teams[i]._id,
                 'name':teams[i].name,
                 'logo':teams[i].logo
-              }
+              },
+              'start_confirm':true
             });
           }
           cb(null,null);
