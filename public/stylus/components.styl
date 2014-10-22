@@ -170,4 +170,53 @@ input()
         border-radius 0
 
 .score_board
-  margin 0
+  .component_head
+    background-color #333333 !important
+  .score_board_body
+    display flex
+    .playing_team
+      width 56px
+      text-align center
+      .team_logo
+        width 56px
+        height 56px
+      .team_name
+        font-size 12px !important
+        white-space nowrap
+        margin-top 5px !important
+        display block
+        overflow hidden
+        text-overflow ellipsis
+    .team_score
+      margin 0 10px
+      padding-top 15px
+      width 62px
+      .score_show
+        display flex
+        .score
+          width 26px
+          height 26px
+          background-color #858585
+          color white
+          line-height 26px
+          font-size 18px
+          text-align center
+          &:first-child
+            margin-right 10px
+      .editing
+        display flex
+        .score
+          width 26px
+          height 26px
+          line-height 26px
+          font-size 18px
+          text-align center
+          &:first-child
+            margin-right 10px
+  .score_board_footer
+    margin-top 10px
+    text-align right
+    .operator
+      margin-left 5px
+      color #73a5dd
+

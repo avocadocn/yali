@@ -124,6 +124,9 @@ block contentExt
               each member in membersForCard
                 img.member(src="#{member.photo}/32/32")
 
+        each scoreBoard in components.ScoreBoard
+          score-board(component-id="#{scoreBoard}" allow-edit="#{allow.setScoreBoardScore}")
+
         if isStart
           .component.brief_card(class="#{helper.start('order-1')} #{helper.end('order-2')}")
             .component_head

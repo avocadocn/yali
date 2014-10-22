@@ -196,6 +196,66 @@
 .rich_comment .component_body .pager li>a {
   border-radius: 0;
 }
-.score_board {
-  margin: 0;
+.score_board .component_head {
+  background-color: #333 !important;
+}
+.score_board .score_board_body {
+  display: flex;
+}
+.score_board .score_board_body .playing_team {
+  width: 56px;
+  text-align: center;
+}
+.score_board .score_board_body .playing_team .team_logo {
+  width: 56px;
+  height: 56px;
+}
+.score_board .score_board_body .playing_team .team_name {
+  font-size: 12px !important;
+  white-space: nowrap;
+  margin-top: 5px !important;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.score_board .score_board_body .team_score {
+  margin: 0 10px;
+  padding-top: 15px;
+  width: 62px;
+}
+.score_board .score_board_body .team_score .score_show {
+  display: flex;
+}
+.score_board .score_board_body .team_score .score_show .score {
+  width: 26px;
+  height: 26px;
+  background-color: #858585;
+  color: #fff;
+  line-height: 26px;
+  font-size: 18px;
+  text-align: center;
+}
+.score_board .score_board_body .team_score .score_show .score:first-child {
+  margin-right: 10px;
+}
+.score_board .score_board_body .team_score .editing {
+  display: flex;
+}
+.score_board .score_board_body .team_score .editing .score {
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  font-size: 18px;
+  text-align: center;
+}
+.score_board .score_board_body .team_score .editing .score:first-child {
+  margin-right: 10px;
+}
+.score_board .score_board_footer {
+  margin-top: 10px;
+  text-align: right;
+}
+.score_board .score_board_footer .operator {
+  margin-left: 5px;
+  color: #73a5dd;
 }
