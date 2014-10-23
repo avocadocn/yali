@@ -126,9 +126,9 @@ block contentExt
             span.title 活动成员(#{campaign.members.length})
             button.head_button(data-toggle="modal" data-target="#memberListModal") 查看
           .component_body
-            .member_list
+            .member_list(bs-popover)
               each member in membersForCard
-                img.member(src="#{member.photo}/32/32")
+                img.member(src="#{member.photo}/32/32" ng-Mouseenter="showUserCard('#{member._id}','#{member._id}member_card')" id='pop#{member._id}member_card' rel='popover')
 
         if components.ScoreBoard
           each scoreBoard in components.ScoreBoard
@@ -173,38 +173,28 @@ block contentExt
                   - var i = 0;
                   each unit in campaign.campaign_unit
                     if i === 0
-                      .member_list.fade.in.active.tab-pane(id="#{unit.team._id}")
+                      .member_list.fade.in.active.tab-pane(id="#{unit.team._id}" bs-popover)
                         each member in unit.member
-                          .member
+                          .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
                             img.photo(src="#{member.photo}/57/57")
                             span.nickname #{member.nickname}
                     else
-                      .member_list.fade.tab-pane(id="#{unit.team._id}")
+                      .member_list.fade.tab-pane(id="#{unit.team._id}" bs-popover)
                         each member in unit.member
-                          .member
+                          .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
                             img.photo(src="#{member.photo}/57/57")
                             span.nickname #{member.nickname}
                     - i++;
               else
-                .member_list
+                .member_list(bs-popover)
                   each member in campaign.campaign_unit[0].member
-                    .member
+                    .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
                       img.photo(src="#{member.photo}/57/57")
                       span.nickname #{member.nickname}
     div
 
 
 append footExt
-  script(src="/js/controllers/campaign.js")
   script(src="/js/directives/count_down.js")
   script(src="/js/bootstrap-tagsinput.js")
-  script.
-    $(function(){
-      $('#deadline').datetimepicker({
-        autoclose: true,
-        language: 'zh-CN',
-        startDate: new Date(),
-        pickerPosition: "top-left"
-        //- setEndDate:#{campaign.end_time}
-      });
-    });
+  script(src="/js/controllers/campaign.js")

@@ -50,7 +50,7 @@
             input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
             button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
           .reply.text(ng-repeat="reply in comment.replies")
-            a.user_name(ng-href="/users/home/{{reply.poster._id}}")
+            a.user_name(ng-href="/users/home/{{reply.poster._id}}" ng-Mouseenter="showUserCard(reply.poster._id,reply._id)" id='pop{{reply._id}}' rel='popover')
               span {{reply.poster.nickname}}
             span {{reply.content}}
             span.reply_date ({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})

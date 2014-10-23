@@ -112,6 +112,14 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Report', 'Camp
     });
   };
 
+  $('#deadline').datetimepicker({
+    autoclose: true,
+    language: 'zh-CN',
+    startDate: new Date(),
+    pickerPosition: "top-left"
+    //- setEndDate:#{campaign.end_time}
+  });
+
 
 }]);
 
