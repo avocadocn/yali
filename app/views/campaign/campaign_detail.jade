@@ -53,7 +53,7 @@ block contentExt
                     p.text #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
                   else
                     p.main_text 没有最新公告
-            .more_info(ng-if="!isStart||editing")
+            .more_info(ng-show="!isStart||editing")
               h4.title 活动简介
               .text(ng-if="!editing") #{campaign.content}
               input(ng-if="editing" type="text" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content")
