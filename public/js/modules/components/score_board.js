@@ -45,6 +45,40 @@ angular.module('donler.components.scoreBoard', [])
   }])
 
   .factory('ScoreBoard', ['$http', function ($http) {
+
+    /**
+     * 设置比分
+     * @param id 组件id
+     * @param data 比分数据
+     *  data: {
+     *    team: {
+     *      cid: String|Object,
+     *      tid: String|Object
+     *    }, // 指明是以哪个队的队长身份修改，有可能会出现同时是两队队长的情况
+     *    scores: [Number], // 可选
+     *    results: [Number], // 可选
+     *    // scores,results属性至少要有一个
+     *  }
+     * @param {Boolean} isInit 是否是初始化设置
+     * @param callback callback(err)
+     */
+    var setScore = function (id, data, isInit, callback) {
+      $http.post('/components/ScoreBoard/id/' + id + '/setScore', {
+        data: data,
+        isInit: isInit
+      })
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('设置失败');
+        });
+    };
+
     return {
 
       /**
@@ -66,36 +100,24 @@ angular.module('donler.components.scoreBoard', [])
           });
       },
 
-      /**
-       * 设置比分
-       * @param id 组件id
-       * @param scores 比分数组，数组长度为2且元素均为数字
-       * @param callback callback(err)
-       */
-      setScore: function (id, scores, callback) {
-        $http.post('/components/ScoreBoard/id/' + id + '/setScore', {
-          scores: scores
-        })
-          .success(function (data, status) {
-            if (data.result === 1) {
-              callback();
-            } else {
-              callback(data.msg);
-            }
-          })
-          .error(function (data, status) {
-            callback('设置失败');
-          });
+      // 初始化比分
+      initScore: function (id, data, callback) {
+        setScore(id, data, true, callback);
       },
+
+      // 重设比分
+      resetScore: function (id, data, callback) {
+        setScore(id, data, false, callback);
+      }
 
       /**
        * 确认比分
-       * @param id 组件id
+       * @param {String} id 组件id
        * @param callback callback(err)
        */
       confirmScore: function (id, callback) {
 
-        var remindMsg = '提示：双方都确认比分后将无法再修改；如果对方在您确认后修改过比分，您需要重新确认。确定要修改比分吗？';
+        var remindMsg = '提示：确认比分后将无法再修改；如果对方在您确认后修改过比分，您需要重新确认。确定要修改比分吗？';
         alertify.confirm(remindMsg, function (e) {
           if (e) {
             $http.post('/components/ScoreBoard/id/' + id + '/confirmScore')

@@ -46,7 +46,12 @@ exports.ScoreBoard = {
             return res.send(403);
           }
 
-          scoreBoard.setScore(req.body.scores);
+          if (req.body.isInit) {
+            scoreBoard.initScore(req.body.data);
+          } else {
+            scoreBoard.setScore(req.body.data);
+          }
+
           scoreBoard.save(function (err) {
             if (err) {
               next(err);
@@ -79,7 +84,7 @@ exports.ScoreBoard = {
               confirmIndex.push(i);
             }
           }
-          scoreBoard.confirm(confirmIndex);
+          scoreBoard.confirm(req.body.data);
           scoreBoard.save(function (err) {
             if (err) {
               next(err);
