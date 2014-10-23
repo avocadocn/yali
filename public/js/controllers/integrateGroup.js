@@ -277,7 +277,7 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
             Campaign.sponsor(_url,_data,function(status,data){
                 if(!status){
                     // window.location.reload();
-                    alertify.alert('活动发布成功!');
+                    window.location = '/campaign/detail/'+data.campaign_id;
                 }else{
                     alertify.alert('活动发布出错');
                 }
@@ -1012,7 +1012,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
             };
             var callback = function(status,data){
                 if(!status){
-                    window.location.reload();
+                    window.location = '/campaign/detail/'+data.campaign_id;
                 }
                 else{
                     alertify.alert(data.msg);

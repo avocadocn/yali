@@ -450,7 +450,7 @@ exports.sponsor = function(req, res) {
               if (err) {
                 console.log(err);
               } else {
-                return res.send(200);
+                return res.send({'result':1,'campaign_id':data.campaign_id});
               }
             });
           }

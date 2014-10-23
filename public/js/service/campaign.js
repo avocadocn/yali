@@ -31,7 +31,7 @@ angular.module('donler')
           url: _url,
           data: _data
         }).success(function (data, status) {
-          callback(null);
+          callback(null,data);
         }).error(function (data, status) {
           callback('error');
         });

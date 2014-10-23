@@ -700,7 +700,7 @@ exports.provoke = function (req, res) {
               message.sendToOne(req,res,param);      //挑战的站内信只要发给队长一个人即可
             }
             console.log('6');
-            return res.send({'result':1,'msg':'SUCCESS'});
+            return res.send({'result':1,'campaign_id':data.campaign_id});
           }
         });
       }
@@ -1052,7 +1052,7 @@ exports.sponsor = function (req, res) {
                 console.log(err);
                 return res.send({'result':0,'msg': 'FAILURED'});
               } else {
-                return res.send({'result': 1, 'msg': 'SUCCESS'});
+                return res.send({'result': 1,'campaign_id': result.campaign_id});
               }
             });
           }
@@ -1097,7 +1097,7 @@ exports.sponsor = function (req, res) {
                 if (err) {
                   console.log('MULTI_CAMPAIGN_GROUPMESSAGE_ERROR', err);
                 } else {
-                  return res.send({'result': 1, 'msg': 'SUCCESS'});
+                  return res.send({'result': 1, 'campaign_id': result.campaign_id});
                 }
               });
             }

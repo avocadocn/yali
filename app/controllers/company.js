@@ -1612,7 +1612,7 @@ exports.sponsor = function(req, res) {
       push.campaign(data.campaign_id);
       res.send({
         'result': 1,
-        'msg': '活动创建成功'
+        'campaign_id': data.campaign_id
       });
 
       //生成动态消息

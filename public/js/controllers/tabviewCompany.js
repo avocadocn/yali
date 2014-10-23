@@ -1522,7 +1522,9 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
                             console.log(e);
                         }
                     }else{
-                      window.location.reload();
+                      // window.location.reload();
+                      //直接挑战到活动详情页
+                      window.location = '/campaign/detail/'+data.campaign_id;
                     }
                 }
             });
@@ -1555,23 +1557,13 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
                 alertify.alert('最少人数须小于最大人数');
             }
             else{
-                try{
-                    $http({
-                        method: 'post',
-                        url: _url,
-                        data:_data
-                    }).success(function(data, status) {
-                        //发布活动后跳转到显示活动列表页面
-                        window.location.reload();
-
-                    }).error(function(data, status) {
-                        //TODO:更改对话框
-                        alertify.alert('DATA ERROR');
-                    });
-                }
-                catch(e){
-                    console.log(e);
-                }
+                Campaign.sponsor(_url,_data,function(status,data){
+                    if(!status){
+                        window.location = '/campaign/detail/'+data.campaign_id;
+                    }else{
+                        alertify.alert('活动发布出错');
+                    }
+                });
             }
         }
     };
