@@ -503,9 +503,10 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
       // temp.camp = _campaign.camp;//...
     }
-    if(_other.unConfirm){
-      temp.voteFlag = false;
-    }
+    //???-M
+    // if(_other.unConfirm){
+    //   temp.voteFlag = false;
+    // }
     if(_other.nowFlag){
       var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
       temp.start_flag = _formatTime.start_flag;
@@ -540,9 +541,9 @@ var formatCampaign = function(campaign,pageType,role,user,other){
         },
         member: _campaign_unit.member
       });
-      if(_other.unConfirm){
-        temp.voteFlag = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,user._id,'_id')>-1;
-      }
+      // if(_other.unConfirm){
+      //   temp.voteFlag = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,user._id,'_id')>-1;
+      // }
     });
     campaigns.push(temp);
   });
@@ -1414,60 +1415,61 @@ exports.quitCampaign = function (req, res) {
 
 //员工投票是否参加约战
 //记得要做重复投票检查 TODO
-exports.vote = function (req, res,next) {
-  if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
-  }
-  var cid = req.user.cid;
-  var uid = req.user._id;
-  var aOr = req.body.aOr;
-  var value = 1;
-  var campaignId = req.body.campaignId;
+//vote 不要了=v=
+// exports.vote = function (req, res,next) {
+//   if(req.role!=='MEMBER' && req.role!=='LEADER'){
+//     res.status(403);
+//     next('forbidden');
+//     return;
+//   }
+//   var cid = req.user.cid;
+//   var uid = req.user._id;
+//   var aOr = req.body.aOr;
+//   var value = 1;
+//   var campaignId = req.body.campaignId;
 
-  Campaign.findOne({
-    '_id' : campaignId
-  },
-  function (err, campaign) {
-    if (campaign) {
-      campaign.campaign_unit.forEach(function(_campaign_unit){
-        if(req.user.isTeamMember(_campaign_unit.team._id)){
-          var positive_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,uid,'_id');
-          var negative_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.negative_member,uid,'_id');
-          if(aOr && negative_index > -1 || !aOr && positive_index > -1){
-          }
-          else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
-            _campaign_unit.vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
-            _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']-1;
-          }
-          else if(aOr && positive_index <0 || !aOr && negative_index <0){
-            _campaign_unit.
-              vote[aOr?'positive_member':'negative_member'].
-                push({
-                      '_id':uid,
-                      'nickname':req.user.nickname,
-                      'photo':req.user.photo
-                    });
-           _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']+1;
-          }
-        }
+//   Campaign.findOne({
+//     '_id' : campaignId
+//   },
+//   function (err, campaign) {
+//     if (campaign) {
+//       campaign.campaign_unit.forEach(function(_campaign_unit){
+//         if(req.user.isTeamMember(_campaign_unit.team._id)){
+//           var positive_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,uid,'_id');
+//           var negative_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.negative_member,uid,'_id');
+//           if(aOr && negative_index > -1 || !aOr && positive_index > -1){
+//           }
+//           else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
+//             _campaign_unit.vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
+//             _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']-1;
+//           }
+//           else if(aOr && positive_index <0 || !aOr && negative_index <0){
+//             _campaign_unit.
+//               vote[aOr?'positive_member':'negative_member'].
+//                 push({
+//                       '_id':uid,
+//                       'nickname':req.user.nickname,
+//                       'photo':req.user.photo
+//                     });
+//            _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']+1;
+//           }
+//         }
 
-      });
-      campaign.save(function (err) {
-        if(err) {
-          return res.send({result: 0, msg:'投票发生错误'});
-        }
-        else{
-          return res.send({result: 1, msg:'成功'});
-        }
-      });
-    } else {
-      console.log('没有此约战!');
-      return res.send({result: 0, msg:'没有此约战'});
-    }
-  });
-};
+//       });
+//       campaign.save(function (err) {
+//         if(err) {
+//           return res.send({result: 0, msg:'投票发生错误'});
+//         }
+//         else{
+//           return res.send({result: 1, msg:'成功'});
+//         }
+//       });
+//     } else {
+//       console.log('没有此约战!');
+//       return res.send({result: 0, msg:'没有此约战'});
+//     }
+//   });
+// };
 
 exports.getCampaignDetail = function(req, res, next) {
   Campaign

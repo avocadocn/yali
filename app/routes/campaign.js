@@ -14,7 +14,7 @@ module.exports = function(app) {
       //加入、退出活动
   app.post('/campaign/joinCampaign/:campaignId', campaign.joinCampaign);
   app.post('/campaign/quitCampaign/:campaignId', campaign.quitCampaign);
-  app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
+  // app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
 
 
   app.get('/campaign/user/all/calendar/:userId', campaign.getUserAllCampaignsForCalendar);
