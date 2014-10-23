@@ -17,7 +17,7 @@
           a(ng-href="{{campaign_item.link}}")
             img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
         td.content_col
-          a(ng-href="/campaign/detail/{{campaign_item._id}}")
+          a(ng-href="/campaign/detail/{{campaign_item._id}}" target="_blank")
             p(ng-class="{'recent_unjoin':showedType=='recentUnjoinedCampaigns','recent_join':showedType=='recentJoinedCampaigns'}")
               strong {{campaign_item.name}} :
               span.theme_text {{campaign_item.theme}}

@@ -797,7 +797,8 @@ exports.home = function(req, res) {
     'sign':_user.introduce,
     'role': req.role,
     'department': department,
-    'myteam':_myteam
+    'myteam':_myteam,
+    'user_role':req.user.role
   });
 };
 

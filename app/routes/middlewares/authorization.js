@@ -417,23 +417,29 @@ exports.campaginAuthorize = function(req, res, next){
     req.role = 'HR';
   }
   else if(req.user.provider==='user' && req.campaign.cid.indexOf(req.user.cid.toString())>-1){
-    if(req.campaign.team.length===0){
+    if(req.campaign.tid.length===0){
       req.role = 'MEMBER';
+        console.log(4)
     }
     else {
-      req.campaign.team.forEach(function(team){
+      console.log(req.campaign.tid,req.user.team)
+      req.campaign.tid.forEach(function(team){
+        console.log(team)
         var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
         if (team_index>-1){
           if(req.user.team[team_index].leader ===true){
             req.role = 'LEADER';
+              console.log(1)
           }
           else if(req.role !== 'LEADER'){
             req.role = 'MEMBER';
+              console.log(2)
           }
 
         }
         else if(req.role==undefined){
           req.role = 'PARTNER';
+            console.log(3)
         }
       });
     }
@@ -441,6 +447,7 @@ exports.campaginAuthorize = function(req, res, next){
   else{
     return res.send(403,'forbidden');
   }
+  console.log(req.role)
   next();
 }
 exports.appToken = function(req, res, next){

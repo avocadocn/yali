@@ -504,49 +504,18 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       // temp.camp = _campaign.camp;//...
     }
     if(_other.unConfirm){
-      temp.campaign_unit =[];
-      _campaign.campaign_unit.forEach(function(_campaign_unit){
-        temp.campaign_unit.push({
-          team:{
-            _id:_campaign_unit.team._id,
-            name:_campaign_unit.team.name,
-            logo:_campaign_unit.team.logo,
-            link : '/group/page/'+_campaign_unit.team._id.toString()
-          },
-          positive: _campaign_unit.vote.positive,
-          start_confirm:_campaign_unit.start_confirm
-        })
-      });
-      var memberIds = [];
-      _campaign.members.forEach(function (member) {
-        memberIds.push(member._id);
-      });
-      temp.components = _campaign.formatComponents();
-      var allow = auth(user, {
-        companies: _campaign.cid,
-        teams: _campaign.tid,
-        users: memberIds
-      }, [
-        'publishComment'
-      ]);
-      temp.allow = allow;
+      temp.voteFlag = false;
     }
     if(_other.nowFlag){
-      temp.campaign_unit =[];
-      _campaign.campaign_unit.forEach(function(_campaign_unit){
-        temp.campaign_unit.push({
-          team:{
-            _id:_campaign_unit.team._id,
-            name:_campaign_unit.team.name,
-            logo:_campaign_unit.team.logo
-          },
-          member: _campaign_unit.member
-        })
-      });
       var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
       temp.start_flag = _formatTime.start_flag;
       temp.remind_text =_formatTime.remind_text;
       temp.start_time_text = _formatTime.start_time_text;
+    }
+    else{
+      temp.deadline_rest = formatrestTime(new Date(),_campaign.deadline);
+    }
+    if(_other.unConfirm || _other.nowFlag){
       var memberIds = [];
       _campaign.members.forEach(function (member) {
         memberIds.push(member._id);
@@ -561,9 +530,20 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       ]);
       temp.allow = allow;
     }
-    else{
-      temp.deadline_rest = formatrestTime(new Date(),_campaign.deadline);
-    }
+    temp.campaign_unit =[];
+    _campaign.campaign_unit.forEach(function(_campaign_unit){
+      temp.campaign_unit.push({
+        team:{
+          _id:_campaign_unit.team._id,
+          name:_campaign_unit.team.name,
+          logo:_campaign_unit.team.logo
+        },
+        member: _campaign_unit.member
+      });
+      if(_other.unConfirm){
+        temp.voteFlag = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,user._id,'_id')>-1;
+      }
+    });
     campaigns.push(temp);
   });
   return campaigns;
@@ -824,11 +804,16 @@ exports.getUserCampaignsForHome = function(req, res) {
       searchCampaign(undefined,{'$lt':startTimeLimit,'$gte': now }, true, true, callback);
     },//刚刚结束的活动
     function(callback){
+      var teamIds = [];
+      for(var i = 0;i<req.user.team.length;i++){
+        teamIds.push(req.user.team[i]._id.toString());
+      }
       var options = {
         'active':true,
         'confirm_status' : false,
         'start_time' : { '$gte': now},
-        'campaign_type':{'$in':[4,5,7,9]}
+        'campaign_type':{'$in':[4,5,7,9]},
+        'tid': {'$in':teamIds}
       }
       var query = Campaign.find(options).sort('-create_time');
       query.exec()
@@ -1429,7 +1414,7 @@ exports.quitCampaign = function (req, res) {
 
 //员工投票是否参加约战
 //记得要做重复投票检查 TODO
-exports.vote = function (req, res) {
+exports.vote = function (req, res,next) {
   if(req.role!=='MEMBER' && req.role!=='LEADER'){
     res.status(403);
     next('forbidden');
@@ -1439,38 +1424,33 @@ exports.vote = function (req, res) {
   var uid = req.user._id;
   var aOr = req.body.aOr;
   var value = 1;
-  var competition_id = req.body.competition_id;
+  var campaignId = req.body.campaignId;
 
   Campaign.findOne({
-    '_id' : competition_id
+    '_id' : campaignId
   },
   function (err, campaign) {
     if (campaign) {
-
-      
       campaign.campaign_unit.forEach(function(_campaign_unit){
         if(req.user.isTeamMember(_campaign_unit.team._id)){
           var positive_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,uid,'_id');
           var negative_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.negative_member,uid,'_id');
           if(aOr && negative_index > -1 || !aOr && positive_index > -1){
-            return res.send({result: 0, msg:'您已经投过票，无法再次投票'});
           }
           else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
             _campaign_unit.vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
-            _campaign_unit.vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']-1;
+            _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']-1;
           }
           else if(aOr && positive_index <0 || !aOr && negative_index <0){
-            campaign.camp[camp_index].
+            _campaign_unit.
               vote[aOr?'positive_member':'negative_member'].
                 push({
-                      'cid':cid,
-                      'uid':uid,
+                      '_id':uid,
                       'nickname':req.user.nickname,
                       'photo':req.user.photo
                     });
-            campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']+1;
+           _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']+1;
           }
-
         }
 
       });
@@ -1479,12 +1459,7 @@ exports.vote = function (req, res) {
           return res.send({result: 0, msg:'投票发生错误'});
         }
         else{
-          return res.send({result: 1, msg:'成功',data:{
-              quit: aOr && positive_index <0 || !aOr && negative_index <0,
-              positive : campaign.camp[camp_index].vote.positive,
-              negative : campaign.camp[camp_index].vote.negative
-            }
-          });
+          return res.send({result: 1, msg:'成功'});
         }
       });
     } else {

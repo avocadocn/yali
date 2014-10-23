@@ -91,6 +91,7 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
             $('#user_modal').modal();
         }
         $rootScope.join = function (index,tid) {
+            console.log($rootScope.recentUnjoinedCampaigns[index],tid);
             Campaign.join({
                 campaignId: $rootScope.recentUnjoinedCampaigns[index]._id,
                 cid: $rootScope.recentUnjoinedCampaigns[index].cid,
@@ -119,7 +120,7 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
                 }
             });
         };
-        $rootScope.vote = function(campaignId) {
+        $rootScope.vote = function(campaignId,vote_status) {
             Campaign.vote(campaignId, vote_status, function (err) {
                 if (err) {
                     alertify.alert(err);

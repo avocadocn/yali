@@ -720,9 +720,9 @@ exports.responseProvoke = function (req, res) {
     next('forbidden');
     return;
   }
-  var competition_id = req.body.competition_id;
+  var campaignId = req.body.campaignId;
   Campaign.findOne({
-      '_id' : competition_id
+      '_id' : campaignId
     }).populate('team').exec(
   function (err, campaign) {
     if(campaign.camp[1].id!=req.params.teamId){
@@ -746,7 +746,7 @@ exports.responseProvoke = function (req, res) {
       }
       else{
         var rst = campaign.team;
-        push.campaign(competition_id);
+        push.campaign(campaignId);
         if(req.body.responseStatus){
           GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
             groupMessage.message_type = 5;
