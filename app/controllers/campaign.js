@@ -1566,7 +1566,7 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   campaign.member_max = basicInfo.member_max ? basicInfo.member_max : 0;
   campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.end_time;
   campaign.active = true;
-  campaign.campaign_mold = basicInfo.campaign_mold
+  campaign.campaign_mold = basicInfo.campaign_mold?basicInfo.campaign_mold:'其它';//以防万一
   if(basicInfo.tags&&basicInfo.tags.length>0)
     campaign.tags = basicInfo.tags;
   if(providerInfo.confirm_status==false){

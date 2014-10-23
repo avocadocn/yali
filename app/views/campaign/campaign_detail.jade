@@ -86,10 +86,11 @@ block contentExt
                 p.text(ng-show="!editing")
                   span.sub_title 报名截止时间:
                   span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
+
               .deadline.text.editing(ng-show="editing")
                 span.sub_title.line_text 报名截止时间:
                 .input-group.date.form_datetime#deadline
-                  input(type="text" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                  input(type="text" ng-init="campaignData.deadline='#{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}'" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
                 span.line_text 如果不选，默认为活动结束停止报名
@@ -204,5 +205,6 @@ append footExt
         language: 'zh-CN',
         startDate: new Date(),
         pickerPosition: "top-left"
+        //- setEndDate:#{campaign.end_time}
       });
     });

@@ -710,6 +710,12 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
                             $scope.recommand_tags = data;
                         }
                     });
+                    Campaign.getMolds('team',$rootScope.teamId,function(status,data){
+                        if(!status){
+                            console.log(data);
+                            $scope.mold = data[0].name;
+                        }
+                    });
                 }
             });
         }
@@ -952,17 +958,28 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
     $scope.provoke_select = function (index) {
         if(!index){//在自己队发挑战
             $scope.team_opposite = $scope.teams[$scope.selected_index]; 
-                Campaign.getTags('group',$rootScope.teamId,function(status,data){
-                    if(!status){
-                        $scope.recommand_tags = data;
-                    }
-                });
+            Campaign.getTags('group',$rootScope.teamId,function(status,data){
+                if(!status){
+                    $scope.recommand_tags = data;
+                }
+            });
+            Campaign.getMolds('team',$rootScope.teamId,function(status,data){
+                if(!status){
+                    console.log(data);
+                    $scope.mold = data[0].name;
+                }
+            });
         }
         else{//到对方队动
             $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
             Campaign.getTags('group',$scope.team_opposite._id,function(status,data){
                 if(!status){
                     $scope.recommand_tags = data;
+                }
+            });
+            Campaign.getMolds('team',$scope.team_opposite._id,function(status,data){
+                if(!status){
+                    $scope.mold = data[0].name;
                 }
             });
         }
@@ -990,7 +1007,8 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
                 deadline: $scope.deadline,
                 member_min : $scope.member_min,
                 member_max : $scope.member_max,
-                tags: $scope.tags?$scope.tags.split(','):[]
+                tags: $scope.tags?$scope.tags.split(','):[],
+                campaign_mold:$scope.mold
             };
             var callback = function(status,data){
                 if(!status){
