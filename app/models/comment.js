@@ -54,10 +54,12 @@ Comment.statics = {
    * @param {Date} pageStartDate 该页第一个评论的createDate
    * @param {Function} callback callback(err, comments, nextStartDate)
    */
-  getComments: function (hostData, pageStartDate, callback) {
+  getComments: function (hostData, pageStartDate, num, callback) {
     var pageSize = 20;
     var hostType = hostData.hostType;
-
+    if(num){
+      pageSize = parseInt(num);
+    }
     // 兼容旧的数据, 现在只有campaign
     if (hostData.hostType === 'campaign_detail' || hostData.hostType === 'campaign') {
       hostType = { '$in': ['campaign', 'campaign_detail'] };

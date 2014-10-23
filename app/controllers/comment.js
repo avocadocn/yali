@@ -149,7 +149,7 @@ exports.getComment = function (req, res) {
   Comment.getComments({
     hostType: req.params.commentType,
     hostId: req.params.hostId
-  }, req.body.create_date, function (err, comments, nextStartDate) {
+  }, req.body.create_date, req.body.num, function (err, comments, nextStartDate) {
     setDeleteAuth({
       host_type: req.params.commentType,
       host_id: req.params.hostId,

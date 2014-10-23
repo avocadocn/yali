@@ -100,6 +100,12 @@ block panel
           a.text.pull-right.clearLinkUnderline(href="/company/home#/team_info" target="_blank" ng-cloak)
             p 您还没有加入任何小队
             p 加入小队参与更多精彩的活动吧！
+    else
+      .user_campaigns_container.recommend_team(ng-if="recentJoinedCampaigns.length==0 && recentUnjoinedCampaigns.length==0" ng-cloak)
+        .campaign_head
+          a.text.pull-right.clearLinkUnderline
+            p 您还没有任何活动
+            p 联系队长组织精彩的活动吧！
     .user_campaigns_container.now_head(ng-if="nowCampaigns.length>0" ng-cloak)
       .campaign_head.left(ng-cloak)
         label {{nowCampaigns.length}} 个活动正在进行
@@ -147,7 +153,7 @@ block panel
           .comments
             //- a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
             a.clearLinkUnderline.pull-right.comment(ng-click="nowCampaign.showComment=true;") {{nowCampaign.comment_sum}}条评论
-            simple-comment(ng-if="nowCampaign.showComment" component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}")
+            simple-comment(ng-if="nowCampaign.showComment" component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" comment-num=3)
         //- a.pull-right(href="") 退出
     //- carousel(interval="5000")
     //-   slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)

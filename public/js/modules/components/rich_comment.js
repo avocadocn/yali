@@ -95,7 +95,6 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
 
         });
       };
-
       $http.get('/components/RichComment/id/' + $scope.componentId)
         .success(function (data) {
           if (data.result === 1) {
@@ -118,7 +117,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
                   $scope.pages.push(page);
                 }
               }
-            });
+            },undefined,$scope.commentNum);
           }
         })
         .error(function (data, status) {
@@ -283,7 +282,20 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
 
     }])
 
-
+  .directive('simpleComment', function () {
+    return {
+      restrict: 'E',
+      replace: true,
+      controller: 'RichCommentCtrl',
+      scope: {
+        componentId: '@',
+        photoAlbumId: '@',
+        allowPublish: '@',
+        commentNum:'@'
+      },
+      templateUrl: '/components/SimpleComment/template'
+    }
+  })
 
   .directive('richComment', function () {
     return {

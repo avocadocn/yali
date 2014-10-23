@@ -4,8 +4,8 @@ angular.module('donler')
 
   .factory('Comment', ['$http', function ($http) {
 
-    var get = function (type, id, callback, create_date) {
-      $http.post('/comment/pull/' + type + '/' + id, { create_date: create_date })
+    var get = function (type, id, callback, create_date, num) {
+      $http.post('/comment/pull/' + type + '/' + id, { create_date: create_date ,num: num})
         .success(function (data, status) {
           callback(null, data.comments, data.nextStartDate);
         })
