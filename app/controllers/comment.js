@@ -263,7 +263,19 @@ exports.reply = function (req, res, next) {
         });
         // 该回复已保存成功，所以不需要判断目标留言的回复数是否保存成功，都直接返回回复成功信息。
         // 如果计数偶然保存失败，再回复时还有机会校正。
-        return res.send({ result: 1, reply: reply });
+
+        setDeleteAuth({
+          host_type: 'comment',
+          host_id: comment._id,
+          user: req.user,
+          comments: [reply]
+        }, function (err) {
+          if (err) { console.log(err); }
+          // 设置删除权限失败依然算作回复成功，删除权设置成功都不影响回复是否成功，只影响页面是否有删除按钮
+          // 此时确实也已经回复成功了
+          return res.send({ result: 1, reply: reply });
+        })
+
       }
     });
   };

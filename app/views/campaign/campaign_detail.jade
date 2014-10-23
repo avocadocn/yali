@@ -14,7 +14,7 @@ block contentExt
           .component_head
             span.title #{campaign.theme}
             span.sub_title #{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}
-            if allow.edit && isActive
+            if allow.edit && isActive && !isEnd
               span.sub_title.right_title.operator(ng-click="toggleEdit()") 编辑
             if !isEnd && isActive
               span.sub_title.right_title.operator(ng-if="isJoin" ng-click="quit()") 退出
