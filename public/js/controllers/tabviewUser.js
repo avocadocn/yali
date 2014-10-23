@@ -185,6 +185,7 @@ tabViewUser.directive('masonry', function ($timeout) {
           $timeout(function () {
             elem.masonry('reloadItems');
             elem.masonry(options);
+            scope.reload = false;
           });
         }
       });
@@ -242,6 +243,9 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
         console.log(e);
       }
     });
+    $scope.reloadM = function(){
+        $scope.is_reload = true;
+    }
   }
 ]);
 

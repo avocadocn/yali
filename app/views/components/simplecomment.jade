@@ -4,7 +4,8 @@
       .comment_control
         .user_photo
           img(src="#{global_user.photo}/30/30")
-        input.content(name="content" ng-model="new_comment.text" placeholder="输入内容请控制在140字以内" maxlength=140 required)
+        .input_container
+          input.content(name="content" ng-model="new_comment.text" placeholder="输入内容请控制在140字以内" maxlength=140 required)
         label.img_selector(for="photos")
           img.upload_img(src="/img/upload_img.png")
           input.hidden#photos(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
@@ -57,3 +58,4 @@
             span &nbsp;
             a(ng-if="reply.delete_permission" ng-click="removeReply(comment, $index)")
               span 删除
+  include ../partials/report_modal

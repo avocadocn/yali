@@ -2638,13 +2638,16 @@ input.ng-invalid.ng-dirty {
   height: 65px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips {
-  height: 45px;
+  height: 50px;
   -moz-box-shadow: 0 3px 3px #f4f4f4;
 /* 老的 Firefox */
   box-shadow: 0 3px 3px #f4f4f4;
 }
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .join_sign {
+  margin: 15px 20px;
+}
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .campaign_label {
-  line-height: 24px;
+  line-height: 30px;
   font-size: 14px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box {

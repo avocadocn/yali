@@ -2,12 +2,11 @@
 
 angular.module('donler.components.richComment', ['angularFileUpload'])
 
-  .controller('RichCommentCtrl', ['$scope', '$http', '$element', 'Comment', 'Report', 'FileUploader',
-    function ($scope, $http, $element, Comment, Report, FileUploader) {
+  .controller('RichCommentCtrl', ['$scope', '$http', '$element','$timeout', 'Comment', 'Report', 'FileUploader',
+    function ($scope, $http, $element, $timeout, Comment, Report, FileUploader) {
 
       $scope.pages = [];
       $scope.nowPage = 0;
-
       var CommentBox = function (args) {
 
         Object.defineProperty(this, 'photo_album_id', {
@@ -91,6 +90,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
               'delete_permission':true
             });
             $scope.new_comment.text = '';
+            if($scope.afterRender){
+              $timeout(function () {
+                $scope.afterRender();
+              });
+            }
           }
 
         });
@@ -115,6 +119,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
                     page.thisStartDate = $scope.comments[0].create_date;
                   }
                   $scope.pages.push(page);
+                }
+                if($scope.afterRender){
+                  $timeout(function () {
+                    $scope.afterRender();
+                  });
                 }
               }
             },undefined,$scope.commentNum);
@@ -179,6 +188,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             comment.reply_count++;
             comment.new_reply = "";
             form.$setPristine();
+            if($scope.afterRender){
+              $timeout(function () {
+                $scope.afterRender();
+              });
+            }
           }
         });
       };
@@ -193,6 +207,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
                   alertify.alert('删除失败，请重试。');
                 } else {
                   $scope.comments.splice(index,1);
+                  if($scope.afterRender){
+                    $timeout(function () {
+                      $scope.afterRender();
+                    });
+                  }
                 }
               });
             }
@@ -213,6 +232,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
               } else {
                 comment.replies.splice(index, 1);
                 comment.reply_count--;
+
               }
             });
           }
@@ -291,7 +311,8 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         componentId: '@',
         photoAlbumId: '@',
         allowPublish: '@',
-        commentNum:'@'
+        commentNum:'@',
+        afterRender:'&'
       },
       templateUrl: '/components/SimpleComment/template'
     }
