@@ -5,19 +5,19 @@ var authorization = require('./middlewares/authorization');
 
 module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:pageId/:campaignType/:campaignPage/:campaignBlock', authorization.listAuthorize, campaign.getCampaigns);
-  app.post('/campaign/cancel/:campaignId', authorization.campaginAuthorize, campaign.cancelCampaign);
-  app.get('/campaign/detail/:campaignId', authorization.campaginAuthorize, campaign.renderCampaignDetail);
-  app.post('/campaign/edit/:campaignId', authorization.campaginAuthorize, campaign.editCampaign);
+  app.post('/campaign/cancel/:campaignId', campaign.cancelCampaign);
+  app.get('/campaign/detail/:campaignId', campaign.addRichCommentIfNot, campaign.renderCampaignDetail);
+  app.post('/campaign/edit/:campaignId', campaign.editCampaign);
 
   app.get('/campaign/team/calendar/:teamId', campaign.getTeamCampaigns);
-
+  app.get('/campaign/getMolds/:hostType/:hostId',campaign.getMolds);
       //加入、退出活动
-  app.post('/campaign/joinCampaign/:campaignId', authorization.campaginAuthorize, campaign.joinCampaign);
-  app.post('/campaign/quitCampaign/:campaignId', authorization.campaginAuthorize, campaign.quitCampaign);
-  app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
+  app.post('/campaign/joinCampaign/:campaignId', campaign.joinCampaign);
+  app.post('/campaign/quitCampaign/:campaignId', campaign.quitCampaign);
+  // app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
 
 
-  app.get('/campaign/user/all/calendar/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForCalendar);
+  app.get('/campaign/user/all/calendar/:userId', campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
   
@@ -28,7 +28,6 @@ module.exports = function(app) {
   app.get('/campaign/user/recent/list/:userId', authorization.userAuthorize, campaign.getUserCampaignsForHome);
   //app
   app.get('/campaign/getCampaigns/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignDetail);
-  app.get('/campaign/getCampaignCommentsAndPhotos/:campaignId/:userId/:appToken', authorization.appToken, authorization.campaginAuthorize, campaign.getCampaignCommentsAndPhotos);
   app.get('/campaign/user/all/applist/:page/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserAllCampaignsForAppList);
   app.get('/campaign/user/joined/applist/:page/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserJoinedCampaignsForAppList);
   app.get('/campaign/user/all/appcalendar/:userId/:appToken', authorization.appToken, authorization.userAuthorize, campaign.getUserAllCampaignsForAppCalendar);

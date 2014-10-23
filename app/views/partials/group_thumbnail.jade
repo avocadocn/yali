@@ -1,23 +1,36 @@
 mixin group_thumbnail(teams)
   .dl_row.box_head
-    span.pull-left.head_title 我的小队(#{teams.length}个)
-    a.text.pull-right.clearLinkUnderline(href="/company/home#/team_info" ng-cloak) 添加更多 > 
-  .groups
+    span.pull-left.head_title 小队(#{teams.length}个)
+    a.text.pull-right.clearLinkUnderline(ng-click="groupShowFlag=!groupShowFlag" ng-cloak) {{groupShowFlag ?'收起' : '展开'}}
+  .groups(ng-if="!groupShowFlag")
     each team,i in teams
       if team.gid !=='0'
-        div.center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
-          if team.leader
-            span.group_leader
+        .center-block.group(data-toggle="tooltip" title="#{team.name}" ng-show="#{i}<14" ng-cloak)
+          a.center-block(href="/group/page/#{team._id}")
+            //-if team_class === 'leader'
+            //-.img_div
+            if team.leader
+              span.group_leader
+            img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
+  .groups(ng-if="groupShowFlag")
+    .group_label  管理的小队
+    each team,i in teams
+      if team.gid !=='0' && team.leader
+        .center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
+          a.center-block(href="/group/page/#{team._id}")
+            img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
+  .groups.secend(ng-if="groupShowFlag")
+    .group_label  参加的小队
+    each team,i in teams
+      if team.gid !=='0' && !team.leader
+        .center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
           a.center-block(href="/group/page/#{team._id}")
             //-if team_class === 'leader'
             //-.img_div
             img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
-            //- else
-            //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
-        //- div.center-block.clearfix.group(ng-if="#{i}>=4" ng-show='show[#{j}]' class=(team.leader==true)?'leader':'member' title="#{team.name}")
-        //-   a.center-block(href="/group/page/#{team._id}")
-        //-     //-if team_class === 'leader'
-        //-     img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
-        //-     //- else
-        //-     //-   img.center-block.size_48(ng-cloak src="#{team.logo}")
-        //-     //-这些if else 不知何用
+    .center-block.group(ng-cloak)
+      a.clearLinkUnderline.center-block(href="/company/home#/team_info")
+        //-if team_class === 'leader'
+        //-.img_div
+        .img.add_group.center-block.group_logo
+          span +

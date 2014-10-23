@@ -1,0 +1,282 @@
+.rich_comment .component_head {
+  height: 35px !important;
+  background-color: #97d7c6 !important;
+  padding-right: 15px !important;
+}
+.rich_comment .component_head .title {
+  font-size: 18px !important;
+  line-height: 35px !important;
+}
+.rich_comment .component_body {
+  padding: 0 !important;
+}
+.rich_comment .component_body .rich_comment_form {
+  padding: 20px;
+  padding-top: 40px;
+  border-bottom: 1px solid #eee;
+}
+.rich_comment .component_body .rich_comment_form .comment_control {
+  display: flex;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .user_photo {
+  width: 30px;
+  height: 30px;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .content {
+  padding: 6px 10px;
+  height: 30px;
+  color: #ccc;
+  background-color: #f3fcff;
+  border: solid 1px #d3dbe6;
+  font-size: 14px;
+  margin-left: 10px;
+  flex: 1;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .img_selector {
+  margin-left: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: #d2e1f1;
+  text-align: center;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .img_selector .upload_img {
+  margin-top: 7px;
+  width: 20px;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .publish {
+  margin-left: 5px;
+  padding: 0;
+  width: 70px;
+  height: 30px;
+  color: #fff;
+  background-color: #73a5dd;
+  font-size: 14px;
+  line-height: 30px;
+}
+.rich_comment .component_body .rich_comment_form .preview_box {
+  display: flex;
+  margin-top: 5px;
+  padding-left: 40px;
+}
+.rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap {
+  position: relative;
+  margin-right: 5px;
+}
+.rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap .close {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap:hover .close {
+  display: block;
+}
+.rich_comment .component_body .comment {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+}
+.rich_comment .component_body .comment .user_name {
+  text-decoration: none;
+  color: #b1c6d2;
+}
+.rich_comment .component_body .comment .comment_user_info {
+  padding-top: 3px;
+  width: 40px;
+}
+.rich_comment .component_body .comment .comment_user_info .user_photo {
+  width: 30px;
+  height: 30px;
+}
+.rich_comment .component_body .comment .comment_content_panel {
+  flex: 1;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content {
+  word-break: break-all;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
+  width: 350px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box .list_img {
+  display: block;
+  float: left;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  width: 100px;
+  height: 100px;
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
+  position: relative;
+  margin-bottom: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .preview_img {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 1;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_pre {
+  flex: 1;
+  cursor: w-resize;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_shrink {
+  flex: 2;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_next {
+  flex: 1;
+  cursor: e-resize;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav {
+  text-align: center;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav .thumb {
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_single_thumb {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .text {
+  font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .text {
+  margin-left: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply {
+  color: #73a5dd;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f7f7;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form {
+  margin-bottom: 15px;
+  display: flex;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form .reply_input {
+  flex: 1;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply {
+  margin: 8px 0;
+  word-break: break-all;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:before,
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:after {
+  display: table;
+  content: " ";
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:after {
+  clear: both;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .user_name {
+  margin-right: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .reply_date {
+  margin-left: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .reply_date {
+  font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator {
+  float: right;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .text {
+  margin-left: 5px;
+  font-size: 12px;
+}
+.rich_comment .component_body .pager {
+  margin: 0;
+  padding: 20px;
+}
+.rich_comment .component_body .pager .pagination {
+  margin: 0;
+}
+.rich_comment .component_body .pager .novisible {
+  opacity: 0;
+}
+.rich_comment .component_body .pager li>a {
+  border-radius: 0;
+}
+.score_board .component_head {
+  background-color: #333 !important;
+}
+.score_board .score_board_body {
+  display: flex;
+}
+.score_board .score_board_body .playing_team {
+  width: 56px;
+  text-align: center;
+}
+.score_board .score_board_body .playing_team .team_logo {
+  width: 56px;
+  height: 56px;
+}
+.score_board .score_board_body .playing_team .team_name {
+  font-size: 12px !important;
+  white-space: nowrap;
+  margin-top: 5px !important;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.score_board .score_board_body .team_score {
+  margin: 0 10px;
+  padding-top: 15px;
+  width: 62px;
+}
+.score_board .score_board_body .team_score .score_show {
+  display: flex;
+}
+.score_board .score_board_body .team_score .score_show .score {
+  width: 26px;
+  height: 26px;
+  background-color: #858585;
+  color: #fff;
+  line-height: 26px;
+  font-size: 18px;
+  text-align: center;
+}
+.score_board .score_board_body .team_score .score_show .score:first-child {
+  margin-right: 10px;
+}
+.score_board .score_board_body .team_score .editing {
+  display: flex;
+}
+.score_board .score_board_body .team_score .editing .score {
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  font-size: 18px;
+  text-align: center;
+}
+.score_board .score_board_body .team_score .editing .score:first-child {
+  margin-right: 10px;
+}
+.score_board .score_board_footer {
+  margin-top: 10px;
+  text-align: right;
+}
+.score_board .score_board_footer .operator {
+  margin-left: 5px;
+  color: #73a5dd;
+}

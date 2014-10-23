@@ -40,6 +40,9 @@ form(name="provoke_form" novalidate)
     .dl_modal_container.height_200(ng-show="showMapFlag")
       #competitionMapDetail.height_200
     .dl_modal_container
+      label.subtitle #{__("PROVOKE")}类型
+      input.dl-form-control(type="text" name="mold" ng-model="mold" disabled="true" required)
+    .dl_modal_container
       .dl_modal_container
         label.subtitle #{__("PROVOKE")}#{__("OPTIONAL")}#{__("OPTION")}
         span (设置人数、报名时间限制)

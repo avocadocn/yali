@@ -32,6 +32,8 @@ var Comment = new Schema({
   status:{
     type: String,
     enum:['active','delete','shield'],
+    // 此默认值是后来才加上的, 此处有大坑, 之前的数据没有默认值, 所以不能用status==active的查询条件
+    // 但在查询结果中, 如果没有此属性, mongoose会设为'active'
     default: 'active'
   },
   host_type:{
@@ -44,5 +46,48 @@ var Comment = new Schema({
     uri: String
   }]
 });
+
+Comment.statics = {
+  /**
+   * 获取评论内容
+   * @param {Object} hostData
+   * @param {Date} pageStartDate 该页第一个评论的createDate
+   * @param {Function} callback callback(err, comments, nextStartDate)
+   */
+  getComments: function (hostData, pageStartDate, num, callback) {
+    var pageSize = 20;
+    var hostType = hostData.hostType;
+    if(num){
+      pageSize = parseInt(num);
+    }
+    // 兼容旧的数据, 现在只有campaign
+    if (hostData.hostType === 'campaign_detail' || hostData.hostType === 'campaign') {
+      hostType = { '$in': ['campaign', 'campaign_detail'] };
+    }
+    this.find({
+      host_type: hostType,
+      host_id: hostData.hostId,
+      status: { '$ne': 'delete' },
+      create_date: {
+        '$lte': pageStartDate || Date.now()
+      }
+    })
+      .limit(pageSize + 1)
+      .sort('-create_date')
+      .exec()
+      .then(function (comments) {
+        if (comments.length === pageSize + 1) {
+          var nextComment = comments.pop();
+          callback(null, comments, nextComment.create_date);
+        } else {
+          callback(null, comments);
+        }
+      })
+      .then(null, function (err) {
+        callback(err);
+      });
+  }
+};
+
 
 mongoose.model('Comment', Comment);

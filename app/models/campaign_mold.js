@@ -10,8 +10,15 @@ var mongoose = require('mongoose'),
  * 映射表
  */
 var CampaignMold = new Schema({
-    name:String,
-    module:[String]
+    name:{//应与小组的类型名相同，如：羽毛球
+        type:String,
+        unique:true
+    },
+    module:[String],
+    enable: {
+        type: Boolean,
+        default: true
+    }
 });
 
 

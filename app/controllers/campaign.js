@@ -1,17 +1,20 @@
 'use strict';
 var mongoose = require('mongoose'),
-    User = mongoose.model('User'),
-    Campaign = mongoose.model('Campaign'),
-    Department = mongoose.model('Department'),
-    Comment = mongoose.model('Comment'),
-    PhotoAlbum = mongoose.model('PhotoAlbum'),
-    MessageContent = mongoose.model('MessageContent'),
-    model_helper = require('../helpers/model_helper'),
-    _ = require('lodash'),
-    moment = require('moment'),
-    async = require('async'),
-    photo_album_controller = require('./photoAlbum'),
-    systemConfig = require('../config/config');
+  User = mongoose.model('User'),
+  Campaign = mongoose.model('Campaign'),
+  Department = mongoose.model('Department'),
+  Comment = mongoose.model('Comment'),
+  PhotoAlbum = mongoose.model('PhotoAlbum'),
+  MessageContent = mongoose.model('MessageContent'),
+  CampaignMold = mongoose.model('CampaignMold'),
+  CompanyGroup = mongoose.model('CompanyGroup'),
+  model_helper = require('../helpers/model_helper'),
+  _ = require('lodash'),
+  moment = require('moment'),
+  async = require('async'),
+  photo_album_controller = require('./photoAlbum'),
+  auth = require('../services/auth'),
+  systemConfig = require('../config/config');
 var pageSize = 100;
 var blockSize = 20;
 
@@ -23,7 +26,7 @@ var blockSize = 20;
  */
 var getTeamAllCampaigns = function(team_id, callback) {
   Campaign
-  .find({ 'team': team_id, 'active': true })
+  .find({ 'tid': team_id, 'active': true })
   .sort('start_time')
   .exec()
   .then(function(campaigns) {
@@ -40,7 +43,7 @@ var getTeamAllCampaigns = function(team_id, callback) {
  * @param  {Object}   user       mongoose.model('User'), example:req.user
  * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
  * @param  {Object}   _query 包括from和to分别为活动的开始和结束时间
- * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 出错或没有找到活动则campaigns为[]
  */
 var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
   var team_ids = [];
@@ -48,17 +51,12 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
     team_ids.push(user.team[i]._id);
   }
   var options = {
-    '$or': [
-      {
-        'cid': user.cid,
-        'team': { '$size': 0 }
-      },
-      {
-        'cid': user.cid,
-        'team': { '$in': team_ids }
-      }
+    '$or':[
+      {'tid': {'$in':team_ids}},
+      {'campaign_type':1}
     ],
-    'active': true
+    'active': true,
+    'confirm_status':true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
@@ -68,9 +66,6 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
     options.end_time = { '$gte': new Date(parseInt(_query.from)) };
   }
   var query = Campaign.find(options).sort('start_time');
-  if (isCalendar === false) {
-    query = query.populate('team').populate('cid');
-  }
 
   query
   .exec()
@@ -88,7 +83,7 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
  * @param  {Object}   user       mongoose.model('User'), example:req.user
  * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
  * @param  {Object}   _query 包括from和to分别为活动的开始和结束时间
- * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 出错或没有找到活动则campaigns为[]
  */
 var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
   var team_ids = [];
@@ -97,8 +92,9 @@ var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
   }
   var options = {
     'cid': user.cid,
-    '$or': [{ 'member.uid': user._id }, { 'camp.member.uid': user._id }],
-    'active': true
+    'campaign_unit.member._id': user._id,
+    'active': true,
+    'confirm_status':true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
@@ -108,9 +104,6 @@ var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
     options.end_time = { '$gte': new Date(parseInt(_query.from)) };
   }
   var query = Campaign.find(options).sort('start_time');
-  if (isCalendar === false) {
-    query = query.populate('team').populate('cid');
-  }
 
   query
   .exec()
@@ -128,7 +121,7 @@ var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
  * @param  {Object}   user       mongoose.model('User'), example:req.user
  * @param  {Boolean}  isCalendar 如果是true，则为日历视图获取，包括已结束的活动，否则则为了列表视图获取，不包括结束的活动
  * @param  {Object}   _query 包括from和to分别为活动的开始和结束时间
- * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 如果isCalendar设为false, 则populate(team, cid), 出错或没有找到活动则campaigns为[]
+ * @param  {Function} callback   callback(campaigns), campaigns为mongoose.model('Campaign'), 出错或没有找到活动则campaigns为[]
  */
 var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
   var team_ids = [];
@@ -136,21 +129,15 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
     team_ids.push(user.team[i]._id);
   }
   var options = {
-    '$or': [
-      {
-        'cid': user.cid,
-        'team': { '$size': 0 }
-      },
-      {
-        'cid': user.cid,
-        'team': { '$in': team_ids }
-      }
+    '$or':[
+      {'tid': {'$in':team_ids}},
+      {'campaign_type':1}
     ],
     '$nor': [
-      { 'member.uid': user._id },
-      { 'camp.member.uid': user._id }
+      { 'campaign_unit.member._id': user._id }
     ],
-    'active': true
+    'active': true,
+    'confirm_status':true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
@@ -160,9 +147,6 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
     options.end_time = { '$gte': new Date(parseInt(_query.from)) };
   }
   var query = Campaign.find(options).sort('start_time');
-  if (isCalendar === false) {
-    query = query.populate('team').populate('cid');
-  }
 
   query
   .exec()
@@ -184,7 +168,6 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
 var formatCampaignForCalendar = function(user, campaigns) {
   var calendarCampaigns = [];
   campaigns.forEach(function(campaign) {
-
     // 公司活动
     if (campaign.campaign_type === 1) {
       var logo_owner_id = campaign.cid[0];
@@ -193,7 +176,7 @@ var formatCampaignForCalendar = function(user, campaigns) {
       // 挑战或比赛
       var logo_owner_id;
       for (var i = 0, teams = user.team; i < teams.length; i++) {
-        if (campaign.team.indexOf(teams[i]._id) !== -1) {
+        if (campaign.tid.indexOf(teams[i]._id) !== -1) {
           logo_owner_id = teams[i]._id;
           var logo = '/logo/group/' + logo_owner_id + '/47/47';
           break;
@@ -201,31 +184,9 @@ var formatCampaignForCalendar = function(user, campaigns) {
       }
     }
 
-
-    // var count = 0;
-    // if (campaign.member) {
-    //   count = campaign.member.length;
-    // }
-
     var is_joined = false;
-    // 活动
-    if (campaign.campaign_type < 4 || campaign.campaign_type ===6) {
-      for (var i = 0, members = campaign.member; i < members.length; i++) {
-        if (user._id.toString() === members[i].uid) {
-          is_joined = true;
-          break;
-        }
-      }
-    }
-
-    // 比赛
-    else {
-      for (var i = 0; i < campaign.camp.length; i++) {
-        if(model_helper.arrayObjectIndexOf(campaign.camp[i].member,user._id,'uid')>-1){
-          is_joined = true;
-          break;
-        }
-      }
+    if(model_helper.arrayObjectIndexOf(campaign.members,user._id,'_id')>-1){
+      is_joined = true;
     }
 
     calendarCampaigns.push({
@@ -236,14 +197,20 @@ var formatCampaignForCalendar = function(user, campaigns) {
       'class': 'event-info',
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
-      //'count': count,
       'is_joined': is_joined,
       'location':campaign.location
     });
   });
   return calendarCampaigns;
 }
-
+/**
+ * 格式化距离开始时间还有多久
+ * @param  {Date} start_time 活动开始时间
+ * @param  {Date} end_time   活动结束时间
+ * @return {Object}          start_flag:活动是否已经开始,
+                              remind_text:提示文字,
+                              start_time_text: 距离开始的时间
+ */
 var formatTime = function(start_time,end_time){
   var remind_text, start_time_text,start_flag;
   var now = new Date();
@@ -296,7 +263,38 @@ var formatTime = function(start_time,end_time){
             start_time_text: start_time_text
           }
 }
+/**
+ * 格式化两个时间距离还有多久
+ * @param  {Date} start_time 开始时间
+ * @param  {Date} end_time   结束时间
+ * @return {String}          相差时间的中文格式化
+ */
+var formatrestTime = function(start_time,end_time){
+  var restTime;
+  var temp_start_time = new Date(start_time);
+  var temp_end_time = new Date(end_time);
+  var during = moment.duration(moment(temp_end_time).diff(temp_start_time));
+  var years = Math.abs(during.years());
+  var months = Math.abs(during.months());
+  var days = Math.floor(Math.abs(during.asDays()));
+  var hours = Math.abs(during.hours());
+  var minutes = Math.abs(during.minutes());
+  var seconds = Math.abs(during.seconds());
 
+  if(days>=3){
+    restTime =  days + '天';
+  }
+  else if(days>=1){
+    restTime = days + '天' + (hours ? hours + '小时' : '') ;
+  }
+  else if(hours>=1){
+    restTime = hours + '小时'  + minutes + '分';
+  }
+  else{
+    restTime = (minutes ?  minutes + '分' : '' ) + seconds + '秒';
+  }
+  return restTime;
+}
 
 /**
  * 计算用户是否参加活动，计算活动所属的公司或组及获取其logo，生成开始时间的提示文字
@@ -421,102 +419,122 @@ var formatCampaignsForApp = function(user, campaigns, nowFlag) {
  * @return {[type]}          [description]
  */
 var formatCampaign = function(campaign,pageType,role,user,other){
-  var campaigns = [];
   var _other = other ? other :{};
+  var campaigns = [];
+  var a = new Date();
   campaign.forEach(function(_campaign,_index){
+    var ct = _campaign.campaign_type;
     var temp = {
       '_id':_campaign._id,
       'active':_campaign.active,
+      'confirm_status':_campaign.confirm_status,
       'theme':_campaign.theme,
-      'content':_campaign.content,
+      'content':_campaign.content.replace(/<\/?[^>]*>/g, ''),
       'member_max':_campaign.member_max,
       'location':_campaign.location,
       'start_time':_campaign.start_time,
       'end_time':_campaign.end_time,
       'deadline':_campaign.deadline,
-      'comment_sum':_campaign.comment_sum
+      'comment_sum':_campaign.comment_sum,
+      'join_flag':model_helper.arrayObjectIndexOf(_campaign.members,user._id,'_id')>-1?1:-1,
+      'due_flag':new Date()>_campaign.deadline ? 1 : 0,
+      'tags':_campaign.tags,
+      'campaign_mold':_campaign.mold,
+      'team':[]
     };
-    if(_campaign.campaign_type===1){//公司活动
+    if(ct===1){//公司活动
       temp.type='companycampaign';
-      temp.logo=_campaign.cid[0].info.logo;
-      temp.link = '/company/home/'+_campaign.cid[0]._id;
-      temp.name = _campaign.cid[0].info.name;
-      temp.cid = _campaign.cid[0]._id;
-      temp.cname=_campaign.cid[0].info.name;
-      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
-      if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
-        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
-          temp.join_flag = 1;
-        }
-        else{
-          temp.join_flag = -1;
-        }
-      }
+      temp.logo=_campaign.campaign_unit[0].company.logo;
+      temp.link = '/company/home/'+_campaign.cid[0];
+      temp.name = _campaign.campaign_unit[0].company.name;
+      temp.cid = _campaign.campaign_unit[0].company._id;
+      temp.cname=_campaign.campaign_unit[0].company.name;
+      temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
     }
-    else if(_campaign.campaign_type===2 || _campaign.campaign_type===3){//小队活动
+    else if(ct===2 || ct===3){//小队活动
       temp.type='teamcampaign';
-      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
-      temp.logo=_campaign.team[0].logo;
-      temp.link = '/group/page/'+_campaign.team[0]._id;
-      temp.name=_campaign.team[0].name;
-      temp.team_id = [{'_id':_campaign.team[0]._id}];
-      if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
-        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
-          temp.join_flag = 1;
-        }
-        else{
-          temp.join_flag = -1;
-        }
-      }
     }
-    else if (_campaign.campaign_type === 6 || _campaign.campaign_type === 8) {
+    else if (ct === 6 || ct === 8) {//部门
       temp.type = 'departmentcampaign';
-      temp.member_num = _campaign.member.length >0 ? _campaign.member.length : 0;
-      temp.logo=_campaign.team[0].logo;
-      temp.link = '/group/page/'+_campaign.team[0]._id;
-      temp.name = _campaign.team[0].name;
-      temp.team_id = [{'_id':_campaign.team[0]._id}];
-      if(new Date()<_campaign.deadline && (pageType==='user'&&role ==='OWNER' || pageType==='team'&&(role ==='LEADER' ||role ==='MEMBER' ) || pageType==='company'&&role ==='EMPLOYEE')){
-        if(model_helper.arrayObjectIndexOf(_campaign.member,user._id,'uid')>-1){
-          temp.join_flag = 1;
-        }
-        else{
-          temp.join_flag = -1;
+    }
+    if(ct===2||ct===3||ct===6||ct===8) {
+      temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
+      temp.logo=_campaign.campaign_unit[0].team.logo;
+      temp.link = '/group/page/'+_campaign.campaign_unit[0].team._id;
+      temp.name=_campaign.campaign_unit[0].team.name;
+      for(var i =0;i<_campaign.campaign_unit.length;i++){
+        if(model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id')>-1){//这个unit是否为user参加的小队
+          temp.team.push(i);
         }
       }
     }
-    else{
+    else if(ct!==1) {//挑战
       temp.type = 'provoke';
       temp.join_flag = 0;
-      temp.team_id = [];
-      _campaign.camp.forEach(function(camp){
-        if(model_helper.arrayObjectIndexOf(camp.member,user._id,'uid')>-1){//user在这个camp的member里
-          temp.join_flag = 1;
-        }
-        for(var i = 0; i<user.team.length; i++){//遍历得出这个camp是否为user参加的小队
-          if(camp.id.toString() == user.team[i]._id.toString()){
-            temp.team_id.push({'_id':camp.id,'name':camp.tname,'logo':camp.logo});
-            temp.logo=camp.logo;
-            temp.name = camp.tname;
-            temp.link='/group/page/'+camp.id.toString();
+      temp.member_num = _campaign.members.length >0 ? _campaign.members.length : 0;
+      temp.logo=_campaign.campaign_unit[0].team.logo;
+      temp.link = '/group/page/'+_campaign.campaign_unit[0].team._id;
+      temp.name=_campaign.campaign_unit[0].team.name;
+      temp.leader =[];
+      for(var i =0;i<_campaign.campaign_unit.length;i++){
+        var _index = model_helper.arrayObjectIndexOf(user.team,_campaign.campaign_unit[i].team._id,'_id');
+        if(_index>-1){//这个unit是否为user参加的小队
+          temp.team.push(i);
+          if(user.team[_index].leader){
+            temp.leader.push(i);
           }
-        };
-      })
-
+        }
+      }
     }
     if(temp.type != 'provoke' && pageType==='team'&&(role ==='LEADER' ||role ==='HR' ) || pageType==='company'&&role ==='HR'){
       temp.close_flag=true;
     }
     if(_other.photoFlag){
       temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
-      temp.camp = _campaign.camp;
+      // temp.camp = _campaign.camp;//...
     }
+    //???-M
+    // if(_other.unConfirm){
+    //   temp.voteFlag = false;
+    // }
     if(_other.nowFlag){
       var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
       temp.start_flag = _formatTime.start_flag;
       temp.remind_text =_formatTime.remind_text;
       temp.start_time_text = _formatTime.start_time_text;
     }
+    else{
+      temp.deadline_rest = formatrestTime(new Date(),_campaign.deadline);
+    }
+    if(_other.unConfirm || _other.nowFlag){
+      var memberIds = [];
+      _campaign.members.forEach(function (member) {
+        memberIds.push(member._id);
+      });
+      temp.components = _campaign.formatComponents();
+      var allow = auth(user, {
+        companies: _campaign.cid,
+        teams: _campaign.tid,
+        users: memberIds
+      }, [
+        'publishComment'
+      ]);
+      temp.allow = allow;
+    }
+    temp.campaign_unit =[];
+    _campaign.campaign_unit.forEach(function(_campaign_unit){
+      temp.campaign_unit.push({
+        team:{
+          _id:_campaign_unit.team._id,
+          name:_campaign_unit.team.name,
+          logo:_campaign_unit.team.logo
+        },
+        member: _campaign_unit.member
+      });
+      // if(_other.unConfirm){
+      //   temp.voteFlag = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,user._id,'_id')>-1;
+      // }
+    });
     campaigns.push(temp);
   });
   return campaigns;
@@ -541,10 +559,10 @@ exports.getCampaigns = function(req, res) {
       option.campaign_type = 1;
     }
     else if(campaignType==='team') {
-      option.campaign_type = {'$in':[2,3]};
+      option.campaign_type = {'$in':[2,3,4,5,7]};//4?5?7?
     }
     else if(campaignType==='department'){
-      option.campaign_type = {'$in':[6,8]};
+      option.campaign_type = {'$in':[6,8]};//9?
     }
     else if(req.role ==='EMPLOYEE')  {
       var team_ids = [];
@@ -552,45 +570,44 @@ exports.getCampaigns = function(req, res) {
         team_ids.push(req.user.team[i]._id.toString());
       }
       if(campaignType==='selected') {
-        option.team={'$in':team_ids};
+        option.tid={'$in':team_ids};
       }
       else if(campaignType==='unselected') {
-        option.team = {'$nin':team_ids};
+        option.tid = {'$nin':team_ids};
         option.campaign_type = 2;
       }
     }
     Campaign
-      .find(option)
-      .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
-      .limit(blockSize)
-      .populate('team').populate('cid')
-      .sort({'start_time':-1})
-      .exec()
-      .then(function(campaign) {
-        if(campaign===[]){
-          return res.send({ result: 0, msg:'查找活动失败' });
-        }
-        else{
-          return res.send({ result: 1, role:req.role, campaignLength: campaign.length, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
-        }
-      })
-      .then(null, function(err) {
-        console.log(err);
-        return res.send(400);
-      });
+    .find(option)
+    .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
+    .limit(blockSize)
+    .sort({'start_time':-1})
+    .exec()
+    .then(function(campaign) {
+      if(campaign===[]){
+        return res.send({ result: 0, msg:'查找活动失败' });
+      }
+      else{
+        return res.send({ result: 1, role:req.role, campaignLength: campaign.length, campaigns: formatCampaign(campaign,pageType,req.role,req.user) });
+      }
+    })
+    .then(null, function(err) {
+      console.log(err);
+      return res.send(400);
+    });
   }
   else if(pageType==='team' && campaignType==='all') {
     option={
       'active':true,
       'finish':false,
-      'team':pageId,
+      'tid':pageId,
       'cid':req.companyGroup.cid
     }
     Campaign
     .find(option)
     .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
     .limit(blockSize)
-    .populate('team').populate('cid')
+    // .populate('team').populate('cid')
     .sort({'start_time':-1})
     .exec()
     .then(function(campaign) {
@@ -617,13 +634,13 @@ exports.getCampaigns = function(req, res) {
           'active':true,
           'finish':false,
           'cid': req.profile.cid,
-          '$or':[{'team':{'$in':team_ids}},{'team':{'$size':0}}]
+          '$or':[{'tid':{'$in':team_ids}},{'tid':{'$size':0}}]
         }
         Campaign
         .find(option)
         .skip(req.params.campaignPage*pageSize+req.params.campaignBlock*blockSize)
         .limit(blockSize)
-        .populate('team').populate('cid')
+        // .populate('team').populate('cid')
         .sort({'start_time':1})
         .exec()
         .then(function(campaign) {
@@ -648,59 +665,72 @@ exports.getCampaigns = function(req, res) {
 }
 
 exports.cancelCampaign = function(req, res){
-  Campaign
-    .findOne({'_id':req.body.campaign_id})
-    .exec()
-    .then(function(campaign) {
-      if(!campaign){
-        return res.send({ result: 0, msg:'查找活动失败' });
-      }
-      else{
-        if (req.role === "HR" || campaign.campaign_type != 3 && req.role === "LEADER" ){
-          campaign.active=false;
-          campaign.save(function(err){
-            if(!err){
-              return res.send({ result: 1, msg:'活动关闭成功' });
-            }
-          });
-        }
-        else{
-          return res.send({ result: 0, msg:'您没有权限关闭该活动' });
-        }
-      }
-    })
-    .then(null, function(err) {
-      console.log(err);
-      res.send(400);
-    });
-}
+  var campaign = req.campaign;
+
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid
+  }, ['cancelCampaign']);
+  if (!allow.cancelCampaign) {
+    return res.send(403);
+  }
+
+  campaign.active = false;
+  campaign.save(function (err) {
+    if (err) {
+      return res.send({ result: 0, msg: '关闭活动失败' });
+    } else {
+      return res.send({ result: 1, msg: '关闭活动成功' });
+    }
+  });
+};
+
 exports.editCampaign = function(req, res){
-  Campaign
-    .findOne({'_id':req.params.campaignId})
-    .exec()
-    .then(function(campaign) {
-      if(!campaign){
-        return res.send({ result: 0, msg:'查找活动失败' });
-      }
-      else{
-        if (req.role === "HR" || campaign.campaign_type != 3 && req.role === "LEADER" ){
-          campaign.content=req.body.content;
-          campaign.save(function(err){
-            if(!err){
-              return res.send({ result: 1, msg:'活动编辑成功' });
-            }
-          });
-        }
-        else{
-          return res.send({ result: 0, msg:'您没有权限编辑该活动' });
-        }
-      }
-    })
-    .then(null, function(err) {
-      console.log(err);
-      res.send(400);
-    });
-}
+  var campaign = req.campaign;
+
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid,
+  }, [
+    'editTeamCampaign',
+    'editCompanyCampaign'
+  ]);
+
+  if (campaign.type === 1) {
+    if (!allow.editCompanyCampaign) {
+      return res.send(403);
+    }
+  } else {
+    if (!allow.editTeamCampaign) {
+      return res.send(403);
+    }
+  }
+
+  if (req.body.content) {
+    campaign.content=req.body.content;
+  }
+  var max = Number(req.body.member_max);
+  if (!isNaN(max)) {
+    campaign.member_max = max;
+  }
+  var min = Number(req.body.member_min);
+  if (!isNaN(min)) {
+    campaign.member_min = min;
+  }
+  if(req.body.tags) {
+    campaign.tags = req.body.tags.split(',');
+  }
+  if(req.body.deadline) {
+    campaign.deadline = req.body.deadline;
+  }
+  campaign.save(function (err) {
+    if (err) {
+      return res.send({ result: 0, msg:'编辑活动失败，请重试' });
+    } else {
+      return res.send({ result: 1, msg:'活动编辑成功' });
+    }
+  });
+};
 
 
 exports.getUserCampaignsForHome = function(req, res) {
@@ -709,12 +739,12 @@ exports.getUserCampaignsForHome = function(req, res) {
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var serchCampaign = function(startSet, endSet, joinFlag, photoFlag, callback){
+  var searchCampaign = function(startSet, endSet, joinFlag, photoFlag, callback){
     var options = {
       'cid': req.user.cid,
-      'active': true
+      'active': true,
+      'confirm_status':true
     };
-    var _populate = 'team cid';
     var _sort;
     if(startSet){
       options.start_time = startSet;
@@ -722,48 +752,98 @@ exports.getUserCampaignsForHome = function(req, res) {
     if(endSet){
       options.end_time = endSet;
     }
-    if(photoFlag){
-      _populate+=' photo_album';
-    }
     if(joinFlag){
-      options['$or'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      options['campaign_unit.member._id'] = req.user._id ;
       _sort ='start_time';
     }
     else{
-      options['$nor'] = [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }];
+      //筛选出未参加的公司活动或小队活动
+      var teamIds = [];
+      for(var i = 0;i<req.user.team.length;i++){
+        teamIds.push(req.user.team[i]._id.toString());
+      }
+      options['$or']=[{'tid': {'$in':teamIds}},{'campaign_type':1}];
+      options['$nor'] = [{'campaign_unit.member._id':req.user._id}];
       _sort ='-create_time';
     }
-    Campaign
-    .find(options)
-    .sort(_sort)
-    .populate(_populate)
-    .exec()
+
+    var query = Campaign.find(options).sort(_sort);
+    if(photoFlag){
+      query = query.populate('photo_album');
+    }
+
+    query.exec()
     .then(function(campaigns){
       callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:photoFlag,nowFlag:joinFlag}));
+    })
+    .then(null,function(err){
+      console.log(err);
+      callback(null);
     });
   }
   async.series([
     function(callback){
-      serchCampaign({'$gte':now },undefined, false, false, callback);
+      searchCampaign({'$gte':now },undefined, false, false, callback);
     },//所有新活动的活动，（未参加）
     function(callback){
-      serchCampaign({ '$gte':now }, undefined, true, false, callback);
+      searchCampaign({ '$gte':now }, undefined, true, false, callback);
     },//马上开始的活动,（已参加）
     function(callback){
-      serchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
+      searchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
     },//正在进行的活动
+    function(callback){
+      searchCampaign(undefined,{'$lt':startTimeLimit,'$gte': now }, true, true, callback);
+    },//刚刚结束的活动
+    function(callback){
+      var teamIds = [];
+      for(var i = 0;i<req.user.team.length;i++){
+        teamIds.push(req.user.team[i]._id.toString());
+      }
+      var options = {
+        'active':true,
+        'confirm_status' : false,
+        'start_time' : { '$gte': now},
+        'campaign_type':{'$in':[4,5,7,9]},
+        'tid': {'$in':teamIds}
+      }
+      var query = Campaign.find(options).sort('-create_time');
+      query.exec()
+      .then(function(campaigns){
+        callback(null,formatCampaign(campaigns,'user',req.role,req.user,{unConfirm:true}));
+      })
+      .then(null,function(err){
+        console.log(err);
+        callback(null);
+      });
+    }//未确认的挑战
   ], function(err, values) {
     if(err){
       console.log(err);
       return res.send({ result: 0, campaigns: [] });
     }
     else{
-      return res.send({ result: 1, campaigns: values });
+      var _result = [values[0],values[1]];
+      if(values[2]){
+        _result.push(values[2]);
+      }
+      else{
+        _result.push(values[3]);
+      }
+      // console.log(values[4]);
+      if(values[4]){
+        _result[2] = values[4].concat(_result[2]);
+      }
+      return res.send({ result: 1, campaigns: _result });
     }
   });
 };
 exports.getUserAllCampaignsForCalendar = function(req, res) {
-  if (req.role === 'OWNER') {
+  var allow = auth(req.user,{
+    users:[req.params.userId]
+  },[
+    'getUserAllCampaignsForCalendar'
+  ]);
+  if(allow.getUserAllCampaignsForCalendar === true){
     getUserAllCampaigns(req.user, true, req.query, function(campaigns) {
       var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
       res.send({
@@ -837,11 +917,12 @@ exports.getUserNowCampaignsForAppList = function(req, res) {
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var serchCampaign = function(startSet, endSet, limit, sort, callback){
+  var searchCampaign = function(startSet, endSet, limit, sort, callback){
     var options = {
       'cid': req.user.cid,
       '$or': [{ 'member.uid': req.user._id }, { 'camp.member.uid': req.user._id }],
-      'active': true
+      'active': true,
+      'confirm_status':true
     };
     if(startSet){
       options.start_time = startSet;
@@ -863,13 +944,13 @@ exports.getUserNowCampaignsForAppList = function(req, res) {
   }
   async.series([
     function(callback){
-      serchCampaign({ '$lt': startTimeLimit,'$gte':now }, undefined, firstLength, 'start_time', callback);
+      searchCampaign({ '$lt': startTimeLimit,'$gte':now }, undefined, firstLength, 'start_time', callback);
     },//马上开始的1个活动
     function(callback){
-      serchCampaign({ '$lt': now},{'$gte':now }, twoLength, 'start_time', callback);
+      searchCampaign({ '$lt': now},{'$gte':now }, twoLength, 'start_time', callback);
     },//正在进行的6个活动
     function(callback){
-      serchCampaign(undefined,{ '$lt': now,'$gte': endTimeLimit}, threeLength, '-end_time', callback);
+      searchCampaign(undefined,{ '$lt': now,'$gte': endTimeLimit}, threeLength, '-end_time', callback);
     }//已经完成的3个活动
   ], function(err, values) {
     if(err){
@@ -1079,370 +1160,306 @@ exports.getUserAllCampaignsForAppCalendar = function(req, res) {
   });
 };
 
-exports.renderCampaignDetail = function(req, res) {
-  async.parallel([
-    function(callback){
-      Campaign
-      .findById(req.params.campaignId)
-      .populate('photo_album')
-      .populate('team')
-      .populate('cid')
-      .exec()
-      .then(function(campaign) {
-        callback(null,campaign);
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
-    },
-    function(callback){
-      MessageContent.find({'campaign_id':req.params.campaignId,'status':'undelete'}).sort('-post_date').exec().then(function(messageContent){
-        callback(null,messageContent);
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
-    }
-  ],
-  // optional callback
-  function(err, results){
-    // the results array will equal ['one','two'] even though
-    // the second function had a shorter timeout.
-    if(err){
-      return res.send(404);
-    }
-    var campaign = results[0];
-    if (!campaign) {
-      return res.send(404);
-    }
-    if(campaign.camp.length >= 2){
-      res.redirect("/competition/"+req.params.campaignId);
-    }else{
-      //join: 1已经参加，0报名人数已满，-1未参加
-      if((req.role ==='MEMBER' ||req.role ==='LEADER' ) && model_helper.arrayObjectIndexOf(campaign.member,req.user._id,'uid')>-1){
-        req.join = 1;
-      }
-      else if(campaign.member_max!==0 && campaign.member_max<=campaign.member.length){
-        req.join = 0
-      }
-      else{
-        req.join = -1;
-      }
 
-      var parent_name, parent_url;
-      if (campaign.team.length === 0 || campaign.campaign_type === 6) {
-        parent_name = campaign.cid[0].info.name;
-        parent_url = '/company/home';
-      }else {
-        parent_name = campaign.team[0].name;
-        parent_url = '/group/page/' + campaign.team[0]._id;
-      }
-      var links = [
-        {
-          text: parent_name,
-          url: parent_url
-        },
-        {
-          text: campaign.theme,
-          active: true
-        }
-      ];
-      var _formatMember = {};
-      var myteamLength = 0;
-      if(campaign.campaign_type==3){
-        for( var i = 0; i < campaign.team.length; i++ ){
-          var _index = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i]._id,'_id');
-          var _id = campaign.team[i]._id;
-          _formatMember[_id]= {
-            _id: _id,
-            name: campaign.team[i].name,
-            logo: campaign.team[i].logo,
-            leader: _index>-1&& req.user.team[_index].leader,
-            member_flag: _index>-1,
-            member:[]
-          };
-          if(_index>-1){
-            myteamLength++;
-          }
-        }
-                  console.log(campaign.member)
-        for(var j =0; j < campaign.member.length; j ++){
+exports.addRichCommentIfNot = function (req, res, next) {
+  var campaign = req.campaign;
+  if (!campaign.modularization) {
+    var RichComment = mongoose.model('RichComment');
 
-          var _id = campaign.member[j].team._id;
-          _formatMember[_id].member.push({
-            'uid' : campaign.member[j].uid,
-            'nickname' : campaign.member[j].nickname,
-            'photo' : campaign.member[j].photo,
-            'team' : campaign.member[j].team
-          });
-        }
-                    console.log(4)
-      }
-      moment.lang('zh-cn');
-      var _messageContent =[];
-      if(results[1]){
-        results[1].forEach(function(_message){
-          _messageContent.push({
-            content: _message.content,
-            post_date:_message.post_date,
-            sender: _message.sender[0]
-          });
-        });
-      }
-      return res.render('campaign/campaign_detail', {
-        over : campaign.deadline<new Date(),
-        join: req.join,
-        role:req.role,
-        can_join:req.canJoin,
-        user:{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo, 'team':req.user.team},
-        campaignLogo: campaign.team.length>0 ? campaign.team[0].logo:campaign.cid[0].info.logo,
-        campaign: campaign,
-        campaignMember:_formatMember,
-        myteamLength:myteamLength,
-        links: links,
-        photo_thumbnails: photo_album_controller.photoThumbnailList(campaign.photo_album, 4),
-        moment : moment,
-        messageContent : _messageContent
+    RichComment.establish(campaign, function (err, richComment) {
+      campaign.components.push({
+        name: 'RichComment',
+        _id: richComment._id
       });
-    }
+      campaign.modularization = true;
+      campaign.save(function (err) {
+        if (err) { next(err); }
+        else { next(); }
+      });
+    });
+
+  } else {
+    next();
+  }
+};
+
+exports.getOneNotice = function (req, res, next) {
+  MessageContent.find({
+    'campaign_id': campaign._id,
+    'status': 'undelete'
+  })
+    .sort('-post_date')
+    .limit(1)
+    .exec()
+    .then(function (messageContents) {
+      req.notice = messageContents[0];
+      next();
+    })
+    .then(null, function (err) {
+      console.log(err);
+      // 获取公告失败依然渲染活动页面
+      next();
+    });
+};
+
+exports.renderCampaignDetail = function (req, res) {
+  var campaign = req.campaign;
+  moment.lang('zh-cn');
+  // 权限判断
+  var memberIds = [];
+  campaign.members.forEach(function (member) {
+    memberIds.push(member._id);
   });
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid,
+    users: memberIds
+  }, [
+    'publishComment',
+    'setScoreBoardScore',
+    'confirmScoreBoardScore',
+    'editTeamCampaign',
+    'editCompanyCampaign'
+  ]);
+
+  // 公司活动
+  if (campaign.campaign_type === 1) {
+    allow.edit = allow.editCompanyCampaign;
+  } else {
+    allow.edit = allow.editTeamCampaign;
+  }
+
+  // 默认值，显示为公司活动的链接，以防以下判断会遗漏
+  var parentNode = {
+    text: campaign.campaign_unit[0].company.name,
+    url: '/company/home/' + campaign.campaign_unit[0].company._id
+  };
+
+  if (req.user.provider === 'user') {
+    // 个人
+    if (campaign.campaign_type !== 1) {
+      for (var i = 0; i < campaign.campaign_unit.length; i++) {
+        var unit = campaign.campaign_unit[i];
+        if (req.user.isTeamMember(unit.team._id)) {
+          parentNode = {
+            text: unit.team.name,
+            url: '/group/page/' + unit.team._id
+          };
+          break;
+        } else if (req.user.cid.toString() === unit.company._id.toString()) {
+          parentNode = {
+            text: unit.team.name,
+            url: '/group/page/' + unit.team._id
+          };
+        }
+      }
+    }
+  } else {
+    // 公司账号
+    if (campaign.campaign_type !== 1) {
+      for (var i = 0; i < campaign.campaign_unit.length; i++) {
+        var unit = campaign.campaign_unit[i];
+        if (req.user._id.toString() === unit.company._id.toString()) {
+          parentNode = {
+            text: unit.team.name,
+            url: '/group/page/' + unit.team._id
+          };
+          break;
+        }
+      }
+    }
+  }
+
+  var links = [
+    parentNode,
+    {
+      text: campaign.theme,
+      active: true
+    }
+  ];
+
+  var isJoin = Boolean(campaign.whichUnit(req.user._id));
+  var isStart = campaign.start_time < Date.now();
+  var isEnd = campaign.end_time < Date.now();
+  var isOneUnit = campaign.campaign_unit.length === 1;
+  var membersForCard = campaign.members.slice(0, 5);
+
+  // 视图辅助函数
+  var helper = {
+
+    // 活动已开始但没有结束
+    start: function (str) {
+      if (isStart && !isEnd) { return str; }
+      else { return ''; }
+    },
+
+    // 活动已结束
+    end: function (str) {
+      if (isEnd) { return str; }
+      else { return ''; }
+    },
+
+    // 是否是多个小队
+    multiUnit: function (str) {
+      if (campaign.campaign_unit.length > 2) {
+        return str;
+      } else {
+        return '';
+      }
+    }
+  };
+
+  res.render('campaign/campaign_detail', {
+    campaign: campaign,
+    components: campaign.formatComponents(),
+    over: campaign.deadline < Date.now(),
+    isStart: isStart,
+    isEnd: isEnd,
+    isJoin: isJoin,
+    isOneUnit: isOneUnit,
+    isActive: campaign.active,
+    membersForCard: membersForCard,
+    notice: req.notice,
+    moment: moment,
+    allow: allow,
+    helper: helper,
+    links: links
+  });
+
 
 };
 
 
 
 //员工参加活动
-//TODO 加入competition
 exports.joinCampaign = function (req, res) {
-  if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
+  var campaign = req.campaign;
+
+  if (campaign.campaign_type === 1) {
+    var allow = auth(req.user, {
+      companies: campaign.cid
+    }, ['joinCompanyCampaign']);
+    if (!allow.joinCompanyCampaign) {
+      return res.send(403);
+    }
+  } else {
+    var allow = auth(req.user, {
+      teams: campaign.tid
+    }, ['joinTeamCampaign']);
+    if (!allow.joinTeamCampaign) {
+      return res.send(403);
+    }
   }
-  var cid = req.user.cid.toString();
-  var uid = req.user._id.toString();
-  var campaign_id = req.body.campaign_id; //该活动的id
-  Campaign.findOne({
-    _id : campaign_id
-  },
-  function (err, campaign) {
-    if (!err && campaign) {
-      if(campaign.deadline<new Date){
-        return res.send({ result: 0, msg: '活动报名已经截止'});
-      }
-      var camp_length = campaign.camp.length;
-      //从campaign的member_quit里删除该员工信息
-      if(camp_length===0){//是活动
-        var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
-        if(member_index<0){
-          var member_quit_index = model_helper.arrayObjectIndexOf(campaign.member_quit,uid,'uid');
-          if(member_quit_index>-1){
-            campaign.member_quit.splice(member_quit_index,1);
-          }
-          //并在member里增加此人
-          var member_push = {
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo,
-            'team':req.body.join_team
-          };
-          campaign.member.push(member_push);
-        }
-        else{
-          return res.send({ result: 0, msg: '您已经参加该活动'});
-        }
-      }
-      else{
-        var tid = req.body.tid;
-        var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
-        if(camp_index==-1){
-           return res.send({ result: 0, msg: '请求错误'});
-        }
 
-        //已参加时提示
-        var member_index ;
-        for (var temp_camp_index=0;temp_camp_index<campaign.camp.length;temp_camp_index++){
-          member_index = model_helper.arrayObjectIndexOf(campaign.camp[temp_camp_index].member,uid,'uid');
-          if(member_index>-1){
-            return res.send({ result: 0, msg: '您已经参加该活动'});
-          }
-        }
+  var joinResult = campaign.join({
+    cid: req.body.cid,
+    tid: req.body.tid
+  }, req.user);
 
-        //从退出人员中删除
-        var member_quit_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member_quit,uid,'uid');
-        if(member_quit_index>-1){
-          campaign.camp[camp_index].member_quit.splice(member_quit_index,1);
-        }
-        //camp中增加此人
-        campaign.camp[camp_index].member.push({
-          'cid':cid,
-          'uid':uid,
-          'nickname':req.user.nickname,
-          'photo':req.user.photo,
-          'camp':camp_index===0?'A':'B',
-          'team':req.body.join_team
-        });
+  if (!joinResult.success) {
+    return res.send({ result: 0, msg: joinResult.msg });
+  } else {
+    campaign.save(function (err) {
+      if (err) {
+        console.log(err);
+        return res.send({ result: 0, msg: '参加失败，请重试' });
+      } else {
+        return res.send({ result: 1 });
       }
-      campaign.save(function (err) {
-        if(err) {
-          return res.send({ result: 0, msg: '保存错误'});
-        } else {
-          return res.send({ result: 1, msg: '退出活动成功',member:{
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo,
-            'team':req.body.join_team
-          }});
-        }
-      });
-    }
-    else {
-      return res.send({ result: 0, msg: '没有此活动'});
-    }
-  });
+    });
+  }
+
 };
 
 
 //员工退出活动
 exports.quitCampaign = function (req, res) {
-  if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
-  }
-  var cid = req.user.cid.toString();
-  var uid = req.user._id.toString();
-  var campaign_id = req.body.campaign_id; //该活动的id
-  Campaign.findOne({
-        _id : campaign_id
-    },
-  function (err, campaign) {
-    if (!err && campaign) {
-      if(campaign.end_time<new Date){
-        return res.send({ result: 0, msg: '活动已经结束'});
-      }
-      var camp_length = campaign.camp.length;
-      //从campaign里删除该员工信息
-      if(camp_length===0){
-        var member_index = model_helper.arrayObjectIndexOf(campaign.member,uid,'uid');
-        if(member_index>-1){
-          campaign.member.splice(member_index,1);
-          campaign.member_quit.push({
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo
-          });
-        }
-        else{
-          return res.send({ result: 0, msg: '您没有参加该活动'});
-        }
-      }
-      else{
-        var member_index ;
-        for (var camp_index=0;camp_index<campaign.camp.length;camp_index++){
-          member_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].member,uid,'uid');
-          if(member_index>-1){
-            campaign.camp[camp_index].member.splice(member_index,1);
-            campaign.member_quit.push({
-              'cid':cid,
-              'uid':uid,
-              'nickname':req.user.nickname,
-              'photo':req.user.photo
-            });
-            var formation_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].formation,uid,'uid');
-            if(formation_index>-1){
-              campaign.camp[camp_index].member.splice(formation_index,1);
-            }
-            break;
-          }
-        }
-        if(member_index<0){
-          return res.send({ result: 0, msg: '您没有参加该活动'});
-        }
-      }
-      campaign.save(function (err) {
-        if(err) {
-          return res.send(err);
-        } else {
-          return res.send({ result: 1, msg: '退出活动成功',member:{
-            'cid':cid,
-            'uid':uid,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo
-          }});
-        }
-      });
-    }
-    else {
-      return res.send({ result: 0, msg: '没有此活动'});
-    }
+  var campaign = req.campaign;
+
+  var uids = [];
+  campaign.members.forEach(function (member) {
+    uids.push(member._id);
   });
+  var allow = auth(req.user, {
+    users: uids
+  }, ['quitCampaign']);
+  if (!allow.quitCampaign) {
+    return res.send(403);
+  }
+
+  var quitResult = campaign.quit(req.user._id);
+  if (quitResult) {
+    campaign.save(function (err) {
+      if (err) {
+        res.send({ result: 0, msg: '退出活动失败，请重试。' });
+      } else {
+        res.send({ result: 1 });
+      }
+    });
+  } else {
+    res.send({ result: 0, msg: '退出活动失败，请重试。' });
+  }
 };
+
+
+
 //员工投票是否参加约战
 //记得要做重复投票检查 TODO
-exports.vote = function (req, res) {
-  if(req.role!=='MEMBER' && req.role!=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
-  }
-  var tid = req.body.tid;
-  var cid = req.user.cid;
-  var uid = req.user._id;
-  var aOr = req.body.aOr;
-  var value = 1;
-  var competition_id = req.body.competition_id;
+//vote 不要了=v=
+// exports.vote = function (req, res,next) {
+//   if(req.role!=='MEMBER' && req.role!=='LEADER'){
+//     res.status(403);
+//     next('forbidden');
+//     return;
+//   }
+//   var cid = req.user.cid;
+//   var uid = req.user._id;
+//   var aOr = req.body.aOr;
+//   var value = 1;
+//   var campaignId = req.body.campaignId;
 
-  Campaign.findOne({
-    '_id' : competition_id
-  },
-  function (err, campaign) {
-    if (campaign) {
+//   Campaign.findOne({
+//     '_id' : campaignId
+//   },
+//   function (err, campaign) {
+//     if (campaign) {
+//       campaign.campaign_unit.forEach(function(_campaign_unit){
+//         if(req.user.isTeamMember(_campaign_unit.team._id)){
+//           var positive_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,uid,'_id');
+//           var negative_index = model_helper.arrayObjectIndexOf(_campaign_unit.vote.negative_member,uid,'_id');
+//           if(aOr && negative_index > -1 || !aOr && positive_index > -1){
+//           }
+//           else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
+//             _campaign_unit.vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
+//             _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']-1;
+//           }
+//           else if(aOr && positive_index <0 || !aOr && negative_index <0){
+//             _campaign_unit.
+//               vote[aOr?'positive_member':'negative_member'].
+//                 push({
+//                       '_id':uid,
+//                       'nickname':req.user.nickname,
+//                       'photo':req.user.photo
+//                     });
+//            _campaign_unit.vote[aOr?'positive':'negative'] = _campaign_unit.vote[aOr?'positive':'negative']+1;
+//           }
+//         }
 
-      var camp_index = model_helper.arrayObjectIndexOf(campaign.camp,tid,'id');
-      var positive_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.positive_member,uid,'uid');
-      var negative_index = model_helper.arrayObjectIndexOf(campaign.camp[camp_index].vote.negative_member,uid,'uid');
-      if(aOr && negative_index > -1 || !aOr && positive_index > -1){
-        return res.send({result: 0, msg:'您已经投过票，无法再次投票'});
-      }
-      else if(aOr && positive_index > -1 || !aOr && negative_index > -1) {
-        campaign.camp[camp_index].vote[aOr?'positive_member':'negative_member'].splice(aOr?positive_index:negative_index,1);
-        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']-1;
-      }
-      else if(aOr && positive_index <0 || !aOr && negative_index <0){
-        campaign.camp[camp_index].
-          vote[aOr?'positive_member':'negative_member'].
-            push({
-                  'cid':cid,
-                  'uid':uid,
-                  'nickname':req.user.nickname,
-                  'photo':req.user.photo
-                });
-        campaign.camp[camp_index].vote[aOr?'positive':'negative'] = campaign.camp[camp_index].vote[aOr?'positive':'negative']+1;
-      }
-
-      campaign.save(function (err) {
-        if(err) {
-          return res.send({result: 0, msg:'投票发生错误'});
-        }
-        else{
-          return res.send({result: 1, msg:'成功',data:{
-              quit: aOr && positive_index <0 || !aOr && negative_index <0,
-              positive : campaign.camp[camp_index].vote.positive,
-              negative : campaign.camp[camp_index].vote.negative
-            }
-          });
-        }
-      });
-    } else {
-      console.log('没有此约战!');
-      return res.send({result: 0, msg:'没有此约战'});
-    }
-  });
-};
+//       });
+//       campaign.save(function (err) {
+//         if(err) {
+//           return res.send({result: 0, msg:'投票发生错误'});
+//         }
+//         else{
+//           return res.send({result: 1, msg:'成功'});
+//         }
+//       });
+//     } else {
+//       console.log('没有此约战!');
+//       return res.send({result: 0, msg:'没有此约战'});
+//     }
+//   });
+// };
 
 exports.getCampaignDetail = function(req, res, next) {
   Campaign
@@ -1462,97 +1479,136 @@ exports.getCampaignDetail = function(req, res, next) {
   });
 };
 
-
-/**
- * 合并评论和照片，并按时间排序
- * @param  {Array} comments 数组元素类型为mongoose.model('Comment')对应的Schema
- * @param  {Array} photos   数组元素类型为mongoose.model('PhotoAlbum')对应的Schema中的photo
- * @return {[type]}         合并后的数组
- */
-var combine = function(comments, photos) {
-  var photo_comments = [];
-
-  comments.forEach(function(comment) {
-    photo_comments.push({
-      content: comment.content,
-      publish_date: comment.create_date,
-      publish_user: {
-        _id: comment.poster._id,
-        name: comment.poster.nickname,
-        photo: comment.poster.photo
-      }
-    });
-  });
-
-  photos.forEach(function(photo) {
-    var photo_comment = {
-      photo: photo.uri,
-      publish_date: photo.upload_date,
-      publish_user: {
-        _id: photo.upload_user._id,
-        name: photo.upload_user.name
-      }
-    };
-    if (photo.upload_user.type === 'user') {
-      photo_comment.publish_user.photo = '/logo/user/' + photo.upload_user._id;
-    } else if (photo.upload_user.type === 'hr') {
-      photo_comment.publish_user.photo = '/logo/company/' + photo.upload_user._id;
+exports.getMolds = function(req, res){
+  CampaignMold.find(null,{name:1},function(err,molds){
+    if(err){
+      return res.send({'result':0,'msg':'获取活动类型失败!'});
     }
-    photo_comments.push(photo_comment)
-  });
-
-  photo_comments.sort(function(a, b) {
-    return a.publish_date - b.publish_date;
-  });
-
-  return photo_comments;
+    else{
+      if(req.params.hostType==='team'){
+        CompanyGroup.findOne({'_id':req.params.hostId},{'group_type':1},function(err,team){
+          if(err){
+            console.log(err);
+            return res.send({'result':0,'msg':'查找失败'});
+          }
+          else{
+            //把跟自己小组类型相同的mold换到第0个
+            for(var i=0;i<molds.length;i++){
+              if(molds[i].name===team.group_type){
+                if(i===0)
+                  break;
+                else{
+                  var temp = molds[0];
+                  molds[0]=molds[i];
+                  molds[i]=temp;
+                  break;
+                }
+              }
+            }
+            return res.send({'result':1,'molds':molds});
+          }
+        });
+      }
+      else{
+        return res.send({'result':1,'molds':molds});
+      }
+    }
+  })
 };
 
-exports.getCampaignCommentsAndPhotos = function(req, res) {
-  Campaign
-  .findById(req.params.campaignId)
-  .exec()
-  .then(function(campaign) {
-    if (!campaign) {
-      return res.send(404);
+//发活动接口
+exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
+//basicInfo: req.body,
+//providerInfo: for poster、campaign_type、campaignUnit、tid、cid etc
+//photoInfo: photo_album needed
+
+  //---basicInfo
+  var campaign = new Campaign();
+  campaign.theme = basicInfo.theme;//主题
+  campaign.content = basicInfo.content ? basicInfo.content : ''; //活动内容
+  campaign.location = basicInfo.location; //活动地点
+  campaign.start_time = basicInfo.start_time;
+  campaign.end_time = basicInfo.end_time;
+  campaign.member_min = basicInfo.member_min ? basicInfo.member_min : 0;
+  campaign.member_max = basicInfo.member_max ? basicInfo.member_max : 0;
+  campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.end_time;
+  campaign.active = true;
+  campaign.campaign_mold = basicInfo.campaign_mold?basicInfo.campaign_mold:'其它';//以防万一
+  if(basicInfo.tags&&basicInfo.tags.length>0)
+    campaign.tags = basicInfo.tags;
+  if(providerInfo.confirm_status==false){
+    campaign.confirm_status = false;
+  }
+  var _now = new Date();
+  if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {
+    callback(400,'活动的时间比现在更早');
+  }
+  else{
+    //---providerInfo
+    for (var attr in providerInfo) {
+      campaign[attr] = providerInfo[attr];
     }
-    Comment
-    .find({'host_id': campaign._id, 'status': {'$ne': 'delete'}})
-    .exec()
-    .then(function(comments) {
-      PhotoAlbum
-      .findById(campaign.photo_album)
-      .exec()
-      .then(function(photo_album) {
-        var photos = [];
-        if (photo_album) {
-          photos = photo_album.photos;
+
+    //---Photo
+    var photo_album = new PhotoAlbum();
+    for (var attr in photoInfo){
+      photo_album[attr]=photoInfo[attr];
+    }
+    photo_album.owner.model._id=campaign._id;
+
+    //---save
+
+    photo_album.save(function(err) {
+      if(err) callback(500,'保存相册失败');
+      campaign.photo_album = photo_album._id;
+
+      campaign.components = [];
+      campaign.modularization = true;
+      var componentNames = [];
+      CampaignMold.findOne({'name':campaign.campaign_mold},function(err,mold){
+        if(err) callback(500,'查找活动类型失败');
+        else{
+          componentNames = mold.module;
+          async.map(componentNames, function (componentName, asyncCallback) {
+            mongoose.model(componentName).establish(campaign, function (err, component) {
+              if (err) { asyncCallback(err); }
+              else {
+                campaign.components.push({
+                  name: componentName,
+                  _id: component._id
+                });
+                asyncCallback(null, component);
+              }
+            });
+          }, function (err, results) {
+            if (err) { callback(500, '创建活动组件失败'); }
+            else {
+              campaign.save(function(err) {
+                if(err) callback(500,'保存活动失败');
+                else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
+              });
+            }
+          });
         }
-        var photo_comments = combine(comments, photos);
-        res.send({ photo_comments: photo_comments });
-      })
-      .then(null, function(err) {
-        next(err);
-      })
-    })
-    .then(null, function(err) {
-      next(err);
-    })
-  })
-  .then(null, function(err) {
-    next(err);
-  })
+      });
+    });
+  }
 };
 
 exports.campaign = function(req, res, next, id){
   Campaign
-      .findOne({
-           _id: id
-      })
-      .exec(function(err, campaign) {
-          if (err) return next(err);
-          if (!campaign) return next(new Error('Failed to load Campaign ' + id));
-          req.campaign = campaign;
-          next();
-      });
-}
+    .findById(id)
+    .populate('photo_album')
+    .exec()
+    .then(function (campaign) {
+      if (!campaign) {
+        res.status(404);
+        return next('not found');
+      }
+      req.campaign = campaign;
+      next();
+    })
+    .then(null, function (err) {
+      next(err);
+    });
+};

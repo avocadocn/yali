@@ -1,4 +1,6 @@
 @require('variables')
+@require('components')
+
 
 html, body
   height 100%
@@ -61,6 +63,7 @@ textarea
   &:hover
     opacity 1
     text-decoration none
+
 .comment_right
   float right
   margin-right 10px
@@ -217,133 +220,6 @@ textarea
     .dl_mouse_hover
       display inline-block
 
-.rich_comment_box
-  width 100%
-  background-color #fff
-  border 1px solid #ddd
-  padding 10px 20px !important
-  margin-top 10px
-
-  .rich_comment_form
-    .comment_textarea
-      float none
-      height 60px
-      background-color contentBgColor
-      border-color contentBdColor
-      border-radius 0
-    .operator
-      margin-top 5px
-      .preview_box
-        margin-top 5px
-        .preview_img_wrap
-          position relative
-          float left
-          margin-right 5px
-          .close
-            display none
-            position absolute
-            top 0
-            right 0
-          &:hover
-            .close
-              display block
-
-  .comment
-    position relative
-    margin-top 20px
-    display flex
-
-    .comment_user_info
-      float left
-      max-width 50px
-      p
-        text-align center
-
-      .user_photo
-        width 50px
-        height 50px
-
-      .user_name
-        text-decoration none
-
-    .comment_content_panel
-      float left
-      margin-left 20px
-      flex 1
-
-      .comment_content
-        padding 10px
-        background-color contentBgColor
-        border solid 1px contentBdColor
-        min-height 50px
-        word-break break-all
-        overflow hidden
-        margin-bottom 4px
-
-        .comment_img_box
-          .img_list_box
-            width 350px
-            .list_img
-              display block
-              float left
-              margin-top 5px
-              margin-left 5px
-              width 100px
-              height 100px
-              background url("/img/loading.gif") center center no-repeat
-          .img_slider_box
-            .preview
-              position relative
-              margin-bottom 10px
-              .preview_img
-                background url("/img/loading.gif") center center no-repeat
-              .operator
-                position absolute
-                top 0
-                left 0
-                width 100%
-                height 100%
-                display flex
-                z-index 1
-                .img_pre
-                  flex 1
-                  cursor w-resize
-                .img_shrink
-                  flex 2
-                .img_next
-                  flex 1
-                  cursor e-resize
-            .nav
-              text-align center
-              .thumb
-                width 40px
-                height 40px
-                margin-right 5px
-                background url("/img/loading.gif") center center no-repeat
-          .img_single_thumb
-            background url("/img/loading.gif") center center no-repeat
-          .preview_img
-            background url("/img/loading.gif") center center no-repeat
-      .replies
-        margin-top 5px
-        padding 10px
-        background-color contentBgColor
-        .reply_form
-          margin-bottom 15px
-          display flex
-          .reply_input
-            flex 1
-        .reply
-          word-break break-all
-
-  .pager
-    .pagination
-      margin 0
-    .novisible
-      opacity 0
-    li>a
-      border-radius 0
-
 .triangle
     position absolute
     top 16px
@@ -407,22 +283,6 @@ textarea
     min-height 24px
 .dl_area
   margin-right 15px
-
-.dl-form-control
-  display block
-  width 100%
-  padding 6px 12px
-  font-size 14px
-  line-height 1.42857143
-  color #555
-  background-color #fff
-  background-image none
-  border 1px solid #ccc
-  border-radius 0
-  -webkit-box-shadow inset 0 1px 1px rgba(0,0,0,.075)
-  box-shadow inset 0 1px 1px rgba(0,0,0,.075)
-  -webkit-transition border-color ease-in-out .15s,box-shadow ease-in-out .15s
-  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
 
 .dl_tip
   float left
@@ -833,21 +693,35 @@ textarea
       .groups
         padding-top 30px
         margin-bottom -10px
+        .group_label
+          line-height 24px
+          font-size 14px
+          color secondaryfontColor
         .group
           margin 4px
           display inline-block
           position relative
+          .add_group
+            font-size: 24px
+            color #fff
+            background-color #73a5dd
+            line-height 32px
+            text-align center
+            position relative
+            top -11px
           .group_logo
             width 32px
             height 32px
           .group_leader
             position absolute
-            background-image url('/img/icons/crown.png')
-            width 24px
-            height 24px
-            right -10px
-            top -10px
+            background-image url('/img/icons/tieman.png')
+            width 17px
+            height 20px
+            right -2px
+            bottom -2px
             background-size contain
+      .secend
+        padding-top 10px
   .aside
     width 128px
     margin-right 20px
@@ -1666,6 +1540,9 @@ input.ng-invalid.ng-dirty
       background-position 10px 0px
     .operator_col
       min-width 96px
+      .dropdown-menu
+        right 0
+        left inherit
 .dl_group_select
   padding 20px 40px
   .img_contain
@@ -2100,11 +1977,13 @@ input.ng-invalid.ng-dirty
             .cal-month-day
               height 65px
           .calendar_tips
-            height 45px
+            height 50px
             -moz-box-shadow 0 3px 3px borderColor /* 老的 Firefox */
             box-shadow 0 3px 3px borderColor
+            .join_sign
+              margin 15px 20px
             .campaign_label
-              line-height 24px
+              line-height 30px
               font-size 14px
         .calendar_event_box
           width 410px
@@ -2153,6 +2032,7 @@ input.ng-invalid.ng-dirty
                   margin-left 20px
                   .campaign_info
                     margin 0
+
 .report_form
   .report_content
     background-color #ccc
@@ -2167,16 +2047,113 @@ input.ng-invalid.ng-dirty
     width 100%
     z-index 50
   .dl_container
+    label
+      font-weight normal
     .main
       width 700px
       margin-right 20px
-      .campaign_table .time_col
-        padding 0
-      .tab-body
-        .dl_card_tebcontent,.dl_campaign_list
-          border none
-        .dl_timeline
-          width 590px
+      .dl_timeline
+        margin-top 30px
+      #user_modal
+        .modal-dialog
+          width 900px
+          .dl-modal
+            width 900px
+            .tab-body
+              min-height 10px
+              .dl_card_tebcontent
+                border none
+              .dl_timeline
+                width 590px
+              .recent_unjoin
+                color themeColor
+              .recent_join
+                color #009999
+              .dl_campaign_list
+                border none
+                .campaign_head
+                  height 34px
+                  line-height 24px
+                  font-size 18px
+                  margin 0 -35px
+                  padding 0 20px
+                  border-bottom 1px solid borderColor
+                .campaigns_content
+                  max-height 600px
+                  overflow-y auto
+                  .campaign_table
+                    .time_col
+                      width 60px
+                      color #999999
+                    .user_logo_col
+                      width 83px
+                    .year_col
+                      .campaign_logo
+                        width 30px
+                        height 30px
+                        margin 8px auto
+                        background-color themeColor
+                    .content_col
+                      .campaign_detail
+                        margin-left -100px
+                        margin-right -90px
+                        padding-left 100px
+                        padding-right 90px
+                        background-color #fbfbfb
+                        width 650px
+                        .content_text
+                          max-width 100%
+                          overflow hidden
+                          text-overflow ellipsis
+                          white-space nowrap
+                          padding 5px 0
+                          margin-left 0
+                        .tags
+                          margin 5px 0
+                          padding 5px 0
+                          .tag
+                            background-color #c2d3e7
+                            color #fff
+                            display inline
+                            margin-right 10px
+                            padding 5px
+                        .member_text
+                          .progress_text
+                            float left
+                            width 80px
+                            line-height 20px
+                          .progress_num
+                            float left
+                            width 60px
+                            line-height 20px
+                            margin 0 10px
+                          .progress
+                            float left
+                            width 100px
+                            height 14px
+                            margin 3px 10px
+                            border-radius 15px
+                            background-color #4b6f97
+
+                            .progress-bar
+                              background-color #97d7c6
+                              box-shadow none
+                          .max_num
+                            color #009999
+                        .time_text
+                          clear both
+                          padding 5px 0
+                          .rest_time
+                            color #009999
+                            font-size 14px
+                            margin 10px
+                    .operator_col
+                      width 100px
+                      .dl_btn
+                        margin-right 30px
+      .campaign_table
+        .time_col
+          padding 0
       .campaigns_container
         margin-top 45px
         .user_campaigns_container
@@ -2205,7 +2182,7 @@ input.ng-invalid.ng-dirty
                 width 47px
                 height 47px
             .content_col
-              width 160px
+              width 150px
               color #ccc
               font-size 14px
               p
@@ -2219,7 +2196,7 @@ input.ng-invalid.ng-dirty
           width 700px
           padding 0
           margin-top 10px
-          .campgin_head
+          .campaign_head
             padding 5px 10px 5px 30px
             background-color #e7ce23
             height 26px
@@ -2302,7 +2279,7 @@ input.ng-invalid.ng-dirty
           .campaign
             border-top 1px solid borderColor
             margin 0 -10px
-          .campgin_head
+          .campaign_head
             color themeColor
             height 34px
             line-height 24px
@@ -2314,7 +2291,7 @@ input.ng-invalid.ng-dirty
           width 345px
           float right
           height 186px
-          .campgin_head
+          .campaign_head
             color #009999
             height 34px
             line-height 24px
@@ -2326,14 +2303,14 @@ input.ng-invalid.ng-dirty
             border-top 1px solid borderColor
             margin 0 -10px
             .time_col
-              width 100px
+              width 110px
               span
                 font-size 14px
                 line-height 44px
               .time_count
                 color #009999
         .recommend_team
-          .campgin_head
+          .campaign_head
             height 54px
             line-height 24px
             font-size 18px
@@ -2342,12 +2319,14 @@ input.ng-invalid.ng-dirty
         .now
           width 700px
           clear both
-          .campgin_head
+          .campaign_head
             padding 0 30px
             height 34px
             color themeColor
             line-height 24px
             font-size 18px
+          .unconfrim
+            color #f7b1b3
           .user_campaigns_container
             width 345px
             .campaign
@@ -2382,10 +2361,16 @@ input.ng-invalid.ng-dirty
                 clear both
                 width 100%
                 padding 10px 30px
+                .operator
+                  margin 20px 10px
+                  width 85px
+                  .dl_btn
+                    margin 5px
+                  .btn_red
+                    background-color #ec6a6a
                 .team
                   float left
-                  &:last-child
-                    float right
+                  margin 5px
               .content_col
                 padding 10px
                 width 100%
@@ -2401,11 +2386,14 @@ input.ng-invalid.ng-dirty
                   width 70px
             .comments
               clear both
+              a
+                color secondaryfontColor
+                margin 0 10px
         .now_head
           width 700px
           height 33px
           padding 0
-          .campgin_head
+          .campaign_head
             display inline
             color #ffffff
             line-height 33px
@@ -2430,6 +2418,10 @@ input.ng-invalid.ng-dirty
       position fixed
       left 50%
       margin-left 240px
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/campaignMold
       .old_campaign_container
         background-color #8dd4e6
         height 40px
@@ -2458,6 +2450,17 @@ input.ng-invalid.ng-dirty
           width 20px
           line-height 20px
           background-color #f3939e
+      .sponsor
+        background-color #3ca2e0
+        .speaker
+          background-image url('/img/icons/speakerwithhandle.png')
+          height 23px
+          width 26px
+          display inline-block
+          float left
+        label
+          float right 
+          margin-right 10px
       .groupsbox
         margin-top 10px
         -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
@@ -2526,11 +2529,22 @@ input.ng-invalid.ng-dirty
         .joined
           background none
           color navbarFontColor
+<<<<<<< HEAD
         .cal-month-day span[data-cal-date]
           width 100%
           height 14px
           text-align center
           margin 5px 0
+=======
+        .cal-month-day
+          span[data-cal-date]
+            width 100%
+            height 14px
+            text-align center
+            margin 5px 0
+            color secondaryfontColor
+            font-size 12px
+>>>>>>> origin/campaignMold
         .cal-month-box
           .cal-day-today
             span[data-cal-date]

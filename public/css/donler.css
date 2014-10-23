@@ -1,3 +1,285 @@
+.rich_comment .component_head {
+  height: 35px !important;
+  background-color: #97d7c6 !important;
+  padding-right: 15px !important;
+}
+.rich_comment .component_head .title {
+  font-size: 18px !important;
+  line-height: 35px !important;
+}
+.rich_comment .component_body {
+  padding: 0 !important;
+}
+.rich_comment .component_body .rich_comment_form {
+  padding: 20px;
+  padding-top: 40px;
+  border-bottom: 1px solid #eee;
+}
+.rich_comment .component_body .rich_comment_form .comment_control {
+  display: flex;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .user_photo {
+  width: 30px;
+  height: 30px;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .content {
+  padding: 6px 10px;
+  height: 30px;
+  color: #ccc;
+  background-color: #f3fcff;
+  border: solid 1px #d3dbe6;
+  font-size: 14px;
+  margin-left: 10px;
+  flex: 1;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .img_selector {
+  margin-left: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-color: #d2e1f1;
+  text-align: center;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .img_selector .upload_img {
+  margin-top: 7px;
+  width: 20px;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .publish {
+  margin-left: 5px;
+  padding: 0;
+  width: 70px;
+  height: 30px;
+  color: #fff;
+  background-color: #73a5dd;
+  font-size: 14px;
+  line-height: 30px;
+}
+.rich_comment .component_body .rich_comment_form .preview_box {
+  display: flex;
+  margin-top: 5px;
+  padding-left: 40px;
+}
+.rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap {
+  position: relative;
+  margin-right: 5px;
+}
+.rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap .close {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap:hover .close {
+  display: block;
+}
+.rich_comment .component_body .comment {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+}
+.rich_comment .component_body .comment .user_name {
+  text-decoration: none;
+  color: #b1c6d2;
+}
+.rich_comment .component_body .comment .comment_user_info {
+  padding-top: 3px;
+  width: 40px;
+}
+.rich_comment .component_body .comment .comment_user_info .user_photo {
+  width: 30px;
+  height: 30px;
+}
+.rich_comment .component_body .comment .comment_content_panel {
+  flex: 1;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content {
+  word-break: break-all;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
+  width: 350px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box .list_img {
+  display: block;
+  float: left;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  width: 100px;
+  height: 100px;
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
+  position: relative;
+  margin-bottom: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .preview_img {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  z-index: 1;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_pre {
+  flex: 1;
+  cursor: w-resize;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_shrink {
+  flex: 2;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_next {
+  flex: 1;
+  cursor: e-resize;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav {
+  text-align: center;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav .thumb {
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_single_thumb {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .text {
+  font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .text {
+  margin-left: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply {
+  color: #73a5dd;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f7f7;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form {
+  margin-bottom: 15px;
+  display: flex;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form .reply_input {
+  flex: 1;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply {
+  margin: 8px 0;
+  word-break: break-all;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:before,
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:after {
+  display: table;
+  content: " ";
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:after {
+  clear: both;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .user_name {
+  margin-right: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .reply_date {
+  margin-left: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .reply_date {
+  font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator {
+  float: right;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .text {
+  margin-left: 5px;
+  font-size: 12px;
+}
+.rich_comment .component_body .pager {
+  margin: 0;
+  padding: 20px;
+}
+.rich_comment .component_body .pager .pagination {
+  margin: 0;
+}
+.rich_comment .component_body .pager .novisible {
+  opacity: 0;
+}
+.rich_comment .component_body .pager li>a {
+  border-radius: 0;
+}
+.score_board .component_head {
+  background-color: #333 !important;
+}
+.score_board .score_board_body {
+  display: flex;
+}
+.score_board .score_board_body .playing_team {
+  width: 56px;
+  text-align: center;
+}
+.score_board .score_board_body .playing_team .team_logo {
+  width: 56px;
+  height: 56px;
+}
+.score_board .score_board_body .playing_team .team_name {
+  font-size: 12px !important;
+  white-space: nowrap;
+  margin-top: 5px !important;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.score_board .score_board_body .team_score {
+  margin: 0 10px;
+  padding-top: 15px;
+  width: 62px;
+}
+.score_board .score_board_body .team_score .score_show {
+  display: flex;
+}
+.score_board .score_board_body .team_score .score_show .score {
+  width: 26px;
+  height: 26px;
+  background-color: #858585;
+  color: #fff;
+  line-height: 26px;
+  font-size: 18px;
+  text-align: center;
+}
+.score_board .score_board_body .team_score .score_show .score:first-child {
+  margin-right: 10px;
+}
+.score_board .score_board_body .team_score .editing {
+  display: flex;
+}
+.score_board .score_board_body .team_score .editing .score {
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  font-size: 18px;
+  text-align: center;
+}
+.score_board .score_board_body .team_score .editing .score:first-child {
+  margin-right: 10px;
+}
+.score_board .score_board_footer {
+  margin-top: 10px;
+  text-align: right;
+}
+.score_board .score_board_footer .operator {
+  margin-left: 5px;
+  color: #73a5dd;
+}
 html,
 body {
   height: 100%;
@@ -236,151 +518,6 @@ textarea {
 .dl_mouse_hover_block:hover .dl_mouse_hover {
   display: inline-block;
 }
-.rich_comment_box {
-  width: 100%;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 10px 20px !important;
-  margin-top: 10px;
-}
-.rich_comment_box .rich_comment_form .comment_textarea {
-  float: none;
-  height: 60px;
-  background-color: #fbfbfb;
-  border-color: #ededed;
-  border-radius: 0;
-}
-.rich_comment_box .rich_comment_form .operator {
-  margin-top: 5px;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box {
-  margin-top: 5px;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap {
-  position: relative;
-  float: left;
-  margin-right: 5px;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap .close {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.rich_comment_box .rich_comment_form .operator .preview_box .preview_img_wrap:hover .close {
-  display: block;
-}
-.rich_comment_box .comment {
-  position: relative;
-  margin-top: 20px;
-  display: flex;
-}
-.rich_comment_box .comment .comment_user_info {
-  float: left;
-  max-width: 50px;
-}
-.rich_comment_box .comment .comment_user_info p {
-  text-align: center;
-}
-.rich_comment_box .comment .comment_user_info .user_photo {
-  width: 50px;
-  height: 50px;
-}
-.rich_comment_box .comment .comment_user_info .user_name {
-  text-decoration: none;
-}
-.rich_comment_box .comment .comment_content_panel {
-  float: left;
-  margin-left: 20px;
-  flex: 1;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content {
-  padding: 10px;
-  background-color: #fbfbfb;
-  border: solid 1px #ededed;
-  min-height: 50px;
-  word-break: break-all;
-  overflow: hidden;
-  margin-bottom: 4px;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
-  width: 350px;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_list_box .list_img {
-  display: block;
-  float: left;
-  margin-top: 5px;
-  margin-left: 5px;
-  width: 100px;
-  height: 100px;
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
-  position: relative;
-  margin-bottom: 10px;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .preview_img {
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  z-index: 1;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_pre {
-  flex: 1;
-  cursor: w-resize;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_shrink {
-  flex: 2;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_next {
-  flex: 1;
-  cursor: e-resize;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav {
-  text-align: center;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav .thumb {
-  width: 40px;
-  height: 40px;
-  margin-right: 5px;
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .img_single_thumb {
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.rich_comment_box .comment .comment_content_panel .replies {
-  margin-top: 5px;
-  padding: 10px;
-  background-color: #fbfbfb;
-}
-.rich_comment_box .comment .comment_content_panel .replies .reply_form {
-  margin-bottom: 15px;
-  display: flex;
-}
-.rich_comment_box .comment .comment_content_panel .replies .reply_form .reply_input {
-  flex: 1;
-}
-.rich_comment_box .comment .comment_content_panel .replies .reply {
-  word-break: break-all;
-}
-.rich_comment_box .pager .pagination {
-  margin: 0;
-}
-.rich_comment_box .pager .novisible {
-  opacity: 0;
-}
-.rich_comment_box .pager li>a {
-  border-radius: 0;
-}
 .triangle {
   position: absolute;
   top: 16px;
@@ -457,22 +594,6 @@ textarea {
 }
 .dl_area {
   margin-right: 15px;
-}
-.dl-form-control {
-  display: block;
-  width: 100%;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #555;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .dl_tip {
   float: left;
@@ -936,7 +1057,7 @@ textarea {
   font-size: 14px;
 }
 .dl_container .side .groupsbox .box_head {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #f4f4f4;
   margin: -20px;
   padding: 10px 20px;
   height: 44px;
@@ -950,10 +1071,24 @@ textarea {
   padding-top: 30px;
   margin-bottom: -10px;
 }
+.dl_container .side .groupsbox .groups .group_label {
+  line-height: 24px;
+  font-size: 14px;
+  color: #ccc;
+}
 .dl_container .side .groupsbox .groups .group {
   margin: 4px;
   display: inline-block;
   position: relative;
+}
+.dl_container .side .groupsbox .groups .group .add_group {
+  font-size: 24px;
+  color: #fff;
+  background-color: #73a5dd;
+  line-height: 32px;
+  text-align: center;
+  position: relative;
+  top: -11px;
 }
 .dl_container .side .groupsbox .groups .group .group_logo {
   width: 32px;
@@ -961,12 +1096,15 @@ textarea {
 }
 .dl_container .side .groupsbox .groups .group .group_leader {
   position: absolute;
-  background-image: url("/img/icons/crown.png");
-  width: 24px;
-  height: 24px;
-  right: -10px;
-  top: -10px;
+  background-image: url("/img/icons/tieman.png");
+  width: 17px;
+  height: 20px;
+  right: -2px;
+  bottom: -2px;
   background-size: contain;
+}
+.dl_container .side .groupsbox .secend {
+  padding-top: 10px;
 }
 .dl_container .aside {
   width: 128px;
@@ -1979,6 +2117,10 @@ input.ng-invalid.ng-dirty {
 .dl_campaign_list .table .operator_col {
   min-width: 96px;
 }
+.dl_campaign_list .table .operator_col .dropdown-menu {
+  right: 0;
+  left: inherit;
+}
 .dl_group_select {
   padding: 20px 40px;
 }
@@ -2487,7 +2629,7 @@ input.ng-invalid.ng-dirty {
   margin: 10px 20px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal {
-  border: 1px solid #ddd;
+  border: 1px solid #f4f4f4;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .cal-month-box [class*="cal-cell"] {
   min-height: 50px;
@@ -2496,13 +2638,16 @@ input.ng-invalid.ng-dirty {
   height: 65px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips {
-  height: 45px;
-  -moz-box-shadow: 0 3px 3px #ddd;
+  height: 50px;
+  -moz-box-shadow: 0 3px 3px #f4f4f4;
 /* 老的 Firefox */
-  box-shadow: 0 3px 3px #ddd;
+  box-shadow: 0 3px 3px #f4f4f4;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .join_sign {
+  margin: 15px 20px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .campaign_label {
-  line-height: 24px;
+  line-height: 30px;
   font-size: 14px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box {
@@ -2529,7 +2674,7 @@ input.ng-invalid.ng-dirty {
   font-size: 14px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box .cal-event-list {
-  border: 1px solid #ddd;
+  border: 1px solid #f4f4f4;
   max-height: 380px;
   min-height: 380px;
   background-color: #fff;
@@ -2576,19 +2721,135 @@ input.ng-invalid.ng-dirty {
   width: 100%;
   z-index: 50;
 }
+.user_page .dl_container label {
+  font-weight: normal;
+}
 .user_page .dl_container .main {
   width: 700px;
   margin-right: 20px;
 }
-.user_page .dl_container .main .campaign_table .time_col {
-  padding: 0;
+.user_page .dl_container .main .dl_timeline {
+  margin-top: 30px;
 }
-.user_page .dl_container .main .tab-body .dl_card_tebcontent,
-.user_page .dl_container .main .tab-body .dl_campaign_list {
+.user_page .dl_container .main #user_modal .modal-dialog {
+  width: 900px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal {
+  width: 900px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body {
+  min-height: 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_card_tebcontent {
   border: none;
 }
-.user_page .dl_container .main .tab-body .dl_timeline {
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_timeline {
   width: 590px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_unjoin {
+  color: #3498db;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_join {
+  color: #099;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list {
+  border: none;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaign_head {
+  height: 34px;
+  line-height: 24px;
+  font-size: 18px;
+  margin: 0 -35px;
+  padding: 0 20px;
+  border-bottom: 1px solid #f4f4f4;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content {
+  max-height: 600px;
+  overflow-y: auto;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .time_col {
+  width: 60px;
+  color: #999;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .user_logo_col {
+  width: 83px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .year_col .campaign_logo {
+  width: 30px;
+  height: 30px;
+  margin: 8px auto;
+  background-color: #3498db;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail {
+  margin-left: -100px;
+  margin-right: -90px;
+  padding-left: 100px;
+  padding-right: 90px;
+  background-color: #fbfbfb;
+  width: 650px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .content_text {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 5px 0;
+  margin-left: 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .tags {
+  margin: 5px 0;
+  padding: 5px 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .tags .tag {
+  background-color: #c2d3e7;
+  color: #fff;
+  display: inline;
+  margin-right: 10px;
+  padding: 5px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress_text {
+  float: left;
+  width: 80px;
+  line-height: 20px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress_num {
+  float: left;
+  width: 60px;
+  line-height: 20px;
+  margin: 0 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress {
+  float: left;
+  width: 100px;
+  height: 14px;
+  margin: 3px 10px;
+  border-radius: 15px;
+  background-color: #4b6f97;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress .progress-bar {
+  background-color: #97d7c6;
+  box-shadow: none;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .max_num {
+  color: #099;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .time_text {
+  clear: both;
+  padding: 5px 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .time_text .rest_time {
+  color: #099;
+  font-size: 14px;
+  margin: 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .operator_col {
+  width: 100px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .operator_col .dl_btn {
+  margin-right: 30px;
+}
+.user_page .dl_container .main .campaign_table .time_col {
+  padding: 0;
 }
 .user_page .dl_container .main .campaigns_container {
   margin-top: 45px;
@@ -2597,9 +2858,9 @@ input.ng-invalid.ng-dirty {
   background-color: #fff;
   float: left;
   margin: 5px 0;
-  -moz-box-shadow: 3px 3px 3px #ddd;
+  -moz-box-shadow: 3px 3px 3px #f4f4f4;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ddd;
+  box-shadow: 3px 3px 3px #f4f4f4;
   padding: 10px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
@@ -2612,7 +2873,7 @@ input.ng-invalid.ng-dirty {
   width: 50px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .year_col {
-  color: #ddd;
+  color: #f4f4f4;
   font-size: 12px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .time_col {
@@ -2627,7 +2888,7 @@ input.ng-invalid.ng-dirty {
   height: 47px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col {
-  width: 160px;
+  width: 150px;
   color: #ccc;
   font-size: 14px;
 }
@@ -2645,7 +2906,7 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   margin-top: 10px;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head {
+.user_page .dl_container .main .campaigns_container .top .campaign_head {
   padding: 5px 10px 5px 30px;
   background-color: #e7ce23;
   height: 26px;
@@ -2653,24 +2914,24 @@ input.ng-invalid.ng-dirty {
   line-height: 16px;
   font-size: 14px;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .star {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .star {
   background-image: url("/img/icons/star.png");
   height: 16px;
   width: 16px;
   display: inline-block;
   float: left;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .title {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .title {
   width: 30%;
   margin-left: 20px;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .time_count {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .time_count {
   width: 30%;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head a {
+.user_page .dl_container .main .campaigns_container .top .campaign_head a {
   color: #fff;
 }
-.user_page .dl_container .main .campaigns_container .top .campgin_head .add {
+.user_page .dl_container .main .campaigns_container .top .campaign_head .add {
   font-size: 24pt;
   line-height: 21px;
 }
@@ -2721,7 +2982,7 @@ input.ng-invalid.ng-dirty {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #ddd;
+  color: #f4f4f4;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .content_col {
   width: 260px;
@@ -2745,16 +3006,16 @@ input.ng-invalid.ng-dirty {
   height: 186px;
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campaign {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #f4f4f4;
   margin: 0 -10px;
 }
-.user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head {
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_head {
   color: #3498db;
   height: 34px;
   line-height: 24px;
   font-size: 18px;
 }
-.user_page .dl_container .main .campaigns_container .recent_unjoin .campgin_head a {
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_head a {
   font-size: 14px;
   color: #ccc;
 }
@@ -2763,22 +3024,22 @@ input.ng-invalid.ng-dirty {
   float: right;
   height: 186px;
 }
-.user_page .dl_container .main .campaigns_container .recent_join .campgin_head {
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_head {
   color: #099;
   height: 34px;
   line-height: 24px;
   font-size: 18px;
 }
-.user_page .dl_container .main .campaigns_container .recent_join .campgin_head a {
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_head a {
   font-size: 14px;
   color: #ccc;
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campaign {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #f4f4f4;
   margin: 0 -10px;
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col {
-  width: 100px;
+  width: 110px;
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col span {
   font-size: 14px;
@@ -2787,24 +3048,27 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col .time_count {
   color: #099;
 }
-.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head {
+.user_page .dl_container .main .campaigns_container .recommend_team .campaign_head {
   height: 54px;
   line-height: 24px;
   font-size: 18px;
 }
-.user_page .dl_container .main .campaigns_container .recommend_team .campgin_head a {
+.user_page .dl_container .main .campaigns_container .recommend_team .campaign_head a {
   color: #3498db;
 }
 .user_page .dl_container .main .campaigns_container .now {
   width: 700px;
   clear: both;
 }
-.user_page .dl_container .main .campaigns_container .now .campgin_head {
+.user_page .dl_container .main .campaigns_container .now .campaign_head {
   padding: 0 30px;
   height: 34px;
   color: #3498db;
   line-height: 24px;
   font-size: 18px;
+}
+.user_page .dl_container .main .campaigns_container .now .unconfrim {
+  color: #f7b1b3;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container {
   width: 345px;
@@ -2847,11 +3111,19 @@ input.ng-invalid.ng-dirty {
   width: 100%;
   padding: 10px 30px;
 }
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator {
+  margin: 20px 10px;
+  width: 85px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator .dl_btn {
+  margin: 5px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator .btn_red {
+  background-color: #ec6a6a;
+}
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .team {
   float: left;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .team:last-child {
-  float: right;
+  margin: 5px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .content_col {
   padding: 10px;
@@ -2873,12 +3145,16 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments {
   clear: both;
 }
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments a {
+  color: #ccc;
+  margin: 0 10px;
+}
 .user_page .dl_container .main .campaigns_container .now_head {
   width: 700px;
   height: 33px;
   padding: 0;
 }
-.user_page .dl_container .main .campaigns_container .now_head .campgin_head {
+.user_page .dl_container .main .campaigns_container .now_head .campaign_head {
   display: inline;
   color: #fff;
   line-height: 33px;
@@ -2916,9 +3192,9 @@ input.ng-invalid.ng-dirty {
   font-size: 18px;
   padding: 10px;
   margin-top: 10px;
-  -moz-box-shadow: 3px 3px 3px #ddd;
+  -moz-box-shadow: 3px 3px 3px #f4f4f4;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ddd;
+  box-shadow: 3px 3px 3px #f4f4f4;
 }
 .user_page .dl_container .side .old_campaign_container a label {
   font-size: 18px;
@@ -2940,11 +3216,25 @@ input.ng-invalid.ng-dirty {
   line-height: 20px;
   background-color: #f3939e;
 }
+.user_page .dl_container .side .sponsor {
+  background-color: #3ca2e0;
+}
+.user_page .dl_container .side .sponsor .speaker {
+  background-image: url("/img/icons/speakerwithhandle.png");
+  height: 23px;
+  width: 26px;
+  display: inline-block;
+  float: left;
+}
+.user_page .dl_container .side .sponsor label {
+  float: right;
+  margin-right: 10px;
+}
 .user_page .dl_container .side .groupsbox {
   margin-top: 10px;
-  -moz-box-shadow: 3px 3px 3px #ddd;
+  -moz-box-shadow: 3px 3px 3px #f4f4f4;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ddd;
+  box-shadow: 3px 3px 3px #f4f4f4;
   padding: 20px 10px;
 }
 .user_page .dl_container .side .groupsbox .infobox .head_title {
@@ -2975,9 +3265,15 @@ input.ng-invalid.ng-dirty {
   color: #ccc;
 }
 .user_page .dl_container .schedule_small {
+<<<<<<< HEAD
   -moz-box-shadow: 3px 3px 3px #ddd;
 /* 老的 Firefox */
   box-shadow: 3px 3px 3px #ddd;
+=======
+  -moz-box-shadow: 3px 3px 3px #f4f4f4;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #f4f4f4;
+>>>>>>> origin/campaignMold
 }
 .user_page .dl_container .schedule_small .schedulebox {
   padding: 0;
@@ -2986,7 +3282,11 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .schedule_small .schedulebox .calendar_tips {
   height: 30px;
   font-size: 12px;
+<<<<<<< HEAD
   border-top: 1px solid #ddd;
+=======
+  border-top: 1px solid #f4f4f4;
+>>>>>>> origin/campaignMold
   margin-top: 5px;
   color: #3498db;
 }
@@ -3030,6 +3330,11 @@ input.ng-invalid.ng-dirty {
   height: 14px;
   text-align: center;
   margin: 5px 0;
+<<<<<<< HEAD
+=======
+  color: #ccc;
+  font-size: 12px;
+>>>>>>> origin/campaignMold
 }
 .user_page .dl_container .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.2em;

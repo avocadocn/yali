@@ -361,32 +361,40 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     }
     //消除ajax缓存
-    $scope.vote = function(competition_id, vote_status, index) {
-         try {
-            $http({
-                method: 'post',
-                url: '/campaign/vote/'+competition_id,
-                data:{
-                    competition_id : competition_id,
-                    aOr : vote_status,
-                    tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
-                }
-            }).success(function(data, status) {
-                if(data.result===0) {
-                    alertify.alert(data.msg);
-                } else {
-                    $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
-                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
-                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // $scope.vote = function(competition_id, vote_status, index) {
+    //     Campaign.vote(competition_id,vote_status,function(status,data){
+    //         if(!status){
+    //             
+    //         }
+    //         esle{
+    //             alertify.alert(status);
+    //         }
+    //     })
+    //      try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/campaign/vote/'+competition_id,
+    //             data:{
+    //                 competition_id : competition_id,
+    //                 aOr : vote_status,
+    //                 tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
+    //             }
+    //         }).success(function(data, status) {
+    //             if(data.result===0) {
+    //                 alertify.alert(data.msg);
+    //             } else {
+    //                 $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
+    //                 $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
+    //                 $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
+    //             }
+    //         }).error(function(data, status) {
+    //             alertify.alert('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
     var joinCommit = function(campaign_id,index,tid){
         try {
             $http({
@@ -1017,7 +1025,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
     });
 }]);
 
-tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Group',function($http, $scope, $rootScope, Group) {
+tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Campaign',function($http, $scope, $rootScope, Campaign) {
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
 
@@ -1033,11 +1041,15 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Gr
     });
 
     $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
-        Group.getTags($rootScope.teamId,function(status,data){
-            if(!status){
-                $scope.recommand_tags = data;
-            }
-        });
+        if(!$scope.moldsgot){
+            Campaign.getMolds('team',$rootScope.teamId,function(status,data){
+                if(!status){
+                    $scope.molds = data;
+                    $scope.moldsgot = true;
+                    $scope.mold = $scope.molds[0].name;
+                }
+            });
+        }
         $("#start_time").on("changeDate",function (ev) {
             var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
             $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
@@ -1086,6 +1098,11 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Gr
         AMap.event.addListener(mar,"dragend", changePoint);
 
     };
+
+    $scope.selectMold=function(name){
+        $scope.mold = name;
+    };
+
     $scope.initialize = function(){
         $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
         $scope.locationmap.plugin(["AMap.CitySearch"], function() {
@@ -1115,7 +1132,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Gr
         window.map_ready =true;
     };
 
-
     $scope.showMap = function(){
         if($scope.location.name==''){
             alertify.alert('请输入地点');
@@ -1130,11 +1146,6 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Gr
         }
     };
 
-    $scope.addTag = function(index) {
-        $scope.recommand_tags[index].disabled = true;
-        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
-    };
-
     $scope.sponsor = function() {
         if($scope.member_max < $scope.member_min){
             alertify.alert('最少人数须小于最大人数');
@@ -1143,17 +1154,14 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Gr
             var _data = {
                 theme: $scope.theme,
                 location: $scope.location,
-                content : $scope.content,
                 start_time : $scope.start_time,
                 end_time : $scope.end_time,
-                member_min: $scope.member_min,
-                member_max: $scope.member_max,
-                deadline: $scope.deadline,
-                tags: $scope.tags?$scope.tags.split(','):[]
+                campaign_mold:$scope.mold
             };
-            Group.sponsor($rootScope.teamId,_data,function(status,data){
+            var _url = '/group/campaignSponsor/'+$rootScope.teamId;
+            Campaign.sponsor(_url,_data,function(status,data){
                 if(!status){
-                    window.location.reload();
+                    window.location = '/campaign/detail/'+data.campaign_id;
                 }else{
                     alertify.alert('活动发布出错');
                 }
@@ -1161,7 +1169,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Gr
         }
     };
 }]);
-tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Group',function($http, $scope, $rootScope, Group) {
+tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Campaign',function($http, $scope, $rootScope, Campaign) {
     $scope.search_type="team";
     $scope.companies = [];
     $scope.teams = [];
@@ -1180,9 +1188,14 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Gr
                 if(data.length===1){
                     $scope.modal=3;//直接跳到发起挑战页面
                     $scope.team_opposite = $scope.similarTeams[0];
-                    Group.getTags($scope.team_opposite._id,function(status,data){
+                    Campaign.getTags('group',$scope.team_opposite._id,function(status,data){
                         if(!status){
                             $scope.recommand_tags = data;
+                        }
+                    });
+                    Campaign.getMolds('team',$rootScope.teamId,function(status,data){
+                        if(!status){
+                            $scope.mold = data[0].name;
                         }
                     });
                 }
@@ -1426,17 +1439,28 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Gr
     $scope.provoke_select = function (index) {
         if(!index){//在自己队发挑战
             $scope.team_opposite = $scope.teams[$scope.selected_index]; 
-                Group.getTags($rootScope.teamId,function(status,data){
-                    if(!status){
-                        $scope.recommand_tags = data;
-                    }
-                });
+            Campaign.getTags('group',$rootScope.teamId,function(status,data){
+                if(!status){
+                    $scope.recommand_tags = data;
+                }
+            });
+            Campaign.getMolds('team',$rootScope.teamId,function(status,data){
+                if(!status){
+                    console.log(data);
+                    $scope.mold = data[0].name;
+                }
+            });
         }
         else{//到对方队动
             $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
-            Group.getTags($scope.team_opposite._id,function(status,data){
+            Campaign.getTags('group',$scope.team_opposite._id,function(status,data){
                 if(!status){
                     $scope.recommand_tags = data;
+                }
+            });
+            Campaign.getMolds('team',$scope.team_opposite._id,function(status,data){
+                if(!status){
+                    $scope.mold = data[0].name;
                 }
             });
         }
@@ -1462,11 +1486,12 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Gr
                 deadline: $scope.deadline,
                 member_min : $scope.member_min,
                 member_max : $scope.member_max,
-                tags: $scope.tags?$scope.tags.split(','):[]
+                tags: $scope.tags?$scope.tags.split(','):[],
+                campaign_mold:$scope.mold
             };
             var callback = function(status,data){
                 if(!status){
-                    window.location.reload();
+                    window.location = '/campaign/detail/'+data.campaign_id;
                 }
                 else{
                     alertify.alert('挑战发起失败');
@@ -1474,11 +1499,11 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Gr
             }
             if($scope.modal===1){//在自己的小队约战
                 _data.team_opposite_id =$scope.team_opposite._id
-                Group.provoke($rootScope.teamId,_data,callback);
+                Campaign.sponsor('/group/provoke/'+$rootScope.teamId,_data,callback);
             }
             else{//在其它小队约战
                 _data.team_opposite_id = $rootScope.teamId;
-                Group.provoke($scope.team_opposite._id,_data,callback);
+                Campaign.sponsor('/group/provoke/'+$scope.team_opposite._id,_data,callback);
             }
         }
     };

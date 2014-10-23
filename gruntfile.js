@@ -38,7 +38,8 @@ module.exports = function(grunt) {
             compile: {
                 options: {
                     urlfunc: 'embedurl',
-                    compress: false
+                    compress: false,
+                    cache: false
                 },
                 files: [{
                     expand: true,

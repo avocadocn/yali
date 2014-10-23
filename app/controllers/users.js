@@ -601,7 +601,7 @@ exports.setProfile = function(req, res) {
 };
 
 exports.renderCampaigns = function(req, res){
-  res.render('partials/campaign_list',{
+  res.render('partials/user_campaign_list',{
       'provider':'user',
       'role':req.role
   });
@@ -797,7 +797,8 @@ exports.home = function(req, res) {
     'sign':_user.introduce,
     'role': req.role,
     'department': department,
-    'myteam':_myteam
+    'myteam':_myteam,
+    'user_role':req.user.role
   });
 };
 
@@ -815,12 +816,11 @@ exports.editInfo = function(req, res) {
 
 
 exports.timeLine = function(req,res){
-  //如果是访问其它员工的timeline
   var uid = req.params.userId;
   Campaign
-  .find({ 'active':true,'finish':true,'$or':[{'member.uid': uid},{'camp.member.uid':uid}]})
+  .find({ 'active':true,'finish':true,'campaign_unit.member._id':uid})
   .sort('-start_time')
-  .populate('team').populate('cid').populate('photo_album')
+  .populate('photo_album')
   .exec()
   .then(function(campaigns) {
       // todo new time style
@@ -828,30 +828,38 @@ exports.timeLine = function(req,res){
       // todo new time style
       campaigns.forEach(function(campaign) {
         var _head,_logo;
-        // todo new time style
-        // console.log(campaign);
-        if(campaign.camp.length>0){
-          _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
-          _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
+        var ct = campaign.campaign_type;
+        
+        //公司活动
+        if(ct===1){
+          // _head = '公司活动';
+          _logo = campaign.campaign_unit[0].company.logo;
         }
-        else if(campaign.team.length==0){
-          _head = '公司活动';
-          _logo = campaign.cid[0].info.logo;
+        //多队
+        else if(ct!==6&&ct!==2){
+          // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
+          for(var i = 0;i<campaign.campaign_unit.length;i++){
+            var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].member,uid,'_id');
+            if(index>-1)
+              _logo = campaign.campaign_unit[i].team.logo;
+          }
+          // _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
         }
-        else{
-          _head = campaign.team[0].name + '活动';
-          _logo = campaign.team[0].logo;
+        //单队
+        else {
+          // _head = campaign.compaign_unit.team.name + '活动';
+          _logo = campaign.campaign_unit[0].team.logo;
         }
         var tempObj = {
           id: campaign._id,
-          //head: _head,
+          //head: _head,//???
           head:campaign.theme,
           logo:_logo,
           content: campaign.content,
           location: campaign.location,
           group_type: campaign.group_type,
           start_time: campaign.start_time,
-          provoke:campaign.camp.length>0,
+          provoke:ct===4||ct===5||ct===7||ct===9,
           year: getYear(campaign),
           photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
         }
@@ -874,7 +882,7 @@ exports.timeLine = function(req,res){
         }
       });
       //console.log(newTimeLines);
-      return res.render('partials/timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
+      return res.render('users/user_timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);

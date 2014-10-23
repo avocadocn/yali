@@ -42,7 +42,7 @@ div(ng-show = '!loading')
           a(ng-href="{{'/group/page/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
           span 发出的挑战
         span.message_head(ng-switch-when="6") 比赛
-          a(ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+          a(ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
           span 的结果已经确认
         span.message_head(ng-switch-when="7")
           a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
@@ -72,7 +72,7 @@ div(ng-show = '!loading')
               span.message_label 主题:
               span.message_content
                 a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-                a(ng-if="!group_message.campaign.finish&&group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+                a(ng-if="!group_message.campaign.finish&&group_message.message_type==4 || group_message.message_type==5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
                 span(ng-if="group_message.campaign.finish&&group_message.message_type==4") {{group_message.campaign.theme}}
             //- .message_row
             //-   span.message_label 内容:
@@ -107,7 +107,7 @@ div(ng-show = '!loading')
               span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<7&& group_message.message_type!=4 || group_message.message_type===9 || group_message.message_type===10")
           span.message_label {{group_message.create_time_format}}
-          //- a.message_label(ng-if="group_message.both_team" href="/competition/{{group_message.campaign._id}}")  详情
+          //- a.message_label(ng-if="group_message.both_team" href="/campaign/detail/{{group_message.campaign._id}}")  详情
           //- a.message_label(ng-if="group_message.campaign.campaign_type==3" href="/campaign/detail/{{group_message.campaign._id}}")  详情
           span.message_label(ng-if="group_message.message_type!=6 ") 已报名人数：{{group_message.member_num ? group_message.member_num :'0'}}
           span.message_label(ng-if="group_message.join_role&&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
@@ -126,8 +126,8 @@ div(ng-show = '!loading')
           //- label.pull-right.vertical_label(ng-if="role === 'LEADER'&&group_message.member_num > 0&&group_message.comment_permission") |
           label.pull-right(ng-if="group_message.comment_permission")
             a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
-          label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined&&role!='HR'&&group_message.comment_permission") |
-          a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.myteam[0]].vote.positive ? group_message.campaign.camp[group_message.myteam[0]].vote.positive :'0'}})
+          //- label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined&&role!='HR'&&group_message.comment_permission") |
+          //- a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.myteam[0]].vote.positive ? group_message.campaign.camp[group_message.myteam[0]].vote.positive :'0'}})
         .message_row(ng-if="toggle[$index] && group_message.comment_permission")
           .dl_comment_area
             form.dl_modal_container.clearfix.margin_top_5(ng-if="role!=='HR'" name="comment_form" novalidate)

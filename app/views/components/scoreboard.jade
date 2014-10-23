@@ -1,0 +1,22 @@
+.component.score_board
+  .component_head
+    span.title 比分板
+  .component_body
+    .score_board_body
+      .playing_team
+        img.team_logo(ng-src="{{scoreBoard.playingTeams[0].logo}}/56/56")
+        span.text.team_name(ng-bind="scoreBoard.playingTeams[0].name" title="{{scoreBoard.playingTeams[0].name}}")
+      .team_score
+        .score_show(ng-if="!editing")
+          .score(ng-bind="scoreBoard.playingTeams[0].score")
+          .score(ng-bind="scoreBoard.playingTeams[1].score")
+        .editing(ng-if="editing && allowEdit && !scoreBoard.allConfirm")
+          input.score(type="number" placeholder="{{scoreBoard.playingTeams[0].score}}" ng-model="scores[0]")
+          input.score(type="number" placeholder="{{scoreBoard.playingTeams[1].score}}" ng-model="scores[1]")
+      .playing_team
+        img.team_logo(ng-src="{{scoreBoard.playingTeams[1].logo}}/56/56")
+        span.text.team_name(ng-bind="scoreBoard.playingTeams[1].name" title="{{scoreBoard.playingTeams[1].name}}")
+    .score_board_footer(ng-if="allowEdit && !scoreBoard.allConfirm")
+      a.operator(ng-if="!editing" ng-click="editScore()") 编辑
+      a.operator(ng-if="editing" ng-click="setScore()") 保存修改
+      a.operator(ng-click="confirmScore()") 确认比分

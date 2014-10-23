@@ -1,0 +1,239 @@
+@require('variables')
+
+input()
+  padding 6px 10px
+  height 30px
+  color #cccccc
+  background-color #f3fcff
+  border solid 1px #d3dbe6
+  font-size 14px
+
+clearfix()
+  &:before, &:after
+    display table
+    content " "
+  &:after
+    clear both
+
+.rich_comment
+  .component_head
+    height 35px !important
+    background-color #97d7c6 !important
+    padding-right 15px !important
+    .title
+      font-size 18px !important
+      line-height 35px !important
+  .component_body
+    padding 0 !important
+
+    .rich_comment_form
+      padding 20px
+      padding-top 40px
+      border-bottom 1px solid #eee
+
+      .comment_control
+        display flex
+        .user_photo
+          width 30px
+          height 30px
+        .content
+          input()
+          margin-left 10px
+          flex 1
+        .img_selector
+          margin-left 10px
+          width 30px
+          height 30px
+          cursor pointer
+          background-color #d2e1f1
+          text-align center
+          .upload_img
+            margin-top 7px
+            width 20px
+        .publish
+          margin-left 5px
+          padding 0
+          width 70px
+          height 30px
+          color #fff
+          background-color #73a5dd
+          font-size 14px
+          line-height 30px
+
+      .preview_box
+        display flex
+        margin-top 5px
+        padding-left 40px
+        .preview_img_wrap
+          position relative
+          margin-right 5px
+          .close
+            display none
+            position absolute
+            top 0
+            right 0
+          &:hover
+            .close
+              display block
+    .comment
+      padding 20px
+      border-bottom 1px solid #eee
+      display flex
+      .user_name
+        text-decoration none
+        color #b1c6d2
+      
+      .comment_user_info
+        padding-top 3px
+        width 40px
+        .user_photo
+          width 30px
+          height 30px
+      .comment_content_panel
+        flex 1
+        .comment_content
+          word-break break-all
+          overflow hidden
+          margin-bottom 4px
+          .comment_img_box
+            margin-top 20px
+            margin-bottom 10px
+            .img_list_box
+              width 350px
+              .list_img
+                display block
+                float left
+                margin-bottom 5px
+                margin-right 5px
+                width 100px
+                height 100px
+                background url(/img/loading.gif) center center no-repeat
+            .img_slider_box
+              .preview
+                position relative
+                margin-bottom 10px
+                .preview_img
+                  background url("/img/loading.gif") center center no-repeat
+                .operator
+                  position absolute
+                  top 0
+                  left 0
+                  width 100%
+                  height 100%
+                  display flex
+                  z-index 1
+                  .img_pre
+                    flex 1
+                    cursor w-resize
+                  .img_shrink
+                    flex 2
+                  .img_next
+                    flex 1
+                    cursor e-resize
+              .nav
+                text-align center
+                .thumb
+                  width 40px
+                  height 40px
+                  margin-right 5px
+                  background url("/img/loading.gif") center center no-repeat
+            .img_single_thumb
+              background url("/img/loading.gif") center center no-repeat
+            .preview_img
+              background url("/img/loading.gif") center center no-repeat
+
+        .comment_footer
+          .text
+            font-size 12px
+          .operator
+            .text
+              margin-left 10px
+            .reply
+              color #73a5dd
+
+        .replies
+          margin-top 20px
+          padding 10px
+          background-color #f8f7f7
+          .reply_form
+            margin-bottom 15px
+            display flex
+            .reply_input
+              flex 1
+          .reply
+            clearfix()
+            margin 8px 0
+            word-break break-all
+            .user_name
+              margin-right 10px
+            .reply_date
+              margin-left 10px
+            .reply_date
+              font-size 12px
+            .operator
+              float right
+              .text
+                margin-left 5px
+                font-size 12px
+
+    .pager
+      margin 0
+      padding 20px
+      .pagination
+        margin 0
+      .novisible
+        opacity 0
+      li>a
+        border-radius 0
+
+.score_board
+  .component_head
+    background-color #333333 !important
+  .score_board_body
+    display flex
+    .playing_team
+      width 56px
+      text-align center
+      .team_logo
+        width 56px
+        height 56px
+      .team_name
+        font-size 12px !important
+        white-space nowrap
+        margin-top 5px !important
+        display block
+        overflow hidden
+        text-overflow ellipsis
+    .team_score
+      margin 0 10px
+      padding-top 15px
+      width 62px
+      .score_show
+        display flex
+        .score
+          width 26px
+          height 26px
+          background-color #858585
+          color white
+          line-height 26px
+          font-size 18px
+          text-align center
+          &:first-child
+            margin-right 10px
+      .editing
+        display flex
+        .score
+          width 26px
+          height 26px
+          line-height 26px
+          font-size 18px
+          text-align center
+          &:first-child
+            margin-right 10px
+  .score_board_footer
+    margin-top 10px
+    text-align right
+    .operator
+      margin-left 5px
+      color #73a5dd
+
