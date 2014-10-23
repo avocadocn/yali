@@ -294,6 +294,11 @@ clearfix()
                 background-color #fbfbfb
                 &:first-child
                   border-left none
+                  border-bottom-left-radius 1em
+                  border-top-left-radius 1em
+                &:last-child
+                  border-bottom-right-radius 1em
+                  border-top-right-radius 1em
                 .tab
                   text-decoration none
                   color #cccccc
@@ -309,7 +314,6 @@ clearfix()
 
           .member_list
             clearfix()
-            display block
             .member
               float left
               margin-bottom 18px

@@ -381,6 +381,12 @@
 }
 .campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit:first-child {
   border-left: none;
+  border-bottom-left-radius: 1em;
+  border-top-left-radius: 1em;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit:last-child {
+  border-bottom-right-radius: 1em;
+  border-top-right-radius: 1em;
 }
 .campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit .tab {
   text-decoration: none;
@@ -397,9 +403,6 @@
 .campaign_detail .member_modal .modal-content .component .component_body .tab-content {
   min-height: 0;
   margin-top: 10px;
-}
-.campaign_detail .member_modal .modal-content .component .component_body .member_list {
-  display: block;
 }
 .campaign_detail .member_modal .modal-content .component .component_body .member_list:before,
 .campaign_detail .member_modal .modal-content .component .component_body .member_list:after {
