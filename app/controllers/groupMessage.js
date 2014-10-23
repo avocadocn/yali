@@ -141,30 +141,28 @@ exports.getMessage = function(req, res, next) {
             _group_message.logo = group_message[i].team[_group_message.myteam[0].index ].logo;
             _group_message.team_id = group_message[i].team[_group_message.myteam[0].index ].teamid;
             _group_message.member_num = campaign.campaign_unit[_group_message.myteam[0].index ].member.length;
-            if (!_group_message.campaign.finish && join_role && campaign.campaign_unit[0].start_confirm) {
-              //0：未投票，1：赞成，-1反对
-              var vote_flag = 0;
-              if (campaign.campaign_unit[_group_message.myteam[0].index ].vote.positive > 0) {
-                campaign.campaign_unit[_group_message.myteam[0].index ].vote.positive_member.forEach(function (member) {
-                  if (member._id.toString() === req.user._id.toString()) {
-                    vote_flag = 1;
-                  }
-                });
-              } 
-              if (campaign.campaign_unit[_group_message.myteam[0].index ].vote.negative > 0) {
-                campaign.campaign_unit[_group_message.myteam[0].index ].vote.negative_member.forEach(function (member) {
-                  if (member._id.toString() === req.user._id.toString()) {
-                    vote_flag = -1;
-                  }
-                });
-              }
-              _group_message.vote_flag = vote_flag;
-            }
+            //删除赞成
+            // if (!_group_message.campaign.finish && join_role && campaign.campaign_unit[0].start_confirm) {
+            //   //0：未投票，1：赞成，-1反对
+            //   var vote_flag = 0;
+            //   if (campaign.campaign_unit[_group_message.myteam[0].index ].vote.positive > 0) {
+            //     campaign.campaign_unit[_group_message.myteam[0].index ].vote.positive_member.forEach(function (member) {
+            //       if (member._id.toString() === req.user._id.toString()) {
+            //         vote_flag = 1;
+            //       }
+            //     });
+            //   }
+            //   if (campaign.campaign_unit[_group_message.myteam[0].index ].vote.negative > 0) {
+            //     campaign.campaign_unit[_group_message.myteam[0].index ].vote.negative_member.forEach(function (member) {
+            //       if (member._id.toString() === req.user._id.toString()) {
+            //         vote_flag = -1;
+            //       }
+            //     });
+            //   }
+            //   _group_message.vote_flag = vote_flag;
+            // }
             //是同类型的 grouptype_flag = true 不是则为false
-            //_group_message.grouptype_flag = group_message[i].campaign.camp[0].gid === group_message[i].campaign.camp[1].gid ? true : false ;
-            //console.log(i,group_message.grouptype_flag);
             //要到小队主页、是HR\LEADER才有应战按钮->response_flag = true;
-            // 有了auth(...)就可以在个人页应战了~ -M
             if (!_group_message.campaign.finish && pageType === "team" && (req.role === 'HR' || req.role === 'LEADER') && group_message[i].campaign.campaign_unit[1].start_confirm === false && group_message[i].campaign.campaign_unit[0].start_confirm) {
               if (_group_message.myteam[0] === 1) {
                 _group_message.response_flag = true;

@@ -361,32 +361,40 @@ tabViewGroup.controller('GroupMessageController', ['$http','$scope','$rootScope'
         }
     }
     //消除ajax缓存
-    $scope.vote = function(competition_id, vote_status, index) {
-         try {
-            $http({
-                method: 'post',
-                url: '/campaign/vote/'+competition_id,
-                data:{
-                    competition_id : competition_id,
-                    aOr : vote_status,
-                    tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
-                }
-            }).success(function(data, status) {
-                if(data.result===0) {
-                    alertify.alert(data.msg);
-                } else {
-                    $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
-                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
-                    $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // $scope.vote = function(competition_id, vote_status, index) {
+    //     Campaign.vote(competition_id,vote_status,function(status,data){
+    //         if(!status){
+    //             
+    //         }
+    //         esle{
+    //             alertify.alert(status);
+    //         }
+    //     })
+    //      try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/campaign/vote/'+competition_id,
+    //             data:{
+    //                 competition_id : competition_id,
+    //                 aOr : vote_status,
+    //                 tid : $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].id
+    //             }
+    //         }).success(function(data, status) {
+    //             if(data.result===0) {
+    //                 alertify.alert(data.msg);
+    //             } else {
+    //                 $scope.group_messages[index].vote_flag = vote_status ? data.data.quit : -data.data.quit;
+    //                 $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.positive = data.data.positive;
+    //                 $scope.group_messages[index].campaign.camp[$scope.group_messages[index].camp_flag].vote.negative = data.data.negative;
+    //             }
+    //         }).error(function(data, status) {
+    //             alertify.alert('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
     var joinCommit = function(campaign_id,index,tid){
         try {
             $http({

@@ -70,18 +70,6 @@ angular.module('donler')
       })
      }
 
-    // var provoke = function(teamId,_data,callback){
-    //   $http({
-    //     method: 'post',
-    //     url: '/group/provoke/'+teamId,
-    //     data:_data
-    //   }).success(function(data, status) {
-    //     callback(null);
-    //   }).error(function(data, status) {
-    //     callback('error');
-    //   });
-    // };
-
     /**
      * 参加活动
      * @param {Object} data
@@ -161,29 +149,30 @@ angular.module('donler')
           callback('关闭活动失败，请重试。');
         });
     };
-    var vote = function(campaignId, vote_status, callback) {
-         try {
-            $http({
-                method: 'post',
-                url: '/campaign/vote/'+campaignId,
-                data:{
-                    campaignId : campaignId,
-                    aOr : vote_status
-                }
-            }).success(function(data, status) {
-                if(data.result===1) {
-                  callback();
-                } else {
-                  callback(data.msg);
-                }
-            }).error(function(data, status) {
-                callback('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
+    // var vote = function(campaignId, vote_status, tid, callback) {
+    //      try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/campaign/vote/'+campaignId,
+    //             data:{
+    //                 campaignId : campaignId,
+    //                 aOr : vote_status,
+    //                 tid : tid
+    //             }
+    //         }).success(function(data, status) {
+    //             if(data.result===1) {
+    //               callback();
+    //             } else {
+    //               callback(data.msg);
+    //             }
+    //         }).error(function(data, status) {
+    //             callback('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
     //应战
     var responseProvoke = function(campaignId,tid,status) {
         $http({
@@ -230,9 +219,8 @@ angular.module('donler')
       edit: edit,
       cancel: cancel,
       getMolds: getMolds,
-      vote: vote,
+      // vote: vote,
       responseProvoke: responseProvoke,
       cancelProvoke: cancelProvoke
-      // provoke:provoke
     };
   }]);

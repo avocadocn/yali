@@ -83,18 +83,19 @@ var _campaignUnit={
   },
   member:[_member],
   member_quit: [_member],
-  vote:{
-    positive: {                             //赞成员工投票数
-      type: Number,
-      default: 0
-    },
-    positive_member: [_member],             //赞成员工id
-    negative: {                             //反对员工投票数
-      type: Number,
-      default: 0
-    },
-    negative_member: [_member]              //反对员工id
-  },
+  //投票不要了
+  // vote:{
+  //   positive: {                             //赞成员工投票数
+  //     type: Number,
+  //     default: 0
+  //   },
+  //   positive_member: [_member],             //赞成员工id
+  //   negative: {                             //反对员工投票数
+  //     type: Number,
+  //     default: 0
+  //   },
+  //   negative_member: [_member]              //反对员工id
+  // },
   start_confirm: {                         //双方组长都确认后才能开战
     type: Boolean,
     default: false
