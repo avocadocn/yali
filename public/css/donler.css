@@ -180,7 +180,28 @@
   margin: 8px 0;
   word-break: break-all;
 }
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:before,
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:after {
+  display: table;
+  content: " ";
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply:after {
+  clear: both;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .user_name {
+  margin-right: 10px;
+}
 .rich_comment .component_body .comment .comment_content_panel .replies .reply .reply_date {
+  margin-left: 10px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .reply_date {
+  font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator {
+  float: right;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .text {
+  margin-left: 5px;
   font-size: 12px;
 }
 .rich_comment .component_body .pager {

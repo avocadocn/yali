@@ -8,6 +8,13 @@ input()
   border solid 1px #d3dbe6
   font-size 14px
 
+clearfix()
+  &:before, &:after
+    display table
+    content " "
+  &:after
+    clear both
+
 .rich_comment
   .component_head
     height 35px !important
@@ -154,10 +161,20 @@ input()
             .reply_input
               flex 1
           .reply
+            clearfix()
             margin 8px 0
             word-break break-all
+            .user_name
+              margin-right 10px
+            .reply_date
+              margin-left 10px
             .reply_date
               font-size 12px
+            .operator
+              float right
+              .text
+                margin-left 5px
+                font-size 12px
 
     .pager
       margin 0

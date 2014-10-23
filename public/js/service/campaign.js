@@ -229,7 +229,7 @@ angular.module('donler')
       quit: quit,
       edit: edit,
       cancel: cancel,
-      getMolds: getMolds
+      getMolds: getMolds,
       vote: vote,
       responseProvoke: responseProvoke,
       cancelProvoke: cancelProvoke

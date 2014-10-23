@@ -2,8 +2,8 @@
 
 angular.module('donler.components.richComment', ['angularFileUpload'])
 
-  .controller('RichCommentCtrl', ['$scope', '$http', '$element', 'Comment', 'FileUploader',
-    function ($scope, $http, $element, Comment, FileUploader) {
+  .controller('RichCommentCtrl', ['$scope', '$http', '$element', 'Comment', 'Report', 'FileUploader',
+    function ($scope, $http, $element, Comment, Report, FileUploader) {
 
       $scope.pages = [];
       $scope.nowPage = 0;
@@ -221,17 +221,23 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
       };
 
 
-      $scope.getReport = function(index){
+      $scope.getReport = function(comment) {
         $scope.reportContent = {
           hostType: 'comment',
-          hostContent:{
-            _id:$scope.comments[index]._id,
-            content:$scope.comments[index].content,
-            poster:$scope.comments[index].poster
+          hostContent: {
+            _id: comment._id,
+            content: comment.content,
+            poster: comment.poster
           },
-          reportType:''
-        };
+          reportType: ''
+        }
         $('#reportModal').modal('show');
+      }
+
+      $scope.pushReport = function() {
+        Report.publish($scope.reportContent, function(err, msg) {
+          alertify.alert(msg);
+        });
       };
 
 
