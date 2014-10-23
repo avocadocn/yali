@@ -234,7 +234,7 @@
   width: 200px;
   margin-right: 10px;
 }
-.campaign_detail .detail_card .component_body .more_info input {
+.campaign_detail .detail_card .component_body .more_info .detail_input {
   padding: 6px 10px;
   width: 100%;
   height: 30px;

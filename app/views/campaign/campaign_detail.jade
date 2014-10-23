@@ -56,13 +56,13 @@ block contentExt
             .more_info(ng-show="!isStart||editing")
               h4.title 活动简介
               .text(ng-if="!editing") #{campaign.content}
-              input(ng-if="editing" type="text" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content")
+              input.detail_input(ng-if="editing" type="text" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content")
               h4.title 活动标签
               .tags(ng-show="!editing")
                 each tag in campaign.tags
                   span.tag #{tag}
               div(ng-show="editing")
-                input#taginput(name="tags" type="text" ng-blur="getTags()" ng-init="campaignData.tags='#{campaign.tags||''}'" ng-model="campaignData.tags" data-role="tagsinput")
+                input.detail_input#taginput(name="tags" type="text" ng-blur="getTags()" ng-init="campaignData.tags='#{campaign.tags||''}'" ng-model="campaignData.tags" data-role="tagsinput")
               h4.title 报名信息
               if campaign.member_max
                 .text(ng-if="!editing")
@@ -72,7 +72,7 @@ block contentExt
                   span #{campaign.members.length}/#{campaign.member_max}
               .text.editing(ng-init="campaignData.member_max=#{campaign.member_max||0}" ng-if="editing")
                 span.sub_title.line_text 报名人数上限:
-                input.people_count(type="number" ng-model="campaignData.member_max")
+                input.detail_input.people_count(type="number" ng-model="campaignData.member_max")
                 span.line_text 人 (到达后停止报名)
               if campaign.member_min
                 p.text(ng-if="!editing")
@@ -80,7 +80,7 @@ block contentExt
                   span #{campaign.member_min}人
               .text.editing(ng-init="campaignData.member_min=#{campaign.member_min||0}" ng-if="editing")
                 span.sub_title.line_text 报名人数下限:
-                input.people_count(type="number" ng-model="campaignData.member_min")
+                input.detail_input.people_count(type="number" ng-model="campaignData.member_min")
                 span.line_text 人 (报名截止前未达最少人数，您将收到提醒)
               if campaign.deadline
                 p.text(ng-show="!editing")
@@ -90,7 +90,7 @@ block contentExt
               .deadline.text.editing(ng-show="editing")
                 span.sub_title.line_text 报名截止时间:
                 .input-group.date.form_datetime#deadline
-                  input(type="text" ng-init="campaignData.deadline='#{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}'" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
+                  input.detail_input(type="text" ng-init="campaignData.deadline='#{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}'" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
                 span.line_text 如果不选，默认为活动结束停止报名
@@ -198,3 +198,14 @@ append footExt
   script(src="/js/directives/count_down.js")
   script(src="/js/bootstrap-tagsinput.js")
   script(src="/js/controllers/campaign.js")
+  script.
+    $(function(){
+      $('#deadline').datetimepicker({
+        autoclose: true,
+        language: 'zh-CN',
+        startDate: new Date(),
+        pickerPosition: "top-left"
+        //- setEndDate:#{campaign.end_time}
+      });
+    });
+
