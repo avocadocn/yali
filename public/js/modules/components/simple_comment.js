@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('donler.components.richComment', ['angularFileUpload'])
+angular.module('donler.components.simpleComment', ['angularFileUpload'])
 
   .controller('SimpleCommentCtrl', ['$scope', '$http', '$element', 'Comment', 'FileUploader',
     function ($scope, $http, $element, Comment, FileUploader) {
