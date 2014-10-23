@@ -44,7 +44,7 @@ block panel
     .user_campaigns_container.recent_unjoin(ng-if="recentJoinedCampaigns.length>0 || recentUnjoinedCampaigns.length>0")
       .campaign_head(ng-cloak)
         label {{recentUnjoinedCampaigns.length}} 个新活动
-        a.pull-right(ng-if="recentUnjoinedCampaigns.length>0" href="#/campaign/#{uid}" target="_blank" ng-click="openModal('recentUnjoinedCampaigns')") 更多
+        a.pull-right(ng-if="recentUnjoinedCampaigns.length>0" href="#/campaign/#{uid}" ng-click="openModal('recentUnjoinedCampaigns')") 更多
       .campaign(ng-if="recentUnjoinedCampaigns.length==0" ng-cloak)
         label 您现在没有新活动，快去找队长组织活动吧！
       .campaign(ng-if="recentUnjoinedCampaigns.length>0" ng-repeat="recentUnjoinedCampaign in recentUnjoinedCampaigns" ng-if="$index<2" ng-cloak)
@@ -72,7 +72,7 @@ block panel
     .user_campaigns_container.recent_join(ng-if="recentJoinedCampaigns.length>0 || recentUnjoinedCampaigns.length>0")
       .campaign_head(ng-cloak)
         label {{recentJoinedCampaigns.length}} 个活动即将开始
-        a.pull-right(ng-if="recentJoinedCampaigns.length>0" href="#/campaign/#{uid}" target="_blank" ng-click="openModal('recentJoinedCampaigns')") 更多
+        a.pull-right(ng-if="recentJoinedCampaigns.length>0" href="#/campaign/#{uid}" ng-click="openModal('recentJoinedCampaigns')") 更多
       .campaign(ng-if="recentJoinedCampaigns.length==0" ng-cloak)
         label 您没有即将开始的活动，快去参加活动吧！
       .campaign(ng-if="recentJoinedCampaigns.length>0" ng-repeat="recentJoinedCampaign in recentJoinedCampaigns" ng-if="$index<2" ng-cloak)
@@ -180,6 +180,10 @@ block panel
   //-     div(ng-view).tab-body
     include ../partials/calendar_modal
   include ../users/user_modal
+  if role !== 'HR'
+  .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
+    include ../partials/calendar_modal
+
 block aside
   if user_role =='LEADER'
     .old_campaign_container.sponsor

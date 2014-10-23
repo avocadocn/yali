@@ -1922,17 +1922,19 @@ input.ng-invalid.ng-dirty
     margin 0
 #events-modal
   .modal-dialog
-    width 1000px
+    width 900px
     .dl-modal
-      width 1000px
+      width 900px
       .dl-modal-body
         display table
         .calendar_box
           width 420px
           float left
           .schedule_type
+            width 100%
             .schedule_btn
-              width 135px
+              width 33.33%
+              padding 5px 0
               margin -2px
               border-bottom 1px solid secondaryfontColor
               border-radius 0
@@ -1982,7 +1984,7 @@ input.ng-invalid.ng-dirty
               line-height 24px
               font-size 14px
         .calendar_event_box
-          width 510px
+          width 410px
           float right
           margin-left 20px
           margin-top 30px
@@ -2003,11 +2005,32 @@ input.ng-invalid.ng-dirty
             border 1px solid borderColor
             max-height 380px
             min-height 380px
+            background-color #fff
             .custom_calendar_li
               margin 10px 0
               overflow hidden
               text-overflow ellipsis
               white-space nowrap
+              .campaign_head
+                color themeColor
+                font-size 24px
+                padding 0 10px
+              .campaign_content
+                background-color #f4f4f4
+                float left
+                width 100%
+                .info_left
+                  float left
+                  .team_logo
+                    width 47px
+                    height 47px
+                    margin 10px
+                .info_right
+                  float left
+                  margin-left 20px
+                  .campaign_info
+                    margin 0
+
 .report_form
   .report_content
     background-color #ccc
@@ -2390,59 +2413,10 @@ input.ng-invalid.ng-dirty
     .side
       padding-top 45px
       width 240px
-      .schedule_small
-        -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
-        box-shadow 3px 3px 3px borderColor
-        .schedulebox
-          padding 0
-          border none
-          .calendar_tips
-            height 30px
-            font-size 12px
-            border-top 1px solid borderColor
-            margin-top 5px
-            color themeColor
-            .join_sign
-              height 10px
-              width 10px
-              background-color themeColor
-              margin 10px
-              float left
-            .campaign_label
-              line-height 10px
-              margin 10px 5px
-          .calendar_nav
-            background-color #73a5dd
-            height 38px
-            line-height 38px
-            padding 0 10px
-            margin 0
-            clear both
-            .calendar_title
-              width 170px
-              text-align center
-              font-size 16px
-              margin 0
-            a
-              color navbarFontColor
-        .cal-context
-          div
-            border none
-          .joined
-            background none
-            color navbarFontColor
-          .cal-month-day
-            span[data-cal-date]
-              width 100%
-              height 14px
-              text-align center
-              margin 5px 0
-              color secondaryfontColor
-              font-size 12px
-          .cal-month-box
-            .cal-day-today
-              span[data-cal-date]
-                font-size 1.2em
+      position fixed
+      left 50%
+      margin-left 240px
+
       .old_campaign_container
         background-color #8dd4e6
         height 40px
@@ -2509,3 +2483,56 @@ input.ng-invalid.ng-dirty
             .cname
               a
                 color #ccc
+    .schedule_small
+      -moz-box-shadow 3px 3px 3px borderColor /* 老的 Firefox */
+      box-shadow 3px 3px 3px borderColor
+      .schedulebox
+        padding 0
+        border none
+        .calendar_tips
+          height 30px
+          font-size 12px
+          border-top 1px solid borderColor
+          margin-top 5px
+          color themeColor
+          .join_sign
+            height 10px
+            width 10px
+            background-color themeColor
+            margin 10px
+            float left
+          .campaign_label
+            line-height 10px
+            margin 10px 5px
+        .calendar_nav
+          background-color #73a5dd
+          height 38px
+          line-height 38px
+          padding 0 10px
+          margin 0
+          clear both
+          .calendar_title
+            width 170px
+            text-align center
+            font-size 16px
+            margin 0
+          a
+            color navbarFontColor
+      .cal-context
+        div
+          border none
+        .joined
+          background none
+          color navbarFontColor
+        .cal-month-day
+          span[data-cal-date]
+            width 100%
+            height 14px
+            text-align center
+            margin 5px 0
+            color secondaryfontColor
+            font-size 12px
+        .cal-month-box
+          .cal-day-today
+            span[data-cal-date]
+              font-size 1.2em

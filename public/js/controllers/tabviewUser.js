@@ -698,7 +698,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
                 tmpl_path: '/tmpls-small/',
                 tmpl_cache: false,
                 language: 'zh-CN',
-                modal: '#events-modal',
+                modal: '#user_modal',
                 onAfterEventsLoad: function(events) {
                     if (!events) {
                         return;
