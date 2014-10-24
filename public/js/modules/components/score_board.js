@@ -20,35 +20,38 @@ angular.module('donler.components.scoreBoard', [])
      */
     $scope.allowEdit = false;
 
-    ScoreBoard.getData($scope.componentId, function (err, scoreBoardData) {
-      if (err) {
-        // todo 这不是一个好的做法，alertify并非是此模块的依赖项
-        alertify.alert(err);
-      } else {
-        $scope.scoreBoard = scoreBoardData;
-        $scope.scores = [];
-        $scope.results = [];
-        for (var i = 0; i < $scope.scoreBoard.playingTeams.length; i++) {
-          var playingTeam = $scope.scoreBoard.playingTeams[i];
-          $scope.scores.push(playingTeam.score);
-          $scope.results.push(playingTeam.result);
-          if ($scope.scoreBoard.status === 1) {
-            if (playingTeam.allowEdit) {
-              $scope.allowEdit = true;
-              if (playingTeam.confirm) {
-                $scope.leaderStatus = 'waitConfirm';
-              } else {
-                $scope.leaderStatus = 'toConfirm';
+    var getScoreBoardData = function () {
+      ScoreBoard.getData($scope.componentId, function (err, scoreBoardData) {
+        if (err) {
+          // todo 这不是一个好的做法，alertify并非是此模块的依赖项
+          alertify.alert(err);
+        } else {
+          $scope.scoreBoard = scoreBoardData;
+          $scope.scores = [];
+          $scope.results = [];
+          for (var i = 0; i < $scope.scoreBoard.playingTeams.length; i++) {
+            var playingTeam = $scope.scoreBoard.playingTeams[i];
+            $scope.scores.push(playingTeam.score);
+            $scope.results.push(playingTeam.result);
+            if ($scope.scoreBoard.status === 1) {
+              if (playingTeam.allowEdit) {
+                $scope.allowEdit = true;
+                if (playingTeam.confirm) {
+                  $scope.leaderStatus = 'waitConfirm';
+                } else {
+                  $scope.leaderStatus = 'toConfirm';
+                }
               }
-            }
-          } else if ($scope.scoreBoard.status === 0) {
-            if (playingTeam.allowEdit) {
-              $scope.allowEdit = true;
+            } else if ($scope.scoreBoard.status === 0) {
+              if (playingTeam.allowEdit) {
+                $scope.allowEdit = true;
+              }
             }
           }
         }
-      }
-    });
+      });
+    };
+    getScoreBoardData();
 
     $scope.editing = false;
 
@@ -110,7 +113,7 @@ angular.module('donler.components.scoreBoard', [])
     };
 
     $scope.confirmScore = function () {
-      var remindMsg = '提示：双方都确认比分后，将无法修改，要确认比分吗？';
+      var remindMsg = '提示：同意后将无法修改，确定要同意吗？';
       alertify.confirm(remindMsg, function (e) {
         if (e) {
           ScoreBoard.confirmScore($scope.componentId, function (err) {
