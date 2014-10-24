@@ -55,6 +55,10 @@ var registeredTasks = {
   cancelCampaign: {
     company: ['hr'],
     team: ['leader']
+  },
+  dealProvoke: {
+    company: ['hr'],
+    team: ['leader']
   }
 };
 

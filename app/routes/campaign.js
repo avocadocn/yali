@@ -20,7 +20,8 @@ module.exports = function(app) {
   app.get('/campaign/user/all/calendar/:userId', campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
-  
+  //处理应战:接受、拒绝、取消
+  app.post('/campaign/dealProvoke/:campaignId', campaign.dealProvoke);
   //已全部用getCampaigns M
   // app.get('/campaign/user/all/list/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForList);
   // app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);

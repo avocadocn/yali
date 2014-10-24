@@ -23,6 +23,7 @@ var mongoose = require('mongoose'),
     path = require('path'),
     moment = require('moment'),
     mime = require('mime'),
+    auth = require('../services/auth'),
     model_helper = require('../helpers/model_helper'),
     schedule = require('../services/schedule'),
     message = require('../controllers/message'),
@@ -588,9 +589,9 @@ exports.provoke = function (req, res) {
             'logo':companies[0].info.logo
           },
           'team':{
-            '_id':team_opposite._id,
-            'name':team_opposite.name,
-            'logo':team_opposite.logo
+            '_id':req.companyGroup._id,
+            'name':req.companyGroup.name,
+            'logo':req.companyGroup.logo
           },
           'start_confirm':true
         });
@@ -602,9 +603,9 @@ exports.provoke = function (req, res) {
             'logo':companies.length ===1?companies[0].info.logo : companies[1].info.logo
           },
           'team':{
-            '_id':req.companyGroup._id,
-            'name':req.companyGroup.name,
-            'logo':req.companyGroup.logo
+            '_id': team_opposite._id,
+            'name':team_opposite.name,
+            'logo':team_opposite.logo
           }
         });
         callback(null,null);
@@ -653,11 +654,12 @@ exports.provoke = function (req, res) {
           if (err) {
             console.log('保存约战动态时出错' + err);
           }else{
-            CompanyGroup.update({'_id':my_team_id},{'$inc':{'score.provoke':5},'$push':{'photo_album_list':data.photo_album_id}},function (err,companyGroup){
-              if(err){
-                console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
-              }
-            });
+            // CompanyGroup.update({'_id':my_team_id},{'$inc':{'score.provoke':5},'$push':{'photo_album_list':data.photo_album_id}},function (err,companyGroup){
+            //   if(err){
+            //     console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
+            //   }
+            // });
+            //deleted by M ---积分应该接受了再给~
             team_opposite.photo_album_list.push(data.photo_album_id);
             team_opposite.save(function(err){
               if(err){
@@ -709,166 +711,6 @@ exports.provoke = function (req, res) {
   .then(null, function(err) {
     console.log(err);
     return res.send({'result':0,'msg':'ERROR'});
-  });
-};
-
-
-//应约
-exports.responseProvoke = function (req, res) {
-  if(req.role !=='HR' && req.role !=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
-  }
-  var campaignId = req.body.campaignId;
-  Campaign.findOne({
-      '_id' : campaignId
-    }).populate('team').exec(
-  function (err, campaign) {
-    if(campaign.camp[1].id!=req.params.teamId){
-      res.status(403);
-      next('forbidden');
-      return;
-    }
-    if(req.body.responseStatus){
-      campaign.camp[1].start_confirm = true;
-      campaign.active = true;
-    }
-    else{
-      campaign.camp[0].start_confirm = false;
-    }
-
-    //还要存入应约方的公司名、队长用户名、真实姓名等
-    campaign.save(function (err) {
-      if (err) {
-        res.send(err);
-        return res.send({'result':0,'msg':'应战失败！'});
-      }
-      else{
-        var rst = campaign.team;
-        push.campaign(campaignId);
-        if(req.body.responseStatus){
-          GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
-            groupMessage.message_type = 5;
-            groupMessage.create_time = new Date();
-            groupMessage.save(function (err) {
-              if (err) {
-                console.log('保存约战动态时出错' + err);
-              }
-            });
-          });
-        }
-        var param = {
-          'specific_type':{
-            'value':4,
-            'child_type':req.body.responseStatus ? 1 : 2
-          },
-          'type':'private',
-          'caption':campaign.theme,
-          'own':{
-            '_id':req.user._id,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo,
-            'role':'LEADER'
-          },
-          'receiver':{
-            '_id':rst[0].leader[0]._id
-          },
-          'content':null,
-          'own_team':{
-            '_id':rst[1]._id,
-            'name':rst[1].name,
-            'logo':rst[1].logo,
-            'status': req.body.responseStatus ? 1 : 4
-          },
-          'receive_team':{
-            '_id':rst[0]._id,
-            'name':rst[0].name,
-            'logo':rst[0].logo,
-            'status': req.body.responseStatus ? 1 : 4
-          },
-          'campaign_id':campaign._id,
-          'auto':true
-        };
-        message.sendToOne(req,res,param);
-        CompanyGroup.update({'_id':{'$in':[rst[0]._id,rst[1]._id]}},{'$inc':{'score.provoke':15}},function (err,team){
-          if(err){
-            console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
-          }
-        });
-        return res.send({'result':1,'msg':'SUCCESS'});
-      }
-    });
-  });
-};
-//取消挑战
-exports.cancelProvoke = function (req, res) {
-  if(req.role !=='HR' && req.role !=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
-  }
-  var competition_id = req.body.competition_id;
-  Campaign.findOne({
-      '_id' : competition_id
-    }).populate('team').exec(
-  function (err, campaign) {
-    if(campaign.camp[0].id!=req.params.teamId){
-      res.status(403);
-      next('forbidden');
-      return;
-    }
-    campaign.camp[0].start_confirm = false;
-
-    //还要存入应约方的公司名、队长用户名、真实姓名等
-    campaign.save(function (err) {
-      if (err) {
-        res.send(err);
-        return res.send({'result':0,'msg':'应战失败！'});
-      }
-      else{
-        var rst = campaign.team;
-        var param = {
-          'specific_type':{
-            'value':4,
-            'child_type':3
-          },
-          'type':'private',
-          'caption':campaign.theme,
-          'own':{
-            '_id':req.user._id,
-            'nickname':req.user.nickname,
-            'photo':req.user.photo,
-            'role':'LEADER'
-          },
-          'receiver':{
-            '_id':rst[1].leader[0]._id
-          },
-          'content':null,
-          'own_team':{
-            '_id':rst[0]._id,
-            'name':rst[0].name,
-            'logo':rst[0].logo,
-            'status':5
-          },
-          'receive_team':{
-            '_id':rst[1]._id,
-            'name':rst[1].name,
-            'logo':rst[1].logo,
-            'status':5
-          },
-          'campaign_id':campaign._id,
-          'auto':true
-        };
-        message.sendToOne(req,res,param);
-        CompanyGroup.update({'_id':rst[0]._id},{'$inc':{'score.provoke':-15}},function (err,team){
-          if(err){
-            console.log('CANCEL_PROVOKE_POINT_FAILED!',err);
-          }
-        });
-        return res.send({'result':1,'msg':'SUCCESS'});
-      }
-    });
   });
 };
 

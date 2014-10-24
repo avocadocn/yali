@@ -226,6 +226,10 @@ UserSchema.methods = {
             }
         }
         return false;
+    },
+
+    isHR: function(){
+        return false;
     }
 };
 

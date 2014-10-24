@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
   Comment = mongoose.model('Comment'),
   PhotoAlbum = mongoose.model('PhotoAlbum'),
   MessageContent = mongoose.model('MessageContent'),
+  GroupMessage = mongoose.model('GroupMessage'),
   CampaignMold = mongoose.model('CampaignMold'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   model_helper = require('../helpers/model_helper'),
@@ -14,6 +15,8 @@ var mongoose = require('mongoose'),
   async = require('async'),
   photo_album_controller = require('./photoAlbum'),
   auth = require('../services/auth'),
+  push = require('../controllers/push'),
+  message = require('../controllers/message'),
   systemConfig = require('../config/config');
 var pageSize = 100;
 var blockSize = 20;
@@ -1460,6 +1463,114 @@ exports.quitCampaign = function (req, res) {
 //     }
 //   });
 // };
+exports.dealProvoke = function(req,res,next) {
+  var campaignId = req.params.campaignId;
+  var campaign = req.campaign;
+  
+  var allow = auth(req.user,{
+    companies:campaign.cid,
+    teams:[req.body.tid]
+  },['dealProvoke']);
+  if(!allow.dealProvoke){
+    res.status(403);
+    next('forbidden');
+  }
+  // });
+
+  //确认状态变更
+  var status = req.body.responseStatus;
+  console.log(status);
+  switch(status){
+    case 1://接受
+      campaign.campaign_unit[1].start_confirm = true;
+      campaign.confirm_status = true;
+      console.log(campaign);
+      break;
+    case 2://拒绝
+      campaign.active = false;
+      break;
+    case 3://取消
+      campaign.campaign_unit[0].start_confirm = false;
+      campaign.active = false;
+      break;
+  }
+
+  campaign.save(function(err){
+    if(err){
+      res.status(500);
+      next('保存错误');
+    }
+    else{
+      // console.log(campaign);
+      //发站内信
+      var own_team = status===3? campaign.campaign_unit[0].team:campaign.campaign_unit[1].team;
+      var receive_team = status ===3? campaign.campaign_unit[1].team:campaign.campaign_unit[0].team;
+      var param = {
+        'specific_type':{
+          'value':4,
+          'child_type':status
+        },
+        'type':'private',
+        'caption':campaign.theme,
+        'own':{
+          '_id':req.user._id,
+          'nickname':req.user.isHR()?req.user.info.official_name: req.user.nickname,
+          'photo':req.user.isHR()? req.user.info.logo: req.user.photo,
+          'role':req.user.isHR()? 'HR':'LEADER'
+        },
+        // 'receiver':{
+        //   '_id':rst[0].leader[0]._id
+        // },
+        'content':null,
+        'own_team':{
+          '_id':own_team._id,
+          'name':own_team.name,
+          'logo':own_team.logo,
+          'status': status===1 ? 1 :(status===2? 4 :5)
+        },
+        'receive_team':{
+          '_id':receive_team._id,
+          'name':receive_team.name,
+          'logo':receive_team.logo,
+          'status': status===1 ? 1 :(status===2? 4 :5)
+        },
+        'campaign_id':campaign._id,
+        'auto':true
+      };
+      CompanyGroup.findOne({'_id':receive_team._id},{leader:1},function(err,opposite_team){
+        if(err){
+          res.status(500);
+          next('查询对方小队错误');
+        }
+        else{
+          param.receiver = {
+            '_id':opposite_team.leader.length? opposite_team.leader[0]._id:''//要是没有队长呢......
+          }
+          message.sendToOne(req,res,param);
+        }
+      });
+      //若接受,则发动态、加积分
+      if(status ===1){
+        push.campaign(campaignId);
+        GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
+          groupMessage.message_type = 5;
+          groupMessage.create_time = new Date();
+          groupMessage.save(function (err) {
+            if (err) {
+              console.log('保存约战动态时出错' + err);
+            }
+          });
+        });
+        CompanyGroup.update({'_id':{'$in':campaign.tid}},{'$inc':{'score.provoke':15}},function (err,team){
+          if(err){
+            console.log('RESPONSE_PROVOKE_POINT_FAILED!',err);
+          }
+        });
+      }
+      return res.send({'result':1,'msg':'SUCCESS'});
+    }
+  });
+};
 
 exports.getCampaignDetail = function(req, res, next) {
   Campaign
@@ -1536,9 +1647,6 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   campaign.campaign_mold = basicInfo.campaign_mold?basicInfo.campaign_mold:'其它';//以防万一
   if(basicInfo.tags&&basicInfo.tags.length>0)
     campaign.tags = basicInfo.tags;
-  if(providerInfo.confirm_status==false){
-    campaign.confirm_status = false;
-  }
   var _now = new Date();
   if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {
     callback(400,'活动的时间比现在更早');

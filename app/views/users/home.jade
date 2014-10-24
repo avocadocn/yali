@@ -125,9 +125,9 @@ block panel
                   p.team_name {{campaign_unit.team.name}}
               .operator(ng-if="!nowCampaign.confirm_status" )
                 //- button.dl_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.length==0 && !nowCampaign.voteFlag" ng-click="vote(nowCampaign._id,true)") 赞成
-                button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(0)>-1" ng-click="cancelProvoke(campaign_item._id,nowCampaign.campaign_unit[0].team._id)") 取消
-                button.dl_btn.dl_btn_small.pull-right.btn_red(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="responseProvoke(campaign_item._id,nowCampaign.campaign_unit[1].team._id)") 接受
-                button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="cancelProvoke(campaign_item._id,nowCampaign.campaign_unit[1].team._id)") 拒绝
+                button.dl_btn.dl_btn_small.pull-right.btn_red(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="dealProvoke(nowCampaign._id,nowCampaign.campaign_unit[1].team._id,1)") 接受
+                button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="dealProvoke(nowCampaign._id,nowCampaign.campaign_unit[1].team._id,2)") 拒绝
+                button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(0)>-1" ng-click="dealProvoke(nowCampaign._id,nowCampaign.campaign_unit[0].team._id,3)") 取消
             .logo_col(ng-if="nowCampaign.type!='provoke'" )
               .team
                 a.clearLinkUnderline(ng-href="{{nowCampaign.link}}" target="_blank")

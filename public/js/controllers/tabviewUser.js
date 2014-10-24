@@ -129,28 +129,27 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
     //     });
     // };
     //应战
-    $rootScope.responseProvoke = function(campaignId, tid, status) {
-      alertify.confirm('确认要接受该挑战吗？',function(e){
+    $rootScope.dealProvoke = function(campaignId, tid, status) {
+      console.log(campaignId);
+      switch(status){
+        case 1://接受
+          var tip = '是否确认接受该挑战?';
+          break;
+        case 2://拒绝
+          var tip = '是否确认拒绝该挑战?';
+          break;
+        case 3://取消
+          var tip = '是否确认取消发起挑战';
+          break;
+      }
+      alertify.confirm(tip,function(e){
         if(e){
-          Campaign.responseProvoke(campaignId, tid, status, function (err) {
+          Campaign.dealProvoke(campaignId, tid, status, function (err) {
             if (err) {
               alertify.alert(err);
             } else {
-
-            }
-          });
-        }
-      });
-    };
-    //取消挑战
-    $rootScope.cancelProvoke = function(campaignId, tid) {
-      alertify.confirm('确认要取消挑战吗？',function(e){
-        if(e){
-          Campaign.cancelProvoke(campaignId, tid, function (err) {
-            if (err) {
-              alertify.alert(err);
-            } else {
-
+              alertify.alert('成功');
+              //刷新页面？
             }
           });
         }
