@@ -736,7 +736,7 @@ exports.getUserCampaignsForHome = function(req, res) {
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var searchCampaign = function(startSet, endSet, joinFlag, photoFlag, callback){
+  var searchCampaign = function(startSet, endSet, deadlineSet, joinFlag, photoFlag, callback){
     var options = {
       'cid': req.user.cid,
       'active': true,
@@ -748,6 +748,9 @@ exports.getUserCampaignsForHome = function(req, res) {
     }
     if(endSet){
       options.end_time = endSet;
+    }
+    if(deadlineSet){
+      options.deadline = deadlineSet;
     }
     if(joinFlag){
       options['campaign_unit.member._id'] = req.user._id ;
@@ -780,16 +783,16 @@ exports.getUserCampaignsForHome = function(req, res) {
   }
   async.series([
     function(callback){
-      searchCampaign({'$gte':now },undefined, false, false, callback);
+      searchCampaign( undefined, undefined,{'$gte':now },  false, false, callback);
     },//所有新活动的活动，（未参加）
     function(callback){
-      searchCampaign({ '$gte':now }, undefined, true, false, callback);
+      searchCampaign({ '$gte':now }, undefined, undefined, true, false, callback);
     },//马上开始的活动,（已参加）
     function(callback){
-      searchCampaign({ '$lt': now},{'$gte':now }, true, true, callback);
+      searchCampaign({ '$lt': now},{'$gte':now }, undefined, true, true, callback);
     },//正在进行的活动
     function(callback){
-      searchCampaign(undefined,{'$lt':startTimeLimit,'$gte': now }, true, true, callback);
+      searchCampaign(undefined,{'$lt':startTimeLimit,'$gte': now }, undefined, true, true, callback);
     },//刚刚结束的活动
     function(callback){
       var teamIds = [];

@@ -33,6 +33,14 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
           }
         });
+        uploader.onAfterAddingAll = function(){
+          console.log(11);
+          if($scope.afterRender){
+            $timeout(function () {
+              $scope.afterRender();
+            });
+          }
+        };
         this.uploader = uploader;
       };
 
@@ -45,6 +53,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
           self.uploader.uploadAll();
           self.uploader.onSuccessItem = function (item, data, status, headers) {
             self.upload_photos.push(data.photo);
+            if($scope.afterRender){
+              $timeout(function () {
+                $scope.afterRender();
+              });
+            }
           };
           self.uploader.onCompleteAll = function () {
             Comment.publish({
@@ -159,6 +172,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             _id: comment.poster._id,
             nickname: comment.poster.nickname
           };
+          if($scope.afterRender){
+            $timeout(function () {
+              $scope.afterRender();
+            });
+          }
         }
       };
 
@@ -232,7 +250,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
               } else {
                 comment.replies.splice(index, 1);
                 comment.reply_count--;
-
+                if($scope.afterRender){
+                  $timeout(function () {
+                    $scope.afterRender();
+                  });
+                }
               }
             });
           }

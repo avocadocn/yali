@@ -139,6 +139,7 @@ clearfix()
                   background url("/img/loading.gif") center center no-repeat
             .img_single_thumb
               background url("/img/loading.gif") center center no-repeat
+              height 84px
             .preview_img
               background url("/img/loading.gif") center center no-repeat
 
@@ -185,7 +186,37 @@ clearfix()
         opacity 0
       li>a
         border-radius 0
-
+.simple_comment
+  .component_body
+    .rich_comment_form
+      float left
+      padding 10px
+      .preview_box
+        display block
+        .remind
+          display block
+        .preview_img_wrap
+          float left
+          width 48px
+          height 48px
+    .comment
+      padding 10px
+      clear both
+      .comment_user_info
+        margin-right 10px
+        .user_name
+          text-align center
+      .comment_content_panel
+        .comment_content
+          .comment_img_box
+            .img_list_box
+              width 100%
+              .list_img
+                width 70px
+                height 70px
+        .replies
+          .reply_form
+            margin-bottom 0
 .score_board
   .component_head
     background-color #333333 !important
