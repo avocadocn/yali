@@ -95,13 +95,13 @@ block panel
           span.text-center 还剩
           span.text-center.time_count.pull-right {{ recentJoinedCampaign.start_time_text}}
     if myteam.length == 0
-      .user_campaigns_container.recommend_team(ng-if="recentJoinedCampaigns.length==0 && recentUnjoinedCampaigns.length==0" ng-cloak)
+      .user_campaigns_container.recommend_team(ng-if="recentCampaigns.length==0" ng-cloak)
         .campaign_head
           a.text.pull-right.clearLinkUnderline(href="/company/home#/team_info" target="_blank" ng-cloak)
             p 您还没有加入任何小队
             p 加入小队参与更多精彩的活动吧！
     else
-      .user_campaigns_container.recommend_team(ng-if="recentJoinedCampaigns.length==0 && recentUnjoinedCampaigns.length==0" ng-cloak)
+      .user_campaigns_container.recommend_team(ng-if="recentCampaigns.length==0" ng-cloak)
         .campaign_head
           a.text.pull-right.clearLinkUnderline
             p 您还没有任何活动

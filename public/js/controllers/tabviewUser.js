@@ -756,7 +756,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
 
       var calendar = $('#calendar').calendar(options);
     };
-    var initModalCalendar = function(events_source,start_time) {
+    var initModalCalendar = function(events_source,start_time,reloadEventList) {
       var modalOptions = {
         events_source: events_source,
         view: 'month',
@@ -791,11 +791,18 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
           $('#calendar_nav_modal').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
             modalCalendar.navigate($(this).data('calendar-nav'));
           });
+          $('#calendar_view_modal').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
+            modalCalendar.navigate($(this).data('calendar-nav'));
+          });
           $('#calendar_view_modal').undelegate('[data-calendar-view]','click').delegate('[data-calendar-view]','click',function() {
             modalCalendar.view($(this).data('calendar-view'));
           });
           if(start_time){
             $('#calendar_view_modal').find("[data-cal-date='"+start_time+"']").parent().mouseenter().click();
+          }
+          else if(reloadEventList){
+            var nowTime = $('#cal-modal-event-box').find('.cal-event-time .time').html();
+            $('#calendar_view_modal').find("[data-cal-date='"+nowTime+"']").parent().mouseenter().click();
           }
         },
         classes: {
@@ -820,7 +827,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
       $scope.campaignsType = attr;
       var events_source = '/campaign/user/' + attr + '/calendar/'+$rootScope.uid;
       if(type=='modal'){
-        initModalCalendar(events_source);
+        initModalCalendar(events_source,undefined,1);
       }
       else{
         initCalendar(events_source);

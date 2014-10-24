@@ -2650,6 +2650,13 @@ input.ng-invalid.ng-dirty {
   line-height: 30px;
   font-size: 14px;
 }
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .today {
+  line-height: 30px;
+  font-size: 14px;
+  margin: 10px 15px;
+  color: #999;
+  cursor: pointer;
+}
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_event_box {
   width: 410px;
   float: right;

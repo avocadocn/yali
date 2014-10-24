@@ -55,8 +55,7 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
       {'tid': {'$in':team_ids}},
       {'campaign_type':1}
     ],
-    'active': true,
-    'confirm_status':true
+    'active': true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
@@ -93,8 +92,7 @@ var getUserJoinedCampaigns = function(user, isCalendar, _query, callback) {
   var options = {
     'cid': user.cid,
     'campaign_unit.member._id': user._id,
-    'active': true,
-    'confirm_status':true
+    'active': true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
@@ -136,8 +134,7 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
     '$nor': [
       { 'campaign_unit.member._id': user._id }
     ],
-    'active': true,
-    'confirm_status':true
+    'active': true
   };
   if (isCalendar === false) {
     options.end_time = { '$gt': new Date() };
