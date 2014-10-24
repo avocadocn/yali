@@ -30,11 +30,11 @@ block contentExt
                 each unit in campaign.campaign_unit
                   .unit
                     img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
-                    if isActive && !isEnd && unit.canjoin
+                    if isActive && !isEnd && unit.canjoin 
                         if unit.team._id
-                          button.join(ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
+                          button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
                         else
-                          button.join(ng-click="join('#{unit.company._id}')") 参加
+                          button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}')") 参加
 
               .info_container
                 if !isStart

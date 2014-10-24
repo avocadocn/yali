@@ -304,7 +304,6 @@ Campaign.methods = {
       };
       // 非公司活动
       if (targetUnit.tid) {
-        console.log(targetUnit, unit.team)
         if(targetUnit.tid.toString() === unit.team._id.toString()){
           return _join(unit);
         }
