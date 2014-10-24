@@ -732,30 +732,36 @@ exports.editCampaign = function(req, res){
   });
 };
 
-
+var nowCampaignLength = 8;
 exports.getUserCampaignsForHome = function(req, res) {
   var now = new Date();
   var startTimeLimit = new Date();
   startTimeLimit.setHours(startTimeLimit.getHours()+systemConfig.CAMPAIGN_STAY_HOUR);
   var endTimeLimit = new Date();
   endTimeLimit.setHours(endTimeLimit.getHours()-systemConfig.CAMPAIGN_STAY_HOUR);
-  var searchCampaign = function(startSet, endSet, deadlineSet, joinFlag, photoFlag, callback){
+  /**
+   * [searchCampaign description]
+   * @param  {[Object]}   searchOption startSet, endSet, deadlineSet, joinFlag, photoFlag,limitSet
+   * @param  {Function} callback     [description]
+   * @return {[type]}                [description]
+   */
+  var searchCampaign = function(searchOption, callback){
     var options = {
       'cid': req.user.cid,
       'active': true,
       'confirm_status':true
     };
     var _sort;
-    if(startSet){
-      options.start_time = startSet;
+    if(searchOption.startSet){
+      options.start_time = searchOption.startSet;
     }
-    if(endSet){
-      options.end_time = endSet;
+    if(searchOption.endSet){
+      options.end_time = searchOption.endSet;
     }
-    if(deadlineSet){
-      options.deadline = deadlineSet;
+    if(searchOption.deadlineSet){
+      options.deadline = searchOption.deadlineSet;
     }
-    if(joinFlag){
+    if(searchOption.joinFlag){
       options['campaign_unit.member._id'] = req.user._id ;
       _sort ='start_time';
     }
@@ -771,13 +777,16 @@ exports.getUserCampaignsForHome = function(req, res) {
     }
 
     var query = Campaign.find(options).sort(_sort);
-    if(photoFlag){
+    if(searchOption.photoFlag){
       query = query.populate('photo_album');
+    }
+    if(searchOption.limitSet){
+      query = query.limit(searchOption.limitSet);
     }
 
     query.exec()
     .then(function(campaigns){
-      callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:photoFlag,nowFlag:joinFlag}));
+      callback(null,formatCampaign(campaigns,'user',req.role,req.user,{photoFlag:searchOption.photoFlag,nowFlag:searchOption.joinFlag}));
     })
     .then(null,function(err){
       console.log(err);
@@ -786,16 +795,16 @@ exports.getUserCampaignsForHome = function(req, res) {
   }
   async.series([
     function(callback){
-      searchCampaign( undefined, undefined,{'$gte':now },  false, false, callback);
+      searchCampaign({deadlineSet:{'$gte':now }}, callback);
     },//所有新活动的活动，（未参加）
     function(callback){
-      searchCampaign({ '$gte':now }, undefined, undefined, true, false, callback);
+      searchCampaign({startSet:{ '$gte':now }, joinFlag: true}, callback);
     },//马上开始的活动,（已参加）
     function(callback){
-      searchCampaign({ '$lt': now},{'$gte':now }, undefined, true, true, callback);
+      searchCampaign({startSet:{ '$lt': now},endSet:{'$gte':now }, joinFlag: true,photoFlag: true}, callback);
     },//正在进行的活动
     function(callback){
-      searchCampaign(undefined,{'$lt':startTimeLimit,'$gte': now }, undefined, true, true, callback);
+      searchCampaign({endSet:{'$lte': now }, joinFlag: true,photoFlag: true,limitSet:nowCampaignLength}, callback);
     },//刚刚结束的活动
     function(callback){
       var teamIds = [];
@@ -826,16 +835,17 @@ exports.getUserCampaignsForHome = function(req, res) {
     }
     else{
       var _result = [values[0],values[1]];
-      if(values[2]){
+      if(values[4].length>0){
+        values[2] = values[4].concat(values[2]);
+      }
+      var _nowCampaignLength = values[2].length;
+      if(_nowCampaignLength>=nowCampaignLength){
         _result.push(values[2]);
       }
       else{
-        _result.push(values[3]);
+        _result.push(values[2].concat(values[3].splice(0,nowCampaignLength-_nowCampaignLength)));
       }
-      // console.log(values[4]);
-      if(values[4]){
-        _result[2] = values[4].concat(_result[2]);
-      }
+      console.log(values);
       return res.send({ result: 1, campaigns: _result });
     }
   });

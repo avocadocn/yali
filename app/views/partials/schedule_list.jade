@@ -17,10 +17,10 @@
         //- a(ng-if="campaignsType!=='all'" ng-click="getCampaigns('all')" href="javascript:void(0)") 所有
         //- span.active(ng-if="campaignsType==='all'") 所有
     p.calendar_nav#calendar_nav(ng-show="isCalendar")
-      a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
-      a(data-calendar-nav="today" href="javascript:void(0)") 
-        span#calendar_title.calendar_title.pull-left
       a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;&gt;
+      a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;&lt;
+      a.calendar_title(data-calendar-nav="today" href="javascript:void(0)") 
+        span#calendar_title
   .calendar_box
     #calendar_view(ng-show="isCalendar")
       //- .clearfix

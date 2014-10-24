@@ -4,7 +4,6 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
 
   .controller('RichCommentCtrl', ['$scope', '$http', '$element','$timeout', 'Comment', 'Report', 'FileUploader',
     function ($scope, $http, $element, $timeout, Comment, Report, FileUploader) {
-
       $scope.pages = [];
       $scope.nowPage = 0;
       var CommentBox = function (args) {
@@ -34,7 +33,6 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
           }
         });
         uploader.onAfterAddingAll = function(){
-          console.log(11);
           if($scope.afterRender){
             $timeout(function () {
               $scope.afterRender();
@@ -112,7 +110,8 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
 
         });
       };
-      $http.get('/components/RichComment/id/' + $scope.componentId)
+      if($scope.componentId){
+        $http.get('/components/RichComment/id/' + $scope.componentId)
         .success(function (data) {
           if (data.result === 1) {
             cbox.host_type = data.componentData.hostType;
@@ -145,6 +144,8 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         .error(function (data, status) {
           alertify.alert('获取评论失败，请刷新页面重试');
         });
+      }
+
 
       $scope.new_comment = {
         text: ''

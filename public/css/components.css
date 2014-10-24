@@ -54,6 +54,9 @@
   font-size: 14px;
   line-height: 30px;
 }
+.rich_comment .component_body .rich_comment_form .comment_control .publish[disabled] {
+  opacity: 0.65;
+}
 .rich_comment .component_body .rich_comment_form .preview_box {
   display: flex;
   margin-top: 5px;

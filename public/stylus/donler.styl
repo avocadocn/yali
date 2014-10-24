@@ -2331,8 +2331,15 @@ input.ng-invalid.ng-dirty
             color themeColor
             line-height 24px
             font-size 18px
+            label
+              max-width 100%
+              overflow hidden
+              text-overflow ellipsis
+              white-space nowrap
           .unconfrim
             color #f7b1b3
+            label
+              max-width 85%
           .user_campaigns_container
             width 345px
             .campaign
@@ -2526,6 +2533,7 @@ input.ng-invalid.ng-dirty
             margin 0
           a
             color navbarFontColor
+            display inline-block
       .cal-context
         div
           border none

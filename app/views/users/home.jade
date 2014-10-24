@@ -95,20 +95,20 @@ block panel
           span.text-center 还剩
           span.text-center.time_count.pull-right {{ recentJoinedCampaign.start_time_text}}
     if myteam.length == 0
-      .user_campaigns_container.recommend_team(ng-if="recentCampaigns.length==0" ng-cloak)
+      .user_campaigns_container.recommend_team(ng-if="recentUnjoinedCampaigns.length==0 && recentJoinedCampaigns.length==0 && nowCampaigns.length==0" ng-cloak)
         .campaign_head
           a.text.pull-right.clearLinkUnderline(href="/company/home#/team_info" target="_blank" ng-cloak)
             p 您还没有加入任何小队
             p 加入小队参与更多精彩的活动吧！
     else
-      .user_campaigns_container.recommend_team(ng-if="recentCampaigns.length==0" ng-cloak)
+      .user_campaigns_container.recommend_team(ng-if="recentUnjoinedCampaigns.length==0 && recentJoinedCampaigns.length==0 && nowCampaigns.length==0" ng-cloak)
         .campaign_head
           a.text.pull-right.clearLinkUnderline
             p 您还没有任何活动
             p 联系队长组织精彩的活动吧！
     .user_campaigns_container.now_head(ng-if="nowCampaigns.length>0" ng-cloak)
       .campaign_head.left(ng-cloak)
-        label {{nowCampaigns.length}} 个活动正在进行
+        label {{nowCampaigns.length}} 个近期活动
       //- .campaign_head.right(ng-cloak)
       //-   a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href=""  ng-click="openModal()") {{newReply.length}}条未查看回复
     .now(ng-cloak)
@@ -152,7 +152,7 @@ block panel
               img(ng-src="{{photo.uri}}/80/80")
           .comments
             //- a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
-            a.clearLinkUnderline.pull-right.comment(ng-click="nowCampaign.showComment=true;") {{nowCampaign.comment_sum}}条评论
+            a.clearLinkUnderline.pull-right.comment(ng-click="nowCampaign.showComment=!nowCampaign.showComment;") {{nowCampaign.comment_sum}}条评论
             simple-comment(ng-if="nowCampaign.showComment" component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" after-render="reloadM()" comment-num=3)
         //- a.pull-right(href="") 退出
     //- carousel(interval="5000")

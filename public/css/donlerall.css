@@ -54,6 +54,9 @@
   font-size: 14px;
   line-height: 30px;
 }
+.rich_comment .component_body .rich_comment_form .comment_control .publish[disabled] {
+  opacity: 0.65;
+}
 .rich_comment .component_body .rich_comment_form .preview_box {
   display: flex;
   margin-top: 5px;
@@ -3110,8 +3113,17 @@ input.ng-invalid.ng-dirty {
   line-height: 24px;
   font-size: 18px;
 }
+.user_page .dl_container .main .campaigns_container .now .campaign_head label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .user_page .dl_container .main .campaigns_container .now .unconfrim {
   color: #f7b1b3;
+}
+.user_page .dl_container .main .campaigns_container .now .unconfrim label {
+  max-width: 85%;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container {
   width: 345px;
@@ -3350,6 +3362,7 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav a {
   color: #fff;
+  display: inline-block;
 }
 .user_page .dl_container .schedule_small .cal-context div {
   border: none;

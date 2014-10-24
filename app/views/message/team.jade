@@ -26,7 +26,7 @@ div(ng-show = '!loading')
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
             h5(ng-switch-when="2")
               您参加的比赛
-              a(href="/campaign/{{team_message.campaign_id}}")
+              a(href="/campaign/detail/{{team_message.campaign_id}}")
                 {{team_message.campaign_name}}
               有了
               a(id='pop_message_{{$index}}' ng-click="showPop($index);setToRead($index)") 新的消息
