@@ -55,7 +55,7 @@ exports.getGroups = function(req,res) {
 
 
 //显示企业成员列表
-exports.renderMember = function(req,res){
+exports.renderMember = function(req,res,next){
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     res.status(403);
     next('forbidden');

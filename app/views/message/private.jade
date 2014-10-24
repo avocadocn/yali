@@ -17,7 +17,7 @@ div(ng-show = '!loading')
         .row
           .dl_md_12(ng-switch="private_message.message_type")
             h5(ng-switch-when="4")
-              a(href="/competition/{{private_message.campaign_id}}" ng-click="setToRead($index)")
+              a(href="/campaign/detail/{{private_message.campaign_id}}" ng-click="setToRead($index)")
                 {{private_message.content}}
             h5(ng-switch-when="5")
               a

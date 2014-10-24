@@ -1205,7 +1205,7 @@ exports.getOneNotice = function (req, res, next) {
     });
 };
 
-exports.renderCampaignDetail = function (req, res) {
+exports.renderCampaignDetail = function (req, res, next) {
   var campaign = req.campaign;
   moment.lang('zh-cn');
   // 权限判断
@@ -1282,6 +1282,8 @@ exports.renderCampaignDetail = function (req, res) {
   ];
 
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
+ 
+
   var isStart = campaign.start_time < Date.now();
   var isEnd = campaign.end_time < Date.now();
   var isOneUnit = campaign.campaign_unit.length === 1;
@@ -1311,25 +1313,64 @@ exports.renderCampaignDetail = function (req, res) {
       }
     }
   };
-
-  res.render('campaign/campaign_detail', {
-    campaign: campaign,
-    components: campaign.formatComponents(),
-    over: campaign.deadline < Date.now(),
-    isStart: isStart,
-    isEnd: isEnd,
-    isJoin: isJoin,
-    isOneUnit: isOneUnit,
-    isActive: campaign.active,
-    membersForCard: membersForCard,
-    notice: req.notice,
-    moment: moment,
-    allow: allow,
-    helper: helper,
-    links: links
+  
+  async.waterfall([
+    function(callback){
+      if(!req.user.isHR()&&!isJoin){
+        if(campaign.campaign_type!==1){//判断这个人是哪个队的
+          CompanyGroup.find({'_id':{'$in':campaign.tid}},function(err,teams){
+            if(err){
+              callback(err);
+            }
+            else{
+              for(var i = 0;i<teams.length;i++){
+                if(teams[i].hasMember(req.user._id)){
+                  var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit,teams[i]._id,'team._id');
+                  if(index>-1){
+                    campaign.campaign_unit[index].canjoin=true;
+                  }
+                }
+              }
+              callback();
+            }
+          });
+        }
+        else{//判断这个人是不是这个公司的
+          if(req.user.cid === campaign.cid[0]){
+            campaign.campaign_unit[0].canjoin=true;
+          }
+          callback();
+        }
+      }
+      else{
+        callback();
+      }
+    },
+    function(args,callback){
+      console.log(campaign);
+      res.render('campaign/campaign_detail', {
+        campaign: campaign,
+        components: campaign.formatComponents(),
+        over: campaign.deadline < Date.now(),
+        isStart: isStart,
+        isEnd: isEnd,
+        isJoin: isJoin,
+        isOneUnit: isOneUnit,
+        isActive: campaign.active,
+        membersForCard: membersForCard,
+        notice: req.notice,
+        moment: moment,
+        allow: allow,
+        helper: helper,
+        links: links
+      });
+    }
+  ],function(err, result){
+    if(err){
+      next(err);
+      return;
+    }
   });
-
-
 };
 
 
