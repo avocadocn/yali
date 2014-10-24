@@ -7,7 +7,7 @@
         img.team_logo(ng-src="{{playingTeam.logo}}/69/69" title="{{playingTeam.name}}")
         span.text.team_name(ng-bind="playingTeam.name" title="{{playingTeam.name}}")
         .show_score(ng-if="!editing && scoreBoard.status!==0" ng-class="{'active': playingTeam.result===1}")
-          .score(ng-bind="playingTeam.score")
+          .score(ng-if="playingTeam.score" ng-bind="playingTeam.score")
           .result(ng-if="playingTeam.result===1") 胜
           .result(ng-if="playingTeam.result===0") 平
           .result(ng-if="playingTeam.result===-1") 败

@@ -62,14 +62,18 @@ exports.ScoreBoard = {
           }
 
           if (req.body.isInit) {
-            scoreBoard.initScore(allows, req.body.data);
+            var err = scoreBoard.initScore(allows, req.body.data);
           } else {
-            scoreBoard.resetScore(allows, req.body.data);
+            var err = scoreBoard.resetScore(allows, req.body.data);
+          }
+          if (err) {
+            return res.send({ result: 0, msg: err });
           }
 
           scoreBoard.save(function (err) {
             if (err) {
-              next(err);
+              console.log(err);
+              res.send({ result: 0, msg: err });
             } else {
               res.send({ result: 1 });
             }
@@ -77,7 +81,8 @@ exports.ScoreBoard = {
         }
       })
       .then(null, function (err) {
-        next(err);
+        console.log(err);
+        res.send({ result: 0, msg: err });
       });
   },
 

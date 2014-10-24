@@ -41,6 +41,10 @@ angular.module('donler.components.scoreBoard', [])
                 $scope.leaderStatus = 'toConfirm';
               }
             }
+          } else if ($scope.scoreBoard.status === 0) {
+            if (playingTeam.allowEdit) {
+              $scope.allowEdit = true;
+            }
           }
         }
       }
@@ -70,6 +74,7 @@ angular.module('donler.components.scoreBoard', [])
 
     var finishEdit = function () {
       $scope.editing = false;
+      $scope.scoreBoard.status === 1;
       $scope.leaderStatus = 'waitConfirm';
       for (var i = 0; i < $scope.scoreBoard.playingTeams.length; i++) {
         var playingTeam = $scope.scoreBoard.playingTeams[i];
