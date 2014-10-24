@@ -3265,15 +3265,9 @@ input.ng-invalid.ng-dirty {
   color: #ccc;
 }
 .user_page .dl_container .schedule_small {
-<<<<<<< HEAD
-  -moz-box-shadow: 3px 3px 3px #ddd;
-/* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ddd;
-=======
   -moz-box-shadow: 3px 3px 3px #f4f4f4;
 /* 老的 Firefox */
   box-shadow: 3px 3px 3px #f4f4f4;
->>>>>>> origin/campaignMold
 }
 .user_page .dl_container .schedule_small .schedulebox {
   padding: 0;
@@ -3282,11 +3276,7 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .schedule_small .schedulebox .calendar_tips {
   height: 30px;
   font-size: 12px;
-<<<<<<< HEAD
-  border-top: 1px solid #ddd;
-=======
   border-top: 1px solid #f4f4f4;
->>>>>>> origin/campaignMold
   margin-top: 5px;
   color: #3498db;
 }
@@ -3330,11 +3320,8 @@ input.ng-invalid.ng-dirty {
   height: 14px;
   text-align: center;
   margin: 5px 0;
-<<<<<<< HEAD
-=======
   color: #ccc;
   font-size: 12px;
->>>>>>> origin/campaignMold
 }
 .user_page .dl_container .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.2em;
