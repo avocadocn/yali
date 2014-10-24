@@ -133,7 +133,7 @@ block contentExt
 
         if components.ScoreBoard
           each scoreBoard in components.ScoreBoard
-            score-board(component-id="#{scoreBoard}" allow-edit="#{allow.setScoreBoardScore}" class="#{helper.start('order-1')} #{helper.end('order-1')}")
+            score-board(component-id="#{scoreBoard}" class="#{helper.start('order-1')} #{helper.end('order-1')}")
 
         if isStart
           .component.brief_card(class="#{helper.start('order-1')} #{helper.end('order-2')}")

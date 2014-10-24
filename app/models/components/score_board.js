@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var auth = require('../../services/auth');
 
 var ScoreBoard = new Schema({
   owner: {
@@ -30,7 +31,7 @@ var ScoreBoard = new Schema({
     playing_team: {
       cid: Schema.Types.ObjectId,
       tid: Schema.Types.ObjectId
-    },
+    }, // 如果同时编辑并确认，则无此属性
     // scores和results二者至少存在一个
     scores: [Number], // 长度能且仅能为2
     results: [Number], // 长度能且仅能为2
@@ -93,34 +94,27 @@ ScoreBoard.statics = {
 /**
  * 设置比分和胜负数据
  * @param {Object} scoreBoard
+ * @param {Array} allowSetScore 是否可以设置比分
  * @param {Object} data
  *  data: {
- *    team: {
- *      cid: String|Object,
- *      tid: String|Object
- *    }, // 指明是以哪个队的队长身份修改，有可能会出现同时是两队队长的情况
  *    scores: [Number], // 可选
  *    results: [Number], // 可选
  *    // scores,results属性至少要有一个
  *  }
  */
-var setScore = function (scoreBoard, data) {
-  var log = {
-    playing_team: {
-      cid: data.team.cid,
-      tid: data.team.tid
-    }
-  };
+var setScore = function (scoreBoard, allowSetScore, data) {
+  var log = {};
   if (data.scores) {
     log.scores = data.scores;
   }
   if (data.results) {
     log.results = data.results;
   }
-  scoreBoard.logs.push(log);
 
+  var isAllLeader = true;
   for (var i = 0; i < scoreBoard.playing_teams.length; i++) {
     var playing_team = scoreBoard.playing_teams[i];
+
     if (data.scores) {
       playing_team.score = data.scores[i];
     }
@@ -128,22 +122,48 @@ var setScore = function (scoreBoard, data) {
       playing_team.result = data.results[i];
     }
 
-    if (playing_team.tid.toString() === data.team.tid.toString()) {
+    if (allowSetScore[i]) {
       playing_team.confirm = true;
+      log.playing_team = {
+        cid: playing_team.cid,
+        tid: playing_team.tid
+      };
     } else {
       playing_team.confirm = false;
+      isAllLeader = false;
     }
   }
-  scoreBoard.status = 1;
+
+  if (isAllLeader) {
+    delete log.playing_team;
+    scoreBoard.status = 2;
+  } else {
+    scoreBoard.status = 1;
+  }
+
+  scoreBoard.logs.push(log);
 };
 
 ScoreBoard.methods = {
 
   /**
    * 获取组件数据
+   * @param {Object} user req.user
    * @param {Function} callback
    */
-  getData: function (callback) {
+  getData: function (user, callback) {
+    this.playing_teams.forEach(function (playing_team) {
+      var allow = auth(user, {
+        companies: [playing_team.cid],
+        teams: [playing_team.tid]
+      }, ['setScoreBoardScore']);
+      if (allow.setScoreBoardScore) {
+        playing_team.set('allowEdit', true, {strict: false});
+      } else {
+        playing_team.set('allowEdit', false, {strict: false});
+      }
+    });
+
     callback({
       playingTeams: this.playing_teams,
       status: this.status
@@ -152,47 +172,41 @@ ScoreBoard.methods = {
 
   /**
    * 初始化比分和胜负关系，会将状态改为1（待确认状态）。如果此时状态为1会阻止设置。
+   * @param {Array} allowSetScore 是否允许设置比分
    * @param {Object} data 比分数据
    *  data: {
-   *    team: {
-   *      cid: String|Object,
-   *      tid: String|Object
-   *    }, // 指明是以哪个队的队长身份修改，有可能会出现同时是两队队长的情况
    *    scores: [Number], // 可选
    *    results: [Number], // 可选
    *    // scores,results属性至少要有一个
    *  }
    * @returns {String|undefined} 如果有错误，则返回错误信息
    */
-  initScore: function (data) {
+  initScore: function (allowSetScore, data) {
     if (this.status === 1) {
       return '对方已设置了比分，请刷新页面进行确认。';
     } else if (this.status === 2) {
       return '抱歉，比分已确认，不可以再设置。';
     } else {
-      setScore(this, data);
+      setScore(this, allowSetScore, data);
     }
   },
 
   /**
    * 不同意对方设置的比分，重新设置
+   * @param {Array} allowSetScore 是否允许设置比分
    * @param {Object} data 比分数据
    *  data: {
-   *    team: {
-   *      cid: String|Object,
-   *      tid: String|Object
-   *    }, // 指明是以哪个队的队长身份修改，有可能会出现同时是两队队长的情况
    *    scores: [Number], // 可选
    *    results: [Number], // 可选
    *    // scores,results属性至少要有一个
    *  }
    * @returns {String|undefined} 如果有错误，则返回错误信息
    */
-  resetScore: function (data) {
+  resetScore: function (allowSetScore, data) {
     if (this.status === 2) {
       return '抱歉，比分已确认，不可以再设置。';
     } else {
-      setScore(this, data);
+      setScore(this, allowSetScore, data);
     }
   },
 
@@ -211,11 +225,11 @@ ScoreBoard.methods = {
       confirm: true
     };
     for (var i = 0; i < this.playing_teams.length; i++) {
-      var team = this.playing_teams[i];
-      if (!team.confirm) {
+      var playing_team = this.playing_teams[i];
+      if (!playing_team.confirm) {
         log.playing_team = {
-          cid: team.cid,
-          tid: team.tid
+          cid: playing_team.cid,
+          tid: playing_team.tid
         };
       }
       playing_team.confirm = true;

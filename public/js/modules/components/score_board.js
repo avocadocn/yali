@@ -4,40 +4,119 @@ angular.module('donler.components.scoreBoard', [])
 
   .controller('ScoreBoardCtrl', ['$scope', 'ScoreBoard', function ($scope, ScoreBoard) {
 
+    /**
+     * 对于有编辑权限的用户的状态，可以是以下的值
+     * 'init' 初始状态，双发都没有设置比分
+     * 'waitConfirm' 等待对方确认
+     * 'toConfirm' 对方已设置比分，需要我方确认
+     * 'confirm' 双方已确认
+     * @type {String}
+     */
+    $scope.leaderStatus = 'init';
+
+    /**
+     * 是否可以管理比分板
+     * @type {Boolean}
+     */
+    $scope.allowEdit = false;
+
     ScoreBoard.getData($scope.componentId, function (err, scoreBoardData) {
       if (err) {
         // todo 这不是一个好的做法，alertify并非是此模块的依赖项
         alertify.alert(err);
       } else {
         $scope.scoreBoard = scoreBoardData;
-        $scope.scores = [$scope.scoreBoard.playingTeams[0].score, $scope.scoreBoard.playingTeams[1].score];
+        $scope.scores = [];
+        $scope.results = [];
+        for (var i = 0; i < $scope.scoreBoard.playingTeams.length; i++) {
+          var playingTeam = $scope.scoreBoard.playingTeams[i];
+          $scope.scores.push(playingTeam.score);
+          $scope.results.push(playingTeam.result);
+          if ($scope.scoreBoard.status === 1) {
+            if (playingTeam.allowEdit) {
+              $scope.allowEdit = true;
+              if (playingTeam.confirm) {
+                $scope.leaderStatus = 'waitConfirm';
+              } else {
+                $scope.leaderStatus = 'toConfirm';
+              }
+            }
+          }
+        }
       }
     });
 
     $scope.editing = false;
 
-    $scope.editScore = function () {
-      $scope.editing = true;
+    /**
+     * 设置胜负结果
+     * @param {Number} result -1, 0, 1
+     * @param {Number} index  0或1, $scope.results的索引
+     */
+    $scope.setResult = function (result, index) {
+      if (index === 0) {
+        // 两队胜负值的和为0
+        $scope.results[0] = result;
+        $scope.results[1] = 0 - result;
+      } else if (index === 1) {
+        $scope.results[0] = 0 - result;
+        $scope.results[1] = result;
+      }
     };
 
-    $scope.setScore = function () {
-      ScoreBoard.setScore($scope.componentId, $scope.scores, function (err) {
+    $scope.toggleEdit = function () {
+      $scope.editing = !$scope.editing;
+    };
+
+    var finishEdit = function () {
+      $scope.editing = false;
+      $scope.leaderStatus = 'waitConfirm';
+      for (var i = 0; i < $scope.scoreBoard.playingTeams.length; i++) {
+        var playingTeam = $scope.scoreBoard.playingTeams[i];
+        playingTeam.score = $scope.scores[i];
+        playingTeam.result = $scope.results[i];
+      }
+    };
+
+    $scope.initScore = function () {
+      ScoreBoard.initScore($scope.componentId, {
+        scores: $scope.scores,
+        results: $scope.results
+      }, function (err) {
         if (err) {
           alertify.alert(err);
         } else {
-          $scope.editing = false;
-          $scope.scoreBoard.playingTeams[0].score = $scope.scores[0];
-          $scope.scoreBoard.playingTeams[1].score = $scope.scores[1];
+          finishEdit();
         }
-      });
+      })
+    };
+
+    $scope.resetScore = function () {
+      ScoreBoard.resetScore($scope.componentId, {
+        scores: $scope.scores,
+        results: $scope.results
+      }, function (err) {
+        if (err) {
+          alertify.alert(err);
+        } else {
+          finishEdit();
+        }
+      })
     };
 
     $scope.confirmScore = function () {
-      ScoreBoard.confirmScore($scope.componentId, function (err) {
-        if (err) {
-          alertify.alert(err);
-        } else {
-          $scope.scoreBoard.allConfirm = true;
+      var remindMsg = '提示：双方都确认比分后，将无法修改，要确认比分吗？';
+      alertify.confirm(remindMsg, function (e) {
+        if (e) {
+          ScoreBoard.confirmScore($scope.componentId, function (err) {
+            if (err) {
+              alertify.alert(err);
+            } else {
+              $scope.scoreBoard.allConfirm = true;
+              $scope.leaderStatus = 'confirm';
+              $scope.scoreBoard.status = 2;
+            }
+          });
         }
       });
     };
@@ -51,10 +130,6 @@ angular.module('donler.components.scoreBoard', [])
      * @param id 组件id
      * @param data 比分数据
      *  data: {
-     *    team: {
-     *      cid: String|Object,
-     *      tid: String|Object
-     *    }, // 指明是以哪个队的队长身份修改，有可能会出现同时是两队队长的情况
      *    scores: [Number], // 可选
      *    results: [Number], // 可选
      *    // scores,results属性至少要有一个
@@ -108,7 +183,7 @@ angular.module('donler.components.scoreBoard', [])
       // 重设比分
       resetScore: function (id, data, callback) {
         setScore(id, data, false, callback);
-      }
+      },
 
       /**
        * 确认比分
@@ -116,24 +191,17 @@ angular.module('donler.components.scoreBoard', [])
        * @param callback callback(err)
        */
       confirmScore: function (id, callback) {
-
-        var remindMsg = '提示：确认比分后将无法再修改；如果对方在您确认后修改过比分，您需要重新确认。确定要修改比分吗？';
-        alertify.confirm(remindMsg, function (e) {
-          if (e) {
-            $http.post('/components/ScoreBoard/id/' + id + '/confirmScore')
-              .success(function (data, status) {
-                if (data.result === 1) {
-                  callback();
-                } else {
-                  callback(data.msg);
-                }
-              })
-              .error(function (data, status) {
-                callback('操作失败，请重试。这可能是由于网络原因导致的。')
-              });
-          }
-        });
-
+        $http.post('/components/ScoreBoard/id/' + id + '/confirmScore')
+          .success(function (data, status) {
+            if (data.result === 1) {
+              callback();
+            } else {
+              callback(data.msg);
+            }
+          })
+          .error(function (data, status) {
+            callback('操作失败，请重试。这可能是由于网络原因导致的。')
+          });
       }
 
     };
@@ -146,8 +214,7 @@ angular.module('donler.components.scoreBoard', [])
       controller: 'ScoreBoardCtrl',
       templateUrl: '/components/ScoreBoard/template',
       scope: {
-        componentId: '@',
-        allowEdit: '='
+        componentId: '@'
       }
     }
   })

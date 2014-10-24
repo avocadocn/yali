@@ -13,7 +13,7 @@ exports.getComponentData = function (req, res, next) {
       if (!component) {
         return res.send(404);
       }
-      component.getData(function (data) {
+      component.getData(req.user, function (data) {
         res.send({ result: 1, componentData: data });
       });
     })
@@ -41,15 +41,30 @@ exports.ScoreBoard = {
           res.send({ result: 0, msg: '找不到该组件' });
         } else {
 
-          var allow = auth(req.user, scoreBoard.owner, ['setScoreBoardScore']);
-          if (!allow.setScoreBoardScore) {
+          var allows = [];
+          scoreBoard.playing_teams.forEach(function (playing_team) {
+            var allow = auth(req.user, {
+              companies: [playing_team.cid],
+              teams: [playing_team.tid]
+            }, ['setScoreBoardScore']);
+            allows.push(allow.setScoreBoardScore);
+          });
+
+          var denyAll = true;
+          for (var i = 0; i < allows.length; i++) {
+            if (allows[i]) {
+              denyAll = false;
+              break;
+            }
+          }
+          if (denyAll) {
             return res.send(403);
           }
 
           if (req.body.isInit) {
-            scoreBoard.initScore(req.body.data);
+            scoreBoard.initScore(allows, req.body.data);
           } else {
-            scoreBoard.setScore(req.body.data);
+            scoreBoard.resetScore(allows, req.body.data);
           }
 
           scoreBoard.save(function (err) {

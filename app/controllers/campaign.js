@@ -1229,8 +1229,6 @@ exports.renderCampaignDetail = function (req, res, next) {
     users: memberIds
   }, [
     'publishComment',
-    'setScoreBoardScore',
-    'confirmScoreBoardScore',
     'editTeamCampaign',
     'editCompanyCampaign'
   ]);
@@ -1357,7 +1355,6 @@ exports.renderCampaignDetail = function (req, res, next) {
       }
     },
     function(args,callback){
-      console.log(campaign);
       res.render('campaign/campaign_detail', {
         campaign: campaign,
         components: campaign.formatComponents(),

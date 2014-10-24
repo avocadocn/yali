@@ -259,63 +259,125 @@
 .score_board .component_head {
   background-color: #333 !important;
 }
+.score_board .component_body {
+  padding: 20px 10px 5px !important;
+}
 .score_board .score_board_body {
   display: flex;
+  padding: 0 20px;
+}
+.score_board .score_board_body .playing_team_0 {
+  order: 1;
+}
+.score_board .score_board_body .playing_team_1 {
+  order: 3;
 }
 .score_board .score_board_body .playing_team {
-  width: 56px;
+  width: 69px;
   text-align: center;
 }
 .score_board .score_board_body .playing_team .team_logo {
-  width: 56px;
-  height: 56px;
+  width: 69px;
+  height: 69px;
 }
 .score_board .score_board_body .playing_team .team_name {
   font-size: 12px !important;
   white-space: nowrap;
-  margin-top: 5px !important;
+  margin: 5px 0 !important;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.score_board .score_board_body .team_score {
-  margin: 0 10px;
-  padding-top: 15px;
-  width: 62px;
-}
-.score_board .score_board_body .team_score .score_show {
+.score_board .score_board_body .playing_team .show_score {
   display: flex;
-}
-.score_board .score_board_body .team_score .score_show .score {
-  width: 26px;
-  height: 26px;
-  background-color: #858585;
   color: #fff;
-  line-height: 26px;
-  font-size: 18px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 14px;
   text-align: center;
 }
-.score_board .score_board_body .team_score .score_show .score:first-child {
-  margin-right: 10px;
+.score_board .score_board_body .playing_team .show_score .score,
+.score_board .score_board_body .playing_team .show_score .result {
+  background-color: #999;
 }
-.score_board .score_board_body .team_score .editing {
-  display: flex;
+.score_board .score_board_body .playing_team .show_score .score {
+  flex: 1;
 }
-.score_board .score_board_body .team_score .editing .score {
-  width: 26px;
-  height: 26px;
-  line-height: 26px;
-  font-size: 18px;
+.score_board .score_board_body .playing_team .show_score .result {
+  flex: 1;
+  margin-left: 1px;
+}
+.score_board .score_board_body .playing_team .show_score.active .score,
+.score_board .score_board_body .playing_team .show_score.active .result {
+  background-color: #ec6a6a;
+}
+.score_board .score_board_body .playing_team .editing .score {
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: #ccc;
+  background-color: #fbfbfb;
+  border: solid 1px #ccc;
+}
+.score_board .score_board_body .playing_team .editing .results:before,
+.score_board .score_board_body .playing_team .editing .results:after {
+  display: table;
+  content: " ";
+}
+.score_board .score_board_body .playing_team .editing .results:after {
+  clear: both;
+}
+.score_board .score_board_body .playing_team .editing .results .result {
+  display: block;
+  float: left;
+  padding: 0;
+  width: 23px;
+  height: 20px;
+  background-color: #999;
+  color: #fff;
+  line-height: 20px;
+  font-size: 14px;
   text-align: center;
 }
-.score_board .score_board_body .team_score .editing .score:first-child {
-  margin-right: 10px;
+.score_board .score_board_body .playing_team .editing .results .result.active {
+  background-color: #ec6a6a;
+}
+.score_board .score_board_body .vs {
+  flex: 1;
+  order: 2;
+  padding-top: 25px;
+  text-align: center;
+  font-size: 28px;
+  color: #ec6a6a;
+}
+.score_board .score_board_operator {
+  margin-top: 20px;
+  padding-right: 20px;
+}
+.score_board .score_board_operator:before,
+.score_board .score_board_operator:after {
+  display: table;
+  content: " ";
+}
+.score_board .score_board_operator:after {
+  clear: both;
+}
+.score_board .score_board_operator .operator {
+  float: right;
+  margin-left: 5px;
+  padding: 0 10px;
+  height: 20px;
+  line-height: 20px;
+  color: #fff;
+  background-color: #3ca2e0;
+  font-size: 14px;
+  text-align: center;
+}
+.score_board .score_board_operator .cancel {
+  background-color: #ccc;
 }
 .score_board .score_board_footer {
-  margin-top: 10px;
-  text-align: right;
-}
-.score_board .score_board_footer .operator {
-  margin-left: 5px;
-  color: #73a5dd;
+  color: #ccc;
+  margin-top: 20px;
 }
