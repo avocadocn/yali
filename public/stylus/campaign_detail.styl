@@ -57,7 +57,7 @@ clearfix()
       background-color #ffffff
       .main_text, .text
         font-size 14px
-        line-height 18px
+        line-height 20px
         margin 0
         word-break break-all
       .main_text
@@ -175,6 +175,35 @@ clearfix()
               line-height 30px
               color white
               background-color themeColor
+            .competition_container
+              float left
+              .unit
+                width 80px
+                float left
+                margin-right 20px
+                .logo
+                  width 80px
+                  height 80px
+                .text
+                  margin-top 10px
+                  width 80px
+                  overflow hidden
+                  text-overflow ellipsis
+                  white-space nowrap
+                  display inline-block
+              .button_container
+                float left
+                padding-top 15px
+                .accept_btn
+                  background-color #ec6a6a
+                  color #fff
+                  &:hover
+                    background-color #ec556a
+                .dl_btn_small
+                  height 20px
+                  padding 4px 15px
+                .second_button
+                  margin-top 10px
       .more_info
         padding-top 20px
         border-top 1px solid #eee
@@ -221,9 +250,9 @@ clearfix()
           border-bottom 0
         .pen-menu
           height 30px
-          padding 5px
           z-index auto
           .pen-icon
+            padding 5px
             height 30px
         #campaignDetail
           background-color #fbfbfb

@@ -1290,18 +1290,22 @@ exports.renderCampaignDetail = function (req, res, next) {
   } else {
     allow.edit = allow.editTeamCampaign;
   }
-  //如果能编辑并且参数status为editing(用于刚发完活动)
+  //如果能编辑并且参数status为editing,则页面一进去就能编辑(用于刚发完活动)
   var editing = false;
   if(allow.edit){
     if(req.query.stat && req.query.stat === 'editing')
       editing = true;
   }
+
+  //面包屑
+
   // 默认值，显示为公司活动的链接，以防以下判断会遗漏
   var parentNode = {
     text: campaign.campaign_unit[0].company.name,
     url: '/company/home/' + campaign.campaign_unit[0].company._id
   };
 
+  
   if (req.user.provider === 'user') {
     // 个人
     if (campaign.campaign_type !== 1) {
@@ -1345,12 +1349,24 @@ exports.renderCampaignDetail = function (req, res, next) {
     }
   ];
 
+  //参数for前端
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
-
   var isStart = campaign.start_time < Date.now();
   var isEnd = campaign.end_time < Date.now();
   var isOneUnit = campaign.campaign_unit.length === 1;
   var membersForCard = campaign.members.slice(0, 5);
+  //没开始没关掉并且是双队的，验证需不需要应答
+  var isWaitingReply = !isOneUnit&&!isStart&&campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
+  //应答权限判断
+  var response={canCancel:false,canResponse:false};
+  if(isWaitingReply){
+    //是发起方的管理员则能取消
+    var authResponse = auth(req.user,{companies:[campaign.campaign_unit[0].company._id],teams:[campaign.campaign_unit[0].team._id]},['dealProvoke']);
+    response.canCancel = authResponse.dealProvoke;
+    //是被挑战方的管理员则能接受
+    authResponse = auth(req.user,{companies:[campaign.campaign_unit[1].company._id],teams:[campaign.campaign_unit[1].team._id]},['dealProvoke']);
+    response.canResponse = authResponse.dealProvoke;
+  }
 
   // 视图辅助函数
   var helper = {
@@ -1376,6 +1392,7 @@ exports.renderCampaignDetail = function (req, res, next) {
       }
     }
   };
+  //是否能加入
   if(campaign.campaign_type===1){
     var canjoin = auth(req.user,{companies:campaign.cid},['joinCompanyCampaign']);
     if(canjoin.joinCompanyCampaign===true){
@@ -1406,6 +1423,8 @@ exports.renderCampaignDetail = function (req, res, next) {
     helper: helper,
     links: links,
     editing : editing,
+    response: response,
+    isWaitingReply: isWaitingReply
   });
 };
 
@@ -1556,12 +1575,10 @@ exports.dealProvoke = function(req,res,next) {
 
   //确认状态变更
   var status = req.body.responseStatus;
-  console.log(status);
   switch(status){
     case 1://接受
       campaign.campaign_unit[1].start_confirm = true;
       campaign.confirm_status = true;
-      console.log(campaign);
       break;
     case 2://拒绝
       campaign.active = false;
@@ -1578,7 +1595,6 @@ exports.dealProvoke = function(req,res,next) {
       next('保存错误');
     }
     else{
-      // console.log(campaign);
       //发站内信
       var own_team = status===3? campaign.campaign_unit[0].team:campaign.campaign_unit[1].team;
       var receive_team = status ===3? campaign.campaign_unit[1].team:campaign.campaign_unit[0].team;
