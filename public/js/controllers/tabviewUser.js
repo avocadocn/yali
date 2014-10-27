@@ -259,9 +259,9 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope','$location', 'Campaign',
   function($http, $scope, $rootScope, $location, Campaign) {
-    $rootScope.recentUnjoinedCampaigns = [];
-    $rootScope.recentJoinedCampaigns = [];
-    $rootScope.nowCampaigns = [];
+    // $rootScope.recentUnjoinedCampaigns = [];
+    // $rootScope.recentJoinedCampaigns = [];
+    // $rootScope.nowCampaigns = [];
 
     $scope.newReply =[];
     $scope.showCampaign = false;

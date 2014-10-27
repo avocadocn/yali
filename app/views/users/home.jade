@@ -197,7 +197,7 @@ block aside
         span.speaker
         label 发起新活动   >>
   .old_campaign_container
-    a(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
+    a(href="#/commentCampaign/#{uid}" ng-click="newReply.length>0 ? openModal('commentCampaign'):''")
       label 热门活动讨论  >>
       label.clearLinkUnderline.pull-right.news_count(ng-if="newReply.length>0" ng-cloak) {{newReply.length}}
   .groupsbox
