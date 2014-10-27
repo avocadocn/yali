@@ -965,7 +965,6 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
             });
             Campaign.getMolds('team',$rootScope.teamId,function(status,data){
                 if(!status){
-                    console.log(data);
                     $scope.mold = data[0].name;
                 }
             });

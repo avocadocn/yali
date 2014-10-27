@@ -3,6 +3,7 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
   link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
+  link(rel="stylesheet" href="/lib/pen/src/pen.css")
 
 block contentExt
   .campaign_detail.dl_container(ng-controller="campaignController")
@@ -57,7 +58,8 @@ block contentExt
             .more_info(ng-show="!isStart||editing")
               h4.title 活动简介
               .text(ng-if="!editing") #{campaign.content}
-              input.detail_input(ng-if="editing" type="text" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content")
+              #campaignDetailToolBar
+              #campaignDetail.markdownContainer(ng-show="editing" name="content" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content" contenteditable mix-maxlength=4000 required)
               h4.title 活动标签
               .tags(ng-show="!editing")
                 each tag in campaign.tags
@@ -199,6 +201,8 @@ append footExt
   script(src="/js/directives/count_down.js")
   script(src="/js/bootstrap-tagsinput.js")
   script(src="/js/controllers/campaign.js")
+  script(src="/lib/pen/src/pen.js")
+  script(src="/lib/pen/src/markdown.js")
   script.
     $(function(){
       $('#deadline').datetimepicker({
@@ -208,5 +212,15 @@ append footExt
         pickerPosition: "top-left"
         //- setEndDate:#{campaign.end_time}
       });
+      var options = {
+        editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
+        class: 'dl_markdown', // {String} class of the editor,
+        textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+        list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+        stay: false,
+        toolBarId: 'campaignDetailToolBar'
+      };
+
+      var editor = new Pen(options);
     });
 
