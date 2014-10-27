@@ -754,7 +754,7 @@ exports.getRecentCommentCampaigns = function(req, res) {
       req.user.last_comment_time = new Date();
       req.user.save();
     }
-    o.query = {'host_type':'campaign','status':'active','create_date':{'$gte':req.user.last_comment_time || new Date()},'host_id':{'$in':joinedCampaignId}};
+    o.query = {'host_type':'campaign','status':'active','create_date':{'$gte':req.user.last_comment_time || new Date()},'poster._id':{'$ne':req.user._id},'host_id':{'$in':joinedCampaignId}};
     o.map = function () { emit(this.host_id, 1) }
     o.reduce = function (k, vals) {
       return vals.length;
@@ -781,8 +781,6 @@ exports.getRecentCommentCampaigns = function(req, res) {
     })
     .end();
   });
-
-
 
 }
 

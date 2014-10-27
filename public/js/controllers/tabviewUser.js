@@ -71,7 +71,7 @@ tabViewUser.config(['$routeProvider',
 tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign',
   function($rootScope,$location,$interval,$http,Report,Campaign) {
     $rootScope.message_for_group = false;
-    var getRecentCommentTime = 10* 60 * 1000;
+    var getRecentCommentTime = 10 * 60 * 1000;
     $rootScope.newReply=[];
     $rootScope.$on("$routeChangeStart",function(){
       $rootScope.loading = true;
@@ -100,6 +100,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
         updateRecentCommentTime();
         $interval.cancel(getRecentCommentCampaignPromise);
         $('#user_modal').one('hidden.bs.modal', function (e) {
+          $rootScope.newReply =[];
           getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
         });
       }
