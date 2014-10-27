@@ -27,24 +27,26 @@ angular.module('donler.components.scoreBoard', [])
           alertify.alert(err);
         } else {
           $scope.scoreBoard = scoreBoardData;
-          $scope.scores = [];
-          $scope.results = [];
-          for (var i = 0; i < $scope.scoreBoard.playingTeams.length; i++) {
-            var playingTeam = $scope.scoreBoard.playingTeams[i];
-            $scope.scores.push(playingTeam.score);
-            $scope.results.push(playingTeam.result);
-            if ($scope.scoreBoard.status === 1) {
-              if (playingTeam.allowEdit) {
-                $scope.allowEdit = true;
-                if (playingTeam.confirm) {
-                  $scope.leaderStatus = 'waitConfirm';
-                } else {
-                  $scope.leaderStatus = 'toConfirm';
+          if ($scope.scoreBoard.effective) {
+            $scope.scores = [];
+            $scope.results = [];
+            for (var i = 0; i < $scope.scoreBoard.playingTeams.length; i++) {
+              var playingTeam = $scope.scoreBoard.playingTeams[i];
+              $scope.scores.push(playingTeam.score);
+              $scope.results.push(playingTeam.result);
+              if ($scope.scoreBoard.status === 1) {
+                if (playingTeam.allowEdit) {
+                  $scope.allowEdit = true;
+                  if (playingTeam.confirm) {
+                    $scope.leaderStatus = 'waitConfirm';
+                  } else {
+                    $scope.leaderStatus = 'toConfirm';
+                  }
                 }
-              }
-            } else if ($scope.scoreBoard.status === 0) {
-              if (playingTeam.allowEdit) {
-                $scope.allowEdit = true;
+              } else if ($scope.scoreBoard.status === 0) {
+                if (playingTeam.allowEdit) {
+                  $scope.allowEdit = true;
+                }
               }
             }
           }

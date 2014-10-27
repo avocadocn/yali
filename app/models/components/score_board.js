@@ -3,6 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var auth = require('../../services/auth');
+var moment = require('moment');
 
 var ScoreBoard = new Schema({
   owner: {
@@ -45,7 +46,20 @@ var ScoreBoard = new Schema({
       type: Date,
       default: Date.now
     }
-  }]
+  }],
+  create_date: {
+    type: Date,
+    default: Date.now
+  } // 创建日期，用于结合status判断比分板是否失效
+});
+
+// 是否失效，超过7天就设为失效
+ScoreBoard.virtual('effective').get(function () {
+  var days = moment().diff(this.create_date, 'days', true);
+  if (Math.abs(days) > 7 && this.status !== 2) {
+    return false;
+  }
+  return true;
 });
 
 
@@ -174,10 +188,17 @@ ScoreBoard.methods = {
       }
     });
 
-    callback({
-      playingTeams: this.playing_teams,
-      status: this.status
-    });
+    if (this.effective) {
+      callback({
+        playingTeams: this.playing_teams,
+        status: this.status,
+        effective: true
+      });
+    } else {
+      callback({
+        effective: false
+      });
+    }
   },
 
   /**
