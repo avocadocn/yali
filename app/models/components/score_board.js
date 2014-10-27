@@ -9,6 +9,11 @@ var ScoreBoard = new Schema({
     companies: [Schema.Types.ObjectId],
     teams: [Schema.Types.ObjectId]
   },
+  host_type: {
+    type: String,
+    enum: ['campaign']
+  },
+  host_id: Schema.Types.ObjectId,
   // 长度能且仅能为2
   playing_teams: [{
     cid: Schema.Types.ObjectId,
@@ -61,6 +66,9 @@ ScoreBoard.statics = {
           teams: host.tid
         };
 
+        var host_type = 'campaign';
+        var host_id = host._id;
+
         if (host.campaign_unit.length !== 2) {
           return callback('比分板只允许在两个队的比赛中使用');
         } else {
@@ -81,6 +89,8 @@ ScoreBoard.statics = {
     }
     var scoreBoard = new this({
       owner: owner,
+      host_type: host_type,
+      host_id: host_id,
       playing_teams: playingTeams
     });
 
