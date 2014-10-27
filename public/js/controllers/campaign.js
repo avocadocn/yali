@@ -117,8 +117,18 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Report', 'Camp
     language: 'zh-CN',
     startDate: new Date(),
     pickerPosition: "top-left"
-    //- setEndDate:#{campaign.end_time}
   });
+
+  var options = {
+    editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
+    class: 'dl_markdown', // {String} class of the editor,
+    textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+    list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+    stay: false,
+    toolBarId: 'campaignDetailToolBar'
+  };
+
+  var editor = new Pen(options);
 
 
 }]);

@@ -143,8 +143,16 @@
   border-right: none !important;
   border-bottom: 1px solid #eee;
 }
+.campaign_detail .detail_card .component_body .multi_team .logo_container:before,
+.campaign_detail .detail_card .component_body .multi_team .logo_container:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .detail_card .component_body .multi_team .logo_container:after {
+  clear: both;
+}
 .campaign_detail .detail_card .component_body .multi_team .logo_container .unit {
-  display: inline-block !important;
+  float: left;
 }
 .campaign_detail .detail_card .component_body .multi_team .info_container {
   padding-top: 20px;

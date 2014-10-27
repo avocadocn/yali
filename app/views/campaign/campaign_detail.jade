@@ -30,8 +30,8 @@ block contentExt
               .logo_container
                 each unit in campaign.campaign_unit
                   .unit
-                    img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
-                    if isActive && !isEnd && unit.canjoin 
+                    img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
+                    if isActive && !isEnd && unit.canjoin
                         if unit.team._id
                           button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
                         else
@@ -199,27 +199,7 @@ block contentExt
 append footExt
   script(src="/js/directives/count_down.js")
   script(src="/js/bootstrap-tagsinput.js")
-  script(src="/js/controllers/campaign.js")
   script(src="/lib/pen/src/pen.js")
   script(src="/lib/pen/src/markdown.js")
-  script.
-    $(function(){
-      $('#deadline').datetimepicker({
-        autoclose: true,
-        language: 'zh-CN',
-        startDate: new Date(),
-        pickerPosition: "top-left"
-        //- setEndDate:#{campaign.end_time}
-      });
-      var options = {
-        editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
-        class: 'dl_markdown', // {String} class of the editor,
-        textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
-        list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-        stay: false,
-        toolBarId: 'campaignDetailToolBar'
-      };
-
-      var editor = new Pen(options);
-    });
+  script(src="/js/controllers/campaign.js")
 

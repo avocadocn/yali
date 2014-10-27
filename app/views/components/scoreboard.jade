@@ -38,3 +38,5 @@
       .log(ng-repeat="log in logs")
         p.title {{log.teamName}}&nbsp;{{log.date}}
         p.content {{log.text}}
+      .log(ng-if="logs.length === 0")
+        p.title.text-center 没有修改记录
