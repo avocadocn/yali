@@ -140,7 +140,7 @@ exports.teampagetemplate =function(req,res){
     // 'cid':cid
   });
 };
-//小队聚合首页 TODO
+
 exports.teampage = function(req, res) {
   if (req.companyGroup.department) {
     return res.redirect('/department/home/' + req.companyGroup.department);
@@ -184,18 +184,15 @@ exports.teampage = function(req, res) {
     },
     function(photo_album_thumbnails, callback){
       var teamMoreInfo = {};
-      //todo add photo here
       teamMoreInfo.photo_album_thumbnails = photo_album_thumbnails;
 
 
-      Campaign.find({'team':req.params.teamId, 'active':true})
+      Campaign.find({'tid':req.params.teamId, 'active':true, 'confirm_status': true})
         .where('end_time').gt(new Date())
         .sort('-create_time')
         .limit(1)
         .exec()
         .then(function(campaign){
-            //todo
-            // console.log(campaign[0]);
             if(campaign.length==0){
                 teamMoreInfo.campaign = '';
             }else{
