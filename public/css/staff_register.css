@@ -760,6 +760,7 @@ textarea {
 }
 .dl-modal .dl-modal-body .dl_modal_container .pen-menu {
   height: 20px;
+  z-index: 1040;
 }
 .dl-modal .dl-modal-body .dl_modal_container .pen-menu .pen-icon {
   height: 20px;
@@ -1088,7 +1089,6 @@ textarea {
   border-color: #ffc0cb;
 }
 .pen-menu {
-  z-index: 1040 !important;
   box-shadow: none !important;
 }
 .pen-menu .pen-icon {

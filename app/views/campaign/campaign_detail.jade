@@ -6,7 +6,7 @@ append headExt
   link(rel="stylesheet" href="/lib/pen/src/pen.css")
 
 block contentExt
-  .campaign_detail.dl_container(ng-controller="campaignController")
+  .campaign_detail.dl_container(ng-controller="campaignController" ng-init="editing=#{editing} ")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .campaign_panel
@@ -195,8 +195,6 @@ block contentExt
                     .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
                       img.photo(src="#{member.photo}/57/57")
                       span.nickname #{member.nickname}
-    div
-
 
 append footExt
   script(src="/js/directives/count_down.js")

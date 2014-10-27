@@ -273,11 +273,11 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
                 end_time : $scope.end_time,
                 campaign_mold:$scope.mold
             };
-            var _url = '/group/campaignSponsor/'+ $rootScope.teamId
+            var _url = '/group/campaignSponsor/'+ $rootScope.teamId;
             Campaign.sponsor(_url,_data,function(status,data){
                 if(!status){
                     // window.location.reload();
-                    window.location = '/campaign/detail/'+data.campaign_id;
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                 }else{
                     alertify.alert('活动发布出错');
                 }
@@ -1011,7 +1011,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
             };
             var callback = function(status,data){
                 if(!status){
-                    window.location = '/campaign/detail/'+data.campaign_id;
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                 }
                 else{
                     alertify.alert(data.msg);

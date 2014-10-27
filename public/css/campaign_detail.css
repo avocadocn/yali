@@ -256,6 +256,7 @@
 .campaign_detail .detail_card .component_body .more_info .pen-menu {
   height: 30px;
   padding: 5px;
+  z-index: auto;
 }
 .campaign_detail .detail_card .component_body .more_info .pen-menu .pen-icon {
   height: 30px;

@@ -1239,7 +1239,12 @@ exports.renderCampaignDetail = function (req, res, next) {
   } else {
     allow.edit = allow.editTeamCampaign;
   }
-
+  //如果能编辑并且参数status为editing(用于刚发完活动)
+  var editing = false;
+  if(allow.edit){
+    if(req.query.stat && req.query.stat === 'editing')
+      editing = true;
+  }
   // 默认值，显示为公司活动的链接，以防以下判断会遗漏
   var parentNode = {
     text: campaign.campaign_unit[0].company.name,
@@ -1334,7 +1339,6 @@ exports.renderCampaignDetail = function (req, res, next) {
       }
     }
   }
-
   res.render('campaign/campaign_detail', {
     campaign: campaign,
     components: campaign.formatComponents(),
@@ -1349,7 +1353,8 @@ exports.renderCampaignDetail = function (req, res, next) {
     moment: moment,
     allow: allow,
     helper: helper,
-    links: links
+    links: links,
+    editing : editing,
   });
 };
 

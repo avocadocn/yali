@@ -1106,40 +1106,6 @@ tabViewCompany.controller('AccountFormController',['$scope','$http','$rootScope'
         });
     };
 
-
-    $scope.preProvoke = function(team) {
-        $scope.team_opposite = team;
-        $('#sponsorProvokeModel').modal();
-    }
-    //约战
-    $scope.provoke = function() {
-        try {
-            $http({
-                method: 'post',
-                url: '/group/provoke/'+$scope.provoke_tid,
-                data:{
-                    provoke_model : 'against',
-                    team_opposite : $scope.team_opposite,
-                    content : $scope.content,
-                    location: $scope.location,
-                    remark: $scope.remark,
-                    competition_date: $scope.competition_date,
-                    deadline: $scope.deadline,
-                    competition_format: $scope.competition_format,
-                    number: $scope.number
-
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-
     $scope.select = function(value) {
         $scope.select_user = value;
         $scope.select_leader = !value;
@@ -1524,7 +1490,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
                     }else{
                       // window.location.reload();
                       //直接挑战到活动详情页
-                      window.location = '/campaign/detail/'+data.campaign_id;
+                      window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                     }
                 }
             });
@@ -1559,7 +1525,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
             else{
                 Campaign.sponsor(_url,_data,function(status,data){
                     if(!status){
-                        window.location = '/campaign/detail/'+data.campaign_id;
+                        window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                     }else{
                         alertify.alert('活动发布出错');
                     }

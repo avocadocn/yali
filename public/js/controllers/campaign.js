@@ -86,7 +86,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Report', 'Camp
         alertify.alert(err);
       } else {
         alertify.alert('编辑成功', function (e) {
-          window.location.reload();
+          window.location='/campaign/detail/'+campaignId;
         });
       }
     });

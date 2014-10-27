@@ -1161,7 +1161,7 @@ tabViewGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Ca
             var _url = '/group/campaignSponsor/'+$rootScope.teamId;
             Campaign.sponsor(_url,_data,function(status,data){
                 if(!status){
-                    window.location = '/campaign/detail/'+data.campaign_id;
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                 }else{
                     alertify.alert('活动发布出错');
                 }
@@ -1491,7 +1491,7 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Ca
             };
             var callback = function(status,data){
                 if(!status){
-                    window.location = '/campaign/detail/'+data.campaign_id;
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                 }
                 else{
                     alertify.alert('挑战发起失败');
