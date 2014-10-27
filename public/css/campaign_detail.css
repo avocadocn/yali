@@ -223,12 +223,17 @@
   background-color: #97d7c6;
   box-shadow: none;
 }
+.campaign_detail .detail_card .component_body .more_info .bootstrap-tagsinput .tag {
+  background-color: #98a8b5;
+}
 .campaign_detail .detail_card .component_body .more_info .tags .tag {
-  margin-right: 10px;
-  padding: 4px 10px;
+  margin-right: 5px;
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 2px 5px;
   border-radius: 5px;
   color: #fff;
-  background-color: #73a5dd;
+  background-color: #73a4dc;
 }
 .campaign_detail .detail_card .component_body .more_info .deadline #deadline {
   width: 200px;
@@ -239,9 +244,25 @@
   width: 100%;
   height: 30px;
   color: #ccc;
-  background-color: #f3fcff;
+  background-color: #fbfbfb;
   border: solid 1px #d3dbe6;
   font-size: 14px;
+}
+.campaign_detail .detail_card .component_body .more_info #campaignDetailToolBar {
+  background-color: #f1f1f1;
+  border: 1px solid #cdcdcd;
+  border-bottom: 0;
+}
+.campaign_detail .detail_card .component_body .more_info .pen-menu {
+  height: 30px;
+  padding: 5px;
+}
+.campaign_detail .detail_card .component_body .more_info .pen-menu .pen-icon {
+  height: 30px;
+}
+.campaign_detail .detail_card .component_body .more_info #campaignDetail {
+  background-color: #fbfbfb;
+  border: 1px solid #eee;
 }
 .campaign_detail .detail_card .component_body .more_info .editing {
   display: flex;

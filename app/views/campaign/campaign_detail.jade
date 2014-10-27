@@ -57,8 +57,8 @@ block contentExt
                     p.main_text 没有最新公告
             .more_info(ng-show="!isStart||editing")
               h4.title 活动简介
-              .text(ng-if="!editing") #{campaign.content}
-              #campaignDetailToolBar
+              .text(ng-show="!editing")!= campaign.content
+              #campaignDetailToolBar(ng-show="editing")
               #campaignDetail.markdownContainer(ng-show="editing" name="content" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content" contenteditable mix-maxlength=4000 required)
               h4.title 活动标签
               .tags(ng-show="!editing")

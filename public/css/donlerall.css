@@ -416,9 +416,6 @@ a {
   color: #28689b;
   cursor: pointer;
 }
-li {
-  list-style: none;
-}
 select {
   border-radius: 0 !important;
   height: 34px !important;
@@ -761,6 +758,12 @@ textarea {
   float: left;
   clear: left;
 }
+.dl-modal .dl-modal-body .dl_modal_container .pen-menu {
+  height: 20px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .pen-menu .pen-icon {
+  height: 20px;
+}
 .dl-modal .dl-modal-body .dl_modal_container .groups {
   max-height: 300px;
   overflow: auto;
@@ -1087,11 +1090,9 @@ textarea {
 .pen-menu {
   z-index: 1040 !important;
   box-shadow: none !important;
-  height: 20px !important;
 }
 .pen-menu .pen-icon {
   font: 14px Georgia serif !important;
-  height: 20px !important;
 }
 .dl_container {
   width: 960px;
