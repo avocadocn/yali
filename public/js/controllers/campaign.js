@@ -14,26 +14,23 @@ campaignApp.directive('maxHeight', function () {
     }
   };
 });
-campaignApp.controller('campaignController', ['$scope', '$http', 'Report', 'Campaign', function ($scope, $http, Report, Campaign) {
+campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', function ($scope, $http, Campaign) {
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;
+
   $scope.isStart = data.start === 'true';
   $scope.isEnd = data.end === 'true';
   $scope.isJoin = data.join === 'true';
 
-  $scope.modalPerticipator = function(team) {
-    $scope.select_team = team;
-    $('#sponsorMessageCampaignModel').modal();
-  };
-  $scope.sendToParticipator = function() {
+  $scope.notice = '';
+  $scope.publishNotice = function() {
     $http({
       method: 'post',
       url: '/message/push/campaign',
       data: {
-//        team: $scope.select_team, ???
         campaign_id: campaignId,
-        content: $scope.private_message_content.text
+        content: $scope.notice
       }
     }).success(function(data, status) {
       if (data.msg === 'SUCCESS') {

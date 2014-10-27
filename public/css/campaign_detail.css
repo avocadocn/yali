@@ -211,6 +211,28 @@
   line-height: 30px;
   color: #97d7c6;
 }
+.campaign_detail .detail_card .component_body .base_info .notice .publish {
+  display: flex;
+}
+.campaign_detail .detail_card .component_body .base_info .notice .publish .notice_text {
+  flex: 1;
+  padding: 6px 10px;
+  height: 30px;
+  color: #ccc;
+  background-color: #fbfbfb;
+  border: solid 1px #d3dbe6;
+  font-size: 14px;
+}
+.campaign_detail .detail_card .component_body .base_info .notice .publish .publish_button {
+  margin: 0;
+  padding: 0;
+  width: 80px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 30px;
+  color: #fff;
+  background-color: #3498db;
+}
 .campaign_detail .detail_card .component_body .more_info {
   padding-top: 20px;
   border-top: 1px solid #eee;

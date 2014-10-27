@@ -422,57 +422,33 @@ exports.sendToParticipator = function(req, res){
     };
 
     if(campaign){
-      var team;
-      if(campaign.campaign_type > 1){
-        team = {
-          '_id':campaign.team[0]._id,
-          'name':campaign.team[0].name,
-          'logo':campaign.team[0].logo,
-          'status':0
-        };
-      }
+      var teams = [];
       var members = [];
-      if([4,5,7].indexOf(campaign.campaign_type) > -1){
-        team.status = 1;
-        for(var i = 0; i < campaign.camp.length; i ++){
-          for(var j = 0; j < campaign.camp[i].member.length; j ++){
-            members.push({
-              '_id':campaign.camp[i].member[j].uid
-            });
-          }
-        }
-      }else{
-        if([2,6,8,9].indexOf(campaign.campaign_type) > -1){
-          team.status = 0;
-          for(var i = 0; i < campaign.member.length; i ++){
-            members.push({
-              '_id':campaign.member[i].uid
-            });
-          }
-        }
-        //多小队活动针对某一小队发消息
-        if(campaign.campaign_type == 3){
-          team._id = join_team._id;
-          team.name = join_team.name;
-          team.logo = join_team.logo;
-          for(var i = 0; i < campaign.member.length; i ++){
-            if(campaign.member[i].team){
-              if(campaign.member[i].team._id.toString() === team._id.toString()){
-                members.push({
-                  '_id':campaign.member[i].uid,
-                  'nickname':campaign.member[i].nickname
-                });
-              }
-            }
-          }
-        }
+
+      if (campaign.campaign_type !== 1) {
+        campaign.campaign_unit.forEach(function (unit) {
+          teams.push({
+            _id: unit.team._id,
+            name: unit.team.name,
+            logo: unit.team.logo,
+            status: 0
+          });
+        });
       }
+
+      campaign.members.forEach(function (member) {
+        members.push({
+          _id: member._id,
+          nickname: member.nickname
+        })
+      });
+
       var _param = {
         'members':members,
         'caption':campaign.theme,
         'content':req.body.content,
         'sender':[sender],
-        'team':campaign.campaign_type > 1 ? [team] : [],
+        'team': teams,
         'company_id':req.user.provider == 'user' ? req.user.cid : req.user._id,
         'campaign_id':req.body.campaign_id,
         'req':req,
@@ -483,15 +459,11 @@ exports.sendToParticipator = function(req, res){
     }
   }
   var param= {
-    'populate':'team',
     'collection':Campaign,
     'type':0,
     'condition':{'_id':req.body.campaign_id},
-    'limit':{'member':1,'theme':1,'team':1,'camp':1,'campaign_type':1},
     'sort':null,
     'callback':callback,
-    '_err':_err,
-    'other_param':req.body.team,
     'req':req,
     'res':res
   };
