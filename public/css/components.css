@@ -381,3 +381,34 @@
   color: #ccc;
   margin-top: 20px;
 }
+.score_board .score_board_footer:before,
+.score_board .score_board_footer:after {
+  display: table;
+  content: " ";
+}
+.score_board .score_board_footer:after {
+  clear: both;
+}
+.score_board .score_board_footer .remind_text {
+  float: left;
+}
+.score_board .score_board_footer .getlog {
+  float: right;
+  cursor: pointer;
+}
+.score_board .logs .log {
+  border-top: solid 1px #ccc;
+}
+.score_board .logs .log .title {
+  margin: 0;
+  margin-top: 5px;
+  color: #ccc;
+  font-size: 12px;
+  line-height: 12px;
+}
+.score_board .logs .log .content {
+  margin: 5px 0;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 14px;
+}

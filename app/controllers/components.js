@@ -209,6 +209,21 @@ exports.ScoreBoard = {
       .then(null, function (err) {
         next(err);
       });
+  },
+
+  getLogs: function (req, res, next) {
+    mongoose.model('ScoreBoard').findById(req.params.componentId).exec()
+    .then(function (scoreBoard) {
+      if (!scoreBoard) {
+        res.send({ result: 0, msg: '找不到该组件' });
+      } else {
+        var logs = scoreBoard.getLogs();
+        res.send({ result: 1, logs: logs });
+      }
+    })
+    .then(null, function (err) {
+      next(err);
+    });
   }
 
 };

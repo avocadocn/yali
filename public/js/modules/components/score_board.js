@@ -15,10 +15,16 @@ angular.module('donler.components.scoreBoard', [])
     $scope.leaderStatus = 'init';
 
     /**
-     * 是否可以管理比分板
+     * 是否可以编辑比分板，确认后将无法编辑
      * @type {Boolean}
      */
     $scope.allowEdit = false;
+
+    /**
+     * 是否可以查看日志
+     * @type {Boolean}
+     */
+    $scope.allowManage = false;
 
     var getScoreBoardData = function () {
       ScoreBoard.getData($scope.componentId, function (err, scoreBoardData) {
@@ -35,7 +41,7 @@ angular.module('donler.components.scoreBoard', [])
               $scope.scores.push(playingTeam.score);
               $scope.results.push(playingTeam.result);
               if ($scope.scoreBoard.status === 1) {
-                if (playingTeam.allowEdit) {
+                if (playingTeam.allowManage) {
                   $scope.allowEdit = true;
                   if (playingTeam.confirm) {
                     $scope.leaderStatus = 'waitConfirm';
@@ -44,9 +50,13 @@ angular.module('donler.components.scoreBoard', [])
                   }
                 }
               } else if ($scope.scoreBoard.status === 0) {
-                if (playingTeam.allowEdit) {
+                if (playingTeam.allowManage) {
                   $scope.allowEdit = true;
                 }
+              }
+
+              if (playingTeam.allowManage) {
+                $scope.allowManage = true;
               }
             }
           }
@@ -131,6 +141,22 @@ angular.module('donler.components.scoreBoard', [])
       });
     };
 
+    $scope.showLogs = false;
+    $scope.toggleLogs = function () {
+      if (!$scope.showLogs) {
+        ScoreBoard.getLogs($scope.componentId, function (err, logs) {
+          if (err) {
+            alertify.alert(err);
+          } else {
+            $scope.logs = logs;
+            $scope.showLogs = true;
+          }
+        });
+      } else {
+        $scope.showLogs = false;
+      }
+    };
+
   }])
 
   .factory('ScoreBoard', ['$http', function ($http) {
@@ -210,7 +236,26 @@ angular.module('donler.components.scoreBoard', [])
             }
           })
           .error(function (data, status) {
-            callback('操作失败，请重试。这可能是由于网络原因导致的。')
+            callback('操作失败，请重试。');
+          });
+      },
+
+      /**
+       * 获取日志
+       * @param {String} id 组件id
+       * @param  {Function} callback callback(err, logs)
+       */
+      getLogs: function (id, callback) {
+        $http.get('/components/ScoreBoard/id/' + id + '/getLogs')
+          .success(function (data, status) {
+            if (data.result === 1) {
+              callback(null, data.logs);
+            } else {
+              callback(data.msg);
+            }
+          })
+          .error(function (data, status) {
+            callback('获取记录失败，请重试。');
           });
       }
 

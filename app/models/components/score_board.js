@@ -182,9 +182,9 @@ ScoreBoard.methods = {
         teams: [playing_team.tid]
       }, ['setScoreBoardScore']);
       if (allow.setScoreBoardScore) {
-        playing_team.set('allowEdit', true, {strict: false});
+        playing_team.set('allowManage', true, {strict: false});
       } else {
-        playing_team.set('allowEdit', false, {strict: false});
+        playing_team.set('allowManage', false, {strict: false});
       }
     });
 
@@ -271,6 +271,63 @@ ScoreBoard.methods = {
     }
     this.logs.push(log);
     this.status = 2;
+  },
+
+  /**
+   * 获取设置比分的记录
+   * example:
+   *  var logs = scoreBoard.getLogs();
+   *
+   * logs: {
+   *   text: String,
+   *   date: String,
+   *   teamName: String
+   * }
+   *
+   * @return {Array} 返回一个对象数组
+   */
+  getLogs: function () {
+    var self = this;
+    var logs = [];
+
+    var formatResult = function (result) {
+      switch (result) {
+      case 1:
+        return '胜';
+      case 0:
+        return '平';
+      case -1:
+        return '败';
+      default:
+        return '';
+      }
+    };
+
+    this.logs.forEach(function (log) {
+      var newLog = {
+        date: moment(log.date).format('YYYY-MM-DD HH:mm')
+      };
+      var scoreText = '';
+      for (var i = 0; i < self.playing_teams.length; i++) {
+        var team = self.playing_teams[i];
+        if (log.playing_team.tid.toString() === team.tid.toString()) {
+          newLog.teamName = team.name;
+        }
+
+        scoreText += (team.name + ' ' + log.scores[i] + ' ' + formatResult(log.results[i]));
+        if (i === 0) {
+          scoreText += ' : ';
+        }
+      }
+      if (!log.confirm) {
+        newLog.text = scoreText;
+      } else {
+        newLog.text = '确认了比分';
+      }
+      logs.push(newLog);
+    });
+
+    return logs;
   }
 
 

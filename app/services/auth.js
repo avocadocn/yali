@@ -33,6 +33,10 @@ var registeredTasks = {
     company: ['hr'],
     team: ['leader']
   },
+  getScoreBoardLogs: {
+    company: ['hr'],
+    team: ['leader']
+  },
   getUserAllCampaignsForCalendar: {
     user: ['self']
   },

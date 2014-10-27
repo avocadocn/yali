@@ -33,3 +33,8 @@
       .remind_text(ng-if="scoreBoard.status===0") 等待队长设置比分
       .remind_text(ng-if="scoreBoard.status===1") 比分待确认
       .remind_text(ng-if="scoreBoard.status===2") 比分已确认
+      .getlog(ng-if="allowManage" ng-click="toggleLogs()") 查看记录
+    .logs(ng-if="showLogs")
+      .log(ng-repeat="log in logs")
+        p.title {{log.teamName}}&nbsp;{{log.date}}
+        p.content {{log.text}}
