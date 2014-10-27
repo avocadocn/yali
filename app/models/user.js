@@ -131,7 +131,8 @@ var UserSchema = new Schema({
     top_campaign:{
         type: Schema.Types.ObjectId,
         ref: 'Campaign'
-    }
+    },
+    last_comment_time: Date
 });
 
 /**

@@ -29,6 +29,11 @@ tabViewUser.config(['$routeProvider',
           return '/users/campaign/'+params.uid;
         }
       })
+      .when('/commentCampaign/:uid', {
+        templateUrl: function(params){
+          return '/users/commentcampaign/'+params.uid;
+        }
+      })
       .when('/personal/:uid', {
         templateUrl: function(params){
           return '/users/editInfo/'+params.uid;
@@ -63,9 +68,11 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location','Report','Campaign',
-  function($rootScope,$location,Report,Campaign) {
+tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign',
+  function($rootScope,$location,$interval,$http,Report,Campaign) {
     $rootScope.message_for_group = false;
+    var getRecentCommentTime = 10* 60 * 1000;
+    $rootScope.newReply=[];
     $rootScope.$on("$routeChangeStart",function(){
       $rootScope.loading = true;
     });
@@ -89,6 +96,13 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
       $rootScope.showedType = type;
       $rootScope.showedCampaign = $rootScope[type];
       $('#user_modal').modal();
+      if(type=='commentCampaign'){
+        updateRecentCommentTime();
+        $interval.cancel(getRecentCommentCampaignPromise);
+        $('#user_modal').one('hidden.bs.modal', function (e) {
+          getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
+        });
+      }
     }
     $rootScope.join = function (index,tid) {
       Campaign.join({
@@ -130,7 +144,6 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
     // };
     //应战
     $rootScope.dealProvoke = function(campaignId, tid, status) {
-      console.log(campaignId);
       switch(status){
         case 1://接受
           var tip = '是否确认接受该挑战?';
@@ -155,6 +168,39 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
         }
       });
     };
+    var getRecentCommentCampaigns = function(){
+      try{
+        $http({
+          method:'get',
+          url: '/campaign/recentCommentCampaign?'+Math.random()*10000,
+        }).success(function(data,status){
+          $rootScope.newReply = data.data;
+        }).error(function(data,status){
+          alertify.alert('DATA ERROR');
+        });
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+    var updateRecentCommentTime = function(){
+      try{
+        $http({
+          method:'get',
+          url: '/users/updateCommentTime/'+$rootScope.uid,
+        }).success(function(data,status){
+          if(data.result==1){
+          }
+        }).error(function(data,status){
+          console.log('err');
+        });
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+    getRecentCommentCampaigns();
+    var getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
   }
 ]);
 tabViewUser.directive('masonry', function ($timeout) {
@@ -977,7 +1023,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
   function($scope, $http, $rootScope) {
     angular.element('.tooltip').hide();
     $scope.editing = false;
-
+    console.log(1)
     $scope.toggleEdit = function() {
       $scope.editing = !$scope.editing;
     }

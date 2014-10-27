@@ -608,6 +608,13 @@ exports.renderCampaigns = function(req, res){
 };
 
 
+exports.renderCommentCampaigns = function(req, res){
+  res.render('partials/recent_comment_campaign',{
+      'provider':'user',
+      'role':req.role
+  });
+};
+
 
 
 function fetchCampaign(req,res,team_ids,role) {
@@ -1615,4 +1622,21 @@ var deviceUnregister = function(device_info,uid){
       }
     }
   });
+}
+
+exports.updateCommentTime =function(req, res) {
+  if(req.role=='OWNER'){
+    req.user.last_comment_time = new Date();
+    req.user.save(function(err){
+      if(err){
+        res.send({result:0});
+      }else{
+        res.send({result:1});
+      }
+
+    });
+  }
+  else{
+    res.send({result:0});
+  }
 }

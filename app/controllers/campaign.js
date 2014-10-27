@@ -54,6 +54,7 @@ var getUserAllCampaigns = function(user, isCalendar, _query, callback) {
     team_ids.push(user.team[i]._id);
   }
   var options = {
+    'cid':user.cid,
     '$or':[
       {'tid': {'$in':team_ids}},
       {'campaign_type':1}
@@ -130,6 +131,7 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
     team_ids.push(user.team[i]._id);
   }
   var options = {
+    'cid':user.cid,
     '$or':[
       {'tid': {'$in':team_ids}},
       {'campaign_type':1}
@@ -732,6 +734,58 @@ exports.editCampaign = function(req, res){
   });
 };
 
+exports.getRecentCommentCampaigns = function(req, res) {
+  var options = {
+    'cid': req.user.cid,
+    'campaign_unit.member._id': req.user._id,
+    'active': true,
+    'confirm_status':true
+  };
+  Campaign
+  .find(options)
+  .exec()
+  .then(function(campaigns) {
+    var joinedCampaignId = [];
+    campaigns.forEach(function(_campaign){
+      joinedCampaignId.push(_campaign._id);
+    });
+    var o = {};
+    if(!req.user.last_comment_time){
+      req.user.last_comment_time = new Date();
+      req.user.save();
+    }
+    o.query = {'host_type':'campaign','status':'active','create_date':{'$gte':req.user.last_comment_time || new Date()},'host_id':{'$in':joinedCampaignId}};
+    o.map = function () { emit(this.host_id, 1) }
+    o.reduce = function (k, vals) {
+      return vals.length;
+    }
+    var promise = Comment.mapReduce(o);
+    promise
+    .then(function (model, stats) {
+      model.forEach(function(_model){
+        var _index = model_helper.arrayObjectIndexOf(campaigns,_model._id,'_id');
+        if(_index>-1){
+          var _campaign = campaigns[_index];
+          _model.theme=_campaign.theme;
+          _model.start_time=_campaign.start_time;
+          _model.end_time=_campaign.end_time;
+          _model.name = _campaign.campaign_unit[0].team.name ?_campaign.campaign_unit[0].team.name:_campaign.campaign_unit[0].company.name;
+          _model.logo=_campaign.campaign_unit[0].team.logo ?_campaign.campaign_unit[0].team.logo:_campaign.campaign_unit[0].company.logo;
+        }
+      });
+      res.send({result:1,data:model});
+    })
+    .then(null, function (err) {
+      console.log(err);
+      res.send({result:0,data:[]});
+    })
+    .end();
+  });
+
+
+
+}
+
 var nowCampaignLength = 8;
 exports.getUserCampaignsForHome = function(req, res) {
   var now = new Date();
@@ -845,7 +899,6 @@ exports.getUserCampaignsForHome = function(req, res) {
       else{
         _result.push(values[2].concat(values[3].splice(0,nowCampaignLength-_nowCampaignLength)));
       }
-      console.log(values);
       return res.send({ result: 1, campaigns: _result });
     }
   });

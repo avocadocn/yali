@@ -1,0 +1,27 @@
+.loading_div(ng-show = 'loading')
+.dl_campaign_list(ng-show = '!loading')
+  .campaign_head(ng-cloak)
+    label {{newReply.length}} 个近期热门活动讨论
+  .campaigns_content
+    table.table.campaign_table
+      tr(ng-repeat="campaign_item in newReply track by campaign_item._id")
+        td(class="#{provider}_logo_col")
+          a(ng-href="{{campaign_item.link}}")
+            img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
+        td.content_col
+          a(ng-href="/campaign/detail/{{campaign_item._id}}" target="_blank")
+            p(ng-class="{'recent_unjoin':showedType=='recentUnjoinedCampaigns','recent_join':showedType=='recentJoinedCampaigns'}")
+              strong {{campaign_item.name}} :
+              span.theme_text {{campaign_item.theme}}
+            p
+              strong 开始时间 :
+              span.time_text {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
+              strong 结束时间 :
+              span.time_text {{campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
+            //- p
+            //-   strong 内容:
+            //-   span.content_text {{campaign_item.content}}
+            p
+              span.content_text 有{{ campaign_item.value }}条新评论
+        td.operator_col
+          a.dl_btn.dl_btn_small.pull-right(ng-href="/campaign/detail/{{campaign_item._id}}" target="_blank") 查看

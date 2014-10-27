@@ -113,7 +113,7 @@ block panel
       //-   a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href=""  ng-click="openModal()") {{newReply.length}}条未查看回复
     .now(ng-cloak)
       .campaigns(masonry reload="is_reload" items="nowCampaigns")
-        .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns" ng-cloak)
+        .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns track by nowCampaign._id" ng-cloak)
           .campaign_head(ng-class="{'unconfrim':!nowCampaign.confirm_status}" ng-cloak)
             label {{nowCampaign.theme}}
             label.pull-right(ng-if="!nowCampaign.confirm_status") 挑战
@@ -197,7 +197,7 @@ block aside
         span.speaker
         label 发起新活动   >>
   .old_campaign_container
-    a(href="#/campaign/#{uid}" ng-click="openModal()")
+    a(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
       label 热门活动讨论  >>
       label.clearLinkUnderline.pull-right.news_count(ng-if="newReply.length>0" ng-cloak) {{newReply.length}}
   .groupsbox

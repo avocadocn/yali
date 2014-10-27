@@ -17,7 +17,7 @@ module.exports = function(app) {
   app.post('/campaign/quitCampaign/:campaignId', campaign.quitCampaign);
   // app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
 
-
+  app.get('/campaign/recentCommentCampaign', campaign.getRecentCommentCampaigns);
   app.get('/campaign/user/all/calendar/:userId', campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
