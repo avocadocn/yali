@@ -1327,7 +1327,7 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         if(!$scope.moldsgot){
             Campaign.getMolds('company','0',function(status,data){
                 if(!status){
-                    $scope.molds = data;
+                    $scope.molds = data.molds;
                     $scope.moldsgot = true;
                 }
             });

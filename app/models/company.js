@@ -192,10 +192,6 @@ CompanySchema.methods = {
         return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
     },
 
-    isHR:function(){
-        return true;
-    },
-
     getCid: function () {
         return this._id;
     }

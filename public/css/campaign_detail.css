@@ -191,13 +191,14 @@
 }
 .campaign_detail .detail_card .component_body .base_info .unit .text {
   margin-top: 10px;
-  width: 100px;
+  width: 80px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
   line-height: 18px;
   color: #999;
+  text-align: center;
 }
 .campaign_detail .detail_card .component_body .base_info .logo_container {
   padding: 20px;

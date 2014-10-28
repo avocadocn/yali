@@ -940,13 +940,12 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','C
         if(!$scope.moldsgot){
             Campaign.getMolds('department',0,function(status,data){
                 if(!status){
-                    $scope.molds = data;
+                    $scope.molds = data.molds;
                     $scope.moldsgot = true;
                     $scope.mold = '其它';
                 }
             });
         }
-        Campaign.get
         $scope.location={name:'',coordinates:[]};
         $("#start_time").on("changeDate",function (ev) {
             var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));

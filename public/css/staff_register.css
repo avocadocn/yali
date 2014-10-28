@@ -792,27 +792,10 @@ textarea {
 .dl-modal .dl-modal-body .info_side {
   min-width: 70px;
 }
-.dl-modal .dl-modal-body .search_row {
-  margin-bottom: 10px;
-}
-.dl-modal .dl-modal-body .search_row_2 {
-  margin-top: 2px;
-}
-.dl-modal .dl-modal-body .opponent {
-  margin-top: 20px;
-  border-bottom: 1px solid #eee;
-}
 .dl-modal .dl-modal-body .dl_modal_container {
   width: 100%;
   float: left;
   clear: left;
-}
-.dl-modal .dl-modal-body .dl_modal_container .pen-menu {
-  height: 20px;
-  z-index: 1040;
-}
-.dl-modal .dl-modal-body .dl_modal_container .pen-menu .pen-icon {
-  height: 20px;
 }
 .dl-modal .dl-modal-body .dl_modal_container .groups {
   max-height: 300px;
@@ -873,64 +856,6 @@ textarea {
 }
 .dl-modal .dl-modal-body .dl_modal_container .dl_md_2 {
   margin-left: 60px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container {
-  width: 280px;
-  float: left;
-  margin-right: 20px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container.end_time {
-  margin-right: 0px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container.end_time .dl_modal_half_container {
-  margin-right: 0px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_input {
-  border-radius: 0;
-  margin-bottom: 18px;
-  font-size: 12px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_input_container {
-  width: 530px;
-  float: left;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_button {
-  width: 67px;
-  height: 33px;
-  float: right;
-  padding: 8px 0 4px 2px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container {
-  background-color: #f6f6f6;
-  padding: 10px 0;
-  margin-bottom: 15px;
-  float: left;
-  width: 600px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_label_container {
-  float: left;
-  min-width: 100px;
-  padding: 7px 0;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_other_container {
-  float: left;
-  width: 120px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_time_container {
-  float: left;
-  width: 159px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_time_container input {
-  width: 120px;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_people_container {
-  float: left;
-  width: 38px;
-  padding: 7px 0;
-  text-align: center;
-}
-.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_people_container .info_label {
-  padding: 7px;
 }
 .dl-modal .dl-modal-footer {
   text-align: left;

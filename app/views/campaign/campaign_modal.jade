@@ -1,4 +1,3 @@
-link(rel="stylesheet" href="/lib/pen/src/pen.css")
 link(rel="stylesheet" href="/css/modal.css")
 .dl_campaign_modal
   form(name="campaign_form" novalidate)
@@ -22,7 +21,6 @@ link(rel="stylesheet" href="/css/modal.css")
           .input-group.date.form_datetime.dl_modal_input#start_time
             input.dl-form-control(type="text" ng-model="start_time" name="startTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" readonly required)
             span.input-group-addon.no_radius
-              //img(ng-src='/img/icons/icon_date.png')
               span.glyphicon.glyphicon-calendar
         .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
           .dl_modal_half_container

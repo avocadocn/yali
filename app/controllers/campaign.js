@@ -689,7 +689,6 @@ exports.cancelCampaign = function(req, res){
 
 exports.editCampaign = function(req, res){
   var campaign = req.campaign;
-
   var allow = auth(req.user, {
     companies: campaign.cid,
     teams: campaign.tid,
@@ -1409,8 +1408,8 @@ exports.renderCampaignDetail = function (req, res, next) {
   var isEnd = campaign.end_time < Date.now();
   var isOneUnit = campaign.campaign_unit.length === 1;
   var membersForCard = campaign.members.slice(0, 5);
-  //没开始没关掉并且是双队的，验证需不需要应答
-  var isWaitingReply = !isOneUnit&&!isStart&&campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
+  //没开始没关掉并且是比赛，验证需不需要应答
+  var isWaitingReply = (ct===4||ct===5||ct===7)&&!isStart&&campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
   //应答权限判断
   var response={canCancel:false,canResponse:false};
   if(isWaitingReply){
@@ -1664,9 +1663,9 @@ exports.dealProvoke = function(req,res,next) {
         'caption':campaign.theme,
         'own':{
           '_id':req.user._id,
-          'nickname':req.user.isHR()?req.user.info.official_name: req.user.nickname,
-          'photo':req.user.isHR()? req.user.info.logo: req.user.photo,
-          'role':req.user.isHR()? 'HR':'LEADER'
+          'nickname':req.user.provider==='company'?req.user.info.official_name: req.user.nickname,
+          'photo':req.user.provider==='company'? req.user.info.logo: req.user.photo,
+          'role':req.user.provider==='company'? 'HR':'LEADER'
         },
         // 'receiver':{
         //   '_id':rst[0].leader[0]._id
@@ -1766,7 +1765,8 @@ exports.getMolds = function(req, res){
                 }
               }
             }
-            return res.send({'result':1,'molds':molds});
+            var cid = req.user.provider==='company' ? req.user._id:req.user.cid;
+            return res.send({'result':1,'molds':molds,'cid':cid});
           }
         });
       }
@@ -1774,7 +1774,7 @@ exports.getMolds = function(req, res){
         return res.send({'result':1,'molds':molds});
       }
     }
-  })
+  });
 };
 
 //发活动接口

@@ -63,7 +63,7 @@ angular.module('donler')
           callback(data.msg);
         }
         else{
-          callback(null,data.molds);
+          callback(null,data);
         }
       }).error(function(data,status){
         callback('error');
