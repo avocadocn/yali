@@ -4,17 +4,22 @@ var campaignApp = angular.module('donler');
 campaignApp.directive('maxHeight', function () {
   return {
     restrict: 'A',
+    scope: {
+      over: '='
+    },
     link: function (scope, elem, attr, ctrl) {
       if (elem.height() > attr.maxHeight) {
-        scope.showFold = true;
+        scope.over = true;
       }
       else {
-        scope.showFold = false;
+        scope.over = false;
       }
+      console.log(scope.over, 'link')
     }
   };
 });
 campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', function ($scope, $http, Campaign) {
+
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;

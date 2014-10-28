@@ -157,9 +157,6 @@ clearfix()
         .info_container
           flex 1
           -webkit-flex 1
-          .title
-            font-size 14px
-            color #e7ce23
           .start_info
             display flex
             display -webkit-flex
@@ -195,6 +192,9 @@ clearfix()
       .notice
         padding 20px
         border-top 1px solid #eee
+        .title
+          font-size 14px
+          color #e7ce23
         .date
           margin-top 7px
           font-size 12px
@@ -457,6 +457,22 @@ clearfix()
     .more_info
       padding 0 20px 20px
       border-top 1px solid #eee
+      .text_container
+        position relative
+      .base_content
+        max-height 100px
+        overflow hidden
+      .base_content_gradient
+        height 20px
+        width 100%
+        position absolute
+        bottom 0
+        cursor pointer
+        background -webkit-linear-gradient(top, transparent, #fff)
+        background -moz-linear-gradient(top, transparent, #fff)
+        background -o-linear-gradient(top, transparent, #fff)
+        filter unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)")
+        -ms-filter unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)")
       .sub_title
         margin-right 10px
       .progress

@@ -246,10 +246,14 @@ block contentExt
                     p.main_text 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
                     p.main_text 活动地点: #{campaign.location.name}
                     p.main_text 活动类型: #{campaign.campaign_mold}
-              .more_info
+              .more_info(ng-init="overflow=false;")
                 if campaign.content
-                  h4.title 活动简介
-                  .text!= campaign.content
+                  .clearfix
+                    h4.title.pull-left 活动简介
+                    a.title.pull-right(ng-click="baseContent=!baseContent;" ng-clock) {{baseContent ? '展开' : '收缩'}}
+                  .text_container
+                    .text(ng-init="baseContent=true;" ng-class="{'base_content': baseContent}")!= campaign.content
+                    .base_content_gradient(ng-show="baseContent" ng-click="baseContent=!baseContent;")
                 if campaign.tags && campaign.tags.length > 0
                   h4.title 活动标签
                   .tags
