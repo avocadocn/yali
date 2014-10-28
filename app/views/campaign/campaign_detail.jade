@@ -163,7 +163,7 @@ block contentExt
           .component.brief_card(class="#{helper.start('order-1')} #{helper.end('order-2')}")
             .component_head
               span.title 活动信息
-              button.head_button 详情
+              button.head_button(data-toggle="modal" data-target="#campaignDetailModal") 详情
             .component_body
               p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
               p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
@@ -216,6 +216,53 @@ block contentExt
                     .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
                       img.photo(src="#{member.photo}/57/57")
                       span.nickname #{member.nickname}
+
+    .detail_modal.modal.fade#campaignDetailModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .component
+            .component_head
+              span.title 活动信息
+              button.close.dl_close(data-dismiss="modal" aria-hidden="true")
+                img.icon_close(src="/img/icons/icon_close.png")
+            .component_body
+              .base_info
+                h4.title #{campaign.theme}
+                .info
+                  .logo_container
+                    each unit in campaign.campaign_unit
+                      img(src="#{unit.team.logo || unit.company.logo}/80/80")
+                  .campaign_info
+                    p.main_text 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
+                    p.main_text 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
+                    p.main_text 活动地点: #{campaign.location.name}
+                    p.main_text 活动类型: #{campaign.campaign_mold}
+              .more_info
+                if campaign.content
+                  h4.title 活动简介
+                  .text!= campaign.content
+                if campaign.tags && campaign.tags.length > 0
+                  h4.title 活动标签
+                  .tags
+                    each tag in campaign.tags
+                      span.tag #{tag}
+                if campaign.member_max || campaign.member_min || campaign.deadline
+                  h4.title 报名信息
+                if campaign.member_max
+                  .text
+                    span.sub_title 报名人数上限:
+                    .progress
+                      .progress-bar(role="progressbar" aria-valuenow="#{campaign.members.length}" aria-valuemin="0" aria-valuemax="#{campaign.member_max}" style="width: #{campaign.members.length*100/campaign.member_max}%")
+                    span #{campaign.members.length}/#{campaign.member_max}
+                if campaign.member_min
+                  p.text
+                    span.sub_title 报名人数下限:
+                    span #{campaign.member_min}人
+                if campaign.deadline
+                  p.text
+                    span.sub_title 报名截止时间:
+                    span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
+
 
 append footExt
   script(src="/js/directives/count_down.js")

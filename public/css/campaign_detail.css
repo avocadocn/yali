@@ -448,20 +448,20 @@
 .campaign_detail .brief_card .component_head .head_button {
   background-color: #4e83be;
 }
-.campaign_detail .member_modal .modal-content {
+.campaign_detail .modal .modal-content {
   border-radius: 0;
 }
-.campaign_detail .member_modal .modal-content .component {
+.campaign_detail .modal .modal-content .component {
   height: 400px;
   box-shadow: none;
 }
-.campaign_detail .member_modal .modal-content .component .component_head {
+.campaign_detail .modal .modal-content .component .component_head {
   background-color: #73a5dd;
 }
-.campaign_detail .member_modal .modal-content .component .component_head .dl_close {
+.campaign_detail .modal .modal-content .component .component_head .dl_close {
   padding: 2px;
 }
-.campaign_detail .member_modal .modal-content .component .component_head .dl_close .icon_close {
+.campaign_detail .modal .modal-content .component .component_head .dl_close .icon_close {
   width: 14px;
   height: 14px;
 }
@@ -556,4 +556,53 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.campaign_detail .detail_modal .component_body {
+  padding: 0 !important;
+}
+.campaign_detail .detail_modal .base_info {
+  padding: 20px;
+}
+.campaign_detail .detail_modal .base_info .info:before,
+.campaign_detail .detail_modal .base_info .info:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .detail_modal .base_info .info:after {
+  clear: both;
+}
+.campaign_detail .detail_modal .base_info .info .logo_container {
+  float: left;
+}
+.campaign_detail .detail_modal .base_info .info .campaign_info {
+  float: left;
+}
+.campaign_detail .detail_modal .more_info {
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+.campaign_detail .detail_modal .more_info .sub_title {
+  margin-right: 10px;
+}
+.campaign_detail .detail_modal .more_info .progress {
+  margin: 0;
+  margin-right: 10px;
+  display: inline-block;
+  width: 200px;
+  height: 14px;
+  border-radius: 15px;
+  background-color: #4b6f97;
+}
+.campaign_detail .detail_modal .more_info .progress .progress-bar {
+  background-color: #97d7c6;
+  box-shadow: none;
+}
+.campaign_detail .detail_modal .more_info .tags .tag {
+  margin-right: 5px;
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #73a4dc;
 }
