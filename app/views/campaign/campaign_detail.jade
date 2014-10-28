@@ -227,11 +227,20 @@ block contentExt
                 img.icon_close(src="/img/icons/icon_close.png")
             .component_body
               .base_info
-                h4.title #{campaign.theme}
+                h4.title
+                  if campaign.campaign_unit.length === 1
+                    | #{campaign.campaign_unit[0].team.name||campaign.campaign_unit[0].company.name}
+                  if campaign.campaign_unit.length === 2
+                    | #{campaign.campaign_unit[0].team.name}
+                    | &nbsp;vs&nbsp;
+                    | #{campaign.campaign_unit[1].team.name}
+                  | &nbsp;-&nbsp;#{campaign.theme}
                 .info
                   .logo_container
                     each unit in campaign.campaign_unit
-                      img(src="#{unit.team.logo || unit.company.logo}/80/80")
+                      .unit
+                        img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
+                        p.main_text #{unit.team.name || unit.company.name}
                   .campaign_info
                     p.main_text 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
                     p.main_text 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}

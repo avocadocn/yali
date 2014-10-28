@@ -560,8 +560,13 @@
 .campaign_detail .detail_modal .component_body {
   padding: 0 !important;
 }
+.campaign_detail .detail_modal .title {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #73a5dd;
+}
 .campaign_detail .detail_modal .base_info {
-  padding: 20px;
+  padding: 0 20px 20px;
 }
 .campaign_detail .detail_modal .base_info .info:before,
 .campaign_detail .detail_modal .base_info .info:after {
@@ -574,11 +579,29 @@
 .campaign_detail .detail_modal .base_info .info .logo_container {
   float: left;
 }
+.campaign_detail .detail_modal .base_info .info .logo_container .unit {
+  float: left;
+  margin-right: 20px;
+  width: 80px;
+}
+.campaign_detail .detail_modal .base_info .info .logo_container .unit .logo {
+  width: 80px;
+  height: 80px;
+}
+.campaign_detail .detail_modal .base_info .info .logo_container .unit .main_text {
+  margin-top: 10px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 18px;
+  color: #999;
+}
 .campaign_detail .detail_modal .base_info .info .campaign_info {
   float: left;
 }
 .campaign_detail .detail_modal .more_info {
-  padding: 20px;
+  padding: 0 20px 20px;
   border-top: 1px solid #eee;
 }
 .campaign_detail .detail_modal .more_info .sub_title {
@@ -601,8 +624,8 @@
   margin-right: 5px;
   display: inline-block;
   margin-bottom: 4px;
-  padding: 2px 5px;
+  padding: 2px 14px;
   border-radius: 5px;
   color: #fff;
-  background-color: #73a4dc;
+  background-color: #b1c6d2;
 }
