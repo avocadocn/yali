@@ -4,7 +4,7 @@
     label {{newReply.length}} 个近期热门活动讨论
   .campaigns_content
     table.table.campaign_table
-      tr(ng-repeat="campaign_item in newReply track by campaign_item._id")
+      tr(ng-repeat="campaign_item in newReply")
         td(class="#{provider}_logo_col")
           a(ng-href="{{campaign_item.link}}")
             img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
@@ -13,15 +13,17 @@
             p(ng-class="{'recent_unjoin':showedType=='recentUnjoinedCampaigns','recent_join':showedType=='recentJoinedCampaigns'}")
               strong {{campaign_item.name}} :
               span.theme_text {{campaign_item.theme}}
-            p
-              strong 开始时间 :
-              span.time_text {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
-              strong 结束时间 :
-              span.time_text {{campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
+            p(ng-if="campaign_item.start_time && campaign_item.end_time")
+              strong(ng-if="campaign_item.start_time") 开始时间 :
+              span.time_text(ng-if="campaign_item.start_time") {{campaign_item.start_time | date:'yyyy-MM-dd HH:mm'}}
+              strong(ng-if="campaign_item.end_time") 结束时间 :
+              span.time_text(ng-if="campaign_item.end_time") {{campaign_item.end_time | date:'yyyy-MM-dd HH:mm'}}
             //- p
             //-   strong 内容:
             //-   span.content_text {{campaign_item.content}}
-            p
+            p(ng-if="campaign_item.value")
               span.content_text 有{{ campaign_item.value }}条新评论
+            p(ng-if="campaign_item.scoreBoardText")
+              span.content_text {{campaign_item.scoreBoardText}}
         td.operator_col
           a.dl_btn.dl_btn_small.pull-right(ng-href="/campaign/detail/{{campaign_item._id}}" target="_blank") 查看

@@ -194,6 +194,10 @@ CompanySchema.methods = {
 
     isHR:function(){
         return true;
+    },
+
+    getCid: function () {
+        return this._id;
     }
 };
 

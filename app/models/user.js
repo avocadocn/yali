@@ -231,6 +231,10 @@ UserSchema.methods = {
 
     isHR: function(){
         return false;
+    },
+
+    getCid: function () {
+        return this.cid;
     }
 };
 

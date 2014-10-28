@@ -734,6 +734,46 @@ exports.editCampaign = function(req, res){
   });
 };
 
+exports.getScoreBoardMessage = function(req, res, next) {
+
+  var aMonthAgo = Date.now() - moment.duration(1, 'months').valueOf();
+  aMonthAgo = new Date(aMonthAgo);
+  if (!req.user.last_comment_time) {
+    req.user.last_comment_time = new Date();
+  }
+  var queryDate = req.user.last_comment_time > aMonthAgo ? req.user.last_comment_time : aMonthAgo;
+
+  MessageContent.find({
+    'company_id': req.user.getCid(),
+    'team.status': { '$in': [2, 3] },
+    'status': 'undelete',
+    'post_date': {'$gte': queryDate}
+  }).exec()
+  .then(function (contents) {
+    req.messageContents = [];
+    contents.forEach(function (content) {
+      var messageContent = {
+        _id: content.campaign_id,
+        theme: content.caption,
+        name: content.team[0].name,
+        logo: content.team[0].logo
+      };
+      if (content.team[0].status === 2) {
+        messageContent.scoreBoardText = '请求确认比分。'
+      } else if (content.team[0].status === 3) {
+        messageContent.scoreBoardText = '确认了比分。'
+      }
+      req.messageContents.push(messageContent);
+    });
+    next();
+  })
+  .then(null, function (err) {
+    console.log(err);
+    // 即使有错误，也直接进入下一个中间件，查询最新比分确认消息是否成功不该影响主页正常显示。
+    next();
+  });
+}
+
 exports.getRecentCommentCampaigns = function(req, res) {
   var options = {
     'cid': req.user.cid,
@@ -754,7 +794,12 @@ exports.getRecentCommentCampaigns = function(req, res) {
       req.user.last_comment_time = new Date();
       req.user.save();
     }
-    o.query = {'host_type':'campaign','status':'active','create_date':{'$gte':req.user.last_comment_time || new Date()},'poster._id':{'$ne':req.user._id},'host_id':{'$in':joinedCampaignId}};
+
+    var aMonthAgo = Date.now() - moment.duration(1, 'months').valueOf();
+    aMonthAgo = new Date(aMonthAgo);
+    var queryDate = req.user.last_comment_time > aMonthAgo ? req.user.last_comment_time : aMonthAgo;
+
+    o.query = {'host_type':'campaign','status':'active','create_date':{'$gte': queryDate},'poster._id':{'$ne':req.user._id},'host_id':{'$in':joinedCampaignId}};
     o.map = function () { emit(this.host_id, 1) }
     o.reduce = function (k, vals) {
       return vals.length;
@@ -773,6 +818,9 @@ exports.getRecentCommentCampaigns = function(req, res) {
           _model.logo=_campaign.campaign_unit[0].team.logo ?_campaign.campaign_unit[0].team.logo:_campaign.campaign_unit[0].company.logo;
         }
       });
+      if (req.messageContents) {
+        model = model.concat(req.messageContents);
+      }
       res.send({result:1,data:model});
     })
     .then(null, function (err) {

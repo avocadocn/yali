@@ -100,7 +100,6 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
         updateRecentCommentTime();
         $interval.cancel(getRecentCommentCampaignPromise);
         $('#user_modal').one('hidden.bs.modal', function (e) {
-          $rootScope.newReply =[];
           getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
         });
       }
