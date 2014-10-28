@@ -12,9 +12,11 @@ clearfix()
   for order in (1..10)
     .order-{order}
       order order
+      -webkit-order order
 
   .campaign_panel
     display flex
+    display -webkit-flex
     .component
       margin-bottom 10px
     .panel_divider
@@ -23,7 +25,9 @@ clearfix()
       width 700px
     .side_panel
       display flex
+      display -webkit-flex
       flex-flow column
+      -webkit-flex-flow column
       width 240px
 
   .component
@@ -100,7 +104,9 @@ clearfix()
 
       .multi_team
         display flex
+        display -webkit-flex
         flex-flow column
+        -webkit-flex-flow column
         .logo_container
           clearfix()
           border-right none !important
@@ -112,7 +118,7 @@ clearfix()
 
       .base_info
         display flex
-
+        display -webkit-flex
         .logo_container
           border-right 1px solid #eee
           .unit
@@ -137,6 +143,7 @@ clearfix()
 
         .info_container
           flex 1
+          -webkit-flex 1
           padding-left 20px
           padding-bottom 20px
           .title
@@ -144,6 +151,7 @@ clearfix()
             color #e7ce23
           .start_info
             display flex
+            display -webkit-flex
             margin-bottom 20px
             .campaign_info
               width 300px
@@ -158,8 +166,10 @@ clearfix()
         .notice
           .publish
             display flex
+            display -webkit-flex
             .notice_text
               flex 1
+              -webkit-flex 1
               padding 6px 10px
               height 30px
               color #cccccc
@@ -259,6 +269,7 @@ clearfix()
           border 1px solid #eee
         .editing
           display flex
+          display -webkit-flex
           margin 15px 0
           .line_text
             line-height 30px

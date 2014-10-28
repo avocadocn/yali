@@ -1,35 +1,46 @@
 .campaign_detail .order-1 {
   order: 1;
+  -webkit-order: 1;
 }
 .campaign_detail .order-2 {
   order: 2;
+  -webkit-order: 2;
 }
 .campaign_detail .order-3 {
   order: 3;
+  -webkit-order: 3;
 }
 .campaign_detail .order-4 {
   order: 4;
+  -webkit-order: 4;
 }
 .campaign_detail .order-5 {
   order: 5;
+  -webkit-order: 5;
 }
 .campaign_detail .order-6 {
   order: 6;
+  -webkit-order: 6;
 }
 .campaign_detail .order-7 {
   order: 7;
+  -webkit-order: 7;
 }
 .campaign_detail .order-8 {
   order: 8;
+  -webkit-order: 8;
 }
 .campaign_detail .order-9 {
   order: 9;
+  -webkit-order: 9;
 }
 .campaign_detail .order-10 {
   order: 10;
+  -webkit-order: 10;
 }
 .campaign_detail .campaign_panel {
   display: flex;
+  display: -webkit-flex;
 }
 .campaign_detail .campaign_panel .component {
   margin-bottom: 10px;
@@ -42,7 +53,9 @@
 }
 .campaign_detail .campaign_panel .side_panel {
   display: flex;
+  display: -webkit-flex;
   flex-flow: column;
+  -webkit-flex-flow: column;
   width: 240px;
 }
 .campaign_detail .component {
@@ -137,7 +150,9 @@
 }
 .campaign_detail .detail_card .component_body .multi_team {
   display: flex;
+  display: -webkit-flex;
   flex-flow: column;
+  -webkit-flex-flow: column;
 }
 .campaign_detail .detail_card .component_body .multi_team .logo_container {
   border-right: none !important;
@@ -159,6 +174,7 @@
 }
 .campaign_detail .detail_card .component_body .base_info {
   display: flex;
+  display: -webkit-flex;
 }
 .campaign_detail .detail_card .component_body .base_info .logo_container {
   border-right: 1px solid #eee;
@@ -187,6 +203,7 @@
 }
 .campaign_detail .detail_card .component_body .base_info .info_container {
   flex: 1;
+  -webkit-flex: 1;
   padding-left: 20px;
   padding-bottom: 20px;
 }
@@ -196,6 +213,7 @@
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info {
   display: flex;
+  display: -webkit-flex;
   margin-bottom: 20px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .campaign_info {
@@ -213,9 +231,11 @@
 }
 .campaign_detail .detail_card .component_body .base_info .notice .publish {
   display: flex;
+  display: -webkit-flex;
 }
 .campaign_detail .detail_card .component_body .base_info .notice .publish .notice_text {
   flex: 1;
+  -webkit-flex: 1;
   padding: 6px 10px;
   height: 30px;
   color: #ccc;
@@ -335,6 +355,7 @@
 }
 .campaign_detail .detail_card .component_body .more_info .editing {
   display: flex;
+  display: -webkit-flex;
   margin: 15px 0;
 }
 .campaign_detail .detail_card .component_body .more_info .editing .line_text {
