@@ -1392,12 +1392,13 @@ exports.renderCampaignDetail = function (req, res, next) {
       }
     }
   };
-  //是否能加入
+  //是否能加入&link
   if(campaign.campaign_type===1){
     var canjoin = auth(req.user,{companies:campaign.cid},['joinCompanyCampaign']);
     if(canjoin.joinCompanyCampaign===true){
       campaign.campaign_unit[0].canjoin=true;
     }
+    campaign.campaign_unit[0].link="/company/home/"+campaign.campaign_unit[0].company._id;
   }
   else{
     for(var i = 0;i<campaign.campaign_unit.length;i++){
@@ -1405,6 +1406,8 @@ exports.renderCampaignDetail = function (req, res, next) {
       if(canjoin.joinTeamCampaign===true){
         campaign.campaign_unit[i].canjoin=true;
       }
+      //给unit加个link属性给超链接用
+      campaign.campaign_unit[i].link="/group/page/"+campaign.campaign_unit[i].team._id;
     }
   }
   res.render('campaign/campaign_detail', {
