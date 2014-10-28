@@ -112,6 +112,7 @@ var getRole = function (user, owner) {
     if (owner.teams) {
       // 判断是否是小队成员, 用户可能同属于这两个小队，所以owner.teams需要完全遍历
       for (var i = 0; i < owner.teams.length; i++) {
+
         for (var j = 0; j < user.team.length; j++) {
           if (user.team[j]._id.toString() === owner.teams[i].toString()) {
             if (user.team[j].leader === true) {
@@ -121,6 +122,11 @@ var getRole = function (user, owner) {
             }
             break;
           }
+        }
+
+        // 如果已确认是队长，则不再查找，保留权限最高的角色
+        if (role.team && role.team === 'leader') {
+          break;
         }
       }
     }
