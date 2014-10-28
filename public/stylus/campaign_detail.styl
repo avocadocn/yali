@@ -42,7 +42,7 @@ clearfix()
         margin-right 10px
         height 14px
       .title
-        color #ffffff
+        color #fff
         font-size 14px
         line-height 30px
       .head_button
@@ -52,22 +52,21 @@ clearfix()
         height 20px
         font-size 12px
         line-height 20px
-        color #ffffff
+        color #fff
         float right
         text-align center
         text-decoration none
     .component_body
-      padding 20px
-      background-color #ffffff
+      background-color #fff
       .main_text, .text
         font-size 14px
         line-height 20px
         margin 0
         word-break break-all
       .main_text
-        color #999999
+        color #999
       .text
-        color #cccccc
+        color #ccc
 
 
 
@@ -98,7 +97,7 @@ clearfix()
         width 50px
         height 20px
         font-size 14px
-        color #ffffff
+        color #fff
         background-color #e7ce23
     .component_body
 
@@ -109,6 +108,7 @@ clearfix()
         -webkit-flex-flow column
         .logo_container
           clearfix()
+          padding 20px
           border-right none !important
           border-bottom 1px solid #eee
           .unit
@@ -119,15 +119,26 @@ clearfix()
       .base_info
         display flex
         display -webkit-flex
+        .unit
+          width 80px
+          float left
+          margin-right 20px
+          .logo
+            width 80px
+            height 80px
+          .text
+            margin-top 10px
+            width 100px
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
+            display inline-block
+            line-height 18px
+            color #999
         .logo_container
+          padding 20px
           border-right 1px solid #eee
           .unit
-            margin-right 20px
-            margin-bottom 20px
-            width 80px
-            .logo
-              width 80px
-              height 80px
             .join
               display block
               margin-left auto
@@ -144,8 +155,6 @@ clearfix()
         .info_container
           flex 1
           -webkit-flex 1
-          padding-left 20px
-          padding-bottom 20px
           .title
             font-size 14px
             color #e7ce23
@@ -154,15 +163,33 @@ clearfix()
             display -webkit-flex
             margin-bottom 20px
             .campaign_info
+              padding 20px
               width 300px
             .time_info
-              padding-left 10px
+              padding 20px
+              padding-top 60px
               width 270px
+              border-left 1px solid #eee
               .remind
                 margin-top 15px
                 font-size 28px
                 line-height 30px
                 color #97d7c6
+            .competition_container
+              float left
+              .button_container
+                float left
+                padding-top 15px
+                .accept_btn
+                  background-color #ec6a6a
+                  color #fff
+                  &:hover
+                    background-color #ec556a
+                .dl_btn_small
+                  height 20px
+                  padding 4px 15px
+                .second_button
+                  margin-top 10px
         .notice
           .publish
             display flex
@@ -185,37 +212,9 @@ clearfix()
               line-height 30px
               color white
               background-color themeColor
-            .competition_container
-              float left
-              .unit
-                width 80px
-                float left
-                margin-right 20px
-                .logo
-                  width 80px
-                  height 80px
-                .text
-                  margin-top 10px
-                  width 80px
-                  overflow hidden
-                  text-overflow ellipsis
-                  white-space nowrap
-                  display inline-block
-              .button_container
-                float left
-                padding-top 15px
-                .accept_btn
-                  background-color #ec6a6a
-                  color #fff
-                  &:hover
-                    background-color #ec556a
-                .dl_btn_small
-                  height 20px
-                  padding 4px 15px
-                .second_button
-                  margin-top 10px
+            
       .more_info
-        padding-top 20px
+        padding 20px
         border-top 1px solid #eee
         .sub_title
           margin-right 10px
