@@ -449,7 +449,7 @@ exports.sendToParticipator = function(req, res){
         'content':req.body.content,
         'sender':[sender],
         'team': teams,
-        'company_id':req.user.provider == 'user' ? req.user.cid : req.user._id,
+        'company_id':req.user.getCid(),
         'campaign_id':req.body.campaign_id,
         'req':req,
         'res':res,

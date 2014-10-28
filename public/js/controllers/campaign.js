@@ -23,14 +23,20 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   $scope.isEnd = data.end === 'true';
   $scope.isJoin = data.join === 'true';
 
-  $scope.notice = '';
+  $scope.notice = {
+    placeholder: '',
+    placeholderText: '添加公告，让成员随时了解活动动态！（输入内容请控制在140字以内）',
+    content: ''
+  };
+  $scope.notice.placeholder = $scope.notice.placeholderText;
   $scope.publishNotice = function() {
+    if ($scope.notice.content === '') return;
     $http({
       method: 'post',
       url: '/message/push/campaign',
       data: {
         campaign_id: campaignId,
-        content: $scope.notice
+        content: $scope.notice.content
       }
     }).success(function(data, status) {
       if (data.msg === 'SUCCESS') {

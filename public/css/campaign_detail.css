@@ -266,11 +266,20 @@
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container .button_container .second_button {
   margin-top: 10px;
 }
-.campaign_detail .detail_card .component_body .base_info .notice .publish {
+.campaign_detail .detail_card .component_body .notice {
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+.campaign_detail .detail_card .component_body .notice .date {
+  margin-top: 7px;
+  font-size: 12px;
+}
+.campaign_detail .detail_card .component_body .notice .publish {
   display: flex;
   display: -webkit-flex;
+  margin-top: 10px;
 }
-.campaign_detail .detail_card .component_body .base_info .notice .publish .notice_text {
+.campaign_detail .detail_card .component_body .notice .publish .notice_text {
   flex: 1;
   -webkit-flex: 1;
   padding: 6px 10px;
@@ -280,7 +289,7 @@
   border: solid 1px #d3dbe6;
   font-size: 14px;
 }
-.campaign_detail .detail_card .component_body .base_info .notice .publish .publish_button {
+.campaign_detail .detail_card .component_body .notice .publish .publish_button {
   margin: 0;
   padding: 0;
   width: 80px;

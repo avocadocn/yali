@@ -6,7 +6,7 @@ append headExt
   link(rel="stylesheet" href="/lib/pen/src/pen.css")
 
 block contentExt
-  .campaign_detail.dl_container(ng-controller="campaignController" ng-init="editing=#{editing} ")
+  .campaign_detail.dl_container(ng-controller="campaignController" ng-init="editing=#{editing}")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .campaign_panel
@@ -18,7 +18,7 @@ block contentExt
             if allow.edit && isActive && !isEnd
               span.sub_title.right_title.operator(ng-click="toggleEdit()") 编辑
             if !isEnd && isActive
-              span.sub_title.right_title.operator(ng-if="isJoin" ng-click="quit()") 退出
+              span.sub_title.right_title.operator(ng-if="isJoin" ng-click="quit()" ng-cloak) 退出
             if isStart && !isEnd && isActive
               span.title.right_title.starting_title 活动正在进行中
             if isEnd && isActive
@@ -65,29 +65,32 @@ block contentExt
                           if response.canCancel
                             .second_button
                               button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[0].team._id}',3)") 取消
-                if !isWaitingReply
-                  .notice
-                    p: span.title 最新公告
-                    if notice
-                      p.main_text #{notice.content}
-                      p.text #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
-                    else
-                      p.main_text 没有最新公告
-            .more_info(ng-show="!isStart||editing")
+            if !isWaitingReply
+              .notice
+                p: span.title 最新公告
+                if notice
+                  p.main_text #{notice.content}
+                  p.text.date #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
+                else
+                  p.main_text 没有最新公告
+                form.publish(ng-if="editing" ng-cloak)
+                  input.notice_text(type="text" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" required)
+                  button.publish_button(ng-click="publishNotice()") 发新公告
+            .more_info(ng-show="!isStart||editing" ng-cloak)
               h4.title 活动简介
-              .text(ng-show="!editing")!= campaign.content
-              div(ng-show="editing")
+              .text(ng-show="!editing" ng-cloak)!= campaign.content
+              div(ng-show="editing" ng-cloak)
                 #campaignDetailToolBar
                 #campaignDetail.markdownContainer(name="content" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content" contenteditable mix-maxlength=4000 required)
               h4.title 活动标签
-              .tags(ng-show="!editing")
+              .tags(ng-show="!editing" ng-cloak)
                 each tag in campaign.tags
                   span.tag #{tag}
-              div(ng-show="editing")
+              div(ng-show="editing" ng-cloak)
                 input.detail_input#taginput(name="tags" type="text" ng-blur="getTags()" ng-init="campaignData.tags='#{campaign.tags||''}'" ng-model="campaignData.tags" data-role="tagsinput")
               h4.title 报名信息
               if campaign.member_max
-                .text(ng-if="!editing")
+                .text(ng-if="!editing" ng-cloak)
                   span.sub_title 报名人数上限:
                   .progress
                     .progress-bar(role="progressbar" aria-valuenow="#{campaign.members.length}" aria-valuemin="0" aria-valuemax="#{campaign.member_max}" style="width: #{campaign.members.length*100/campaign.member_max}%")
@@ -97,7 +100,7 @@ block contentExt
                 input.detail_input.people_count(type="number" ng-model="campaignData.member_max")
                 span.line_text 人 (到达后停止报名)
               if campaign.member_min
-                p.text(ng-if="!editing")
+                p.text(ng-if="!editing" ng-cloak)
                   span.sub_title 报名人数下限:
                   span #{campaign.member_min}人
               .text.editing(ng-init="campaignData.member_min=#{campaign.member_min||0}" ng-if="editing")
@@ -105,18 +108,18 @@ block contentExt
                 input.detail_input.people_count(type="number" ng-model="campaignData.member_min")
                 span.line_text 人 (报名截止前未达最少人数，您将收到提醒)
               if campaign.deadline
-                p.text(ng-show="!editing")
+                p.text(ng-show="!editing" ng-cloak)
                   span.sub_title 报名截止时间:
                   span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
 
-              .deadline.text.editing(ng-show="editing")
+              .deadline.text.editing(ng-show="editing" ng-cloak)
                 span.sub_title.line_text 报名截止时间:
                 .input-group.date.form_datetime#deadline
                   input.detail_input(type="text" ng-init="campaignData.deadline='#{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}'" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
                 span.line_text 如果不选，默认为活动结束停止报名
-              .operator(ng-if="editing")
+              .operator(ng-if="editing" ng-cloak)
                 span.close_campaign(ng-click="cancel()")
                   img.icon_close(src="/img/warning.png")
                   | 关闭活动

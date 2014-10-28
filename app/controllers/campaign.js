@@ -1297,7 +1297,7 @@ exports.addRichCommentIfNot = function (req, res, next) {
 
 exports.getOneNotice = function (req, res, next) {
   MessageContent.find({
-    'campaign_id': campaign._id,
+    'campaign_id': req.campaign._id,
     'status': 'undelete'
   })
     .sort('-post_date')
@@ -1354,15 +1354,12 @@ exports.renderCampaignDetail = function (req, res, next) {
       editing = true;
   }
 
-  //面包屑
-
   // 默认值，显示为公司活动的链接，以防以下判断会遗漏
   var parentNode = {
     text: campaign.campaign_unit[0].company.name,
     url: '/company/home/' + campaign.campaign_unit[0].company._id
   };
 
-  
   if (req.user.provider === 'user') {
     // 个人
     if (campaign.campaign_type !== 1) {
