@@ -98,6 +98,7 @@
 }
 .campaign_detail .component .component_body {
   background-color: #fff;
+  padding: 20px;
 }
 .campaign_detail .component .component_body .main_text,
 .campaign_detail .component .component_body .text {
@@ -146,6 +147,9 @@
   font-size: 14px;
   color: #fff;
   background-color: #e7ce23;
+}
+.campaign_detail .detail_card .component_body {
+  padding: 0;
 }
 .campaign_detail .detail_card .component_body .multi_team {
   display: flex;
@@ -231,7 +235,6 @@
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .time_info {
   padding: 20px;
-  padding-top: 60px;
   width: 270px;
   border-left: 1px solid #eee;
 }
@@ -243,6 +246,7 @@
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container {
   float: left;
+  padding: 20px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container .button_container {
   float: left;
@@ -509,6 +513,9 @@
 .campaign_detail .member_modal .modal-content .component .component_body .tab-content {
   min-height: 0;
   margin-top: 10px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list {
+  padding: 20px;
 }
 .campaign_detail .member_modal .modal-content .component .component_body .member_list:before,
 .campaign_detail .member_modal .modal-content .component .component_body .member_list:after {
