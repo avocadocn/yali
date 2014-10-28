@@ -1285,10 +1285,19 @@ exports.renderCampaignDetail = function (req, res, next) {
   ]);
 
   // 公司活动
-  if (campaign.campaign_type === 1) {
+  var ct = campaign.campaign_type;
+  if (ct === 1) {
     allow.edit = allow.editCompanyCampaign;
-  } else {
+  } else if(ct===2||ct===3||ct===6||ct===8) {
     allow.edit = allow.editTeamCampaign;
+  } else{//挑战只有己方的能编辑
+    var allow_competition = auth(req.user,{
+      companies: [campaign.campaign_unit[0].company._id],
+      teams:[campaign.campaign_unit[0].team._id]
+    },[
+      'editTeamCampaign'
+    ]);
+    allow.edit = allow_competition.editTeamCampaign;
   }
   //如果能编辑并且参数status为editing,则页面一进去就能编辑(用于刚发完活动)
   var editing = false;
