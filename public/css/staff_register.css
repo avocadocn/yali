@@ -1,3 +1,6 @@
+.rich_comment img {
+  background: url("/img/loading.gif") center center no-repeat;
+}
 .rich_comment .component_head {
   height: 35px !important;
   background-color: #97d7c6 !important;
@@ -118,14 +121,13 @@
   margin-right: 5px;
   width: 100px;
   height: 100px;
-  background: url("/img/loading.gif") center center no-repeat;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview {
   position: relative;
   margin-bottom: 10px;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .preview_img {
-  background: url("/img/loading.gif") center center no-repeat;
+  background-color: #fff;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator {
   position: absolute;
@@ -140,7 +142,6 @@
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_pre {
   flex: 1;
   -webkit-flex: 1;
-  cursor: w-resize;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_shrink {
   flex: 2;
@@ -149,7 +150,6 @@
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .preview .operator .img_next {
   flex: 1;
   -webkit-flex: 2;
-  cursor: e-resize;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_slider_box .nav {
   text-align: center;
@@ -158,14 +158,9 @@
   width: 40px;
   height: 40px;
   margin-right: 5px;
-  background: url("/img/loading.gif") center center no-repeat;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_single_thumb {
-  background: url("/img/loading.gif") center center no-repeat;
   height: 84px;
-}
-.rich_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .preview_img {
-  background: url("/img/loading.gif") center center no-repeat;
 }
 .rich_comment .component_body .comment .comment_content_panel .comment_footer .text {
   font-size: 12px;
@@ -579,11 +574,17 @@ textarea {
   height: 36px;
   margin-left: 10px;
 }
-.magnifying {
-  cursor: url("/img/magnifying.png"), auto;
+.cursor_big {
+  cursor: url("/img/big.cur"), auto;
 }
-.shrink {
-  cursor: url("/img/shrink.png"), auto;
+.cursor_small {
+  cursor: url("/img/small.cur"), auto;
+}
+.cursor_prev {
+  cursor: url("/img/pic_prev.cur"), auto;
+}
+.cursor_next {
+  cursor: url("/img/pic_next.cur"), auto;
 }
 .dl_btn_score {
   width: 100px;

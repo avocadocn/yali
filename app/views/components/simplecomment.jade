@@ -24,19 +24,19 @@
           p.text(ng-cloak) {{comment.content}}
           .comment_img_box(ng-if="comment.photos.length > 1" ng-init="comment.preview_index=0")
             .img_list_box.clearfix(ng-if="!comment.preview")
-              img.list_img.magnifying(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/100/100" onError="this.src='/img/not_found.jpg';" ng-click="comment.preview=true;comment.preview_img=photo.uri;comment.preview_index=$index")
+              img.list_img.cursor_big(ng-repeat="photo in comment.photos.slice(0, 9)" ng-src="{{photo.uri}}/100/100" onError="this.src='/img/not_found.jpg';" ng-click="comment.preview=true;comment.preview_img=photo.uri;comment.preview_index=$index")
             .img_slider_box.clearfix(ng-if="comment.preview")
               .preview
                 img.preview_img.img-responsive.center-block(ng-src="{{comment.preview_img || comment.photos[0].uri}}" onError="this.src='/img/not_found.jpg';")
                 .operator
-                  .img_pre(ng-if="comment.preview_index!=0" ng-click="comment.preview_img=comment.photos[comment.preview_index-1].uri;comment.preview_index=comment.preview_index-1")
-                  .img_shrink.shrink(ng-click="comment.preview=false")
-                  .img_next(ng-if="comment.preview_index!=comment.photos.length-1" ng-click="comment.preview_img=comment.photos[comment.preview_index+1].uri;comment.preview_index=comment.preview_index+1")
+                  .img_pre.cursor_prev(ng-if="comment.preview_index!=0" ng-click="comment.preview_img=comment.photos[comment.preview_index-1].uri;comment.preview_index=comment.preview_index-1")
+                  .img_shrink.cursor_small(ng-click="comment.preview=false")
+                  .img_next.cursor_next(ng-if="comment.preview_index!=comment.photos.length-1" ng-click="comment.preview_img=comment.photos[comment.preview_index+1].uri;comment.preview_index=comment.preview_index+1")
               .nav
-                img.thumb(ng-repeat="photo in comment.photos" ng-src="{{photo.uri}}/40/40" onError="this.src='/img/holder_trash_small.jpg';" ng-click="comment.preview_img=photo.uri;comment.preview_index=$index")
+                img.thumb(ng-repeat="photo in comment.photos.slice(0,5)" ng-src="{{photo.uri}}/40/40" onError="this.src='/img/holder_trash_small.jpg';" ng-click="comment.preview_img=photo.uri;comment.preview_index=$index")
           .comment_img_box(ng-if="comment.photos.length === 1")
-            img.img_single_thumb.magnifying(ng-src="{{comment.photos[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-if="!comment.preview" ng-click="comment.preview=true")
-            img.preview_img.img-responsive.shrink(ng-src="{{comment.photos[0].uri}}" onError="this.src='/img/not_found.jpg';" ng-if="comment.preview" ng-click="comment.preview=false")
+            img.img_single_thumb.cursor_big(ng-src="{{comment.photos[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-if="!comment.preview" ng-click="comment.preview=true")
+            img.preview_img.img-responsive.cursor_small(ng-src="{{comment.photos[0].uri}}" onError="this.src='/img/not_found.jpg';" ng-if="comment.preview" ng-click="comment.preview=false")
         .comment_footer.clearfix
           span.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
           .pull-right.operator

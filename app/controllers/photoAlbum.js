@@ -1370,6 +1370,7 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
         update_date: photo_album.update_date,
         photos: photos,
         owner: {
+          model: photo_album.owner.model,
           name: owner_name,
           logo: owner_logo
         },

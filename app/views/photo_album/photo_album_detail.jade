@@ -59,9 +59,9 @@ block contentExt
               span(ng-show="item.isError"): i.glyphicon.glyphicon-remove
               span(ng-show="item.errorMsg") {{item.errorMsg}}
             td(nowrap)
-              button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.denyUpload")
-                span.glyphicon.glyphicon-upload
-                | &nbsp;上传
+              //- button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.denyUpload")
+              //-   span.glyphicon.glyphicon-upload
+              //-   | &nbsp;上传
               //- button.btn.btn-warning.btn-xs(type="button" ng-click="item.cancel()" ng-disabled="!item.isUploading")
               //-   span.glyphicon.glyphicon-ban-circle
               //-   | &nbsp;停止上传
@@ -82,14 +82,13 @@ block contentExt
         button.btn.btn-danger.btn-s(type="button" ng-click="removeAll(uploader)" ng-disabled="!uploader.queue.length || uploader.isUploading")
           | &nbsp;关闭
 
-
-
     hr
     div.photo_panel.clearfix
       a.photo.text-center(ng-repeat="photo in photos" ng-href="/photoAlbum/{{photo_album_id}}/photoView/{{photo._id}}")
         img(ng-src="{{photo.uri}}/resize/200/200")
         p.photo_name {{photo.name}}
 
+    #data(data-album-id="#{photo_album._id}" data-owner-model-type="#{photo_album.owner.model.type}" data-owner-model-id="#{photo_album.owner.model._id}")
 
 append footExt
   script(src="/js/controllers/photo_album.js")

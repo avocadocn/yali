@@ -22,13 +22,12 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         }
 
         var uploader = new FileUploader({
-          url: this.photo_album_id ? '/photoAlbum/' + this.photo_album_id + '/photo/single' : null,
-          queueLimit: 9
+          url: this.photo_album_id ? '/photoAlbum/' + this.photo_album_id + '/photo/single' : null
         });
 
         uploader.filters.push({
           name: 'imageFilter',
-          fn: function(item /*{File|FileLikeObject}*/ , options) {
+          fn: function(item, options) {
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
           }

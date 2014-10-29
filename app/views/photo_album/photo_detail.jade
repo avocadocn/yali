@@ -22,44 +22,44 @@ block contentExt
         p.text.margin_top_5
           each tag in photo_detail.tags
             span.tag= tag
-        .comment_panel#comment_panel
-          if global_user.provider === 'user'
-            h4 我要留言
-            //-pushcomment logic todo -M
-            form.js_ajax_form(action="/comment/push/photo/#{photo_detail._id}" method="post")
-              input(type="hidden" name="host_id" value="#{photo_detail._id}")
-              input(type="hidden" name="host_type" value="photo")
-              textarea.comment_textarea.form-control(type="text" name="content" required)
-              .clearfix
-                button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
-          section(bs-popover)
-            div.comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments")
-              //- span {{comment}}
-              .comment_user_info(ng-if="'#{user_cid}'===comment.poster.cid")
-                a(href="/users/home/{{comment.poster._id}}")
-                 img.user_photo.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id="pop{{comment._id}}")
-                p: a.user_name(href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
-              .comment_user_info(ng-if="!('#{user_cid}'===comment.poster.cid)")
-                img.user_photo.img_user(ng-src="{{comment.poster.photo}}")
-                p: a.user_name {{comment.poster.nickname}}
-              .comment_content_panel
-                .relative
-                  .triangle_border
-                  .triangle
-                  .comment_content
-                    p {{comment.content}}
-                p.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
-                  h7.pull-right
-                    a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
-                    a.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
-            ul.pager(ng-if="pages[0].has_next===true")
-              li.previous
-                a(href="#comment_panel" ng-click="lastPage()" ng-class="{'novisible': now_page === 0}") <<上一页
-              li.next
-                a(href="#comment_panel" ng-click="nextPage()" ng-class="{'novisible': pages[now_page].has_next === false}") 下一页>>
-              ul.pagination(ng-if="pages.length > 1")
-                li(ng-repeat="page in pages" ng-class="{'active': now_page===$index}")
-                  a(href="#comment_panel" ng-click="changePage($index)") {{$index + 1}}
+        //- .comment_panel#comment_panel
+        //-   if global_user.provider === 'user'
+        //-     h4 我要留言
+        //-     //-pushcomment logic todo -M
+        //-     form.js_ajax_form(action="/comment/push/photo/#{photo_detail._id}" method="post")
+        //-       input(type="hidden" name="host_id" value="#{photo_detail._id}")
+        //-       input(type="hidden" name="host_type" value="photo")
+        //-       textarea.comment_textarea.form-control(type="text" name="content" required)
+        //-       .clearfix
+        //-         button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
+        //-   section(bs-popover)
+        //-     div.comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments")
+        //-       //- span {{comment}}
+        //-       .comment_user_info(ng-if="'#{user_cid}'===comment.poster.cid")
+        //-         a(href="/users/home/{{comment.poster._id}}")
+        //-          img.user_photo.img_user(ng-src="{{comment.poster.photo}}" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id="pop{{comment._id}}")
+        //-         p: a.user_name(href="/users/home/{{comment.poster._id}}") {{comment.poster.nickname}}
+        //-       .comment_user_info(ng-if="!('#{user_cid}'===comment.poster.cid)")
+        //-         img.user_photo.img_user(ng-src="{{comment.poster.photo}}")
+        //-         p: a.user_name {{comment.poster.nickname}}
+        //-       .comment_content_panel
+        //-         .relative
+        //-           .triangle_border
+        //-           .triangle
+        //-           .comment_content
+        //-             p {{comment.content}}
+        //-         p.comment_date.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+        //-           h7.pull-right
+        //-             a.mouse_hidden.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
+        //-             a.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
+        //-     ul.pager(ng-if="pages[0].has_next===true")
+        //-       li.previous
+        //-         a(href="#comment_panel" ng-click="lastPage()" ng-class="{'novisible': now_page === 0}") <<上一页
+        //-       li.next
+        //-         a(href="#comment_panel" ng-click="nextPage()" ng-class="{'novisible': pages[now_page].has_next === false}") 下一页>>
+        //-       ul.pagination(ng-if="pages.length > 1")
+        //-         li(ng-repeat="page in pages" ng-class="{'active': now_page===$index}")
+        //-           a(href="#comment_panel" ng-click="changePage($index)") {{$index + 1}}
       .col-xs-offset-1.col-sm-offset-1.col-xs-3.col-sm-3
         .media
           .pull-left

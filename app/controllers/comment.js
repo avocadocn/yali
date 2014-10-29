@@ -173,7 +173,7 @@ exports.setComment = function (req, res) {
   }
   var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
   var content = req.body.content;
-  var host_type = req.body.host_type;
+  var host_type = req.body.host_type.toLowerCase();
   var comment = new Comment();
   var poster = {
     '_id': req.user._id,
@@ -188,9 +188,9 @@ exports.setComment = function (req, res) {
   comment.host_id = host_id;
   comment.poster = poster;
   if (req.body.photos && req.body.photos.length > 0) {
-    var max = Math.min(9, req.body.photos.length);
+    //var max = Math.min(9, req.body.photos.length);
     comment.photos = [];
-    for (var i = 0; i < max; i++) {
+    for (var i = 0; i < req.body.photos.length; i++) {
       comment.photos.push(req.body.photos[i]);
     }
   }

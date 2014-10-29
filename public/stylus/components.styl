@@ -16,6 +16,8 @@ clearfix()
     clear both
 
 .rich_comment
+  img
+    background url(/img/loading.gif) center center no-repeat
   .component_head
     height 35px !important
     background-color #97d7c6 !important
@@ -113,13 +115,12 @@ clearfix()
                 margin-right 5px
                 width 100px
                 height 100px
-                background url(/img/loading.gif) center center no-repeat
             .img_slider_box
               .preview
                 position relative
                 margin-bottom 10px
                 .preview_img
-                  background url("/img/loading.gif") center center no-repeat
+                  background-color white
                 .operator
                   position absolute
                   top 0
@@ -132,26 +133,20 @@ clearfix()
                   .img_pre
                     flex 1
                     -webkit-flex 1
-                    cursor w-resize
                   .img_shrink
                     flex 2
                     -webkit-flex 2
                   .img_next
                     flex 1
                     -webkit-flex 2
-                    cursor e-resize
               .nav
                 text-align center
                 .thumb
                   width 40px
                   height 40px
                   margin-right 5px
-                  background url("/img/loading.gif") center center no-repeat
             .img_single_thumb
-              background url("/img/loading.gif") center center no-repeat
               height 84px
-            .preview_img
-              background url("/img/loading.gif") center center no-repeat
 
         .comment_footer
           .text
