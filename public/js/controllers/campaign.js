@@ -46,7 +46,9 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
         alertify.alert(err);
       } else {
         $scope.isJoin = true;
-        alertify.alert('参加活动成功');
+        alertify.alert('参加活动成功', function (e) {
+          window.location.reload();
+        });
       }
     });
   };
@@ -57,7 +59,9 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
         alertify.alert(err);
       } else {
         $scope.isJoin = false;
-        alertify.alert('退出活动成功');
+        alertify.alert('退出活动成功', function (e) {
+          window.location.reload();
+        });
       }
     });
   };
