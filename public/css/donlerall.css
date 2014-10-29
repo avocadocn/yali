@@ -1,16 +1,14 @@
 .rich_comment .component_head {
-  height: 30px !important;
   background-color: #97d7c6 !important;
   padding-right: 15px !important;
 }
-.rich_comment .component_head .title {
-  font-size: 18px !important;
-  line-height: 35px !important;
-}
 .rich_comment .component_head .head_button {
   width: 100px !important;
-  padding: 0 14px !important;
   background-color: #74baa7;
+}
+.rich_comment .component_head .head_button .head_button_icon {
+  margin-right: 9px;
+  height: 14px;
 }
 .rich_comment .component_body {
   padding: 0 !important;
