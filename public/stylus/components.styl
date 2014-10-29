@@ -15,16 +15,21 @@ clearfix()
   &:after
     clear both
 
+loading()
+  background url(/img/loading.gif) center center no-repeat
+
 .rich_comment
-  img
-    background url(/img/loading.gif) center center no-repeat
   .component_head
-    height 35px !important
+    height 30px !important
     background-color #97d7c6 !important
     padding-right 15px !important
     .title
       font-size 18px !important
       line-height 35px !important
+    .head_button
+      width 100px !important
+      padding 0 14px !important
+      background-color #74baa7
   .component_body
     padding 0 !important
 
@@ -119,8 +124,6 @@ clearfix()
               .preview
                 position relative
                 margin-bottom 10px
-                .preview_img
-                  background-color white
                 .operator
                   position absolute
                   top 0
@@ -142,11 +145,15 @@ clearfix()
               .nav
                 text-align center
                 .thumb
+                  loading()
                   width 40px
                   height 40px
                   margin-right 5px
             .img_single_thumb
               height 84px
+              loading()
+              .preview_img
+                loading()
 
         .comment_footer
           .text

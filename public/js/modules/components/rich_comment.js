@@ -117,6 +117,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             cbox.host_type = data.componentData.hostType;
             cbox.host_id = data.componentData.hostId;
             cbox.photo_album_id = data.componentData.photoAlbumId;
+            $scope.photoAlbumId = data.componentData.photoAlbumId;
 
             Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
               if (err) {

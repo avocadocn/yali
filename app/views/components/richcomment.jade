@@ -1,6 +1,7 @@
 .component.rich_comment#rich_comment_box(bs-popover)
   .component_head
     span.title 活动讨论
+    a.head_button(ng-href="/photoAlbum/{{photoAlbumId}}/detailView") 活动影集
   .component_body
     form.rich_comment_form(name="comment_form" ng-if="allowPublish" novalidate)
       .comment_control
