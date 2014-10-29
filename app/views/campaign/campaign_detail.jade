@@ -31,7 +31,8 @@ block contentExt
                 .logo_container
                   each unit in campaign.campaign_unit
                     .unit
-                      img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}" ng-href="#{unit.link}" target="_blank")
+                      a(ng-href="#{unit.link}" target="_blank")
+                        img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
                       span.text= unit.team.name
                       if isActive && !isEnd && unit.canjoin
                         if unit.team._id

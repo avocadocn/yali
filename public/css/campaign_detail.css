@@ -224,7 +224,7 @@
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info {
   display: flex;
   display: -webkit-flex;
-  margin-bottom: 20px;
+  min-height: 153px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .campaign_info {
   padding: 20px;
