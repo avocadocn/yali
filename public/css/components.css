@@ -277,6 +277,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.simple_comment .component_body .comment .comment_content_panel .comment_content {
+  background-color: #f3fdff;
+  padding: 10px;
+}
 .simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
   width: 100%;
 }

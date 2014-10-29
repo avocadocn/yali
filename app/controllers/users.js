@@ -888,6 +888,12 @@ exports.timeLine = function(req,res){
           newTimeLines[i].push(tempObj);
         }
       });
+      var myteam = [];
+      req.profile.team.forEach(function(_team){
+        if(_team.gid!=0){
+          myteam.push(_team);
+        }
+      });
       var nowUser = {
         nickname:req.profile.nickname,
         realname:req.profile.realname,
@@ -897,7 +903,7 @@ exports.timeLine = function(req,res){
         photo:req.profile.photo,
         phone:req.profile.phone,
         email:req.profile.email,
-        teams:req.profile.team
+        teams:myteam
       };
       //console.log(newTimeLines);
       return res.render('users/user_timeLine',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});

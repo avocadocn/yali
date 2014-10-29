@@ -149,7 +149,7 @@ block panel
                   span.content_text {{nowCampaign.location.name}}
           .photos
             .photo(ng-repeat="photo in nowCampaign.photo_thumbnails" ng-class="{'odd':$index%4==1 ||$index%4==2,'single':$last&&$even}")
-              img(ng-src="{{photo.uri}}{{$last&&$even ? '/240/80': ($index%4==1 ||$index%4==2)?'/160/80':'/80/80'}}")
+              img(ng-src="{{photo.uri}}{{$last&&$even ? '/305/80': ($index%4==1 ||$index%4==2)?'/189/80':'/104/80'}}")
           .comments
             //- a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
             a.clearLinkUnderline.pull-right.comment_num(ng-click="nowCampaign.showComment=!nowCampaign.showComment;") {{nowCampaign.comment_sum}}条评论
