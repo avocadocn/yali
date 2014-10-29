@@ -239,7 +239,7 @@ block contentExt
                   .logo_container
                     each unit in campaign.campaign_unit
                       .unit
-                        img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
+                        img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
                         p.main_text #{unit.team.name || unit.company.name}
                   .campaign_info
                     p.main_text 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
@@ -253,7 +253,7 @@ block contentExt
                     a.title.pull-right(ng-if="canUnFold" ng-click="toggleFold()" ng-clock) {{baseContent ? '展开' : '收起'}}
                   .text_container
                     .text#campaign_intro(ng-class="{'base_content': baseContent}")!= campaign.content
-                    .base_content_gradient(ng-show="baseContent" ng-click="toggleFold()")
+                    .base_content_gradient(ng-show="canUnFold&&baseContent" ng-click="toggleFold()")
                 if campaign.tags && campaign.tags.length > 0
                   h4.title 活动标签
                   .tags
