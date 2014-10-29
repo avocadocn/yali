@@ -1052,6 +1052,13 @@ exports.getCompanyTeamsInfo = function(req, res) {
     cache.createCache("EmpTeamInfo"); //是否存在EmpTeamInfo，否则Create
     if (cache.get("EmpTeamInfo", req.params.companyId)) { //查询有没有，有的话数据拿出来
       output.teams = cache.get("EmpTeamInfo", req.params.companyId);
+      output.teams.forEach(function(_team){
+        if (model_helper.arrayObjectIndexOf(req.user.team, _team._id, '_id') > -1) {
+          _team.belong = true;
+        } else {
+          _team.belong = false;
+        }
+      });
       return res.send(output);
     }
   } else if (req.role !== "HR") {
@@ -1138,12 +1145,6 @@ exports.getCompanyTeamsInfo = function(req, res) {
                 team.set('did', did, {
                   strict: false
                 });
-                //标记是否是某队成员
-                if (model_helper.arrayObjectIndexOf(req.user.team, team._id, '_id') > -1) {
-                  _team.belong = true;
-                } else {
-                  _team.belong = false;
-                }
                 allcallback(null, _team);
               });
             }
@@ -1155,8 +1156,16 @@ exports.getCompanyTeamsInfo = function(req, res) {
               'msg': 'FAILURED'
             });
           } else {
-            output.teams = results;
             cache.set("EmpTeamInfo", req.params.companyId, results, 1000 * 60 * 5);
+            //标记是否是某队成员
+            output.teams = results;
+            output.teams.forEach(function(_team){
+              if (model_helper.arrayObjectIndexOf(req.user.team, _team._id, '_id') > -1) {
+                _team.belong = true;
+              } else {
+                _team.belong = false;
+              }
+            });
             return res.send(output);
           }
         });
