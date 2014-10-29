@@ -148,11 +148,11 @@ block panel
                   span #{__("LOCATION")}:
                   span.content_text {{nowCampaign.location.name}}
           .photos
-            .photo(ng-repeat="photo in nowCampaign.photo_thumbnails")
-              img(ng-src="{{photo.uri}}/80/80")
+            .photo(ng-repeat="photo in nowCampaign.photo_thumbnails" ng-class="{'odd':$index%4==1 ||$index%4==2,'single':$last&&$even}")
+              img(ng-src="{{photo.uri}}{{$last&&$even ? '/240/80': ($index%4==1 ||$index%4==2)?'/160/80':'/80/80'}}")
           .comments
             //- a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
-            a.clearLinkUnderline.pull-right.comment(ng-click="nowCampaign.showComment=!nowCampaign.showComment;") {{nowCampaign.comment_sum}}条评论
+            a.clearLinkUnderline.pull-right.comment_num(ng-click="nowCampaign.showComment=!nowCampaign.showComment;") {{nowCampaign.comment_sum}}条评论
             simple-comment(ng-if="nowCampaign.showComment" component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" after-render="reloadM()" comment-num=3)
         //- a.pull-right(href="") 退出
     //- carousel(interval="5000")
@@ -197,7 +197,7 @@ block aside
         span.speaker
         label 发起新活动   >>
   .old_campaign_container
-    a(href="#/commentCampaign/#{uid}" ng-click="newReply.length>0 ? openModal('commentCampaign'):''")
+    a.full_parent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
       label 热门活动讨论  >>
       label.clearLinkUnderline.pull-right.news_count(ng-if="newReply.length>0" ng-cloak) {{newReply.length}}
   .groupsbox
@@ -227,7 +227,7 @@ block aside
         include ../partials/group_thumbnail
         +group_thumbnail(myteam)
   .old_campaign_container
-    a.clearLinkUnderline(href="timeLine/#{uid}")
+    a.clearLinkUnderline(href="/users/timeLine/#{uid}")
       span.footprint
       label.pull-right 活动足迹 >>
 

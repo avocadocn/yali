@@ -868,7 +868,7 @@ exports.timeLine = function(req,res){
           start_time: campaign.start_time,
           provoke:ct===4||ct===5||ct===7||ct===9,
           year: getYear(campaign),
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)
         }
         // todo new time style
         // console.log(campaign);
@@ -888,8 +888,19 @@ exports.timeLine = function(req,res){
           newTimeLines[i].push(tempObj);
         }
       });
+      var nowUser = {
+        nickname:req.profile.nickname,
+        realname:req.profile.realname,
+        department:req.profile.department,
+        cname:req.profile.cname,
+        introduce:req.profile.introduce,
+        photo:req.profile.photo,
+        phone:req.profile.phone,
+        email:req.profile.email,
+        teams:req.profile.team
+      };
       //console.log(newTimeLines);
-      return res.render('users/user_timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
+      return res.render('users/user_timeLine',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);

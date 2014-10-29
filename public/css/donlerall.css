@@ -482,6 +482,18 @@ textarea {
 textarea {
   resize: none;
 }
+::-webkit-input-placeholder /* WebKit browsers */ {
+  color: #ccc;
+}
+:-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+  color: #ccc;
+}
+::-moz-placeholder /* Mozilla Firefox 19+ */ {
+  color: #ccc;
+}
+:-ms-input-placeholder /* Internet Explorer 10+ */ {
+  color: #ccc;
+}
 .transparent {
   opacity: 0;
 }
@@ -792,10 +804,27 @@ textarea {
 .dl-modal .dl-modal-body .info_side {
   min-width: 70px;
 }
+.dl-modal .dl-modal-body .search_row {
+  margin-bottom: 10px;
+}
+.dl-modal .dl-modal-body .search_row_2 {
+  margin-top: 2px;
+}
+.dl-modal .dl-modal-body .opponent {
+  margin-top: 20px;
+  border-bottom: 1px solid #eee;
+}
 .dl-modal .dl-modal-body .dl_modal_container {
   width: 100%;
   float: left;
   clear: left;
+}
+.dl-modal .dl-modal-body .dl_modal_container .pen-menu {
+  height: 20px;
+  z-index: 1040;
+}
+.dl-modal .dl-modal-body .dl_modal_container .pen-menu .pen-icon {
+  height: 20px;
 }
 .dl-modal .dl-modal-body .dl_modal_container .groups {
   max-height: 300px;
@@ -856,6 +885,64 @@ textarea {
 }
 .dl-modal .dl-modal-body .dl_modal_container .dl_md_2 {
   margin-left: 60px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container {
+  width: 280px;
+  float: left;
+  margin-right: 20px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container.end_time {
+  margin-right: 0px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_half_container.end_time .dl_modal_half_container {
+  margin-right: 0px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_input {
+  border-radius: 0;
+  margin-bottom: 18px;
+  font-size: 12px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_input_container {
+  width: 530px;
+  float: left;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_button {
+  width: 67px;
+  height: 33px;
+  float: right;
+  padding: 8px 0 4px 2px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container {
+  background-color: #f6f6f6;
+  padding: 10px 0;
+  margin-bottom: 15px;
+  float: left;
+  width: 600px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_label_container {
+  float: left;
+  min-width: 100px;
+  padding: 7px 0;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_other_container {
+  float: left;
+  width: 120px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_time_container {
+  float: left;
+  width: 159px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_time_container input {
+  width: 120px;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_people_container {
+  float: left;
+  width: 38px;
+  padding: 7px 0;
+  text-align: center;
+}
+.dl-modal .dl-modal-body .dl_modal_container .dl_modal_option_container .dl_modal_people_container .info_label {
+  padding: 7px;
 }
 .dl-modal .dl-modal-footer {
   text-align: left;
@@ -2810,9 +2897,61 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main {
   width: 700px;
   margin-right: 20px;
+  margin-top: 54px;
 }
-.user_page .dl_container .main .dl_timeline {
-  margin-top: 30px;
+.user_page .dl_container .main .dl_info_container {
+  background-color: #fff;
+  width: 865px;
+  height: 140px;
+  -moz-box-shadow: 3px 3px 3px #f4f4f4;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #f4f4f4;
+}
+.user_page .dl_container .main .dl_info_container .team {
+  float: left;
+}
+.user_page .dl_container .main .dl_info_container .team a .team_logo {
+  width: 40px;
+  height: 40px;
+}
+.user_page .dl_container .main .dl_info_container .team a .team_name {
+  text-align: center;
+}
+.user_page .dl_container .main .dl_info_container .info_container {
+  float: left;
+  width: 37%;
+  padding: 20px;
+  color: #999;
+  height: 100%;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row {
+  min-height: 20px;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row label {
+  margin: 0;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row .nickname {
+  color: #3498db;
+  font-size: 18px;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row .introduce {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row .register_date {
+  color: #f4f4f4;
+}
+.user_page .dl_container .main .dl_info_container .info_container .user_logo {
+  width: 100px;
+  height: 100px;
+}
+.user_page .dl_container .main .dl_info_container .logo_container {
+  width: 22%;
+}
+.user_page .dl_container .main .dl_info_container .base_info {
+  border-right: 1px solid #f4f4f4;
 }
 .user_page .dl_container .main #user_modal .modal-dialog {
   width: 900px;
@@ -2931,11 +3070,35 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .operator_col .dl_btn {
   margin-right: 30px;
 }
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_head {
+  color: #8dd4e6;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col {
+  width: 75%;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .theme_container {
+  font-size: 14px;
+  color: #9a9a9a;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .time_container {
+  font-size: 12px;
+  color: #dedede;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .time_container .time_text {
+  margin: 0 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .comment_container {
+  font-size: 14px;
+  color: #8dd4e6;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .operator_col {
+  padding-right: 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .operator_col .dl_btn {
+  margin-right: 0;
+}
 .user_page .dl_container .main .campaign_table .time_col {
   padding: 0;
-}
-.user_page .dl_container .main .campaigns_container {
-  margin-top: 45px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container {
   background-color: #fff;
@@ -3144,7 +3307,7 @@ input.ng-invalid.ng-dirty {
   clear: both;
 }
 .user_page .dl_container .main .campaigns_container .now .campaign_head {
-  padding: 0 30px;
+  padding: 0 10px;
   height: 34px;
   color: #3498db;
   line-height: 24px;
@@ -3169,10 +3332,11 @@ input.ng-invalid.ng-dirty {
   margin: 0 -10px;
   background-color: #fcfcfc;
   height: 132px;
+  padding: 25px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col {
   width: 70px;
-  margin-right: 30px;
+  margin-right: 25px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .team {
   width: 70px;
@@ -3229,17 +3393,27 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photo {
   float: left;
   margin: 0 6px 10px 0;
+  width: 34%;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photo img {
-  height: 70px;
-  width: 70px;
+  height: 80px;
+  width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .odd {
+  width: 62%;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .single {
+  width: 100%;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments {
   clear: both;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments a {
   color: #ccc;
-  margin: 0 10px;
+}
+.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments .comment_more a {
+  color: #3498db;
+  text-align: center;
 }
 .user_page .dl_container .main .campaigns_container .now_head {
   width: 700px;
@@ -3293,6 +3467,7 @@ input.ng-invalid.ng-dirty {
   color: #fff;
   font-size: 18px;
   text-align: center;
+  cursor: pointer;
 }
 .user_page .dl_container .side .old_campaign_container a .footprint {
   background-image: url("/img/icons/footprint.png");
@@ -3300,6 +3475,9 @@ input.ng-invalid.ng-dirty {
   width: 34px;
   display: inline-block;
   float: left;
+}
+.user_page .dl_container .side .old_campaign_container .full_parent {
+  display: inline-block;
 }
 .user_page .dl_container .side .old_campaign_container .news_count {
   font-size: 14px;
@@ -3816,4 +3994,79 @@ Timeline UI Base
   background-color: #fff;
   border: 1px solid #ccc;
   border-top: 0;
+}
+.user_timeline {
+  width: 865px;
+}
+.user_timeline .dl_timeline {
+  width: 100%;
+}
+.user_timeline .dl_timeline .spine {
+  top: 0;
+  left: 50%;
+}
+.user_timeline .dl_timeline .column {
+  width: 50%;
+}
+.user_timeline .dl_timeline .column .timeline_element {
+  width: 400px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .date {
+  width: 210px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_1 .photo_0 {
+  width: 264px;
+  height: 264px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_0,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_1 {
+  width: 131px;
+  height: 131px;
+  margin-right: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_1 {
+  margin-left: 1px;
+  margin-right: 0;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_0 {
+  width: 175px;
+  height: 175px;
+  margin-right: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_2 {
+  width: 87px;
+  height: 87px;
+  margin-bottom: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_2 {
+  margin-bottom: 0;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_0 {
+  width: 263px;
+  height: 263px;
+  margin-bottom: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_2,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_3 {
+  width: 87px;
+  height: 87px;
+  margin-right: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .photo {
+  display: inline-block;
+}
+.user_timeline .dl_timeline .column_right {
+  margin-left: 0;
+}
+.user_timeline .dl_timeline .date_separator .span {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  width: 100px;
+  background-color: #ccc;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
 }
