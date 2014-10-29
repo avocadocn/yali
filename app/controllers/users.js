@@ -857,6 +857,9 @@ exports.timeLine = function(req,res){
           // _head = campaign.compaign_unit.team.name + '活动';
           _logo = campaign.campaign_unit[0].team.logo;
         }
+        var _endTime = new Date(campaign.end_time);
+        var _groupYear = _endTime.getFullYear();
+        var _groupMonth = _endTime.getMonth()+1;
         var tempObj = {
           id: campaign._id,
           //head: _head,//???
@@ -867,26 +870,29 @@ exports.timeLine = function(req,res){
           group_type: campaign.group_type,
           start_time: campaign.start_time,
           provoke:ct===4||ct===5||ct===7||ct===9,
-          year: getYear(campaign),
+          year: _groupYear,
+          month:_groupMonth,
           photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)
         }
         // todo new time style
         // console.log(campaign);
-        function getYear(dates) {
-          var response = String(dates.end_time);
-          var _ = response.split(" ");
-          var year = _[3]
-          return year;
-        }
+        // function getYear(dates) {
+        //   var response = String(dates.end_time);
+        //   var _ = response.split(" ");
+        //   var year = _[3];
+        //   return year;
+        // }
         // console.log(getYear(campaign));
-        var groupYear = getYear(campaign);
-        if (newTimeLines.length==0||newTimeLines[newTimeLines.length-1][0].year!=groupYear) {
+        // var groupYear = getYear(campaign);
+        if (newTimeLines.length==0 || newTimeLines[newTimeLines.length-1][0][0].year!=_groupYear) {
           newTimeLines.push([]);
-          newTimeLines[newTimeLines.length-1].push(tempObj);
-        }else{
-          var i = newTimeLines.length-1;
-          newTimeLines[i].push(tempObj);
         }
+        var _yearGroup = newTimeLines[newTimeLines.length-1];
+        if(_yearGroup.length==0 || _yearGroup[_yearGroup.length-1][0].month!=_groupMonth){
+          _yearGroup.push([]);
+        }
+        var _monthGroup = _yearGroup[_yearGroup.length-1];
+        _monthGroup.push(tempObj);
       });
       var myteam = [];
       req.profile.team.forEach(function(_team){
@@ -905,7 +911,137 @@ exports.timeLine = function(req,res){
         email:req.profile.email,
         teams:myteam
       };
-      //console.log(newTimeLines);
+      // newTimeLines = [
+      //   [
+      //     [
+      //     { year:2014,
+      //       month:12
+      //       }
+      //     ],
+      //     [
+      //       { year:2014,
+      //         month:11
+      //       }
+      //     ],
+      //     [
+      //       { year:2014,
+      //         month:10
+      //       }
+      //     ],
+      //     [
+      //       { year:2014,
+      //         month:9
+      //       }
+      //     ],
+      //     [
+      //       { year:2014,
+      //         month:5
+      //       }
+      //     ],
+      //     [
+      //       { year:2014,
+      //         month:1
+      //       }
+      //     ]
+      //   ],
+      //   [
+      //     [
+      //     { year:2013,
+      //       month:12
+      //       }
+      //     ],
+      //     [
+      //       { year:2013,
+      //         month:11
+      //       }
+      //     ],
+      //     [
+      //       { year:2013,
+      //         month:10
+      //       }
+      //     ],
+      //     [
+      //       { year:2013,
+      //         month:6
+      //       }
+      //     ],
+      //     [
+      //       { year:2013,
+      //         month:2
+      //       }
+      //     ],
+      //     [
+      //       { year:2013,
+      //         month:1
+      //       }
+      //     ]
+      //   ],
+      //   [
+      //     [
+      //     { year:2010,
+      //       month:10
+      //       }
+      //     ],
+      //     [
+      //       { year:2010,
+      //         month:9
+      //       }
+      //     ],
+      //     [
+      //       { year:2010,
+      //         month:6
+      //       }
+      //     ],
+      //     [
+      //       { year:2010,
+      //         month:5
+      //       }
+      //     ],
+      //     [
+      //       { year:2010,
+      //         month:4
+      //       }
+      //     ],
+      //     [
+      //       { year:2010,
+      //         month:1
+      //       }
+      //     ]
+      //   ],
+      //   [
+      //     [
+      //     { year:2000,
+      //       month:12
+      //       }
+      //     ],
+      //     [
+      //       { year:2000,
+      //         month:5
+      //       }
+      //     ],
+      //     [
+      //       { year:2000,
+      //         month:4
+      //       }
+      //     ],
+      //     [
+      //       { year:2000,
+      //         month:3
+      //       }
+      //     ],
+      //     [
+      //       { year:2000,
+      //         month:2
+      //       }
+      //     ],
+      //     [
+      //       { year:2000,
+      //         month:1
+      //       }
+      //     ]
+      //   ]
+      // ];
+      // console.log(newTimeLines);
       return res.render('users/user_timeline',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {

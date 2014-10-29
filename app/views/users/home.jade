@@ -111,7 +111,7 @@ block panel
         label {{nowCampaigns.length}} 个近期活动
       //- .campaign_head.right(ng-cloak)
       //-   a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href=""  ng-click="openModal()") {{newReply.length}}条未查看回复
-    .now(ng-cloak)
+    .now(ng-init="showComment=-1;" ng-cloak)
       .campaigns(masonry reload="is_reload" items="nowCampaigns")
         .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns track by nowCampaign._id" ng-cloak)
           .campaign_head(ng-class="{'unconfrim':!nowCampaign.confirm_status}" ng-cloak)
@@ -152,8 +152,9 @@ block panel
               img(ng-src="{{photo.uri}}{{$last&&$even ? '/305/80': ($index%4==1 ||$index%4==2)?'/189/80':'/104/80'}}")
           .comments
             //- a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
-            a.clearLinkUnderline.pull-right.comment_num(ng-click="nowCampaign.showComment=!nowCampaign.showComment;") {{nowCampaign.comment_sum}}条评论
-            simple-comment(ng-if="nowCampaign.showComment" component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" after-render="reloadM()" comment-num=3)
+            a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$index;") {{nowCampaign.comment_sum}}条评论
+            .comment_list(ng-if="$root.showComment==$index")
+              simple-comment(component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" after-render="reloadM()" comment-num=3)
         //- a.pull-right(href="") 退出
     //- carousel(interval="5000")
     //-   slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)

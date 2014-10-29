@@ -228,25 +228,16 @@
 .rich_comment .component_body .pager li>a {
   border-radius: 0;
 }
-.simple_comment .component_body .rich_comment_form {
-  float: left;
-  padding: 10px;
-  width: 100%;
-}
-.simple_comment .component_body .rich_comment_form .comment_control {
-  display: block;
-}
 .simple_comment .component_body .rich_comment_form .comment_control .content {
-  height: 50px;
   margin: 0;
+  background-color: #fbfbfb;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .img_selector {
-  background-color: #fff;
-  margin: 10px 0;
+  margin: 0;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .publish {
-  float: right;
-  margin: 10px 0;
+  margin: 0;
+  background-color: #3ca2e0;
 }
 .simple_comment .component_body .rich_comment_form .preview_box {
   display: block;
@@ -267,16 +258,17 @@
   margin-right: 10px;
   width: 30px;
 }
-.simple_comment .component_body .comment .comment_user_info .user_name {
-  text-align: center;
+.simple_comment .component_body .comment .comment_content_panel p {
+  margin: 0;
+}
+.simple_comment .component_body .comment .comment_content_panel .comment_content .user_name {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.simple_comment .component_body .comment .comment_content_panel .comment_content {
-  background-color: #f3fdff;
-  padding: 10px;
+.simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box {
+  margin: 0;
 }
 .simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
   width: 100%;

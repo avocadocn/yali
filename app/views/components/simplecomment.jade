@@ -2,13 +2,11 @@
   .component_body
     form.rich_comment_form(name="comment_form{{$id}}" ng-if="allowPublish" novalidate)
       .comment_control
-        .input_container
-          textarea.content(name="content" ng-model="new_comment.text" placeholder="输入内容请控制在140字以内" rows=3 maxlength=140 required)
+        input.content(name="content" ng-model="new_comment.text" placeholder="输入内容请控制在140字以内" maxlength=140 required)
         label.img_selector(for="photos{{$id}}")
           img.upload_img(src="/img/upload_img.png")
           input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
-        button.publish(ng-click="publish(new_comment.text)" ng-disabled="comment_form{{$id}}.$invalid") 发言
-      .comment_control
+        button.publish(ng-click="publish(new_comment.text)" ng-disabled="comment_form{{$id}}.$invalid") 评论
       .preview_box(ng-show="uploader.isHTML5")
         span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
         .preview_img_wrap(ng-repeat="item in uploader.queue")
@@ -18,9 +16,9 @@
       .comment_user_info
         a(href="/users/home/{{comment.poster._id}}" )
           img.user_photo(ng-src="{{comment.poster.photo}}/30/30" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
-          p.user_name {{comment.poster.nickname}}
       .comment_content_panel
         .comment_content
+          p.user_name {{comment.poster.nickname}}
           p.text(ng-cloak) {{comment.content}}
           .comment_img_box(ng-if="comment.photos.length > 1" ng-init="comment.preview_index=0")
             .img_list_box.clearfix(ng-if="!comment.preview")

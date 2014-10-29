@@ -228,25 +228,16 @@
 .rich_comment .component_body .pager li>a {
   border-radius: 0;
 }
-.simple_comment .component_body .rich_comment_form {
-  float: left;
-  padding: 10px;
-  width: 100%;
-}
-.simple_comment .component_body .rich_comment_form .comment_control {
-  display: block;
-}
 .simple_comment .component_body .rich_comment_form .comment_control .content {
-  height: 50px;
   margin: 0;
+  background-color: #fbfbfb;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .img_selector {
-  background-color: #fff;
-  margin: 10px 0;
+  margin: 0;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .publish {
-  float: right;
-  margin: 10px 0;
+  margin: 0;
+  background-color: #3ca2e0;
 }
 .simple_comment .component_body .rich_comment_form .preview_box {
   display: block;
@@ -267,16 +258,17 @@
   margin-right: 10px;
   width: 30px;
 }
-.simple_comment .component_body .comment .comment_user_info .user_name {
-  text-align: center;
+.simple_comment .component_body .comment .comment_content_panel p {
+  margin: 0;
+}
+.simple_comment .component_body .comment .comment_content_panel .comment_content .user_name {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.simple_comment .component_body .comment .comment_content_panel .comment_content {
-  background-color: #f3fdff;
-  padding: 10px;
+.simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box {
+  margin: 0;
 }
 .simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
   width: 100%;
@@ -2926,6 +2918,25 @@ input.ng-invalid.ng-dirty {
   width: 700px;
   margin-right: 20px;
   margin-top: 45px;
+}
+.user_page .dl_container .main .timeline_control {
+  width: 60px;
+  position: fixed;
+  left: 50%;
+  margin-left: 415px;
+  top: 70px;
+  font-size: 14px;
+}
+.user_page .dl_container .main .timeline_control .control_year {
+  border-left: 6px solid #ccd3e1;
+  padding-left: 6px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.user_page .dl_container .main .timeline_control .control_year .control_month {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 .user_page .dl_container .main .dl_info_container {
   background-color: #fff;
