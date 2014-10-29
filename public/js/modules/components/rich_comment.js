@@ -4,9 +4,9 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
 
   .controller('RichCommentCtrl', ['$scope', '$http', '$element','$timeout', 'Comment', 'Report', 'FileUploader',
     function ($scope, $http, $element, $timeout, Comment, Report, FileUploader) {
-
       $scope.pages = [];
       $scope.nowPage = 0;
+      $scope.showMoreComment = false;
       var CommentBox = function (args) {
 
         Object.defineProperty(this, 'photo_album_id', {
@@ -33,6 +33,13 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
           }
         });
+        uploader.onAfterAddingAll = function(){
+          if($scope.afterRender){
+            $timeout(function () {
+              $scope.afterRender();
+            });
+          }
+        };
         this.uploader = uploader;
       };
 
@@ -45,6 +52,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
           self.uploader.uploadAll();
           self.uploader.onSuccessItem = function (item, data, status, headers) {
             self.upload_photos.push(data.photo);
+            if($scope.afterRender){
+              $timeout(function () {
+                $scope.afterRender();
+              });
+            }
           };
           self.uploader.onCompleteAll = function () {
             Comment.publish({
@@ -99,7 +111,8 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
 
         });
       };
-      $http.get('/components/RichComment/id/' + $scope.componentId)
+      if($scope.componentId){
+        $http.get('/components/RichComment/id/' + $scope.componentId)
         .success(function (data) {
           if (data.result === 1) {
             cbox.host_type = data.componentData.hostType;
@@ -126,12 +139,14 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
                   });
                 }
               }
-            },undefined,$scope.commentNum);
+            });
           }
         })
         .error(function (data, status) {
           alertify.alert('获取评论失败，请刷新页面重试');
         });
+      }
+
 
       $scope.new_comment = {
         text: ''
@@ -159,6 +174,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             _id: comment.poster._id,
             nickname: comment.poster.nickname
           };
+          if($scope.afterRender){
+            $timeout(function () {
+              $scope.afterRender();
+            });
+          }
         }
       };
 
@@ -232,7 +252,11 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
               } else {
                 comment.replies.splice(index, 1);
                 comment.reply_count--;
-
+                if($scope.afterRender){
+                  $timeout(function () {
+                    $scope.afterRender();
+                  });
+                }
               }
             });
           }
@@ -299,7 +323,14 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
           }
         }, $scope.pages[index].thisStartDate);
       }
-
+      $scope.showMore = function () {
+        $scope.showMoreComment = true;
+        if($scope.afterRender){
+          $timeout(function () {
+            $scope.afterRender();
+          });
+        }
+      }
     }])
 
   .directive('simpleComment', function () {

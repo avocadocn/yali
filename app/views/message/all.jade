@@ -37,7 +37,7 @@
           //-2:比赛
           p.subtitle(ng-switch-when="2")
             您参加的比赛&nbsp;&nbsp;
-            a(href="/competition/{{all_message.campaign_id}}")
+            a(href="/campaign/detail/{{all_message.campaign_id}}")
               {{all_message.campaign_name}}
             | 收到一条新通知(来自
             a(href="/company/home/{{all_message.sender._id}}" ng-if="all_message.sender.role=='HR'") {{all_message.sender.nickname}}
@@ -52,7 +52,7 @@
           p.subtitle(ng-switch-when="4")
             strong
               {{all_message.sender.name}}&nbsp;&nbsp;
-            a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
+            a(href="/campaign/detail/{{all_message.campaign_id}}" ng-click="setToRead($index)")
               {{all_message.content}}
           //-5: p2p
           p.subtitle(ng-switch-when="5")
@@ -66,7 +66,7 @@
           p.subtitle(ng-switch-when="7")
             strong
               {{all_message.sender.name}}&nbsp;&nbsp;
-            a(href="/competition/{{all_message.campaign_id}}" ng-click="setToRead($index)")
+            a(href="/campaign/detail/{{all_message.campaign_id}}" ng-click="setToRead($index)")
               {{all_message.content}}
           span {{all_message.detail}}
       .dl_message_tail

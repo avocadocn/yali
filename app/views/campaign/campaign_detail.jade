@@ -3,9 +3,10 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/css/campaign_detail.css")
   link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
+  link(rel="stylesheet" href="/lib/pen/src/pen.css")
 
 block contentExt
-  .campaign_detail.dl_container(ng-controller="campaignController")
+  .campaign_detail.dl_container(ng-controller="campaignController" ng-init="editing=#{editing};")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .campaign_panel
@@ -17,7 +18,7 @@ block contentExt
             if allow.edit && isActive && !isEnd
               span.sub_title.right_title.operator(ng-click="toggleEdit()") 编辑
             if !isEnd && isActive
-              span.sub_title.right_title.operator(ng-if="isJoin" ng-click="quit()") 退出
+              span.sub_title.right_title.operator(ng-if="isJoin" ng-click="quit()" ng-cloak) 退出
             if isStart && !isEnd && isActive
               span.title.right_title.starting_title 活动正在进行中
             if isEnd && isActive
@@ -26,15 +27,18 @@ block contentExt
               span.sub_title.right_title 活动已关闭
           .component_body
             .base_info(class="#{helper.multiUnit('multi_team')}")
-              .logo_container
-                each unit in campaign.campaign_unit
-                  .unit
-                    img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
-                    if isActive && !isEnd
-                      if unit.team._id
-                        button.join(ng-if="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
-                      else
-                        button.join(ng-if="!isJoin" ng-click="join('#{unit.company._id}')") 参加
+              if !isWaitingReply
+                .logo_container
+                  each unit in campaign.campaign_unit
+                    .unit
+                      img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}" ng-href="#{unit.link}" target="_blank")
+                      span.text= unit.team.name
+                      if isActive && !isEnd && unit.canjoin
+                        if unit.team._id
+                          button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
+                        else
+                          button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}')") 参加
+
               .info_container
                 if !isStart
                   .start_info
@@ -43,29 +47,50 @@ block contentExt
                       p.main_text 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
                       p.main_text 活动地点: #{campaign.location.name}
                       p.main_text 活动类型: #{campaign.campaign_mold}
-                    .time_info
-                      p.text 距活动开始还有
-                      p.remind(count-down="#{campaign.start_time}")
-                .notice
-                  p: span.title 最新公告
-                  if notice
-                    p.main_text #{notice.content}
-                    p.text #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
-                  else
-                    p.main_text 没有最新公告
-            .more_info(ng-show="!isStart||editing")
+                    if !isWaitingReply && isActive
+                      .time_info
+                        p.text 距活动开始还有
+                        p.remind(count-down="#{campaign.start_time}")
+                    if isWaitingReply
+                      .competition_container
+                        each unit in campaign.campaign_unit
+                          .unit(ng-href="#{unit.link}" target="_blank")
+                            img.logo(src="#{unit.team.logo}/80/80" title="#{unit.team.name}")
+                            span.text= unit.team.name
+                        .button_container
+                          if response.canResponse
+                            button.dl_btn.accept_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',1)") 接受
+                            .second_button
+                              button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',2)") 拒绝
+                          if response.canCancel
+                            .second_button
+                              button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[0].team._id}',3)") 取消
+            if !isWaitingReply
+              .notice
+                p: span.title 最新公告
+                if notice
+                  p.main_text #{notice.content}
+                  p.text.date #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
+                else
+                  p.main_text 没有最新公告
+                form.publish(ng-if="editing" ng-cloak)
+                  input.notice_text(type="text" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" required)
+                  button.publish_button(ng-click="publishNotice()") 发新公告
+            .more_info(ng-show="!isStart||editing" ng-cloak)
               h4.title 活动简介
-              .text(ng-if="!editing") #{campaign.content}
-              input.detail_input(ng-if="editing" type="text" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content")
+              .text(ng-show="!editing" ng-cloak)!= campaign.content
+              div(ng-show="editing" ng-cloak)
+                #campaignDetailToolBar
+                #campaignDetail.markdownContainer(name="content" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content" contenteditable mix-maxlength=4000 required)
               h4.title 活动标签
-              .tags(ng-show="!editing")
+              .tags(ng-show="!editing" ng-cloak)
                 each tag in campaign.tags
                   span.tag #{tag}
-              div(ng-show="editing")
+              div(ng-show="editing" ng-cloak)
                 input.detail_input#taginput(name="tags" type="text" ng-blur="getTags()" ng-init="campaignData.tags='#{campaign.tags||''}'" ng-model="campaignData.tags" data-role="tagsinput")
               h4.title 报名信息
               if campaign.member_max
-                .text(ng-if="!editing")
+                .text(ng-if="!editing" ng-cloak)
                   span.sub_title 报名人数上限:
                   .progress
                     .progress-bar(role="progressbar" aria-valuenow="#{campaign.members.length}" aria-valuemin="0" aria-valuemax="#{campaign.member_max}" style="width: #{campaign.members.length*100/campaign.member_max}%")
@@ -75,7 +100,7 @@ block contentExt
                 input.detail_input.people_count(type="number" ng-model="campaignData.member_max")
                 span.line_text 人 (到达后停止报名)
               if campaign.member_min
-                p.text(ng-if="!editing")
+                p.text(ng-if="!editing" ng-cloak)
                   span.sub_title 报名人数下限:
                   span #{campaign.member_min}人
               .text.editing(ng-init="campaignData.member_min=#{campaign.member_min||0}" ng-if="editing")
@@ -83,18 +108,18 @@ block contentExt
                 input.detail_input.people_count(type="number" ng-model="campaignData.member_min")
                 span.line_text 人 (报名截止前未达最少人数，您将收到提醒)
               if campaign.deadline
-                p.text(ng-show="!editing")
+                p.text(ng-show="!editing" ng-cloak)
                   span.sub_title 报名截止时间:
                   span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
 
-              .deadline.text.editing(ng-show="editing")
+              .deadline.text.editing(ng-show="editing" ng-cloak)
                 span.sub_title.line_text 报名截止时间:
                 .input-group.date.form_datetime#deadline
                   input.detail_input(type="text" ng-init="campaignData.deadline='#{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}'" ng-model="campaignData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
                 span.line_text 如果不选，默认为活动结束停止报名
-              .operator(ng-if="editing")
+              .operator(ng-if="editing" ng-cloak)
                 span.close_campaign(ng-click="cancel()")
                   img.icon_close(src="/img/warning.png")
                   | 关闭活动
@@ -132,13 +157,13 @@ block contentExt
 
         if components.ScoreBoard
           each scoreBoard in components.ScoreBoard
-            score-board(component-id="#{scoreBoard}" allow-edit="#{allow.setScoreBoardScore}" class="#{helper.start('order-1')} #{helper.end('order-1')}")
+            score-board(component-id="#{scoreBoard}" class="#{helper.start('order-1')} #{helper.end('order-1')}")
 
         if isStart
           .component.brief_card(class="#{helper.start('order-1')} #{helper.end('order-2')}")
             .component_head
               span.title 活动信息
-              button.head_button 详情
+              button.head_button(data-toggle="modal" data-target="#campaignDetailModal" ng-click="showDetailModal=true;") 详情
             .component_body
               p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
               p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
@@ -191,21 +216,71 @@ block contentExt
                     .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
                       img.photo(src="#{member.photo}/57/57")
                       span.nickname #{member.nickname}
-    div
+
+    .detail_modal.modal.fade#campaignDetailModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .component
+            .component_head
+              span.title 活动信息
+              button.close.dl_close(data-dismiss="modal" aria-hidden="true")
+                img.icon_close(src="/img/icons/icon_close.png")
+            .component_body
+              .base_info
+                h4.title
+                  if campaign.campaign_unit.length === 1
+                    | #{campaign.campaign_unit[0].team.name||campaign.campaign_unit[0].company.name}
+                  if campaign.campaign_unit.length === 2
+                    | #{campaign.campaign_unit[0].team.name}
+                    | &nbsp;vs&nbsp;
+                    | #{campaign.campaign_unit[1].team.name}
+                  | &nbsp;-&nbsp;#{campaign.theme}
+                .info
+                  .logo_container
+                    each unit in campaign.campaign_unit
+                      .unit
+                        img.logo(src="#{unit.team.logo || unit.company.logo}/80/80")
+                        p.main_text #{unit.team.name || unit.company.name}
+                  .campaign_info
+                    p.main_text 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
+                    p.main_text 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
+                    p.main_text 活动地点: #{campaign.location.name}
+                    p.main_text 活动类型: #{campaign.campaign_mold}
+              .more_info(ng-init="overflow=false;")
+                if campaign.content
+                  .clearfix
+                    h4.title.pull-left 活动简介
+                    a.title.pull-right(ng-click="baseContent=!baseContent;" ng-clock) {{baseContent ? '展开' : '收缩'}}
+                  .text_container
+                    .text(ng-init="baseContent=true;" ng-class="{'base_content': baseContent}" max-height=100 over="overflow" startCal="showDetailModal")!= campaign.content
+                    .base_content_gradient(ng-show="baseContent" ng-click="baseContent=!baseContent;")
+                if campaign.tags && campaign.tags.length > 0
+                  h4.title 活动标签
+                  .tags
+                    each tag in campaign.tags
+                      span.tag #{tag}
+                if campaign.member_max || campaign.member_min || campaign.deadline
+                  h4.title 报名信息
+                if campaign.member_max
+                  .text
+                    span.sub_title 报名人数上限:
+                    .progress
+                      .progress-bar(role="progressbar" aria-valuenow="#{campaign.members.length}" aria-valuemin="0" aria-valuemax="#{campaign.member_max}" style="width: #{campaign.members.length*100/campaign.member_max}%")
+                    span #{campaign.members.length}/#{campaign.member_max}
+                if campaign.member_min
+                  p.text
+                    span.sub_title 报名人数下限:
+                    span #{campaign.member_min}人
+                if campaign.deadline
+                  p.text
+                    span.sub_title 报名截止时间:
+                    span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
 
 
 append footExt
   script(src="/js/directives/count_down.js")
   script(src="/js/bootstrap-tagsinput.js")
+  script(src="/lib/pen/src/pen.js")
+  script(src="/lib/pen/src/markdown.js")
   script(src="/js/controllers/campaign.js")
-  script.
-    $(function(){
-      $('#deadline').datetimepicker({
-        autoclose: true,
-        language: 'zh-CN',
-        startDate: new Date(),
-        pickerPosition: "top-left"
-        //- setEndDate:#{campaign.end_time}
-      });
-    });
 

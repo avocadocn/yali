@@ -4,7 +4,7 @@
     label {{showedCampaign.length}} {{showedType=='recentUnjoinedCampaigns'?'个最新活动':'个活动即将开始'}}
   .campaigns_content
     table.table.campaign_table
-      tr(ng-repeat="campaign_item in showedCampaign")
+      tr(ng-repeat="campaign_item in showedCampaign  track by campaign_item._id")
         //- td.emp_col
         //-   p
         td.year_col

@@ -6,7 +6,7 @@ var authorization = require('./middlewares/authorization');
 module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:pageId/:campaignType/:campaignPage/:campaignBlock', authorization.listAuthorize, campaign.getCampaigns);
   app.post('/campaign/cancel/:campaignId', campaign.cancelCampaign);
-  app.get('/campaign/detail/:campaignId', campaign.addRichCommentIfNot, campaign.renderCampaignDetail);
+  app.get('/campaign/detail/:campaignId', campaign.getOneNotice, campaign.addRichCommentIfNot, campaign.renderCampaignDetail);
   app.post('/campaign/edit/:campaignId', campaign.editCampaign);
 
   app.get('/campaign/team/calendar/:teamId', campaign.getTeamCampaigns);
@@ -16,11 +16,12 @@ module.exports = function(app) {
   app.post('/campaign/quitCampaign/:campaignId', campaign.quitCampaign);
   // app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
 
-
+  app.get('/campaign/recentCommentCampaign', campaign.getScoreBoardMessage, campaign.getRecentCommentCampaigns);
   app.get('/campaign/user/all/calendar/:userId', campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
-  
+  //处理应战:接受、拒绝、取消
+  app.post('/campaign/dealProvoke/:campaignId', campaign.dealProvoke);
   //已全部用getCampaigns M
   // app.get('/campaign/user/all/list/:userId', authorization.userAuthorize,campaign.getUserAllCampaignsForList);
   // app.get('/campaign/user/joined/list/:userId', authorization.userAuthorize,campaign.getUserJoinedCampaignsForList);

@@ -31,6 +31,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/users/campaign/:userId', authorization.userAuthorize, users.renderCampaigns);
+    app.get('/users/commentcampaign/:userId', authorization.userAuthorize, users.renderCommentCampaigns);
     app.get('/users/getCampaigns/:userId', authorization.userAuthorize, users.getCampaigns);
     app.get('/users/getScheduleList/:userId', authorization.userAuthorize,users.renderScheduleList);
 
@@ -45,8 +46,7 @@ module.exports = function(app, passport) {
     app.post('/users/quitGroup', users.quitGroup);
 
 
-
-
+    app.get('/users/updateCommentTime/:userId', authorization.userAuthorize, users.updateCommentTime);
     app.get('/users/editPhoto/:userId', authorization.userAuthorize, users.editPhoto);
 
 

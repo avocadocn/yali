@@ -1,22 +1,42 @@
-.component.score_board
+.component.score_board(ng-if="scoreBoard.effective")
   .component_head
     span.title 比分板
   .component_body
     .score_board_body
-      .playing_team
-        img.team_logo(ng-src="{{scoreBoard.playingTeams[0].logo}}/56/56")
-        span.text.team_name(ng-bind="scoreBoard.playingTeams[0].name" title="{{scoreBoard.playingTeams[0].name}}")
-      .team_score
-        .score_show(ng-if="!editing")
-          .score(ng-bind="scoreBoard.playingTeams[0].score")
-          .score(ng-bind="scoreBoard.playingTeams[1].score")
-        .editing(ng-if="editing && allowEdit && !scoreBoard.allConfirm")
-          input.score(type="number" placeholder="{{scoreBoard.playingTeams[0].score}}" ng-model="scores[0]")
-          input.score(type="number" placeholder="{{scoreBoard.playingTeams[1].score}}" ng-model="scores[1]")
-      .playing_team
-        img.team_logo(ng-src="{{scoreBoard.playingTeams[1].logo}}/56/56")
-        span.text.team_name(ng-bind="scoreBoard.playingTeams[1].name" title="{{scoreBoard.playingTeams[1].name}}")
-    .score_board_footer(ng-if="allowEdit && !scoreBoard.allConfirm")
-      a.operator(ng-if="!editing" ng-click="editScore()") 编辑
-      a.operator(ng-if="editing" ng-click="setScore()") 保存修改
-      a.operator(ng-click="confirmScore()") 确认比分
+      .playing_team(ng-repeat="playingTeam in scoreBoard.playingTeams" class="playing_team_{{$index}}")
+        img.team_logo(ng-src="{{playingTeam.logo}}/69/69" title="{{playingTeam.name}}")
+        span.text.team_name(ng-bind="playingTeam.name" title="{{playingTeam.name}}")
+        .show_score(ng-if="!editing && scoreBoard.status!==0" ng-class="{'active': playingTeam.result===1}")
+          .score(ng-if="playingTeam.score || playingTeam.score===0" ng-bind="playingTeam.score")
+          .result(ng-if="playingTeam.result===1") 胜
+          .result(ng-if="playingTeam.result===0") 平
+          .result(ng-if="playingTeam.result===-1") 败
+        .editing(ng-if="editing")
+          input.score(type="number" placeholder="{{playingTeam.score||'输入比分'}}" ng-model="scores[$index]")
+          .results
+            button.result(ng-click="setResult(1, $index)" ng-class="{'active': results[$index]===1}") 胜
+            button.result(ng-click="setResult(0, $index)" ng-class="{'active': results[$index]===0}") 平
+            button.result(ng-click="setResult(-1, $index)" ng-class="{'active': results[$index]===-1}") 负
+      .vs vs
+    .score_board_operator(ng-if="allowEdit && !editing && leaderStatus==='init'")
+      button.operator(ng-click="toggleEdit()") 设置比分
+    .score_board_operator(ng-if="allowEdit && !editing && leaderStatus==='toConfirm'")
+      button.operator(ng-click="confirmScore()") 同意
+      button.operator.cancel(ng-click="toggleEdit()") 不同意
+    .score_board_operator(ng-if="allowEdit && !editing && leaderStatus==='waitConfirm'")
+      button.operator(ng-click="toggleEdit()") 重新设置
+    .score_board_operator(ng-if="allowEdit && editing")
+      button.operator(ng-if="scoreBoard.status===0" ng-click="initScore()") 确认
+      button.operator(ng-if="scoreBoard.status===1" ng-click="resetScore()") 确认
+      button.operator.cancel(ng-click="toggleEdit()") 取消
+    .score_board_footer
+      .remind_text(ng-if="scoreBoard.status===0") 等待队长设置比分
+      .remind_text(ng-if="scoreBoard.status===1") 比分待确认
+      .remind_text(ng-if="scoreBoard.status===2") 比分已确认
+      .getlog(ng-if="allowManage" ng-click="toggleLogs()") 查看记录
+    .logs(ng-if="showLogs")
+      .log(ng-repeat="log in logs")
+        p.title {{log.teamName}}&nbsp;{{log.date}}
+        p.content {{log.text}}
+      .log(ng-if="logs.length === 0")
+        p.title.text-center 没有修改记录

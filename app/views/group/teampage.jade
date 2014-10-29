@@ -103,12 +103,12 @@ block aside
         if (campaign.campaign_type == '4' || campaign.campaign_type == '5 '|| campaign.campaign_type == '7')
           .event_pk.clearfix
             .team
-              img(src="#{campaign.camp[0].logo}/64/64")
-              span= campaign.camp[0].tname
+              img(src="#{campaign.campaign_unit[0].team.logo}/64/64")
+              span= campaign.campaign_unit[0].team.name
             .vs VS
             .team
-              img(src="#{campaign.camp[1].logo}/64/64")
-              span= campaign.camp[1].tname
+              img(src="#{campaign.campaign_unit[1].team.logo}/64/64")
+              span= campaign.campaign_unit[1].team.name
         //- 自己玩的活动
         if campaign.campaign_type == '2'
           .event_solo

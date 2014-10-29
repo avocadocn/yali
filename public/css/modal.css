@@ -23,6 +23,10 @@
 .dl_campaign_modal .dl_modal_header .dl_close img {
   height: 14px;
 }
+.dl_campaign_modal .dl_modal_header .preStep {
+  color: #bbb;
+  font-size: 12px;
+}
 .dl_campaign_modal .dl_modal_body {
   position: relative;
 }
@@ -84,6 +88,14 @@
   width: 100%;
   height: 100%;
 }
+.dl_campaign_modal .dl_modal_body .dl_modal_container .dl_modal_button .search_btn {
+  width: 100%;
+  height: 100%;
+  padding: 9px;
+  background-size: 13px 13px;
+  background-position: 8px 8px;
+  padding-left: 20px !important;
+}
 .dl_campaign_modal .dl_modal_body .dl_modal_container .groups {
   max-height: 300px;
   overflow: auto;
@@ -111,6 +123,27 @@
 }
 .dl_campaign_modal .dl_modal_body .dl_modal_container .input-group .input-group-btn .dropdown-menu li a {
   color: #999;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .opponent {
+  margin-top: 20px;
+  border-bottom: 1px solid #dedede;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .team_select {
+  cursor: pointer;
+  border-bottom: 1px solid #dedede;
+  padding: 10px 0;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .team_select:hover {
+  background-color: #f5f5f5;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .active.team_select {
+  background-image: url("/img/icons/ico_07.png");
+  background-position: 0px 15px;
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .dl_md_2 {
+  margin-left: 40px;
 }
 .dl_campaign_modal .dl_modal_body .dl_modal_map_container {
   height: 150px;

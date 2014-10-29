@@ -160,7 +160,7 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
         if(!$scope.moldsgot){
             Campaign.getMolds('team',$rootScope.teamId,function(status,data){
                 if(!status){
-                    $scope.molds = data;
+                    $scope.molds = data.molds;
                     $scope.moldsgot = true;
                     $scope.mold = $scope.molds[0].name;
                 }
@@ -273,11 +273,11 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
                 end_time : $scope.end_time,
                 campaign_mold:$scope.mold
             };
-            var _url = '/group/campaignSponsor/'+ $rootScope.teamId
+            var _url = '/group/campaignSponsor/'+ $rootScope.teamId;
             Campaign.sponsor(_url,_data,function(status,data){
                 if(!status){
                     // window.location.reload();
-                    window.location = '/campaign/detail/'+data.campaign_id;
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                 }else{
                     alertify.alert('活动发布出错');
                 }
@@ -705,15 +705,11 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
                 if(data.length===1){
                     $scope.modal=3;//直接跳到发起挑战页面
                     $scope.team_opposite = $scope.similarTeams[0];
-                    Campaign.getTags('group',$scope.team_opposite._id,function(status,data){
-                        if(!status){
-                            $scope.recommand_tags = data;
-                        }
-                    });
                     Campaign.getMolds('team',$rootScope.teamId,function(status,data){
                         if(!status){
-                            console.log(data);
-                            $scope.mold = data[0].name;
+                            $scope.mold = data.molds[0].name;
+                            $scope.molds = data.molds;
+                            $scope.user_cid = data.cid;
                         }
                     });
                 }
@@ -958,40 +954,30 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
     $scope.provoke_select = function (index) {
         if(!index){//在自己队发挑战
             $scope.team_opposite = $scope.teams[$scope.selected_index]; 
-            Campaign.getTags('group',$rootScope.teamId,function(status,data){
-                if(!status){
-                    $scope.recommand_tags = data;
-                }
-            });
             Campaign.getMolds('team',$rootScope.teamId,function(status,data){
                 if(!status){
-                    console.log(data);
-                    $scope.mold = data[0].name;
+                    $scope.mold = data.molds[0].name;
+                    $scope.user_cid = data.cid;
                 }
             });
         }
         else{//到对方队动
             $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
-            Campaign.getTags('group',$scope.team_opposite._id,function(status,data){
-                if(!status){
-                    $scope.recommand_tags = data;
-                }
-            });
             Campaign.getMolds('team',$scope.team_opposite._id,function(status,data){
                 if(!status){
-                    $scope.mold = data[0].name;
+                    $scope.mold = data.molds[0].name;
+                    $scope.molds = data.molds;
+                    $scope.user_cid = data.cid;
                 }
             });
         }
         $scope.modal++;
         $rootScope.loadMapIndex=2;
     };
-
-
-    $scope.addTag = function(index) {
-        $scope.recommand_tags[index].disabled = true;
-        $('#comptagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
+    $scope.selectMold=function(name){
+        $scope.mold = name;
     };
+
     //约战
     $scope.provoke = function() {
         if($scope.member_max < $scope.member_min){
@@ -1000,19 +986,14 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
         else{
             var _data = {
                 theme : $scope.theme,
-                content : $scope.content,
                 location: $scope.location,
                 start_time: $scope.start_time,
                 end_time: $scope.end_time,
-                deadline: $scope.deadline,
-                member_min : $scope.member_min,
-                member_max : $scope.member_max,
-                tags: $scope.tags?$scope.tags.split(','):[],
                 campaign_mold:$scope.mold
             };
             var callback = function(status,data){
                 if(!status){
-                    window.location = '/campaign/detail/'+data.campaign_id;
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
                 }
                 else{
                     alertify.alert(data.msg);

@@ -159,12 +159,12 @@ CompanyGroup.methods = {
      */
     hasMember: function (uid) {
         for (var i = 0; i < this.member.length; i++) {
-            if (uid === this.member[i]._id.toString()) {
+            if (uid.toString() === this.member[i]._id.toString()) {
                 return true;
             }
         }
         for (var i = 0; i < this.leader.length; i++) {
-            if (uid === this.leader[i]._id.toString()) {
+            if (uid.toString() === this.leader[i]._id.toString()) {
                 return true;
             }
         }

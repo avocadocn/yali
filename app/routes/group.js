@@ -40,11 +40,8 @@ module.exports = function(app) {
   //多队活动
   app.post('/group/campaignSponsor/multi/:cid', authorization.teamAuthorize, group.sponsor);
   app.param('teamId',group.group);
-  //约战、应战
+  //约战
   app.post('/group/provoke/:teamId', authorization.teamAuthorize, group.provoke);
-  app.post('/group/responseProvoke/:teamId', authorization.teamAuthorize, group.responseProvoke);
-  app.post('/group/cancelProvoke/:teamId', authorization.teamAuthorize, group.cancelProvoke);
-
   app.post('/group/resultConfirm/:teamId/:competitionId', authorization.teamAuthorize, group.resultConfirm);
 
   app.get('/group/:teamId/editLogo', authorization.teamAuthorize, group.editLogo);

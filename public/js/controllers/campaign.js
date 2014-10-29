@@ -4,36 +4,52 @@ var campaignApp = angular.module('donler');
 campaignApp.directive('maxHeight', function () {
   return {
     restrict: 'A',
+    scope: {
+      over: '=',
+      startCal: '=' // 是否开始计算
+    },
     link: function (scope, elem, attr, ctrl) {
-      if (elem.height() > attr.maxHeight) {
-        scope.showFold = true;
-      }
-      else {
-        scope.showFold = false;
-      }
+
+      scope.$watch('startCal', function (newVal, oldVal) {
+        console.log(newVal, oldVal)
+        if (newVal) {
+          if (elem.height() > attr.maxHeight) {
+            scope.over = true;
+          }
+          else {
+            scope.over = false;
+          }
+          console.log(scope.over, 'link')
+        }
+      });
     }
   };
 });
-campaignApp.controller('campaignController', ['$scope', '$http', 'Report', 'Campaign', function ($scope, $http, Report, Campaign) {
+campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', function ($scope, $http, Campaign) {
+
+  $scope.showDetailModal = false;
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;
+
   $scope.isStart = data.start === 'true';
   $scope.isEnd = data.end === 'true';
   $scope.isJoin = data.join === 'true';
 
-  $scope.modalPerticipator = function(team) {
-    $scope.select_team = team;
-    $('#sponsorMessageCampaignModel').modal();
+  $scope.notice = {
+    placeholder: '',
+    placeholderText: '添加公告，让成员随时了解活动动态！（输入内容请控制在140字以内）',
+    content: ''
   };
-  $scope.sendToParticipator = function() {
+  $scope.notice.placeholder = $scope.notice.placeholderText;
+  $scope.publishNotice = function() {
+    if ($scope.notice.content === '') return;
     $http({
       method: 'post',
       url: '/message/push/campaign',
       data: {
-//        team: $scope.select_team, ???
         campaign_id: campaignId,
-        content: $scope.private_message_content.text
+        content: $scope.notice.content
       }
     }).success(function(data, status) {
       if (data.msg === 'SUCCESS') {
@@ -86,7 +102,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Report', 'Camp
         alertify.alert(err);
       } else {
         alertify.alert('编辑成功', function (e) {
-          window.location.reload();
+          window.location='/campaign/detail/'+campaignId;
         });
       }
     });
@@ -111,14 +127,47 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Report', 'Camp
       }
     });
   };
-
+  $scope.dealProvoke = function(tid, status) {
+      switch(status){
+        case 1://接受
+          var tip = '是否确认接受该挑战?';
+          break;
+        case 2://拒绝
+          var tip = '是否确认拒绝该挑战?';
+          break;
+        case 3://取消
+          var tip = '是否确认取消发起挑战';
+          break;
+      }
+      alertify.confirm(tip,function(e){
+        if(e){
+          Campaign.dealProvoke(campaignId, tid, status, function (err) {
+            if (err) {
+              alertify.alert(err);
+            } else {
+              window.location.reload();
+            }
+          });
+        }
+      });
+    };
   $('#deadline').datetimepicker({
     autoclose: true,
     language: 'zh-CN',
     startDate: new Date(),
     pickerPosition: "top-left"
-    //- setEndDate:#{campaign.end_time}
   });
+
+  var options = {
+    editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
+    class: 'dl_markdown', // {String} class of the editor,
+    textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+    list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+    stay: false,
+    toolBarId: 'campaignDetailToolBar'
+  };
+
+  var editor = new Pen(options);
 
 
 }]);

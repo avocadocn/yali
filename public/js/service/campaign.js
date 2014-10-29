@@ -63,7 +63,7 @@ angular.module('donler')
           callback(data.msg);
         }
         else{
-          callback(null,data.molds);
+          callback(null,data);
         }
       }).error(function(data,status){
         callback('error');
@@ -173,33 +173,15 @@ angular.module('donler')
     //         console.log(e);
     //     }
     // };
-    //应战
-    var responseProvoke = function(campaignId,tid,status) {
-        $http({
-            method: 'post',
-            url: '/group/responseProvoke/'+tid,
-            data:{
-                campaignId : campaignId,
-                responseStatus : status
-            }
-        }).success(function(data, status) {
-          if(data.result===1) {
-            callback();
-          } else {
-            callback(data.msg);
-          }
-        }).error(function(data, status) {
-          callback('DATA ERROR');
-        });
-    };
-    //取消挑战
-    var cancelProvoke = function(campaignId,tid) {
+    //应战、拒绝、取消
+    var dealProvoke = function(campaignId,tid,status,callback) {
       $http({
-          method: 'post',
-          url: '/group/cancelProvoke/'+tid,
-          data:{
-              campaignId : campaignId
-          }
+        method: 'post',
+        url: '/campaign/dealProvoke/'+campaignId,
+        data:{
+          tid : tid,
+          responseStatus : status
+        }
       }).success(function(data, status) {
         if(data.result===1) {
           callback();
@@ -211,6 +193,7 @@ angular.module('donler')
       });
     };
 
+
     return {
       sponsor: sponsor,
       getTags: getTags,
@@ -220,7 +203,6 @@ angular.module('donler')
       cancel: cancel,
       getMolds: getMolds,
       // vote: vote,
-      responseProvoke: responseProvoke,
-      cancelProvoke: cancelProvoke
+      dealProvoke: dealProvoke,
     };
   }]);

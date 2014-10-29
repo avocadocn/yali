@@ -355,3 +355,78 @@ Timeline UI Base
   border: 1px solid #ccc;
   border-top: 0;
 }
+.user_timeline {
+  width: 865px;
+}
+.user_timeline .dl_timeline {
+  width: 100%;
+}
+.user_timeline .dl_timeline .spine {
+  top: 0;
+  left: 50%;
+}
+.user_timeline .dl_timeline .column {
+  width: 50%;
+}
+.user_timeline .dl_timeline .column .timeline_element {
+  width: 400px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .date {
+  width: 210px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_1 .photo_0 {
+  width: 264px;
+  height: 264px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_0,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_1 {
+  width: 131px;
+  height: 131px;
+  margin-right: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_1 {
+  margin-left: 1px;
+  margin-right: 0;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_0 {
+  width: 175px;
+  height: 175px;
+  margin-right: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_2 {
+  width: 87px;
+  height: 87px;
+  margin-bottom: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_2 {
+  margin-bottom: 0;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_0 {
+  width: 263px;
+  height: 263px;
+  margin-bottom: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_2,
+.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_3 {
+  width: 87px;
+  height: 87px;
+  margin-right: 1px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .photo {
+  display: inline-block;
+}
+.user_timeline .dl_timeline .column_right {
+  margin-left: 0;
+}
+.user_timeline .dl_timeline .date_separator .span {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  width: 100px;
+  background-color: #ccc;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+}

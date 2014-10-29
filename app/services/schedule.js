@@ -9,6 +9,16 @@ var mongoose = require('mongoose'),
     Department = mongoose.model('Department'),
     schedule = require('node-schedule');
 var finishCampaign = function(){
+  //把比赛都开始都没应答的视为关闭
+  Campaign.update({'active':true,'start_time':{'$lt':new Date()},'campaign_type':{'$in':[4,5,7,9]},'confirm_status':false},{$set:{'active':false}},{multi:true},function(err,num){
+    if(err){
+      console.log(err);
+    }
+    else{
+      console.log('closeNoResponseCompetition:'+num);
+    }
+  })
+  //把时间到了的设为finish
   Campaign.update({'finish':false,'end_time': {'$lt':new Date()}},{$set:{'finish':true}},{multi: true},function(err,num){
     if(err){
       console.log(err);
@@ -17,6 +27,9 @@ var finishCampaign = function(){
       console.log('finishCampaign:'+num);
     }
   });
+  //把finish的但是没人参加的活动视为关闭
+  // Campaign.update({'finish':true,''})
+
 }
 
 var team_time_out = 30;

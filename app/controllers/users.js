@@ -608,6 +608,13 @@ exports.renderCampaigns = function(req, res){
 };
 
 
+exports.renderCommentCampaigns = function(req, res){
+  res.render('partials/recent_comment_campaign',{
+      'provider':'user',
+      'role':req.role
+  });
+};
+
 
 
 function fetchCampaign(req,res,team_ids,role) {
@@ -861,7 +868,7 @@ exports.timeLine = function(req,res){
           start_time: campaign.start_time,
           provoke:ct===4||ct===5||ct===7||ct===9,
           year: getYear(campaign),
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)
         }
         // todo new time style
         // console.log(campaign);
@@ -881,8 +888,19 @@ exports.timeLine = function(req,res){
           newTimeLines[i].push(tempObj);
         }
       });
+      var nowUser = {
+        nickname:req.profile.nickname,
+        realname:req.profile.realname,
+        department:req.profile.department,
+        cname:req.profile.cname,
+        introduce:req.profile.introduce,
+        photo:req.profile.photo,
+        phone:req.profile.phone,
+        email:req.profile.email,
+        teams:req.profile.team
+      };
       //console.log(newTimeLines);
-      return res.render('users/user_timeLine',{'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
+      return res.render('users/user_timeLine',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);
@@ -1615,4 +1633,21 @@ var deviceUnregister = function(device_info,uid){
       }
     }
   });
+}
+
+exports.updateCommentTime =function(req, res) {
+  if(req.role=='OWNER'){
+    req.user.last_comment_time = new Date();
+    req.user.save(function(err){
+      if(err){
+        res.send({result:0});
+      }else{
+        res.send({result:1});
+      }
+
+    });
+  }
+  else{
+    res.send({result:0});
+  }
 }

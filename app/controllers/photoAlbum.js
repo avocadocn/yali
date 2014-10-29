@@ -857,6 +857,8 @@ exports.createSinglePhoto = function(req, res, next) {
             }
             fs.writeFileSync(path.join(dir, photo_id + '.' + ext), data);
             req.photo_album.photo_count += 1;
+            req.photo_album.upload_user = upload_user;
+            req.photo_album.update_date = Date.now();
             req.photo_album.save(function (err) {
               if (err) {
                 console.log(err);

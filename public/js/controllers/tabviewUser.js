@@ -29,6 +29,11 @@ tabViewUser.config(['$routeProvider',
           return '/users/campaign/'+params.uid;
         }
       })
+      .when('/commentCampaign/:uid', {
+        templateUrl: function(params){
+          return '/users/commentcampaign/'+params.uid;
+        }
+      })
       .when('/personal/:uid', {
         templateUrl: function(params){
           return '/users/editInfo/'+params.uid;
@@ -63,9 +68,11 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location','Report','Campaign',
-  function($rootScope,$location,Report,Campaign) {
+tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign',
+  function($rootScope,$location,$interval,$http,Report,Campaign) {
     $rootScope.message_for_group = false;
+    var getRecentCommentTime = 10 * 60 * 1000;
+    $rootScope.newReply=[];
     $rootScope.$on("$routeChangeStart",function(){
       $rootScope.loading = true;
     });
@@ -89,6 +96,13 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
       $rootScope.showedType = type;
       $rootScope.showedCampaign = $rootScope[type];
       $('#user_modal').modal();
+      if(type=='commentCampaign'){
+        updateRecentCommentTime();
+        $interval.cancel(getRecentCommentCampaignPromise);
+        $('#user_modal').one('hidden.bs.modal', function (e) {
+          getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
+        });
+      }
     }
     $rootScope.join = function (index,tid) {
       Campaign.join({
@@ -130,33 +144,64 @@ tabViewUser.run(['$rootScope','$location','Report','Campaign',
     //     });
     // };
     //应战
-    $rootScope.responseProvoke = function(campaignId, tid, status) {
-      alertify.confirm('确认要接受该挑战吗？',function(e){
+    $rootScope.dealProvoke = function(campaignId, tid, status) {
+      switch(status){
+        case 1://接受
+          var tip = '是否确认接受该挑战?';
+          break;
+        case 2://拒绝
+          var tip = '是否确认拒绝该挑战?';
+          break;
+        case 3://取消
+          var tip = '是否确认取消发起挑战';
+          break;
+      }
+      alertify.confirm(tip,function(e){
         if(e){
-          Campaign.responseProvoke(campaignId, tid, status, function (err) {
+          Campaign.dealProvoke(campaignId, tid, status, function (err) {
             if (err) {
               alertify.alert(err);
             } else {
-
+              alertify.alert('成功');
+              //刷新页面？
             }
           });
         }
       });
     };
-    //取消挑战
-    $rootScope.cancelProvoke = function(campaignId, tid) {
-      alertify.confirm('确认要取消挑战吗？',function(e){
-        if(e){
-          Campaign.cancelProvoke(campaignId, tid, function (err) {
-            if (err) {
-              alertify.alert(err);
-            } else {
-
-            }
-          });
-        }
-      });
-    };
+    var getRecentCommentCampaigns = function(){
+      try{
+        $http({
+          method:'get',
+          url: '/campaign/recentCommentCampaign?'+Math.random()*10000,
+        }).success(function(data,status){
+          $rootScope.newReply = data.data;
+        }).error(function(data,status){
+          alertify.alert('DATA ERROR');
+        });
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+    var updateRecentCommentTime = function(){
+      try{
+        $http({
+          method:'get',
+          url: '/users/updateCommentTime/'+$rootScope.uid,
+        }).success(function(data,status){
+          if(data.result==1){
+          }
+        }).error(function(data,status){
+          console.log('err');
+        });
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+    getRecentCommentCampaigns();
+    var getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
   }
 ]);
 tabViewUser.directive('masonry', function ($timeout) {
@@ -214,9 +259,9 @@ var messageConcat = function(messages,rootScope,scope,reset){
 
 tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope','$location', 'Campaign',
   function($http, $scope, $rootScope, $location, Campaign) {
-    $rootScope.recentUnjoinedCampaigns = [];
-    $rootScope.recentJoinedCampaigns = [];
-    $rootScope.nowCampaigns = [];
+    // $rootScope.recentUnjoinedCampaigns = [];
+    // $rootScope.recentJoinedCampaigns = [];
+    // $rootScope.nowCampaigns = [];
 
     $scope.newReply =[];
     $scope.showCampaign = false;
@@ -757,7 +802,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
 
       var calendar = $('#calendar').calendar(options);
     };
-    var initModalCalendar = function(events_source,start_time) {
+    var initModalCalendar = function(events_source,start_time,reloadEventList) {
       var modalOptions = {
         events_source: events_source,
         view: 'month',
@@ -792,11 +837,18 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
           $('#calendar_nav_modal').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
             modalCalendar.navigate($(this).data('calendar-nav'));
           });
+          $('#calendar_view_modal').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
+            modalCalendar.navigate($(this).data('calendar-nav'));
+          });
           $('#calendar_view_modal').undelegate('[data-calendar-view]','click').delegate('[data-calendar-view]','click',function() {
             modalCalendar.view($(this).data('calendar-view'));
           });
           if(start_time){
             $('#calendar_view_modal').find("[data-cal-date='"+start_time+"']").parent().mouseenter().click();
+          }
+          else if(reloadEventList){
+            var nowTime = $('#cal-modal-event-box').find('.cal-event-time .time').html();
+            $('#calendar_view_modal').find("[data-cal-date='"+nowTime+"']").parent().mouseenter().click();
           }
         },
         classes: {
@@ -821,7 +873,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
       $scope.campaignsType = attr;
       var events_source = '/campaign/user/' + attr + '/calendar/'+$rootScope.uid;
       if(type=='modal'){
-        initModalCalendar(events_source);
+        initModalCalendar(events_source,undefined,1);
       }
       else{
         initCalendar(events_source);
@@ -972,7 +1024,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
   function($scope, $http, $rootScope) {
     angular.element('.tooltip').hide();
     $scope.editing = false;
-
+    console.log(1)
     $scope.toggleEdit = function() {
       $scope.editing = !$scope.editing;
     }

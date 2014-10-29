@@ -66,9 +66,10 @@ RichComment.methods = {
 
   /**
    * 获取该组件的初始数据, 用于前端directive初始化
+   * @param {Object} user req.user
    * @param callback callback(data)
    */
-  getData: function (callback) {
+  getData: function (user, callback) {
     callback({
       hostType: this.host_type,
       hostId: this.host_id,
