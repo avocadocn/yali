@@ -6,9 +6,11 @@ clearfix()
     content " "
   &:after
     clear both
+.breadcrumb
+  margin-bottom 0
 
 .campaign_detail
-
+  //-公用
   for order in (1..10)
     .order-{order}
       order order
@@ -29,6 +31,8 @@ clearfix()
       flex-flow column
       -webkit-flex-flow column
       width 240px
+      .component_head
+        padding 0 10px
 
   .component
     box-shadow 3px 3px 3px #ddd
@@ -70,7 +74,7 @@ clearfix()
         color #ccc
 
 
-
+  //-左侧
   .detail_card
     .component_head
       height 35px
@@ -116,25 +120,27 @@ clearfix()
             float left
         .info_container
           padding-top 20px
-
+      //-基本信息
       .base_info
         display flex
         display -webkit-flex
+        min-height 159px
+        //-队伍信息
         .unit
-          width 80px
+          width 70px
           float left
           margin-right 20px
           .logo
-            width 80px
-            height 80px
+            width 70px
+            height 70px
           .text
-            margin-top 10px
-            width 80px
+            margin 10px 0 2px
+            width 70px
             overflow hidden
             text-overflow ellipsis
             white-space nowrap
             display inline-block
-            line-height 18px
+            line-height 12px
             color #999
             text-align center
         .logo_container
@@ -145,7 +151,6 @@ clearfix()
               display block
               margin-left auto
               margin-right auto
-              margin-top 10px
               padding 0
               width 52px
               height 20px
@@ -153,14 +158,14 @@ clearfix()
               line-height 20px
               color white
               background-color themeColor
-
+        //-上方基本信息
         .info_container
           flex 1
           -webkit-flex 1
           .start_info
             display flex
             display -webkit-flex
-            margin-bottom 20px
+            min-height 153px
             .campaign_info
               padding 20px
               width 300px
@@ -170,8 +175,8 @@ clearfix()
               border-left 1px solid #eee
               .remind
                 margin-top 15px
-                font-size 28px
-                line-height 30px
+                font-size 20px
+                line-height 20px
                 color #97d7c6
             .competition_container
               float left
@@ -189,9 +194,11 @@ clearfix()
                   padding 4px 15px
                 .second_button
                   margin-top 10px
+      //-公告
       .notice
         padding 20px
         border-top 1px solid #eee
+        min-height 128px
         .title
           font-size 14px
           color #e7ce23
@@ -220,10 +227,29 @@ clearfix()
             line-height 30px
             color white
             background-color themeColor
-
+      //-活动附加信息
       .more_info
         padding 20px
         border-top 1px solid #eee
+        .block
+          margin-bottom 20px
+          .tags
+            .tag
+              margin-right 5px
+              display inline-block
+              margin-bottom 4px
+              padding 2px 5px
+              border-radius 5px
+              color #ffffff
+              background-color #73a4dc
+          .deadline
+            #deadline
+              width 200px
+              margin-right 10px
+        .enter_info
+          margin-bottom 0
+          .text
+            line-height 28px
         .sub_title
           margin-right 10px
         .progress
@@ -240,19 +266,7 @@ clearfix()
         .bootstrap-tagsinput
           .tag
             background-color #98a8b5
-        .tags
-          .tag
-            margin-right 5px
-            display inline-block
-            margin-bottom 4px
-            padding 2px 5px
-            border-radius 5px
-            color #ffffff
-            background-color #73a4dc
-        .deadline
-          #deadline
-            width 200px
-            margin-right 10px
+        
         .detail_input
           padding 6px 10px
           width 100%
@@ -317,6 +331,8 @@ clearfix()
       .title
         font-size 14px
         color #73a5dd
+        display inline-block
+        margin-bottom 10px
 
   .map_card
     .component_head

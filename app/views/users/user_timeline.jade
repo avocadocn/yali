@@ -4,7 +4,7 @@ append headExt
   link(rel="stylesheet" href="/css/tree.css")
 
 block panel
-  .dl_info_container.clearfix
+  .dl_info_container.base_info_container.clearfix
     .info_container.logo_container
       //-用户头像
       img.user_logo(src="#{user.photo ? user.photo+'/100/100' :'/img/icons/default_user_photo.png'}")
@@ -35,14 +35,18 @@ block panel
         label 邮箱:#{user.email}
       .dl_row
         label.register_date 注册时间:#{moment(user.register_date).format('YYYY-MM-DD HH:mm')}
-  .dl_info_container.clearfix
-    label 加入的小队
-    each team in user.teams
-      .team
-        a.clearLinkUnderline(ng-href="/group/page/#{team._id}" target="_blank")
-          img.team_logo(ng-src="#{team.logo}/40/40")
-          p.team_name= team.name
-
+  .dl_info_container.team_info_container.clearfix(ng-init="showMore=false;")
+    .info_left
+      label.label_info 加入的小队
+    .info_right
+      each team,index in user.teams
+        .team(ng-if="showMore || #{index}<9" ng-cloak)
+          a.clearLinkUnderline(ng-href="/group/page/#{team._id}" target="_blank")
+            img.team_logo(ng-src="#{team.logo}/56/56")
+            p.team_name= team.name
+    if user.teams.length>9
+      .show_more(ng-cloak)
+        a(ng-click="showMore=!showMore;") {{showMore ? '收缩':'展开'}}
   .loading_div(ng-show = 'loading')
   .user_timeline(ng-show = '!loading')
     if length>0

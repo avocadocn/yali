@@ -1,3 +1,6 @@
+.breadcrumb {
+  margin-bottom: 0;
+}
 .campaign_detail .order-1 {
   order: 1;
   -webkit-order: 1;
@@ -57,6 +60,9 @@
   flex-flow: column;
   -webkit-flex-flow: column;
   width: 240px;
+}
+.campaign_detail .campaign_panel .side_panel .component_head {
+  padding: 0 10px;
 }
 .campaign_detail .component {
   box-shadow: 3px 3px 3px #ddd;
@@ -179,24 +185,25 @@
 .campaign_detail .detail_card .component_body .base_info {
   display: flex;
   display: -webkit-flex;
+  min-height: 159px;
 }
 .campaign_detail .detail_card .component_body .base_info .unit {
-  width: 80px;
+  width: 70px;
   float: left;
   margin-right: 20px;
 }
 .campaign_detail .detail_card .component_body .base_info .unit .logo {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
 }
 .campaign_detail .detail_card .component_body .base_info .unit .text {
-  margin-top: 10px;
-  width: 80px;
+  margin: 10px 0 2px;
+  width: 70px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
-  line-height: 18px;
+  line-height: 12px;
   color: #999;
   text-align: center;
 }
@@ -208,7 +215,6 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
   padding: 0;
   width: 52px;
   height: 20px;
@@ -224,7 +230,7 @@
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info {
   display: flex;
   display: -webkit-flex;
-  margin-bottom: 20px;
+  min-height: 153px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .campaign_info {
   padding: 20px;
@@ -237,8 +243,8 @@
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .time_info .remind {
   margin-top: 15px;
-  font-size: 28px;
-  line-height: 30px;
+  font-size: 20px;
+  line-height: 20px;
   color: #97d7c6;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container {
@@ -266,6 +272,7 @@
 .campaign_detail .detail_card .component_body .notice {
   padding: 20px;
   border-top: 1px solid #eee;
+  min-height: 128px;
 }
 .campaign_detail .detail_card .component_body .notice .title {
   font-size: 14px;
@@ -304,6 +311,28 @@
   padding: 20px;
   border-top: 1px solid #eee;
 }
+.campaign_detail .detail_card .component_body .more_info .block {
+  margin-bottom: 20px;
+}
+.campaign_detail .detail_card .component_body .more_info .block .tags .tag {
+  margin-right: 5px;
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #73a4dc;
+}
+.campaign_detail .detail_card .component_body .more_info .block .deadline #deadline {
+  width: 200px;
+  margin-right: 10px;
+}
+.campaign_detail .detail_card .component_body .more_info .enter_info {
+  margin-bottom: 0;
+}
+.campaign_detail .detail_card .component_body .more_info .enter_info .text {
+  line-height: 28px;
+}
 .campaign_detail .detail_card .component_body .more_info .sub_title {
   margin-right: 10px;
 }
@@ -322,19 +351,6 @@
 }
 .campaign_detail .detail_card .component_body .more_info .bootstrap-tagsinput .tag {
   background-color: #98a8b5;
-}
-.campaign_detail .detail_card .component_body .more_info .tags .tag {
-  margin-right: 5px;
-  display: inline-block;
-  margin-bottom: 4px;
-  padding: 2px 5px;
-  border-radius: 5px;
-  color: #fff;
-  background-color: #73a4dc;
-}
-.campaign_detail .detail_card .component_body .more_info .deadline #deadline {
-  width: 200px;
-  margin-right: 10px;
 }
 .campaign_detail .detail_card .component_body .more_info .detail_input {
   padding: 6px 10px;
@@ -421,6 +437,8 @@
 .campaign_detail .detail_card .component_body .title {
   font-size: 14px;
   color: #73a5dd;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 .campaign_detail .map_card .component_head {
   background-color: #8dd4e6;

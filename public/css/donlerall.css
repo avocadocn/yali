@@ -276,6 +276,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.simple_comment .component_body .comment .comment_content_panel .comment_content {
+  background-color: #f3fdff;
+  padding: 10px;
+}
 .simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
   width: 100%;
 }
@@ -2923,25 +2927,52 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main {
   width: 700px;
   margin-right: 20px;
-  margin-top: 54px;
+  margin-top: 45px;
 }
 .user_page .dl_container .main .dl_info_container {
   background-color: #fff;
   width: 865px;
-  height: 140px;
-  -moz-box-shadow: 3px 3px 3px #f4f4f4;
+  -moz-box-shadow: 3px 3px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #f4f4f4;
+  box-shadow: 3px 3px 3px #ccc;
+  margin-top: 10px;
+}
+.user_page .dl_container .main .dl_info_container .info_left {
+  float: left;
+  width: 15%;
+}
+.user_page .dl_container .main .dl_info_container .info_right {
+  float: left;
+  width: 80%;
+}
+.user_page .dl_container .main .dl_info_container .show_more {
+  float: left;
+  width: 5%;
+  font-weight: border;
+  color: #3ba3e0;
+}
+.user_page .dl_container .main .dl_info_container .label_info {
+  color: #3498db;
+  font-size: 14px;
+  margin-right: 53px;
 }
 .user_page .dl_container .main .dl_info_container .team {
   float: left;
+  margin-right: 13px;
+  width: 60px;
 }
 .user_page .dl_container .main .dl_info_container .team a .team_logo {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
 }
 .user_page .dl_container .main .dl_info_container .team a .team_name {
+  margin-top: 10px;
+  margin-bottom: 0;
   text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .user_page .dl_container .main .dl_info_container .info_container {
   float: left;
@@ -2978,6 +3009,12 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .dl_info_container .base_info {
   border-right: 1px solid #f4f4f4;
+}
+.user_page .dl_container .main .base_info_container {
+  height: 140px;
+}
+.user_page .dl_container .main .team_info_container {
+  padding: 20px;
 }
 .user_page .dl_container .main #user_modal .modal-dialog {
   width: 900px;
@@ -3130,9 +3167,9 @@ input.ng-invalid.ng-dirty {
   background-color: #fff;
   float: left;
   margin: 5px 0;
-  -moz-box-shadow: 3px 3px 3px #f4f4f4;
+  -moz-box-shadow: 3px 3px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #f4f4f4;
+  box-shadow: 3px 3px 3px #ccc;
   padding: 10px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
@@ -3484,9 +3521,9 @@ input.ng-invalid.ng-dirty {
   font-size: 18px;
   padding: 10px;
   margin-top: 10px;
-  -moz-box-shadow: 3px 3px 3px #f4f4f4;
+  -moz-box-shadow: 3px 3px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #f4f4f4;
+  box-shadow: 3px 3px 3px #ccc;
 }
 .user_page .dl_container .side .old_campaign_container a label {
   font-size: 18px;
@@ -3528,9 +3565,9 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .side .groupsbox {
   margin-top: 10px;
-  -moz-box-shadow: 3px 3px 3px #f4f4f4;
+  -moz-box-shadow: 3px 3px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #f4f4f4;
+  box-shadow: 3px 3px 3px #ccc;
   padding: 20px 10px;
 }
 .user_page .dl_container .side .groupsbox .infobox .head_title {
@@ -3561,9 +3598,9 @@ input.ng-invalid.ng-dirty {
   color: #ccc;
 }
 .user_page .dl_container .schedule_small {
-  -moz-box-shadow: 3px 3px 3px #f4f4f4;
+  -moz-box-shadow: 3px 3px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #f4f4f4;
+  box-shadow: 3px 3px 3px #ccc;
 }
 .user_page .dl_container .schedule_small .schedulebox {
   padding: 0;
@@ -4030,6 +4067,8 @@ Timeline UI Base
 .user_timeline .dl_timeline .spine {
   top: 0;
   left: 50%;
+  margin-left: -1px;
+  width: 2px;
 }
 .user_timeline .dl_timeline .column {
   width: 50%;
@@ -4037,50 +4076,57 @@ Timeline UI Base
 .user_timeline .dl_timeline .column .timeline_element {
   width: 400px;
 }
+.user_timeline .dl_timeline .column .timeline_element:before {
+  content: initial;
+}
+.user_timeline .dl_timeline .column .timeline_element:after {
+  border: none;
+  background-color: #999;
+}
 .user_timeline .dl_timeline .column .timeline_element .title .date {
   width: 210px;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_1 .photo_0 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_1 .photo_0 {
   width: 264px;
   height: 264px;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_0,
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_1 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
   width: 131px;
   height: 131px;
   margin-right: 1px;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_2 .photo_1 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
   margin-left: 1px;
   margin-right: 0;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_0 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_0 {
   width: 175px;
   height: 175px;
   margin-right: 1px;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_1,
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_2 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
   width: 87px;
   height: 87px;
   margin-bottom: 1px;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_3 .photo_2 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
   margin-bottom: 0;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_0 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0 {
   width: 263px;
   height: 263px;
   margin-bottom: 1px;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_1,
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_2,
-.user_timeline .dl_timeline .column .timeline_element .title .img_scroll .photos_4 .photo_3 {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_3 {
   width: 87px;
   height: 87px;
   margin-right: 1px;
 }
-.user_timeline .dl_timeline .column .timeline_element .title .photo {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photo {
   display: inline-block;
 }
 .user_timeline .dl_timeline .column_right {

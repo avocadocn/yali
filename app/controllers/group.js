@@ -698,7 +698,6 @@ exports.provoke = function (req, res) {
               };
               message.sendToOne(req,res,param);      //挑战的站内信只要发给队长一个人即可
             }
-            console.log('6');
             return res.send({'result':1,'campaign_id':data.campaign_id});
           }
         });
