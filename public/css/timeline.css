@@ -423,7 +423,7 @@ Timeline UI Base
   height: 87px;
   margin-right: 1px;
 }
-.user_timeline .dl_timeline .column .timeline_element .photo {
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photo {
   display: inline-block;
 }
 .user_timeline .dl_timeline .column_right {
