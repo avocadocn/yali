@@ -1827,6 +1827,10 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
         if(err) callback(500,'查找活动类型失败');
         else{
           componentNames = mold.module;
+          if(campaign.campaign_unit.length!==2){//单组去除比分板
+            var scoreIndex = componentNames.indexOf('ScoreBoard');
+            componentNames.splice(scoreIndex,1);
+          }
           async.map(componentNames, function (componentName, asyncCallback) {
             mongoose.model(componentName).establish(campaign, function (err, component) {
               if (err) { asyncCallback(err); }
