@@ -906,7 +906,7 @@ exports.timeLine = function(req,res){
         teams:myteam
       };
       //console.log(newTimeLines);
-      return res.render('users/user_timeLine',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
+      return res.render('users/user_timeline',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
   .then(null, function(err) {
     console.log(err);
