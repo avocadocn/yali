@@ -5,21 +5,29 @@ campaignApp.directive('maxHeight', function () {
   return {
     restrict: 'A',
     scope: {
-      over: '='
+      over: '=',
+      startCal: '=' // 是否开始计算
     },
     link: function (scope, elem, attr, ctrl) {
-      if (elem.height() > attr.maxHeight) {
-        scope.over = true;
-      }
-      else {
-        scope.over = false;
-      }
-      console.log(scope.over, 'link')
+
+      scope.$watch('startCal', function (newVal, oldVal) {
+        console.log(newVal, oldVal)
+        if (newVal) {
+          if (elem.height() > attr.maxHeight) {
+            scope.over = true;
+          }
+          else {
+            scope.over = false;
+          }
+          console.log(scope.over, 'link')
+        }
+      });
     }
   };
 });
 campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', function ($scope, $http, Campaign) {
 
+  $scope.showDetailModal = false;
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;

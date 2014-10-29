@@ -6,7 +6,7 @@ append headExt
   link(rel="stylesheet" href="/lib/pen/src/pen.css")
 
 block contentExt
-  .campaign_detail.dl_container(ng-controller="campaignController" ng-init="editing=#{editing}")
+  .campaign_detail.dl_container(ng-controller="campaignController" ng-init="editing=#{editing};")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .campaign_panel
@@ -163,7 +163,7 @@ block contentExt
           .component.brief_card(class="#{helper.start('order-1')} #{helper.end('order-2')}")
             .component_head
               span.title 活动信息
-              button.head_button(data-toggle="modal" data-target="#campaignDetailModal") 详情
+              button.head_button(data-toggle="modal" data-target="#campaignDetailModal" ng-click="showDetailModal=true;") 详情
             .component_body
               p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
               p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
@@ -252,7 +252,7 @@ block contentExt
                     h4.title.pull-left 活动简介
                     a.title.pull-right(ng-click="baseContent=!baseContent;" ng-clock) {{baseContent ? '展开' : '收缩'}}
                   .text_container
-                    .text(ng-init="baseContent=true;" ng-class="{'base_content': baseContent}")!= campaign.content
+                    .text(ng-init="baseContent=true;" ng-class="{'base_content': baseContent}" max-height=100 over="overflow" startCal="showDetailModal")!= campaign.content
                     .base_content_gradient(ng-show="baseContent" ng-click="baseContent=!baseContent;")
                 if campaign.tags && campaign.tags.length > 0
                   h4.title 活动标签
