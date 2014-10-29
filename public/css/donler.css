@@ -234,6 +234,22 @@
 .simple_comment .component_body .rich_comment_form {
   float: left;
   padding: 10px;
+  width: 100%;
+}
+.simple_comment .component_body .rich_comment_form .comment_control {
+  display: block;
+}
+.simple_comment .component_body .rich_comment_form .comment_control .content {
+  height: 50px;
+  margin: 0;
+}
+.simple_comment .component_body .rich_comment_form .comment_control .img_selector {
+  background-color: #fff;
+  margin: 10px 0;
+}
+.simple_comment .component_body .rich_comment_form .comment_control .publish {
+  float: right;
+  margin: 10px 0;
 }
 .simple_comment .component_body .rich_comment_form .preview_box {
   display: block;
@@ -252,9 +268,14 @@
 }
 .simple_comment .component_body .comment .comment_user_info {
   margin-right: 10px;
+  width: 30px;
 }
 .simple_comment .component_body .comment .comment_user_info .user_name {
   text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
   width: 100%;

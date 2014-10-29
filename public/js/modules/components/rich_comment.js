@@ -6,6 +6,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
     function ($scope, $http, $element, $timeout, Comment, Report, FileUploader) {
       $scope.pages = [];
       $scope.nowPage = 0;
+      $scope.showMoreComment = false;
       var CommentBox = function (args) {
 
         Object.defineProperty(this, 'photo_album_id', {
@@ -138,7 +139,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
                   });
                 }
               }
-            },undefined,$scope.commentNum);
+            });
           }
         })
         .error(function (data, status) {
@@ -322,7 +323,14 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
           }
         }, $scope.pages[index].thisStartDate);
       }
-
+      $scope.showMore = function () {
+        $scope.showMoreComment = true;
+        if($scope.afterRender){
+          $timeout(function () {
+            $scope.afterRender();
+          });
+        }
+      }
     }])
 
   .directive('simpleComment', function () {
