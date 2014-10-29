@@ -287,7 +287,7 @@
   height: 30px;
   color: #ccc;
   background-color: #fbfbfb;
-  border: solid 1px #d3dbe6;
+  border: 1px solid #d3dbe6;
   font-size: 14px;
 }
 .campaign_detail .detail_card .component_body .notice .publish .publish_button {
@@ -342,7 +342,7 @@
   height: 30px;
   color: #ccc;
   background-color: #fbfbfb;
-  border: solid 1px #d3dbe6;
+  border: 1px solid #d3dbe6;
   font-size: 14px;
 }
 .campaign_detail .detail_card .component_body .more_info #campaignDetailToolBar {
@@ -496,7 +496,8 @@
   padding-right: 30px;
   font-size: 12px;
   line-height: 20px;
-  border-left: solid 1px #ccc;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
   background-color: #fbfbfb;
 }
 .campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit:first-child {
@@ -523,9 +524,6 @@
 .campaign_detail .member_modal .modal-content .component .component_body .tab-content {
   min-height: 0;
   margin-top: 10px;
-}
-.campaign_detail .member_modal .modal-content .component .component_body .member_list {
-  padding: 20px;
 }
 .campaign_detail .member_modal .modal-content .component .component_body .member_list:before,
 .campaign_detail .member_modal .modal-content .component .component_body .member_list:after {
