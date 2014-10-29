@@ -1,33 +1,8 @@
 'use strict';
 
 var campaignApp = angular.module('donler');
-campaignApp.directive('maxHeight', function () {
-  return {
-    restrict: 'A',
-    scope: {
-      over: '=',
-      startCal: '=' // 是否开始计算
-    },
-    link: function (scope, elem, attr, ctrl) {
 
-      scope.$watch('startCal', function (newVal, oldVal) {
-        console.log(newVal, oldVal)
-        if (newVal) {
-          if (elem.height() > attr.maxHeight) {
-            scope.over = true;
-          }
-          else {
-            scope.over = false;
-          }
-          console.log(scope.over, 'link')
-        }
-      });
-    }
-  };
-});
 campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', function ($scope, $http, Campaign) {
-
-  $scope.showDetailModal = false;
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;
@@ -168,6 +143,26 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   };
 
   var editor = new Pen(options);
+
+  $scope.canUnFold = false;
+  var detailModal = $('#campaignDetailModal');
+  detailModal.on('shown.bs.modal', function (e) {
+    var campaignIntroDom = document.getElementById('campaign_intro');
+    if (campaignIntroDom.scrollHeight > 100) {
+      $scope.canUnFold = true;
+      $scope.$apply();
+    }
+  });
+
+  $scope.showDetailModal = function () {
+    detailModal.modal('show');
+  };
+
+  $scope.baseContent = true;
+  $scope.toggleFold = function () {
+    $scope.baseContent = !$scope.baseContent;
+  };
+
 
 
 }]);

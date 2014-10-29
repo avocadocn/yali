@@ -163,7 +163,7 @@ block contentExt
           .component.brief_card(class="#{helper.start('order-1')} #{helper.end('order-2')}")
             .component_head
               span.title 活动信息
-              button.head_button(data-toggle="modal" data-target="#campaignDetailModal" ng-click="showDetailModal=true;") 详情
+              button.head_button(ng-click="showDetailModal()") 详情
             .component_body
               p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
               p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
@@ -246,14 +246,14 @@ block contentExt
                     p.main_text 结束时间: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
                     p.main_text 活动地点: #{campaign.location.name}
                     p.main_text 活动类型: #{campaign.campaign_mold}
-              .more_info(ng-init="overflow=false;")
+              .more_info
                 if campaign.content
                   .clearfix
                     h4.title.pull-left 活动简介
-                    a.title.pull-right(ng-click="baseContent=!baseContent;" ng-clock) {{baseContent ? '展开' : '收缩'}}
+                    a.title.pull-right(ng-if="canUnFold" ng-click="toggleFold()" ng-clock) {{baseContent ? '展开' : '收起'}}
                   .text_container
-                    .text(ng-init="baseContent=true;" ng-class="{'base_content': baseContent}" max-height=100 over="overflow" startCal="showDetailModal")!= campaign.content
-                    .base_content_gradient(ng-show="baseContent" ng-click="baseContent=!baseContent;")
+                    .text#campaign_intro(ng-class="{'base_content': baseContent}")!= campaign.content
+                    .base_content_gradient(ng-show="baseContent" ng-click="toggleFold()")
                 if campaign.tags && campaign.tags.length > 0
                   h4.title 活动标签
                   .tags
