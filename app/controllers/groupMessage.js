@@ -258,12 +258,12 @@ exports.getMessage = function(req, res, next) {
             }
           break;
           case 9://部门内部活动
-            _group_message.logo = group_message[i].team[0].logo;
-            _group_message.team_id=group_message[i].team[0].teamid;
+            _group_message.logo = group_message[i].campaign.campaign_unit[0].team.logo;
+            _group_message.team_id=group_message[i].campaign.campaign_unit[0].team._id;
             if(group_message[i].campaign.active && join_role&& new Date()<group_message[i].campaign.deadline){
               var join_flag = false;
               group_message[i].campaign.members.forEach(function(member){
-                if(member.uid.toString() === req.user._id.toString()){
+                if(member._id.toString() === req.user._id.toString()){
                   join_flag = true;
                 }
               });
@@ -273,7 +273,7 @@ exports.getMessage = function(req, res, next) {
             }
             _group_message.campaign_flag = campaign_list.indexOf(group_message[i].campaign.campaign_type)>-1;
             break;
-          case 10:
+          case 10://部门间活动 暂时没有
             _group_message.logo = group_message[i].team[0].logo;
             _group_message.team_id=group_message[i].team[0].teamid;
             _group_message.member_num = group_message[i].campaign.members.length;
