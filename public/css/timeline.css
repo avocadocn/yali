@@ -218,11 +218,16 @@ Timeline UI Base
   border-radius: 0px;
   padding: 10px;
   color: #888;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 1px 1px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  -moz-box-shadow: 3px 3px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:before {
   content: '';
@@ -367,11 +372,27 @@ Timeline UI Base
   margin-left: -1px;
   width: 2px;
 }
+.user_timeline .dl_timeline .full_column {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  text-shadow: none;
+  position: relative;
+  margin: 10px 0px;
+  clear: both;
+  border-radius: 0px;
+  padding: 10px;
+  color: #888;
+  margin: 0;
+  text-align: center;
+}
 .user_timeline .dl_timeline .column {
   width: 50%;
 }
 .user_timeline .dl_timeline .column .timeline_element {
   width: 400px;
+  padding: 0;
+  border: none;
 }
 .user_timeline .dl_timeline .column .timeline_element:before {
   content: initial;
@@ -379,52 +400,98 @@ Timeline UI Base
 .user_timeline .dl_timeline .column .timeline_element:after {
   border: none;
   background-color: #999;
+  left: -34px;
+}
+.user_timeline .dl_timeline .column .timeline_element .timeline_head {
+  clear: both;
+  padding: 10px;
+  font-size: 14px;
+}
+.user_timeline .dl_timeline .column .timeline_element .comments {
+  clear: both;
+}
+.user_timeline .dl_timeline .column .timeline_element .comments a {
+  color: #ccc;
+}
+.user_timeline .dl_timeline .column .timeline_element .comments a.comment_num {
+  border-top: 1px solid #ccc;
+  display: inline-block;
+  color: #ccc;
+  width: 100%;
+  padding: 5px 10px;
+  text-align: right;
+}
+.user_timeline .dl_timeline .column .timeline_element .title {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding: 10px;
+}
+.user_timeline .dl_timeline .column .timeline_element .title .timeline-logo {
+  height: 30px;
+  width: 30px;
 }
 .user_timeline .dl_timeline .column .timeline_element .title .date {
-  width: 210px;
+  width: 100px;
+  line-height: 30px;
 }
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_1 .photo_0 {
-  width: 264px;
-  height: 264px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
-  width: 131px;
-  height: 131px;
-  margin-right: 1px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
-  margin-left: 1px;
-  margin-right: 0;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_0 {
-  width: 175px;
-  height: 175px;
-  margin-right: 1px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
-  width: 87px;
-  height: 87px;
-  margin-bottom: 1px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
-  margin-bottom: 0;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0 {
-  width: 263px;
-  height: 263px;
-  margin-bottom: 1px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_1,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_3 {
-  width: 87px;
-  height: 87px;
-  margin-right: 1px;
+.user_timeline .dl_timeline .column .timeline_element .title .name {
+  line-height: 30px;
+  margin: 0 10px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
 }
 .user_timeline .dl_timeline .column .timeline_element .img_scroll .photo {
   display: inline-block;
+  margin-right: 0;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_1 .photo_0 {
+  width: 400px;
+  height: 250px;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
+  width: 195px;
+  height: 180px;
+  float: left;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0 {
+  margin-right: 10px;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_0 {
+  width: 195px;
+  height: 290px;
+  margin-left: 10px;
+  float: right;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
+  width: 195px;
+  height: 140px;
+  float: right;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1 {
+  margin-bottom: 10px;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_3 {
+  width: 160px;
+  height: 145px;
+  margin-bottom: 5px;
+  float: left;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_1,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2 {
+  width: 230px;
+  height: 145px;
+  margin-bottom: 10px;
+  float: left;
+}
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0,
+.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2 {
+  margin-right: 10px;
 }
 .user_timeline .dl_timeline .column_right {
   margin-left: 0;

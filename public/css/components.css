@@ -228,6 +228,10 @@
 .rich_comment .component_body .pager li>a {
   border-radius: 0;
 }
+.simple_comment .component_body .comment_more a {
+  color: #3498db;
+  text-align: center;
+}
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
   background-color: #fbfbfb;

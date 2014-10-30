@@ -5,16 +5,18 @@ append headExt
 
 block panel
   .timeline_control(ng-controller="timelineController")
-      .control_year(ng-click="nowYear='0'")
-        span 现在
-      each years in newTimeLines
-        .control_year(ng-class="{'active_year':nowYear=='#{years[0][0].year}''}" ng-click="nowYear='#{years[0][0].year}'")
-          span= years[0][0].year
-          .months(ng-if="nowYear=='#{years[0][0].year}'")
-            each months in years
-              .control_month
-                a(ng-click="scrollTo('#{months[0].year}_#{months[0].month}')")
-                  span= months[0].month+'月'
+    .control_year(ng-class="{'active_year':nowYear=='timeline_0'}" ng-click="nowYear='timeline_0';scrollTo('timeline_0')")
+      span 现在
+    each years in newTimeLines
+      .control_year(ng-class="{'active_year':nowYear=='#{years[0][0].year}'}")
+        span(ng-click="nowYear='#{years[0][0].year}';scrollTo('#{years[0][0].year}_#{years[0][0].month}')")= years[0][0].year
+        .months(ng-if="nowYear=='#{years[0][0].year}'")
+          each months in years
+            .control_month
+              a.clearLinkUnderline(ng-class="{'active_month':nowMonth=='#{months[0].year}_#{months[0].month}'}" ng-click="scrollTo('#{months[0].year}_#{months[0].month}')")
+                span= months[0].month+'月'
+    .control_year(ng-class="{'active_year':nowYear=='timeline_1'}" ng-click="nowYear='timeline_1';scrollTo('timeline_1')")
+      span 最初
   .dl_info_container.base_info_container.clearfix
     .info_container.logo_container
       //-用户头像
@@ -58,14 +60,13 @@ block panel
     if user.teams.length>9
       .show_more(ng-cloak)
         a(ng-click="showMore=!showMore;") {{showMore ? '收缩':'展开'}}
-  .loading_div(ng-show = 'loading')
-  .user_timeline(ng-show = '!loading')
+  .user_timeline(when-scrolled="loadMore()")
     if length>0
       .dl_timeline
         .spine
         each years in newTimeLines
           each months in years
-            .date_separator(id='#{months[0].year}_#{months[0].month}')
+            .date_separator(id='#{months[0].year}_#{months[0].month}' ng-click="scrollTo('#{months[0].year}_#{months[0].month}')")
               span.span= months[0].year +'-'+ months[0].month
             .column.column_left
               each item,index in months
@@ -73,15 +74,31 @@ block panel
                   .timeline_element
                     .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                       a(href="/campaign/detail/#{item.id}",target="_blank")
-                        img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                        span.date= moment(item.start_time).format('MM/DD')
-                        span.head= item.head
+                        img.timeline-logo.pull-right(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                        span.name.pull-right= item.name
+                        span.date= moment(item.start_time).format('MM/DD/YYYY')
                     .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                       a(href="/campaign/detail/#{item.id}",target="_blank")
                         .img_scroll
                           div(class="photos_#{item.photo_list.length}")
                             each imgs,img_index in item.photo_list
-                              img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
+                              case (item.photo_list.length)
+                                when 1
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
+                                when 2
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
+                                when 3
+                                  if img_index == 0
+                                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
+                                  else
+                                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
+                                when 4
+                                  if img_index == 0 || img_index == 3
+                                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
+                                  else
+                                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
+                                default
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
                     .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
                       img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                       span.date= moment(item.start_time).format('MM/DD')
@@ -90,27 +107,60 @@ block panel
                       a(href="/campaign/detail/#{item.id}",target="_blank")
                         div(class="photos_#{item.photo_list.length}")
                           each imgs,img_index in item.photo_list
-                            img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
-                    //- div(ng-if="#{item.photo_list.length}===0")
-                    //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                    //-     a(href="/campaign/detail/#{item.id}",target="_blank")
-                    //-       p= item.content
-                    //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                    //-     p= item.content
+                            case (item.photo_list.length)
+                              when 1
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
+                              when 2
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
+                              when 3
+                                if img_index == 0
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
+                                else
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
+                              when 4
+                                if img_index == 0 || img_index == 3
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
+                                else
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
+                              default
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
+                    .timeline_head
+                      span= item.head
+                    if item.components.RichComment
+                      .comments
+                        a.clearLinkUnderline.pull-right.comment_num(ng-click="showComment='#{item.year}_#{item.month}_#{index}';") #{item.comment_sum}条评论
+                        .comment_list(ng-if="showComment=='#{item.year}_#{item.month}_#{index}'")
+                          simple-comment(component-id="#{item.components.RichComment[0]}" allow-publish="#{item.allow.publishComment}" comment-num=3)
             .column.column_right
               each item,index in months
                 if index%2
                   .timeline_element
                     .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                       a(href="/campaign/detail/#{item.id}",target="_blank")
-                        img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-                        span.date= moment(item.start_time).format('MM/DD')
-                        span.head= item.head
+                        img.timeline-logo.pull-right(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                        span.name.pull-right= item.name
+                        span.date= moment(item.start_time).format('MM/DD/YYYY')
                     .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                       a(href="/campaign/detail/#{item.id}",target="_blank")
                         div(class="photos_#{item.photo_list.length}")
                           each imgs,img_index in item.photo_list
-                            img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
+                            case (item.photo_list.length)
+                              when 1
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
+                              when 2
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
+                              when 3
+                                if img_index == 0
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
+                                else
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
+                              when 4
+                                if img_index == 0 || img_index == 3
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
+                                else
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
+                              default
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
                     .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
                       img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
                       span.date= moment(item.start_time).format('MM/DD')
@@ -119,13 +169,34 @@ block panel
                       a(href="/campaign/detail/#{item.id}",target="_blank")
                         div(class="photos_#{item.photo_list.length}")
                           each imgs,img_index in item.photo_list
-                            img.photo(class="photo_#{img_index}" src="#{imgs.uri}/263/263")
-                    //- div(ng-if="#{item.photo_list.length}===0")
-                    //-   .content(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-                    //-     a(href="/campaign/detail/#{item.id}",target="_blank")
-                    //-       p= item.content
-                    //-   .content(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                    //-     p= item.content
+                            case (item.photo_list.length)
+                              when 1
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
+                              when 2
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
+                              when 3
+                                if img_index == 0
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
+                                else
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
+                              when 4
+                                if img_index == 0 || img_index == 3
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
+                                else
+                                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
+                              default
+                                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
+                    .timeline_head
+                      span= item.head
+                    if item.components.RichComment
+                      .comments
+                        a.clearLinkUnderline.pull-right.comment_num(ng-click="showComment='#{item.year}_#{item.month}_#{index}';") {{nowCampaign.comment_sum}}条评论
+                        .comment_list(ng-if="showComment=='#{item.year}_#{item.month}_#{index}'")
+                          simple-comment(component-id="#{item.components.RichComment[0]}" allow-publish="#{item.allow.publishComment}" comment-num=3)
+        .date_separator(id='timeline_1')
+          span.span 初来乍到
+        .full_column
+          span #{moment(user.register_date).format('YYYY-MM-DD HH:mm')} 注册
     else
       .loademp.text-center #{__("NO_TIMELINE")}
 

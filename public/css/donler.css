@@ -228,6 +228,10 @@
 .rich_comment .component_body .pager li>a {
   border-radius: 0;
 }
+.simple_comment .component_body .comment_more a {
+  color: #3498db;
+  text-align: center;
+}
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
   background-color: #fbfbfb;
@@ -2822,9 +2826,9 @@ input.ng-invalid.ng-dirty {
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips {
   height: 50px;
-  -moz-box-shadow: 0 3px 3px #f4f4f4;
+  -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 0 3px 3px #f4f4f4;
+  box-shadow: 1px 1px 3px #ccc;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .join_sign {
   margin: 15px 20px;
@@ -2925,26 +2929,44 @@ input.ng-invalid.ng-dirty {
   left: 50%;
   margin-left: 415px;
   top: 70px;
-  font-size: 14px;
 }
 .user_page .dl_container .main .timeline_control .control_year {
   border-left: 6px solid #ccd3e1;
   padding-left: 6px;
   margin-bottom: 10px;
   font-size: 18px;
+  color: #ccd3e1;
+}
+.user_page .dl_container .main .timeline_control .control_year:hover {
+  border-left: 6px solid #ccc;
+  color: #ccc;
 }
 .user_page .dl_container .main .timeline_control .control_year .control_month {
   margin-left: 10px;
-  margin-bottom: 10px;
   text-align: center;
+}
+.user_page .dl_container .main .timeline_control .control_year .control_month a {
+  color: #ccd3e1;
+  font-size: 14px;
+}
+.user_page .dl_container .main .timeline_control .active_year {
+  color: #3ba3e0;
+  border-left: 6px solid #3ba3e0;
+}
+.user_page .dl_container .main .timeline_control .active_year:hover {
+  color: #3ba3e0;
+  border-left: 6px solid #3ba3e0;
+}
+.user_page .dl_container .main .timeline_control .active_year a.active_month {
+  color: #3ba3e0;
 }
 .user_page .dl_container .main .dl_info_container {
   background-color: #fff;
   width: 865px;
-  -moz-box-shadow: 3px 3px 3px #ccc;
-/* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ccc;
   margin-top: 10px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .main .dl_info_container .info_left {
   float: left;
@@ -3176,9 +3198,9 @@ input.ng-invalid.ng-dirty {
   background-color: #fff;
   float: left;
   margin: 5px 0;
-  -moz-box-shadow: 3px 3px 3px #ccc;
+  -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
   padding: 10px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
@@ -3483,10 +3505,6 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments a {
   color: #ccc;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments .comment_more a {
-  color: #3498db;
-  text-align: center;
-}
 .user_page .dl_container .main .campaigns_container .now_head {
   width: 700px;
   height: 33px;
@@ -3530,9 +3548,9 @@ input.ng-invalid.ng-dirty {
   font-size: 18px;
   padding: 10px;
   margin-top: 10px;
-  -moz-box-shadow: 3px 3px 3px #ccc;
+  -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .old_campaign_container a label {
   font-size: 18px;
@@ -3574,9 +3592,9 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .side .groupsbox {
   margin-top: 10px;
-  -moz-box-shadow: 3px 3px 3px #ccc;
+  -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
   padding: 20px 10px;
 }
 .user_page .dl_container .side .groupsbox .infobox .head_title {
@@ -3607,9 +3625,9 @@ input.ng-invalid.ng-dirty {
   color: #ccc;
 }
 .user_page .dl_container .schedule_small {
-  -moz-box-shadow: 3px 3px 3px #ccc;
+  -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
-  box-shadow: 3px 3px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .schedule_small .schedulebox {
   padding: 0;

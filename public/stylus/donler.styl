@@ -1,6 +1,9 @@
 @require('variables')
 @require('components')
 
+dl_shadow()
+  -moz-box-shadow 1px 1px 3px secondaryfontColor /* 老的 Firefox */
+  box-shadow 1px 1px 3px secondaryfontColor
 
 html, body
   height 100%
@@ -1991,8 +1994,7 @@ input.ng-invalid.ng-dirty
               height 65px
           .calendar_tips
             height 50px
-            -moz-box-shadow 0 3px 3px borderColor /* 老的 Firefox */
-            box-shadow 0 3px 3px borderColor
+            dl_shadow()
             .join_sign
               margin 15px 20px
             .campaign_label
@@ -2078,22 +2080,34 @@ input.ng-invalid.ng-dirty
         left 50%
         margin-left 415px
         top 70px
-        font-size 14px
         .control_year
           border-left 6px solid #CCD3E1
           padding-left 6px
           margin-bottom 10px
           font-size 18px
+          color #CCD3E1
+          &:hover
+            border-left 6px solid #ccc
+            color #ccc
           .control_month
             margin-left 10px
-            margin-bottom 10px
             text-align center
+            a
+              color #CCD3E1
+              font-size 14px
+        .active_year
+          color #3ba3e0
+          border-left 6px solid #3ba3e0
+          &:hover
+            color #3ba3e0
+            border-left 6px solid #3ba3e0
+          a.active_month
+            color #3ba3e0
       .dl_info_container
         background-color #fff
         width 865px
-        -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
-        box-shadow 3px 3px 3px secondaryfontColor
         margin-top 10px
+        dl_shadow()
         .info_left
           float left
           width 15%
@@ -2282,8 +2296,7 @@ input.ng-invalid.ng-dirty
           background-color #ffffff
           float left
           margin 5px 0
-          -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
-          box-shadow 3px 3px 3px secondaryfontColor
+          dl_shadow()
           padding 10px
           .campaign
             clear both
@@ -2523,10 +2536,6 @@ input.ng-invalid.ng-dirty
               clear both
               a
                 color secondaryfontColor
-              .comment_more
-                a
-                  color themeColor
-                  text-align center
         .now_head
           width 700px
           height 33px
@@ -2564,8 +2573,7 @@ input.ng-invalid.ng-dirty
         font-size 18px
         padding 10px
         margin-top 10px
-        -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
-        box-shadow 3px 3px 3px secondaryfontColor
+        dl_shadow()
         a
           label
             font-size 18px
@@ -2600,8 +2608,7 @@ input.ng-invalid.ng-dirty
           margin-right 10px
       .groupsbox
         margin-top 10px
-        -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
-        box-shadow 3px 3px 3px secondaryfontColor
+        dl_shadow()
         padding 20px 10px
         .infobox
           .head_title
@@ -2626,8 +2633,7 @@ input.ng-invalid.ng-dirty
               a
                 color #ccc
     .schedule_small
-      -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
-      box-shadow 3px 3px 3px secondaryfontColor
+      dl_shadow()
       .schedulebox
         padding 0
         border none

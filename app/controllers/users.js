@@ -36,8 +36,8 @@ var encrypt = require('../middlewares/encrypt'),
   meanConfig = require('../../config/config'),
   message = require('../language/zh-cn/message'),
   model_helper = require('../helpers/model_helper'),
-  photo_album_controller = require('./photoAlbum');
-
+  photo_album_controller = require('./photoAlbum'),
+  auth = require('../services/auth');
 
 
 
@@ -834,21 +834,26 @@ exports.timeLine = function(req,res){
       var newTimeLines = [];
       // todo new time style
       campaigns.forEach(function(campaign) {
-        var _head,_logo;
+        var _head,_logo,_name;
         var ct = campaign.campaign_type;
         
         //公司活动
         if(ct===1){
           // _head = '公司活动';
           _logo = campaign.campaign_unit[0].company.logo;
+          _name = campaign.campaign_unit[0].company.name
         }
         //多队
         else if(ct!==6&&ct!==2){
           // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
           for(var i = 0;i<campaign.campaign_unit.length;i++){
             var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].member,uid,'_id');
-            if(index>-1)
+            if(index>-1){
               _logo = campaign.campaign_unit[i].team.logo;
+              _name = campaign.campaign_unit[i].team.name;
+              break;
+            }
+
           }
           // _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
         }
@@ -856,15 +861,21 @@ exports.timeLine = function(req,res){
         else {
           // _head = campaign.compaign_unit.team.name + '活动';
           _logo = campaign.campaign_unit[0].team.logo;
+          _name = campaign.campaign_unit[0].team.name;
         }
         var _endTime = new Date(campaign.end_time);
         var _groupYear = _endTime.getFullYear();
         var _groupMonth = _endTime.getMonth()+1;
+        var memberIds = [];
+        campaign.members.forEach(function (member) {
+          memberIds.push(member._id);
+        });
         var tempObj = {
           id: campaign._id,
           //head: _head,//???
           head:campaign.theme,
           logo:_logo,
+          name:_name,
           content: campaign.content,
           location: campaign.location,
           group_type: campaign.group_type,
@@ -872,8 +883,18 @@ exports.timeLine = function(req,res){
           provoke:ct===4||ct===5||ct===7||ct===9,
           year: _groupYear,
           month:_groupMonth,
+          comment_sum:campaign.comment_sum,
           photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)
         }
+        tempObj.components = campaign.formatComponents();
+        var allow = auth(req.user, {
+          companies: campaign.cid,
+          teams: campaign.tid,
+          users: memberIds
+        }, [
+          'publishComment'
+        ]);
+        tempObj.allow = allow;
         // todo new time style
         // console.log(campaign);
         // function getYear(dates) {
