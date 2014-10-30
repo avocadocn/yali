@@ -4047,7 +4047,7 @@ Timeline UI Base
 }
 .dl_timeline .column_left .timeline_element:after {
   top: 10px;
-  right: -35px;
+  right: -34px;
 }
 .dl_timeline .column_right {
   float: left;
@@ -4064,7 +4064,7 @@ Timeline UI Base
 }
 .dl_timeline .column_right .timeline_element:after {
   top: 10px;
-  left: -35px;
+  left: -34px;
 }
 .dl_timeline .date_separator {
   clear: both;
@@ -4130,7 +4130,6 @@ Timeline UI Base
 .user_timeline .dl_timeline .column .timeline_element:after {
   border: none;
   background-color: #999;
-  left: -34px;
 }
 .user_timeline .dl_timeline .column .timeline_element .timeline_head {
   clear: both;
