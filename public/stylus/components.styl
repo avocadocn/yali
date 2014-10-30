@@ -368,8 +368,57 @@ loading()
         line-height 14px
 
 
-
-
+.image_box
+  .thumb
+    width 350px
+    clearfix()
+    .multi
+      display block
+      float left
+      margin-bottom 5px
+      margin-right 5px
+      width 100px
+      height 100px
+  .preview
+    padding 10px
+    background-color #f4f4f4
+    overflow hidden
+    .operator
+      clearfix()
+      padding-bottom 10px
+      .dl_close
+        font-size 15px
+        .icon_close
+          width 15px
+          height 15px
+    .image_container
+      position relative
+      .preview_img
+        display block
+        margin-left auto
+        margin-right auto
+        max-width 100%
+      .operator
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        display -webkit-flex
+        display flex
+        z-index 1
+        .img_pre
+          -webkit-flex 1
+          flex 1
+        .img_small
+          -webkit-flex 2
+          flex 2
+        .img_next
+          -webkit-flex 1
+          flex 1
+    .image_nav
+      width 8000px
+      height 80px
 
 
 

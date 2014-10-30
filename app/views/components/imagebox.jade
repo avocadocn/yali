@@ -1,0 +1,15 @@
+.image_box(ng-if="images.length > 0")
+  .thumb(ng-if="isPreview===false")
+    img.single.cursor_big(ng-if="images.length===1" ng-src="{{images[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-click="preview(0)")
+    img.multi.cursor_big(ng-if="images.length>1" ng-repeat="image in images.slice(0,9)" ng-src="{{image.uri}}/resize/100/100" onError="this.src='/img/not_found.jpg';" ng-click="preview($index)")
+  .preview(ng-if="isPreview===true")
+    .operator
+      button.close.dl_close(data-dismiss="modal" aria-hidden="true" ng-click="close()")
+        img.icon_close(src="/img/icons/icon_close.png")
+    .image_container
+      img.preview_img(ng-src="{{previewImg}}" onError="this.src='/img/not_found.jpg';")
+      .operator
+        .img_pre.cursor_prev(ng-if="prevIndex!=thisIndex" ng-click="prev()")
+        .img_small.cursor_small(ng-click="close()")
+        .img_next.cursor_next(ng-if="nextIndex!=thisIndex" ng-click="next()")
+    .image_nav(ng-if="images.length > 1")
