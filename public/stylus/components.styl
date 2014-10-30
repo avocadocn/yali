@@ -18,6 +18,18 @@ clearfix()
 loading()
   background url(/img/loading.gif) center center no-repeat
 
+centerImg()
+  display block
+  text-align center
+  white-space nowrap
+  &:after
+    display inline-block
+    height 100%
+    vertical-align middle
+    content " "
+  img
+    vertical-align middle
+
 .rich_comment
   .component_head
     background-color #97d7c6 !important
@@ -383,7 +395,7 @@ loading()
     padding 10px
     background-color #f4f4f4
     overflow hidden
-    .operator
+    .operator_nav
       clearfix()
       padding-bottom 10px
       .dl_close
@@ -398,7 +410,7 @@ loading()
         margin-left auto
         margin-right auto
         max-width 100%
-      .operator
+      .operator_wrap
         position absolute
         top 0
         left 0
@@ -417,8 +429,31 @@ loading()
           -webkit-flex 1
           flex 1
     .image_nav
-      width 8000px
-      height 80px
+      display -webkit-flex-
+      display flex
+      margin-top 10px
+      .prev, .next
+        width 20px
+        height 60px
+      .thumb_box
+        -webkit-flex 1
+        flex 1
+        overflow hidden
+        .thumb_box_inner
+          clearfix()
+          width 8000px
+          height 60px
+          .border
+            centerImg()
+            float left
+            width 60px
+            height 60px
+            &:hover
+              border 1px solid #3498db
+            .nav_thumb
+              width 56px
+              height 56px
+
 
 
 
