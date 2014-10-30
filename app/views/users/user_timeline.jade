@@ -60,7 +60,7 @@ block panel
     if user.teams.length>9
       .show_more(ng-cloak)
         a(ng-click="showMore=!showMore;") {{showMore ? '收缩':'展开'}}
-  .user_timeline(when-scrolled="loadMore()")
+  .user_timeline(when-scrolled="loadMore" select-class="date_separator")
     if length>0
       .dl_timeline
         .spine

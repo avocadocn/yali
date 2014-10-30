@@ -58,25 +58,36 @@ timeline.service('anchorSmoothScroll', function(){
     };
     
 });
-timeline.directive('whenScrolled', function() {
+timeline.directive('whenScrolled', function($window) {
     return function(scope, elm, attr) {
         var raw = elm[0];
-        
-        elm.bind('scroll', function() {
-            if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
-                scope.$apply(attr.whenScrolled);
+        var selectClass=angular.element(raw).attr('select-class');
+        angular.element($window).bind('scroll', function() {
+            var _scrollTop = angular.element($window).scrollTop()
+            var selectedEle = angular.element('.'+selectClass);
+            var nearestEle = selectedEle[0];
+            for(var i = 0; i<selectedEle.length;i++){
+                var _temp = selectedEle[i];
+                if(_scrollTop > _temp.offsetTop && nearestEle.offsetTop < _temp.offsetTop){
+                    nearestEle = _temp;
+                }
             }
+            scope.$apply(attr.whenScrolled+"(\'"+nearestEle.id+"\')");
         });
     };
 });
 
 timeline.controller('timelineController', function ($scope, $http, $location, $rootScope,anchorSmoothScroll) {
   $rootScope.nowYear='timeline_0';
-
   $rootScope.scrollTo =function(id){
     $rootScope.nowMonth = id;
     $location.hash(id);
     anchorSmoothScroll.scrollTo(id);
   }
-
+  $rootScope.loadMore = function (id) {
+      // console.log(i++);
+      var temp = id.split('_');
+      $rootScope.nowYear = temp[0];
+      $rootScope.nowMonth = id;
+  }
 });
