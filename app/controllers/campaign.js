@@ -1321,6 +1321,7 @@ exports.renderCampaignDetail = function (req, res, next) {
   campaign.members.forEach(function (member) {
     memberIds.push(member._id);
   });
+
   var allow = auth(req.user, {
     companies: campaign.cid,
     teams: campaign.tid,
@@ -1330,6 +1331,7 @@ exports.renderCampaignDetail = function (req, res, next) {
     'editTeamCampaign',
     'editCompanyCampaign'
   ]);
+
 
   // 公司活动
   var ct = campaign.campaign_type;
@@ -1346,6 +1348,7 @@ exports.renderCampaignDetail = function (req, res, next) {
     ]);
     allow.edit = allow_competition.editTeamCampaign;
   }
+
   //如果能编辑并且参数status为editing,则页面一进去就能编辑(用于刚发完活动)
   var editing = false;
   if(allow.edit){
@@ -1445,6 +1448,7 @@ exports.renderCampaignDetail = function (req, res, next) {
       }
     }
   };
+
   //是否能加入&link
   if(campaign.campaign_type===1){
     var canjoin = auth(req.user,{companies:campaign.cid},['joinCompanyCampaign']);
@@ -1455,7 +1459,7 @@ exports.renderCampaignDetail = function (req, res, next) {
   }
   else{
     for(var i = 0;i<campaign.campaign_unit.length;i++){
-      var canjoin = auth(req.user,{teams:[campaign.campaign_unit[i].team._id]},['joinTeamCampaign']);
+      var canjoin = auth(req.user,{companies:campaign.cid, teams:[campaign.campaign_unit[i].team._id]},['joinTeamCampaign']);
       if(canjoin.joinTeamCampaign===true){
         campaign.campaign_unit[i].canjoin=true;
       }
@@ -1463,6 +1467,7 @@ exports.renderCampaignDetail = function (req, res, next) {
       campaign.campaign_unit[i].link="/group/page/"+campaign.campaign_unit[i].team._id;
     }
   }
+
   res.render('campaign/campaign_detail', {
     campaign: campaign,
     components: campaign.formatComponents(),

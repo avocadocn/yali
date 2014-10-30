@@ -72,7 +72,7 @@ var registeredTasks = {
  * @param {Object} user req.user
  * @param {Object} owner 资源的所属者, 部门资源视为部门的组的资源
  *  owner: {
- *    companies: [{Mongoose.Schema.Types.ObjectId|String}],
+ *    companies: [{Mongoose.Schema.Types.ObjectId|String}],(必需)
  *    teams: [{Mongoose.Schema.Types.ObjectId|String}],
  *    users: [{Mongoose.Schema.Types.ObjectId|String}]
  *  }
@@ -186,7 +186,7 @@ var _auth = function (role, tasks) {
  * @param user req.user
  * @param owner 资源的所属者, 部门资源视为部门的组的资源
  *  owner: {
- *    companies: [{Mongoose.Schema.Types.ObjectId|String}],
+ *    companies: [{Mongoose.Schema.Types.ObjectId|String}], (必需)
  *    teams: [{Mongoose.Schema.Types.ObjectId|String}],
  *    users: [{Mongoose.Schema.Types.ObjectId|String}]
  *  }
