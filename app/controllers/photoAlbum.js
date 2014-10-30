@@ -23,6 +23,7 @@ var multiparty = require('multiparty');
 
 // custom
 var config = require('../../config/config');
+var auth = require('../services/auth');
 
 
 exports.getPhotoAlbum = function (req, res, next) {
@@ -1344,19 +1345,30 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
   .exec()
   .then(function(photo_album) {
     if (!photo_album) {
-      res.status(404)
+      res.status(404);
       return next('not found');
     }
-    var photos = getShowPhotos(photo_album);
-    var owner = getPhotoAlbumOwner(req.user, photo_album);
-    var editAuth = photoAlbumEditAuth(req.user, photo_album);
-    var deleteAuth = photoAlbumDeleteAuth(req.user, photo_album);
-    var uploadAuth = photoUploadAuth(req.user, photo_album);
-    if (req.user.provider === 'user' && req.user.cid.toString() !== owner.company._id.toString()
-      || req.user.provider === 'company' && req.user._id.toString() !== owner.company._id.toString()) {
+
+    var allow = auth(req.user, {
+      companies: photo_album.populated('owner.companies'),
+      teams: photo_album.populated('owner.teams')
+    }, ['publishComment', 'uploadPhoto', 'visitPhotoAlbum']);
+    if (!allow.visitPhotoAlbum) {
       res.status(403);
       return next('forbidden');
     }
+
+    var canCommentCampaign = false; // 在传图片时是否可以同时在活动讨论区自动生成评论
+    if (allow.publishComment && photo_album.owner.model.type === 'Campaign') {
+      canCommentCampaign = true;
+    }
+
+    var photos = getShowPhotos(photo_album);
+    var owner = getPhotoAlbumOwner(req.user, photo_album);
+    // todo 编辑和删除的权限判断有些特殊，以后再改为使用auth权限系统判断
+    var editAuth = photoAlbumEditAuth(req.user, photo_album);
+    var deleteAuth = photoAlbumDeleteAuth(req.user, photo_album);
+
     if (!owner.team || owner.team.length === 0) {
       var links = [
         {
@@ -1408,7 +1420,8 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
       moment: moment,
       editAuth: editAuth,
       deleteAuth: deleteAuth,
-      uploadAuth: uploadAuth,
+      allow: allow,
+      canCommentCampaign: canCommentCampaign,
       links: links
     });
   })

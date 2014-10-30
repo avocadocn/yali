@@ -11,6 +11,7 @@ angular.module('donler')
       type: data.ownerModelType,
       id: data.ownerModelId
     };
+    var canCommentCampaign = data.commentCampaign === 'true';
 
     var photo_album = new PhotoAlbum($scope.photo_album_id);
 
@@ -58,7 +59,6 @@ angular.module('donler')
 
     };
 
-    var uploadedPhotos = [];
     var uploader = $scope.uploader = new FileUploader({
       url: '/photoAlbum/' + $scope.photo_album_id + '/photo/single'
     });
@@ -73,24 +73,21 @@ angular.module('donler')
       }
     });
 
-    uploader.onSuccessItem = function (item, data, status, headers) {
-      uploadedPhotos.push(data.photo);
-    };
-
     uploader.onCompleteAll = function() {
       getPhotos();
       // 上传完照片后，再发送一个文本内容为空的评论。
-      Comment.publish({
-        host_id: ownerModel.id,
-        host_type: ownerModel.type,
-        photos: uploadedPhotos,
-        content: ''
-      }, function (err) {
-        // 不需要向用户提示失败（用户只是在上传照片，而该操作已成功，发评论失败与此无关），在控制台输出错误信息即可。
-        if (err) {
-          console.log(err);
-        }
-      });
+      if (canCommentCampaign) {
+        Comment.publish({
+          host_id: ownerModel.id,
+          host_type: ownerModel.type,
+          content: ''
+        }, function (err) {
+          // 不需要向用户提示失败（用户只是在上传照片，而该操作已成功，发评论失败与此无关），在控制台输出错误信息即可。
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
     };
 
     uploader.onAfterAddingFile = function(item) {

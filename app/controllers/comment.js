@@ -165,6 +165,35 @@ exports.getComment = function (req, res) {
 
 }
 
+exports.canPublishComment = function (req, res, next) {
+  var host_id = req.body.host_id;
+  var host_type = req.body.host_type.toLowerCase();
+  switch (host_type) {
+  case 'campaign':
+    Campaign.findById(host_id).exec()
+    .then(function (campaign) {
+      if (!campaign) {
+        return res.send(403);
+      }
+      var allow = auth(req.user, {
+        companies: campaign.cid,
+        teams: campaign.tid
+      }, ['publishComment']);
+      if (allow.publishComment === false) {
+        return res.send(403);
+      } else {
+        next();
+      }
+    })
+    .then(null, function (err) {
+      next(err);
+    });
+    break;
+  default:
+    return res.send(403);
+  }
+};
+
 //发表留言
 exports.setComment = function (req, res) {
   // 非Guest、非HR都能发表
@@ -200,13 +229,6 @@ exports.setComment = function (req, res) {
     req.session.uploadData = null;
   }
 
-  // if (req.body.photos && req.body.photos.length > 0) {
-  //   //var max = Math.min(9, req.body.photos.length);
-  //   comment.photos = [];
-  //   for (var i = 0; i < req.body.photos.length; i++) {
-  //     comment.photos.push(req.body.photos[i]);
-  //   }
-  // }
   comment.save(function (err) {
     if (err) {
       console.log('COMMENT_PUSH_ERROR', err);

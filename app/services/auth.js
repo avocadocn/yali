@@ -63,6 +63,13 @@ var registeredTasks = {
   dealProvoke: {
     company: ['hr'],
     team: ['leader']
+  },
+  uploadPhoto: {
+    company: ['hr'],
+    team: ['leader', 'member']
+  },
+  visitPhotoAlbum: {
+    company: ['hr', 'member']
   }
 };
 
@@ -90,9 +97,11 @@ var getRole = function (user, owner) {
   if (!user) { return role; }
 
   if (user.provider === 'company') {
-    for (var i = 0; i < owner.companies.length; i++) {
-      if (user._id.toString() === owner.companies[i].toString()) {
-        role.company = 'hr';
+    if (owner.companies) {
+      for (var i = 0; i < owner.companies.length; i++) {
+        if (user._id.toString() === owner.companies[i].toString()) {
+          role.company = 'hr';
+        }
       }
     }
   } else if (user.provider === 'user') {
