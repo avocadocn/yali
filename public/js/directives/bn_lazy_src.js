@@ -22,7 +22,7 @@ angular.module('donler').directive(
       // I cache the window element as a jQuery reference.
       var win = $($window);
 
-      // I cache the document document height so that 
+      // I cache the document document height so that
       // we can respond to changes in the height due to
       // dynamic content.
       var doc = $document;
@@ -30,8 +30,8 @@ angular.module('donler').directive(
       var documentTimer = null;
       var documentDelay = 2000;
 
-      // I determine if the window dimension events 
-      // (ie. resize, scroll) are currenlty being 
+      // I determine if the window dimension events
+      // (ie. resize, scroll) are currenlty being
       // monitored for changes.
       var isWatchingWindow = false;
 
@@ -78,7 +78,7 @@ angular.module('donler').directive(
         }
 
         // If removing the given image has cleared the
-        // render queue, then we can stop monitoring 
+        // render queue, then we can stop monitoring
         // the window and the image queue.
         if (!images.length) {
 
@@ -99,8 +99,8 @@ angular.module('donler').directive(
       // I check the document height to see if it's changed.
       function checkDocumentHeight() {
 
-        // If the render time is currently active, then 
-        // don't bother getting the document height - 
+        // If the render time is currently active, then
+        // don't bother getting the document height -
         // it won't actually do anything.
         if (renderTimer) {
 
@@ -110,7 +110,7 @@ angular.module('donler').directive(
 
         var currentDocumentHeight = doc.height();
 
-        // If the height has not changed, then ignore - 
+        // If the height has not changed, then ignore -
         // no more images could have come into view.
         if (currentDocumentHeight === documentHeight) {
 
@@ -126,13 +126,13 @@ angular.module('donler').directive(
       }
 
 
-      // I check the lazy-load images that have yet to 
-      // be rendered. 
+      // I check the lazy-load images that have yet to
+      // be rendered.
       function checkImages() {
 
-        // Log here so we can see how often this 
+        // Log here so we can see how often this
         // gets called during page activity.
-        console.log("Checking for visible images...");
+        // console.log("Checking for visible images...");
 
         var visible = [];
         var hidden = [];
@@ -172,7 +172,7 @@ angular.module('donler').directive(
 
         }
 
-        // Keep the still-hidden images as the new 
+        // Keep the still-hidden images as the new
         // image queue to be monitored.
         images = hidden;
 
@@ -191,7 +191,7 @@ angular.module('donler').directive(
       }
 
 
-      // I clear the render timer so that we can easily 
+      // I clear the render timer so that we can easily
       // check to see if the timer is running.
       function clearRenderTimer() {
 
@@ -203,7 +203,7 @@ angular.module('donler').directive(
 
 
       // I start the render time, allowing more images to
-      // be added to the images queue before the render 
+      // be added to the images queue before the render
       // action is executed.
       function startRenderTimer() {
 
@@ -270,17 +270,17 @@ angular.module('donler').directive(
     // I represent a single lazy-load image.
     function LazyImage(element) {
 
-      // I am the interpolated LAZY SRC attribute of 
-      // the image as reported by AngularJS.          
+      // I am the interpolated LAZY SRC attribute of
+      // the image as reported by AngularJS.
       var source = null;
 
-      // I determine if the image has already been 
+      // I determine if the image has already been
       // rendered (ie, that it has been exposed to the
       // viewport and the source had been loaded).
       var isRendered = false;
 
-      // I am the cached height of the element. We are 
-      // going to assume that the image doesn't change 
+      // I am the cached height of the element. We are
+      // going to assume that the image doesn't change
       // height over time.
       var height = null;
 
@@ -290,11 +290,11 @@ angular.module('donler').directive(
       // ---
 
 
-      // I determine if the element is above the given 
+      // I determine if the element is above the given
       // fold of the page.
       function isVisible(topFoldOffset, bottomFoldOffset) {
 
-        // If the element is not visible because it 
+        // If the element is not visible because it
         // is hidden, don't bother testing it.
         if (!element.is(":visible")) {
 
@@ -302,7 +302,7 @@ angular.module('donler').directive(
 
         }
 
-        // If the height has not yet been calculated, 
+        // If the height has not yet been calculated,
         // the cache it for the duration of the page.
         if (height === null) {
 
@@ -366,7 +366,7 @@ angular.module('donler').directive(
       // ---
 
 
-      // I load the lazy source value into the actual 
+      // I load the lazy source value into the actual
       // source value of the image element.
       function renderSource() {
 
@@ -400,7 +400,7 @@ angular.module('donler').directive(
 
 
       // Since the lazy-src will likely need some sort
-      // of string interpolation, we don't want to 
+      // of string interpolation, we don't want to
       attributes.$observe(
         "bnLazySrc",
         function(newSource) {

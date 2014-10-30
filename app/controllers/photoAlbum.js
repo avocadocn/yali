@@ -864,7 +864,35 @@ exports.createSinglePhoto = function(req, res, next) {
                 console.log(err);
                 return res.send(500);
               }
+
+              // 将照片_id和uri及第一张图的上传日期存入session
+              // 在1分钟内，发表评论时，如果该session值存在，则将图片信息存入评论中
+              // 发表完评论后清除session，或是再次上传图片时，超过1分钟，清除上次的session
+
+              // 判断session是否存在，是否过期，新建session
+              var now = Date.now();
+              if (!req.session.uploadData) {
+                req.session.uploadData = {
+                  date: now,
+                  photos: []
+                };
+              }
+              var aMinuteAgo = now - moment.duration(1, 'minutes').valueOf();
+              aMinuteAgo = new Date(aMinuteAgo);
+
+              // 超过一分钟，重置数据
+              if (aMinuteAgo > req.session.uploadData.date) {
+                req.session.uploadData.date = now;
+                req.session.uploadData.photos = [];
+              }
+
               var new_photo = req.photo_album.photos[req.photo_album.photos.length - 1];
+              // 保存photo信息到session中
+              req.session.uploadData.photos.push({
+                _id: new_photo._id,
+                uri: new_photo.uri
+              });
+
               return res.send({
                 result: 1,
                 msg: '上传成功',

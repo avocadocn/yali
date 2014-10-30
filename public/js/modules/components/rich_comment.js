@@ -47,10 +47,8 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         var self = this;
         if (self.uploader.getNotUploadedItems().length > 0) {
           if (!this.uploader.url || this.uploader.url === '') return;
-          self.upload_photos = [];
           self.uploader.uploadAll();
           self.uploader.onSuccessItem = function (item, data, status, headers) {
-            self.upload_photos.push(data.photo);
             if($scope.afterRender){
               $timeout(function () {
                 $scope.afterRender();
@@ -61,8 +59,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             Comment.publish({
               host_id: self.host_id,
               host_type: self.host_type,
-              content: content,
-              photos: self.upload_photos
+              content: content
             }, function (err, comment) {
               self.uploader.clearQueue();
               callback(err, comment);

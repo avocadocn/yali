@@ -187,13 +187,26 @@ exports.setComment = function (req, res) {
   comment.content = content;
   comment.host_id = host_id;
   comment.poster = poster;
-  if (req.body.photos && req.body.photos.length > 0) {
-    //var max = Math.min(9, req.body.photos.length);
-    comment.photos = [];
-    for (var i = 0; i < req.body.photos.length; i++) {
-      comment.photos.push(req.body.photos[i]);
+
+  if (req.session.uploadData) {
+    // 如果有上传照片的数据，依然要判断是否过期
+    var aMinuteAgo = Date.now() - moment.duration(1, 'minutes').valueOf();
+    aMinuteAgo = new Date(aMinuteAgo);
+
+    if (aMinuteAgo <= req.session.uploadData.date) {
+      // 在一分钟之内，上传的照片有效
+      comment.photos = req.session.uploadData.photos;
     }
+    req.session.uploadData = null;
   }
+
+  // if (req.body.photos && req.body.photos.length > 0) {
+  //   //var max = Math.min(9, req.body.photos.length);
+  //   comment.photos = [];
+  //   for (var i = 0; i < req.body.photos.length; i++) {
+  //     comment.photos.push(req.body.photos[i]);
+  //   }
+  // }
   comment.save(function (err) {
     if (err) {
       console.log('COMMENT_PUSH_ERROR', err);

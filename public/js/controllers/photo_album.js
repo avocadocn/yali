@@ -5,7 +5,6 @@ angular.module('donler')
 .controller('PhotoAlbumDetailCtrl', ['$scope', 'PhotoAlbum', 'Comment', 'FileUploader',
   function($scope, PhotoAlbum, Comment, FileUploader) {
 
-    //$scope.photo_album_id = window.location.pathname.match(/photoAlbum\/([\w]+)\/detailView/)[1];
     var data = document.getElementById('data').dataset;
     $scope.photo_album_id = data.albumId;
     var ownerModel = {
