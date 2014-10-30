@@ -3,7 +3,6 @@ extends ../layouts/manager
 append headExt
   link(rel="stylesheet" href="/css/photo_album.css")
   link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
-  link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
 
 block baseInfo
   .dl_container.clearfix
@@ -85,7 +84,7 @@ block panel
     include ../partials/report_modal
     if role ==='HR' || role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        include ../campaign/campaign_modal
+        include ../campaign/campaign_modal_base
     if (role ==='MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER')
       div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
@@ -113,4 +112,3 @@ append footExt
   script(src="/lib/jquery-form/jquery.form.js")
   script(src="/js/jquery.Jcrop.min.js")
   script(src="/js/controllers/tabviewGroup.js")
-  script(src="/js/bootstrap-tagsinput.js")

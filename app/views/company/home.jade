@@ -80,7 +80,7 @@ block panel
   if role === 'HR'
     div(ng-init="cid='#{cid}'" ng-controller="SponsorController" )
       .modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        include ../campaign/campaign_modal
+        include ../campaign/campaign_modal_base
       .modal.fade#dOtSearchModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/search_dot_modal
   #bottom

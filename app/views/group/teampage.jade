@@ -5,7 +5,6 @@ append headExt
   link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
   link(rel="stylesheet" href="/lib/bootstrap-calendar/css/calendar.css")
   link(rel="stylesheet" href="/css/custom_calendar.css")
-  link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
 block baseInfo
   .dl_container.clearfix
     .aside
@@ -87,7 +86,7 @@ block panel
     div(ng-view)
     if role ==='HR' || role ==='LEADER'
       div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-        include ../campaign/campaign_modal
+        include ../campaign/campaign_modal_base
     if (role ==='MEMBER' || role ==='LEADER' || role === 'MEMBERLEADER')
       div.modal.fade#quitGroupModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
         include ../partials/quitGroup_modal
@@ -186,5 +185,3 @@ append footExt
   script(src="/lib/underscore/underscore.js")
   script(src="/js/language/zh-CN.js")
   script(src="/lib/bootstrap-calendar/js/calendar.js")
-  script(src="/js/bootstrap-tagsinput.js")
-  //-script(src="/js/donler-carousel.js")

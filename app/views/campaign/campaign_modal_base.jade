@@ -1,0 +1,6 @@
+link(rel="stylesheet" href="/css/modal.css")
+.modal-dialog
+  .dl_campaign_modal(ng-show='modal===1')
+    include search_myteam_modal
+  .dl_campaign_modal(ng-show='modal!==1')
+    include campaign_modal

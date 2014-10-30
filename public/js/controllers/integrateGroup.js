@@ -144,17 +144,6 @@ var messageConcat = function(messages,rootScope,scope,reset){
 integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','Campaign',function($http, $scope, $rootScope, Campaign) {
     $scope.showMapFlag=false;
 
-    $scope.$watch('member_max + member_min',function(newValue,oldValue){
-        if($scope.member_max<$scope.member_min){
-            $scope.campaign_form.$setValidity('ngMin', false);
-            $scope.campaign_form.$setValidity('ngMax', false);
-        }
-        else{
-            $scope.campaign_form.$setValidity('ngMin', true);
-            $scope.campaign_form.$setValidity('ngMax', true);
-        };
-    });
-
     //打开发活动modal时
     $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
         if(!$scope.moldsgot){
@@ -186,12 +175,6 @@ integrateGroup.controller('SponsorController', ['$http', '$scope','$rootScope','
             var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
             $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
             $('#start_time').datetimepicker('setEndDate', dateUTC);
-            $('#deadline').datetimepicker('setEndDate', dateUTC);
-        });
-        $("#deadline").on("changeDate",function (ev) {
-            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-            $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-            $('#end_time').datetimepicker('setEndDate', dateUTC);
         });
     });
 
@@ -702,10 +685,10 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
             $scope.modal = 2;
             Campaign.getLedTeams($rootScope.teamId,function(status,teamdata){
                 if(!status){
-                    $scope.similarTeams = teamdata.teams;
+                    $scope.ledTeams = teamdata.teams;
                     if(teams.length===1){
                         $scope.modal=3;
-                        $scope.team_opposite = $scope.similarTeams[0];
+                        $scope.team_opposite = $scope.ledTeams[0];
                         Campaign.getMolds('team',$rootScope.teamId,function(status,data){
                             if(!status){
                                 $scope.mold = data.molds[0].name;
@@ -741,14 +724,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
     });
     $("#competition_end_time").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
         $('#competition_start_time').datetimepicker('setEndDate', dateUTC);
-        $('#competition_deadline').datetimepicker('setEndDate', dateUTC);
-    });
-    $("#competition_deadline").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#end_time').datetimepicker('setEndDate', dateUTC);
     });
     
     $scope.recommandTeam = function(){
@@ -964,7 +940,7 @@ integrateGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','
             });
         }
         else{//到对方队动
-            $scope.team_opposite = $scope.similarTeams[$scope.selected_index];
+            $scope.team_opposite = $scope.ledTeams[$scope.selected_index];
             Campaign.getMolds('team',$scope.team_opposite._id,function(status,data){
                 if(!status){
                     $scope.mold = data.molds[0].name;

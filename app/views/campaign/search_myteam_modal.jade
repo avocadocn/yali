@@ -5,7 +5,7 @@ form(name="search_form_2")
     span 请选择您想选择与之动一下的小队
   .dl_modal_body.clearfix
     .dl_modal_container
-      .dl_row.team_select.clearfix(ng-repeat="team in similarTeams track by $index" ng-class="{'active':selected_index==$index}" ng-click="selcet_team($index)")
+      .dl_row.team_select.clearfix(ng-repeat="team in ledTeams track by $index" ng-class="{'active':selected_index==$index}" ng-click="selcet_team($index)")
         .dl_md_2
           img.size_56(ng-src="{{team.logo}}")
         .dl_md_10

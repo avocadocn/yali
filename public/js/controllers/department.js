@@ -599,25 +599,6 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
     //         console.log(e);
     //     }
     // };
-    // //应战
-    // $scope.responseProvoke = function(competition_id) {
-    //      try {
-    //         $http({
-    //             method: 'post',
-    //             url: '/group/responseProvoke',
-    //             data:{
-    //                 competition_id : competition_id
-    //             }
-    //         }).success(function(data, status) {
-    //             window.location.reload();
-    //         }).error(function(data, status) {
-    //             alertify.alert('DATA ERROR');
-    //         });
-    //     }
-    //     catch(e) {
-    //         console.log(e);
-    //     }
-    // };
 
     $scope.cancel = function (_id) {
         try {
@@ -959,11 +940,6 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','C
             $('#start_time').datetimepicker('setEndDate', dateUTC);
 
         });
-        $("#deadline").on("changeDate",function (ev) {
-            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-            $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-            $('#end_time').datetimepicker('setEndDate', dateUTC);
-        });
     });
     var placeSearchCallBack = function(data){
         $scope.locationmap.clearMap();
@@ -1033,7 +1009,6 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','C
         var _data = {
             theme: $scope.theme,
             location: $scope.location,
-            tags: $scope.tags ? $scope.tags.split(',') :[],
             start_time:$scope.start_time,
             end_time:$scope.end_time,
             campaign_mold:$scope.mold

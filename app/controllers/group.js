@@ -250,8 +250,9 @@ exports.getOneTeam = function(req, res) {
   });
 };
 
+
 exports.getLedTeams = function(req,res) {
-  if(req.params.teamId===0||req.user.cid.toString()===req.companyGroup.cid.toString()){//同公司
+  if(!req.params.teamId||req.user.cid.toString()===req.companyGroup.cid.toString()){//同公司
     var options = {'cid':req.user.cid,'leader._id':req.user._id,'gid':{'$ne':'0'}};
   }
   else{//同类型

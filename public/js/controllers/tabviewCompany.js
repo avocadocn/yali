@@ -1294,13 +1294,8 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
         $('#start_time').datetimepicker('setEndDate', dateUTC);
-        $('#deadline').datetimepicker('setEndDate', dateUTC);
     });
-    $("#deadline").on("changeDate",function (ev) {
-        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-        $('#end_time').datetimepicker('setEndDate', dateUTC);
-    });
+
     $scope.showMapFlag = false;
     $scope.location = {name:'',coordinates:[]};
     var placeSearchCallBack = function(data){
@@ -1471,8 +1466,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         }
     }
 
-
-
     //依次给小队发活动
     var hrSendToTeamOneByOne = function(value,select_dOts,count){
         if(select_dOts.length > count -1){
@@ -1496,10 +1489,6 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
             });
         }
     };
-    $scope.addTag = function(index) {
-        $scope.recommand_tags[index].disabled = true;
-        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
-    };
     $scope.sponsor = function() {
         var _data = {
             theme: $scope.theme,
@@ -1511,27 +1500,29 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         if($rootScope.dOtMulti && $scope.multi_campaign_type.value == '1'){
             $scope.dOt_send_success = 0;
             hrSendToTeamOneByOne(_data,$scope.select_dOts,$scope.dOt_send_success);
-        }else{
-            var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
-            if($scope.dOt){
-                _data.select_departments = $scope.select_dOts;
-            }else{
-                _data.select_teams = $scope.select_dOts;
-            }
-
-            if($scope.member_max < $scope.member_min){
-                alertify.alert('最少人数须小于最大人数');
-            }
-            else{
-                Campaign.sponsor(_url,_data,function(status,data){
-                    if(!status){
-                        window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
-                    }else{
-                        alertify.alert('活动发布出错');
-                    }
-                });
-            }
         }
+        //暂时么有联谊活动了 -M
+        // else{
+        //     var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
+        //     if($scope.dOt){
+        //         _data.select_departments = $scope.select_dOts;
+        //     }else{
+        //         _data.select_teams = $scope.select_dOts;
+        //     }
+
+        //     if($scope.member_max < $scope.member_min){
+        //         alertify.alert('最少人数须小于最大人数');
+        //     }
+        //     else{
+        //         Campaign.sponsor(_url,_data,function(status,data){
+        //             if(!status){
+        //                 window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+        //             }else{
+        //                 alertify.alert('活动发布出错');
+        //             }
+        //         });
+        //     }
+        // }
     };
 }]);
 

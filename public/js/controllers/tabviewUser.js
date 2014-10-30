@@ -169,6 +169,11 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
         }
       });
     };
+    //打开modal后检查是不是队长，获取是队长的小队信息
+    $rootScope.newCampaign = function() {
+      $('#sponsorCampaignModel').modal('show');
+      $rootScope.modal=1;
+    };
     var getRecentCommentCampaigns = function(){
       try{
         $http({
@@ -290,10 +295,161 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
       }
     });
     $scope.reloadM = function(){
-        $scope.is_reload = true;
+      $scope.is_reload = true;
     }
   }
 ]);
+
+tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campaign', function($http, $scope, $rootScope, Campaign){
+  $scope.showMapFlag=false;
+  $scope.location={name:'',coordinates:[]};
+
+  $rootScope.$watch('modal',function(value){
+    if(value===1){
+      Campaign.getLedTeams(null,function(status,data){
+        if(status||data.teams.length===0){
+          alertify.alert('抱歉出错了!您可能不具有发活动的权限。');
+        }else{
+          if(data.teams.length===1){
+            $rootScope.modal = 2;
+            $scope.sponsorTeam = data.teams[0];
+          }else{
+            $rootScope.modal = 1;
+            $scope.ledTeams = data.teams;
+          }
+        }
+      });
+    }
+    else if(value===2){
+      Campaign.getMolds('team',$scope.sponsorTeam._id,function(status,data){
+        if(!status){
+          $scope.molds = data.molds;
+          $scope.mold = $scope.molds[0].name;
+        }
+      });
+      $("#start_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#end_time').datetimepicker('setStartDate', dateUTC);
+      });
+      $("#end_time").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $('#start_time').datetimepicker('setEndDate', dateUTC);
+      });
+      //加载地图
+      if(!window.map_ready){
+        window.campaign_map_initialize = $scope.initialize;
+        var script = document.createElement("script");
+        script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+        document.body.appendChild(script);
+      }
+      else{
+        $scope.initialize();
+      }
+    }
+  });
+
+
+  $scope.selected_index = -1;
+  //决定好哪个小队了
+  $scope.provoke_select = function(value){
+    $rootScope.modal = value;
+  };
+  //选择小队
+  $scope.selcet_team = function(index){
+    $scope.sponsorTeam = $scope.ledTeams[index];
+    $scope.selected_index = index;
+  }
+  //选择类型
+  $scope.selectMold=function(name){
+    $scope.mold = name;
+  };
+
+
+  var placeSearchCallBack = function(data){
+    $scope.locationmap.clearMap();
+    var lngX = data.poiList.pois[0].location.getLng();
+    var latY = data.poiList.pois[0].location.getLat();
+    $scope.location.coordinates=[lngX, latY];
+    var nowPoint = new AMap.LngLat(lngX,latY);
+    var markerOption = {
+      map: $scope.locationmap,
+      position: nowPoint,
+      draggable: true
+    };
+    var mar = new AMap.Marker(markerOption);
+    var changePoint = function (e) {
+      var p = mar.getPosition();
+      $scope.location.coordinates=[p.getLng(), p.getLat()];
+    };
+    $scope.locationmap.setFitView();
+    AMap.event.addListener(mar,"dragend", changePoint);
+
+  };
+
+  $scope.initialize = function(){
+    $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
+    $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+      //实例化城市查询类
+      var citysearch = new AMap.CitySearch();
+      //自动获取用户IP，返回当前城市
+      citysearch.getLocalCity();
+      //citysearch.getCityByIp("123.125.114.*");
+      AMap.event.addListener(citysearch, "complete", function(result){
+        if(result && result.city && result.bounds) {
+          var citybounds = result.bounds;
+          //地图显示当前城市
+          $scope.locationmap.setBounds(citybounds);
+          $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {
+            $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+              pageSize:1,
+              pageIndex:1,
+              city: result.city
+
+            });
+            AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+          });
+        }
+      });
+      AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+    });
+    window.map_ready =true;
+  };
+
+  $scope.showMap = function(){
+    if($scope.location.name==''){
+      alertify.alert('请输入地点');
+      return false;
+    }
+    else if($scope.showMapFlag ==false){
+      $scope.showMapFlag =true;
+      $scope.MSearch.search($scope.location.name); //关键字查询
+    }
+    else{
+      $scope.MSearch.search($scope.location.name); //关键字查询
+    }
+  };
+
+  $scope.sponsor = function() {
+    var _data = {
+      theme: $scope.theme,
+      location: $scope.location,
+      start_time : $scope.start_time,
+      end_time : $scope.end_time,
+      campaign_mold:$scope.mold
+    };
+    var _url = '/group/campaignSponsor/'+$scope.sponsorTeam._id;
+    Campaign.sponsor(_url,_data,function(status,data){
+      if(!status){
+        window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+      }else{
+        alertify.alert('活动发布出错');
+      }
+    });
+  };
+}]);
+
 
 // tabViewUser.controller('GroupMessageController', ['$http', '$scope', '$rootScope', 'Report', 'Comment',
 //     function($http, $scope, $rootScope, Report, Comment) {

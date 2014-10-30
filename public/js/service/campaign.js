@@ -195,19 +195,23 @@ angular.module('donler')
 
     /**
      * 获取自己能动别人一下的小队或者自己能发活动的小队
-     * @param tid 别人小队的id,若是0则是在个人主页查找自己的小队
+     * @param tid 别人小队的id,若是null则是在个人主页查找自己的小队
      * @param callback callback(status,data)
      */
     //获取自己能动别人一下的小队或者自己能发活动的小队
     var getLedTeams = function(tid,callback) {
-      $http.get('/group/getLedTeams/'+tid).success(function(data,status) {
+      if(!tid)
+        var _url = '/group/getLedTeams';
+      else
+        var _url = '/group/getLedTeams/'+tid;
+      $http.get(_url).success(function(data,status) {
         if(data.result===0){
           callback(data.msg);
         }
         else{
           callback(null,data);
         }
-      })
+      });
     };
 
 

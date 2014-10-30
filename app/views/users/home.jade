@@ -190,12 +190,17 @@ block panel
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/calendar_modal
+  if user_role === 'LEADER'
+    div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../campaign/campaign_modal_base
+
 block aside
   if user_role =='LEADER'
     .old_campaign_container.sponsor
-      a(href="#/campaign/#{uid}" ng-click="openModal()")
+      a(href="javascript:void(0);" ng-click="newCampaign()")
         span.speaker
         label 发起新活动   >>
+
   .old_campaign_container
     a.full_parent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
       label 热门活动讨论  >>
@@ -230,6 +235,7 @@ block aside
     a.clearLinkUnderline(href="/users/timeLine/#{uid}")
       span.footprint
       label.pull-right 活动足迹 >>
+
 
 
 append footExt
