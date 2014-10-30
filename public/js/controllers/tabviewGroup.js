@@ -1177,24 +1177,26 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Ca
     $scope.location={name:'',coordinates:[]};
     $scope.modal=0;
     $scope.result=0;//是否已搜索
-    $scope.selected_index=-1;
+    $scope.selected_index=-1; 
 
     //决定要打开哪个挑战的modal
     $rootScope.$watch('modal_index',function(value){
         if(value===3){//动一下
             $scope.modal = 2;
-            $http.get('/group/getSimiliarTeams/'+$rootScope.teamId).success(function(data,status){
-                $scope.similarTeams = data;
-                if(data.length===1){
-                    $scope.modal=3;//直接跳到发起挑战页面
-                    $scope.team_opposite = $scope.similarTeams[0];
-                    Campaign.getMolds('team',$rootScope.teamId,function(status,data){
-                        if(!status){
-                            $scope.mold = data.molds[0].name;
-                            $scope.molds = data.molds;
-                            $scope.cid = data.cid;
-                        }
-                    });
+            Campaign.getLedTeams($rootScope.teamId,function(status,teamdata){
+                if(!status){
+                    $scope.similarTeams = teamdata.teams;
+                    if(teams.length===1){
+                        $scope.modal=3;
+                        $scope.team_opposite = $scope.similarTeams[0];
+                        Campaign.getMolds('team',$rootScope.teamId,function(status,data){
+                            if(!status){
+                                $scope.mold = data.molds[0].name;
+                                $scope.molds = data.molds;
+                                $scope.cid = data.cid;
+                            }
+                        });
+                    }
                 }
             });
         }

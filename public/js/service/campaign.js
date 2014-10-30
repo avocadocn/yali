@@ -22,7 +22,7 @@ angular.module('donler')
      *    tags:[String](暂时只有挑战有,选填)
      *    campaign_mold: String,
      *  }
-     * @param {Object} callback callback(err)
+     * @param {Object} callback callback(status,data)
      */
     var sponsor = function (_url, _data, callback) {
       try {
@@ -193,6 +193,23 @@ angular.module('donler')
       });
     };
 
+    /**
+     * 获取自己能动别人一下的小队或者自己能发活动的小队
+     * @param tid 别人小队的id,若是0则是在个人主页查找自己的小队
+     * @param callback callback(status,data)
+     */
+    //获取自己能动别人一下的小队或者自己能发活动的小队
+    var getLedTeams = function(tid,callback) {
+      $http.get('/group/getLedTeams/'+tid).success(function(data,status) {
+        if(data.result===0){
+          callback(data.msg);
+        }
+        else{
+          callback(null,data);
+        }
+      })
+    };
+
 
     return {
       sponsor: sponsor,
@@ -204,5 +221,6 @@ angular.module('donler')
       getMolds: getMolds,
       // vote: vote,
       dealProvoke: dealProvoke,
+      getLedTeams: getLedTeams
     };
   }]);

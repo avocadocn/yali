@@ -1786,17 +1786,17 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   //---basicInfo
   var campaign = new Campaign();
   campaign.theme = basicInfo.theme;//主题
-  campaign.content = basicInfo.content ? basicInfo.content : ''; //活动内容
+  // campaign.content = basicInfo.content ? basicInfo.content : ''; //活动内容
   campaign.location = basicInfo.location; //活动地点
   campaign.start_time = basicInfo.start_time;
   campaign.end_time = basicInfo.end_time;
-  campaign.member_min = basicInfo.member_min ? basicInfo.member_min : 0;
-  campaign.member_max = basicInfo.member_max ? basicInfo.member_max : 0;
+  // campaign.member_min = basicInfo.member_min ? basicInfo.member_min : 0;
+  // campaign.member_max = basicInfo.member_max ? basicInfo.member_max : 0;
   campaign.deadline = basicInfo.deadline ? basicInfo.deadline : basicInfo.end_time;
   campaign.active = true;
   campaign.campaign_mold = basicInfo.campaign_mold?basicInfo.campaign_mold:'其它';//以防万一
-  if(basicInfo.tags&&basicInfo.tags.length>0)
-    campaign.tags = basicInfo.tags;
+  // if(basicInfo.tags&&basicInfo.tags.length>0)
+  //   campaign.tags = basicInfo.tags;
   var _now = new Date();
   if (campaign.start_time < _now || campaign.end_time < _now || campaign.deadline < _now) {
     callback(400,'活动的时间比现在更早');
@@ -1829,7 +1829,8 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
           componentNames = mold.module;
           if(campaign.campaign_unit.length!==2){//单组去除比分板
             var scoreIndex = componentNames.indexOf('ScoreBoard');
-            componentNames.splice(scoreIndex,1);
+            if(scoreIndex>-1)
+              componentNames.splice(scoreIndex,1);
           }
           async.map(componentNames, function (componentName, asyncCallback) {
             mongoose.model(componentName).establish(campaign, function (err, component) {

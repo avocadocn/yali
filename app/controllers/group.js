@@ -250,28 +250,21 @@ exports.getOneTeam = function(req, res) {
   });
 };
 
-exports.getSimiliarTeams = function(req,res) {
-  if(req.user.cid.toString()===req.companyGroup.cid.toString()){//同公司
-    CompanyGroup.find({'cid':req.user.cid,'leader._id':req.user._id,'gid':{'$ne':'0'}},{'logo':1,'member':1,'name':1},function(err, companyGroups){
-      if(err){
-        console.log(err);
-        return res.send([]);
-      }
-      else{
-        return res.send(companyGroups);
-      }
-    });
+exports.getLedTeams = function(req,res) {
+  if(req.params.teamId===0||req.user.cid.toString()===req.companyGroup.cid.toString()){//同公司
+    var options = {'cid':req.user.cid,'leader._id':req.user._id,'gid':{'$ne':'0'}};
   }
   else{//同类型
-    CompanyGroup.find({'cid':req.user.cid,'gid':req.companyGroup.gid,'leader._id':req.user._id},{'logo':1,'member':1,'name':1},function(err, companyGroups){
-      if(err){
-        console.log(err);
-        return res.send([]);
-      }
-      else
-       return res.send(companyGroups);
-    });
+    var options = {'cid':req.user.cid,'gid':req.companyGroup.gid,'leader._id':req.user._id};
   }
+  CompanyGroup.find(options,{'logo':1,'member':1,'name':1},function(err, companyGroups){
+    if(err){
+      console.log(err);
+      return res.send({'result':0,'msg':'获取带领'});
+    }
+    else
+     return res.send({'result':1,'teams':companyGroups});
+  });
 };
 
 //TODO

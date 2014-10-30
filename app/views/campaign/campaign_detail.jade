@@ -129,8 +129,8 @@ block contentExt
                   | 关闭活动
                 button.save(ng-click="save()") 保存
                 button.cancel(ng-click="toggleEdit()") 取消
-
-        rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment&&isActive}")
+        if components.RichComment
+          rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment&&isActive}")
 
       .panel_divider
 
