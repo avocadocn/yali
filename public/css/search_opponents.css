@@ -1,0 +1,28 @@
+.search_opponents .head_container .headline {
+  height: 30px;
+  width: 100%;
+  background-color: #f48361;
+}
+.search_opponents .head_container .my_teams .unit {
+  float: left;
+}
+.search_opponents .head_container .my_teams .unit .logo {
+  width: 100px;
+  height: 100px;
+}
+.search_opponents .head_container .my_teams .unit .text {
+  width: 100px;
+}
+.search_opponents .head_container .my_teams .unit .button {
+  width: 100px;
+}
+.search_opponents .head_container .selected_team .my_team .logo {
+  width: 50px;
+  height: 50px;
+}
+.search_opponents .head_container .selected_team .my_team .button {
+  float: right;
+}
+.search_opponents .tab_view {
+  width: 100%;
+}

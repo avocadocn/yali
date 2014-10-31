@@ -1,0 +1,53 @@
+extends ../layouts/base
+
+append headExt
+  link(rel="stylesheet" href="/css/search_opponents.css")
+
+block content
+  .wrap
+    include ../partials/home_nav
+    .dl_container.search_opponents.clearfix
+      .head_container.clearfix
+        .headline
+          img
+          span 寻找对手,发起挑战!
+        .my_teams(ng-show="!my_team")
+          p 选择你要用来发起挑战的队伍
+          each team,index in myTeams
+            .unit
+              img.logo(ng-src="#{team.logo}")
+              .text
+                p= team.name
+                p= team.group_type
+              .button
+                if team.leader
+                  button(ng-click="select('#{team._id}')") 为它选对手
+                else
+                  button(ng-click="select('#{team._id}')") 给它推荐对手
+        .selected_team(ng-show="my_team")
+          p 挑战发起方
+          .my_team
+            img.logo
+            p {{my_team.name}}
+            p
+              span {{my_team.group_type}}
+              //- span 队长：{{my_team.leader}}
+            button.button(ng-click="") 更换小队
+      .tab_view
+        div
+          ul.nav.nav-tabs
+            li.tab_style(ng-class="{'active':nowTab=='sameCity'}")
+              a.subtitle.no_radius(ng-href="#/sameCity/{{selectTeamId}}" ng-click="addactive('sameCity')") 同城小队
+            li.tab_style(ng-class="{'active':nowTab=='nearTeam'}")
+              a.subtitle.no_radius(ng-href="#/nearTeam/{{selectTeamId}}" ng-click="addactive('nearTeam')") 附近小队
+            li.tab_style(ng-class="{'active':nowTab=='search'}")
+              a.subtitle.no_radius 搜索
+          .tab-content
+            .tab-pane.active
+              div(ng-view)
+  include ../partials/user_footer
+
+append footExt
+  script(src="/js/language/zh-CN.js")
+  script(src="/js/controllers/searchOpponents.js")
+  script(src="/js/service/campaign.js")

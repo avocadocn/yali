@@ -821,7 +821,30 @@ exports.editInfo = function(req, res) {
   });
 };
 
-
+exports.renderSearchOpponents = function(req, res){
+  var myTeams = req.user.team;
+  var sortTeams = function(teams){//整理成队长的在前
+    var leaderHead = -1;
+    //leaderHead指向最后一个他是队长的小队
+    for(var i=0; i<teams.length; i++){
+      if(teams[i].gid==='0'){
+        teams.splice(i,1);
+        i--;
+      }
+      else if(teams[i].leader===true){
+        if(leaderHead===i+1) leaderHead++;
+        else{//向前交换
+          leaderHead++;
+          var temp = teams[leaderHead];
+          teams[leaderHead] = teams[i];
+          teams[i] = temp;
+        }
+      }
+    }
+    return teams;
+  };
+  return res.render('users/search_opponents',{myTeams:sortTeams(myTeams)});
+};
 
 
 
