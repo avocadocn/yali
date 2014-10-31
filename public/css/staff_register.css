@@ -526,6 +526,12 @@
 .image_box .preview .image_nav .next {
   width: 20px;
   height: 60px;
+  color: #fff;
+  background-color: #73a5dd;
+}
+.image_box .preview .image_nav .prev:disabled,
+.image_box .preview .image_nav .next:disabled {
+  background-color: #ccc;
 }
 .image_box .preview .image_nav .thumb_box {
   -webkit-flex: 1;
@@ -533,8 +539,12 @@
   overflow: hidden;
 }
 .image_box .preview .image_nav .thumb_box .thumb_box_inner {
-  width: 8000px;
+  width: 6000px;
   height: 60px;
+  transition: margin-left 1s;
+  -moz-transition: margin-left 1s;
+  -webkit-transition: margin-left 1s;
+  -o-transition: margin-left 1s;
 }
 .image_box .preview .image_nav .thumb_box .thumb_box_inner:before,
 .image_box .preview .image_nav .thumb_box .thumb_box_inner:after {

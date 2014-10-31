@@ -9,19 +9,36 @@ angular.module('donler.components.imageBox', [])
     this.thumbWidth = 60;
     var self = this;
 
+    $scope.canPrev = false;
+    $scope.canNext = false;
+
     $scope.setMargin = function (index) {
       var correctIndex = index - parseInt(self.maxShowThumbCount / 2);
       if (correctIndex < 0) {
         correctIndex = 0;
       }
       var marginWidth = self.thumbWidth * correctIndex;
-      if (self.maxScrollWidth > 0 && marginWidth > self.maxScrollWidth) {
-        marginWidth = self.maxScrollWidth;
+      if (self.maxScrollWidth > 0) {
+        if (marginWidth > self.maxScrollWidth) {
+          marginWidth = self.maxScrollWidth;
+        }
+        var margin = (0 - marginWidth) + 'px';
+        $scope.thumbBoxInnerStyle = {
+          'margin-left': margin
+        };
       }
-      var margin = (0 - marginWidth) + 'px';
-      $scope.thumbBoxInnerStyle = {
-        'margin-left': margin
-      };
+      if (marginWidth === 0) {
+        $scope.canPrev = false;
+      } else {
+        $scope.canPrev = true;
+      }
+
+      if (marginWidth >= self.maxScrollWidth) {
+        $scope.canNext = false;
+      } else {
+        $scope.canNext = true;
+      }
+
     };
 
   }])
@@ -46,6 +63,8 @@ angular.module('donler.components.imageBox', [])
           scope.nextIndex = 0;
           scope.previewImg = images[0].uri;
 
+          var pageIndex = 0;
+
           var setIndex = function (index) {
             if (index <= 0) {
               scope.prevIndex = 0;
@@ -60,6 +79,7 @@ angular.module('donler.components.imageBox', [])
               scope.nextIndex = index + 1;
               scope.thisIndex = index;
             }
+            pageIndex = scope.thisIndex;
             scope.previewImg = images[scope.thisIndex].uri;
             scope.setMargin(scope.thisIndex);
           };
@@ -84,6 +104,22 @@ angular.module('donler.components.imageBox', [])
           scope.close = function () {
             scope.isPreview = false;
           };
+
+          scope.prevList = function () {
+            if (scope.canPrev) {
+              pageIndex -= ctrl.maxShowThumbCount;
+              scope.setMargin(pageIndex);
+            }
+          };
+
+          scope.nextList = function () {
+            if (scope.canNext) {
+              pageIndex += ctrl.maxShowThumbCount;
+              scope.setMargin(pageIndex);
+            }
+          };
+
+
         }
 
       }

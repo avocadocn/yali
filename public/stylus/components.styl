@@ -435,14 +435,22 @@ centerImg()
       .prev, .next
         width 20px
         height 60px
+        color white
+        background-color #73a5dd
+        &:disabled
+          background-color #ccc
       .thumb_box
         -webkit-flex 1
         flex 1
         overflow hidden
         .thumb_box_inner
           clearfix()
-          width 8000px
+          width 6000px
           height 60px
+          transition margin-left 1s
+          -moz-transition margin-left 1s
+          -webkit-transition margin-left 1s
+          -o-transition margin-left 1s
           .border
             centerImg()
             float left
