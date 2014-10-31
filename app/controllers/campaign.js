@@ -493,6 +493,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
     }
     if(_other.photoFlag){
       temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
+      temp.photo_album_id = _campaign.photo_album._id;
       // temp.camp = _campaign.camp;//...
     }
     //???-M

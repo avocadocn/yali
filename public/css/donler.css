@@ -3562,6 +3562,10 @@ input.ng-invalid.ng-dirty {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.user_page .dl_container .main .campaigns_container .now .campaign_head a {
+  color: #3498db;
+  cursor: pointer;
+}
 .user_page .dl_container .main .campaigns_container .now .unconfrim {
   color: #f7b1b3;
 }
@@ -3631,28 +3635,29 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos {
   clear: both;
-  margin: 20px 10px;
+  margin-top: 15px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photo {
   float: left;
-  margin: 0 6px 10px 0;
-  width: 34%;
+  margin: 10px 0 0 9px;
+  width: 56%;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photo img {
-  height: 80px;
+  height: 120px;
   width: 100%;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .odd {
-  width: 62%;
+  width: 36%;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .single {
-  width: 100%;
+  width: 95%;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments {
   clear: both;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments a {
   color: #ccc;
+  margin-top: 10px;
 }
 .user_page .dl_container .main .campaigns_container .now_head {
   width: 700px;
@@ -3835,6 +3840,26 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.2em;
+}
+#photoModal .photos .photo {
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+}
+#photoModal .photos .last,
+#photoModal .photos .next {
+  width: 50px;
+  position: absolute;
+  top: 50%;
+  font-size: 50px;
+  font-weight: border;
+  cursor: pointer;
+}
+#photoModal .photos .last {
+  left: 20px;
+}
+#photoModal .photos .next {
+  right: 20px;
 }
 @-moz-keyframes scaleFade {
   50% {

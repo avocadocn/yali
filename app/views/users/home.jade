@@ -115,7 +115,8 @@ block panel
       .campaigns(masonry reload="is_reload" items="nowCampaigns")
         .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns track by nowCampaign._id" ng-cloak)
           .campaign_head(ng-class="{'unconfrim':!nowCampaign.confirm_status}" ng-cloak)
-            label {{nowCampaign.theme}}
+            a.clearLinkUnderline(ng-href="/campaign/detail/{{nowCampaign._id}}" target="_blank")
+              label {{nowCampaign.theme}}
             label.pull-right(ng-if="!nowCampaign.confirm_status") 挑战
           .campaign(ng-class="{'provoke':nowCampaign.type=='provoke'}")
             .logo_col(ng-if="nowCampaign.type=='provoke'" )
@@ -148,44 +149,15 @@ block panel
                   span #{__("LOCATION")}:
                   span.content_text {{nowCampaign.location.name}}
           .photos
-            .photo(ng-repeat="photo in nowCampaign.photo_thumbnails" ng-class="{'odd':$index%4==1 ||$index%4==2,'single':$last&&$even}")
-              img(ng-src="{{photo.uri}}{{$last&&$even ? '/305/80': ($index%4==1 ||$index%4==2)?'/189/80':'/104/80'}}")
+            .photo(ng-repeat="photo in nowCampaign.photo_thumbnails" ng-class="{'odd':$index%4==1 || $index%4==2,'single':$last&&$even}")
+              img(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-src="{{photo.uri}}{{$last&&$even ? '/309/120': ($index%4==1 ||$index%4==2)?'/117/120':'/182/120'}}")
           .comments
             //- a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
             a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$index;") {{nowCampaign.comment_sum}}条评论
             .comment_list(ng-if="$root.showComment==$index")
               simple-comment(component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" after-render="reloadM()" comment-num=3)
         //- a.pull-right(href="") 退出
-    //- carousel(interval="5000")
-    //-   slide(ng-repeat="recentCampaign in recentCampaigns" ng-cloak)
-    //-     a.campaign_link.clearLinkUnderline(href="/campaign/detail/{{ recentCampaign._id }}")
-    //-       .campaign_title
-    //-         img.campaign_group_logo(ng-src="{{ img_url + recentCampaign.logo + '/72/72'}}")
-    //-         p.campaign_theme {{ recentCampaign.theme }}
-    //-         p.now_campaign_now(ng-if="recentCampaign.start_flag==1") 正在进行的活动
-    //-       .now_campaign_time(ng-if="recentCampaign.start_flag==0 || recentCampaign.photo_thumbnails.length==0")
-    //-         p.campaign_time_remind {{ recentCampaign.remind_text }}
-    //-         p.campaign_time_count(ng-if="recentCampaign.start_flag!=0") 快来传照片吧
-    //-         p.campaign_time_count(ng-if="recentCampaign.start_flag==0") {{ recentCampaign.start_time_text }}
-    //-       .now_campaign_photos(ng-if="recentCampaign.start_flag!=0 && recentCampaign.photo_thumbnails.length>0")
-    //-         img.now_campaign_photo(ng-src="{{ photo.uri + '/150/150'}}" ng-repeat="photo in recentCampaign.photo_thumbnails")
-    //-   slide(ng-if="recentCampaigns.length==0&&showCampaign" ng-cloak)
-    //-     p.campaign_time_count 您近期没有活动，快去参加吧
-  //-   if role==='OWNER'
-  //-     li.tab_style(ng-class="{'active':nowTab=='group_message'}")
-  //-       a.subtitle.no_radius(href="#/group_message") 动态
-  //-     li.tab_style(ng-class="{'active':nowTab=='campaign'}")
-  //-       a.subtitle.no_radius(href="#/campaign/#{uid}") #{__("CAMPAIGN")}#{__("LIST")}
-  //-   //- li.tab_style(ng-class="{'active':nowTab=='schedule'}")
-  //-   //-   a.subtitle.no_radius(href="#/schedule/#{uid}") #{__("SCHEDULE")}
-  //-   li.tab_style(ng-class="{'active':nowTab=='timeLine'}")
-  //-     a.subtitle.no_radius(href="#/timeLine/#{uid}") 足迹
-  //-   li.tab_style(ng-class="{'active':nowTab=='personal'}")
-  //-     a.subtitle.no_radius(href="#/personal/#{uid}") 个人资料
-  //- .tab-content
-  //-   .tab-pane.active
-  //-     div(ng-view).tab-body
-    include ../partials/calendar_modal
+
   include ../users/user_modal
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
@@ -193,7 +165,8 @@ block panel
   if user_role === 'LEADER'
     div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
-
+append content
+  include ../partials/photo_modal
 block aside
   if user_role =='LEADER'
     .old_campaign_container.sponsor

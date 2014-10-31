@@ -2514,6 +2514,9 @@ input.ng-invalid.ng-dirty
               overflow hidden
               text-overflow ellipsis
               white-space nowrap
+            a
+              color themeColor
+              cursor pointer
           .unconfrim
             color #f7b1b3
             label
@@ -2569,22 +2572,23 @@ input.ng-invalid.ng-dirty
                 max-width 100%
             .photos
               clear both
-              margin 20px 10px
+              margin-top 15px
               .photo
                 float left
-                margin 0 6px 10px 0
-                width 34%
+                margin 10px 0 0 9px
+                width 56%
                 img
-                  height 80px
+                  height 120px
                   width 100%
               .odd
-                width 62%
+                width 36%
               .single
-                width 100%
+                width 95%
             .comments
               clear both
               a
                 color secondaryfontColor
+                margin-top 10px
         .now_head
           width 700px
           height 33px
@@ -2734,5 +2738,21 @@ input.ng-invalid.ng-dirty
           .cal-day-today
             span[data-cal-date]
               font-size 1.2em
-
+#photoModal
+  .photos
+    .photo
+      width 400px
+      height 400px
+      margin 0 auto
+    .last,.next
+      width 50px
+      position absolute
+      top 50%
+      font-size 50px
+      font-weight border
+      cursor pointer
+    .last
+      left 20px
+    .next
+      right 20px
 
