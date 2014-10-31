@@ -1,8 +1,8 @@
 .image_box(ng-if="images.length > 0")
   p.remind(ng-if="images.length > 9 && isPreview === false" ng-click="preview(0)") 共{{images.length}}张照片，点击查看全部 >>
   .thumb(ng-if="isPreview===false")
-    img.single.cursor_big(ng-if="images.length===1" ng-src="{{images[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-click="preview(0)")
-    img.multi.cursor_big(ng-if="images.length>1" ng-repeat="image in images.slice(0,9)" ng-src="{{image.uri}}/resize/100/100" onError="this.src='/img/not_found.jpg';" ng-click="preview($index)")
+    img.single.cursor_big.lazyload(ng-if="images.length===1" data-src="{{images[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-click="preview(0)")
+    img.multi.cursor_big.lazyload(ng-if="images.length>1" ng-repeat="image in images.slice(0,9)" data-src="{{image.uri}}/resize/100/100" onError="this.src='/img/not_found.jpg';" ng-click="preview($index)")
   .preview(ng-show="isPreview===true" need-scroll)
     .operator_nav
       button.close.dl_close(data-dismiss="modal" aria-hidden="true" ng-click="close()")
@@ -18,5 +18,5 @@
       .thumb_box(cal-width)
         .thumb_box_inner(ng-style="thumbBoxInnerStyle")
           a.border(href="javascript:;" ng-class="{'active':thisIndex===$index}" ng-repeat="image in images" ng-click="choose($index)")
-            img.nav_thumb(ng-src="{{image.uri}}/resize/56/56/stretch")
+            img.nav_thumb.lazyload(data-src="{{image.uri}}/resize/56/56/stretch")
       button.next(ng-click="nextList()" ng-disabled="!canNext") >

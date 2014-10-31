@@ -88,8 +88,8 @@ module.exports = function(grunt) {
                     'public/lib/masonry/dist/masonry.pkgd.min.js',
                     'public/lib/angular-masonry/angular-masonry.js',
                     'public/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
-                    'public/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js'
-
+                    'public/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js',
+                    'public/lib/lazysizes/lazysizes.js'
                 ],
                 dest: 'public/js/library.js'
             }

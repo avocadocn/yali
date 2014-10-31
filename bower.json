@@ -25,6 +25,7 @@
     "linkage-selector": "0.1.4",
     "moment": "^2.7.0",
     "smalot-bootstrap-datetimepicker": "latest",
-    "pen": "https://github.com/afeidonler/pen.git#master"
+    "pen": "https://github.com/afeidonler/pen.git#master",
+    "lazysizes": "~0.3.1"
   }
 }
