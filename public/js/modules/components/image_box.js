@@ -113,4 +113,24 @@ angular.module('donler.components.imageBox', [])
     };
   })
 
+  .directive('needScroll', function () {
+    return {
+      require: '^imageBox',
+      restrict: 'A',
+      link: function (scope, ele, attrs, ctrl) {
+        var lastHeight = 0;
+        scope.$watch('previewImg', function (newVal, oldVal) {
+          var img = new Image();
+          img.src = scope.previewImg;
+          img.onload = function () {
+            if (this.height > document.body.clientHeight || lastHeight > document.body.clientHeight) {
+              window.scrollTo(0, ele[0].offsetTop);
+            }
+            lastHeight = this.height;
+          }
+        })
+      }
+    };
+  })
+
 
