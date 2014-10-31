@@ -271,15 +271,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box {
-  margin: 0;
+.simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb {
+  width: 200px;
 }
-.simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box {
-  width: 100%;
-}
-.simple_comment .component_body .comment .comment_content_panel .comment_content .comment_img_box .img_list_box .list_img {
-  width: 70px;
-  height: 70px;
+.simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb .multi {
+  width: 60px;
+  height: 60px;
 }
 .simple_comment .component_body .comment .comment_content_panel .replies .reply_form {
   margin-bottom: 0;
