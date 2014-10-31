@@ -65,14 +65,21 @@ timeline.directive('whenScrolled', function($window) {
         angular.element($window).bind('scroll', function() {
             var _scrollTop = angular.element($window).scrollTop()
             var selectedEle = angular.element('.'+selectClass);
-            var nearestEle = selectedEle[0];
+            var nearestEle = 0;
             for(var i = 0; i<selectedEle.length;i++){
                 var _temp = selectedEle[i];
-                if(_scrollTop > _temp.offsetTop && nearestEle.offsetTop < _temp.offsetTop){
-                    nearestEle = _temp;
+                if(_scrollTop > _temp.offsetTop && selectedEle[nearestEle].offsetTop < _temp.offsetTop){
+                    nearestEle = i;
                 }
             }
-            scope.$apply(attr.whenScrolled+"(\'"+nearestEle.id+"\')");
+            scope['show_'+selectedEle[nearestEle].id] = true;
+            if(nearestEle>0){
+                scope['show_'+selectedEle[nearestEle-1].id] = true;
+            }
+            if(nearestEle<selectedEle.length-1){
+                scope['show_'+selectedEle[nearestEle+1].id] = true;
+            }
+            scope.$apply(attr.whenScrolled+"(\'"+selectedEle[nearestEle].id+"\')");
         });
     };
 });
@@ -80,6 +87,8 @@ timeline.directive('whenScrolled', function($window) {
 timeline.controller('timelineController', function ($scope, $http, $location, $rootScope,anchorSmoothScroll) {
   $rootScope.nowYear='timeline_0';
   $rootScope.scrollTo =function(id){
+    var temp = id.split('_');
+    $rootScope.nowYear = temp[0];
     $rootScope.nowMonth = id;
     $location.hash(id);
     anchorSmoothScroll.scrollTo(id);

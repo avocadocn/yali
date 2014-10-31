@@ -23,11 +23,11 @@ companies.forEach(function (company) {
 
   db.campaigns.find({'cid': company._id }).forEach(function (campaign) {
 
-
     if (!campaign.team) {
       //已经是新数据了
     }
     else if ( campaign.team.length <= 1) {//公司+单队
+          console.log(1)
       campaign.tid = campaign.team;
       campaign.campaign_unit = [{
         company: {
@@ -65,6 +65,7 @@ companies.forEach(function (company) {
         }
       });
     } else if (campaign.team.length === 2) {
+          console.log(1)
       campaign.tid = campaign.team;
       campaign.campaign_unit = [];
       campaign.camp.forEach(function (camp) {

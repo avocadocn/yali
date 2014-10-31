@@ -749,6 +749,9 @@ exports.renderScheduleList = function(req, res) {
 
 
 exports.home = function(req, res) {
+  if(req.role!=='OWNER'){
+    return res.redirect('/users/timeLine/'+req.profile._id);
+  }
   var _user = {};
   var _nickname,_logo;
   if(req.role ==='OWNER'){
@@ -824,8 +827,15 @@ exports.editInfo = function(req, res) {
 
 exports.timeLine = function(req,res){
   var uid = req.params.userId;
+  var option = {
+    'active':true,
+    'campaign_unit.member._id':uid
+  }
+  if(req.role=='OWNER'){
+    option.finish=true;
+  }
   Campaign
-  .find({ 'active':true,'finish':true,'campaign_unit.member._id':uid})
+  .find(option)
   .sort('-start_time')
   .populate('photo_album')
   .exec()
@@ -930,138 +940,9 @@ exports.timeLine = function(req,res){
         photo:req.profile.photo,
         phone:req.profile.phone,
         email:req.profile.email,
-        teams:myteam
+        teams:myteam,
+        role :req.role
       };
-      // newTimeLines = [
-      //   [
-      //     [
-      //     { year:2014,
-      //       month:12
-      //       }
-      //     ],
-      //     [
-      //       { year:2014,
-      //         month:11
-      //       }
-      //     ],
-      //     [
-      //       { year:2014,
-      //         month:10
-      //       }
-      //     ],
-      //     [
-      //       { year:2014,
-      //         month:9
-      //       }
-      //     ],
-      //     [
-      //       { year:2014,
-      //         month:5
-      //       }
-      //     ],
-      //     [
-      //       { year:2014,
-      //         month:1
-      //       }
-      //     ]
-      //   ],
-      //   [
-      //     [
-      //     { year:2013,
-      //       month:12
-      //       }
-      //     ],
-      //     [
-      //       { year:2013,
-      //         month:11
-      //       }
-      //     ],
-      //     [
-      //       { year:2013,
-      //         month:10
-      //       }
-      //     ],
-      //     [
-      //       { year:2013,
-      //         month:6
-      //       }
-      //     ],
-      //     [
-      //       { year:2013,
-      //         month:2
-      //       }
-      //     ],
-      //     [
-      //       { year:2013,
-      //         month:1
-      //       }
-      //     ]
-      //   ],
-      //   [
-      //     [
-      //     { year:2010,
-      //       month:10
-      //       }
-      //     ],
-      //     [
-      //       { year:2010,
-      //         month:9
-      //       }
-      //     ],
-      //     [
-      //       { year:2010,
-      //         month:6
-      //       }
-      //     ],
-      //     [
-      //       { year:2010,
-      //         month:5
-      //       }
-      //     ],
-      //     [
-      //       { year:2010,
-      //         month:4
-      //       }
-      //     ],
-      //     [
-      //       { year:2010,
-      //         month:1
-      //       }
-      //     ]
-      //   ],
-      //   [
-      //     [
-      //     { year:2000,
-      //       month:12
-      //       }
-      //     ],
-      //     [
-      //       { year:2000,
-      //         month:5
-      //       }
-      //     ],
-      //     [
-      //       { year:2000,
-      //         month:4
-      //       }
-      //     ],
-      //     [
-      //       { year:2000,
-      //         month:3
-      //       }
-      //     ],
-      //     [
-      //       { year:2000,
-      //         month:2
-      //       }
-      //     ],
-      //     [
-      //       { year:2000,
-      //         month:1
-      //       }
-      //     ]
-      //   ]
-      // ];
       // console.log(newTimeLines);
       return res.render('users/user_timeline',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
   })
