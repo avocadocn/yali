@@ -106,7 +106,7 @@ clearfix()
         background-color #e7ce23
     .component_body
       padding 0
-      .multi_team
+      .base_info.multi_team
         display flex
         display -webkit-flex
         flex-flow column
@@ -114,16 +114,21 @@ clearfix()
         .logo_container
           clearfix()
           padding 20px
-          border-right none !important
+          border-right none
           border-bottom 1px solid #eee
           .unit
             float left
         .info_container
-          padding-top 20px
+          width 100%
+          border 0
+          .start_info
+            width 100%
+            .campaign_info
+              width 50%
+            .time_info
+              width 50%
       //-基本信息
       .base_info
-        display flex
-        display -webkit-flex
         min-height 159px
         //-队伍信息
         .unit
@@ -145,7 +150,7 @@ clearfix()
             text-align center
         .logo_container
           padding 20px
-          border-right 1px solid #eee
+          float left
           .unit
             .join
               display block
@@ -160,19 +165,21 @@ clearfix()
               background-color themeColor
         //-上方基本信息
         .info_container
-          flex 1
-          -webkit-flex 1
+          float left
+          width 570px
+          border-left 1px solid #eee
           .start_info
-            display flex
-            display -webkit-flex
-            min-height 153px
+            float left
+            border-bottom 1px solid #eee
             .campaign_info
               padding 20px
-              width 300px
+              width 369px
+              float left
+              border-right 1px solid #eee
             .time_info
               padding 20px
-              width 270px
-              border-left 1px solid #eee
+              width 200px
+              float left
               .remind
                 margin-top 15px
                 font-size 20px
@@ -194,39 +201,48 @@ clearfix()
                   padding 4px 15px
                 .second_button
                   margin-top 10px
-      //-公告
-      .notice
-        padding 20px
-        border-top 1px solid #eee
-        min-height 128px
-        .title
-          font-size 14px
-          color #e7ce23
-        .date
-          margin-top 7px
-          font-size 12px
-        .publish
-          display flex
-          display -webkit-flex
-          margin-top 10px
-          .notice_text
-            flex 1
-            -webkit-flex 1
-            padding 6px 10px
-            height 30px
-            color #cccccc
-            background-color #fbfbfb
-            border 1px solid #d3dbe6
-            font-size 14px
-          .publish_button
-            margin 0
-            padding 0
-            width 80px
-            height 30px
-            font-size 14px
-            line-height 30px
-            color white
-            background-color themeColor
+          //-公告
+          .notice
+            padding 20px
+            min-height 100px
+            width 100%
+            float left
+            .title
+              font-size 14px
+              color #e7ce23
+            .date
+              margin-top 7px
+              font-size 12px
+            .publish
+              display flex
+              display -webkit-flex
+              margin-top 10px
+              .notice_text
+                flex 1
+                -webkit-flex 1
+                padding 6px 10px
+                height 30px
+                color #cccccc
+                background-color #fbfbfb
+                border 1px solid #d3dbe6
+                font-size 14px
+              .publish_button
+                margin 0
+                padding 0
+                width 80px
+                height 30px
+                font-size 14px
+                line-height 30px
+                color white
+                background-color themeColor
+          .notice.isStart
+            min-height 159px
+        .info_container.twoUnit
+          width 480px
+          .start_info
+            .campaign_info
+              width 279px
+
       //-活动附加信息
       .more_info
         padding 20px

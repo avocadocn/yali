@@ -431,7 +431,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       'active':_campaign.active,
       'confirm_status':_campaign.confirm_status,
       'theme':_campaign.theme,
-      'content':_campaign.content.replace(/<\/?[^>]*>/g, ''),
+      'content':_campaign.content ? _campaign.content.replace(/<\/?[^>]*>/g, ''):'',
       'member_max':_campaign.member_max,
       'location':_campaign.location,
       'start_time':_campaign.start_time,
@@ -1437,6 +1437,15 @@ exports.renderCampaignDetail = function (req, res, next) {
     end: function (str) {
       if (isEnd) { return str; }
       else { return ''; }
+    },
+
+    twoUnit: function(str) {
+      if(campaign.campaign_unit.length===2){
+        return str;
+      }
+      else{
+        return '';
+      }
     },
 
     // 是否是多个小队

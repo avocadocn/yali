@@ -26,6 +26,7 @@ var mongoose = require('mongoose'),
   moment = require('moment'),
   message = require('../controllers/message'),
   schedule = require('../services/schedule'),
+  auth = require('../services/auth'),
   photo_album_controller = require('./photoAlbum'),
   model_helper = require('../helpers/model_helper'),
   cache = require('../services/cache/Cache'),
@@ -1562,13 +1563,18 @@ exports.getTags = function (req,res) {
   });
 };
 //HR发布一个活动(可能是多个企业)
-exports.sponsor = function(req, res) {
-  if (req.role !== 'HR') {
+exports.sponsor = function(req, res, next) {
+  var allow = auth(req.user, {
+    companies: [req.params.companyId],
+  }, [
+    'sponsorCampaign'
+  ]);
+  if(!allow.sponsorCampaign){
     res.status(403);
     next('forbidden');
     return;
   }
-  var cname = req.user.info.name;
+  var cname = req.user.info.official_name;
   var cid = req.user._id.toString(); //公司id
 
   var company_in_campaign = req.body.company_in_campaign; //公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是此hr所在的公司!
@@ -1588,7 +1594,7 @@ exports.sponsor = function(req, res) {
     'campaign_unit':[{
       'company':{
         _id:req.user._id,
-        name:req.user.info.name,
+        name:req.user.info.official_name,
         logo:req.user.info.logo
       }
     }]//暂时只有一个公司的活动

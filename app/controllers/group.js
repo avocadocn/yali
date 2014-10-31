@@ -505,18 +505,29 @@ exports.renderCampaigns = function(req,res){
 }
 //约战
 exports.provoke = function (req, res) {
-  if(req.role !=='HR' && req.role !=='LEADER' && req.role !=='GUESTLEADER' && req.role !=='MEMBERLEADER' && req.role !=='PARTNERLEADER'){
+  // if(req.role !=='HR' && req.role !=='LEADER' && req.role !=='GUESTLEADER' && req.role !=='MEMBERLEADER' && req.role !=='PARTNERLEADER'){
+  //   res.status(403);
+  //   next('forbidden');
+  //   return;
+  // }
+  var my_team_id = req.params.teamId;
+  var cid = req.companyGroup.cid
+  var allow = auth(req.user, {
+    companies: [cid],
+    teams: [my_team_id]
+  }, [
+    'sponsorCampaign'
+  ]);
+  if(!allow.sponsorCampaign){
     res.status(403);
     next('forbidden');
     return;
-  }
-  var my_team_id = req.params.teamId;
+  };
   CompanyGroup.findOne({'_id':req.body.team_opposite_id},{'cid':1,'gid':1,'name':1,'logo':1,'leader':1,'photo_album_list':1})
   .populate('cid')
   .exec()
   .then(function(team_opposite){
-    var cid = req.user.provider==="company" ? req.user._id : req.user.cid;
-    var cname = req.user.provider==="company" ? req.user.info.name : req.user.cname;
+    var cname = req.companyGroup.cname;
     var type = 0;
     if(team_opposite.cid === req.companyGroup.cid){//同公司
       if(team_opposite.gid === req.companyGroup.gid)//同类型
@@ -528,8 +539,8 @@ exports.provoke = function (req, res) {
       type =5;//挑战公司外小组
     var _user={
       '_id':req.user._id,
-      'name':req.role ==='HR' ? req.user.info.official_name:req.user.nickname,
-      'type':req.role ==='HR' ? 'hr':'user'
+      'name':req.user.provider==='company' ? req.user.info.official_name:req.user.nickname,
+      'type':req.user.provider==='company' ? 'hr':'user'
     };
     var photoInfo= {
       owner: {
@@ -552,10 +563,10 @@ exports.provoke = function (req, res) {
       'poster':{
         cname:cname,
         cid:cid,
-        role:req.role==='HR'? 'HR':'LEADER',
+        role:req.user.provider==='company'? 'HR':'LEADER',
         tname:req.companyGroup.name,
-        uid:req.role==='HR'? null:req.user._id,
-        nickname: req.role==='HR'? null:req.user.nickname
+        uid:req.user.provider==='company'? null:req.user._id,
+        nickname: req.user.provider==='company'? null:req.user.nickname
       },
       'campaign_type':type,
       'campaign_unit':[]
@@ -667,9 +678,9 @@ exports.provoke = function (req, res) {
                 'caption':req.body.theme,
                 'own':{
                   '_id':req.user._id,
-                  'nickname':req.user.nickname,
-                  'photo':req.user.photo,
-                  'role':'LEADER'
+                  'nickname':req.user.provider==='company'? req.user.info.official_name : req.user.nickname,
+                  'photo':req.user.provider==='company'?req.user.info.logo : req.user.photo,
+                  'role':req.user.provider==='company'?'HR':'LEADER'
                 },
                 'receiver':{
                   '_id':team_opposite.leader[0]._id
@@ -728,22 +739,40 @@ exports.getTags = function (req, res) {
 };
 
 //发布和小队相关的活动
-exports.sponsor = function (req, res) {
-  if(req.role !=='HR' && req.role !=='LEADER'){
-    res.status(403);
-    next('forbidden');
-    return;
-  }
+exports.sponsor = function (req, res, next) {
   var multi = false;
-  var cid = req.role ==='HR' ? req.user._id : req.user.cid;
-  var cname = req.role ==='HR' ? req.user.info.name : req.user.cname;
   var tids = [];
   if(req.params.teamId != null && req.params.teamId != undefined && req.params.teamId != ""){
+    var cid = req.companyGroup.cid;
+    var cname = req.companyGroup.cname;
+    var allow = auth(req.user, {
+      companies: [cid],
+      teams:[req.params.teamId]
+    }, [
+      'sponsorCampaign'
+    ]);
+    if(!allow.sponsorCampaign){
+      res.status(403);
+      next('forbidden');
+      return;
+    }
     var tname = req.companyGroup.name;
     multi = false;
     var tid = req.params.teamId;
     tids = [req.params.teamId];
   }else{
+    var cid = req.params.cid;
+    var allow = auth(req.user, {
+      companies: [cid],
+    }, [
+      'sponsorCampaign'
+    ]);
+    if(!allow.sponsorCampaign){
+      res.status(403);
+      next('forbidden');
+      return;
+    }
+    var cname = req.user.info.official_name;
     multi = true;
     for(var i = 0; i < req.body.select_teams.length; i ++){
       tids.push(req.body.select_teams[i]._id);
@@ -761,13 +790,12 @@ exports.sponsor = function (req, res) {
     name: moment(req.body.start_time).format("YYYY-MM-DD ") + req.body.theme
   };
   var _user;
-  if(req.role==='LEADER'){
+  if(req.user.provider==='user'){
     _user ={
       _id: req.user._id,
       name: req.user.nickname,
       type: 'user'
     };
-
   }else{
     _user={
       _id: req.user._id,
@@ -782,10 +810,10 @@ exports.sponsor = function (req, res) {
     poster:{
       cname:cname,
       cid:cid,
-      role:req.role,
+      role:req.user.provider==='user'?'LEADER':'HR',
       tname:!multi ? tname:'',
-      uid:req.role==='LEADER'? req.user._id : null,
-      nickname: req.role==='LEADER'? req.user.nickname : null
+      uid:req.user.provider==='user'? req.user._id : null,
+      nickname: req.user.provider==='user'? req.user.nickname : null
     },
     campaign_type:!multi ? 2 : 3,
     tid: !multi ? [tid]:tids,
@@ -819,7 +847,7 @@ exports.sponsor = function (req, res) {
             'logo':req.companyGroup.logo
           }
         }];
-        cb(null,null)
+        cb(null,null);
       }
       else{
         CompanyGroup.find({'_id':{'$in':tids}},{name:1,logo:1},function(err,teams){

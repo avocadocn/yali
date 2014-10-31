@@ -19,6 +19,7 @@ var mongoose = require('mongoose'),
   meanConfig = require('../../config/config'),
   path = require('path'),
   push = require('../controllers/push'),
+  auth = require('../services/auth'),
   photo_album_controller = require('./photoAlbum'),
   _ = require('lodash'),
   campaign_controller = require('../controllers/campaign');
@@ -348,13 +349,18 @@ exports.getTags = function (req,res) {
 
 };
 //部门发活动
-exports.sponsor = function(req, res) {
-  if (req.role !== 'HR' && req.role !== 'LEADER') {
+exports.sponsor = function(req, res, next) {
+  var allow = auth(req.user, {
+    companies: [req.department.company._id],
+    teams: [req.department.team._id]
+  }, [
+    'sponsorCampaign'
+  ]);
+  if(!allow.sponsorCampaign){
     res.status(403);
     next('forbidden');
     return;
-  }
-
+  };
   var _sponsor = function(req,res,departments){
 
     var tid = req.department.team._id;

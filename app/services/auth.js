@@ -70,7 +70,12 @@ var registeredTasks = {
   },
   visitPhotoAlbum: {
     company: ['hr', 'member']
+  },
+  sponsorCampaign: {
+    company: ['hr'],
+    team: ['leader']
   }
+
 };
 
 

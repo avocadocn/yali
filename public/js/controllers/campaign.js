@@ -13,7 +13,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
 
   $scope.notice = {
     placeholder: '',
-    placeholderText: '添加公告，让成员随时了解活动动态！（输入内容请控制在140字以内）',
+    placeholderText: '添加公告，让成员随时了解活动动态！（请控制在140字以内）',
     content: ''
   };
   $scope.notice.placeholder = $scope.notice.placeholderText;

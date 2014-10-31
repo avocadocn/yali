@@ -26,21 +26,21 @@ block contentExt
             if !isActive
               span.sub_title.right_title 活动已关闭
           .component_body
-            .base_info(class="#{helper.multiUnit('multi_team')}")
+            .base_info.clearfix(class="#{helper.multiUnit('multi_team')}")
               if !isWaitingReply
                 .logo_container
                   each unit in campaign.campaign_unit
                     .unit
                       a(ng-href="#{unit.link}" target="_blank")
                         img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
-                      span.text= unit.team.name
+                      span.text= unit.team.name||unit.company.name
                       if isActive && !isEnd && unit.canjoin
                         if unit.team._id
                           button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
                         else
                           button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}')") 参加
 
-              .info_container
+              .info_container(class="#{helper.twoUnit('twoUnit')}")
                 if !isStart
                   .start_info
                     .campaign_info
@@ -66,17 +66,17 @@ block contentExt
                           if response.canCancel
                             .second_button
                               button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[0].team._id}',3)") 取消
-            if !isWaitingReply
-              .notice
-                span.title 最新公告
-                if notice
-                  p.main_text #{notice.content}
-                  p.text.date #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
-                else
-                  p.main_text 没有最新公告
-                form.publish(ng-if="editing" ng-cloak)
-                  input.notice_text(type="text" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" required)
-                  button.publish_button(ng-click="publishNotice()") 发新公告
+                if !isWaitingReply
+                  .notice(class="#{helper.start('isStart')}")
+                    span.title 最新公告
+                    if notice
+                      p.main_text #{notice.content}
+                      p.text.date #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
+                    else
+                      p.main_text 没有最新公告
+                    form.publish(ng-if="editing" ng-cloak)
+                      input.notice_text(type="text" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" required)
+                      button.publish_button(ng-click="publishNotice()") 发新公告
             .more_info(ng-show="!isStart||editing" ng-cloak)
               .block
                 span.title 活动简介

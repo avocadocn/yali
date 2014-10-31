@@ -1501,28 +1501,27 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
             $scope.dOt_send_success = 0;
             hrSendToTeamOneByOne(_data,$scope.select_dOts,$scope.dOt_send_success);
         }
-        //暂时么有联谊活动了 -M
-        // else{
-        //     var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
-        //     if($scope.dOt){
-        //         _data.select_departments = $scope.select_dOts;
-        //     }else{
-        //         _data.select_teams = $scope.select_dOts;
-        //     }
+        else{
+            var _url = $rootScope.dOtMulti ? ($scope.dOt ? ('/department/multi_sponsor/'+$rootScope.cid) : ('/group/campaignSponsor/multi/'+$rootScope.cid)) : ('/company/campaignSponsor/'+$rootScope.cid);
+            if($scope.dOt){
+                _data.select_departments = $scope.select_dOts;
+            }else{
+                _data.select_teams = $scope.select_dOts;
+            }
 
-        //     if($scope.member_max < $scope.member_min){
-        //         alertify.alert('最少人数须小于最大人数');
-        //     }
-        //     else{
-        //         Campaign.sponsor(_url,_data,function(status,data){
-        //             if(!status){
-        //                 window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
-        //             }else{
-        //                 alertify.alert('活动发布出错');
-        //             }
-        //         });
-        //     }
-        // }
+            if($scope.member_max < $scope.member_min){
+                alertify.alert('最少人数须小于最大人数');
+            }
+            else{
+                Campaign.sponsor(_url,_data,function(status,data){
+                    if(!status){
+                        window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+                    }else{
+                        alertify.alert('活动发布出错');
+                    }
+                });
+            }
+        }
     };
 }]);
 

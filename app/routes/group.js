@@ -37,12 +37,13 @@ module.exports = function(app) {
 
   app.post('/group/updateFormation/:teamId/:competitionId', authorization.teamAuthorize, group.updateFormation);
   //小队发布组内活动
-  app.post('/group/campaignSponsor/:teamId', authorization.teamAuthorize, group.sponsor);
+  app.post('/group/campaignSponsor/:teamId', group.sponsor);
   //多队活动
-  app.post('/group/campaignSponsor/multi/:cid', authorization.teamAuthorize, group.sponsor);
+  //暂时没用
+  // app.post('/group/campaignSponsor/multi/:cid', group.sponsor);
   app.param('teamId',group.group);
   //约战
-  app.post('/group/provoke/:teamId', authorization.teamAuthorize, group.provoke);
+  app.post('/group/provoke/:teamId', group.provoke);
   app.post('/group/resultConfirm/:teamId/:competitionId', authorization.teamAuthorize, group.resultConfirm);
 
   app.get('/group/:teamId/editLogo', authorization.teamAuthorize, group.editLogo);

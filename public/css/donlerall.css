@@ -1998,7 +1998,7 @@ input::-webkit-inner-spin-button {
   color: #f00;
 }
 input.ng-invalid.ng-dirty {
-  border-color: #ffc0cb;
+  border-color: #ffc0cb !important;
 }
 .tooltip.right {
   width: 300px;
