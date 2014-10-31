@@ -192,6 +192,41 @@
 .campaign_detail .detail_card .component_body .base_info.multi_team .info_container .start_info .time_info {
   width: 50%;
 }
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .info_container {
+  width: 280px;
+  border: 0;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .info_container .start_info {
+  border: 0;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .info_container .start_info .campaign_info {
+  width: 280px;
+  border: 0;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .logo_container {
+  float: right;
+  border-left: 1px solid #eee;
+  min-height: 159px;
+  width: 400px;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .logo_container .button_container {
+  float: left;
+  padding-top: 15px;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .logo_container .button_container .accept_btn {
+  background-color: #ec6a6a;
+  color: #fff;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .logo_container .button_container .accept_btn:hover {
+  background-color: #ec556a;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .logo_container .button_container .dl_btn_small {
+  height: 20px;
+  padding: 4px 15px;
+}
+.campaign_detail .detail_card .component_body .base_info.isWaitingReply .logo_container .button_container .second_button {
+  margin-top: 10px;
+}
 .campaign_detail .detail_card .component_body .base_info {
   min-height: 159px;
 }
@@ -256,28 +291,6 @@
   font-size: 20px;
   line-height: 20px;
   color: #97d7c6;
-}
-.campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container {
-  float: left;
-  padding: 20px;
-}
-.campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container .button_container {
-  float: left;
-  padding-top: 15px;
-}
-.campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container .button_container .accept_btn {
-  background-color: #ec6a6a;
-  color: #fff;
-}
-.campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container .button_container .accept_btn:hover {
-  background-color: #ec556a;
-}
-.campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container .button_container .dl_btn_small {
-  height: 20px;
-  padding: 4px 15px;
-}
-.campaign_detail .detail_card .component_body .base_info .info_container .start_info .competition_container .button_container .second_button {
-  margin-top: 10px;
 }
 .campaign_detail .detail_card .component_body .base_info .info_container .notice {
   padding: 20px;

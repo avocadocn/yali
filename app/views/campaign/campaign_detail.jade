@@ -26,19 +26,27 @@ block contentExt
             if !isActive
               span.sub_title.right_title 活动已关闭
           .component_body
-            .base_info.clearfix(class="#{helper.multiUnit('multi_team')}")
-              if !isWaitingReply
-                .logo_container
-                  each unit in campaign.campaign_unit
-                    .unit
-                      a(ng-href="#{unit.link}" target="_blank")
-                        img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
-                      span.text= unit.team.name||unit.company.name
-                      if isActive && !isEnd && unit.canjoin
-                        if unit.team._id
-                          button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
-                        else
-                          button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}')") 参加
+            .base_info.clearfix(class="#{helper.multiUnit('multi_team')} #{helper.isWaitingReply('isWaitingReply')}")
+              .logo_container
+                each unit in campaign.campaign_unit
+                  .unit
+                    a(ng-href="#{unit.link}" target="_blank")
+                      img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
+                    span.text= unit.team.name||unit.company.name
+                    if isActive && !isEnd && unit.canjoin && !isWaitingReply
+                      if unit.team._id
+                        button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
+                      else
+                        button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}')") 参加
+                if isWaitingReply
+                  .button_container
+                    if response.canResponse
+                      button.dl_btn.accept_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',1)") 接受
+                      .second_button
+                        button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',2)") 拒绝
+                    if response.canCancel
+                      .second_button
+                        button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[0].team._id}',3)") 取消
 
               .info_container(class="#{helper.twoUnit('twoUnit')}")
                 if !isStart
@@ -52,20 +60,6 @@ block contentExt
                       .time_info
                         p.text 距活动开始还有
                         p.remind(count-down="#{campaign.start_time}")
-                    if isWaitingReply
-                      .competition_container
-                        each unit in campaign.campaign_unit
-                          .unit(ng-href="#{unit.link}" target="_blank")
-                            img.logo(src="#{unit.team.logo}/80/80" title="#{unit.team.name}")
-                            span.text= unit.team.name
-                        .button_container
-                          if response.canResponse
-                            button.dl_btn.accept_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',1)") 接受
-                            .second_button
-                              button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',2)") 拒绝
-                          if response.canCancel
-                            .second_button
-                              button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[0].team._id}',3)") 取消
                 if !isWaitingReply
                   .notice(class="#{helper.start('isStart')}")
                     span.title 最新公告

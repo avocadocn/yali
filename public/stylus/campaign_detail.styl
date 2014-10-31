@@ -106,6 +106,7 @@ clearfix()
         background-color #e7ce23
     .component_body
       padding 0
+      //- >3队情况
       .base_info.multi_team
         display flex
         display -webkit-flex
@@ -127,6 +128,34 @@ clearfix()
               width 50%
             .time_info
               width 50%
+      //-等待确认情况
+      .base_info.isWaitingReply
+        .info_container
+          width 280px
+          border 0
+          .start_info
+            border 0
+            .campaign_info
+              width 280px
+              border 0
+        .logo_container
+          float right
+          border-left 1px solid #eee
+          min-height 159px
+          width 400px
+          .button_container
+            float left
+            padding-top 15px
+            .accept_btn
+              background-color #ec6a6a
+              color #fff
+              &:hover
+                background-color #ec556a
+            .dl_btn_small
+              height 20px
+              padding 4px 15px
+            .second_button
+              margin-top 10px
       //-基本信息
       .base_info
         min-height 159px
@@ -185,22 +214,6 @@ clearfix()
                 font-size 20px
                 line-height 20px
                 color #97d7c6
-            .competition_container
-              float left
-              padding 20px
-              .button_container
-                float left
-                padding-top 15px
-                .accept_btn
-                  background-color #ec6a6a
-                  color #fff
-                  &:hover
-                    background-color #ec556a
-                .dl_btn_small
-                  height 20px
-                  padding 4px 15px
-                .second_button
-                  margin-top 10px
           //-公告
           .notice
             padding 20px

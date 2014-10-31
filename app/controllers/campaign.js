@@ -1439,8 +1439,19 @@ exports.renderCampaignDetail = function (req, res, next) {
       else { return ''; }
     },
 
+    // 是否是两队
     twoUnit: function(str) {
-      if(campaign.campaign_unit.length===2){
+      if(campaign.campaign_unit.length===2 && !isWaitingReply){
+        return str;
+      }
+      else{
+        return '';
+      }
+    },
+
+    //是否待确认
+    isWaitingReply:function(str) {
+      if(isWaitingReply){
         return str;
       }
       else{
