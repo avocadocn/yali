@@ -13,7 +13,10 @@ angular.module('donler.components.imageBox', [])
     $scope.canNext = false;
 
     $scope.setMargin = function (index) {
-      var correctIndex = index - parseInt(self.maxShowThumbCount / 2);
+      var correctIndex = 0;
+      if ($scope.images.length > self.maxShowThumbCount) {
+        correctIndex = index - parseInt((self.maxShowThumbCount - 1) / 2);
+      }
       if (correctIndex < 0) {
         correctIndex = 0;
       }
@@ -27,6 +30,7 @@ angular.module('donler.components.imageBox', [])
           'margin-left': margin
         };
       }
+
       if (marginWidth === 0) {
         $scope.canPrev = false;
       } else {

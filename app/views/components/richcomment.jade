@@ -33,7 +33,9 @@
           .pull-right.operator
             a.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport(comment)") 举报
             a.delete.text.dl_mouse_hover(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
-            a.reply.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
+            a.reply.text(ng-click="toggleComment(comment)")
+              img.reply_icon(src="/img/comment.png")
+              | {{comment.reply_count || 0}}条回复
         .replies(ng-if="comment.replying")
           form.reply_form(name="reply_form" ng-if="allowPublish")
             input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)

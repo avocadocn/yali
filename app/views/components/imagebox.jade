@@ -1,4 +1,5 @@
 .image_box(ng-if="images.length > 0")
+  p.remind(ng-if="images.length > 9 && isPreview === false" ng-click="preview(0)") 共{{images.length}}张照片，点击查看全部 >>
   .thumb(ng-if="isPreview===false")
     img.single.cursor_big(ng-if="images.length===1" ng-src="{{images[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-click="preview(0)")
     img.multi.cursor_big(ng-if="images.length>1" ng-repeat="image in images.slice(0,9)" ng-src="{{image.uri}}/resize/100/100" onError="this.src='/img/not_found.jpg';" ng-click="preview($index)")
