@@ -568,3 +568,6 @@
   width: 56px;
   height: 56px;
 }
+.image_box .preview .image_nav .thumb_box .thumb_box_inner .border.active {
+  border: 1px solid #3498db;
+}

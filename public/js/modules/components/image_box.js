@@ -2,6 +2,30 @@
 
 angular.module('donler.components.imageBox', [])
 
+  .controller('ImageBoxCtrl', ['$scope', function ($scope) {
+    $scope.thumbBoxInnerStyle = {};
+    this.maxScrollWidth = 0;
+    this.maxShowThumbCount = 0; // 下方缩略图最多可展示的数目
+    this.thumbWidth = 60;
+    var self = this;
+
+    $scope.setMargin = function (index) {
+      var correctIndex = index - parseInt(self.maxShowThumbCount / 2);
+      if (correctIndex < 0) {
+        correctIndex = 0;
+      }
+      var marginWidth = self.thumbWidth * correctIndex;
+      if (self.maxScrollWidth > 0 && marginWidth > self.maxScrollWidth) {
+        marginWidth = self.maxScrollWidth;
+      }
+      var margin = (0 - marginWidth) + 'px';
+      $scope.thumbBoxInnerStyle = {
+        'margin-left': margin
+      };
+    };
+
+  }])
+
   .directive('imageBox', function () {
 
     return {
@@ -11,30 +35,16 @@ angular.module('donler.components.imageBox', [])
         images: '='
       },
       templateUrl: '/components/ImageBox/template',
+      controller: 'ImageBoxCtrl',
       link: function (scope, ele, attrs, ctrl) {
         var images = scope.images;
         if (images.length > 0) {
-
-          scope.sliderWidth = 0;
 
           scope.isPreview = false;
           scope.prevIndex = 0;
           scope.thisIndex = 0;
           scope.nextIndex = 0;
           scope.previewImg = images[0].uri;
-
-          scope.thumbBoxInnerStyle = {};
-          var width = 60;
-
-          var setMargin = function (index) {
-            var marginWidth = width * index;
-            if (marginWidth >= scope.sliderWidth) {
-              var margin = (0 - marginWidth) + 'px';
-              scope.thumbBoxInnerStyle = {
-                'margin-left': margin
-              };
-            }
-          };
 
           var setIndex = function (index) {
             if (index <= 0) {
@@ -51,7 +61,7 @@ angular.module('donler.components.imageBox', [])
               scope.thisIndex = index;
             }
             scope.previewImg = images[scope.thisIndex].uri;
-            setMargin(scope.thisIndex);
+            scope.setMargin(scope.thisIndex);
           };
 
           scope.choose = function (index) {
@@ -83,12 +93,24 @@ angular.module('donler.components.imageBox', [])
 
   .directive('calWidth', function () {
     return {
+      require: '^imageBox',
       restrict: 'A',
-      scope: {
-        resultWidth: '='
-      },
       link: function (scope, ele, attrs, ctrl) {
-        scope.resultWidth = ele.width();
+        // 最大滚动宽度，可能为负值，表示允许向左滚动的最大值
+        var maxScrollWidth = ctrl.thumbWidth * scope.images.length - ele.width();
+
+        // 校正最大滚动宽度为缩略图的整数倍
+        if (maxScrollWidth > 0) {
+          var count = parseInt(maxScrollWidth / ctrl.thumbWidth);
+          var remainder = maxScrollWidth % ctrl.thumbWidth;
+          if (remainder != 0) {
+            maxScrollWidth = ctrl.thumbWidth * (count + 1);
+          }
+        }
+        ctrl.maxScrollWidth = maxScrollWidth;
+        ctrl.maxShowThumbCount = parseInt(ele.width() / ctrl.thumbWidth);
       }
     };
   })
+
+

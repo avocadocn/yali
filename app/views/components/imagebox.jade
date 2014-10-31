@@ -14,8 +14,8 @@
         .img_next.cursor_next(ng-if="nextIndex!=thisIndex" ng-click="next()")
     .image_nav(ng-if="images.length > 1")
       button.prev(ng-click="prev()") <
-      .thumb_box(cal-width result-width="sliderWidth")
+      .thumb_box(cal-width)
         .thumb_box_inner(ng-style="thumbBoxInnerStyle")
-          a.border(href="javascript:;" ng-repeat="image in images" ng-click="choose($index)")
+          a.border(href="javascript:;" ng-class="{'active':thisIndex===$index}" ng-repeat="image in images" ng-click="choose($index)")
             img.nav_thumb(ng-src="{{image.uri}}/resize/56/56/stretch")
       button.next(ng-click="next()") >
