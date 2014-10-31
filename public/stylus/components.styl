@@ -18,6 +18,18 @@ clearfix()
 loading()
   background url(/img/loading.gif) center center no-repeat
 
+centerImg()
+  display block
+  text-align center
+  white-space nowrap
+  &:after
+    display inline-block
+    height 100%
+    vertical-align middle
+    content " "
+  img
+    vertical-align middle
+
 .rich_comment
   .component_head
     background-color #97d7c6 !important
@@ -372,7 +384,89 @@ loading()
         line-height 14px
 
 
-
+.image_box
+  .thumb
+    width 350px
+    clearfix()
+    .multi
+      display block
+      float left
+      margin-bottom 5px
+      margin-right 5px
+      width 100px
+      height 100px
+  .preview
+    padding 10px
+    background-color #f4f4f4
+    overflow hidden
+    .operator_nav
+      clearfix()
+      padding-bottom 10px
+      .dl_close
+        font-size 15px
+        .icon_close
+          width 15px
+          height 15px
+    .image_container
+      position relative
+      .preview_img
+        display block
+        margin-left auto
+        margin-right auto
+        max-width 100%
+      .operator_wrap
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        display -webkit-flex
+        display flex
+        z-index 1
+        .img_pre
+          -webkit-flex 1
+          flex 1
+        .img_small
+          -webkit-flex 2
+          flex 2
+        .img_next
+          -webkit-flex 1
+          flex 1
+    .image_nav
+      display -webkit-flex-
+      display flex
+      margin-top 10px
+      .prev, .next
+        width 20px
+        height 60px
+        color white
+        background-color #73a5dd
+        &:disabled
+          background-color #ccc
+      .thumb_box
+        -webkit-flex 1
+        flex 1
+        overflow hidden
+        .thumb_box_inner
+          clearfix()
+          width 6000px
+          height 60px
+          transition margin-left 1s
+          -moz-transition margin-left 1s
+          -webkit-transition margin-left 1s
+          -o-transition margin-left 1s
+          .border
+            centerImg()
+            float left
+            width 60px
+            height 60px
+            &:hover
+              border 1px solid #3498db
+            .nav_thumb
+              width 56px
+              height 56px
+          .border.active
+            border 1px solid #3498db
 
 
 
