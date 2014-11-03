@@ -1,5 +1,9 @@
 extends ../layouts/user_base
 
+append headExt
+  link(rel="stylesheet" href="/lib/bootstrap-calendar/css/calendar.css")
+  link(rel="stylesheet" href="/css/custom_calendar.css")
+
 block contentExt
   .dl_container(ng-controller="TeamPageController")
     #data(data-id="#{teamId}" data-gid="#{groupId}")
@@ -23,8 +27,19 @@ block contentExt
       hr
       img(ng-repeat="member in team.members" ng-src="{{member.photo}}")
 
+    .card.calendar_card
+      #calendar_nav.calendar_nav
+        a(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+        span.calendar_date.calendar_title#calendar_title
+        a(data-calendar-nav="next" href="javascript:void(0)") &gt;
+      #calendar
+
     .card.home_court_card
-      .home_court(ng-repeat="homeCourt in team.homeCourts")
+      .home_court_nav
+        .tabs(ng-init="courtIndex=0;")
+          .tab(ng-click="courtIndex=0;") 主场一
+          .tab(ng-click="courtIndex=1;") 主场二
+      .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
         p(ng-cloak) {{homeCourt.name}}
         a(ng-cloak ng-if="homeCourt.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
           img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=268*210&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
@@ -38,3 +53,6 @@ block contentExt
 append footExt
   script(src="/js/controllers/team.js")
   script(src="/js/service/team.js")
+  script(src="/lib/underscore/underscore.js")
+  script(src="/js/language/zh-CN.js")
+  script(src="/lib/bootstrap-calendar/js/calendar.js")
