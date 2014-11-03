@@ -9,11 +9,11 @@ block content
     .dl_container.search_opponents.clearfix
       .head_container.clearfix
         .headline
-          img
+          img(ng-src="")
           span 寻找对手,发起挑战!
-        .my_teams(ng-show="!my_team")
+        .my_teams(ng-show="!myTeam")
           p 选择你要用来发起挑战的队伍
-          each team,index in myTeams
+          each team in myTeams
             .unit
               img.logo(ng-src="#{team.logo}")
               .text
@@ -24,23 +24,23 @@ block content
                   button(ng-click="select('#{team._id}')") 为它选对手
                 else
                   button(ng-click="select('#{team._id}')") 给它推荐对手
-        .selected_team(ng-show="my_team")
+        .selected_team(ng-show="myTeam")
           p 挑战发起方
           .my_team
-            img.logo
-            p {{my_team.name}}
+            img.logo(ng-src="{{myTeam.logo}}")
+            p {{myTeam.name}}
             p
-              span {{my_team.group_type}}
-              //- span 队长：{{my_team.leader}}
-            button.button(ng-click="") 更换小队
-      .tab_view
+              span {{myTeam.group_type}}
+              span 队长：{{myTeam.leader}}
+            button.button(ng-click="changeTeam()") 更换小队
+      .tab_view(ng-class="{'active':myteam !== null")
         div
           ul.nav.nav-tabs
             li.tab_style(ng-class="{'active':nowTab=='sameCity'}")
               a.subtitle.no_radius(ng-href="#/sameCity/{{selectTeamId}}" ng-click="addactive('sameCity')") 同城小队
-            li.tab_style(ng-class="{'active':nowTab=='nearTeam'}")
-              a.subtitle.no_radius(ng-href="#/nearTeam/{{selectTeamId}}" ng-click="addactive('nearTeam')") 附近小队
-            li.tab_style(ng-class="{'active':nowTab=='search'}")
+            li.tab_style(ng-class="{'active':nowTab=='nearbyTeam'}")
+              a.subtitle.no_radius(ng-href="#/nearbyTeam/{{selectTeamId}}" ng-click="addactive('nearbyTeam')") 附近小队
+            li.tab_style
               a.subtitle.no_radius 搜索
           .tab-content
             .tab-pane.active

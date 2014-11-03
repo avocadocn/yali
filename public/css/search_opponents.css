@@ -12,6 +12,10 @@
 }
 .search_opponents .head_container .my_teams .unit .text {
   width: 100px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .search_opponents .head_container .my_teams .unit .button {
   width: 100px;

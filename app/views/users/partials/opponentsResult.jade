@@ -1,0 +1,77 @@
+.result
+  //- 主场信息(若点详情则向左收)
+  .homecourt(ng-show="")
+    a(ng-click="") 主场一：{{myTeam.home_court[0].name}}
+    a(ng-show="myTeam.home_court[1]" ng-click="") 主场二: {{myTeam.home_court[1].name}}
+    button(ng-if=) 更换主场
+  //- 主场设置
+  .homecourtSetting(ng-show="setHomeCourt")
+    div(ng-show="myTeam.isLeader")
+      .text
+        span 主场一:
+      .input
+        input(ng-model="myTeam.home_court[0].name")
+        #homecourt1.homecourtMap
+    div(ng-show="myTeam.isLeader")
+      .text
+        span 主场二:
+      .input
+        input(ng-model="myTeam.home_court[1].name")
+        #homecourt2.homecourtMap
+    span(ng-show="!myTeam.isLeader") 请提醒您的队长去添加小队主场吧~
+
+  //- 附近小队地图
+  .map
+    #map.fullMap
+  //- 搜索出的小队列表
+  .teamlist
+    a(ng-show="isShowMap") <地图
+    span.headline {{headline}}
+    .team(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}")
+      span(ng-if="isShowMap") {{engDict[$index]}}
+      img.logo(src="team.logo")
+      .text
+        span.title {{team.name}}
+        span.cname {{team.cname}}
+  //-详情
+  .detail(ng-show="!isShowMap")
+    .detailHead
+      img.logo(ng-src="opponent.logo")
+      .text
+        p.title {{opponent.name}}
+        p.content {{opponent.cname}}
+        p.content 成员:{{opponent.memberNumber}}人
+        p.content 成立时间:{{opponent.create_time}}
+      .buttons
+        button(ng-click="") 挑战
+        a(ng-href="") 查看
+    .detailContent
+      .content(ng-if="opponent.home_court.length")
+        .title
+          img
+          span 小队主场
+        .text
+          p 主场一:{{opponent.home_court[0].name}}
+          p(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
+      .content
+        .title
+          img
+          span 最新活动
+        .text
+          p 开始时间:{{opponent.newestCampaign.start_time}}
+          p 结束时间:{{opponent.newestCampaign.eng_time}}
+          p 活动主题:{{opponent.newestCampaign.theme}}
+          p 参加人数:{{opponent.newestCampaign.memberNumber}}
+          p 活动地点:{{opponent.newestCampaign.location.name}}
+      .content
+        .title
+          img
+          span 小队队长
+        .text
+          p {{opponent.leader.nickname}}
+      .content
+        .title
+          img
+          span 小队简介
+        .text
+          p {{opponent.brief}}

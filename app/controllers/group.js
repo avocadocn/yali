@@ -237,17 +237,25 @@ exports.teampage = function(req, res) {
 
 //根据tid返回team
 exports.getOneTeam = function(req, res) {
-  var tid = req.body.tid;
-  CompanyGroup.findOne({
-    '_id':tid
-  },function(err, team){
-    if (err || !team) {
-      console.log('err');
-      return res.send();
-    } else{
-        return res.send(team);
-    }
-  });
+  var allow = auth(req.user,{
+    companies: [req.companyGroup.cid],
+    teams: [req.companyGroup._id]
+  },['getOneTeaminfo','getMyTeaminfo']);
+  if(allow.getOneTeaminfo)//HR在公司小队信息页取详细信息
+    return res.send(req.companyGroup);
+  else if(allow.getMyTeaminfo){//个人在发挑战时取信息
+    var team = {
+      '_id':req.companyGroup._id,
+      'name':req.companyGroup.name,
+      'group_type':req.companyGroup.group_type,
+      'leader':req.companyGroup.leader[0].nickname,
+      'gid':req.companyGroup.gid,
+      'logo':req.companyGroup.logo
+    };
+    return res.send(team);
+  }
+  else
+    return res.send(403);
 };
 
 
@@ -261,7 +269,7 @@ exports.getLedTeams = function(req,res) {
   CompanyGroup.find(options,{'logo':1,'member':1,'name':1},function(err, companyGroups){
     if(err){
       console.log(err);
-      return res.send({'result':0,'msg':'获取带领'});
+      return res.send({'result':0,'msg':'获取带领小队失败'});
     }
     else
      return res.send({'result':1,'teams':companyGroups});

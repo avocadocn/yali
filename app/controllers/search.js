@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
     Company = mongoose.model('Company'),
     CompanyGroup = mongoose.model('CompanyGroup'),
     async = require('async'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    auth = require('../services/auth');
 
 
 //TODO
@@ -204,3 +205,41 @@ exports.getUserInfo = function(req,res) {
     }
   });
 };
+
+exports.sameCityTeam = function(req,res,next) {
+  var allow = auth(req.user,{
+    teams: [req.params.teamId]
+  },['searchSameCityTeam']);
+  if(!allow.searchSameCityTeam){
+    return res.send(403);
+  }
+  else{
+    Company.findOne({'_id':req.companyGroup.cid},function(err,company){
+      if(err){
+        console.log(err);
+        return res.send(500);
+      }else{
+        var sameCityTeams = searchCityTeam(company.info.city.city);
+      }
+    })
+  }
+};
+
+var searchCityTeam = function(city){
+  Company.find({'info.city.city':city},{'_id':1},function(err,companies){
+    if(err){
+      console.log(err);
+      return ;
+    }else{
+      CompanyGroup.find()
+    }
+  });
+}
+
+
+
+
+
+
+
+

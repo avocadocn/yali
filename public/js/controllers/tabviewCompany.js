@@ -790,17 +790,9 @@ tabViewCompany
                 //TODO:更改对话框
                 alertify.alert('DATA ERROR');
             });
-            //-Todo 检查此段是否需要,貌似可用index代替 不需重新发请求 -M
-            $http({
-                method:'post',
-                url:'/group/oneTeam/'+tid,
-                data:{
-                    tid: $scope.tid
-                }
-            }).success(function(data, status) {
+            $http.get('/group/oneTeam/'+tid).success(function(data, status) {
                 $scope.team = data;
             }).error(function(data, status) {
-                //TODO:更改对话框
                 alertify.alert('DATA ERROR');
             });
         }

@@ -846,8 +846,6 @@ exports.renderSearchOpponents = function(req, res){
   return res.render('users/search_opponents',{myTeams:sortTeams(myTeams)});
 };
 
-
-
 exports.timeLine = function(req,res){
   var uid = req.params.userId;
   var option = {

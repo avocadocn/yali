@@ -118,6 +118,11 @@ var CompanyGroup = new Schema({
         default: true
     },
     home_court: [_home_court],       //主场(可能有多个)
+    city: {
+        province: String,
+        city: String,
+        district: String
+    },
     create_time:{
         type: Date,
         default: Date.now
