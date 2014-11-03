@@ -74,6 +74,22 @@ var registeredTasks = {
   sponsorCampaign: {
     company: ['hr'],
     team: ['leader']
+  },
+  joinTeam: function (role) {
+    if (role.company === 'member' && !role.team) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  quitTeam: {
+    team: ['leader', 'member']
+  },
+
+  // 发小队站内信
+  publishTeamMessage: {
+    company: ['hr'],
+    team: ['leader']
   }
 
 };

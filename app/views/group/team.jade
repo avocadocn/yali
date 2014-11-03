@@ -11,9 +11,12 @@ block contentExt
       p.main_text(ng-cloak) 成立时间: {{team.createTime | date:'yyyy-MM-dd'}}
       p.text.intro(ng-cloak) {{team.brief}}
 
-      button.blue(ng-click="sponsorIndex(1)") 发起活动
-      button.red(ng-click="sponsorIndex(2)") 找对手
-      a.blue(ng-href="/message/home/{{team._id}}#/send") 发站内信
+      button.blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
+      button.red(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(2)" ng-cloak) 找对手
+      a.blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
+
+      button.blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
+      button.red(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
 
     div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base

@@ -7,7 +7,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', functio
   var data = document.getElementById('data').dataset;
   var teamId = data.id;
 
-  // todo 这并不是好的做法，仅仅是为了下面两个发活动的controller
+  // 这并不是好的做法，仅仅是为了下面两个发活动的controller
   $rootScope.teamId = data.id;
   $rootScope.groupId = data.gid;
 
@@ -17,10 +17,11 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', functio
     } else {
       $scope.team = data.team;
       $scope.team._id = teamId;
+      $scope.allow = data.allow;
     }
   });
 
-  // 这并不是一个好的做法，日后可改善。现在暂时按以前的写法，通过rootScope设置活动
+  // 这并不是一个好的做法，日后可改善。现在暂时按以前的写法，通过rootScope来设置发起活动
   $rootScope.sponsorIndex = function (index) {
     $rootScope.modal_index = index;
     if (index === 1) {//活动
@@ -28,6 +29,36 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', functio
     } else {
       $('#sponsorProvokeModel').modal('show');
     }
+  };
+
+  $scope.joinTeam = function () {
+    Team.join(teamId, function (err) {
+      if (err) {
+        alertify.alert('加入小队失败，请重试。');
+      } else {
+        alertify.alert('加入小队成功', function (e) {
+          // todo 暂时刷新页面，应该是重新获取小队数据，在全部功能完成后需要修改这里。
+          window.location.reload();
+        });
+      }
+    });
+  };
+
+  $scope.quitTeam = function () {
+    alertify.confirm('确定要退出该小队吗？', function (e) {
+      if (e) {
+        Team.quit(teamId, function (err) {
+          if (err) {
+            alertify.alert('退出小队失败，请重试。');
+          } else {
+            alertify.alert('退出小队成功', function (e) {
+              // todo 暂时刷新页面，应该是重新获取小队数据，在全部功能完成后需要修改这里。
+              window.location.reload();
+            });
+          }
+        });
+      }
+    });
   };
 
 

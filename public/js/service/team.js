@@ -15,7 +15,45 @@ donler.factory('Team', ['$http', function($http) {
       $http.get('/group/' + id + '/info')
         .success(function (data, status) {
           if (data.result === 1) {
-            callback(null, { team: data.team });
+            callback(null, { team: data.team, allow: data.allow });
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    },
+
+    /**
+     * 加入小队
+     * @param  {String}   id       小队id
+     * @param  {Function} callback callback(err)
+     */
+    join: function (id, callback) {
+      $http.post('/users/joinGroup', { tid: id })
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    },
+
+    /**
+     * 退出小队
+     * @param  {String}   id       小队id
+     * @param  {Function} callback callback(err)
+     */
+    quit: function (id, callback) {
+      $http.post('/users/quitGroup', { tid: id })
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
           } else {
             callback('error');
           }
@@ -24,6 +62,8 @@ donler.factory('Team', ['$http', function($http) {
           callback('error');
         });
     }
+
+
   };
 
 

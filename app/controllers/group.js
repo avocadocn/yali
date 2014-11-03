@@ -101,6 +101,7 @@ exports.activateGroup = function(req, res) {
 
 // todo 返回小队信息
 exports.info =function(req, res) {
+  var team = req.companyGroup;
   // todo 作权限判断，以便在页面上呈现或隐藏一些操作
   // 是否可以发活动、找对手
   // 是否可以加入或退出
@@ -108,7 +109,18 @@ exports.info =function(req, res) {
   // 是否可以修改全家福？（待定）
   // 是否显示主场
 
-  var team = req.companyGroup;
+  var tasks = [
+    'joinTeam',
+    'quitTeam',
+    'sponsorCampaign',
+    'publishTeamMessage'
+  ];
+  var allow = auth(req.user, {
+    companies: [team.cid],
+    teams: [team._id]
+  }, tasks);
+  console.log(allow)
+
   // 考虑安全性和数据量的问题，不把整个companyGroup原封不动地写入响应，而是按需取需要的字段
   var briefTeam = {
     name: team.name,
@@ -120,7 +132,7 @@ exports.info =function(req, res) {
     members: team.member.slice(0, 6),
     homeCourts: team.home_court
   };
-  res.send({ result: 1, team: briefTeam });
+  res.send({ result: 1, team: briefTeam, allow: allow });
 };
 
 exports.teampagetemplate =function(req,res){
