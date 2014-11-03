@@ -99,40 +99,30 @@ exports.activateGroup = function(req, res) {
   }
 };
 
+// todo 返回小队信息
+exports.info =function(req, res) {
+  // todo 作权限判断，以便在页面上呈现或隐藏一些操作
+  // 是否可以发活动、找对手
+  // 是否可以加入或退出
+  // 是否可以编辑
+  // 是否可以修改全家福？（待定）
+  // 是否显示主场
 
-//小队信息维护 TODO
-exports.info =function(req,res) {
-  var entity_type = req.companyGroup.entity_type;
-
-  if (entity_type === 'virtual') {
-    return res.send({
-      'companyGroup': req.companyGroup,
-      'role': req.role
-    });
-  }
-
-  try {
-    var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-    Entity.findOne({
-        'tid': req.companyGroup._id
-      },function(err, entity) {
-          if (err) {
-              console.log(err);
-              return res.send(err);
-          } else {
-              return res.send({
-                  'companyGroup': req.companyGroup,  //父小队信息
-                  'entity': entity,                   //实体小队信息
-                  'role': req.role
-              });
-          }
-      });
-  } catch (e) {
-    console.log(e);
-    return res.send(500);
-  }
-
+  var team = req.companyGroup;
+  // 考虑安全性和数据量的问题，不把整个companyGroup原封不动地写入响应，而是按需取需要的字段
+  var briefTeam = {
+    name: team.name,
+    logo: team.logo,
+    groupType: team.group_type,
+    createTime: team.create_time,
+    brief: team.brief,
+    leaders: team.leader,
+    members: team.member.slice(0, 6),
+    homeCourts: team.home_court
+  };
+  res.send({ result: 1, team: briefTeam });
 };
+
 exports.teampagetemplate =function(req,res){
   // var cid = req.user.provider=='company'? req.user._id :req.user.cid;
   res.render('partials/team_integrate_page',{
@@ -142,94 +132,98 @@ exports.teampagetemplate =function(req,res){
 };
 
 exports.teampage = function(req, res) {
-  if (req.companyGroup.department) {
-    return res.redirect('/department/home/' + req.companyGroup.department);
-  }
-  moment.lang('zh-cn');
-  var cid = req.companyGroup.cid.toString();
-  async.waterfall([
-    function(callback) {
-      PhotoAlbum
-      .where('_id').in(req.companyGroup.photo_album_list)
-      .exec()
-      .then(function(photo_albums) {
-        if (!photo_albums) {
-          callback('not found');
-        }
-        var photo_album_thumbnails = [];
+  // if (req.companyGroup.department) {
+  //   return res.redirect('/department/home/' + req.companyGroup.department);
+  // }
+  // moment.lang('zh-cn');
+  // var cid = req.companyGroup.cid.toString();
+  // async.waterfall([
+  //   function(callback) {
+  //     PhotoAlbum
+  //     .where('_id').in(req.companyGroup.photo_album_list)
+  //     .exec()
+  //     .then(function(photo_albums) {
+  //       if (!photo_albums) {
+  //         callback('not found');
+  //       }
+  //       var photo_album_thumbnails = [];
 
-        for (var i = 0; i < photo_albums.length; i++) {
-          if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
-            continue;
-          }
-          if (photo_albums[i].hidden === true) {
-            continue;
-          }
-          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
-          photo_album_thumbnails.push({
-            uri: thumbnail_uri,
-            name: photo_albums[i].name,
-            _id: photo_albums[i]._id
-          });
-          if (photo_album_thumbnails.length === 4) {
-            break;
-          }
-        }
+  //       for (var i = 0; i < photo_albums.length; i++) {
+  //         if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
+  //           continue;
+  //         }
+  //         if (photo_albums[i].hidden === true) {
+  //           continue;
+  //         }
+  //         var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
+  //         photo_album_thumbnails.push({
+  //           uri: thumbnail_uri,
+  //           name: photo_albums[i].name,
+  //           _id: photo_albums[i]._id
+  //         });
+  //         if (photo_album_thumbnails.length === 4) {
+  //           break;
+  //         }
+  //       }
 
-        callback(null, photo_album_thumbnails);
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
-    },
-    function(photo_album_thumbnails, callback){
-      var teamMoreInfo = {};
-      teamMoreInfo.photo_album_thumbnails = photo_album_thumbnails;
+  //       callback(null, photo_album_thumbnails);
+  //     })
+  //     .then(null, function(err) {
+  //       callback(err);
+  //     });
+  //   },
+  //   function(photo_album_thumbnails, callback){
+  //     var teamMoreInfo = {};
+  //     teamMoreInfo.photo_album_thumbnails = photo_album_thumbnails;
 
 
-      Campaign.find({'tid':req.params.teamId, 'active':true, 'confirm_status': true})
-        .where('end_time').gt(new Date())
-        .sort('-create_time')
-        .limit(1)
-        .exec()
-        .then(function(campaign){
-            if(campaign.length==0){
-                teamMoreInfo.campaign = '';
-            }else{
-              teamMoreInfo.campaign = campaign[0];
-            }
-            callback(null, teamMoreInfo);
-        });
+  //     Campaign.find({'tid':req.params.teamId, 'active':true, 'confirm_status': true})
+  //       .where('end_time').gt(new Date())
+  //       .sort('-create_time')
+  //       .limit(1)
+  //       .exec()
+  //       .then(function(campaign){
+  //           if(campaign.length==0){
+  //               teamMoreInfo.campaign = '';
+  //           }else{
+  //             teamMoreInfo.campaign = campaign[0];
+  //           }
+  //           callback(null, teamMoreInfo);
+  //       });
 
-    },
-    function(teamMoreInfo, callback) {
+  //   },
+  //   function(teamMoreInfo, callback) {
 
-      res.render('group/teampage',{
-        'title': req.companyGroup.name,
-        'teamId' : req.params.teamId,
-        'tname': req.companyGroup.name,
-        'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-        'score': req.companyGroup.score ? req.companyGroup.score.member + req.companyGroup.score.campaign + req.companyGroup.score.participator + req.companyGroup.score.album + req.companyGroup.score.provoke + req.companyGroup.score.comment : 0,
-        'role': req.role,
-        'logo': req.companyGroup.logo,
-        'group_id': req.companyGroup._id,
-        'cname': req.companyGroup.cname,
-        'sign': req.companyGroup.brief,
-        'gid' : req.companyGroup.gid,
-        'cid' : cid,
-        'photo': req.user.photo,
-        'realname':req.user.realname,
-        'photo_album_thumbnails': teamMoreInfo.photo_album_thumbnails,
-        'home_court': req.companyGroup.home_court,
-        'campaign':teamMoreInfo.campaign,
-        'moment': moment
-      });
-    }
-  ], function(err, result) {
-    console.log(err);
-    if (err === 'not found') res.send(404);
-    else res.send(500);
-  });
+  //     res.render('group/teampage',{
+  //       'title': req.companyGroup.name,
+  //       'teamId' : req.params.teamId,
+  //       'tname': req.companyGroup.name,
+  //       'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
+  //       'score': req.companyGroup.score ? req.companyGroup.score.member + req.companyGroup.score.campaign + req.companyGroup.score.participator + req.companyGroup.score.album + req.companyGroup.score.provoke + req.companyGroup.score.comment : 0,
+  //       'role': req.role,
+  //       'logo': req.companyGroup.logo,
+  //       'group_id': req.companyGroup._id,
+  //       'cname': req.companyGroup.cname,
+  //       'sign': req.companyGroup.brief,
+  //       'gid' : req.companyGroup.gid,
+  //       'cid' : cid,
+  //       'photo': req.user.photo,
+  //       'realname':req.user.realname,
+  //       'photo_album_thumbnails': teamMoreInfo.photo_album_thumbnails,
+  //       'home_court': req.companyGroup.home_court,
+  //       'campaign':teamMoreInfo.campaign,
+  //       'moment': moment
+  //     });
+  //   }
+  // ], function(err, result) {
+  //   console.log(err);
+  //   if (err === 'not found') res.send(404);
+  //   else res.send(500);
+  // });
+
+  var team = req.companyGroup;
+
+  res.render('group/team', { team: team });
 
 };
 
@@ -1108,7 +1102,7 @@ exports.group = function(req, res, next, id) {
     if (!company_group) {
       return next(new Error(' Failed to load companyGroup ' + id));
     } else {
-      // may equal false
+      // department可以是false，表示不是部门的小队
       if (company_group.department == undefined && company_group.department == null) {
         mongoose.model('Department').findOne({
           team: company_group._id

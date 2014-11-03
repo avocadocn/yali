@@ -1,0 +1,16 @@
+extends ../layouts/user_base
+
+block contentExt
+  .dl_container(ng-controller="TeamPageController")
+    #data(data-id="#{team._id}")
+
+    .card.info_card
+      img.logo(ng-src="{{team.logo}}")
+      h3.name(ng-cloak) {{team.name}}
+      p.main_text(ng-cloak) 小队类型: {{team.groupType}}
+      p.main_text(ng-cloak) 成立时间: {{team.createTime | date:'yyyy-MM-dd'}}
+      p.text.intro(ng-cloak) {{team.brief}}
+
+append footExt
+  script(src="/js/controllers/team.js")
+  script(src="/js/service/team.js")
