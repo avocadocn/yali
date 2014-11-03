@@ -222,8 +222,8 @@ exports.teampage = function(req, res) {
   // });
 
   var team = req.companyGroup;
-
-  res.render('group/team', { team: team });
+  // 仅提供id，其它所有数据通过group.info获取
+  res.render('group/team', { teamId: team._id, groupId: team.gid });
 
 };
 
