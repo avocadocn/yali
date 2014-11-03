@@ -15,7 +15,11 @@ donler.factory('Team', ['$http', function($http) {
       $http.get('/group/' + id + '/info')
         .success(function (data, status) {
           if (data.result === 1) {
-            callback(null, { team: data.team, allow: data.allow });
+            callback(null, {
+              team: data.team,
+              allow: data.allow,
+              isShowHomeCourts: data.isShowHomeCourts
+            });
           } else {
             callback('error');
           }

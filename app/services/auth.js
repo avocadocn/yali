@@ -75,6 +75,10 @@ var registeredTasks = {
     company: ['hr'],
     team: ['leader']
   },
+  sponsorProvoke: {
+    company: ['hr'],
+    team: ['leader']
+  },
   joinTeam: function (role) {
     if (role.company === 'member' && !role.team) {
       return true;

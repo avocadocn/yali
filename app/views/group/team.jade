@@ -16,7 +16,7 @@ block contentExt
       p.text.intro(ng-cloak) {{team.brief}}
 
       button.blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
-      button.red(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(2)" ng-cloak) 找对手
+      button.red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
       a.blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
 
       button.blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
@@ -34,7 +34,7 @@ block contentExt
         a(data-calendar-nav="next" href="javascript:void(0)") &gt;
       #calendar
 
-    .card.home_court_card
+    .card.home_court_card(ng-if="isShowHomeCourts")
       .home_court_nav
         .tabs(ng-init="courtIndex=0;")
           .tab(ng-click="courtIndex=0;") 主场一

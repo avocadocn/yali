@@ -110,13 +110,19 @@ exports.info =function(req, res) {
     'joinTeam',
     'quitTeam',
     'sponsorCampaign',
+    'sponsorProvoke',
     'publishTeamMessage'
   ];
   var allow = auth(req.user, {
     companies: [team.cid],
     teams: [team._id]
   }, tasks);
-  console.log(allow)
+
+  if (team.department) {
+    allow.joinTeam = false;
+    allow.quitTeam = false;
+    allow.sponsorProvoke = false;
+  }
 
   // 从members中去除leader
   var membersWithoutLeader = [];
@@ -135,23 +141,30 @@ exports.info =function(req, res) {
   });
 
   // 设置主场，目的是为了避免在页面做过多的逻辑判断
+  // 注意，此处必须使用===比较，department属性有可能是null或undefined，此时是无效的数据
+  // 只有为false或是一个ObjectId时才是有效数据
   var homeCourts = [];
-  team.home_court.forEach(function (homeCourt) {
-    homeCourts.push(homeCourt);
-  });
-  switch (homeCourts.length) {
-  case 0:
-    homeCourts = [{
-      defaultImg: '/img/icons/nohomecourt.jpg'
-    }, {
-      defaultImg: '/img/icons/nohomecourt2.jpg'
-    }];
-    break;
-  case 1:
-    homeCourts.push({
-      defaultImg: '/img/icons/nohomecourt2.jpg'
+  var isShowHomeCourts = true;
+  if (team.department === false) {
+    team.home_court.forEach(function (homeCourt) {
+      homeCourts.push(homeCourt);
     });
-    break;
+    switch (homeCourts.length) {
+    case 0:
+      homeCourts = [{
+        defaultImg: '/img/icons/nohomecourt.jpg'
+      }, {
+        defaultImg: '/img/icons/nohomecourt2.jpg'
+      }];
+      break;
+    case 1:
+      homeCourts.push({
+        defaultImg: '/img/icons/nohomecourt2.jpg'
+      });
+      break;
+    }
+  } else {
+    isShowHomeCourts = false;
   }
 
   // 考虑安全性和数据量的问题，不把整个companyGroup原封不动地写入响应，而是按需取需要的字段
@@ -165,7 +178,12 @@ exports.info =function(req, res) {
     members: membersWithoutLeader,
     homeCourts: homeCourts
   };
-  res.send({ result: 1, team: briefTeam, allow: allow });
+  res.send({
+    result: 1,
+    team: briefTeam,
+    allow: allow,
+    isShowHomeCourts: isShowHomeCourts
+  });
 };
 
 exports.teampagetemplate =function(req,res){
