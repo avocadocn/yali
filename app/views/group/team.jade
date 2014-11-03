@@ -18,6 +18,18 @@ block contentExt
       button.blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
       button.red(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
 
+    .card.member_card
+      img(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}")
+      hr
+      img(ng-repeat="member in team.members" ng-src="{{member.photo}}")
+
+    .card.home_court_card
+      .home_court(ng-repeat="homeCourt in team.homeCourts")
+        p(ng-cloak) {{homeCourt.name}}
+        a(ng-cloak ng-if="homeCourt.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
+          img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=268*210&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
+        img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}")
+
     div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
     div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")

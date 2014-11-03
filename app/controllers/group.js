@@ -99,16 +99,13 @@ exports.activateGroup = function(req, res) {
   }
 };
 
-// todo 返回小队信息
+
 exports.info =function(req, res) {
   var team = req.companyGroup;
   // todo 作权限判断，以便在页面上呈现或隐藏一些操作
-  // 是否可以发活动、找对手
-  // 是否可以加入或退出
   // 是否可以编辑
   // 是否可以修改全家福？（待定）
   // 是否显示主场
-
   var tasks = [
     'joinTeam',
     'quitTeam',
@@ -121,6 +118,42 @@ exports.info =function(req, res) {
   }, tasks);
   console.log(allow)
 
+  // 从members中去除leader
+  var membersWithoutLeader = [];
+  team.member.forEach(function (member) {
+    var isLeader = false;
+    for (var i = 0; i < team.leader.length; i++) {
+      var leader = team.leader[i];
+      if (leader._id.toString() === member._id.toString()) {
+        isLeader = true;
+        break;
+      }
+    }
+    if (!isLeader) {
+      membersWithoutLeader.push(member);
+    }
+  });
+
+  // 设置主场，目的是为了避免在页面做过多的逻辑判断
+  var homeCourts = [];
+  team.home_court.forEach(function (homeCourt) {
+    homeCourts.push(homeCourt);
+  });
+  switch (homeCourts.length) {
+  case 0:
+    homeCourts = [{
+      defaultImg: '/img/icons/nohomecourt.jpg'
+    }, {
+      defaultImg: '/img/icons/nohomecourt2.jpg'
+    }];
+    break;
+  case 1:
+    homeCourts.push({
+      defaultImg: '/img/icons/nohomecourt2.jpg'
+    });
+    break;
+  }
+
   // 考虑安全性和数据量的问题，不把整个companyGroup原封不动地写入响应，而是按需取需要的字段
   var briefTeam = {
     name: team.name,
@@ -129,8 +162,8 @@ exports.info =function(req, res) {
     createTime: team.create_time,
     brief: team.brief,
     leaders: team.leader,
-    members: team.member.slice(0, 6),
-    homeCourts: team.home_court
+    members: membersWithoutLeader,
+    homeCourts: homeCourts
   };
   res.send({ result: 1, team: briefTeam, allow: allow });
 };
