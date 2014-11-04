@@ -2,7 +2,7 @@
 
 var donler = angular.module('donler');
 
-donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', function($rootScope, $scope, Team) {
+donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campaign', function($rootScope, $scope, Team, Campaign) {
 
   var data = document.getElementById('data').dataset;
   var teamId = data.id;
@@ -20,6 +20,14 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', functio
       $scope.allow = data.allow;
       $scope.isShowHomeCourts = data.isShowHomeCourts;
     }
+  });
+
+  var now = new Date();
+  Campaign.getTeamCampaigns(teamId, {
+    year: now.getFullYear(),
+    month: now.getMonth()
+  }, function (err, campaigns) {
+    console.log(err, campaigns);
   });
 
   // 这并不是一个好的做法，日后可改善。现在暂时按以前的写法，通过rootScope来设置发起活动

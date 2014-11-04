@@ -215,6 +215,25 @@ angular.module('donler')
     };
 
 
+    var getTeamCampaigns = function (teamId, paging, callback) {
+      var query = '';
+      if (paging && paging.year && paging.month) {
+        query = '?year=' + paging.year + '&month=' + paging.month;
+      }
+      $http.get('/campaign/getTeamCampaigns/' + teamId + query)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.campaigns);
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
+
+
     return {
       sponsor: sponsor,
       getTags: getTags,
@@ -225,6 +244,7 @@ angular.module('donler')
       getMolds: getMolds,
       // vote: vote,
       dealProvoke: dealProvoke,
-      getLedTeams: getLedTeams
+      getLedTeams: getLedTeams,
+      getTeamCampaigns: getTeamCampaigns
     };
   }]);
