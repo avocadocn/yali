@@ -45,6 +45,18 @@ block contentExt
           img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=268*210&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
         img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}")
 
+    .nav
+      .year(ng-repeat="year in dateRecord")
+        a(ng-cloak) {{year.year}}
+        .months
+          a(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}
+    .timeline
+      .year(ng-repeat="yearData in campaignData")
+        .month(ng-repeat="monthData in yearData.months")
+          h1 {{yearData.year}}-{{monthData.month+1}}
+          .campaign(ng-repeat="campaign in monthData.campaigns")
+            p {{campaign.theme}}
+
     div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
     div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")

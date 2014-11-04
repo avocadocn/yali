@@ -22,13 +22,84 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
     }
   });
 
-  var now = new Date();
-  Campaign.getTeamCampaigns(teamId, {
-    year: now.getFullYear(),
-    month: now.getMonth()
-  }, function (err, campaigns) {
-    console.log(err, campaigns);
+  Campaign.getTeamDateRecord(teamId, function (err, record) {
+    if (err) {
+      alertify.alert('抱歉，获取数据失败，请刷新页面重试。');
+    } else {
+      $scope.dateRecord = record;
+    }
   });
+
+  $scope.campaignData = [];
+
+  var now = new Date();
+
+  var getCampaign = $scope.getCampaign = function (year, month) {
+    // 已有的不再获取
+    var found = false;
+    var isExistsCampaign = function (year, month) {
+      for (var i = 0; i < $scope.campaignData.length; i++) {
+        var yearData = $scope.campaignData[i];
+        if (yearData.year === year) {
+          for (var j = 0; j < yearData.months.length; j++) {
+            if (yearData.months[j].month === month) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    };
+    found = isExistsCampaign(year, month);
+
+    if (found) {
+      return;
+    }
+
+    // 获取尚未获取的月份的活动
+    Campaign.getTeamCampaigns(teamId, {
+      year: year,
+      month: month
+    }, function (err, campaigns) {
+
+      // 查找对应年份的数据是否存在
+      var found = false;
+      var data;
+      for (var i = 0; i < $scope.campaignData.length; i++) {
+        data = $scope.campaignData[i];
+        if (data.year === year) {
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        // 如果不存在对应的年份，则添加年份的数据
+        $scope.campaignData.push({
+          year: year,
+          months: [{
+            month: month,
+            campaigns: campaigns
+          }]
+        });
+        $scope.campaignData.sort(function (a, b) {
+          return b.year - a.year;
+        });
+      } else {
+        // 如果已存在对应的年份，添加一个月的数据并排序（假定这里不会重复添加）
+        data.months.push({
+          month: month,
+          campaigns: campaigns
+        });
+        data.months.sort(function (a, b) {
+          return b.month - a.month;
+        });
+      }
+
+    });
+  };
+
+  getCampaign(now.getFullYear(), now.getMonth());
 
   // 这并不是一个好的做法，日后可改善。现在暂时按以前的写法，通过rootScope来设置发起活动
   $rootScope.sponsorIndex = function (index) {

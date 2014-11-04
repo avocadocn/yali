@@ -214,7 +214,12 @@ angular.module('donler')
       });
     };
 
-
+    /**
+     * 获取小队某年某月的活动
+     * @param  {String}   teamId   小队id
+     * @param  {Object}   paging   {year: Number, month: Number}, month:0-11
+     * @param  {Function} callback callback(err, campaigns)
+     */
     var getTeamCampaigns = function (teamId, paging, callback) {
       var query = '';
       if (paging && paging.year && paging.month) {
@@ -224,6 +229,25 @@ angular.module('donler')
         .success(function (data, status) {
           if (data.result === 1) {
             callback(null, data.campaigns);
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
+
+    /**
+     * 获取小队有活动的年月
+     * @param  {String}   teamId   小队id
+     * @param  {Function} callback callback(err, record)
+     */
+    var getTeamDateRecord = function (teamId, callback) {
+      $http.get('/campaign/getDateRecord/' + teamId)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.dateRecord);
           } else {
             callback(data.msg);
           }
@@ -245,6 +269,7 @@ angular.module('donler')
       // vote: vote,
       dealProvoke: dealProvoke,
       getLedTeams: getLedTeams,
-      getTeamCampaigns: getTeamCampaigns
+      getTeamCampaigns: getTeamCampaigns,
+      getTeamDateRecord: getTeamDateRecord
     };
   }]);

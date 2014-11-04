@@ -1951,7 +1951,7 @@ exports.getTeamPageCampaignDateRecord = function (req, res) {
       })
       .then(null, function (err) {
         console.log(err);
-        res.send({ result: 0 });
+        res.send({ result: 0, msg: '获取有活动的年月列表失败' });
       });
   }
 };
@@ -1976,7 +1976,7 @@ exports.getTeamPageCampaigns = function (req, res) {
     })
     .then(null, function (err) {
       console.log(err);
-      res.send({ result: 0 });
+      res.send({ result: 0, msg: '获取活动失败' });
     });
 
 };
