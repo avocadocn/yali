@@ -1968,6 +1968,7 @@ exports.getTeamPageCampaigns = function (req, res) {
   var nextMonth = new Date(year, month + 1);
   Campaign
     .find({
+      tid: req.params.teamId,
       start_time: { $gte: thisMonth, $lt: nextMonth }
     })
     .exec()
