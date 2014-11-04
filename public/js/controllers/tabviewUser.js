@@ -1022,7 +1022,7 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
           $('#calendar_nav_modal').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
             modalCalendar.navigate($(this).data('calendar-nav'));
           });
-          $('#calendar_view_modal').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
+          $('#calendar_view_modal').undelegate('[data-calendar-nav="today"]','click').delegate('[data-calendar-nav]','click',function() {
             modalCalendar.navigate($(this).data('calendar-nav'));
           });
           $('#calendar_view_modal').undelegate('[data-calendar-view]','click').delegate('[data-calendar-view]','click',function() {
