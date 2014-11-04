@@ -3,59 +3,79 @@ extends ../layouts/user_base
 append headExt
   link(rel="stylesheet" href="/lib/bootstrap-calendar/css/calendar.css")
   link(rel="stylesheet" href="/css/custom_calendar.css")
+  link(rel="stylesheet" href="/css/teampage.css")
 
 block contentExt
-  .dl_container(ng-controller="TeamPageController")
+  .teampage.dl_container(ng-controller="TeamPageController")
     #data(data-id="#{teamId}" data-gid="#{groupId}")
 
-    .card.info_card
-      img.logo(ng-src="{{team.logo}}")
-      h3.name(ng-cloak) {{team.name}}
-      p.main_text(ng-cloak) 小队类型: {{team.groupType}}
-      p.main_text(ng-cloak) 成立时间: {{team.createTime | date:'yyyy-MM-dd'}}
-      p.text.intro(ng-cloak) {{team.brief}}
+    .main_panel
 
-      button.blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
-      button.red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
-      a.blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
+      .base_info
+        .team_row
+          .team_col
+            .card.info_card
+              .team_info
+                .logo_box
+                  img.logo(ng-src="{{team.logo}}")
+                .info_box
+                  h3.name(ng-cloak) {{team.name}}
+                  p.main_text(ng-cloak) 小队类型: {{team.groupType}}
+                  p.main_text(ng-cloak) 成立时间: {{team.createTime | date:'yyyy-MM-dd'}}
+                  p.text.intro(ng-cloak) {{team.brief}}
+              .operator
+                button.blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
+                button.red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
+                a.blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
 
-      button.blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
-      button.red(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
+                button.blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
+                button.red(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
 
-    .card.member_card
-      img(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}")
-      hr
-      img(ng-repeat="member in team.members" ng-src="{{member.photo}}")
+            .card.member_card
+              .header
+                h4 队员
+              .members
+                img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}")
+                span.divider
+                img.member(ng-repeat="member in team.members" ng-src="{{member.photo}}")
 
-    .card.calendar_card
-      #calendar_nav.calendar_nav
-        a(data-calendar-nav="prev" href="javascript:void(0)") &lt;
-        span.calendar_date.calendar_title#calendar_title
-        a(data-calendar-nav="next" href="javascript:void(0)") &gt;
-      #calendar
+          .team_col
+            .card.family_card
 
-    .card.home_court_card(ng-if="isShowHomeCourts")
-      .home_court_nav
-        .tabs(ng-init="courtIndex=0;")
-          .tab(ng-click="courtIndex=0;") 主场一
-          .tab(ng-click="courtIndex=1;") 主场二
-      .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
-        p(ng-cloak) {{homeCourt.name}}
-        a(ng-cloak ng-if="homeCourt.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
-          img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=268*210&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
-        img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}")
+        .team_row
+          .team_col
+            .card.home_court_card(ng-if="isShowHomeCourts")
+              .home_court_nav
+                .tabs(ng-init="courtIndex=0;")
+                  .tab(ng-click="courtIndex=0;") 主场一
+                  .tab(ng-click="courtIndex=1;") 主场二
+              .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
+                p(ng-cloak) {{homeCourt.name}}
+                a(ng-cloak ng-if="homeCourt.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
+                  img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=268*210&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
+                img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}")
 
-    .nav
-      .year(ng-repeat="year in dateRecord")
-        a(ng-cloak) {{year.year}}
-        .months
-          a(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}
-    .timeline
-      .year(ng-repeat="yearData in campaignData")
-        .month(ng-repeat="monthData in yearData.months")
-          h1 {{yearData.year}}-{{monthData.month+1}}
-          .campaign(ng-repeat="campaign in monthData.campaigns")
-            p {{campaign.theme}}
+          .team_col
+            .card.calendar_card
+              #calendar_nav.calendar_nav
+                a(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+                span.calendar_date.calendar_title#calendar_title
+                a(data-calendar-nav="next" href="javascript:void(0)") &gt;
+              #calendar
+
+      .timeline
+        .year(ng-repeat="yearData in campaignData")
+          .month(ng-repeat="monthData in yearData.months" ng-cloak)
+            h1 {{yearData.year}}-{{monthData.month+1}}
+            .campaign(ng-repeat="campaign in monthData.campaigns")
+              p {{campaign.theme}}
+
+    .side_panel
+      .nav
+        .year(ng-repeat="year in dateRecord")
+          a(ng-cloak) {{year.year}}
+          .months
+            a(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}
 
     div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base

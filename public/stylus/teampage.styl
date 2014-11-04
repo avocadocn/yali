@@ -1,0 +1,67 @@
+clearfix()
+  &:before, &:after
+    display table
+    content " "
+  &:after
+    clear both
+
+responsive()
+  display block
+  max-width 100%
+
+.teampage
+  clearfix()
+  .main_panel
+    float left
+    width 865px
+  .side_panel
+    float right
+    width 60px
+
+  .team_row
+    clearfix()
+    margin-bottom 20px
+
+    .team_col
+      float left
+      width 425px
+      &:last-child
+        margin-left 15px
+
+  .card
+    background-color white
+    box-shadow 3px 3px 3px #ddd
+
+
+  .info_card
+    .team_info
+      clearfix()
+      .logo_box
+        float left
+        .logo
+          width 100px
+          height 100px
+      .info_box
+        float left
+
+  .member_card
+    .members
+      clearfix()
+      .member
+        display block
+        float left
+        width 60px
+        height 60px
+
+  .home_court_card
+    // temp style
+    height 250px
+    overflow hidden
+    .map_size
+      responsive()
+
+  .calendar_card
+    // temp style
+    height 250px
+    overflow hidden
+
