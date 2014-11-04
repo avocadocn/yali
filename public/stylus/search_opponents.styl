@@ -1,23 +1,35 @@
+.dl_container
+  background-color #fff
 .search_opponents
+  color #989898
   .head_container
     .headline
       height 30px
       width 100%
       background-color #f48361
+      color #fff
     .my_teams
-      .unit
-        float left
-        .logo
-          width 100px
-          height 100px
-        .text
-          width 100px
-          text-align center
-          overflow hidden
-          text-overflow ellipsis
-          white-space nowrap
-        .button
-          width 100px
+      margin 20px
+      .title
+        line-height 30px
+      .units
+        .unit
+          float left
+          .logo
+            width 100px
+            height 100px
+          .text
+            width 100px
+            text-align center
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
+          .button
+            width 100px
+            .select
+              background-color #f48361
+            .recommand
+              background-color #3ca2e0
     .selected_team
       .my_team
         .logo
@@ -27,3 +39,32 @@
           float right
   .tab_view
     width 100%
+    .result
+      margin 20px
+      background-color #fbfbfb
+      min-height 400px
+      .homecourt
+        .text
+          color #989898
+          cursor pointer
+        .text.active
+          color #000
+      .homecourtSetting
+        .court
+          width 100%
+      .map
+        float left
+        .fullMap
+          width 570px
+          height 560px
+      .teamlist
+        background-color #efefef
+        float left
+        width 350px
+        height 560px
+      .detail
+        background-color #fbfbfb
+        padding 20px
+        float left
+        width 570px
+        height 560px

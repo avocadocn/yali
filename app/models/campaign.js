@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  Schema = mongoose.Schema,
+  mongoosePaginate = require('mongoose-paginate');
 
 /**
  * 用于子文档嵌套
@@ -212,6 +213,7 @@ Campaign.virtual('members').get(function () {
   return members;
 });
 
+Campaign.plugin(mongoosePaginate);
 
 Campaign.methods = {
 

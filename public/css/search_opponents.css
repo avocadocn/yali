@@ -1,24 +1,43 @@
+.dl_container {
+  background-color: #fff;
+}
+.search_opponents {
+  color: #989898;
+}
 .search_opponents .head_container .headline {
   height: 30px;
   width: 100%;
   background-color: #f48361;
+  color: #fff;
 }
-.search_opponents .head_container .my_teams .unit {
+.search_opponents .head_container .my_teams {
+  margin: 20px;
+}
+.search_opponents .head_container .my_teams .title {
+  line-height: 30px;
+}
+.search_opponents .head_container .my_teams .units .unit {
   float: left;
 }
-.search_opponents .head_container .my_teams .unit .logo {
+.search_opponents .head_container .my_teams .units .unit .logo {
   width: 100px;
   height: 100px;
 }
-.search_opponents .head_container .my_teams .unit .text {
+.search_opponents .head_container .my_teams .units .unit .text {
   width: 100px;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.search_opponents .head_container .my_teams .unit .button {
+.search_opponents .head_container .my_teams .units .unit .button {
   width: 100px;
+}
+.search_opponents .head_container .my_teams .units .unit .button .select {
+  background-color: #f48361;
+}
+.search_opponents .head_container .my_teams .units .unit .button .recommand {
+  background-color: #3ca2e0;
 }
 .search_opponents .head_container .selected_team .my_team .logo {
   width: 50px;
@@ -29,4 +48,39 @@
 }
 .search_opponents .tab_view {
   width: 100%;
+}
+.search_opponents .tab_view .result {
+  margin: 20px;
+  background-color: #fbfbfb;
+  min-height: 400px;
+}
+.search_opponents .tab_view .result .homecourt .text {
+  color: #989898;
+  cursor: pointer;
+}
+.search_opponents .tab_view .result .homecourt .text.active {
+  color: #000;
+}
+.search_opponents .tab_view .result .homecourtSetting .court {
+  width: 100%;
+}
+.search_opponents .tab_view .result .map {
+  float: left;
+}
+.search_opponents .tab_view .result .map .fullMap {
+  width: 570px;
+  height: 560px;
+}
+.search_opponents .tab_view .result .teamlist {
+  background-color: #efefef;
+  float: left;
+  width: 350px;
+  height: 560px;
+}
+.search_opponents .tab_view .result .detail {
+  background-color: #fbfbfb;
+  padding: 20px;
+  float: left;
+  width: 570px;
+  height: 560px;
 }

@@ -1,6 +1,4 @@
 'use strict';
-//小队city脚本todo
-
 //活动组件脚本
 // var campaign_modules = [
 //     {

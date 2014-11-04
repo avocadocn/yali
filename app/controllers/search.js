@@ -3,37 +3,37 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Company = mongoose.model('Company'),
-    CompanyGroup = mongoose.model('CompanyGroup'),
-    async = require('async'),
-    User = mongoose.model('User'),
-    auth = require('../services/auth');
+  Company = mongoose.model('Company'),
+  CompanyGroup = mongoose.model('CompanyGroup'),
+  async = require('async'),
+  User = mongoose.model('User'),
+  auth = require('../services/auth');
 
 
 //TODO
 //根据公司名搜索公司
 exports.getCompany = function (req, res) {
-    var regx = new RegExp(req.body.regx);
-    var companies_rst = [];
-    Company.find({'info.name':regx,'status.active':true}, function (err, companies) {
-        if(err) {
-            return res.send([]);
-        } else {
-            if(companies) {
-                for(var i = 0; i < companies.length; i ++) {
-                    companies_rst.push({
-                        '_id' : companies[i]._id,
-                        'name' : companies[i].info.name,
-                        'team' : companies[i].team,
-                        'logo' : companies[i].info.logo
-                    });
-                }
-                return res.send(companies_rst);
-            } else {
-                return res.send([]);
-            }
+  var regx = new RegExp(req.body.regx);
+  var companies_rst = [];
+  Company.find({'info.name':regx,'status.active':true}, function (err, companies) {
+    if(err) {
+      return res.send([]);
+    } else {
+      if(companies) {
+        for(var i = 0; i < companies.length; i ++) {
+          companies_rst.push({
+            '_id' : companies[i]._id,
+            'name' : companies[i].info.name,
+            'team' : companies[i].team,
+            'logo' : companies[i].info.logo
+          });
         }
-    });
+        return res.send(companies_rst);
+      } else {
+        return res.send([]);
+      }
+    }
+  });
 };
 
 
@@ -235,11 +235,3 @@ var searchCityTeam = function(city){
     }
   });
 }
-
-
-
-
-
-
-
-

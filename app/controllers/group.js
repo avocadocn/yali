@@ -248,9 +248,11 @@ exports.getOneTeam = function(req, res) {
       '_id':req.companyGroup._id,
       'name':req.companyGroup.name,
       'group_type':req.companyGroup.group_type,
-      'leader':req.companyGroup.leader[0].nickname,
+      'leader':req.companyGroup.leader.length>0?req.companyGroup.leader[0].nickname:null,
       'gid':req.companyGroup.gid,
-      'logo':req.companyGroup.logo
+      'logo':req.companyGroup.logo,
+      'home_court':req.companyGroup.home_court?req.companyGroup.home_court:null,
+      'isLeader':req.companyGroup.leader.length>0?req.companyGroup.leader[0]._id === req.user._id:false
     };
     return res.send(team);
   }
@@ -274,6 +276,20 @@ exports.getLedTeams = function(req,res) {
     else
      return res.send({'result':1,'teams':companyGroups});
   });
+};
+
+exports.renderSameCity = function(req,res, next) {
+  if(req.params.teamId){
+    var allow = auth(req.user,{companies:[req.companyGroup.cid],teams:[req.params.teamId]},['getMyTeaminfo']);
+    if(!allow.getMyTeaminfo){
+      res.status(403);
+      next('forbidden');
+    }
+    else
+      return res.render('users/partials/opponentsResult');
+  }
+  else
+    return res.render('users/partials/opponentsResult',{'pleaseSelect':true});
 };
 
 //TODO
