@@ -8,6 +8,7 @@
 }
 .teampage .main_panel {
   float: left;
+  padding-top: 4px;
   width: 865px;
 }
 .teampage .side_panel {
@@ -36,6 +37,12 @@
   background-color: #fff;
   box-shadow: 3px 3px 3px #ddd;
 }
+.teampage .info_card {
+  height: 230px;
+}
+.teampage .info_card .team_info {
+  height: 160px;
+}
 .teampage .info_card .team_info:before,
 .teampage .info_card .team_info:after {
   display: table;
@@ -46,13 +53,34 @@
 }
 .teampage .info_card .team_info .logo_box {
   float: left;
+  width: 160px;
 }
 .teampage .info_card .team_info .logo_box .logo {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
+  margin-top: 20px;
+  margin-left: 20px;
 }
 .teampage .info_card .team_info .info_box {
   float: left;
+}
+.teampage .info_card .operator {
+  height: 70px;
+  padding: 20px;
+  padding-right: 0;
+}
+.teampage .info_card .operator .op_button {
+  width: 92px;
+  height: 30px;
+  margin-left: 5px;
+  padding: 0;
+  color: #fff;
+  background-color: #3498db;
+  font-size: 14px;
+  line-height: 30px;
+}
+.teampage .info_card .operator .op_button:first-child {
+  margin-left: 0;
 }
 .teampage .member_card .members:before,
 .teampage .member_card .members:after {
