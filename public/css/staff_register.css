@@ -185,6 +185,10 @@
   color: #3498db;
   text-align: center;
 }
+.simple_comment .component_body .rich_comment_form {
+  float: left;
+  width: 100%;
+}
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
   background-color: #fbfbfb;
@@ -3396,9 +3400,9 @@ input.ng-invalid.ng-dirty {
   margin-top: 10px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign_head {
-  padding: 5px 10px 5px 30px;
-  background-color: #e7ce23;
-  height: 26px;
+  padding: 7px 10px 5px 10px;
+  background-color: #ffc053;
+  height: 30px;
   color: #fff;
   line-height: 16px;
   font-size: 14px;
@@ -3412,7 +3416,7 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .top .campaign_head .title {
   width: 30%;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign_head .time_count {
   width: 30%;
@@ -3492,7 +3496,10 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_unjoin {
   width: 345px;
   float: left;
-  height: 186px;
+  height: 180px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin.no_campaign {
+  background-image: url("/img/no_new_campaign.png");
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campaign {
   border-top: 1px solid #f4f4f4;
@@ -3511,7 +3518,10 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_join {
   width: 345px;
   float: right;
-  height: 186px;
+  height: 180px;
+}
+.user_page .dl_container .main .campaigns_container .recent_join.no_campaign {
+  background-image: url("/img/no_recent_campaign.png");
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campaign_head {
   color: #099;
@@ -3548,6 +3558,9 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .now {
   width: 700px;
   clear: both;
+}
+.user_page .dl_container .main .campaigns_container .now.no_campaign {
+  background-image: url("/img/no_now_campaign.png");
 }
 .user_page .dl_container .main .campaigns_container .now .campaign_head {
   padding: 0 10px;
@@ -3660,32 +3673,25 @@ input.ng-invalid.ng-dirty {
   margin-top: 10px;
 }
 .user_page .dl_container .main .campaigns_container .now_head {
-  width: 700px;
-  height: 33px;
+  width: 100%;
+  height: 30px;
   padding: 0;
 }
 .user_page .dl_container .main .campaigns_container .now_head .campaign_head {
-  display: inline;
   color: #fff;
-  line-height: 33px;
-  height: 33px;
-  padding: 0 20px;
+  line-height: 32px;
+  height: 30px;
+  padding: 0;
+  font-size: 14px;
+  background-color: #3ca2e0;
 }
-.user_page .dl_container .main .campaigns_container .now_head .left {
-  font-size: 18px;
-  margin-right: -124px;
-  width: 100%;
+.user_page .dl_container .main .campaigns_container .now_head .campaign_head .head_icon {
+  background-image: url("/img/icons/coupleballoon.png");
+  background-repeat: no-repeat;
+  width: 17px;
+  height: 100%;
+  margin: 8px 9px;
   float: left;
-  background-color: #97d7c6;
-}
-.user_page .dl_container .main .campaigns_container .now_head .right {
-  width: 124px;
-  float: right;
-  background-color: #74baa7;
-}
-.user_page .dl_container .main .campaigns_container .now_head .right a {
-  color: #fff;
-  font-size: 12px;
 }
 .user_page .dl_container .side {
   padding-top: 45px;
@@ -3694,55 +3700,100 @@ input.ng-invalid.ng-dirty {
   left: 50%;
   margin-left: 240px;
 }
+.user_page .dl_container .side .dl_icons {
+  height: 12px;
+  width: 19px;
+  float: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.user_page .dl_container .side .dl_icons.speaker {
+  background-image: url("/img/icons/speakerwithhandle.png");
+}
+.user_page .dl_container .side .dl_icons.binoculars {
+  background-image: url("/img/icons/binoculars.png");
+}
+.user_page .dl_container .side .dl_icons.info {
+  background-image: url("/img/icons/personalinfo.png");
+}
+.user_page .dl_container .side .dl_icons.info_edit {
+  background-image: url("/img/icons/edit.png");
+}
 .user_page .dl_container .side .old_campaign_container {
-  background-color: #8dd4e6;
-  height: 40px;
+  height: 30px;
   color: #fff;
   line-height: 20px;
   font-size: 18px;
-  padding: 10px;
+  padding: 5px;
   margin-top: 10px;
+  clear: both;
   -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
-.user_page .dl_container .side .old_campaign_container a label {
-  font-size: 18px;
-  color: #fff;
-  font-size: 18px;
-  text-align: center;
-  cursor: pointer;
+.user_page .dl_container .side .old_campaign_container.commentCampaign {
+  background-color: #3ccbd4;
 }
-.user_page .dl_container .side .old_campaign_container a .footprint {
+.user_page .dl_container .side .old_campaign_container.commentCampaign .news_count {
+  font-size: 12px;
+  height: 16px;
+  width: 16px;
+  line-height: 18px;
+  margin: 0 6px;
+  background-color: #fff;
+  color: #3ccbd4;
+  border-radius: 6px;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container {
+  background-image: url("/img/timeline_bg.png");
+  background-size: cover;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container .footprint {
   background-image: url("/img/icons/footprint.png");
-  height: 23px;
+  background-repeat: no-repeat;
+  height: 30px;
   width: 34px;
+  margin-left: 5px;
+  margin-top: 5px;
   display: inline-block;
   float: left;
+}
+.user_page .dl_container .side .old_campaign_container a label {
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
 }
 .user_page .dl_container .side .old_campaign_container .full_parent {
   display: inline-block;
 }
-.user_page .dl_container .side .old_campaign_container .news_count {
-  font-size: 14px;
-  height: 20px;
-  width: 20px;
+.user_page .dl_container .side .sponsor_container {
+  height: 30px;
+  color: #fff;
   line-height: 20px;
-  background-color: #f3939e;
-}
-.user_page .dl_container .side .sponsor {
-  background-color: #3ca2e0;
-}
-.user_page .dl_container .side .sponsor .speaker {
-  background-image: url("/img/icons/speakerwithhandle.png");
-  height: 23px;
-  width: 26px;
-  display: inline-block;
+  font-size: 14px;
+  padding: 7px;
+  margin-top: 10px;
   float: left;
+  width: 118px;
+  margin-bottom: 10px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 1px 1px 3px #ccc;
 }
-.user_page .dl_container .side .sponsor label {
-  float: right;
-  margin-right: 10px;
+.user_page .dl_container .side .sponsor_container a {
+  color: #fff;
+}
+.user_page .dl_container .side .sponsor_container.sponsor {
+  background-color: #3ca2e0;
+  margin-right: 3px;
+}
+.user_page .dl_container .side .sponsor_container.provoke {
+  background-color: #f48361;
+  padding-left: 18px;
+}
+.user_page .dl_container .side .sponsor_container label {
+  margin-left: 10px;
 }
 .user_page .dl_container .side .groupsbox {
   margin-top: 10px;
@@ -3751,32 +3802,60 @@ input.ng-invalid.ng-dirty {
   box-shadow: 1px 1px 3px #ccc;
   padding: 20px 10px;
 }
-.user_page .dl_container .side .groupsbox .infobox .head_title {
-  padding-bottom: 20px;
-  margin-top: -7px;
-  color: #ccc;
+.user_page .dl_container .side .infobox {
+  background-color: #525e70;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 98px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 1px 1px 3px #ccc;
 }
-.user_page .dl_container .side .groupsbox .infobox .head_title a {
-  color: #3498db;
-}
-.user_page .dl_container .side .groupsbox .infobox .info_left {
-  float: left;
-}
-.user_page .dl_container .side .groupsbox .infobox .info_left .user_logo {
-  width: 54px;
-  height: 54px;
-}
-.user_page .dl_container .side .groupsbox .infobox .info_right {
-  float: left;
-  margin-left: 20px;
-  font-size: 12px;
-}
-.user_page .dl_container .side .groupsbox .infobox .info_right .username {
-  color: #3498db;
+.user_page .dl_container .side .infobox .head_title {
+  color: #fff;
+  padding: 8px;
   font-size: 14px;
+  line-height: 12px;
 }
-.user_page .dl_container .side .groupsbox .infobox .info_right .cname a {
+.user_page .dl_container .side .infobox .head_title .label_info {
+  margin-left: 10px;
+  margin-bottom: 0;
+}
+.user_page .dl_container .side .infobox .info_left {
+  float: left;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+.user_page .dl_container .side .infobox .info_left .user_logo {
+  width: 50px;
+  height: 50px;
+}
+.user_page .dl_container .side .infobox .info_right {
+  float: left;
+  padding: 10px;
+  padding-left: 15px;
+  font-size: 12px;
+  width: 170px;
+  height: 70px;
+  background-color: #fff;
+}
+.user_page .dl_container .side .infobox .info_right label {
+  margin-bottom: 0;
+}
+.user_page .dl_container .side .infobox .info_right .username {
+  color: #3498db;
+  font-size: 16px;
+  min-width: 63px;
+}
+.user_page .dl_container .side .infobox .info_right .score_label {
+  color: #edca3c;
+}
+.user_page .dl_container .side .infobox .info_right .score {
   color: #ccc;
+}
+.user_page .dl_container .side .infobox .info_right .info_row a {
+  color: #999;
 }
 .user_page .dl_container .schedule_small {
   -moz-box-shadow: 1px 1px 3px #ccc;
@@ -3806,12 +3885,28 @@ input.ng-invalid.ng-dirty {
   margin: 10px 5px;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav {
-  background-color: #73a5dd;
+  background-color: #525e70;
   height: 38px;
   line-height: 38px;
   padding: 0 10px;
   margin: 0;
   clear: both;
+}
+.user_page .dl_container .schedule_small .schedulebox .calendar_nav .icon_calendar {
+  height: 16px;
+  width: 19px;
+  float: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/img/icons/calendar.png");
+}
+.user_page .dl_container .schedule_small .schedulebox .calendar_nav .icon_fold {
+  height: 16px;
+  width: 19px;
+  float: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/img/icons/fold.png");
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav .calendar_title {
   width: 170px;

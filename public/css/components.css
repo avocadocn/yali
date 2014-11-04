@@ -185,6 +185,10 @@
   color: #3498db;
   text-align: center;
 }
+.simple_comment .component_body .rich_comment_form {
+  float: left;
+  width: 100%;
+}
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
   background-color: #fbfbfb;

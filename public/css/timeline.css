@@ -408,17 +408,21 @@ Timeline UI Base
 }
 .user_timeline .dl_timeline .column .timeline_element .comments {
   clear: both;
+  background-color: #fbfbfb;
 }
 .user_timeline .dl_timeline .column .timeline_element .comments a {
   color: #ccc;
 }
 .user_timeline .dl_timeline .column .timeline_element .comments a.comment_num {
-  border-top: 1px solid #ccc;
   display: inline-block;
   color: #ccc;
   width: 100%;
   padding: 5px 10px;
   text-align: right;
+  background-color: #fbfbfb;
+}
+.user_timeline .dl_timeline .column .timeline_element .comments a.comment_num .reply_icon {
+  margin-right: 7px;
 }
 .user_timeline .dl_timeline .column .timeline_element .title {
   margin-bottom: 0;

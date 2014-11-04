@@ -57,7 +57,9 @@ mixin timelineElement(item,index)
       span= item.head
     if item.components.RichComment
       .comments
-        a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=($root.showComment!='#{item.year}_#{item.month}_#{index}'?'#{item.year}_#{item.month}_#{index}':'');") #{item.comment_sum}条评论
+        a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=($root.showComment!='#{item.year}_#{item.month}_#{index}'?'#{item.year}_#{item.month}_#{index}':'');")
+          img.reply_icon(src="/img/comment_grey.png")
+          | #{item.comment_sum}条评论
         .comment_list(ng-if="$root.showComment=='#{item.year}_#{item.month}_#{index}'")
           simple-comment(component-id="#{item.components.RichComment[0]}" allow-publish="#{item.allow.publishComment}" comment-num=3)
 block content

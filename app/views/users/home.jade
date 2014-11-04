@@ -9,7 +9,7 @@ block panel
     .user_campaigns_container.top(ng-cloak)
       .campaign_head
         span.star
-        label.title 置顶
+        label.title {{topCampaign?'置顶':'没有置顶活动'}}
         label.time_count(ng-if="topCampaign && topCampaign.start_time_text") 还剩 {{topCampaign.start_time_text}}
         //- a.clearLinkUnderline.pull-right(ng-if="topCampaign"  ng-click="openModal()") 编辑
         //- a.clearLinkUnderline.pull-right.add(ng-if="!topCampaign"  ng-click="openModal()") +
@@ -41,7 +41,7 @@ block panel
             p.campaign_info
               span #{__("LOCATION")}:
               span.content_text {{topCampaign.location.name}}
-    .user_campaigns_container.recent_unjoin(ng-if="recentJoinedCampaigns.length>0 || recentUnjoinedCampaigns.length>0")
+    .user_campaigns_container.recent_unjoin(ng-if="recentUnjoinedCampaigns.length>0")
       .campaign_head(ng-cloak)
         label {{recentUnjoinedCampaigns.length}} 个新活动
         a.pull-right(ng-if="recentUnjoinedCampaigns.length>0" href="#/campaign/#{uid}" ng-click="openModal('recentUnjoinedCampaigns')") 更多
@@ -69,7 +69,8 @@ block panel
             p
               span #{__("LOCATION")}:
               span.content_text {{recentUnjoinedCampaign.location.name}}
-    .user_campaigns_container.recent_join(ng-if="recentJoinedCampaigns.length>0 || recentUnjoinedCampaigns.length>0")
+    .user_campaigns_container.recent_unjoin.no_campaign(ng-if="recentUnjoinedCampaigns.length==0")
+    .user_campaigns_container.recent_join(ng-if="recentJoinedCampaigns.length>0")
       .campaign_head(ng-cloak)
         label {{recentJoinedCampaigns.length}} 个活动即将开始
         a.pull-right(ng-if="recentJoinedCampaigns.length>0" href="#/campaign/#{uid}" ng-click="openModal('recentJoinedCampaigns')") 更多
@@ -94,6 +95,7 @@ block panel
         .time_col
           span.text-center 还剩
           span.text-center.time_count.pull-right {{ recentJoinedCampaign.start_time_text}}
+    .user_campaigns_container.recent_join.no_campaign(ng-if="recentJoinedCampaigns.length==0")
     if myteam.length == 0
       .user_campaigns_container.recommend_team(ng-if="recentUnjoinedCampaigns.length==0 && recentJoinedCampaigns.length==0 && nowCampaigns.length==0" ng-cloak)
         .campaign_head
@@ -107,11 +109,12 @@ block panel
             p 您还没有任何活动
             p 联系队长组织精彩的活动吧！
     .user_campaigns_container.now_head(ng-if="nowCampaigns.length>0" ng-cloak)
-      .campaign_head.left(ng-cloak)
-        label {{nowCampaigns.length}} 个近期活动
+      .campaign_head(ng-cloak)
+        span.head_icon
+        label 活动动态
       //- .campaign_head.right(ng-cloak)
       //-   a.clearLinkUnderline.pull-right(ng-if="newReply.length>0" href=""  ng-click="openModal()") {{newReply.length}}条未查看回复
-    .now(ng-init="showComment=-1;" ng-cloak)
+    .now(ng-show="nowCampaigns.length>0" ng-init="showComment=-1;" ng-cloak)
       .campaigns(masonry reload="is_reload" items="nowCampaigns")
         .user_campaigns_container.masonry-item(ng-repeat="nowCampaign in nowCampaigns track by nowCampaign._id" ng-cloak)
           .campaign_head(ng-class="{'unconfrim':!nowCampaign.confirm_status}" ng-cloak)
@@ -157,7 +160,7 @@ block panel
             .comment_list(ng-if="$root.showComment==$index")
               simple-comment(component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" after-render="reloadM()" comment-num=3)
         //- a.pull-right(href="") 退出
-
+    .now.no_campaign(ng-if="nowCampaigns.length==0" ng-cloak)
   include ../users/user_modal
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
@@ -169,33 +172,44 @@ append content
   include ../partials/photo_modal
 block aside
   if user_role =='LEADER'
-    .old_campaign_container.sponsor
+    .sponsor_container.sponsor
       a(href="javascript:void(0);" ng-click="newCampaign()")
-        span.speaker
-        label 发起新活动   >>
-
-  .old_campaign_container
+        span.dl_icons.speaker
+        label 发活动
+    .sponsor_container.provoke
+      a(href="javascript:void(0);" ng-click="newCampaign()")
+        span.dl_icons.binoculars
+        label 找对手
+  .old_campaign_container.commentCampaign
     a.full_parent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
-      label 热门活动讨论  >>
-      label.clearLinkUnderline.pull-right.news_count(ng-if="newReply.length>0" ng-cloak) {{newReply.length}}
-  .groupsbox
-    .infobox
-      .head_title 
-        label 个人资料
-        a.clearLinkUnderline.pull-right(href="#/personal/#{uid}" ng-click="openModal()") 编辑
-      .info_left
-        //-用户头像
-        img.user_logo.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
-      .info_right
-        //-人名
-        .username
-          label= nickname
-        //-公司名
-        .cname
-          if (!department)
-            a.clearLinkUnderline(href='/company/home' target="_blank" ng-cloak) #{cname}
-          else
-            a.clearLinkUnderline(href='/department/home/#{department._id}' target="_blank" ng-cloak) #{department.name}
+      label.clearLinkUnderline.news_count(ng-cloak) {{newReply.length}}
+      label 热门活动讨论
+      label.pull-right >>
+  .old_campaign_container.timeline_container
+    a.clearLinkUnderline(href="/users/timeLine/#{uid}")
+      span.footprint
+      label 活动足迹
+      label.pull-right >>
+  .infobox
+    .head_title 
+      span.dl_icons.info
+      label.label_info 个人资料
+      a.clearLinkUnderline.pull-right(href="#/personal/#{uid}" ng-click="openModal()")
+        span.dl_icons.info_edit
+    .info_left
+      //-用户头像
+      img.user_logo.img_contain(src="#{photo ? photo :'/img/icons/default_user_photo.png'}")
+    .info_right
+      //-人名
+      div
+        label.username= nickname
+        label.score_label 积分
+        label.score 500
+      //-公司名
+      .info_row
+        a.clearLinkUnderline(href='/department/home/#{department._id}' target="_blank" ng-cloak) #{department.name}
+        if (!department)
+          a.clearLinkUnderline(href='/company/home' target="_blank" ng-cloak) #{cname}
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/schedule_list
@@ -204,10 +218,6 @@ block aside
       .groupsbox(ng-init="showFlag=false;")
         include ../partials/group_thumbnail
         +group_thumbnail(myteam)
-  .old_campaign_container
-    a.clearLinkUnderline(href="/users/timeLine/#{uid}")
-      span.footprint
-      label.pull-right 活动足迹 >>
 
 
 
