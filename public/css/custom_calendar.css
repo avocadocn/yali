@@ -73,6 +73,15 @@
   background: none;
   color: navbarFontColor;
 }
+.calendar_box .cal-context .cal-month-box .cal-row-fluid [class*='cal-cell'] {
+  width: 34px;
+}
+.calendar_box .cal-context .cal-month-box .cal-row-fluid [class*='cal-cell']:first-child {
+  width: 35px;
+}
+.calendar_box .cal-context .cal-month-box .cal-row-fluid [class*='cal-cell']:last-child {
+  width: 35px;
+}
 .calendar_box .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.2em;
   background-color: #f58464;

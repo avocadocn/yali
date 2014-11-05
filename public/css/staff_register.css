@@ -1368,7 +1368,6 @@ textarea {
   position: relative;
   overflow: hidden;
   border: 1px solid #e6e6e6;
-  padding: 20px;
 }
 .dl_container .side .groupsbox .head_title {
   color: #fff;
@@ -1380,18 +1379,18 @@ textarea {
   font-size: 14px;
 }
 .dl_container .side .groupsbox .box_head {
-  border-bottom: 1px solid #f4f4f4;
-  margin: -20px;
-  padding: 10px 20px;
+  padding: 10px;
   background-color: #525e70;
+  height: 30px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 .dl_container .side .groupsbox .box_head .icon_fold,
 .dl_container .side .groupsbox .box_head .icon_unfold {
   margin: 0;
 }
 .dl_container .side .groupsbox .groups {
-  padding-top: 30px;
-  margin-bottom: -10px;
+  padding: 28px 13px 4px 13px;
 }
 .dl_container .side .groupsbox .groups .group_label {
   line-height: 24px;
@@ -1399,7 +1398,7 @@ textarea {
   color: #ccc;
 }
 .dl_container .side .groupsbox .groups .group {
-  margin: 4px;
+  margin: 4px 4px 8px 4px;
   display: inline-block;
   position: relative;
 }
@@ -3395,6 +3394,7 @@ input.ng-invalid.ng-dirty {
 /* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   padding: 10px;
+  border-radius: 2px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
   clear: both;
@@ -3446,6 +3446,7 @@ input.ng-invalid.ng-dirty {
   color: #fff;
   line-height: 16px;
   font-size: 14px;
+  border-radius: 2px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign_head .star {
   background-image: url("/img/icons/star.png");
@@ -3724,6 +3725,7 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   font-size: 14px;
   background-color: #3ca2e0;
+  border-radius: 2px;
 }
 .user_page .dl_container .main .campaigns_container .now_head .campaign_head .head_icon {
   background-image: url("/img/icons/coupleballoon.png");
@@ -3748,6 +3750,7 @@ input.ng-invalid.ng-dirty {
   padding: 5px;
   margin-top: 10px;
   clear: both;
+  border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
@@ -3798,6 +3801,7 @@ input.ng-invalid.ng-dirty {
   float: left;
   width: 118px;
   margin-bottom: 10px;
+  border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
@@ -3818,16 +3822,13 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .side .groupsbox {
   margin-top: 10px;
-  -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
-  box-shadow: 1px 1px 3px #ccc;
-  padding: 20px 10px;
 }
 .user_page .dl_container .side .infobox {
   background-color: #525e70;
   margin-top: 10px;
   margin-bottom: 10px;
   height: 98px;
+  border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
@@ -3921,6 +3922,8 @@ input.ng-invalid.ng-dirty {
   padding: 0 10px;
   margin: 0;
   clear: both;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav .icon_calendar {
   height: 14px;

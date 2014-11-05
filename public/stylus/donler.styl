@@ -721,7 +721,7 @@ textarea
       position relative
       overflow hidden
       border 1px solid #e6e6e6
-      padding 20px
+      dl_shadow()
       .head_title
         color #fff
         font-size 14px
@@ -730,21 +730,21 @@ textarea
         a
           font-size 14px
       .box_head
-        border-bottom 1px solid borderColor
-        margin -20px
-        padding 10px 20px
+        padding 10px
         background-color #525E70
+        height 30px
+        border-top-left-radius 2px
+        border-top-right-radius 2px
         .icon_fold,.icon_unfold
           margin 0
       .groups
-        padding-top 30px
-        margin-bottom -10px
+        padding 28px 13px 4px 13px
         .group_label
           line-height 24px
           font-size 14px
           color secondaryfontColor
         .group
-          margin 4px
+          margin 4px 4px 8px 4px
           display inline-block
           position relative
           .add_group
@@ -2090,7 +2090,6 @@ input.ng-invalid.ng-dirty
   .reported_user
     color themeColor
 
-
 //用户首页
 .user_page
   .dl_nav
@@ -2377,6 +2376,7 @@ input.ng-invalid.ng-dirty
           margin 5px 0
           dl_shadow()
           padding 10px
+          border-radius 2px
           .campaign
             clear both
             height 70px
@@ -2417,6 +2417,7 @@ input.ng-invalid.ng-dirty
             color #ffffff
             line-height 16px
             font-size 14px
+            border-radius 2px
             .star
               background-image url('/img/icons/star.png')
               height 16px
@@ -2637,6 +2638,7 @@ input.ng-invalid.ng-dirty
             padding 0
             font-size 14px
             background-color #3ca2e0
+            border-radius 2px
             .head_icon
               background-image url('/img/icons/coupleballoon.png')
               background-repeat no-repeat
@@ -2658,6 +2660,7 @@ input.ng-invalid.ng-dirty
         padding 5px
         margin-top 10px
         clear both
+        border-radius 2px
         dl_shadow()
         &.commentCampaign
           background-color #3ccbd4
@@ -2700,6 +2703,7 @@ input.ng-invalid.ng-dirty
         float left
         width 118px
         margin-bottom 10px
+        border-radius 2px
         dl_shadow()
         a
           color #ffffff
@@ -2713,13 +2717,12 @@ input.ng-invalid.ng-dirty
           margin-left 10px
       .groupsbox
         margin-top 10px
-        dl_shadow()
-        padding 20px 10px
       .infobox
         background-color #525E70
         margin-top 10px
         margin-bottom 10px
         height 98px
+        border-radius 2px
         dl_shadow()
         .head_title
           color #fff
@@ -2791,6 +2794,8 @@ input.ng-invalid.ng-dirty
           padding 0 10px
           margin 0
           clear both
+          border-top-left-radius 2px
+          border-top-right-radius 2px
           .icon_calendar
             height 14px
             width 38px

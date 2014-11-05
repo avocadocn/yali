@@ -1,5 +1,5 @@
 mixin group_thumbnail(teams)
-  .dl_row.box_head
+  .box_head
     span.dl_icons.icon_group
     span.pull-left.head_title 小队(#{teams.length}个)
     span(ng-class="{'icon_fold':groupShowFlag,'icon_unfold':!groupShowFlag}" ng-click="groupShowFlag=!groupShowFlag;" ng-cloak)
