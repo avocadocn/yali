@@ -667,7 +667,7 @@ tabViewGroup.controller('CampaignListController', ['$http', '$scope','$rootScope
 }]);
 
 
-tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
+tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope','$timeout',function($http, $scope, $rootScope,$timeout) {
     $scope.unEdit = true;
     $scope.buttonStatus = '编辑';
     $scope.city='';
@@ -809,7 +809,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.MSearch1.search($scope.team.home_court[0].name); 
         }
         else{
-            setTimeout(function(){
+            $timeout(function(){
                 $scope.MSearch1.search($scope.team.home_court[0].name);
             },0);
         }
@@ -821,7 +821,7 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope',functi
             $scope.MSearch2.search($scope.team.home_court[1].name); 
         }
         else{
-            setTimeout(function(){
+            $timeout(function(){
                 $scope.MSearch2.search($scope.team.home_court[1].name);
             },0);
         }

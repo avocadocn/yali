@@ -33,7 +33,7 @@
     .dl_row.clearfix(ng-show='showMap1 && !unEdit')
       .info_side 
       .height_200
-        #courtMap1(ng-show='showMap1')
+        #courtMap1.height_200(ng-show='showMap1')
     .dl_row.clearfix(ng-show="team.home_court[1]!=undefined || !unEdit")
       .info_side
         span.info_label #{__("HOME_COURT")}二
