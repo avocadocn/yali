@@ -92,6 +92,10 @@ var registeredTasks = {
   closeTeam: {
     company: ['hr']
   },
+  editTeam: {
+    company: ['hr'],
+    team: ['leader']
+  },
   // 发小队站内信
   publishTeamMessage: {
     company: ['hr'],

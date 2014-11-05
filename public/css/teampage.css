@@ -54,16 +54,24 @@
 }
 .teampage .info_card .team_info .logo_box {
   float: left;
-  width: 160px;
+  position: relative;
+  width: 140px;
 }
 .teampage .info_card .team_info .logo_box .logo {
   width: 120px;
   height: 120px;
   margin-left: 20px;
 }
+.teampage .info_card .team_info .logo_box .edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: pointer;
+}
 .teampage .info_card .team_info .info_box {
   float: left;
   width: 260px;
+  margin-left: 20px;
   padding-right: 10px;
 }
 .teampage .info_card .team_info .info_box .main_text {
@@ -77,6 +85,20 @@
   font-size: 16px;
   color: #666;
 }
+.teampage .info_card .team_info .info_box .edit {
+  margin-left: 10px;
+  height: 14px;
+  cursor: pointer;
+}
+.teampage .info_card .team_info .info_box .input_name {
+  border: 1px solid #d6d6d6;
+  color: #999;
+  background-color: #fbfbfb;
+}
+.teampage .info_card .team_info .info_box .save {
+  color: #3ca2df;
+  margin-left: 10px;
+}
 .teampage .info_card .team_info .info_box .team_type {
   margin: 0;
   margin-top: 14px;
@@ -84,13 +106,19 @@
 .teampage .info_card .team_info .info_box .create_time {
   margin: 0;
 }
-.teampage .info_card .team_info .info_box .intro {
+.teampage .info_card .team_info .info_box .brief {
   margin: 0;
   margin-top: 6px;
   height: 51px;
   overflow: hidden;
   font-size: 12px;
   line-height: 17px;
+}
+.teampage .info_card .team_info .info_box .input_brief {
+  width: 100%;
+  border: 1px solid #d6d6d6;
+  color: #999;
+  background-color: #fbfbfb;
 }
 .teampage .info_card .operator {
   height: 70px;

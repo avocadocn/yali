@@ -20,6 +20,11 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
       $scope.allow = data.allow;
       $scope.isShowHomeCourts = data.isShowHomeCourts;
       $scope.role = data.role;
+
+      $scope.teamInfo = {
+        name: $scope.team.name,
+        brief: $scope.team.brief
+      };
     }
   });
 
@@ -98,6 +103,18 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
       }
 
     });
+
+    // 编辑小队信息
+    $scope.isEditingInfo = false;
+    $scope.editInfo = function () {
+      $scope.isEditingInfo = true;
+    };
+    $scope.saveInfo = function () {
+      $scope.isEditingInfo = false;
+      // todo save
+    };
+
+
   };
 
   getCampaign(now.getFullYear(), now.getMonth());
