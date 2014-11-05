@@ -15,18 +15,17 @@ block panel
         //- a.clearLinkUnderline.pull-right.add(ng-if="!topCampaign"  ng-click="openModal()") +
       .campaign(ng-if="topCampaign" ng-cloak)
         .info_left
-          .year_col
-            //- (ng-if="judgeYear($index)")
-            p.year {{topCampaign.start_time  | date:'yyyy'}}
           .time_col
-            p.text-center.day {{ topCampaign.start_time  | day }} {{ topCampaign.start_time | date:'HH:mm' }}
-          .theme
-            p {{topCampaign.theme}}
+            //- (ng-if="judgeYear($index)")
+            p.remind_text {{topCampaign.remind_text}}
+            p.time_text {{topCampaign.start_time_text}}
         .logo_col
           .team
             a.clearLinkUnderline(ng-href="{{topCampaign.link}}" target="_blank")
               img.campaign_logo(ng-src="{{topCampaign.logo}}/47/47")
-              p.team_name {{topCampaign.name}}
+              .campaign_info
+                p.team_name {{topCampaign.name}}
+                p.team_name {{topCampaign.theme}}
         .content_col
           a.clearLinkUnderline(ng-href="/campaign/detail/{{topCampaign._id}}" target="_blank")
             //- p
@@ -173,11 +172,11 @@ append content
 block aside
   if user_role =='LEADER'
     .sponsor_container.sponsor
-      a(href="javascript:void(0);" ng-click="newCampaign()")
+      a.full_parent(href="javascript:void(0);" ng-click="newCampaign()")
         span.dl_icons.speaker
         label 发活动
     .sponsor_container.provoke
-      a(href="javascript:void(0);" ng-click="newCampaign()")
+      a.full_parent(href="javascript:void(0);" ng-click="newCampaign()")
         span.dl_icons.binoculars
         label 找对手
   .old_campaign_container.commentCampaign
@@ -186,7 +185,7 @@ block aside
       label 热门活动讨论
       label.pull-right >>
   .old_campaign_container.timeline_container
-    a.clearLinkUnderline(href="/users/timeLine/#{uid}")
+    a.full_parent.clearLinkUnderline(href="/users/timeLine/#{uid}")
       span.footprint
       label 活动足迹
       label.pull-right >>

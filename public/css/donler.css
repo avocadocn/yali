@@ -1325,12 +1325,20 @@ textarea {
   background-size: contain;
 }
 .dl_container .side .dl_icons.speaker {
+  height: 13px;
+  width: 21px;
+  margin-top: 3px;
   background-image: url("/img/icons/speakerwithhandle.png");
 }
 .dl_container .side .dl_icons.binoculars {
+  height: 13px;
+  width: 18px;
+  margin-top: 3px;
   background-image: url("/img/icons/binoculars.png");
 }
 .dl_container .side .dl_icons.info {
+  height: 14px;
+  width: 21px;
   background-image: url("/img/icons/personalinfo.png");
 }
 .dl_container .side .dl_icons.info_edit {
@@ -3449,7 +3457,8 @@ input.ng-invalid.ng-dirty {
   color: #fff;
   line-height: 16px;
   font-size: 14px;
-  border-radius: 2px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign_head .star {
   background-image: url("/img/icons/star.png");
@@ -3479,47 +3488,41 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .top .campaign .info_left {
   width: 200px;
 }
-.user_page .dl_container .main .campaigns_container .top .campaign .info_left .year_col {
-  color: #ccc;
-  font-size: 14px;
-  height: 40px;
-  line-height: 40px;
-}
 .user_page .dl_container .main .campaigns_container .top .campaign .info_left .time_col {
-  font-size: 24px;
-  width: 150px;
-  height: 40px;
-  line-height: 40px;
-}
-.user_page .dl_container .main .campaigns_container .top .campaign .info_left .theme {
   font-size: 18px;
   clear: both;
   width: 100%;
   text-align: center;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .info_left .time_col .remind_text {
   height: 40px;
   line-height: 40px;
   color: #ccc;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .info_left .time_col .time_text {
+  color: #f48361;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .logo_col {
   width: 200px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team {
-  width: 100px;
+  width: 200px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team .campaign_logo {
   width: 47px;
   height: 47px;
-  display: block;
-  margin: 0 auto;
+  float: left;
 }
-.user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team .team_name {
-  text-align: center;
-  margin-top: 15px;
-  max-width: 100px;
+.user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team .campaign_info {
+  float: left;
+  width: 150px;
+}
+.user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team .campaign_info .team_name {
+  margin-left: 15px;
+  max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #f4f4f4;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .content_col {
   width: 260px;

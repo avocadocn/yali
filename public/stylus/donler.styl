@@ -686,10 +686,18 @@ textarea
       background-repeat no-repeat
       background-size contain
       &.speaker
+        height 13px
+        width 21px
+        margin-top 3px
         background-image url('/img/icons/speakerwithhandle.png')
       &.binoculars
+        height 13px
+        width 18px
+        margin-top 3px
         background-image url('/img/icons/binoculars.png')
       &.info
+        height 14px
+        width 21px
         background-image url('/img/icons/personalinfo.png')
       &.info_edit
         background-image url('/img/icons/edit.png')
@@ -2417,7 +2425,8 @@ input.ng-invalid.ng-dirty
             color #ffffff
             line-height 16px
             font-size 14px
-            border-radius 2px
+            border-top-left-radius 2px
+            border-top-right-radius 2px
             .star
               background-image url('/img/icons/star.png')
               height 16px
@@ -2439,41 +2448,34 @@ input.ng-invalid.ng-dirty
             height 100px
             .info_left
               width 200px
-              .year_col
-                color #ccc
-                font-size 14px
-                height 40px
-                line-height 40px
               .time_col
-                font-size 24px
-                width 150px
-                height 40px
-                line-height 40px
-              .theme
                 font-size 18px
                 clear both
                 width 100%
                 text-align center
-                height 40px
-                line-height 40px
-                color secondaryfontColor
+                .remind_text
+                  height 40px
+                  line-height 40px
+                  color secondaryfontColor
+                .time_text
+                  color #f48361
             .logo_col
               width 200px
               .team
-                width 100px
+                width 200px
                 .campaign_logo
                   width 47px
                   height 47px
-                  display block
-                  margin 0 auto
-                .team_name
-                  text-align center
-                  margin-top 15px
-                  max-width 100px
-                  overflow hidden
-                  text-overflow ellipsis
-                  white-space nowrap
-                  color borderColor
+                  float left
+                .campaign_info
+                  float left
+                  width 150px
+                  .team_name
+                    margin-left 15px
+                    max-width 150px
+                    overflow hidden
+                    text-overflow ellipsis
+                    white-space nowrap
             .content_col
               width 260px
               color #ccc
