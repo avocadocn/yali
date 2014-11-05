@@ -67,14 +67,16 @@ block contentExt
           .team_col
             .card.home_court_card(ng-if="isShowHomeCourts")
               .home_court_nav
+                img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
                 .tabs(ng-init="courtIndex=0;")
-                  .tab(ng-click="courtIndex=0;") 主场一
-                  .tab(ng-click="courtIndex=1;") 主场二
+                  .tab(ng-click="courtIndex=0;" ng-class="{'active': courtIndex==0}") 主场一
+                  .tab(ng-click="courtIndex=1;" ng-class="{'active': courtIndex==1}") 主场二
+                img.edit(src="/img/pencil_diagonal_outline_symbol_on_a_line.png")
               .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
-                p(ng-cloak) {{homeCourt.name}}
+                p(ng-cloak ng-if="homeCourt.name&&homeCourt.coordinates.length!==2") {{homeCourt.name}}
                 a(ng-cloak ng-if="homeCourt.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
-                  img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=268*210&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
-                img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}")
+                  img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=420*230&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
+                img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}/420/230")
 
           .team_col
             .card.calendar_card

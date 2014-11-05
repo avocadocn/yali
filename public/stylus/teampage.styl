@@ -174,11 +174,47 @@
         height 50px
 
   .home_court_card
-    // temp style
     height 260px
-    overflow hidden
+    .home_court_nav
+      clearfix()
+      height 30px
+      padding 0 10px
+      border-bottom 1px solid #efefef
+      .icon
+        float left
+        margin 8px 0
+        margin-right 20px
+        max-height 14px
+      .tabs
+        clearfix()
+        float left
+        .tab
+          height 30px
+          padding 8px
+          font-size 14px
+          line-height 1
+          float left
+          color #cccccc
+          cursor pointer
+          &:first-child
+            border-left 1px solid #efefef
+          &:last-child
+            border-right 1px solid #efefef
+        .tab.active
+          color #999999
+          background-color #fbfbfb
+          border-left-color #fbfbfb
+          border-right-color #fbfbfb
+      .edit
+        float right
+        max-height 14px
+        margin 8px 0
+    .home_court
+      height 230px
+
     .map_size
-      responsiveImg()
+      width 420px
+      height 230px
 
   .calendar_card
     // temp style

@@ -153,14 +153,14 @@ exports.info =function(req, res) {
     switch (homeCourts.length) {
     case 0:
       homeCourts = [{
-        defaultImg: '/img/icons/nohomecourt.jpg'
+        defaultImg: '/img/no_home_court.png'
       }, {
-        defaultImg: '/img/icons/nohomecourt2.jpg'
-      }];
+        defaultImg: '/img/no_home_court.png'
+      }]; // 之所以这么麻烦，是因为之前两个默认的主场是不一样的
       break;
     case 1:
       homeCourts.push({
-        defaultImg: '/img/icons/nohomecourt2.jpg'
+        defaultImg: '/img/no_home_court.png'
       });
       break;
     }

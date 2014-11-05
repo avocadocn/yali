@@ -262,11 +262,69 @@
 }
 .teampage .home_court_card {
   height: 260px;
-  overflow: hidden;
+}
+.teampage .home_court_card .home_court_nav {
+  height: 30px;
+  padding: 0 10px;
+  border-bottom: 1px solid #efefef;
+}
+.teampage .home_court_card .home_court_nav:before,
+.teampage .home_court_card .home_court_nav:after {
+  display: table;
+  content: " ";
+}
+.teampage .home_court_card .home_court_nav:after {
+  clear: both;
+}
+.teampage .home_court_card .home_court_nav .icon {
+  float: left;
+  margin: 8px 0;
+  margin-right: 20px;
+  max-height: 14px;
+}
+.teampage .home_court_card .home_court_nav .tabs {
+  float: left;
+}
+.teampage .home_court_card .home_court_nav .tabs:before,
+.teampage .home_court_card .home_court_nav .tabs:after {
+  display: table;
+  content: " ";
+}
+.teampage .home_court_card .home_court_nav .tabs:after {
+  clear: both;
+}
+.teampage .home_court_card .home_court_nav .tabs .tab {
+  height: 30px;
+  padding: 8px;
+  font-size: 14px;
+  line-height: 1;
+  float: left;
+  color: #ccc;
+  cursor: pointer;
+}
+.teampage .home_court_card .home_court_nav .tabs .tab:first-child {
+  border-left: 1px solid #efefef;
+}
+.teampage .home_court_card .home_court_nav .tabs .tab:last-child {
+  border-right: 1px solid #efefef;
+}
+.teampage .home_court_card .home_court_nav .tabs .tab.active {
+  color: #999;
+  background-color: #fbfbfb;
+  border-left-color: #fbfbfb;
+  border-right-color: #fbfbfb;
+}
+.teampage .home_court_card .home_court_nav .edit {
+  float: right;
+  max-height: 14px;
+  margin: 8px 0;
+}
+.teampage .home_court_card .home_court {
+  height: 230px;
 }
 .teampage .home_court_card .map_size {
-  display: block;
-  max-width: 100%;
+  width: 420px;
+  height: 230px;
 }
 .teampage .calendar_card {
   height: 260px;
