@@ -94,23 +94,17 @@
 }
 .teampage .info_card .operator {
   height: 70px;
-  padding: 20px;
-  padding-right: 10px;
+  padding: 20px 0;
   border-top: 1px solid #efefef;
-  text-align: center;
 }
 .teampage .info_card .operator .op_button {
   width: 92px;
   height: 30px;
-  margin-left: 4px;
   padding: 0;
   color: #fff;
   background-color: #3498db;
   font-size: 14px;
   line-height: 30px;
-}
-.teampage .info_card .operator .op_button:first-child {
-  margin-left: 0;
 }
 .teampage .info_card .operator .button_blue {
   background-color: #3ca2e0;
@@ -120,6 +114,34 @@
 }
 .teampage .info_card .operator .button_gray {
   background-color: #ccc;
+}
+.teampage .info_card .operator .one_button {
+  text-align: center;
+}
+.teampage .info_card .operator .one_button .op_button {
+  width: 190px;
+}
+.teampage .info_card .operator .two_button {
+  text-align: center;
+}
+.teampage .info_card .operator .two_button .op_button:last-child {
+  margin-left: 10px;
+}
+.teampage .info_card .operator .four_button:before,
+.teampage .info_card .operator .four_button:after {
+  display: table;
+  content: " ";
+}
+.teampage .info_card .operator .four_button:after {
+  clear: both;
+}
+.teampage .info_card .operator .four_button .op_button {
+  display: block;
+  float: left;
+  margin-left: 8px;
+}
+.teampage .info_card .operator .four_button .op_button:first-child {
+  margin-left: 20px;
 }
 .teampage .member_card {
   height: 100px;

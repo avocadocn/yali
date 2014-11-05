@@ -66,27 +66,39 @@
 
     .operator
       height 70px
-      padding 20px
-      padding-right 10px
+      padding 20px 0
       border-top 1px solid #efefef
-      text-align center
       .op_button
         width 92px
         height 30px
-        margin-left 4px
         padding 0
         color white
         background-color themeColor
         font-size 14px
         line-height 30px
-        &:first-child
-          margin-left 0
       .button_blue
         background-color #3ca2e0
       .button_red
         background-color #f48361
       .button_gray
         background-color #cccccc
+      .one_button
+        text-align center
+        .op_button
+          width 190px
+      .two_button
+        text-align center
+        .op_button
+          &:last-child
+            margin-left 10px
+      .four_button
+        clearfix()
+        .op_button
+          display block
+          float left
+          margin-left 8px
+          &:first-child
+            margin-left 20px
 
   .member_card
     height 100px

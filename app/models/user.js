@@ -229,6 +229,15 @@ UserSchema.methods = {
         return false;
     },
 
+    isLeader: function () {
+        for (var i = 0; i < this.team.length; i++) {
+            if (this.team[i].leader) {
+                return true;
+            }
+        }
+        return false;
+    },
+
     getCid: function () {
         return this.cid;
     }

@@ -18,7 +18,8 @@ donler.factory('Team', ['$http', function($http) {
             callback(null, {
               team: data.team,
               allow: data.allow,
-              isShowHomeCourts: data.isShowHomeCourts
+              isShowHomeCourts: data.isShowHomeCourts,
+              role: data.role
             });
           } else {
             callback('error');

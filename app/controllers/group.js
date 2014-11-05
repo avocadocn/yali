@@ -178,11 +178,42 @@ exports.info =function(req, res) {
     members: membersWithoutLeader,
     homeCourts: homeCourts
   };
+
+  // 根据页面显示需要，获取用户相对于小队页面的角色
+  var role = 'guest'; // 'HR', 'companyMember', 'teamMember', 'leader', 'otherHR', 'otherLeader', 'otherMember', 'guest'
+  if (!req.user) {
+    role = 'guest';
+  } else if (req.user.provider === 'company') {
+    if (req.user._id.toString() === team.cid.toString()) {
+      role = 'HR';
+    } else {
+      role = 'otherHR';
+    }
+  } else if (req.user.provider === 'user') {
+    if (req.user.cid.toString() === team.cid.toString()) {
+      if (req.user.isTeamLeader(team._id)) {
+        role = 'leader';
+      } else if (req.user.isTeamMember(team._id)) {
+        role = 'teamMember';
+      } else {
+        role = 'companyMember';
+      }
+    } else {
+      if (req.user.isLeader()) {
+        role = 'otherLeader';
+      } else {
+        role = 'otherMember';
+      }
+    }
+  }
+  console.log(role);
+
   res.send({
     result: 1,
     team: briefTeam,
     allow: allow,
-    isShowHomeCourts: isShowHomeCourts
+    isShowHomeCourts: isShowHomeCourts,
+    role: role
   });
 };
 

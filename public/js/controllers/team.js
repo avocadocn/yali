@@ -19,6 +19,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
       $scope.team._id = teamId;
       $scope.allow = data.allow;
       $scope.isShowHomeCourts = data.isShowHomeCourts;
+      $scope.role = data.role;
     }
   });
 
