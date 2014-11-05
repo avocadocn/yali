@@ -130,7 +130,7 @@ block contentExt
           .member_modal_body(bs-popover)
             .member(ng-repeat="member in team.membersWithLeader" ng-Mouseenter="showUserCard(member._id, member._id + 'member_modal')" id="pop{{member._id}}member_modal" rel="popover")
               img.photo(ng-src="{{member.photo}}")
-              p.nickname {{member.nickname}}
+              p.nickname(title="{{member.nickname}}") {{member.nickname}}
 
 
 append footExt
