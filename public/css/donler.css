@@ -1368,6 +1368,9 @@ textarea {
   position: relative;
   overflow: hidden;
   border: 1px solid #e6e6e6;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 1px 1px 3px #ccc;
 }
 .dl_container .side .groupsbox .head_title {
   color: #fff;
@@ -3611,7 +3614,7 @@ input.ng-invalid.ng-dirty {
   font-size: 18px;
 }
 .user_page .dl_container .main .campaigns_container .now .campaign_head label {
-  max-width: 100%;
+  max-width: 80%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3669,8 +3672,7 @@ input.ng-invalid.ng-dirty {
   padding: 10px 30px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator {
-  margin: 20px 10px;
-  width: 85px;
+  width: 75px;
 }
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator .dl_btn {
   margin: 5px;

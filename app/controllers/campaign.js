@@ -435,6 +435,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       'member_max':_campaign.member_max,
       'location':_campaign.location,
       'start_time':_campaign.start_time,
+      'finish':_campaign.finish,
       'end_time':_campaign.end_time,
       'deadline':_campaign.deadline,
       'comment_sum':_campaign.comment_sum,
