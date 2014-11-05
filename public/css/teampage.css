@@ -328,5 +328,50 @@
 }
 .teampage .calendar_card {
   height: 260px;
+}
+.teampage .calendar_card .calendar_nav {
+  height: 30px;
+}
+.teampage .calendar_card .calendar_nav:before,
+.teampage .calendar_card .calendar_nav:after {
+  display: table;
+  content: " ";
+}
+.teampage .calendar_card .calendar_nav:after {
+  clear: both;
+}
+.teampage .calendar_card .calendar_nav .icon {
+  float: left;
+}
+.teampage .calendar_card .calendar_nav .title {
+  float: left;
+}
+.teampage .calendar_card .calendar_body {
+  height: 200px;
   overflow: hidden;
+}
+.teampage .calendar_card .calendar_footer {
+  height: 30px;
+}
+.teampage .calendar_card .calendar_footer:before,
+.teampage .calendar_card .calendar_footer:after {
+  display: table;
+  content: " ";
+}
+.teampage .calendar_card .calendar_footer:after {
+  clear: both;
+}
+.teampage .calendar_card .calendar_footer .instruction {
+  float: right;
+}
+.teampage .calendar_card .calendar_footer .instruction:before,
+.teampage .calendar_card .calendar_footer .instruction:after {
+  display: table;
+  content: " ";
+}
+.teampage .calendar_card .calendar_footer .instruction:after {
+  clear: both;
+}
+.teampage .calendar_card .calendar_footer .instruction .item {
+  float: left;
 }

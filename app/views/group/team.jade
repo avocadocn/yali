@@ -81,10 +81,23 @@ block contentExt
           .team_col
             .card.calendar_card
               #calendar_nav.calendar_nav
-                a(data-calendar-nav="prev" href="javascript:void(0)") &lt;
-                span.calendar_date.calendar_title#calendar_title
-                a(data-calendar-nav="next" href="javascript:void(0)") &gt;
-              #calendar
+                img.icon(src="/img/calendar_big.png")
+                .title
+                  a(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+                  span.calendar_date.calendar_title#calendar_title
+                  a(data-calendar-nav="next" href="javascript:void(0)") &gt;
+              #calendar.calendar_body
+              .calendar_footer
+                .instruction
+                  .item
+                    .circle
+                    .text 没有活动
+                  .item
+                    .circle
+                    .text 2个及以下
+                  .item
+                    .circle
+                    .text 2个以上
 
       .timeline
         .year(ng-repeat="yearData in campaignData")
