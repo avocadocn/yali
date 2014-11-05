@@ -51,11 +51,14 @@ block contentExt
 
             .card.member_card
               .header
-                h4 队员
+                img.icon(src="/img/team.png")
+                h3.title 队员
+                span.count(ng-cloak) {{team.leaders.length + team.members.length}} >
               .members
-                img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}")
-                span.divider
-                img.member(ng-repeat="member in team.members" ng-src="{{member.photo}}")
+                .leader_box
+                  img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50")
+                .member_box
+                  img.member(ng-repeat="member in team.members" ng-src="{{member.photo}}/50/50")
 
           .team_col
             .card.family_card

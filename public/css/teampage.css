@@ -179,6 +179,41 @@
   height: 100px;
   margin-top: 10px;
 }
+.teampage .member_card .header {
+  height: 30px;
+  padding: 8px 10px;
+}
+.teampage .member_card .header:before,
+.teampage .member_card .header:after {
+  display: table;
+  content: " ";
+}
+.teampage .member_card .header:after {
+  clear: both;
+}
+.teampage .member_card .header .icon {
+  float: left;
+  max-height: 14px;
+}
+.teampage .member_card .header .title {
+  float: left;
+  margin: 0;
+  margin-left: 7px;
+  color: #999;
+  font-size: 14px;
+  line-height: 1;
+}
+.teampage .member_card .header .count {
+  float: right;
+  color: #3ca2e0;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.teampage .member_card .members {
+  padding: 0 10px;
+  border-top: 1px solid #efefef;
+}
 .teampage .member_card .members:before,
 .teampage .member_card .members:after {
   display: table;
@@ -187,11 +222,43 @@
 .teampage .member_card .members:after {
   clear: both;
 }
+.teampage .member_card .members .leader_box {
+  float: left;
+  padding: 10px 20px;
+  border-right: 1px solid #efefef;
+}
+.teampage .member_card .members .leader_box:before,
+.teampage .member_card .members .leader_box:after {
+  display: table;
+  content: " ";
+}
+.teampage .member_card .members .leader_box:after {
+  clear: both;
+}
+.teampage .member_card .members .member_box {
+  float: left;
+  padding: 10px 20px;
+  padding-right: 0;
+}
+.teampage .member_card .members .member_box:before,
+.teampage .member_card .members .member_box:after {
+  display: table;
+  content: " ";
+}
+.teampage .member_card .members .member_box:after {
+  clear: both;
+}
+.teampage .member_card .members .member_box .member {
+  margin-left: 10px;
+}
+.teampage .member_card .members .member_box .member:first-child {
+  margin-left: 0;
+}
 .teampage .member_card .members .member {
   display: block;
   float: left;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
 }
 .teampage .home_court_card {
   height: 260px;
