@@ -53,12 +53,12 @@ block contentExt
               .header
                 img.icon(src="/img/team.png")
                 h3.title 队员
-                span.count(ng-cloak) {{team.leaders.length + team.members.length}} >
-              .members
+                span.count(data-toggle="modal" data-target="#memberListModal" ng-cloak) {{team.leaders.length + team.members.length}} >
+              .members(bs-popover)
                 .leader_box
-                  img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50")
+                  img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50" ng-Mouseenter="showUserCard(leader._id, leader._id + 'member_card')" id="pop{{leader._id}}member_card" rel="popover")
                 .member_box
-                  img.member(ng-repeat="member in team.members" ng-src="{{member.photo}}/50/50")
+                  img.member(ng-repeat="member in team.members.slice(0, 5)" ng-src="{{member.photo}}/50/50" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id="pop{{member._id}}member_card" rel="popover")
 
           .team_col
             .card.family_card
@@ -113,10 +113,25 @@ block contentExt
           .months
             a(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}
 
-    div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
-    div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    .modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/provoke_modal_base
+
+    .member_list_modal.modal.fade#memberListModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .member_modal_header
+            img.icon(src="/img/team.png")
+            h3.title 队员
+            span.subtitle ({{team.leaders.length + team.members.length}})
+            button.close.dl_close(data-dismiss="modal" aria-hidden="true")
+              img.icon_close(src="/img/icons/icon_close.png")
+          .member_modal_body(bs-popover)
+            .member(ng-repeat="member in team.membersWithLeader" ng-Mouseenter="showUserCard(member._id, member._id + 'member_modal')" id="pop{{member._id}}member_modal" rel="popover")
+              img.photo(ng-src="{{member.photo}}")
+              p.nickname {{member.nickname}}
+
 
 append footExt
   script(src="/js/controllers/team.js")

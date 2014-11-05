@@ -25,6 +25,9 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
         name: $scope.team.name,
         brief: $scope.team.brief
       };
+      $scope.team.membersWithLeader = [];
+      $scope.team.membersWithLeader = $scope.team.membersWithLeader.concat($scope.team.leaders);
+      $scope.team.membersWithLeader = $scope.team.membersWithLeader.concat($scope.team.members);
     }
   });
 

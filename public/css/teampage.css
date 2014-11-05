@@ -375,3 +375,79 @@
 .teampage .calendar_card .calendar_footer .instruction .item {
   float: left;
 }
+.teampage .member_list_modal .modal-dialog {
+  width: 960px;
+}
+.teampage .member_list_modal .modal-content {
+  border-radius: 0;
+}
+.teampage .member_list_modal .modal-content .member_modal_header {
+  height: 30px;
+  padding: 8px;
+  padding-left: 20px;
+  border-bottom: 1px solid #efefef;
+}
+.teampage .member_list_modal .modal-content .member_modal_header:before,
+.teampage .member_list_modal .modal-content .member_modal_header:after {
+  display: table;
+  content: " ";
+}
+.teampage .member_list_modal .modal-content .member_modal_header:after {
+  clear: both;
+}
+.teampage .member_list_modal .modal-content .member_modal_header .icon {
+  float: left;
+}
+.teampage .member_list_modal .modal-content .member_modal_header .title {
+  float: left;
+  margin: 0;
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 1;
+  color: #999;
+}
+.teampage .member_list_modal .modal-content .member_modal_header .subtitle {
+  float: left;
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 1;
+  color: #999;
+}
+.teampage .member_list_modal .modal-content .member_modal_header .dl_close {
+  float: right;
+  width: 14px;
+  height: 14px;
+}
+.teampage .member_list_modal .modal-content .member_modal_header .dl_close .icon_close {
+  height: 14px;
+}
+.teampage .member_list_modal .modal-content .member_modal_body {
+  padding: 25px 20px 35px;
+}
+.teampage .member_list_modal .modal-content .member_modal_body:before,
+.teampage .member_list_modal .modal-content .member_modal_body:after {
+  display: table;
+  content: " ";
+}
+.teampage .member_list_modal .modal-content .member_modal_body:after {
+  clear: both;
+}
+.teampage .member_list_modal .modal-content .member_modal_body .member {
+  float: left;
+  margin-left: 20px;
+  margin-top: 15px;
+}
+.teampage .member_list_modal .modal-content .member_modal_body .member .photo {
+  width: 70px;
+  height: 70px;
+}
+.teampage .member_list_modal .modal-content .member_modal_body .member .nickname {
+  margin: 0;
+  margin-top: 7px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: #999;
+}
