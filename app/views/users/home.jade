@@ -120,7 +120,7 @@ block panel
           .campaign_head(ng-class="{'unconfrim':!nowCampaign.confirm_status}" ng-cloak)
             a.clearLinkUnderline(ng-href="/campaign/detail/{{nowCampaign._id}}" target="_blank")
               label {{nowCampaign.theme}}
-            label.pull-right {{nowCampaign.confirm_status ?(nowCampaign.finish?'已结束':'正在进行中'):'挑战'}}
+            label.pull-right {{nowCampaign.confirm_status ?(nowCampaign.finish?'已结束':'进行中'):'挑战中'}}
           .campaign(ng-class="{'provoke':nowCampaign.type=='provoke'}")
             .logo_col(ng-if="nowCampaign.type=='provoke'" )
               .team(ng-repeat="campaign_unit in nowCampaign.campaign_unit")

@@ -486,6 +486,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
           if(user.team[_index].leader){
             temp.leader.push(i);
           }
+          temp.join_flag = temp.join_flag || model_helper.arrayObjectIndexOf(_campaign.campaign_unit[i].member,user._id,'_id')>-1?1:0;
         }
       }
     }
