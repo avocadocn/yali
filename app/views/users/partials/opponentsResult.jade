@@ -31,13 +31,13 @@
     //- 搜索出的小队列表
     .teamlist
       a(ng-show="isShowMap") <地图
-      span.headline {{headline}}
-      .team(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo({{team._id}})")
+      span.headline(ng-if="headline") {{headline}}
+      .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo('{{team._id}}',$index)")
         span(ng-if="isShowMap") {{engDict[$index]}}
-        img.logo(src="team.logo")
+        img.logo(src="{{team.logo}}")
         .text
           span.title {{team.name}}
-          span.cname {{team.cname}}
+          span.content {{team.cname}}
       .nav
         ul.pagination
           li(ng-show="currentPage!==1")
@@ -52,43 +52,43 @@
             a(ng-click="loadPage(pages.length)") &raquo;
     //-详情
     .detail(ng-show="!isShowMap")
-      .detailHead
-        img.logo(ng-src="opponent.logo")
+      .detailHead.clearfix
+        img.logo(ng-src="{{opponent.logo}}")
         .text
-          p.title {{opponent.name}}
-          p.content {{opponent.cname}}
-          p.content 成员:{{opponent.memberNumber}}人
-          p.content 成立时间:{{opponent.create_time}}
+          span.title {{opponent.name}}
+          span.content {{opponent.cname}}
+          span.content 成员:{{opponent.memberNumber}}人
+          span.content 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .buttons
-          button(ng-click="provoke()") 挑战
-          a(ng-href="/group/page/{{opponent._id}}") 查看
+          button.dl_btn.dl_btn_small(ng-click="provoke()") 挑战
+          a.dl_btn.dl_btn_small(ng-href="/group/page/{{opponent._id}}") 查看
       .detailContent(ng-cloak)
-        .content(ng-if="opponent.home_court.length")
+        .block.clearfix(ng-if="opponent.home_court.length")
           .title
             img
             span 小队主场
           .text
-            p 主场一:{{opponent.home_court[0].name}}
-            p(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
-        .content
+            span.content 主场一:{{opponent.home_court[0].name}}
+            span.content(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
+        .block.clearfix(ng-show="opponent.newestCampaign")
           .title
             img
             span 最新活动
           .text
-            p 开始时间:{{opponent.newestCampaign.start_time}}
-            p 结束时间:{{opponent.newestCampaign.eng_time}}
-            p 活动主题:{{opponent.newestCampaign.theme}}
-            p 参加人数:{{opponent.newestCampaign.memberNumber}}
-            p 活动地点:{{opponent.newestCampaign.location.name}}
-        .content
+            span.content 开始时间:{{opponent.newestCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.content 结束时间:{{opponent.newestCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.content 活动主题:{{opponent.newestCampaign.theme}}
+            span.content 参加人数:{{opponent.newestCampaign.memberNumber}}
+            span.content 活动地点:{{opponent.newestCampaign.location.name}}
+        .block.clearfix
           .title
             img
             span 小队队长
           .text
-            p {{opponent.leader.nickname}}
-        .content
+            span.content {{opponent.leader[0].nickname}}
+        .block.clearfix
           .title
             img
             span 小队简介
           .text
-            p {{opponent.brief}}
+            span.content {{opponent.brief}}

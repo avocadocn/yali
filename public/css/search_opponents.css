@@ -2,7 +2,7 @@
   background-color: #fff;
 }
 .search_opponents {
-  color: #989898;
+  color: #999;
 }
 .search_opponents .head_container .headline {
   height: 30px;
@@ -54,12 +54,23 @@
   background-color: #fbfbfb;
   min-height: 400px;
 }
+.search_opponents .tab_view .result .text .title {
+  font-size: 14px;
+  color: #666;
+  width: 100%;
+  float: left;
+  line-height: 1;
+}
+.search_opponents .tab_view .result .text .content {
+  width: 100%;
+  float: left;
+}
 .search_opponents .tab_view .result .homecourt .text {
-  color: #989898;
+  color: #999;
   cursor: pointer;
 }
 .search_opponents .tab_view .result .homecourt .text.active {
-  color: #000;
+  color: #666;
 }
 .search_opponents .tab_view .result .homecourtSetting .court {
   width: 100%;
@@ -77,10 +88,76 @@
   width: 350px;
   height: 560px;
 }
+.search_opponents .tab_view .result .teamlist .headline {
+  height: 50px;
+  width: 100%;
+}
+.search_opponents .tab_view .result .teamlist .team.selected {
+  background-color: #fff;
+  border-left: 1px solid #efefef;
+}
+.search_opponents .tab_view .result .teamlist .team {
+  width: 100%;
+  float: left;
+  padding: 10px 20px;
+  height: 50px;
+}
+.search_opponents .tab_view .result .teamlist .team .logo {
+  width: 30px;
+  height: 30px;
+  float: left;
+}
+.search_opponents .tab_view .result .teamlist .team .text {
+  width: 250px;
+  padding: 0 10px;
+  float: left;
+}
+.search_opponents .tab_view .result .teamlist .team .text .title {
+  margin-bottom: 3px;
+}
 .search_opponents .tab_view .result .detail {
   background-color: #fbfbfb;
   padding: 20px;
   float: left;
   width: 570px;
   height: 560px;
+}
+.search_opponents .tab_view .result .detail .detailHead {
+  width: 100%;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+.search_opponents .tab_view .result .detail .detailHead .logo {
+  float: left;
+  width: 70px;
+  height: 70px;
+}
+.search_opponents .tab_view .result .detail .detailHead .text {
+  width: 380px;
+  float: left;
+  padding: 0 20px;
+}
+.search_opponents .tab_view .result .detail .detailHead .text .title {
+  margin-bottom: 5px;
+}
+.search_opponents .tab_view .result .detail .detailHead .buttons {
+  float: left;
+  width: 60px;
+}
+.search_opponents .tab_view .result .detail .detailContent {
+  width: 100%;
+  margin-left: 70px;
+  padding: 20px;
+}
+.search_opponents .tab_view .result .detail .detailContent .block {
+  margin-bottom: 30px;
+}
+.search_opponents .tab_view .result .detail .detailContent .block .title {
+  float: left;
+  color: #666;
+  width: 100px;
+}
+.search_opponents .tab_view .result .detail .detailContent .block .text {
+  width: 270px;
+  float: left;
 }

@@ -278,6 +278,35 @@ exports.getLedTeams = function(req,res) {
   });
 };
 
+//个人获取对手信息,以及对手最新活动
+exports.getOpponentInfo = function(req,res,next) {
+  Campaign.find({'tid':req.params.teamId})
+  .sort('-create_time')
+  .limit(1)
+  .exec()
+  .then(function(campaign){
+    var team = req.companyGroup;
+    team.set('memberNumber',team.member.length,{strict:false});
+    team.member=null;
+    if(campaign.length>0){
+      team.set('newestCampaign', {
+        'start_time':campaign[0].start_time,
+        'end_time':campaign[0].end_time,
+        'theme':campaign[0].theme,
+        'memberNumber':campaign[0].members.length,
+        'location':campaign[0].location,
+      },{strict:false});
+    }
+    return res.send({'team':team})
+  })
+  .then(null,function(err){
+    console.log(err);
+    res.status(500);
+    next();
+  })
+  
+}
+
 exports.renderSameCity = function(req,res, next) {
   if(req.params.teamId){
     var allow = auth(req.user,{companies:[req.companyGroup.cid],teams:[req.params.teamId]},['getMyTeaminfo']);

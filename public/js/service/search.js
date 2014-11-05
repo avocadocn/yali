@@ -23,7 +23,21 @@ angular.module('donler')
         callback('error');
       }
     };
+    /**
+     * 查找附近小队
+     * @param String tid 小队id
+     * @param {Object} callback callback(status,data)
+     */
+    var getOpponentInfo = function(tid, callback) {
+      $http.get('/group/opponentInfo/'+tid)
+      .success(function(data,status){
+        callback(null,data);
+      }).error(function(data,status){
+        callback('error');
+      })
+    }
     return {
-      searchSameCity: searchSameCity
+      searchSameCity: searchSameCity,
+      getOpponentInfo: getOpponentInfo
     };
   }]);

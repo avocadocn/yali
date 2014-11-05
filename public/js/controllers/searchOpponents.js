@@ -67,15 +67,18 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
       $rootScope.selectTeamId = data._id;
     });
     //获取同城小队
+    $scope.pages=[];
     Search.searchSameCity(tid,1,function(status,data){
       if(!status){
         $scope.currentPage=1;
         $scope.resultTeams = data.teams;
-        if(data.length>0)
+        if(data.teams.length>0){
           $scope.getOpponentInfo(data.teams[0]._id);
+          $scope.selectedIndex = 0;
+        }
         var maxPage = data.maxPage;
         var showMaxPage = maxPage>5? 5:maxPage;
-        for(i=0;i<showMaxPage;i++){
+        for(var i=1;i<=showMaxPage;i++){
           $scope.pages.push(i);
         }
       }
@@ -90,12 +93,13 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
 
       });
     };
-    $scope.getOpponentInfo=function(tid){
-      $http.get('/group/opponentInfo/'+tid).success(function(data,status){
-        if(data.result===1){
-          $scope.opponent = data;
+    $scope.getOpponentInfo=function(tid,index){
+      $scope.selectedIndex = index;
+      Search.getOpponentInfo(tid,function(status,data){
+        if(!status){
+          $scope.opponent = data.team;
         }
-      })
+      });
     };
 }]);
 

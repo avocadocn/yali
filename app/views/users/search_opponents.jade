@@ -40,7 +40,7 @@ block content
             a.subtitle.no_radius(ng-href="#/sameCity/{{selectTeamId}}" ng-click="addactive('sameCity')") 同城小队
           li.tab_style(ng-class="{'active':nowTab=='nearbyTeam'}")
             a.subtitle.no_radius(ng-href="#/nearbyTeam/{{selectTeamId}}" ng-click="addactive('nearbyTeam')") 附近小队
-          li.tab_style
+          li.tab_style(ng-class="{'active':nowTab=='search'}")
             a.subtitle.no_radius 搜索
         .tab-content
           .tab-pane.active

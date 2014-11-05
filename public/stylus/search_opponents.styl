@@ -1,7 +1,7 @@
 .dl_container
   background-color #fff
 .search_opponents
-  color #989898
+  color #999
   .head_container
     .headline
       height 30px
@@ -43,12 +43,23 @@
       margin 20px
       background-color #fbfbfb
       min-height 400px
+      //-通用
+      .text
+        .title
+          font-size 14px
+          color #666
+          width 100%
+          float left
+          line-height 1
+        .content
+          width 100%
+          float left
       .homecourt
         .text
-          color #989898
+          color #999
           cursor pointer
         .text.active
-          color #000
+          color #666
       .homecourtSetting
         .court
           width 100%
@@ -62,9 +73,61 @@
         float left
         width 350px
         height 560px
+        .headline
+          height 50px
+          width 100%
+        .team.selected
+          background-color #fff
+          border-left 1px solid #efefef
+        .team
+          width 100%
+          float left
+          padding 10px 20px
+          height 50px
+          .logo
+            width 30px
+            height 30px
+            float left
+          .text
+            width 250px
+            padding 0 10px
+            float left
+            .title
+              margin-bottom 3px
       .detail
         background-color #fbfbfb
         padding 20px
         float left
         width 570px
         height 560px
+        .detailHead
+          width 100%
+          padding-bottom 20px
+          border-bottom 1px solid #ccc
+          .logo
+            float left
+            width 70px
+            height 70px
+          .text
+            width 380px
+            float left
+            padding 0 20px
+            .title
+              margin-bottom 5px
+          .buttons
+            float left
+            width 60px
+        .detailContent
+          width 100%
+          margin-left 70px
+          padding 20px
+          .block
+            margin-bottom 30px
+            .title
+              float left
+              color #666
+              width 100px
+            .text
+              width 270px
+              float left
+

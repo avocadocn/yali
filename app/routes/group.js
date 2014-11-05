@@ -31,6 +31,7 @@ module.exports = function(app) {
   app.post('/group/activateGroup/:teamId', authorization.teamAuthorize, group.activateGroup);
   app.get('/group/getLedTeams',group.getLedTeams);
   app.get('/group/getLedTeams/:teamId',authorization.teamAuthorize,group.getLedTeams);
+  app.get('/group/opponentInfo/:teamId',group.getOpponentInfo);
   app.get('/group/competition/:teamId/:competitionId', authorization.teamAuthorize, group.getCompetition);
   //获取小队的tags
   app.get('/group/getTags/:teamId', authorization.teamAuthorize, group.getTags);

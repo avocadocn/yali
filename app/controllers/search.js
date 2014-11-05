@@ -206,6 +206,7 @@ exports.getUserInfo = function(req,res) {
   });
 };
 
+//搜索同城小队,积分排序
 exports.sameCityTeam = function(req,res,next) {
   var allow = auth(req.user,{
     companies:[req.companyGroup.cid],
@@ -215,7 +216,7 @@ exports.sameCityTeam = function(req,res,next) {
     return res.send(403);
   }
   else{
-    CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':req.companyGroup.city.city},
+    CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':req.companyGroup.city.city,'_id':{'$ne':req.params.teamId}},
       req.query.page,10,function(err,pageCount,results,itemCount) {
         if(err){
           console.log(err);
@@ -223,12 +224,12 @@ exports.sameCityTeam = function(req,res,next) {
           next();
         }
         else{
-          console.log(pageCount);
-          console.log(results);
-          console.log(itemCount);
-          return res.send({'result':1});
+          var teams = [];
+          for(var i=0;i<results.length;i++){
+            teams.push({'_id':results[i]._id,'logo':results[i].logo,'name':results[i].name,'cname':results[i].cname})
+          }
+          return res.send({'result':1,'teams':teams,'maxPage':pageCount});
         }
-      })
-    
+      },{sortBy:{'score.total':-1}});
   }
 };
