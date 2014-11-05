@@ -1,4 +1,4 @@
-.schedulebox
+.schedulebox(ng-init="isCalendar=true;")
   .clearfix.schedule_operator
     if role === 'OWNER'
       //- p.pull-left.view_type
@@ -16,23 +16,23 @@
         //- span |
         //- a(ng-if="campaignsType!=='all'" ng-click="getCampaigns('all')" href="javascript:void(0)") 所有
         //- span.active(ng-if="campaignsType==='all'") 所有
-    p.calendar_nav#calendar_nav(ng-show="isCalendar")
-      //- span.icon_calendar
+    p.calendar_nav#calendar_nav
+      span(ng-class="{'icon_fold':isCalendar,'icon_unfold':!isCalendar}" ng-click="isCalendar=!isCalendar;" ng-cloak)
       a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+      span.icon_calendar
       a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
       a.calendar_title(data-calendar-nav="today" href="javascript:void(0)") 
         span#calendar_title
-      //- span.icon_fold
   .calendar_box
     #calendar_view(ng-show="isCalendar")
       //- .clearfix
         //- h5#calendar_title.calendar_title.pull-left
         //- a.pull-right(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView") 返回日历
       #calendar
-
-    if role === 'OWNER'
-      div(ng-if="!isCalendar")
-        include campaign_list
-  .calendar_tips
-    span.join_sign
-    label.campaign_label 活动
+  .calendar_tips(ng-show="isCalendar")
+    span.join_sign.length_1
+    label.campaign_label 没有活动
+    span.join_sign.length_2
+    label.campaign_label 2个及以下
+    span.join_sign.length_3
+    label.campaign_label 2个以上

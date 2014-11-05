@@ -1331,9 +1331,10 @@ textarea {
   padding: 20px;
 }
 .dl_container .side .groupsbox .head_title {
-  color: #3498db;
-  font-size: 18px;
-  line-height: 24px;
+  color: #fff;
+  font-size: 14px;
+  line-height: 100%;
+  margin-left: 10px;
 }
 .dl_container .side .groupsbox .head_title a {
   font-size: 14px;
@@ -1342,12 +1343,11 @@ textarea {
   border-bottom: 1px solid #f4f4f4;
   margin: -20px;
   padding: 10px 20px;
-  height: 44px;
+  background-color: #525e70;
 }
-.dl_container .side .groupsbox .box_head a {
-  line-height: 24px;
-  font-size: 14px;
-  color: #ccc;
+.dl_container .side .groupsbox .box_head .icon_fold,
+.dl_container .side .groupsbox .box_head .icon_unfold {
+  margin: 0;
 }
 .dl_container .side .groupsbox .groups {
   padding-top: 30px;
@@ -1378,12 +1378,12 @@ textarea {
 }
 .dl_container .side .groupsbox .groups .group .group_leader {
   position: absolute;
-  background-image: url("/img/icons/tieman.png");
-  width: 17px;
-  height: 20px;
-  right: -2px;
-  bottom: -2px;
-  background-size: contain;
+  background-image: url("/img/icons/crown.png");
+  width: 25px;
+  height: 18px;
+  left: 6px;
+  top: -13px;
+  background-repeat: no-repeat;
 }
 .dl_container .side .groupsbox .secend {
   padding-top: 10px;
@@ -3719,6 +3719,27 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .side .dl_icons.info_edit {
   background-image: url("/img/icons/edit.png");
 }
+.user_page .dl_container .side .dl_icons.icon_group {
+  background-image: url("/img/icons/group.png");
+}
+.user_page .dl_container .side .icon_fold {
+  height: 14px;
+  width: 14px;
+  float: right;
+  margin: 8px 2px 0 25px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/img/icons/fold.png");
+}
+.user_page .dl_container .side .icon_unfold {
+  height: 14px;
+  width: 14px;
+  float: right;
+  margin: 8px 2px 0 25px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/img/icons/unfold.png");
+}
 .user_page .dl_container .side .old_campaign_container {
   height: 30px;
   color: #fff;
@@ -3867,74 +3888,59 @@ input.ng-invalid.ng-dirty {
   border: none;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_tips {
-  height: 30px;
+  height: 25px;
   font-size: 12px;
-  border-top: 1px solid #f4f4f4;
   margin-top: 5px;
-  color: #3498db;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign {
   height: 10px;
   width: 10px;
-  background-color: #3498db;
-  margin: 10px;
+  margin: 5px 5px 15px 5px;
   float: left;
+  border-radius: 100%;
+}
+.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_3 {
+  background-color: #3ca2e0;
+}
+.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_2 {
+  background-color: #8dc5e8;
+}
+.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_1 {
+  background-color: #a7d6f2;
+  margin-left: 32px;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_tips .campaign_label {
-  line-height: 10px;
-  margin: 10px 5px;
+  line-height: 20px;
+  float: left;
+  font-size: 9px;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav {
   background-color: #525e70;
-  height: 38px;
-  line-height: 38px;
+  height: 30px;
+  line-height: 30px;
   padding: 0 10px;
   margin: 0;
   clear: both;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav .icon_calendar {
-  height: 16px;
-  width: 19px;
+  height: 14px;
+  width: 38px;
+  margin-top: 8px;
   float: left;
   background-repeat: no-repeat;
   background-size: contain;
   background-image: url("/img/icons/calendar.png");
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav .icon_fold {
-  height: 16px;
-  width: 19px;
-  float: left;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-image: url("/img/icons/fold.png");
-}
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav .calendar_title {
-  width: 170px;
+  width: 106px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   margin: 0;
 }
 .user_page .dl_container .schedule_small .schedulebox .calendar_nav a {
   color: #fff;
   display: inline-block;
-}
-.user_page .dl_container .schedule_small .cal-context div {
-  border: none;
-}
-.user_page .dl_container .schedule_small .cal-context .joined {
-  background: none;
-  color: #fff;
-}
-.user_page .dl_container .schedule_small .cal-context .cal-month-day span[data-cal-date] {
-  width: 100%;
-  height: 14px;
-  text-align: center;
-  margin: 5px 0;
-  color: #ccc;
-  font-size: 12px;
-}
-.user_page .dl_container .schedule_small .cal-context .cal-month-box .cal-day-today span[data-cal-date] {
-  font-size: 1.2em;
+  margin: 0 5px;
 }
 #photoModal .photos .photo {
   width: 400px;

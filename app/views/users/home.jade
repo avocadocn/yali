@@ -207,9 +207,10 @@ block aside
         label.score 500
       //-公司名
       .info_row
-        a.clearLinkUnderline(href='/department/home/#{department._id}' target="_blank" ng-cloak) #{department.name}
-        if (!department)
-          a.clearLinkUnderline(href='/company/home' target="_blank" ng-cloak) #{cname}
+        a.clearLinkUnderline(href='/company/home' target="_blank" ng-cloak) #{cname}
+        if department
+          a.clearLinkUnderline(href='/department/home/#{department._id}' target="_blank" ng-cloak) #{department.name}
+
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/schedule_list

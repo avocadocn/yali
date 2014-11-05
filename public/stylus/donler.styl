@@ -691,21 +691,19 @@ textarea
       border 1px solid #e6e6e6
       padding 20px
       .head_title
-        color themeColor
-        font-size 18px
-        line-height 24px
+        color #fff
+        font-size 14px
+        line-height 100%
+        margin-left 10px
         a
           font-size 14px
       .box_head
         border-bottom 1px solid borderColor
         margin -20px
         padding 10px 20px
-        height 44px
-
-        a
-          line-height 24px
-          font-size 14px
-          color secondaryfontColor
+        background-color #525E70
+        .icon_fold,.icon_unfold
+          margin 0
       .groups
         padding-top 30px
         margin-bottom -10px
@@ -730,12 +728,12 @@ textarea
             height 32px
           .group_leader
             position absolute
-            background-image url('/img/icons/tieman.png')
-            width 17px
-            height 20px
-            right -2px
-            bottom -2px
-            background-size contain
+            background-image url('/img/icons/crown.png')
+            width 25px
+            height 18px
+            left 6px
+            top -13px
+            background-repeat no-repeat
       .secend
         padding-top 10px
   .aside
@@ -2634,6 +2632,24 @@ input.ng-invalid.ng-dirty
             background-image url('/img/icons/personalinfo.png')
           &.info_edit
             background-image url('/img/icons/edit.png')
+          &.icon_group
+            background-image url('/img/icons/group.png')
+      .icon_fold
+        height 14px
+        width 14px
+        float right
+        margin 8px 2px 0 25px
+        background-repeat no-repeat
+        background-size contain
+        background-image url('/img/icons/fold.png')
+      .icon_unfold
+        height 14px
+        width 14px
+        float right
+        margin 8px 2px 0 25px
+        background-repeat no-repeat
+        background-size contain
+        background-image url('/img/icons/unfold.png')
       .old_campaign_container
         height 30px
         color #ffffff
@@ -2748,67 +2764,50 @@ input.ng-invalid.ng-dirty
         padding 0
         border none
         .calendar_tips
-          height 30px
+          height 25px
           font-size 12px
-          border-top 1px solid borderColor
           margin-top 5px
-          color themeColor
           .join_sign
             height 10px
             width 10px
-            background-color themeColor
-            margin 10px
+            margin 5px 5px 15px 5px
             float left
+            border-radius 100%
+            &.length_3
+              background-color #3ca2e0
+            &.length_2
+              background-color #8dc5e8
+            &.length_1
+              background-color #a7d6f2
+              margin-left 32px
           .campaign_label
-            line-height 10px
-            margin 10px 5px
+            line-height 20px
+            float left
+            font-size 9px
         .calendar_nav
           background-color #525e70
-          height 38px
-          line-height 38px
+          height 30px
+          line-height 30px
           padding 0 10px
           margin 0
           clear both
           .icon_calendar
-            height 16px
-            width 19px
+            height 14px
+            width 38px
+            margin-top 8px
             float left
             background-repeat no-repeat
             background-size contain
             background-image url('/img/icons/calendar.png')
-          .icon_fold
-            height 16px
-            width 19px
-            float left
-            background-repeat no-repeat
-            background-size contain
-            background-image url('/img/icons/fold.png')
           .calendar_title
-            width 170px
+            width 106px
             text-align center
-            font-size 16px
+            font-size 14px
             margin 0
           a
             color navbarFontColor
             display inline-block
-      .cal-context
-        div
-          border none
-        .joined
-          background none
-          color navbarFontColor
-        .cal-month-day
-          span[data-cal-date]
-            width 100%
-            height 14px
-            text-align center
-            margin 5px 0
-            color secondaryfontColor
-            font-size 12px
-        .cal-month-box
-          .cal-day-today
-            span[data-cal-date]
-              font-size 1.2em
+            margin 0 5px
 #photoModal
   .photos
     .photo
