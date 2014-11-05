@@ -1,12 +1,12 @@
-@require('variables')
-@require('tools')
+@require 'variables'
+@require 'tools'
 
 .teampage
   clearfix()
   .main_panel
     float left
     padding-top 4px
-    width 865px
+    width 860px
   .side_panel
     float right
     width 60px
@@ -17,9 +17,9 @@
 
     .team_col
       float left
-      width 425px
+      width 420px
       &:last-child
-        margin-left 15px
+        margin-left 20px
 
   .card
     background-color white
@@ -31,24 +31,49 @@
     .team_info
       clearfix()
       height 160px
+      padding-top 20px
       .logo_box
         float left
         width 160px
         .logo
           width 120px
           height 120px
-          margin-top 20px
           margin-left 20px
       .info_box
         float left
+        width 260px
+        padding-right 10px
+        .main_text
+          color #999999
+        .text
+          color #cccccc
+        .name
+          margin 0
+          font-size 16px
+          color #666666
+        .team_type
+          margin 0
+          margin-top 14px
+        .create_time
+          margin 0
+        .intro
+          margin 0
+          margin-top 6px
+          height 51px
+          overflow hidden
+          font-size 12px
+          line-height 17px
+
     .operator
       height 70px
       padding 20px
-      padding-right 0
+      padding-right 10px
+      border-top 1px solid #efefef
+      text-align center
       .op_button
         width 92px
         height 30px
-        margin-left 5px
+        margin-left 4px
         padding 0
         color white
         background-color themeColor
@@ -56,8 +81,16 @@
         line-height 30px
         &:first-child
           margin-left 0
+      .button_blue
+        background-color #3ca2e0
+      .button_red
+        background-color #f48361
+      .button_gray
+        background-color #cccccc
 
   .member_card
+    height 100px
+    margin-top 10px
     .members
       clearfix()
       .member
@@ -68,13 +101,13 @@
 
   .home_court_card
     // temp style
-    height 250px
+    height 260px
     overflow hidden
     .map_size
       responsiveImg()
 
   .calendar_card
     // temp style
-    height 250px
+    height 260px
     overflow hidden
 

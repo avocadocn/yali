@@ -105,10 +105,10 @@ exports.info =function(req, res) {
   // todo 作权限判断，以便在页面上呈现或隐藏一些操作
   // 是否可以编辑
   // 是否可以修改全家福？（待定）
-  // 是否显示主场
   var tasks = [
     'joinTeam',
     'quitTeam',
+    'closeTeam',
     'sponsorCampaign',
     'sponsorProvoke',
     'publishTeamMessage'

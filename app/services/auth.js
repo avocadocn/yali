@@ -89,7 +89,9 @@ var registeredTasks = {
   quitTeam: {
     team: ['leader', 'member']
   },
-
+  closeTeam: {
+    company: ['hr']
+  },
   // 发小队站内信
   publishTeamMessage: {
     company: ['hr'],

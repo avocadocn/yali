@@ -9,7 +9,7 @@
 .teampage .main_panel {
   float: left;
   padding-top: 4px;
-  width: 865px;
+  width: 860px;
 }
 .teampage .side_panel {
   float: right;
@@ -28,10 +28,10 @@
 }
 .teampage .team_row .team_col {
   float: left;
-  width: 425px;
+  width: 420px;
 }
 .teampage .team_row .team_col:last-child {
-  margin-left: 15px;
+  margin-left: 20px;
 }
 .teampage .card {
   background-color: #fff;
@@ -42,6 +42,7 @@
 }
 .teampage .info_card .team_info {
   height: 160px;
+  padding-top: 20px;
 }
 .teampage .info_card .team_info:before,
 .teampage .info_card .team_info:after {
@@ -58,21 +59,50 @@
 .teampage .info_card .team_info .logo_box .logo {
   width: 120px;
   height: 120px;
-  margin-top: 20px;
   margin-left: 20px;
 }
 .teampage .info_card .team_info .info_box {
   float: left;
+  width: 260px;
+  padding-right: 10px;
+}
+.teampage .info_card .team_info .info_box .main_text {
+  color: #999;
+}
+.teampage .info_card .team_info .info_box .text {
+  color: #ccc;
+}
+.teampage .info_card .team_info .info_box .name {
+  margin: 0;
+  font-size: 16px;
+  color: #666;
+}
+.teampage .info_card .team_info .info_box .team_type {
+  margin: 0;
+  margin-top: 14px;
+}
+.teampage .info_card .team_info .info_box .create_time {
+  margin: 0;
+}
+.teampage .info_card .team_info .info_box .intro {
+  margin: 0;
+  margin-top: 6px;
+  height: 51px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 17px;
 }
 .teampage .info_card .operator {
   height: 70px;
   padding: 20px;
-  padding-right: 0;
+  padding-right: 10px;
+  border-top: 1px solid #efefef;
+  text-align: center;
 }
 .teampage .info_card .operator .op_button {
   width: 92px;
   height: 30px;
-  margin-left: 5px;
+  margin-left: 4px;
   padding: 0;
   color: #fff;
   background-color: #3498db;
@@ -81,6 +111,19 @@
 }
 .teampage .info_card .operator .op_button:first-child {
   margin-left: 0;
+}
+.teampage .info_card .operator .button_blue {
+  background-color: #3ca2e0;
+}
+.teampage .info_card .operator .button_red {
+  background-color: #f48361;
+}
+.teampage .info_card .operator .button_gray {
+  background-color: #ccc;
+}
+.teampage .member_card {
+  height: 100px;
+  margin-top: 10px;
 }
 .teampage .member_card .members:before,
 .teampage .member_card .members:after {
@@ -97,7 +140,7 @@
   height: 60px;
 }
 .teampage .home_court_card {
-  height: 250px;
+  height: 260px;
   overflow: hidden;
 }
 .teampage .home_court_card .map_size {
@@ -105,6 +148,6 @@
   max-width: 100%;
 }
 .teampage .calendar_card {
-  height: 250px;
+  height: 260px;
   overflow: hidden;
 }
