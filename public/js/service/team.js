@@ -66,6 +66,29 @@ donler.factory('Team', ['$http', function($http) {
         .error(function (data, status) {
           callback('error');
         });
+    },
+
+    /**
+     * 保存小队信息
+     * @param  {String}   id       小队id
+     * @param  {Object}   data     {name: String, brief: String}
+     * @param  {Function} callback callback(err)
+     */
+    saveInfo: function (id, data, callback) {
+      $http.post('/group/saveInfo/' + id, {
+        name: data.name,
+        brief: data.brief
+      })
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
     }
 
 

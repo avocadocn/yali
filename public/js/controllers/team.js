@@ -104,14 +104,30 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
 
     });
 
+    $scope.sendMessage = function () {
+      window.location.href = '/message/home/' + teamId + '#/send';
+    };
+
     // 编辑小队信息
     $scope.isEditingInfo = false;
     $scope.editInfo = function () {
       $scope.isEditingInfo = true;
     };
     $scope.saveInfo = function () {
+      Team.saveInfo(teamId, $scope.teamInfo, function (err) {
+        if (err) {
+          alertify.alert(err);
+        } else {
+          $scope.team.name = $scope.teamInfo.name;
+          $scope.team.brief = $scope.teamInfo.brief;
+          $scope.isEditingInfo = false;
+        }
+      });
+    };
+    $scope.cancelEditInfo = function () {
       $scope.isEditingInfo = false;
-      // todo save
+      $scope.teamInfo.name = $scope.team.name;
+      $scope.teamInfo.brief = $scope.team.brief;
     };
 
 

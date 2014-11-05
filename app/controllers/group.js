@@ -284,13 +284,16 @@ exports.saveInfo =function(req,res) {
       }
       var newNameFlag = false;
       if(companyGroup) {
-          if(companyGroup.name !== req.body.name){
+          if(req.body.name && companyGroup.name !== req.body.name){
             companyGroup.name = req.body.name;
             newNameFlag =true;
           }
-
-          companyGroup.brief = req.body.brief;
-          companyGroup.home_court = req.body.homecourt;
+          if (req.body.brief) {
+            companyGroup.brief = req.body.brief;
+          }
+          if (req.body.home_court) {
+            companyGroup.home_court = req.body.homecourt;
+          }
           companyGroup.save(function (s_err){
               if(s_err){
                   console.log(s_err);
