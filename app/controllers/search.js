@@ -49,10 +49,10 @@ exports.getTeam = function(req, res) {
   if(req.body.operate === 'part') {
     //返回某公司某类型的所有小队
     cid = req.body.cid;
-    condition = {'cid':cid,'gid':gid , '_id':{'$ne': tid}}
+    condition = {'cid':cid, 'gid':gid, '_id':{'$ne': tid}};
   } else {
     //根据队名部分关键字匹配小队
-    condition = {'gid':gid,'name':regx , '_id':{'$ne': tid}}
+    condition = {'gid':gid, 'name':regx, '_id':{'$ne': tid}};
   }
   CompanyGroup.find(condition,function(err, company_groups){
     if(err || !company_groups) {
@@ -208,30 +208,27 @@ exports.getUserInfo = function(req,res) {
 
 exports.sameCityTeam = function(req,res,next) {
   var allow = auth(req.user,{
+    companies:[req.companyGroup.cid],
     teams: [req.params.teamId]
   },['searchSameCityTeam']);
   if(!allow.searchSameCityTeam){
     return res.send(403);
   }
   else{
-    Company.findOne({'_id':req.companyGroup.cid},function(err,company){
-      if(err){
-        console.log(err);
-        return res.send(500);
-      }else{
-        var sameCityTeams = searchCityTeam(company.info.city.city);
-      }
-    })
+    CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':req.companyGroup.city.city},
+      req.query.page,10,function(err,pageCount,results,itemCount) {
+        if(err){
+          console.log(err);
+          res.status(500);
+          next();
+        }
+        else{
+          console.log(pageCount);
+          console.log(results);
+          console.log(itemCount);
+          return res.send({'result':1});
+        }
+      })
+    
   }
 };
-
-var searchCityTeam = function(city){
-  Company.find({'info.city.city':city},{'_id':1},function(err,companies){
-    if(err){
-      console.log(err);
-      return ;
-    }else{
-      CompanyGroup.find()
-    }
-  });
-}

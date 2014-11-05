@@ -80,6 +80,9 @@ var registeredTasks = {
   },
   getMyTeaminfo:{
     team:['leader', 'member']
+  },
+  searchSameCityTeam:{
+    team:['leader', 'member']
   }
 };
 

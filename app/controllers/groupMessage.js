@@ -128,7 +128,7 @@ exports.getMessage = function(req, res, next) {
             var campaign = group_message[i].campaign;
             for (var j = 0; j < campaign.campaign_unit.length; j++) {
               var unit = campaign.campaign_unit[j];
-              if ((req.role!=='HR'&&req.user.isTeamMember(unit.team._id))||(req.role==='HR'&&req.user._id.toString() === unit.company._id.toString())) {
+              if ((req.role!=='HR'&&req.user.isTeamMember(unit.team._id))||(req.role==='HR'&& req.user._id.toString() === unit.company._id.toString())) {
                 _group_message.myteam.push({
                   index: j,
                   _id: unit.team._id,
@@ -137,7 +137,6 @@ exports.getMessage = function(req, res, next) {
                 });
               }
             }
-
             _group_message.logo = group_message[i].team[_group_message.myteam[0].index ].logo;
             _group_message.team_id = group_message[i].team[_group_message.myteam[0].index ].teamid;
             _group_message.member_num = campaign.campaign_unit[_group_message.myteam[0].index ].member.length;
@@ -215,13 +214,16 @@ exports.getMessage = function(req, res, next) {
             break;
           case 6://比赛确认
             _group_message.myteam =[];
-            for(var ii =0;ii<group_message[i].campaign.campaign_unit.length;ii++){
-              if(model_helper.arrayObjectIndexOf(req.user.team,group_message[i].campaign.campaign_unit[ii].team._id,'_id')>-1){
-                _group_message.myteam.push( {
-                  index:ii,
-                  _id : group_message[i].campaign.campaign_unit[ii].team._id,              //小队id
-                  logo: group_message[i].campaign.campaign_unit[ii].team.logo,                            //队徽路径
-                  name: group_message[i].campaign.campaign_unit[ii].team.name
+            var campaign = group_message[i].campaign;
+            for(var j =0;j<campaign.campaign_unit.length;j++){
+              var unit = campaign.campaign_unit[j];
+              if((req.role!=='HR'&&model_helper.arrayObjectIndexOf(req.user.team,unit.team._id,'_id')>-1)
+                ||(req.role==='HR' && req.user._id.toString() === unit.company._id.toString())) {
+                _group_message.myteam.push({
+                  index:j,
+                  _id : group_message[i].campaign.campaign_unit[j].team._id,              //小队id
+                  logo: group_message[i].campaign.campaign_unit[j].team.logo,                            //队徽路径
+                  name: group_message[i].campaign.campaign_unit[j].team.name
                 });
               }
             }

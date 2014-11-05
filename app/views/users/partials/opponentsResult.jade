@@ -32,12 +32,24 @@
     .teamlist
       a(ng-show="isShowMap") <地图
       span.headline {{headline}}
-      .team(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}")
+      .team(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo({{team._id}})")
         span(ng-if="isShowMap") {{engDict[$index]}}
         img.logo(src="team.logo")
         .text
           span.title {{team.name}}
           span.cname {{team.cname}}
+      .nav
+        ul.pagination
+          li(ng-show="currentPage!==1")
+            a(ng-click="loadPage(1)") &laquo;
+          li(ng-show="currentPage!==1")
+            a(ng-click="loadPage({{currentPage}}-1)") &lt;
+          li(ng-repeat="page in pages" ng-class="{'active':page===currentPage}")
+            a(ng-click="loadPage({{page}})") {{page}}
+          li(ng-show="currentPage!==pages.length")
+            a(ng-click="loadPage({{currentPage}}+1)") &gt;
+          li(ng-show="currentPage!==pages.length")
+            a(ng-click="loadPage(pages.length)") &raquo;
     //-详情
     .detail(ng-show="!isShowMap")
       .detailHead
@@ -48,9 +60,9 @@
           p.content 成员:{{opponent.memberNumber}}人
           p.content 成立时间:{{opponent.create_time}}
         .buttons
-          button(ng-click="") 挑战
-          a(ng-href="") 查看
-      .detailContent
+          button(ng-click="provoke()") 挑战
+          a(ng-href="/group/page/{{opponent._id}}") 查看
+      .detailContent(ng-cloak)
         .content(ng-if="opponent.home_court.length")
           .title
             img
