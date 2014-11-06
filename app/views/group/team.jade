@@ -136,6 +136,8 @@ block contentExt
             a.month(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}月
         .year
           span.year_text 最初
+      .button_group
+        a.photo_album(ng-href="/photoAlbum/team/{{team._id}}/listView") 相册
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base

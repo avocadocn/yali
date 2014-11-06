@@ -1,0 +1,27 @@
+extend ../layouts/user_base
+
+append headExt
+  link(rel="stylesheet" href="/css/photo_album.css")
+
+block contentExt
+  .dl_container.photo_album
+    header.clearfix
+      include ../partials/breadcrumb
+      +breadcrumb(links)
+      div.relative
+        .media
+          .pull-left
+            img.media-object.header_logo.img-thumbnail(src="#{companyGroup.logo}")
+          .media-body
+            h4.media-heading= companyGroup.name
+            p.text 相册名:&nbsp;#{companyGroup.name}的全家福
+            p.text 照片数:&nbsp;#{showPhotos.length}
+            p.text 最后更新:&nbsp;#{moment(lastPhoto.upload_date).format('YYYY.MM.DD')}
+
+    hr
+    div.photo_panel.clearfix
+      a.photo.text-center(ng-repeat="photo in showPhotos")
+        img(ng-src="{{photo.uri}}/resize/200/200")
+
+
+
