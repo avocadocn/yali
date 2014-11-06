@@ -14,23 +14,47 @@
       padding 10px 20px
     .my_teams
       margin 20px
-      .title
-        line-height 30px
+      .select
+        margin-bottom 15px
+        font-size 14px
       .units
+        background-color #fbfbfb
+        max-height 300px
+        padding 10px
+        overflow auto
         .unit
           float left
+          text-align center
+          width 120px
+          padding 10px 10px 15px
+          &:hover
+            background-color #edebec
           .logo
             width 100px
             height 100px
           .text
-            width 100px
             text-align center
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-          .button
-            width 100px
-            .select
+            .title
+              width 100px
+              overflow hidden
+              text-overflow ellipsis
+              white-space nowrap
+              padding 10px 0
+              line-height 1
+              font-size 14px
+              float left
+            .type
+              width 100px
+              margin-bottom 10px
+              float left
+          .buttons
+            .button
+              width 100px
+              color #fff
+              height 30px
+              padding 10px
+              line-height 1
+            .selectOpponent
               background-color #f48361
             .recommand
               background-color #3ca2e0
