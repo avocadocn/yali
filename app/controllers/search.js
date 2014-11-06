@@ -66,7 +66,7 @@ exports.getTeam = function(req, res) {
 exports.recommandTeam = function(req,res) {
   var gid = req.body.gid;
   var tid = req.body.tid;
-  CompanyGroup.findOne({'gid':gid,'_id':tid},{'home_court':1},function (err,companyGroup){
+  CompanyGroup.findOne({'gid':gid,'_id':tid},{'home_court':1,'city':1},function (err,companyGroup){
     if(err || !companyGroup){
       console.log(err);
       return res.send(500,{'result':0,'msg':'500'});
@@ -76,7 +76,8 @@ exports.recommandTeam = function(req,res) {
     }
     else{
       var homecourt = companyGroup.home_court[0];
-      CompanyGroup.find({'_id':{$ne:tid},'gid':gid,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},{'_id':1,'name':1,'home_court':1,'logo':1,'score':1})
+      CompanyGroup.find({'gid':gid,'active':true,'city.city':companyGroup.city.city,'_id':{$ne:tid},'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},
+        {'name':1,'home_court':1,'logo':1,'score':1})
       .limit(10)
       .exec(function (err, teams){
         if(err){
@@ -216,7 +217,8 @@ exports.sameCityTeam = function(req,res,next) {
     return res.send(403);
   }
   else{
-    CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':req.companyGroup.city.city,'_id':{'$ne':req.params.teamId}},
+    var city = req.companyGroup.city.city;
+    CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':city,'_id':{'$ne':req.params.teamId},'active':true},
       req.query.page,10,function(err,pageCount,results,itemCount) {
         if(err){
           console.log(err);
@@ -228,8 +230,29 @@ exports.sameCityTeam = function(req,res,next) {
           for(var i=0;i<results.length;i++){
             teams.push({'_id':results[i]._id,'logo':results[i].logo,'name':results[i].name,'cname':results[i].cname})
           }
-          return res.send({'result':1,'teams':teams,'maxPage':pageCount});
+          return res.send({'result':1,'teams':teams,'maxPage':pageCount,'city':city});
         }
       },{sortBy:{'score.total':-1}});
   }
 };
+
+exports.nearbyTeam = function(req,res,next) {
+  var companyGroup = req.companyGroup;
+  var homecourt = companyGroup.home_court[0];
+  var city = req.companyGroup.city.city;
+  CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':city,'_id':{'$ne':req.params.teamId},'active':true,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},
+    req.query.page,10,function(err,pageCount,results,itemCount) {
+      if(err){
+        console.log(err);
+        res.status(500);
+        next();
+      }
+      else{
+        var teams = [];
+        for(var i=0;i<results.length;i++){
+          teams.push({'_id':results[i]._id,'logo':results[i].logo,'name':results[i].name,'cname':results[i].cname,'home_court':results[i].home_court});
+        }
+        return res.send({'result':1,'teams':teams,'maxPage':pageCount});
+      }
+    });
+}

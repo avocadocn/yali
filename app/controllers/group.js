@@ -252,7 +252,7 @@ exports.getOneTeam = function(req, res) {
       'gid':req.companyGroup.gid,
       'logo':req.companyGroup.logo,
       'home_court':req.companyGroup.home_court?req.companyGroup.home_court:null,
-      'isLeader':req.companyGroup.leader.length>0?req.companyGroup.leader[0]._id === req.user._id:false
+      'isLeader':req.companyGroup.leader.length>0?req.companyGroup.leader[0]._id.toString() === req.user._id.toString():false
     };
     return res.send(team);
   }

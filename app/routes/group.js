@@ -26,6 +26,7 @@ module.exports = function(app) {
   app.get('/group/getGroupMembers/:teamId', authorization.teamAuthorize, group.getGroupMember);
   app.get('/group/sameCity/:teamId',group.renderSameCity);
   app.get('/group/sameCity',group.renderSameCity);
+  app.get('/group/nearbyTeam/:teamId',group.renderSameCity);
   //app.get('/group/getMembers', group.renderMember);
   //激活、关闭小队
   app.post('/group/activateGroup/:teamId', authorization.teamAuthorize, group.activateGroup);

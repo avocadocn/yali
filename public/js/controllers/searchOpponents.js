@@ -23,11 +23,11 @@ searchOpponents.config(['$routeProvider',function ($routeProvider) {
       controller: 'searchController',
       controllerAs: 'search'
     })
-    .when('/sameCity', {
+    .when('/', {
       templateUrl:'/group/sameCity'
     })
     .otherwise({
-      redirectTo: '/sameCity'
+      redirectTo: '/'
     });
 }]);
 
@@ -40,6 +40,19 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
   $rootScope.$on("$routeChangeSuccess",function(){
       $rootScope.loading = false;
   });
+  $rootScope.getTeam=function(tid){
+     $http.get('/group/oneTeam/'+tid).success(function(data,status){
+      $rootScope.myTeam = data;
+      $rootScope.selectedStatus = 'active';
+      $rootScope.selectTeamId = data._id;
+    });
+  }
+  //获取选中小队信息
+  var tid = window.location.hash.split("/")[2];
+  $rootScope.tid = tid;
+  if(tid){
+    $rootScope.getTeam(tid);
+  }
   $rootScope.addactive = function(value) {
     $rootScope.nowTab = value;
   };
@@ -47,52 +60,66 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
     window.location.hash = '#/sameCity/'+tid;
     $rootScope.selectedStatus = 'active';
     $rootScope.myTeam = true;
+    $rootScope.tid = tid;
   };
   $rootScope.changeTeam = function(){
     $rootScope.myTeam = null;
     window.location.hash= '#/sameCity';
     $rootScope.selectTeamId = null;
+    $rootScope.selectedStatus='unactive';
   };
-
 }]);
 
 searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'Search',
   function($http, $scope, $rootScope, Search) {
     $rootScope.nowTab = 'sameCity';
-    //获取选中小队信息
-    var tid = window.location.hash.split("/")[2];
-    $http.get('/group/oneTeam/'+tid).success(function(data,status){
-      $rootScope.myTeam = data;
-      $rootScope.selectedStatus = 'active';
-      $rootScope.selectTeamId = data._id;
-    });
     //获取同城小队
-    $scope.pages=[];
-    Search.searchSameCity(tid,1,function(status,data){
+    Search.searchSameCity($rootScope.tid,1,function(status,data){
       if(!status){
+        var maxNumber = (data.maxPage-1)*10;
+        if(data.maxPage===1 &&data.maxPage<10)
+            maxNumber = data.teams.length;
+        $scope.headline = data.city+"共有"+maxNumber+"+个相关小队"
         $scope.currentPage=1;
         $scope.resultTeams = data.teams;
         if(data.teams.length>0){
           $scope.getOpponentInfo(data.teams[0]._id);
           $scope.selectedIndex = 0;
         }
-        var maxPage = data.maxPage;
-        var showMaxPage = maxPage>5? 5:maxPage;
+        $scope.maxPage = data.maxPage;
+        var showMaxPage = $scope.maxPage>5? 5:$scope.maxPage;
+        $scope.pages=[];
         for(var i=1;i<=showMaxPage;i++){
           $scope.pages.push(i);
         }
-      }
-      else{
-        console.log(status);
       }
     });
 
     $scope.loadPage=function(pageNumber){
       $scope.currentPage=pageNumber;
-      Search.searchSameCity(tid,pageNumber,function(status,data){
-
+      Search.searchSameCity($rootScope.tid,pageNumber,function(status,data){
+        if(!status){
+          $scope.resultTeams = data.teams;
+          if(data.teams.length>0){
+            $scope.getOpponentInfo(data.teams[0]._id);
+            $scope.selectedIndex = 0;
+          }
+          var start = Math.floor(pageNumber/10)*10+1;
+          var end = Math.ceil(pageNumber/10)*10;
+          var end = end>$scope.maxPage? $scope.maxPage:end;
+          $scope.pages=[];
+          for(var i=start;i<=end;i++){
+            $scope.pages.push(i);
+          }
+        }
       });
     };
+    $scope.loadPrePage=function(){
+      $scope.loadPage($scope.currentPage-1);
+    }
+    $scope.loadNextPage=function(){
+      $scope.loadPage($scope.currentPage+1);
+    }
     $scope.getOpponentInfo=function(tid,index){
       $scope.selectedIndex = index;
       Search.getOpponentInfo(tid,function(status,data){
@@ -106,19 +133,52 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
 searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 'Search',
   function($http, $scope, $rootScope, Search) {
     $rootScope.nowTab = 'nearbyTeam';
-    var tid = window.location.hash.split("/")[2];
-    $http.get('/group/oneTeam/'+tid).success(function(data,status){
-      $rootScope.myTeam = data;
-      $rootScope.selectedStatus = 'active';
-      $rootScope.selectTeamId = data._id;
-    });
     $scope.isShowMap = true;
     //获取附近小队
-
-
+    if($rootScope.myTeam.home_court.length>0){
+      Search.searchNearby($rootScope.tid,1,function(status,data){
+        if(!status){
+          var maxNumber = (data.maxPage-1)*10;
+          if(data.maxPage===1 &&data.maxPage<10)
+            maxNumber = data.teams.length;
+          $scope.headline = "附近共有"+maxNumber+"+个相关小队"
+          $scope.currentPage=1;
+          $scope.resultTeams = data.teams;
+          $scope.maxPage = data.maxPage;
+          var showMaxPage = $scope.maxPage>5? 5:$scope.maxPage;
+          $scope.pages=[];
+          for(var i=1;i<=showMaxPage;i++){
+            $scope.pages.push(i);
+          }
+        }
+      });
+    }
+    
     $scope.loadPage=function(pageNumber){
-
+      $scope.currentPage=pageNumber;
+      Search.searchNearby($rootScope.tid,pageNumber,function(status,data){
+        if(!status){
+          $scope.resultTeams = data.teams;
+          if(data.teams.length>0){
+            $scope.getOpponentInfo(data.teams[0]._id);
+            $scope.selectedIndex = 0;
+          }
+          var start = Math.floor(pageNumber/10)*10+1;
+          var end = Math.ceil(pageNumber/10)*10;
+          var end = end>$scope.maxPage? $scope.maxPage:end;
+          $scope.pages=[];
+          for(var i=start;i<=end;i++){
+            $scope.pages.push(i);
+          }
+        }
+      });
     };
+    $scope.loadPrePage=function(){
+      $scope.loadPage($scope.currentPage-1);
+    }
+    $scope.loadNextPage=function(){
+      $scope.loadPage($scope.currentPage+1);
+    }
 }]);
 
 searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 'Search',

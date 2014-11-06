@@ -1,15 +1,16 @@
-.result.clearfix
+.loading_div(ng-show = 'loading')
+.result.clearfix(ng-show = '!loading')
   if pleaseSelect
     img()
     span 请先选择队伍再进行搜索
   else
     //- 主场信息(若点详情则向左收)
-    .homecourt(ng-show="myTeam.home_court")
+    .homecourt(ng-show="nowTab=='nearbyTeam'&&myTeam.home_court")
       p.text(ng-class="{'active':homecourtIndex===1}" ng-click="homecourtIndex=1") 主场一: {{myTeam.home_court[0].name}}
       p.text(ng-class="{'active':homecourtIndex===2}" ng-show="myTeam.home_court.length===2" ng-click="homecourtIndex=2") 主场二: {{myTeam.home_court[1].name}}
       button(ng-if="myTeam.isLeader") 更换主场
     //- 主场设置
-    .homecourtSetting(ng-show="!myTeam.home_court")
+    .homecourtSetting(ng-show="isShowMap&&myTeam.home_court.length===0")
       .court(ng-show="myTeam.isLeader")
         .text
           span 主场一:
@@ -26,32 +27,33 @@
       span(ng-show="!myTeam.isLeader") 请提醒您的队长去添加小队主场吧~
 
     //- 附近小队地图
-    .map(ng-show="isShowMap")
+    .map(ng-show="isShowMap&&myTeam.home_court.length>0")
       #map.fullMap
     //- 搜索出的小队列表
     .teamlist
       a(ng-show="isShowMap") <地图
-      span.headline(ng-if="headline") {{headline}}
+      .headline
+        span(ng-show="headline") {{headline}}
       .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo('{{team._id}}',$index)")
         span(ng-if="isShowMap") {{engDict[$index]}}
-        img.logo(src="{{team.logo}}")
+        img.logo(ng-cloak src="{{team.logo}}")
         .text
           span.title {{team.name}}
           span.content {{team.cname}}
-      .nav
-        ul.pagination
+      .page_nav
+        ul.nav
           li(ng-show="currentPage!==1")
             a(ng-click="loadPage(1)") &laquo;
           li(ng-show="currentPage!==1")
-            a(ng-click="loadPage({{currentPage}}-1)") &lt;
-          li(ng-repeat="page in pages" ng-class="{'active':page===currentPage}")
+            a(ng-click="loadPrePage()") &lt;
+          li(ng-repeat="page in pages track by $index" ng-class="{'active':page===currentPage}")
             a(ng-click="loadPage({{page}})") {{page}}
-          li(ng-show="currentPage!==pages.length")
-            a(ng-click="loadPage({{currentPage}}+1)") &gt;
-          li(ng-show="currentPage!==pages.length")
-            a(ng-click="loadPage(pages.length)") &raquo;
+          li(ng-show="currentPage!==maxPage")
+            a(ng-click="loadNextPage()") &gt;
+          li(ng-show="currentPage!==maxPage")
+            a(ng-click="loadPage(maxPage)") &raquo;
     //-详情
-    .detail(ng-show="!isShowMap")
+    .detail(ng-show="!isShowMap&&opponent")
       .detailHead.clearfix
         img.logo(ng-src="{{opponent.logo}}")
         .text
