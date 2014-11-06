@@ -23,9 +23,9 @@ block content
                   span.type= team.group_type
                 .buttons
                   if team.leader
-                    button.button.selectOpponent(ng-click="select('#{team._id}')") 为它选对手
+                    button.button.btn_red(ng-click="select('#{team._id}')") 为它选对手
                   else
-                    button.button.recommand(ng-click="select('#{team._id}')") 给它推荐对手
+                    button.button(ng-click="select('#{team._id}')") 给它推荐对手
         .selected_team(ng-show="myTeam")
           p 挑战发起方
           .my_team.clearfix
@@ -34,7 +34,7 @@ block content
               span.tname {{myTeam.name}}
               span.type {{myTeam.group_type}}
               span.leader 队长: {{myTeam.leader}}
-            button.dl_btn.button(ng-click="changeTeam()") 更换小队
+            button.button(ng-click="changeTeam()") 更换小队
       .tab_view.clearfix(ng-class="selectedStatus")
         ul.nav
           li.opponnet_tab_style.sameCity(ng-class="{'active':nowTab=='sameCity'}")

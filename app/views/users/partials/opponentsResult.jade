@@ -5,10 +5,11 @@
     span 请先选择队伍再进行搜索
   else
     //- 主场信息(若点详情则向左收)
-    .homecourt(ng-show="nowTab=='nearbyTeam'&&myTeam.home_court")
-      p.text(ng-class="{'active':homecourtIndex===1}" ng-click="homecourtIndex=1") 主场一: {{myTeam.home_court[0].name}}
-      p.text(ng-class="{'active':homecourtIndex===2}" ng-show="myTeam.home_court.length===2" ng-click="homecourtIndex=2") 主场二: {{myTeam.home_court[1].name}}
-      button(ng-if="myTeam.isLeader") 更换主场
+    .homecourt.clearfix(ng-show="nowTab=='nearbyTeam'&&myTeam.home_court")
+      .text
+        span.title(ng-class="{'active':homecourtIndex===0}" ng-click="toggleHomecourt(0)") 主场一: {{myTeam.home_court[0].name}}
+        span.title(ng-class="{'active':homecourtIndex===1}" ng-show="myTeam.home_court.length===2" ng-click="toggleHomecourt(1)") 主场二: {{myTeam.home_court[1].name}}
+      button.button(ng-if="myTeam.isLeader") 更换主场
     //- 主场设置
     .homecourtSetting(ng-show="isShowMap&&myTeam.home_court.length===0")
       .court(ng-show="myTeam.isLeader")
@@ -23,23 +24,26 @@
         .input
           input(ng-model="myTeam.home_court[1].name")
           #homecourt2.homecourtMap
-          button 完成
+          button.button.btn_small 完成
       span(ng-show="!myTeam.isLeader") 请提醒您的队长去添加小队主场吧~
 
     //- 附近小队地图
     .map(ng-show="isShowMap&&myTeam.home_court.length>0")
-      #map.fullMap
+      #fullMap.fullMap
     //- 搜索出的小队列表
     .teamlist
-      a(ng-show="isShowMap") <地图
-      .headline
-        span(ng-show="headline") {{headline}}
-      .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo('{{team._id}}',$index)")
-        span(ng-if="isShowMap") {{engDict[$index]}}
-        img.logo(ng-cloak src="{{team.logo}}")
-        .text
-          span.title {{team.name}}
-          span.content {{team.cname}}
+      .teams
+        .map_head(ng-show="nowTab=='nearbyTeam'")
+          span.pull-right(ng-show="isShowMap" ng-click="getOpponentInfo(0)") 详情&nbsp;&gt;
+          span(ng-show="!isShowMap" ng-click="isShowMap=true") &lt;&nbsp;地图
+        .headline
+          span(ng-show="headline") {{headline}}
+        .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo($index)")
+          span(ng-if="isShowMap") {{engDict[$index]}}
+          img.logo(ng-cloak src="{{team.logo}}")
+          .text
+            span.title {{team.name}}
+            span.content {{team.cname}}
       .page_nav
         ul.nav
           li(ng-show="currentPage!==1")
@@ -62,8 +66,9 @@
           span.content 成员:{{opponent.memberNumber}}人
           span.content 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .buttons
-          button.dl_btn.dl_btn_small(ng-click="provoke()") 挑战
-          a.dl_btn.dl_btn_small(ng-href="/group/page/{{opponent._id}}") 查看
+          button.button.btn_small.btn_red(ng-click="provoke()") 挑战
+          a(ng-href="/group/page/{{opponent._id}}")
+            button.button.btn_small 查看
       .detailContent(ng-cloak)
         .block.clearfix(ng-if="opponent.home_court.length")
           .title

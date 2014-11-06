@@ -238,7 +238,7 @@ exports.sameCityTeam = function(req,res,next) {
 
 exports.nearbyTeam = function(req,res,next) {
   var companyGroup = req.companyGroup;
-  var homecourt = companyGroup.home_court[0];
+  var homecourt = companyGroup.home_court[req.query.index];
   var city = req.companyGroup.city.city;
   CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':city,'_id':{'$ne':req.params.teamId},'active':true,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},
     req.query.page,10,function(err,pageCount,results,itemCount) {
