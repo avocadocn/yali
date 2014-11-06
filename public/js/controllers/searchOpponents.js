@@ -57,6 +57,7 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
     $rootScope.nowTab = value;
   };
   $rootScope.select=function(tid){
+    $rootScope.getTeam(tid);
     window.location.hash = '#/sameCity/'+tid;
     $rootScope.selectedStatus = 'active';
     $rootScope.myTeam = true;
