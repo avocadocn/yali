@@ -62,6 +62,10 @@ block contentExt
 
           .team_col
             .card.family_card
+              carousel(interval="5000")
+                slide(ng-repeat="photo in team.familyPhotos")
+                  img(ng-src="{{photo.uri}}/420/340")
+              a.edit(ng-if="allow.editTeam" ng-href="/group/{{team._id}}/editLogo" title="修改全家福"): img(src="/img/edit_logo.png" ng-cloak)
 
         .team_row
           .team_col

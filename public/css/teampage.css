@@ -260,6 +260,34 @@
   width: 50px;
   height: 50px;
 }
+.teampage .family_card {
+  width: 420px;
+  height: 340px;
+  position: relative;
+}
+.teampage .family_card .left.carousel-control {
+  opacity: 0;
+  cursor: url("/img/pic_prev.cur"), auto;
+}
+.teampage .family_card .right.carousel-control {
+  opacity: 0;
+  cursor: url("/img/pic_next.cur"), auto;
+}
+.teampage .family_card .carousel-indicators {
+  bottom: 0;
+}
+.teampage .family_card .edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.teampage .family_card .carousel-indicators li {
+  background-color: #fff;
+}
+.teampage .family_card .carousel-indicators .active {
+  border-color: #3ca2e0;
+  background-color: #3ca2e0;
+}
 .teampage .home_court_card {
   height: 260px;
 }

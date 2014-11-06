@@ -177,10 +177,14 @@ exports.info =function(req, res) {
     brief: team.brief,
     leaders: team.leader,
     members: membersWithoutLeader,
-    homeCourts: homeCourts
+    homeCourts: homeCourts,
+    familyPhotos: team.family.filter(function (photo) {
+      return !photo.hidden && photo.select;
+    })
   };
 
   // 根据页面显示需要，获取用户相对于小队页面的角色
+  // todo 加入权限系统中，使用权限系统的获取角色的方法
   var role = 'guest'; // 'HR', 'companyMember', 'teamMember', 'leader', 'otherHR', 'otherLeader', 'otherMember', 'guest'
   if (!req.user) {
     role = 'guest';
