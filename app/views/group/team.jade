@@ -99,19 +99,34 @@ block contentExt
                     .circle
                     .text 2个以上
 
-      .timeline
-        .year(ng-repeat="yearData in campaignData")
-          .month(ng-repeat="monthData in yearData.months" ng-cloak)
-            h1 {{yearData.year}}-{{monthData.month+1}}
-            .campaign(ng-repeat="campaign in monthData.campaigns")
-              p {{campaign.theme}}
+      .dl_timeline.team_timeline
+        .spine
+        .year(ng-repeat="yearData in campaignData" ng-cloak)
+          .month(ng-repeat="monthData in yearData.months")
+            .date_separator(id='{{yearData.year}}_{{monthData.month+1}}' ng-click="scrollTo(yearData.year + '_' + (monthData.month + 1))")
+              span.span {{yearData.year}}-{{monthData.month+1}}
+            .column(ng-repeat="campaign in monthData.campaigns" ng-class="{'column_left': $index%2===0, 'column_right': $index%2===1}")
+              .timeline_element
+                .title
+                  a(ng-href="/campaign/detail/{{campaign.id}}",target="_blank")
+                    //- todo 需改为服务器直接返回处理好的logo和队名
+                    img.timeline-logo.pull-right(ng-src="{{campaign.campaign_unit[0].team.logo || campaign.campaign_unit[0].company.logo}}")
+                    span.name.pull-right {{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}}
+                    span.date {{moment(campaign.start_time).format('MM/DD/YYYY')}}
+                .timeline_head
+                  span {{campaign.theme}}
+        .date_separator(id='timeline_1')
+          span.span 最初
+
 
     .side_panel
       .nav
         .year(ng-repeat="year in dateRecord")
-          a(ng-cloak) {{year.year}}
+          span.year_text(ng-cloak) {{year.year}}
           .months
-            a(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}
+            a.month(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}月
+        .year
+          span.year_text 最初
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
