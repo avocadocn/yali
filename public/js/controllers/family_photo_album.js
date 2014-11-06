@@ -15,6 +15,17 @@ donler.controller('FamilyPhotoAlbumCtrl', ['$scope', 'Family', function ($scope,
     }
   });
 
+  $scope.toggleSelect = function (index) {
+
+    Family.toggleSelectFamilyPhoto(data.id, $scope.familyPhotos[index]._id, function (err) {
+      if (!err) {
+        $scope.familyPhotos[index].select = !$scope.familyPhotos[index].select;
+      } else {
+        alertify.alert('操作失败，请重试。');
+      }
+    });
+  };
+
 }]);
 
 donler.factory('Family', ['$http', function ($http) {
@@ -47,7 +58,17 @@ donler.factory('Family', ['$http', function ($http) {
      * @param  {Function} callback callback(err)
      */
     toggleSelectFamilyPhoto: function (id, photoId, callback) {
-      // todo
+      $http.post('/select/group/' + id + '/family/photo/' + photoId)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
     },
 
     /**

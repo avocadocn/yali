@@ -53,7 +53,7 @@ block contentExt
               .header
                 img.icon(src="/img/team.png")
                 h3.title 队员
-                span.count(data-toggle="modal" data-target="#memberListModal" ng-cloak) {{team.leaders.length + team.members.length}} >
+                span.count(data-toggle="modal" data-target="#memberListModal" ng-cloak title="查看全部队员") {{team.leaders.length + team.members.length}} >
               .members(bs-popover)
                 .leader_box
                   img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50" ng-Mouseenter="showUserCard(leader._id, leader._id + 'member_card')" id="pop{{leader._id}}member_card" rel="popover")
@@ -65,8 +65,8 @@ block contentExt
               carousel(interval="5000" ng-if="team.familyPhotos.length > 0" ng-cloak)
                 slide(ng-repeat="photo in team.familyPhotos")
                   img(ng-src="{{photo.uri}}/420/340")
-              a.edit(ng-if="allow.editTeam && team.familyPhotos.length > 0" ng-href="/group/{{team._id}}/editLogo" title="修改全家福"): img(src="/img/edit_logo.png" ng-cloak)
-              a.upload(ng-if="allow.editTeam && team.familyPhotos.length === 0" ng-cloak) 上传小队全家福
+              a.edit(ng-if="allow.editTeam && team.familyPhotos.length > 0" ng-href="/photoAlbum/family/{{team._id}}" title="修改全家福"): img(src="/img/edit_logo.png" ng-cloak)
+              a.upload(ng-if="allow.editTeam && team.familyPhotos.length === 0" ng-href="/photoAlbum/family/{{team._id}}" ng-cloak) 上传小队全家福
               .remind(ng-if="!allow.editTeam && team.familyPhotos.length === 0" ng-cloak)
                 .remind_triangle
                 .remind_triangle_border
@@ -151,8 +151,9 @@ block contentExt
             img.icon(src="/img/team.png")
             h3.title 队员
             span.subtitle ({{team.leaders.length + team.members.length}})
-            button.close.dl_close(data-dismiss="modal" aria-hidden="true")
-              img.icon_close(src="/img/icons/icon_close.png")
+            //- todo 以后改为图片，暂且用乘号代替
+            button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
+              //-img.icon_close(src="/img/icons/icon_close.png")
           .member_modal_body(bs-popover)
             .member(ng-repeat="member in team.membersWithLeader" ng-Mouseenter="showUserCard(member._id, member._id + 'member_modal')" id="pop{{member._id}}member_modal" rel="popover")
               img.photo(ng-src="{{member.photo}}")

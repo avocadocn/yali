@@ -1284,7 +1284,7 @@ exports.toggleSelectFamilyPhoto = function(req, res) {
       console.log(err);
       return res.send(500);
     }
-    res.send(200);
+    res.send({ result: 1 });
   });
 };
 
