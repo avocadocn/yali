@@ -17,7 +17,7 @@ donler.controller('FamilyPhotoAlbumCtrl', ['$scope', 'Family', function ($scope,
 
   $scope.toggleSelect = function (index) {
 
-    Family.toggleSelectFamilyPhoto(data.id, $scope.familyPhotos[index]._id, function (err) {
+    Family.toggleSelectPhoto(data.id, $scope.familyPhotos[index]._id, function (err) {
       if (!err) {
         $scope.familyPhotos[index].select = !$scope.familyPhotos[index].select;
       } else {
@@ -25,6 +25,21 @@ donler.controller('FamilyPhotoAlbumCtrl', ['$scope', 'Family', function ($scope,
       }
     });
   };
+
+  $scope.deletePhoto = function (index) {
+    alertify.confirm('您确实要删除这张照片吗？', function (e) {
+      if (e) {
+        Family.deletePhoto(data.id, $scope.familyPhotos[index]._id, function (err) {
+          if (!err) {
+            $scope.familyPhotos.splice(index, 1);
+          } else {
+            alertify.alert('操作失败，请重试。');
+          }
+        });
+      }
+    });
+
+  }
 
 }]);
 
@@ -57,7 +72,7 @@ donler.factory('Family', ['$http', function ($http) {
      * @param  {String}   photoId  照片id
      * @param  {Function} callback callback(err)
      */
-    toggleSelectFamilyPhoto: function (id, photoId, callback) {
+    toggleSelectPhoto: function (id, photoId, callback) {
       $http.post('/select/group/' + id + '/family/photo/' + photoId)
         .success(function (data, status) {
           if (data.result === 1) {
@@ -77,8 +92,18 @@ donler.factory('Family', ['$http', function ($http) {
      * @param  {String}   photoId  照片id
      * @param  {Function} callback callback(err)
      */
-    deleteFamilyPhoto: function (id, photoId, callback) {
-      // todo
+    deletePhoto: function (id, photoId, callback) {
+      $http.delete('/group/' + id + '/family/photo/' + photoId)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        })
     }
 
 

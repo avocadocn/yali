@@ -22,6 +22,7 @@ block contentExt
     div.photo_panel.clearfix
       a.photo.text-center(ng-repeat="photo in familyPhotos" ng-click="toggleSelect($index)" ng-class="{'active': photo.select===true}" ng-cloak)
         img(ng-src="{{photo.uri}}/resize/200/200")
+        button(ng-click="deletePhoto($index)") 删除
 
   #data(data-id="#{companyGroup._id}")
 
