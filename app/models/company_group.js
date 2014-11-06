@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    mongoosePaginate = require('mongoose-paginate');
 
 
 
@@ -118,6 +119,11 @@ var CompanyGroup = new Schema({
         default: true
     },
     home_court: [_home_court],       //主场(可能有多个)
+    city: {//暂时是公司的city,将来若是填了主场，公司改变city时，小队不改变
+        province: String,
+        city: String,
+        district: String
+    },
     create_time:{
         type: Date,
         default: Date.now
@@ -150,6 +156,8 @@ var CompanyGroup = new Schema({
     },
     family: [familyPhoto]
 });
+
+CompanyGroup.plugin(mongoosePaginate);
 
 CompanyGroup.methods = {
     /**

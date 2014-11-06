@@ -1,0 +1,96 @@
+.loading_div(ng-show = 'loading')
+.result.clearfix(ng-show = '!loading')
+  if pleaseSelect
+    img()
+    span 请先选择队伍再进行搜索
+  else
+    //- 主场信息(若点详情则向左收)
+    .homecourt(ng-show="nowTab=='nearbyTeam'&&myTeam.home_court")
+      p.text(ng-class="{'active':homecourtIndex===1}" ng-click="homecourtIndex=1") 主场一: {{myTeam.home_court[0].name}}
+      p.text(ng-class="{'active':homecourtIndex===2}" ng-show="myTeam.home_court.length===2" ng-click="homecourtIndex=2") 主场二: {{myTeam.home_court[1].name}}
+      button(ng-if="myTeam.isLeader") 更换主场
+    //- 主场设置
+    .homecourtSetting(ng-show="isShowMap&&myTeam.home_court.length===0")
+      .court(ng-show="myTeam.isLeader")
+        .text
+          span 主场一:
+        .input
+          input(ng-model="myTeam.home_court[0].name")
+          #homecourt1.homecourtMap
+      .cout(ng-show="myTeam.isLeader")
+        .text
+          span 主场二:
+        .input
+          input(ng-model="myTeam.home_court[1].name")
+          #homecourt2.homecourtMap
+          button 完成
+      span(ng-show="!myTeam.isLeader") 请提醒您的队长去添加小队主场吧~
+
+    //- 附近小队地图
+    .map(ng-show="isShowMap&&myTeam.home_court.length>0")
+      #map.fullMap
+    //- 搜索出的小队列表
+    .teamlist
+      a(ng-show="isShowMap") <地图
+      .headline
+        span(ng-show="headline") {{headline}}
+      .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo('{{team._id}}',$index)")
+        span(ng-if="isShowMap") {{engDict[$index]}}
+        img.logo(ng-cloak src="{{team.logo}}")
+        .text
+          span.title {{team.name}}
+          span.content {{team.cname}}
+      .page_nav
+        ul.nav
+          li(ng-show="currentPage!==1")
+            a(ng-click="loadPage(1)") &laquo;
+          li(ng-show="currentPage!==1")
+            a(ng-click="loadPrePage()") &lt;
+          li(ng-repeat="page in pages track by $index" ng-class="{'active':page===currentPage}")
+            a(ng-click="loadPage({{page}})") {{page}}
+          li(ng-show="currentPage!==maxPage")
+            a(ng-click="loadNextPage()") &gt;
+          li(ng-show="currentPage!==maxPage")
+            a(ng-click="loadPage(maxPage)") &raquo;
+    //-详情
+    .detail(ng-show="!isShowMap&&opponent")
+      .detailHead.clearfix
+        img.logo(ng-src="{{opponent.logo}}")
+        .text
+          span.title {{opponent.name}}
+          span.content {{opponent.cname}}
+          span.content 成员:{{opponent.memberNumber}}人
+          span.content 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+        .buttons
+          button.dl_btn.dl_btn_small(ng-click="provoke()") 挑战
+          a.dl_btn.dl_btn_small(ng-href="/group/page/{{opponent._id}}") 查看
+      .detailContent(ng-cloak)
+        .block.clearfix(ng-if="opponent.home_court.length")
+          .title
+            img
+            span 小队主场
+          .text
+            span.content 主场一:{{opponent.home_court[0].name}}
+            span.content(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
+        .block.clearfix(ng-show="opponent.newestCampaign")
+          .title
+            img
+            span 最新活动
+          .text
+            span.content 开始时间:{{opponent.newestCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.content 结束时间:{{opponent.newestCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+            span.content 活动主题:{{opponent.newestCampaign.theme}}
+            span.content 参加人数:{{opponent.newestCampaign.memberNumber}}
+            span.content 活动地点:{{opponent.newestCampaign.location.name}}
+        .block.clearfix
+          .title
+            img
+            span 小队队长
+          .text
+            span.content {{opponent.leader[0].nickname}}
+        .block.clearfix
+          .title
+            img
+            span 小队简介
+          .text
+            span.content {{opponent.brief}}

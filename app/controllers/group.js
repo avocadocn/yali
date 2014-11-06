@@ -237,17 +237,27 @@ exports.teampage = function(req, res) {
 
 //根据tid返回team
 exports.getOneTeam = function(req, res) {
-  var tid = req.body.tid;
-  CompanyGroup.findOne({
-    '_id':tid
-  },function(err, team){
-    if (err || !team) {
-      console.log('err');
-      return res.send();
-    } else{
-        return res.send(team);
-    }
-  });
+  var allow = auth(req.user,{
+    companies: [req.companyGroup.cid],
+    teams: [req.companyGroup._id]
+  },['getOneTeaminfo','getMyTeaminfo']);
+  if(allow.getOneTeaminfo)//HR在公司小队信息页取详细信息
+    return res.send(req.companyGroup);
+  else if(allow.getMyTeaminfo){//个人在发挑战时取信息
+    var team = {
+      '_id':req.companyGroup._id,
+      'name':req.companyGroup.name,
+      'group_type':req.companyGroup.group_type,
+      'leader':req.companyGroup.leader.length>0?req.companyGroup.leader[0].nickname:null,
+      'gid':req.companyGroup.gid,
+      'logo':req.companyGroup.logo,
+      'home_court':req.companyGroup.home_court?req.companyGroup.home_court:null,
+      'isLeader':req.companyGroup.leader.length>0?req.companyGroup.leader[0]._id.toString() === req.user._id.toString():false
+    };
+    return res.send(team);
+  }
+  else
+    return res.send(403);
 };
 
 
@@ -261,11 +271,54 @@ exports.getLedTeams = function(req,res) {
   CompanyGroup.find(options,{'logo':1,'member':1,'name':1},function(err, companyGroups){
     if(err){
       console.log(err);
-      return res.send({'result':0,'msg':'获取带领'});
+      return res.send({'result':0,'msg':'获取带领小队失败'});
     }
     else
      return res.send({'result':1,'teams':companyGroups});
   });
+};
+
+//个人获取对手信息,以及对手最新活动
+exports.getOpponentInfo = function(req,res,next) {
+  Campaign.find({'tid':req.params.teamId})
+  .sort('-create_time')
+  .limit(1)
+  .exec()
+  .then(function(campaign){
+    var team = req.companyGroup;
+    team.set('memberNumber',team.member.length,{strict:false});
+    team.member=null;
+    if(campaign.length>0){
+      team.set('newestCampaign', {
+        'start_time':campaign[0].start_time,
+        'end_time':campaign[0].end_time,
+        'theme':campaign[0].theme,
+        'memberNumber':campaign[0].members.length,
+        'location':campaign[0].location,
+      },{strict:false});
+    }
+    return res.send({'team':team})
+  })
+  .then(null,function(err){
+    console.log(err);
+    res.status(500);
+    next();
+  })
+  
+}
+
+exports.renderSameCity = function(req,res, next) {
+  if(req.params.teamId){
+    var allow = auth(req.user,{companies:[req.companyGroup.cid],teams:[req.params.teamId]},['getMyTeaminfo']);
+    if(!allow.getMyTeaminfo){
+      res.status(403);
+      next('forbidden');
+    }
+    else
+      return res.render('users/partials/opponentsResult');
+  }
+  else
+    return res.render('users/partials/opponentsResult',{'pleaseSelect':true});
 };
 
 //TODO

@@ -74,8 +74,16 @@ var registeredTasks = {
   sponsorCampaign: {
     company: ['hr'],
     team: ['leader']
+  },
+  getOneTeaminfo:{
+    company:['hr']
+  },
+  getMyTeaminfo:{
+    team:['leader', 'member']
+  },
+  searchSameCityTeam:{
+    team:['leader', 'member']
   }
-
 };
 
 

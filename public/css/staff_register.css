@@ -610,12 +610,6 @@ textarea {
 .transparent {
   opacity: 0;
 }
-.nav-tabs>li.active>a {
-  background-color: #fff;
-}
-.nav-tabs>li.active>a:hover {
-  background-color: #fff;
-}
 .bg_change:hover {
   cursor: pointer;
   background-color: #f8f8f3;
@@ -1305,6 +1299,12 @@ textarea {
   width: auto;
   float: right;
   max-width: 500px;
+}
+.dl_container .top_side .nav-tabs>li.active>a {
+  background-color: #fff;
+}
+.dl_container .top_side .nav-tabs>li.active>a:hover {
+  background-color: #fff;
 }
 .dl_container .main {
   width: 660px;

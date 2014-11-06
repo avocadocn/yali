@@ -50,11 +50,6 @@ textarea
 .transparent
   opacity 0
 
-.nav-tabs>li.active>a
-  background-color cardbgColor
-  &:hover
-    background-color cardbgColor
-
 .bg_change
   &:hover
     cursor pointer
@@ -670,6 +665,10 @@ textarea
     width auto
     float right
     max-width 500px
+    .nav-tabs>li.active>a
+      background-color cardbgColor
+      &:hover
+        background-color cardbgColor
   .main
     width 660px
     max-width 960px

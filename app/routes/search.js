@@ -10,4 +10,6 @@ module.exports = function(app, passport) {
     app.get('/search/user/:userId', search.getUserInfo);
     app.post('/search/recommandTeam', search.recommandTeam);
     app.get('/search/:companyId/member', authorization.companyAuthorize, search.getMember);
+    app.get('/search/sameCityTeam/:teamId',search.sameCityTeam);
+    app.get('/search/nearbyTeam/:teamId',search.nearbyTeam);
 };

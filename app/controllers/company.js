@@ -421,7 +421,7 @@ exports.saveGroup = function(req, res) {
       companyGroup.entity_type = selected_group.entity_type;
       companyGroup.name = req.body.tname;
       companyGroup.logo = '/img/icons/group/' + selected_group.entity_type.toLowerCase() + '_on.png';
-
+      companyGroup.city = company.info.city;
       companyGroup.save(function(err) {
         if (err) {
           console.log(err);
@@ -966,7 +966,13 @@ exports.saveAccount = function(req, res) {
       if (req.body.info !== undefined && company.info.name !== _company.info.name) {
         schedule.updateCname(req.user._id);
       }
-
+      CompanyGroup.update({'cid':company._id},{$set:{city:req.body.info.city}},{multi:true},function(err,number){
+        if(err){
+          console.log(err);
+        }else{
+          console.log('小队地址更新数:',number);
+        }
+      });
       res.send({
         'result': 1,
         'msg': '更新成功'
