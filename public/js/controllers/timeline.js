@@ -84,19 +84,56 @@ timeline.directive('whenScrolled', function($window) {
     };
 });
 
-timeline.controller('timelineController', function ($scope, $http, $location, $rootScope,anchorSmoothScroll) {
-  $rootScope.nowYear='timeline_0';
-  $rootScope.scrollTo =function(id){
-    var temp = id.split('_');
-    $rootScope.nowYear = temp[0];
-    $rootScope.nowMonth = id;
-    $location.hash(id);
-    anchorSmoothScroll.scrollTo(id);
-  }
-  $rootScope.loadMore = function (id) {
-      // console.log(i++);
-      var temp = id.split('_');
-      $rootScope.nowYear = temp[0];
-      $rootScope.nowMonth = id;
-  }
-});
+timeline.controller('timelineController',['$scope', '$http', '$location', '$rootScope', 'anchorSmoothScroll', 'Campaign', 
+    function ($scope, $http, $location, $rootScope, anchorSmoothScroll, Campaign) {
+        var data = document.getElementById('user_data').dataset;
+        var userId = data.id;
+        var hostType = 'user';
+        Campaign.getCampaignsDateRecord(hostType,userId,function(err,record){
+            if(!err){
+                $scope.timelines=record;
+            }
+        });
+        $scope.nowYear='timeline_0';
+        var addCampaign = function(timeline){
+            for (var i = $scope.timelines.length - 1; i >= 0; i--) {
+                if($scope.timelines[i].year==timeline.year){
+                    for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
+                        if($scope.timelines[i].month[j].month==timeline.month){
+                            if($scope.timelines[i].month[j].campaigns.length==0){
+                                $scope.timelines[i].month[j].campaigns = timeline.campaigns;
+                            }
+                            return;
+                        }
+                    };
+                    break;
+                }
+            };
+        }
+        $scope.scrollTo =function(id){
+            var temp = id.split('_');
+            $scope.nowYear = temp[0];
+            $scope.nowMonth = temp[1];
+            $location.hash(id);
+            anchorSmoothScroll.scrollTo(id);
+            if(temp[0]!='timeline'){
+                var paging = {
+                    year:temp[0],
+                    month:temp[1]
+                }
+                Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
+                    if(!err){
+                        addCampaign(timeline);
+                    }
+                });
+            }
+
+        }
+        $scope.loadMore = function (id) {
+          // console.log(i++);
+          var temp = id.split('_');
+          $scope.nowYear = temp[0];
+          $scope.nowMonth = id;
+        }
+    }
+]);

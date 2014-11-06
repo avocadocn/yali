@@ -213,7 +213,50 @@ angular.module('donler')
         }
       });
     };
+    /**
+     * 获取特定月份的活动
+     * @param  {type}   hostType 获取主体的类型：team,user
+     * @param  {type}   hostId   小队或者用户的id
+     * @param  {type}   paging   分页的条件
+     * @param  {Function} callback callback(err, campaigns)
+     */
+    var getCampaignsData = function (hostType, hostId, paging, callback) {
+      var query = '';
+      if (paging && paging.year && paging.month) {
+        query = '?year=' + paging.year + '&month=' + paging.month;
+      }
+      $http.get('/campaign/getCampaignData/' +hostType +'/' +hostId + query)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.timeLine);
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
 
+    /**
+     * 获取有活动的年月
+     * @param  {String}   hostType 获取主体的类型：team,user
+     * @param  {String}   hostId   小队或者用户的id
+     * @param  {Function} callback callback(err, record)
+     */
+    var getCampaignsDateRecord = function (hostType, hostId, callback) {
+      $http.get('/campaign/getDateRecord/' + hostType +'/'+ hostId)
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.dateRecord);
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
 
     return {
       sponsor: sponsor,
@@ -225,6 +268,8 @@ angular.module('donler')
       getMolds: getMolds,
       // vote: vote,
       dealProvoke: dealProvoke,
-      getLedTeams: getLedTeams
+      getLedTeams: getLedTeams,
+      getCampaignsData: getCampaignsData,
+      getCampaignsDateRecord: getCampaignsDateRecord
     };
   }]);

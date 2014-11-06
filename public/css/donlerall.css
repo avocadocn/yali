@@ -3081,6 +3081,7 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 10px;
   font-size: 18px;
   color: #ccd3e1;
+  cursor: pointer;
 }
 .user_page .dl_container .main .timeline_control .control_year:hover {
   border-left: 6px solid #ccc;
@@ -3211,8 +3212,7 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .self_info_container .self_logo_container .nickname {
   text-align: center;
-  width: 80px;
-  padding-left: 35px;
+  width: 110px;
   padding-top: 11px;
   font-size: 16px;
 }
@@ -3482,11 +3482,14 @@ input.ng-invalid.ng-dirty {
   line-height: 21px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign {
-  padding: 10px;
+  padding: 0;
   height: 100px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .info_left {
-  width: 200px;
+  width: 160px;
+  border-right: 1px solid #ccc;
+  height: 100%;
+  padding: 10px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .info_left .time_col {
   font-size: 18px;
@@ -3496,14 +3499,20 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .info_left .time_col .remind_text {
   height: 40px;
-  line-height: 40px;
-  color: #ccc;
+  line-height: 50px;
+  color: #999;
+  font-size: 12px;
+  margin: 0;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .info_left .time_col .time_text {
   color: #f48361;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .logo_col {
-  width: 200px;
+  width: 221px;
+  padding-top: 26px;
+  padding-left: 20px;
+  border-right: 1px solid #ccc;
+  height: 100%;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .logo_col .team {
   width: 200px;
@@ -3528,6 +3537,8 @@ input.ng-invalid.ng-dirty {
   width: 260px;
   color: #ccc;
   font-size: 14px;
+  padding-top: 21px;
+  padding-left: 21px;
 }
 .user_page .dl_container .main .campaigns_container .top .campaign .content_col p {
   max-width: 100%;
@@ -3970,6 +3981,177 @@ input.ng-invalid.ng-dirty {
 #photoModal .photos .next {
   right: 20px;
 }
+.timeline_element {
+  background-color: #fff;
+  text-shadow: none;
+  position: relative;
+  margin: 10px 0px;
+  clear: both;
+  border-radius: 0px;
+  color: #888;
+  width: 400px;
+  padding: 0;
+  border: none;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 1px 1px 3px #ccc;
+}
+.timeline_element:hover {
+  cursor: pointer;
+  opacity: 1;
+  -moz-box-shadow: 3px 3px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #ccc;
+}
+.timeline_element .timeline_head {
+  clear: both;
+  padding: 10px;
+  font-size: 14px;
+}
+.timeline_element .title {
+  position: relative;
+  font-size: 10px;
+  overflow: hidden;
+  text-transform: uppercase;
+  word-break: break-all;
+  margin-bottom: 0;
+  border-bottom: none;
+  padding: 10px;
+}
+.timeline_element .title a {
+  color: #aaa;
+  display: block;
+}
+.timeline_element .title a:hover {
+  text-decoration: none;
+}
+.timeline_element .title .timeline_logo {
+  height: 30px;
+  width: 30px;
+  margin-top: 7px;
+  margin-right: 2px;
+}
+.timeline_element .title .date {
+  width: 30px;
+  line-height: 13px;
+  margin: 8px 4px;
+  float: left;
+}
+.timeline_element .title .name {
+  line-height: 30px;
+  margin-right: 10px;
+  margin-top: 8px;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+.timeline_element .title .day {
+  float: left;
+  font-size: 28px;
+  margin: 11px 6px;
+  margin-right: 0;
+}
+.timeline_element .title .head {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 22px;
+  max-width: 250px;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  float: left;
+}
+.timeline_element .title .timeline-logo {
+  margin-right: 4px;
+  height: 40px;
+  width: 40px;
+}
+.timeline_element .img_scroll .photo {
+  float: left;
+  width: 86px;
+  height: 86px;
+  background: url("/img/loading.gif") center center no-repeat;
+  display: inline-block;
+  margin-right: 0;
+}
+.timeline_element .img_scroll .photos_1 .photo_0 {
+  width: 400px;
+  height: 250px;
+}
+.timeline_element .img_scroll .photos_2 .photo_0,
+.timeline_element .img_scroll .photos_2 .photo_1 {
+  width: 195px;
+  height: 180px;
+  float: left;
+}
+.timeline_element .img_scroll .photos_2 .photo_0 {
+  margin-right: 10px;
+}
+.timeline_element .img_scroll .photos_3 .photo_0 {
+  width: 195px;
+  height: 290px;
+  margin-left: 10px;
+  float: right;
+}
+.timeline_element .img_scroll .photos_3 .photo_1,
+.timeline_element .img_scroll .photos_3 .photo_2 {
+  width: 195px;
+  height: 140px;
+  float: right;
+}
+.timeline_element .img_scroll .photos_3 .photo_1 {
+  margin-bottom: 10px;
+}
+.timeline_element .img_scroll .photos_4 .photo_0,
+.timeline_element .img_scroll .photos_4 .photo_3 {
+  width: 160px;
+  height: 145px;
+  margin-bottom: 5px;
+  float: left;
+}
+.timeline_element .img_scroll .photos_4 .photo_1,
+.timeline_element .img_scroll .photos_4 .photo_2 {
+  width: 230px;
+  height: 145px;
+  margin-bottom: 10px;
+  float: left;
+}
+.timeline_element .img_scroll .photos_4 .photo_0,
+.timeline_element .img_scroll .photos_4 .photo_2 {
+  margin-right: 10px;
+}
+.timeline_element .content p {
+  margin-bottom: 0;
+}
+.timeline_element .content a {
+  color: #888;
+  display: block;
+}
+.timeline_element .content a:hover {
+  text-decoration: none;
+}
+.timeline_element .comments {
+  clear: both;
+  background-color: #fbfbfb;
+}
+.timeline_element .comments a {
+  color: #ccc;
+}
+.timeline_element .comments a.comment_num {
+  display: inline-block;
+  color: #ccc;
+  width: 100%;
+  padding: 5px 10px;
+  text-align: right;
+  background-color: #fbfbfb;
+}
+.timeline_element .comments a.comment_num .reply_icon {
+  margin-right: 7px;
+}
 @-moz-keyframes scaleFade {
   50% {
     opacity: 1;
@@ -4261,62 +4443,6 @@ Timeline UI Base
   border: 1px solid #fff;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
 }
-.dl_timeline .column .timeline_element .title {
-  position: relative;
-  font-size: 10px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  word-break: break-all;
-  padding: 0 5px 5px;
-  border-bottom: 1px solid #ddd;
-}
-.dl_timeline .column .timeline_element .title a {
-  color: #aaa;
-  display: block;
-}
-.dl_timeline .column .timeline_element .title a:hover {
-  text-decoration: none;
-}
-.dl_timeline .column .timeline_element .title .head {
-  color: #aaa;
-  font-size: 12px;
-  line-height: 22px;
-  max-width: 250px;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: inline-block;
-  float: left;
-}
-.dl_timeline .column .timeline_element .title .date {
-  float: left;
-  width: 460px;
-}
-.dl_timeline .column .timeline_element .title .timeline-logo {
-  margin-right: 4px;
-  height: 40px;
-  width: 40px;
-}
-.dl_timeline .column .timeline_element .img_scroll .photo {
-  display: block;
-  float: left;
-  width: 86px;
-  height: 86px;
-  margin-right: 1px;
-  background: url("/img/loading.gif") center center no-repeat;
-}
-.dl_timeline .column .timeline_element .content p {
-  margin-bottom: 0;
-}
-.dl_timeline .column .timeline_element .content a {
-  color: #888;
-  display: block;
-}
-.dl_timeline .column .timeline_element .content a:hover {
-  text-decoration: none;
-}
 .dl_timeline .column_left {
   float: left;
 }
@@ -4413,101 +4539,6 @@ Timeline UI Base
 .user_timeline .dl_timeline .column .timeline_element:after {
   border: none;
   background-color: #999;
-}
-.user_timeline .dl_timeline .column .timeline_element .timeline_head {
-  clear: both;
-  padding: 10px;
-  font-size: 14px;
-}
-.user_timeline .dl_timeline .column .timeline_element .comments {
-  clear: both;
-  background-color: #fbfbfb;
-}
-.user_timeline .dl_timeline .column .timeline_element .comments a {
-  color: #ccc;
-}
-.user_timeline .dl_timeline .column .timeline_element .comments a.comment_num {
-  display: inline-block;
-  color: #ccc;
-  width: 100%;
-  padding: 5px 10px;
-  text-align: right;
-  background-color: #fbfbfb;
-}
-.user_timeline .dl_timeline .column .timeline_element .comments a.comment_num .reply_icon {
-  margin-right: 7px;
-}
-.user_timeline .dl_timeline .column .timeline_element .title {
-  margin-bottom: 0;
-  border-bottom: none;
-  padding: 10px;
-}
-.user_timeline .dl_timeline .column .timeline_element .title .timeline-logo {
-  height: 30px;
-  width: 30px;
-}
-.user_timeline .dl_timeline .column .timeline_element .title .date {
-  width: 100px;
-  line-height: 30px;
-}
-.user_timeline .dl_timeline .column .timeline_element .title .name {
-  line-height: 30px;
-  margin: 0 10px;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: center;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photo {
-  display: inline-block;
-  margin-right: 0;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_1 .photo_0 {
-  width: 400px;
-  height: 250px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_1 {
-  width: 195px;
-  height: 180px;
-  float: left;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_2 .photo_0 {
-  margin-right: 10px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_0 {
-  width: 195px;
-  height: 290px;
-  margin-left: 10px;
-  float: right;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_2 {
-  width: 195px;
-  height: 140px;
-  float: right;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_3 .photo_1 {
-  margin-bottom: 10px;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_3 {
-  width: 160px;
-  height: 145px;
-  margin-bottom: 5px;
-  float: left;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_1,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2 {
-  width: 230px;
-  height: 145px;
-  margin-bottom: 10px;
-  float: left;
-}
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_0,
-.user_timeline .dl_timeline .column .timeline_element .img_scroll .photos_4 .photo_2 {
-  margin-right: 10px;
 }
 .user_timeline .dl_timeline .column_right {
   margin-left: 0;

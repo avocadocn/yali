@@ -1,84 +1,21 @@
 extends ../layouts/base
-mixin timelineElement(item,index)
-  .timeline_element
-    .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-      a(href="/campaign/detail/#{item.id}",target="_blank")
-        img.timeline-logo.pull-right(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-        span.name.pull-right= item.name
-        span.date= moment(item.start_time).format('MM/DD/YYYY')
-    .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
-      a(href="/campaign/detail/#{item.id}",target="_blank")
-        .img_scroll
-          div(class="photos_#{item.photo_list.length}")
-            each imgs,img_index in item.photo_list
-              case (item.photo_list.length)
-                when 1
-                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
-                when 2
-                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
-                when 3
-                  if img_index == 0
-                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
-                  else
-                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
-                when 4
-                  if img_index == 0 || img_index == 3
-                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
-                  else
-                    img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
-                default
-                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
-    .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-      img.timeline-logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
-      span.date= moment(item.start_time).format('MM/DD')
-      span.head= item.head
-    .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-      a(href="/campaign/detail/#{item.id}",target="_blank")
-        div(class="photos_#{item.photo_list.length}")
-          each imgs,img_index in item.photo_list
-            case (item.photo_list.length)
-              when 1
-                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
-              when 2
-                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
-              when 3
-                if img_index == 0
-                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
-                else
-                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
-              when 4
-                if img_index == 0 || img_index == 3
-                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
-                else
-                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
-              default
-                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
-    .timeline_head
-      span= item.head
-    if item.components.RichComment
-      .comments
-        a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=($root.showComment!='#{item.year}_#{item.month}_#{index}'?'#{item.year}_#{item.month}_#{index}':'');")
-          img.reply_icon(src="/img/comment_grey.png")
-          | #{item.comment_sum}条评论
-        .comment_list(ng-if="$root.showComment=='#{item.year}_#{item.month}_#{index}'")
-          simple-comment(component-id="#{item.components.RichComment[0]}" allow-publish="#{item.allow.publishComment}" comment-num=3)
+
 block content
   .wrap.user_page
     include ../partials/home_nav
     .dl_container.clearfix
-      .main
+      .main(ng-controller="timelineController")
         block panel
-          .timeline_control(ng-controller="timelineController" ng-init="$root['show_#{newTimeLines[0][0][0].year}_#{newTimeLines[0][0][0].month}']=true")
+          #user_data(data-id="#{user._id}")
+          .timeline_control
             .control_year(ng-class="{'active_year':nowYear=='timeline_0'}" ng-click="scrollTo('timeline_0')")
               span 现在
-            each years in newTimeLines
-              .control_year(ng-class="{'active_year':nowYear=='#{years[0][0].year}'}")
-                span(ng-click="nowYear='#{years[0][0].year}';scrollTo('#{years[0][0].year}_#{years[0][0].month}')")= years[0][0].year
-                .months(ng-if="nowYear=='#{years[0][0].year}'")
-                  each months in years
-                    .control_month
-                      a.clearLinkUnderline(ng-class="{'active_month':nowMonth=='#{months[0].year}_#{months[0].month}'}" ng-click="scrollTo('#{months[0].year}_#{months[0].month}')")
-                        span= months[0].month+'月'
+            .control_year(ng-repeat ="years in timelines" ng-class="{'active_year':nowYear==years.year}")
+              span(ng-click="nowYear=years.year;scrollTo(years.year+'_'+years.month[0].month)") {{years.year}}
+              .months(ng-if="nowYear==years.year")
+                .control_month(ng-repeat ="month in years.month")
+                  a.clearLinkUnderline(ng-class="{'active_month':nowMonth==month.month}" ng-click="scrollTo(years.year+'_'+month.month)")
+                    span {{month.month}}月
             .control_year(ng-class="{'active_year':nowYear=='timeline_1'}" ng-click="scrollTo('timeline_1')")
               span 最初
           if user.role !=='OWNER'
@@ -141,30 +78,24 @@ block content
                 span 共参加过
                 span.campaign_num #{length}
                 span 个活动
-              .self_right_container.photo_count
-                span 我被圈出的照片
+              //- .self_right_container.photo_count
+              //-   span 我被圈出的照片
 
                 
           .user_timeline(when-scrolled="loadMore" select-class="date_separator")
             if length>0
               .dl_timeline
                 .spine
-                each years in newTimeLines
-                  each months in years
-                    .date_separator(id='#{months[0].year}_#{months[0].month}' ng-click="scrollTo('#{months[0].year}_#{months[0].month}')")
-                      span.span= months[0].year +'-'+ months[0].month
-                    .column.column_left(ng-if="$root['show_#{months[0].year}_#{months[0].month}']==true")
-                      each item,index in months
-                        if index%2==0
-                          +timelineElement(item,index)
-                    .column.column_right(ng-if="$root['show_#{months[0].year}_#{months[0].month}']==true")
-                      each item,index in months
-                        if index%2
-                          +timelineElement(item,index)
+                .year(ng-repeat ="years in timelines")
+                  .month(ng-repeat ="month in years.month")
+                    .date_separator(id='{{years.year}}_{{month.month}}' ng-click="scrollTo(years.year+'_'+month.month)")
+                      span.span {{years.year}}-{{month.month}}
+                      .column(ng-repeat="campaign in month.campaigns" ng-class="{'column_left': $index%2===0, 'column_right': $index%2===1}")
+                        campaign-card(item="campaign" role="'#{user.role}'")
                 .date_separator(id='timeline_1')
                   span.span 初来乍到
-                .full_column
-                  span #{moment(user.register_date).format('YYYY-MM-DD HH:mm')} 注册
+                  .full_column
+                    span #{moment(user.register_date).format('YYYY-MM-DD HH:mm')} 注册
             else
               .loademp.text-center #{__("NO_TIMELINE")}
   include ../partials/user_footer

@@ -1,0 +1,65 @@
+.campaign_card
+  .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+    a(href="/campaign/detail/#{item.id}",target="_blank")
+      img.campaign_logo.pull-right(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+      span.name.pull-right= item.name
+      span.day= moment(item.start_time).format('DD')
+      .date
+        .month= moment(item.start_time).format('MM')+'月'
+        .year= moment(item.start_time).format('YYYY')
+  .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
+    a(href="/campaign/detail/#{item.id}",target="_blank")
+      .img_scroll
+        div(class="photos_#{item.photo_list.length}")
+          each imgs,img_index in item.photo_list
+            case (item.photo_list.length)
+              when 1
+                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
+              when 2
+                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
+              when 3
+                if img_index == 0
+                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
+                else
+                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
+              when 4
+                if img_index == 0 || img_index == 3
+                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
+                else
+                  img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
+              default
+                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
+  .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+    img.timeline_logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+    span.date= moment(item.start_time).format('MM/DD')
+    span.head= item.head
+  .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
+    a(href="/campaign/detail/#{item.id}",target="_blank")
+      div(class="photos_#{item.photo_list.length}")
+        each imgs,img_index in item.photo_list
+          case (item.photo_list.length)
+            when 1
+              img.photo(class="photo_#{img_index}" src="#{imgs.uri}/400/250")
+            when 2
+              img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/180")
+            when 3
+              if img_index == 0
+                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/290")
+              else
+                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/195/240")
+            when 4
+              if img_index == 0 || img_index == 3
+                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/160/145")
+              else
+                img.photo(class="photo_#{img_index}" src="#{imgs.uri}/230/145")
+            default
+              img.photo(class="photo_#{img_index}" src="#{imgs.uri}/200/200")
+  .timeline_head
+    span= item.head
+  if item.components.RichComment
+    .comments
+      a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=($root.showComment!='#{item.year}_#{item.month}_#{index}'?'#{item.year}_#{item.month}_#{index}':'');")
+        img.reply_icon(src="/img/comment_grey.png")
+        | #{item.comment_sum}条评论
+      .comment_list(ng-if="$root.showComment=='#{item.year}_#{item.month}_#{index}'")
+        simple-comment(component-id="#{item.components.RichComment[0]}" allow-publish="#{item.allow.publishComment}" comment-num=3)

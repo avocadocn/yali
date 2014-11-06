@@ -821,6 +821,7 @@ exports.editInfo = function(req, res) {
   });
 };
 
+
 exports.renderSearchOpponents = function(req, res){
   var myTeams = req.user.team;
   var sortTeams = function(teams){//整理成队长的在前
@@ -856,96 +857,9 @@ exports.timeLine = function(req,res){
     option.finish=true;
   }
   Campaign
-  .find(option)
-  .sort('-start_time')
-  .populate('photo_album')
+  .count(option)
   .exec()
-  .then(function(campaigns) {
-      // todo new time style
-      var newTimeLines = [];
-      // todo new time style
-      campaigns.forEach(function(campaign) {
-        var _head,_logo,_name;
-        var ct = campaign.campaign_type;
-        
-        //公司活动
-        if(ct===1){
-          // _head = '公司活动';
-          _logo = campaign.campaign_unit[0].company.logo;
-          _name = campaign.campaign_unit[0].company.name
-        }
-        //多队
-        else if(ct!==6&&ct!==2){
-          // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
-          for(var i = 0;i<campaign.campaign_unit.length;i++){
-            var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].member,uid,'_id');
-            if(index>-1){
-              _logo = campaign.campaign_unit[i].team.logo;
-              _name = campaign.campaign_unit[i].team.name;
-              break;
-            }
-
-          }
-          // _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
-        }
-        //单队
-        else {
-          // _head = campaign.compaign_unit.team.name + '活动';
-          _logo = campaign.campaign_unit[0].team.logo;
-          _name = campaign.campaign_unit[0].team.name;
-        }
-        var _endTime = new Date(campaign.end_time);
-        var _groupYear = _endTime.getFullYear();
-        var _groupMonth = _endTime.getMonth()+1;
-        var memberIds = [];
-        campaign.members.forEach(function (member) {
-          memberIds.push(member._id);
-        });
-        var tempObj = {
-          id: campaign._id,
-          //head: _head,//???
-          head:campaign.theme,
-          logo:_logo,
-          name:_name,
-          content: campaign.content,
-          location: campaign.location,
-          group_type: campaign.group_type,
-          start_time: campaign.start_time,
-          provoke:ct===4||ct===5||ct===7||ct===9,
-          year: _groupYear,
-          month:_groupMonth,
-          comment_sum:campaign.comment_sum,
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)
-        }
-        tempObj.components = campaign.formatComponents();
-        var allow = auth(req.user, {
-          companies: campaign.cid,
-          teams: campaign.tid,
-          users: memberIds
-        }, [
-          'publishComment'
-        ]);
-        tempObj.allow = allow;
-        // todo new time style
-        // console.log(campaign);
-        // function getYear(dates) {
-        //   var response = String(dates.end_time);
-        //   var _ = response.split(" ");
-        //   var year = _[3];
-        //   return year;
-        // }
-        // console.log(getYear(campaign));
-        // var groupYear = getYear(campaign);
-        if (newTimeLines.length==0 || newTimeLines[newTimeLines.length-1][0][0].year!=_groupYear) {
-          newTimeLines.push([]);
-        }
-        var _yearGroup = newTimeLines[newTimeLines.length-1];
-        if(_yearGroup.length==0 || _yearGroup[_yearGroup.length-1][0].month!=_groupMonth){
-          _yearGroup.push([]);
-        }
-        var _monthGroup = _yearGroup[_yearGroup.length-1];
-        _monthGroup.push(tempObj);
-      });
+  .then(function(campaignsNum) {
       var myteam = [];
       req.profile.team.forEach(function(_team){
         if(_team.gid!=0){
@@ -953,6 +867,7 @@ exports.timeLine = function(req,res){
         }
       });
       var nowUser = {
+        _id:req.profile._id,
         nickname:req.profile.nickname,
         realname:req.profile.realname,
         department:req.profile.department,
@@ -965,13 +880,14 @@ exports.timeLine = function(req,res){
         role :req.role
       };
       // console.log(newTimeLines);
-      return res.render('users/user_timeline',{'user':nowUser,'newTimeLines': newTimeLines,'length':campaigns.length,'moment': moment});
+      return res.render('users/user_timeline',{'user':nowUser,'length':campaignsNum,'moment':moment});
   })
   .then(null, function(err) {
     console.log(err);
     return res.send({result:0,msg:'查询错误'});
   });
-};
+}
+
 
 //用户加入小队
 exports.joinGroup = function (req, res){
