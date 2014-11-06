@@ -107,9 +107,6 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
 
     });
 
-    $scope.sendMessage = function () {
-      window.location.href = '/message/home/' + teamId + '#/send';
-    };
 
     // 编辑小队信息
     $scope.isEditingInfo = false;
@@ -691,3 +688,4 @@ donler.controller('ProvokeController', ['$http', '$scope', '$rootScope', 'Campai
     };
   }
 ]);
+
