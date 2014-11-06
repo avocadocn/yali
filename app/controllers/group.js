@@ -1254,21 +1254,11 @@ exports.uploadFamily = function(req, res) {
 
 exports.getFamily = function(req, res) {
 
-  var company_group = req.companyGroup;
+  var familyPhotos = req.companyGroup.family.filter(function (photo) {
+    return !photo.hidden;
+  });
 
-  // 如果要限制长度，则取消注释
-  // var length = 0;
-  var res_data = [];
-  for (var i = 0; i < company_group.family.length; i++) {
-    if (company_group.family[i].hidden === false) {
-      res_data.push(company_group.family[i]);
-      // length++;
-      // if (length >= 3) {
-      //   break;
-      // }
-    }
-  }
-  res.send(res_data);
+  res.send({ result: 1, familyPhotos: familyPhotos });
 };
 
 exports.toggleSelectFamilyPhoto = function(req, res) {

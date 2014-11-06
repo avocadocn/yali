@@ -2,9 +2,18 @@
 
 var donler = angular.module('donler');
 
-donler.controller('FamilyPhotoAlbumCtrl', ['$scope', function ($scope) {
+donler.controller('FamilyPhotoAlbumCtrl', ['$scope', 'Family', function ($scope, Family) {
 
+  var data = document.getElementById('data').dataset;
+  $scope.teamId = data.id;
 
+  Family.getFamily(data.id, function (err, familyPhotos) {
+    if (err) {
+      alertify.alert('获取照片失败，请刷新页面重试。');
+    } else {
+      $scope.familyPhotos = familyPhotos;
+    }
+  });
 
 }]);
 
@@ -18,7 +27,17 @@ donler.factory('Family', ['$http', function ($http) {
      * @param  {Function} callback callback(err, familyPhotos)
      */
     getFamily: function (id, callback) {
-      // todo
+      $http.get('/group/' + id + '/family')
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.familyPhotos);
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
     },
 
     /**
