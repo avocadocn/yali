@@ -2951,11 +2951,10 @@ input.ng-invalid.ng-dirty {
   width: 165px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_box .join_sign {
-  width: 17px;
+  width: 20px;
   height: 20px;
   color: #fff;
   text-align: center;
-  border-radius: 0;
   font-size: 14px;
   font-family: Arial;
   line-height: 24px;
@@ -2969,6 +2968,11 @@ input.ng-invalid.ng-dirty {
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day {
   height: 65px;
+  text-align: center;
+}
+#events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day span[data-cal-date] {
+  margin-top: 22px;
+  display: inline-block;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips {
   height: 50px;
@@ -2980,8 +2984,9 @@ input.ng-invalid.ng-dirty {
   margin: 15px 20px;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .campaign_label {
-  line-height: 30px;
+  line-height: 50px;
   font-size: 14px;
+  margin-bottom: 0;
 }
 #events-modal .modal-dialog .dl-modal .dl-modal-body .calendar_view_modal .calendar_tips .today {
   line-height: 30px;
@@ -3644,6 +3649,9 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .now .unconfrim label {
   max-width: 85%;
 }
+.user_page .dl_container .main .campaigns_container .now .masonry-item {
+  width: 345px;
+}
 .user_page .dl_container .main .campaigns_container .now .user_campaigns_container {
   width: 345px;
 }
@@ -3990,7 +3998,6 @@ input.ng-invalid.ng-dirty {
   clear: both;
   border-radius: 0px;
   color: #888;
-  width: 400px;
   padding: 0;
   border: none;
   -moz-box-shadow: 1px 1px 3px #ccc;
