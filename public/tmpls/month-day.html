@@ -1,10 +1,9 @@
-<div class="cal-month-day <%= cls %>">
+<div class="cal-month-day cal-month-day-small <%= cls %> <%= events.length > 0 ? (events.length > 2 ? 'length_3' : 'length_2') : 'length_1' %>">
   <% if (cls.search('cal-day-inmonth')>-1) {%>
-  	<span class="pull-right day" data-cal-date="<%= data_day %>" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
-  	<% if (events.length > 0) { %>
-  		<div class="join_sign "><%= events.length%></div>
-  		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
-  		</div>
-  	<% } %>
+    <span class="day" data-cal-date="<%= data_day %>" data-toggle="tooltip" title="<%= tooltip %>"><%=  day %></span>
+    <% if (events.length > 0) { %>
+      <div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
+      </div>
+    <% } %>
   <% }%>
 </div>
