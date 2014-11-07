@@ -83,6 +83,10 @@ var registeredTasks = {
   },
   searchSameCityTeam:{
     team:['leader', 'member']
+  },
+  editGroupInfo:{
+    company:['hr'],
+    team:['leader']
   }
 };
 

@@ -321,43 +321,43 @@ exports.renderSameCity = function(req,res, next) {
     return res.render('users/partials/opponentsResult',{'pleaseSelect':true});
 };
 
-//TODO
-exports.saveInfo =function(req,res) {
-  if(req.role !=='HR' && req.role !=='LEADER'){
+exports.saveInfo =function(req,res,next) {
+  var teamId = req.params.teamId;
+  var companyGroup = req.companyGroup;
+  var allow = auth(req.user,{companies:[companyGroup.cid],teams:[teamId]},['editGroupInfo']);
+  if(allow.editGroupInfo){
+    var newNameFlag = false;
+    if(companyGroup) {
+      if(req.body.name){
+        if(companyGroup.name !== req.body.name){
+          companyGroup.name = req.body.name;
+          newNameFlag =true;
+        }
+      }
+      if(req.body.brief){
+        companyGroup.brief = req.body.brief;
+      }
+      if(req.body.homecourt){
+        companyGroup.home_court = req.body.homecourt;
+      }
+      companyGroup.save(function (s_err){
+        if(s_err){
+            console.log(s_err);
+            return res.send({'result':0,'msg':'数据保存错误'});
+        }
+        if(newNameFlag){
+          schedule.updateTname(teamId);
+        }
+        res.send({'result':1,'msg':'更新成功'});
+      });
+    } else {
+      res.send({'result':0,'msg':'不存在组件！'});
+    }
+  }else{
     res.status(403);
     next('forbidden');
-    return;
   }
-  var teamId = req.params.teamId;
-  CompanyGroup.findOne({'_id' : teamId}, function(err, companyGroup) {
-      if (err) {
-          console.log('err');
-          res.send({'result':0,'msg':'数据查询错误'});
-          return;
-      }
-      var newNameFlag = false;
-      if(companyGroup) {
-          if(companyGroup.name !== req.body.name){
-            companyGroup.name = req.body.name;
-            newNameFlag =true;
-          }
-
-          companyGroup.brief = req.body.brief;
-          companyGroup.home_court = req.body.homecourt;
-          companyGroup.save(function (s_err){
-              if(s_err){
-                  console.log(s_err);
-                  return res.send({'result':0,'msg':'数据保存错误'});
-              }
-              if(newNameFlag){
-                schedule.updateTname(teamId);
-              }
-              res.send({'result':1,'msg':'更新成功'});
-          });
-      } else {
-          res.send({'result':0,'msg':'不存在组件！'});
-      }
-  });
+  
 };
 //小队信息维护
 exports.timeLine = function(req, res){
