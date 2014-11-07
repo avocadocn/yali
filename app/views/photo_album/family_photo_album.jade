@@ -1,0 +1,47 @@
+extend ../layouts/user_base
+
+append headExt
+  link(rel="stylesheet" href="/css/photo_album.css")
+
+block contentExt
+  .dl_container.photo_album.family_photo_album(ng-controller="FamilyPhotoAlbumCtrl")
+    header.clearfix
+      include ../partials/breadcrumb
+      +breadcrumb(links)
+      .relative
+        .media
+          .pull-left
+            img.media-object.header_logo.img-thumbnail(src="#{companyGroup.logo}")
+          .media-body
+            h4.media-heading= companyGroup.name
+            p.text 相册名:&nbsp;#{companyGroup.name}的全家福
+            p.text 照片数:&nbsp;#{showPhotos.length}
+            p.text 最后更新:&nbsp;#{moment(lastPhoto.upload_date).format('YYYY.MM.DD')}
+        .right_down
+          if allow.editTeam === true
+            label.dl_btn.dl_btn_small(ng-click="selectPhoto()") 选择照片
+      .cropper#image_cropper(ng-show="isUploading")
+        .cropit-image-preview-container
+          .cropit-image-preview
+        .operator
+          span.glyphicon.glyphicon-picture
+          input.cropit-image-zoom-input(type="range")
+          span.glyphicon.glyphicon-picture.icon_large
+          button.button_sure.dl_btn.dl_btn_small(type="button" ng-click="uploadPhoto()") 确定
+        input.cropit-image-input#cropit_image_input(type="file")
+
+    hr
+    .photo_panel.clearfix
+      .photo.text-center(ng-repeat="photo in familyPhotos" ng-class="{'active': photo.select===true}" ng-cloak)
+        img.photo_img(ng-src="{{photo.uri}}/resize/180/145")
+        if allow.editTeam === true
+          .button_group
+            button.star(ng-click="toggleSelect($index)" title="{{photo.select===true?'不使用该照片':'使用该照片作为全家福'}}")
+            button.delete(ng-click="deletePhoto($index)" title="删除该照片")
+
+  #data(data-id="#{companyGroup._id}")
+
+
+append footExt
+  script(src="/lib/cropit/dist/jquery.cropit.min.js")
+  script(src="/js/controllers/family_photo_album.js")

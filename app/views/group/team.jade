@@ -1,0 +1,168 @@
+extends ../layouts/user_base
+
+append headExt
+  link(rel="stylesheet" href="/lib/bootstrap-calendar/css/calendar.css")
+  link(rel="stylesheet" href="/css/custom_calendar.css")
+  link(rel="stylesheet" href="/css/teampage.css")
+
+block contentExt
+  .teampage.dl_container(ng-controller="TeamPageController")
+    #data(data-id="#{teamId}" data-gid="#{groupId}")
+
+    .main_panel
+
+      .base_info
+        .team_row
+          .team_col
+            .card.info_card
+              .team_info
+                .logo_box
+                  img.logo(ng-src="{{team.logo}}")
+                  a.edit(ng-if="allow.editTeam" ng-href="/group/{{team._id}}/editLogo" title="修改logo"): img(src="/img/edit_logo.png" ng-cloak)
+                .info_box
+                  h3.name(ng-cloak ng-if="!isEditingInfo") {{team.name}}
+                    img.edit(ng-if="allow.editTeam" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" ng-click="editInfo()" title="修改小队信息" ng-cloak)
+                  input.input_name(ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.name" required)
+                  a.save(ng-cloak ng-if="isEditingInfo && teamInfo.name" ng-click="saveInfo()") 保存
+                  a.cancel(ng-cloak ng-if="isEditingInfo" ng-click="cancelEditInfo()") 取消
+                  p.main_text.team_type(ng-cloak) 小队类型：{{team.groupType}}
+                  p.main_text.create_time(ng-cloak) 成立时间：{{team.createTime | date:'yyyy-MM-dd'}}
+                  p.text.brief(ng-cloak ng-if="!isEditingInfo") {{team.brief}}
+                  textarea.input_brief(ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.brief")
+              .operator
+                .team_leader.four_button(ng-if="role==='leader'" ng-cloak)
+                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
+                  button.op_button.button_red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
+                  a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
+                  button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
+                .team_member.one_button(ng-if="role==='teamMember'" ng-cloak)
+                  button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
+                .company_member.one_button(ng-if="role==='companyMember'" ng-cloak)
+                  button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
+                .company_hr.four_button(ng-if="role==='HR'" ng-cloak)
+                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
+                  button.op_button.button_red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
+                  a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
+                  button.op_button.button_gray(ng-if="allow.closeTeam" ng-cloak) 关闭小队
+                .other_company_hr.one_button(ng-if="role==='otherHR' || role==='otherLeader'" ng-cloak)
+                  button.op_button.button_red 发起挑战
+                .other_company_member.one_button(ng-if="role==='otherMember'" ng-cloak)
+                  button.op_button.button_red 推荐给队长
+
+            .card.member_card
+              .header
+                img.icon(src="/img/team.png")
+                h3.title 队员
+                span.count(data-toggle="modal" data-target="#memberListModal" ng-cloak title="查看全部队员") {{team.leaders.length + team.members.length}} >
+              .members(bs-popover)
+                .leader_box
+                  img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50" ng-Mouseenter="showUserCard(leader._id, leader._id + 'member_card')" id="pop{{leader._id}}member_card" rel="popover")
+                .member_box
+                  img.member(ng-repeat="member in team.members.slice(0, 5)" ng-src="{{member.photo}}/50/50" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id="pop{{member._id}}member_card" rel="popover")
+
+          .team_col
+            .card.family_card(ng-class="{'no_family': team.familyPhotos.length===0, 'no_upload': !allow.editTeam && team.familyPhotos.length===0}")
+              carousel(interval="5000" ng-if="team.familyPhotos.length > 0" ng-cloak)
+                slide(ng-repeat="photo in team.familyPhotos")
+                  a(ng-href="/photoAlbum/family/{{team._id}}" title="点击进入全家福相册"): img(ng-src="{{photo.uri}}/420/340")
+              a.edit(ng-if="allow.editTeam && team.familyPhotos.length > 0" ng-href="/photoAlbum/family/{{team._id}}" title="修改全家福"): img(src="/img/edit_logo.png" ng-cloak)
+              a.upload(ng-if="allow.editTeam && team.familyPhotos.length === 0" ng-href="/photoAlbum/family/{{team._id}}" ng-cloak) 上传小队全家福
+              .remind(ng-if="!allow.editTeam && team.familyPhotos.length === 0" ng-cloak)
+                .remind_triangle
+                .remind_triangle_border
+                .remind_text 小队没有上传全家福
+
+        .team_row
+          .team_col
+            .card.home_court_card(ng-if="isShowHomeCourts")
+              .home_court_nav
+                img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
+                .tabs(ng-init="courtIndex=0;")
+                  .tab(ng-click="courtIndex=0;" ng-class="{'active': courtIndex==0}") 主场一
+                  .tab(ng-click="courtIndex=1;" ng-class="{'active': courtIndex==1}") 主场二
+                img.edit(src="/img/pencil_diagonal_outline_symbol_on_a_line.png")
+              .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
+                p(ng-cloak ng-if="homeCourt.name&&homeCourt.coordinates.length!==2") {{homeCourt.name}}
+                a(ng-cloak ng-if="homeCourt.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
+                  img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=420*230&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
+                img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}/420/230")
+
+          .team_col
+            .card.calendar_card
+              #calendar_nav.calendar_nav
+                img.icon(src="/img/calendar_big.png")
+                .title
+                  a(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+                  span.calendar_date.calendar_title#calendar_title
+                  a(data-calendar-nav="next" href="javascript:void(0)") &gt;
+              #calendar.calendar_body
+              .calendar_footer
+                .instruction
+                  .item
+                    .circle
+                    .text 没有活动
+                  .item
+                    .circle
+                    .text 2个及以下
+                  .item
+                    .circle
+                    .text 2个以上
+
+      .dl_timeline.team_timeline
+        .spine
+        .year(ng-repeat="yearData in campaignData" ng-cloak)
+          .month(ng-repeat="monthData in yearData.months")
+            .date_separator(id='{{yearData.year}}_{{monthData.month+1}}' ng-click="scrollTo(yearData.year + '_' + (monthData.month + 1))")
+              span.span {{yearData.year}}-{{monthData.month+1}}
+            .column(ng-repeat="campaign in monthData.campaigns" ng-class="{'column_left': $index%2===0, 'column_right': $index%2===1}")
+              .timeline_element
+                .title
+                  a(ng-href="/campaign/detail/{{campaign.id}}",target="_blank")
+                    //- todo 需改为服务器直接返回处理好的logo和队名
+                    img.timeline-logo.pull-right(ng-src="{{campaign.campaign_unit[0].team.logo || campaign.campaign_unit[0].company.logo}}")
+                    span.name.pull-right {{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}}
+                    span.date {{moment(campaign.start_time).format('MM/DD/YYYY')}}
+                .timeline_head
+                  span {{campaign.theme}}
+        .date_separator(id='timeline_1')
+          span.span 最初
+
+
+    .side_panel
+      .nav
+        .year(ng-repeat="year in dateRecord")
+          span.year_text(ng-cloak) {{year.year}}
+          .months
+            a.month(ng-cloak ng-repeat="month in year.month" ng-click="getCampaign(year.year, month-1)") {{month}}月
+        .year
+          span.year_text 最初
+      .button_group
+        a.photo_album(ng-href="/photoAlbum/team/{{team._id}}/listView") 相册
+
+    .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../campaign/campaign_modal_base
+    .modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      include ../campaign/provoke_modal_base
+
+    .member_list_modal.modal.fade#memberListModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .member_modal_header
+            img.icon(src="/img/team.png")
+            h3.title 队员
+            span.subtitle ({{team.leaders.length + team.members.length}})
+            //- todo 以后改为图片，暂且用乘号代替
+            button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
+              //-img.icon_close(src="/img/icons/icon_close.png")
+          .member_modal_body(bs-popover)
+            .member(ng-repeat="member in team.membersWithLeader" ng-Mouseenter="showUserCard(member._id, member._id + 'member_modal')" id="pop{{member._id}}member_modal" rel="popover")
+              img.photo(ng-src="{{member.photo}}")
+              p.nickname(title="{{member.nickname}}") {{member.nickname}}
+
+
+append footExt
+  script(src="/js/controllers/team.js")
+  script(src="/js/service/team.js")
+  script(src="/lib/underscore/underscore.js")
+  script(src="/js/language/zh-CN.js")
+  script(src="/lib/bootstrap-calendar/js/calendar.js")

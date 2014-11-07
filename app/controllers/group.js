@@ -100,39 +100,129 @@ exports.activateGroup = function(req, res) {
 };
 
 
-//小队信息维护 TODO
-exports.info =function(req,res) {
-  var entity_type = req.companyGroup.entity_type;
+exports.info =function(req, res) {
+  var team = req.companyGroup;
+  // todo 作权限判断，以便在页面上呈现或隐藏一些操作
+  // 是否可以编辑
+  // 是否可以修改全家福？（待定）
+  var tasks = [
+    'joinTeam',
+    'quitTeam',
+    'closeTeam',
+    'editTeam',
+    'sponsorCampaign',
+    'sponsorProvoke',
+    'publishTeamMessage'
+  ];
+  var allow = auth(req.user, {
+    companies: [team.cid],
+    teams: [team._id]
+  }, tasks);
 
-  if (entity_type === 'virtual') {
-    return res.send({
-      'companyGroup': req.companyGroup,
-      'role': req.role
+  if (team.department) {
+    allow.joinTeam = false;
+    allow.quitTeam = false;
+    allow.sponsorProvoke = false;
+    allow.editTeam = false;
+    allow.closeTeam = false;
+  }
+
+  // 从members中去除leader
+  var membersWithoutLeader = [];
+  team.member.forEach(function (member) {
+    var isLeader = false;
+    for (var i = 0; i < team.leader.length; i++) {
+      var leader = team.leader[i];
+      if (leader._id.toString() === member._id.toString()) {
+        isLeader = true;
+        break;
+      }
+    }
+    if (!isLeader) {
+      membersWithoutLeader.push(member);
+    }
+  });
+
+  // 设置主场，目的是为了避免在页面做过多的逻辑判断
+  // 注意，此处必须使用===比较，department属性有可能是null或undefined，此时是无效的数据
+  // 只有为false或是一个ObjectId时才是有效数据
+  var homeCourts = [];
+  var isShowHomeCourts = true;
+  if (team.department === false) {
+    team.home_court.forEach(function (homeCourt) {
+      homeCourts.push(homeCourt);
     });
-  }
-
-  try {
-    var Entity = mongoose.model(entity_type);//将对应的增强组件模型引进来
-    Entity.findOne({
-        'tid': req.companyGroup._id
-      },function(err, entity) {
-          if (err) {
-              console.log(err);
-              return res.send(err);
-          } else {
-              return res.send({
-                  'companyGroup': req.companyGroup,  //父小队信息
-                  'entity': entity,                   //实体小队信息
-                  'role': req.role
-              });
-          }
+    switch (homeCourts.length) {
+    case 0:
+      homeCourts = [{
+        defaultImg: '/img/no_home_court.png'
+      }, {
+        defaultImg: '/img/no_home_court.png'
+      }]; // 之所以这么麻烦，是因为之前两个默认的主场是不一样的
+      break;
+    case 1:
+      homeCourts.push({
+        defaultImg: '/img/no_home_court.png'
       });
-  } catch (e) {
-    console.log(e);
-    return res.send(500);
+      break;
+    }
+  } else {
+    isShowHomeCourts = false;
   }
 
+  // 考虑安全性和数据量的问题，不把整个companyGroup原封不动地写入响应，而是按需取需要的字段
+  var briefTeam = {
+    name: team.name,
+    logo: team.logo,
+    groupType: team.group_type,
+    createTime: team.create_time,
+    brief: team.brief,
+    leaders: team.leader,
+    members: membersWithoutLeader,
+    homeCourts: homeCourts,
+    familyPhotos: team.family.filter(function (photo) {
+      return !photo.hidden && photo.select;
+    })
+  };
+
+  // 根据页面显示需要，获取用户相对于小队页面的角色
+  // todo 加入权限系统中，使用权限系统的获取角色的方法
+  var role = 'guest'; // 'HR', 'companyMember', 'teamMember', 'leader', 'otherHR', 'otherLeader', 'otherMember', 'guest'
+  if (!req.user) {
+    role = 'guest';
+  } else if (req.user.provider === 'company') {
+    if (req.user._id.toString() === team.cid.toString()) {
+      role = 'HR';
+    } else {
+      role = 'otherHR';
+    }
+  } else if (req.user.provider === 'user') {
+    if (req.user.cid.toString() === team.cid.toString()) {
+      if (req.user.isTeamLeader(team._id)) {
+        role = 'leader';
+      } else if (req.user.isTeamMember(team._id)) {
+        role = 'teamMember';
+      } else {
+        role = 'companyMember';
+      }
+    } else {
+      if (req.user.isLeader()) {
+        role = 'otherLeader';
+      } else {
+        role = 'otherMember';
+      }
+    }
+  }
+
+  res.send({
+    result: 1,
+    team: briefTeam,
+    allow: allow,
+    isShowHomeCourts: isShowHomeCourts,
+    role: role
+  });
 };
+
 exports.teampagetemplate =function(req,res){
   // var cid = req.user.provider=='company'? req.user._id :req.user.cid;
   res.render('partials/team_integrate_page',{
@@ -142,94 +232,10 @@ exports.teampagetemplate =function(req,res){
 };
 
 exports.teampage = function(req, res) {
-  if (req.companyGroup.department) {
-    return res.redirect('/department/home/' + req.companyGroup.department);
-  }
-  moment.lang('zh-cn');
-  var cid = req.companyGroup.cid.toString();
-  async.waterfall([
-    function(callback) {
-      PhotoAlbum
-      .where('_id').in(req.companyGroup.photo_album_list)
-      .exec()
-      .then(function(photo_albums) {
-        if (!photo_albums) {
-          callback('not found');
-        }
-        var photo_album_thumbnails = [];
 
-        for (var i = 0; i < photo_albums.length; i++) {
-          if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
-            continue;
-          }
-          if (photo_albums[i].hidden === true) {
-            continue;
-          }
-          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
-          photo_album_thumbnails.push({
-            uri: thumbnail_uri,
-            name: photo_albums[i].name,
-            _id: photo_albums[i]._id
-          });
-          if (photo_album_thumbnails.length === 4) {
-            break;
-          }
-        }
-
-        callback(null, photo_album_thumbnails);
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
-    },
-    function(photo_album_thumbnails, callback){
-      var teamMoreInfo = {};
-      teamMoreInfo.photo_album_thumbnails = photo_album_thumbnails;
-
-
-      Campaign.find({'tid':req.params.teamId, 'active':true, 'confirm_status': true})
-        .where('end_time').gt(new Date())
-        .sort('-create_time')
-        .limit(1)
-        .exec()
-        .then(function(campaign){
-            if(campaign.length==0){
-                teamMoreInfo.campaign = '';
-            }else{
-              teamMoreInfo.campaign = campaign[0];
-            }
-            callback(null, teamMoreInfo);
-        });
-
-    },
-    function(teamMoreInfo, callback) {
-
-      res.render('group/teampage',{
-        'title': req.companyGroup.name,
-        'teamId' : req.params.teamId,
-        'tname': req.companyGroup.name,
-        'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-        'score': req.companyGroup.score ? req.companyGroup.score.member + req.companyGroup.score.campaign + req.companyGroup.score.participator + req.companyGroup.score.album + req.companyGroup.score.provoke + req.companyGroup.score.comment : 0,
-        'role': req.role,
-        'logo': req.companyGroup.logo,
-        'group_id': req.companyGroup._id,
-        'cname': req.companyGroup.cname,
-        'sign': req.companyGroup.brief,
-        'gid' : req.companyGroup.gid,
-        'cid' : cid,
-        'photo': req.user.photo,
-        'realname':req.user.realname,
-        'photo_album_thumbnails': teamMoreInfo.photo_album_thumbnails,
-        'home_court': req.companyGroup.home_court,
-        'campaign':teamMoreInfo.campaign,
-        'moment': moment
-      });
-    }
-  ], function(err, result) {
-    console.log(err);
-    if (err === 'not found') res.send(404);
-    else res.send(500);
-  });
+  var team = req.companyGroup;
+  // 仅提供id，其它所有数据通过group.info获取
+  res.render('group/team', { teamId: team._id, groupId: team.gid });
 
 };
 
@@ -337,13 +343,16 @@ exports.saveInfo =function(req,res) {
       }
       var newNameFlag = false;
       if(companyGroup) {
-          if(companyGroup.name !== req.body.name){
+          if(req.body.name && companyGroup.name !== req.body.name){
             companyGroup.name = req.body.name;
             newNameFlag =true;
           }
-
-          companyGroup.brief = req.body.brief;
-          companyGroup.home_court = req.body.homecourt;
+          if (req.body.brief) {
+            companyGroup.brief = req.body.brief;
+          }
+          if (req.body.home_court) {
+            companyGroup.home_court = req.body.homecourt;
+          }
           companyGroup.save(function (s_err){
               if(s_err){
                   console.log(s_err);
@@ -1161,7 +1170,7 @@ exports.group = function(req, res, next, id) {
     if (!company_group) {
       return next(new Error(' Failed to load companyGroup ' + id));
     } else {
-      // may equal false
+      // department可以是false，表示不是部门的小队
       if (company_group.department == undefined && company_group.department == null) {
         mongoose.model('Department').findOne({
           team: company_group._id
@@ -1203,14 +1212,11 @@ exports.uploadFamily = function(req, res) {
     next('forbidden');
     return;
   }
-
-  var width = Number(req.body.width);
-  var height = Number(req.body.height);
-  var req_x = Number(req.body.x);
-  var req_y = Number(req.body.y);
-  if (isNaN(width + height + req_x + req_y)) {
+  console.log(req.body, req.files)
+  if (!req.files || !req.files.family) {
     return res.send(400);
   }
+
   CompanyGroup
   .findById(req.params.teamId)
   .exec()
@@ -1223,20 +1229,8 @@ exports.uploadFamily = function(req, res) {
     var family_dir = '/img/group/family/';
     var photo_name = Date.now().toString() + '.' + ext;
     try{
-      gm(family_photo.path).size(function(err, value) {
-        if (err) {
-          console.log(err);
-          return res.send(500);
-        }
-        // req.body参数均为百分比
-        var w = width * value.width;
-        var h = height * value.height;
-        var x = req_x * value.width;
-        var y = req_y * value.height;
-
-        gm(family_photo.path)
-        .crop(w, h, x, y)
-        .resize(800, 450)
+      gm(family_photo.path)
+        .resize(420, 340)
         .write(path.join(meanConfig.root, 'public', family_dir, photo_name), function(err) {
           if (err) {
             console.log(err);
@@ -1279,11 +1273,10 @@ exports.uploadFamily = function(req, res) {
               console.log(err);
               res.send(500);
             } else {
-              res.send(200);
+              res.send({ result: 1 });
             }
           });
         });
-      });
 
     } catch (e) {
       console.log(e);
@@ -1300,21 +1293,11 @@ exports.uploadFamily = function(req, res) {
 
 exports.getFamily = function(req, res) {
 
-  var company_group = req.companyGroup;
+  var familyPhotos = req.companyGroup.family.filter(function (photo) {
+    return !photo.hidden;
+  });
 
-  // 如果要限制长度，则取消注释
-  // var length = 0;
-  var res_data = [];
-  for (var i = 0; i < company_group.family.length; i++) {
-    if (company_group.family[i].hidden === false) {
-      res_data.push(company_group.family[i]);
-      // length++;
-      // if (length >= 3) {
-      //   break;
-      // }
-    }
-  }
-  res.send(res_data);
+  res.send({ result: 1, familyPhotos: familyPhotos });
 };
 
 exports.toggleSelectFamilyPhoto = function(req, res) {
@@ -1340,7 +1323,7 @@ exports.toggleSelectFamilyPhoto = function(req, res) {
       console.log(err);
       return res.send(500);
     }
-    res.send(200);
+    res.send({ result: 1 });
   });
 };
 
@@ -1364,7 +1347,7 @@ exports.deleteFamilyPhoto = function(req, res) {
       console.log(err);
       return res.send(500);
     }
-    res.send(200);
+    res.send({ result: 1 });
   });
 
 };

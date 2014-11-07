@@ -239,6 +239,7 @@ angular.module('donler')
     };
 
     /**
+
      * 获取有活动的年月
      * @param  {String}   hostType 获取主体的类型：team,user
      * @param  {String}   hostId   小队或者用户的id
@@ -246,6 +247,7 @@ angular.module('donler')
      */
     var getCampaignsDateRecord = function (hostType, hostId, callback) {
       $http.get('/campaign/getDateRecord/' + hostType +'/'+ hostId)
+
         .success(function (data, status) {
           if (data.result === 1) {
             callback(null, data.dateRecord);

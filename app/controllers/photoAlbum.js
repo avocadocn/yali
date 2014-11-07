@@ -366,7 +366,7 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
   .exec()
   .then(function(company_group) {
     if (!company_group) {
-      return callback(null);
+      return callback();
     }
 
     var photo_album_list = [];
@@ -387,11 +387,11 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
         update_date: photo_album.update_date,
       });
     });
-    callback(photo_album_list);
+    callback(photo_album_list, company_group);
   })
   .then(null, function(err) {
     console.log(err);
-    callback(null);
+    callback();
   });
 };
 
@@ -1281,55 +1281,115 @@ exports.renderGroupPhotoAlbumList = function(req, res, next) {
     res.status(403);
     return next('forbidden');
   }
-  getGroupPhotoAlbumList(req.params.tid, function(photo_album_list) {
+  getGroupPhotoAlbumList(req.params.tid, function(photo_album_list, company_group) {
     if (photo_album_list !== null) {
-      CompanyGroup
-      .findById(req.params.tid)
-      .exec()
-      .then(function(company_group) {
-        if (!company_group) {
-          res.status(404);
-          return next('not found');
+      if (req.user.provider === 'company' && req.user._id.toString() !== company_group.cid.toString()
+        || req.user.provider === 'user' && req.user.cid.toString() !== company_group.cid.toString()) {
+        res.status(403);
+        return next('forbidden');
+      }
+      var links = [
+        {
+          text: company_group.name,
+          url: '/group/page/' + company_group._id
+        },
+        {
+          text: '相册集',
+          active: true
         }
-        if (req.user.provider === 'company' && req.user._id.toString() !== company_group.cid.toString()
-          || req.user.provider === 'user' && req.user.cid.toString() !== company_group.cid.toString()) {
-          res.status(403);
-          return next('forbidden');
-        }
-        var links = [
-          {
-            text: company_group.name,
-            url: '/group/page/' + company_group._id
-          },
-          {
-            text: '相册集',
-            active: true
-          }
-        ];
-        return res.render('photo_album/photo_album_list', {
-          photo_album_list: photo_album_list,
-          photo: req.user.photo,
-          realname: req.user.realname,
-          role: req.role,
-          owner_id: company_group._id,
-          owner_name: company_group.name,
-          owner_logo: company_group.logo,
-          cid: company_group.cid,
-          moment: moment,
-          links: links,
-          create_auth: req.create_auth
-        });
-      })
-      .then(null, function(err) {
-        if (err) {
-          next(err);
-        }
+      ];
+
+      var thumbnail = company_group.family.filter(function (photo) {
+          return !photo.hidden && photo.select;
+        })[0].uri;
+      if (!thumbnail) {
+        thumbnail = '/img/family.png';
+      }
+      var showFilter = function (photo) {
+        return !photo.hidden;
+      };
+      var lastPhoto = company_group.family.filter(showFilter).sort(function (a, b) {
+        return b.upload_date - a.upload_date;
+      })[0];
+
+      var familyPhotoAlbum = {
+        thumbnail: thumbnail,
+        name: company_group.name + '的全家福',
+        photo_count: company_group.family.filter(showFilter).length,
+        update_user: lastPhoto.upload_user,
+        update_date: lastPhoto.upload_date
+      };
+
+      return res.render('photo_album/photo_album_list', {
+        company_group: company_group,
+        photo_album_list: photo_album_list,
+        familyPhotoAlbum: familyPhotoAlbum,
+        photo: req.user.photo,
+        realname: req.user.realname,
+        role: req.role,
+        owner_id: company_group._id,
+        owner_name: company_group.name,
+        owner_logo: company_group.logo,
+        cid: company_group.cid,
+        moment: moment,
+        links: links,
+        create_auth: req.create_auth
       });
     } else {
       res.status(404);
       return next('not found');
     }
   });
+};
+
+exports.renderFamilyPhotoAlbum = function (req, res, next) {
+  CompanyGroup.findById(req.params.tid).exec()
+    .then(function (companyGroup) {
+
+      if (!companyGroup) {
+        res.status(404);
+        return next('not found');
+      }
+
+      var allow = auth(req.user, {
+        companies: [companyGroup.cid],
+        teams: [companyGroup._id]
+      }, ['editTeam']);
+
+      var links = [
+        {
+          text: companyGroup.name,
+          url: '/group/page/' + companyGroup._id
+        },
+        {
+          text: '相册集',
+          url: '/photoAlbum/team/' + companyGroup._id + '/listView'
+        },
+        {
+          text: '全家福相册',
+          active: true
+        }
+      ];
+
+      var showFilter = function (photo) {
+        return !photo.hidden;
+      };
+      var lastPhoto = companyGroup.family.filter(showFilter).sort(function (a, b) {
+        return b.upload_date - a.upload_date;
+      })[0];
+
+      res.render('photo_album/family_photo_album', {
+        links: links,
+        companyGroup: companyGroup,
+        showPhotos: companyGroup.family.filter(showFilter),
+        lastPhoto: lastPhoto,
+        moment: moment,
+        allow: allow
+      });
+    })
+    .then(null, function (err) {
+      next(err);
+    });
 };
 
 

@@ -19,6 +19,7 @@
     "angular-file-upload": "https://github.com/nervgh/angular-file-upload.git#v1.1.1",
     "bootstrap": "3.0.3",
     "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.9",
+    "cropit": "~0.1.9",
     "imagesloaded": "~3.1.8",
     "ionic": "1.0.0-beta.4",
     "jquery-form": "3.46.0",

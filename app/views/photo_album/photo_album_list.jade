@@ -23,6 +23,21 @@ block contentExt
             button.dl_btn.dl_btn_small(type="submit") 新建相册
       hr
     .row.photo_album_list_wrap
+      .col-sm-3.col-xs-3.photo_album_container
+        .photo_album_panel
+          a(href="/photoAlbum/family/#{company_group._id}" title="#{familyPhotoAlbum.name}").center-block
+            .img_container
+              img.photo_album_thumbnail.img-responsive(src="#{familyPhotoAlbum.thumbnail}/204/204")
+              .img_number
+                span #{familyPhotoAlbum.photo_count}
+            h6.text-center.album_title
+              span.photo_album_name= familyPhotoAlbum.name
+          div.update_info.center-block(bs-popover)
+            a(href="/users/home/#{familyPhotoAlbum.update_user._id}")
+              img.update_user_photo.img_user(src="#{familyPhotoAlbum.update_user.photo}/36/36" ng-Mouseover="showUserCard('#{familyPhotoAlbum.update_user._id}','#{familyPhotoAlbum._id}')" id="pop#{familyPhotoAlbum._id}")
+            .pull-left
+              a.update_user_name(href="/users/home/#{familyPhotoAlbum.update_user._id}")= familyPhotoAlbum.update_user.name
+            p.text #{moment(familyPhotoAlbum.update_date).format('YYYY.MM.DD')} 最后更新
       each photo_album in photo_album_list
         .col-sm-3.col-xs-3.photo_album_container
           .photo_album_panel

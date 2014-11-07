@@ -1,4 +1,5 @@
 @require('variables')
+@require('tools')
 
 input()
   padding 6px 10px
@@ -8,27 +9,6 @@ input()
   border solid 1px #d3dbe6
   font-size 14px
 
-clearfix()
-  &:before, &:after
-    display table
-    content " "
-  &:after
-    clear both
-
-loading()
-  background url(/img/loading.gif) center center no-repeat
-
-centerImg()
-  display block
-  text-align center
-  white-space nowrap
-  &:after
-    display inline-block
-    height 100%
-    vertical-align middle
-    content " "
-  img
-    vertical-align middle
 
 .rich_comment
   .component_head

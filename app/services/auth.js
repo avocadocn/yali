@@ -83,6 +83,31 @@ var registeredTasks = {
   },
   searchSameCityTeam:{
     team:['leader', 'member']
+  sponsorProvoke: {
+    company: ['hr'],
+    team: ['leader']
+  },
+  joinTeam: function (role) {
+    if (role.company === 'member' && !role.team) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  quitTeam: {
+    team: ['leader', 'member']
+  },
+  closeTeam: {
+    company: ['hr']
+  },
+  editTeam: {
+    company: ['hr'],
+    team: ['leader']
+  },
+  // 发小队站内信
+  publishTeamMessage: {
+    company: ['hr'],
+    team: ['leader']
   }
 };
 

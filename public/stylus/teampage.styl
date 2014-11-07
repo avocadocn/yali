@@ -1,0 +1,428 @@
+@require 'variables'
+@require 'tools'
+
+.teampage
+  clearfix()
+  .main_panel
+    float left
+    padding-top 4px
+    width 860px
+  .side_panel
+    float right
+    width 60px
+
+  .team_row
+    clearfix()
+    margin-bottom 20px
+
+    .team_col
+      float left
+      width 420px
+      &:last-child
+        margin-left 20px
+
+  .card
+    background-color white
+    box-shadow 3px 3px 3px #ddd
+
+
+  .info_card
+    height 230px
+    .team_info
+      clearfix()
+      height 160px
+      padding-top 20px
+      .logo_box
+        float left
+        position relative
+        width 140px
+        .logo
+          width 120px
+          height 120px
+          margin-left 20px
+        .edit
+          position absolute
+          bottom 0
+          right 0
+          cursor pointer
+      .info_box
+        float left
+        width 260px
+        margin-left 20px
+        padding-right 10px
+        .main_text
+          color #999999
+        .text
+          color #cccccc
+        .name
+          margin 0
+          font-size 16px
+          color #666666
+        .edit
+          margin-left 10px
+          height 14px
+          cursor pointer
+        .input_name
+          border 1px solid #d6d6d6
+          color #999999
+          background-color #fbfbfb
+        .save
+          color #3ca2df
+          margin-left 10px
+        .cancel
+          color #cccccc
+          margin-left 10px
+        .team_type
+          margin 0
+          margin-top 14px
+        .create_time
+          margin 0
+        .brief
+          margin 0
+          margin-top 6px
+          height 51px
+          overflow hidden
+          font-size 12px
+          line-height 17px
+        .input_brief
+          width 100%
+          border 1px solid #d6d6d6
+          color #999999
+          background-color #fbfbfb
+
+    .operator
+      height 70px
+      padding 20px 0
+      border-top 1px solid #efefef
+      .op_button
+        display inline-block
+        width 92px
+        height 30px
+        padding 0
+        color white
+        background-color themeColor
+        font-size 14px
+        line-height 30px
+        text-align center
+        text-decoration none
+      .button_blue
+        background-color #3ca2e0
+      .button_red
+        background-color #f48361
+      .button_gray
+        background-color #cccccc
+      .one_button
+        text-align center
+        .op_button
+          width 190px
+      .two_button
+        text-align center
+        .op_button
+          &:last-child
+            margin-left 10px
+      .four_button
+        clearfix()
+        .op_button
+          display block
+          float left
+          margin-left 8px
+          &:first-child
+            margin-left 20px
+
+  .member_card
+    height 100px
+    margin-top 10px
+    .header
+      clearfix()
+      height 30px
+      padding 8px 10px
+      .icon
+        float left
+        max-height 14px
+      .title
+        float left
+        margin 0
+        margin-left 7px
+        color #999999
+        font-size 14px
+        line-height 1
+      .count
+        float right
+        color #3ca2e0
+        font-size 14px
+        line-height 1
+        cursor pointer
+    .members
+      clearfix()
+      padding 0 10px
+      border-top 1px solid #efefef
+      .leader_box
+        clearfix()
+        float left
+        padding 10px 20px
+        border-right 1px solid #efefef
+      .member_box
+        clearfix()
+        float left
+        padding 10px 20px
+        padding-right 0
+        .member
+          margin-left 10px
+          &:first-child
+            margin-left 0
+      .member
+        display block
+        float left
+        width 50px
+        height 50px
+
+  .family_card
+    width 420px
+    height 340px
+    position relative
+    .left.carousel-control
+      opacity 0
+      cursor url("/img/pic_prev.cur"),auto
+    .right.carousel-control
+      opacity 0
+      cursor url("/img/pic_next.cur"),auto
+    .carousel-indicators
+      bottom 0
+    .edit
+      position absolute
+      bottom 0
+      right 0
+    .carousel-indicators
+      li
+        background-color white
+      .active
+        border-color #3ca2e0
+        background-color #3ca2e0
+    .upload
+      display inline-block
+      position absolute
+      left 60px
+      bottom 40px
+      width 300px
+      height 30px
+      line-height 30px
+      color white
+      background-color #3ca2e0
+      text-align center
+      text-decoration none
+    .remind
+      position absolute
+      left 59px
+      bottom 40px
+      width 294px
+      height 98px
+      .remind_triangle
+        position absolute
+        left 164px
+        top 3px
+        width 0
+        height 0
+        border-width 19px
+        border-style solid
+        border-color transparent transparent #e3d6bc #e3d6bc
+        z-index 1
+      .remind_triangle_border
+        position: absolute;
+        left 163px
+        width 0
+        height 0
+        border-width 20px
+        border-style solid
+        border-color transparent transparent white white
+      .remind_text
+        margin-top 40px
+        border 1px solid #fff
+        height 60px
+        text-align center
+        color white
+        background-color #e3d6bc
+        line-height 60px
+        font-size 18px
+        border-radius 10px
+  .no_family
+    background-image url("/img/family.png")
+  .no_upload
+    background-position -4px -22px
+
+  .home_court_card
+    height 260px
+    .home_court_nav
+      clearfix()
+      height 30px
+      padding 0 10px
+      border-bottom 1px solid #efefef
+      .icon
+        float left
+        margin 8px 0
+        margin-right 20px
+        max-height 14px
+      .tabs
+        clearfix()
+        float left
+        .tab
+          height 30px
+          padding 8px
+          font-size 14px
+          line-height 1
+          float left
+          color #cccccc
+          cursor pointer
+          &:first-child
+            border-left 1px solid #efefef
+          &:last-child
+            border-right 1px solid #efefef
+        .tab.active
+          color #999999
+          background-color #fbfbfb
+          border-left-color #fbfbfb
+          border-right-color #fbfbfb
+      .edit
+        float right
+        max-height 14px
+        margin 8px 0
+    .home_court
+      height 230px
+
+    .map_size
+      width 420px
+      height 230px
+
+  .calendar_card
+    height 260px
+    .calendar_nav
+      clearfix()
+      height 30px
+      .icon
+        float left
+      .title
+        float left
+    .calendar_body
+      height 200px
+      overflow hidden
+    .calendar_footer
+      clearfix()
+      height 30px
+      .instruction
+        clearfix()
+        float right
+        .item
+          float left
+
+  .member_list_modal
+    .modal-dialog
+      width 960px
+    .modal-content
+      border-radius 0
+      .member_modal_header
+        clearfix()
+        height 30px
+        padding 8px
+        padding-left 20px
+        border-bottom 1px solid #efefef
+        .icon
+          float left
+        .title
+          float left
+          margin 0
+          margin-left 10px
+          font-size 14px
+          line-height 1
+          color #999999
+        .subtitle
+          float left
+          margin-left 10px
+          font-size 14px
+          line-height 1
+          color #999999
+        .dl_close
+          float right
+          width 14px
+          height 14px
+          line-height 14px
+          font-size 14px
+          color #3ca2e0
+      .member_modal_body
+        clearfix()
+        padding 25px 20px 35px
+        .member
+          float left
+          margin-left 20px
+          margin-top 15px
+          .photo
+            width 70px
+            height 70px
+          .nickname
+            margin 0
+            margin-top 7px
+            width 70px
+            text-align center
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
+            font-size 12px
+            color #999999
+
+  .side_panel
+    .nav
+      .year
+        border-left 6px solid #CCD3E1
+        padding-left 6px
+        margin-bottom 10px
+        font-size 18px
+        text-align right
+        color #CCD3E1
+        .year_text
+          cursor pointer
+        &:hover
+          border-left 6px solid #ccc
+          color #ccc
+      .year.active
+        color #3ba3e0
+        border-left 6px solid #3ba3e0
+        &:hover
+          color #3ba3e0
+          border-left 6px solid #3ba3e0
+        .month.active
+          color #3ba3e0
+      .month
+        display block
+        margin-left 10px
+        color #CCD3E1
+        font-size 14px
+        text-decoration none
+
+  .team_timeline
+    width 100%
+    .spine
+      top 0
+      left 50%
+      margin-left -1px
+      width 2px
+    .date_separator
+      .span
+        position absolute
+        left 50%
+        margin-left -50px
+        width 100px
+        background-color #ccc
+        color #fff
+        border-radius 10px
+        border none
+    .column
+      width 50%
+    .column_right
+      margin-left 0
+    .timeline_element
+      width 400px
+      padding 0
+      border none
+      .title
+        margin-bottom 0
+        border-bottom none
+        padding 10px
+

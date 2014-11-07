@@ -2077,3 +2077,84 @@ exports.campaign = function(req, res, next, id){
       next(err);
     });
 };
+
+
+exports.getTeamPageCampaignDateRecord = function (req, res) {
+  // todo 权限判断
+
+  cache.createCache('TeamPageCampaignDateRecord');
+  var dateRecord = cache.get('TeamPageCampaignDateRecord', req.params.teamId);
+  if (dateRecord) {
+    res.send({ result: 1, dateRecord: dateRecord });
+  } else {
+    // 查找分页数据
+    // todo 可能会有垃圾数据影响分组，需要清除
+    Campaign
+      .aggregate()
+      .match({
+        tid: { $in: [mongoose.Types.ObjectId(req.params.teamId)] }
+      })
+      .group({
+        _id: {
+          year: { $year: '$start_time' },
+          month: { $month: '$start_time' }
+        }
+      })
+      .sort('-_id.year -_id.month')
+      .exec()
+      .then(function (results) {
+        var dateRecord = [];
+        results.forEach(function (result) {
+          var found = false;
+          var i;
+          for (i = 0; i < dateRecord.length; i++) {
+            if (dateRecord[i].year === result._id.year) {
+              found = true;
+              break;
+            }
+          }
+          if (found) {
+            dateRecord[i].month.push(result._id.month);
+          } else {
+            dateRecord.push({
+              year: result._id.year,
+              month: [result._id.month]
+            });
+          }
+        });
+        cache.set('TeamPageCampaignDateRecord', req.params.teamId, dateRecord);
+        res.send({ result: 1, dateRecord: dateRecord });
+      })
+      .then(null, function (err) {
+        console.log(err);
+        res.send({ result: 0, msg: '获取有活动的年月列表失败' });
+      });
+  }
+};
+
+exports.getTeamPageCampaigns = function (req, res) {
+  // todo 权限判断
+
+  // todo 获取小队活动数据
+  var now = new Date();
+  var year = req.query.year || now.getFullYear();
+  var month = req.query.month || now.getMonth();
+
+  var thisMonth = new Date(year, month);
+  var nextMonth = new Date(year, month + 1);
+  Campaign
+    .find({
+      tid: req.params.teamId,
+      start_time: { $gte: thisMonth, $lt: nextMonth }
+    })
+    .exec()
+    .then(function (campaigns) {
+      res.send({ result: 1, campaigns: campaigns });
+    })
+    .then(null, function (err) {
+      console.log(err);
+      res.send({ result: 0, msg: '获取活动失败' });
+    });
+
+};
+

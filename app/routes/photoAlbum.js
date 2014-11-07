@@ -30,5 +30,6 @@ module.exports = function(app) {
   app.get('/photoAlbum/team/:tid/listView', photoAlbum.createAuth, photoAlbum.renderGroupPhotoAlbumList);
   app.get('/photoAlbum/:photoAlbumId/detailView', photoAlbum.renderPhotoAlbumDetail);
   app.get('/photoAlbum/:photoAlbumId/photoView/:photoId', photoAlbum.renderPhotoDetail);
+  app.get('/photoAlbum/family/:tid', photoAlbum.renderFamilyPhotoAlbum)
 
 };
