@@ -31,7 +31,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
     }
   });
 
-  Campaign.getTeamDateRecord(teamId, function (err, record) {
+  Campaign.getCampaignsDateRecord('team', teamId, function (err, record) {
     if (err) {
       alertify.alert('抱歉，获取数据失败，请刷新页面重试。');
     } else {
@@ -66,7 +66,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', 'Team', 'Campai
     }
 
     // 获取尚未获取的月份的活动
-    Campaign.getTeamCampaigns(teamId, {
+    Campaign.getCampaignsData('team', teamId, {
       year: year,
       month: month
     }, function (err, campaigns) {

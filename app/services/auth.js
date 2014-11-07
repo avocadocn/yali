@@ -83,6 +83,7 @@ var registeredTasks = {
   },
   searchSameCityTeam:{
     team:['leader', 'member']
+  },
   sponsorProvoke: {
     company: ['hr'],
     team: ['leader']
