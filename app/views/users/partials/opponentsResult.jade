@@ -5,33 +5,35 @@
     span 请先选择队伍再进行搜索
   else
     //- 主场信息(若点详情则向左收)
-    .homecourt.clearfix(ng-show="nowTab=='nearbyTeam'&&myTeam.home_court")
+    .homecourt.clearfix(ng-show="nowTab==='nearbyTeam'&&!needSetting")
       .text
         span.title(ng-class="{'active':homecourtIndex===0}" ng-click="toggleHomecourt(0)") 主场一: {{myTeam.home_court[0].name}}
         span.title(ng-class="{'active':homecourtIndex===1}" ng-show="myTeam.home_court.length===2" ng-click="toggleHomecourt(1)") 主场二: {{myTeam.home_court[1].name}}
-      button.button(ng-if="myTeam.isLeader") 更换主场
+      button.button(ng-if="myTeam.isLeader" ng-click="changeHomecourt()") 更换主场
     //- 主场设置
-    .homecourtSetting(ng-show="isShowMap&&myTeam.home_court.length===0")
-      .court(ng-show="myTeam.isLeader")
+    .homecourtSetting(ng-show="isShowMap&&needSetting")
+      .title 
+        span 搜索附近小队, 请先设置小队主场(至少一个)：
+      .court.clearfix(ng-show="myTeam.isLeader")
         .text
           span 主场一:
         .input
-          input(ng-model="myTeam.home_court[0].name")
-          #homecourt1.homecourtMap
-      .cout(ng-show="myTeam.isLeader")
+          input(ng-model="myTeam.home_court[0].name" ng-change="changeLocation(0)")
+          #courtMap1.homecourtMap
+      .court.clearfix(ng-show="myTeam.isLeader")
         .text
           span 主场二:
         .input
-          input(ng-model="myTeam.home_court[1].name")
-          #homecourt2.homecourtMap
-          button.button.btn_small 完成
+          input(ng-model="myTeam.home_court[1].name" ng-change="changeLocation(1)")
+          #courtMap2.homecourtMap
+          button.button.btn_small(ng-click="saveHomecourt()") 完成
       span(ng-show="!myTeam.isLeader") 请提醒您的队长去添加小队主场吧~
 
     //- 附近小队地图
-    .map(ng-show="isShowMap&&myTeam.home_court.length>0")
+    .map(ng-show="isShowMap&&!needSetting")
       #fullMap.fullMap
     //- 搜索出的小队列表
-    .teamlist
+    .teamlist(ng-show="!isShowMap||!needSetting")
       .teams
         .map_head(ng-show="nowTab=='nearbyTeam'")
           span.pull-right(ng-show="isShowMap" ng-click="getOpponentInfo(0)") 详情&nbsp;&gt;
@@ -56,7 +58,7 @@
             a(ng-click="loadNextPage()") &gt;
           li(ng-show="currentPage!==maxPage")
             a(ng-click="loadPage(maxPage)") &raquo;
-    //-详情
+    //- 详情
     .detail(ng-show="!isShowMap&&opponent")
       .detailHead.clearfix
         img.logo(ng-src="{{opponent.logo}}")

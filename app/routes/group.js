@@ -20,7 +20,7 @@ module.exports = function(app) {
   //获取小队简要信息供弹出窗使用
   //app.get('/group/briefInfo/:teamId', authorization.teamAuthorize, group.getBriefInfo);
   app.get('/group/renderInfo', group.renderInfo);
-  app.post('/group/saveInfo/:teamId', authorization.teamAuthorize, group.saveInfo);
+  app.post('/group/saveInfo/:teamId', group.saveInfo);
   app.get('/group/timeLine/:teamId', authorization.teamAuthorize, group.timeLine);
   app.get('/group/campaign', group.renderCampaigns);
   app.get('/group/getGroupMembers/:teamId', authorization.teamAuthorize, group.getGroupMember);

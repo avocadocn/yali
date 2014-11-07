@@ -109,6 +109,10 @@ var registeredTasks = {
   publishTeamMessage: {
     company: ['hr'],
     team: ['leader']
+  },
+  editGroupInfo:{
+    company:['hr'],
+    team:['leader']
   }
 };
 
