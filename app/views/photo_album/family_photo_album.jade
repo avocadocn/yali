@@ -8,7 +8,7 @@ block contentExt
     header.clearfix
       include ../partials/breadcrumb
       +breadcrumb(links)
-      div.relative
+      .relative
         .media
           .pull-left
             img.media-object.header_logo.img-thumbnail(src="#{companyGroup.logo}")
@@ -17,9 +17,16 @@ block contentExt
             p.text 相册名:&nbsp;#{companyGroup.name}的全家福
             p.text 照片数:&nbsp;#{showPhotos.length}
             p.text 最后更新:&nbsp;#{moment(lastPhoto.upload_date).format('YYYY.MM.DD')}
-
+        .right_down
+          if allow.editTeam === true
+            label.dl_btn.dl_btn_small(ng-click="selectPhoto()") 选择照片
+      .cropper#image_cropper(ng-show="isUploading")
+        .cropit-image-preview
+        input.cropit-image-zoom-input(type="range")
+        input.cropit-image-input#cropit_image_input(type="file")
+        button(type="button" ng-click="uploadPhoto()") 确定
     hr
-    div.photo_panel.clearfix
+    .photo_panel.clearfix
       a.photo.text-center(ng-repeat="photo in familyPhotos" ng-click="toggleSelect($index)" ng-class="{'active': photo.select===true}" ng-cloak)
         img(ng-src="{{photo.uri}}/resize/200/200")
         button(ng-click="deletePhoto($index)") 删除
@@ -28,4 +35,5 @@ block contentExt
 
 
 append footExt
+  script(src="/lib/cropit/dist/jquery.cropit.min.js")
   script(src="/js/controllers/family_photo_album.js")

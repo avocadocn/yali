@@ -1159,14 +1159,11 @@ exports.uploadFamily = function(req, res) {
     next('forbidden');
     return;
   }
-
-  var width = Number(req.body.width);
-  var height = Number(req.body.height);
-  var req_x = Number(req.body.x);
-  var req_y = Number(req.body.y);
-  if (isNaN(width + height + req_x + req_y)) {
+  console.log(req.body, req.files)
+  if (!req.files || !req.files.family) {
     return res.send(400);
   }
+
   CompanyGroup
   .findById(req.params.teamId)
   .exec()
@@ -1179,20 +1176,8 @@ exports.uploadFamily = function(req, res) {
     var family_dir = '/img/group/family/';
     var photo_name = Date.now().toString() + '.' + ext;
     try{
-      gm(family_photo.path).size(function(err, value) {
-        if (err) {
-          console.log(err);
-          return res.send(500);
-        }
-        // req.body参数均为百分比
-        var w = width * value.width;
-        var h = height * value.height;
-        var x = req_x * value.width;
-        var y = req_y * value.height;
-
-        gm(family_photo.path)
-        .crop(w, h, x, y)
-        .resize(800, 450)
+      gm(family_photo.path)
+        .resize(420, 340)
         .write(path.join(meanConfig.root, 'public', family_dir, photo_name), function(err) {
           if (err) {
             console.log(err);
@@ -1235,11 +1220,10 @@ exports.uploadFamily = function(req, res) {
               console.log(err);
               res.send(500);
             } else {
-              res.send(200);
+              res.send({ result: 1 });
             }
           });
         });
-      });
 
     } catch (e) {
       console.log(e);

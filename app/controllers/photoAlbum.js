@@ -1351,6 +1351,11 @@ exports.renderFamilyPhotoAlbum = function (req, res, next) {
         return next('not found');
       }
 
+      var allow = auth(req.user, {
+        companies: [companyGroup.cid],
+        teams: [companyGroup._id]
+      }, ['editTeam']);
+
       var links = [
         {
           text: companyGroup.name,
@@ -1378,7 +1383,8 @@ exports.renderFamilyPhotoAlbum = function (req, res, next) {
         companyGroup: companyGroup,
         showPhotos: companyGroup.family.filter(showFilter),
         lastPhoto: lastPhoto,
-        moment: moment
+        moment: moment,
+        allow: allow
       });
     })
     .then(null, function (err) {

@@ -251,3 +251,10 @@
 .family_photo_album .photo.active {
   border-color: #008000;
 }
+.family_photo_album .cropit-image-preview {
+  width: 420px;
+  height: 340px;
+}
+.family_photo_album .cropit-image-input {
+  visibility: hidden;
+}
