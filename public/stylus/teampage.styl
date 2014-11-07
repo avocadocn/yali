@@ -285,6 +285,7 @@
         float right
         max-height 14px
         margin 8px 0
+        cursor pointer
     .home_court
       height 230px
 
@@ -313,59 +314,90 @@
         .item
           float left
 
-  .member_list_modal
+  .modal
     .modal-dialog
       width 960px
     .modal-content
       border-radius 0
-      .member_modal_header
-        clearfix()
-        height 30px
-        padding 8px
-        padding-left 20px
-        border-bottom 1px solid #efefef
-        .icon
-          float left
-        .title
-          float left
+    .modal_header
+      clearfix()
+      height 30px
+      padding 8px
+      padding-left 20px
+      border-bottom 1px solid #efefef
+      .icon
+        float left
+      .title
+        float left
+        margin 0
+        margin-left 10px
+        font-size 14px
+        line-height 1
+        color #999999
+      .subtitle
+        float left
+        margin-left 10px
+        font-size 14px
+        line-height 1
+        color #999999
+      .dl_close
+        float right
+        width 14px
+        height 14px
+        line-height 14px
+        font-size 14px
+        color #3ca2e0
+  .member_list_modal
+    .modal_body
+      clearfix()
+      padding 25px 20px 35px
+      .member
+        float left
+        margin-left 20px
+        margin-top 15px
+        .photo
+          width 70px
+          height 70px
+        .nickname
           margin 0
-          margin-left 10px
-          font-size 14px
-          line-height 1
+          margin-top 7px
+          width 70px
+          text-align center
+          overflow hidden
+          text-overflow ellipsis
+          white-space nowrap
+          font-size 12px
           color #999999
-        .subtitle
-          float left
-          margin-left 10px
-          font-size 14px
-          line-height 1
-          color #999999
-        .dl_close
-          float right
-          width 14px
-          height 14px
-          line-height 14px
-          font-size 14px
-          color #3ca2e0
-      .member_modal_body
+  .home_court_modal
+    .modal_body
+      padding 30px
+    .home_court
+      margin-bottom 15px
+      .control
         clearfix()
-        padding 25px 20px 35px
-        .member
+        margin-bottom 15px
+        .title
+          display block
           float left
-          margin-left 20px
-          margin-top 15px
-          .photo
-            width 70px
-            height 70px
-          .nickname
-            margin 0
-            margin-top 7px
-            width 70px
-            text-align center
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-            font-size 12px
-            color #999999
+          width 60px
+          height 30px
+          line-height 30px
+          font-size 12px
+          margin 0
+          font-weight normal
+        .address
+          display block
+          float left
+          width 825px
+          height 30px
+      .map_container, .map
+        width 825px
+        height 200px
+      .map_container
+        margin-left 60px
+    .finish
+      margin-left 60px
+
 
   .side_panel
     .nav

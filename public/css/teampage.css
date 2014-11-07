@@ -406,6 +406,7 @@
   float: right;
   max-height: 14px;
   margin: 8px 0;
+  cursor: pointer;
 }
 .teampage .home_court_card .home_court {
   height: 230px;
@@ -463,30 +464,30 @@
 .teampage .calendar_card .calendar_footer .instruction .item {
   float: left;
 }
-.teampage .member_list_modal .modal-dialog {
+.teampage .modal .modal-dialog {
   width: 960px;
 }
-.teampage .member_list_modal .modal-content {
+.teampage .modal .modal-content {
   border-radius: 0;
 }
-.teampage .member_list_modal .modal-content .member_modal_header {
+.teampage .modal .modal_header {
   height: 30px;
   padding: 8px;
   padding-left: 20px;
   border-bottom: 1px solid #efefef;
 }
-.teampage .member_list_modal .modal-content .member_modal_header:before,
-.teampage .member_list_modal .modal-content .member_modal_header:after {
+.teampage .modal .modal_header:before,
+.teampage .modal .modal_header:after {
   display: table;
   content: " ";
 }
-.teampage .member_list_modal .modal-content .member_modal_header:after {
+.teampage .modal .modal_header:after {
   clear: both;
 }
-.teampage .member_list_modal .modal-content .member_modal_header .icon {
+.teampage .modal .modal_header .icon {
   float: left;
 }
-.teampage .member_list_modal .modal-content .member_modal_header .title {
+.teampage .modal .modal_header .title {
   float: left;
   margin: 0;
   margin-left: 10px;
@@ -494,14 +495,14 @@
   line-height: 1;
   color: #999;
 }
-.teampage .member_list_modal .modal-content .member_modal_header .subtitle {
+.teampage .modal .modal_header .subtitle {
   float: left;
   margin-left: 10px;
   font-size: 14px;
   line-height: 1;
   color: #999;
 }
-.teampage .member_list_modal .modal-content .member_modal_header .dl_close {
+.teampage .modal .modal_header .dl_close {
   float: right;
   width: 14px;
   height: 14px;
@@ -509,27 +510,27 @@
   font-size: 14px;
   color: #3ca2e0;
 }
-.teampage .member_list_modal .modal-content .member_modal_body {
+.teampage .member_list_modal .modal_body {
   padding: 25px 20px 35px;
 }
-.teampage .member_list_modal .modal-content .member_modal_body:before,
-.teampage .member_list_modal .modal-content .member_modal_body:after {
+.teampage .member_list_modal .modal_body:before,
+.teampage .member_list_modal .modal_body:after {
   display: table;
   content: " ";
 }
-.teampage .member_list_modal .modal-content .member_modal_body:after {
+.teampage .member_list_modal .modal_body:after {
   clear: both;
 }
-.teampage .member_list_modal .modal-content .member_modal_body .member {
+.teampage .member_list_modal .modal_body .member {
   float: left;
   margin-left: 20px;
   margin-top: 15px;
 }
-.teampage .member_list_modal .modal-content .member_modal_body .member .photo {
+.teampage .member_list_modal .modal_body .member .photo {
   width: 70px;
   height: 70px;
 }
-.teampage .member_list_modal .modal-content .member_modal_body .member .nickname {
+.teampage .member_list_modal .modal_body .member .nickname {
   margin: 0;
   margin-top: 7px;
   width: 70px;
@@ -539,6 +540,50 @@
   white-space: nowrap;
   font-size: 12px;
   color: #999;
+}
+.teampage .home_court_modal .modal_body {
+  padding: 30px;
+}
+.teampage .home_court_modal .home_court {
+  margin-bottom: 15px;
+}
+.teampage .home_court_modal .home_court .control {
+  margin-bottom: 15px;
+}
+.teampage .home_court_modal .home_court .control:before,
+.teampage .home_court_modal .home_court .control:after {
+  display: table;
+  content: " ";
+}
+.teampage .home_court_modal .home_court .control:after {
+  clear: both;
+}
+.teampage .home_court_modal .home_court .control .title {
+  display: block;
+  float: left;
+  width: 60px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  margin: 0;
+  font-weight: normal;
+}
+.teampage .home_court_modal .home_court .control .address {
+  display: block;
+  float: left;
+  width: 825px;
+  height: 30px;
+}
+.teampage .home_court_modal .home_court .map_container,
+.teampage .home_court_modal .home_court .map {
+  width: 825px;
+  height: 200px;
+}
+.teampage .home_court_modal .home_court .map_container {
+  margin-left: 60px;
+}
+.teampage .home_court_modal .finish {
+  margin-left: 60px;
 }
 .teampage .side_panel .nav .year {
   border-left: 6px solid #ccd3e1;

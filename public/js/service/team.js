@@ -75,9 +75,19 @@ donler.factory('Team', ['$http', function($http) {
      * @param  {Function} callback callback(err)
      */
     saveInfo: function (id, data, callback) {
+      var homecourt;
+      if (data.homecourt) {
+        homecourt = data.homecourt;
+        for (var i = 0; i < homecourt.length; i++) {
+          if (!homecourt[i].name) {
+            homecourt.splice(i, 1);
+          }
+        }
+      }
       $http.post('/group/saveInfo/' + id, {
         name: data.name,
-        brief: data.brief
+        brief: data.brief,
+        homecourt: homecourt
       })
         .success(function (data, status) {
           if (data.result === 1) {

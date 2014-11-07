@@ -80,11 +80,11 @@ block contentExt
                 .tabs(ng-init="courtIndex=0;")
                   .tab(ng-click="courtIndex=0;" ng-class="{'active': courtIndex==0}") 主场一
                   .tab(ng-click="courtIndex=1;" ng-class="{'active': courtIndex==1}") 主场二
-                img.edit(src="/img/pencil_diagonal_outline_symbol_on_a_line.png")
+                img.edit(src="/img/pencil_diagonal_outline_symbol_on_a_line.png" data-toggle="modal" data-target="#homeCourtModal" ng-cloak title="修改主场")
               .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
-                p(ng-cloak ng-if="homeCourt.name&&homeCourt.coordinates.length!==2") {{homeCourt.name}}
-                a(ng-cloak ng-if="homeCourt.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
-                  img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=420*230&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{home.name.replace(/ /g, '')}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
+                p(ng-cloak ng-if="homeCourt.name&&homeCourt.loc.coordinates.length!==2") {{homeCourt.name}}
+                a(ng-cloak ng-if="homeCourt.loc.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
+                  img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=420*230&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{homeCourt.name}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
                 img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}/420/230")
 
           .team_col
@@ -147,17 +147,38 @@ block contentExt
     .member_list_modal.modal.fade#memberListModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       .modal-dialog
         .modal-content
-          .member_modal_header
+          .modal_header
             img.icon(src="/img/team.png")
             h3.title 队员
             span.subtitle ({{team.leaders.length + team.members.length}})
-            //- todo 以后改为图片，暂且用乘号代替
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
-              //-img.icon_close(src="/img/icons/icon_close.png")
-          .member_modal_body(bs-popover)
+          .modal_body(bs-popover)
             .member(ng-repeat="member in team.membersWithLeader" ng-Mouseenter="showUserCard(member._id, member._id + 'member_modal')" id="pop{{member._id}}member_modal" rel="popover")
               img.photo(ng-src="{{member.photo}}")
               p.nickname(title="{{member.nickname}}") {{member.nickname}}
+
+    .home_court_modal.modal.fade#homeCourtModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal_header
+            img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
+            h3.title 主场
+            button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
+          .modal_body
+            form(name="homeCourtForm")
+              .home_court
+                .control
+                  label.title 主场一：
+                  input.address(type="text" name ="home_court_1" ng-change='changeLocation1()' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_1.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourt[0].name" tooltip-placement="right")
+                .map_container(ng-show='showMap1')
+                  .map#courtMap1
+              .home_court
+                .control
+                  label.title 主场二：
+                  input.address(type="text" name ="home_court_2" ng-change='changeLocation2()' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_2.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourt[1].name" tooltip-placement="right")
+                .map_container(ng-show='showMap2')
+                  .map#courtMap2
+              button.finish.dl_btn.dl_btn_small(type="button" ng-click="saveHomeCourt()") 完成
 
 
 append footExt

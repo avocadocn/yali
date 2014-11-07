@@ -344,7 +344,13 @@ exports.saveInfo =function(req,res,next) {
         companyGroup.brief = req.body.brief;
       }
       if(req.body.homecourt){
-        companyGroup.home_court = req.body.homecourt;
+        var homecourts = req.body.homecourt;
+        homecourts.forEach(function (homecourt) {
+          if (!homecourt.loc || !homecourt.loc.coordinates || homecourt.loc.coordinates.length === 0) {
+            delete homecourt.loc;
+          }
+        });
+        companyGroup.home_court = homecourts;
       }
       companyGroup.save(function (s_err){
         if(s_err){

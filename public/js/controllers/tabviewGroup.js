@@ -825,7 +825,6 @@ tabViewGroup.controller('infoController', ['$http', '$scope','$rootScope','$time
                 $scope.MSearch2.search($scope.team.home_court[1].name);
             },0);
         }
-        
     };
     $scope.editToggle = function() {
 
