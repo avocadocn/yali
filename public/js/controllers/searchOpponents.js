@@ -18,8 +18,10 @@ searchOpponents.config(['$routeProvider',function ($routeProvider) {
       controller: 'nearbyController',
       controllerAs: 'nearby'
     })
-    .when('/search',{
-      templateUrl:'/group/search',
+    .when('/search/:tid',{
+      templateUrl: function(params){
+        return '/group/sameCity/'+params.tid;
+      },
       controller: 'searchController',
       controllerAs: 'search'
     })
@@ -35,13 +37,13 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
   $rootScope.nowTab = window.location.hash.substr(2);
   $rootScope.selectedStatus = 'unactive';
   $rootScope.$on("$routeChangeStart",function(){
-      $rootScope.loading = true;
+    $rootScope.loading = true;
   });
   $rootScope.$on("$routeChangeSuccess",function(){
-      $rootScope.loading = false;
+    $rootScope.loading = false;
   });
   $rootScope.getTeam=function(tid){
-     $http.get('/group/oneTeam/'+tid).success(function(data,status){
+    $http.get('/group/oneTeam/'+tid).success(function(data,status){
       $rootScope.myTeam = data;
       $rootScope.selectedStatus = 'active';
       $rootScope.selectTeamId = data._id;
@@ -65,10 +67,15 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
   };
   $rootScope.changeTeam = function(){
     $rootScope.myTeam = null;
-    window.location.hash= '#/sameCity';
+    window.location.hash= '#/';
     $rootScope.selectTeamId = null;
     $rootScope.selectedStatus='unactive';
   };
+  $rootScope.needSearch=0;
+  $rootScope.search = function(keyEvent){
+    if(!keyEvent || keyEvent.which === 13)
+      $rootScope.needSearch ++;
+  }
 }]);
 
 searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'Search',
@@ -80,6 +87,7 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
         var maxNumber = (data.maxPage-1)*10;
         if(data.maxPage===1 &&data.maxPage<10)
             maxNumber = data.teams.length;
+        //小队选完同城小队个数不会变
         $scope.headline = data.city+"共有"+maxNumber+"+个相关小队"
         $scope.currentPage=1;
         $scope.resultTeams = data.teams;
@@ -115,10 +123,10 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
     };
     $scope.loadPrePage=function(){
       $scope.loadPage($scope.currentPage-1);
-    }
+    };
     $scope.loadNextPage=function(){
       $scope.loadPage($scope.currentPage+1);
-    }
+    };
     $scope.getOpponentInfo=function(index){
       if(index!==$scope.selectedIndex){
         $scope.selectedIndex = index;
@@ -138,6 +146,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
     $scope.isShowMap = true;
     $scope.needSetting = $rootScope.myTeam.home_court.length===0;
     //获取附近小队
+    //有此函数原因：小队选完，由于有两个主场，附近小队个数可能会变
     $scope.search=function(hc_index) {
       Search.searchNearby($rootScope.tid,1,hc_index,function(status,data){
         if(!status){
@@ -376,7 +385,69 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
 
 searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 'Search',
   function($http, $scope, $rootScope, Search) {
+    $rootScope.nowTab="search";
 
+    $scope.searchTeam=function(){
+      Search.searchTeam($rootScope.tid,$rootScope.keywords,0,function(status,data){
+        if(!status){
+          var maxNumber = (data.maxPage-1)*10;
+          if(data.maxPage===1 &&data.maxPage<10)
+            maxNumber = data.teams.length;
+          $scope.headline = "&quot;"+$rootScope.keywords+"&quot;共有"+maxNumber+"+个相关小队";
+          $scope.currentPage=1;
+          $scope.resultTeams = data.teams;
+          if(data.teams.length>0){
+            $scope.getOpponentInfo(0);
+          }
+          $scope.maxPage = data.maxPage;
+          var showMaxPage = $scope.maxPage>5? 5:$scope.maxPage;
+          $scope.pages=[];
+          for(var i=1;i<=showMaxPage;i++){
+            $scope.pages.push(i);
+          }
+        }
+      });
+    };
+    $rootScope.$watch("needSearch",function(value){
+      if(value){
+        $scope.searchTeam();
+      }
+    });
+    $scope.getOpponentInfo=function(index){
+      if(index!==$scope.selectedIndex){
+        $scope.selectedIndex = index;
+        var tid = $scope.resultTeams[index]._id;
+        Search.getOpponentInfo(tid,function(status,data){
+          if(!status){
+            $scope.opponent = data.team;
+          }
+        });
+      }
+    };
+    $scope.loadPage=function(pageNumber){
+      $scope.currentPage=pageNumber;
+      Search.searchTeam($rootScope.tid,$rootScope.keywords,function(status,data){
+        if(!status){
+          $scope.resultTeams = data.teams;
+          if(data.teams.length>0){
+            $scope.getOpponentInfo(data.teams[0]._id);
+          }
+          var start = Math.floor(pageNumber/10)*10+1;
+          var end = Math.ceil(pageNumber/10)*10;
+          var end = end>$scope.maxPage? $scope.maxPage:end;
+          $scope.pages=[];
+          for(var i=start;i<=end;i++){
+            $scope.pages.push(i);
+          }
+        }
+      });
+    };
+    $scope.loadPrePage=function(){
+      $scope.loadPage($scope.currentPage-1);
+    };
+    $scope.loadNextPage=function(){
+      $scope.loadPage($scope.currentPage+1);
+    };
 }]);
 
 searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope', 'Campaign',

@@ -39,12 +39,16 @@ block content
         ul.nav
           li.opponnet_tab_style.sameCity(ng-class="{'active':nowTab=='sameCity'}")
             a.no_radius(ng-href="#/sameCity/{{selectTeamId}}" ng-click="addactive('sameCity')") 
-              img()
+              img.nav_img(ng-src="/img/icons/building_tower.png")
               span 同城小队
           li.opponnet_tab_style.nearbyTeam(ng-class="{'active':nowTab=='nearbyTeam'}")
-            a.no_radius(ng-href="#/nearbyTeam/{{selectTeamId}}" ng-click="addactive('nearbyTeam')") 附近小队
+            a.no_radius(ng-href="#/nearbyTeam/{{selectTeamId}}" ng-click="addactive('nearbyTeam')") 
+              img.nav_img(ng-src="/img/icons/pinstar.png")
+              span 附近小队
           li.opponnet_tab_style.search(ng-class="{'active':nowTab=='search'}")
-            a.no_radius 搜索
+            a.no_radius(ng-href="#/search/{{selectTeamId}}" ng-click="addactive('search')") 
+              input.searchOpponentInput(ng-model="keywords" placeholder="公司名字、小队名" ng-keypress="search($event)")
+              button.search_button(ng-click="search()")
         .tab-content
           .tab-pane.active
             div(ng-view)

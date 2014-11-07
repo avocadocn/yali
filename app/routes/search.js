@@ -12,4 +12,5 @@ module.exports = function(app, passport) {
     app.get('/search/:companyId/member', authorization.companyAuthorize, search.getMember);
     app.get('/search/sameCityTeam/:teamId',search.sameCityTeam);
     app.get('/search/nearbyTeam/:teamId',search.nearbyTeam);
+    app.get('/search/keywordSearch/:teamId',search.keywordSearch);
 };

@@ -15,7 +15,7 @@ var mongoose = require('mongoose'),
 exports.getCompany = function (req, res) {
   var regx = new RegExp(req.body.regx);
   var companies_rst = [];
-  Company.find({'info.name':regx,'status.active':true}, function (err, companies) {
+  Company.find({'info.name':regx,'status.active':true,'status.mail_active':true}, function (err, companies) {
     if(err) {
       return res.send([]);
     } else {
@@ -255,4 +255,46 @@ exports.nearbyTeam = function(req,res,next) {
         return res.send({'result':1,'teams':teams,'maxPage':pageCount});
       }
     });
+};
+
+//关键词搜索，先搜索有此关键词的的公司，再搜索此公司的同类型小队或有此关键词的小队
+exports.keywordSearch = function(req,res,next){
+  var companyGroup = req.companyGroup;
+  var regx = new RegExp(req.query.key);
+  var gid = companyGroup.gid;
+  Company.find({'info.name':regx,'status.active':true,'status.mail_active':true},{'_id':1,'team':1},function(err,companies){
+    if(err){
+      res.status(500);
+      next(err);
+    }else{
+      var tids=[];
+      for(var i=0;i<companies.length;i++){
+        for(var j=0;j<companies[i].team.length;j++){
+          if(companies[i].team[j].gid===gid){
+            tids.push(companies[i].team[j].id);
+          }
+        }
+      }
+      // CompanyGroup.find({'$or':[{'_id':{'$in':tids}},{'$and':[{'gid':gid},{'name':regx}]}]},{_id:1},function(err,company_groups){
+      //   console.log(company_groups.length);
+      //   console.log(company_groups);
+      // });
+      CompanyGroup.paginate({'$or':[{'_id':{'$in':tids}},{'$and':[{'gid':gid},{'name':regx}]}]},
+        req.query.page,10,function(err,pageCount,results,itemCount) {
+          if(err){
+            console.log('??')
+            console.log(err);
+            res.status(500);
+            next();
+          }
+          else{
+            var teams = [];
+            for(var i=0;i<results.length;i++){
+              teams.push({'_id':results[i]._id,'logo':results[i].logo,'name':results[i].name,'cname':results[i].cname,'home_court':results[i].home_court});
+            }
+            return res.send({'result':1,'teams':teams,'maxPage':pageCount});
+          }
+        });
+    }
+  })
 }
