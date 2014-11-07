@@ -84,7 +84,7 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
         $scope.currentPage=1;
         $scope.resultTeams = data.teams;
         if(data.teams.length>0){
-          $scope.getOpponentInfo(data.teams[0]._id);
+          $scope.getOpponentInfo(0);
           $scope.selectedIndex = 0;
         }
         $scope.maxPage = data.maxPage;
@@ -166,7 +166,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
         if(!status){
           $scope.resultTeams = data.teams;
           if(data.teams.length>0){
-            $scope.getOpponentInfo(data.teams[0]._id);
+            $scope.getOpponentInfo(0);
             $scope.selectedIndex = 0;
           }
           var start = Math.floor(pageNumber/10)*10+1;
@@ -207,11 +207,11 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
         dragEnable:true,
         zoomEnable:true,
       });
-      window.map_ready =true;
+      $scope.map_ready =true;
       $scope.addMarkers();
     };
     $scope.addMarkers = function(){
-      if(window.map_ready&&$scope.resultTeams.length>0){
+      if($scope.map_ready&&$scope.resultTeams.length>0){
         //清除地图的标记
         $scope.fullMap.clearMap();
         //增加标记
@@ -229,7 +229,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
       }
     };
     if($rootScope.myTeam.home_court.length>0){
-      if(!window.map_ready){//如果没有加载过地图script则加载
+      if(!$scope.map_ready){//如果没有加载过地图script则加载
         window.fullMapIntialize = function(){
             $scope.fullMapInitialize();
         };

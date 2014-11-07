@@ -5,7 +5,7 @@
     span 请先选择队伍再进行搜索
   else
     //- 主场信息(若点详情则向左收)
-    .homecourt.clearfix(ng-show="nowTab=='nearbyTeam'&&myTeam.home_court")
+    .homecourt.clearfix(ng-show="nowTab=='nearbyTeam'&&myTeam.home_court.length>0")
       .text
         span.title(ng-class="{'active':homecourtIndex===0}" ng-click="toggleHomecourt(0)") 主场一: {{myTeam.home_court[0].name}}
         span.title(ng-class="{'active':homecourtIndex===1}" ng-show="myTeam.home_court.length===2" ng-click="toggleHomecourt(1)") 主场二: {{myTeam.home_court[1].name}}
@@ -31,7 +31,7 @@
     .map(ng-show="isShowMap&&myTeam.home_court.length>0")
       #fullMap.fullMap
     //- 搜索出的小队列表
-    .teamlist
+    .teamlist(ng-show="!isShowMap||myTeam.home_court.length>0")
       .teams
         .map_head(ng-show="nowTab=='nearbyTeam'")
           span.pull-right(ng-show="isShowMap" ng-click="getOpponentInfo(0)") 详情&nbsp;&gt;
