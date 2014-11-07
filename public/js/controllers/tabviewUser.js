@@ -1209,7 +1209,6 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
   function($scope, $http, $rootScope) {
     angular.element('.tooltip').hide();
     $scope.editing = false;
-    console.log(1)
     $scope.toggleEdit = function() {
       $scope.editing = !$scope.editing;
     }

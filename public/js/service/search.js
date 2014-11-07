@@ -27,11 +27,12 @@ angular.module('donler')
      * 查找附近小队
      * @param String tid 小队id
      * @param pageNum 页数
+     * @param homecourtIndex 主场index
      * @param {Object} callback callback(status,data)
      */
-    var searchNearby = function (tid, pageNum, callback) {
+    var searchNearby = function (tid, pageNum, homecourtIndex, callback) {
       try {
-        $http.get('/search/nearbyTeam/'+tid+'?page='+pageNum)
+        $http.get('/search/nearbyTeam/'+tid+'?page='+pageNum+'&index='+homecourtIndex)
         .success(function (data, status) {
           callback(null,data);
         }).error(function (data, status) {

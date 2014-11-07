@@ -121,8 +121,9 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
     $scope.loadNextPage=function(){
       $scope.loadPage($scope.currentPage+1);
     }
-    $scope.getOpponentInfo=function(tid,index){
+    $scope.getOpponentInfo=function(index){
       $scope.selectedIndex = index;
+      var tid = $scope.resultTeams[index]._id;
       Search.getOpponentInfo(tid,function(status,data){
         if(!status){
           $scope.opponent = data.team;
@@ -136,9 +137,10 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
     $rootScope.nowTab = 'nearbyTeam';
     $scope.isShowMap = true;
     //获取附近小队
-    if($rootScope.myTeam.home_court.length>0){
-      Search.searchNearby($rootScope.tid,1,function(status,data){
+    $scope.search=function(hc_index) {
+      Search.searchNearby($rootScope.tid,1,hc_index,function(status,data){
         if(!status){
+          $scope.homecourtIndex=hc_index;
           var maxNumber = (data.maxPage-1)*10;
           if(data.maxPage===1 &&data.maxPage<10)
             maxNumber = data.teams.length;
@@ -151,13 +153,16 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
           for(var i=1;i<=showMaxPage;i++){
             $scope.pages.push(i);
           }
+          $scope.addMarkers();
         }
       });
     }
-    
+    if($rootScope.myTeam.home_court.length>0){
+      $scope.search(0);
+    }
     $scope.loadPage=function(pageNumber){
       $scope.currentPage=pageNumber;
-      Search.searchNearby($rootScope.tid,pageNumber,function(status,data){
+      Search.searchNearby($rootScope.tid,pageNumber,$scope.homecourtIndex,function(status,data){
         if(!status){
           $scope.resultTeams = data.teams;
           if(data.teams.length>0){
@@ -167,6 +172,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
           var start = Math.floor(pageNumber/10)*10+1;
           var end = Math.ceil(pageNumber/10)*10;
           var end = end>$scope.maxPage? $scope.maxPage:end;
+          $scope.addMarkers();
           $scope.pages=[];
           for(var i=start;i<=end;i++){
             $scope.pages.push(i);
@@ -176,17 +182,67 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
     };
     $scope.loadPrePage=function(){
       $scope.loadPage($scope.currentPage-1);
-    }
+    };
     $scope.loadNextPage=function(){
       $scope.loadPage($scope.currentPage+1);
+    };
+    $scope.getOpponentInfo=function(index){
+      $scope.isShowMap = false;
+      $scope.selectedIndex = index;
+      var tid = $scope.resultTeams[index]._id;
+      Search.getOpponentInfo(tid,function(status,data){
+        if(!status){
+          $scope.opponent = data.team;
+        }
+      });
+    };
+    $scope.toggleHomecourt=function(index){
+      $scope.search(index);
+    };
+
+    //-地图
+    $scope.fullMapInitialize = function(){
+      $scope.fullMap = new AMap.Map("fullMap",{
+        rotateEnable:true,
+        dragEnable:true,
+        zoomEnable:true,
+      });
+      window.map_ready =true;
+      $scope.addMarkers();
+    };
+    $scope.addMarkers = function(){
+      if(window.map_ready&&$scope.resultTeams.length>0){
+        //清除地图的标记
+        $scope.fullMap.clearMap();
+        //增加标记
+        var points=[],markers=[];
+        for(var i=0;i<$scope.resultTeams.length;i++){
+          var point = new AMap.LngLat($scope.resultTeams[i].home_court[0].loc.coordinates[0],$scope.resultTeams[i].home_court[0].loc.coordinates[1]);
+          var imageNumber = i+1;
+          markers[i] = new AMap.Marker({
+            icon:"http://webapi.amap.com/images/"+imageNumber+".png",
+            map:$scope.fullMap,
+            position:point
+          });
+        }
+        $scope.fullMap.setFitView();
+      }
+    };
+    if($rootScope.myTeam.home_court.length>0){
+      if(!window.map_ready){//如果没有加载过地图script则加载
+        window.fullMapIntialize = function(){
+            $scope.fullMapInitialize();
+        };
+        var script = document.createElement("script");
+        script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=fullMapIntialize";
+        document.body.appendChild(script);
+      }
     }
 }]);
 
 searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 'Search',
   function($http, $scope, $rootScope, Search) {
-    $scope.loadPage=function(pageNumber){
 
-    };
 }]);
 
 searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope', 'Campaign',
