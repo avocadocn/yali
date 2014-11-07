@@ -64,7 +64,7 @@ block contentExt
             .card.family_card(ng-class="{'no_family': team.familyPhotos.length===0, 'no_upload': !allow.editTeam && team.familyPhotos.length===0}")
               carousel(interval="5000" ng-if="team.familyPhotos.length > 0" ng-cloak)
                 slide(ng-repeat="photo in team.familyPhotos")
-                  img(ng-src="{{photo.uri}}/420/340")
+                  a(ng-href="/photoAlbum/family/{{team._id}}" title="点击进入全家福相册"): img(ng-src="{{photo.uri}}/420/340")
               a.edit(ng-if="allow.editTeam && team.familyPhotos.length > 0" ng-href="/photoAlbum/family/{{team._id}}" title="修改全家福"): img(src="/img/edit_logo.png" ng-cloak)
               a.upload(ng-if="allow.editTeam && team.familyPhotos.length === 0" ng-href="/photoAlbum/family/{{team._id}}" ng-cloak) 上传小队全家福
               .remind(ng-if="!allow.editTeam && team.familyPhotos.length === 0" ng-cloak)

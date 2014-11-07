@@ -505,9 +505,9 @@
   float: right;
   width: 14px;
   height: 14px;
-}
-.teampage .member_list_modal .modal-content .member_modal_header .dl_close .icon_close {
-  height: 14px;
+  line-height: 14px;
+  font-size: 14px;
+  color: #3ca2e0;
 }
 .teampage .member_list_modal .modal-content .member_modal_body {
   padding: 25px 20px 35px;

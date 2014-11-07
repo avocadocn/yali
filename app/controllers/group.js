@@ -123,6 +123,8 @@ exports.info =function(req, res) {
     allow.joinTeam = false;
     allow.quitTeam = false;
     allow.sponsorProvoke = false;
+    allow.editTeam = false;
+    allow.closeTeam = false;
   }
 
   // 从members中去除leader
