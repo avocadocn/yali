@@ -296,6 +296,7 @@ Timeline UI Base
   border: 1px solid #bbb;
   background-color: #fff;
   color: #666;
+  cursor: pointer;
 }
 .emptiem {
   width: 660px;

@@ -13,6 +13,7 @@ timeline.service('anchorSmoothScroll', function(){
         var stopY = elmYPosition(eID);
         var distance = stopY > startY ? stopY - startY : startY - stopY;
         if (distance < 100) {
+            window.scrollByU =true;
             scrollTo(0, stopY); return;
         }
         var speed = Math.round(distance / 200);
@@ -22,12 +23,12 @@ timeline.service('anchorSmoothScroll', function(){
         var timer = 0;
         if (stopY > startY) {
             for ( var i=startY; i<stopY; i+=step ) {
-                setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+                setTimeout("window.scrollByU =true;window.scrollTo(0, "+leapY+")", timer * speed);
                 leapY += step; if (leapY > stopY) leapY = stopY; timer++;
             } return;
         }
         for ( var i=startY; i>stopY; i-=step ) {
-            setTimeout("window.scrollTo(0, "+leapY+")", timer * speed);
+            setTimeout("window.scrollByU =true;window.scrollTo(0, "+leapY+")", timer * speed);
             leapY -= step; if (leapY < stopY) leapY = stopY; timer++;
         }
         
@@ -58,28 +59,63 @@ timeline.service('anchorSmoothScroll', function(){
     };
     
 });
+
 timeline.directive('whenScrolled', function($window) {
     return function(scope, elm, attr) {
         var raw = elm[0];
         var selectClass=angular.element(raw).attr('select-class');
+        var lastScrollTop=0;
         angular.element($window).bind('scroll', function() {
-            var _scrollTop = angular.element($window).scrollTop()
+            if($window.scrollByU){
+                $window.scrollByU =false;
+                return;
+            }
+            var _scrollTop = $window.scrollY;
+            var _windowHeight = $window.innerHeight;
+            var _scrollHeight = _scrollTop +_windowHeight;
             var selectedEle = angular.element('.'+selectClass);
             var nearestEle = 0;
+            // if(lastScrollTop>_scrollTop){
+            //     //向上滚动 
+            //     for(var i = 0; i<selectedEle.length;i++){
+            //         var _temp = selectedEle[i];
+            //         if( _scrollTop > _temp.offsetTop && selectedEle[nearestEle].offsetTop < _temp.offsetTop){
+            //             nearestEle = i;
+            //         }
+            //     }
+            //     for(var j=nearestEle;j>0;j--){
+            //         if(selectedEle[j].id&&selectedEle[j].dataset.load!='0'){
+            //             nearestEle =j;
+            //             break;
+            //         }
+            //     }
+            // }
+            // else{
+            //     //向下滚动
+            //     for(var i = 0; i<selectedEle.length;i++){
+            //         var _temp = selectedEle[i];
+            //         if( _scrollHeight > _temp.offsetTop && selectedEle[nearestEle].offsetTop > _temp.offsetTop){
+            //             nearestEle = i;
+            //         }
+            //     }
+            //     for(var j=nearestEle;j<selectedEle.length;j++){
+            //         if(selectedEle[j].id&&selectedEle[j].dataset.load!='0'){
+            //             nearestEle =j;
+            //             break;
+            //         }
+            //     }
+            // }
             for(var i = 0; i<selectedEle.length;i++){
                 var _temp = selectedEle[i];
-                if(_scrollTop > _temp.offsetTop && selectedEle[nearestEle].offsetTop < _temp.offsetTop){
-                    nearestEle = i;
+                if( _scrollTop < _temp.offsetTop && _scrollHeight > _temp.offsetTop){
+                    // nearestEle = i;
+                    if(_temp.id){
+                        scope.$apply(attr.whenScrolled+"(\'"+_temp.id+"\')");
+                    }
                 }
             }
-            scope['show_'+selectedEle[nearestEle].id] = true;
-            if(nearestEle>0){
-                scope['show_'+selectedEle[nearestEle-1].id] = true;
-            }
-            if(nearestEle<selectedEle.length-1){
-                scope['show_'+selectedEle[nearestEle+1].id] = true;
-            }
-            scope.$apply(attr.whenScrolled+"(\'"+selectedEle[nearestEle].id+"\')");
+
+            lastScrollTop = _scrollTop;
         });
     };
 });
@@ -92,23 +128,41 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
         Campaign.getCampaignsDateRecord(hostType,userId,function(err,record){
             if(!err){
                 $scope.timelines=record;
+                addCampaign(record[0].year+'_'+record[0].month[0].month);
             }
         });
-        $scope.nowYear='timeline_0';
-        var addCampaign = function(timeline){
-            for (var i = $scope.timelines.length - 1; i >= 0; i--) {
-                if($scope.timelines[i].year==timeline.year){
-                    for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
-                        if($scope.timelines[i].month[j].month==timeline.month){
-                            if($scope.timelines[i].month[j].campaigns.length==0){
-                                $scope.timelines[i].month[j].campaigns = timeline.campaigns;
-                            }
-                            return;
-                        }
-                    };
-                    break;
+        $scope.nowYear='timeline1_0';
+        var addCampaign = function(id){
+            var temp = id.split('_');
+            if(temp[0]!='timeline1'&&temp[0]!='timeline0'){
+                var paging = {
+                    year:temp[0],
+                    month:temp[1]
                 }
-            };
+                Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
+                    if(!err){
+                        for (var i = $scope.timelines.length - 1; i >= 0; i--) {
+                            if($scope.timelines[i].year==timeline.year){
+                                for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
+                                    if($scope.timelines[i].month[j].month==timeline.month){
+                                        if($scope.timelines[i].month[j].campaigns.length==0){
+                                            $scope.timelines[i].month[j].campaigns = timeline.campaigns;
+                                            return timeline.campaigns.length;
+                                        }
+                                        return 0;
+                                    }
+                                };
+                                break;
+                            }
+                        };
+                    }
+                    return 0;
+                });
+            }
+            else{
+                return false;
+            }
+            
         }
         $scope.scrollTo =function(id){
             var temp = id.split('_');
@@ -116,24 +170,13 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
             $scope.nowMonth = temp[1];
             $location.hash(id);
             anchorSmoothScroll.scrollTo(id);
-            if(temp[0]!='timeline'){
-                var paging = {
-                    year:temp[0],
-                    month:temp[1]
-                }
-                Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
-                    if(!err){
-                        addCampaign(timeline);
-                    }
-                });
-            }
-
+            addCampaign(id);
         }
         $scope.loadMore = function (id) {
-          // console.log(i++);
           var temp = id.split('_');
           $scope.nowYear = temp[0];
-          $scope.nowMonth = id;
+          $scope.nowMonth = temp[1];
+          addCampaign(id);
         }
     }
 ]);

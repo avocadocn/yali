@@ -60,13 +60,11 @@ angular.module('donler.components.imageBox', [])
       link: function (scope, ele, attrs, ctrl) {
         var images = scope.images;
         if (images.length > 0) {
-
           scope.isPreview = false;
           scope.prevIndex = 0;
           scope.thisIndex = 0;
           scope.nextIndex = 0;
           scope.previewImg = images[0].uri;
-
           var pageIndex = 0;
 
           var setIndex = function (index) {
@@ -86,6 +84,7 @@ angular.module('donler.components.imageBox', [])
             pageIndex = scope.thisIndex;
             scope.previewImg = images[scope.thisIndex].uri;
             scope.setMargin(scope.thisIndex);
+
           };
 
           scope.choose = function (index) {
@@ -160,14 +159,17 @@ angular.module('donler.components.imageBox', [])
       link: function (scope, ele, attrs, ctrl) {
         var lastHeight = 0;
         scope.$watch('previewImg', function (newVal, oldVal) {
-          var img = new Image();
-          img.src = scope.previewImg;
-          img.onload = function () {
-            if (this.height > document.body.clientHeight || lastHeight > document.body.clientHeight) {
-              window.scrollTo(0, ele[0].offsetTop);
+          if(newVal){
+            var img = new Image();
+            img.src = newVal;
+            img.onload = function () {
+              if (this.height > document.body.clientHeight || lastHeight > document.body.clientHeight) {
+                window.scrollTo(0, ele[0].offsetTop);
+              }
+              lastHeight = this.height;
             }
-            lastHeight = this.height;
           }
+
         })
       }
     };

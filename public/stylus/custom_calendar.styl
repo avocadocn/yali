@@ -72,60 +72,61 @@ logoLink()
   .month
     margin-top 5px
     margin-right 5px
-.calendar_box
-  .cal-context
-    div
-      border none
-    .cal-row-head
-      border-bottom 1px solid #CCC
-      [class*='cal-cell1']
-        padding 2px 0
-    .joined
-      background none
-      color navbarFontColor
-    .cal-month-box
-      .cal-row-fluid
-        [class*='cal-cell']
-          width 34px
-          &:first-child
-            width 35px
-          &:last-child
-            width 35px
-      .cal-day-today
-        span[data-cal-date]
-          font-size 1.2em
-          background-color #F58464
-          border-radius 100%
-      .cal-month-day-small
-        height 31px
-        border-bottom 1px solid #fff
-        // .join_sign
-        //   margin 0 10px
-        //   width 14px
-        //   height 13px
-        //   color #ffff
-        //   background-color #3498db
-        //   text-align center
-        //   float right
-        //   border-radius 0
-        //   font-size 10px
-        //   font-family Arial
-        //   line-height 14px
-        span[data-cal-date]
-          width 21px
-          height 21px
-          text-align center
-          margin 5px
-          color #fff
-          font-size 12px
-          line-height 23px
-      .cal-day-inmonth.cal-month-day-small
-        &.length_3
-          background-color #3ca2e0
-        &.length_2
-          background-color #8dc5e8
-        &.length_1
-          background-color #a7d6f2
+.schedule_small
+  .calendar_box
+    .cal-context
+      div
+        border none
+      .cal-row-head
+        border-bottom 1px solid #CCC
+        [class*='cal-cell1']
+          padding 2px 0
+      .joined
+        background none
+        color navbarFontColor
+      .cal-month-box
+        .cal-row-fluid
+          [class*='cal-cell']
+            width 34px
+            &:first-child
+              width 35px
+            &:last-child
+              width 35px
+        .cal-day-today
+          span[data-cal-date]
+            font-size 1.2em
+            background-color #F58464
+            border-radius 100%
+        .cal-month-day-small
+          height 31px
+          border-bottom 1px solid #fff
+          // .join_sign
+          //   margin 0 10px
+          //   width 14px
+          //   height 13px
+          //   color #ffff
+          //   background-color #3498db
+          //   text-align center
+          //   float right
+          //   border-radius 0
+          //   font-size 10px
+          //   font-family Arial
+          //   line-height 14px
+          span[data-cal-date]
+            width 21px
+            height 21px
+            text-align center
+            margin 5px
+            color #fff
+            font-size 12px
+            line-height 23px
+        .cal-day-inmonth.cal-month-day-small
+          &.length_3
+            background-color #3ca2e0
+          &.length_2
+            background-color #8dc5e8
+          &.length_1
+            background-color #a7d6f2
 #cal-slide-content
   .event-item
     position relative

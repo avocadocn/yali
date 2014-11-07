@@ -1975,7 +1975,6 @@ exports.getCampaignData = function (req, res) {
   else if(req.params.hostType=='user'){
     options['campaign_unit.member._id'] = mongoose.Types.ObjectId(req.params.hostId);
   }
-
   Campaign
     .find(options)
     .populate('photo_album')

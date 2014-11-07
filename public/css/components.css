@@ -227,6 +227,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: left;
 }
 .simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb {
   width: 200px;

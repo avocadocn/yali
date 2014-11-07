@@ -227,6 +227,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: left;
 }
 .simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb {
   width: 200px;
@@ -4026,10 +4027,10 @@ input.ng-invalid.ng-dirty {
   text-decoration: none;
 }
 .timeline_element .title .timeline_logo {
-  height: 30px;
-  width: 30px;
   margin-top: 7px;
-  margin-right: 2px;
+  margin-right: 4px;
+  height: 40px;
+  width: 40px;
 }
 .timeline_element .title .date {
   width: 30px;
@@ -4064,11 +4065,6 @@ input.ng-invalid.ng-dirty {
   white-space: nowrap;
   display: inline-block;
   float: left;
-}
-.timeline_element .title .timeline-logo {
-  margin-right: 4px;
-  height: 40px;
-  width: 40px;
 }
 .timeline_element .img_scroll .photo {
   float: left;
