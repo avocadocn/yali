@@ -256,12 +256,79 @@ contentBdColor = #ededed
 
 .family_photo_album
   .photo
-    line-height 1
+    display block
+    width 180px
+    height 145px
+    position relative
+    margin-left 15px
+    box-shadow 3px 3px 3px #ddd
+    &:nth-child(4n+1)
+      margin-left 15px
+    &:nth-child(5n+1)
+      margin-left 0 !important
+    &:hover
+      .star, .delete
+        opacity 1 !important
+    .photo_img
+      display block
+      width 180px
+      height 145px
+    .button_group
+      position absolute
+      top 5px
+      right 5px
+      width 20px
+      height 45px
+      .star, .delete
+        display block
+        width 20px
+        height 20px
+        background-color white
+        opacity 0
+      .star
+        background url('/img/star.png') center
+        &:hover
+          background url('/img/star_mouseover_selected.png') center
+      .delete
+        margin-top 5px
+        background url('/img/delete.png') center
+        &:hover
+          background url('/img/delete_mouseover.png') center
+
   .photo.active
-    border-color green
+    border 2px solid #3498db
+    .star
+      opacity 1
+      background url('/img/star_mouseover_selected.png') center
+
+  .cropper
+    margin-left auto
+    margin-right auto
+    width 600px
+    height 420px
+    padding 30px 90px 50px
+    overflow hidden
   .cropit-image-preview
     width 420px
     height 340px
+  .cropit-image-background
+    opacity 0.2
   .cropit-image-input
     visibility hidden
-
+  .operator
+    position relative
+    text-align center
+    .cropit-image-zoom-input
+      margin 0 10px
+      line-height 26px
+      -webkit-appearance none
+      -moz-appearance none
+      appearance none
+      height 5px
+      -webkit-border-radius 5px
+      border-radius 5px
+      outline none
+    .button_sure
+      margin-left 10px
+    .icon_large
+      font-size 17px

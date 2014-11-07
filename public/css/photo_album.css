@@ -246,15 +246,99 @@
   line-height: 20px;
 }
 .family_photo_album .photo {
-  line-height: 1;
+  display: block;
+  width: 180px;
+  height: 145px;
+  position: relative;
+  margin-left: 15px;
+  box-shadow: 3px 3px 3px #ddd;
+}
+.family_photo_album .photo:nth-child(4n+1) {
+  margin-left: 15px;
+}
+.family_photo_album .photo:nth-child(5n+1) {
+  margin-left: 0 !important;
+}
+.family_photo_album .photo:hover .star,
+.family_photo_album .photo:hover .delete {
+  opacity: 1 !important;
+}
+.family_photo_album .photo .photo_img {
+  display: block;
+  width: 180px;
+  height: 145px;
+}
+.family_photo_album .photo .button_group {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 45px;
+}
+.family_photo_album .photo .button_group .star,
+.family_photo_album .photo .button_group .delete {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  opacity: 0;
+}
+.family_photo_album .photo .button_group .star {
+  background: url("/img/star.png") center;
+}
+.family_photo_album .photo .button_group .star:hover {
+  background: url("/img/star_mouseover_selected.png") center;
+}
+.family_photo_album .photo .button_group .delete {
+  margin-top: 5px;
+  background: url("/img/delete.png") center;
+}
+.family_photo_album .photo .button_group .delete:hover {
+  background: url("/img/delete_mouseover.png") center;
 }
 .family_photo_album .photo.active {
-  border-color: #008000;
+  border: 2px solid #3498db;
+}
+.family_photo_album .photo.active .star {
+  opacity: 1;
+  background: url("/img/star_mouseover_selected.png") center;
+}
+.family_photo_album .cropper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  height: 420px;
+  padding: 30px 90px 50px;
+  overflow: hidden;
 }
 .family_photo_album .cropit-image-preview {
   width: 420px;
   height: 340px;
 }
+.family_photo_album .cropit-image-background {
+  opacity: 0.2;
+}
 .family_photo_album .cropit-image-input {
   visibility: hidden;
+}
+.family_photo_album .operator {
+  position: relative;
+  text-align: center;
+}
+.family_photo_album .operator .cropit-image-zoom-input {
+  margin: 0 10px;
+  line-height: 26px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  outline: none;
+}
+.family_photo_album .operator .button_sure {
+  margin-left: 10px;
+}
+.family_photo_album .operator .icon_large {
+  font-size: 17px;
 }

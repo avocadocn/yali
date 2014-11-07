@@ -42,13 +42,14 @@ donler.controller('FamilyPhotoAlbumCtrl', ['$scope', 'Family', function ($scope,
       }
     });
 
-  }
+  };
 
   var cropper = $('#image_cropper').cropit({
     onFileChange: function () {
       $scope.isUploading = true;
       $scope.$digest();
-    }
+    },
+    imageBackground: true
   });
 
   $scope.isUploading = false;
