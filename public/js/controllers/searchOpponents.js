@@ -172,6 +172,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
           var start = Math.floor(pageNumber/10)*10+1;
           var end = Math.ceil(pageNumber/10)*10;
           var end = end>$scope.maxPage? $scope.maxPage:end;
+          $scope.addMarkers();
           $scope.pages=[];
           for(var i=start;i<=end;i++){
             $scope.pages.push(i);
@@ -201,37 +202,30 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
 
     //-地图
     $scope.fullMapInitialize = function(){
-        $scope.fullMap = new AMap.Map("fullMap",{
-          rotateEnable:true,
-          dragEnable:true,
-          zoomEnable:true,
-        });
-        // if($scope.team.home_court[0].name!==''){
-        //     var piont1 = new AMap.LngLat(
-        //       $scope.team.home_court[0].loc.coordinates[0],
-        //       $scope.team.home_court[0].loc.coordinates[1]);
-        //     $scope.locationmap1.setZoomAndCenter(15,piont1);
-        //     var markerOption = {
-        //         map: $scope.locationmap1,
-        //         position: piont1,
-        //         draggable: true
-        //     };
-        //     var mar = new AMap.Marker(markerOption);
-        // };
-        window.map_ready =true;
-        $scope.addMarkers();
+      $scope.fullMap = new AMap.Map("fullMap",{
+        rotateEnable:true,
+        dragEnable:true,
+        zoomEnable:true,
+      });
+      window.map_ready =true;
+      $scope.addMarkers();
     };
     $scope.addMarkers = function(){
       if(window.map_ready&&$scope.resultTeams.length>0){
         //清除地图的标记
         $scope.fullMap.clearMap();
         //增加标记
-        var piont = new AMap.LngLat($rootScope.myTeam.home_court[0].loc.coordinates[0],$rootScope.myTeam.home_court[0].loc.coordinates[1]);
-        var marker1 = new Amap.Marker({
-          map:$scope.fullMap,
-          position:piont
-        });
-        // $scope.fullMap.setFitView();
+        var points=[],markers=[];
+        for(var i=0;i<$scope.resultTeams.length;i++){
+          var point = new AMap.LngLat($scope.resultTeams[i].home_court[0].loc.coordinates[0],$scope.resultTeams[i].home_court[0].loc.coordinates[1]);
+          var imageNumber = i+1;
+          markers[i] = new AMap.Marker({
+            icon:"http://webapi.amap.com/images/"+imageNumber+".png",
+            map:$scope.fullMap,
+            position:point
+          });
+        }
+        $scope.fullMap.setFitView();
       }
     };
     if($rootScope.myTeam.home_court.length>0){

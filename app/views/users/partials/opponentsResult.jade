@@ -39,8 +39,8 @@
         .headline
           span(ng-show="headline") {{headline}}
         .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo($index)")
-          span(ng-if="isShowMap") {{engDict[$index]}}
-          img.logo(ng-cloak src="{{team.logo}}")
+          img.logo(ng-if="isShowMap" ng-src="http://webapi.amap.com/images/{{$index+1}}.png") 
+          img.logo(ng-cloak ng-src="{{team.logo}}")
           .text
             span.title {{team.name}}
             span.content {{team.cname}}
