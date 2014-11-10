@@ -2,7 +2,7 @@
 
 var donler = angular.module('donler');
 
-donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$location', 'Team', 'Campaign', function($rootScope, $scope, $timeout, $location, Team, Campaign) {
+donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$location', 'Team', 'Campaign', 'anchorSmoothScroll', function($rootScope, $scope, $timeout, $location, Team, Campaign, anchorSmoothScroll) {
 
   var data = document.getElementById('data').dataset;
   var teamId = data.id;
@@ -438,6 +438,11 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     } else {
       return false;
     }
+  };
+
+  $scope.anchorTo = function (id) {
+    $location.hash(id);
+    anchorSmoothScroll.scrollTo(id);
   };
 
   $scope.scrollTo = function(id) {

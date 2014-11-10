@@ -658,6 +658,33 @@
 .teampage .side_panel .timeline_control .active_year a.active_month {
   color: #3ba3e0;
 }
+.teampage .side_panel .button_group {
+  width: 50px;
+  border-radius: 1em;
+  box-shadow: 3px 3px 3px #ddd;
+}
+.teampage .side_panel .button_group .icon_button {
+  display: block;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #fff;
+  border-top: 1px solid #efefef;
+  cursor: pointer;
+}
+.teampage .side_panel .button_group .icon_button:first-child {
+  border-top: none;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+.teampage .side_panel .button_group .icon_button:last-child {
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+.teampage .side_panel .button_group .icon_button .icon {
+  height: 16px;
+}
 .teampage .team_timeline .dl_timeline {
   padding-top: 0;
 }
