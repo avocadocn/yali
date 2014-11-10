@@ -154,6 +154,66 @@
   margin: 0;
   background-color: #aaa;
 }
+.teampage .calendar_card .cal-context div {
+  border: none;
+}
+.teampage .calendar_card .cal-context .joined {
+  background: none;
+  color: navbarFontColor;
+}
+.teampage .calendar_card .cal-context .cal-row-head {
+  height: 18px;
+  background-color: #fbfbfb;
+  border-top: 2px solid #efefef;
+  border-bottom: 1px solid #efefef;
+  box-sizing: content-box;
+}
+.teampage .calendar_card .cal-context .cal-row-head .cal-cell1 {
+  height: 20px;
+  line-height: 20px;
+  padding: 0;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-row-fluid {
+  height: 30px;
+  margin-top: 1px;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-cell {
+  width: 14.285714285714286%;
+  min-height: 0;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-month-day.cal-day-today {
+  padding: 5px;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-month-day.cal-day-today .day {
+  display: block;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  line-height: 22px;
+  background-color: #f58464;
+  border-radius: 100%;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-month-day {
+  height: 30px;
+  line-height: 32px;
+  text-align: center;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-month-day .day {
+  text-align: center;
+  margin: 0;
+  color: #fff;
+  font-size: 12px;
+  float: none !important;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-day-inmonth.cal-month-day.length_3 {
+  background-color: #3ca2e0;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-day-inmonth.cal-month-day.length_2 {
+  background-color: #8dc5e8;
+}
+.teampage .calendar_card .cal-context .cal-month-box .cal-day-inmonth.cal-month-day.length_1 {
+  background-color: #a7d6f2;
+}
 #cal-slide-content {
   padding: 10px 5px;
   box-shadow: none;

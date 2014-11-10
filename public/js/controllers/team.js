@@ -352,7 +352,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', 'Te
   var firstLoad = true;
   var options = {
     events_source: '/campaign/team/calendar/' + teamId,
-    view: 'weeks',
+    view: 'month',
     time_end: '24:00',
     tmpl_path: '/tmpls-team/',
     tmpl_cache: false,

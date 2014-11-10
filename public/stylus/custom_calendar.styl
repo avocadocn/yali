@@ -188,6 +188,60 @@ logoLink()
     .join_sign
       margin 0
       background-color #aaa
+
+.teampage
+  .calendar_card
+    .cal-context
+      div
+        border none
+      .joined
+        background none
+        color navbarFontColor
+      .cal-row-head
+        height 18px
+        background-color #fbfbfb
+        border-top 2px solid #efefef
+        border-bottom 1px solid #efefef
+        box-sizing content-box
+        .cal-cell1
+          height 20px
+          line-height 20px
+          padding 0
+      .cal-month-box
+        .cal-row-fluid
+          height 30px
+          margin-top 1px
+        .cal-cell
+          width (100/7)%
+          min-height 0
+        .cal-month-day.cal-day-today
+          padding 5px
+          .day
+            display block
+            margin auto
+            width 20px
+            height 20px
+            line-height 22px
+            background-color #F58464
+            border-radius 100%
+        .cal-month-day
+          height 30px
+          line-height 32px
+          text-align center
+          .day
+            text-align center
+            margin 0
+            color #fff
+            font-size 12px
+            float none !important
+        .cal-day-inmonth.cal-month-day
+          &.length_3
+            background-color #3ca2e0
+          &.length_2
+            background-color #8dc5e8
+          &.length_1
+            background-color #a7d6f2
+
 //-for both teampage and personal page
 #cal-slide-content
   padding 10px 5px

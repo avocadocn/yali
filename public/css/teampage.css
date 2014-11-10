@@ -215,6 +215,7 @@
 }
 .teampage .member_card .members {
   padding: 0 10px;
+  padding-right: 0;
   border-top: 1px solid #efefef;
 }
 .teampage .member_card .members:before,
@@ -420,6 +421,7 @@
 }
 .teampage .calendar_card .calendar_nav {
   height: 30px;
+  line-height: 30px;
 }
 .teampage .calendar_card .calendar_nav:before,
 .teampage .calendar_card .calendar_nav:after {
@@ -431,16 +433,31 @@
 }
 .teampage .calendar_card .calendar_nav .icon {
   float: left;
+  margin-top: 9px;
+  margin-left: 10px;
+  height: 14px;
 }
 .teampage .calendar_card .calendar_nav .title {
-  float: left;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 16px;
+}
+.teampage .calendar_card .calendar_nav .title .calendar_title {
+  margin: 0 20px;
+}
+.teampage .calendar_card .calendar_nav .title .prev,
+.teampage .calendar_card .calendar_nav .title .next {
+  margin: 0;
+  text-decoration: none;
 }
 .teampage .calendar_card .calendar_body {
-  height: 200px;
-  overflow: hidden;
+  height: 207px;
 }
 .teampage .calendar_card .calendar_footer {
-  height: 30px;
+  height: 25px;
+  line-height: 25px;
+  padding-right: 10px;
 }
 .teampage .calendar_card .calendar_footer:before,
 .teampage .calendar_card .calendar_footer:after {
@@ -463,6 +480,24 @@
 }
 .teampage .calendar_card .calendar_footer .instruction .item {
   float: left;
+  margin-left: 13px;
+}
+.teampage .calendar_card .calendar_footer .instruction .item .circle {
+  height: 10px;
+  width: 10px;
+  margin: 7px 0;
+  margin-right: 10px;
+  float: left;
+  border-radius: 100%;
+}
+.teampage .calendar_card .calendar_footer .instruction .item .circle_no_campaign {
+  background-color: #a7d6f2;
+}
+.teampage .calendar_card .calendar_footer .instruction .item .circle_few_campaign {
+  background-color: #8dc5e8;
+}
+.teampage .calendar_card .calendar_footer .instruction .item .circle_many_campaign {
+  background-color: #3ca2e0;
 }
 .teampage .modal .modal-dialog {
   width: 960px;
