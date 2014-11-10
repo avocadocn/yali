@@ -14,7 +14,7 @@ block contentExt
       .base_info
         .team_row
           .team_col
-            .card.info_card
+            .card.info_card#info_card
               .team_info
                 .logo_box
                   img.logo(ng-src="{{team.logo}}")
@@ -49,7 +49,7 @@ block contentExt
                 .other_company_member.one_button(ng-if="role==='GUEST'" ng-cloak)
                   button.op_button.button_red 推荐给队长
 
-            .card.member_card
+            .card.member_card#member_card
               .header
                 img.icon(src="/img/team.png")
                 h3.title 队员
@@ -61,7 +61,7 @@ block contentExt
                   img.member(ng-repeat="member in team.members.slice(0, 5)" ng-src="{{member.photo}}/50/50" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id="pop{{member._id}}member_card" rel="popover")
 
           .team_col
-            .card.family_card(ng-class="{'no_family': team.familyPhotos.length===0, 'no_upload': !allow.editTeam && team.familyPhotos.length===0}")
+            .card.family_card#family_card(ng-class="{'no_family': team.familyPhotos.length===0, 'no_upload': !allow.editTeam && team.familyPhotos.length===0}")
               carousel(interval="5000" ng-if="team.familyPhotos.length > 0" ng-cloak)
                 slide(ng-repeat="photo in team.familyPhotos")
                   a(ng-href="/photoAlbum/family/{{team._id}}" title="点击进入全家福相册"): img(ng-src="{{photo.uri}}/420/340")
@@ -74,7 +74,7 @@ block contentExt
 
         .team_row
           .team_col
-            .card.home_court_card(ng-if="isShowHomeCourts")
+            .card.home_court_card#home_court_card(ng-if="isShowHomeCourts")
               .home_court_nav
                 img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
                 .tabs(ng-init="courtIndex=0;")
@@ -88,7 +88,7 @@ block contentExt
                 img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}/420/230")
 
           .team_col
-            .card.calendar_card
+            .card.calendar_card#calendar_card
               #calendar_nav.calendar_nav
                 img.icon(src="/img/calendar_big.png")
                 .title
@@ -137,8 +137,11 @@ block contentExt
                 span {{month.month}}月
         .control_year(ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')")
           span 最初
-      .button_group
-        a.photo_album(ng-href="/photoAlbum/team/{{team._id}}/listView") 相册
+        .button_group
+          .icon_button(ng-click="anchorTo('home_court_card')"): img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
+          .icon_button(ng-click="anchorTo('calendar_card')"): img.icon(src="/img/calendar_big.png")
+          .icon_button(ng-click="anchorTo('member_card')"): img.icon(src="/img/team.png")
+          a.icon_button(ng-href="/photoAlbum/team/{{team._id}}/listView"): img.icon(src="/img/camera_with_flash.png")
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
