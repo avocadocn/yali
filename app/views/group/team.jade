@@ -116,9 +116,9 @@ block contentExt
               .date_separator(id='{{years.year}}_{{month.month}}' data-load="{{month.campaigns.length}}")
                 span.span(ng-click="scrollTo(years.year+'_'+month.month)") {{years.year}}-{{month.month}}
               .column.column_left
-                campaign-card(ng-repeat="campaign in month.campaigns" ng-if="$index%2===0" item="campaign" role="{{role}}")
+                campaign-card(ng-repeat="campaign in month.campaigns" ng-if="$index%2===0" item="campaign" role="{{role}}" cid="{{team.cid}}" tid="{{team._id}}")
               .column.column_right
-                campaign-card(ng-repeat="campaign in month.campaigns" ng-if="$index%2===1" item="campaign" role="{{role}}")
+                campaign-card(ng-repeat="campaign in month.campaigns" ng-if="$index%2===1" item="campaign" role="{{role}}" cid="{{team.cid}}" tid="{{team._id}}")
           .date_separator(id='timeline1_0' data-load='0')
             span.span 最初
             .full_column
@@ -189,6 +189,7 @@ append footExt
   script(src="/js/controllers/timeline.js")
   script(src="/js/controllers/team.js")
   script(src="/js/service/team.js")
+  script(src="/js/directives/count_down.js")
   script(src="/lib/underscore/underscore.js")
   script(src="/js/language/zh-CN.js")
   script(src="/lib/bootstrap-calendar/js/calendar.js")

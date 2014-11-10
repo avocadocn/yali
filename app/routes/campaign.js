@@ -16,8 +16,6 @@ module.exports = function(app) {
   app.post('/campaign/quitCampaign/:campaignId', campaign.quitCampaign);
   // app.post('/campaign/vote/:campaignId', authorization.campaginAuthorize, campaign.vote);
 
-  app.get('/campaign/getDateRecord/:teamId', campaign.getTeamPageCampaignDateRecord);
-  app.get('/campaign/getTeamCampaigns/:teamId', campaign.getTeamPageCampaigns);
   app.get('/campaign/recentCommentCampaign', campaign.getScoreBoardMessage, campaign.getRecentCommentCampaigns);
   app.get('/campaign/user/all/calendar/:userId', campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);

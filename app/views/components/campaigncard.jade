@@ -7,6 +7,10 @@
       .date
         .month {{item.start_time | date:'MM'}}月
         .year {{item.start_time | date:'yyyy'}}
+  .join_remind(ng-if="(role==='LEADER'||role==='MEMBER') && !item.isEnd && cid && tid" ng-cloak)
+    span.remind(count-down="{{item.start_time}}")
+    button.join_button(ng-if="!item.isJoin" ng-click="join(cid, tid)") 参加
+    button.join_button(ng-if="item.isJoin" ng-click="quit()") 退出
   .img_scroll
     a(ng-href="{{(role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER')?'/campaign/detail/'+item.id:'#'}}",target="_blank")
       .img_scroll(ng-switch="item.photo_list.length")

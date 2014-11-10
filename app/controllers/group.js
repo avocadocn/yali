@@ -180,6 +180,7 @@ exports.info =function(req, res) {
     leaders: team.leader,
     members: membersWithoutLeader,
     homeCourts: homeCourts,
+    cid: team.cid,
     familyPhotos: team.family.filter(function (photo) {
       return !photo.hidden && photo.select;
     })
