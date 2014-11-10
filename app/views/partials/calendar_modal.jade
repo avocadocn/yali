@@ -10,13 +10,13 @@
             button.schedule_btn.join(ng-disabled="campaignsType=='joined'" ng-click="getCampaigns('joined','modal')") 已参加
             button.schedule_btn.unjoin(ng-disabled="campaignsType=='unjoin'" ng-click="getCampaigns('unjoin','modal')") 未参加
             button.schedule_btn.all(ng-disabled="campaignsType=='all'" ng-click="getCampaigns('all','modal')") 所有
-          p.calendar_nav#calendar_nav
+          p.calendar_nav#calendar_nav_modal
             span(ng-class="{'icon_fold':isCalendar,'icon_unfold':!isCalendar}" ng-click="isCalendar=!isCalendar;" ng-cloak)
             a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
             span.icon_calendar
             a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
             a.calendar_title(data-calendar-nav="today" href="javascript:void(0)") 
-              span#calendar_title
+              span#calendar_title_modal
           #calendar_view_modal.calendar_view_modal(ng-show="isCalendar")
             //- .clearfix
             //-   a.pull-right(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView") 返回日历

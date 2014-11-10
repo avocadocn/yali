@@ -284,7 +284,7 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
             $rootScope.recentJoinedCampaigns = data.campaigns[1];
             $rootScope.nowCampaigns = data.campaigns[2];
             $scope.showCampaign = true;
-            $scope.topCampaign = data.campaigns[1][0];
+            // $scope.topCampaign = data.campaigns[1][0];
           }
         }).error(function(data,status){
           alertify.alert('DATA ERROR');

@@ -198,7 +198,7 @@ textarea
   white-space nowrap
 
 .dl_head
-  max-width 1020px
+  max-width 1026px
   width auto
   min-width miniPageWidth
   margin 0 auto
@@ -669,6 +669,55 @@ textarea
       background-color cardbgColor
       &:hover
         background-color cardbgColor
+  .dl_icons
+    height 16px
+    width 16px
+    margin-top 2px
+    margin-left 4px
+    float left
+    background-repeat no-repeat
+    background-size contain
+    &:hover
+      opacity 0.5
+    &.icon_speaker
+      
+      background-image url('/img/icons/speakerwithhandle.png')
+    &.icon_binoculars
+      background-image url('/img/icons/binoculars.png')
+    &.icon_info
+      height 14px
+      margin-right 4px
+      margin-left 2px
+      margin-top 0
+      background-image url('/img/icons/personalinfo.png')
+    &.info_edit
+      margin 7px 13px
+      background-image url('/img/icons/edit.png')
+    &.icon_group
+      margin-top -3px
+      margin-left -2px
+      background-image url('/img/icons/group.png')
+    &.icon_rarrow
+      background-image url('/img/icons/rightarrow.png')
+    &.icon_drarrow
+      margin-right 4px
+      margin-top 5px
+      background-image url('/img/icons/dubblearrow.png')
+    &.icon_bgrarrow
+      background-image url('/img/icons/bgarrow.png')
+    &.icon_fold
+      height 14px
+      width 14px
+      float right
+      margin 8px 2px 0 25px
+      background-image url('/img/icons/fold.png')
+    &.icon_unfold
+      height 14px
+      width 14px
+      float right
+      margin 8px 2px 0 25px
+      background-image url('/img/icons/unfold.png')
+
   .main
     width 660px
     max-width 960px
@@ -678,46 +727,6 @@ textarea
     width 290px
     float left
     padding-top 41px
-    .dl_icons
-      height 12px
-      width 19px
-      float left
-      background-repeat no-repeat
-      background-size contain
-      &.speaker
-        height 13px
-        width 21px
-        margin-top 3px
-        background-image url('/img/icons/speakerwithhandle.png')
-      &.binoculars
-        height 13px
-        width 18px
-        margin-top 3px
-        background-image url('/img/icons/binoculars.png')
-      &.info
-        height 14px
-        width 21px
-        background-image url('/img/icons/personalinfo.png')
-      &.info_edit
-        background-image url('/img/icons/edit.png')
-      &.icon_group
-        background-image url('/img/icons/group.png')
-    .icon_fold
-      height 14px
-      width 14px
-      float right
-      margin 8px 2px 0 25px
-      background-repeat no-repeat
-      background-size contain
-      background-image url('/img/icons/fold.png')
-    .icon_unfold
-      height 14px
-      width 14px
-      float right
-      margin 8px 2px 0 25px
-      background-repeat no-repeat
-      background-size contain
-      background-image url('/img/icons/unfold.png')
     .photo_album
       padding 20px 10px 8px
       background-color #fff
@@ -733,7 +742,7 @@ textarea
         color #fff
         font-size 14px
         line-height 100%
-        margin-left 10px
+        margin-left 12px
         a
           font-size 14px
       .box_head
@@ -2008,7 +2017,7 @@ input.ng-invalid.ng-dirty
               border-top-right-radius 1em
           .calendar_nav
             a
-              width 100px
+              width 110px
               text-align center
               .calendar_title
                 width 165px
@@ -2113,7 +2122,7 @@ input.ng-invalid.ng-dirty
     .main
       width 700px
       margin-right 20px
-      margin-top 45px
+      margin-top 50px
       .timeline_control
         width 60px
         position fixed
@@ -2386,190 +2395,220 @@ input.ng-invalid.ng-dirty
           float left
           margin 5px 0
           dl_shadow()
-          padding 10px
           border-radius 2px
+          a
+            color white
+            .campaign_head
+              cursor pointer !important
+            .campaign_count
+              margin-right 5px
+              float right
+          .campaign_head
+            color white
+            height 30px
+            line-height 14px
+            font-size 14px
+            padding 9px
           .campaign
             clear both
-            height 70px
-            padding 10px
-            div
+            height 40px
+            padding 5px 0
+            color #999
+            & > div
               float left
+              height 100%
+            .day_col
+              font-size 30px
+              line-height 40px
               width 50px
-            .year_col
-              color borderColor
-              font-size 12px
             .time_col
-              font-size 14px
-              color secondaryfontColor
-            .logo_col
-              width 60px
-              .campaign_logo
-                width 47px
-                height 47px
-            .content_col
-              width 150px
+              font-size 12px
+              padding 5px 0
+              width 30px
               color #ccc
-              font-size 14px
               p
-                max-width 100%
-                overflow hidden
-                text-overflow ellipsis
-                white-space nowrap
-              a
-                color #ccc
-        .top
-          width 700px
-          padding 0
-          margin-top 10px
-          .campaign_head
-            padding 7px 10px 5px 10px
-            background-color #ffc053
-            height 30px
-            color #ffffff
-            line-height 16px
-            font-size 14px
-            border-top-left-radius 2px
-            border-top-right-radius 2px
-            .star
-              background-image url('/img/icons/star.png')
-              height 16px
-              width 16px
-              display inline-block
-              float left
-            .title
-              width 30%
-              margin-left 10px
-            .time_count
-              width 30%
-            a
-              color #ffffff
-            .add
-              font-size 24pt
-              line-height 21px
-          .campaign
-            padding 0
-            height 100px
-            .info_left
-              width 160px
-              border-right 1px solid #ccc
-              height 100%
-              padding 10px
-              .time_col
-                font-size 18px
-                clear both
-                width 100%
-                text-align center
-                .remind_text
-                  height 40px
-                  line-height 50px
-                  color #999
-                  font-size 12px
-                  margin 0
-                .time_text
-                  color #f48361
-            .logo_col
-              width 221px
-              padding-top 26px
-              padding-left 20px
-              border-right 1px solid #ccc
-              height 100%
-              .team
-                width 200px
-                .campaign_logo
-                  width 47px
-                  height 47px
-                  float left
-                .campaign_info
-                  float left
-                  width 150px
-                  .team_name
-                    margin-left 15px
-                    max-width 150px
-                    overflow hidden
-                    text-overflow ellipsis
-                    white-space nowrap
-            .content_col
-              width 260px
-              color #ccc
-              font-size 14px
-              padding-top 21px
-              padding-left 21px
-              p
-                max-width 100%
-                overflow hidden
-                text-overflow ellipsis
-                white-space nowrap
                 margin 0
-                line-height 24px
+                line-height 12px
+            .logo_col
+              padding-left 8px
+              .campaign_logo
+                width 30px
+                height 30px
+                float left
+                margin-right 4px
+            .content_col
+              maxwidth 160px
+              font-size 12px
+              padding-left 8px
+              p
+                max-width 100%
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+                line-height 16px
+                margin 0
               a
-                color #ccc
+                color #999
+            .operator
+              float right
+              margin-right 12px
+              margin-top 5px
+        // .top
+        //   width 700px
+        //   padding 0
+        //   margin-top 10px
+        //   .campaign_head
+        //     padding 7px 10px 5px 10px
+        //     background-color #ffc053
+        //     height 30px
+        //     color #ffffff
+        //     line-height 16px
+        //     font-size 14px
+        //     border-top-left-radius 2px
+        //     border-top-right-radius 2px
+        //     .star
+        //       background-image url('/img/icons/star.png')
+        //       height 16px
+        //       width 16px
+        //       display inline-block
+        //       float left
+        //     .title
+        //       width 30%
+        //       margin-left 10px
+        //     .time_count
+        //       width 30%
+        //     a
+        //       color #ffffff
+        //     .add
+        //       font-size 24pt
+        //       line-height 21px
+        //   .campaign
+        //     padding 0
+        //     height 100px
+        //     .info_left
+        //       width 160px
+        //       border-right 1px solid #ccc
+        //       height 100%
+        //       padding 10px
+        //       .time_col
+        //         font-size 18px
+        //         clear both
+        //         width 100%
+        //         text-align center
+        //         .remind_text
+        //           height 40px
+        //           line-height 50px
+        //           color #999
+        //           font-size 12px
+        //           margin 0
+        //         .time_text
+        //           color #f48361
+        //     .logo_col
+        //       width 221px
+        //       padding-top 26px
+        //       padding-left 20px
+        //       border-right 1px solid #ccc
+        //       height 100%
+        //       .team
+        //         width 200px
+        //         .campaign_logo
+        //           width 47px
+        //           height 47px
+        //           float left
+        //         .campaign_info
+        //           float left
+        //           width 150px
+        //           .team_name
+        //             margin-left 15px
+        //             max-width 150px
+        //             overflow hidden
+        //             text-overflow ellipsis
+        //             white-space nowrap
+        //     .content_col
+        //       width 260px
+        //       color #ccc
+        //       font-size 14px
+        //       padding-top 21px
+        //       padding-left 21px
+        //       p
+        //         max-width 100%
+        //         overflow hidden
+        //         text-overflow ellipsis
+        //         white-space nowrap
+        //         margin 0
+        //         line-height 24px
+        //       a
+        //         color #ccc
         .recent_unjoin
           width 345px
           float left
-          height 180px
+          max-height 230px
           &.no_campaign
             background-image url('/img/no_new_campaign.png')
-          .campaign
-            border-top 1px solid borderColor
-            margin 0 -10px
           .campaign_head
-            color themeColor
-            height 34px
-            line-height 24px
-            font-size 18px
-            a
-              font-size 14px
-              color #ccc
+            background-color #ffc053
+          a
+            .campaign_head
+              &:hover
+                background-color #e6af4f
         .recent_join
           width 345px
           float right
-          height 180px
+          max-height 230px
           &.no_campaign
             background-image url('/img/no_recent_campaign.png')
           .campaign_head
-            color #009999
-            height 34px
-            line-height 24px
-            font-size 18px
-            a
-              font-size 14px
-              color #ccc
+            background-color #3ccbd4
           .campaign
-            border-top 1px solid borderColor
-            margin 0 -10px
             .time_col
-              width 110px
+              width 60px
+              float right
               span
-                font-size 14px
-                line-height 44px
-              .time_count
-                color #009999
-        .recommend_team
-          .campaign_head
-            height 54px
-            line-height 24px
-            font-size 18px
-            a
-              color themeColor
+                line-height 20px
+            .content_col
+              max-width 175px
+            
         .now
           width 700px
           clear both
           &.no_campaign
             background-image url('/img/no_now_campaign.png')
           .campaign_head
-            padding 0 10px
-            height 34px
             color themeColor
             line-height 24px
-            font-size 18px
+            font-size 12px
             label
               max-width 80%
               overflow hidden
               text-overflow ellipsis
               white-space nowrap
             a
-              color themeColor
               cursor pointer
+              color #ccc
+              .date
+                width 30px
+                line-height 13px
+                margin 8px 4px
+                float left
+              .name
+                line-height 30px
+                margin-right 10px
+                margin-top 8px
+                max-width 250px
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+                text-align center
+              .day
+                float left
+                font-size 28px
+                margin 11px 6px
+                margin-right 0
+              .campaign_logo
+                width 30px
+                height 30px
+                margin-right 11px
+                margin-top 8px
           .unconfrim
             color #f7b1b3
             label
@@ -2579,38 +2618,54 @@ input.ng-invalid.ng-dirty
           .user_campaigns_container
             width 345px
             .campaign
-              margin 0 -10px
+              margin 0
               background-color #fcfcfc
               height 132px
-              padding 25px
+              padding-top 5px
               .logo_col
-                width 70px
-                margin-right 25px
+                width 100%
+                clear both
+                height 30px
+                padding-left 0
+                color #fff
+                .campaign_status
+                  color #fff
+                  padding-left 30px
+                .start_campaign
+                  background-color #3ccbd4
+                .unstart_campaign
+                  background-color #3ca2e0
                 .team
                   width 70px
                   .campaign_logo
                     width 70px
                     height 70px
                   .team_name
-                    padding 10px 0
+                    padding 5px 0
+                    margin 0
                     font-size 14px
                     text-align center
-                    color secondaryfontColor
                     max-width 70px
                     overflow hidden
                     text-overflow ellipsis
                     white-space nowrap
+                    float left
               .content_col
-                width 200px
-                max-width 200px
+                width 100%
+                max-width 100%
+                height 125px
                 overflow hidden
                 text-overflow ellipsis
                 white-space nowrap
+                padding 6px 40px
+                p
+                  line-height 20px
             .provoke
               .logo_col
-                clear both
-                width 100%
-                padding 10px 30px
+                padding-top 5px
+                padding-left 10px
+                height 110px
+                background-color #FFC053
                 .operator
                   width 75px
                   .dl_btn
@@ -2619,11 +2674,10 @@ input.ng-invalid.ng-dirty
                     background-color #ec6a6a
                 .team
                   float left
-                  margin 5px
-              .content_col
-                padding 10px
-                width 100%
-                max-width 100%
+                  margin-top 5px
+                  margin-left 30px
+                .content_col
+                  padding 19px 40px
             .photos
               clear both
               margin-top 15px
@@ -2643,17 +2697,15 @@ input.ng-invalid.ng-dirty
               a
                 color secondaryfontColor
                 margin-top 10px
-        
+                padding 10px
         .now_head
           width 100%
           height 30px
           padding 0
           .campaign_head
-            color #ffffff
             line-height 32px
             height 30px
             padding 0
-            font-size 14px
             background-color #3ca2e0
             border-radius 2px
             .head_icon
@@ -2676,38 +2728,37 @@ input.ng-invalid.ng-dirty
         font-size 18px
         padding 5px
         margin-top 10px
+        margin-bottom 10px
         clear both
         border-radius 2px
         dl_shadow()
         &.commentCampaign
-          background-color #3ccbd4
+          background-color #525E70
+          &:hover
+            background-color #4a5567
           .news_count
             font-size 12px
             height 16px
             width 16px
             line-height 18px
-            margin 0 6px
+            margin-left 5px
+            margin-right 6px
             background-color #fff
-            color #3ccbd4
+            color black
             border-radius 6px
         &.timeline_container
           background-image url('/img/timeline_bg.png')
           background-size cover
           .footprint
             background-image url('/img/icons/footprint.png')
-            background-repeat no-repeat
-            height 30px
-            width 34px
-            margin-left 5px
-            margin-top 5px
-            display inline-block
-            float left
-        a
-          label
-            font-size 14px
-            color #ffffff
-            text-align center
-            cursor pointer
+            margin 5px 12px 0 5px
+        label
+          font-size 14px
+          color #ffffff
+          text-align center
+          cursor pointer
+        .icon_right
+          margin-right 3px
         .full_parent
           display inline-block
       .sponsor_container
@@ -2715,7 +2766,7 @@ input.ng-invalid.ng-dirty
         color #ffffff
         line-height 20px
         font-size 14px
-        padding 7px
+        padding 6px
         margin-top 10px
         float left
         width 118px
@@ -2726,12 +2777,17 @@ input.ng-invalid.ng-dirty
           color #ffffff
         &.sponsor
           background-color #3ca2e0
-          margin-right 3px
+          margin-right 2px
+          &:hover
+            background-color #398fc3
         &.provoke
           background-color #f48361
           padding-left 18px
+          &:hover
+            background-color #da7659
         label
-          margin-left 10px
+          margin-left 14px
+          cursor pointer
       .groupsbox
         margin-top 10px
       .infobox
@@ -2747,37 +2803,45 @@ input.ng-invalid.ng-dirty
           font-size 14px
           line-height 12px
           .label_info
-            margin-left 10px
-            margin-bottom 0
-        .info_left
-          float left
-          padding 10px
-          margin-bottom 10px
-          background-color #fff
-          .user_logo
-            width 50px
-            height 50px
-        .info_right
-          float left
-          padding 10px
-          padding-left 15px
-          font-size 12px
-          width 170px
-          height 70px
-          background-color #fff
-          label
-            margin-bottom 0
-          .username
-            color themeColor
-            font-size 16px
-            min-width 63px
-          .score_label
-            color #edca3c
-          .score
-            color #ccc
-          .info_row
-            a
-              color #999
+            margin 1px 0px 0px 7px
+          .icon_container
+            float right
+            width 40x
+            height 100%
+            margin -8px
+            &:hover
+              background-color #444e5e
+        .info
+          clear both
+          .info_left
+            float left
+            padding 10px
+            margin-bottom 10px
+            background-color #fff
+            .user_logo
+              width 50px
+              height 50px
+          .info_right
+            float left
+            padding 10px
+            padding-left 15px
+            font-size 12px
+            width 170px
+            height 70px
+            background-color #fff
+            label
+              margin-bottom 0
+            .username
+              color themeColor
+              font-size 16px
+              min-width 63px
+            .score_label
+              color #edca3c
+            .score
+              color #ccc
+            .info_row
+              a
+                color #999
     .schedule_small
       dl_shadow()
       .schedulebox
@@ -2796,9 +2860,9 @@ input.ng-invalid.ng-dirty
             &.length_3
               background-color #3ca2e0
             &.length_2
-              background-color #8dc5e8
+              background-color #6cb8e7
             &.length_1
-              background-color #a7d6f2
+              background-color #a6d6f4
               margin-left 32px
           .campaign_label
             line-height 20px
@@ -2815,8 +2879,9 @@ input.ng-invalid.ng-dirty
           border-top-right-radius 2px
           .icon_calendar
             height 14px
-            width 38px
-            margin-top 8px
+            width 14px
+            margin-right 24px
+            margin-top 9px
             float left
             background-repeat no-repeat
             background-size contain

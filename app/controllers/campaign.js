@@ -527,20 +527,22 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       ]);
       temp.allow = allow;
     }
-    temp.campaign_unit =[];
-    _campaign.campaign_unit.forEach(function(_campaign_unit){
-      temp.campaign_unit.push({
-        team:{
-          _id:_campaign_unit.team._id,
-          name:_campaign_unit.team.name,
-          logo:_campaign_unit.team.logo
-        },
-        member: _campaign_unit.member
+    if(ct!==1) {//非公司活动
+      temp.campaign_unit =[];
+      _campaign.campaign_unit.forEach(function(_campaign_unit){
+        temp.campaign_unit.push({
+          team:{
+            _id:_campaign_unit.team._id,
+            name:_campaign_unit.team.name,
+            logo:_campaign_unit.team.logo
+          },
+          member: _campaign_unit.member
+        });
+        // if(_other.unConfirm){
+        //   temp.voteFlag = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,user._id,'_id')>-1;
+        // }
       });
-      // if(_other.unConfirm){
-      //   temp.voteFlag = model_helper.arrayObjectIndexOf(_campaign_unit.vote.positive_member,user._id,'_id')>-1;
-      // }
-    });
+    }
     campaigns.push(temp);
   });
   return campaigns;
@@ -1808,9 +1810,9 @@ exports.getMolds = function(req, res){
 
 //发活动接口
 exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
-//basicInfo: req.body,
-//providerInfo: for poster、campaign_type、campaignUnit、tid、cid etc
-//photoInfo: photo_album needed
+  //basicInfo: req.body,
+  //providerInfo: for poster、campaign_type、campaignUnit、tid、cid etc
+  //photoInfo: photo_album needed
 
   //---basicInfo
   var campaign = new Campaign();

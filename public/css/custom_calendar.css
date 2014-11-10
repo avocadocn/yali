@@ -67,7 +67,7 @@
   border-bottom: 1px solid #ccc;
 }
 .calendar_box .cal-context .cal-row-head [class*='cal-cell1'] {
-  padding: 2px 0;
+  padding: 1px 0;
 }
 .calendar_box .cal-context .joined {
   background: none;
@@ -95,10 +95,10 @@
   background-color: #3ca2e0;
 }
 .calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_2 {
-  background-color: #8dc5e8;
+  background-color: #6cb8e7;
 }
 .calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_1 {
-  background-color: #a7d6f2;
+  background-color: #a6d6f4;
 }
 #cal-slide-content .event-item {
   position: relative;
