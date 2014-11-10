@@ -1989,7 +1989,7 @@ exports.getCampaignData = function (req, res) {
       campaigns.forEach(function(campaign) {
         var _head,_logo,_name;
         var ct = campaign.campaign_type;
-
+        var unitInfos = [];
         //公司活动
         if(ct===1){
           // _head = '公司活动';
@@ -2006,7 +2006,10 @@ exports.getCampaignData = function (req, res) {
               _name = campaign.campaign_unit[i].team.name;
               break;
             }
-
+            unitInfos.push({
+              name: campaign.campaign_unit[i].team.name,
+              logo: campaign.campaign_unit[i].team.logo
+            });
           }
           // _logo = model_helper.arrayObjectIndexOf(campaign.camp[0].member,uid,'uid')>-1 ?campaign.camp[0].logo :campaign.camp[1].logo;
         }
@@ -2045,6 +2048,7 @@ exports.getCampaignData = function (req, res) {
           comment_sum:campaign.comment_sum,
           isJoin: isJoin,
           isEnd: campaign.end_time < Date.now(),
+          unitInfos: unitInfos,
           photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)
         }
         tempObj.components = campaign.formatComponents();

@@ -4073,6 +4073,28 @@ input.ng-invalid.ng-dirty {
   display: inline-block;
   float: left;
 }
+.timeline_element .join_remind {
+  height: 50px;
+  padding: 10px 40px;
+}
+.timeline_element .join_remind .remind {
+  float: left;
+  height: 30px;
+  line-height: 30px;
+}
+.timeline_element .join_remind .join_button,
+.timeline_element .join_remind .quit_button {
+  float: right;
+  width: 60px;
+  height: 30px;
+  color: #fff;
+}
+.timeline_element .join_remind .join_button {
+  background-color: #3ca2e0;
+}
+.timeline_element .join_remind .quit_button {
+  background-color: #ccc;
+}
 .timeline_element .img_scroll .photo {
   float: left;
   width: 86px;
