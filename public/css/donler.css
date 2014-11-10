@@ -4073,27 +4073,77 @@ input.ng-invalid.ng-dirty {
   display: inline-block;
   float: left;
 }
-.timeline_element .join_remind {
-  height: 50px;
-  padding: 10px 40px;
-}
-.timeline_element .join_remind .remind {
-  float: left;
-  height: 30px;
-  line-height: 30px;
-}
-.timeline_element .join_remind .join_button,
-.timeline_element .join_remind .quit_button {
+.timeline_element .join_button,
+.timeline_element .quit_button {
   float: right;
   width: 60px;
   height: 30px;
   color: #fff;
 }
-.timeline_element .join_remind .join_button {
+.timeline_element .join_button {
   background-color: #3ca2e0;
 }
-.timeline_element .join_remind .quit_button {
+.timeline_element .quit_button {
   background-color: #ccc;
+}
+.timeline_element .single_remind {
+  height: 50px;
+  padding: 10px 40px;
+  background-color: #fbfbfb;
+}
+.timeline_element .single_remind .remind {
+  float: left;
+  height: 30px;
+  line-height: 30px;
+}
+.timeline_element .multi_remind {
+  height: 110px;
+  padding: 10px 40px;
+  background-color: #fbfbfb;
+}
+.timeline_element .multi_remind .unit_info {
+  float: left;
+  display: flex;
+  display: -webkit-flex;
+}
+.timeline_element .multi_remind .unit_info .unit {
+  width: 70px;
+  height: 90px;
+}
+.timeline_element .multi_remind .unit_info .unit_1 {
+  order: 1;
+  -webkit-order: 1;
+}
+.timeline_element .multi_remind .unit_info .unit_2 {
+  order: 3;
+  -webkit-order: 3;
+}
+.timeline_element .multi_remind .unit_info .name {
+  width: 70px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.timeline_element .multi_remind .unit_info .vs {
+  width: 30px;
+  height: 70px;
+  line-height: 70px;
+  order: 2;
+  -webkit-order: 2;
+  font-size: 14px;
+  text-align: center;
+  color: #f48361;
+}
+.timeline_element .multi_remind .operator {
+  float: right;
+  text-align: right;
+}
+.timeline_element .multi_remind .operator .remind .count_down {
+  height: 25px;
+}
+.timeline_element .multi_remind .operator .remind .starting {
+  height: 50px;
 }
 .timeline_element .img_scroll .photo {
   float: left;

@@ -2917,23 +2917,63 @@ input.ng-invalid.ng-dirty
       white-space nowrap
       display inline-block
       float left
-  .join_remind
+  .join_button, .quit_button
+    float right
+    width 60px
+    height 30px
+    color white
+  .join_button
+    background-color #3ca2e0
+  .quit_button
+    background-color #cccccc
+  .single_remind
     height 50px
     padding 10px 40px
+    background-color #fbfbfb
     .remind
       float left
       height 30px
       line-height 30px
-    .join_button, .quit_button
+  .multi_remind
+    height 110px
+    padding 10px 40px
+    background-color #fbfbfb
+    .unit_info
+      float left
+      display flex
+      display -webkit-flex
+      .unit
+        width 70px
+        height 90px
+      .unit_1
+        order 1
+        -webkit-order 1
+      .unit_2
+        order 3
+        -webkit-order 3
+      .name
+        width 70px
+        display inline-block
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
+      .vs
+        width 30px
+        height 70px
+        line-height 70px
+        order 2
+        -webkit-order 2
+        font-size 14px
+        text-align center
+        color #f48361
+    .operator
       float right
-      width 60px
-      height 30px
-      color white
-    .join_button
-      background-color #3ca2e0
-    .quit_button
-      background-color #cccccc
-    
+      text-align right
+      .remind
+        .count_down
+          height 25px
+        .starting
+          height 50px
   .img_scroll
     .photo
       float left

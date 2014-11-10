@@ -7,7 +7,7 @@
       .date
         .month {{item.start_time | date:'MM'}}月
         .year {{item.start_time | date:'yyyy'}}
-  .join_remind(ng-if="(role==='LEADER'||role==='MEMBER') && !item.isEnd && cid && tid && item.unitInfos.length === 0" ng-cloak)
+  .single_remind(ng-if="(role==='LEADER'||role==='MEMBER') && !item.isEnd && cid && tid && item.unitInfos.length === 0" ng-cloak)
     .remind(ng-if="!isStart")
       span 距离开始还有
       span(count-down="{{item.start_time}}")
@@ -15,14 +15,18 @@
       span 活动正在进行中
     button.join_button(ng-if="!item.isJoin" ng-click="join(cid, tid)") 参加
     button.quit_button(ng-if="item.isJoin" ng-click="quit()") 退出
-  .join_remind(ng-if="(role==='LEADER'||role==='MEMBER') && !item.isEnd && cid && tid && item.unitInfos.length > 0" ng-cloak)
+  .multi_remind.clearfix(ng-if="(role==='LEADER'||role==='MEMBER') && !item.isEnd && cid && tid && item.unitInfos.length > 0" ng-cloak)
     .unit_info
-      .unit(ng-repeat="unit in item.unitInfos")
-        img.logo(ng-src="{{unit.logo}}")
+      .unit(ng-repeat="unit in item.unitInfos" class="unit_{{$index+1}}")
+        img.logo(ng-src="{{unit.logo}}/70/70")
         span.name {{unit.name}}
       span.vs vs
     .operator
-      span.remind(count-down="{{item.start_time}}")
+      .remind(ng-if="!isStart")
+        .count_down 距离开始还有
+        .count_down(count-down="{{item.start_time}}")
+      .remind(ng-if="isStart")
+        span.starting 正在进行
       button.join_button(ng-if="!item.isJoin" ng-click="join(cid, tid)") 参加
       button.quit_button(ng-if="item.isJoin" ng-click="quit()") 退出
   .img_scroll
