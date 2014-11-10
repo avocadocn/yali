@@ -135,7 +135,6 @@
 }
 .search_opponents .tab_view .search .searchOpponentInput {
   height: 30px;
-  background-color: #19bdc7;
   width: 280px;
   border-radius: 5px;
   border: 0;
@@ -156,8 +155,17 @@
 .search_opponents .unactive .opponnet_tab_style {
   background-color: #ccc !important;
 }
+.search_opponents .unactive .opponnet_tab_style a:hover {
+  background-color: #ccc;
+}
 .search_opponents .unactive .opponnet_tab_style.nearbyTeam {
   background-color: #afafaf !important;
+}
+.search_opponents .unactive .opponnet_tab_style.nearbyTeam a:hover {
+  background-color: #afafaf;
+}
+.search_opponents .unactive .search .searchOpponentInput {
+  background-color: #afafaf;
 }
 .search_opponents .active .nearbyTeam {
   background-color: #afafaf;
@@ -179,6 +187,9 @@
 }
 .search_opponents .active .search a:hover {
   background-color: #43d3dc;
+}
+.search_opponents .active .search .searchOpponentInput {
+  background-color: #19bdc7;
 }
 .search_opponents .active .result {
   margin: 20px;

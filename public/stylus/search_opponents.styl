@@ -110,7 +110,6 @@
         padding 0
       .searchOpponentInput
         height 30px
-        background-color #19bdc7
         width 280px
         border-radius 5px
         border 0
@@ -129,8 +128,17 @@
   .unactive
     .opponnet_tab_style
       background-color #ccc !important
+      a
+        &:hover
+          background-color #ccc 
     .opponnet_tab_style.nearbyTeam
       background-color #afafaf !important
+      a
+        &:hover
+          background-color #afafaf
+    .search
+      .searchOpponentInput
+        background-color #afafaf
   .active
     .nearbyTeam
       background-color #afafaf
@@ -149,6 +157,8 @@
       a
         &:hover
           background-color #43d3dc
+      .searchOpponentInput
+        background-color #19bdc7
     .result
       margin 20px
       background-color #fff
