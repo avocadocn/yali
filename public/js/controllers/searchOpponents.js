@@ -101,7 +101,7 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
         $scope.currentPage=1;
         $scope.resultTeams = data.teams;
         if(data.teams.length>0){
-          $scope.getOpponentInfo(0);
+          $scope.getOpponentInfo(0,1);
         }
         $scope.maxPage = data.maxPage;
         var showMaxPage = $scope.maxPage>5? 5:$scope.maxPage;
@@ -118,7 +118,7 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
         if(!status){
           $scope.resultTeams = data.teams;
           if(data.teams.length>0){
-            $scope.getOpponentInfo(data.teams[0]._id);
+            $scope.getOpponentInfo(0,1);
           }
           var start = Math.floor(pageNumber/10)*10+1;
           var end = Math.ceil(pageNumber/10)*10;
@@ -136,8 +136,8 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
     $scope.loadNextPage=function(){
       $scope.loadPage($scope.currentPage+1);
     };
-    $scope.getOpponentInfo=function(index){
-      if(index!==$scope.selectedIndex){
+    $scope.getOpponentInfo=function(index,newPage){
+      if(index!==$scope.selectedIndex||newPage){
         $scope.selectedIndex = index;
         var tid = $scope.resultTeams[index]._id;
         Search.getOpponentInfo(tid,function(status,data){
@@ -462,10 +462,10 @@ searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 
 searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope', 'Campaign',
   function($http, $scope, $rootScope, Campaign) {
     $scope.modal = 1;
-    $scope.myTname = $rootScope.myTeam.name;
     $scope.showMapFlag=false;
     $scope.location={name:'',coordinates:[]};
     $('#sponsorProvokeModel').on('show.bs.modal', function (e) {
+      $scope.myTname = $rootScope.myTeam.name;
       if(!$scope.moldsgot){
         Campaign.getMolds('team',$rootScope.myTeam._id,function(status,data){
           if(!status){
@@ -498,23 +498,23 @@ searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope',
     });
 
     var placeSearchCallBack = function(data){
-        $scope.locationmap.clearMap();
-        var lngX = data.poiList.pois[0].location.getLng();
-        var latY = data.poiList.pois[0].location.getLat();
-        $scope.location.coordinates=[lngX, latY];
-        var nowPoint = new AMap.LngLat(lngX,latY);
-        var markerOption = {
-            map: $scope.locationmap,
-            position: nowPoint,
-            draggable: true
-        };
-        var mar = new AMap.Marker(markerOption);
-        var changePoint = function (e) {
-            var p = mar.getPosition();
-            $scope.location.coordinates=[p.getLng(), p.getLat()];
-        };
-        $scope.locationmap.setFitView();
-        AMap.event.addListener(mar,"dragend", changePoint);
+      $scope.locationmap.clearMap();
+      var lngX = data.poiList.pois[0].location.getLng();
+      var latY = data.poiList.pois[0].location.getLat();
+      $scope.location.coordinates=[lngX, latY];
+      var nowPoint = new AMap.LngLat(lngX,latY);
+      var markerOption = {
+        map: $scope.locationmap,
+        position: nowPoint,
+        draggable: true
+      };
+      var mar = new AMap.Marker(markerOption);
+      var changePoint = function (e) {
+        var p = mar.getPosition();
+        $scope.location.coordinates=[p.getLng(), p.getLat()];
+      };
+      $scope.locationmap.setFitView();
+      AMap.event.addListener(mar,"dragend", changePoint);
     };
 
     $scope.initialize = function(){
@@ -573,10 +573,10 @@ searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope',
       };
       var callback = function(status,data){
         if(!status){
-            window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+          window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
         }
         else{
-            alertify.alert('挑战发起失败');
+          alertify.alert('挑战发起失败');
         }                
       }
       _data.team_opposite_id =$scope.team_opposite._id

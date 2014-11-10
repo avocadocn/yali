@@ -1,8 +1,8 @@
 .loading_div(ng-show = 'loading')
 .result.clearfix(ng-show = '!loading')
   if pleaseSelect
-    img()
-    span 请先选择队伍再进行搜索
+    img.confused(ng-src="/img/icons/confused.png")
+    span.text 请先选择队伍,再进行搜索
   else
     //- 主场信息(若点详情则向左收)
     .homecourt.clearfix(ng-show="nowTab==='nearbyTeam'&&!needSetting")
@@ -46,18 +46,22 @@
           .text
             span.title {{team.name}}
             span.content {{team.cname}}
-      .page_nav
+      .page_nav.clearfix
         ul.nav
-          li(ng-show="currentPage!==1")
-            a(ng-click="loadPage(1)") &laquo;
-          li(ng-show="currentPage!==1")
-            a(ng-click="loadPrePage()") &lt;
+          li(ng-show="currentPage&&currentPage!==1")
+            a(ng-click="loadPage(1)") 
+              img(ng-src="/img/icons/twoleft.png")
+          li(ng-show="currentPage&&currentPage!==1")
+            a(ng-click="loadPrePage()") 
+              img(ng-src="/img/icons/oneleft.png")
           li(ng-repeat="page in pages track by $index" ng-class="{'active':page===currentPage}")
             a(ng-click="loadPage({{page}})") {{page}}
           li(ng-show="currentPage!==maxPage")
-            a(ng-click="loadNextPage()") &gt;
+            a(ng-click="loadNextPage()")
+              img(ng-src="/img/icons/oneright.png")
           li(ng-show="currentPage!==maxPage")
-            a(ng-click="loadPage(maxPage)") &raquo;
+            a(ng-click="loadPage(maxPage)")
+              img(ng-src="/img/icons/tworight.png")
     //- 详情
     .detail(ng-show="!isShowMap&&opponent")
       .detailHead.clearfix
@@ -66,7 +70,7 @@
           span.title {{opponent.name}}
           span.content {{opponent.cname}}
           span.content 成员:{{opponent.memberNumber}}人
-          span.content 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+          span 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .buttons
           button.button.btn_small.btn_red(ng-click="provoke(opponent._id,opponent.name)") 挑战
           a(ng-href="/group/page/{{opponent._id}}")
@@ -74,32 +78,32 @@
       .detailContent(ng-cloak)
         .block.clearfix(ng-if="opponent.home_court.length")
           .title
-            img
+            img(ng-src="/img/icons/homecourt.png")
             span 小队主场
           .text
             span.content 主场一:{{opponent.home_court[0].name}}
-            span.content(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
+            span.content.lastline(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
         .block.clearfix(ng-show="opponent.newestCampaign")
           .title
-            img
+            img(ng-src="/img/icons/sunshine.png")
             span 最新活动
           .text
             span.content 开始时间:{{opponent.newestCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
             span.content 结束时间:{{opponent.newestCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
             span.content 活动主题:{{opponent.newestCampaign.theme}}
             span.content 参加人数:{{opponent.newestCampaign.memberNumber}}
-            span.content 活动地点:{{opponent.newestCampaign.location.name}}
+            span.content.lastline 活动地点:{{opponent.newestCampaign.location.name}}
         .block.clearfix
           .title
-            img
+            img(ng-src="/img/icons/leader.png")
             span 小队队长
           .text
-            span.content {{opponent.leader[0].nickname}}
+            span.content.lastline {{opponent.leader[0].nickname}}
         .block.clearfix
           .title
-            img
+            img(ng-src="/img/icons/information.png")
             span 小队简介
           .text
-            span.content {{opponent.brief}}
+            span.content.lastline {{opponent.brief}}
   div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
     include ../../campaign/provoke_modal_base
