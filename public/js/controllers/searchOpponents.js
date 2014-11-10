@@ -388,12 +388,12 @@ searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 
     $rootScope.nowTab="search";
 
     $scope.searchTeam=function(){
-      Search.searchTeam($rootScope.tid,$rootScope.keywords,0,function(status,data){
+      Search.searchTeam($rootScope.tid,$rootScope.keywords,1,function(status,data){
         if(!status){
           var maxNumber = (data.maxPage-1)*10;
           if(data.maxPage===1 &&data.maxPage<10)
             maxNumber = data.teams.length;
-          $scope.headline = "&quot;"+$rootScope.keywords+"&quot;共有"+maxNumber+"+个相关小队";
+          $scope.headline = "'"+$rootScope.keywords+"'共有"+maxNumber+"+个相关小队";
           $scope.currentPage=1;
           $scope.resultTeams = data.teams;
           if(data.teams.length>0){
@@ -425,13 +425,13 @@ searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 
       }
     };
     $scope.loadPage=function(pageNumber){
-      $scope.currentPage=pageNumber;
-      Search.searchTeam($rootScope.tid,$rootScope.keywords,function(status,data){
+      Search.searchTeam($rootScope.tid,$rootScope.keywords,pageNumber,function(status,data){
         if(!status){
           $scope.resultTeams = data.teams;
           if(data.teams.length>0){
-            $scope.getOpponentInfo(data.teams[0]._id);
+            $scope.getOpponentInfo(0);
           }
+          $scope.currentPage=pageNumber;
           var start = Math.floor(pageNumber/10)*10+1;
           var end = Math.ceil(pageNumber/10)*10;
           var end = end>$scope.maxPage? $scope.maxPage:end;

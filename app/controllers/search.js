@@ -217,9 +217,10 @@ exports.sameCityTeam = function(req,res,next) {
     return res.send(403);
   }
   else{
+    var page = req.query.page > 0? req.query.page:1;
     var city = req.companyGroup.city.city;
     CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':city,'_id':{'$ne':req.params.teamId},'active':true},
-      req.query.page,10,function(err,pageCount,results,itemCount) {
+      page,10,function(err,pageCount,results,itemCount) {
         if(err){
           console.log(err);
           res.status(500);
@@ -240,8 +241,9 @@ exports.nearbyTeam = function(req,res,next) {
   var companyGroup = req.companyGroup;
   var homecourt = companyGroup.home_court[req.query.index];
   var city = req.companyGroup.city.city;
+  var page = req.query.page > 0? req.query.page:1;
   CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':city,'_id':{'$ne':req.params.teamId},'active':true,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},
-    req.query.page,10,function(err,pageCount,results,itemCount) {
+    page,10,function(err,pageCount,results,itemCount) {
       if(err){
         console.log(err);
         res.status(500);
@@ -262,6 +264,7 @@ exports.keywordSearch = function(req,res,next){
   var companyGroup = req.companyGroup;
   var regx = new RegExp(req.query.key);
   var gid = companyGroup.gid;
+  var page = req.query.page > 0? req.query.page:1;
   Company.find({'info.name':regx,'status.active':true,'status.mail_active':true},{'_id':1,'team':1},function(err,companies){
     if(err){
       res.status(500);
@@ -275,12 +278,8 @@ exports.keywordSearch = function(req,res,next){
           }
         }
       }
-      // CompanyGroup.find({'$or':[{'_id':{'$in':tids}},{'$and':[{'gid':gid},{'name':regx}]}]},{_id:1},function(err,company_groups){
-      //   console.log(company_groups.length);
-      //   console.log(company_groups);
-      // });
       CompanyGroup.paginate({'$or':[{'_id':{'$in':tids}},{'$and':[{'gid':gid},{'name':regx}]}]},
-        req.query.page,10,function(err,pageCount,results,itemCount) {
+        page,10,function(err,pageCount,results,itemCount) {
           if(err){
             console.log('??')
             console.log(err);
