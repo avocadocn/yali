@@ -14,7 +14,8 @@ var mongoose = require('mongoose'),
     Company = mongoose.model('Company'),
     Message = mongoose.model('Message'),
     MessageContent = mongoose.model('MessageContent'),
-    CompanyGroup = mongoose.model('CompanyGroup');
+    CompanyGroup = mongoose.model('CompanyGroup'),
+    auth = require('../services/auth');
 
 
 var time_out = 72*24*3600;
@@ -967,10 +968,49 @@ exports.renderAll = function(req,res){
     return;
   }
 }
-exports.renderSender = function(req,res){
+exports.renderSender = function(req,res,next){
   res.render('message/send',{'provider':req.user.provider});
 }
 
+exports.recommandTeamToLeader = function(req,res){
+  var allow = auth(req.user, {companies:[req.companyGroup.cid],teams:[req.params.teamId]},['recommandTeamToLeader']);
+  if(allow.recommandTeamToLeader){
+    var MC = new MessageContent({
+      'caption':"Private Message",
+      'sender':[{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo,'role':'USER'}],
+      'team':[{'_id':req.body.opponent._id,'name':req.body.opponent.name}],
+      'specific_type':{'value':6}
+    });
+    var newMessage = new Message({
+      'rec_id':req.companyGroup.leader[0]._id,
+      'MessageContent':MC._id,
+      'type':'private',
+      'status':'unread',
+      'specific_type':{'value':6}
+    });
+    MC.save(function(err){
+      if(err){
+        res.status(500);
+        next();
+        return;
+      }else{
+        newMessage.save(function(err){
+          if(err){
+            res.status(500);
+            next();
+            return;
+          }else{
+            return res.send({'result':1,'msg':'发送站内信成功!'});
+          }
+        });
+      }
+    });
+  }else{
+    res.status(403);
+    next('forbidden');
+    return;
+  }
+}
 //这些以后站内信分类时会用到的
 /*
 exports.renderPrivate = function(req,res){

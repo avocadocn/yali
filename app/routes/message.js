@@ -30,5 +30,6 @@ module.exports = function(app) {
 	app.post('/message/push/leader', Message.leaderSendToMember);
   app.post('/message/push/campaign', Message.sendToParticipator);
 	app.post('/message/push/hr', Message.hrSendToMember);
+  app.post('/message/recommandTeam/:teamId', Message.recommandTeamToLeader);
 
 }

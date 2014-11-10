@@ -34,7 +34,7 @@ block content
               span.tname {{myTeam.name}}
               span.type {{myTeam.group_type}}
               span.leader 队长: {{myTeam.leader}}
-            button.button(ng-click="changeTeam()") 更换小队
+            button.button.largerFont(ng-click="changeTeam()") 更换小队
       .tab_view.clearfix(ng-class="selectedStatus")
         ul.nav
           li.opponnet_tab_style.sameCity(ng-class="{'active':nowTab=='sameCity'}")

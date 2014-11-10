@@ -9,13 +9,15 @@
   background-color: #3ca2e0;
   padding: 10px;
   line-height: 1;
-  font-size: 14px;
 }
 .search_opponents .button.btn_small {
   width: 60px;
 }
 .search_opponents .button.btn_red {
   background-color: #f48361;
+}
+.search_opponents .button.largerFont {
+  font-size: 14px;
 }
 .search_opponents .head_container {
   background-color: #fff;

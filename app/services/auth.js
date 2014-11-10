@@ -113,6 +113,10 @@ var registeredTasks = {
   editGroupInfo:{
     company:['hr'],
     team:['leader']
+  },
+  //给队长发站内信
+  recommandTeamToLeader:{
+    team:['member']
   }
 };
 

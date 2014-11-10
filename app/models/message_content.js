@@ -36,7 +36,7 @@ var MessageContent = new Schema({
   team: [_team],  // 消息所属小队
   company_id: Schema.Types.ObjectId,  // 消息所属公司的_id
   campaign_id: Schema.Types.ObjectId,
-  groupmessage_id: Schema.Types.ObjectId,
+  groupmessage_id: Schema.Types.ObjectId,//这tm存它干嘛的...-M
   department_id: Schema.Types.ObjectId,
   auto: {
     type:Boolean,
@@ -73,6 +73,7 @@ var MessageContent = new Schema({
 //3 活动或者比赛消息(child_type=0为活动  child_type=1为比赛   结合sender来判断是公司发的还是小队发的)
 //4 和挑战相关的消息(child_type=0为发起挑战  child_type=1为接受挑战   child_type=2为拒绝挑战  child_type=3为取消挑战)
 //5 和比赛确认相关的消息(child_type=0对方发起新的比赛确认(或者对之前的比分发出异议)  child_type=1对方接受比分确认)
+//6 推荐活动(通常由个人发给队长)
 
 mongoose.model('MessageContent', MessageContent);
 
