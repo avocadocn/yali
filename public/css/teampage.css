@@ -620,71 +620,44 @@
 .teampage .home_court_modal .finish {
   margin-left: 60px;
 }
-.teampage .side_panel .nav .year {
+.teampage .side_panel .timeline_control {
+  width: 60px;
+  position: fixed;
+  left: 50%;
+  margin-left: 415px;
+  top: 70px;
+}
+.teampage .side_panel .timeline_control .control_year {
   border-left: 6px solid #ccd3e1;
   padding-left: 6px;
   margin-bottom: 10px;
   font-size: 18px;
-  text-align: right;
   color: #ccd3e1;
-}
-.teampage .side_panel .nav .year .year_text {
   cursor: pointer;
 }
-.teampage .side_panel .nav .year:hover {
+.teampage .side_panel .timeline_control .control_year:hover {
   border-left: 6px solid #ccc;
   color: #ccc;
 }
-.teampage .side_panel .nav .year.active {
-  color: #3ba3e0;
-  border-left: 6px solid #3ba3e0;
-}
-.teampage .side_panel .nav .year.active:hover {
-  color: #3ba3e0;
-  border-left: 6px solid #3ba3e0;
-}
-.teampage .side_panel .nav .year.active .month.active {
-  color: #3ba3e0;
-}
-.teampage .side_panel .nav .month {
-  display: block;
+.teampage .side_panel .timeline_control .control_year .control_month {
   margin-left: 10px;
+  text-align: center;
+}
+.teampage .side_panel .timeline_control .control_year .control_month a {
   color: #ccd3e1;
   font-size: 14px;
-  text-decoration: none;
 }
-.teampage .team_timeline {
-  width: 100%;
+.teampage .side_panel .timeline_control .active_year {
+  color: #3ba3e0;
+  border-left: 6px solid #3ba3e0;
 }
-.teampage .team_timeline .spine {
-  top: 0;
-  left: 50%;
-  margin-left: -1px;
-  width: 2px;
+.teampage .side_panel .timeline_control .active_year:hover {
+  color: #3ba3e0;
+  border-left: 6px solid #3ba3e0;
 }
-.teampage .team_timeline .date_separator .span {
-  position: absolute;
-  left: 50%;
-  margin-left: -50px;
-  width: 100px;
-  background-color: #ccc;
-  color: #fff;
-  border-radius: 10px;
-  border: none;
+.teampage .side_panel .timeline_control .active_year a.active_month {
+  color: #3ba3e0;
 }
-.teampage .team_timeline .column {
-  width: 50%;
-}
-.teampage .team_timeline .column_right {
-  margin-left: 0;
-}
-.teampage .team_timeline .timeline_element {
-  width: 400px;
-  padding: 0;
-  border: none;
-}
-.teampage .team_timeline .timeline_element .title {
-  margin-bottom: 0;
-  border-bottom: none;
-  padding: 10px;
+.teampage .team_timeline .dl_timeline {
+  padding-top: 0;
 }

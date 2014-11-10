@@ -402,7 +402,59 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', 'Te
   });
 
   // timeline
+  Campaign.getCampaignsDateRecord('team', teamId, function(err, record) {
+    if (!err) {
+      $scope.timelines = record;
+      addCampaign(record[0].year + '_' + record[0].month[0].month);
+    }
+  });
+  $scope.nowYear = 'timeline1_0';
+  var addCampaign = function(id) {
+    var temp = id.split('_');
+    if (temp[0] != 'timeline1' && temp[0] != 'timeline0') {
+      var paging = {
+        year: temp[0],
+        month: temp[1]
+      }
+      Campaign.getCampaignsData('team', teamId, paging, function(err, timeline) {
+        if (!err) {
+          for (var i = $scope.timelines.length - 1; i >= 0; i--) {
+            if ($scope.timelines[i].year == timeline.year) {
+              for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
+                if ($scope.timelines[i].month[j].month == timeline.month) {
+                  if ($scope.timelines[i].month[j].campaigns.length == 0) {
+                    $scope.timelines[i].month[j].campaigns = timeline.campaigns;
+                    return timeline.campaigns.length;
+                  }
+                  return 0;
+                }
+              };
+              break;
+            }
+          };
+        }
+        return 0;
+      });
+    } else {
+      return false;
+    }
+  };
 
+  $scope.scrollTo = function(id) {
+    var temp = id.split('_');
+    $scope.nowYear = temp[0];
+    $scope.nowMonth = temp[1];
+    $location.hash(id);
+    anchorSmoothScroll.scrollTo(id);
+    addCampaign(id);
+  };
+
+  $scope.loadMore = function(id) {
+    var temp = id.split('_');
+    $scope.nowYear = temp[0];
+    $scope.nowMonth = temp[1];
+    addCampaign(id);
+  };
 
 }]);
 
@@ -859,4 +911,6 @@ donler.controller('ProvokeController', ['$http', '$scope', '$rootScope', 'Campai
     };
   }
 ]);
+
+
 
