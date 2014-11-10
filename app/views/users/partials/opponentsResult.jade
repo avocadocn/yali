@@ -72,9 +72,9 @@
           span.content 成员:{{opponent.memberNumber}}人
           span 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .buttons
-          button.button.btn_small.btn_red(ng-click="provoke(opponent._id,opponent.name)") 挑战
+          button.button.btn_small.btn_red.largerFont(ng-click="provoke(opponent._id,opponent.name)") 挑战
           a(ng-href="/group/page/{{opponent._id}}")
-            button.button.btn_small 查看
+            button.button.btn_small.largerFont 查看
       .detailContent(ng-cloak)
         .block.clearfix(ng-if="opponent.home_court.length")
           .title

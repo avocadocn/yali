@@ -82,6 +82,15 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
       $rootScope.team_opposite = {'name':opponentName,'_id':opponentId};
     }
     else{
+      alertify.confirm('是否推荐此队给您的队长?',function(e){
+        if(e){
+          $http.post('/message/recommandTeam/'+$rootScope.tid,{'opponent':{'name':opponentName,'_id':opponentId}}).success(function(data,status){
+            alertify.alert('推荐成功!');
+          }).error(function(data,status){
+            alertify.alert('推荐失败');
+          });
+        }
+      })
       //发私信给队长
     }
   }
