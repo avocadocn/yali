@@ -9,6 +9,7 @@
   background-color: #3ca2e0;
   padding: 10px;
   line-height: 1;
+  font-size: 14px;
 }
 .search_opponents .button.btn_small {
   width: 60px;
@@ -29,6 +30,9 @@
   line-height: 1;
   font-size: 14px;
   padding: 10px 20px;
+}
+.search_opponents .head_container .headline img {
+  margin-right: 10px;
 }
 .search_opponents .head_container .my_teams {
   margin: 20px;
@@ -117,7 +121,7 @@
 }
 .search_opponents .tab_view .opponnet_tab_style a {
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
 }
 .search_opponents .tab_view .opponnet_tab_style .nav_img {
   width: 23px;
@@ -152,96 +156,127 @@
   background-repeat: no-repeat;
   background-color: transparent;
 }
-.search_opponents .unactive .opponnet_tab_style {
+.search_opponents .tab_view.unactive .opponnet_tab_style {
   background-color: #ccc !important;
 }
-.search_opponents .unactive .opponnet_tab_style a:hover {
+.search_opponents .tab_view.unactive .opponnet_tab_style a:hover {
   background-color: #ccc;
 }
-.search_opponents .unactive .opponnet_tab_style.nearbyTeam {
+.search_opponents .tab_view.unactive .opponnet_tab_style.nearbyTeam {
   background-color: #afafaf !important;
 }
-.search_opponents .unactive .opponnet_tab_style.nearbyTeam a:hover {
+.search_opponents .tab_view.unactive .opponnet_tab_style.nearbyTeam a:hover {
   background-color: #afafaf;
 }
-.search_opponents .unactive .search .searchOpponentInput {
+.search_opponents .tab_view.unactive .search .searchOpponentInput {
   background-color: #afafaf;
 }
-.search_opponents .active .nearbyTeam {
-  background-color: #afafaf;
+.search_opponents .tab_view.unactive .result {
+  background-color: #fbfbfb !important;
+  padding: 20px;
 }
-.search_opponents .active .sameCity {
+.search_opponents .tab_view.unactive .result .confused {
+  float: left;
+  margin-right: 20px;
+}
+.search_opponents .tab_view.unactive .result .text {
+  float: left;
+  font-size: 14px;
+  color: #c4c4c4;
+  margin: 12px 0;
+}
+.search_opponents .tab_view.active .arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  bottom: -9px;
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px 10px 0;
+}
+.search_opponents .tab_view.active .sameCity {
   background-color: #fec053;
 }
-.search_opponents .active .sameCity a:hover {
+.search_opponents .tab_view.active .sameCity a:hover {
   background-color: #fec053;
 }
-.search_opponents .active .nearbyTeam {
+.search_opponents .tab_view.active .sameCity.active .arrow {
+  border-top-color: #fec053;
+}
+.search_opponents .tab_view.active .nearbyTeam {
   background-color: #3ca2e0;
 }
-.search_opponents .active .nearbyTeam a:hover {
+.search_opponents .tab_view.active .nearbyTeam a:hover {
   background-color: #3ca2e0;
 }
-.search_opponents .active .search {
+.search_opponents .tab_view.active .nearbyTeam.active .arrow {
+  border-top-color: #3ca2e0;
+}
+.search_opponents .tab_view.active .search {
   background-color: #43d3dc;
 }
-.search_opponents .active .search a:hover {
+.search_opponents .tab_view.active .search a:hover {
   background-color: #43d3dc;
 }
-.search_opponents .active .search .searchOpponentInput {
+.search_opponents .tab_view.active .search .searchOpponentInput {
   background-color: #19bdc7;
 }
-.search_opponents .active .result {
+.search_opponents .tab_view.active .search.active .arrow {
+  border-top-color: #43d3dc;
+}
+.search_opponents .tab_content .result {
   margin: 20px;
   background-color: #fff;
   min-height: 400px;
 }
-.search_opponents .active .result .text {
+.search_opponents .tab_content .result .text {
   float: left;
 }
-.search_opponents .active .result .text .title {
+.search_opponents .tab_content .result .text .title {
   font-size: 14px;
   color: #666;
   width: 100%;
   float: left;
   line-height: 1;
 }
-.search_opponents .active .result .text .content {
+.search_opponents .tab_content .result .text .content {
   width: 100%;
   float: left;
 }
-.search_opponents .active .result .homecourt {
+.search_opponents .tab_content .result .homecourt {
   padding-bottom: 10px;
 }
-.search_opponents .active .result .homecourt .text {
+.search_opponents .tab_content .result .homecourt .text {
   width: 200px;
 }
-.search_opponents .active .result .homecourt .text .title {
+.search_opponents .tab_content .result .homecourt .text .title {
   color: #999;
   cursor: pointer;
   padding-bottom: 10px;
 }
-.search_opponents .active .result .homecourt .text .title.active {
+.search_opponents .tab_content .result .homecourt .text .title.active {
   color: #666;
 }
-.search_opponents .active .result .homecourt .button {
+.search_opponents .tab_content .result .homecourt .button {
   float: right;
 }
-.search_opponents .active .result .homecourtSetting .title {
+.search_opponents .tab_content .result .homecourtSetting .title {
   font-size: 14px;
   margin-bottom: 25px;
 }
-.search_opponents .active .result .homecourtSetting .court {
+.search_opponents .tab_content .result .homecourtSetting .court {
   width: 100%;
 }
-.search_opponents .active .result .homecourtSetting .court .text {
+.search_opponents .tab_content .result .homecourtSetting .court .text {
   width: 60px;
 }
-.search_opponents .active .result .homecourtSetting .court .input {
+.search_opponents .tab_content .result .homecourtSetting .court .input {
   float: left;
   width: 790px;
 }
-.search_opponents .active .result .homecourtSetting .court .input input {
+.search_opponents .tab_content .result .homecourtSetting .court .input input {
   padding: 0 10px;
   width: 100%;
   height: 30px;
@@ -250,130 +285,145 @@
   border: 1px solid #d3dbe6;
   font-size: 14px;
 }
-.search_opponents .active .result .homecourtSetting .court .input .homecourtMap {
+.search_opponents .tab_content .result .homecourtSetting .court .input .homecourtMap {
   width: 100%;
   height: 200px;
   margin: 20px 0;
 }
-.search_opponents .active .result .map {
+.search_opponents .tab_content .result .map {
   float: left;
 }
-.search_opponents .active .result .map .fullMap {
+.search_opponents .tab_content .result .map .fullMap {
   width: 570px;
   height: 620px;
 }
-.search_opponents .active .result .teamlist {
+.search_opponents .tab_content .result .teamlist {
   background-color: #efefef;
   float: left;
   width: 350px;
   height: 620px;
 }
-.search_opponents .active .result .teamlist .teams {
-  height: 570px;
+.search_opponents .tab_content .result .teamlist .teams {
+  height: 560px;
 }
-.search_opponents .active .result .teamlist .teams .map_head {
+.search_opponents .tab_content .result .teamlist .teams .map_head {
   height: 30px;
   background-color: #ccc;
   width: 100%;
   padding: 10px 20px;
   line-height: 1;
 }
-.search_opponents .active .result .teamlist .teams .map_head span {
+.search_opponents .tab_content .result .teamlist .teams .map_head span {
   cursor: pointer;
   color: #fff;
 }
-.search_opponents .active .result .teamlist .teams .headline {
+.search_opponents .tab_content .result .teamlist .teams .headline {
   height: 50px;
   width: 100%;
   padding: 20px;
   font-size: 14px;
   line-height: 1;
 }
-.search_opponents .active .result .teamlist .teams .team.selected {
+.search_opponents .tab_content .result .teamlist .teams .team.selected {
   background-color: #fbfbfb;
   border-left: 1px solid #efefef;
 }
-.search_opponents .active .result .teamlist .teams .team {
+.search_opponents .tab_content .result .teamlist .teams .team {
   width: 100%;
   float: left;
   padding: 10px 20px;
   height: 50px;
   cursor: pointer;
 }
-.search_opponents .active .result .teamlist .teams .team .logo {
+.search_opponents .tab_content .result .teamlist .teams .team .logo {
   width: 30px;
   height: 30px;
   float: left;
 }
-.search_opponents .active .result .teamlist .teams .team .text {
+.search_opponents .tab_content .result .teamlist .teams .team .text {
   width: 245px;
   padding: 0 10px;
 }
-.search_opponents .active .result .teamlist .teams .team .text .title {
+.search_opponents .tab_content .result .teamlist .teams .team .text .title {
   margin-bottom: 3px;
 }
-.search_opponents .active .result .teamlist .page_nav {
+.search_opponents .tab_content .result .teamlist .page_nav {
   width: 350px;
-  padding: 20px;
+  padding: 17px 20px;
   border-top: 1px solid #ccc;
 }
-.search_opponents .active .result .teamlist .page_nav ul {
+.search_opponents .tab_content .result .teamlist .page_nav ul {
   float: right;
 }
-.search_opponents .active .result .teamlist .page_nav ul li {
+.search_opponents .tab_content .result .teamlist .page_nav ul li {
   float: left;
 }
-.search_opponents .active .result .teamlist .page_nav ul li a {
+.search_opponents .tab_content .result .teamlist .page_nav ul li a {
   color: #999;
   padding: 0 5px;
 }
-.search_opponents .active .result .teamlist .page_nav ul .active a {
+.search_opponents .tab_content .result .teamlist .page_nav ul .active a {
   color: #3ca2e0;
 }
-.search_opponents .active .result .detail {
+.search_opponents .tab_content .result .detail {
   background-color: #fbfbfb;
   padding: 20px;
   float: left;
   width: 570px;
   height: 620px;
 }
-.search_opponents .active .result .detail .detailHead {
+.search_opponents .tab_content .result .detail .detailHead {
   width: 100%;
-  padding-bottom: 20px;
+  min-height: 90px;
   border-bottom: 1px solid #ccc;
+  line-height: 1;
 }
-.search_opponents .active .result .detail .detailHead .logo {
+.search_opponents .tab_content .result .detail .detailHead .logo {
   float: left;
   width: 70px;
   height: 70px;
 }
-.search_opponents .active .result .detail .detailHead .text {
+.search_opponents .tab_content .result .detail .detailHead .text {
   width: 380px;
   padding: 0 20px;
 }
-.search_opponents .active .result .detail .detailHead .text .title {
-  margin-bottom: 5px;
-}
-.search_opponents .active .result .detail .detailHead .buttons {
-  float: left;
-  width: 60px;
-}
-.search_opponents .active .result .detail .detailHead .buttons .button {
+.search_opponents .tab_content .result .detail .detailHead .text .title {
   margin-bottom: 10px;
 }
-.search_opponents .active .result .detail .detailContent {
+.search_opponents .tab_content .result .detail .detailHead .text .content {
+  margin-bottom: 6px;
+}
+.search_opponents .tab_content .result .detail .detailHead .buttons {
+  float: right;
+  width: 60px;
+}
+.search_opponents .tab_content .result .detail .detailHead .buttons .button {
+  margin-bottom: 10px;
+}
+.search_opponents .tab_content .result .detail .detailContent {
   width: 100%;
   margin-left: 70px;
   padding: 20px;
+  line-height: 1;
 }
-.search_opponents .active .result .detail .detailContent .block {
+.search_opponents .tab_content .result .detail .detailContent .block {
   margin-bottom: 30px;
 }
-.search_opponents .active .result .detail .detailContent .block .title {
+.search_opponents .tab_content .result .detail .detailContent .block img {
+  margin-right: 10px;
+}
+.search_opponents .tab_content .result .detail .detailContent .block .title {
   float: left;
   color: #666;
   width: 100px;
+  font-size: 14px;
 }
-.search_opponents .active .result .detail .detailContent .block .text {
+.search_opponents .tab_content .result .detail .detailContent .block .text {
   width: 270px;
+}
+.search_opponents .tab_content .result .detail .detailContent .block .text .content {
+  margin-bottom: 7px;
+}
+.search_opponents .tab_content .result .detail .detailContent .block .text .content.lastline {
+  margin-bottom: 0;
 }
