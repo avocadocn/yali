@@ -187,29 +187,29 @@ exports.info =function(req, res) {
 
   // 根据页面显示需要，获取用户相对于小队页面的角色
   // todo 加入权限系统中，使用权限系统的获取角色的方法
-  var role = 'guest'; // 'HR', 'companyMember', 'teamMember', 'leader', 'otherHR', 'otherLeader', 'otherMember', 'guest'
+  var role = 'GUEST';
   if (!req.user) {
-    role = 'guest';
+    role = 'GUEST';
   } else if (req.user.provider === 'company') {
     if (req.user._id.toString() === team.cid.toString()) {
       role = 'HR';
     } else {
-      role = 'otherHR';
+      role = 'GUESTHR';
     }
   } else if (req.user.provider === 'user') {
     if (req.user.cid.toString() === team.cid.toString()) {
       if (req.user.isTeamLeader(team._id)) {
-        role = 'leader';
+        role = 'LEADER';
       } else if (req.user.isTeamMember(team._id)) {
-        role = 'teamMember';
+        role = 'MEMBER';
       } else {
-        role = 'companyMember';
+        role = 'PARTNER';
       }
     } else {
       if (req.user.isLeader()) {
-        role = 'otherLeader';
+        role = 'GUESTLEADER';
       } else {
-        role = 'otherMember';
+        role = 'GUEST';
       }
     }
   }

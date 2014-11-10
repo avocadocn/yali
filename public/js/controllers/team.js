@@ -2,7 +2,7 @@
 
 var donler = angular.module('donler');
 
-donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', 'Team', 'Campaign', function($rootScope, $scope, $timeout, Team, Campaign) {
+donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$location', 'Team', 'Campaign', function($rootScope, $scope, $timeout, $location, Team, Campaign) {
 
   var data = document.getElementById('data').dataset;
   var teamId = data.id;

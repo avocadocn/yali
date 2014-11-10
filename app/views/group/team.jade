@@ -30,12 +30,12 @@ block contentExt
                   p.text.brief(ng-cloak ng-if="!isEditingInfo") {{team.brief}}
                   textarea.input_brief(ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.brief")
               .operator
-                .team_leader.four_button(ng-if="role==='leader'" ng-cloak)
+                .team_leader.four_button(ng-if="role==='LEADER'" ng-cloak)
                   button.op_button.button_blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
                   button.op_button.button_red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
                   a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
                   button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
-                .team_member.one_button(ng-if="role==='teamMember'" ng-cloak)
+                .team_member.one_button(ng-if="role==='MEMBER'" ng-cloak)
                   button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
                 .company_member.one_button(ng-if="role==='companyMember'" ng-cloak)
                   button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
@@ -44,9 +44,9 @@ block contentExt
                   button.op_button.button_red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
                   a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
                   button.op_button.button_gray(ng-if="allow.closeTeam" ng-cloak) 关闭小队
-                .other_company_hr.one_button(ng-if="role==='otherHR' || role==='otherLeader'" ng-cloak)
+                .other_company_hr.one_button(ng-if="role==='GUESTHR' || role==='GUESTLEADER'" ng-cloak)
                   button.op_button.button_red 发起挑战
-                .other_company_member.one_button(ng-if="role==='otherMember'" ng-cloak)
+                .other_company_member.one_button(ng-if="role==='GUEST'" ng-cloak)
                   button.op_button.button_red 推荐给队长
 
             .card.member_card
