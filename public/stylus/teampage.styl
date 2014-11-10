@@ -428,61 +428,38 @@
 
 
   .side_panel
-    .nav
-      .year
+    .timeline_control
+      width 60px
+      position fixed
+      left 50%
+      margin-left 415px
+      top 70px
+      .control_year
         border-left 6px solid #CCD3E1
         padding-left 6px
         margin-bottom 10px
         font-size 18px
-        text-align right
         color #CCD3E1
-        .year_text
-          cursor pointer
+        cursor pointer
         &:hover
           border-left 6px solid #ccc
           color #ccc
-      .year.active
+        .control_month
+          margin-left 10px
+          text-align center
+          a
+            color #CCD3E1
+            font-size 14px
+      .active_year
         color #3ba3e0
         border-left 6px solid #3ba3e0
         &:hover
           color #3ba3e0
           border-left 6px solid #3ba3e0
-        .month.active
+        a.active_month
           color #3ba3e0
-      .month
-        display block
-        margin-left 10px
-        color #CCD3E1
-        font-size 14px
-        text-decoration none
 
   .team_timeline
-    width 100%
-    .spine
-      top 0
-      left 50%
-      margin-left -1px
-      width 2px
-    .date_separator
-      .span
-        position absolute
-        left 50%
-        margin-left -50px
-        width 100px
-        background-color #ccc
-        color #fff
-        border-radius 10px
-        border none
-    .column
-      width 50%
-    .column_right
-      margin-left 0
-    .timeline_element
-      width 400px
-      padding 0
-      border none
-      .title
-        margin-bottom 0
-        border-bottom none
-        padding 10px
+    .dl_timeline
+      padding-top 0
 
