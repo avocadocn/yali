@@ -56,10 +56,26 @@ angular.module('donler')
       }).error(function(data,status){
         callback('error');
       })
-    }
+    };
+    /**
+     * 关键字查找
+     * @param String tid 小队id
+     * @param String keyword 关键词
+     * @param pageNum 页数
+     * @param {Object} callback callback(status,data)
+     */
+    var searchTeam = function(tid,keyword,pageNum,callback) {
+      $http.get('/search/keywordSearch/'+tid+'?key='+keyword+'&page='+pageNum)
+      .success(function(data,status){
+        callback(null,data);
+      }).error(function(data,status){
+        callback('error');
+      })
+    };
     return {
       searchSameCity: searchSameCity,
       getOpponentInfo: getOpponentInfo,
-      searchNearby: searchNearby
+      searchNearby: searchNearby,
+      searchTeam: searchTeam
     };
   }]);

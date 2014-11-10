@@ -1436,33 +1436,28 @@ tabViewGroup.controller('ProvokeController', ['$http', '$scope','$rootScope','Ca
 
     //约战
     $scope.provoke = function() {
-        if($scope.member_max < $scope.member_min){
-            alertify.alert('最少人数须小于最大人数');
+        var _data = {
+            theme : $scope.theme,
+            location: $scope.location,
+            start_time: $scope.start_time,
+            end_time: $scope.end_time,
+            campaign_mold:$scope.mold
+        };
+        var callback = function(status,data){
+            if(!status){
+                window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+            }
+            else{
+                alertify.alert('挑战发起失败');
+            }                
         }
-        else{
-            var _data = {
-                theme : $scope.theme,
-                location: $scope.location,
-                start_time: $scope.start_time,
-                end_time: $scope.end_time,
-                campaign_mold:$scope.mold
-            };
-            var callback = function(status,data){
-                if(!status){
-                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
-                }
-                else{
-                    alertify.alert('挑战发起失败');
-                }                
-            }
-            if($scope.modal===1){//在自己的小队约战
-                _data.team_opposite_id =$scope.team_opposite._id
-                Campaign.sponsor('/group/provoke/'+$rootScope.teamId,_data,callback);
-            }
-            else{//在其它小队约战
-                _data.team_opposite_id = $rootScope.teamId;
-                Campaign.sponsor('/group/provoke/'+$scope.team_opposite._id,_data,callback);
-            }
+        if($scope.modal===1){//在自己的小队约战
+            _data.team_opposite_id =$scope.team_opposite._id
+            Campaign.sponsor('/group/provoke/'+$rootScope.teamId,_data,callback);
+        }
+        else{//在其它小队约战
+            _data.team_opposite_id = $rootScope.teamId;
+            Campaign.sponsor('/group/provoke/'+$scope.team_opposite._id,_data,callback);
         }
     };
     $scope.selectMold=function(name){

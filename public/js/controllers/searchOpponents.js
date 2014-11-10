@@ -18,8 +18,10 @@ searchOpponents.config(['$routeProvider',function ($routeProvider) {
       controller: 'nearbyController',
       controllerAs: 'nearby'
     })
-    .when('/search',{
-      templateUrl:'/group/search',
+    .when('/search/:tid',{
+      templateUrl: function(params){
+        return '/group/sameCity/'+params.tid;
+      },
       controller: 'searchController',
       controllerAs: 'search'
     })
@@ -35,13 +37,13 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
   $rootScope.nowTab = window.location.hash.substr(2);
   $rootScope.selectedStatus = 'unactive';
   $rootScope.$on("$routeChangeStart",function(){
-      $rootScope.loading = true;
+    $rootScope.loading = true;
   });
   $rootScope.$on("$routeChangeSuccess",function(){
-      $rootScope.loading = false;
+    $rootScope.loading = false;
   });
   $rootScope.getTeam=function(tid){
-     $http.get('/group/oneTeam/'+tid).success(function(data,status){
+    $http.get('/group/oneTeam/'+tid).success(function(data,status){
       $rootScope.myTeam = data;
       $rootScope.selectedStatus = 'active';
       $rootScope.selectTeamId = data._id;
@@ -65,10 +67,24 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
   };
   $rootScope.changeTeam = function(){
     $rootScope.myTeam = null;
-    window.location.hash= '#/sameCity';
+    window.location.hash= '#/';
     $rootScope.selectTeamId = null;
     $rootScope.selectedStatus='unactive';
   };
+  $rootScope.needSearch=0;
+  $rootScope.search = function(keyEvent){
+    if(!keyEvent || keyEvent.which === 13)
+      $rootScope.needSearch ++;
+  };
+  $rootScope.provoke=function(opponentId,opponentName){
+    if($rootScope.myTeam.isLeader){
+      $('#sponsorProvokeModel').modal('show');
+      $rootScope.team_opposite = {'name':opponentName,'_id':opponentId};
+    }
+    else{
+      //发私信给队长
+    }
+  }
 }]);
 
 searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'Search',
@@ -80,6 +96,7 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
         var maxNumber = (data.maxPage-1)*10;
         if(data.maxPage===1 &&data.maxPage<10)
             maxNumber = data.teams.length;
+        //小队选完同城小队个数不会变
         $scope.headline = data.city+"共有"+maxNumber+"+个相关小队"
         $scope.currentPage=1;
         $scope.resultTeams = data.teams;
@@ -115,10 +132,10 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
     };
     $scope.loadPrePage=function(){
       $scope.loadPage($scope.currentPage-1);
-    }
+    };
     $scope.loadNextPage=function(){
       $scope.loadPage($scope.currentPage+1);
-    }
+    };
     $scope.getOpponentInfo=function(index){
       if(index!==$scope.selectedIndex){
         $scope.selectedIndex = index;
@@ -138,6 +155,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
     $scope.isShowMap = true;
     $scope.needSetting = $rootScope.myTeam.home_court.length===0;
     //获取附近小队
+    //有此函数原因：小队选完，由于有两个主场，附近小队个数可能会变
     $scope.search=function(hc_index) {
       Search.searchNearby($rootScope.tid,1,hc_index,function(status,data){
         if(!status){
@@ -376,10 +394,196 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
 
 searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 'Search',
   function($http, $scope, $rootScope, Search) {
+    $rootScope.nowTab="search";
 
+    $scope.searchTeam=function(){
+      Search.searchTeam($rootScope.tid,$rootScope.keywords,1,function(status,data){
+        if(!status){
+          var maxNumber = (data.maxPage-1)*10;
+          if(data.maxPage===1 &&data.maxPage<10)
+            maxNumber = data.teams.length;
+          $scope.headline = "'"+$rootScope.keywords+"'共有"+maxNumber+"+个相关小队";
+          $scope.currentPage=1;
+          $scope.resultTeams = data.teams;
+          if(data.teams.length>0){
+            $scope.getOpponentInfo(0);
+          }
+          $scope.maxPage = data.maxPage;
+          var showMaxPage = $scope.maxPage>5? 5:$scope.maxPage;
+          $scope.pages=[];
+          for(var i=1;i<=showMaxPage;i++){
+            $scope.pages.push(i);
+          }
+        }
+      });
+    };
+    $rootScope.$watch("needSearch",function(value){
+      if(value){
+        $scope.searchTeam();
+      }
+    });
+    $scope.getOpponentInfo=function(index){
+      if(index!==$scope.selectedIndex){
+        $scope.selectedIndex = index;
+        var tid = $scope.resultTeams[index]._id;
+        Search.getOpponentInfo(tid,function(status,data){
+          if(!status){
+            $scope.opponent = data.team;
+          }
+        });
+      }
+    };
+    $scope.loadPage=function(pageNumber){
+      Search.searchTeam($rootScope.tid,$rootScope.keywords,pageNumber,function(status,data){
+        if(!status){
+          $scope.resultTeams = data.teams;
+          if(data.teams.length>0){
+            $scope.getOpponentInfo(0);
+          }
+          $scope.currentPage=pageNumber;
+          var start = Math.floor(pageNumber/10)*10+1;
+          var end = Math.ceil(pageNumber/10)*10;
+          var end = end>$scope.maxPage? $scope.maxPage:end;
+          $scope.pages=[];
+          for(var i=start;i<=end;i++){
+            $scope.pages.push(i);
+          }
+        }
+      });
+    };
+    $scope.loadPrePage=function(){
+      $scope.loadPage($scope.currentPage-1);
+    };
+    $scope.loadNextPage=function(){
+      $scope.loadPage($scope.currentPage+1);
+    };
 }]);
 
 searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope', 'Campaign',
   function($http, $scope, $rootScope, Campaign) {
+    $scope.modal = 1;
+    $scope.myTname = $rootScope.myTeam.name;
+    $scope.showMapFlag=false;
+    $scope.location={name:'',coordinates:[]};
+    $('#sponsorProvokeModel').on('show.bs.modal', function (e) {
+      if(!$scope.moldsgot){
+        Campaign.getMolds('team',$rootScope.myTeam._id,function(status,data){
+          if(!status){
+            $scope.molds = data.molds;
+            $scope.moldsgot = true;
+            $scope.mold = $scope.molds[0].name;
+          }
+        });
+      }
+      //时间
+      $("#competition_start_time").on("changeDate",function (ev) {
+          var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+          $scope.competition_date = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+          $('#competition_end_time').datetimepicker('setStartDate', dateUTC);
+      });
+      $("#competition_end_time").on("changeDate",function (ev) {
+          var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+          $('#competition_start_time').datetimepicker('setEndDate', dateUTC);
+      });
+      //地图初始化
+      if(!window.map_ready){
+        window.campaign_map_initialize = $scope.initialize;
+        var script = document.createElement("script");
+        script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+        document.body.appendChild(script);
+      }
+      else{
+        $scope.initialize();
+      }
+    });
 
+    var placeSearchCallBack = function(data){
+        $scope.locationmap.clearMap();
+        var lngX = data.poiList.pois[0].location.getLng();
+        var latY = data.poiList.pois[0].location.getLat();
+        $scope.location.coordinates=[lngX, latY];
+        var nowPoint = new AMap.LngLat(lngX,latY);
+        var markerOption = {
+            map: $scope.locationmap,
+            position: nowPoint,
+            draggable: true
+        };
+        var mar = new AMap.Marker(markerOption);
+        var changePoint = function (e) {
+            var p = mar.getPosition();
+            $scope.location.coordinates=[p.getLng(), p.getLat()];
+        };
+        $scope.locationmap.setFitView();
+        AMap.event.addListener(mar,"dragend", changePoint);
+    };
+
+    $scope.initialize = function(){
+      $scope.locationmap = new AMap.Map("competitionMapDetail");            // 创建Map实例
+      $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+        //实例化城市查询类
+        var citysearch = new AMap.CitySearch();
+        //自动获取用户IP，返回当前城市
+        citysearch.getLocalCity();
+        //citysearch.getCityByIp("123.125.114.*");
+        AMap.event.addListener(citysearch, "complete", function(result){
+          if(result && result.city && result.bounds) {
+            var citybounds = result.bounds;
+            //地图显示当前城市
+            $scope.locationmap.setBounds(citybounds);
+            $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+              $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                pageSize:1,
+                pageIndex:1,
+                city: result.city
+              });
+              AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+            });
+          }
+        });
+        AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+      });
+      window.map_ready =true;
+    };
+
+    $scope.showMap = function(){
+      if($scope.location.name==''){
+        alertify.alert('请输入地点');
+        return false;
+      }
+      else if($scope.showMapFlag ==false){
+        $scope.showMapFlag =true;
+        $scope.MSearch.search($scope.location.name); //关键字查询
+      }
+      else{
+        $scope.MSearch.search($scope.location.name); //关键字查询
+      }
+    };
+
+    $scope.preStep=function(){
+      $('#sponsorProvokeModel').modal('hide');
+    };
+
+    $scope.provoke=function(){
+      var _data = {
+        theme : $scope.theme,
+        location: $scope.location,
+        start_time: $scope.start_time,
+        end_time: $scope.end_time,
+        campaign_mold:$scope.mold
+      };
+      var callback = function(status,data){
+        if(!status){
+            window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+        }
+        else{
+            alertify.alert('挑战发起失败');
+        }                
+      }
+      _data.team_opposite_id =$scope.team_opposite._id
+      Campaign.sponsor('/group/provoke/'+$rootScope.myTeam._id,_data,callback);
+    };
+    
+    $scope.selectMold=function(){
+      $scope.mold = name;
+    };
 }]);

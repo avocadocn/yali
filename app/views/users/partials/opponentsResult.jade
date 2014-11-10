@@ -68,7 +68,7 @@
           span.content 成员:{{opponent.memberNumber}}人
           span.content 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .buttons
-          button.button.btn_small.btn_red(ng-click="provoke()") 挑战
+          button.button.btn_small.btn_red(ng-click="provoke(opponent._id,opponent.name)") 挑战
           a(ng-href="/group/page/{{opponent._id}}")
             button.button.btn_small 查看
       .detailContent(ng-cloak)
@@ -101,3 +101,5 @@
             span 小队简介
           .text
             span.content {{opponent.brief}}
+  div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    include ../../campaign/provoke_modal_base

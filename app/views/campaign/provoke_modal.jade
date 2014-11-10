@@ -2,8 +2,8 @@ form(name="provoke_form" novalidate)
   .dl_modal_header
     button.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
       img(ng-src='/img/icons/icon_close.png')
-    span#myModalLabel(ng-show='modal==3') {{team_opposite.name}} V.S #{tname}
-    span#myModalLabel(ng-show='modal==1') #{tname} V.S {{team_opposite.name}}
+    span#myModalLabel(ng-show='modal==3') {{team_opposite.name}} V.S #{tname}{{myTname}}
+    span#myModalLabel(ng-show='modal==1') #{tname}{{myTname}} V.S {{team_opposite.name}}
     a.preStep(ng-click='preStep()') 更改
   .dl_modal_body.clearfix
     .dl_modal_container
