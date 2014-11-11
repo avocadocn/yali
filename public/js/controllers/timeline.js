@@ -144,7 +144,7 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
                     if($scope.timelines[i].year==temp[0]){
                         for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
                             if($scope.timelines[i].month[j].month==temp[1]){
-                                if($scope.timelines[i].month[j].campaigns.length==0&&!$scope.timelines[i].month[j].loaded){
+                                if(!$scope.timelines[i].month[j].campaigns&&!$scope.timelines[i].month[j].loaded){
                                     var yearIndex=i,monthIndex = j;
                                     Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
                                         if(!err){

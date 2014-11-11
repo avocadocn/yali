@@ -2148,8 +2148,7 @@ exports.getCampaignDateRecord = function (req, res) {
         _id: {
           year: { $year: '$start_time' },
           month: { $month: '$start_time' }
-        },
-        count:{"$sum":1}
+        }
       })
       .sort('-_id.year -_id.month')
       .exec()
@@ -2166,15 +2165,13 @@ exports.getCampaignDateRecord = function (req, res) {
           }
           if (found) {
             dateRecord[i].month.push({
-              month:result._id.month,
-              campaigns:[]
+              month:result._id.month
             });
           } else {
             dateRecord.push({
               year: result._id.year,
               month: [{
-                month:result._id.month,
-                campaigns:[]
+                month:result._id.month
               }]
             });
           }
