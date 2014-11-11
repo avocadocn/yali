@@ -17,24 +17,45 @@ angular.module('donler')
             return;
           }
           var during = moment.duration(moment(startTime).diff(Date.now()));
-          var remindText = during.seconds() + '秒';
-          if (during.minutes() > 0) {
-            remindText = during.minutes() + '分' + remindText;
-          }
-          if (during.hours() > 0) {
-            remindText = during.hours() + '小时' + remindText;
-          }
-          if (during.days() > 0) {
-            remindText = during.days() + '天' + remindText;
-          }
-          if (during.months() > 0) {
-            remindText = during.months() + '月' + remindText;
-          }
-          if (during.years() > 0) {
-            remindText = during.years() + '年' + remindText;
-          }
+          var remindText = '';
+          var startAdd = false; // 是否开始添加
+          var addedCount = 0; // 添加了几次
+          var isFinishedAdd = false; // 是否添加完毕
+
+          var addText = function (value, measure) {
+            var text = value + measure;
+            if (value > 0) {
+              if (!startAdd) {
+                startAdd = true;
+              }
+              if (!isFinishedAdd) {
+                remindText += text;
+                addedCount += 1;
+                if (addedCount >= 2) {
+                  isFinishedAdd = true;
+                }
+              }
+            } else {
+              if (startAdd) {
+                addedCount += 1;
+                if (addedCount >= 2) {
+                  isFinishedAdd = true;
+                }
+              }
+            }
+          };
+
+          addText(during.years(), '年');
+          addText(during.months(), '个月');
+          addText(during.days(), '天');
+          addText(during.hours(), '小时');
+          addText(during.minutes(), '分');
+          addText(during.seconds(), '秒');
+
           element.text(remindText);
         }, 1000);
       }
     }
   });
+
+
