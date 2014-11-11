@@ -483,25 +483,26 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
         year: temp[0],
         month: temp[1]
       }
-      Campaign.getCampaignsData('team', teamId, paging, function(err, timeline) {
-        if (!err) {
-          for (var i = $scope.timelines.length - 1; i >= 0; i--) {
-            if ($scope.timelines[i].year == timeline.year) {
-              for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
-                if ($scope.timelines[i].month[j].month == timeline.month) {
-                  if ($scope.timelines[i].month[j].campaigns.length == 0) {
-                    $scope.timelines[i].month[j].campaigns = timeline.campaigns;
+      for (var i = $scope.timelines.length - 1; i >= 0; i--) {
+        if ($scope.timelines[i].year == temp[0]) {
+          for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
+            if ($scope.timelines[i].month[j].month == temp[1]) {
+              if (!$scope.timelines[i].month[j].campaigns && !$scope.timelines[i].month[j].loaded) {
+                var yearIndex = i,
+                  monthIndex = j;
+                Campaign.getCampaignsData('team', teamId, paging, function(err, timeline) {
+                  if (!err) {
+                    $scope.timelines[yearIndex].month[monthIndex].campaigns = timeline.campaigns;
                     return timeline.campaigns.length;
                   }
-                  return 0;
-                }
-              };
-              break;
+                });
+              }
+              $scope.timelines[i].month[j].loaded = true;
             }
           };
+          break;
         }
-        return 0;
-      });
+      };
     } else {
       return false;
     }
