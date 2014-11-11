@@ -74,7 +74,7 @@ block panel
             //-   span #{__("LOCATION")}:
             //-   span.content_text {{recentUnjoinedCampaign.location.name}}
         .operator
-          a(ng-href="{{recentUnjoinedCampaign.link}}" target="_blank")
+          a(ng-href="/campaign/detail/{{recentUnjoinedCampaign._id}}" target="_blank")
             span.dl_icons.icon_bgrarrow
     .user_campaigns_container.recent_unjoin.no_campaign(ng-if="recentUnjoinedCampaigns.length==0" ng-cloak)
     .user_campaigns_container.recent_join(ng-if="recentJoinedCampaigns.length>0" ng-cloak)

@@ -18,7 +18,8 @@ var mongoose = require('mongoose'),
   push = require('../controllers/push'),
   message = require('../controllers/message'),
   cache = require('../services/cache/Cache'),
-  systemConfig = require('../config/config');
+  systemConfig = require('../config/config'),
+  logController =require('../controllers/log');
 var pageSize = 100;
 var blockSize = 20;
 
@@ -1711,6 +1712,14 @@ exports.joinCampaign = function (req, res) {
         console.log(err);
         return res.send({ result: 0, msg: '参加失败，请重试' });
       } else {
+        var logBody = {
+        'log_type':'joinCampaign',
+        'userid' : req.user._id,
+        'cid': req.user.cid,
+        'role' : 'user',
+        'campaignid' :campaign._id
+      }
+      logController.addLog(logBody);
         return res.send({ result: 1 });
       }
     });

@@ -17,8 +17,7 @@ var mongoose = require('mongoose'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   GroupMessage = mongoose.model('GroupMessage'),
   Department = mongoose.model('Department'),
-  Campaign = mongoose.model('Campaign'),
-  Log = mongoose.model('Log');
+  Campaign = mongoose.model('Campaign');
 
 // 3rd
 var validator = require('validator'),
@@ -194,6 +193,7 @@ exports.loginSuccess = function(req, res) {
   var logBody = {
     'log_type':'userlog',
     'userid' : req.user._id,
+    'cid':req.user.cid,
     'role' : 'user',
     'ip' :req.headers['x-forwarded-for'] || req.connection.remoteAddress
   }

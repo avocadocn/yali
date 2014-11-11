@@ -172,7 +172,7 @@ exports.signout = function(req, res) {
 exports.loginSuccess = function(req, res) {
   var logBody = {
     'log_type':'userlog',
-    'userid' : req.user._id,
+    'cid' : req.user._id,
     'role' : 'hr',
     'ip' :req.headers['x-forwarded-for'] || req.connection.remoteAddress
   }

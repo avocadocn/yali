@@ -9,12 +9,22 @@ var mongoose = require('mongoose'),
 var LogShema = new Schema({
   log_type:{
     'type': String,
-    enum: ['userlog']
+    enum: ['userlog','joinCampaign']
   },
-  userid: String,
+  userid: {
+    type: Schema.Types.ObjectId,
+    ref:'User'
+  },
+  cid: {
+    type: Schema.Types.ObjectId,
+    ref:'Company'
+  },
   role:{
     'type': String,
     enum: ['hr','user']
+  },
+  campaignid:{
+    type: Schema.Types.ObjectId
   },
   ip:String,
   created: {
