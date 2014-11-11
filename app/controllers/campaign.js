@@ -2066,9 +2066,9 @@ exports.getCampaignDateRecord = function (req, res) {
   }
   cache.createCache(cacheName);
   var dateRecord = cache.get(cacheName, req.params.hostId);
-  // if (dateRecord) {
-  //   res.send({ result: 1, dateRecord: dateRecord });
-  // } else {
+  if (dateRecord) {
+    res.send({ result: 1, dateRecord: dateRecord });
+  } else {
     // 查找分页数据
     // todo 可能会有垃圾数据影响分组，需要清除
     Campaign
@@ -2085,7 +2085,6 @@ exports.getCampaignDateRecord = function (req, res) {
       .exec()
       .then(function (results) {
         var dateRecord = [];
-        console.log(results);
         results.forEach(function (result) {
           var found = false;
           var i;
@@ -2110,7 +2109,6 @@ exports.getCampaignDateRecord = function (req, res) {
             });
           }
         });
-        console.log(dateRecord)
         cache.set(cacheName, req.params.hostId, dateRecord);
         res.send({ result: 1, dateRecord: dateRecord });
       })
@@ -2118,7 +2116,7 @@ exports.getCampaignDateRecord = function (req, res) {
         console.log(err);
         res.send({ result: 0, msg: '获取有活动的年月列表失败' });
       });
-  // }
+  }
 };
 
 exports.getCampaignData = function (req, res) {
@@ -2141,7 +2139,6 @@ exports.getCampaignData = function (req, res) {
   else if(req.params.hostType=='user'){
     options['campaign_unit.member._id'] = mongoose.Types.ObjectId(req.params.hostId);
   }
-  console.log(options)
   Campaign
     .find(options)
     .populate('photo_album')

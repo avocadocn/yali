@@ -111,6 +111,7 @@ timeline.directive('whenScrolled', function($window) {
                     // nearestEle = i;
                     if(_temp.id){
                         scope.$apply(attr.whenScrolled+"(\'"+_temp.id+"\')");
+                        break;
                     }
                 }
             }
@@ -143,15 +144,16 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
                     if($scope.timelines[i].year==temp[0]){
                         for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
                             if($scope.timelines[i].month[j].month==temp[1]){
-                                if($scope.timelines[i].month[j].campaigns.length==0){
+                                if($scope.timelines[i].month[j].campaigns.length==0&&!$scope.timelines[i].month[j].loaded){
+                                    var yearIndex=i,monthIndex = j;
                                     Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
                                         if(!err){
-                                            $scope.timelines[i].month[j].campaigns = timeline.campaigns;
+                                            $scope.timelines[yearIndex].month[monthIndex].campaigns = timeline.campaigns;
                                             return timeline.campaigns.length;
                                         }
                                     });
                                 }
-                                return 0;
+                                $scope.timelines[i].month[j].loaded = true;
                             }
                         };
                         break;
