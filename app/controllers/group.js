@@ -224,13 +224,6 @@ exports.info =function(req, res) {
   });
 };
 
-exports.teampagetemplate =function(req,res){
-  // var cid = req.user.provider=='company'? req.user._id :req.user.cid;
-  res.render('partials/team_integrate_page',{
-    // 'role':req.role,
-    // 'cid':cid
-  });
-};
 
 exports.teampage = function(req, res) {
 
@@ -434,120 +427,6 @@ exports.timeLine = function(req, res){
 };
 
 
-//返回小队页面
-exports.home = function(req, res) {
-  var cid = req.companyGroup.cid.toString();
-  async.waterfall([
-    function(callback) {
-      PhotoAlbum
-      .where('_id').in(req.companyGroup.photo_album_list)
-      .exec()
-      .then(function(photo_albums) {
-        if (!photo_albums) {
-          callback('not found');
-        }
-        var photo_album_thumbnails = [];
-
-        for (var i = 0; i < photo_albums.length; i++) {
-          if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
-            continue;
-          }
-          if (photo_albums[i].hidden === true) {
-            continue;
-          }
-          var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
-          photo_album_thumbnails.push({
-            uri: thumbnail_uri,
-            name: photo_albums[i].name,
-            _id: photo_albums[i]._id
-          });
-          if (photo_album_thumbnails.length === 4) {
-            break;
-          }
-        }
-
-        callback(null, photo_album_thumbnails);
-      })
-      .then(null, function(err) {
-        callback(err);
-      });
-    },
-    function(photo_album_thumbnails, callback) {
-      if(req.role==='HR' || req.role ==='GUESTHR'){
-        res.render('group/home', {
-          'title': req.companyGroup.name,
-          'role': req.role,
-          'teamId' : req.params.teamId,
-          'tname': req.companyGroup.name,
-          'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-          'score': req.companyGroup.score ? (req.companyGroup.score.member +  req.companyGroup.score.campaign +req.companyGroup.score.provoke +req.companyGroup.score.participator +req.companyGroup.score.comment +req.companyGroup.score.album) : 0,
-          'logo': req.companyGroup.logo,
-          'group_id': req.companyGroup._id,
-          'cname': req.companyGroup.cname,
-          'sign': req.companyGroup.brief,
-          'gid' : req.companyGroup.gid,
-          'cid' : cid,
-          'nav_logo':req.user.info.logo,
-          'nav_name':req.user.info.name,
-          'photo_album_thumbnails': photo_album_thumbnails
-        });
-      }
-      else{//个人侧栏
-        var myteam = req.user.team;
-        var _myteam = [];
-        var myteamLength= myteam.length;
-        for(var i = 0; i < myteamLength; i ++) {
-          if(myteam[i].gid !== '0'){
-            //下面查找的是该成员加入和未加入的所有active小队
-            if(myteam[i].leader) {
-              //判断此人是否是此队队长，并作标记
-              _myteam.unshift({
-                _id:myteam[i]._id,
-                name:myteam[i].name,
-                logo:myteam[i].logo,
-                leader:myteam[i].leader
-              });
-            }
-            else{
-              _myteam.push({
-                _id:myteam[i]._id,
-                name:myteam[i].name,
-                logo:myteam[i].logo,
-                leader:myteam[i].leader
-              });
-            }
-          }
-        }
-
-        res.render('group/home',{
-          'title': req.companyGroup.name,
-          'myteam': _myteam,
-          'teamId' : req.params.teamId,
-          'tname': req.companyGroup.name,
-          'number': req.companyGroup.member ? req.companyGroup.member.length : 0,
-          'score': req.companyGroup.score ? (req.companyGroup.score.member +  req.companyGroup.score.campaign +req.companyGroup.score.provoke +req.companyGroup.score.participator +req.companyGroup.score.comment +req.companyGroup.score.album) : 0,
-          'role': req.role,
-          'logo': req.companyGroup.logo,
-          'group_id': req.companyGroup._id,
-          'cname': req.companyGroup.cname,
-          'sign': req.companyGroup.brief,
-          'gid' : req.companyGroup.gid,
-          'cid' : cid,
-          'photo': req.user.photo,
-          'realname':req.user.realname,
-          'nav_logo': req.user.photo,
-          'nav_name':req.user.nickname,
-          'photo_album_thumbnails': photo_album_thumbnails
-        });
-      };
-    }
-  ], function(err, result) {
-    console.log(err);
-    if (err === 'not found') res.send(404);
-    else res.send(500);
-  });
-
-};
 //返回公司小队的所有数据,员工选择组件时使用
 exports.getCompanyGroups = function(req, res) {
   CompanyGroup.find({cid : req.params.companyId},{'gid':1,'group_type':1,'entity_type':1,'name':1,'logo':1}, function(err, teams) {
