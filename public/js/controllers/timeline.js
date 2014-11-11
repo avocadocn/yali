@@ -139,25 +139,24 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
                     year:temp[0],
                     month:temp[1]
                 }
-                Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
-                    if(!err){
-                        for (var i = $scope.timelines.length - 1; i >= 0; i--) {
-                            if($scope.timelines[i].year==timeline.year){
-                                for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
-                                    if($scope.timelines[i].month[j].month==timeline.month){
-                                        if($scope.timelines[i].month[j].campaigns.length==0){
+                for (var i = $scope.timelines.length - 1; i >= 0; i--) {
+                    if($scope.timelines[i].year==temp[0]){
+                        for (var j = $scope.timelines[i].month.length - 1; j >= 0; j--) {
+                            if($scope.timelines[i].month[j].month==temp[1]){
+                                if($scope.timelines[i].month[j].campaigns.length==0){
+                                    Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
+                                        if(!err){
                                             $scope.timelines[i].month[j].campaigns = timeline.campaigns;
                                             return timeline.campaigns.length;
                                         }
-                                        return 0;
-                                    }
-                                };
-                                break;
+                                    });
+                                }
+                                return 0;
                             }
                         };
+                        break;
                     }
-                    return 0;
-                });
+                };
             }
             else{
                 return false;

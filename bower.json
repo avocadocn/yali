@@ -21,7 +21,6 @@
     "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.9",
     "cropit": "~0.1.9",
     "imagesloaded": "~3.1.8",
-    "ionic": "1.0.0-beta.4",
     "jquery-form": "3.46.0",
     "linkage-selector": "0.1.4",
     "moment": "^2.7.0",

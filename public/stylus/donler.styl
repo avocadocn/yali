@@ -2033,14 +2033,16 @@ input.ng-invalid.ng-dirty
             margin 10px 20px
         .calendar_view_modal
           border 1px solid borderColor
-          .cal-month-box [class*="cal-cell"]
-            min-height 50px
-            .cal-month-day
-              height 65px
-              text-align center
-              span[data-cal-date]
-                margin-top 22px
-                display inline-block
+          .cal-content
+            height 411px
+            .cal-month-box [class*="cal-cell"]
+              min-height 50px
+              .cal-month-day
+                height 65px
+                text-align center
+                span[data-cal-date]
+                  margin-top 22px
+                  display inline-block
           .calendar_tips
             height 50px
             dl_shadow()
@@ -2076,8 +2078,8 @@ input.ng-invalid.ng-dirty
             font-size 14px
           .cal-event-list
             border 1px solid borderColor
-            max-height 380px
-            min-height 380px
+            max-height 438px
+            min-height 438px
             background-color #fff
             .custom_calendar_li
               margin 10px 0
@@ -2437,7 +2439,7 @@ input.ng-invalid.ng-dirty
                 float left
                 margin-right 4px
             .content_col
-              maxwidth 160px
+              max-width 160px
               font-size 12px
               padding-left 8px
               p
@@ -2545,6 +2547,7 @@ input.ng-invalid.ng-dirty
           max-height 230px
           &.no_campaign
             background-image url('/img/no_new_campaign.png')
+            height 180px
           .campaign_head
             background-color #ffc053
           a
@@ -2557,6 +2560,7 @@ input.ng-invalid.ng-dirty
           max-height 230px
           &.no_campaign
             background-image url('/img/no_recent_campaign.png')
+            height 180px
           .campaign_head
             background-color #3ccbd4
           .campaign
@@ -2618,10 +2622,6 @@ input.ng-invalid.ng-dirty
           .user_campaigns_container
             width 345px
             .campaign
-              margin 0
-              background-color #fcfcfc
-              height 132px
-              padding-top 5px
               .logo_col
                 width 100%
                 clear both
@@ -2653,13 +2653,14 @@ input.ng-invalid.ng-dirty
               .content_col
                 width 100%
                 max-width 100%
-                height 125px
+                height 70px
                 overflow hidden
                 text-overflow ellipsis
                 white-space nowrap
                 padding 6px 40px
                 p
                   line-height 20px
+                  font-size 14px
             .provoke
               .logo_col
                 padding-top 5px
@@ -2679,25 +2680,75 @@ input.ng-invalid.ng-dirty
                 .content_col
                   padding 19px 40px
             .photos
-              clear both
-              margin-top 15px
+              float left
+              margin-top 10px
+              // .photo
+              //   float left
+              //   margin 10px 0 0 9px
+              //   width 56%
+              //   img
+              //     height 120px
+              //     width 100%
               .photo
                 float left
-                margin 10px 0 0 9px
-                width 56%
-                img
-                  height 120px
-                  width 100%
-              .odd
-                width 36%
-              .single
-                width 95%
+                width 86px
+                height 86px
+                background url("/img/loading.gif") center center no-repeat
+                display inline-block
+                margin-right 0
+              .photos_1
+                .photo_0
+                  width 345px
+                  height 235px
+              .photos_2
+                .photo_0
+                  width 175px
+                  height 115px
+                  float left
+                  margin-right 5px
+                .photo_1
+                  width 165px
+                  height 115px
+                  float left
+              .photos_3
+                .photo_0
+                  width 170px
+                  height 265px
+                  margin-left 5px
+                  float right
+                .photo_1, .photo_2
+                  width 170px
+                  height 130px
+                  float right
+                .photo_1
+                  margin-bottom 5px
+              .photos_4
+                .photo_0,.photo_3
+                  width 146px
+                  height 130px
+                  margin-bottom 5px
+                  float left
+                .photo_1, .photo_2
+                  width 193px
+                  height 130px
+                  margin-bottom 5px
+                  float left
+                .photo_2,.photo_3
+                  height 150px
+                .photo_0,.photo_2
+                  margin-right 6px
+              // .odd
+              //   width 36%
+              // .single
+              //   width 95%
             .comments
               clear both
               a
                 color secondaryfontColor
                 margin-top 10px
                 padding 10px
+                .reply_icon
+                  margin-right 5px
         .now_head
           width 100%
           height 30px

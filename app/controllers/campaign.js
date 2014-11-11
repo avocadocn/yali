@@ -868,7 +868,7 @@ exports.getUserCampaignsForHome = function(req, res) {
     }
     if(searchOption.joinFlag){
       options['campaign_unit.member._id'] = req.user._id ;
-      _sort ='start_time';
+      _sort ='-start_time';
     }
     else{
       //筛选出未参加的公司活动或小队活动
@@ -898,6 +898,8 @@ exports.getUserCampaignsForHome = function(req, res) {
       callback(null);
     });
   }
+
+
   async.series([
     function(callback){
       searchCampaign({deadlineSet:{'$gte':now }}, callback);
@@ -909,8 +911,28 @@ exports.getUserCampaignsForHome = function(req, res) {
       searchCampaign({startSet:{ '$lt': now},endSet:{'$gte':now }, joinFlag: true,photoFlag: true}, callback);
     },//正在进行的活动
     function(callback){
-      searchCampaign({endSet:{'$lte': now }, joinFlag: true,photoFlag: true,limitSet:nowCampaignLength}, callback);
-    },//刚刚结束的活动
+      //刚刚结束的活动
+      // searchCampaign({endSet:{'$lte': now }, joinFlag: true,photoFlag: true,limitSet:nowCampaignLength}, callback);
+      var teamIds = [];
+      for(var i = 0;i<req.user.team.length;i++){
+        teamIds.push(req.user.team[i]._id.toString());
+      }
+      var options = {
+        'active':true,
+        'cid':req.user.cid,
+        'end_time' : { '$gte': now},
+        'tid': {'$nin':teamIds}
+      }
+      var query = Campaign.find(options).sort('-create_time');
+      query.exec()
+      .then(function(campaigns){
+        callback(null,formatCampaign(campaigns,'user',req.role,req.user));
+      })
+      .then(null,function(err){
+        console.log(err);
+        callback(null);
+      });
+    },//热门活动：未参加的队伍的
     function(callback){
       var teamIds = [];
       for(var i = 0;i<req.user.team.length;i++){
@@ -939,7 +961,7 @@ exports.getUserCampaignsForHome = function(req, res) {
       return res.send({ result: 0, campaigns: [] });
     }
     else{
-      var _result = [values[0],values[1]];
+      var _result = [values[0],values[3]];
       if(values[4].length>0){
         values[2] = values[4].concat(values[2]);
       }
@@ -948,7 +970,7 @@ exports.getUserCampaignsForHome = function(req, res) {
         _result.push(values[2]);
       }
       else{
-        _result.push(values[2].concat(values[3].splice(0,nowCampaignLength-_nowCampaignLength)));
+        _result.push(values[2].concat(values[1]));
       }
       return res.send({ result: 1, campaigns: _result });
     }
@@ -1977,6 +1999,7 @@ exports.getCampaignData = function (req, res) {
   else if(req.params.hostType=='user'){
     options['campaign_unit.member._id'] = mongoose.Types.ObjectId(req.params.hostId);
   }
+  console.log(options);
   Campaign
     .find(options)
     .populate('photo_album')

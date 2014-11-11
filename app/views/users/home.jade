@@ -62,7 +62,7 @@ block panel
         .content_col
           a.clearLinkUnderline(ng-href="/campaign/detail/{{recentUnjoinedCampaign._id}}" target="_blank")
             p(ng-if="recentUnjoinedCampaign.type=='companycampaign'||recentUnjoinedCampaign.campaign_unit.length==1")
-              span {{recentJoinrecentUnjoinedCampaignsedCampaign.name}}
+              span {{recentUnjoinedCampaign.name}}
             p(ng-if="recentUnjoinedCampaign.campaign_unit &&recentUnjoinedCampaign.campaign_unit.length>1")
               span {{recentUnjoinedCampaign.campaign_unit[0].team.name}} VS {{recentUnjoinedCampaign.campaign_unit[1].team.name}}
             p
@@ -74,7 +74,8 @@ block panel
             //-   span #{__("LOCATION")}:
             //-   span.content_text {{recentUnjoinedCampaign.location.name}}
         .operator
-          span.dl_icons.icon_bgrarrow
+          a(ng-href="{{recentUnjoinedCampaign.link}}" target="_blank")
+            span.dl_icons.icon_bgrarrow
     .user_campaigns_container.recent_unjoin.no_campaign(ng-if="recentUnjoinedCampaigns.length==0" ng-cloak)
     .user_campaigns_container.recent_join(ng-if="recentJoinedCampaigns.length>0" ng-cloak)
       .campaign_head(ng-cloak)
@@ -101,7 +102,8 @@ block panel
             //-   span #{__("LOCATION")}:
             //-   span.content_text {{recentJoinedCampaign.location.name}}
         .operator
-          span.dl_icons.icon_bgrarrow
+          a.clearLinkUnderline(ng-href="/campaign/detail/{{recentJoinedCampaign._id}}" target="_blank")
+            span.dl_icons.icon_bgrarrow
         .time_col
           span {{ recentJoinedCampaign.start_flag ?'正在进行':'即将开始'}}
     .user_campaigns_container.recent_join.no_campaign(ng-if="recentJoinedCampaigns.length==0" ng-cloak)
@@ -128,8 +130,8 @@ block panel
               img.campaign_logo.pull-right(ng-if="nowCampaign.type !=='companycampaign'" ng-repeat="campaign_unit in nowCampaign.campaign_unit" ng-src="{{campaign_unit.team.logo ? campaign_unit.team.logo :'/img/icons/default_group_logo.png'}}/30/30")
               span.name.pull-right {{nowCampaign.campaign_unit.length==1 ?  (nowCampaign.type ==='companycampaign' ? nowCampaign.campaign_unit[0].company.name:nowCampaign.campaign_unit[0].team.name): '比赛'}}
               //- span.date= moment(item.start_time).format('MM/DD/YYYY')
-          .campaign(ng-class="{'provoke':nowCampaign.type=='provoke'}")
-            .logo_col(ng-if="nowCampaign.type=='provoke'" )
+          .campaign(ng-class="{'provoke':!nowCampaign.confirm_status}")
+            .logo_col(ng-if="!nowCampaign.confirm_status" )
               .team(ng-repeat="campaign_unit in nowCampaign.campaign_unit")
                 a.clearLinkUnderline(ng-href="/group/page/{{campaign_unit.team._id}}" target="_blank")
                   img.campaign_logo(ng-src="{{campaign_unit.team.logo}}/70/70")
@@ -139,46 +141,46 @@ block panel
                 button.dl_btn.dl_btn_small.pull-right.btn_red(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="dealProvoke(nowCampaign._id,nowCampaign.campaign_unit[1].team._id,1)") 接受
                 button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(1)>-1" ng-click="dealProvoke(nowCampaign._id,nowCampaign.campaign_unit[1].team._id,2)") 拒绝
                 button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="nowCampaign.leader.indexOf(0)>-1" ng-click="dealProvoke(nowCampaign._id,nowCampaign.campaign_unit[0].team._id,3)") 取消
-            .logo_col(ng-if="nowCampaign.type!='provoke'" )
+            .logo_col(ng-if="nowCampaign.confirm_status" )
               .campaign_status(ng-class="{'start_campaign':nowCampaign.start_flag,'unstart_campaign':!nowCampaign.start_flag}")
                 span {{ nowCampaign.start_flag ?(nowCampaign.finish ?'已经结束':'正在进行'):nowCampaign.start_time_text+'后开始'}}
             .content_col
               a.clearLinkUnderline(ng-href="/campaign/detail/{{nowCampaign._id}}" target="_blank")
                 p
-                  strong 主题:
+                  span 主题:
                   span.theme_text {{nowCampaign.theme}}
-                p
-                  strong 类型:
-                  span.theme_text 
+                //- p
+                //-   span 类型:
+                //-   span.theme_text 
                 p.campaign_info
                   span 开始时间:
                   span.content_text {{nowCampaign.start_time | date:'yyyy-MM-dd HH:mm'}}
-                p.campaign_info
-                  span 结束时间:
-                  span.content_text {{nowCampaign.end_time | date:'yyyy-MM-dd HH:mm'}}
+                //- p.campaign_info
+                //-   span 结束时间:
+                //-   span.content_text {{nowCampaign.end_time | date:'yyyy-MM-dd HH:mm'}}
                 p.campaign_info
                   span #{__("LOCATION")}:
                   span.content_text {{nowCampaign.location.name}}
-                p.campaign_info
-                  span 简介:
-                  span.content_text {{nowCampaign.content}}
-          .photos
-            .photo(ng-repeat="photo in nowCampaign.photo_thumbnails" ng-class="{'odd':$index%4==1 || $index%4==2,'single':$last&&$even}")
-              img(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-src="{{photo.uri}}{{$last&&$even ? '/309/120': ($index%4==1 ||$index%4==2)?'/117/120':'/182/120'}}")
+                //- p.campaign_info
+                //-   span 简介:
+                //-   span.content_text {{nowCampaign.content}}
+          //- .photos
+          //-   .photo(ng-repeat="photo in nowCampaign.photo_thumbnails" ng-class="{'odd':$index%4==1 || $index%4==2,'single':$last&&$even}")
+          //-     img(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-src="{{photo.uri}}{{$last&&$even ? '/309/120': ($index%4==1 ||$index%4==2)?'/117/120':'/182/120'}}")
 
-          //- .photos(ng-switch="nowCampaign.photo_thumbnails.length")
-          //-   .photo(class="photos_{{nowCampaign.photo_thumbnails.length}}" ng-switch-when="1")
-          //-     img(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/400/250")
-          //-   .photo(class="photos_{{nowCampaign.photo_thumbnails.length}}" ng-switch-when="2")
-          //-     img(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/195/180")
-          //-   .photo(class="photos_{{nowCampaign.photo_thumbnails.length}}" ng-switch-when="3")
-          //-     img(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0?photo.uri+'/195/290':photo.uri+'/195/240')}}")
-          //-   .photo(class="photos_{{nowCampaign.photo_list.length}}" ng-switch-when="4")
-          //-     img(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0 || $index==3)?photo.uri+'/160/145':photo.uri+'/230/145'}}")
+          .photos(ng-switch="nowCampaign.photo_thumbnails.length")
+            div(class="photos_{{nowCampaign.photo_thumbnails.length}}" ng-switch-when="1")
+              img.photo(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/400/250")
+            div(class="photos_{{nowCampaign.photo_thumbnails.length}}" ng-switch-when="2")
+              img.photo(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/195/180")
+            div(class="photos_{{nowCampaign.photo_thumbnails.length}}" ng-switch-when="3")
+              img.photo(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0?photo.uri+'/195/290':photo.uri+'/195/240')}}")
+            div(class="photos_{{nowCampaign.photo_thumbnails.length}}" ng-switch-when="4")
+              img.photo(ng-click="showMorePhoto(nowCampaign.photo_album_id,photo.uri)" ng-repeat="photo in nowCampaign.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0 || $index==3)?photo.uri+'/160/145':photo.uri+'/230/145'}}")
           .comments
             //- a.clearLinkUnderline.pull-right.vote(ng-if="!nowCampaign.confirm_status") {{nowCampaign.campaign_unit[nowCampaign.team[0]].positive}}个赞成
-            a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$root.showComment==$index?null:$index;")
-              img.reply_icon(src="/img/comment.png")
+            a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$root.showComment==$index?null:$index;reloadM();")
+              img.reply_icon(src="/img/comment_grey.png")
               span {{nowCampaign.comment_sum}}条评论
             .comment_list(ng-if="$root.showComment==$index")
               simple-comment(component-id="{{nowCampaign.components.RichComment[0]}}" allow-publish="{{nowCampaign.allow.publishComment}}" after-render="reloadM()" comment-num=3)
