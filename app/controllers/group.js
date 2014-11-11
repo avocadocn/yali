@@ -112,7 +112,8 @@ exports.info =function(req, res) {
     'editTeam',
     'sponsorCampaign',
     'sponsorProvoke',
-    'publishTeamMessage'
+    'publishTeamMessage',
+    'editTeamFamily'
   ];
   var allow = auth(req.user, {
     companies: [team.cid],

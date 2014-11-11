@@ -1377,12 +1377,13 @@ exports.renderFamilyPhotoAlbum = function (req, res, next) {
       var lastPhoto = companyGroup.family.filter(showFilter).sort(function (a, b) {
         return b.upload_date - a.upload_date;
       })[0];
+      var lastUpdate = lastPhoto ? moment(lastPhoto.upload_date).format('YYYY.MM.DD') : null;
 
       res.render('photo_album/family_photo_album', {
         links: links,
         companyGroup: companyGroup,
         showPhotos: companyGroup.family.filter(showFilter),
-        lastPhoto: lastPhoto,
+        lastUpdate: lastUpdate,
         moment: moment,
         allow: allow
       });

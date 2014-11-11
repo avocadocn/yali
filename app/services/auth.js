@@ -117,6 +117,10 @@ var registeredTasks = {
   //给队长发站内信
   recommandTeamToLeader:{
     team:['member']
+  },
+  editTeamFamily: {
+    company: ['hr'],
+    team: ['leader']
   }
 };
 

@@ -16,7 +16,8 @@ block contentExt
             h4.media-heading= companyGroup.name
             p.text 相册名:&nbsp;#{companyGroup.name}的全家福
             p.text 照片数:&nbsp;#{showPhotos.length}
-            p.text 最后更新:&nbsp;#{moment(lastPhoto.upload_date).format('YYYY.MM.DD')}
+            if lastUpdate
+              p.text 最后更新:&nbsp;#{lastUpdate}
         .right_down
           if allow.editTeam === true
             label.dl_btn.dl_btn_small(ng-click="selectPhoto()") 选择照片
