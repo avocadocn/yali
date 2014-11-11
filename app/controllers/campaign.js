@@ -1969,6 +1969,68 @@ exports.getMolds = function(req, res){
   });
 };
 
+/**
+ * 更新小队主页的活动记录缓存
+ * @param  {Object} campaign 活动
+ */
+var updateTeamPageDateRecord = function (campaign) {
+  // 公司活动不更新
+  if (campaign.campaign_type === 1) {
+    return;
+  }
+
+  var tids = campaign.tid;
+  var cacheName = 'TeamPageCampaignDateRecord';
+  cache.createCache(cacheName);
+  tids.forEach(function (tid) {
+    var dateRecord = cache.get(cacheName, tid);
+
+    // 如果还没有保存进缓存中，则不更新
+    if (!dateRecord) {
+      return;
+    }
+
+    var startTime = new Date(campaign.start_time);
+    (function updateRecord() {
+      var result = false;
+      for (var i = 0; i < dateRecord.length; i++) {
+        var yearData = dateRecord[i];
+        if (yearData.year === startTime.getFullYear()) {
+          for (var j = 0; j < yearData.month.length; j++) {
+            var monthData = yearData.month[j];
+            if (monthData.month === startTime.getMonth() + 1) {
+              // 新活动的月份已在缓存中，不必更新
+              return;
+            }
+          }
+          // 如果没有找到该月的记录，则把该年数据保存到结果中，便于添加缓存
+          result = yearData;
+          break;
+        }
+      }
+
+      if (result) {
+        // 如果只是缺少该月数据，则添加该月的数据进缓存中
+        result.month.push({
+          month: startTime.getMonth() + 1
+        });
+      } else {
+        // 如果连这一年的数据页没有，则添加一年的数据
+        dateRecord.push({
+          year: startTime.getFullYear(),
+          month: [{
+            month: startTime.getMonth() + 1
+          }]
+        });
+      }
+      cache.set(cacheName, tid, dateRecord);
+
+    })();
+
+  });
+
+};
+
 //发活动接口
 exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
   //basicInfo: req.body,
@@ -2040,8 +2102,16 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
             else {
               campaign.save(function(err) {
                 if(err) callback(500,'保存活动失败');
-                else callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
+                else {
+                  callback(null,{'campaign_id':campaign._id,'photo_album_id':photo_album._id});
+
+                  // 保存成功后更新缓存
+                  updateTeamPageDateRecord(campaign);
+
+                }
+
               });
+
             }
           });
         }
