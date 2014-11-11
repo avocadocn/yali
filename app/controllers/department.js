@@ -1361,95 +1361,97 @@ exports.createDepartment = function(req, res) {
 
 exports.renderHome = function(req, res) {
   var department = req.department;
-  PhotoAlbum
-    .where('_id').in(department.team.photo_album_list)
-    .exec()
-    .then(function(photo_albums) {
-      if (!photo_albums) {
-        return res.send(404);
-      }
-      var photo_album_thumbnails = [];
+  console.log('run')
+  res.redirect('/group/page/' + department.populated('team'));
+  // PhotoAlbum
+  //   .where('_id').in(department.team.photo_album_list)
+  //   .exec()
+  //   .then(function(photo_albums) {
+  //     if (!photo_albums) {
+  //       return res.send(404);
+  //     }
+  //     var photo_album_thumbnails = [];
 
-      for (var i = 0; i < photo_albums.length; i++) {
-        if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
-          continue;
-        }
-        if (photo_albums[i].hidden === true) {
-          continue;
-        }
-        var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
-        photo_album_thumbnails.push({
-          uri: thumbnail_uri,
-          name: photo_albums[i].name,
-          _id: photo_albums[i]._id
-        });
-        if (photo_album_thumbnails.length === 4) {
-          break;
-        }
-      }
+  //     for (var i = 0; i < photo_albums.length; i++) {
+  //       if (photo_albums[i].owner.model.type === 'Campaign' && photo_albums[i].photos.length === 0) {
+  //         continue;
+  //       }
+  //       if (photo_albums[i].hidden === true) {
+  //         continue;
+  //       }
+  //       var thumbnail_uri = photo_album_controller.photoAlbumThumbnail(photo_albums[i]);
+  //       photo_album_thumbnails.push({
+  //         uri: thumbnail_uri,
+  //         name: photo_albums[i].name,
+  //         _id: photo_albums[i]._id
+  //       });
+  //       if (photo_album_thumbnails.length === 4) {
+  //         break;
+  //       }
+  //     }
 
-      if (req.role === 'HR') {
-        return res.render('department/home', {
-          'title': department.team.cname+department.team.name,
-          'department': department,
-          'role': req.role,
-          'tname': department.team.name,
-          'number': department.team.member ? department.team.member.length : 0,
-          'score': department.team.score ? department.team.score : 0,
-          'logo': department.team.logo,
-          'group_id': department.team._id,
-          'cname': department.team.cname,
-          'sign': department.team.brief,
-          'gid': department.team.gid,
-          'photo_album_thumbnails': photo_album_thumbnails
-        });
-      } else {
-        var myteam = req.user.team;
-        var _myteam = [];
-        var myteamLength= myteam.length;
-        for(var i = 0; i < myteamLength; i ++) {
-          if(myteam[i].gid !== '0'){
-            //下面查找的是该成员加入和未加入的所有active小队
-            if(myteam[i].leader) {
-              //判断此人是否是此队队长，并作标记
-              _myteam.unshift({
-                _id:myteam[i]._id,
-                name:myteam[i].name,
-                logo:myteam[i].logo,
-                leader:myteam[i].leader
-              });
-            }
-            else{
-              _myteam.push({
-                _id:myteam[i]._id,
-                name:myteam[i].name,
-                logo:myteam[i].logo,
-                leader:myteam[i].leader
-              });
-            }
-          }
-        }
+  //     if (req.role === 'HR') {
+  //       return res.render('department/home', {
+  //         'title': department.team.cname+department.team.name,
+  //         'department': department,
+  //         'role': req.role,
+  //         'tname': department.team.name,
+  //         'number': department.team.member ? department.team.member.length : 0,
+  //         'score': department.team.score ? department.team.score : 0,
+  //         'logo': department.team.logo,
+  //         'group_id': department.team._id,
+  //         'cname': department.team.cname,
+  //         'sign': department.team.brief,
+  //         'gid': department.team.gid,
+  //         'photo_album_thumbnails': photo_album_thumbnails
+  //       });
+  //     } else {
+  //       var myteam = req.user.team;
+  //       var _myteam = [];
+  //       var myteamLength= myteam.length;
+  //       for(var i = 0; i < myteamLength; i ++) {
+  //         if(myteam[i].gid !== '0'){
+  //           //下面查找的是该成员加入和未加入的所有active小队
+  //           if(myteam[i].leader) {
+  //             //判断此人是否是此队队长，并作标记
+  //             _myteam.unshift({
+  //               _id:myteam[i]._id,
+  //               name:myteam[i].name,
+  //               logo:myteam[i].logo,
+  //               leader:myteam[i].leader
+  //             });
+  //           }
+  //           else{
+  //             _myteam.push({
+  //               _id:myteam[i]._id,
+  //               name:myteam[i].name,
+  //               logo:myteam[i].logo,
+  //               leader:myteam[i].leader
+  //             });
+  //           }
+  //         }
+  //       }
 
-        return res.render('department/home', {
-          'title': department.team.cname+department.team.name,
-          'department': department,
-          'myteam':_myteam,
-          'tname': department.team.name,
-          'number': department.team.member ? department.team.member.length : 0,
-          'score': department.team.score ? department.team.score : 0,
-          'role': req.role,
-          'logo': department.team.logo,
-          'group_id': department.team._id,
-          'cname': department.team.cname,
-          'sign': department.team.brief,
-          'gid': department.team.gid,
-          'photo': req.user.photo,
-          'realname': req.user.realname,
-          'photo_album_thumbnails': photo_album_thumbnails
-        });
-      }
+  //       return res.render('department/home', {
+  //         'title': department.team.cname+department.team.name,
+  //         'department': department,
+  //         'myteam':_myteam,
+  //         'tname': department.team.name,
+  //         'number': department.team.member ? department.team.member.length : 0,
+  //         'score': department.team.score ? department.team.score : 0,
+  //         'role': req.role,
+  //         'logo': department.team.logo,
+  //         'group_id': department.team._id,
+  //         'cname': department.team.cname,
+  //         'sign': department.team.brief,
+  //         'gid': department.team.gid,
+  //         'photo': req.user.photo,
+  //         'realname': req.user.realname,
+  //         'photo_album_thumbnails': photo_album_thumbnails
+  //       });
+  //     }
 
-    });
+  //   });
 
 };
 
