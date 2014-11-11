@@ -891,7 +891,7 @@ exports.timeLine = function(req,res){
         role :req.role,
         register_date:req.user.register_date
       };
-      console.log(nowUser)
+
       // console.log(newTimeLines);
       return res.render('users/user_timeline',{'user':nowUser,'length':campaignsNum,'moment':moment});
   })
