@@ -1,5 +1,6 @@
 .search_opponents
   color #999
+  box-shadow 0px 1px 3px 3px #e7e7e7
   //-通用按钮
   .button
     height 30px
@@ -9,16 +10,21 @@
     background-color #3ca2e0
     padding 10px
     line-height 1
+    box-shadow 1px 1px 2px #c8cac7
+    &:hover
+      background-color #398ec4
+      box-shadow 0 0 0
   .button.btn_small
     width 60px
   .button.btn_red
     background-color #f48361
+    &:hover
+      background-color #da775a
   .button.largerFont
     font-size 14px
-
+    padding 9px
   .head_container
     background-color #fff
-    border 1px solid #eee
     border-bottom 0
     .headline
       height 30px
@@ -32,6 +38,7 @@
         margin-right 10px
     .my_teams
       margin 20px
+      margin-bottom 30px
       .select
         margin-bottom 15px
         font-size 14px
@@ -89,10 +96,11 @@
             float left
         .button
           float right
+          margin-top 10px
   .tab_view
     width 100%
     background-color #fff
-    .opponnet_tab_style
+    .opponent_tab_style
       width 320px
       height 40px
       color #fff
@@ -101,6 +109,7 @@
       a
         color #fff
         font-size 16px
+        height 100%
       .nav_img
         width 23px
         height 20px
@@ -130,12 +139,13 @@
         background-repeat no-repeat
         background-color transparent
   .tab_view.unactive
-    .opponnet_tab_style
+    //-非active的tab(灰)
+    .opponent_tab_style
       background-color #ccc !important
       a
         &:hover
           background-color #ccc 
-    .opponnet_tab_style.nearbyTeam
+    .opponent_tab_style.nearbyTeam
       background-color #afafaf !important
       a
         &:hover
@@ -155,6 +165,7 @@
         color #c4c4c4
         margin 12px 0
   .tab_view.active
+    //-active后的tab
     .arrow
       position absolute
       width 0
@@ -169,18 +180,12 @@
       background-color #fec053
       a
         &:hover
-          background-color #fec053
-    .sameCity.active
-      .arrow
-        border-top-color #fec053
+          background-color #e6b050
     .nearbyTeam
       background-color #3ca2e0
       a
         &:hover
-          background-color #3ca2e0
-    .nearbyTeam.active
-      .arrow
-        border-top-color #3ca2e0
+          background-color #398ec4
     .search
       background-color #43d3dc
       a
@@ -188,6 +193,18 @@
           background-color #43d3dc
       .searchOpponentInput
         background-color #19bdc7
+    .sameCity.active
+      &:hover
+        .arrow
+          border-top-color #e6b050
+      .arrow
+        border-top-color #fec053
+    .nearbyTeam.active
+      .arrow
+        border-top-color #3ca2e0
+      &:hover
+        .arrow
+          border-top-color #398ec4
     .search.active
       .arrow
         border-top-color #43d3dc
@@ -220,6 +237,7 @@
             color #666
         .button
           float right
+          margin-top 10px
       .homecourtSetting
         .title
           font-size 14px

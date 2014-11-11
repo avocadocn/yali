@@ -1,5 +1,6 @@
 .search_opponents {
   color: #999;
+  box-shadow: 0px 1px 3px 3px #e7e7e7;
 }
 .search_opponents .button {
   height: 30px;
@@ -9,6 +10,11 @@
   background-color: #3ca2e0;
   padding: 10px;
   line-height: 1;
+  box-shadow: 1px 1px 2px #c8cac7;
+}
+.search_opponents .button:hover {
+  background-color: #398ec4;
+  box-shadow: 0 0 0;
 }
 .search_opponents .button.btn_small {
   width: 60px;
@@ -16,12 +22,15 @@
 .search_opponents .button.btn_red {
   background-color: #f48361;
 }
+.search_opponents .button.btn_red:hover {
+  background-color: #da775a;
+}
 .search_opponents .button.largerFont {
   font-size: 14px;
+  padding: 9px;
 }
 .search_opponents .head_container {
   background-color: #fff;
-  border: 1px solid #eee;
   border-bottom: 0;
 }
 .search_opponents .head_container .headline {
@@ -38,6 +47,7 @@
 }
 .search_opponents .head_container .my_teams {
   margin: 20px;
+  margin-bottom: 30px;
 }
 .search_opponents .head_container .my_teams .select {
   margin-bottom: 15px;
@@ -109,23 +119,25 @@
 }
 .search_opponents .head_container .selected_team .my_team .button {
   float: right;
+  margin-top: 10px;
 }
 .search_opponents .tab_view {
   width: 100%;
   background-color: #fff;
 }
-.search_opponents .tab_view .opponnet_tab_style {
+.search_opponents .tab_view .opponent_tab_style {
   width: 320px;
   height: 40px;
   color: #fff;
   float: left;
   text-align: center;
 }
-.search_opponents .tab_view .opponnet_tab_style a {
+.search_opponents .tab_view .opponent_tab_style a {
   color: #fff;
   font-size: 16px;
+  height: 100%;
 }
-.search_opponents .tab_view .opponnet_tab_style .nav_img {
+.search_opponents .tab_view .opponent_tab_style .nav_img {
   width: 23px;
   height: 20px;
   margin-right: 20px;
@@ -158,16 +170,16 @@
   background-repeat: no-repeat;
   background-color: transparent;
 }
-.search_opponents .tab_view.unactive .opponnet_tab_style {
+.search_opponents .tab_view.unactive .opponent_tab_style {
   background-color: #ccc !important;
 }
-.search_opponents .tab_view.unactive .opponnet_tab_style a:hover {
+.search_opponents .tab_view.unactive .opponent_tab_style a:hover {
   background-color: #ccc;
 }
-.search_opponents .tab_view.unactive .opponnet_tab_style.nearbyTeam {
+.search_opponents .tab_view.unactive .opponent_tab_style.nearbyTeam {
   background-color: #afafaf !important;
 }
-.search_opponents .tab_view.unactive .opponnet_tab_style.nearbyTeam a:hover {
+.search_opponents .tab_view.unactive .opponent_tab_style.nearbyTeam a:hover {
   background-color: #afafaf;
 }
 .search_opponents .tab_view.unactive .search .searchOpponentInput {
@@ -202,19 +214,13 @@
   background-color: #fec053;
 }
 .search_opponents .tab_view.active .sameCity a:hover {
-  background-color: #fec053;
-}
-.search_opponents .tab_view.active .sameCity.active .arrow {
-  border-top-color: #fec053;
+  background-color: #e6b050;
 }
 .search_opponents .tab_view.active .nearbyTeam {
   background-color: #3ca2e0;
 }
 .search_opponents .tab_view.active .nearbyTeam a:hover {
-  background-color: #3ca2e0;
-}
-.search_opponents .tab_view.active .nearbyTeam.active .arrow {
-  border-top-color: #3ca2e0;
+  background-color: #398ec4;
 }
 .search_opponents .tab_view.active .search {
   background-color: #43d3dc;
@@ -224,6 +230,18 @@
 }
 .search_opponents .tab_view.active .search .searchOpponentInput {
   background-color: #19bdc7;
+}
+.search_opponents .tab_view.active .sameCity.active:hover .arrow {
+  border-top-color: #e6b050;
+}
+.search_opponents .tab_view.active .sameCity.active .arrow {
+  border-top-color: #fec053;
+}
+.search_opponents .tab_view.active .nearbyTeam.active .arrow {
+  border-top-color: #3ca2e0;
+}
+.search_opponents .tab_view.active .nearbyTeam.active:hover .arrow {
+  border-top-color: #398ec4;
 }
 .search_opponents .tab_view.active .search.active .arrow {
   border-top-color: #43d3dc;
@@ -263,6 +281,7 @@
 }
 .search_opponents .tab_content .result .homecourt .button {
   float: right;
+  margin-top: 10px;
 }
 .search_opponents .tab_content .result .homecourtSetting .title {
   font-size: 14px;

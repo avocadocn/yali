@@ -229,7 +229,8 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
       $scope.search(index);
     };
     $scope.changeHomecourt=function(){
-      $scope.needSetting=true;
+      $scope.needSetting = true;
+      // $scope.isShowMap = true;
     }
     //-地图
     //搜索地图的增加标记函数
