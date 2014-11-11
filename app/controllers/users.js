@@ -888,8 +888,10 @@ exports.timeLine = function(req,res){
         phone:req.profile.phone,
         email:req.profile.email,
         teams:myteam,
-        role :req.role
+        role :req.role,
+        register_date:req.user.register_date
       };
+      console.log(nowUser)
       // console.log(newTimeLines);
       return res.render('users/user_timeline',{'user':nowUser,'length':campaignsNum,'moment':moment});
   })
