@@ -30,8 +30,8 @@
   float: left;
   width: 420px;
 }
-.teampage .team_row .team_col:last-child {
-  margin-left: 20px;
+.teampage .team_row .team_col:first-child {
+  margin-right: 20px;
 }
 .teampage .card {
   background-color: #fff;

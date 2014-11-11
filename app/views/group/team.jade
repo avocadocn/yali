@@ -73,7 +73,7 @@ block contentExt
                 .remind_text 小队没有上传全家福
 
         .team_row
-          .team_col
+          .team_col(ng-if="isShowHomeCourts")
             .card.home_court_card#home_court_card(ng-if="isShowHomeCourts")
               .home_court_nav
                 img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
