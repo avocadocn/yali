@@ -184,6 +184,34 @@ block contentExt
                   .map#courtMap2
               button.finish.dl_btn.dl_btn_small(type="button" ng-click="saveHomeCourt()") 完成
 
+    .calendar_modal.modal.fade#calendarModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal_header.clearfix
+            .tabs.clearfix
+              .tab(ng-click="getCalendarCampaigns('playing')") 正在进行
+              .tab(ng-click="getCalendarCampaigns('future')") 即将开始
+              .tab(ng-click="getCalendarCampaigns('end')") 已经结束
+              .tab(ng-click="getCalendarCampaigns('all')") 所有
+            button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
+          .modal_body.clearfix
+            .calendar_box
+              .calendar_header
+              .calendar_body
+                #modal_calendar
+              .calendar_footer
+                .instruction
+                  .item
+                    span.circle.circle_no_campaign
+                    span.text 没有活动
+                  .item
+                    span.circle.circle_few_campaign
+                    span.text 2个及以下
+                  .item
+                    span.circle.circle_many_campaign
+                    span.text 2个以上
+            .event_list
+              #cal-modal-event-box
 
 append footExt
   script(src="/js/controllers/timeline.js")

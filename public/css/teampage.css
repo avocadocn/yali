@@ -620,6 +620,26 @@
 .teampage .home_court_modal .finish {
   margin-left: 60px;
 }
+.teampage .calendar_modal .modal_header .tabs {
+  float: left;
+}
+.teampage .calendar_modal .modal_header .tabs .tab {
+  float: left;
+}
+.teampage .calendar_modal .modal_body {
+  padding: 20px;
+}
+.teampage .calendar_modal .modal_body .calendar_box {
+  float: left;
+  width: 360px;
+  height: 455px;
+  overflow: hidden;
+}
+.teampage .calendar_modal .modal_body .event_list {
+  float: right;
+  width: 530px;
+  hidden: 455px;
+}
 .teampage .side_panel .timeline_control {
   width: 60px;
   position: fixed;

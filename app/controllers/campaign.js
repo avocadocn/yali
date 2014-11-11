@@ -24,22 +24,142 @@ var blockSize = 20;
 
 
 /**
- * 获取一个队的所有未关闭的、未开始的活动, 并按开始时间排序
- * @param  {Object|String}   team_id  小队_id
- * @param  {Function} callback callback(campaigns, err), campaigns为小队的所有活动, 类型为数组, 没有populate的mongoose.model('Campaign'), 没有找到则为空数组
+ * 按查询条件获取一个小队的所有活动
+ * @param  {Object|String}   tid      小队id
+ * @param  {Object}   query    查询条件, from,to为查询区间，类型为可以转换成数字的字符串或整数，需要是一个时间戳
+ * @param  {Function} callback callback(campaigns)
  */
-var getTeamAllCampaigns = function(team_id, callback) {
-  Campaign
-  .find({ 'tid': team_id, 'active': true })
+var getTeamAllCampaigns = function (tid, query, callback) {
+  Campaign.find({
+    'tid': tid,
+    'active': true,
+    'start_time': {
+      '$lt': new Date(parseInt(query.to)),
+      '$gte': new Date(parseInt(query.from))
+    }
+  })
   .sort('start_time')
   .exec()
-  .then(function(campaigns) {
+  .then(function (campaigns) {
     callback(campaigns);
   })
-  .then(null, function(err) {
-    callback([], err);
+  .then(null, function (err) {
+    console.log(err);
+    callback([]);
   });
 };
+
+/**
+ * 获取小队正在进行的活动
+ * @param  {Object|String}   tid      小队id
+ * @param  {Object}   query    查询条件, from,to为查询区间，类型为可以转换成数字的字符串或整数，需要是一个时间戳
+ * @param  {Function} callback callback(campaigns)
+ */
+var getTeamPlayingCampaigns = function (tid, query, callback) {
+  Campaign.find({
+    'tid': tid,
+    'active': true,
+    'start_time': {
+      '$lt': Math.min(new Date(parseInt(query.to)), Date.now()),
+      '$gte': new Date(parseInt(query.from))
+    },
+    'end_time': { '$gt': Date.now() }
+  })
+  .sort('start_time')
+  .exec()
+  .then(function (campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function (err) {
+    console.log(err);
+    callback([]);
+  });
+};
+
+/**
+ * 获取小队即将开始的活动
+ * @param  {Object|String}   tid      小队id
+ * @param  {Object}   query    查询条件, from,to为查询区间，类型为可以转换成数字的字符串或整数，需要是一个时间戳
+ * @param  {Function} callback callback(campaigns)
+ */
+var getTeamFutureCampaigns = function (tid, query, callback) {
+  Campaign.find({
+    'tid': tid,
+    'active': true,
+    'start_time': {
+      '$gte': Math.max(Date.now(), new Date(parseInt(query.from))),
+      '$lt': new Date(parseInt(query.to))
+    }
+  })
+  .sort('start_time')
+  .exec()
+  .then(function (campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function (err) {
+    console.log(err);
+    callback([]);
+  });
+};
+
+/**
+ * 获取小队已经结束的活动
+ * @param  {Object|String}   tid      小队id
+ * @param  {Object}   query    查询条件, from,to为查询区间，类型为可以转换成数字的字符串或整数，需要是一个时间戳
+ * @param  {Function} callback callback(campaigns)
+ */
+var getTeamEndCampaigns = function (tid, query, callback) {
+  Campaign.find({
+    'tid': tid,
+    'active': true,
+    'start_time': {
+      '$lt': new Date(parseInt(query.to)),
+      '$gte': new Date(parseInt(query.from))
+    },
+    'end_time': {
+      '$lt': Date.now()
+    }
+  })
+  .sort('start_time')
+  .exec()
+  .then(function (campaigns) {
+    callback(campaigns);
+  })
+  .then(null, function (err) {
+    console.log(err);
+    callback([]);
+  });
+};
+
+exports.getTeamCampaignsForCalendar = function (campaignType) {
+
+  var queryFunc = getTeamAllCampaigns;
+  switch (campaignType) {
+  case 'all':
+    queryFunc = getTeamAllCampaigns;
+    break;
+  case 'playing':
+    queryFunc = getTeamPlayingCampaigns;
+    break;
+  case 'future':
+    queryFunc = getTeamFutureCampaigns;
+    break;
+  case 'end':
+    queryFunc = getTeamEndCampaigns;
+    break;
+  }
+
+  return function (req, res) {
+    queryFunc(req.params.teamId, req.query, function (campaigns) {
+      var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
+      res.send({
+        success: 1,
+        result: format_campaigns
+      });
+    });
+  };
+};
+
 
 
 /**
@@ -1213,7 +1333,26 @@ exports.getUserNewFinishCampaignsForAppList = function(req, res) {
   findUserNewFinishCampaigns(options, skipSize, findTime, res);
 };
 exports.getTeamCampaigns = function(req, res) {
-  getTeamAllCampaigns(req.params.teamId, function(campaigns, err) {
+
+  /**
+   * 获取一个队的所有未关闭的、未开始的活动, 并按开始时间排序
+   * @param  {Object|String}   team_id  小队_id
+   * @param  {Function} callback callback(campaigns, err), campaigns为小队的所有活动, 类型为数组, 没有populate的mongoose.model('Campaign'), 没有找到则为空数组
+   */
+  var getCampaigns = function(team_id, callback) {
+    Campaign
+    .find({ 'tid': team_id, 'active': true })
+    .sort('start_time')
+    .exec()
+    .then(function(campaigns) {
+      callback(campaigns);
+    })
+    .then(null, function(err) {
+      callback([], err);
+    });
+  };
+
+  getCampaigns(req.params.teamId, function(campaigns, err) {
     var format_campaigns = formatCampaignForCalendar(req.user, campaigns);
     res.send({
       success: 1,

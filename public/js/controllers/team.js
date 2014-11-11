@@ -348,10 +348,15 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
 
 
   // calendar
-  $scope.isDayView = false;
-  var firstLoad = true;
+  var modalEventSource = {
+    all: '/campaign/team/' + teamId + '/calendar/all',
+    playing: '/campaign/team/' + teamId + '/calendar/playing',
+    future: '/campaign/team/' + teamId + '/calendar/future',
+    end: '/campaign/team/' + teamId + '/calendar/end'
+  };
+  var modal_data = {};
   var options = {
-    events_source: '/campaign/team/calendar/' + teamId,
+    events_source: modalEventSource.all,
     view: 'month',
     time_end: '24:00',
     tmpl_path: '/tmpls-team/',
@@ -366,18 +371,20 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       $('#calendar_title').text(this.getTitle());
       //$('#calendar_operator button').removeClass('active');
       //$('button[data-calendar-view="' + view + '"]').addClass('active');
-      if (view === 'day') {
-        $scope.isDayView = true;
-        if (firstLoad === true) {
-          firstLoad = false;
-        }
-        $scope.$digest();
-      } else {
-        $scope.isDayView = false;
-        if (firstLoad === false) {
-          $scope.$digest();
-        }
-      }
+
+      $('#calendar').undelegate('.cal-month-day','click').delegate('.cal-month-day','click',function(e){
+        $('#calendarModal').modal('show');
+        initModalCalendar(modalEventSource.all,$(this).children('span[data-cal-date]').attr('data-cal-date'));
+        // $('#calendar_modal').view($(this).data('calendar-view'));
+        // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
+      });
+      $('#calendar').find('span[data-cal-date]').click(function(e){
+        $('#calendarModal').modal('show');
+        initModalCalendar(modalEventSource.all,$(this).attr('data-cal-date'));
+        // $('#calendar_modal').view($(this).data('calendar-view'));
+        // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
+      });
+
     },
     classes: {
       months: {
@@ -400,6 +407,64 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       calendar.view($this.data('calendar-view'));
     });
   });
+
+
+  var initModalCalendar = function(events_source, start_time, reloadEventList) {
+    var modalOptions = {
+      events_source: events_source,
+      view: 'month',
+      time_end: '24:00',
+      tmpl_path: '/tmpls/',
+      tmpl_cache: false,
+      language: 'zh-CN',
+      eventShow: 1,
+      eventShowContainer: '#cal-modal-event-box',
+      onAfterEventsLoad: function(events) {
+        if (!events) {
+          return;
+        }
+        modal_data.start = this.getStartDate();
+      },
+      onAfterViewLoad: function(view) {
+        $('#calendar_title_modal').text(this.getTitle());
+        //$('#calendar_operator button').removeClass('active');
+        //$('button[data-calendar-view="' + view + '"]').addClass('active');
+        $('#calendarModal').undelegate('[data-calendar-nav]', 'click').delegate('[data-calendar-nav]', 'click', function() {
+          modalCalendar.navigate($(this).data('calendar-nav'));
+        });
+        $('#calendarModal').undelegate('[data-calendar-nav="today"]', 'click').delegate('[data-calendar-nav]', 'click', function() {
+          modalCalendar.navigate($(this).data('calendar-nav'));
+        });
+        $('#calendarModal').undelegate('[data-calendar-view]', 'click').delegate('[data-calendar-view]', 'click', function() {
+          modalCalendar.view($(this).data('calendar-view'));
+        });
+        if (start_time) {
+          $('#calendarModal').find("[data-cal-date='" + start_time + "']").parent().mouseenter().click();
+        } else if (reloadEventList) {
+          var nowTime = $('#cal-modal-event-box').find('.cal-event-time .time').html();
+          $('#calendarModal').find("[data-cal-date='" + nowTime + "']").parent().mouseenter().click();
+        }
+      },
+      classes: {
+        months: {
+          general: 'label'
+        }
+      }
+    };
+    if (modal_data.start) {
+      modalOptions.day = moment(modal_data.start).format('YYYY-MM-DD');
+    }
+    if (start_time) {
+      modalOptions.day = start_time;
+    }
+    var modalCalendar = $('#modal_calendar').calendar(modalOptions);
+  };
+
+  $scope.getCalendarCampaigns = function (type) {
+    initModalCalendar(modalEventSource[type]);
+  };
+
+
 
   // timeline
   Campaign.getCampaignsDateRecord('team', teamId, function(err, record) {
