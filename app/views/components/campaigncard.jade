@@ -8,10 +8,10 @@
         .month {{item.start_time | date:'MM'}}月
         .year {{item.start_time | date:'yyyy'}}
     .single_remind(ng-if="(role==='LEADER'||role==='MEMBER') && !item.isEnd && cid && tid && item.unitInfos.length === 0" ng-cloak)
-      .remind(ng-if="!isStart")
+      .remind(ng-if="!item.isStart")
         span 距离开始还有
         span(count-down="{{item.start_time}}")
-      .remind(ng-if="isStart")
+      .remind(ng-if="item.isStart")
         span 活动正在进行中
       button.join_button(ng-if="!item.isJoin" ng-click="join(cid, tid)") 参加
       button.quit_button(ng-if="item.isJoin" ng-click="quit()") 退出

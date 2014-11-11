@@ -2278,6 +2278,7 @@ exports.getCampaignData = function (req, res) {
           month:_groupMonth,
           comment_sum:campaign.comment_sum,
           isJoin: isJoin,
+          isStart: campaign.start_time < Date.now(),
           isEnd: campaign.end_time < Date.now(),
           unitInfos: unitInfos,
           photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)

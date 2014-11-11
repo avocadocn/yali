@@ -71,7 +71,6 @@ angular.module('donler.components.campaignCard', [])
         scope.quit = function () {
           ctrl.quit(scope.item);
         };
-        scope.isStart = scope.item.start_time <= Date.now();
       }
     };
 
