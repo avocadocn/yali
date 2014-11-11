@@ -355,6 +355,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     end: '/campaign/team/' + teamId + '/calendar/end'
   };
   var modal_data = {};
+  $scope.calStatus = 'playing';
   var options = {
     events_source: modalEventSource.all,
     view: 'month',
@@ -373,14 +374,14 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       //$('button[data-calendar-view="' + view + '"]').addClass('active');
 
       $('#calendar').undelegate('.cal-month-day','click').delegate('.cal-month-day','click',function(e){
-        $('#calendarModal').modal('show');
-        initModalCalendar(modalEventSource.all,$(this).children('span[data-cal-date]').attr('data-cal-date'));
+        $('#events-modal').modal('show');
+        initModalCalendar(modalEventSource.playing,$(this).children('span[data-cal-date]').attr('data-cal-date'));
         // $('#calendar_modal').view($(this).data('calendar-view'));
         // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
       });
       $('#calendar').find('span[data-cal-date]').click(function(e){
-        $('#calendarModal').modal('show');
-        initModalCalendar(modalEventSource.all,$(this).attr('data-cal-date'));
+        $('#events-modal').modal('show');
+        initModalCalendar(modalEventSource.playing,$(this).attr('data-cal-date'));
         // $('#calendar_modal').view($(this).data('calendar-view'));
         // $('#calendar_modal').find('.cal-month-day[data-cal-date='+$(this).attr('data-cal-date')+']').click();
       });
@@ -429,20 +430,20 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
         $('#calendar_title_modal').text(this.getTitle());
         //$('#calendar_operator button').removeClass('active');
         //$('button[data-calendar-view="' + view + '"]').addClass('active');
-        $('#calendarModal').undelegate('[data-calendar-nav]', 'click').delegate('[data-calendar-nav]', 'click', function() {
+        $('#events-modal').undelegate('[data-calendar-nav]', 'click').delegate('[data-calendar-nav]', 'click', function() {
           modalCalendar.navigate($(this).data('calendar-nav'));
         });
-        $('#calendarModal').undelegate('[data-calendar-nav="today"]', 'click').delegate('[data-calendar-nav]', 'click', function() {
+        $('#events-modal').undelegate('[data-calendar-nav="today"]', 'click').delegate('[data-calendar-nav]', 'click', function() {
           modalCalendar.navigate($(this).data('calendar-nav'));
         });
-        $('#calendarModal').undelegate('[data-calendar-view]', 'click').delegate('[data-calendar-view]', 'click', function() {
+        $('#events-modal').undelegate('[data-calendar-view]', 'click').delegate('[data-calendar-view]', 'click', function() {
           modalCalendar.view($(this).data('calendar-view'));
         });
         if (start_time) {
-          $('#calendarModal').find("[data-cal-date='" + start_time + "']").parent().mouseenter().click();
+          $('#events-modal').find("[data-cal-date='" + start_time + "']").parent().mouseenter().click();
         } else if (reloadEventList) {
           var nowTime = $('#cal-modal-event-box').find('.cal-event-time .time').html();
-          $('#calendarModal').find("[data-cal-date='" + nowTime + "']").parent().mouseenter().click();
+          $('#events-modal').find("[data-cal-date='" + nowTime + "']").parent().mouseenter().click();
         }
       },
       classes: {
@@ -461,7 +462,8 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
   };
 
   $scope.getCalendarCampaigns = function (type) {
-    initModalCalendar(modalEventSource[type]);
+    initModalCalendar(modalEventSource[type], null, 1);
+    $scope.calStatus = type;
   };
 
 

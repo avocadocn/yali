@@ -184,34 +184,42 @@ block contentExt
                   .map#courtMap2
               button.finish.dl_btn.dl_btn_small(type="button" ng-click="saveHomeCourt()") 完成
 
-    .calendar_modal.modal.fade#calendarModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    .calendar_modal.modal.fade#events-modal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       .modal-dialog
         .modal-content
           .modal_header.clearfix
             .tabs.clearfix
-              .tab(ng-click="getCalendarCampaigns('playing')") 正在进行
-              .tab(ng-click="getCalendarCampaigns('future')") 即将开始
-              .tab(ng-click="getCalendarCampaigns('end')") 已经结束
-              .tab(ng-click="getCalendarCampaigns('all')") 所有
+              .tab(ng-click="getCalendarCampaigns('playing')" ng-class="{'active': calStatus==='playing'}") 正在进行
+                .active_triangle
+              .tab(ng-click="getCalendarCampaigns('future')" ng-class="{'active': calStatus==='future'}") 即将开始
+                .active_triangle
+              .tab(ng-click="getCalendarCampaigns('end')" ng-class="{'active': calStatus==='end'}") 已经结束
+                .active_triangle
+              .tab(ng-click="getCalendarCampaigns('all')" ng-class="{'active': calStatus==='all'}") 所有
+                .active_triangle
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
-          .modal_body.clearfix
+          .modal_body.clearfix.schedulebox
             .calendar_box
-              .calendar_header
-              .calendar_body
+              p.calendar_nav#calendar_nav_modal
+                span(ng-class="{'icon_fold':isCalendar,'icon_unfold':!isCalendar}" ng-click="isCalendar=!isCalendar;" ng-cloak)
+                a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+                span.icon_calendar
+                a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+                a.calendar_title(data-calendar-nav="today" href="javascript:void(0)")
+                  span#calendar_title_modal
+              #calendar_view_modal.calendar_view_modal
                 #modal_calendar
-              .calendar_footer
-                .instruction
-                  .item
-                    span.circle.circle_no_campaign
-                    span.text 没有活动
-                  .item
-                    span.circle.circle_few_campaign
-                    span.text 2个及以下
-                  .item
-                    span.circle.circle_many_campaign
-                    span.text 2个以上
-            .event_list
-              #cal-modal-event-box
+                .calendar_tips
+                  span.join_sign.length_1
+                  label.campaign_label 没有活动
+                  span.join_sign.length_2
+                  label.campaign_label 2个及以下
+                  span.join_sign.length_3
+                  label.campaign_label 2个以上
+                  a.pull-right(data-calendar-nav="today" href="javascript:void(0)")
+                    label.today 今天
+            .calendar_event_box#cal-modal-event-box
+
 
 append footExt
   script(src="/js/controllers/timeline.js")
