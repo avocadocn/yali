@@ -82,7 +82,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
       $scope.uploader = cbox.uploader;
 
 
-      $scope.publish = function (content) {
+      $scope.publish = function (content, form) {
         cbox.publish(content, function (err, comment) {
           if (err) {
             console.log(err);
@@ -98,6 +98,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
               'delete_permission':true
             });
             $scope.new_comment.text = '';
+            form.$setPristine();
             if($scope.afterRender){
               $timeout(function () {
                 $scope.afterRender();

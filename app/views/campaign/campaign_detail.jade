@@ -95,7 +95,7 @@ block contentExt
                     span #{campaign.members.length}/#{campaign.member_max}
                 .text.editing(ng-init="campaignData.member_max=#{campaign.member_max||0}" ng-if="editing")
                   span.sub_title.line_text 报名人数上限:
-                  input.detail_input.people_count(type="number" ng-model="campaignData.member_max")
+                  input.detail_input.people_count(type="number" ng-model="campaignData.member_max" ng-min="{{campaignData.member_min}}")
                   span.line_text 人 (到达后停止报名)
                 if campaign.member_min
                   p.text(ng-if="!editing" ng-cloak)
@@ -103,7 +103,7 @@ block contentExt
                     span #{campaign.member_min}人
                 .text.editing(ng-init="campaignData.member_min=#{campaign.member_min||0}" ng-if="editing")
                   span.sub_title.line_text 报名人数下限:
-                  input.detail_input.people_count(type="number" ng-model="campaignData.member_min")
+                  input.detail_input.people_count(type="number" ng-model="campaignData.member_min" ng-max="{{campaignData.member_max}}" )
                   span.line_text 人 (报名截止前未达最少人数，您将收到提醒)
                 if campaign.deadline
                   p.text(ng-show="!editing" ng-cloak)

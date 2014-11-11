@@ -76,15 +76,19 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   };
 
   $scope.save = function () {
-    Campaign.edit(campaignId, $scope.campaignData, function (err) {
-      if (err) {
-        alertify.alert(err);
-      } else {
-        alertify.alert('编辑成功', function (e) {
-          window.location='/campaign/detail/'+campaignId;
-        });
-      }
-    });
+    if($scope.campaignData.member_min<=$scope.member_max&&$scope.member_min>=0){
+      Campaign.edit(campaignId, $scope.campaignData, function (err) {
+        if (err) {
+          alertify.alert(err);
+        } else {
+          alertify.alert('编辑成功', function (e) {
+            window.location='/campaign/detail/'+campaignId;
+          });
+        }
+      });
+    }else{
+      alertify.alert('请正确填写报名人数!');
+    }
   };
 
   $scope.toggleEdit = function () {
