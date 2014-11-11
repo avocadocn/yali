@@ -30,7 +30,8 @@ var mongoose = require('mongoose'),
   photo_album_controller = require('./photoAlbum'),
   model_helper = require('../helpers/model_helper'),
   cache = require('../services/cache/Cache'),
-  campaign_controller =require('../controllers/campaign');
+  campaign_controller =require('../controllers/campaign'),
+  logController =require('../controllers/log');
 
 var mail = require('../services/mail');
 var webpower = require('../services/webpower');
@@ -167,7 +168,15 @@ exports.signout = function(req, res) {
   req.logout();
   res.redirect('/');
 };
+
 exports.loginSuccess = function(req, res) {
+  var logBody = {
+    'log_type':'userlog',
+    'userid' : req.user._id,
+    'role' : 'hr',
+    'ip' :req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  }
+  logController.addLog(logBody);
   res.redirect('/company/home');
 };
 

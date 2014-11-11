@@ -144,7 +144,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
     //     });
     // };
     //应战
-    $rootScope.dealProvoke = function(campaignId, tid, status) {
+    $rootScope.dealProvoke = function(index,campaignId, tid, status) {
       switch(status){
         case 1://接受
           var tip = '是否确认接受该挑战?';
@@ -163,6 +163,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
               alertify.alert(err);
             } else {
               alertify.alert('成功');
+              $rootScope.nowCampaigns.splice(index,1);
               //刷新页面？
             }
           });

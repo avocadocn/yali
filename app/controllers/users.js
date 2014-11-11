@@ -17,7 +17,8 @@ var mongoose = require('mongoose'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   GroupMessage = mongoose.model('GroupMessage'),
   Department = mongoose.model('Department'),
-  Campaign = mongoose.model('Campaign');
+  Campaign = mongoose.model('Campaign'),
+  Log = mongoose.model('Log');
 
 // 3rd
 var validator = require('validator'),
@@ -37,7 +38,8 @@ var encrypt = require('../middlewares/encrypt'),
   message = require('../language/zh-cn/message'),
   model_helper = require('../helpers/model_helper'),
   photo_album_controller = require('./photoAlbum'),
-  auth = require('../services/auth');
+  auth = require('../services/auth'),
+  logController =require('../controllers/log');
 
 
 
@@ -184,10 +186,18 @@ exports.signout = function(req, res) {
   res.redirect('/');
 };
 
+
 /**
  * Session
  */
 exports.loginSuccess = function(req, res) {
+  var logBody = {
+    'log_type':'userlog',
+    'userid' : req.user._id,
+    'role' : 'user',
+    'ip' :req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  }
+  logController.addLog(logBody);
   res.redirect('/users/home');
 };
 exports.autoLogin = function(req, res, next){
@@ -233,6 +243,7 @@ exports.appLoginSuccess = function(req, res) {
   req.user.app_token = app_token;
   req.user.save(function(err){
     if(!err){
+      saveLogRecord(req.user,req.headers['x-forwarded-for'] || req.connection.remoteAddress);
       res.send({ result: 1, msg: '登录成功', data: data });
     }
   });
