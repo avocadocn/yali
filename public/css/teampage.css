@@ -213,6 +213,10 @@
   line-height: 1;
   cursor: pointer;
 }
+.teampage .member_card .header .count .arrow_right {
+  margin-left: 5px;
+  margin-bottom: 3px;
+}
 .teampage .member_card .members {
   padding: 0 10px;
   padding-right: 0;
@@ -602,6 +606,7 @@
   line-height: 30px;
   font-size: 12px;
   margin: 0;
+  color: #999;
   font-weight: normal;
 }
 .teampage .home_court_modal .home_court .control .address {
@@ -609,6 +614,12 @@
   float: left;
   width: 825px;
   height: 30px;
+  padding: 0 10px;
+  color: #999;
+  background-color: #fbfbfb;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d6d6d6 #eee #fbfbfb #eee;
 }
 .teampage .home_court_modal .home_court .map_container,
 .teampage .home_court_modal .home_court .map {

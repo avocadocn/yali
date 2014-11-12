@@ -53,7 +53,8 @@ block contentExt
               .header
                 img.icon(src="/img/team.png")
                 h3.title 队员
-                span.count(data-toggle="modal" data-target="#memberListModal" ng-cloak title="查看全部队员") {{team.leaders.length + team.members.length}} >
+                span.count(data-toggle="modal" data-target="#memberListModal" ng-cloak title="查看全部队员") {{team.leaders.length + team.members.length}}
+                  img.arrow_right(src="/img/chevron_arrow_in_right_direction.png")
               .members(bs-popover)
                 .leader_box(ng-if="team.leaders.length > 0")
                   img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50" ng-Mouseenter="showUserCard(leader._id, leader._id + 'member_card')" id="pop{{leader._id}}member_card" rel="popover")
