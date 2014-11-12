@@ -35,7 +35,9 @@ var getTeamAllCampaigns = function (tid, query, callback) {
     'tid': tid,
     'active': true,
     'start_time': {
-      '$lt': new Date(parseInt(query.to)),
+      '$lte': new Date(parseInt(query.to))
+    },
+    'end_time': {
       '$gte': new Date(parseInt(query.from))
     }
   })
@@ -61,10 +63,11 @@ var getTeamPlayingCampaigns = function (tid, query, callback) {
     'tid': tid,
     'active': true,
     'start_time': {
-      '$lt': Math.min(new Date(parseInt(query.to)), Date.now()),
-      '$gte': new Date(parseInt(query.from))
+      '$lte': Math.min(new Date(parseInt(query.to)), Date.now())
     },
-    'end_time': { '$gt': Date.now() }
+    'end_time': {
+      '$gte': Math.max(new Date(parseInt(query.from)), Date.now())
+    }
   })
   .sort('start_time')
   .exec()
@@ -88,8 +91,11 @@ var getTeamFutureCampaigns = function (tid, query, callback) {
     'tid': tid,
     'active': true,
     'start_time': {
-      '$gte': Math.max(Date.now(), new Date(parseInt(query.from))),
-      '$lt': new Date(parseInt(query.to))
+      '$gte': Date.now(),
+      '$lte': new Date(parseInt(query.to))
+    },
+    'end_time': {
+      '$gte': new Date(parseInt(query.from))
     }
   })
   .sort('start_time')
@@ -114,11 +120,11 @@ var getTeamEndCampaigns = function (tid, query, callback) {
     'tid': tid,
     'active': true,
     'start_time': {
-      '$lt': new Date(parseInt(query.to)),
-      '$gte': new Date(parseInt(query.from))
+      '$lte': new Date(parseInt(query.to))
     },
     'end_time': {
-      '$lt': Date.now()
+      '$lt': Date.now(),
+      '$gte': new Date(parseInt(query.from))
     }
   })
   .sort('start_time')

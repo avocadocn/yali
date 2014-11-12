@@ -503,6 +503,7 @@
   width: 960px;
 }
 .teampage .modal .modal-content {
+  margin-top: 150px;
   border-radius: 0;
 }
 .teampage .modal .modal_header {
