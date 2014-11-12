@@ -76,7 +76,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   };
 
   $scope.save = function () {
-    if($scope.campaignData.member_min<=$scope.member_max&&$scope.member_min>=0){
+    if ($scope.campaignData.member_min <= $scope.campaignData.member_max && $scope.campaignData.member_min >= 0) {
       Campaign.edit(campaignId, $scope.campaignData, function (err) {
         if (err) {
           alertify.alert(err);

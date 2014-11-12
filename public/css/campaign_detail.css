@@ -458,6 +458,9 @@
   color: #fff;
   background-color: #97d7c6;
 }
+.campaign_detail .detail_card .component_body .more_info .operator .save[disabled] {
+  opacity: 0.65;
+}
 .campaign_detail .detail_card .component_body .more_info .operator .cancel {
   color: #fff;
   background-color: #ccc;

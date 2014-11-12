@@ -71,7 +71,7 @@ block contentExt
                     form.publish(ng-if="editing" name="noticeForm" ng-cloak)
                       input.notice_text(type="text" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
                       button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
-            .more_info(ng-show="!isStart||editing" ng-cloak)
+            form.more_info(ng-show="!isStart||editing" name="infoForm" ng-cloak)
               .block
                 span.title 活动简介
                 .text(ng-show="!editing" ng-cloak)!= campaign.content
@@ -121,7 +121,7 @@ block contentExt
                 span.close_campaign(ng-click="cancel()")
                   img.icon_close(src="/img/warning.png")
                   | 关闭活动
-                button.save(ng-click="save()") 保存
+                button.save(ng-click="save()" ng-disabled="infoForm.content.$invalid") 保存
                 button.cancel(ng-click="toggleEdit()") 取消
         if components.RichComment
           rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment&&isActive}")
