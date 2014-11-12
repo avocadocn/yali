@@ -16,17 +16,16 @@ block content
             .select
               span 选择你要用来发起挑战的队伍
             .units
-              each team in myTeams
-                .unit
+              each team,i in myTeams
+                .unit(ng-class="{'leader':#{team.leader},'right':#{i}%4===3}" ng-click="select('#{team._id}')")
                   img.logo(ng-src="#{team.logo}")
                   .text
                     span.title= team.name
-                    span.type= team.group_type
                   .buttons
                     if team.leader
-                      button.button.btn_red(ng-click="select('#{team._id}')") 为它选对手
+                      button.button 为它选对手
                     else
-                      button.button(ng-click="select('#{team._id}')") 给它推荐对手
+                      button.button 给它推荐对手
           .selected_team(ng-show="myTeam")
             p 挑战发起方
             .my_team.clearfix

@@ -103,10 +103,13 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
     Search.searchSameCity($rootScope.tid,1,function(status,data){
       if(!status){
         var maxNumber = (data.maxPage-1)*10;
-        if(data.maxPage===1 &&data.maxPage<10)
+        if(data.maxPage===1){
             maxNumber = data.teams.length;
-        //小队选完同城小队个数不会变
-        $scope.headline = data.city+"共有"+maxNumber+"+个相关小队"
+            $scope.headline = data.city+"共有"+maxNumber+"个相关小队";
+        }
+        else{
+          $scope.headline = data.city+"共有"+maxNumber+"+个相关小队";
+        }
         $scope.currentPage=1;
         $scope.resultTeams = data.teams;
         if(data.teams.length>0){
@@ -163,6 +166,17 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
     $rootScope.nowTab = 'nearbyTeam';
     $scope.isShowMap = true;
     $scope.needSetting = $rootScope.myTeam.home_court.length===0;
+    //计算距离
+    var lengthsquare = function(coordinates1,coordinates2){
+      var result = Math.pow((coordinates1[0]-coordinates2[0]),2)+ Math.pow((coordinates1[1]-coordinates2[1]),2);
+      return result;
+    }
+    //比较opponent的两个队与自己小队某主场的距离,如果主场1>=主场2则返回true,否则为false
+    var compareNearby =function(homecourts,myHomecourt){
+      var myHomecourtCdt = myHomecourt.loc.coordinates;
+      var result = lengthsquare(homecourts[0].loc.coordinates,myHomecourtCdt)>=lengthsquare(homecourts[1].loc.coordinates,myHomecourtCdt);
+      return result;
+    };
     //获取附近小队
     //有此函数原因：小队选完，由于有两个主场，附近小队个数可能会变
     $scope.search=function(hc_index) {
@@ -170,11 +184,24 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
         if(!status){
           $scope.homecourtIndex=hc_index;
           var maxNumber = (data.maxPage-1)*10;
-          if(data.maxPage===1 &&data.maxPage<10)
+          if(data.maxPage===1){
             maxNumber = data.teams.length;
-          $scope.headline = "附近共有"+maxNumber+"+个相关小队"
+            $scope.headline = "附近共有"+maxNumber+"个相关小队";
+          }
+          else{
+            $scope.headline = "附近共有"+maxNumber+"+个相关小队";
+          }
           $scope.currentPage=1;
           $scope.resultTeams = data.teams;
+          for(var i=0;i<$scope.resultTeams.length;i++){
+            if($scope.resultTeams[i].home_court.length===2){
+              if(compareNearby($scope.resultTeams[i].home_court,$rootScope.myTeam.home_court[hc_index])){
+                var temp = $scope.resultTeams[i].home_court[0];
+                $scope.resultTeams[i].home_court[0] = $scope.resultTeams[i].home_court[1];
+                $scope.resultTeams[i].home_court[1] = temp; 
+              }
+            }
+          }
           $scope.maxPage = data.maxPage;
           var showMaxPage = $scope.maxPage>5? 5:$scope.maxPage;
           $scope.pages=[];
@@ -224,48 +251,50 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
           }
         });
       }
-      if($('#map').width()===570){
+      if($('#slides').css("marginLeft")=="0px"){
         //动画
-        $('#map').animate({width:'400',opacity:'0.8'},300);
-        $('#detail').animate({width:'170',opacity:'0.2'},300);
-        $('#map').animate({width:'0',opacity:'0'},100);
-        $('#detail').animate({width:'570',opacity:'1'},100);
-        $timeout(function(){
-          $scope.showingMap = true;
-        },400);
+        $('#slides').animate({marginLeft:'-570'},300);
       }
     };
     $scope.showMap=function(){
-      $scope.showingMap = false;
-      $('#map').animate({width:'170',opacity:'0.8'},300);
-      $('#detail').animate({width:'400',opacity:'0.2'},300);
-      $('#map').animate({width:'570',opacity:'1'},100);
-      $('#detail').animate({width:'0',opacity:'0'},100);
+      $('#slides').animate({marginLeft:'0'},300);
       $timeout(function(){
         $scope.isShowMap=true;
-      },400);
+      },300);
     };
     $scope.toggleHomecourt=function(index){
       $scope.search(index);
     };
     $scope.changeHomecourt=function(){
       $scope.needSetting = true;
-      // $scope.isShowMap = true;
     };
     //-地图
+    var needMove = function(coordinates,coordinate){
+      var number =0;
+      for(var i=0;i<coordinates.length;i++){
+        if(coordinates[i][0]==coordinate[0]&&coordinates[i][1]==coordinate[1]){
+          number ++;
+        }
+      }
+      return number;
+    };
     //搜索地图的增加标记函数
     $scope.addMarkers = function(){
       if($scope.map_ready&&$scope.resultTeams.length>0){
         //清除地图的标记
         $scope.fullMap.clearMap();
         //增加标记
-        var points=[],markers=[];
+        var coordinates=[],markers=[];
         for(var i=0;i<$scope.resultTeams.length;i++){
-          var point = new AMap.LngLat($scope.resultTeams[i].home_court[0].loc.coordinates[0],$scope.resultTeams[i].home_court[0].loc.coordinates[1]);
+          var coordinate = $scope.resultTeams[i].home_court[0].loc.coordinates;
+          var moveLength = -needMove(coordinates,coordinate)*5;
+          coordinates.push(coordinate);
+          var point = new AMap.LngLat(coordinate[0],coordinate[1]);
           var imageNumber = i+1;
           markers[i] = new AMap.Marker({
             icon:"http://webapi.amap.com/images/"+imageNumber+".png",
             map:$scope.fullMap,
+            offset:new AMap.Pixel(-14+moveLength,-36+moveLength),
             position:point
           });
         }
@@ -431,9 +460,12 @@ searchOpponents.controller('searchController',['$http', '$scope', '$rootScope', 
       Search.searchTeam($rootScope.tid,$rootScope.keywords,1,function(status,data){
         if(!status){
           var maxNumber = (data.maxPage-1)*10;
-          if(data.maxPage===1 &&data.maxPage<10)
+          if(data.maxPage===1){
             maxNumber = data.teams.length;
-          $scope.headline = "'"+$rootScope.keywords+"'共有"+maxNumber+"+个相关小队";
+            $scope.headline = "'"+$rootScope.keywords+"'共有"+maxNumber+"个相关小队";
+          }else{
+            $scope.headline = "'"+$rootScope.keywords+"'共有"+maxNumber+"+个相关小队";
+          }
           $scope.currentPage=1;
           $scope.resultTeams = data.teams;
           if(data.teams.length>0){
