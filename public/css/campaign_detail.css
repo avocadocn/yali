@@ -331,6 +331,9 @@
   color: #fff;
   background-color: #3498db;
 }
+.campaign_detail .detail_card .component_body .base_info .info_container .notice .publish .publish_button[disabled] {
+  opacity: 0.65;
+}
 .campaign_detail .detail_card .component_body .base_info .info_container .notice.isStart {
   min-height: 159px;
 }

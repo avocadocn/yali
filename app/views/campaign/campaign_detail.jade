@@ -68,9 +68,9 @@ block contentExt
                       p.text.date #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
                     else
                       p.main_text 没有最新公告
-                    form.publish(ng-if="editing" ng-cloak)
-                      input.notice_text(type="text" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" required)
-                      button.publish_button(ng-click="publishNotice()") 发新公告
+                    form.publish(ng-if="editing" name="noticeForm" ng-cloak)
+                      input.notice_text(type="text" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
+                      button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
             .more_info(ng-show="!isStart||editing" ng-cloak)
               .block
                 span.title 活动简介
