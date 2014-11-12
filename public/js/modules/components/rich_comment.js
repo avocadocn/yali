@@ -320,15 +320,23 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             $scope.nowPage = index;
           }
         }, $scope.pages[index].thisStartDate);
-      }
+      };
+
       $scope.showMore = function () {
         $scope.showMoreComment = true;
-        if($scope.afterRender){
+        if ($scope.afterRender) {
           $timeout(function () {
             $scope.afterRender();
           });
         }
-      }
+      };
+
+      $scope.originPlaceholder = '输入内容请控制在140字以内';
+      $scope.currentPlaceholder = {
+        comment: $scope.originPlaceholder,
+        reply: $scope.originPlaceholder
+      };
+
     }])
 
   .directive('simpleComment', function () {

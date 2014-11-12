@@ -138,10 +138,10 @@ block contentExt
         .control_year(ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')")
           span 最初
         .button_group
-          .icon_button(ng-click="anchorTo('home_court_card')"): img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
-          .icon_button(ng-click="anchorTo('calendar_card')"): img.icon(src="/img/calendar_big.png")
-          .icon_button(ng-click="anchorTo('member_card')"): img.icon(src="/img/team.png")
-          a.icon_button(ng-href="/photoAlbum/team/{{team._id}}/listView"): img.icon(src="/img/photo.png")
+          .icon_button(ng-click="anchorTo('home_court_card')" title="主场"): img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
+          .icon_button(ng-click="anchorTo('calendar_card')" title="日历"): img.icon(src="/img/calendar_big.png")
+          .icon_button(ng-click="anchorTo('member_card')" title="成员"): img.icon(src="/img/team.png")
+          a.icon_button(ng-href="/photoAlbum/team/{{team._id}}/listView" title="相册"): img.icon(src="/img/photo.png")
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
