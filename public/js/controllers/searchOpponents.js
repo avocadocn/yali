@@ -158,8 +158,8 @@ searchOpponents.controller('cityController',['$http', '$scope', '$rootScope', 'S
     };
 }]);
 
-searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 'Search',
-  function($http, $scope, $rootScope, Search) {
+searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', '$timeout', 'Search',
+  function($http, $scope, $rootScope, $timeout, Search) {
     $rootScope.nowTab = 'nearbyTeam';
     $scope.isShowMap = true;
     $scope.needSetting = $rootScope.myTeam.home_court.length===0;
@@ -224,6 +224,26 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
           }
         });
       }
+      if($('#map').width()===570){
+        //动画
+        $('#map').animate({width:'400',opacity:'0.8'},300);
+        $('#detail').animate({width:'170',opacity:'0.2'},300);
+        $('#map').animate({width:'0',opacity:'0'},100);
+        $('#detail').animate({width:'570',opacity:'1'},100);
+        $timeout(function(){
+          $scope.showingMap = true;
+        },400);
+      }
+    };
+    $scope.showMap=function(){
+      $scope.showingMap = false;
+      $('#map').animate({width:'170',opacity:'0.8'},300);
+      $('#detail').animate({width:'400',opacity:'0.2'},300);
+      $('#map').animate({width:'570',opacity:'1'},100);
+      $('#detail').animate({width:'0',opacity:'0'},100);
+      $timeout(function(){
+        $scope.isShowMap=true;
+      },400);
     };
     $scope.toggleHomecourt=function(index){
       $scope.search(index);
@@ -231,7 +251,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
     $scope.changeHomecourt=function(){
       $scope.needSetting = true;
       // $scope.isShowMap = true;
-    }
+    };
     //-地图
     //搜索地图的增加标记函数
     $scope.addMarkers = function(){
@@ -385,6 +405,7 @@ searchOpponents.controller('nearbyController',['$http', '$scope', '$rootScope', 
         },0);
       }
     };
+    //保存主场信息
     $scope.saveHomecourt = function(){
       if($rootScope.myTeam.home_court.length===0){
         alertify.alert('请填写至少一个主场啊亲~');

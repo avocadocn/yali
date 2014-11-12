@@ -4,7 +4,7 @@
     img.confused(ng-src="/img/icons/confused.png")
     span.text 请先选择队伍,再进行搜索
   else
-    //- 主场信息(若点详情则向左收)
+    //- 主场信息
     .homecourt.clearfix(ng-show="nowTab==='nearbyTeam'&&!needSetting")
       .text
         span.title(ng-class="{'active':homecourtIndex===0}" ng-click="toggleHomecourt(0)") 主场一: {{myTeam.home_court[0].name}}
@@ -28,82 +28,82 @@
           #courtMap2.homecourtMap
           button.button.btn_small(ng-click="saveHomecourt()") 完成
       span(ng-show="!myTeam.isLeader") 请提醒您的队长去添加小队主场吧~
-
-    //- 附近小队地图
-    .map(ng-show="isShowMap&&!needSetting")
-      #fullMap.fullMap
-    //- 搜索出的小队列表
-    .teamlist(ng-show="!needSetting")
-      .teams
-        .map_head(ng-show="nowTab=='nearbyTeam'")
-          span.pull-right(ng-show="isShowMap" ng-click="getOpponentInfo(0)") 详情&nbsp;&gt;
-          span(ng-show="!isShowMap" ng-click="isShowMap=true") &lt;&nbsp;地图
-        .headline
-          span(ng-show="headline") {{headline}}
-        .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo($index)")
-          img.logo(ng-if="isShowMap" ng-src="http://webapi.amap.com/images/{{$index+1}}.png") 
-          img.logo(ng-cloak ng-src="{{team.logo}}")
+    #slides(ng-show="!needSetting")
+      //- 附近小队地图
+      #map.map(ng-show="nowTab=='nearbyTeam'&&!showingMap")
+        #fullMap.fullMap
+      //- 搜索出的小队列表
+      .teamlist
+        .teams
+          .map_head(ng-show="nowTab=='nearbyTeam'")
+            span.pull-right(ng-show="isShowMap" ng-click="getOpponentInfo(0)") 详情&nbsp;&gt;
+            span(ng-show="!isShowMap" ng-click="showMap()") &lt;&nbsp;地图
+          .headline
+            span(ng-show="headline") {{headline}}
+          .team.clearfix(ng-repeat="team in resultTeams track by $index" ng-class="{'selected':$index==selectedIndex}" ng-click="getOpponentInfo($index)")
+            img.logo(ng-if="isShowMap" ng-src="http://webapi.amap.com/images/{{$index+1}}.png") 
+            img.logo(ng-cloak ng-src="{{team.logo}}")
+            .text
+              span.title {{team.name}}
+              span.content {{team.cname}}
+        .page_nav.clearfix
+          ul.nav
+            li(ng-show="currentPage&&currentPage!==1")
+              a(ng-click="loadPage(1)") 
+                img(ng-src="/img/icons/twoleft.png")
+            li(ng-show="currentPage&&currentPage!==1")
+              a(ng-click="loadPrePage()") 
+                img(ng-src="/img/icons/oneleft.png")
+            li(ng-repeat="page in pages track by $index" ng-class="{'active':page===currentPage}")
+              a(ng-click="loadPage({{page}})") {{page}}
+            li(ng-show="currentPage!==maxPage")
+              a(ng-click="loadNextPage()")
+                img(ng-src="/img/icons/oneright.png")
+            li(ng-show="currentPage!==maxPage")
+              a(ng-click="loadPage(maxPage)")
+                img(ng-src="/img/icons/tworight.png")
+      //- 详情
+      #detail.detail(ng-show="!isShowMap&&opponent")
+        .detailHead.clearfix
+          img.logo(ng-src="{{opponent.logo}}")
           .text
-            span.title {{team.name}}
-            span.content {{team.cname}}
-      .page_nav.clearfix
-        ul.nav
-          li(ng-show="currentPage&&currentPage!==1")
-            a(ng-click="loadPage(1)") 
-              img(ng-src="/img/icons/twoleft.png")
-          li(ng-show="currentPage&&currentPage!==1")
-            a(ng-click="loadPrePage()") 
-              img(ng-src="/img/icons/oneleft.png")
-          li(ng-repeat="page in pages track by $index" ng-class="{'active':page===currentPage}")
-            a(ng-click="loadPage({{page}})") {{page}}
-          li(ng-show="currentPage!==maxPage")
-            a(ng-click="loadNextPage()")
-              img(ng-src="/img/icons/oneright.png")
-          li(ng-show="currentPage!==maxPage")
-            a(ng-click="loadPage(maxPage)")
-              img(ng-src="/img/icons/tworight.png")
-    //- 详情
-    .detail(ng-show="!isShowMap&&!needSetting&&opponent")
-      .detailHead.clearfix
-        img.logo(ng-src="{{opponent.logo}}")
-        .text
-          span.title {{opponent.name}}
-          span.content {{opponent.cname}}
-          span.content 成员:{{opponent.memberNumber}}人
-          span 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-        .buttons
-          button.button.btn_small.btn_red.largerFont(ng-click="provoke(opponent._id,opponent.name)") 挑战
-          a(ng-href="/group/page/{{opponent._id}}")
-            button.button.btn_small.largerFont 查看
-      .detailContent(ng-cloak)
-        .block.clearfix(ng-if="opponent.home_court.length")
-          .title
-            img(ng-src="/img/icons/homecourt.png")
-            span 小队主场
-          .text
-            span.content 主场一:{{opponent.home_court[0].name}}
-            span.content.lastline(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
-        .block.clearfix(ng-show="opponent.newestCampaign")
-          .title
-            img(ng-src="/img/icons/sunshine.png")
-            span 最新活动
-          .text
-            span.content 开始时间:{{opponent.newestCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-            span.content 结束时间:{{opponent.newestCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
-            span.content 活动主题:{{opponent.newestCampaign.theme}}
-            span.content 参加人数:{{opponent.newestCampaign.memberNumber}}
-            span.content.lastline 活动地点:{{opponent.newestCampaign.location.name}}
-        .block.clearfix
-          .title
-            img(ng-src="/img/icons/leader.png")
-            span 小队队长
-          .text
-            span.content.lastline {{opponent.leader[0].nickname}}
-        .block.clearfix
-          .title
-            img(ng-src="/img/icons/information.png")
-            span 小队简介
-          .text
-            span.content.lastline {{opponent.brief}}
+            span.title {{opponent.name}}
+            span.content {{opponent.cname}}
+            span.content 成员:{{opponent.memberNumber}}人
+            span 成立时间:{{opponent.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+          .buttons
+            button.button.btn_small.btn_red.largerFont(ng-click="provoke(opponent._id,opponent.name)") 挑战
+            a(ng-href="/group/page/{{opponent._id}}")
+              button.button.btn_small.largerFont 查看
+        .detailContent(ng-cloak)
+          .block.clearfix(ng-if="opponent.home_court.length")
+            .title
+              img(ng-src="/img/icons/homecourt.png")
+              span 小队主场
+            .text
+              span.content 主场一:{{opponent.home_court[0].name}}
+              span.content.lastline(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
+          .block.clearfix(ng-show="opponent.newestCampaign")
+            .title
+              img(ng-src="/img/icons/sunshine.png")
+              span 最新活动
+            .text
+              span.content 开始时间:{{opponent.newestCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+              span.content 结束时间:{{opponent.newestCampaign.end_time | date:'yyyy-MM-dd HH:mm' | dateView}}
+              span.content 活动主题:{{opponent.newestCampaign.theme}}
+              span.content 参加人数:{{opponent.newestCampaign.memberNumber}}
+              span.content.lastline 活动地点:{{opponent.newestCampaign.location.name}}
+          .block.clearfix
+            .title
+              img(ng-src="/img/icons/leader.png")
+              span 小队队长
+            .text
+              span.content.lastline {{opponent.leader[0].nickname}}
+          .block.clearfix
+            .title
+              img(ng-src="/img/icons/information.png")
+              span 小队简介
+            .text
+              span.content.lastline {{opponent.brief}}
   div.modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
     include ../../campaign/provoke_modal_base

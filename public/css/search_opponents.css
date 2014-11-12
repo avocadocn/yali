@@ -405,7 +405,7 @@
   height: 70px;
 }
 .search_opponents .tab_content .result .detail .detailHead .text {
-  width: 380px;
+  max-width: 300px;
   padding: 0 20px;
 }
 .search_opponents .tab_content .result .detail .detailHead .text .title {
@@ -423,7 +423,7 @@
 }
 .search_opponents .tab_content .result .detail .detailContent {
   width: 100%;
-  margin-left: 70px;
+  margin-left: 12%;
   padding: 20px;
   line-height: 1;
 }
@@ -438,6 +438,7 @@
   color: #666;
   width: 100px;
   font-size: 14px;
+  margin-bottom: 7px;
 }
 .search_opponents .tab_content .result .detail .detailContent .block .text {
   width: 270px;
