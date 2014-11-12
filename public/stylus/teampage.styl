@@ -22,9 +22,11 @@
         margin-right 20px
 
   .card
+    dl_shadow()
     background-color white
-    box-shadow 3px 3px 3px #ddd
-
+    &:hover
+      -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
+      box-shadow 3px 3px 3px secondaryfontColor
 
   .info_card
     height 230px

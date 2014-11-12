@@ -34,8 +34,15 @@
   margin-right: 20px;
 }
 .teampage .card {
+  -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 1px 1px 3px #ccc;
   background-color: #fff;
-  box-shadow: 3px 3px 3px #ddd;
+}
+.teampage .card:hover {
+  -moz-box-shadow: 3px 3px 3px #ccc;
+/* 老的 Firefox */
+  box-shadow: 3px 3px 3px #ccc;
 }
 .teampage .info_card {
   height: 230px;
