@@ -302,6 +302,19 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       });
     };
 
+    $scope.openMemberModal = function () {
+      $('#memberListModal').modal('show');
+      if (!$scope.teamMembers) {
+        $scope.loadingMembers = true;
+        Team.getTeamMembers(teamId, function (err, members) {
+          if (!err) {
+            $scope.teamMembers = members;
+            $scope.loadingMembers = false;
+          }
+        });
+      }
+    };
+
   };
 
   getCampaign(now.getFullYear(), now.getMonth());

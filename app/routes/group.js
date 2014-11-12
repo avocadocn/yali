@@ -15,6 +15,7 @@ module.exports = function(app) {
   app.get('/group/getCompanyGroups/:companyId', group.getCompanyGroups);
   app.get('/group/page/:teamId', authorization.teamAuthorize, group.teampage);
   app.get('/group/:teamId/info', group.info);
+  app.get('/group/:teamId/members', group.getTeamMembers);
   //获取小队简要信息供弹出窗使用
   //app.get('/group/briefInfo/:teamId', authorization.teamAuthorize, group.getBriefInfo);
   app.get('/group/renderInfo', group.renderInfo);

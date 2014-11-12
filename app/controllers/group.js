@@ -100,7 +100,32 @@ exports.activateGroup = function(req, res) {
 };
 
 
-exports.info =function(req, res) {
+exports.getTeamMembers = function (req, res) {
+  var team = req.companyGroup;
+
+  var leaders = team.leader;
+  var membersWithoutLeader = [];
+  team.member.forEach(function (member) {
+    var isLeader = false;
+    for (var i = 0; i < team.leader.length; i++) {
+      var leader = team.leader[i];
+      if (leader._id.toString() === member._id.toString()) {
+        isLeader = true;
+        break;
+      }
+    }
+    if (!isLeader) {
+      membersWithoutLeader.push(member);
+    }
+  });
+
+  var members = [];
+  members = members.concat(leaders);
+  members = members.concat(membersWithoutLeader);
+  res.send({ result: 1, members: members });
+};
+
+exports.info = function (req, res) {
   var team = req.companyGroup;
   // todo 作权限判断，以便在页面上呈现或隐藏一些操作
   // 是否可以编辑
@@ -179,7 +204,8 @@ exports.info =function(req, res) {
     createTime: team.create_time,
     brief: team.brief,
     leaders: team.leader,
-    members: membersWithoutLeader,
+    members: membersWithoutLeader.slice(0, 6 - team.leader.length),
+    memberCount: team.member.length,
     homeCourts: homeCourts,
     cid: team.cid,
     familyPhotos: team.family.filter(function (photo) {

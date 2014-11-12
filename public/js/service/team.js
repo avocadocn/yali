@@ -31,6 +31,25 @@ donler.factory('Team', ['$http', function($http) {
     },
 
     /**
+     * 获取小队成员列表
+     * @param  {String}   id       小队id
+     * @param  {Function} callback callback(err, members)
+     */
+    getTeamMembers: function (id, callback) {
+      $http.get('/group/' + id + '/members')
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.members);
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    },
+
+    /**
      * 加入小队
      * @param  {String}   id       小队id
      * @param  {Function} callback callback(err)

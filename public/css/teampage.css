@@ -33,6 +33,9 @@
 .teampage .team_row .team_col:first-child {
   margin-right: 20px;
 }
+.teampage .loading {
+  background: url("/img/loading.gif") center center no-repeat;
+}
 .teampage .card {
   -moz-box-shadow: 1px 1px 3px #ccc;
 /* 老的 Firefox */
