@@ -259,6 +259,9 @@
 .family_photo_album .photo:nth-child(5n+1) {
   margin-left: 0 !important;
 }
+.family_photo_album .photo:hover {
+  border: 2px solid #3498db;
+}
 .family_photo_album .photo:hover .star,
 .family_photo_album .photo:hover .delete {
   opacity: 1 !important;
@@ -326,8 +329,10 @@
   text-align: center;
 }
 .family_photo_album .operator .cropit-image-zoom-input {
+  display: inline-block;
   margin: 0 10px;
   line-height: 26px;
+  vertical-align: middle;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -338,6 +343,10 @@
 }
 .family_photo_album .operator .button_sure {
   margin-left: 10px;
+}
+.family_photo_album .operator .icon_small,
+.family_photo_album .operator .icon_large {
+  vertical-align: middle;
 }
 .family_photo_album .operator .icon_large {
   font-size: 17px;

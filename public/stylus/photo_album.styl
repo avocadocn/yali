@@ -267,6 +267,7 @@ contentBdColor = #ededed
     &:nth-child(5n+1)
       margin-left 0 !important
     &:hover
+      border 2px solid #3498db
       .star, .delete
         opacity 1 !important
     .photo_img
@@ -319,8 +320,10 @@ contentBdColor = #ededed
     position relative
     text-align center
     .cropit-image-zoom-input
+      display inline-block
       margin 0 10px
       line-height 26px
+      vertical-align middle
       -webkit-appearance none
       -moz-appearance none
       appearance none
@@ -330,5 +333,7 @@ contentBdColor = #ededed
       outline none
     .button_sure
       margin-left 10px
+    .icon_small, .icon_large
+      vertical-align middle
     .icon_large
       font-size 17px
