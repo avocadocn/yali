@@ -6,6 +6,7 @@ var minifyCSS = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var sourcemaps = require('gulp-sourcemaps');
+var watch = require('gulp-watch');
 
 gulp.task('nodemon', function () {
   nodemon({
@@ -28,12 +29,16 @@ gulp.task('nodemon', function () {
 });
 
 gulp.task('stylus', function () {
-  gulp.src(['./public/stylus/**.styl'])
+  var src = './public/stylus/**.styl';
+  gulp.src(src)
+    .pipe(watch(src))
     .pipe(stylus())
     .pipe(gulp.dest('./public/css'));
 });
 
-gulp.task('css', ['stylus'], function () {
+gulp.task('css', ['css:library', 'css:donler']);
+
+gulp.task('css:library', function () {
   gulp.src([
     './public/lib/bootstrap/dist/css/bootstrap.min.css',
     './public/lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
@@ -46,8 +51,10 @@ gulp.task('css', ['stylus'], function () {
     .pipe(rename('library.min.css'))
     .pipe(minifyCSS())
     .pipe(gulp.dest('./public/css'));
+});
 
-  gulp.src([
+gulp.task('css:donler', ['stylus'], function () {
+  var src = [
     './public/css/donler.css',
     './public/css/timeline.css',
     './public/css/custom_alertify.css',
@@ -56,15 +63,17 @@ gulp.task('css', ['stylus'], function () {
     './public/css/group_select.css',
     './public/css/campaign_list.css',
     './public/css/tree.css'
-  ])
+  ]
+  gulp.src(src)
     .pipe(concat('donlerall.css'))
     .pipe(rename('donlerall.min.css'))
     .pipe(minifyCSS())
     .pipe(gulp.dest('./public/css'));
 });
 
-gulp.task('js', function () {
+gulp.task('js', ['js:library', 'js:donler']);
 
+gulp.task('js:library', function () {
   gulp.src([
     './public/lib/jquery/jquery.js',
     './public/lib/angular/angular.js',
@@ -95,22 +104,27 @@ gulp.task('js', function () {
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/js'));
+});
 
-  gulp.src([
+gulp.task('js:donler', function () {
+  var src = [
     './public/js/modules/**/*.js',
     './public/js/app.js',
     './public/js/service/**.js',
     './public/js/controllers/message_header.js',
     './public/js/dl_card.js'
-  ])
+  ];
+  gulp.src(src)
+    .pipe(watch(src))
     .pipe(concat('donlerall.js'))
     .pipe(rename('donlerall.min.js'))
     .pipe(sourcemaps.init())
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/js'));
-
 });
 
 gulp.task('develop', ['nodemon', 'css', 'js']);
+
+
 
