@@ -126,5 +126,5 @@ gulp.task('js:donler', function () {
 
 gulp.task('develop', ['nodemon', 'css', 'js']);
 
-
+gulp.task('default', ['develop']);
 
