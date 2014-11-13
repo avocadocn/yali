@@ -155,7 +155,7 @@ block contentExt
           .modal_header
             img.icon(src="/img/team.png")
             h3.title 队员
-            span.subtitle ({{team.leaders.length + team.members.length}})
+            span.subtitle ({{teamMembers.length}})
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
           .modal_body(bs-popover ng-class="{'loading': loadingMembers}")
             .member(ng-repeat="member in teamMembers" ng-Mouseenter="showUserCard(member._id, member._id + 'member_modal')" id="pop{{member._id}}member_modal" rel="popover")
