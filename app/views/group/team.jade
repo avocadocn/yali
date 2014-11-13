@@ -37,7 +37,7 @@ block contentExt
                   button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
                 .team_member.one_button(ng-if="role==='MEMBER'" ng-cloak)
                   button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
-                .company_member.one_button(ng-if="role==='companyMember'" ng-cloak)
+                .company_member.one_button(ng-if="role==='PARTNER'" ng-cloak)
                   button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
                 .company_hr.four_button(ng-if="role==='HR'" ng-cloak)
                   button.op_button.button_blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
