@@ -27,7 +27,6 @@ companies.forEach(function (company) {
       //已经是新数据了
     }
     else if ( campaign.team.length <= 1) {//公司+单队
-          console.log(1)
       campaign.tid = campaign.team;
       campaign.campaign_unit = [{
         company: {
@@ -65,7 +64,6 @@ companies.forEach(function (company) {
         }
       });
     } else if (campaign.team.length === 2) {
-          console.log(1)
       campaign.tid = campaign.team;
       campaign.campaign_unit = [];
       campaign.camp.forEach(function (camp) {
@@ -120,10 +118,53 @@ companies.forEach(function (company) {
         });
         campaign.campaign_unit.push(unit);
       });
+    } else if (campaign.team.length >= 2 && campaign.campaign_type === 6) {
+      printjson(campaign);
+      print('before');
+      campaign.tid = campaign.team;
+      campaign.campaign_unit = [];
+      var teams = db.companygroups.find({ '_id': { '$in': campaign.tid } });
+      teams.forEach(function (team) {
+        var unit = {
+          company: {
+            _id: company._id,
+            name: company.info.official_name,
+            logo: company.info.logo
+          },
+          team: {
+            _id: team._id,
+            name: team.name,
+            logo: team.logo
+          },
+          member: [],
+          member_quit: []
+        };
+        campaign.member.forEach(function (member) {
+          var user = db.users.findOne({ _id: ObjectId(member.uid) });
+          if (user.department._id.toString() === team.department.toString()) {
+            unit.member.push({
+              _id: ObjectId(member.uid),
+              nickname: member.nickname,
+              photo: member.photo
+            });
+          }
+        });
+        campaign.member_quit.forEach(function (member) {
+          var user = db.users.findOne({ _id: ObjectId(member.uid) });
+          if (user.department._id.toString() === team.department.toString()) {
+            unit.member_quit.push({
+              _id: ObjectId(member.uid),
+              nickname: member.nickname,
+              photo: member.photo
+            });
+          }
+        });
+        campaign.campaign_unit.push(unit);
+      });
+      printjson(campaign);
+      print('after');
     }
-
     db.campaigns.save(campaign);
-
   });
 
 });
