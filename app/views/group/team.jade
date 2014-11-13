@@ -1,8 +1,6 @@
 extends ../layouts/user_base
 
 append headExt
-  link(rel="stylesheet" href="/lib/bootstrap-calendar/css/calendar.css")
-  link(rel="stylesheet" href="/css/custom_calendar.css")
   link(rel="stylesheet" href="/css/teampage.css")
 
 block contentExt
@@ -225,8 +223,5 @@ block contentExt
 append footExt
   script(src="/js/controllers/timeline.js")
   script(src="/js/controllers/team.js")
-  script(src="/js/service/team.js")
   script(src="/js/directives/count_down.js")
-  script(src="/lib/underscore/underscore.js")
-  script(src="/js/language/zh-CN.js")
-  script(src="/lib/bootstrap-calendar/js/calendar.js")
+

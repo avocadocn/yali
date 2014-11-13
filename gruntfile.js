@@ -59,16 +59,25 @@ module.exports = function(grunt) {
         concat: {
             css: {
                 src: [
+                    'public/lib/bootstrap/dist/css/bootstrap.min.css',
                     'public/lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
                     'public/lib/alertify.js/themes/alertify.core.css',
-                    'public/lib/alertify.js/themes/alertify.default.css'
+                    'public/lib/alertify.js/themes/alertify.default.css',
+                    'public/lib/angular-carousel/dist/angular-carousel.min.css',
+                    'public/lib/bootstrap-calendar/css/calendar.css'
                 ],
                 dest: 'public/css/library.css'
             },
             cssdonler:{
                 src: [
                     'public/css/donler.css',
-                    'public/css/timeline.css'
+                    'public/css/timeline.css',
+                    'public/css/custom_alertify.css',
+                    'public/css/dl_card.css',
+                    'public/css/custom_calendar.css',
+                    'public/css/group_select.css',
+                    'public/css/campaign_list.css',
+                    'public/css/tree.css'
                 ],
                 dest: 'public/css/donlerall.css'
             },
@@ -89,9 +98,25 @@ module.exports = function(grunt) {
                     'public/lib/angular-masonry/angular-masonry.js',
                     'public/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
                     'public/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js',
-                    'public/lib/lazysizes/lazysizes.js'
+                    'public/lib/lazysizes/lazysizes.js',
+                    'public/lib/angular-touch/angular-touch.min.js',
+                    'public/lib/angular-carousel/dist/angular-carousel.js',
+                    'public/lib/angular-file-upload/angular-file-upload.min.js',
+                    'public/lib/underscore/underscore.js',
+                    'public/js/language/zh-CN.js',
+                    'public/lib/bootstrap-calendar/js/calendar.js'
                 ],
                 dest: 'public/js/library.js'
+            },
+            jsdonler: {
+                src: [
+                    'public/js/modules/**/*.js',
+                    'public/js/app.js',
+                    'public/js/service/**.js',
+                    'public/js/controllers/message_header.js',
+                    'public/js/dl_card.js'
+                ],
+                dest: 'public/js/donlerall.js'
             }
         },
         uglify: {
@@ -105,7 +130,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'public/js/',
-                    src: 'library.js',
+                    src: ['library.js', 'donlerall.js'],
                     dest: 'public/js/',
                     ext: '.min.js'
                 }]

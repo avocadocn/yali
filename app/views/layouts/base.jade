@@ -8,28 +8,14 @@ html
     meta(name="viewport" content="width=device-width,initial-scale=1")
     meta(name="renderer" content="webkit")
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
-    link(rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css")
     link(rel="stylesheet" href="/css/library.min.css")
-    link(rel="stylesheet" href="/css/custom_alertify.css")
     link(rel="stylesheet" href="/css/donlerall.min.css")
-    link(rel="stylesheet" href="/css/dl_card.css")
-    link(rel="stylesheet" href="/lib/angular-carousel/dist/angular-carousel.min.css")
     script(src="/js/library.min.js")
 
     block headExt
   body
     block content
-
-    script(src="/js/app.js")
-    script(src="/js/modules/components/components.js")
-    script(src="/js/modules/components/rich_comment.js")
-    script(src="/js/modules/components/score_board.js")
-    script(src="/js/modules/components/image_box.js")
-    script(src="/js/modules/components/campaign_card.js")
-    script(src="/js/service/comment.js")
-    script(src="/js/service/photo_album.js")
-    script(src="/js/service/report.js")
-    script(src="/js/service/campaign.js")
+    script(src="/js/donlerall.min.js")
     script.
       angular.element(document).ready(function() {
         //Fixing facebook bug with redirect
@@ -47,12 +33,6 @@ html
 
       ga('create', 'UA-52353216-1', 'auto');
       ga('send', 'pageview');
-    script(src="/js/dl_card.js")
-    script(src="/js/controllers/message_header.js")
-    script(src="/lib/angular-touch/angular-touch.min.js")
-    script(src="/lib/angular-carousel/dist/angular-carousel.js")
-    script(src="/lib/angular-file-upload/angular-file-upload.min.js")
-    //-script(src="/js/notice/update.js")
     block footExt
 
     block bottomExt
