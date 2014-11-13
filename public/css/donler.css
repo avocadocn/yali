@@ -2427,6 +2427,31 @@ input.ng-invalid.ng-dirty {
   padding: 25px 0px;
   min-width: 140px;
 }
+.dl_company_container .timeline_element .title {
+  padding: 0;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.dl_company_container .timeline_element .timeline_logo {
+  margin: 0 !important;
+  margin-right: 4px !important;
+}
+.dl_company_container .timeline_element .timeline_text {
+  float: left !important;
+}
+.dl_company_container .timeline_element .timeline_text .date {
+  display: block;
+  float: none;
+  margin: 0;
+  width: auto;
+  height: 18px;
+  line-height: 18px;
+}
+.dl_company_container .timeline_element .timeline_text .head {
+  display: block;
+  float: none;
+}
 .dl_compaign_member {
   padding: 20px 10px 0px;
 }

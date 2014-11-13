@@ -59,265 +59,186 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     }
   });
 
-  Campaign.getCampaignsDateRecord('team', teamId, function (err, record) {
-    if (err) {
-      alertify.alert('抱歉，获取数据失败，请刷新页面重试。');
-    } else {
-      $scope.dateRecord = record;
-    }
-  });
-
-  $scope.campaignData = [];
-
-  var now = new Date();
-
-  var getCampaign = $scope.getCampaign = function (year, month) {
-    // 已有的不再获取
-    var found = false;
-    var isExistsCampaign = function (year, month) {
-      for (var i = 0; i < $scope.campaignData.length; i++) {
-        var yearData = $scope.campaignData[i];
-        if (yearData.year === year) {
-          for (var j = 0; j < yearData.months.length; j++) {
-            if (yearData.months[j].month === month) {
-              return true;
-            }
-          }
-        }
-      }
-      return false;
-    };
-    found = isExistsCampaign(year, month);
-
-    if (found) {
-      return;
-    }
-
-    // 获取尚未获取的月份的活动
-    Campaign.getCampaignsData('team', teamId, {
-      year: year,
-      month: month
-    }, function (err, campaigns) {
-
-      // 查找对应年份的数据是否存在
-      var found = false;
-      var data;
-      for (var i = 0; i < $scope.campaignData.length; i++) {
-        data = $scope.campaignData[i];
-        if (data.year === year) {
-          found = true;
-          break;
-        }
-      }
-
-      if (!found) {
-        // 如果不存在对应的年份，则添加年份的数据
-        $scope.campaignData.push({
-          year: year,
-          months: [{
-            month: month,
-            campaigns: campaigns
-          }]
-        });
-        $scope.campaignData.sort(function (a, b) {
-          return b.year - a.year;
-        });
+  // 编辑小队信息
+  $scope.isEditingInfo = false;
+  $scope.editInfo = function () {
+    $scope.isEditingInfo = true;
+  };
+  $scope.saveInfo = function () {
+    Team.saveInfo(teamId, $scope.teamInfo, function (err) {
+      if (err) {
+        alertify.alert(err);
       } else {
-        // 如果已存在对应的年份，添加一个月的数据并排序（假定这里不会重复添加）
-        data.months.push({
-          month: month,
-          campaigns: campaigns
-        });
-        data.months.sort(function (a, b) {
-          return b.month - a.month;
-        });
+        $scope.team.name = $scope.teamInfo.name;
+        $scope.team.brief = $scope.teamInfo.brief;
+        $scope.isEditingInfo = false;
       }
-
     });
-
-
-    // 编辑小队信息
+  };
+  $scope.cancelEditInfo = function () {
     $scope.isEditingInfo = false;
-    $scope.editInfo = function () {
-      $scope.isEditingInfo = true;
-    };
-    $scope.saveInfo = function () {
-      Team.saveInfo(teamId, $scope.teamInfo, function (err) {
-        if (err) {
-          alertify.alert(err);
-        } else {
-          $scope.team.name = $scope.teamInfo.name;
-          $scope.team.brief = $scope.teamInfo.brief;
-          $scope.isEditingInfo = false;
-        }
-      });
-    };
-    $scope.cancelEditInfo = function () {
-      $scope.isEditingInfo = false;
-      $scope.teamInfo.name = $scope.team.name;
-      $scope.teamInfo.brief = $scope.team.brief;
-    };
-
-
-    // 编辑主场
-    $scope.MSearch1 = '';
-    $scope.MSearch2 = '';
-    $scope.city = '';
-
-    var placeSearchCallBack = function(bindMap, index) {
-      return function(data) {
-        bindMap.clearMap();
-        var lngX = data.poiList.pois[0].location.getLng();
-        var latY = data.poiList.pois[0].location.getLat();
-        $scope.homeCourt[index].loc.coordinates = [lngX, latY];
-        var nowPoint = new AMap.LngLat(lngX, latY);
-        var markerOption = {
-          map: bindMap,
-          position: nowPoint,
-          draggable: true
-        };
-        var mar = new AMap.Marker(markerOption);
-        bindMap.setFitView();
-        var changePoint = function(e) {
-          var p = e.lnglat;
-          $scope.homeCourt[index].loc.coordinates = [p.getLng(), p.getLat()];
-        };
-        AMap.event.addListener(mar, "dragend", changePoint);
-      }
-    };
-
-    var bindPlaceSearch = function(bindMap, index) {
-      bindMap.plugin(["AMap.PlaceSearch"], function() {
-        if (index == 0) {
-          $scope.MSearch1 = new AMap.PlaceSearch({ //构造地点查询类
-            pageSize: 1,
-            pageIndex: 1,
-            city: $scope.city
-
-          });
-          AMap.event.addListener($scope.MSearch1, "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
-        } else {
-          $scope.MSearch2 = new AMap.PlaceSearch({ //构造地点查询类
-            pageSize: 1,
-            pageIndex: 1,
-            city: $scope.city
-
-          });
-          AMap.event.addListener($scope.MSearch2, "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
-        }
-      });
-    };
-
-    $scope.initialize = function() {
-      $scope.locationmap1 = new AMap.Map("courtMap1");
-      $scope.locationmap2 = new AMap.Map("courtMap2");
-      if ($scope.homeCourt[0].name !== '') {
-        var piont1 = new AMap.LngLat($scope.homeCourt[0].loc.coordinates[0], $scope.homeCourt[0].loc.coordinates[1]);
-        $scope.locationmap1.setZoomAndCenter(15, piont1);
-        var markerOption = {
-          map: $scope.locationmap1,
-          position: piont1,
-          draggable: true
-        };
-        var mar = new AMap.Marker(markerOption);
-        var changePoint = function(e) {
-          var p = e.lnglat;
-          $scope.homeCourt[0].loc.coordinates = [p.getLng(), p.getLat()];
-        };
-        AMap.event.addListener(mar, "dragend", changePoint);
-      };
-
-      if ($scope.homeCourt[1].name !== '') {
-        var piont2 = new AMap.LngLat($scope.homeCourt[1].loc.coordinates[0], $scope.homeCourt[1].loc.coordinates[1]);
-        $scope.locationmap2.setZoomAndCenter(15, piont2);
-        var markerOption = {
-          map: $scope.locationmap2,
-          position: piont2,
-          draggable: true
-        };
-        var marker2 = new AMap.Marker(markerOption);
-        var changePoint = function(e) {
-          var p = e.lnglat;
-          $scope.homeCourt[1].loc.coordinates = [p.getLng(), p.getLat()];
-        };
-        AMap.event.addListener(marker2, "dragend", changePoint);
-      }
-      if ($scope.city != '') {
-        bindPlaceSearch($scope.locationmap1, 0);
-        bindPlaceSearch($scope.locationmap2, 1);
-      } else {
-        $scope.locationmap1.plugin(["AMap.CitySearch"], function() {
-          var citysearch = new AMap.CitySearch();
-          citysearch.getLocalCity();
-          AMap.event.addListener(citysearch, "complete", function(result) {
-            if (result && result.city && result.bounds) {
-              var citybounds = result.bounds;
-              $scope.city = result.city;
-              bindPlaceSearch($scope.locationmap1, 0);
-              bindPlaceSearch($scope.locationmap2, 1);
-            }
-          });
-          AMap.event.addListener(citysearch, "error", function(result) {
-            alert(result.info);
-          });
-        });
-      }
-      window.map_ready = true;
-    };
-
-    $scope.changeLocation1 = function() {
-      $scope.showMap1 = true;
-      if ($scope.MSearch1 != '') {
-        $scope.MSearch1.search($scope.homeCourt[0].name);
-      } else {
-        $timeout(function() {
-          $scope.MSearch1.search($scope.homeCourt[0].name);
-        }, 0);
-      }
-    };
-
-    $scope.changeLocation2 = function() {
-      $scope.showMap2 = true;
-      if ($scope.MSearch2 != '') {
-        $scope.MSearch2.search($scope.homeCourt[1].name);
-      } else {
-        $timeout(function() {
-          $scope.MSearch2.search($scope.homeCourt[1].name);
-        }, 0);
-      }
-    };
-
-    $scope.saveHomeCourt = function () {
-      Team.saveInfo(teamId, {
-        homecourt: $scope.homeCourt
-      }, function (err) {
-        if (err) {
-          alertify.alert(err);
-        } else {
-          $scope.team.homeCourts = $scope.homeCourt;
-          $scope.isEditingInfo = false;
-          $('#homeCourtModal').modal('hide');
-          alertify.alert('保存成功');
-        }
-      });
-    };
-
-    $scope.openMemberModal = function () {
-      $('#memberListModal').modal('show');
-      if (!$scope.teamMembers) {
-        $scope.loadingMembers = true;
-        Team.getTeamMembers(teamId, function (err, members) {
-          if (!err) {
-            $scope.teamMembers = members;
-            $scope.loadingMembers = false;
-          }
-        });
-      }
-    };
-
+    $scope.teamInfo.name = $scope.team.name;
+    $scope.teamInfo.brief = $scope.team.brief;
   };
 
-  getCampaign(now.getFullYear(), now.getMonth());
+
+  // 编辑主场
+  $scope.MSearch1 = '';
+  $scope.MSearch2 = '';
+  $scope.city = '';
+
+  var placeSearchCallBack = function(bindMap, index) {
+    return function(data) {
+      bindMap.clearMap();
+      var lngX = data.poiList.pois[0].location.getLng();
+      var latY = data.poiList.pois[0].location.getLat();
+      $scope.homeCourt[index].loc.coordinates = [lngX, latY];
+      var nowPoint = new AMap.LngLat(lngX, latY);
+      var markerOption = {
+        map: bindMap,
+        position: nowPoint,
+        draggable: true
+      };
+      var mar = new AMap.Marker(markerOption);
+      bindMap.setFitView();
+      var changePoint = function(e) {
+        var p = e.lnglat;
+        $scope.homeCourt[index].loc.coordinates = [p.getLng(), p.getLat()];
+      };
+      AMap.event.addListener(mar, "dragend", changePoint);
+    }
+  };
+
+  var bindPlaceSearch = function(bindMap, index) {
+    bindMap.plugin(["AMap.PlaceSearch"], function() {
+      if (index == 0) {
+        $scope.MSearch1 = new AMap.PlaceSearch({ //构造地点查询类
+          pageSize: 1,
+          pageIndex: 1,
+          city: $scope.city
+
+        });
+        AMap.event.addListener($scope.MSearch1, "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
+      } else {
+        $scope.MSearch2 = new AMap.PlaceSearch({ //构造地点查询类
+          pageSize: 1,
+          pageIndex: 1,
+          city: $scope.city
+
+        });
+        AMap.event.addListener($scope.MSearch2, "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
+      }
+    });
+  };
+
+  $scope.initialize = function() {
+    $scope.locationmap1 = new AMap.Map("courtMap1");
+    $scope.locationmap2 = new AMap.Map("courtMap2");
+    if ($scope.homeCourt[0].name !== '') {
+      var piont1 = new AMap.LngLat($scope.homeCourt[0].loc.coordinates[0], $scope.homeCourt[0].loc.coordinates[1]);
+      $scope.locationmap1.setZoomAndCenter(15, piont1);
+      var markerOption = {
+        map: $scope.locationmap1,
+        position: piont1,
+        draggable: true
+      };
+      var mar = new AMap.Marker(markerOption);
+      var changePoint = function(e) {
+        var p = e.lnglat;
+        $scope.homeCourt[0].loc.coordinates = [p.getLng(), p.getLat()];
+      };
+      AMap.event.addListener(mar, "dragend", changePoint);
+    };
+
+    if ($scope.homeCourt[1].name !== '') {
+      var piont2 = new AMap.LngLat($scope.homeCourt[1].loc.coordinates[0], $scope.homeCourt[1].loc.coordinates[1]);
+      $scope.locationmap2.setZoomAndCenter(15, piont2);
+      var markerOption = {
+        map: $scope.locationmap2,
+        position: piont2,
+        draggable: true
+      };
+      var marker2 = new AMap.Marker(markerOption);
+      var changePoint = function(e) {
+        var p = e.lnglat;
+        $scope.homeCourt[1].loc.coordinates = [p.getLng(), p.getLat()];
+      };
+      AMap.event.addListener(marker2, "dragend", changePoint);
+    }
+    if ($scope.city != '') {
+      bindPlaceSearch($scope.locationmap1, 0);
+      bindPlaceSearch($scope.locationmap2, 1);
+    } else {
+      $scope.locationmap1.plugin(["AMap.CitySearch"], function() {
+        var citysearch = new AMap.CitySearch();
+        citysearch.getLocalCity();
+        AMap.event.addListener(citysearch, "complete", function(result) {
+          if (result && result.city && result.bounds) {
+            var citybounds = result.bounds;
+            $scope.city = result.city;
+            bindPlaceSearch($scope.locationmap1, 0);
+            bindPlaceSearch($scope.locationmap2, 1);
+          }
+        });
+        AMap.event.addListener(citysearch, "error", function(result) {
+          alert(result.info);
+        });
+      });
+    }
+    window.map_ready = true;
+  };
+
+  $scope.changeLocation1 = function() {
+    $scope.showMap1 = true;
+    if ($scope.MSearch1 != '') {
+      $scope.MSearch1.search($scope.homeCourt[0].name);
+    } else {
+      $timeout(function() {
+        $scope.MSearch1.search($scope.homeCourt[0].name);
+      }, 0);
+    }
+  };
+
+  $scope.changeLocation2 = function() {
+    $scope.showMap2 = true;
+    if ($scope.MSearch2 != '') {
+      $scope.MSearch2.search($scope.homeCourt[1].name);
+    } else {
+      $timeout(function() {
+        $scope.MSearch2.search($scope.homeCourt[1].name);
+      }, 0);
+    }
+  };
+
+  $scope.saveHomeCourt = function () {
+    Team.saveInfo(teamId, {
+      homecourt: $scope.homeCourt
+    }, function (err) {
+      if (err) {
+        alertify.alert(err);
+      } else {
+        $scope.team.homeCourts = $scope.homeCourt;
+        $scope.isEditingInfo = false;
+        $('#homeCourtModal').modal('hide');
+        alertify.alert('保存成功');
+      }
+    });
+  };
+
+  $scope.openMemberModal = function () {
+    $('#memberListModal').modal('show');
+    if (!$scope.teamMembers) {
+      $scope.loadingMembers = true;
+      Team.getTeamMembers(teamId, function (err, members) {
+        if (!err) {
+          $scope.teamMembers = members;
+          $scope.loadingMembers = false;
+        }
+      });
+    }
+  };
+
+  // getCampaign(now.getFullYear(), now.getMonth());
 
   // 这并不是一个好的做法，日后可改善。现在暂时按以前的写法，通过rootScope来设置发起活动
   $rootScope.sponsorIndex = function (index) {
