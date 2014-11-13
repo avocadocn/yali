@@ -188,7 +188,10 @@
 .simple_comment .component_body .rich_comment_form {
   float: left;
   width: 100%;
-  padding-top: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: none;
+  border-top: 1px solid #eee;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
@@ -215,6 +218,8 @@
 .simple_comment .component_body .comment {
   padding: 10px;
   clear: both;
+  border-bottom: none;
+  border-top: 1px solid #eee;
 }
 .simple_comment .component_body .comment .comment_user_info {
   margin-right: 10px;
@@ -236,6 +241,9 @@
 .simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb .multi {
   width: 60px;
   height: 60px;
+}
+.simple_comment .component_body .comment .comment_content_panel .replies {
+  background-color: #f2f2f2;
 }
 .simple_comment .component_body .comment .comment_content_panel .replies .reply_form {
   margin-bottom: 0;

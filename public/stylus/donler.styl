@@ -2132,6 +2132,19 @@ input.ng-invalid.ng-dirty
   .reported_user
     color themeColor
 
+campaignContainer(color)
+  .container_head
+    color color
+    border-top 2px solid color
+  .campaign
+    .day_col,.time_col,.status_col
+      color color
+  .campaign_detail
+    .day_col,.time_col
+      background-color color
+      color white
+    .triangle_col
+      border-color #fff #fff #fff color
 //用户首页
 .user_page
   .dl_nav
@@ -2411,304 +2424,120 @@ input.ng-invalid.ng-dirty
       .campaign_table
         .time_col
           padding 0
+      .campaign_filter
+        width 110px
+        position fixed
+        margin-right 19px
+        margin-top 5px
+        background-color #ffffff
+        dl_shadow()
+        border-radius 2px
+        padding-top 10px
+        left 50%
+        margin-left -481px
+        ul
+          padding-left 24px
+          li
+            line-height 25px
+            cursor pointer
+            &:hover
+              background-color #efefef
+              .fileter_info
+                color #666
+            .fileter_info
+              color #999
+            .campaign_num
+              float right
+              margin-right 13px
+          .recent_all
+            color #666
+          .recent_unjoin
+            color #f48361
+          .recent_join
+            color #3ca2df
+          .recent_competition
+            color #ffc053
+          .recent_now
+            color #13adb6
       .campaigns_container
+        width 570px
+        float right
         .user_campaigns_container
           background-color #ffffff
           float left
-          margin 5px 0
+          margin-top 4px
+          margin-bottom 10px
           dl_shadow()
           border-radius 2px
-          a
-            color white
-            .campaign_head
-              cursor pointer !important
+          width 100%
+          .container_head
+            cursor pointer
+            height 39px
+            line-height 18px
+            font-size 14px
+            padding 10px 10px 0 19px
             .campaign_count
               margin-right 5px
               float right
-          .campaign_head
-            color white
-            height 30px
-            line-height 14px
-            font-size 14px
-            padding 9px
+            .span_rotate
+              transform:rotate(90deg);
+              -moz-transform:rotate(90deg);
+              -o-transform:rotate(90deg);
           .campaign
             clear both
-            height 40px
-            padding 5px 0
+            padding-top 5px
             color #999
-            & > div
+            border-top 1px solid #ccc
+            .day_col
               float left
               height 100%
-            .day_col
-              font-size 30px
-              line-height 40px
+              font-size 24px
+              padding-top 12px
+              padding-left 13px
               width 50px
+              p
+                margin 0
             .time_col
+              float left
+              height 100%
               font-size 12px
-              padding 5px 0
-              width 30px
+              padding 8px 0
+              width 50px
               color #ccc
               p
                 margin 0
                 line-height 12px
             .logo_col
-              padding-left 8px
+              float left
+              height 100%
+              padding-left 10px
+              padding-top 5px
               .campaign_logo
                 width 30px
                 height 30px
                 float left
                 margin-right 4px
             .content_col
-              max-width 160px
+              float left
+              height 100%
+              max-width 300px
               font-size 12px
-              padding-left 8px
-              p
-                max-width 100%
-                overflow hidden
-                text-overflow ellipsis
-                white-space nowrap
-                line-height 16px
-                margin 0
+              padding 6px 11px
               a
-                color #999
+                color #b1b1b1
+                p
+                  max-width 100%
+                  line-height 16px
+                  margin 0
+                  .theme_text
+                    color #666
+                    font-size 14px
             .operator
               float right
-              margin-right 12px
-              margin-top 5px
-        // .top
-        //   width 700px
-        //   padding 0
-        //   margin-top 10px
-        //   .campaign_head
-        //     padding 7px 10px 5px 10px
-        //     background-color #ffc053
-        //     height 30px
-        //     color #ffffff
-        //     line-height 16px
-        //     font-size 14px
-        //     border-top-left-radius 2px
-        //     border-top-right-radius 2px
-        //     .star
-        //       background-image url('/img/icons/star.png')
-        //       height 16px
-        //       width 16px
-        //       display inline-block
-        //       float left
-        //     .title
-        //       width 30%
-        //       margin-left 10px
-        //     .time_count
-        //       width 30%
-        //     a
-        //       color #ffffff
-        //     .add
-        //       font-size 24pt
-        //       line-height 21px
-        //   .campaign
-        //     padding 0
-        //     height 100px
-        //     .info_left
-        //       width 160px
-        //       border-right 1px solid #ccc
-        //       height 100%
-        //       padding 10px
-        //       .time_col
-        //         font-size 18px
-        //         clear both
-        //         width 100%
-        //         text-align center
-        //         .remind_text
-        //           height 40px
-        //           line-height 50px
-        //           color #999
-        //           font-size 12px
-        //           margin 0
-        //         .time_text
-        //           color #f48361
-        //     .logo_col
-        //       width 221px
-        //       padding-top 26px
-        //       padding-left 20px
-        //       border-right 1px solid #ccc
-        //       height 100%
-        //       .team
-        //         width 200px
-        //         .campaign_logo
-        //           width 47px
-        //           height 47px
-        //           float left
-        //         .campaign_info
-        //           float left
-        //           width 150px
-        //           .team_name
-        //             margin-left 15px
-        //             max-width 150px
-        //             overflow hidden
-        //             text-overflow ellipsis
-        //             white-space nowrap
-        //     .content_col
-        //       width 260px
-        //       color #ccc
-        //       font-size 14px
-        //       padding-top 21px
-        //       padding-left 21px
-        //       p
-        //         max-width 100%
-        //         overflow hidden
-        //         text-overflow ellipsis
-        //         white-space nowrap
-        //         margin 0
-        //         line-height 24px
-        //       a
-        //         color #ccc
-        .recent_unjoin
-          width 345px
-          float left
-          max-height 230px
-          &.no_campaign
-            background-image url('/img/no_new_campaign.png')
-            height 180px
-          .campaign_head
-            background-color #ffc053
-          a
-            .campaign_head
-              &:hover
-                background-color #e6af4f
-        .recent_join
-          width 345px
-          float right
-          max-height 230px
-          &.no_campaign
-            background-image url('/img/no_recent_campaign.png')
-            height 180px
-          .campaign_head
-            background-color #3ccbd4
-          .campaign
-            .time_col
-              width 60px
-              float right
-              span
-                line-height 20px
-            .content_col
-              max-width 175px
-            
-        .now
-          width 700px
-          clear both
-          &.no_campaign
-            background-image url('/img/no_now_campaign.png')
-          .campaign_head
-            color themeColor
-            line-height 24px
-            font-size 12px
-            label
-              max-width 80%
-              overflow hidden
-              text-overflow ellipsis
-              white-space nowrap
-            a
-              cursor pointer
-              color #ccc
-              .date
-                width 30px
-                line-height 13px
-                margin 8px 4px
-                float left
-              .name
-                line-height 30px
-                margin-right 10px
-                margin-top 8px
-                max-width 250px
-                overflow hidden
-                text-overflow ellipsis
-                white-space nowrap
-                text-align center
-              .day
-                float left
-                font-size 28px
-                margin 11px 6px
-                margin-right 0
-              .campaign_logo
-                width 30px
-                height 30px
-                margin-right 11px
-                margin-top 8px
-          .unconfrim
-            color #f7b1b3
-            label
-              max-width 85%
-          .masonry-item
-            width 345px
-          .user_campaigns_container
-            width 345px
-            .campaign
-              .logo_col
-                width 100%
-                clear both
-                height 30px
-                padding-left 0
-                color #fff
-                .campaign_status
-                  color #fff
-                  padding-left 30px
-                .start_campaign
-                  background-color #3ccbd4
-                .unstart_campaign
-                  background-color #3ca2e0
-                .team
-                  width 70px
-                  .campaign_logo
-                    width 70px
-                    height 70px
-                  .team_name
-                    padding 5px 0
-                    margin 0
-                    font-size 14px
-                    text-align center
-                    max-width 70px
-                    overflow hidden
-                    text-overflow ellipsis
-                    white-space nowrap
-                    float left
-              .content_col
-                width 100%
-                max-width 100%
-                height 70px
-                overflow hidden
-                text-overflow ellipsis
-                white-space nowrap
-                padding 6px 40px
-                p
-                  line-height 20px
-                  font-size 14px
-            .provoke
-              .logo_col
-                padding-top 5px
-                padding-left 10px
-                height 110px
-                background-color #FFC053
-                .operator
-                  width 75px
-                  .dl_btn
-                    margin 5px
-                  .btn_red
-                    background-color #ec6a6a
-                .team
-                  float left
-                  margin-top 5px
-                  margin-left 30px
-                .content_col
-                  padding 19px 40px
+              margin-right 20px
+              margin-top 11px
             .photos
               float left
-              margin-top 10px
-              // .photo
-              //   float left
-              //   margin 10px 0 0 9px
-              //   width 56%
-              //   img
-              //     height 120px
-              //     width 100%
               .photo
                 float left
                 width 86px
@@ -2718,74 +2547,125 @@ input.ng-invalid.ng-dirty
                 margin-right 0
               .photos_1
                 .photo_0
-                  width 345px
-                  height 235px
+                  width 570px
+                  height 300px
               .photos_2
                 .photo_0
-                  width 175px
-                  height 115px
+                  width 282px
+                  height 200px
                   float left
-                  margin-right 5px
+                  margin-right 6px
                 .photo_1
-                  width 165px
-                  height 115px
+                  width 282px
+                  height 200px
                   float left
               .photos_3
                 .photo_0
-                  width 170px
-                  height 265px
+                  width 282px
+                  height 305px
                   margin-left 5px
                   float right
                 .photo_1, .photo_2
-                  width 170px
-                  height 130px
+                  width 282px
+                  height 150px
                   float right
                 .photo_1
                   margin-bottom 5px
               .photos_4
                 .photo_0,.photo_3
-                  width 146px
-                  height 130px
+                  width 235px
+                  height 170px
                   margin-bottom 5px
                   float left
                 .photo_1, .photo_2
-                  width 193px
-                  height 130px
+                  width 330px
+                  height 170px
                   margin-bottom 5px
                   float left
-                .photo_2,.photo_3
-                  height 150px
                 .photo_0,.photo_2
-                  margin-right 6px
+                  margin-right 5px
               // .odd
               //   width 36%
               // .single
               //   width 95%
             .comments
               clear both
-              a
-                color secondaryfontColor
-                margin-top 10px
-                padding 10px
+              background-color #fbfbfb
+              min-height 25px
+              a.comment_num
+                color #999
+                padding 3px 18px 4px 0
                 .reply_icon
-                  margin-right 5px
-        .now_head
-          width 100%
-          height 30px
-          padding 0
-          .campaign_head
-            line-height 32px
-            height 30px
-            padding 0
-            background-color #3ca2e0
-            border-radius 2px
-            .head_icon
-              background-image url('/img/icons/coupleballoon.png')
-              background-repeat no-repeat
-              width 17px
-              height 100%
-              margin 8px 9px
+                  margin-right 15px
+          .campaign_base
+            height 51px
+            .content_col
+              a
+                p
+                  overflow hidden
+                  text-overflow ellipsis
+                  white-space nowrap
+          .campaign_detail
+            padding-bottom 0
+            padding-top 15px
+            float left
+            width 100%
+            .triangle_col
               float left
+              border-style solid
+              border-width 16px
+              height 0
+              width 0
+            .day_col,.time_col
+              padding 5px 0 3px 0
+              line-height 100%
+              width 40px
+              margin-bottom 20px
+            .logo_col
+              padding-top 0
+              padding-left 0
+              margin-bottom 20px
+            .content_col
+              padding 0
+              padding-left 10px
+              margin-bottom 20px
+              max-width 240px
+              a
+                p
+                  word-wrap break-word
+                  word-break break-all
+            .status_col
+              float right
+              height 100%
+              font-size 18px
+              padding-right 20px
+              padding-top 8px
+              margin-bottom 20px
+              .dl_btn
+                margin-left 5px
+              .btn_red
+                background-color #F48361
+              .btn_cancel
+                background-color #999
+              p
+                margin 0
+                line-height 12px
+        .recent_unjoin
+          campaignContainer(#f48361)
+        .recent_join
+          campaignContainer(#3ca2df)
+        .recent_competition
+          campaignContainer(#ffc053)
+        .recent_now
+          campaignContainer(#13adb6)
+        .card_campaign
+          background-color initial
+          box-shadow none
+          .container_head,.campaign
+            background-color #fff
+            margin-bottom 10px
+            dl_shadow()
+        
     .side
       padding-top 45px
       width 240px
@@ -2861,6 +2741,8 @@ input.ng-invalid.ng-dirty
           cursor pointer
       .groupsbox
         margin-top 10px
+        margin-bottom 0
+        width 100%
       .infobox
         background-color #525E70
         margin-top 10px

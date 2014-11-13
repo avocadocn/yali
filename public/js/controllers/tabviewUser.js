@@ -268,23 +268,19 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
     // $rootScope.recentUnjoinedCampaigns = [];
     // $rootScope.recentJoinedCampaigns = [];
     // $rootScope.nowCampaigns = [];
-
-    $scope.newReply =[];
-    $scope.showCampaign = false;
-    $rootScope.$watch('uid',function(uid){
-      if(!uid)
-        return;
+    $scope.nowShow ='all';
+    var data = document.getElementById('user_data').dataset;
+    $rootScope.uid = data.uid;
       try{
         $http({
           method:'get',
-          url: '/campaign/user/recent/list/'+uid +'?'+Math.random()*10000,
+          url: '/campaign/user/recent/list/'+$rootScope.uid +'?'+Math.random()*10000,
         }).success(function(data,status){
           if(data.result===1){
-            $rootScope.recentCampaigns = data.campaigns;
             $rootScope.recentUnjoinedCampaigns = data.campaigns[0];
             $rootScope.recentJoinedCampaigns = data.campaigns[1];
+            $rootScope.competitions = data.campaigns[3];
             $rootScope.nowCampaigns = data.campaigns[2];
-            $scope.showCampaign = true;
             // $scope.topCampaign = data.campaigns[1][0];
           }
         }).error(function(data,status){
@@ -294,9 +290,11 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
       catch(e){
         console.log(e);
       }
-    });
-    $scope.reloadM = function(){
-      $scope.is_reload = true;
+    // $scope.reloadM = function(){
+    //   $scope.is_reload = true;
+    // }
+    $scope.campaignFilter = function(type){
+      $scope.nowShow = type;
     }
     $scope.showMorePhoto = function(photo_album_id,uri){
       try{
