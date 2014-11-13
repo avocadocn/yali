@@ -188,7 +188,10 @@
 .simple_comment .component_body .rich_comment_form {
   float: left;
   width: 100%;
-  padding-top: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: none;
+  border-top: 1px solid #eee;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
@@ -215,6 +218,8 @@
 .simple_comment .component_body .comment {
   padding: 10px;
   clear: both;
+  border-bottom: none;
+  border-top: 1px solid #eee;
 }
 .simple_comment .component_body .comment .comment_user_info {
   margin-right: 10px;
@@ -236,6 +241,9 @@
 .simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb .multi {
   width: 60px;
   height: 60px;
+}
+.simple_comment .component_body .comment .comment_content_panel .replies {
+  background-color: #f2f2f2;
 }
 .simple_comment .component_body .comment .comment_content_panel .replies .reply_form {
   margin-bottom: 0;
@@ -3439,50 +3447,107 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaign_table .time_col {
   padding: 0;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container {
+.user_page .dl_container .main .campaign_filter {
+  width: 110px;
+  position: fixed;
+  margin-right: 19px;
+  margin-top: 5px;
   background-color: #fff;
-  float: left;
-  margin: 5px 0;
   -moz-box-shadow: 1px 1px 3px #ccc;
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
+  padding-top: 10px;
+  left: 50%;
+  margin-left: -481px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container a {
-  color: #fff;
+.user_page .dl_container .main .campaign_filter ul {
+  padding-left: 24px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container a .campaign_head {
-  cursor: pointer !important;
+.user_page .dl_container .main .campaign_filter ul li {
+  line-height: 25px;
+  cursor: pointer;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container a .campaign_count {
+.user_page .dl_container .main .campaign_filter ul li:hover {
+  background-color: #efefef;
+}
+.user_page .dl_container .main .campaign_filter ul li:hover .fileter_info {
+  color: #666;
+}
+.user_page .dl_container .main .campaign_filter ul li .fileter_info {
+  color: #999;
+}
+.user_page .dl_container .main .campaign_filter ul li .campaign_num {
+  float: right;
+  margin-right: 13px;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_all {
+  color: #666;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_unjoin {
+  color: #f48361;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_join {
+  color: #3ca2df;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_competition {
+  color: #ffc053;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_now {
+  color: #13adb6;
+}
+.user_page .dl_container .main .campaigns_container {
+  width: 570px;
+  float: right;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container {
+  background-color: #fff;
+  float: left;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+  border-radius: 2px;
+  width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head {
+  cursor: pointer;
+  height: 39px;
+  line-height: 18px;
+  font-size: 14px;
+  padding: 10px 10px 0 19px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .campaign_count {
   margin-right: 5px;
   float: right;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_head {
-  color: #fff;
-  height: 30px;
-  line-height: 14px;
-  font-size: 14px;
-  padding: 9px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .span_rotate {
+  transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
   clear: both;
-  height: 40px;
-  padding: 5px 0;
+  padding-top: 5px;
   color: #999;
-}
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign > div {
-  float: left;
-  height: 100%;
+  border-top: 1px solid #ccc;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .day_col {
-  font-size: 30px;
-  line-height: 40px;
+  float: left;
+  height: 100%;
+  font-size: 24px;
+  padding-top: 12px;
+  padding-left: 13px;
   width: 50px;
 }
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .day_col p {
+  margin: 0;
+}
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .time_col {
+  float: left;
+  height: 100%;
   font-size: 12px;
-  padding: 5px 0;
-  width: 30px;
+  padding: 8px 0;
+  width: 50px;
   color: #ccc;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .time_col p {
@@ -3490,7 +3555,10 @@ input.ng-invalid.ng-dirty {
   line-height: 12px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .logo_col {
-  padding-left: 8px;
+  float: left;
+  height: 100%;
+  padding-left: 10px;
+  padding-top: 5px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .logo_col .campaign_logo {
   width: 30px;
@@ -3499,201 +3567,33 @@ input.ng-invalid.ng-dirty {
   margin-right: 4px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col {
-  max-width: 160px;
+  float: left;
+  height: 100%;
+  max-width: 300px;
   font-size: 12px;
-  padding-left: 8px;
+  padding: 6px 11px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col p {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a {
+  color: #b1b1b1;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a p {
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   line-height: 16px;
   margin: 0;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a {
-  color: #999;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a p .theme_text {
+  color: #666;
+  font-size: 14px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .operator {
   float: right;
-  margin-right: 12px;
-  margin-top: 5px;
+  margin-right: 20px;
+  margin-top: 11px;
 }
-.user_page .dl_container .main .campaigns_container .recent_unjoin {
-  width: 345px;
-  float: left;
-  max-height: 230px;
-}
-.user_page .dl_container .main .campaigns_container .recent_unjoin.no_campaign {
-  background-image: url("/img/no_new_campaign.png");
-  height: 180px;
-}
-.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_head {
-  background-color: #ffc053;
-}
-.user_page .dl_container .main .campaigns_container .recent_unjoin a .campaign_head:hover {
-  background-color: #e6af4f;
-}
-.user_page .dl_container .main .campaigns_container .recent_join {
-  width: 345px;
-  float: right;
-  max-height: 230px;
-}
-.user_page .dl_container .main .campaigns_container .recent_join.no_campaign {
-  background-image: url("/img/no_recent_campaign.png");
-  height: 180px;
-}
-.user_page .dl_container .main .campaigns_container .recent_join .campaign_head {
-  background-color: #3ccbd4;
-}
-.user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col {
-  width: 60px;
-  float: right;
-}
-.user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col span {
-  line-height: 20px;
-}
-.user_page .dl_container .main .campaigns_container .recent_join .campaign .content_col {
-  max-width: 175px;
-}
-.user_page .dl_container .main .campaigns_container .now {
-  width: 700px;
-  clear: both;
-}
-.user_page .dl_container .main .campaigns_container .now.no_campaign {
-  background-image: url("/img/no_now_campaign.png");
-}
-.user_page .dl_container .main .campaigns_container .now .campaign_head {
-  color: #3498db;
-  line-height: 24px;
-  font-size: 12px;
-}
-.user_page .dl_container .main .campaigns_container .now .campaign_head label {
-  max-width: 80%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.user_page .dl_container .main .campaigns_container .now .campaign_head a {
-  cursor: pointer;
-  color: #ccc;
-}
-.user_page .dl_container .main .campaigns_container .now .campaign_head a .date {
-  width: 30px;
-  line-height: 13px;
-  margin: 8px 4px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos {
   float: left;
 }
-.user_page .dl_container .main .campaigns_container .now .campaign_head a .name {
-  line-height: 30px;
-  margin-right: 10px;
-  margin-top: 8px;
-  max-width: 250px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-align: center;
-}
-.user_page .dl_container .main .campaigns_container .now .campaign_head a .day {
-  float: left;
-  font-size: 28px;
-  margin: 11px 6px;
-  margin-right: 0;
-}
-.user_page .dl_container .main .campaigns_container .now .campaign_head a .campaign_logo {
-  width: 30px;
-  height: 30px;
-  margin-right: 11px;
-  margin-top: 8px;
-}
-.user_page .dl_container .main .campaigns_container .now .unconfrim {
-  color: #f7b1b3;
-}
-.user_page .dl_container .main .campaigns_container .now .unconfrim label {
-  max-width: 85%;
-}
-.user_page .dl_container .main .campaigns_container .now .masonry-item {
-  width: 345px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container {
-  width: 345px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col {
-  width: 100%;
-  clear: both;
-  height: 30px;
-  padding-left: 0;
-  color: #fff;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .campaign_status {
-  color: #fff;
-  padding-left: 30px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .start_campaign {
-  background-color: #3ccbd4;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .unstart_campaign {
-  background-color: #3ca2e0;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .team {
-  width: 70px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .team .campaign_logo {
-  width: 70px;
-  height: 70px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .logo_col .team .team_name {
-  padding: 5px 0;
-  margin: 0;
-  font-size: 14px;
-  text-align: center;
-  max-width: 70px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  float: left;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .content_col {
-  width: 100%;
-  max-width: 100%;
-  height: 70px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: 6px 40px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .campaign .content_col p {
-  line-height: 20px;
-  font-size: 14px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col {
-  padding-top: 5px;
-  padding-left: 10px;
-  height: 110px;
-  background-color: #ffc053;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator {
-  width: 75px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator .dl_btn {
-  margin: 5px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .operator .btn_red {
-  background-color: #ec6a6a;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .team {
-  float: left;
-  margin-top: 5px;
-  margin-left: 30px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .provoke .logo_col .content_col {
-  padding: 19px 40px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos {
-  float: left;
-  margin-top: 10px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photo {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photo {
   float: left;
   width: 86px;
   height: 86px;
@@ -3701,88 +3601,208 @@ input.ng-invalid.ng-dirty {
   display: inline-block;
   margin-right: 0;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_1 .photo_0 {
-  width: 345px;
-  height: 235px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_1 .photo_0 {
+  width: 570px;
+  height: 300px;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_2 .photo_0 {
-  width: 175px;
-  height: 115px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_2 .photo_0 {
+  width: 282px;
+  height: 200px;
   float: left;
-  margin-right: 5px;
+  margin-right: 6px;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_2 .photo_1 {
-  width: 165px;
-  height: 115px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_2 .photo_1 {
+  width: 282px;
+  height: 200px;
   float: left;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_3 .photo_0 {
-  width: 170px;
-  height: 265px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_0 {
+  width: 282px;
+  height: 305px;
   margin-left: 5px;
   float: right;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_3 .photo_1,
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_3 .photo_2 {
-  width: 170px;
-  height: 130px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_1,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_2 {
+  width: 282px;
+  height: 150px;
   float: right;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_3 .photo_1 {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_1 {
   margin-bottom: 5px;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_0,
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_3 {
-  width: 146px;
-  height: 130px;
-  margin-bottom: 5px;
-  float: left;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_1,
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_2 {
-  width: 193px;
-  height: 130px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_0,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_3 {
+  width: 235px;
+  height: 170px;
   margin-bottom: 5px;
   float: left;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_2,
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_3 {
-  height: 150px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_1,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_2 {
+  width: 330px;
+  height: 170px;
+  margin-bottom: 5px;
+  float: left;
 }
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_0,
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .photos .photos_4 .photo_2 {
-  margin-right: 6px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments {
-  clear: both;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments a {
-  color: #ccc;
-  margin-top: 10px;
-  padding: 10px;
-}
-.user_page .dl_container .main .campaigns_container .now .user_campaigns_container .comments a .reply_icon {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_0,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_2 {
   margin-right: 5px;
 }
-.user_page .dl_container .main .campaigns_container .now_head {
-  width: 100%;
-  height: 30px;
-  padding: 0;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments {
+  clear: both;
+  background-color: #fbfbfb;
+  min-height: 25px;
 }
-.user_page .dl_container .main .campaigns_container .now_head .campaign_head {
-  line-height: 32px;
-  height: 30px;
-  padding: 0;
-  background-color: #3ca2e0;
-  border-radius: 2px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num {
+  color: #999;
+  padding: 3px 18px 4px 0;
 }
-.user_page .dl_container .main .campaigns_container .now_head .campaign_head .head_icon {
-  background-image: url("/img/icons/coupleballoon.png");
-  background-repeat: no-repeat;
-  width: 17px;
-  height: 100%;
-  margin: 8px 9px;
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num .reply_icon {
+  margin-right: 15px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base {
+  height: 51px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .content_col a p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail {
+  padding-bottom: 0;
+  padding-top: 15px;
   float: left;
+  width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .triangle_col {
+  float: left;
+  border-style: solid;
+  border-width: 16px;
+  height: 0;
+  width: 0;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .time_col {
+  padding: 5px 0 3px 0;
+  line-height: 100%;
+  width: 40px;
+  margin-bottom: 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .logo_col {
+  padding-top: 0;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .content_col {
+  padding: 0;
+  padding-left: 10px;
+  margin-bottom: 20px;
+  max-width: 240px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .content_col a p {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col {
+  float: right;
+  height: 100%;
+  font-size: 18px;
+  padding-right: 20px;
+  padding-top: 8px;
+  margin-bottom: 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .dl_btn {
+  margin-left: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .btn_red {
+  background-color: #f48361;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .btn_cancel {
+  background-color: #999;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col p {
+  margin: 0;
+  line-height: 12px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .container_head {
+  color: #f48361;
+  border-top: 2px solid #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .status_col {
+  color: #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .time_col {
+  background-color: #f48361;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .triangle_col {
+  border-color: #fff #fff #fff #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .container_head {
+  color: #3ca2df;
+  border-top: 2px solid #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .status_col {
+  color: #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .time_col {
+  background-color: #3ca2df;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .triangle_col {
+  border-color: #fff #fff #fff #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .container_head {
+  color: #ffc053;
+  border-top: 2px solid #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign .status_col {
+  color: #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .time_col {
+  background-color: #ffc053;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .triangle_col {
+  border-color: #fff #fff #fff #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .container_head {
+  color: #13adb6;
+  border-top: 2px solid #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_now .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_now .campaign .status_col {
+  color: #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .time_col {
+  background-color: #13adb6;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .triangle_col {
+  border-color: #fff #fff #fff #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .card_campaign {
+  background-color: initial;
+  box-shadow: none;
+}
+.user_page .dl_container .main .campaigns_container .card_campaign .container_head,
+.user_page .dl_container .main .campaigns_container .card_campaign .campaign {
+  background-color: #fff;
+  margin-bottom: 10px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side {
   padding-top: 45px;
@@ -3878,6 +3898,8 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .side .groupsbox {
   margin-top: 10px;
+  margin-bottom: 0;
+  width: 100%;
 }
 .user_page .dl_container .side .infobox {
   background-color: #525e70;
