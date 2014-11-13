@@ -189,20 +189,21 @@
   float: left;
   width: 100%;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   border-bottom: none;
   border-top: 1px solid #eee;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
-  background-color: #fbfbfb;
+  background-color: #fff;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .img_selector {
-  margin: 0;
+  margin: 0 7px;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .publish {
   margin: 0;
   background-color: #3ca2e0;
+  width: 50px;
 }
 .simple_comment .component_body .rich_comment_form .preview_box {
   display: block;
@@ -216,7 +217,7 @@
   height: 48px;
 }
 .simple_comment .component_body .comment {
-  padding: 10px;
+  padding: 10px 20px;
   clear: both;
   border-bottom: none;
   border-top: 1px solid #eee;
@@ -244,9 +245,19 @@
 }
 .simple_comment .component_body .comment .comment_content_panel .replies {
   background-color: #f2f2f2;
+  margin-top: 0;
+  padding: 5px;
 }
 .simple_comment .component_body .comment .comment_content_panel .replies .reply_form {
   margin-bottom: 0;
+}
+.simple_comment .component_body .comment .comment_content_panel .replies .reply_form .dl_reply {
+  width: 43px;
+}
+.simple_comment .component_body .comment .comment_content_panel .replies .reply {
+  border-top: 1px solid #fbfbfb;
+  line-height: 20px;
+  margin: 10px 0;
 }
 .score_board .component_head {
   background-color: #333 !important;
@@ -605,16 +616,16 @@ textarea {
 textarea {
   resize: none;
 }
-::-webkit-input-placeholder /* WebKit browsers */ {
+::-webkit-input-placeholder {
   color: #ccc;
 }
-:-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+:-moz-placeholder {
   color: #ccc;
 }
-::-moz-placeholder /* Mozilla Firefox 19+ */ {
+::-moz-placeholder {
   color: #ccc;
 }
-:-ms-input-placeholder /* Internet Explorer 10+ */ {
+:-ms-input-placeholder {
   color: #ccc;
 }
 .transparent {
@@ -1397,7 +1408,6 @@ textarea {
   overflow: hidden;
   border: 1px solid #e6e6e6;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_container .side .groupsbox .head_title {
@@ -2584,7 +2594,7 @@ input.ng-invalid.ng-dirty {
   font-size: 80px;
   color: #3498db;
 }
-[ngcloak],
+[ng:cloak],
 [ng-cloak],
 [data-ng-cloak],
 [x-ng-cloak],
@@ -3024,7 +3034,6 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_view_modal .calendar_tips {
   height: 50px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 #events-modal .calendar_view_modal .calendar_tips .join_sign {
@@ -3164,7 +3173,6 @@ input.ng-invalid.ng-dirty {
   width: 865px;
   margin-top: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .main .dl_info_container .info_left {
@@ -3457,7 +3465,6 @@ input.ng-invalid.ng-dirty {
   margin-top: 5px;
   background-color: #fff;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   padding-top: 10px;
@@ -3509,7 +3516,6 @@ input.ng-invalid.ng-dirty {
   margin-top: 4px;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   width: 100%;
@@ -3519,16 +3525,29 @@ input.ng-invalid.ng-dirty {
   height: 39px;
   line-height: 18px;
   font-size: 14px;
-  padding: 10px 10px 0 19px;
+  padding: 10px 5px 0 19px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .campaign_count {
-  margin-right: 5px;
+  float: right;
+  margin-right: 4px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head img.head_arrow {
+  height: 10px;
+  width: 10px;
+  margin-right: 4px;
+  margin-top: 4px;
   float: right;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .span_rotate {
-  transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
+  transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .no_campaign {
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  position: relative;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
   clear: both;
@@ -3590,7 +3609,7 @@ input.ng-invalid.ng-dirty {
   color: #666;
   font-size: 14px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .operator {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .operator_col {
   float: right;
   margin-right: 20px;
   margin-top: 11px;
@@ -3734,6 +3753,9 @@ input.ng-invalid.ng-dirty {
   color: #f48361;
   border-top: 2px solid #f48361;
 }
+.user_page .dl_container .main .campaigns_container .recent_unjoin .container_head img.head_arrow {
+  background-color: #f48361;
+}
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .day_col,
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .time_col,
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .status_col {
@@ -3747,9 +3769,30 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .triangle_col {
   border-color: #fff #fff #fff #f48361;
 }
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign {
+  background-image: url("/img/no_new_campaign.png");
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip {
+  position: absolute;
+  bottom: 30px;
+  left: 75px;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p {
+  margin: 6px 1px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p .dl_btn {
+  border-radius: 5px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p .tip_info {
+  padding-left: 11px;
+}
 .user_page .dl_container .main .campaigns_container .recent_join .container_head {
   color: #3ca2df;
   border-top: 2px solid #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .container_head img.head_arrow {
+  background-color: #3ca2df;
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campaign .day_col,
 .user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col,
@@ -3764,9 +3807,15 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .triangle_col {
   border-color: #fff #fff #fff #3ca2df;
 }
+.user_page .dl_container .main .campaigns_container .recent_join .no_campaign {
+  background-image: url("/img/no_recent_campaign.png");
+}
 .user_page .dl_container .main .campaigns_container .recent_competition .container_head {
   color: #ffc053;
   border-top: 2px solid #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .container_head img.head_arrow {
+  background-color: #ffc053;
 }
 .user_page .dl_container .main .campaigns_container .recent_competition .campaign .day_col,
 .user_page .dl_container .main .campaigns_container .recent_competition .campaign .time_col,
@@ -3781,9 +3830,31 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .triangle_col {
   border-color: #fff #fff #fff #ffc053;
 }
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign {
+  background-image: url("/img/no_competition.png");
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip {
+  position: absolute;
+  top: 168px;
+  left: 270px;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p {
+  margin: 6px 1px;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p .dl_btn {
+  border-radius: 5px;
+  background-color: #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p .tip_info {
+  padding-left: 11px;
+}
 .user_page .dl_container .main .campaigns_container .recent_now .container_head {
   color: #13adb6;
   border-top: 2px solid #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .container_head img.head_arrow {
+  background-color: #13adb6;
 }
 .user_page .dl_container .main .campaigns_container .recent_now .campaign .day_col,
 .user_page .dl_container .main .campaigns_container .recent_now .campaign .time_col,
@@ -3798,6 +3869,9 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .triangle_col {
   border-color: #fff #fff #fff #13adb6;
 }
+.user_page .dl_container .main .campaigns_container .recent_now .no_campaign {
+  background-image: url("/img/no_now_campaign.png");
+}
 .user_page .dl_container .main .campaigns_container .card_campaign {
   background-color: initial;
   box-shadow: none;
@@ -3807,7 +3881,6 @@ input.ng-invalid.ng-dirty {
   background-color: #fff;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side {
@@ -3828,7 +3901,6 @@ input.ng-invalid.ng-dirty {
   clear: both;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .old_campaign_container.commentCampaign {
@@ -3880,7 +3952,6 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 10px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .sponsor_container a {
@@ -3916,7 +3987,6 @@ input.ng-invalid.ng-dirty {
   height: 98px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .infobox .head_title {
@@ -3978,7 +4048,6 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .schedule_small {
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .schedule_small .schedulebox {
@@ -4074,14 +4143,12 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   border: none;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .timeline_element .timeline_head {
@@ -4489,7 +4556,7 @@ Timeline UI Base
   padding-right: 1px;
   padding-left: 2px;
 }
-.timeline > li .timeline-icon -webkit-border-radius 30px -moz-border-radius 30px {
+.timeline > li .timeline-icon -webkit-border-radius 30px !important -moz-border-radius 30px !important {
   border-radius: 30px !important;
 }
 @media (max-width: 767px) {
@@ -4565,14 +4632,12 @@ Timeline UI Base
   padding: 10px;
   color: #888;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:before {

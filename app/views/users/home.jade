@@ -5,11 +5,24 @@ append headExt
 
 
 mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
-  .user_campaigns_container(ng-init="#{containerClass}=false;" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')&&#{items}.length>0" ng-cloak)
+  .user_campaigns_container(ng-init="#{containerClass}=false;" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')" ng-cloak)
     .container_head(ng-click="#{containerClass}=!#{containerClass};" ng-cloak)
       span= containerTitle
-      span.pull-right(ng-if="#{items}.length>2" ng-class="{'span_rotate':#{containerClass}}") &gt;
+      img.head_arrow(src="/img/icons/trarrow.png" ng-if="#{items}.length>2" ng-class="{'span_rotate':!#{containerClass}}")
       span.campaign_count {{#{items}.length}}
+    .no_campaign(ng-if="#{items}.length==0 && nowShow=='#{containerClass}'")
+      if containerClass=='recent_unjoin'
+        .no_campaign_tip
+          p 没有活动怎么办？进入
+          p
+            button.dl_btn.dl_btn_small 小队列表
+            span.tip_info 加入更多小队！
+      else if containerClass=='recent_competition'
+        .no_campaign_tip
+          p
+            span 点击
+            button.dl_btn.dl_btn_small 找对手
+            span.tip_info 向其他小队发起挑战
     .campaign(ng-class="{'campaign_detail':#{detailFlag}||nowShow=='#{containerClass}','campaign_base':#{detailFlag}==false&&nowShow!=='#{containerClass}'}" ng-repeat="item in #{items}" ng-if="$index<2||#{containerClass}||nowShow=='#{containerClass}'" ng-cloak)
       .day_col
         //- (ng-if="judgeYear($index)")
@@ -34,7 +47,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
           p
             span #{__("LOCATION")}:
             span.content_text {{item.location.name}}
-      .operator(ng-if="#{detailFlag}==false&&nowShow!=='#{containerClass}'")
+      .operator_col(ng-if="#{detailFlag}==false&&nowShow!=='#{containerClass}'")
         a.clearLinkUnderline(ng-href="/campaign/detail/{{item._id}}" target="_blank")
           span.dl_icons.icon_bgrarrow
       .status_col(ng-if="#{detailFlag}")
@@ -49,9 +62,9 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
               li(ng-repeat="_team in item.team")
                 a(ng-click="join($parent.$parent.$index,item.campaign_unit[_team].team._id)") {{item.campaign_unit[_team].team.name}}
         else if containerClass=='recent_competition'
-          button.dl_btn.btn_cancel.dl_btn_small.pull-right(ng-if="item.leader.indexOf(0)>-1" ng-click="dealProvoke(item._id,item.campaign_unit[0].team._id,3)") 取消
-                    button.dl_btn.btn_cancel.dl_btn_small.pull-right(ng-if="item.leader.indexOf(1)>-1 && item.leader.indexOf(0)==-1" ng-click="dealProvoke(item._id,item.campaign_unit[1].team._id,2)") 拒绝
-          button.dl_btn.dl_btn_small.pull-right.btn_red(ng-if="item.leader.indexOf(1)>-1" ng-click="dealProvoke(item._id,item.campaign_unit[1].team._id,1)") 接受
+          button.dl_btn.btn_cancel.dl_btn_small.pull-right(ng-if="item.leader.indexOf(0)>-1" ng-click="dealProvoke($index,item._id,item.campaign_unit[0].team._id,3)") 取消
+                    button.dl_btn.btn_cancel.dl_btn_small.pull-right(ng-if="item.leader.indexOf(1)>-1 && item.leader.indexOf(0)==-1" ng-click="dealProvoke($index,item._id,item.campaign_unit[1].team._id,2)") 拒绝
+          button.dl_btn.dl_btn_small.pull-right.btn_red(ng-if="item.leader.indexOf(1)>-1" ng-click="dealProvoke($index,item._id,item.campaign_unit[1].team._id,1)") 接受
       .photos(ng-if="#{detailFlag}||nowShow=='#{containerClass}'" ng-switch="item.photo_thumbnails.length")
           div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="1")
             img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/570/300")

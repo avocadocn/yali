@@ -189,20 +189,21 @@
   float: left;
   width: 100%;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   border-bottom: none;
   border-top: 1px solid #eee;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
-  background-color: #fbfbfb;
+  background-color: #fff;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .img_selector {
-  margin: 0;
+  margin: 0 7px;
 }
 .simple_comment .component_body .rich_comment_form .comment_control .publish {
   margin: 0;
   background-color: #3ca2e0;
+  width: 50px;
 }
 .simple_comment .component_body .rich_comment_form .preview_box {
   display: block;
@@ -216,7 +217,7 @@
   height: 48px;
 }
 .simple_comment .component_body .comment {
-  padding: 10px;
+  padding: 10px 20px;
   clear: both;
   border-bottom: none;
   border-top: 1px solid #eee;
@@ -244,9 +245,19 @@
 }
 .simple_comment .component_body .comment .comment_content_panel .replies {
   background-color: #f2f2f2;
+  margin-top: 0;
+  padding: 5px;
 }
 .simple_comment .component_body .comment .comment_content_panel .replies .reply_form {
   margin-bottom: 0;
+}
+.simple_comment .component_body .comment .comment_content_panel .replies .reply_form .dl_reply {
+  width: 43px;
+}
+.simple_comment .component_body .comment .comment_content_panel .replies .reply {
+  border-top: 1px solid #fbfbfb;
+  line-height: 20px;
+  margin: 10px 0;
 }
 .score_board .component_head {
   background-color: #333 !important;
