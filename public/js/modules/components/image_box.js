@@ -64,7 +64,6 @@ angular.module('donler.components.imageBox', [])
           scope.prevIndex = 0;
           scope.thisIndex = 0;
           scope.nextIndex = 0;
-          scope.previewImg = images[0].uri;
           var pageIndex = 0;
 
           var setIndex = function (index) {

@@ -106,16 +106,17 @@ gulp.task('js:library', function () {
     .pipe(gulp.dest('./public/js'));
 });
 
+
+var donlerJsSrc = [
+  './public/js/modules/**/*.js',
+  './public/js/app.js',
+  './public/js/service/**.js',
+  './public/js/controllers/message_header.js',
+  './public/js/dl_card.js'
+];
+
 gulp.task('js:donler', function () {
-  var src = [
-    './public/js/modules/**/*.js',
-    './public/js/app.js',
-    './public/js/service/**.js',
-    './public/js/controllers/message_header.js',
-    './public/js/dl_card.js'
-  ];
-  gulp.src(src)
-    .pipe(watch(src))
+  gulp.src(donlerJsSrc)
     .pipe(concat('donlerall.js'))
     .pipe(rename('donlerall.min.js'))
     .pipe(sourcemaps.init())
@@ -123,6 +124,8 @@ gulp.task('js:donler', function () {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/js'));
 });
+
+gulp.watch(donlerJsSrc, ['js:donler']);
 
 gulp.task('develop', ['nodemon', 'css', 'js']);
 
