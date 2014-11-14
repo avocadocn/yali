@@ -68,8 +68,8 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign',
-  function($rootScope,$location,$interval,$http,Report,Campaign) {
+tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', 'Report','Campaign',
+  function($rootScope,$location,$interval,$http,$anchorScroll,Report,Campaign) {
     $rootScope.message_for_group = false;
     var getRecentCommentTime = 10 * 60 * 1000;
     $rootScope.newReply=[];
@@ -79,6 +79,9 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
     $rootScope.$on("$routeChangeSuccess",function(){
       $rootScope.loading = false;
     });
+    $rootScope.bakckTop = function(){
+      $anchorScroll(0);
+    }
     $rootScope.pushReport = function(){
       Report.publish($rootScope.reportContent,function(err,msg){
         alertify.alert(msg);
@@ -93,9 +96,9 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
       }
     };
     $rootScope.openModal = function(type){
+      $('#user_modal').modal();
       $rootScope.showedType = type;
       $rootScope.showedCampaign = $rootScope[type];
-      $('#user_modal').modal();
       if(type=='commentCampaign'){
         updateRecentCommentTime();
         $interval.cancel(getRecentCommentCampaignPromise);

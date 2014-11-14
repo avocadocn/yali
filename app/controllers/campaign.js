@@ -993,7 +993,7 @@ exports.getUserCampaignsForHome = function(req, res) {
     }
     if(searchOption.joinFlag){
       options['campaign_unit.member._id'] = req.user._id ;
-      _sort ='-start_time';
+      _sort ='start_time';
     }
     else{
       //筛选出未参加的公司活动或小队活动

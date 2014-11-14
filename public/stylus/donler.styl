@@ -2532,42 +2532,32 @@ campaignContainer(color)
             padding-top 5px
             color #999
             border-top 1px solid #ccc
-            .day_col
+            .campaign_head
               float left
-              height 100%
-              font-size 24px
-              padding-top 12px
-              padding-left 13px
-              width 50px
-              p
-                margin 0
-            .time_col
-              float left
-              height 100%
-              font-size 12px
-              padding 8px 0
-              width 50px
-              color #ccc
-              p
-                margin 0
-                line-height 12px
-            .logo_col
-              float left
-              height 100%
-              padding-left 10px
-              padding-top 5px
-              .campaign_logo
-                width 30px
-                height 30px
+              width 100%
+              .day_col
                 float left
-                margin-right 4px
-            .content_col
-              float left
-              height 100%
-              max-width 300px
-              font-size 12px
-              padding 6px 11px
-              a
+                font-size 24px
+                width 50px
+                p
+                  margin 0
+              .time_col
+                float left
+                width 26px
+                p
+                  margin 0
+                  line-height 12px
+              .logo_col
+                float left
+                .campaign_logo
+                  width 30px
+                  height 30px
+                  float left
+                  margin-right 4px
+              .content_col
+                float left
+                max-width 300px
+                font-size 12px
                 color #b1b1b1
                 p
                   max-width 100%
@@ -2576,10 +2566,10 @@ campaignContainer(color)
                   .theme_text
                     color #666
                     font-size 14px
-            .operator_col
-              float right
-              margin-right 20px
-              margin-top 11px
+              .operator_col
+                float right
+                margin-right 20px
+                margin-top 11px
             .photos
               float left
               .photo
@@ -2643,8 +2633,18 @@ campaignContainer(color)
                   margin-right 15px
           .campaign_base
             height 51px
-            .content_col
-              a
+            .campaign_head
+              .day_col
+                padding-top 13px
+                padding-left 10px
+              .time_col
+                padding-top 10px
+                width 50px
+              .logo_col
+                padding-left 10px
+                padding-top 5px
+              .content_col
+                padding 6px 11px
                 p
                   overflow hidden
                   text-overflow ellipsis
@@ -2691,6 +2691,8 @@ campaignContainer(color)
                 background-color #F48361
               .btn_cancel
                 background-color #999
+              .select_item
+                color black
               p
                 margin 0
                 line-height 12px
@@ -2736,6 +2738,7 @@ campaignContainer(color)
         .card_campaign
           background-color initial
           box-shadow none
+          margin-bottom 0
           .container_head,.campaign
             background-color #fff
             margin-bottom 10px
@@ -2744,9 +2747,20 @@ campaignContainer(color)
     .side
       padding-top 45px
       width 240px
-      position fixed
-      left 50%
-      margin-left 240px
+      // position fixed
+      // left 50%
+      // margin-left 240px
+      .icon_backtop
+        visibility hidden
+        cursor pointer
+        width 30px
+        height 40px
+        background-image url('/img/icons/rocket.png')
+        &.affix
+          bottom 70px 
+          left 50%
+          margin-left 500px
+          visibility visible
       .old_campaign_container
         height 30px
         color #ffffff
@@ -2757,9 +2771,12 @@ campaignContainer(color)
         margin-bottom 10px
         clear both
         border-radius 2px
+        width 240px
         dl_shadow()
         &.commentCampaign
           background-color #525E70
+          &.affix
+            top 100px
           &:hover
             background-color #4a5567
           .news_count
@@ -2775,6 +2792,8 @@ campaignContainer(color)
         &.timeline_container
           background-image url('/img/timeline_bg.png')
           background-size cover
+          &.affix
+            top 140px
           .footprint
             background-image url('/img/icons/footprint.png')
             margin 5px 12px 0 5px
@@ -2804,11 +2823,17 @@ campaignContainer(color)
         &.sponsor
           background-color #3ca2e0
           margin-right 2px
+          &.affix
+            top 60px
           &:hover
             background-color #398fc3
         &.provoke
           background-color #f48361
           padding-left 18px
+          &.affix
+            top 60px
+            left 50%
+            margin-left 360px
           &:hover
             background-color #da7659
         label
@@ -2872,6 +2897,8 @@ campaignContainer(color)
                 color #999
     .schedule_small
       dl_shadow()
+      &.affix
+        top 190px
       .schedulebox
         padding 0
         border none
