@@ -7,6 +7,7 @@ var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var sourcemaps = require('gulp-sourcemaps');
 var watch = require('gulp-watch');
+var changed = require('gulp-changed');
 
 gulp.task('nodemon', function () {
   nodemon({
@@ -28,6 +29,7 @@ gulp.task('nodemon', function () {
 
 });
 
+
 gulp.task('stylus', function () {
   var src = './public/stylus/**.styl';
   gulp.src(src)
@@ -36,7 +38,6 @@ gulp.task('stylus', function () {
     .pipe(gulp.dest('./public/css'));
 });
 
-gulp.task('css', ['css:library', 'css:donler']);
 
 gulp.task('css:library', function () {
   gulp.src([
@@ -52,26 +53,25 @@ gulp.task('css:library', function () {
     .pipe(minifyCSS())
     .pipe(gulp.dest('./public/css'));
 });
-
-gulp.task('css:donler', ['stylus'], function () {
-  var src = [
-    './public/css/donler.css',
-    './public/css/timeline.css',
-    './public/css/custom_alertify.css',
-    './public/css/dl_card.css',
-    './public/css/custom_calendar.css',
-    './public/css/group_select.css',
-    './public/css/campaign_list.css',
-    './public/css/tree.css'
-  ]
-  gulp.src(src)
+var donlerCssSrc = [
+  './public/css/donler.css',
+  './public/css/timeline.css',
+  './public/css/custom_alertify.css',
+  './public/css/dl_card.css',
+  './public/css/custom_calendar.css',
+  './public/css/group_select.css',
+  './public/css/campaign_list.css',
+  './public/css/tree.css'
+];
+gulp.task('css:donler', function () {
+  gulp.src(donlerCssSrc)
     .pipe(concat('donlerall.css'))
     .pipe(rename('donlerall.min.css'))
     .pipe(minifyCSS())
     .pipe(gulp.dest('./public/css'));
 });
+gulp.task('css', ['css:library', 'css:donler']);
 
-gulp.task('js', ['js:library', 'js:donler']);
 
 gulp.task('js:library', function () {
   gulp.src([
@@ -105,8 +105,6 @@ gulp.task('js:library', function () {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/js'));
 });
-
-
 var donlerJsSrc = [
   './public/js/modules/**/*.js',
   './public/js/app.js',
@@ -114,7 +112,6 @@ var donlerJsSrc = [
   './public/js/controllers/message_header.js',
   './public/js/dl_card.js'
 ];
-
 gulp.task('js:donler', function () {
   gulp.src(donlerJsSrc)
     .pipe(concat('donlerall.js'))
@@ -124,10 +121,21 @@ gulp.task('js:donler', function () {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/js'));
 });
+gulp.task('js', ['js:library', 'js:donler']);
 
-gulp.watch(donlerJsSrc, ['js:donler']);
 
-gulp.task('develop', ['nodemon', 'css', 'js']);
+gulp.task('watch:donlerCss', function () {
+  gulp.watch(donlerCssSrc, {
+    interval: 1000,
+    debounceDelay: 1000
+  }, ['css:donler']);
+});
+gulp.task('watch:donlerJs', function () {
+  gulp.watch(donlerJsSrc, ['js:donler']);
+});
+gulp.task('watch', ['watch:donlerCss', 'watch:donlerJs']);
 
+
+gulp.task('develop', ['nodemon', 'stylus', 'css', 'js', 'watch']);
 gulp.task('default', ['develop']);
 
