@@ -260,6 +260,28 @@ angular.module('donler')
         });
     };
 
+    /**
+     * 获取详情页的活动数据
+     * @param  {String}   campaignId 活动id
+     * @param  {Function} callback   callback(err, data)
+     */
+    var getDetailPageData = function (campaignId, callback) {
+      $http.get('/campaign/' + campaignId + '/pageData')
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, {
+              campaign: data.campaign,
+              allow: data.allow
+            });
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
+
     return {
       sponsor: sponsor,
       getTags: getTags,
@@ -272,6 +294,7 @@ angular.module('donler')
       dealProvoke: dealProvoke,
       getLedTeams: getLedTeams,
       getCampaignsData: getCampaignsData,
-      getCampaignsDateRecord: getCampaignsDateRecord
+      getCampaignsDateRecord: getCampaignsDateRecord,
+      getDetailPageData: getDetailPageData
     };
   }]);

@@ -481,17 +481,15 @@
   margin-bottom: 10px;
 }
 .campaign_detail .detail_card .campaign_intro {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 5px;
+  float: left;
 }
 .campaign_detail .detail_card .tags {
   display: inline-block;
 }
 .campaign_detail .detail_card .tags .tag {
+  margin: 8px 0;
   margin-right: 5px;
   display: inline-block;
-  margin-bottom: 4px;
   padding: 2px 5px;
   border-radius: 5px;
   color: #fff;

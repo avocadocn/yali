@@ -11,6 +11,16 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   $scope.isEnd = data.end === 'true';
   $scope.isJoin = data.join === 'true';
 
+  Campaign.getDetailPageData(campaignId, function (err, data) {
+    if (err) {
+      alertify.alert('获取活动数据失败，请刷新页面重试。');
+    } else {
+      $scope.campaign = data.campaign;
+      $scope.allow = data.allow;
+    }
+  });
+
+
   $scope.notice = {
     placeholder: '',
     placeholderText: '添加公告，让成员随时了解活动动态！（请控制在140字以内）',

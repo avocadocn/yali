@@ -1488,6 +1488,142 @@ exports.getOneNotice = function (req, res, next) {
 };
 
 
+exports.getCampaignDataForDetailPage = function (req, res) {
+var campaign = req.campaign;
+  moment.lang('zh-cn');
+  // 权限判断
+  var memberIds = [];
+  campaign.members.forEach(function (member) {
+    memberIds.push(member._id);
+  });
+
+  var resAllow = {};
+
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid,
+    users: memberIds
+  }, [
+    'publishComment',
+    'editTeamCampaign',
+    'editCompanyCampaign'
+  ]);
+
+
+  // 公司活动
+  var ct = campaign.campaign_type;
+  if (ct === 1) {
+    resAllow.edit = allow.editCompanyCampaign;
+  } else if (ct === 2 || ct === 3 || ct === 6 || ct === 8) {
+    resAllow.edit = allow.editTeamCampaign;
+  } else { //挑战只有己方的能编辑
+    var allow_competition = auth(req.user, {
+      companies: [campaign.campaign_unit[0].company._id],
+      teams: [campaign.campaign_unit[0].team._id]
+    }, [
+      'editTeamCampaign'
+    ]);
+    resAllow.edit = allow_competition.editTeamCampaign;
+  }
+
+  //如果能编辑并且参数status为editing,则页面一进去就能编辑(用于刚发完活动)
+  var editing = false;
+  if (resAllow.edit) {
+    if (req.query.stat && req.query.stat === 'editing')
+      editing = true;
+  }
+
+  //参数for前端
+  var isJoin = Boolean(campaign.whichUnit(req.user._id));
+  var isStart = campaign.start_time < Date.now();
+  var isEnd = campaign.end_time < Date.now();
+  var isDeadline = campaign.deadline < Date.now();
+  var membersForCard = campaign.members.slice(0, 5);
+  //没开始没关掉并且是比赛，验证需不需要应答
+  var isWaitingReply = (ct === 4 || ct === 5 || ct === 7) && !isStart && campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
+  //应答权限判断
+  var response = {
+    canCancel: false,
+    canResponse: false
+  };
+  if (isWaitingReply) {
+    //是发起方的管理员则能取消
+    var authResponse = auth(req.user, {
+      companies: [campaign.campaign_unit[0].company._id],
+      teams: [campaign.campaign_unit[0].team._id]
+    }, ['dealProvoke']);
+    response.canCancel = authResponse.dealProvoke;
+    //是被挑战方的管理员则能接受
+    authResponse = auth(req.user, {
+      companies: [campaign.campaign_unit[1].company._id],
+      teams: [campaign.campaign_unit[1].team._id]
+    }, ['dealProvoke']);
+    response.canResponse = authResponse.dealProvoke;
+  }
+
+  resAllow.cancel = response.canCancel;
+  resAllow.response = response.canResponse;
+
+  var resUnits = [];
+
+  campaign.campaign_unit.forEach(function (unit) {
+    var resUnit = {};
+    if (campaign.campaign_type === 1) {
+      var canjoin = auth(req.user, {
+        companies: campaign.cid
+      }, ['joinCompanyCampaign']);
+      resUnit = {
+        name: unit.company.name,
+        logo: unit.company.logo,
+        link: "/company/home/" + unit.company._id,
+        canJoin: canjoin.joinCompanyCampaign
+      }
+    } else {
+      var canjoin = auth(req.user, {
+        companies: campaign.cid,
+        teams: [unit.team._id]
+      }, ['joinTeamCampaign']);
+      resUnit = {
+        name: unit.team.name,
+        logo: unit.team.logo,
+        link: "/group/page/" + unit.team._id,
+        canJoin: canjoin.joinTeamCampaign
+      }
+    }
+    resUnits.push(resUnit);
+  });
+
+
+
+  var resCampaign = {
+    theme: campaign.theme,
+    content: campaign.content,
+    member_min: campaign.member_min,
+    member_max: campaign.member_max,
+    location: campaign.location,
+    start_time: campaign.start_time,
+    end_time: campaign.end_time,
+    deadline: campaign.deadline,
+    mold: campaign.campaign_mold,
+    tags: campaign.tags,
+    isStart: isStart,
+    isEnd: isEnd,
+    isJoin: isJoin,
+    isDeadline: isDeadline,
+    isWaitingReply: isWaitingReply,
+    members: membersForCard,
+    units: resUnits,
+    joinCount: campaign.members.length
+  };
+
+  res.send({
+    result: 1,
+    campaign: resCampaign,
+    allow: resAllow
+  });
+
+};
+
 exports.renderCampaignDetail = function (req, res, next) {
   var campaign = req.campaign;
   moment.lang('zh-cn');

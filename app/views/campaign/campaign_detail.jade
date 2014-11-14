@@ -124,7 +124,7 @@ block contentExt
                 button.save(ng-click="save()" ng-disabled="infoForm.content.$invalid") 保存
                 button.cancel(ng-click="toggleEdit()") 取消
 
-        .component.detail_card
+        .component.detail_card(ng-cloak)
           .component_head
             img.icon.left.first(src="/img/map-pin-circle.png")
             span.title.left 活动信息
@@ -132,27 +132,25 @@ block contentExt
             img.icon.right(src="/img/map-pin-circle.png")
           .component_body
             .detail_show
-              .text_dark 活动主题：#{campaign.theme}
-              .text_dark 活动类型：#{campaign.campaign_mold}
-              .text_dark 开始时间：#{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
-              .text_dark 结束时间：#{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
-              .text_dark 活动地点：#{campaign.location.name}
-              .text_dark 活动简介：
-                if !campaign.content || campaign.content === ''
-                  | 无
-                else
-                  .campaign_intro(ng-cloak)!= campaign.content
+              .text_dark 活动主题：{{campaign.theme}}
+              .text_dark 活动类型：{{campaign.campaign_mold}}
+              .text_dark 开始时间：{{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}}
+              .text_dark 结束时间：{{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}}
+              .text_dark 活动地点：{{campaign.location.name}}
+              .text_dark.clearfix
+                span.pull-left 活动简介：
+                span.pull-left(ng-if="!campaign.content || campaign.content === ''") 无
+                .campaign_intro(ng-if="campaign.content" ng-cloak)!= campaign.content
               .text_dark 活动标签：
-                .tags(ng-show="!editing" ng-cloak)
-                  each tag in campaign.tags
-                    span.tag #{tag}
-              .text_dark(ng-init="deadline=#{isEnd}")
-                span(ng-if="!deadline") 距报名截止还有：
-                span.deadline_countdown(count-down="#{campaign.deadline}" end-text="报名已截止" is-end="deadline")
+                .tags
+                  span.tag(ng-repeat="tag in campaign.tags") {{tag}}
+              .text_dark
+                span(ng-if="!campaign.isDeadline") 距报名截止还有：
+                span.deadline_countdown(count-down="campaign.deadline" end-text="报名已截止" is-end="campaign.isDeadline")
               .text_dark 报名人数上限：
                 .progress
-                  .progress-bar(role="progressbar" aria-valuenow="#{campaign.members.length}" aria-valuemin="0" aria-valuemax="#{campaign.member_max}" style="width: #{campaign.members.length*100/campaign.member_max}%")
-                span #{campaign.members.length}/#{campaign.member_max}
+                  .progress-bar(role="progressbar" aria-valuenow="{{campaign.joinCount}}" aria-valuemin="0" aria-valuemax="{{campaign.member_max}}" style="width: {{campaign.joinCount*100/campaign.member_max}}%")
+                span {{campaign.joinCount}}/{{campaign.member_max}}
             .detail_editing
 
         if components.RichComment
