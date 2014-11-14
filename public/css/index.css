@@ -15,7 +15,7 @@
   width: 100%;
   height: 750px;
   margin: 0 auto;
-  background: url("/img/index/cake.png") no-repeat bottom left -30px, url("/img/index/luggage.png") no-repeat top left -220px, url("/img/index/dl_promo_bg.jpg") center center no-repeat;
+  background: url("/img/index/cake.png") no-repeat bottom left -30px, url("/img/index/luggage.png") no-repeat top left -300px, url("/img/index/dl_promo_bg.jpg") center center no-repeat;
 }
 .index_background .promo .promo_background {
   min-width: 960px;
@@ -28,22 +28,17 @@
   max-width: 1280px;
   margin: 0 auto;
 }
-.index_background .promo .promo_background .index_container .left_background {
-  margin-left: -34%;
-  width: 52%;
-  height: 720px;
-  float: left;
-}
 .index_background .promo .promo_background .index_container .regbox {
-  width: 330px;
+  width: 410px;
   float: left;
   margin-top: 140px;
+  margin-left: 17%;
   text-align: center;
 }
 .index_background .promo .promo_background .index_container .regbox .reginfo {
   width: 100%;
   color: #fff;
-  margin: 40px 0;
+  margin: 20px 0 40px;
 }
 .index_background .promo .promo_background .index_container .regbox .reginfo p {
   line-height: 1;
