@@ -616,16 +616,16 @@ textarea {
 textarea {
   resize: none;
 }
-::-webkit-input-placeholder {
+::-webkit-input-placeholder /* WebKit browsers */ {
   color: #ccc;
 }
-:-moz-placeholder {
+:-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
   color: #ccc;
 }
-::-moz-placeholder {
+::-moz-placeholder /* Mozilla Firefox 19+ */ {
   color: #ccc;
 }
-:-ms-input-placeholder {
+:-ms-input-placeholder /* Internet Explorer 10+ */ {
   color: #ccc;
 }
 .transparent {
@@ -1408,6 +1408,7 @@ textarea {
   overflow: hidden;
   border: 1px solid #e6e6e6;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_container .side .groupsbox .head_title {
@@ -2594,7 +2595,7 @@ input.ng-invalid.ng-dirty {
   font-size: 80px;
   color: #3498db;
 }
-[ng:cloak],
+[ngcloak],
 [ng-cloak],
 [data-ng-cloak],
 [x-ng-cloak],
@@ -3034,6 +3035,7 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_view_modal .calendar_tips {
   height: 50px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 #events-modal .calendar_view_modal .calendar_tips .join_sign {
@@ -3173,6 +3175,7 @@ input.ng-invalid.ng-dirty {
   width: 865px;
   margin-top: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .main .dl_info_container .info_left {
@@ -3465,6 +3468,7 @@ input.ng-invalid.ng-dirty {
   margin-top: 5px;
   background-color: #fff;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   padding-top: 10px;
@@ -3516,6 +3520,7 @@ input.ng-invalid.ng-dirty {
   margin-top: 4px;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   width: 100%;
@@ -3881,6 +3886,7 @@ input.ng-invalid.ng-dirty {
   background-color: #fff;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side {
@@ -3901,6 +3907,7 @@ input.ng-invalid.ng-dirty {
   clear: both;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .old_campaign_container.commentCampaign {
@@ -3952,6 +3959,7 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 10px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .sponsor_container a {
@@ -3987,6 +3995,7 @@ input.ng-invalid.ng-dirty {
   height: 98px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .infobox .head_title {
@@ -4048,6 +4057,7 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .schedule_small {
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .schedule_small .schedulebox {
@@ -4143,12 +4153,14 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   border: none;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .timeline_element .timeline_head {
