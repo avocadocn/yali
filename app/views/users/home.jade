@@ -8,7 +8,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
   .user_campaigns_container(ng-init="#{containerClass}=false;" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')" ng-cloak)
     .container_head(ng-click="#{containerClass}=!#{containerClass};" ng-cloak)
       span= containerTitle
-      i.fa.pull-right(ng-if="#{items}.length>2" ng-class="{'fa-angle-right':!#{containerClass}&&nowShow!=='#{containerClass}','fa-angle-down':#{containerClass}||nowshow=='#{containerClass}'}")
+      i.fa.pull-right(ng-if="#{items}.length>2" ng-class="{'fa-angle-right':!#{containerClass}&&nowShow!=='#{containerClass}','fa-angle-down':#{containerClass} || nowShow=='#{containerClass}'}")
       span.campaign_count {{#{items}.length}}
     div(ng-class="{'no_campaign':true}" ng-if="campaignLoaded && #{items}.length==0 && nowShow=='#{containerClass}'" ng-cloak)
       if containerClass=='recent_unjoin'
