@@ -865,7 +865,9 @@ exports.editCampaign = function(req, res){
 };
 
 exports.getScoreBoardMessage = function(req, res, next) {
-
+  if(!req.user){
+    return res.send({result:0,data:[]});
+  }
   var aMonthAgo = Date.now() - moment.duration(1, 'months').valueOf();
   aMonthAgo = new Date(aMonthAgo);
   if (!req.user.last_comment_time) {
@@ -905,6 +907,9 @@ exports.getScoreBoardMessage = function(req, res, next) {
 }
 
 exports.getRecentCommentCampaigns = function(req, res) {
+  if(!req.user){
+    return res.send({result:0,data:[]});
+  }
   var options = {
     'cid': req.user.cid,
     'campaign_unit.member._id': req.user._id,

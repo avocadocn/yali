@@ -190,19 +190,19 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
       $rootScope.modal=1;
     };
     var getRecentCommentCampaigns = function(){
-      try{
-        $http({
-          method:'get',
-          url: '/campaign/recentCommentCampaign?'+Math.random()*10000,
-        }).success(function(data,status){
+      $http({
+        method:'get',
+        url: '/campaign/recentCommentCampaign?'+Math.random()*10000,
+      }).success(function(data,status){
+        if(data.result==1){
           $rootScope.newReply = data.data;
-        }).error(function(data,status){
-          alertify.alert('DATA ERROR');
-        });
-      }
-      catch(e){
-        console.log(e);
-      }
+        }
+        else{
+          $interval.cancel(getRecentCommentCampaignPromise);
+        }
+      }).error(function(data,status){
+        console.log('DATA ERROR');
+      });
     }
     var updateRecentCommentTime = function(){
       try{

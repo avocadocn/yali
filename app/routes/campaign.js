@@ -20,7 +20,7 @@ module.exports = function(app) {
   app.get('/campaign/team/:teamId/calendar/playing', campaign.getTeamCampaignsForCalendar('playing'));
   app.get('/campaign/team/:teamId/calendar/future', campaign.getTeamCampaignsForCalendar('future'));
   app.get('/campaign/team/:teamId/calendar/end', campaign.getTeamCampaignsForCalendar('end'));
-  app.get('/campaign/recentCommentCampaign', campaign.getScoreBoardMessage, campaign.getRecentCommentCampaigns);
+  app.get('/campaign/recentCommentCampaign',campaign.getScoreBoardMessage, campaign.getRecentCommentCampaigns);
   app.get('/campaign/user/all/calendar/:userId', campaign.getUserAllCampaignsForCalendar);
   app.get('/campaign/user/joined/calendar/:userId',authorization.userAuthorize, campaign.getUserJoinedCampaignsForCalendar);
   app.get('/campaign/user/unjoin/calendar/:userId',authorization.userAuthorize, campaign.getUserUnjoinCampaignsForCalendar);
