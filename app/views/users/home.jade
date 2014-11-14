@@ -10,7 +10,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
       span= containerTitle
       i.fa.pull-right(ng-if="#{items}.length>2" ng-class="{'fa-angle-right':!#{containerClass}&&nowShow!=='#{containerClass}','fa-angle-down':#{containerClass}||nowshow=='#{containerClass}'}")
       span.campaign_count {{#{items}.length}}
-    .no_campaign(ng-if="#{items}.length==0 && nowShow=='#{containerClass}'")
+    div(ng-class="{'no_campaign':true}" ng-if="campaignLoaded && #{items}.length==0 && nowShow=='#{containerClass}'" ng-cloak)
       if containerClass=='recent_unjoin'
         .no_campaign_tip
           p 没有活动怎么办？进入

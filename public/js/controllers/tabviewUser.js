@@ -284,26 +284,23 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
     // $rootScope.nowCampaigns = [];
     $scope.nowShow ='all';
     var data = document.getElementById('user_data').dataset;
+    $scope.campaignLoaded = false;
     $rootScope.uid = data.uid;
-      try{
-        $http({
-          method:'get',
-          url: '/campaign/user/recent/list/'+$rootScope.uid +'?'+Math.random()*10000,
-        }).success(function(data,status){
-          if(data.result===1){
-            $rootScope.recentUnjoinedCampaigns = data.campaigns[0];
-            $rootScope.recentJoinedCampaigns = data.campaigns[1];
-            $rootScope.competitions = data.campaigns[3];
-            $rootScope.nowCampaigns = data.campaigns[2];
-            // $scope.topCampaign = data.campaigns[1][0];
-          }
-        }).error(function(data,status){
-          alertify.alert('DATA ERROR');
-        });
+    $http({
+      method:'get',
+      url: '/campaign/user/recent/list/'+$rootScope.uid +'?'+Math.random()*10000,
+    }).success(function(data,status){
+      if(data.result===1){
+        $scope.campaignLoaded = true;
+        $rootScope.recentUnjoinedCampaigns = data.campaigns[0];
+        $rootScope.recentJoinedCampaigns = data.campaigns[1];
+        $rootScope.competitions = data.campaigns[3];
+        $rootScope.nowCampaigns = data.campaigns[2];
+        // $scope.topCampaign = data.campaigns[1][0];
       }
-      catch(e){
-        console.log(e);
-      }
+    }).error(function(data,status){
+      alertify.alert('DATA ERROR');
+    });
     // $scope.reloadM = function(){
     //   $scope.is_reload = true;
     // }
