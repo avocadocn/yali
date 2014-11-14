@@ -29,8 +29,8 @@ block contentExt
                   textarea.input_brief(ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.brief")
               .operator
                 .team_leader.four_button(ng-if="role==='LEADER'" ng-cloak)
-                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
-                  button.op_button.button_red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
+                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
+                  a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
                   a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
                   button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
                 .team_member.one_button(ng-if="role==='MEMBER'" ng-cloak)
@@ -38,8 +38,8 @@ block contentExt
                 .company_member.one_button(ng-if="role==='PARTNER'" ng-cloak)
                   button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
                 .company_hr.four_button(ng-if="role==='HR'" ng-cloak)
-                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" ng-click="sponsorIndex(1)" ng-cloak) 发起活动
-                  button.op_button.button_red(ng-if="allow.sponsorProvoke" ng-click="sponsorIndex(2)" ng-cloak) 找对手
+                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
+                  a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
                   a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
                   button.op_button.button_gray(ng-if="allow.closeTeam" ng-cloak) 关闭小队
                 .other_company_hr.one_button(ng-if="role==='GUESTHR' || role==='GUESTLEADER'" ng-cloak)
@@ -144,8 +144,6 @@ block contentExt
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
-    .modal.fade#sponsorProvokeModel(ng-controller="ProvokeController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-      include ../campaign/provoke_modal_base
 
     .member_list_modal.modal.fade#memberListModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       .modal-dialog
