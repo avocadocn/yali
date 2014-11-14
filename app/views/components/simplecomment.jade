@@ -2,7 +2,7 @@
   .component_body
     form.rich_comment_form(name="comment_form{{$id}}" ng-if="allowPublish" novalidate)
       .comment_control
-        input.content(name="content" ng-model="new_comment.text" placeholder="输入内容请控制在140字以内" maxlength=140 required)
+        input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder" maxlength=140 required)
         label.img_selector(for="photos{{$id}}")
           img.upload_img(src="/img/upload_img.png")
           input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
@@ -31,7 +31,7 @@
               | {{comment.reply_count || 0}}条回复
         .replies(ng-if="comment.replying")
           form.reply_form(name="reply_form" ng-if="allowPublish")
-            input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
+            input.reply_input(type="text" ng-model="comment.new_reply" placeholder="{{currentPlaceholder.reply}}" ng-focus="currentPlaceholder.reply=''" ng-blur="currentPlaceholder.reply=originPlaceholder" required)
             button.dl_btn.dl_reply(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
           p.reply.text(ng-repeat="reply in comment.replies")
             a.user_name(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.poster._id, reply.poster.nickname)")
