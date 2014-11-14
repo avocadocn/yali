@@ -15,7 +15,13 @@ tabViewUser.directive('match', function($parse) {
     }
   };
 });
-
+tabViewUser.directive('eatClick', function() {
+    return function(scope, element, attrs) {
+        $(element).click(function(event) {
+            event.preventDefault();
+        });
+    }
+})
 tabViewUser.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
@@ -108,6 +114,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
       }
     }
     $rootScope.join = function (index,tid) {
+
       Campaign.join({
         campaignId: $rootScope.recentUnjoinedCampaigns[index]._id,
         cid: $rootScope.recentUnjoinedCampaigns[index].cid,
@@ -122,6 +129,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
           alertify.alert('参加活动成功');
         }
       });
+      return false;
     };
 
     $rootScope.quit = function (index) {
@@ -136,6 +144,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
         }
 
       });
+      return false;
     };
     // $rootScope.vote = function(campaignId) {
     //     Campaign.vote(campaignId, vote_status, function (err) {
@@ -173,6 +182,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
           });
         }
       });
+      return false;
     };
     //打开modal后检查是不是队长，获取是队长的小队信息
     $rootScope.newCampaign = function() {
