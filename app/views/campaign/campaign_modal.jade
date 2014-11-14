@@ -3,6 +3,8 @@ form(name="campaign_form" novalidate)
     button.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
       img(ng-src='/img/icons/icon_close.png')
     span 发起活动
+    span(ng-if="title") ({{title}})
+    a.preStep(ng-if="title" ng-click="provoke_select(1)") 更改
   .dl_modal_body.clearfix
     .dl_modal_container(ng-if="dOtMulti")
       span.dl_modal_subtitle 参加该活动的小队
@@ -49,7 +51,7 @@ form(name="campaign_form" novalidate)
               a(ng-click="selectMold(select_mold.name)") {{select_mold.name}}
   .dl_modal_footer
     //- button.dl_btn.dl_btn_large(type='button' ng-click='goBack()' data-dismiss="modal" ng-if="dOtMulti") 上一步
-    button.dl_btn.dl_modal_btn(type='button' ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
+    button.dl_btn.dl_modal_btn(type='button' ng-click='pressed=true;sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid||pressed") #{__("IMMEDIATE")}#{__("SPONSOR")}
 script.
   $(function() {
     $('#start_time').datetimepicker({

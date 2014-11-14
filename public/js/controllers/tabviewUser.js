@@ -352,6 +352,7 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
           if(data.teams.length===1){
             $rootScope.modal = 2;
             $scope.sponsorTeam = data.teams[0];
+            $scope.title=$scope.sponsorTeam.name;
           }else{
             $rootScope.modal = 1;
             $scope.ledTeams = data.teams;
@@ -388,10 +389,10 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
       }
     }
   });
-
+  
 
   $scope.selected_index = -1;
-  //决定好哪个小队了
+  //决定好哪个小队了/回到上个页面
   $scope.provoke_select = function(value){
     $rootScope.modal = value;
   };
@@ -399,12 +400,12 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
   $scope.selcet_team = function(index){
     $scope.sponsorTeam = $scope.ledTeams[index];
     $scope.selected_index = index;
-  }
+    $scope.title=$scope.sponsorTeam.name;
+  };
   //选择类型
   $scope.selectMold=function(name){
     $scope.mold = name;
   };
-
 
   var placeSearchCallBack = function(data){
     $scope.locationmap.clearMap();
