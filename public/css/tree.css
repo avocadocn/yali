@@ -90,7 +90,7 @@
   height: 48px;
   border-radius: 100%;
 }
-.selected {
+.tree .selected {
   border: solid 3px #5cb85c !important;
 }
 .select_tree .self>span {
