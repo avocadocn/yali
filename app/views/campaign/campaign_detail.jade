@@ -11,7 +11,7 @@ block contentExt
     +breadcrumb(links)
     .campaign_panel
       .main_panel
-        .component.detail_card
+        .component.base_card
           .component_head
             span.title #{campaign.theme}
             span.sub_title #{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}
@@ -77,7 +77,7 @@ block contentExt
                 .text(ng-show="!editing" ng-cloak)!= campaign.content
                 div(ng-show="editing" ng-cloak)
                   #campaignDetailToolBar
-                  #campaignDetail.markdownContainer(name="content" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content" contenteditable mix-maxlength=4000 required)
+                  #campaignDetail.markdownContainer(name="content" ng-init="campaignData.content='#{campaign.content||''}'" ng-model="campaignData.content" contenteditable mix-maxlength=4000)
               .block
                 span.title 活动标签
                 .tags(ng-show="!editing" ng-cloak)
@@ -123,6 +123,38 @@ block contentExt
                   | 关闭活动
                 button.save(ng-click="save()" ng-disabled="infoForm.content.$invalid") 保存
                 button.cancel(ng-click="toggleEdit()") 取消
+
+        .component.detail_card
+          .component_head
+            img.icon.left.first(src="/img/map-pin-circle.png")
+            span.title.left 活动信息
+            img.icon.right.last(src="/img/map-pin-circle.png")
+            img.icon.right(src="/img/map-pin-circle.png")
+          .component_body
+            .detail_show
+              .text_dark 活动主题：#{campaign.theme}
+              .text_dark 活动类型：#{campaign.campaign_mold}
+              .text_dark 开始时间：#{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
+              .text_dark 结束时间：#{moment(campaign.end_time).format('YYYY-MM-DD HH:mm')}
+              .text_dark 活动地点：#{campaign.location.name}
+              .text_dark 活动简介：
+                if !campaign.content || campaign.content === ''
+                  | 无
+                else
+                  .campaign_intro(ng-cloak)!= campaign.content
+              .text_dark 活动标签：
+                .tags(ng-show="!editing" ng-cloak)
+                  each tag in campaign.tags
+                    span.tag #{tag}
+              .text_dark(ng-init="deadline=#{isEnd}")
+                span(ng-if="!deadline") 距报名截止还有：
+                span.deadline_countdown(count-down="#{campaign.deadline}" end-text="报名已截止" is-end="deadline")
+              .text_dark 报名人数上限：
+                .progress
+                  .progress-bar(role="progressbar" aria-valuenow="#{campaign.members.length}" aria-valuemin="0" aria-valuemax="#{campaign.member_max}" style="width: #{campaign.members.length*100/campaign.member_max}%")
+                span #{campaign.members.length}/#{campaign.member_max}
+            .detail_editing
+
         if components.RichComment
           rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment&&isActive}")
 

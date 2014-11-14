@@ -5,14 +5,18 @@ angular.module('donler')
   .directive('countDown', function () {
     return {
       restrict: 'A',
+      scope: {
+        endText: '@',
+        isEnd: '='
+      },
       link: function (scope, element, attrs) {
-
-
+        var endText = scope.endText ? scope.endText : '活动已开始';
         var startTime = new Date(attrs.countDown);
         var handle = setInterval(function() {
           startTime.setSeconds(startTime.getSeconds());
           if (startTime < Date.now()) {
-            element.text('活动已开始');
+            element.text(endText);
+            scope.isEnd = true;
             clearInterval(handle);
             return;
           }

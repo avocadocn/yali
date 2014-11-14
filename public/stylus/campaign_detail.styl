@@ -1,11 +1,5 @@
-@require('variables')
-
-clearfix()
-  &:before, &:after
-    display table
-    content " "
-  &:after
-    clear both
+@require 'variables'
+@require 'tools'
 
 .breadcrumb
   margin-bottom 0
@@ -36,47 +30,44 @@ clearfix()
         padding 0 10px
 
   .component
-    box-shadow 3px 3px 3px #ddd
+    dl_shadow()
     .component_head
-      padding-left 20px
-      padding-right 5px
+      padding 5px 10px
       clearfix()
       height 30px
       background-color themeColor
-      .component_logo
-        margin-right 10px
+      .icon
         height 14px
+        margin 3px 0
       .title
         color #fff
         font-size 14px
-        line-height 30px
-      .head_button
-        margin-top 5px
-        padding 0
-        width 35px
-        height 20px
-        font-size 12px
         line-height 20px
-        color #fff
+      .left
+        float left
+        margin-left 10px
+      .first
+        margin-left 0
+      .right
         float right
-        text-align center
-        text-decoration none
+        margin-right 10px
+      .last
+        margin-right 0
     .component_body
       background-color #fff
       padding 20px
-      .main_text, .text
-        font-size 14px
-        line-height 20px
+      .text_dark, .text
         margin 0
-        word-break break-all
-      .main_text
-        color #999
+        font-size 12px
+        line-height 18px
+      .text_dark
+        color #999999
       .text
-        color #ccc
+        color #cccccc
 
 
   //-左侧
-  .detail_card
+  .base_card
     .component_head
       height 35px
       background-color #73a5dd
@@ -367,6 +358,35 @@ clearfix()
         color #73a5dd
         display inline-block
         margin-bottom 10px
+
+  .detail_card
+    .campaign_intro
+      border 1px solid #cccccc
+      padding 10px
+      margin-bottom 5px
+    .tags
+      display inline-block
+      .tag
+        margin-right 5px
+        display inline-block
+        margin-bottom 4px
+        padding 2px 5px
+        border-radius 5px
+        color #ffffff
+        background-color #b1c6d2
+    .deadline_countdown
+      color #f48361
+    .progress
+      margin 0
+      margin-right 10px
+      display inline-block
+      width 180px
+      height 10px
+      border-radius 15px
+      background-color #525e70
+      .progress-bar
+        background-color #ffc053
+        box-shadow none
 
   .map_card
     .component_head

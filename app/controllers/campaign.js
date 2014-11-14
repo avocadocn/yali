@@ -1487,6 +1487,7 @@ exports.getOneNotice = function (req, res, next) {
     });
 };
 
+
 exports.renderCampaignDetail = function (req, res, next) {
   var campaign = req.campaign;
   moment.lang('zh-cn');
