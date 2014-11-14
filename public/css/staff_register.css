@@ -2193,25 +2193,60 @@ input.ng-invalid.ng-dirty {
 .clearLinkUnderline:hover {
   text-decoration: none;
 }
-.dl-top-login {
+.dl_top_login {
   width: 480px;
   padding: 11px 0 0 0;
 }
-.dl-top-login .form-control {
-  display: inline-block;
-  border-radius: 0px;
-}
-.dl-top-login .btn {
-  border-radius: 0px;
-}
-.dl-top-login .btn-signin-link {
-  color: #28689b;
-}
-.dl-top-login .input-group-btn>.btn+.btn-submit {
-  margin-left: 14px;
-}
-.dl-top-login .pull-right {
+.dl_top_login .signin {
   width: 160px;
+}
+.dl_top_login .signin .input-group .input-group-btn ::-webkit-input-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn :-moz-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn ::-moz-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn :-ms-input-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn .forgetPwd {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  width: 20px;
+  height: 24px;
+  padding: 8px 5px;
+  color: #fff;
+}
+.dl_top_login .signin .input-group .input-group-btn .form-control {
+  display: inline-block;
+  border-radius: 3px;
+  width: 110px;
+  margin-right: 10px;
+  background-color: #268bc9;
+  border: none;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_signin {
+  border-radius: 3px;
+  width: 80px;
+  color: #fff;
+  background-color: #f48361;
+  box-shadow: 1px 1px 1px #3381be;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_signin:hover {
+  background-color: #da775a;
+  box-shadow: 0 0 0;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_company {
+  margin-left: 30px;
+  color: #3498db;
+  background-color: #fff;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_company:hover {
+  background-color: #eee;
 }
 .dl_slider .slider {
   position: fixed;
