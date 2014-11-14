@@ -41,7 +41,6 @@ gulp.task('stylus', function () {
 
 gulp.task('css:library', function () {
   gulp.src([
-    './public/lib/bootstrap/dist/css/bootstrap.min.css',
     './public/lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
     './public/lib/alertify.js/themes/alertify.core.css',
     './public/lib/alertify.js/themes/alertify.default.css',
