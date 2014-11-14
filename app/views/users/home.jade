@@ -8,7 +8,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
   .user_campaigns_container(ng-init="#{containerClass}=false;" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')" ng-cloak)
     .container_head(ng-click="#{containerClass}=!#{containerClass};" ng-cloak)
       span= containerTitle
-      img.head_arrow(src="/img/icons/trarrow.png" ng-if="#{items}.length>2" ng-class="{'span_rotate':!#{containerClass}&&nowShow!=='#{containerClass}'}")
+      i.fa.pull-right(ng-if="#{items}.length>2" ng-class="{'fa-angle-right':!#{containerClass}&&nowShow!=='#{containerClass}','fa-angle-down':#{containerClass}||nowshow=='#{containerClass}'}")
       span.campaign_count {{#{items}.length}}
     .no_campaign(ng-if="#{items}.length==0 && nowShow=='#{containerClass}'")
       if containerClass=='recent_unjoin'
@@ -127,8 +127,8 @@ block aside
         //-人名
         div
           label.username= nickname
-          label.score_label 积分
-          label.score 500
+          //- label.score_label 积分
+          //- label.score 500
         //-公司名
         .info_row
           a.clearLinkUnderline(href='/company/home' target="_blank" ng-cloak) #{cname}
@@ -149,15 +149,15 @@ block aside
         label 找对手
   a.clearLinkUnderline(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
     .old_campaign_container.commentCampaign(data-spy="affix" data-offset-top="260")
-      label.clearLinkUnderline.news_count(ng-cloak) {{newReply.length}}
-      label 活动讨论
-      label.pull-right.dl_icons.icon_drarrow
+      span.dl_icons.comment_w
+      label.label_info 活动讨论
+      label.news_count(ng-cloak) {{newReply.length}}
+        i.fa.fa-angle-right
   a.clearLinkUnderline(href="/users/timeLine/#{uid}")
     .old_campaign_container.timeline_container(data-spy="affix" data-offset-top="260")
       span.dl_icons.footprint
       label 活动足迹
-      label.pull-right.dl_icons.icon_drarrow
-
+      i.fa.fa-angle-double-right.pull-right
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak data-spy="affix" data-offset-top="260")
       include ../partials/schedule_list

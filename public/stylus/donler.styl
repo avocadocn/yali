@@ -696,14 +696,15 @@ textarea
       margin-top -3px
       margin-left -2px
       background-image url('/img/icons/group.png')
-    &.icon_rarrow
-      background-image url('/img/icons/rightarrow.png')
-    &.icon_drarrow
-      margin-right 4px
-      margin-top 5px
-      background-image url('/img/icons/dubblearrow.png')
-    &.icon_bgrarrow
-      background-image url('/img/icons/bgarrow.png')
+    &.comment_w
+      background-image url('/img/icons/comment_bubble_w.png')
+      margin-top 3px
+    // &.icon_drarrow
+    //   margin-right 4px
+    //   margin-top 5px
+    //   background-image url('/img/icons/dubblearrow.png')
+    // &.icon_bgrarrow
+    //   background-image url('/img/icons/bgarrow.png')
     &.icon_fold
       height 14px
       width 14px
@@ -750,8 +751,15 @@ textarea
         height 30px
         border-top-left-radius 2px
         border-top-right-radius 2px
-        .icon_fold,.icon_unfold
-          margin 0
+        cursor pointer
+        .group_count
+          color #fff
+          float right
+          margin-top -3px
+          margin-right -2px
+          .fa
+            font-size 14px
+            margin-left 8px
       .groups
         padding 28px 13px 4px 13px
         .group_label
@@ -2512,6 +2520,8 @@ campaignContainer(color)
             .campaign_count
               float right
               margin-right 4px
+            .fa
+              margin-right 5px
             img.head_arrow
               height 10px
               width 10px
@@ -2779,24 +2789,28 @@ campaignContainer(color)
             top 100px
           &:hover
             background-color #4a5567
+          .label_info
+            margin-left 13px
           .news_count
-            font-size 12px
-            height 16px
-            width 16px
-            line-height 18px
-            margin-left 5px
-            margin-right 6px
-            background-color #fff
-            color black
-            border-radius 6px
+            font-size 14px
+            margin-top 1px
+            margin-right 4px
+            float right
+            .fa
+              margin-left 9px
+              font-size 16px
         &.timeline_container
           background-image url('/img/timeline_bg.png')
           background-size cover
           &.affix
             top 140px
+          .fa
+            margin-right 5px
+            font-size 28px
+            line-height 20px
           .footprint
             background-image url('/img/icons/footprint.png')
-            margin 5px 12px 0 5px
+            margin 2px 12px 0 4px
         label
           font-size 14px
           color #ffffff
@@ -2829,7 +2843,7 @@ campaignContainer(color)
             background-color #398fc3
         &.provoke
           background-color #f48361
-          padding-left 18px
+          padding-left 6px
           &.affix
             top 60px
             left 50%
@@ -2837,7 +2851,7 @@ campaignContainer(color)
           &:hover
             background-color #da7659
         label
-          margin-left 14px
+          margin-left 12px
           cursor pointer
       .groupsbox
         margin-top 10px
