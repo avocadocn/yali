@@ -1,0 +1,31 @@
+.image_box
+  .photos(ng-if="isPreview===false" ng-switch="preImages.length")
+    div(class="photos_{{preImages.length}}" ng-switch-when="1")
+      img.cursor_big.lazyload.photo(onError="this.src='/img/not_found.jpg';" ng-click="preview(photo.uri)" ng-repeat="photo in preImages" class="photo_{{$index}}" data-src="{{photo.uri}}/570/300")
+    div(class="photos_{{preImages.length}}" ng-switch-when="2")
+      img.cursor_big.lazyload.photo(ng-repeat="photo in preImages" class="photo_{{$index}}" ng-src="{{photo.uri}}/282/200" onError="this.src='/img/not_found.jpg';" ng-click="preview(photo.uri)")
+    div(class="photos_{{preImages.length}}" ng-switch-when="3")
+      img.cursor_big.lazyload.photo(ng-repeat="photo in preImages" class="photo_{{$index}}" ng-src="{{($index==0?photo.uri+'/282/305':photo.uri+'/282/150')}}" onError="this.src='/img/not_found.jpg';" ng-click="preview(photo.uri)")
+    div(class="photos_{{preImages.length}}" ng-switch-when="4")
+      img.cursor_big.lazyload.photo(ng-repeat="photo in preImages" class="photo_{{$index}}" ng-src="{{($index==0 || $index==3)?photo.uri+'/235/170':photo.uri+'/330/170'}}" onError="this.src='/img/not_found.jpg';" ng-click="preview(photo.uri)")
+  //- p.remind(ng-if="images.length > 9 && isPreview === false" ng-click="preview(0)") 共{{images.length}}张照片，点击查看全部 >>
+  //- .thumb(ng-if="isPreview===false")
+  //-   img.single.cursor_big.lazyload(ng-if="images.length===1" data-src="{{images[0].uri}}/resize/150/150" onError="this.src='/img/not_found.jpg';" ng-click="preview(0)")
+  //-   img.multi.cursor_big.lazyload(ng-if="images.length>1" ng-repeat="image in images.slice(0,9)" data-src="{{image.uri}}/resize/100/100" onError="this.src='/img/not_found.jpg';" ng-click="preview($index)")
+  .preview(ng-show="isPreview===true" need-scroll)
+    .operator_nav
+      button.close.dl_close(data-dismiss="modal" aria-hidden="true" ng-click="close()")
+        img.icon_close(src="/img/icons/icon_close.png")
+    .image_container
+      img.preview_img(ng-src="{{previewImg}}" onError="this.src='/img/not_found.jpg';")
+      .operator_wrap
+        .img_pre.cursor_prev(ng-if="prevIndex!=thisIndex" ng-click="prev()")
+        .img_small.cursor_small(ng-click="close()")
+        .img_next.cursor_next(ng-if="nextIndex!=thisIndex" ng-click="next()")
+    .image_nav(ng-if="images.length > 1")
+      button.prev(ng-click="prevList()" ng-disabled="!canPrev") <
+      .thumb_box(cal-width)
+        .thumb_box_inner(ng-style="thumbBoxInnerStyle")
+          a.border(href="javascript:;" ng-class="{'active':thisIndex===$index}" ng-repeat="image in images" ng-click="choose($index)")
+            img.nav_thumb.lazyload(data-src="{{image.uri}}/resize/56/56/stretch")
+      button.next(ng-click="nextList()" ng-disabled="!canNext") >

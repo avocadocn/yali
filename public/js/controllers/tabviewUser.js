@@ -307,34 +307,6 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
     $scope.campaignFilter = function(type){
       $scope.nowShow = type;
     }
-    $scope.showMorePhoto = function(photo_album_id,uri){
-      try{
-        $http({
-          method:'get',
-          url: '/photoAlbum/'+photo_album_id+'/photolist',
-        }).success(function(data,status){
-          if(data.result===1){
-            $rootScope.showedPhotos = data.data;
-            for(var i=0;i<data.data.length;i++){
-              if(data.data[i].uri==uri){
-                $rootScope.showedIndex=i;
-                break;
-              }
-            }
-            $('#photoModal').modal();
-          }
-        }).error(function(data,status){
-          alertify.alert('DATA ERROR');
-        });
-      }
-      catch(e){
-        console.log(e);
-      }
-    }
-    $rootScope.changePhoto = function(flag){
-      $rootScope.showedIndex= $rootScope.showedIndex +flag;
-      $rootScope.$apply();
-    }
   }
 ]);
 

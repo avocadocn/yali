@@ -3658,6 +3658,7 @@ input.ng-invalid.ng-dirty {
   background: url("/img/loading.gif") center center no-repeat;
   display: inline-block;
   margin-right: 0;
+  cursor: pointer;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_1 .photo_0 {
   width: 570px;
@@ -3823,7 +3824,7 @@ input.ng-invalid.ng-dirty {
   color: #fff;
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .triangle_col {
-  border-color: #fff #fff #fff #f48361;
+  border-color: transparent transparent transparent #f48361;
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign {
   background-image: url("/img/no_new_campaign.png");
@@ -3861,7 +3862,7 @@ input.ng-invalid.ng-dirty {
   color: #fff;
 }
 .user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .triangle_col {
-  border-color: #fff #fff #fff #3ca2df;
+  border-color: transparent transparent transparent #3ca2df;
 }
 .user_page .dl_container .main .campaigns_container .recent_join .no_campaign {
   background-image: url("/img/no_recent_campaign.png");
@@ -3884,7 +3885,7 @@ input.ng-invalid.ng-dirty {
   color: #fff;
 }
 .user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .triangle_col {
-  border-color: #fff #fff #fff #ffc053;
+  border-color: transparent transparent transparent #ffc053;
 }
 .user_page .dl_container .main .campaigns_container .recent_competition .no_campaign {
   background-image: url("/img/no_competition.png");
@@ -3923,7 +3924,7 @@ input.ng-invalid.ng-dirty {
   color: #fff;
 }
 .user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .triangle_col {
-  border-color: #fff #fff #fff #13adb6;
+  border-color: transparent transparent transparent #13adb6;
 }
 .user_page .dl_container .main .campaigns_container .recent_now .no_campaign {
   background-image: url("/img/no_now_campaign.png");
@@ -4211,6 +4212,7 @@ input.ng-invalid.ng-dirty {
   width: 400px;
   height: 400px;
   margin: 0 auto;
+  cursor: pointer;
 }
 #photoModal .photos .last,
 #photoModal .photos .next {

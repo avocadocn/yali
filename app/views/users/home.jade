@@ -71,15 +71,16 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
             button.dl_btn.btn_cancel.dl_btn_small.pull-right(eat-click ng-if="item.leader.indexOf(0)>-1" ng-click="dealProvoke($index,item._id,item.campaign_unit[0].team._id,3)") 取消
             button.dl_btn.btn_cancel.dl_btn_small.pull-right(eat-click ng-if="item.leader.indexOf(1)>-1 && item.leader.indexOf(0)==-1" ng-click="dealProvoke($index,item._id,item.campaign_unit[1].team._id,2)") 拒绝
             button.dl_btn.dl_btn_small.pull-right.btn_red(eat-click ng-if="item.leader.indexOf(1)>-1" ng-click="dealProvoke($index,item._id,item.campaign_unit[1].team._id,1)") 接受
-      .photos(ng-if="#{detailFlag}||nowShow=='#{containerClass}'" ng-switch="item.photo_thumbnails.length")
-          div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="1")
-            img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/570/300")
-          div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="2")
-            img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/282/200")
-          div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="3")
-            img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0?photo.uri+'/282/305':photo.uri+'/282/150')}}")
-          div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="4")
-            img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0 || $index==3)?photo.uri+'/235/170':photo.uri+'/330/170'}}")
+      //- .photos(ng-if="#{detailFlag}||nowShow=='#{containerClass}'" ng-switch="item.photo_thumbnails.length")
+      //-   div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="1")
+      //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/570/300")
+      //-   div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="2")
+      //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{photo.uri}}/282/200")
+      //-   div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="3")
+      //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0?photo.uri+'/282/305':photo.uri+'/282/150')}}")
+      //-   div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="4")
+      //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0 || $index==3)?photo.uri+'/235/170':photo.uri+'/330/170'}}")
+      pre-image-box(ng-if="#{detailFlag}||nowShow=='#{containerClass}'" images="item.photo_thumbnails" photo-album-id="item.photo_album_id")
       .comments(ng-if="#{detailFlag}||nowShow=='#{containerClass}'")
         //- a.clearLinkUnderline.pull-right.vote(ng-if="!item.confirm_status") {{item.campaign_unit[item.team[0]].positive}}个赞成
         a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$root.showComment=='#{containerClass}'+$index?null:'#{containerClass}'+$index;")
@@ -118,8 +119,8 @@ block panel
   if user_role === 'LEADER'
     div.modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
-append content
-  include ../partials/photo_modal
+//- append content
+//-   include ../partials/photo_modal
 block aside
   .infobox
     .head_title 
