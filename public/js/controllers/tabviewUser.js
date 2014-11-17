@@ -30,11 +30,11 @@ tabViewUser.config(['$routeProvider',
       //   controller: 'GroupMessageController',
       //   controllerAs: 'messages'
       // })
-      .when('/campaign/:uid', {
-        templateUrl: function(params){
-          return '/users/campaign/'+params.uid;
-        }
-      })
+      // .when('/campaign/:uid', {
+      //   templateUrl: function(params){
+      //     return '/users/campaign/'+params.uid;
+      //   }
+      // })
       .when('/commentCampaign/:uid', {
         templateUrl: function(params){
           return '/users/commentcampaign/'+params.uid;
@@ -103,15 +103,18 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
     };
     $rootScope.openModal = function(type){
       $('#user_modal').modal();
-      $rootScope.showedType = type;
-      $rootScope.showedCampaign = $rootScope[type];
-      if(type=='commentCampaign'){
-        updateRecentCommentTime();
-        $interval.cancel(getRecentCommentCampaignPromise);
-        $('#user_modal').one('hidden.bs.modal', function (e) {
-          getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
-        });
+      if(type){
+        $rootScope.showedType = type;
+        $rootScope.showedCampaign = $rootScope[type];
+        if(type=='commentCampaign'){
+          updateRecentCommentTime();
+          $interval.cancel(getRecentCommentCampaignPromise);
+          $('#user_modal').one('hidden.bs.modal', function (e) {
+            getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
+          });
+        }
       }
+
     }
     $rootScope.join = function (index,tid) {
 
@@ -1196,7 +1199,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
     $scope.toggleEdit = function() {
       $scope.editing = !$scope.editing;
     }
-
+    $('#user_modal').modal();
     var markUserDepartment = function(user, department) {
       if (department && user.department) {
         for (var i = 0; i < department.length; i++) {
@@ -1261,6 +1264,7 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
     $scope.nowpassword = '';
     $scope.newpassword = '';
     $scope.confirmpassword = '';
+    $('#user_modal').modal();
     $scope.change_password = function() {
       $http({
         method: 'post',
