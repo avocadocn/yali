@@ -1,39 +1,3 @@
-.form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
-  .dl_row
-    .label_left
-      label.control-label(for="email") ＊企业邮箱
-    .input_right
-      .input_email
-        label.sr-only Email Host
-        input.dl-form-control(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
-      span.at @
-      .select_domain
-        label.sr-only Email Domain
-        if domains.length === 1
-          input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
-          input.dl-form-control(type="text" value="#{domains[0]}" disabled="true")
-        if domains.length > 1
-          select.dl-form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
-            each domain in domains
-              option(value="#{domain}" selected='selected')= domain
-        input(type="text" name="index" ng-model="active" ng-show='false')
-  .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
-    p
-    img(ng-show='loading' src='/img/loading.gif')
-    div(ng-show='active==1' ng-cloak)
-      span 此邮箱未被注册!
-    div(ng-show='active==2' ng-cloak)
-      p 您的邮箱已注册过,请查收邮件,若未收到请点击重发按钮再次发送。
-      p 
-        span 若之前不是本人操作请
-        a.subtitle(ng-click="active=4;") 再次填写信息
-        span 并查看邮箱激活。
-    div(ng-show='active==3' ng-cloak)
-      span 您的邮箱已注册,请
-      a(href='/users/signin') 登录。
-      span 若是您忘记了密码,
-      a(href='/users/forgetPwd') 请点此跳转
-    p
 div(ng-if="active==0 || active==1 || active ==4")
   //-未注册过、未激活需重填资料时显示
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")

@@ -25,6 +25,9 @@
 .signup_row .block_left {
   margin-right: 50px;
 }
+.signup_row .notification_block {
+  width: 270px;
+}
 .signup_row .signup_block {
   border-radius: 8px;
   border: 2px solid #f48361;
