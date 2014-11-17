@@ -344,141 +344,22 @@
 .campaign_detail .base_card .component_body .base_info .info_container.twoUnit .start_info .campaign_info {
   width: 279px;
 }
-.campaign_detail .base_card .component_body .more_info {
-  padding: 20px;
-  border-top: 1px solid #eee;
-}
-.campaign_detail .base_card .component_body .more_info .block {
-  margin-bottom: 20px;
-}
-.campaign_detail .base_card .component_body .more_info .block .tags .tag {
-  margin-right: 5px;
-  display: inline-block;
-  margin-bottom: 4px;
-  padding: 2px 5px;
-  border-radius: 5px;
-  color: #fff;
-  background-color: #73a4dc;
-}
-.campaign_detail .base_card .component_body .more_info .block .deadline #deadline {
-  width: 200px;
-  margin-right: 10px;
-}
-.campaign_detail .base_card .component_body .more_info .enter_info {
-  margin-bottom: 0;
-}
-.campaign_detail .base_card .component_body .more_info .enter_info .text {
-  line-height: 28px;
-}
-.campaign_detail .base_card .component_body .more_info .sub_title {
-  margin-right: 10px;
-}
-.campaign_detail .base_card .component_body .more_info .progress {
-  margin: 0;
-  margin-right: 10px;
-  display: inline-block;
-  width: 200px;
-  height: 14px;
-  border-radius: 15px;
-  background-color: #4b6f97;
-}
-.campaign_detail .base_card .component_body .more_info .progress .progress-bar {
-  background-color: #97d7c6;
-  box-shadow: none;
-}
-.campaign_detail .base_card .component_body .more_info .bootstrap-tagsinput .tag {
-  background-color: #98a8b5;
-}
-.campaign_detail .base_card .component_body .more_info .detail_input {
-  padding: 0 10px;
-  width: 100%;
-  height: 30px;
-  color: #ccc;
-  background-color: #fbfbfb;
-  border: 1px solid #d3dbe6;
-  font-size: 14px;
-}
-.campaign_detail .base_card .component_body .more_info #campaignDetailToolBar {
-  background-color: #f1f1f1;
-  border: 1px solid #cdcdcd;
-  border-bottom: 0;
-}
-.campaign_detail .base_card .component_body .more_info .pen-menu {
-  height: 30px;
-  z-index: auto;
-}
-.campaign_detail .base_card .component_body .more_info .pen-menu .pen-icon {
-  padding: 5px;
-  height: 30px;
-}
-.campaign_detail .base_card .component_body .more_info #campaignDetail {
-  background-color: #fbfbfb;
-  border: 1px solid #eee;
-}
-.campaign_detail .base_card .component_body .more_info .editing {
-  display: flex;
-  display: -webkit-flex;
-  margin: 15px 0;
-}
-.campaign_detail .base_card .component_body .more_info .editing .line_text {
-  line-height: 30px;
-}
-.campaign_detail .base_card .component_body .more_info .editing .people_count {
-  margin-right: 10px;
-  width: 45px;
-}
-.campaign_detail .base_card .component_body .more_info .editing .date_picker {
-  margin-right: 10px;
-  width: 150px;
-}
-.campaign_detail .base_card .component_body .more_info .editing .date_picker input {
-  display: block;
-}
-.campaign_detail .base_card .component_body .more_info .operator {
-  margin-top: 20px;
-}
-.campaign_detail .base_card .component_body .more_info .operator:before,
-.campaign_detail .base_card .component_body .more_info .operator:after {
-  display: table;
-  content: " ";
-}
-.campaign_detail .base_card .component_body .more_info .operator:after {
-  clear: both;
-}
-.campaign_detail .base_card .component_body .more_info .operator .save,
-.campaign_detail .base_card .component_body .more_info .operator .cancel {
-  float: right;
-  padding: 0;
-  width: 52px;
-  height: 20px;
-  font-size: 14px;
-  line-height: 20px;
-}
-.campaign_detail .base_card .component_body .more_info .operator .save {
-  margin-left: 10px;
-  color: #fff;
-  background-color: #97d7c6;
-}
-.campaign_detail .base_card .component_body .more_info .operator .save[disabled] {
-  opacity: 0.65;
-}
-.campaign_detail .base_card .component_body .more_info .operator .cancel {
-  color: #fff;
-  background-color: #ccc;
-}
-.campaign_detail .base_card .component_body .more_info .operator .close_campaign {
-  float: left;
-  color: #f3939e;
-  cursor: pointer;
-}
-.campaign_detail .base_card .component_body .more_info .operator .close_campaign .icon_close {
-  margin-right: 5px;
-}
 .campaign_detail .base_card .component_body .title {
   font-size: 14px;
   color: #73a5dd;
   display: inline-block;
   margin-bottom: 10px;
+}
+.campaign_detail .detail_card .component_head {
+  background-color: #ffc053;
+}
+.campaign_detail .detail_card .component_head .save {
+  color: #fff;
+  cursor: pointer;
+}
+.campaign_detail .detail_card .component_head .cancel {
+  color: #999;
+  cursor: pointer;
 }
 .campaign_detail .detail_card .campaign_intro {
   float: left;
@@ -523,6 +404,31 @@
   background-color: #ffc053;
   box-shadow: none;
 }
+.campaign_detail .detail_card .detail_editing {
+  margin-bottom: -6px;
+}
+.campaign_detail .detail_card .detail_editing .span_intro {
+  line-height: 18px;
+}
+.campaign_detail .detail_card .detail_editing .detail_editor {
+  height: auto;
+  padding: 0;
+}
+.campaign_detail .detail_card .detail_editing .pen-menu {
+  height: 20px;
+  line-height: 20px;
+  background-color: #efefef;
+}
+.campaign_detail .detail_card .detail_editing .pen-menu .pen-icon {
+  height: 20px;
+  line-height: 20px !important;
+  padding: 0 5px;
+}
+.campaign_detail .detail_card .detail_editing .markdownContainer {
+  padding: 0 5px;
+  line-height: 1;
+  border: none;
+}
 .campaign_detail .detail_card .detail_editing .bootstrap-tagsinput {
   display: inline-block;
   width: 400px;
@@ -540,6 +446,7 @@
   padding: 2px 8px;
   height: 16px;
   line-height: 20px;
+  background-color: #b1c6d2;
 }
 .campaign_detail .detail_card .detail_editing .bootstrap-tagsinput input {
   height: 15px;
@@ -556,6 +463,8 @@
   height: 20px;
   line-height: 20px;
   padding: 0;
+  background-color: #d6d6d6;
+  color: #fff;
   border: none;
 }
 .campaign_detail .detail_card .detail_editing .form_datetime .glyphicon {
@@ -571,6 +480,14 @@
 }
 .campaign_detail .detail_card .detail_editing .member_min {
   width: 30px;
+}
+.campaign_detail .detail_card .detail_editing .close_campaign {
+  float: left;
+  color: #f3939e;
+  cursor: pointer;
+}
+.campaign_detail .detail_card .detail_editing .close_campaign .icon_close {
+  margin-right: 5px;
 }
 .campaign_detail .map_card .component_head {
   background-color: #8dd4e6;

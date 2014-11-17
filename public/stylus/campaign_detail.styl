@@ -261,110 +261,6 @@ detail_input()
           .start_info
             .campaign_info
               width 279px
-
-      //-活动附加信息
-      .more_info
-        padding 20px
-        border-top 1px solid #eee
-        .block
-          margin-bottom 20px
-          .tags
-            .tag
-              margin-right 5px
-              display inline-block
-              margin-bottom 4px
-              padding 2px 5px
-              border-radius 5px
-              color #ffffff
-              background-color #73a4dc
-          .deadline
-            #deadline
-              width 200px
-              margin-right 10px
-        .enter_info
-          margin-bottom 0
-          .text
-            line-height 28px
-        .sub_title
-          margin-right 10px
-        .progress
-          margin 0
-          margin-right 10px
-          display inline-block
-          width 200px
-          height 14px
-          border-radius 15px
-          background-color #4b6f97
-          .progress-bar
-            background-color #97d7c6
-            box-shadow none
-        .bootstrap-tagsinput
-          .tag
-            background-color #98a8b5
-        
-        .detail_input
-          padding 0 10px
-          width 100%
-          height 30px
-          color #cccccc
-          background-color #fbfbfb
-          border 1px solid #d3dbe6
-          font-size 14px
-        #campaignDetailToolBar
-          background-color #f1f1f1
-          border 1px solid #cdcdcd
-          border-bottom 0
-        .pen-menu
-          height 30px
-          z-index auto
-          .pen-icon
-            padding 5px
-            height 30px
-        #campaignDetail
-          background-color #fbfbfb
-          border 1px solid #eee
-        .editing
-          display flex
-          display -webkit-flex
-          margin 15px 0
-          .line_text
-            line-height 30px
-          .people_count
-            margin-right 10px
-            width 45px
-          .date_picker
-            margin-right 10px
-            width 150px
-            input
-              display block
-
-        .operator
-          margin-top 20px
-          clearfix()
-          .save, .cancel
-            float right
-            padding 0
-            width 52px
-            height 20px
-            font-size 14px
-            line-height 20px
-          .save
-            margin-left 10px
-            color #fff
-            background-color #97d7c6
-            &[disabled]
-              opacity .65
-          .cancel
-            color #ffffff
-            background-color #cccccc
-          .close_campaign
-            float left
-            color #f3939e
-            cursor pointer
-            .icon_close
-              margin-right 5px
-
-
       .title
         font-size 14px
         color #73a5dd
@@ -372,6 +268,14 @@ detail_input()
         margin-bottom 10px
 
   .detail_card
+    .component_head
+      background-color #ffc053
+      .save
+        color white
+        cursor pointer
+      .cancel
+        color #999999
+        cursor pointer
     .campaign_intro
       float left
     .detail_input
@@ -400,6 +304,24 @@ detail_input()
         background-color #ffc053
         box-shadow none
     .detail_editing
+      margin-bottom -6px
+      .span_intro
+        line-height 18px
+      .detail_editor
+        height auto
+        padding 0
+      .pen-menu
+        height 20px
+        line-height 20px
+        background-color #efefef
+        .pen-icon
+          height 20px
+          line-height 20px !important
+          padding 0 5px
+      .markdownContainer
+        padding 0 5px
+        line-height 1
+        border none
       .bootstrap-tagsinput
         detail_input()
         .tag
@@ -407,6 +329,7 @@ detail_input()
           padding 2px 8px
           height 16px
           line-height 20px
+          background-color #b1c6d2
         input
           height 15px
       .form_datetime
@@ -419,6 +342,8 @@ detail_input()
           height 20px
           line-height 20px
           padding 0
+          background-color #d6d6d6
+          color white
           border none
         .glyphicon
           width 18px
@@ -430,6 +355,12 @@ detail_input()
         width 30px
       .member_min
         width 30px
+      .close_campaign
+        float left
+        color #f3939e
+        cursor pointer
+        .icon_close
+          margin-right 5px
 
   .map_card
     .component_head

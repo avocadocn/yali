@@ -15,11 +15,20 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       $scope.allow = data.allow;
       $scope.modelData = {
         content: $scope.campaign.content,
-        tags: $scope.campaign.tags,
         member_max: $scope.campaign.member_max,
         member_min: $scope.campaign.member_min,
         deadline: moment($scope.campaign.deadline).format('YYYY-MM-DD HH:mm')
       };
+      var tags = '';
+      for (var i = 0; i < $scope.campaign.tags.length; i++) {
+        tags += $scope.campaign.tags[i];
+        if (i != $scope.campaign.tags.length - 1) {
+          tags += ',';
+        }
+      }
+      $scope.modelData.tags = tags;
+      $('#taginput').val(tags);
+      $('#taginput').tagsinput();
     }
   });
 
