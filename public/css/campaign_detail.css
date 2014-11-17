@@ -61,9 +61,6 @@
   -webkit-flex-flow: column;
   width: 240px;
 }
-.campaign_detail .campaign_panel .side_panel .component_head {
-  padding: 0 10px;
-}
 .campaign_detail .component {
   -moz-box-shadow: 1px 1px 3px #ccc;
   box-shadow: 1px 1px 3px #ccc;
@@ -363,9 +360,6 @@
 }
 .campaign_detail .map_card .component_head {
   background-color: #8dd4e6;
-}
-.campaign_detail .map_card .component_head .head_button {
-  background-color: #5eb0c5;
 }
 .campaign_detail .map_card .component_body {
   padding: 0;
