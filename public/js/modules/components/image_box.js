@@ -30,7 +30,6 @@ angular.module('donler.components.imageBox', [])
           'margin-left': margin
         };
       }
-
       if (marginWidth === 0) {
         $scope.canPrev = false;
       } else {
@@ -146,7 +145,7 @@ angular.module('donler.components.imageBox', [])
     };
 
   })
-  .directive('preImageBox', function () {
+  .directive('preImageBox',['$timeout', function ($timeout) {
 
     return {
       restrict: 'E',
@@ -165,7 +164,6 @@ angular.module('donler.components.imageBox', [])
           scope.thisIndex = 0;
           scope.nextIndex = 0;
           var pageIndex = 0;
-
           var setIndex = function (index) {
             if (index <= 0) {
               scope.prevIndex = 0;
@@ -194,7 +192,9 @@ angular.module('donler.components.imageBox', [])
             scope.getMoreImages(function(){
               for(var i=0;i<scope.images.length;i++){
                 if(scope.images[i].uri==uri){
-                  setIndex(i);
+                  $timeout(function(){
+                    setIndex(i);
+                  });
                   break;
                 }
               }
@@ -235,17 +235,18 @@ angular.module('donler.components.imageBox', [])
       }
     };
 
-  })
+  }])
   .directive('calWidth', function () {
     return {
       require: ['^?imageBox','^?preImageBox'],
       restrict: 'A',
       link: function (scope, ele, attrs, ctrl) {
+        var eleWidth = ele.width();
         ctrl= ctrl[0] || ctrl[1];
         scope.$watch('images', function (newVal, oldVal) {
           if(newVal){
             // 最大滚动宽度，可能为负值，表示允许向左滚动的最大值
-            var maxScrollWidth = ctrl.thumbWidth * scope.images.length - ele.width();
+            var maxScrollWidth = ctrl.thumbWidth * scope.images.length - eleWidth;
             // 校正最大滚动宽度为缩略图的整数倍
             if (maxScrollWidth > 0) {
               var count = parseInt(maxScrollWidth / ctrl.thumbWidth);
@@ -255,7 +256,7 @@ angular.module('donler.components.imageBox', [])
               }
             }
             ctrl.maxScrollWidth = maxScrollWidth;
-            ctrl.maxShowThumbCount = parseInt(ele.width() / ctrl.thumbWidth);
+            ctrl.maxShowThumbCount = parseInt(eleWidth / ctrl.thumbWidth);
           }
 
         });

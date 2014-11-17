@@ -2228,6 +2228,7 @@ input.ng-invalid.ng-dirty {
   margin-right: 10px;
   background-color: #268bc9;
   border: none;
+  color: #fff;
 }
 .dl_top_login .signin .input-group .input-group-btn .btn_signin {
   border-radius: 3px;
@@ -2260,14 +2261,6 @@ input.ng-invalid.ng-dirty {
   color: #716b7a;
   padding: 5px 20px;
   font-size: 120%;
-}
-.signup_row .select_box {
-  width: 85px;
-  float: left;
-  margin-right: 3px;
-}
-.signup_row .select_right {
-  width: 266px !important;
 }
 .dl_company_info {
   min-height: 300px;
@@ -3507,11 +3500,23 @@ input.ng-invalid.ng-dirty {
   margin-left: -481px;
 }
 .user_page .dl_container .main .campaign_filter ul {
-  padding-left: 24px;
+  padding-left: 0;
 }
 .user_page .dl_container .main .campaign_filter ul li {
   line-height: 25px;
   cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-left: 25px;
+}
+.user_page .dl_container .main .campaign_filter ul li:before {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  left: 12px;
+  top: 9px;
+  border-radius: 100%;
 }
 .user_page .dl_container .main .campaign_filter ul li:hover {
   background-color: #efefef;
@@ -3524,22 +3529,37 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaign_filter ul li .campaign_num {
   float: right;
-  margin-right: 13px;
+  margin-right: 10px;
 }
 .user_page .dl_container .main .campaign_filter ul .recent_all {
   color: #666;
 }
+.user_page .dl_container .main .campaign_filter ul .recent_all:before {
+  background-color: #666;
+}
 .user_page .dl_container .main .campaign_filter ul .recent_unjoin {
   color: #f48361;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_unjoin:before {
+  background-color: #f48361;
 }
 .user_page .dl_container .main .campaign_filter ul .recent_join {
   color: #3ca2df;
 }
+.user_page .dl_container .main .campaign_filter ul .recent_join:before {
+  background-color: #3ca2df;
+}
 .user_page .dl_container .main .campaign_filter ul .recent_competition {
   color: #ffc053;
 }
+.user_page .dl_container .main .campaign_filter ul .recent_competition:before {
+  background-color: #ffc053;
+}
 .user_page .dl_container .main .campaign_filter ul .recent_now {
   color: #13adb6;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_now:before {
+  background-color: #13adb6;
 }
 .user_page .dl_container .main .campaigns_container {
   width: 570px;
@@ -3560,7 +3580,7 @@ input.ng-invalid.ng-dirty {
   height: 39px;
   line-height: 18px;
   font-size: 14px;
-  padding: 10px 20px 0 20px;
+  padding: 10px 6px 0 20px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .campaign_count {
   float: right;

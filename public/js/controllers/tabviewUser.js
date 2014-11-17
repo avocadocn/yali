@@ -227,40 +227,40 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
     var getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
   }
 ]);
-tabViewUser.directive('masonry', function ($timeout) {
-  return {
-    restrict: 'A',
-    scope: {
-      reload: '=',
-      items: '='
-    },
-    link: function (scope, elem, attrs) {
-      var options = {
-        itemSelector: '.masonry-item',
-        transitionDuration: '0.2s',
-        gutter: 10
-      };
-      elem.masonry(options);
-      scope.$watch('items', function(newVal, oldVal) {
-        if (newVal && newVal != oldVal) {
-          $timeout(function () {
-            elem.masonry('reloadItems');
-            elem.masonry(options);
-          });
-        }
-      }, true);
-      scope.$watch('reload', function(newVal) {
-        if (newVal === true) {
-          $timeout(function () {
-            elem.masonry('reloadItems');
-            elem.masonry(options);
-            scope.reload = false;
-          });
-        }
-      });
-    }
-  };
-});
+// tabViewUser.directive('masonry', function ($timeout) {
+//   return {
+//     restrict: 'A',
+//     scope: {
+//       reload: '=',
+//       items: '='
+//     },
+//     link: function (scope, elem, attrs) {
+//       var options = {
+//         itemSelector: '.masonry-item',
+//         transitionDuration: '0.2s',
+//         gutter: 10
+//       };
+//       elem.masonry(options);
+//       scope.$watch('items', function(newVal, oldVal) {
+//         if (newVal && newVal != oldVal) {
+//           $timeout(function () {
+//             elem.masonry('reloadItems');
+//             elem.masonry(options);
+//           });
+//         }
+//       }, true);
+//       scope.$watch('reload', function(newVal) {
+//         if (newVal === true) {
+//           $timeout(function () {
+//             elem.masonry('reloadItems');
+//             elem.masonry(options);
+//             scope.reload = false;
+//           });
+//         }
+//       });
+//     }
+//   };
+// });
 
 //留言合并
 var messageConcat = function(messages,rootScope,scope,reset){
