@@ -7,16 +7,19 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;
 
-  $scope.isStart = data.start === 'true';
-  $scope.isEnd = data.end === 'true';
-  $scope.isJoin = data.join === 'true';
-
   Campaign.getDetailPageData(campaignId, function (err, data) {
     if (err) {
       alertify.alert('获取活动数据失败，请刷新页面重试。');
     } else {
       $scope.campaign = data.campaign;
       $scope.allow = data.allow;
+      $scope.modelData = {
+        content: $scope.campaign.content,
+        tags: $scope.campaign.tags,
+        member_max: $scope.campaign.member_max,
+        member_min: $scope.campaign.member_min,
+        deadline: moment($scope.campaign.deadline).format('YYYY-MM-DD HH:mm')
+      };
     }
   });
 
@@ -78,21 +81,16 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
 
 
 
-  $scope.editing = false;
-  $scope.campaignData = {
-    content: '',
-    member_max: 0,
-    member_min: 0
-  };
+  $scope.editingDetail = false;
 
   $scope.save = function () {
-    if ($scope.campaignData.member_min <= $scope.campaignData.member_max && $scope.campaignData.member_min >= 0) {
-      Campaign.edit(campaignId, $scope.campaignData, function (err) {
+    if ($scope.modelData.member_min <= $scope.modelData.member_max && $scope.modelData.member_min >= 0) {
+      Campaign.edit(campaignId, $scope.modelData, function (err) {
         if (err) {
           alertify.alert(err);
         } else {
           alertify.alert('编辑成功', function (e) {
-            window.location='/campaign/detail/'+campaignId;
+            window.location = '/campaign/detail/' + campaignId;
           });
         }
       });
@@ -102,7 +100,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   };
 
   $scope.toggleEdit = function () {
-    $scope.editing = !$scope.editing;
+    $scope.editingDetail = !$scope.editingDetail;
   };
 
   $scope.cancel = function () {
