@@ -1609,6 +1609,7 @@ var campaign = req.campaign;
     isStart: isStart,
     isEnd: isEnd,
     isJoin: isJoin,
+    isActive: campaign.active,
     isDeadline: isDeadline,
     isWaitingReply: isWaitingReply,
     members: membersForCard,

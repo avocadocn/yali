@@ -52,9 +52,14 @@ detail_input()
         height 14px
         margin 3px 0
       .title
-        color #fff
+        color #ffffff
         font-size 14px
         line-height 20px
+      .sub_title
+        color #ffffff
+        font-size 12px
+        line-height 20px
+        opacity 0.6
       .left
         float left
         margin-left 10px
@@ -81,97 +86,23 @@ detail_input()
   //-左侧
   .base_card
     .component_head
-      height 35px
-      background-color #73a5dd
-      padding-right 15px
-      .title
-        margin-right 15px
-        line-height 35px
-        font-size 18px
-      .sub_title
-        line-height 35px
-        color #ffffff
-        font-size 14px
-        opacity 0.6
-      .right_title
-        margin-left 15px
-        margin-right 0
-        float right
-      .starting_title
-        font-size 14px
-      .operator
-        cursor pointer
-      .head_button
-        margin-top 8px
-        width 50px
-        height 20px
-        font-size 14px
-        color #fff
-        background-color #e7ce23
+      background-color themeColor
+      .count_down_remind
+        font-size 12px
+    .component_head.competition
+      background-color #f48361
     .component_body
-      padding 0
-      //- >3队情况
-      .base_info.multi_team
-        display flex
-        display -webkit-flex
-        flex-flow column
-        -webkit-flex-flow column
-        .logo_container
-          clearfix()
-          padding 20px
-          border-right none
-          border-bottom 1px solid #eee
-          .unit
-            float left
-        .info_container
-          width 100%
-          border 0
-          .start_info
-            width 100%
-            .campaign_info
-              width 50%
-            .time_info
-              width 50%
-      //-等待确认情况
-      .base_info.isWaitingReply
-        .info_container
-          width 280px
-          border 0
-          .start_info
-            border 0
-            .campaign_info
-              width 280px
-              border 0
-        .logo_container
-          float right
-          border-left 1px solid #eee
-          min-height 159px
-          width 400px
-          .button_container
-            float left
-            padding-top 15px
-            .accept_btn
-              background-color #ec6a6a
-              color #fff
-              &:hover
-                background-color #ec556a
-            .dl_btn_small
-              height 20px
-              padding 4px 15px
-            .second_button
-              margin-top 10px
-      //-基本信息
-      .base_info
-        min-height 159px
-        //-队伍信息
+      display webkit-flex
+      display flex
+      .unit_container
         .unit
-          width 70px
           float left
-          margin-right 20px
+          width 90px
           .logo
             width 70px
             height 70px
-          .text
+            margin-right 20px
+          .name
             margin 10px 0 2px
             width 70px
             overflow hidden
@@ -181,91 +112,50 @@ detail_input()
             line-height 12px
             color #999
             text-align center
-        .logo_container
-          padding 20px
-          float left
-          .unit
-            .join
-              display block
-              margin-left auto
-              margin-right auto
-              padding 0
-              width 52px
-              height 20px
+      .notice_container
+        webkit-flex 1
+        flex 1
+        .notice
+          padding 0 20px
+          .title
+            font-size 14px
+            color #e7ce23
+          .date
+            margin-top 7px
+            font-size 12px
+          .publish
+            display flex
+            display -webkit-flex
+            margin-top 10px
+            .notice_text
+              flex 1
+              -webkit-flex 1
+              padding 6px 10px
+              height 30px
+              color #cccccc
+              background-color #fbfbfb
+              border 1px solid #d3dbe6
               font-size 14px
-              line-height 20px
+            .publish_button
+              margin 0
+              padding 0
+              width 80px
+              height 30px
+              font-size 14px
+              line-height 30px
               color white
               background-color themeColor
-        //-上方基本信息
-        .info_container
-          float left
-          width 570px
-          border-left 1px solid #eee
-          .start_info
-            float left
-            border-bottom 1px solid #eee
-            .campaign_info
-              padding 20px
-              width 369px
-              float left
-              border-right 1px solid #eee
-            .time_info
-              padding 20px
-              width 200px
-              float left
-              .remind
-                margin-top 15px
-                font-size 20px
-                line-height 20px
-                color #97d7c6
-          //-公告
-          .notice
-            padding 20px
-            min-height 100px
-            width 100%
-            float left
-            .title
-              font-size 14px
-              color #e7ce23
-            .date
-              margin-top 7px
-              font-size 12px
-            .publish
-              display flex
-              display -webkit-flex
-              margin-top 10px
-              .notice_text
-                flex 1
-                -webkit-flex 1
-                padding 6px 10px
-                height 30px
-                color #cccccc
-                background-color #fbfbfb
-                border 1px solid #d3dbe6
-                font-size 14px
-              .publish_button
-                margin 0
-                padding 0
-                width 80px
-                height 30px
-                font-size 14px
-                line-height 30px
-                color white
-                background-color themeColor
-                &[disabled]
-                  opacity .65
-          .notice.isStart
-            min-height 159px
-        .info_container.twoUnit
-          width 480px
-          .start_info
-            .campaign_info
-              width 279px
-      .title
-        font-size 14px
-        color #73a5dd
-        display inline-block
-        margin-bottom 10px
+              &[disabled]
+                opacity .65
+      .operator_container
+        width 110px
+        text-align right
+        .operator_button
+          width 70px
+          height 30px
+          font-size 14px
+          color white
+          background-color themeColor
 
   .detail_card
     .component_head

@@ -8,7 +8,8 @@ angular.module('donler')
       scope: {
         endText: '@',
         target: '=',
-        isEnd: '='
+        isEnd: '=',
+        startCal: '='
       },
       link: function (scope, element, attrs) {
         var endText = scope.endText ? scope.endText : '活动已开始';
@@ -64,6 +65,10 @@ angular.module('donler')
               addText(during.seconds(), '秒');
 
               element.text(remindText);
+              if (scope.startCal === false) {
+                scope.startCal = true;
+                scope.$apply();
+              }
             }, 1000);
           }
         });
