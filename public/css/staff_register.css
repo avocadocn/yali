@@ -1335,9 +1335,6 @@ textarea {
   background-repeat: no-repeat;
   background-size: contain;
 }
-.dl_container .dl_icons:hover {
-  opacity: 0.5;
-}
 .dl_container .dl_icons.icon_speaker {
   background-image: url("/img/icons/speakerwithhandle.png");
 }
@@ -3563,7 +3560,7 @@ input.ng-invalid.ng-dirty {
   height: 39px;
   line-height: 18px;
   font-size: 14px;
-  padding: 10px 5px 0 19px;
+  padding: 10px 20px 0 20px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .campaign_count {
   float: right;
@@ -3595,6 +3592,12 @@ input.ng-invalid.ng-dirty {
   padding-top: 5px;
   color: #999;
   border-top: 1px solid #ccc;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign:hover {
+  background-color: #fbfbfb;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign:hover .icon_bgrarrow {
+  opacity: 0.65;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head {
   float: left;
@@ -3708,6 +3711,9 @@ input.ng-invalid.ng-dirty {
   clear: both;
   background-color: #fbfbfb;
   min-height: 25px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments:hover {
+  background-color: #eceded;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num {
   color: #999;
@@ -4028,6 +4034,9 @@ input.ng-invalid.ng-dirty {
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
   box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .side .sponsor_container:hover .dl_icons {
+  opacity: 0.65;
 }
 .user_page .dl_container .side .sponsor_container a {
   color: #fff;

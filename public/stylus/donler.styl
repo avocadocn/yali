@@ -676,8 +676,6 @@ textarea
     float left
     background-repeat no-repeat
     background-size contain
-    &:hover
-      opacity 0.5
     &.icon_speaker
       
       background-image url('/img/icons/speakerwithhandle.png')
@@ -2511,7 +2509,7 @@ campaignContainer(color)
             height 39px
             line-height 18px
             font-size 14px
-            padding 10px 5px 0 19px
+            padding 10px 20px 0 20px
             .campaign_count
               float right
               margin-right 4px
@@ -2537,6 +2535,10 @@ campaignContainer(color)
             padding-top 5px
             color #999
             border-top 1px solid #ccc
+            &:hover
+              background-color #fbfbfb
+              .icon_bgrarrow
+                opacity 0.65
             .campaign_head
               float left
               width 100%
@@ -2631,6 +2633,8 @@ campaignContainer(color)
               clear both
               background-color #fbfbfb
               min-height 25px
+              &:hover
+                background-color #eceded
               a.comment_num
                 color #999
                 padding 3px 18px 4px 0
@@ -2828,6 +2832,9 @@ campaignContainer(color)
         margin-bottom 10px
         border-radius 2px
         dl_shadow()
+        &:hover
+          .dl_icons
+            opacity 0.65
         a
           color #ffffff
         &.sponsor

@@ -299,7 +299,7 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
         // $scope.topCampaign = data.campaigns[1][0];
       }
     }).error(function(data,status){
-      alertify.alert('DATA ERROR');
+      console.log('DATA ERROR');
     });
     // $scope.reloadM = function(){
     //   $scope.is_reload = true;
@@ -330,11 +330,10 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
       catch(e){
         console.log(e);
       }
+    }
     $rootScope.changePhoto = function(flag){
       $rootScope.showedIndex= $rootScope.showedIndex +flag;
       $rootScope.$apply();
-    }
-
     }
   }
 ]);
@@ -437,10 +436,12 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
       citysearch.getLocalCity();
       //citysearch.getCityByIp("123.125.114.*");
       AMap.event.addListener(citysearch, "complete", function(result){
+        console.log(1)
         if(result && result.city && result.bounds) {
           var citybounds = result.bounds;
           //地图显示当前城市
           $scope.locationmap.setBounds(citybounds);
+          console.log(citybounds)
           $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {
             $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
               pageSize:1,

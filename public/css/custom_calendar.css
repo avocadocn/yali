@@ -78,9 +78,24 @@
   background-color: #f58464;
   border-radius: 100%;
 }
+.calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_3 {
+  border: 1px solid #3ca2e0;
+  background-color: #3ca2e0;
+}
+.calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_2 {
+  border: 1px solid #6cb8e7;
+  background-color: #6cb8e7;
+}
+.calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_1 {
+  border: 1px solid #a6d6f4;
+  background-color: #a6d6f4;
+}
 .calendar_box .cal-context .cal-month-box .cal-month-day-small {
   height: 31px;
   border-bottom: 1px solid #fff;
+}
+.calendar_box .cal-context .cal-month-box .cal-month-day-small.cal-day-inmonth:hover {
+  border: 1px solid #525e70;
 }
 .calendar_box .cal-context .cal-month-box .cal-month-day-small span[data-cal-date] {
   width: 21px;
@@ -90,15 +105,6 @@
   color: #fff;
   font-size: 12px;
   line-height: 23px;
-}
-.calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_3 {
-  background-color: #3ca2e0;
-}
-.calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_2 {
-  background-color: #6cb8e7;
-}
-.calendar_box .cal-context .cal-month-box .cal-day-inmonth.cal-month-day-small.length_1 {
-  background-color: #a6d6f4;
 }
 #cal-slide-content .event-item {
   position: relative;
