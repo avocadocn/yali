@@ -483,6 +483,18 @@
 .campaign_detail .detail_card .campaign_intro {
   float: left;
 }
+.campaign_detail .detail_card .detail_input {
+  display: inline-block;
+  width: 400px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 6px;
+  color: #999;
+  background-color: #fbfbfb;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d6d6d6 #eee #fbfbfb #eee;
+}
 .campaign_detail .detail_card .tags {
   display: inline-block;
 }
@@ -510,6 +522,55 @@
 .campaign_detail .detail_card .progress .progress-bar {
   background-color: #ffc053;
   box-shadow: none;
+}
+.campaign_detail .detail_card .detail_editing .bootstrap-tagsinput {
+  display: inline-block;
+  width: 400px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 6px;
+  color: #999;
+  background-color: #fbfbfb;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d6d6d6 #eee #fbfbfb #eee;
+}
+.campaign_detail .detail_card .detail_editing .bootstrap-tagsinput .tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  height: 16px;
+  line-height: 20px;
+}
+.campaign_detail .detail_card .detail_editing .bootstrap-tagsinput input {
+  height: 15px;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime {
+  width: 400px;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime .detail_input {
+  width: 380px;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime .input-group-addon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0;
+  border: none;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime .glyphicon {
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+}
+.campaign_detail .detail_card .detail_editing .text_dark {
+  line-height: 30px;
+}
+.campaign_detail .detail_card .detail_editing .member_max {
+  width: 30px;
+}
+.campaign_detail .detail_card .detail_editing .member_min {
+  width: 30px;
 }
 .campaign_detail .map_card .component_head {
   background-color: #8dd4e6;

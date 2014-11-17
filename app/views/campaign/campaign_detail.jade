@@ -112,20 +112,20 @@ block contentExt
                 span.pull-left 活动标签：
                 input.detail_input.pull-left#taginput(name="tags" type="text" ng-blur="getTags()" ng-model="modelData.tags" data-role="tagsinput")
               .text_dark.clearfix
-                span.pull-left 报名截止时间：
+                span.pull-left 报名截止：
                 .input-group.date.form_datetime.pull-left#deadline
                   input.detail_input(type="text" ng-model="modelData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-th
-              .text_dark.clearfix
-                span.pull-left 报名人数上限：
-                .progress.pull-left
+              .text_dark
+                span 报名人数上限：
+                .progress
                   .progress-bar(role="progressbar" aria-valuenow="{{campaign.joinCount}}" aria-valuemin="0" aria-valuemax="{{campaign.member_max}}" style="width: {{campaign.joinCount*100/modelData.member_max}}%")
                 span {{campaign.joinCount}}/
-                input.detail_input(type="number" ng-model="modelData.member_max" ng-min="{{modelData.member_min}}")
-              .text_dark.clearfix
-                span.pull-left 最少报名人数：
-                input.detail_input.pull-left(type="number" ng-model="modelData.member_min" ng-max="{{modelData.member_max}}" )
+                input.detail_input.member_max(type="number" ng-model="modelData.member_max" ng-min="{{modelData.member_min}}")
+              .text_dark
+                span 最少报名人数：
+                input.detail_input.member_min(type="number" ng-model="modelData.member_min" ng-max="{{modelData.member_max}}" )
               .operator
                 span.close_campaign(ng-click="cancel()")
                   img.icon_close(src="/img/warning.png")

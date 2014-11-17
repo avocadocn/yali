@@ -1,6 +1,18 @@
 @require 'variables'
 @require 'tools'
 
+detail_input()
+  display inline-block
+  width 400px
+  height 20px
+  line-height 20px
+  padding 0 6px
+  color #999999
+  background-color #fbfbfb
+  border-width 1px
+  border-style solid
+  border-color #d6d6d6 #eeeeee #fbfbfb #eeeeee
+
 .breadcrumb
   margin-bottom 0
 
@@ -362,6 +374,8 @@
   .detail_card
     .campaign_intro
       float left
+    .detail_input
+      detail_input()
     .tags
       display inline-block
       .tag
@@ -385,6 +399,37 @@
       .progress-bar
         background-color #ffc053
         box-shadow none
+    .detail_editing
+      .bootstrap-tagsinput
+        detail_input()
+        .tag
+          font-size 12px
+          padding 2px 8px
+          height 16px
+          line-height 20px
+        input
+          height 15px
+      .form_datetime
+        width 400px
+        .detail_input
+          width 380px
+        .input-group-addon
+          display inline-block
+          width 20px
+          height 20px
+          line-height 20px
+          padding 0
+          border none
+        .glyphicon
+          width 18px
+          height 18px
+          font-size 12px
+      .text_dark
+        line-height 30px
+      .member_max
+        width 30px
+      .member_min
+        width 30px
 
   .map_card
     .component_head
