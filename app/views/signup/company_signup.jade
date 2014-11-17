@@ -1,0 +1,37 @@
+extends ../layouts/register
+
+append headExt
+  link(rel="stylesheet" href="/css/company_signup.css")
+
+block contentExt
+  .dl_container.clearfix(ng-controller="signupController" )
+    .signup_row
+      div(ng-show="step")
+        .block.block_left.text-right
+          .signup_title 
+            span 个人注册
+          .signup_tips
+            p 我们会严格审核您的申请,
+            p 确保每个用户的身份都真实可靠
+        div(ng-show="step===2")
+          include partials/personal_step_two
+        dive(ng-show="step===3")
+          include partials/personal_step_three
+      div(ng-show="!step")
+        include partials/company_form
+        include partials/personal_step_one
+
+append footExt
+  script(src='/js/controllers/companySignUp.js')
+  script(src='/lib/linkage-selector/linkage-selector.js')
+  script.
+    window.location.hash='';
+    var $buoop = {vs:{i:10,f:15,o:12.1,s:5.1}}; 
+    $buoop.ol = window.onload; 
+    window.onload=function(){ 
+      try {if ($buoop.ol) {$buoop.ol();} }catch (e) {} 
+      var e = document.createElement("script"); 
+      e.setAttribute("type", "text/javascript"); 
+      e.setAttribute("src", "/js/notice/update.js"); 
+      document.body.appendChild(e);
+    }

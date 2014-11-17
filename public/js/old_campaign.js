@@ -139,26 +139,28 @@ companies.forEach(function (company) {
           member: [],
           member_quit: []
         };
-        campaign.member.forEach(function (member) {
-          var user = db.users.findOne({ _id: ObjectId(member.uid) });
-          if (user.department._id.toString() === team.department.toString()) {
-            unit.member.push({
-              _id: ObjectId(member.uid),
-              nickname: member.nickname,
-              photo: member.photo
-            });
-          }
-        });
-        campaign.member_quit.forEach(function (member) {
-          var user = db.users.findOne({ _id: ObjectId(member.uid) });
-          if (user.department._id.toString() === team.department.toString()) {
-            unit.member_quit.push({
-              _id: ObjectId(member.uid),
-              nickname: member.nickname,
-              photo: member.photo
-            });
-          }
-        });
+        if (team.department) {
+          campaign.member.forEach(function (member) {
+            var user = db.users.findOne({ _id: ObjectId(member.uid) });
+            if (user.department._id.toString() === team.department.toString()) {
+              unit.member.push({
+                _id: ObjectId(member.uid),
+                nickname: member.nickname,
+                photo: member.photo
+              });
+            }
+          });
+          campaign.member_quit.forEach(function (member) {
+            var user = db.users.findOne({ _id: ObjectId(member.uid) });
+            if (user.department._id.toString() === team.department.toString()) {
+              unit.member_quit.push({
+                _id: ObjectId(member.uid),
+                nickname: member.nickname,
+                photo: member.photo
+              });
+            }
+          });
+        }
         campaign.campaign_unit.push(unit);
       });
       printjson(campaign);

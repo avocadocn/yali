@@ -676,8 +676,6 @@ textarea
     float left
     background-repeat no-repeat
     background-size contain
-    &:hover
-      opacity 0.5
     &.icon_speaker
       
       background-image url('/img/icons/speakerwithhandle.png')
@@ -696,12 +694,13 @@ textarea
       margin-top -3px
       margin-left -2px
       background-image url('/img/icons/group.png')
-    &.icon_rarrow
-      background-image url('/img/icons/rightarrow.png')
-    &.icon_drarrow
-      margin-right 4px
-      margin-top 5px
-      background-image url('/img/icons/dubblearrow.png')
+    &.comment_w
+      background-image url('/img/icons/comment_bubble_w.png')
+      margin-top 3px
+    // &.icon_drarrow
+    //   margin-right 4px
+    //   margin-top 5px
+    //   background-image url('/img/icons/dubblearrow.png')
     &.icon_bgrarrow
       background-image url('/img/icons/bgarrow.png')
     &.icon_fold
@@ -750,8 +749,15 @@ textarea
         height 30px
         border-top-left-radius 2px
         border-top-right-radius 2px
-        .icon_fold,.icon_unfold
-          margin 0
+        cursor pointer
+        .group_count
+          color #fff
+          float right
+          margin-top -3px
+          margin-right -2px
+          .fa
+            font-size 14px
+            margin-left 8px
       .groups
         padding 28px 13px 4px 13px
         .group_label
@@ -1399,7 +1405,8 @@ input.ng-invalid.ng-dirty
           width 110px
           margin-right 10px
           background-color #268bc9
-          border none 
+          border none
+          color #fff
         .btn_signin
           border-radius 3px
           width 80px
@@ -1429,13 +1436,7 @@ input.ng-invalid.ng-dirty
       color #716b7a
       padding 5px 20px
       font-size 120%
-.signup_row
-  .select_box 
-    width 85px
-    float left
-    margin-right 3px
-  .select_right
-    width 266px !important
+
 .dl_company_info
   min-height 300px
   form
@@ -2177,7 +2178,7 @@ campaignContainer(color)
       background-color color
       color white
     .triangle_col
-      border-color #fff #fff #fff color
+      border-color transparent transparent transparent color
 //用户首页
 .user_page
   .dl_nav
@@ -2469,10 +2470,21 @@ campaignContainer(color)
         left 50%
         margin-left -481px
         ul
-          padding-left 24px
+          padding-left 0
           li
             line-height 25px
             cursor pointer
+            list-style none
+            position relative
+            padding-left 25px
+            &:before
+              content ''
+              position absolute
+              width 5px
+              height 5px
+              left 12px
+              top 9px
+              border-radius 100%
             &:hover
               background-color #efefef
               .fileter_info
@@ -2481,17 +2493,27 @@ campaignContainer(color)
               color #999
             .campaign_num
               float right
-              margin-right 13px
+              margin-right 10px
           .recent_all
             color #666
+            &:before
+              background-color #666
           .recent_unjoin
             color #f48361
+            &:before
+              background-color #f48361
           .recent_join
             color #3ca2df
+            &:before
+              background-color #3ca2df
           .recent_competition
             color #ffc053
+            &:before
+              background-color #ffc053
           .recent_now
             color #13adb6
+            &:before
+              background-color #13adb6
       .campaigns_container
         width 570px
         float right
@@ -2508,10 +2530,12 @@ campaignContainer(color)
             height 39px
             line-height 18px
             font-size 14px
-            padding 10px 5px 0 19px
+            padding 10px 6px 0 20px
             .campaign_count
               float right
               margin-right 4px
+            .fa
+              margin-right 5px
             img.head_arrow
               height 10px
               width 10px
@@ -2532,42 +2556,36 @@ campaignContainer(color)
             padding-top 5px
             color #999
             border-top 1px solid #ccc
-            .day_col
+            &:hover
+              background-color #fbfbfb
+              .icon_bgrarrow
+                opacity 0.65
+            .campaign_head
               float left
-              height 100%
-              font-size 24px
-              padding-top 12px
-              padding-left 13px
-              width 50px
-              p
-                margin 0
-            .time_col
-              float left
-              height 100%
-              font-size 12px
-              padding 8px 0
-              width 50px
-              color #ccc
-              p
-                margin 0
-                line-height 12px
-            .logo_col
-              float left
-              height 100%
-              padding-left 10px
-              padding-top 5px
-              .campaign_logo
-                width 30px
-                height 30px
+              width 100%
+              .day_col
                 float left
-                margin-right 4px
-            .content_col
-              float left
-              height 100%
-              max-width 300px
-              font-size 12px
-              padding 6px 11px
-              a
+                font-size 24px
+                width 50px
+                p
+                  margin 0
+              .time_col
+                float left
+                width 26px
+                p
+                  margin 0
+                  line-height 12px
+              .logo_col
+                float left
+                .campaign_logo
+                  width 30px
+                  height 30px
+                  float left
+                  margin-right 4px
+              .content_col
+                float left
+                max-width 300px
+                font-size 12px
                 color #b1b1b1
                 p
                   max-width 100%
@@ -2576,10 +2594,10 @@ campaignContainer(color)
                   .theme_text
                     color #666
                     font-size 14px
-            .operator_col
-              float right
-              margin-right 20px
-              margin-top 11px
+              .operator_col
+                float right
+                margin-right 20px
+                margin-top 11px
             .photos
               float left
               .photo
@@ -2589,6 +2607,7 @@ campaignContainer(color)
                 background url("/img/loading.gif") center center no-repeat
                 display inline-block
                 margin-right 0
+                cursor pointer
               .photos_1
                 .photo_0
                   width 570px
@@ -2636,6 +2655,8 @@ campaignContainer(color)
               clear both
               background-color #fbfbfb
               min-height 25px
+              &:hover
+                background-color #eceded
               a.comment_num
                 color #999
                 padding 3px 18px 4px 0
@@ -2643,8 +2664,18 @@ campaignContainer(color)
                   margin-right 15px
           .campaign_base
             height 51px
-            .content_col
-              a
+            .campaign_head
+              .day_col
+                padding-top 13px
+                padding-left 10px
+              .time_col
+                padding-top 10px
+                width 50px
+              .logo_col
+                padding-left 10px
+                padding-top 5px
+              .content_col
+                padding 6px 11px
                 p
                   overflow hidden
                   text-overflow ellipsis
@@ -2671,6 +2702,7 @@ campaignContainer(color)
               margin-bottom 20px
             .content_col
               padding 0
+              max-width 265px
               padding-left 10px
               margin-bottom 20px
               max-width 240px
@@ -2691,6 +2723,8 @@ campaignContainer(color)
                 background-color #F48361
               .btn_cancel
                 background-color #999
+              .select_item
+                color black
               p
                 margin 0
                 line-height 12px
@@ -2736,6 +2770,7 @@ campaignContainer(color)
         .card_campaign
           background-color initial
           box-shadow none
+          margin-bottom 0
           .container_head,.campaign
             background-color #fff
             margin-bottom 10px
@@ -2744,9 +2779,20 @@ campaignContainer(color)
     .side
       padding-top 45px
       width 240px
-      position fixed
-      left 50%
-      margin-left 240px
+      // position fixed
+      // left 50%
+      // margin-left 240px
+      .icon_backtop
+        visibility hidden
+        cursor pointer
+        width 30px
+        height 40px
+        background-image url('/img/icons/rocket.png')
+        &.affix
+          bottom 70px 
+          left 50%
+          margin-left 500px
+          visibility visible
       .old_campaign_container
         height 30px
         color #ffffff
@@ -2757,27 +2803,36 @@ campaignContainer(color)
         margin-bottom 10px
         clear both
         border-radius 2px
+        width 240px
         dl_shadow()
         &.commentCampaign
           background-color #525E70
+          &.affix
+            top 100px
           &:hover
             background-color #4a5567
+          .label_info
+            margin-left 13px
           .news_count
-            font-size 12px
-            height 16px
-            width 16px
-            line-height 18px
-            margin-left 5px
-            margin-right 6px
-            background-color #fff
-            color black
-            border-radius 6px
+            font-size 14px
+            margin-top 1px
+            margin-right 4px
+            float right
+            .fa
+              margin-left 9px
+              font-size 16px
         &.timeline_container
           background-image url('/img/timeline_bg.png')
           background-size cover
+          &.affix
+            top 140px
+          .fa
+            margin-right 5px
+            font-size 28px
+            line-height 20px
           .footprint
             background-image url('/img/icons/footprint.png')
-            margin 5px 12px 0 5px
+            margin 2px 12px 0 4px
         label
           font-size 14px
           color #ffffff
@@ -2799,20 +2854,29 @@ campaignContainer(color)
         margin-bottom 10px
         border-radius 2px
         dl_shadow()
+        &:hover
+          .dl_icons
+            opacity 0.65
         a
           color #ffffff
         &.sponsor
           background-color #3ca2e0
           margin-right 2px
+          &.affix
+            top 60px
           &:hover
             background-color #398fc3
         &.provoke
           background-color #f48361
-          padding-left 18px
+          padding-left 6px
+          &.affix
+            top 60px
+            left 50%
+            margin-left 360px
           &:hover
             background-color #da7659
         label
-          margin-left 14px
+          margin-left 12px
           cursor pointer
       .groupsbox
         margin-top 10px
@@ -2872,6 +2936,8 @@ campaignContainer(color)
                 color #999
     .schedule_small
       dl_shadow()
+      &.affix
+        top 190px
       .schedulebox
         padding 0
         border none
@@ -2929,6 +2995,7 @@ campaignContainer(color)
       width 400px
       height 400px
       margin 0 auto
+      cursor pointer
     .last,.next
       width 50px
       position absolute

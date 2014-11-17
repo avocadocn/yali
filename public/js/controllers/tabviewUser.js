@@ -15,7 +15,13 @@ tabViewUser.directive('match', function($parse) {
     }
   };
 });
-
+tabViewUser.directive('eatClick', function() {
+    return function(scope, element, attrs) {
+        $(element).click(function(event) {
+            event.preventDefault();
+        });
+    }
+})
 tabViewUser.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
@@ -24,11 +30,11 @@ tabViewUser.config(['$routeProvider',
       //   controller: 'GroupMessageController',
       //   controllerAs: 'messages'
       // })
-      .when('/campaign/:uid', {
-        templateUrl: function(params){
-          return '/users/campaign/'+params.uid;
-        }
-      })
+      // .when('/campaign/:uid', {
+      //   templateUrl: function(params){
+      //     return '/users/campaign/'+params.uid;
+      //   }
+      // })
       .when('/commentCampaign/:uid', {
         templateUrl: function(params){
           return '/users/commentcampaign/'+params.uid;
@@ -68,8 +74,8 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign',
-  function($rootScope,$location,$interval,$http,Report,Campaign) {
+tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', 'Report','Campaign',
+  function($rootScope,$location,$interval,$http,$anchorScroll,Report,Campaign) {
     $rootScope.message_for_group = false;
     var getRecentCommentTime = 10 * 60 * 1000;
     $rootScope.newReply=[];
@@ -79,6 +85,9 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
     $rootScope.$on("$routeChangeSuccess",function(){
       $rootScope.loading = false;
     });
+    $rootScope.bakckTop = function(){
+      $anchorScroll(0);
+    }
     $rootScope.pushReport = function(){
       Report.publish($rootScope.reportContent,function(err,msg){
         alertify.alert(msg);
@@ -93,18 +102,22 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
       }
     };
     $rootScope.openModal = function(type){
-      $rootScope.showedType = type;
-      $rootScope.showedCampaign = $rootScope[type];
       $('#user_modal').modal();
-      if(type=='commentCampaign'){
-        updateRecentCommentTime();
-        $interval.cancel(getRecentCommentCampaignPromise);
-        $('#user_modal').one('hidden.bs.modal', function (e) {
-          getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
-        });
+      if(type){
+        $rootScope.showedType = type;
+        $rootScope.showedCampaign = $rootScope[type];
+        if(type=='commentCampaign'){
+          updateRecentCommentTime();
+          $interval.cancel(getRecentCommentCampaignPromise);
+          $('#user_modal').one('hidden.bs.modal', function (e) {
+            getRecentCommentCampaignPromise = $interval(getRecentCommentCampaigns,getRecentCommentTime);
+          });
+        }
       }
+
     }
     $rootScope.join = function (index,tid) {
+
       Campaign.join({
         campaignId: $rootScope.recentUnjoinedCampaigns[index]._id,
         cid: $rootScope.recentUnjoinedCampaigns[index].cid,
@@ -119,6 +132,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
           alertify.alert('参加活动成功');
         }
       });
+      return false;
     };
 
     $rootScope.quit = function (index) {
@@ -133,6 +147,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
         }
 
       });
+      return false;
     };
     // $rootScope.vote = function(campaignId) {
     //     Campaign.vote(campaignId, vote_status, function (err) {
@@ -170,6 +185,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
           });
         }
       });
+      return false;
     };
     //打开modal后检查是不是队长，获取是队长的小队信息
     $rootScope.newCampaign = function() {
@@ -177,19 +193,19 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','Report','Campaign
       $rootScope.modal=1;
     };
     var getRecentCommentCampaigns = function(){
-      try{
-        $http({
-          method:'get',
-          url: '/campaign/recentCommentCampaign?'+Math.random()*10000,
-        }).success(function(data,status){
+      $http({
+        method:'get',
+        url: '/campaign/recentCommentCampaign?'+Math.random()*10000,
+      }).success(function(data,status){
+        if(data.result==1){
           $rootScope.newReply = data.data;
-        }).error(function(data,status){
-          alertify.alert('DATA ERROR');
-        });
-      }
-      catch(e){
-        console.log(e);
-      }
+        }
+        else{
+          $interval.cancel(getRecentCommentCampaignPromise);
+        }
+      }).error(function(data,status){
+        console.log('DATA ERROR');
+      });
     }
     var updateRecentCommentTime = function(){
       try{
@@ -271,60 +287,28 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
     // $rootScope.nowCampaigns = [];
     $scope.nowShow ='all';
     var data = document.getElementById('user_data').dataset;
+    $scope.campaignLoaded = false;
     $rootScope.uid = data.uid;
-      try{
-        $http({
-          method:'get',
-          url: '/campaign/user/recent/list/'+$rootScope.uid +'?'+Math.random()*10000,
-        }).success(function(data,status){
-          if(data.result===1){
-            $rootScope.recentUnjoinedCampaigns = data.campaigns[0];
-            $rootScope.recentJoinedCampaigns = data.campaigns[1];
-            $rootScope.competitions = data.campaigns[3];
-            $rootScope.nowCampaigns = data.campaigns[2];
-            // $scope.topCampaign = data.campaigns[1][0];
-          }
-        }).error(function(data,status){
-          alertify.alert('DATA ERROR');
-        });
+    $http({
+      method:'get',
+      url: '/campaign/user/recent/list/'+$rootScope.uid +'?'+Math.random()*10000,
+    }).success(function(data,status){
+      if(data.result===1){
+        $scope.campaignLoaded = true;
+        $rootScope.recentUnjoinedCampaigns = data.campaigns[0];
+        $rootScope.recentJoinedCampaigns = data.campaigns[1];
+        $rootScope.competitions = data.campaigns[3];
+        $rootScope.nowCampaigns = data.campaigns[2];
+        // $scope.topCampaign = data.campaigns[1][0];
       }
-      catch(e){
-        console.log(e);
-      }
+    }).error(function(data,status){
+      console.log('DATA ERROR');
+    });
     // $scope.reloadM = function(){
     //   $scope.is_reload = true;
     // }
     $scope.campaignFilter = function(type){
       $scope.nowShow = type;
-    }
-    $scope.showMorePhoto = function(photo_album_id,uri){
-      try{
-        $http({
-          method:'get',
-          url: '/photoAlbum/'+photo_album_id+'/photolist',
-        }).success(function(data,status){
-          if(data.result===1){
-            $rootScope.showedPhotos = data.data;
-            for(var i=0;i<data.data.length;i++){
-              if(data.data[i].uri==uri){
-                $rootScope.showedIndex=i;
-                break;
-              }
-            }
-            $('#photoModal').modal();
-          }
-        }).error(function(data,status){
-          alertify.alert('DATA ERROR');
-        });
-      }
-      catch(e){
-        console.log(e);
-      }
-    $rootScope.changePhoto = function(flag){
-      $rootScope.showedIndex= $rootScope.showedIndex +flag;
-      $rootScope.$apply();
-    }
-
     }
   }
 ]);
@@ -342,6 +326,7 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
           if(data.teams.length===1){
             $rootScope.modal = 2;
             $scope.sponsorTeam = data.teams[0];
+            $scope.title=$scope.sponsorTeam.name;
           }else{
             $rootScope.modal = 1;
             $scope.ledTeams = data.teams;
@@ -378,10 +363,10 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
       }
     }
   });
-
+  
 
   $scope.selected_index = -1;
-  //决定好哪个小队了
+  //决定好哪个小队了/回到上个页面
   $scope.provoke_select = function(value){
     $rootScope.modal = value;
   };
@@ -389,12 +374,12 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
   $scope.selcet_team = function(index){
     $scope.sponsorTeam = $scope.ledTeams[index];
     $scope.selected_index = index;
-  }
+    $scope.title=$scope.sponsorTeam.name;
+  };
   //选择类型
   $scope.selectMold=function(name){
     $scope.mold = name;
   };
-
 
   var placeSearchCallBack = function(data){
     $scope.locationmap.clearMap();
@@ -426,10 +411,12 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
       citysearch.getLocalCity();
       //citysearch.getCityByIp("123.125.114.*");
       AMap.event.addListener(citysearch, "complete", function(result){
+        console.log(1)
         if(result && result.city && result.bounds) {
           var citybounds = result.bounds;
           //地图显示当前城市
           $scope.locationmap.setBounds(citybounds);
+          console.log(citybounds)
           $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {
             $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
               pageSize:1,
@@ -1212,7 +1199,7 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
     $scope.toggleEdit = function() {
       $scope.editing = !$scope.editing;
     }
-
+    $('#user_modal').modal();
     var markUserDepartment = function(user, department) {
       if (department && user.department) {
         for (var i = 0; i < department.length; i++) {
@@ -1277,6 +1264,7 @@ tabViewUser.controller('PasswordFormController', ['$http', '$scope', '$rootScope
     $scope.nowpassword = '';
     $scope.newpassword = '';
     $scope.confirmpassword = '';
+    $('#user_modal').modal();
     $scope.change_password = function() {
       $http({
         method: 'post',

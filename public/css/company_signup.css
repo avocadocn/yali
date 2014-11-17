@@ -1,122 +1,162 @@
 .signup_row {
-  padding-top: 120px;
+  padding-top: 95px;
 }
-.block_left {
-  margin-top: 50px;
-  width: 340px;
+.signup_row .block {
+  width: 455px;
   float: left;
 }
-.block_left h1 {
-  font-family: "KaiTi", "STKaiti", "BiauKai";
-  font-size: 50px;
+.signup_row .block .signup_title {
+  font-size: 28px;
+  font-size: 28px;
+  margin-bottom: 43px;
+  line-height: 1;
+}
+.signup_row .block .signup_tips {
+  font-size: 16px;
   margin-bottom: 40px;
+  line-height: 1;
 }
-.block_right {
-  width: 380px;
-  margin-left: 200px;
-  float: left;
+.signup_row .block .signup_tips .tip_number {
+  font-size: 24px;
 }
-.block_right .label_left {
-  width: 95px;
+.signup_row .block .personal_title {
+  color: #3ca2e0;
+}
+.signup_row .block_left {
+  margin-right: 50px;
+}
+.signup_row .signup_block {
+  border-radius: 8px;
+  border: 2px solid #f48361;
+  padding: 38px;
+}
+.signup_row .signup_block .company_title {
+  color: #f48361;
+}
+.signup_row .signup_block .dl_sm_group .dl_row {
+  min-height: 45px;
+  padding: 5px 0;
+}
+.signup_row .signup_block .dl_sm_group .label_left {
+  width: 84px;
   float: left;
   text-align: right;
+  min-height: 20px;
 }
-.block_right .input_right {
-  width: 260px;
+.signup_row .signup_block .dl_sm_group .input_right {
+  width: 290px;
   float: left;
-  margin-left: 10px;
+  margin-left: 15px;
 }
-.block_right .input_right .department_select_width {
+.signup_row .signup_block .dl_sm_group .input_right .department_select_width {
   width: 127px;
 }
-.block_right .input_right .input_email {
+.signup_row .signup_block .dl_sm_group .input_right .input_email {
   width: 45%;
   float: left;
 }
-.block_right .input_right .select_domain {
+.signup_row .signup_block .dl_sm_group .input_right .select_domain {
   width: 45%;
   float: right;
 }
-.block_right .input_right .at {
+.signup_row .signup_block .dl_sm_group .input_right .at {
   padding: 9px 5px;
   font-size: 14px;
   float: left;
 }
-.block_right .center_container {
+.signup_row .signup_block .dl_sm_group .input_right inputf {
+  width: 100%;
+}
+.signup_row .signup_block .dl_sm_group .input_right .arecode_container {
+  width: 60px;
+  float: left;
+  margin-right: 10px;
+}
+.signup_row .signup_block .dl_sm_group .input_right .number_container {
+  width: 140px;
+  float: left;
+  margin-right: 10px;
+}
+.signup_row .signup_block .dl_sm_group .input_right .extention_container {
+  width: 70px;
+  float: left;
+}
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box {
+  width: 90px;
+  float: left;
+  margin-right: 10px;
+}
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box select {
+  width: 90px;
+  outline: 0;
+}
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box[last_child] {
+  margin-right: 0;
+}
+.signup_row .signup_block .dl_sm_group .service_tip {
+  margin-left: 15px;
+  float: left;
+  height: 62px;
+  padding: 25px 0 15px;
+  font-size: 14px;
+}
+.signup_row .signup_block .dl_sm_group .service_tip a {
+  color: #f48361;
+}
+.signup_row .signup_block .dl_sm_group .btn_submit {
+  width: 100%;
+  height: 40px !important;
+  background-color: #f48361;
+}
+.signup_row .signup_block .dl_sm_group .dl_tip {
+  position: relative;
+}
+.signup_row .signup_block .dl_sm_group .center_container {
   width: 350px;
   text-align: center;
 }
-.block_right .center_container .center_content {
+.signup_row .signup_block .dl_sm_group .center_container .center_content {
   margin: 0 auto;
   width: 150px;
 }
-.email_tip {
+.signup_row .signup_block .dl_sm_group .email_tip {
   float: right;
   text-align: right;
 }
-.btn_submit {
-  width: 100%;
-  height: 40px !important;
-}
-#province,
-#city,
-#region {
-  width: 85px;
-}
-#lindline_areacodes {
-  width: 70px;
-}
-#lindline_number {
-  width: 90px;
-}
-#lindline_extension {
-  width: 70px;
-}
-#email_host {
+.signup_row .signup_block .dl_sm_group #email_host {
   width: 142px;
 }
-#email_domain {
+.signup_row .signup_block .dl_sm_group #email_domain {
   width: 100px;
 }
-.apply_info h2 {
+.signup_row .signup_block .dl_sm_group .apply_info h2 {
   font-weight: normal;
 }
-.apply_info p {
+.signup_row .signup_block .dl_sm_group .apply_info p {
   color: #808080;
 }
-.btn_return {
+.signup_row .signup_block .dl_sm_group .btn_return {
   margin-top: 30px;
   width: 140px;
   border: none;
   padding: 10px;
 }
-.invite_block {
+.signup_row .signup_block .dl_sm_group .invite_block {
   width: 480px;
   padding-top: 50px;
 }
-.invite_block .add_domain {
+.signup_row .signup_block .dl_sm_group .invite_block .add_domain {
   margin-top: 50px;
 }
-.invite_block .add_domain .add_domain_div {
+.signup_row .signup_block .dl_sm_group .invite_block .add_domain .add_domain_div {
   margin: 5px;
 }
-.invite_block .index_link {
+.signup_row .signup_block .dl_sm_group .invite_block .index_link {
   margin-top: 15px;
 }
-.arecode_container {
-  width: 60px;
-  float: left;
+.signup_row .personal_signup {
+  border: 2px solid #3ca2e0;
 }
-.number_container {
-  width: 90px;
-  float: left;
-}
-.-container {
-  width: 14px;
-  float: left;
-  margin-left: 5px;
-}
-body {
-  background-image: url("/img/sign_bg.jpg");
-  background-size: cover;
+.signup_row .personal_signup .signup_tips {
+  margin-top: -7px;
 }

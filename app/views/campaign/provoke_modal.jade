@@ -45,8 +45,7 @@ form(name="provoke_form" novalidate)
             li(ng-repeat="select_mold in molds")
               a(ng-click="selectMold(select_mold.name)") {{select_mold.name}}
   .dl_modal_footer
-    //- button.cancel_btn.dl_btn_large(type='button' ng-click='preStep()') 上一步
-    button.dl_btn.dl_modal_btn(type='button' ng-click='provoke()' data-dismiss="modal" ng-disabled="provoke_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
+    button.dl_btn.dl_modal_btn(type='button' ng-click='pressed=true;provoke()' data-dismiss="modal" ng-disabled="provoke_form.$invalid||pressed") #{__("IMMEDIATE")}#{__("SPONSOR")}
 script.
   $(function() {
     $('#competition_start_time').datetimepicker({

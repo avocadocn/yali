@@ -9,7 +9,7 @@
           .photos
             .last(ng-if="showedIndex>0" ng-click="changePhoto(-1)")
               span <
-            .photo
+            .photo(ng-if="showedPhotos")
               img(ng-src="{{showedPhotos[showedIndex].uri+'/400/400'}}")
             .next(ng-if="showedIndex<showedPhotos.length-1" ng-click="changePhoto(1)")
               span >

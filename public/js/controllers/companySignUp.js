@@ -10,22 +10,22 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
   $scope.code_value = '正在检查邀请码有效性...';
 
   $scope.mailRegCheck = function() {
-     $scope.reg = (pattern.test($scope.email));
-     $scope.check = false;
-     $("#submit").attr("disabled",true);
-      if(!$scope.reg){
-        $scope.mail_ok = false;
-        $("#email").tooltip({
-          "trigger":"hover",
-          "title":'请输入正确的邮箱地址!',
-          "placement" : "right"
-        });
-      } else {
-        $("#email").tooltip('destroy');
-      }
+    $scope.reg = (pattern.test($scope.email));
+    $scope.check = false;
+    $("#submit").attr("disabled",true);
+    if(!$scope.reg){
+      $scope.mail_ok = false;
+      $("#email").tooltip({
+        "trigger":"hover",
+        "title":'请输入正确的邮箱地址!',
+        "placement" : "right"
+      });
+    } else {
+      $("#email").tooltip('destroy');
+    }
   }
   $scope.mailCheck = function() {
-    if($scope.reg){
+    if($scope.reg&&$scope.email){
       $scope.mail_ok = true;
       try{
         $http({
@@ -54,7 +54,6 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
     }
   }
 
-
   $scope.codeCheck = function() {
     $scope.code_ok = true;
     try{
@@ -81,5 +80,17 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
         console.log(e);
     }
   }
+
+  $scope.search=function(){
+    $http.post('/search/company/key='+$scope.company_name).success(function(data,status){
+      $scope.companies=data.companies;
+      $scope.step=2;
+
+    });
+  };
+
+  $scope.select=function(index){
+    $scope.step = 3;
+  };
 
 }]);

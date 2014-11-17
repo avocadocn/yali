@@ -195,7 +195,7 @@ exports.signup = function(req, res) {
         if (config) {
           is_need_invite = config.company_register_need_invite;
         }
-        res.render('company/company_signup', {
+        res.render('signup/company_signup', {
           title: '注册',
           is_need_invite: is_need_invite
         });
@@ -723,7 +723,7 @@ exports.create = function(req, res) {
                 default:
                   break;
               }
-              return res.render('company/company_signup', {
+              return res.render('signup/company_signup', {
                 company: company
               });
             }
@@ -760,7 +760,7 @@ exports.create = function(req, res) {
     })
     .then(null, function(err) {
       console.log(err);
-      res.render('company/company_signup', {
+      res.render('signup/company_signup', {
         invite_code_err: '邀请码不正确'
       });
     });

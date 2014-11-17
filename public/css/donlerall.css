@@ -616,16 +616,16 @@ textarea {
 textarea {
   resize: none;
 }
-::-webkit-input-placeholder {
+::-webkit-input-placeholder /* WebKit browsers */ {
   color: #ccc;
 }
-:-moz-placeholder {
+:-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
   color: #ccc;
 }
-::-moz-placeholder {
+::-moz-placeholder /* Mozilla Firefox 19+ */ {
   color: #ccc;
 }
-:-ms-input-placeholder {
+:-ms-input-placeholder /* Internet Explorer 10+ */ {
   color: #ccc;
 }
 .transparent {
@@ -1360,13 +1360,9 @@ textarea {
   margin-left: -2px;
   background-image: url("/img/icons/group.png");
 }
-.dl_container .dl_icons.icon_rarrow {
-  background-image: url("/img/icons/rightarrow.png");
-}
-.dl_container .dl_icons.icon_drarrow {
-  margin-right: 4px;
-  margin-top: 5px;
-  background-image: url("/img/icons/dubblearrow.png");
+.dl_container .dl_icons.comment_w {
+  background-image: url("/img/icons/comment_bubble_w.png");
+  margin-top: 3px;
 }
 .dl_container .dl_icons.icon_bgrarrow {
   background-image: url("/img/icons/bgarrow.png");
@@ -1408,6 +1404,7 @@ textarea {
   overflow: hidden;
   border: 1px solid #e6e6e6;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_container .side .groupsbox .head_title {
@@ -1425,10 +1422,17 @@ textarea {
   height: 30px;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
+  cursor: pointer;
 }
-.dl_container .side .groupsbox .box_head .icon_fold,
-.dl_container .side .groupsbox .box_head .icon_unfold {
-  margin: 0;
+.dl_container .side .groupsbox .box_head .group_count {
+  color: #fff;
+  float: right;
+  margin-top: -3px;
+  margin-right: -2px;
+}
+.dl_container .side .groupsbox .box_head .group_count .fa {
+  font-size: 14px;
+  margin-left: 8px;
 }
 .dl_container .side .groupsbox .groups {
   padding: 28px 13px 4px 13px;
@@ -2193,25 +2197,60 @@ input.ng-invalid.ng-dirty {
 .clearLinkUnderline:hover {
   text-decoration: none;
 }
-.dl-top-login {
+.dl_top_login {
   width: 480px;
   padding: 11px 0 0 0;
 }
-.dl-top-login .form-control {
-  display: inline-block;
-  border-radius: 0px;
-}
-.dl-top-login .btn {
-  border-radius: 0px;
-}
-.dl-top-login .btn-signin-link {
-  color: #28689b;
-}
-.dl-top-login .input-group-btn>.btn+.btn-submit {
-  margin-left: 14px;
-}
-.dl-top-login .pull-right {
+.dl_top_login .signin {
   width: 160px;
+}
+.dl_top_login .signin .input-group .input-group-btn ::-webkit-input-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn :-moz-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn ::-moz-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn :-ms-input-placeholder {
+  color: #7acfff;
+}
+.dl_top_login .signin .input-group .input-group-btn .forgetPwd {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  width: 20px;
+  height: 24px;
+  padding: 8px 5px;
+  color: #fff;
+}
+.dl_top_login .signin .input-group .input-group-btn .form-control {
+  display: inline-block;
+  border-radius: 3px;
+  width: 110px;
+  margin-right: 10px;
+  background-color: #268bc9;
+  border: none;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_signin {
+  border-radius: 3px;
+  width: 80px;
+  color: #fff;
+  background-color: #f48361;
+  box-shadow: 1px 1px 1px #3381be;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_signin:hover {
+  background-color: #da775a;
+  box-shadow: 0 0 0;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_company {
+  margin-left: 30px;
+  color: #3498db;
+  background-color: #fff;
+}
+.dl_top_login .signin .input-group .input-group-btn .btn_company:hover {
+  background-color: #eee;
 }
 .dl_slider .slider {
   position: fixed;
@@ -2594,7 +2633,7 @@ input.ng-invalid.ng-dirty {
   font-size: 80px;
   color: #3498db;
 }
-[ng:cloak],
+[ngcloak],
 [ng-cloak],
 [data-ng-cloak],
 [x-ng-cloak],
@@ -3034,6 +3073,7 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_view_modal .calendar_tips {
   height: 50px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 #events-modal .calendar_view_modal .calendar_tips .join_sign {
@@ -3173,6 +3213,7 @@ input.ng-invalid.ng-dirty {
   width: 865px;
   margin-top: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .main .dl_info_container .info_left {
@@ -3465,6 +3506,7 @@ input.ng-invalid.ng-dirty {
   margin-top: 5px;
   background-color: #fff;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   padding-top: 10px;
@@ -3516,6 +3558,7 @@ input.ng-invalid.ng-dirty {
   margin-top: 4px;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   width: 100%;
@@ -3530,6 +3573,9 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .campaign_count {
   float: right;
   margin-right: 4px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .fa {
+  margin-right: 5px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head img.head_arrow {
   height: 10px;
@@ -3555,61 +3601,51 @@ input.ng-invalid.ng-dirty {
   color: #999;
   border-top: 1px solid #ccc;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .day_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head {
   float: left;
-  height: 100%;
+  width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .day_col {
+  float: left;
   font-size: 24px;
-  padding-top: 12px;
-  padding-left: 13px;
   width: 50px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .day_col p {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .day_col p {
   margin: 0;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .time_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .time_col {
   float: left;
-  height: 100%;
-  font-size: 12px;
-  padding: 8px 0;
-  width: 50px;
-  color: #ccc;
+  width: 26px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .time_col p {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .time_col p {
   margin: 0;
   line-height: 12px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .logo_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .logo_col {
   float: left;
-  height: 100%;
-  padding-left: 10px;
-  padding-top: 5px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .logo_col .campaign_logo {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .logo_col .campaign_logo {
   width: 30px;
   height: 30px;
   float: left;
   margin-right: 4px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .content_col {
   float: left;
-  height: 100%;
   max-width: 300px;
   font-size: 12px;
-  padding: 6px 11px;
-}
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a {
   color: #b1b1b1;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a p {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .content_col p {
   max-width: 100%;
   line-height: 16px;
   margin: 0;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .content_col a p .theme_text {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .content_col p .theme_text {
   color: #666;
   font-size: 14px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .operator_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .operator_col {
   float: right;
   margin-right: 20px;
   margin-top: 11px;
@@ -3688,7 +3724,22 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base {
   height: 51px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .content_col a p {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .day_col {
+  padding-top: 13px;
+  padding-left: 10px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .time_col {
+  padding-top: 10px;
+  width: 50px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .logo_col {
+  padding-left: 10px;
+  padding-top: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .content_col {
+  padding: 6px 11px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .content_col p {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3720,6 +3771,7 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .content_col {
   padding: 0;
+  max-width: 265px;
   padding-left: 10px;
   margin-bottom: 20px;
   max-width: 240px;
@@ -3744,6 +3796,9 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .btn_cancel {
   background-color: #999;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .select_item {
+  color: #000;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col p {
   margin: 0;
@@ -3875,20 +3930,32 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .card_campaign {
   background-color: initial;
   box-shadow: none;
+  margin-bottom: 0;
 }
 .user_page .dl_container .main .campaigns_container .card_campaign .container_head,
 .user_page .dl_container .main .campaigns_container .card_campaign .campaign {
   background-color: #fff;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side {
   padding-top: 45px;
   width: 240px;
-  position: fixed;
+}
+.user_page .dl_container .side .icon_backtop {
+  visibility: hidden;
+  cursor: pointer;
+  width: 30px;
+  height: 40px;
+  background-image: url("/img/icons/rocket.png");
+}
+.user_page .dl_container .side .icon_backtop.affix {
+  bottom: 70px;
   left: 50%;
-  margin-left: 240px;
+  margin-left: 500px;
+  visibility: visible;
 }
 .user_page .dl_container .side .old_campaign_container {
   height: 30px;
@@ -3900,33 +3967,48 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 10px;
   clear: both;
   border-radius: 2px;
+  width: 240px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .old_campaign_container.commentCampaign {
   background-color: #525e70;
 }
+.user_page .dl_container .side .old_campaign_container.commentCampaign.affix {
+  top: 100px;
+}
 .user_page .dl_container .side .old_campaign_container.commentCampaign:hover {
   background-color: #4a5567;
 }
+.user_page .dl_container .side .old_campaign_container.commentCampaign .label_info {
+  margin-left: 13px;
+}
 .user_page .dl_container .side .old_campaign_container.commentCampaign .news_count {
-  font-size: 12px;
-  height: 16px;
-  width: 16px;
-  line-height: 18px;
-  margin-left: 5px;
-  margin-right: 6px;
-  background-color: #fff;
-  color: #000;
-  border-radius: 6px;
+  font-size: 14px;
+  margin-top: 1px;
+  margin-right: 4px;
+  float: right;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign .news_count .fa {
+  margin-left: 9px;
+  font-size: 16px;
 }
 .user_page .dl_container .side .old_campaign_container.timeline_container {
   background-image: url("/img/timeline_bg.png");
   background-size: cover;
 }
+.user_page .dl_container .side .old_campaign_container.timeline_container.affix {
+  top: 140px;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container .fa {
+  margin-right: 5px;
+  font-size: 28px;
+  line-height: 20px;
+}
 .user_page .dl_container .side .old_campaign_container.timeline_container .footprint {
   background-image: url("/img/icons/footprint.png");
-  margin: 5px 12px 0 5px;
+  margin: 2px 12px 0 4px;
 }
 .user_page .dl_container .side .old_campaign_container label {
   font-size: 14px;
@@ -3952,6 +4034,7 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 10px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .sponsor_container a {
@@ -3961,18 +4044,26 @@ input.ng-invalid.ng-dirty {
   background-color: #3ca2e0;
   margin-right: 2px;
 }
+.user_page .dl_container .side .sponsor_container.sponsor.affix {
+  top: 60px;
+}
 .user_page .dl_container .side .sponsor_container.sponsor:hover {
   background-color: #398fc3;
 }
 .user_page .dl_container .side .sponsor_container.provoke {
   background-color: #f48361;
-  padding-left: 18px;
+  padding-left: 6px;
+}
+.user_page .dl_container .side .sponsor_container.provoke.affix {
+  top: 60px;
+  left: 50%;
+  margin-left: 360px;
 }
 .user_page .dl_container .side .sponsor_container.provoke:hover {
   background-color: #da7659;
 }
 .user_page .dl_container .side .sponsor_container label {
-  margin-left: 14px;
+  margin-left: 12px;
   cursor: pointer;
 }
 .user_page .dl_container .side .groupsbox {
@@ -3987,6 +4078,7 @@ input.ng-invalid.ng-dirty {
   height: 98px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .infobox .head_title {
@@ -4048,7 +4140,11 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .schedule_small {
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .schedule_small.affix {
+  top: 190px;
 }
 .user_page .dl_container .schedule_small .schedulebox {
   padding: 0;
@@ -4143,12 +4239,14 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   border: none;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .timeline_element .timeline_head {
@@ -4556,7 +4654,7 @@ Timeline UI Base
   padding-right: 1px;
   padding-left: 2px;
 }
-.timeline > li .timeline-icon -webkit-border-radius 30px !important -moz-border-radius 30px !important {
+.timeline > li .timeline-icon -webkit-border-radius 30px -moz-border-radius 30px {
   border-radius: 30px !important;
 }
 @media (max-width: 767px) {
@@ -4632,12 +4730,14 @@ Timeline UI Base
   padding: 10px;
   color: #888;
   -moz-box-shadow: 1px 1px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
+/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:before {
@@ -5589,7 +5689,7 @@ Timeline UI Base
   height: 48px;
   border-radius: 100%;
 }
-.selected {
+.tree .selected {
   border: solid 3px #5cb85c !important;
 }
 .select_tree .self>span {
