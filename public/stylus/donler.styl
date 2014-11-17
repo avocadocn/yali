@@ -2470,10 +2470,21 @@ campaignContainer(color)
         left 50%
         margin-left -481px
         ul
-          padding-left 24px
+          padding-left 0
           li
             line-height 25px
             cursor pointer
+            list-style none
+            position relative
+            padding-left 25px
+            &:before
+              content ''
+              position absolute
+              width 5px
+              height 5px
+              left 12px
+              top 9px
+              border-radius 100%
             &:hover
               background-color #efefef
               .fileter_info
@@ -2482,17 +2493,27 @@ campaignContainer(color)
               color #999
             .campaign_num
               float right
-              margin-right 13px
+              margin-right 10px
           .recent_all
             color #666
+            &:before
+              background-color #666
           .recent_unjoin
             color #f48361
+            &:before
+              background-color #f48361
           .recent_join
             color #3ca2df
+            &:before
+              background-color #3ca2df
           .recent_competition
             color #ffc053
+            &:before
+              background-color #ffc053
           .recent_now
             color #13adb6
+            &:before
+              background-color #13adb6
       .campaigns_container
         width 570px
         float right
@@ -2509,7 +2530,7 @@ campaignContainer(color)
             height 39px
             line-height 18px
             font-size 14px
-            padding 10px 20px 0 20px
+            padding 10px 6px 0 20px
             .campaign_count
               float right
               margin-right 4px
