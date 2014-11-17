@@ -313,7 +313,7 @@ exports.invite = function(req, res) {
         }
         req.session.key = key;
         req.session.key_id = cid;
-        res.render('users/invite', {
+        res.render('signup/invite', {
           title: '个人注册',
           domains: company.email.domain,
           cname: company.info.official_name
@@ -344,7 +344,7 @@ function userOperate(cid, key, res, req, index) {
       .then(function(user) {
         if(index ==1){//未注册过,新建用户并保存
           if (user) {
-            return res.render('users/invite', {
+            return res.render('signup/invite', {
               title: 'validate',
               domains: company.email.domain,
               message: '该邮箱已被注册'
@@ -403,7 +403,7 @@ function userOperate(cid, key, res, req, index) {
               }
             });
           } else {
-            res.render('users/invite', {
+            res.render('signup/invite', {
               title: 'validate',
               domains: company.email.domain,
               message: '请使用企业邮箱'
@@ -470,7 +470,7 @@ function userOperate(cid, key, res, req, index) {
               return res.render('users/message', message.wait);
             }
             else {
-              return res.render('users/invite', {
+              return res.render('signup/invite', {
                 title: 'validate',
                 domains: company.email.domain,
                 message: '请使用企业邮箱'
