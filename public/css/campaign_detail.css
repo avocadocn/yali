@@ -81,9 +81,18 @@
 .campaign_detail .component .component_head:after {
   clear: both;
 }
-.campaign_detail .component .component_head .icon {
+.campaign_detail .component .component_head .icon_img {
   height: 14px;
   margin: 3px 0;
+}
+.campaign_detail .component .component_head .icon {
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+.campaign_detail .component .component_head .op_icon {
+  cursor: pointer;
 }
 .campaign_detail .component .component_head .title {
   color: #fff;

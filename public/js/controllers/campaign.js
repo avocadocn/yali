@@ -88,6 +88,10 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
     });
   };
 
+  $scope.detailFold = false;
+  $scope.toggleFoldDetail = function () {
+    $scope.detailFold = !$scope.detailFold;
+  }
 
 
   $scope.editingDetail = false;
