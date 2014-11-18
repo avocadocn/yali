@@ -141,7 +141,7 @@ block contentExt
               span.title.left 成员
               span.icon.op_icon.right.last(title="查看所有成员" ng-click="openMemberModal()")
                 i.fa.fa-angle-right
-              span.title.right(ng-click="openMemberModal()") {{campaign.memberCount}}
+              span.title.right.count(ng-click="openMemberModal()") {{campaign.memberCount}}
             .component_body(ng-if="campaign.memberCount > 0")
               .member_list(bs-popover)
                 img.member(ng-repeat="member in campaign.membersForCard" ng-src="{{member.photo}}/32/32" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id='pop{{member._id}}member_card' rel='popover')
@@ -168,7 +168,7 @@ block contentExt
     .member_modal.modal.fade#memberListModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       .modal-dialog
         .modal-content
-          .component
+          .component(ng-class="{'loading': !loadedMembers }")
             .component_head
               img.icon_img.left.first(src="/img/icons/users_relation.png")
               span.title.left 活动成员&nbsp;(#{campaign.members.length})

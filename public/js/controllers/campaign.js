@@ -254,6 +254,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       if (!err) {
         $scope.memberModalUnits = units;
         $scope.campaign.memberCount = count;
+        $scope.loadedMembers = true;
         callback && callback();
       }
     });

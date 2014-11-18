@@ -1,6 +1,9 @@
 .breadcrumb {
   margin-bottom: 0;
 }
+.campaign_detail .loading {
+  background: url("/img/loading.gif") center center no-repeat;
+}
 .campaign_detail .order-1 {
   order: 1;
   -webkit-order: 1;
@@ -402,6 +405,9 @@
 }
 .campaign_detail .member_card .member:nth-child(5n) {
   margin-right: 0;
+}
+.campaign_detail .member_card .count {
+  cursor: pointer;
 }
 .campaign_detail .brief_card .component_head {
   background-color: #525e70;

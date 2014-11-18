@@ -17,6 +17,10 @@ detail_input()
   margin-bottom 0
 
 .campaign_detail
+
+  .loading
+    loading()
+
   //-公用
   for order in (1..10)
     .order-{order}
@@ -289,6 +293,8 @@ detail_input()
       margin-bottom 20px
       &:nth-child(5n)
         margin-right 0
+    .count
+      cursor pointer
 
 
   .brief_card
