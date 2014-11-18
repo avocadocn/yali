@@ -44,6 +44,9 @@
 #cal-slide-content .custom_calendar_li {
   margin-bottom: 5px;
 }
+.cal-month-day {
+  cursor: pointer;
+}
 .cal-month-day .join_sign {
   margin: 10px;
   width: 6px;

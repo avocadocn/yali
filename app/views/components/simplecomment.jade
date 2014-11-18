@@ -45,4 +45,12 @@
               span 删除
     .comment_more(ng-if="!showMoreComment && comments.length-commentNum>0")
       a.center-block(ng-click="showMore()") 显示剩余的{{comments.length-commentNum}}条评论
+    ul.pager(ng-if="showMoreComment && pages[0].nextStartDate")
+      li.previous
+        a(href="#rich_comment_box" ng-click="lastPage()" ng-class="{'novisible': nowPage === 0}") <<上一页
+      li.next
+        a(href="#rich_comment_box" ng-click="nextPage()" ng-class="{'novisible': !pages[nowPage].nextStartDate}") 下一页>>
+      ul.pagination(ng-if="pages.length > 1")
+        li(ng-repeat="page in pages" ng-class="{'active': nowPage===$index}")
+          a(href="#rich_comment_box" ng-click="changePage($index)") {{$index + 1}}
   include ../partials/report_modal

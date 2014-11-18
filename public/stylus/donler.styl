@@ -775,7 +775,7 @@ textarea
             line-height 32px
             text-align center
             position relative
-            top -11px
+            top -15px
           .group_logo
             width 32px
             height 32px
@@ -2083,6 +2083,7 @@ input.ng-invalid.ng-dirty
       font-family Arial
       line-height 24px
       margin 10px 20px
+      border-radius initial
   .calendar_view_modal
     border 1px solid borderColor
     .cal-context
@@ -2095,6 +2096,13 @@ input.ng-invalid.ng-dirty
         span[data-cal-date]
           margin-top 22px
           display inline-block
+          margin 5px 20px
+          border-radius initial
+      .cal-day-today
+        background-color inherit
+        span[data-cal-date]
+          background-color #ccc
+          color #fff
     .calendar_tips
       height 50px
       dl_shadow()
@@ -2556,13 +2564,13 @@ campaignContainer(color)
             padding-top 5px
             color #999
             border-top 1px solid #ccc
-            &:hover
-              background-color #fbfbfb
-              .icon_bgrarrow
-                opacity 0.65
             .campaign_head
               float left
               width 100%
+              &:hover
+                background-color #fbfbfb
+                .icon_bgrarrow
+                  opacity 0.65
               .day_col
                 float left
                 font-size 24px
@@ -2638,15 +2646,15 @@ campaignContainer(color)
                 .photo_0,.photo_3
                   width 235px
                   height 170px
-                  margin-bottom 5px
                   float left
                 .photo_1, .photo_2
                   width 330px
                   height 170px
-                  margin-bottom 5px
                   float left
                 .photo_0,.photo_2
                   margin-right 5px
+                .photo_0,.photo_1
+                  margin-bottom 5px
               // .odd
               //   width 36%
               // .single
@@ -2655,11 +2663,13 @@ campaignContainer(color)
               clear both
               background-color #fbfbfb
               min-height 25px
-              &:hover
-                background-color #eceded
               a.comment_num
                 color #999
                 padding 3px 18px 4px 0
+                width 100%
+                text-align right
+                &:hover
+                  background-color #eceded
                 .reply_icon
                   margin-right 15px
           .campaign_base
@@ -2682,52 +2692,54 @@ campaignContainer(color)
                   white-space nowrap
           .campaign_detail
             padding-bottom 0
-            padding-top 15px
+            padding-top 0
             float left
             width 100%
-            .triangle_col
-              float left
-              border-style solid
-              border-width 16px
-              height 0
-              width 0
-            .day_col,.time_col
-              padding 5px 0 3px 0
-              line-height 100%
-              width 40px
-              margin-bottom 20px
-            .logo_col
-              padding-top 0
-              padding-left 0
-              margin-bottom 20px
-            .content_col
-              padding 0
-              max-width 265px
-              padding-left 10px
-              margin-bottom 20px
-              max-width 240px
-              a
+            .campaign_head
+              padding-top 15px
+              .triangle_col
+                float left
+                border-style solid
+                border-width 16px
+                height 0
+                width 0
+              .day_col,.time_col
+                padding 5px 0 3px 0
+                line-height 100%
+                width 40px
+                margin-bottom 20px
+              .logo_col
+                padding-top 0
+                padding-left 0
+                margin-bottom 20px
+              .content_col
+                padding 0
+                max-width 265px
+                padding-left 10px
+                margin-bottom 20px
+                max-width 240px
+                a
+                  p
+                    word-wrap break-word
+                    word-break break-all
+              .status_col
+                float right
+                height 100%
+                font-size 18px
+                padding-right 20px
+                padding-top 8px
+                margin-bottom 20px
+                .dl_btn
+                  margin-left 5px
+                .btn_red
+                  background-color #F48361
+                .btn_cancel
+                  background-color #999
+                .select_item
+                  color black
                 p
-                  word-wrap break-word
-                  word-break break-all
-            .status_col
-              float right
-              height 100%
-              font-size 18px
-              padding-right 20px
-              padding-top 8px
-              margin-bottom 20px
-              .dl_btn
-                margin-left 5px
-              .btn_red
-                background-color #F48361
-              .btn_cancel
-                background-color #999
-              .select_item
-                color black
-              p
-                margin 0
-                line-height 12px
+                  margin 0
+                  line-height 12px
         .recent_unjoin
           campaignContainer(#f48361)
           .no_campaign
@@ -2941,72 +2953,74 @@ campaignContainer(color)
       .schedulebox
         padding 0
         border none
-        .calendar_tips
-          height 25px
-          font-size 12px
-          margin-top 5px
-          .join_sign
-            height 10px
-            width 10px
-            margin 5px 5px 15px 5px
-            float left
-            border-radius 100%
-            &.length_3
-              background-color #3ca2e0
-            &.length_2
-              background-color #6cb8e7
-            &.length_1
-              background-color #a6d6f4
-              margin-left 32px
-          .campaign_label
-            line-height 20px
-            float left
-            font-size 9px
-        .calendar_nav
-          background-color #525e70
-          height 30px
-          line-height 30px
-          padding 0 10px
-          margin 0
-          clear both
-          border-top-left-radius 2px
-          border-top-right-radius 2px
-          .icon_calendar
-            height 14px
-            width 14px
-            margin-right 24px
-            margin-top 9px
-            float left
-            background-repeat no-repeat
-            background-size contain
-            background-image url('/img/icons/calendar.png')
-          .calendar_title
-            width 106px
-            text-align center
-            font-size 14px
+        .schedule_operator
+          cursor pointer
+          .calendar_tips
+            height 25px
+            font-size 12px
+            margin-top 5px
+            .join_sign
+              height 10px
+              width 10px
+              margin 5px 5px 15px 5px
+              float left
+              border-radius 100%
+              &.length_3
+                background-color #3ca2e0
+              &.length_2
+                background-color #6cb8e7
+              &.length_1
+                background-color #a6d6f4
+                margin-left 32px
+            .campaign_label
+              line-height 20px
+              float left
+              font-size 9px
+          .calendar_nav
+            background-color #525e70
+            height 30px
+            line-height 30px
+            padding 0 10px
             margin 0
-          a
-            color navbarFontColor
-            display inline-block
-            margin 0 5px
-#photoModal
-  .photos
-    .photo
-      width 400px
-      height 400px
-      margin 0 auto
-      cursor pointer
-    .last,.next
-      width 50px
-      position absolute
-      top 50%
-      font-size 50px
-      font-weight border
-      cursor pointer
-    .last
-      left 20px
-    .next
-      right 20px
+            clear both
+            border-top-left-radius 2px
+            border-top-right-radius 2px
+            .icon_calendar
+              height 14px
+              width 14px
+              margin-right 24px
+              margin-top 9px
+              float left
+              background-repeat no-repeat
+              background-size contain
+              background-image url('/img/icons/calendar.png')
+            .calendar_title
+              width 106px
+              text-align center
+              font-size 14px
+              margin 0
+            a
+              color navbarFontColor
+              display inline-block
+              margin 0 5px
+// #photoModal
+//   .photos
+//     .photo
+//       width 400px
+//       height 400px
+//       margin 0 auto
+//       cursor pointer
+//     .last,.next
+//       width 50px
+//       position absolute
+//       top 50%
+//       font-size 50px
+//       font-weight border
+//       cursor pointer
+//     .last
+//       left 20px
+//     .next
+//       right 20px
       
 .timeline_element
   background-color #FFFFFF

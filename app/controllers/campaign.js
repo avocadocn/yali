@@ -934,7 +934,7 @@ exports.getRecentCommentCampaigns = function(req, res) {
     aMonthAgo = new Date(aMonthAgo);
     var queryDate = req.user.last_comment_time > aMonthAgo ? req.user.last_comment_time : aMonthAgo;
 
-    o.query = {'host_type':'campaign','status':'active','create_date':{'$gte': queryDate},'poster._id':{'$ne':req.user._id},'host_id':{'$in':joinedCampaignId}};
+    o.query = {'host_type':'campaign','status':'active','create_date':{'$gte': queryDate},'host_id':{'$in':joinedCampaignId}};
     o.map = function () { emit(this.host_id, 1) }
     o.reduce = function (k, vals) {
       return vals.length;

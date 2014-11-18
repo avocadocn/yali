@@ -1450,7 +1450,7 @@ textarea {
   line-height: 32px;
   text-align: center;
   position: relative;
-  top: -11px;
+  top: -15px;
 }
 .dl_container .side .groupsbox .groups .group .group_logo {
   width: 32px;
@@ -3041,6 +3041,7 @@ input.ng-invalid.ng-dirty {
   font-family: Arial;
   line-height: 24px;
   margin: 10px 20px;
+  border-radius: initial;
 }
 #events-modal .calendar_view_modal {
   border: 1px solid #f4f4f4;
@@ -3058,6 +3059,15 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day span[data-cal-date] {
   margin-top: 22px;
   display: inline-block;
+  margin: 5px 20px;
+  border-radius: initial;
+}
+#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-day-today {
+  background-color: inherit;
+}
+#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-day-today span[data-cal-date] {
+  background-color: #ccc;
+  color: #fff;
 }
 #events-modal .calendar_view_modal .calendar_tips {
   height: 50px;
@@ -3613,15 +3623,15 @@ input.ng-invalid.ng-dirty {
   color: #999;
   border-top: 1px solid #ccc;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign:hover {
-  background-color: #fbfbfb;
-}
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign:hover .icon_bgrarrow {
-  opacity: 0.65;
-}
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head {
   float: left;
   width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head:hover {
+  background-color: #fbfbfb;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head:hover .icon_bgrarrow {
+  opacity: 0.65;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .day_col {
   float: left;
@@ -3714,31 +3724,35 @@ input.ng-invalid.ng-dirty {
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_3 {
   width: 235px;
   height: 170px;
-  margin-bottom: 5px;
   float: left;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_1,
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_2 {
   width: 330px;
   height: 170px;
-  margin-bottom: 5px;
   float: left;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_0,
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_2 {
   margin-right: 5px;
 }
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_0,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_1 {
+  margin-bottom: 5px;
+}
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments {
   clear: both;
   background-color: #fbfbfb;
   min-height: 25px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments:hover {
-  background-color: #eceded;
-}
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num {
   color: #999;
   padding: 3px 18px 4px 0;
+  width: 100%;
+  text-align: right;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num:hover {
+  background-color: #eceded;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num .reply_icon {
   margin-right: 15px;
@@ -3768,41 +3782,44 @@ input.ng-invalid.ng-dirty {
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail {
   padding-bottom: 0;
-  padding-top: 15px;
+  padding-top: 0;
   float: left;
   width: 100%;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .triangle_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head {
+  padding-top: 15px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .triangle_col {
   float: left;
   border-style: solid;
   border-width: 16px;
   height: 0;
   width: 0;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .day_col,
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .time_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .day_col,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .time_col {
   padding: 5px 0 3px 0;
   line-height: 100%;
   width: 40px;
   margin-bottom: 20px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .logo_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .logo_col {
   padding-top: 0;
   padding-left: 0;
   margin-bottom: 20px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .content_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .content_col {
   padding: 0;
   max-width: 265px;
   padding-left: 10px;
   margin-bottom: 20px;
   max-width: 240px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .content_col a p {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .content_col a p {
   word-wrap: break-word;
   word-break: break-all;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col {
   float: right;
   height: 100%;
   font-size: 18px;
@@ -3810,19 +3827,19 @@ input.ng-invalid.ng-dirty {
   padding-top: 8px;
   margin-bottom: 20px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .dl_btn {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .dl_btn {
   margin-left: 5px;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .btn_red {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .btn_red {
   background-color: #f48361;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .btn_cancel {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .btn_cancel {
   background-color: #999;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col .select_item {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .select_item {
   color: #000;
 }
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .status_col p {
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col p {
   margin: 0;
   line-height: 12px;
 }
@@ -4170,34 +4187,37 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   border: none;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator {
+  cursor: pointer;
+}
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_tips {
   height: 25px;
   font-size: 12px;
   margin-top: 5px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_tips .join_sign {
   height: 10px;
   width: 10px;
   margin: 5px 5px 15px 5px;
   float: left;
   border-radius: 100%;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_3 {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_tips .join_sign.length_3 {
   background-color: #3ca2e0;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_2 {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_tips .join_sign.length_2 {
   background-color: #6cb8e7;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_1 {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_tips .join_sign.length_1 {
   background-color: #a6d6f4;
   margin-left: 32px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .campaign_label {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_tips .campaign_label {
   line-height: 20px;
   float: left;
   font-size: 9px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_nav {
   background-color: #525e70;
   height: 30px;
   line-height: 30px;
@@ -4207,7 +4227,7 @@ input.ng-invalid.ng-dirty {
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav .icon_calendar {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_nav .icon_calendar {
   height: 14px;
   width: 14px;
   margin-right: 24px;
@@ -4217,37 +4237,16 @@ input.ng-invalid.ng-dirty {
   background-size: contain;
   background-image: url("/img/icons/calendar.png");
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav .calendar_title {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_nav .calendar_title {
   width: 106px;
   text-align: center;
   font-size: 14px;
   margin: 0;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav a {
+.user_page .dl_container .schedule_small .schedulebox .schedule_operator .calendar_nav a {
   color: #fff;
   display: inline-block;
   margin: 0 5px;
-}
-#photoModal .photos .photo {
-  width: 400px;
-  height: 400px;
-  margin: 0 auto;
-  cursor: pointer;
-}
-#photoModal .photos .last,
-#photoModal .photos .next {
-  width: 50px;
-  position: absolute;
-  top: 50%;
-  font-size: 50px;
-  font-weight: border;
-  cursor: pointer;
-}
-#photoModal .photos .last {
-  left: 20px;
-}
-#photoModal .photos .next {
-  right: 20px;
 }
 .timeline_element {
   background-color: #fff;
