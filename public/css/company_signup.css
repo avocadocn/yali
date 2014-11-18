@@ -205,3 +205,9 @@
   background-color: #3ca2e0;
   color: #fff;
 }
+.signup_row .personal_signup .dl_sm_group .btn_submit {
+  background-color: #3ca2e0;
+}
+.signup_row .personal_signup a {
+  color: #3ca2e0;
+}

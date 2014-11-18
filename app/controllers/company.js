@@ -637,6 +637,7 @@ exports.create = function(req, res) {
             } else {
               throw new Error('邀请码不正确');
             }
+
           });
       } else {
         return Company.create({
@@ -661,6 +662,9 @@ exports.create = function(req, res) {
       company.info.phone = req.body.phone;
       company.provider = 'company';
       company.login_email = req.body.email;
+      //生成随机邀请码
+      var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+      company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 8).toString('base64');
       var _email = req.body.email.split('@');
       if (_email[1])
         company.email.domain.push(_email[1]);

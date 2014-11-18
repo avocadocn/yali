@@ -590,7 +590,7 @@ exports.mailActive = function(req, res){
               return res.send(500,{'msg':'user save err.'});
             }
           });
-          res.render('users/setProfile', {
+          res.render('signup/personal_step_four', {
             title: '激活成功',
             key: key,
             uid: uid
@@ -648,10 +648,8 @@ exports.lastStepActive = function(req, res){
             });
           }
         });
-        res.render('users/setProfile', {
+        res.render('signup/setProfile', {
           title: '激活成功',
-          key: key,
-          uid: uid
         });
       }
     }
@@ -724,10 +722,8 @@ exports.setProfile = function(req, res) {
               //req.session.username = user.username;
             }
           });
-          res.render('users/setProfile', {
+          res.render('signup/setProfile', {
             title: '激活成功',
-            key: key,
-            uid: uid
           });
         } else {
           res.render('users/message', message.invalid);
