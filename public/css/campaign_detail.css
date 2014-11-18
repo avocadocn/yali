@@ -232,6 +232,13 @@
   color: #fff;
   background-color: #3498db;
 }
+.campaign_detail .base_card .component_body .operator_container .cancel,
+.campaign_detail .base_card .component_body .operator_container .refuse {
+  background-color: #ccc;
+}
+.campaign_detail .base_card .component_body .operator_container .refuse {
+  margin-top: 20px;
+}
 .campaign_detail .detail_card .component_head {
   background-color: #ffc053;
 }

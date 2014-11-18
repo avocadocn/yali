@@ -1624,7 +1624,6 @@ var campaign = req.campaign;
     units: resUnits,
     joinCount: campaign.members.length
   };
-
   res.send({
     result: 1,
     campaign: resCampaign,

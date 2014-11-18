@@ -74,8 +74,11 @@ block contentExt
                   input.notice_text(type="text" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
                   button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
             .operator_container
-              button.operator_button.join(ng-if="!campaign.isDeadline && allowJoinUnits.length>0 && !campaign.isJoin" ng-click="openJoinModal()") 参加
-              button.operator_button.quit(ng-if="campaign.isJoin" ng-click="quit()") 退出
+              button.operator_button.join(ng-if="!campaign.isWaitingReply && !campaign.isDeadline && allowJoinUnits.length>0 && !campaign.isJoin" ng-click="openJoinModal()" ng-cloak) 参加
+              button.operator_button.quit(ng-if="!campaign.isWaitingReply && campaign.isJoin" ng-click="quit()" ng-cloak) 退出
+              button.operator_button.access(ng-if="campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 1)" ng-cloak) 接受
+              button.operator_button.refuse(ng-if="campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 2)" ng-cloak) 拒绝
+              button.operator_button.cancel(ng-if="campaign.isWaitingReply && allow.cancel" ng-click="dealProvoke(campaign.units[0].tid, 3)" ng-cloak) 取消
 
         .component.detail_card(ng-cloak)
           .component_head
