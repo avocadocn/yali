@@ -109,6 +109,15 @@
   font-size: 12px;
   line-height: 23px;
 }
+.calendar_box_small .cal-row-fluid .cal-cell1 {
+  width: 34px;
+}
+.calendar_box_small .cal-row-fluid .cal-cell1[data-cal-row="-day7"] {
+  width: 35px;
+}
+.calendar_box_small .cal-row-fluid .cal-cell1[data-cal-row="-day1"] {
+  width: 35px;
+}
 #cal-slide-content .event-item {
   position: relative;
 }

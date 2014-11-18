@@ -74,8 +74,8 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', 'Report','Campaign',
-  function($rootScope,$location,$interval,$http,$anchorScroll,Report,Campaign) {
+tabViewUser.run(['$rootScope','$location','$interval','$http','anchorSmoothScroll', 'Report','Campaign',
+  function($rootScope,$location,$interval,$http,anchorSmoothScroll,Report,Campaign) {
     $rootScope.message_for_group = false;
     var getRecentCommentTime = 10 * 60 * 1000;
     $rootScope.newReply=[];
@@ -86,7 +86,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$anchorScroll', '
       $rootScope.loading = false;
     });
     $rootScope.bakckTop = function(){
-      $anchorScroll(0);
+      anchorSmoothScroll.scrollTo(0);
     }
     $rootScope.pushReport = function(){
       Report.publish($rootScope.reportContent,function(err,msg){
@@ -383,6 +383,7 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
 
   var placeSearchCallBack = function(data){
     $scope.locationmap.clearMap();
+    console.log(data)
     var lngX = data.poiList.pois[0].location.getLng();
     var latY = data.poiList.pois[0].location.getLat();
     $scope.location.coordinates=[lngX, latY];
@@ -406,28 +407,26 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
     $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
     $scope.locationmap.plugin(["AMap.CitySearch"], function() {
       //实例化城市查询类
-      var citysearch = new AMap.CitySearch();
-      //自动获取用户IP，返回当前城市
-      citysearch.getLocalCity();
-      //citysearch.getCityByIp("123.125.114.*");
-      AMap.event.addListener(citysearch, "complete", function(result){
-        console.log(1)
-        if(result && result.city && result.bounds) {
-          var citybounds = result.bounds;
-          //地图显示当前城市
-          $scope.locationmap.setBounds(citybounds);
-          console.log(citybounds)
+      // var citysearch = new AMap.CitySearch();
+      // //自动获取用户IP，返回当前城市
+      // citysearch.getLocalCity();
+      // //citysearch.getCityByIp("123.125.114.*");
+      // AMap.event.addListener(citysearch, "complete", function(result){
+      //   if(result && result.city && result.bounds) {
+      //     var citybounds = result.bounds;
+      //     //地图显示当前城市
+      //     $scope.locationmap.setBounds(citybounds);
           $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {
             $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
               pageSize:1,
               pageIndex:1,
-              city: result.city
+              // city: result.city
 
             });
             AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
           });
-        }
-      });
+      //   }
+      // });
       AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
     });
     window.map_ready =true;

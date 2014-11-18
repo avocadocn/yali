@@ -862,6 +862,7 @@ exports.timeLine = function(req,res){
   var uid = req.params.userId;
   var option = {
     'active':true,
+    'cid':req.profile.cid,
     'campaign_unit.member._id':uid
   }
   if(req.role=='OWNER'){

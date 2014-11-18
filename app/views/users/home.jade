@@ -5,7 +5,7 @@ append headExt
 
 
 mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
-  .user_campaigns_container(ng-init="#{containerClass}=false;" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')" ng-cloak)
+  .user_campaigns_container(ng-init="#{containerClass}=#{detailFlag};" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')" ng-cloak)
     .container_head(ng-click="#{containerClass}=!#{containerClass};" ng-cloak)
       span= containerTitle
       i.fa.pull-right(ng-if="#{items}.length>2" ng-class="{'fa-angle-right':!#{containerClass}&&nowShow!=='#{containerClass}','fa-angle-down':#{containerClass} || nowShow=='#{containerClass}'}")
@@ -23,7 +23,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
             span 点击
             button.dl_btn.dl_btn_small 找对手
             span.tip_info 向其他小队发起挑战
-    .campaign(ng-class="{'campaign_detail':#{detailFlag}||nowShow=='#{containerClass}','campaign_base':#{detailFlag}==false&&nowShow!=='#{containerClass}'}" ng-repeat="item in #{items}" ng-if="$index<2||#{containerClass}||nowShow=='#{containerClass}'" ng-cloak)
+    .campaign(ng-class="{true: 'campaign_detail', false: 'campaign_base'}[(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}']" ng-repeat="item in #{items}" ng-if="#{detailFlag} ||$index<2||#{containerClass}||nowShow=='#{containerClass}'" ng-cloak)
       a.campaign_head.clearLinkUnderline(ng-href="/campaign/detail/{{item._id}}" target="_blank")
         .day_col
           //- (ng-if="judgeYear($index)")
@@ -80,8 +80,8 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
       //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0?photo.uri+'/282/305':photo.uri+'/282/150')}}")
       //-   div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="4")
       //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0 || $index==3)?photo.uri+'/235/170':photo.uri+'/330/170'}}")
-      pre-image-box(ng-if="#{detailFlag}||nowShow=='#{containerClass}'" images="item.photo_thumbnails" photo-album-id="item.photo_album_id")
-      .comments(ng-if="#{detailFlag}||nowShow=='#{containerClass}'")
+      pre-image-box(ng-if="(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}'" images="item.photo_thumbnails" photo-album-id="item.photo_album_id")
+      .comments(ng-if="(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}'")
         //- a.clearLinkUnderline.pull-right.vote(ng-if="!item.confirm_status") {{item.campaign_unit[item.team[0]].positive}}个赞成
         a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$root.showComment=='#{containerClass}'+$index?null:'#{containerClass}'+$index;")
           img.reply_icon(src="/img/comment_grey.png")

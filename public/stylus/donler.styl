@@ -734,7 +734,6 @@ textarea
       margin-bottom 10px
       position relative
       overflow hidden
-      border 1px solid #e6e6e6
       dl_shadow()
       .head_title
         color #fff
@@ -787,8 +786,11 @@ textarea
             left 6px
             top -13px
             background-repeat no-repeat
-      .secend
+      .group_unfold
         padding-top 10px
+        .groups
+          padding 0
+          padding-left 18px
   .aside
     width 128px
     margin-right 20px
@@ -2606,6 +2608,13 @@ campaignContainer(color)
                 float right
                 margin-right 20px
                 margin-top 11px
+              .status_col
+                float right
+                height 100%
+                font-size 18px
+                padding-right 20px
+                padding-top 8px
+                margin-bottom 20px
             .photos
               float left
               .photo
@@ -2873,7 +2882,7 @@ campaignContainer(color)
           color #ffffff
         &.sponsor
           background-color #3ca2e0
-          margin-right 2px
+          margin-right 4px
           &.affix
             top 60px
           &:hover
@@ -2955,54 +2964,54 @@ campaignContainer(color)
         border none
         .schedule_operator
           cursor pointer
-          .calendar_tips
-            height 25px
-            font-size 12px
-            margin-top 5px
-            .join_sign
-              height 10px
-              width 10px
-              margin 5px 5px 15px 5px
-              float left
-              border-radius 100%
-              &.length_3
-                background-color #3ca2e0
-              &.length_2
-                background-color #6cb8e7
-              &.length_1
-                background-color #a6d6f4
-                margin-left 32px
-            .campaign_label
-              line-height 20px
-              float left
-              font-size 9px
-          .calendar_nav
-            background-color #525e70
-            height 30px
-            line-height 30px
-            padding 0 10px
+        .calendar_tips
+          height 25px
+          font-size 12px
+          margin-top 5px
+          .join_sign
+            height 10px
+            width 10px
+            margin 5px 5px 15px 5px
+            float left
+            border-radius 100%
+            &.length_3
+              background-color #3ca2e0
+            &.length_2
+              background-color #6cb8e7
+            &.length_1
+              background-color #a6d6f4
+              margin-left 32px
+          .campaign_label
+            line-height 20px
+            float left
+            font-size 9px
+        .calendar_nav
+          background-color #525e70
+          height 30px
+          line-height 30px
+          padding 0 10px
+          margin 0
+          clear both
+          border-top-left-radius 2px
+          border-top-right-radius 2px
+          .icon_calendar
+            height 14px
+            width 14px
+            margin-right 24px
+            margin-top 9px
+            float left
+            background-repeat no-repeat
+            background-size contain
+            background-image url('/img/icons/calendar.png')
+          .calendar_title
+            width 106px
+            text-align center
+            font-size 14px
             margin 0
-            clear both
-            border-top-left-radius 2px
-            border-top-right-radius 2px
-            .icon_calendar
-              height 14px
-              width 14px
-              margin-right 24px
-              margin-top 9px
-              float left
-              background-repeat no-repeat
-              background-size contain
-              background-image url('/img/icons/calendar.png')
-            .calendar_title
-              width 106px
-              text-align center
-              font-size 14px
-              margin 0
-            a
-              color navbarFontColor
-              display inline-block
-              margin 0 5px
+          a
+            color navbarFontColor
+            display inline-block
+            margin 0 5px
 // #photoModal
 //   .photos
 //     .photo
