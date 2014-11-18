@@ -81,16 +81,40 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
     }
   }
 
-  $scope.search=function(){
-    $http.post('/search/company/key='+$scope.company_name).success(function(data,status){
-      $scope.companies=data.companies;
-      $scope.step=2;
-
-    });
+  $scope.search=function(keyEvent){
+    if(keyEvent&&keyEvent.which===13||!keyEvent){
+      $http.post('/search/company',{regx:$scope.company_name}).success(function(data,status){
+        $scope.companies=data;
+        $scope.step=2;
+      });
+    }
   };
 
   $scope.select=function(index){
+    $scope.cid = $scope.companies[index]._id;
     $scope.step = 3;
+    $scope.active =0;
+  };
+
+  $scope.mailCheck = function() {
+    if($scope.email){
+      $scope.loading = true;
+      try{
+        $http({
+          method: 'post',
+          url: '/users/mailCheck',
+          data:{
+              login_email: $scope.email
+          }
+        }).success(function(data, status) {
+          $scope.loading = false;
+          $scope.active=data.active;
+        });
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
   };
 
 }]);

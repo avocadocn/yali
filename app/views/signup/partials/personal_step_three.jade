@@ -3,7 +3,7 @@ form.block.signup_block.personal_signup.form-horizontal
     span 第
     span.tip_number 3
     span 步：填写您的信息
-  form.form-inline.form-horizontal
+  form.form-inline.form-horizontal(role="form" name='active_form' action='/users/newRegister' method='post')
     .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
       .dl_row
         .label_left
@@ -23,8 +23,8 @@ form.block.signup_block.personal_signup.form-horizontal
             span 并查看邮箱激活。
         div(ng-show='active==3' ng-cloak)
           span 您的邮箱已注册,请
-          a(href='/users/signin') 登录。
-          span 若是您忘记了密码,
+          a(href='/users/signin') 登录
+          span 。若是您忘记了密码,
           a(href='/users/forgetPwd') 请点此跳转
         p
     include personal_form
