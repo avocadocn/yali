@@ -52,7 +52,7 @@ block contentExt
             span.title.left 活动信息
             img.icon_img.right.last.op_icon(ng-if="detailFold" src="/img/icons/unfold.png" ng-click="toggleFoldDetail()")
             img.icon_img.right.last.op_icon(ng-if="!detailFold" src="/img/icons/fold.png" ng-click="toggleFoldDetail()")
-            img.icon_img.right.op_icon(ng-if="!editingDetail && allow.edit" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
+            img.icon_img.right.op_icon(title="编辑" ng-if="!editingDetail && allow.edit" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
             span.title.save.right(ng-if="editingDetail" ng-click="save()" ng-disabled="detailForm.content.$invalid" ng-cloak) 保存
             span.title.cancel.right(ng-if="editingDetail" ng-click="toggleEdit()" ng-cloak) 取消
           .component_body(ng-show="!detailFold")
@@ -119,7 +119,7 @@ block contentExt
             img.icon_img.left.first(src="/img/map-pin-circle.png")
             span.title.left 活动地点
             if campaign.location.coordinates.length==2
-              a.right.last(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
+              a.right.last(title="查看大图" href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
                 img.icon_img(src="/img/icons/view.png")
           .component_body
             if campaign.location.coordinates.length==2
@@ -132,7 +132,7 @@ block contentExt
           .component_head
             img.icon_img.left.first(src="/img/icons/users_relation.png")
             span.title.left 成员
-            span.icon.op_icon.right.last(ng-click="openMemberModal()")
+            span.icon.op_icon.right.last(title="查看所有成员" ng-click="openMemberModal()")
               i.fa.fa-angle-right
             span.title.right(ng-click="openMemberModal()") {{campaign.memberCount}}
           .component_body(ng-if="campaign.memberCount > 0")
@@ -143,18 +143,17 @@ block contentExt
           each scoreBoard in components.ScoreBoard
             score-board(component-id="#{scoreBoard}" class="#{helper.start('order-1')} #{helper.end('order-1')}")
 
-        if isStart
-          .component.brief_card(class="#{helper.start('order-1')} #{helper.end('order-2')}")
-            .component_head
-              span.icon.left.first
-                i.fa.fa-bars
-              span.title.left 活动信息
-              img.icon_img.op_icon.right.last(src="/img/icons/view.png" ng-click="showDetailModal()")
-            .component_body
-              p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
-              p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
-              p.text 地点: #{campaign.location.name}
-              p.text 类型: #{campaign.campaign_mold}
+        .component.brief_card(ng-if="campaign.isStart" class="#{helper.start('order-1')} #{helper.end('order-2')}")
+          .component_head
+            span.icon.left.first
+              i.fa.fa-bars
+            span.title.left 活动信息
+            img.icon_img.op_icon.right.last(title="查看详细" src="/img/icons/view.png" ng-click="showDetailModal()")
+          .component_body
+            p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
+            p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
+            p.text 地点: #{campaign.location.name}
+            p.text 类型: #{campaign.campaign_mold}
 
     #campaign_data(data-id="#{campaign._id}")
 
