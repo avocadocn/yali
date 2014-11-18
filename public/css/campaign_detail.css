@@ -142,7 +142,7 @@
   background-color: #f48361;
 }
 .campaign_detail .base_card .component_body {
-  display: webkit-flex;
+  display: -webkit-flex;
   display: flex;
 }
 .campaign_detail .base_card .component_body .unit_container .unit {
@@ -166,7 +166,7 @@
   text-align: center;
 }
 .campaign_detail .base_card .component_body .notice_container {
-  webkit-flex: 1;
+  -webkit-flex: 1;
   flex: 1;
 }
 .campaign_detail .base_card .component_body .notice_container .notice {
@@ -181,8 +181,8 @@
   font-size: 12px;
 }
 .campaign_detail .base_card .component_body .notice_container .notice .publish {
-  display: flex;
   display: -webkit-flex;
+  display: flex;
   margin-top: 10px;
 }
 .campaign_detail .base_card .component_body .notice_container .notice .publish .notice_text {
@@ -359,16 +359,13 @@
   margin-right: 5px;
 }
 .campaign_detail .map_card .component_head {
-  background-color: #8dd4e6;
+  background-color: #525e70;
 }
 .campaign_detail .map_card .component_body {
   padding: 0;
 }
 .campaign_detail .member_card .component_head {
-  background-color: #73a5dd;
-}
-.campaign_detail .member_card .component_head .head_button {
-  background-color: #4e83be;
+  background-color: #525e70;
 }
 .campaign_detail .member_card .component_body .member {
   margin-right: 9px;
@@ -377,10 +374,7 @@
   margin-right: 0;
 }
 .campaign_detail .brief_card .component_head {
-  background-color: #73a5dd;
-}
-.campaign_detail .brief_card .component_head .head_button {
-  background-color: #4e83be;
+  background-color: #525e70;
 }
 .campaign_detail .modal .modal-content {
   border-radius: 0;
@@ -389,15 +383,8 @@
   height: 400px;
   box-shadow: none;
 }
-.campaign_detail .modal .modal-content .component .component_head {
-  background-color: #73a5dd;
-}
-.campaign_detail .modal .modal-content .component .component_head .dl_close {
-  padding: 2px;
-}
-.campaign_detail .modal .modal-content .component .component_head .dl_close .icon_close {
-  width: 14px;
-  height: 14px;
+.campaign_detail .member_modal .modal-content .component .component_head {
+  background-color: #525e70;
 }
 .campaign_detail .member_modal .modal-content .component .component_body .unit_panel:before,
 .campaign_detail .member_modal .modal-content .component .component_body .unit_panel:after {

@@ -60,7 +60,8 @@ var donlerCssSrc = [
   './public/css/custom_calendar.css',
   './public/css/group_select.css',
   './public/css/campaign_list.css',
-  './public/css/tree.css'
+  './public/css/tree.css',
+  './public/css/components.css'
 ];
 gulp.task('css:donler', function () {
   gulp.src(donlerCssSrc)

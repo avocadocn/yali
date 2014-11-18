@@ -83,7 +83,7 @@ block contentExt
             span.title.left 活动信息
             img.icon_img.right.last.op_icon(ng-if="detailFold" src="/img/icons/unfold.png" ng-click="toggleFoldDetail()")
             img.icon_img.right.last.op_icon(ng-if="!detailFold" src="/img/icons/fold.png" ng-click="toggleFoldDetail()")
-            img.icon_img.right.op_icon(ng-if="!editingDetail" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
+            img.icon_img.right.op_icon(ng-if="!editingDetail && allow.edit" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
             span.title.save.right(ng-if="editingDetail" ng-click="save()" ng-disabled="detailForm.content.$invalid" ng-cloak) 保存
             span.title.cancel.right(ng-if="editingDetail" ng-click="toggleEdit()" ng-cloak) 取消
           .component_body(ng-show="!detailFold")
@@ -108,7 +108,7 @@ block contentExt
                   .progress-bar(role="progressbar" aria-valuenow="{{campaign.joinCount}}" aria-valuemin="0" aria-valuemax="{{campaign.member_max}}" style="width: {{campaign.joinCount*100/campaign.member_max}}%")
                 span {{campaign.joinCount}}/{{campaign.member_max}}
               .text_dark(ng-if="campaign.member_min") 最少报名人数：{{campaign.member_min}}
-            form.detail_editing(ng-show="editingDetail" name="detailForm" ng-cloak)
+            form.detail_editing(ng-show="editingDetail && allow.edit" name="detailForm" ng-cloak)
               .text_dark.clearfix
                 span.pull-left.span_intro 活动简介：
                 .detail_editor.pull-left.detail_input
@@ -196,10 +196,10 @@ block contentExt
         .modal-content
           .component
             .component_head
-              img.component_logo(src="/img/people-general.png")
-              span.title 活动成员&nbsp;(#{campaign.members.length})
-              button.close.dl_close(data-dismiss="modal" aria-hidden="true")
-                img.icon_close(src="/img/icons/icon_close.png")
+              img.icon_img.left.first(src="/img/icons/users_relation.png")
+              span.title.left 活动成员&nbsp;(#{campaign.members.length})
+              span.icon.op_icon.right.last(data-dismiss="modal" aria-hidden="true")
+                i.fa.fa-times
             .component_body
               if campaign.campaign_unit.length > 1
                 .unit_panel

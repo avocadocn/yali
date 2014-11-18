@@ -102,9 +102,12 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
         if (err) {
           alertify.alert(err);
         } else {
-          alertify.alert('编辑成功', function (e) {
-            window.location = '/campaign/detail/' + campaignId;
-          });
+          $scope.campaign.content = $scope.modelData.content;
+          $scope.campaign.member_max = $scope.modelData.member_max;
+          $scope.campaign.member_min = $scope.modelData.member_min;
+          $scope.campaign.deadline = $scope.modelData.deadline;
+          $scope.campaign.tags = $scope.modelData.tags.split(',');
+          $scope.editingDetail = false;
         }
       });
     }else{
