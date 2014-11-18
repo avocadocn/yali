@@ -29,6 +29,10 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       $scope.modelData.tags = tags;
       $('#taginput').val(tags);
       $('#taginput').tagsinput();
+
+      $scope.allowJoinUnits = $scope.campaign.units.filter(function (unit) {
+        return unit.canJoin;
+      });
     }
   });
 
@@ -58,6 +62,17 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
     });
   };
 
+  var joinModal = $('#joinModal');
+
+  // 如果同时加入了多个小队，则打开modal，否则直接参加
+  $scope.openJoinModal = function () {
+    if ($scope.allowJoinUnits.length === 1) {
+      $scope.join($scope.allowJoinUnits[0].cid, $scope.allowJoinUnits[0].tid);
+    } else {
+      joinModal.modal('show');
+    }
+  };
+
   $scope.join = function (cid, tid) {
     Campaign.join({
       campaignId: campaignId,
@@ -67,7 +82,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       if (err) {
         alertify.alert(err);
       } else {
-        $scope.isJoin = true;
+        $scope.campaign.isJoin = true;
         alertify.alert('参加活动成功', function (e) {
           window.location.reload();
         });
@@ -80,7 +95,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       if (err) {
         alertify.alert(err);
       } else {
-        $scope.isJoin = false;
+        $scope.campaign.isJoin = false;
         alertify.alert('退出活动成功', function (e) {
           window.location.reload();
         });

@@ -1578,6 +1578,7 @@ var campaign = req.campaign;
         companies: campaign.cid
       }, ['joinCompanyCampaign']);
       resUnit = {
+        cid: unit.company._id,
         name: unit.company.name,
         logo: unit.company.logo,
         link: "/company/home/" + unit.company._id,
@@ -1589,6 +1590,8 @@ var campaign = req.campaign;
         teams: [unit.team._id]
       }, ['joinTeamCampaign']);
       resUnit = {
+        cid: unit.company._id,
+        tid: unit.team._id,
         name: unit.team.name,
         logo: unit.team.logo,
         link: "/group/page/" + unit.team._id,

@@ -86,7 +86,17 @@ detail_input()
         color #999999
       .text
         color #cccccc
-
+  .progress
+    margin 0
+    margin-right 10px
+    display inline-block
+    width 180px
+    height 10px
+    border-radius 15px
+    background-color #525e70
+    .progress-bar
+      background-color #ffc053
+      box-shadow none
 
   //-左侧
   .base_card
@@ -187,17 +197,7 @@ detail_input()
         background-color #b1c6d2
     .deadline_countdown
       color #f48361
-    .progress
-      margin 0
-      margin-right 10px
-      display inline-block
-      width 180px
-      height 10px
-      border-radius 15px
-      background-color #525e70
-      .progress-bar
-        background-color #ffc053
-        box-shadow none
+    
     .detail_editing
       margin-bottom -6px
       .span_intro
@@ -279,10 +279,11 @@ detail_input()
 
   .modal
     .modal-content
+      margin-top 150px
       border-radius 0
-      .component
-        height 400px
-        box-shadow none
+    .component
+      height 400px
+      box-shadow none
 
   .member_modal
     .modal-content
@@ -355,10 +356,6 @@ detail_input()
 
     .component_body
       padding 0 !important
-    .title
-      margin-top 20px
-      font-size 14px
-      color #73a5dd
     .base_info
       padding 0 20px 20px
       .info
@@ -405,17 +402,17 @@ detail_input()
 
       .sub_title
         margin-right 10px
-      .progress
-        margin 0
-        margin-right 10px
-        display inline-block
-        width 200px
-        height 14px
-        border-radius 15px
-        background-color #4b6f97
-        .progress-bar
-          background-color #97d7c6
-          box-shadow none
+      // .progress
+      //   margin 0
+      //   margin-right 10px
+      //   display inline-block
+      //   width 200px
+      //   height 14px
+      //   border-radius 15px
+      //   background-color #4b6f97
+      //   .progress-bar
+      //     background-color #97d7c6
+      //     box-shadow none
       .tags
         .tag
           margin-right 5px
@@ -426,5 +423,58 @@ detail_input()
           color #ffffff
           background-color #b1c6d2
 
-
-
+  .join_modal
+    .modal-content
+      width 480px
+      height 180px
+    .component
+      height auto
+    .component_head
+      background-color white
+      .icon
+        color #cccccc
+    .component_body
+      padding 0 40px
+    .remind
+      margin 0
+      color #999999
+    .unit_box
+      width 400px
+      margin-top 20px
+    .unit
+      float left
+      width 180px
+      height 70px
+      margin-bottom 40px
+      padding 10px
+      background-color #edebec
+      border 1px solid #f48361
+      border-radius 6px
+      &:nth-child(2n)
+        margin-left 40px
+    .logo
+      display block
+      float left
+      margin-right 10px
+      width 50px
+      height 50px
+    .name
+      display block
+      float left
+      width 98px
+      font-size 14px
+      line-height 18px
+      overflow hidden
+      text-align left
+      text-overflow ellipsis
+      white-space nowrap
+    .join
+      display block
+      float left
+      margin-top 8px
+      width 98px
+      height 24px
+      color white
+      background-color #999999
+      &:hover
+        background-color #f48361

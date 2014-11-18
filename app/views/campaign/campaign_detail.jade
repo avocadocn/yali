@@ -58,10 +58,10 @@ block contentExt
             //-           button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
 
             .unit_container.clearfix
-              .unit(ng-repeat="unit in campaign.units")
+              .unit(ng-repeat="unit in campaign.units" ng-cloak)
                 a(ng-href="{{unit.link}}" target="_blank")
                   img.logo(ng-src="{{unit.logo}}" title="{{unit.name}}")
-                span.name {{unit.name}}
+                span.name(title="{{unit.name}}") {{unit.name}}
             .notice_container
               .notice
                 span.title 最新公告
@@ -74,7 +74,8 @@ block contentExt
                   input.notice_text(type="text" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
                   button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
             .operator_container
-              button.operator_button.join 参加
+              button.operator_button.join(ng-if="!campaign.isDeadline && allowJoinUnits.length>0 && !campaign.isJoin" ng-click="openJoinModal()") 参加
+              button.operator_button.quit(ng-if="campaign.isJoin" ng-click="quit()") 退出
 
         .component.detail_card(ng-cloak)
           .component_head
@@ -182,7 +183,7 @@ block contentExt
               span.icon.left.first
                 i.fa.fa-bars
               span.title.left 活动信息
-              img.icon_img.right.last(src="/img/icons/view.png" ng-click="showDetailModal()")
+              img.icon_img.op_icon.right.last(src="/img/icons/view.png" ng-click="showDetailModal()")
             .component_body
               p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
               p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
@@ -241,9 +242,11 @@ block contentExt
         .modal-content
           .component
             .component_head
-              span.title 活动信息
-              button.close.dl_close(data-dismiss="modal" aria-hidden="true")
-                img.icon_close(src="/img/icons/icon_close.png")
+              span.icon.left.first
+                i.fa.fa-bars
+              span.title.left 活动信息
+              span.icon.op_icon.right.last(data-dismiss="modal" aria-hidden="true")
+                i.fa.fa-times
             .component_body
               .base_info
                 h4.title
@@ -295,6 +298,20 @@ block contentExt
                     span.sub_title 报名截止时间:
                     span #{moment(campaign.deadline).format('YYYY-MM-DD HH:mm')}
 
+    .join_modal.modal.fade#joinModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .component
+            .component_head
+              span.icon.op_icon.right.last(data-dismiss="modal" aria-hidden="true")
+                i.fa.fa-times
+            .component_body
+              p.remind 您同时参加了多个小队，请选择其中一个参加比赛：
+              .unit_box.clearfix(ng-cloak)
+                .unit.clearfix(ng-repeat="unit in allowJoinUnits")
+                  img.logo(ng-src="{{unit.logo}}")
+                  span.name(title="{{unit.name}}") {{unit.name}}
+                  button.join(ng-click="join(unit.cid, unit.tid)") 参加这个小队
 
 append footExt
   script(src="/js/directives/count_down.js")

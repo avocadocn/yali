@@ -132,6 +132,19 @@
 .campaign_detail .component .component_body .text {
   color: #ccc;
 }
+.campaign_detail .progress {
+  margin: 0;
+  margin-right: 10px;
+  display: inline-block;
+  width: 180px;
+  height: 10px;
+  border-radius: 15px;
+  background-color: #525e70;
+}
+.campaign_detail .progress .progress-bar {
+  background-color: #ffc053;
+  box-shadow: none;
+}
 .campaign_detail .base_card .component_head {
   background-color: #3498db;
 }
@@ -260,19 +273,6 @@
 .campaign_detail .detail_card .deadline_countdown {
   color: #f48361;
 }
-.campaign_detail .detail_card .progress {
-  margin: 0;
-  margin-right: 10px;
-  display: inline-block;
-  width: 180px;
-  height: 10px;
-  border-radius: 15px;
-  background-color: #525e70;
-}
-.campaign_detail .detail_card .progress .progress-bar {
-  background-color: #ffc053;
-  box-shadow: none;
-}
 .campaign_detail .detail_card .detail_editing {
   margin-bottom: -6px;
 }
@@ -377,9 +377,10 @@
   background-color: #525e70;
 }
 .campaign_detail .modal .modal-content {
+  margin-top: 150px;
   border-radius: 0;
 }
-.campaign_detail .modal .modal-content .component {
+.campaign_detail .modal .component {
   height: 400px;
   box-shadow: none;
 }
@@ -479,11 +480,6 @@
 .campaign_detail .detail_modal .component_body {
   padding: 0 !important;
 }
-.campaign_detail .detail_modal .title {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #73a5dd;
-}
 .campaign_detail .detail_modal .base_info {
   padding: 0 20px 20px;
 }
@@ -546,19 +542,6 @@
 .campaign_detail .detail_modal .more_info .sub_title {
   margin-right: 10px;
 }
-.campaign_detail .detail_modal .more_info .progress {
-  margin: 0;
-  margin-right: 10px;
-  display: inline-block;
-  width: 200px;
-  height: 14px;
-  border-radius: 15px;
-  background-color: #4b6f97;
-}
-.campaign_detail .detail_modal .more_info .progress .progress-bar {
-  background-color: #97d7c6;
-  box-shadow: none;
-}
 .campaign_detail .detail_modal .more_info .tags .tag {
   margin-right: 5px;
   display: inline-block;
@@ -567,4 +550,71 @@
   border-radius: 5px;
   color: #fff;
   background-color: #b1c6d2;
+}
+.campaign_detail .join_modal .modal-content {
+  width: 480px;
+  height: 180px;
+}
+.campaign_detail .join_modal .component {
+  height: auto;
+}
+.campaign_detail .join_modal .component_head {
+  background-color: #fff;
+}
+.campaign_detail .join_modal .component_head .icon {
+  color: #ccc;
+}
+.campaign_detail .join_modal .component_body {
+  padding: 0 40px;
+}
+.campaign_detail .join_modal .remind {
+  margin: 0;
+  color: #999;
+}
+.campaign_detail .join_modal .unit_box {
+  width: 400px;
+  margin-top: 20px;
+}
+.campaign_detail .join_modal .unit {
+  float: left;
+  width: 180px;
+  height: 70px;
+  margin-bottom: 40px;
+  padding: 10px;
+  background-color: #edebec;
+  border: 1px solid #f48361;
+  border-radius: 6px;
+}
+.campaign_detail .join_modal .unit:nth-child(2n) {
+  margin-left: 40px;
+}
+.campaign_detail .join_modal .logo {
+  display: block;
+  float: left;
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+}
+.campaign_detail .join_modal .name {
+  display: block;
+  float: left;
+  width: 98px;
+  font-size: 14px;
+  line-height: 18px;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.campaign_detail .join_modal .join {
+  display: block;
+  float: left;
+  margin-top: 8px;
+  width: 98px;
+  height: 24px;
+  color: #fff;
+  background-color: #999;
+}
+.campaign_detail .join_modal .join:hover {
+  background-color: #f48361;
 }
