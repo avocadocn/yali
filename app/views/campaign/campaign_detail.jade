@@ -22,41 +22,6 @@ block contentExt
             span.title.right.last(ng-if="campaign.isEnd && campaign.isActive" ng-cloak) 活动已结束
             span.title.right.last(ng-if="!campaign.isActive" ng-cloak) 活动已关闭
           .component_body
-            //- .base_info.clearfix(class="#{helper.multiUnit('multi_team')} #{helper.isWaitingReply('isWaitingReply')}")
-            //-   .logo_container
-            //-     each unit in campaign.campaign_unit
-            //-       .unit
-            //-         a(ng-href="#{unit.link}" target="_blank")
-            //-           img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
-            //-         span.text= unit.team.name||unit.company.name
-            //-         if isActive && !isEnd && unit.canjoin && !isWaitingReply
-            //-           if unit.team._id
-            //-             button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}', '#{unit.team._id}')") 参加
-            //-           else
-            //-             button.join(ng-cloak ng-show="!isJoin" ng-click="join('#{unit.company._id}')") 参加
-            //-     if isWaitingReply
-            //-       .button_container
-            //-         if response.canResponse
-            //-           button.dl_btn.accept_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',1)") 接受
-            //-           .second_button
-            //-             button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[1].team._id}',2)") 拒绝
-            //-         if response.canCancel
-            //-           .second_button
-            //-             button.cancel_btn.dl_btn_small(ng-cloak ng-click="dealProvoke('#{campaign.campaign_unit[0].team._id}',3)") 取消
-
-            //-   .info_container(class="#{helper.twoUnit('twoUnit')}")
-            //-     if !isWaitingReply
-            //-       .notice(class="#{helper.start('isStart')}")
-            //-         span.title 最新公告
-            //-         if notice
-            //-           p.main_text #{notice.content}
-            //-           p.text.date #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
-            //-         else
-            //-           p.main_text 没有最新公告
-            //-         form.publish(ng-if="editing" name="noticeForm" ng-cloak)
-            //-           input.notice_text(type="text" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
-            //-           button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
-
             .unit_container.clearfix
               .unit(ng-repeat="unit in campaign.units" ng-cloak)
                 a(ng-href="{{unit.link}}" target="_blank")
@@ -167,14 +132,12 @@ block contentExt
           .component_head
             img.icon_img.left.first(src="/img/icons/users_relation.png")
             span.title.left 成员
-            span.icon.op_icon.right.last(data-toggle="modal" data-target="#memberListModal")
+            span.icon.op_icon.right.last(ng-click="openMemberModal()")
               i.fa.fa-angle-right
-            span.title.right(data-toggle="modal" data-target="#memberListModal") #{campaign.members.length}
-          if membersForCard.length
-            .component_body
-              .member_list(bs-popover)
-                each member in membersForCard
-                  img.member(src="#{member.photo}/32/32" ng-Mouseenter="showUserCard('#{member._id}','#{member._id}member_card')" id='pop#{member._id}member_card' rel='popover')
+            span.title.right(ng-click="openMemberModal()") {{campaign.memberCount}}
+          .component_body(ng-if="campaign.memberCount > 0")
+            .member_list(bs-popover)
+              img.member(ng-repeat="member in campaign.membersForCard" ng-src="{{member.photo}}/32/32" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id='pop{{member._id}}member_card' rel='popover')
 
         if components.ScoreBoard && isStart
           each scoreBoard in components.ScoreBoard
@@ -205,40 +168,20 @@ block contentExt
               span.icon.op_icon.right.last(data-dismiss="modal" aria-hidden="true")
                 i.fa.fa-times
             .component_body
-              if campaign.campaign_unit.length > 1
+              div(ng-if="memberModalUnits.length > 1")
                 .unit_panel
                   ul.unit_list(role="tablist")
-                    - var i = 0;
-                    each unit in campaign.campaign_unit
-                      if i === 0
-                        li.unit.active
-                          a.tab(href="##{unit.team._id}" role="tab" data-toggle="tab") #{unit.team.name}
-                      else
-                        li.unit
-                          a.tab(href="##{unit.team._id}" role="tab" data-toggle="tab") #{unit.team.name}
-                      - i++;
+                    li.unit(ng-repeat="unit in memberModalUnits" ng-class="{'active': $index===memberModalTabIndex}" ng-click="selectTab($index)")
+                      a.tab {{unit.name}}
                 .tab-content
-                  - var i = 0;
-                  each unit in campaign.campaign_unit
-                    if i === 0
-                      .member_list.fade.in.active.tab-pane(id="#{unit.team._id}" bs-popover)
-                        each member in unit.member
-                          .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
-                            img.photo(src="#{member.photo}/57/57")
-                            span.nickname #{member.nickname}
-                    else
-                      .member_list.fade.tab-pane(id="#{unit.team._id}" bs-popover)
-                        each member in unit.member
-                          .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
-                            img.photo(src="#{member.photo}/57/57")
-                            span.nickname #{member.nickname}
-                    - i++;
-              else
-                .member_list(bs-popover)
-                  each member in campaign.campaign_unit[0].member
-                    .member(ng-Mouseenter="showUserCard('#{member._id}','#{member._id}')" id='pop#{member._id}' rel='popover')
-                      img.photo(src="#{member.photo}/57/57")
-                      span.nickname #{member.nickname}
+                  .member_list.fade.tab-pane(ng-repeat="unit in memberModalUnits" ng-class="{'active': $index===memberModalTabIndex, 'in': $index===memberModalTabIndex}" bs-popover)
+                    .member(ng-repeat="member in unit.members" ng-Mouseenter="showUserCard(member._id, member._id)" id='pop{{member._id}}' rel='popover')
+                      img.photo(ng-src="{{member.photo}}/57/57")
+                      span.nickname {{member.nickname}}
+              .member_list(ng-if="memberModalUnits.length === 1" bs-popover)
+                .member(ng-repeat="member in memberModalUnits[0].members" ng-Mouseenter="showUserCard(member._id,member._id)" id='pop{{member._id}}' rel='popover')
+                  img.photo(ng-src="{{member.photo}}/57/57")
+                  span.nickname {{member.nickname}}
 
     .detail_modal.modal.fade#campaignDetailModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       .modal-dialog

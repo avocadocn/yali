@@ -1493,8 +1493,30 @@ exports.getOneNotice = function (req, res, next) {
 };
 
 
+exports.getMembers = function (req, res) {
+  var campaign = req.campaign;
+
+  // todo: 权限验证
+
+  var resUnits = [];
+  campaign.campaign_unit.forEach(function (unit) {
+    var resUnit = {
+      members: unit.member
+    };
+    if (unit.team) {
+      resUnit.name = unit.team.name;
+    } else {
+      resUnit.name = unit.company.name;
+    }
+    resUnits.push(resUnit);
+  });
+
+  res.send({ result: 1, units: resUnits, memberCount: campaign.members.length });
+
+};
+
 exports.getCampaignDataForDetailPage = function (req, res) {
-var campaign = req.campaign;
+  var campaign = req.campaign;
   moment.lang('zh-cn');
   // 权限判断
   var memberIds = [];
@@ -1543,7 +1565,7 @@ var campaign = req.campaign;
   var isStart = campaign.start_time < Date.now();
   var isEnd = campaign.end_time < Date.now();
   var isDeadline = campaign.deadline < Date.now();
-  var membersForCard = campaign.members.slice(0, 5);
+  var membersForCard = campaign.members.slice(0, 10);
   //没开始没关掉并且是比赛，验证需不需要应答
   var isWaitingReply = (ct === 4 || ct === 5 || ct === 7) && !isStart && campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
   //应答权限判断
@@ -1620,7 +1642,8 @@ var campaign = req.campaign;
     isActive: campaign.active,
     isDeadline: isDeadline,
     isWaitingReply: isWaitingReply,
-    members: membersForCard,
+    membersForCard: membersForCard,
+    memberCount: campaign.members.length,
     units: resUnits,
     joinCount: campaign.members.length
   };

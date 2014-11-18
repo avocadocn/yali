@@ -233,7 +233,8 @@
   background-color: #3498db;
 }
 .campaign_detail .base_card .component_body .operator_container .cancel,
-.campaign_detail .base_card .component_body .operator_container .refuse {
+.campaign_detail .base_card .component_body .operator_container .refuse,
+.campaign_detail .base_card .component_body .operator_container .quit {
   background-color: #ccc;
 }
 .campaign_detail .base_card .component_body .operator_container .refuse {
@@ -374,10 +375,17 @@
 .campaign_detail .member_card .component_head {
   background-color: #525e70;
 }
-.campaign_detail .member_card .component_body .member {
-  margin-right: 9px;
+.campaign_detail .member_card .component_body {
+  padding-bottom: 0;
 }
-.campaign_detail .member_card .component_body .member:last-child {
+.campaign_detail .member_card .member_list {
+  margin-top: 10px;
+}
+.campaign_detail .member_card .member {
+  margin-right: 9px;
+  margin-bottom: 20px;
+}
+.campaign_detail .member_card .member:nth-child(5n) {
   margin-right: 0;
 }
 .campaign_detail .brief_card .component_head {

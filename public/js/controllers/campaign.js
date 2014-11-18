@@ -73,6 +73,24 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
     }
   };
 
+  var updateMemberCard = function () {
+    var count = 0;
+    var members = [];
+    (function () {
+      for (var i = 0; i < $scope.memberModalUnits.length; i++) {
+        var unit = $scope.memberModalUnits[i];
+        for (var j = 0; j < unit.members.length; j++) {
+          members.push(unit.members[j]);
+          count++;
+          if (count === 10) {
+            return;
+          }
+        }
+      }
+    })();
+    $scope.campaign.membersForCard = members;
+  };
+
   $scope.join = function (cid, tid) {
     Campaign.join({
       campaignId: campaignId,
@@ -83,21 +101,24 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
         alertify.alert(err);
       } else {
         $scope.campaign.isJoin = true;
-        alertify.alert('参加活动成功', function (e) {
-          window.location.reload();
-        });
+        getMembers(updateMemberCard);
+        $('#joinModal').modal('hide');
+        alertify.alert('参加活动成功');
       }
     });
   };
 
   $scope.quit = function () {
-    Campaign.quit(campaignId, function (err) {
-      if (err) {
-        alertify.alert(err);
-      } else {
-        $scope.campaign.isJoin = false;
-        alertify.alert('退出活动成功', function (e) {
-          window.location.reload();
+    alertify.confirm('您确定要退出该活动吗？', function (e) {
+      if (e) {
+        Campaign.quit(campaignId, function (err) {
+          if (err) {
+            alertify.alert(err);
+          } else {
+            $scope.campaign.isJoin = false;
+            getMembers(updateMemberCard);
+            alertify.alert('退出活动成功');
+          }
         });
       }
     });
@@ -210,6 +231,28 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
     $scope.baseContent = !$scope.baseContent;
   };
 
+
+  var getMembers = function (callback) {
+    Campaign.getMembers(campaignId, function (err, units, count) {
+      if (!err) {
+        $scope.memberModalUnits = units;
+        $scope.campaign.memberCount = count;
+        callback && callback();
+      }
+    });
+  };
+
+  $scope.memberModalTabIndex = 0;
+  $scope.selectTab = function (index) {
+    $scope.memberModalTabIndex = index;
+  };
+
+  $scope.openMemberModal = function () {
+    if (!$scope.memberModalUnits) {
+      getMembers();
+    }
+    $('#memberListModal').modal('show');
+  };
 
 
 }]);

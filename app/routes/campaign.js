@@ -8,6 +8,7 @@ module.exports = function(app) {
   app.post('/campaign/cancel/:campaignId', campaign.cancelCampaign);
   app.get('/campaign/detail/:campaignId', campaign.getOneNotice, campaign.addRichCommentIfNot, campaign.renderCampaignDetail);
   app.get('/campaign/:campaignId/pageData', campaign.getCampaignDataForDetailPage);
+  app.get('/campaign/:campaignId/members', campaign.getMembers);
   app.post('/campaign/edit/:campaignId', campaign.editCampaign);
 
   app.get('/campaign/team/calendar/:teamId', campaign.getTeamCampaigns);

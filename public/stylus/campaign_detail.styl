@@ -171,7 +171,7 @@ detail_input()
           font-size 14px
           color white
           background-color themeColor
-        .cancel, .refuse
+        .cancel, .refuse, .quit
           background-color #cccccc
         .refuse
           margin-top 20px
@@ -271,10 +271,14 @@ detail_input()
     .component_head
       background-color #525e70
     .component_body
-      .member
-        margin-right 9px
-        &:last-child
-          margin-right 0
+      padding-bottom 0
+    .member_list
+      margin-top 10px
+    .member
+      margin-right 9px
+      margin-bottom 20px
+      &:nth-child(5n)
+        margin-right 0
 
 
   .brief_card
