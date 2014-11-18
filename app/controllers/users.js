@@ -578,7 +578,7 @@ exports.mailActive = function(req, res){
       console.log(err);
       res.render('users/message', message.dbError);
     } else if(user) {
-      if(user.active === true) {
+      if(user.invite_active === true) {
         res.render('users/message', message.actived);
       } else {
         if(encrypt.encrypt(uid, config.SECRET) === key) {
@@ -609,17 +609,18 @@ exports.mailActive = function(req, res){
  * 输入公司邀请码后最终的激活
  */
 exports.lastStepActive = function(req, res){
-  var key = req.query.key;
-  var uid = req.query.uid;
+  var key = req.body.key;
+  var uid = req.body.uid;
   User.findOne({_id: uid}).populate('cid').exec(function(err, user) {
     if(err) {
       console.log(err);
       res.render('users/message', message.dbError);
     }
     else if(user) {
-      if(encrypt.encrypt(uid, config.SECRET) === key) {
+      if(key===user.cid.invite_key){
         user.invite_active = true;
         //员工激活后,要把他的具体信息加入部门
+        //此处可以做个api
         if(user.department != null && user.department != undefined){
           var callback = function(err, data) {
             if (err) {
@@ -651,6 +652,9 @@ exports.lastStepActive = function(req, res){
         res.render('signup/setProfile', {
           title: '激活成功',
         });
+      }
+      else{
+        res.render('users/message', message.invalid);
       }
     }
   });
