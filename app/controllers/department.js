@@ -1091,7 +1091,7 @@ exports.deleteDepartment = function(req, res) {
 };
 
 //获取树形部门数据
-exports.getDepartment = function(req, res) {
+exports.getDepartment = function(req, res, next) {
   if(req.params.cid === '0'){
     if (req.session.cid) {
       Company.findOne({

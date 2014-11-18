@@ -323,7 +323,6 @@ exports.invite = function(req, res) {
         console.log(err);
         res.render('users/message', {title: 'error', message: 'bad request'});
       });
-
     }
   }
 };
@@ -353,6 +352,7 @@ function userOperate(cid, key, res, req, index) {
               message: '该邮箱已被注册'
             });
           }
+          
           if (company.email.domain.indexOf(req.body.domain)>-1||company.email.domain.indexOf(email.split("@")[1])>-1) {
             var user = new User({
               email: email,
@@ -421,7 +421,7 @@ function userOperate(cid, key, res, req, index) {
             });
           } else {
             res.render('signup/invite', {
-              title: 'validate',
+              title: '验证失败',
               domains: company.email.domain,
               message: '请使用企业邮箱'
             });
@@ -429,7 +429,7 @@ function userOperate(cid, key, res, req, index) {
         }
         else{//已注册过，重发邮件
           if (user) {
-            if (company.email.domain.indexOf(req.body.domain) > -1 || company.email.domain.indexOf(email.split("@")[1]){
+            if (company.email.domain.indexOf(req.body.domain) > -1 || company.email.domain.indexOf(email.split("@")[1]>-1)) {
               //覆盖用户信息并保存
               if(index===4){
                 user.nickname = req.body.nickname;
@@ -531,7 +531,7 @@ function userOperate(cid, key, res, req, index) {
 exports.dealActive = function(req, res) {
   if(req.query.notinvited=='true'){
     var index = req.body.index;
-    userOperate(req.body.cid,null,res,req,index);
+    userOperate(req.body.cid, null, res, req, index);
   }
   else{
     var key = req.session.key;

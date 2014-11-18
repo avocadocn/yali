@@ -68,7 +68,7 @@ var UserSchema = new Schema({
     invite_active:{
         type:Boolean,
         default: true
-    }
+    },
     hashed_password: String,
     provider: {
         type: String,
