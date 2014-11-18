@@ -1114,7 +1114,7 @@ exports.getDepartment = function(req, res) {
       return;
     }
   }else{
-    if (req.user._id.toString() === req.params.cid) {
+    if (req.user&&req.user._id.toString() === req.params.cid) {
       res.send({
         '_id': req.user._id,
         'name': req.user.info.name,

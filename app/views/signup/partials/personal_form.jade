@@ -9,13 +9,13 @@ div(ng-if="active==0 || active==1 || active ==4")
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.password.$invalid && active_form.password.$dirty}")
     .dl_row
       .label_left
-        label.control-label(for="password") ＊密码
+        label.control-label(for="password") ＊密码:
       .input_right
         input.dl-form-control(type="password" name="password" ng-model="$parent.password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.passconf.$invalid && active_form.passconf.$dirty}")
     .dl_row
       .label_left
-        label.control-label(for="passconf") ＊密码确认
+        label.control-label(for="passconf") ＊密码确认:
       .input_right
         input.dl-form-control(type="password" name="passconf" ng-model="$parent.passconf" ng-minlength=1 tooltip-placement="right" match="$parent.password" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")

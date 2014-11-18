@@ -5,9 +5,14 @@ form.block.signup_block.personal_signup.form-horizontal
     span 步：填写您的信息
   form.form-inline.form-horizontal(role="form" name='active_form' action='/users/newRegister' method='post')
     .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
+      .dl_row(ng-show="cname" ng-cloak)
+        .label_left
+          label.control-label ＊企业名称:
+        .input_right
+          label.control-label {{cname}}
       .dl_row
         .label_left
-          label.control-label(for="email") ＊企业邮箱
+          label.control-label(for="email") ＊企业邮箱:
         .input_right
           input.dl-form-control(type="text" name="email" ng-model="email" ng-blur="mailCheck()")
       .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
