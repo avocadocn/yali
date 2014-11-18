@@ -161,7 +161,8 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
           method: 'post',
           url: '/users/mailCheck',
           data:{
-              login_email: $scope.email
+              login_email: $scope.email,
+              cid:$scope.cid
           }
         }).success(function(data, status) {
           $scope.loading = false;

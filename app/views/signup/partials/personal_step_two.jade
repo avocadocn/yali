@@ -3,13 +3,14 @@
     span 第
     span.tip_number 2
     span 步：选择您的公司
-  .search_companies
+  .search_companies.clearfix
     input.dl-form-control.search_input(ng-model="company_name" placeholder="输入您的公司全称" ng-keypress="search($event)" required)
     button.search_button(ng-disabled="!company_name" ng-click="search()")
       i.fa.fa-search
   .select_companies
     p(ng-show="companies.length") 选择您的公司:
-    button.select_company(ng-repeat="company in companies" ng-click="select($index)") {{company.name}}
+    .companies
+      button.select_company(ng-repeat="company in companies" ng-click="select($index)") {{company.name}}
     p 若没有您的公司:
     p 
       span 邀请贵公司HR进行注册 或

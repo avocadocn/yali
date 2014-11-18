@@ -49,6 +49,7 @@
   float: left;
   text-align: right;
   min-height: 20px;
+  color: #a1a1a1;
 }
 .signup_row .signup_block .dl_sm_group .input_right {
   width: 290px;
@@ -181,4 +182,26 @@
   color: #3ca2e0;
   font-size: 20px;
   background-color: transparent;
+}
+.signup_row .personal_signup .select_companies {
+  line-height: 1;
+  margin-top: 30px;
+  color: #a1a1a1;
+}
+.signup_row .personal_signup .select_companies a {
+  color: #f48361;
+}
+.signup_row .personal_signup .select_companies .companies {
+  margin: 20px 0 30px;
+}
+.signup_row .personal_signup .select_companies .companies .select_company {
+  border-radius: 5px;
+  padding: 8px 10px;
+  border: 1px solid #3ca2e0;
+  color: #3ca2e0;
+  background-color: #fff;
+}
+.signup_row .personal_signup .select_companies .companies .select_company:hover {
+  background-color: #3ca2e0;
+  color: #fff;
 }
