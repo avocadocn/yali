@@ -240,6 +240,9 @@
 .campaign_detail .base_card .component_body .operator_container .refuse {
   margin-top: 20px;
 }
+.campaign_detail .base_card .component_body .operator_container .access {
+  background-color: #f48361;
+}
 .campaign_detail .detail_card .component_head {
   background-color: #ffc053;
 }

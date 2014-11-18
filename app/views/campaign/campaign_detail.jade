@@ -39,20 +39,20 @@ block contentExt
                   input.notice_text(type="text" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
                   button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
             .operator_container
-              button.operator_button.join(ng-if="!campaign.isWaitingReply && !campaign.isDeadline && allowJoinUnits.length>0 && !campaign.isJoin" ng-click="openJoinModal()" ng-cloak) 参加
-              button.operator_button.quit(ng-if="!campaign.isWaitingReply && campaign.isJoin" ng-click="quit()" ng-cloak) 退出
+              button.operator_button.join(ng-if="campaign.isActive && !campaign.isWaitingReply && !campaign.isDeadline && allowJoinUnits.length>0 && !campaign.isJoin && !campaign.isEnd" ng-click="openJoinModal()" ng-cloak) 参加
+              button.operator_button.quit(ng-if="campaign.isActive && !campaign.isWaitingReply && campaign.isJoin && !campaign.isEnd" ng-click="quit()" ng-cloak) 退出
               button.operator_button.access(ng-if="campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 1)" ng-cloak) 接受
               button.operator_button.refuse(ng-if="campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 2)" ng-cloak) 拒绝
               button.operator_button.cancel(ng-if="campaign.isWaitingReply && allow.cancel" ng-click="dealProvoke(campaign.units[0].tid, 3)" ng-cloak) 取消
 
-        .component.detail_card(ng-cloak)
+        .component.detail_card(ng-cloak ng-show="!campaign.isEnd")
           .component_head
             span.icon.left.first
               i.fa.fa-bars
             span.title.left 活动信息
-            img.icon_img.right.last.op_icon(ng-if="detailFold" src="/img/icons/unfold.png" ng-click="toggleFoldDetail()")
-            img.icon_img.right.last.op_icon(ng-if="!detailFold" src="/img/icons/fold.png" ng-click="toggleFoldDetail()")
-            img.icon_img.right.op_icon(title="编辑" ng-if="!editingDetail && allow.edit" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
+            img.icon_img.right.last.op_icon(title="展开" ng-if="detailFold" src="/img/icons/unfold.png" ng-click="toggleFoldDetail()")
+            img.icon_img.right.last.op_icon(title="收起" ng-if="!detailFold" src="/img/icons/fold.png" ng-click="toggleFoldDetail()")
+            img.icon_img.right.op_icon(title="编辑" ng-if="campaign.isActive && !editingDetail && allow.edit" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
             span.title.save.right(ng-if="editingDetail" ng-click="save()" ng-disabled="detailForm.content.$invalid" ng-cloak) 保存
             span.title.cancel.right(ng-if="editingDetail" ng-click="toggleEdit()" ng-cloak) 取消
           .component_body(ng-show="!detailFold")
@@ -86,19 +86,19 @@ block contentExt
               .text_dark.clearfix
                 span.pull-left 活动标签：
                 input.detail_input#taginput(name="tags" type="text" ng-model="modelData.tags")
-              .text_dark.clearfix
+              .text_dark.clearfix(ng-if="!campaign.isEnd")
                 span.pull-left 报名截止：
                 .input-group.date.form_datetime.pull-left#deadline
                   input.detail_input(type="text" ng-model="modelData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
                   span.input-group-addon.no_radius
                     span.glyphicon.glyphicon-calendar
-              .text_dark
+              .text_dark(ng-if="!campaign.isEnd")
                 span 报名人数上限：
                 .progress
                   .progress-bar(role="progressbar" aria-valuenow="{{campaign.joinCount}}" aria-valuemin="0" aria-valuemax="{{campaign.member_max}}" style="width: {{campaign.joinCount*100/modelData.member_max}}%")
                 span {{campaign.joinCount}}/
                 input.detail_input.member_max(type="number" ng-model="modelData.member_max" ng-min="{{modelData.member_min}}")
-              .text_dark.clearfix
+              .text_dark.clearfix(ng-if="!campaign.isEnd")
                 span 最少报名人数：
                 input.detail_input.member_min(type="number" ng-model="modelData.member_min" ng-max="{{modelData.member_max}}")
                 span 人
@@ -107,7 +107,7 @@ block contentExt
                   | 关闭活动
 
 
-        if components.RichComment
+        if components.RichComment && isActive
           rich-comment(component-id="#{components.RichComment[0]}" allow-publish="#{allow.publishComment&&isActive}")
 
       .panel_divider
@@ -128,32 +128,34 @@ block contentExt
             else
               img.img-responsive(src="/img/icons/nomap.jpg")
 
-        .component.member_card(class="#{helper.start('order-3')} #{helper.end('order-4')}")
-          .component_head
-            img.icon_img.left.first(src="/img/icons/users_relation.png")
-            span.title.left 成员
-            span.icon.op_icon.right.last(title="查看所有成员" ng-click="openMemberModal()")
-              i.fa.fa-angle-right
-            span.title.right(ng-click="openMemberModal()") {{campaign.memberCount}}
-          .component_body(ng-if="campaign.memberCount > 0")
-            .member_list(bs-popover)
-              img.member(ng-repeat="member in campaign.membersForCard" ng-src="{{member.photo}}/32/32" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id='pop{{member._id}}member_card' rel='popover')
+        if isActive
+          .component.member_card(class="#{helper.start('order-3')} #{helper.end('order-4')}")
+            .component_head
+              img.icon_img.left.first(src="/img/icons/users_relation.png")
+              span.title.left 成员
+              span.icon.op_icon.right.last(title="查看所有成员" ng-click="openMemberModal()")
+                i.fa.fa-angle-right
+              span.title.right(ng-click="openMemberModal()") {{campaign.memberCount}}
+            .component_body(ng-if="campaign.memberCount > 0")
+              .member_list(bs-popover)
+                img.member(ng-repeat="member in campaign.membersForCard" ng-src="{{member.photo}}/32/32" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id='pop{{member._id}}member_card' rel='popover')
 
-        if components.ScoreBoard && isStart
+        if components.ScoreBoard && isStart && isActive
           each scoreBoard in components.ScoreBoard
             score-board(component-id="#{scoreBoard}" class="#{helper.start('order-1')} #{helper.end('order-1')}")
 
-        .component.brief_card(ng-if="campaign.isStart" class="#{helper.start('order-1')} #{helper.end('order-2')}")
-          .component_head
-            span.icon.left.first
-              i.fa.fa-bars
-            span.title.left 活动信息
-            img.icon_img.op_icon.right.last(title="查看详细" src="/img/icons/view.png" ng-click="showDetailModal()")
-          .component_body
-            p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
-            p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
-            p.text 地点: #{campaign.location.name}
-            p.text 类型: #{campaign.campaign_mold}
+        if isActive
+          .component.brief_card(ng-if="campaign.isEnd" class="#{helper.start('order-1')} #{helper.end('order-2')}")
+            .component_head
+              span.icon.left.first
+                i.fa.fa-bars
+              span.title.left 活动信息
+              img.icon_img.op_icon.right.last(title="查看详细" src="/img/icons/view.png" ng-click="showDetailModal()")
+            .component_body
+              p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
+              p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
+              p.text 地点: #{campaign.location.name}
+              p.text 类型: #{campaign.campaign_mold}
 
     #campaign_data(data-id="#{campaign._id}")
 

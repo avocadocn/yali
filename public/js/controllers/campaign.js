@@ -12,6 +12,9 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       alertify.alert('获取活动数据失败，请刷新页面重试。');
     } else {
       $scope.campaign = data.campaign;
+      if ($scope.campaign.isStart && $scope.campaign.isActive) {
+        $scope.detailFold = true;
+      }
       $scope.allow = data.allow;
       $scope.modelData = {
         content: $scope.campaign.content,
@@ -153,6 +156,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
 
   $scope.toggleEdit = function () {
     $scope.editingDetail = !$scope.editingDetail;
+    $scope.detailFold = false;
   };
 
   $scope.cancel = function () {
