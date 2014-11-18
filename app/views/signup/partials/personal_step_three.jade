@@ -1,9 +1,9 @@
-form.block.signup_block.personal_signup.form-horizontal
+.block.signup_block.personal_signup.form-horizontal
   .signup_tips
     span 第
     span.tip_number 3
     span 步：填写您的信息
-  form.form-inline.form-horizontal(role="form" name='active_form' action='/users/newRegister' method='post')
+  form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive?notinvited=true' method='post')
     .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
       .dl_row(ng-show="cname" ng-cloak)
         .label_left
@@ -15,6 +15,8 @@ form.block.signup_block.personal_signup.form-horizontal
           label.control-label(for="email") ＊企业邮箱:
         .input_right
           input.dl-form-control(type="text" name="email" ng-model="email" ng-blur="mailCheck()")
+        input(type="text" name="index" ng-model="active" ng-show='false')
+        input(type="text" name="cid" ng-model="cid" ng-show='false')
       .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
         p
         img(ng-show='loading' src='/img/loading.gif')

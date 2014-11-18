@@ -75,6 +75,33 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
         },'USER_CREATE_EMAIL_SEND_ERROR');
     });
 };
+
+exports.sendNewStaffActiveMail = function(user_email, uid , cid ,host){
+  var from = '动梨<service@donler.com>';
+  var to = user_email;
+  var subject = '动梨账号激活';
+  var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
+    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/mailActive?key=' + encrypt.encrypt(uid, config.SECRET) +
+    '&uid=' + uid + '&cid=' + cid + '">激活账号</a>';
+
+    fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+        if (err) throw err;
+        var fn = jade.compile(data);
+        var html = fn({'title':'注册激活','host':siteProtocol+host,'who':user_email,'content':content});
+        sendMail({
+          from: from,
+          to: to,
+          subject: subject,
+          html: html
+        },{
+          type:'user',
+          _id:uid,
+          name:null,
+          email:user_email
+        },'USER_CREATE_EMAIL_SEND_ERROR');
+    });
+};
+
 exports.sendStaffResetPwdMail = function(who, uid, host) {
   var from = '动梨<service@donler.com>';
   var to = who;

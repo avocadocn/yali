@@ -11,7 +11,7 @@ block contentExt
       div(ng-controller="userSignupController")
         div(ng-show="!step")
           include partials/personal_step_one
-        div(ng-show="step")
+        .center(ng-show="step")
           .block.block_left.notification_block
             .signup_title.personal_title
               span 个人注册
@@ -20,9 +20,8 @@ block contentExt
               p 确保每个用户的身份都真实可靠
           div(ng-show="step===2")
             include partials/personal_step_two
-          dive(ng-show="step===3")
+          div(ng-show="step===3")
             include partials/personal_step_three
-
 
 append footExt
   script(src='/js/controllers/companySignUp.js')

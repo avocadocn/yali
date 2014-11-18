@@ -1,6 +1,10 @@
 .signup_row {
   padding-top: 95px;
 }
+.signup_row .center {
+  width: 775px;
+  margin: auto;
+}
 .signup_row .block {
   width: 455px;
   float: left;
