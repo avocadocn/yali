@@ -203,6 +203,24 @@ exports.sendStaffActiveMail = function (email, uid, cid, host, callback) {
 
 };
 
+exports.sendNewStaffActiveMail = function (email, uid, cid, host, callback) {
+
+  var active_link = 'http://' + host + '/users/mailActive?key=' + encrypt.encrypt(uid, website_config.SECRET)
+    + '&uid=' + uid + '&cid=' + cid;
+
+  var active_config = {
+    login: global_config.login,
+    campaignID: global_config.campaignID,
+    mailingID: global_config.mail.user.active
+  };
+
+  sendMail(active_config, email, [{
+    name: 'user_active_link',
+    value: active_link
+  }], callback);
+
+};
+
 exports.sendFeedBackMail = function (email, content, callback) {
 
 

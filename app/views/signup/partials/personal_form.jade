@@ -1,39 +1,3 @@
-.form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
-  .dl_row
-    .label_left
-      label.control-label(for="email") ＊企业邮箱
-    .input_right
-      .input_email
-        label.sr-only Email Host
-        input.dl-form-control(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
-      span.at @
-      .select_domain
-        label.sr-only Email Domain
-        if domains.length === 1
-          input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
-          input.dl-form-control(type="text" value="#{domains[0]}" disabled="true")
-        if domains.length > 1
-          select.dl-form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
-            each domain in domains
-              option(value="#{domain}" selected='selected')= domain
-        input(type="text" name="index" ng-model="active" ng-show='false')
-  .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
-    p
-    img(ng-show='loading' src='/img/loading.gif')
-    div(ng-show='active==1' ng-cloak)
-      span 此邮箱未被注册!
-    div(ng-show='active==2' ng-cloak)
-      p 您的邮箱已注册过,请查收邮件,若未收到请点击重发按钮再次发送。
-      p 
-        span 若之前不是本人操作请
-        a.subtitle(ng-click="active=4;") 再次填写信息
-        span 并查看邮箱激活。
-    div(ng-show='active==3' ng-cloak)
-      span 您的邮箱已注册,请
-      a(href='/users/signin') 登录。
-      span 若是您忘记了密码,
-      a(href='/users/forgetPwd') 请点此跳转
-    p
 div(ng-if="active==0 || active==1 || active ==4")
   //-未注册过、未激活需重填资料时显示
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
@@ -45,13 +9,13 @@ div(ng-if="active==0 || active==1 || active ==4")
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.password.$invalid && active_form.password.$dirty}")
     .dl_row
       .label_left
-        label.control-label(for="password") ＊密码
+        label.control-label(for="password") ＊密码:
       .input_right
         input.dl-form-control(type="password" name="password" ng-model="$parent.password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.passconf.$invalid && active_form.passconf.$dirty}")
     .dl_row
       .label_left
-        label.control-label(for="passconf") ＊密码确认
+        label.control-label(for="passconf") ＊密码确认:
       .input_right
         input.dl-form-control(type="password" name="passconf" ng-model="$parent.passconf" ng-minlength=1 tooltip-placement="right" match="$parent.password" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")
@@ -64,7 +28,7 @@ div(ng-if="active==0 || active==1 || active ==4")
     .dl_row
       .label_left
         label.control-label(for="department") ＊#{__("DEPARTMENT")}
-      .input_right
+      .input_right.select_right
         //- input#department.form-control.dl_full_control(type="text" name="department" ng-model="department")
         .select_box.department_select_width(ng-if="department_exist")
           select.dl-form-control.chzn-select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment(main_department)" ng-disabled="main_departments.length == 0")
@@ -74,7 +38,7 @@ div(ng-if="active==0 || active==1 || active ==4")
           select.dl-form-control.chzn-select(data-placeholder="选择二级部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
           input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
           input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
-        .select_box.department_select_width(ng-if="department_exist")
+        .select_box.department_select_width(ng-if="department_exist" last_child)
           select.dl-form-control.chzn-select(data-placeholder="选择三级部门" tabindex="2" ng-model="grandchild_department" ng-options="d.name for d in grandchild_departments" ng-change="selectGrandChildDepartment(grandchild_department)" ng-disabled="grandchild_departments.length == 0")
           input(type="text" name="grandchild_department_id" ng-model="grandchild_department_id" ng-show="false")
           input(type="text" name="grandchild_department_name" ng-model="grandchild_department_name" ng-show="false")

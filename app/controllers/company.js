@@ -82,7 +82,6 @@ exports.forgetPwd = function(req, res) {
           });
         }
       });
-
     }
   });
 }
