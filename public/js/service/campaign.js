@@ -313,6 +313,25 @@ angular.module('donler')
         });
     };
 
+    /**
+     * 获取活动的公告
+     * @param  {String}   campaignId 活动id
+     * @param  {Function} callback   callback(err, notices)
+     */
+    var getNotices = function (campaignId, callback) {
+      $http.get('/campaign/' + campaignId + '/notices')
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.notices);
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
+
     return {
       sponsor: sponsor,
       getTags: getTags,
@@ -327,6 +346,7 @@ angular.module('donler')
       getCampaignsData: getCampaignsData,
       getCampaignsDateRecord: getCampaignsDateRecord,
       getDetailPageData: getDetailPageData,
-      getMembers: getMembers
+      getMembers: getMembers,
+      getNotices: getNotices
     };
   }]);

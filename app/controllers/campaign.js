@@ -1473,22 +1473,19 @@ exports.addRichCommentIfNot = function (req, res, next) {
   }
 };
 
-exports.getOneNotice = function (req, res, next) {
+exports.getNotices = function (req, res, next) {
   MessageContent.find({
     'campaign_id': req.campaign._id,
     'status': 'undelete'
   })
     .sort('-post_date')
-    .limit(1)
     .exec()
     .then(function (messageContents) {
-      req.notice = messageContents[0];
-      next();
+      res.send({ result: 1, notices: messageContents });
     })
     .then(null, function (err) {
       console.log(err);
-      // 获取公告失败依然渲染活动页面
-      next();
+      res.send({ result: 0 });
     });
 };
 
@@ -1829,7 +1826,6 @@ exports.renderCampaignDetail = function (req, res, next) {
       campaign.campaign_unit[i].link="/group/page/"+campaign.campaign_unit[i].team._id;
     }
   }
-
   res.render('campaign/campaign_detail', {
     campaign: campaign,
     components: campaign.formatComponents(),
@@ -1840,7 +1836,7 @@ exports.renderCampaignDetail = function (req, res, next) {
     isOneUnit: isOneUnit,
     isActive: campaign.active,
     membersForCard: membersForCard,
-    notice: req.notice,
+    notices: req.notices,
     moment: moment,
     allow: allow,
     helper: helper,

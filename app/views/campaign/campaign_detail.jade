@@ -28,16 +28,22 @@ block contentExt
                   img.logo(ng-src="{{unit.logo}}" title="{{unit.name}}")
                 span.name(title="{{unit.name}}") {{unit.name}}
             .notice_container
-              .notice
-                span.title 最新公告
-                if notice
-                  p.main_text #{notice.content}
-                  p.text.date #{moment(notice.post_date).format('YYYY-MM-DD HH:mm')}
-                else
-                  p.main_text 没有最新公告
-                form.publish(ng-if="editingNotice" name="noticeForm" ng-cloak)
-                  input.notice_text(type="text" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
-                  button.publish_button(ng-click="publishNotice()" ng-disabled="noticeForm.notice.$invalid") 发新公告
+              span.title 最新公告
+              img.edit(ng-if="allow.edit && !editingNotice" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" title="发新公告" ng-click="togglePublishNotice()")
+              span.save(ng-click="publishNotice()" ng-if="editingNotice") 保存
+              span.cancel(ng-click="togglePublishNotice()" ng-if="editingNotice") 取消
+              form.publish(ng-if="editingNotice" name="noticeForm" ng-cloak)
+                textarea.notice_text(name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" required)
+              .notices
+                .notice(ng-if="notices.length > 0 && !unfoldNotice")
+                  p.main_text {{notices[0].content}}
+                  p.text.date {{notices[0].post_date | date:'yyyy-MM-dd HH:mm'}}
+                .notice(ng-if="notices.length > 0 && unfoldNotice" ng-repeat="notice in notices")
+                  p.main_text {{notice.content}}
+                  p.text.date {{notice.post_date | date:'yyyy-MM-dd HH:mm'}}
+                .toggle_fold(ng-if="!unfoldNotice" ng-click="toggleFoldNotice()") 展开历史记录
+                .toggle_fold(ng-if="unfoldNotice" ng-click="toggleFoldNotice()") 收起历史记录
+                p.main_text(ng-if="notices.length === 0") 没有最新公告
             .operator_container
               button.operator_button.join(ng-if="campaign.isActive && !campaign.isWaitingReply && !campaign.isDeadline && allowJoinUnits.length>0 && !campaign.isJoin && !campaign.isEnd" ng-click="openJoinModal()" ng-cloak) 参加
               button.operator_button.quit(ng-if="campaign.isActive && !campaign.isWaitingReply && campaign.isJoin && !campaign.isEnd" ng-click="quit()" ng-cloak) 退出

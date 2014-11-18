@@ -39,6 +39,15 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
     }
   });
 
+  Campaign.getNotices(campaignId, function (err, notices) {
+    if (!err) {
+      $scope.notices = notices;
+    }
+  });
+  $scope.unfoldNotice = false;
+  $scope.toggleFoldNotice = function () {
+    $scope.unfoldNotice = !$scope.unfoldNotice;
+  };
 
   $scope.notice = {
     placeholder: '',
@@ -63,6 +72,10 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       //TODO:更改对话框
       alertify.alert('DATA ERROR');
     });
+  };
+  $scope.editingNotice = false;
+  $scope.togglePublishNotice = function () {
+    $scope.editingNotice = !$scope.editingNotice;
   };
 
   var joinModal = $('#joinModal');
