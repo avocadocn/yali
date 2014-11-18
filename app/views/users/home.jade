@@ -2,7 +2,7 @@ extends ../layouts/user
 
 append headExt
   link(rel="stylesheet" href="/css/tree.css")
-
+  link(rel="stylesheet" href="/css/userpage.css")
 
 mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
   .user_campaigns_container(ng-init="#{containerClass}=#{detailFlag};" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')" ng-cloak)
@@ -143,7 +143,7 @@ block aside
           a.clearLinkUnderline(href='/company/home' target="_blank" ng-cloak) #{cname}
           if department
             a.clearLinkUnderline(href='/department/home/#{department._id}' target="_blank" ng-cloak) #{department.name}
-  if role !== 'HR' && myteam.length > 0
+  if role !== 'HR'
     .groupsbox(ng-init="showFlag=false;")
       include ../partials/group_thumbnail
       +group_thumbnail(myteam)

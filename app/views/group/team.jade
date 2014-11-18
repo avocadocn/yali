@@ -198,7 +198,7 @@ block contentExt
           .modal_body.clearfix.schedulebox
             .calendar_box
               p.calendar_nav#calendar_nav_modal
-                span(ng-class="{'icon_fold':isCalendar,'icon_unfold':!isCalendar}" ng-click="isCalendar=!isCalendar;" ng-cloak)
+                a.pull-right(data-calendar-nav="today" href="javascript:void(0)") 今天
                 a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
                 span.icon_calendar
                 a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
@@ -207,14 +207,9 @@ block contentExt
               #calendar_view_modal.calendar_view_modal
                 #modal_calendar
                 .calendar_tips
-                  span.join_sign.length_1
-                  label.campaign_label 没有活动
-                  span.join_sign.length_2
-                  label.campaign_label 2个及以下
-                  span.join_sign.length_3
-                  label.campaign_label 2个以上
-                  a.pull-right(data-calendar-nav="today" href="javascript:void(0)")
-                    label.today 今天
+                  .calendar_tip
+                    span.join_sign.length_3
+                    label.campaign_label 活动
             .calendar_event_box#cal-modal-event-box
 
 

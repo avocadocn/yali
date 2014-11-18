@@ -298,37 +298,65 @@ var getUserUnjoinCampaigns = function(user, isCalendar, _query, callback) {
 var formatCampaignForCalendar = function(user, campaigns) {
   var calendarCampaigns = [];
   campaigns.forEach(function(campaign) {
+    var name,logo_owner_id,logo,_formatTime,_formatTimeText,campaignUnit=[];
     // 公司活动
     if (campaign.campaign_type === 1) {
-      var logo_owner_id = campaign.cid[0];
-      var logo = '/logo/company/' + logo_owner_id + '/47/47';
+      logo_owner_id = campaign.cid[0];
+      logo = '/logo/company/' + logo_owner_id + '/47/47';
+      name = campaign.campaign_unit[0].company.name;
+      campaign.campaign_unit.forEach(function(campaign_unit){
+        campaignUnit.push({
+          _id:campaign_unit.company._id,
+          logo:'/logo/company/' + campaign_unit.company._id + '/47/47',
+          name:campaign_unit.company.name,
+          // link:'/company/home/' + campaign_unit.team._id
+        });
+      });
     } else {
       // 挑战或比赛
-      var logo_owner_id;
       for (var i = 0, teams = user.team; i < teams.length; i++) {
         if (campaign.tid.indexOf(teams[i]._id) !== -1) {
           logo_owner_id = teams[i]._id;
-          var logo = '/logo/group/' + logo_owner_id + '/47/47';
+          logo = '/logo/group/' + logo_owner_id + '/47/47';
           break;
         }
       }
+      campaign.campaign_unit.forEach(function(campaign_unit){
+        campaignUnit.push({
+          _id:campaign_unit.team._id,
+          logo:'/logo/group/' + campaign_unit.team._id + '/47/47',
+          name:campaign_unit.team.name,
+          // link:'/group/page/' + campaign_unit.team._id
+        });
+      });
     }
 
     var is_joined = false;
     if(model_helper.arrayObjectIndexOf(campaign.members,user._id,'_id')>-1){
       is_joined = true;
     }
-
+    _formatTime = formatTime(campaign.start_time,campaign.end_time);
+    if(_formatTime.start_flag==-1){
+      _formatTimeText="已结束";
+    }else if(_formatTime.start_flag==1){
+      _formatTimeText="正在进行";
+    }
+    else{
+      _formatTimeText=_formatTime.start_time_text;
+    }
     calendarCampaigns.push({
       'id': campaign._id,
+      'name':name,
       'logo': logo,
       'title': campaign.theme,
+      'campaignUnit':campaignUnit,
       'url': '/campaign/detail/' + campaign._id.toString(),
       'class': 'event-info',
       'start': campaign.start_time.valueOf(),
       'end': campaign.end_time.valueOf(),
       'is_joined': is_joined,
-      'location':campaign.location
+      'location':campaign.location,
+      'formatTime' : _formatTimeText
     });
   });
   return calendarCampaigns;

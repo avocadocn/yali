@@ -10,20 +10,31 @@
         <!-- <span class="pull-left event <%= event['class'] %>"></span>&nbsp; -->
         <a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>" target="_blank"
           data-event-class="<%= event['class'] %>" class="event-item clearLinkUnderline">
-          <p class="campaign_head">
-            <span class="content_text"><%= event.title %></span>
-          </p>
           <div class="campaign_content">
             <div class="info_left">
-              <img class="team_logo" src="<%= event.logo %>"/>
+              <% _.each(event.campaignUnit, function(unit) { %>
+                <img class="team_logo" src="<%= unit.logo %>"/>
+              <% }) %>
+              <p class="campaign_info">
+                <span class="content_text"><%= event.formatTime%></span>
+              </p>
             </div>
             <div class="info_right">
+              <p class="campaign_head">
+                <% _.each(event.campaignUnit, function(unit) { %>
+                  <span class="content_text"><%= unit.name %> </span>
+                <% }) %>
+              </p>
               <p class="campaign_info">
-                <span>开始时间:</span>
+                <span>主题:</span>
+                <span class="content_text"><%= event.title %></span>
+              </p>
+              <p class="campaign_info">
+                <span>开始:</span>
                 <span class="content_text"><%= moment(new Date(event.start)).format('YYYY-MM-DD HH:mm') %></span>
               </p>
               <p class="campaign_info">
-                <span>结束时间:</span>
+                <span>结束:</span>
                 <span class="content_text"><%= moment(new Date(event.end)).format('YYYY-MM-DD HH:mm') %></span>
               </p>
               <p class="campaign_info">
