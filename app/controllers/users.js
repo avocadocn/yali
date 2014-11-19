@@ -973,6 +973,9 @@ exports.editInfo = function(req, res) {
 
 
 exports.renderSearchOpponents = function(req, res){
+  if(req.user.provider==='company'){
+    return res.redirect('/');
+  }
   var myTeams = req.user.team;
   var sortTeams = function(teams){//整理成队长的在前
     var leaderHead = -1;
