@@ -59,7 +59,7 @@ block contentExt
             img.icon_img.right.last.op_icon(title="展开" ng-if="detailFold" src="/img/icons/unfold.png" ng-click="toggleFoldDetail()")
             img.icon_img.right.last.op_icon(title="收起" ng-if="!detailFold" src="/img/icons/fold.png" ng-click="toggleFoldDetail()")
             img.icon_img.right.op_icon(title="编辑" ng-if="campaign.isActive && !editingDetail && allow.edit" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
-            span.title.save.right(ng-if="editingDetail" ng-click="save()" ng-disabled="detailForm.content.$invalid" ng-cloak) 保存
+            span.title.save.right(ng-if="editingDetail" ng-click="save()" ng-cloak) 保存
             span.title.cancel.right(ng-if="editingDetail" ng-click="toggleEdit()" ng-cloak) 取消
           .component_body(ng-show="!detailFold")
             .detail_show(ng-if="!editingDetail" ng-cloak)
@@ -89,6 +89,7 @@ block contentExt
                 .detail_editor.pull-left.detail_input
                   #campaignDetailToolBar
                   #campaignDetail.markdownContainer(name="content" ng-model="modelData.content" contenteditable mix-maxlength=4000)
+              p.error(ng-if="detailForm.content.$invalid") 活动简介不能超过2000字。
               .text_dark.clearfix
                 span.pull-left 活动标签：
                 input.detail_input#taginput(name="tags" type="text" ng-model="modelData.tags")
@@ -235,7 +236,7 @@ block contentExt
                 if campaign.content
                   .clearfix
                     h4.title.pull-left 活动简介
-                    a.title.pull-right(ng-if="canUnFold" ng-click="toggleFold()" ng-clock) {{baseContent ? '展开' : '收起'}}
+                    a.title.pull-right.unfold(ng-if="canUnFold" ng-click="toggleFold()" ng-clock) {{baseContent ? '展开' : '收起'}}
                   .text_container
                     .text#campaign_intro(ng-class="{'base_content': baseContent}")!= campaign.content
                     .base_content_gradient(ng-show="canUnFold&&baseContent" ng-click="toggleFold()")

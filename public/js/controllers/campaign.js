@@ -149,22 +149,26 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   $scope.editingDetail = false;
 
   $scope.save = function () {
-    if ($scope.modelData.member_min <= $scope.modelData.member_max && $scope.modelData.member_min >= 0) {
-      Campaign.edit(campaignId, $scope.modelData, function (err) {
-        if (err) {
-          alertify.alert(err);
-        } else {
-          $scope.campaign.content = $scope.modelData.content;
-          $scope.campaign.member_max = $scope.modelData.member_max;
-          $scope.campaign.member_min = $scope.modelData.member_min;
-          $scope.campaign.deadline = $scope.modelData.deadline;
-          $scope.campaign.tags = $scope.modelData.tags.split(',');
-          $scope.editingDetail = false;
-        }
-      });
-    }else{
-      alertify.alert('请正确填写报名人数!');
+    if ($scope.detailForm.content.$invalid) {
+      alertify.alert('活动简介不能超过2000字。');
+      return;
     }
+    if ($scope.modelData.member_min > $scope.modelData.member_max || $scope.modelData.member_min < 0) {
+      alertify.alert('请正确填写报名人数!');
+      return;
+    }
+    Campaign.edit(campaignId, $scope.modelData, function (err) {
+      if (err) {
+        alertify.alert(err);
+      } else {
+        $scope.campaign.content = $scope.modelData.content;
+        $scope.campaign.member_max = $scope.modelData.member_max;
+        $scope.campaign.member_min = $scope.modelData.member_min;
+        $scope.campaign.deadline = $scope.modelData.deadline;
+        $scope.campaign.tags = $scope.modelData.tags.split(',');
+        $scope.editingDetail = false;
+      }
+    });
   };
 
   $scope.toggleEdit = function () {
@@ -233,7 +237,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
   var detailModal = $('#campaignDetailModal');
   detailModal.on('shown.bs.modal', function (e) {
     var campaignIntroDom = document.getElementById('campaign_intro');
-    if (campaignIntroDom.scrollHeight > 100) {
+    if (campaignIntroDom && campaignIntroDom.scrollHeight > 100) {
       $scope.canUnFold = true;
       $scope.$apply();
     }

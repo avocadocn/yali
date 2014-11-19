@@ -269,6 +269,7 @@
 }
 .campaign_detail .detail_card .campaign_intro {
   float: left;
+  width: 600px;
 }
 .campaign_detail .detail_card .detail_input {
   display: inline-block;
@@ -367,6 +368,10 @@
 }
 .campaign_detail .detail_card .detail_editing .text_dark {
   line-height: 30px;
+}
+.campaign_detail .detail_card .detail_editing .error {
+  color: #f3939e;
+  margin-left: 60px;
 }
 .campaign_detail .detail_card .detail_editing .member_max {
   width: 30px;
@@ -587,6 +592,11 @@
 .campaign_detail .detail_modal .more_info {
   padding: 0 20px 20px;
   border-top: 1px solid #eee;
+}
+.campaign_detail .detail_modal .more_info .unfold {
+  margin-top: 10px;
+  font-size: 12px;
+  text-decoration: none;
 }
 .campaign_detail .detail_modal .more_info .text_container {
   position: relative;
