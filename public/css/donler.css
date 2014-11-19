@@ -63,13 +63,16 @@
 .rich_comment .component_body .rich_comment_form .comment_control .publish[disabled] {
   opacity: 0.65;
 }
+.rich_comment .component_body .rich_comment_form .remind {
+  margin: 0;
+  margin-left: 40px;
+}
 .rich_comment .component_body .rich_comment_form .preview_box {
-  display: flex;
-  display: -webkit-flex;
   margin-top: 5px;
   padding-left: 40px;
 }
 .rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap {
+  float: left;
   position: relative;
   margin-right: 5px;
 }

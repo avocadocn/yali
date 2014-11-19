@@ -7,8 +7,8 @@
           img.upload_img(src="/img/upload_img.png")
           input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
         button.publish(ng-click="publish(new_comment.text)" ng-disabled="comment_form{{$id}}.$invalid") 评论
-      .preview_box(ng-show="uploader.isHTML5")
-        span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
+      span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
+      .preview_box.clearfix(ng-show="uploader.isHTML5")
         .preview_img_wrap(ng-repeat="item in uploader.queue")
           .close(ng-click="item.remove()") &times;
           div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
