@@ -31,7 +31,10 @@ angular.module('donler')
           url: _url,
           data: _data
         }).success(function (data, status) {
-          callback(null,data);
+          if(data.result===1)
+            callback(null,data);
+          else
+            callback('活动发布出错 '+data.msg);
         }).error(function (data, status) {
           callback('error');
         });

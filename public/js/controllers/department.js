@@ -1037,7 +1037,10 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','C
                 data:_data
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面
-                window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+                if(data.result===1)
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+                else
+                    alertify.alert('活动发布失败');
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alertify.alert('DATA ERROR');

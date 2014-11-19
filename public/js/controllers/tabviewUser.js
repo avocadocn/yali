@@ -469,7 +469,7 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
       if(!status){
         window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
       }else{
-        alertify.alert('活动发布出错');
+        alertify.alert(status);
       }
     });
   };
