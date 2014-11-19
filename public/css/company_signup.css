@@ -85,9 +85,6 @@
   font-size: 14px;
   float: left;
 }
-.signup_row .signup_block .dl_sm_group .input_right input {
-  width: 100%;
-}
 .signup_row .signup_block .dl_sm_group .input_right .arecode_container {
   width: 60px;
   float: left;
