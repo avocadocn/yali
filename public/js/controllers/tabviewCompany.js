@@ -1291,23 +1291,27 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
     $scope.showMapFlag = false;
     $scope.location = {name:'',coordinates:[]};
     var placeSearchCallBack = function(data){
-        $scope.locationmap.clearMap();
-        var lngX = data.poiList.pois[0].location.getLng();
-        var latY = data.poiList.pois[0].location.getLat();
-        $scope.location.coordinates=[lngX, latY];
-        var nowPoint = new AMap.LngLat(lngX,latY);
-        var markerOption = {
-            map: $scope.locationmap,
-            position: nowPoint,
-            draggable: true
-        };
-        var mar = new AMap.Marker(markerOption);
-        var changePoint = function (e) {
-            var p = mar.getPosition();
-            $scope.location.coordinates=[p.getLng(), p.getLat()];
-        };
-        AMap.event.addListener(mar, "dragend", changePoint);
-        $scope.locationmap.setFitView();
+      $scope.locationmap.clearMap();
+      if(data.poiList.pois.length==0){
+        alertify.alert('没有符合条件的地点，请重新输入');
+        return;
+      }
+      var lngX = data.poiList.pois[0].location.getLng();
+      var latY = data.poiList.pois[0].location.getLat();
+      $scope.location.coordinates=[lngX, latY];
+      var nowPoint = new AMap.LngLat(lngX,latY);
+      var markerOption = {
+        map: $scope.locationmap,
+        position: nowPoint,
+        draggable: true
+      };
+      var mar = new AMap.Marker(markerOption);
+      var changePoint = function (e) {
+        var p = mar.getPosition();
+        $scope.location.coordinates=[p.getLng(), p.getLat()];
+      };
+      AMap.event.addListener(mar, "dragend", changePoint);
+      $scope.locationmap.setFitView();
     }
     
     $('#sponsorCampaignModel').on('show.bs.modal', function (e) {
@@ -1329,28 +1333,35 @@ tabViewCompany.controller('SponsorController',['$http','$scope','$rootScope','Ca
         
         $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
         $scope.locationmap.plugin(["AMap.CitySearch"], function() {
-            //实例化城市查询类
-            var citysearch = new AMap.CitySearch();
-            //自动获取用户IP，返回当前城市
-            citysearch.getLocalCity();
-            //citysearch.getCityByIp("123.125.114.*");
-            AMap.event.addListener(citysearch, "complete", function(result){
-                if(result && result.city && result.bounds) {
-                    var citybounds = result.bounds;
-                    //地图显示当前城市
-                    $scope.locationmap.setBounds(citybounds);
-                    $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
-                        $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
-                            pageSize:1,
-                            pageIndex:1,
-                            city: result.city
-
-                        });
-                        AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
-                    });
-                }
+          $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {
+            $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+              pageSize:1,
+              pageIndex:1
             });
-            AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+            AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+          });
+            //实例化城市查询类
+          var citysearch = new AMap.CitySearch();
+          //自动获取用户IP，返回当前城市
+          citysearch.getLocalCity();
+          //citysearch.getCityByIp("123.125.114.*");
+          AMap.event.addListener(citysearch, "complete", function(result){
+              if(result && result.city && result.bounds) {
+                  var citybounds = result.bounds;
+                  //地图显示当前城市
+                  $scope.locationmap.setBounds(citybounds);
+                  $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+                      $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                          pageSize:1,
+                          pageIndex:1,
+                          city: result.city
+
+                      });
+                      AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+                  });
+              }
+          });
+          AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
         });
         $scope.showMapFlag = true;
     };

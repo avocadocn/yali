@@ -562,6 +562,10 @@ searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope',
 
     var placeSearchCallBack = function(data){
       $scope.locationmap.clearMap();
+      if(data.poiList.pois.length==0){
+        alertify.alert('没有符合条件的地点，请重新输入');
+        return;
+      }
       var lngX = data.poiList.pois[0].location.getLng();
       var latY = data.poiList.pois[0].location.getLat();
       $scope.location.coordinates=[lngX, latY];
@@ -583,6 +587,13 @@ searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope',
     $scope.initialize = function(){
       $scope.locationmap = new AMap.Map("competitionMapDetail");            // 创建Map实例
       $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+        $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+          $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+            pageSize:1,
+            pageIndex:1
+          });
+          AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+        });
         //实例化城市查询类
         var citysearch = new AMap.CitySearch();
         //自动获取用户IP，返回当前城市
