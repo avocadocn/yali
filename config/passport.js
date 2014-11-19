@@ -88,9 +88,14 @@ module.exports = function(passport) {
                         message: '用户不存在，请检查您的用户名'
                     });
                 }
-                else if(!user.mail_active){
+                else if (!user.authenticate(password)) {
                     return done(null, false, {
-                        message: '账号未激活,请至邮箱激活'
+                        message: '密码错误,请重新输入'
+                    });
+                }
+                else if(!user.mail_active||!user.invite_active){
+                    return done(null, false, {
+                        message: '账号未激活,请至邮箱点击链接激活'
                     });
                 }
                 else if(!user.active){
@@ -101,11 +106,6 @@ module.exports = function(passport) {
                 else if(user.disabled){
                     return done(null, false, {
                         message: '账号已关闭。'
-                    });
-                }
-                else if (!user.authenticate(password)) {
-                    return done(null, false, {
-                        message: '密码错误,请重新输入'
                     });
                 }
                 return done(null, user);

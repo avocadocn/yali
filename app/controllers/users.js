@@ -594,7 +594,6 @@ exports.mailActive = function(req, res){
           });
           res.render('signup/personal_step_four', {
             title: '激活成功',
-            key: key,
             uid: uid
           });
         } else {
