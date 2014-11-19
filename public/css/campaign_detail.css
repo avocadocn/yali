@@ -406,6 +406,7 @@
 }
 .campaign_detail .member_card .count {
   cursor: pointer;
+  line-height: 22px !important;
 }
 .campaign_detail .brief_card .component_head {
   background-color: #525e70;
@@ -532,6 +533,19 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.campaign_detail .detail_modal .title {
+  color: #3498db;
+  font-size: 14px;
+}
+.campaign_detail .detail_modal .main_text {
+  color: #999;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+.campaign_detail .detail_modal .component_head {
+  background-color: #525e70;
+}
 .campaign_detail .detail_modal .component_body {
   padding: 0 !important;
 }
@@ -552,11 +566,11 @@
 .campaign_detail .detail_modal .base_info .info .logo_container .unit {
   float: left;
   margin-right: 20px;
-  width: 80px;
+  width: 70px;
 }
 .campaign_detail .detail_modal .base_info .info .logo_container .unit .logo {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
 }
 .campaign_detail .detail_modal .base_info .info .logo_container .unit .main_text {
   margin-top: 10px;

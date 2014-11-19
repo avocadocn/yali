@@ -224,7 +224,7 @@ block contentExt
                   .logo_container
                     each unit in campaign.campaign_unit
                       .unit
-                        img.logo(src="#{unit.team.logo || unit.company.logo}/80/80" title="#{unit.team.name || unit.company.name}")
+                        img.logo(src="#{unit.team.logo || unit.company.logo}/70/70" title="#{unit.team.name || unit.company.name}")
                         p.main_text #{unit.team.name || unit.company.name}
                   .campaign_info
                     p.main_text 开始时间: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm')}
