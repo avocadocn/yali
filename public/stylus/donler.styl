@@ -2377,23 +2377,26 @@ input.ng-invalid.ng-dirty
     border 1px solid borderColor
     .cal-context
       height 380px
-    .cal-month-box [class*="cal-cell"]
-      min-height 50px
-      .cal-month-day
-        height 50px
-        text-align center
-        margin 5px 0
-        span[data-cal-date]
-          margin-top 22px
-          display inline-block
-          margin 5px 16px 3px
-          border-radius initial
-      .cal-day-today
-        background-color #f9f8f8
-        &:hover
-          background-color inherit
-        span[data-cal-date]
-          background-color inherit
+    .cal-month-box
+      .cal-row-fluid
+        border-bottom 1px solid borderColor
+        [class*="cal-cell"]
+          min-height 50px
+          .cal-month-day
+            height 50px
+            text-align center
+            margin 5px 0
+            span[data-cal-date]
+              margin-top 22px
+              display inline-block
+              margin 5px 16px 3px
+              border-radius initial
+          .cal-day-today
+            background-color #f9f8f8
+            &:hover
+              background-color inherit
+            span[data-cal-date]
+              background-color inherit
     .calendar_tips
       height 40px
       border-top 1px solid #ccc

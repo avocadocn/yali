@@ -66,6 +66,7 @@
 .rich_comment .component_body .rich_comment_form .remind {
   margin: 0;
   margin-left: 40px;
+  color: #999;
 }
 .rich_comment .component_body .rich_comment_form .preview_box {
   margin-top: 5px;
@@ -75,6 +76,7 @@
   float: left;
   position: relative;
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 .rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap .close {
   display: none;
@@ -228,16 +230,11 @@
   background-color: #3ca2e0;
   width: 50px;
 }
+.simple_comment .component_body .rich_comment_form .remind {
+  margin-left: 0;
+}
 .simple_comment .component_body .rich_comment_form .preview_box {
-  display: block;
-}
-.simple_comment .component_body .rich_comment_form .preview_box .remind {
-  display: block;
-}
-.simple_comment .component_body .rich_comment_form .preview_box .preview_img_wrap {
-  float: left;
-  width: 48px;
-  height: 48px;
+  padding-left: 0;
 }
 .simple_comment .component_body .comment {
   padding: 10px 20px;
@@ -3401,27 +3398,30 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_view_modal .cal-context {
   height: 380px;
 }
-#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] {
+#events-modal .calendar_view_modal .cal-month-box .cal-row-fluid {
+  border-bottom: 1px solid #f4f4f4;
+}
+#events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] {
   min-height: 50px;
 }
-#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day {
+#events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] .cal-month-day {
   height: 50px;
   text-align: center;
   margin: 5px 0;
 }
-#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day span[data-cal-date] {
+#events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] .cal-month-day span[data-cal-date] {
   margin-top: 22px;
   display: inline-block;
   margin: 5px 16px 3px;
   border-radius: initial;
 }
-#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-day-today {
+#events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] .cal-day-today {
   background-color: #f9f8f8;
 }
-#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-day-today:hover {
+#events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] .cal-day-today:hover {
   background-color: inherit;
 }
-#events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-day-today span[data-cal-date] {
+#events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] .cal-day-today span[data-cal-date] {
   background-color: inherit;
 }
 #events-modal .calendar_view_modal .calendar_tips {

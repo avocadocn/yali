@@ -659,15 +659,11 @@ var formatCampaign = function(campaign,pageType,role,user,other){
     // if(_other.unConfirm){
     //   temp.voteFlag = false;
     // }
-    if(_other.nowFlag){
-      var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
-      temp.start_flag = _formatTime.start_flag;
-      temp.remind_text =_formatTime.remind_text;
-      temp.start_time_text = _formatTime.start_time_text;
-    }
-    else{
-      temp.deadline_rest = formatrestTime(new Date(),_campaign.deadline);
-    }
+    var _formatTime = formatTime(_campaign.start_time,_campaign.end_time);
+    temp.start_flag = _formatTime.start_flag;
+    temp.remind_text =_formatTime.remind_text;
+    temp.start_time_text = _formatTime.start_time_text;
+    temp.deadline_rest = formatrestTime(new Date(),_campaign.deadline);
     var memberIds = [];
     _campaign.members.forEach(function (member) {
       memberIds.push(member._id);
