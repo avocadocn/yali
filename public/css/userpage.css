@@ -462,13 +462,13 @@
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
   clear: both;
-  padding-top: 5px;
   color: #999;
   border-top: 1px solid #ccc;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head {
   float: left;
   width: 100%;
+  padding-top: 5px;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head:hover {
   background-color: #fbfbfb;
