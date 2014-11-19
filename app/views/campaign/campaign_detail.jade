@@ -135,7 +135,7 @@ block contentExt
               img.img-responsive(src="/img/icons/nomap.jpg")
 
         if isActive
-          .component.member_card(class="#{helper.start('order-3')} #{helper.end('order-4')}")
+          .component.member_card(class="#{helper.start('order-3')} #{helper.end('order-3')}")
             .component_head
               img.icon_img.left.first(src="/img/icons/users_relation.png")
               span.title.left 成员
@@ -146,12 +146,22 @@ block contentExt
               .member_list(bs-popover)
                 img.member(ng-repeat="member in campaign.membersForCard" ng-src="{{member.photo}}/32/32" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id='pop{{member._id}}member_card' rel='popover')
 
+        if isActive
+          .component.photo_album_card(class="#{helper.start('order-4')} #{helper.end('order-4')}")
+            a.photo_wrap(href="/photoAlbum/#{campaign.photo_album._id}/detailView")
+              img.view(src="/img/icons/view.png")
+              p.text 影集
+            if photo
+              img(src="#{photo}/240/180")
+            else
+              img(src="/img/photo_album.png")
+
         if components.ScoreBoard && isStart && isActive
           each scoreBoard in components.ScoreBoard
             score-board(component-id="#{scoreBoard}" class="#{helper.start('order-1')} #{helper.end('order-1')}")
 
         if isActive
-          .component.brief_card(ng-if="campaign.isEnd" class="#{helper.start('order-1')} #{helper.end('order-2')}")
+          .component.brief_card(ng-if="campaign.isEnd" class="#{helper.end('order-2')}")
             .component_head
               span.icon.left.first
                 i.fa.fa-bars
