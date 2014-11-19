@@ -7,8 +7,8 @@
           img.upload_img(src="/img/upload_img.png")
           input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
         button.publish(ng-click="publish(new_comment.text)" ng-disabled="comment_form{{$id}}.$invalid") 评论
-      .preview_box(ng-show="uploader.isHTML5")
-        span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
+      span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
+      .preview_box.clearfix(ng-show="uploader.isHTML5")
         .preview_img_wrap(ng-repeat="item in uploader.queue")
           .close(ng-click="item.remove()") &times;
           div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
@@ -31,7 +31,7 @@
               | {{comment.reply_count || 0}}条回复
         .replies(ng-if="comment.replying")
           form.reply_form(name="reply_form" ng-if="allowPublish")
-            input.reply_input(type="text" ng-model="comment.new_reply" placeholder="{{currentPlaceholder.reply}}" ng-focus="currentPlaceholder.reply=''" ng-blur="currentPlaceholder.reply=originPlaceholder" required)
+            input.reply_input(toggle-focus="comment.replying" type="text" ng-model="comment.new_reply" placeholder="{{currentPlaceholder.reply}}" ng-focus="currentPlaceholder.reply=''" ng-blur="currentPlaceholder.reply=originPlaceholder" required)
             button.dl_btn.dl_reply(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
           p.reply.text(ng-repeat="reply in comment.replies")
             a.user_name(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.poster._id, reply.poster.nickname)")

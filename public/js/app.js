@@ -144,15 +144,18 @@ app.directive('contenteditable',function() {
             // replace the HTML mess with the plain content
             //console.log(replaced);
             e.currentTarget.innerHTML = replaced;
+            changeBind(e);
         }, 100);
       }
       element.bind('focus', function() {
+        element.bind('input',changeBind);
         element.bind('keydown',changeBind);
         element.bind('paste', clearStyle);
       });
       element.bind('blur', function(e) {
+        element.unbind('input',changeBind);
         element.unbind('keydown',changeBind);
-         element.unbind('paste', clearStyle);
+        element.unbind('paste', clearStyle);
         changeBind(e);
       });
       return read = function() {

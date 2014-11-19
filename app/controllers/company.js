@@ -637,6 +637,7 @@ exports.create = function(req, res) {
             } else {
               throw new Error('邀请码不正确');
             }
+
           });
       } else {
         return Company.create({
@@ -661,6 +662,9 @@ exports.create = function(req, res) {
       company.info.phone = req.body.phone;
       company.provider = 'company';
       company.login_email = req.body.email;
+      //生成随机邀请码
+      var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+      company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
       var _email = req.body.email.split('@');
       if (_email[1])
         company.email.domain.push(_email[1]);
@@ -905,17 +909,10 @@ exports.saveGroupInfo = function(req, res) {
   });
 };
 
-exports.getAccount = function(req, res) {
+exports.getAccount = function(req, res, next) {
   var companyId = req.params.companyId;
   Company.findOne({
     '_id': companyId
-  }, {
-    '_id': 0,
-    'username': 1,
-    'login_email': 1,
-    'register_date': 1,
-    'info': 1,
-    'email': 1
   }, function(err, _company) {
     if (err) {
       console.log(err);
@@ -927,7 +924,18 @@ exports.getAccount = function(req, res) {
         'domain': _company.email.domain
       };
       if (req.role === 'HR') {
-        _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(companyId, config.SECRET) + '&cid=' + companyId;
+        if(!_company.invite_key){
+          var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+          _company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
+          _company.save(function(err){
+            if(err){
+              console.log(err);
+              res.status(500);
+              next();
+            }
+          });
+        }
+        _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + _company.invite_key + '&cid=' + companyId;
       }
       return res.send({
         'result': 1,

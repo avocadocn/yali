@@ -367,6 +367,22 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
       },
       templateUrl: '/components/RichComment/template'
     }
+  })
+
+  .directive('toggleFocus', function () {
+    return {
+      restrict: 'A',
+      scope: {
+        toggleFocus: '='
+      },
+      link: function (scope, ele, attrs, ctrl) {
+        scope.$watch('toggleFocus', function (newVal, oldVal) {
+          if (newVal === true) {
+            ele.focus();
+          }
+        });
+      }
+    };
   });
 
 

@@ -239,14 +239,11 @@ var photoThumbnailList = exports.photoThumbnailList = function(photo_album, coun
   for (var i = 0; i < photo_album.photos.length; i++) {
     if (photo_album.photos[i].hidden === false) {
       photo_list.push(photo_album.photos[i]);
-      if (photo_list.length === count) {
-        break;
-      }
     }
   }
   photo_list.sort(sortByUploadDate);
   photo_list.sort(sortByClick);
-  return photo_list;
+  return photo_list.slice(0, count);
 };
 
 // 根据当前登录的用户获取相册的所有者

@@ -737,6 +737,22 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
       },
       templateUrl: '/components/RichComment/template'
     }
+  })
+
+  .directive('toggleFocus', function () {
+    return {
+      restrict: 'A',
+      scope: {
+        toggleFocus: '='
+      },
+      link: function (scope, ele, attrs, ctrl) {
+        scope.$watch('toggleFocus', function (newVal, oldVal) {
+          if (newVal === true) {
+            ele.focus();
+          }
+        });
+      }
+    };
   });
 
 
@@ -1163,15 +1179,18 @@ app.directive('contenteditable',function() {
             // replace the HTML mess with the plain content
             //console.log(replaced);
             e.currentTarget.innerHTML = replaced;
+            changeBind(e);
         }, 100);
       }
       element.bind('focus', function() {
+        element.bind('input',changeBind);
         element.bind('keydown',changeBind);
         element.bind('paste', clearStyle);
       });
       element.bind('blur', function(e) {
+        element.unbind('input',changeBind);
         element.unbind('keydown',changeBind);
-         element.unbind('paste', clearStyle);
+        element.unbind('paste', clearStyle);
         changeBind(e);
       });
       return read = function() {
@@ -1711,6 +1730,78 @@ angular.module('donler')
         });
     };
 
+    /**
+     * 获取详情页的活动数据
+     * @param  {String}   campaignId 活动id
+     * @param  {Function} callback   callback(err, data)
+     */
+    var getDetailPageData = function (campaignId, callback) {
+      $http.get('/campaign/' + campaignId + '/pageData')
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, {
+              campaign: data.campaign,
+              allow: data.allow
+            });
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
+
+    /**
+     * 获取活动已参加的成员列表
+     * @example
+     *   getMembers(campaignId, function (err, units, count) {})
+     *   units是以下形式的对象数组
+     *   [{
+     *     name: String,
+     *     members: [{
+     *       _id: String,
+     *       nickname: String,
+     *       photo: String
+     *     }]
+     *   }]
+     *   count是参加成员总数
+     * @param  {String}   campaignId 活动id
+     * @param  {Function} callback   callback(err, units, count)
+     */
+    var getMembers = function (campaignId, callback) {
+      $http.get('/campaign/' + campaignId + '/members')
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.units, data.memberCount);
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
+
+    /**
+     * 获取活动的公告
+     * @param  {String}   campaignId 活动id
+     * @param  {Function} callback   callback(err, notices)
+     */
+    var getNotices = function (campaignId, callback) {
+      $http.get('/campaign/' + campaignId + '/notices')
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback(null, data.notices);
+          } else {
+            callback('error');
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
+    };
+
     return {
       sponsor: sponsor,
       getTags: getTags,
@@ -1723,7 +1814,10 @@ angular.module('donler')
       dealProvoke: dealProvoke,
       getLedTeams: getLedTeams,
       getCampaignsData: getCampaignsData,
-      getCampaignsDateRecord: getCampaignsDateRecord
+      getCampaignsDateRecord: getCampaignsDateRecord,
+      getDetailPageData: getDetailPageData,
+      getMembers: getMembers,
+      getNotices: getNotices
     };
   }]);
 'use strict';

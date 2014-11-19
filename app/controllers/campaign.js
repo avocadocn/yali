@@ -1502,23 +1502,183 @@ exports.addRichCommentIfNot = function (req, res, next) {
   }
 };
 
-exports.getOneNotice = function (req, res, next) {
+exports.getNotices = function (req, res, next) {
   MessageContent.find({
     'campaign_id': req.campaign._id,
     'status': 'undelete'
   })
     .sort('-post_date')
-    .limit(1)
     .exec()
     .then(function (messageContents) {
-      req.notice = messageContents[0];
-      next();
+      res.send({ result: 1, notices: messageContents });
     })
     .then(null, function (err) {
       console.log(err);
-      // 获取公告失败依然渲染活动页面
-      next();
+      res.send({ result: 0 });
     });
+};
+
+
+exports.getMembers = function (req, res) {
+  var campaign = req.campaign;
+
+  // todo: 权限验证
+
+  var resUnits = [];
+  campaign.campaign_unit.forEach(function (unit) {
+    var resUnit = {
+      members: unit.member
+    };
+    if (unit.team) {
+      resUnit.name = unit.team.name;
+    } else {
+      resUnit.name = unit.company.name;
+    }
+    resUnits.push(resUnit);
+  });
+
+  res.send({ result: 1, units: resUnits, memberCount: campaign.members.length });
+
+};
+
+exports.getCampaignDataForDetailPage = function (req, res) {
+  var campaign = req.campaign;
+  moment.lang('zh-cn');
+  // 权限判断
+  var memberIds = [];
+  campaign.members.forEach(function (member) {
+    memberIds.push(member._id);
+  });
+
+  var resAllow = {};
+
+  var allow = auth(req.user, {
+    companies: campaign.cid,
+    teams: campaign.tid,
+    users: memberIds
+  }, [
+    'publishComment',
+    'editTeamCampaign',
+    'editCompanyCampaign'
+  ]);
+
+
+  // 公司活动
+  var ct = campaign.campaign_type;
+  if (ct === 1) {
+    resAllow.edit = allow.editCompanyCampaign;
+  } else if (ct === 2 || ct === 3 || ct === 6 || ct === 8) {
+    resAllow.edit = allow.editTeamCampaign;
+  } else { //挑战只有己方的能编辑
+    var allow_competition = auth(req.user, {
+      companies: [campaign.campaign_unit[0].company._id],
+      teams: [campaign.campaign_unit[0].team._id]
+    }, [
+      'editTeamCampaign'
+    ]);
+    resAllow.edit = allow_competition.editTeamCampaign;
+  }
+
+  //如果能编辑并且参数status为editing,则页面一进去就能编辑(用于刚发完活动)
+  var editing = false;
+  if (resAllow.edit) {
+    if (req.query.stat && req.query.stat === 'editing')
+      editing = true;
+  }
+
+  //参数for前端
+  var isJoin = Boolean(campaign.whichUnit(req.user._id));
+  var isStart = campaign.start_time < Date.now();
+  var isEnd = campaign.end_time < Date.now();
+  var isDeadline = campaign.deadline < Date.now();
+  var membersForCard = campaign.members.slice(0, 10);
+  //没开始没关掉并且是比赛，验证需不需要应答
+  var isWaitingReply = (ct === 4 || ct === 5 || ct === 7) && !isStart && campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
+  //应答权限判断
+  var response = {
+    canCancel: false,
+    canResponse: false
+  };
+  if (isWaitingReply) {
+    //是发起方的管理员则能取消
+    var authResponse = auth(req.user, {
+      companies: [campaign.campaign_unit[0].company._id],
+      teams: [campaign.campaign_unit[0].team._id]
+    }, ['dealProvoke']);
+    response.canCancel = authResponse.dealProvoke;
+    //是被挑战方的管理员则能接受
+    authResponse = auth(req.user, {
+      companies: [campaign.campaign_unit[1].company._id],
+      teams: [campaign.campaign_unit[1].team._id]
+    }, ['dealProvoke']);
+    response.canResponse = authResponse.dealProvoke;
+  }
+
+  resAllow.cancel = response.canCancel;
+  resAllow.response = response.canResponse;
+
+  var resUnits = [];
+
+  campaign.campaign_unit.forEach(function (unit) {
+    var resUnit = {};
+    if (campaign.campaign_type === 1) {
+      var canjoin = auth(req.user, {
+        companies: campaign.cid
+      }, ['joinCompanyCampaign']);
+      resUnit = {
+        cid: unit.company._id,
+        name: unit.company.name,
+        logo: unit.company.logo,
+        link: "/company/home/" + unit.company._id,
+        canJoin: canjoin.joinCompanyCampaign
+      }
+    } else {
+      var canjoin = auth(req.user, {
+        companies: campaign.cid,
+        teams: [unit.team._id]
+      }, ['joinTeamCampaign']);
+      resUnit = {
+        cid: unit.company._id,
+        tid: unit.team._id,
+        name: unit.team.name,
+        logo: unit.team.logo,
+        link: "/group/page/" + unit.team._id,
+        canJoin: canjoin.joinTeamCampaign
+      }
+    }
+    resUnits.push(resUnit);
+  });
+
+
+
+  var resCampaign = {
+    theme: campaign.theme,
+    content: campaign.content,
+    member_min: campaign.member_min,
+    member_max: campaign.member_max,
+    location: campaign.location,
+    start_time: campaign.start_time,
+    end_time: campaign.end_time,
+    deadline: campaign.deadline,
+    mold: campaign.campaign_mold,
+    tags: campaign.tags,
+    isStart: isStart,
+    isEnd: isEnd,
+    isJoin: isJoin,
+    isActive: campaign.active,
+    isDeadline: isDeadline,
+    isWaitingReply: isWaitingReply,
+    membersForCard: membersForCard,
+    memberCount: campaign.members.length,
+    units: resUnits,
+    joinCount: campaign.members.length
+  };
+  res.send({
+    result: 1,
+    campaign: resCampaign,
+    allow: resAllow
+  });
+
 };
 
 exports.renderCampaignDetail = function (req, res, next) {
@@ -1617,20 +1777,7 @@ exports.renderCampaignDetail = function (req, res, next) {
   var isJoin = Boolean(campaign.whichUnit(req.user._id));
   var isStart = campaign.start_time < Date.now();
   var isEnd = campaign.end_time < Date.now();
-  var isOneUnit = campaign.campaign_unit.length === 1;
-  var membersForCard = campaign.members.slice(0, 5);
   //没开始没关掉并且是比赛，验证需不需要应答
-  var isWaitingReply = (ct===4||ct===5||ct===7)&&!isStart&&campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
-  //应答权限判断
-  var response={canCancel:false,canResponse:false};
-  if(isWaitingReply){
-    //是发起方的管理员则能取消
-    var authResponse = auth(req.user,{companies:[campaign.campaign_unit[0].company._id],teams:[campaign.campaign_unit[0].team._id]},['dealProvoke']);
-    response.canCancel = authResponse.dealProvoke;
-    //是被挑战方的管理员则能接受
-    authResponse = auth(req.user,{companies:[campaign.campaign_unit[1].company._id],teams:[campaign.campaign_unit[1].team._id]},['dealProvoke']);
-    response.canResponse = authResponse.dealProvoke;
-  }
 
   // 视图辅助函数
   var helper = {
@@ -1677,23 +1824,10 @@ exports.renderCampaignDetail = function (req, res, next) {
     }
   };
 
-  //是否能加入&link
-  if(campaign.campaign_type===1){
-    var canjoin = auth(req.user,{companies:campaign.cid},['joinCompanyCampaign']);
-    if(canjoin.joinCompanyCampaign===true){
-      campaign.campaign_unit[0].canjoin=true;
-    }
-    campaign.campaign_unit[0].link="/company/home/"+campaign.campaign_unit[0].company._id;
-  }
-  else{
-    for(var i = 0;i<campaign.campaign_unit.length;i++){
-      var canjoin = auth(req.user,{companies:campaign.cid, teams:[campaign.campaign_unit[i].team._id]},['joinTeamCampaign']);
-      if(canjoin.joinTeamCampaign===true){
-        campaign.campaign_unit[i].canjoin=true;
-      }
-      //给unit加个link属性给超链接用
-      campaign.campaign_unit[i].link="/group/page/"+campaign.campaign_unit[i].team._id;
-    }
+  var photo;
+  var photoList = photo_album_controller.photoThumbnailList(campaign.photo_album, 1);
+  if (photoList.length > 0) {
+    photo = photoList[0].uri;
   }
 
   res.render('campaign/campaign_detail', {
@@ -1703,17 +1837,14 @@ exports.renderCampaignDetail = function (req, res, next) {
     isStart: isStart,
     isEnd: isEnd,
     isJoin: isJoin,
-    isOneUnit: isOneUnit,
     isActive: campaign.active,
-    membersForCard: membersForCard,
-    notice: req.notice,
+    notices: req.notices,
     moment: moment,
     allow: allow,
     helper: helper,
     links: links,
-    editing : editing,
-    response: response,
-    isWaitingReply: isWaitingReply
+    editing: editing,
+    photo: photo
   });
 };
 

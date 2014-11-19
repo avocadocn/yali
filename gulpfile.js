@@ -48,6 +48,7 @@ gulp.task('css:library', function () {
     './public/lib/bootstrap-calendar/css/calendar.css'
   ])
     .pipe(concat('library.css'))
+    .pipe(gulp.dest('./public/css'))
     .pipe(rename('library.min.css'))
     .pipe(minifyCSS())
     .pipe(gulp.dest('./public/css'));
@@ -60,11 +61,13 @@ var donlerCssSrc = [
   './public/css/custom_calendar.css',
   './public/css/group_select.css',
   './public/css/campaign_list.css',
-  './public/css/tree.css'
+  './public/css/tree.css',
+  './public/css/components.css'
 ];
 gulp.task('css:donler', function () {
   gulp.src(donlerCssSrc)
     .pipe(concat('donlerall.css'))
+    .pipe(gulp.dest('./public/css'))
     .pipe(rename('donlerall.min.css'))
     .pipe(minifyCSS())
     .pipe(gulp.dest('./public/css'));
@@ -98,6 +101,7 @@ gulp.task('js:library', function () {
     './public/lib/bootstrap-calendar/js/calendar.js'
   ])
     .pipe(concat('library.js'))
+    .pipe(gulp.dest('./public/js'))
     .pipe(rename('library.min.js'))
     .pipe(sourcemaps.init())
     .pipe(uglify())
@@ -114,6 +118,7 @@ var donlerJsSrc = [
 gulp.task('js:donler', function () {
   gulp.src(donlerJsSrc)
     .pipe(concat('donlerall.js'))
+    .pipe(gulp.dest('./public/js'))
     .pipe(rename('donlerall.min.js'))
     .pipe(sourcemaps.init())
     .pipe(uglify())
