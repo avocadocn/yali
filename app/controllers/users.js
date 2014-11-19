@@ -552,7 +552,6 @@ exports.mailCheck = function(req, res) {
     if(req.body.cid){
       Company.findOne({'_id':req.body.cid},function(err,company){
         if(company.email.domain.indexOf(email.split("@")[1])===-1){//这个邮箱后缀不对
-          console.log('5');
           return res.send({'active':5});
         }
         else if(!user){//这个邮箱没用过
