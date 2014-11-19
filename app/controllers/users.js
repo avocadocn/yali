@@ -330,20 +330,19 @@ exports.invite = function(req, res) {
 };
 
 function userOperate(cid, key, res, req, index) {
-  if (!key||encrypt.encrypt(cid, config.SECRET) === key) {
-    Company
-    .findOne({ _id: cid })
-    .exec()
-    .then(function(company) {
-      if (!company) {
-        throw 'Not found company';
-      }
+  Company
+  .findOne({ _id: cid })
+  .exec()
+  .then(function(company) {
+    if (!company) {
+      throw 'Not found company';
+    }
+    if(!key||company.invite_key===key){
       if(!key)
         var email=req.body.email;
       else
         var email = req.body.host.toLowerCase() + '@' + req.body.domain;
-      User
-      .findOne({ username: email})
+      User.findOne({ username: email})
       .exec()
       .then(function(user) {
         if(index ==1){//未注册过,新建用户并保存
@@ -354,7 +353,6 @@ function userOperate(cid, key, res, req, index) {
               message: '该邮箱已被注册'
             });
           }
-          
           if (company.email.domain.indexOf(req.body.domain)>-1||company.email.domain.indexOf(email.split("@")[1])>-1) {
             var user = new User({
               email: email,
@@ -516,15 +514,12 @@ function userOperate(cid, key, res, req, index) {
         console.log(err);
         return res.render('users/message', message.invalid);
       });
-    })
-    .then(null, function(err) {
-      console.log(err);
-      return res.render('users/message', message.invalid);
-    });
-
-  } else {
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
     return res.render('users/message', message.invalid);
-  }
+  });
 };
 
 /**
