@@ -17,16 +17,17 @@ block contentExt
                 .logo_box
                   img.logo(ng-src="{{team.logo}}")
                   a.edit(ng-if="allow.editTeam" ng-href="/group/{{team._id}}/editLogo" title="修改logo"): img(src="/img/edit_logo.png" ng-cloak)
-                .info_box
+                form.info_box(name="infoForm")
                   h3.name(ng-cloak ng-if="!isEditingInfo") {{team.name}}
                     img.edit(ng-if="allow.editTeam" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" ng-click="editInfo()" title="修改小队信息" ng-cloak)
-                  input.input_name(ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.name" required)
-                  a.save(ng-cloak ng-if="isEditingInfo && teamInfo.name" ng-click="saveInfo()") 保存
+                  input.input_name(name="name" ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.name" required)
+                  a.save(ng-cloak ng-if="isEditingInfo && infoForm.$valid" ng-click="saveInfo()") 保存
                   a.cancel(ng-cloak ng-if="isEditingInfo" ng-click="cancelEditInfo()") 取消
                   p.main_text.team_type(ng-cloak) 小队类型：{{team.groupType}}
                   p.main_text.create_time(ng-cloak) 成立时间：{{team.createTime | date:'yyyy-MM-dd'}}
                   p.text.brief(ng-cloak ng-if="!isEditingInfo") {{team.brief}}
-                  textarea.input_brief(ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.brief")
+                  textarea.input_brief(name="brief" ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.brief" mix-maxlength="280")
+                  p.error(ng-if="infoForm.brief.$invalid" ng-cloak) 小队简介不能超过140个字。
               .operator
                 .team_leader.four_button(ng-if="role==='LEADER'" ng-cloak)
                   button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
