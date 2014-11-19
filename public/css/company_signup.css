@@ -56,6 +56,11 @@
   float: left;
   margin-left: 15px;
 }
+.signup_row .signup_block .dl_sm_group .input_right .dl-form-control {
+  border: 0;
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 1px #d9d9d9;
+}
 .signup_row .signup_block .dl_sm_group .input_right .department_select_width {
   width: 127px;
 }
@@ -88,6 +93,29 @@
 .signup_row .signup_block .dl_sm_group .input_right .extention_container {
   width: 70px;
   float: left;
+}
+.signup_row .signup_block .dl_sm_group .email_check {
+  width: 250px;
+}
+.signup_row .signup_block .dl_sm_group .email_check .pass {
+  border: 1px solid #3ca2e0;
+}
+.signup_row .signup_block .dl_sm_group .email_check .error {
+  border: 1px solid #f48361;
+}
+.signup_row .signup_block .dl_sm_group .email_tips {
+  float: left;
+  width: 50px;
+}
+.signup_row .signup_block .dl_sm_group .email_tips .inactive {
+  color: #f48361;
+  padding: 8px 15px;
+  font-size: 14px;
+}
+.signup_row .signup_block .dl_sm_group .email_tips .active {
+  color: #3ca2e0;
+  padding: 8px 15px;
+  font-size: 14px;
 }
 .signup_row .signup_block .dl_sm_group .input_right.select_right .select_box {
   width: 90px;
@@ -210,4 +238,7 @@
 }
 .signup_row .personal_signup a {
   color: #3ca2e0;
+}
+.signup_row .block.activation {
+  width: 700px;
 }

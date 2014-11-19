@@ -549,6 +549,22 @@ exports.mailCheck = function(req, res) {
       console.log(err);
       return res.send(500,{'msg':'DatabaseError'});
     }
+    if(req.body.cid){
+      Company.findOne({'_id':req.body.cid},function(err,company){
+        if(company.email.domain.indexOf(email.split("@")[1])===-1){//这个邮箱后缀不对
+          console.log('5');
+          return res.send({'active':5});
+        }
+        else if(!user){//这个邮箱没用过
+          return res.send({'active':1});
+        }
+        else if(user.mail_active === false){//这个邮箱激活了没验证
+          return res.send({'active':2});
+        }
+        else //这个邮箱已激活、并注册完毕
+          return res.send({'active':3});
+      });
+    }
     else if(!user){//这个邮箱没用过
       return res.send({'active':1});
     }
