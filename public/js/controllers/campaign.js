@@ -153,7 +153,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       alertify.alert('活动简介不能超过2000字。');
       return;
     }
-    if ($scope.modelData.member_min > $scope.modelData.member_max || $scope.modelData.member_min < 0) {
+    if ($scope.modelData.member_min < 0 || $scope.modelData.member_max < 0 || $scope.modelData.member_min > $scope.modelData.member_max || $scope.modelData.member_min < 0) {
       alertify.alert('请正确填写报名人数!');
       return;
     }
