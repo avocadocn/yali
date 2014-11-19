@@ -15,15 +15,17 @@
               <% _.each(event.campaignUnit, function(unit) { %>
                 <img class="team_logo" src="<%= unit.logo %>"/>
               <% }) %>
-              <p class="campaign_info">
+              <p class="campaign_info <%= event.start_flag?'campaign_start' : ''%>">
                 <span class="content_text"><%= event.formatTime%></span>
               </p>
             </div>
             <div class="info_right">
               <p class="campaign_head">
-                <% _.each(event.campaignUnit, function(unit) { %>
-                  <span class="content_text"><%= unit.name %> </span>
-                <% }) %>
+                 <span class="content_text"><%= event.campaignUnit[0].name %> </span>
+                <% if ( event.campaignUnit.length>1) {%>
+                  <span class="campaign_vs">VS</span>
+                  <span class="content_text"><%= event.campaignUnit[1].name %> </span>
+                <% } %>
               </p>
               <p class="campaign_info">
                 <span>主题:</span>

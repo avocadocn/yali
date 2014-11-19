@@ -40,7 +40,7 @@ block contentExt
                   button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
                 .company_hr.four_button(ng-if="role==='HR'" ng-cloak)
                   button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
-                  a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
+                  //- a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
                   a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
                   button.op_button.button_gray(ng-if="allow.closeTeam" ng-cloak) 关闭小队
                 .other_company_hr.one_button(ng-if="role==='GUESTHR' || role==='GUESTLEADER'" ng-cloak)
@@ -198,13 +198,14 @@ block contentExt
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
           .modal_body.clearfix.schedulebox
             .calendar_box
-              p.calendar_nav#calendar_nav_modal
-                a.pull-right(data-calendar-nav="today" href="javascript:void(0)") 今天
-                a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+              .calendar_nav#calendar_nav_modal
+                a.clearLinkUnderline.calendar_nav_today(data-calendar-nav="today" href="javascript:void(0)") 今天
                 span.icon_calendar
-                a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
-                a.calendar_title(data-calendar-nav="today" href="javascript:void(0)")
-                  span#calendar_title_modal
+                .calendar_nav_container
+                  a.clearLinkUnderline(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+                  a.clearLinkUnderline.calendar_title
+                    span#calendar_title_modal
+                  a.clearLinkUnderline(data-calendar-nav="next" href="javascript:void(0)") &gt;
               #calendar_view_modal.calendar_view_modal
                 #modal_calendar
                 .calendar_tips

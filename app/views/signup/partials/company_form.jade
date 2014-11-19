@@ -49,7 +49,7 @@ form.block.block_left.signup_block.form-horizontal(ng-controller="signupControll
         label.control-label(for="email_host") *电子邮箱:
       .input_right
         input#email.dl-form-control(type="text" name="email" ng-model= "email" ng-blur="mailCheck()" ng-change="mailRegCheck()" required)
-        span#check.dl_tip(ng-if="mail_ok") {{check_value}}
+        span#check.dl_tip(ng-show="mail_ok&&check_value") {{check_value}}
   .form-group.dl_sm_group(ng-class="{'has-error':signup_form.phone.$invalid && signup_form.phone.$dirty}")
     .dl_row
       .label_left
@@ -63,7 +63,7 @@ form.block.block_left.signup_block.form-horizontal(ng-controller="signupControll
           label.control-label(for="invite_code") *邀请码:
         .input_right
           input#invite_code.dl-form-control(type="text" name="invite_code" placeholder="测试中,暂不对外开放注册。" ng-model= "invite_code" ng-blur="codeCheck()" required)
-          p#check.dl_tip(ng-if="code_ok") {{code_value}}
+          p#check.dl_tip(ng-show="code_ok&&code_value") {{code_value}}
   .form-group.dl_sm_group(ng-class="{'has-error':signup_form.checkbox.$invalid && signup_form.checkbox.$dirty}")
     .dl_row
       .label_left
@@ -74,4 +74,4 @@ form.block.block_left.signup_block.form-horizontal(ng-controller="signupControll
     .dl_row
       .label_left
       .input_right
-        button#submit.dl_btn.btn_submit.dl_full_control(ng-disabled="!check || !reg || signup_form.$invalid") 免费注册企业账号
+        button#submit.dl_btn.btn_submit.dl_full_control(ng-disabled="!check|| !code_check || !reg || signup_form.$invalid") 免费注册企业账号

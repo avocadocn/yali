@@ -1,7 +1,14 @@
-extends ../layouts/default
+extends ../layouts/register
+
+append headExt
+  link(rel="stylesheet" href="/css/company_signup.css")
 
 block contentExt
-  .wrap
-    .dl_container
-      p.subtitle.margin_top_50= message
-      a(href='/') 点此回到主页
+  .dl_container.clearfix
+    .signup_row
+      .block.activation
+        .signup_title.personal_title
+          span 个人注册
+        .signup_tips
+          p= message
+          a(href='/') 点此回到主页

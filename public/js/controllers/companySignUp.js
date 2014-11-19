@@ -1,9 +1,5 @@
 var companySignUpApp = angular.module('donler');
 
-companySignUpApp.run(['$rootScope', function ($rootScope) {
-
-}]);
-
 companySignUpApp.controller('signupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
   var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
   $scope.reg = true;
@@ -36,7 +32,8 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
             method: 'post',
             url: '/company/mailCheck',
             data:{
-                login_email: $scope.email
+                login_email: $scope.email,
+                cid:$rootScope.cid
             }
         }).success(function(data, status) {
             if(data === "false") {
@@ -70,9 +67,9 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
       }).success(function(data, status) {
           if(data === "false") {
             $scope.code_value = "该邀请码不存在或者已经被使用!";
-            $scope.check = false;
+            $scope.code_check = false;
           } else {
-            $scope.check = true;
+            $scope.code_check = true;
             $scope.code_value = "";
           }
       }).error(function(data, status) {
@@ -97,7 +94,8 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
   };
   var departments;
   $scope.select=function(index){
-    $scope.cid = $scope.companies[index]._id;
+    $scope.cid=$scope.companies[index]._id;
+    $rootScope.cid = $scope.companies[index]._id;
     $scope.cname = $scope.companies[index].name;
     $rootScope.step = 3;
     $scope.active =0;
