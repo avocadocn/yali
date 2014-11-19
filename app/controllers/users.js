@@ -303,14 +303,14 @@ exports.invite = function(req, res) {
   if(key == undefined || cid == undefined) {
     res.render('users/message', {title: 'error', message: 'bad request'});
   } else {
-    if (encrypt.encrypt(cid, config.SECRET) === key) {
-      Company
-      .findOne({ _id: cid })
-      .exec()
-      .then(function(company) {
-        if (!company) {
-          throw 'Not Found';
-        }
+    Company
+    .findOne({ _id: cid })
+    .exec()
+    .then(function(company) {
+      if (!company) {
+        throw 'Not Found';
+      }
+      if(key === company.invite_key){
         req.session.key = key;
         req.session.key_id = cid;
         res.render('signup/invite', {
@@ -318,12 +318,14 @@ exports.invite = function(req, res) {
           domains: company.email.domain,
           cname: company.info.official_name
         });
-      })
-      .then(null, function(err) {
-        console.log(err);
+      }else{
         res.render('users/message', {title: 'error', message: 'bad request'});
-      });
-    }
+      }
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.render('users/message', {title: 'error', message: 'bad request'});
+    });
   }
 };
 
