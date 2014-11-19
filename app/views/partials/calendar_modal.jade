@@ -16,13 +16,14 @@
           //-   button.schedule_btn.join() 已参加
           //-   button.schedule_btn.unjoin() 未参加
           //-   button.schedule_btn.all() 所有
-          p.calendar_nav#calendar_nav_modal
-            a.clearLinkUnderline.pull-right(data-calendar-nav="today" href="javascript:void(0)") 今天
-            a.clearLinkUnderline.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+          .calendar_nav#calendar_nav_modal
+            a.clearLinkUnderline.calendar_nav_today(data-calendar-nav="today" href="javascript:void(0)") 今天
             span.icon_calendar
-            a.clearLinkUnderline.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
-            a.clearLinkUnderline.calendar_title
-              span#calendar_title_modal
+            .calendar_nav_container
+              a.clearLinkUnderline(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+              a.clearLinkUnderline.calendar_title
+                span#calendar_title_modal
+              a.clearLinkUnderline(data-calendar-nav="next" href="javascript:void(0)") &gt;
           #calendar_view_modal.calendar_view_modal(ng-show="isCalendar")
             //- .clearfix
             //-   a.pull-right(data-calendar-view="weeks" href="javascript:void(0)" ng-show="isDayView") 返回日历

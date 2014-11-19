@@ -356,6 +356,7 @@ var formatCampaignForCalendar = function(user, campaigns) {
       'end': campaign.end_time.valueOf(),
       'is_joined': is_joined,
       'location':campaign.location,
+      'start_flag':_formatTime.start_flag,
       'formatTime' : _formatTimeText
     });
   });

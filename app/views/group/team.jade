@@ -197,13 +197,14 @@ block contentExt
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
           .modal_body.clearfix.schedulebox
             .calendar_box
-              p.calendar_nav#calendar_nav_modal
-                a.pull-right(data-calendar-nav="today" href="javascript:void(0)") 今天
-                a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+              .calendar_nav#calendar_nav_modal
+                a.clearLinkUnderline.calendar_nav_today(data-calendar-nav="today" href="javascript:void(0)") 今天
                 span.icon_calendar
-                a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
-                a.calendar_title(data-calendar-nav="today" href="javascript:void(0)")
-                  span#calendar_title_modal
+                .calendar_nav_container
+                  a.clearLinkUnderline(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+                  a.clearLinkUnderline.calendar_title
+                    span#calendar_title_modal
+                  a.clearLinkUnderline(data-calendar-nav="next" href="javascript:void(0)") &gt;
               #calendar_view_modal.calendar_view_modal
                 #modal_calendar
                 .calendar_tips

@@ -1034,41 +1034,42 @@
 .user_page .dl_container .schedule_small.affix {
   top: 190px;
 }
-.user_page .dl_container .schedule_small .schedulebox {
+.user_page .dl_container .schedule_small .schedulebox_small {
   padding: 0;
   border: none;
+  background-color: #fff;
 }
-.user_page .dl_container .schedule_small .schedulebox .schedule_operator {
+.user_page .dl_container .schedule_small .schedulebox_small .schedule_operator {
   cursor: pointer;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips {
   height: 25px;
   font-size: 12px;
   margin-top: 5px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign {
   height: 10px;
   width: 10px;
   margin: 5px 5px 15px 5px;
   float: left;
   border-radius: 100%;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_3 {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign.length_3 {
   background-color: #3ca2e0;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_2 {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign.length_2 {
   background-color: #6cb8e7;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .join_sign.length_1 {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign.length_1 {
   background-color: #a6d6f4;
   margin-left: 32px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_tips .campaign_label {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .campaign_label {
   line-height: 20px;
   float: left;
   font-size: 9px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_nav {
   background-color: #525e70;
   height: 30px;
   line-height: 30px;
@@ -1078,7 +1079,7 @@
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav .icon_calendar {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_nav .icon_calendar {
   height: 14px;
   width: 14px;
   margin-right: 24px;
@@ -1088,13 +1089,13 @@
   background-size: contain;
   background-image: url("/img/icons/calendar.png");
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav .calendar_title {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_nav .calendar_title {
   width: 106px;
   text-align: center;
   font-size: 14px;
   margin: 0;
 }
-.user_page .dl_container .schedule_small .schedulebox .calendar_nav a {
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_nav a {
   color: #fff;
   display: inline-block;
   margin: 0 5px;

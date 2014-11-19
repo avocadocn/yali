@@ -2304,9 +2304,11 @@ input.ng-invalid.ng-dirty
       .dl-modal-body
         display table
         padding 20px
+        border none
   .calendar_box
-    width 362px
+    width 360px
     float left
+    dl_shadow()
     .schedule_type
       width 100%
       .schedule_btn
@@ -2330,14 +2332,37 @@ input.ng-invalid.ng-dirty
         border-bottom-right-radius 1em
         border-top-right-radius 1em
     .calendar_nav
-      a
-        width 70px
+      background-color #525e70
+      height 30px
+      line-height 30px
+      padding 0 10px
+      margin 0
+      clear both
+      border-top-left-radius 2px
+      border-top-right-radius 2px
+      .icon_calendar
+        height 14px
+        width 14px
+        margin-right 24px
+        margin-top 9px
+        float left
+        background-repeat no-repeat
+        background-size contain
+        background-image url('/img/icons/calendar.png')
+      .calendar_nav_container
         text-align center
         .calendar_title
-          width 165px
-      .calendar_title
-        width 110px
-
+          width 110px
+          text-align center
+          font-size 14px
+          margin 0
+      a
+        color navbarFontColor
+        margin 0 10px
+      .calendar_nav_today
+        width 26px
+        float right
+        margin 0
     .join_sign
       width 20px
       height 20px
@@ -2346,33 +2371,39 @@ input.ng-invalid.ng-dirty
       font-size 14px
       font-family Arial
       line-height 24px
-      margin 10px 20px
+      margin 0 16px
       border-radius initial
   .calendar_view_modal
     border 1px solid borderColor
     .cal-context
-      height 422px
+      height 380px
     .cal-month-box [class*="cal-cell"]
       min-height 50px
       .cal-month-day
-        height 65px
+        height 50px
         text-align center
+        margin 5px 0
         span[data-cal-date]
           margin-top 22px
           display inline-block
-          margin 5px 20px
+          margin 5px 16px 3px
           border-radius initial
       .cal-day-today
+        background-color #f9f8f8
+        &:hover
+          background-color inherit
         span[data-cal-date]
           background-color inherit
     .calendar_tips
       height 40px
-      dl_shadow()
+      border-top 1px solid #ccc
       .calendar_tip
         float right
         padding-right 10px
         .join_sign
+          float left
           margin 10px
+          background-color #3ca2e0
         .campaign_label
           line-height 40px
           font-size 14px
@@ -2382,7 +2413,7 @@ input.ng-invalid.ng-dirty
     float right
     margin-left 20px
     .cal-event-time
-      color #585b6c
+      color #525e70
       padding-top 10px
       padding-left 20px
       .date
@@ -2393,15 +2424,18 @@ input.ng-invalid.ng-dirty
       .title
         padding-top 5px
         font-size 14px
-        color #3498DB
+        color #3ca2e0
     .cal-event-list
       border 1px solid borderColor
-      max-height 445px
-      min-height 445px
+      max-height 400px
+      min-height 400px
       background-color #fff
       width 100%
       margin-left 20px
       margin-top 16px
+      background-color #fbfbfb
+      padding-top 0
+      box-shadow inset 0 0 1px 0 rgba(0, 0, 0, 0.5);
       ul.list-unstyled
         padding 0 13px
         .custom_calendar_li
@@ -2409,13 +2443,17 @@ input.ng-invalid.ng-dirty
           text-overflow ellipsis
           white-space nowrap
           border-bottom 1px solid #ccc
-          padding 10px 0
+          padding-top 18px
+          padding-bottom 12px
           .campaign_head
-            color themeColor
+            color #3ca2e0
             font-size 14px
             line-height 14px
             padding 0
             margin 0 0 6px
+            font-weight bold
+            .campaign_vs
+              color #F58464
           .campaign_content
             float left
             width 100%
@@ -2424,12 +2462,19 @@ input.ng-invalid.ng-dirty
               .team_logo
                 width 70px
                 height 70px
+                margin-right 8px
               .campaign_info
                 padding-top 2px
                 margin 0
+                color #3ca2e0
+              .campaign_start
+                color #13adb6
             .info_right
               float left
-              margin-left 20px
+              margin-left 13px
               .campaign_info
                 margin 0
                 line-height 18px
+                color #999
+                .content_text
+                  padding-left 10px
