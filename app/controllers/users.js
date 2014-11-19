@@ -303,14 +303,14 @@ exports.invite = function(req, res) {
   if(key == undefined || cid == undefined) {
     res.render('users/message', {title: 'error', message: 'bad request'});
   } else {
-    if (encrypt.encrypt(cid, config.SECRET) === key) {
-      Company
-      .findOne({ _id: cid })
-      .exec()
-      .then(function(company) {
-        if (!company) {
-          throw 'Not Found';
-        }
+    Company
+    .findOne({ _id: cid })
+    .exec()
+    .then(function(company) {
+      if (!company) {
+        throw 'Not Found';
+      }
+      if(key === company.invite_key){
         req.session.key = key;
         req.session.key_id = cid;
         res.render('signup/invite', {
@@ -318,12 +318,14 @@ exports.invite = function(req, res) {
           domains: company.email.domain,
           cname: company.info.official_name
         });
-      })
-      .then(null, function(err) {
-        console.log(err);
+      }else{
         res.render('users/message', {title: 'error', message: 'bad request'});
-      });
-    }
+      }
+    })
+    .then(null, function(err) {
+      console.log(err);
+      res.render('users/message', {title: 'error', message: 'bad request'});
+    });
   }
 };
 
@@ -578,7 +580,7 @@ exports.mailActive = function(req, res){
       console.log(err);
       res.render('users/message', message.dbError);
     } else if(user) {
-      if(user.active === true) {
+      if(user.invite_active === true) {
         res.render('users/message', message.actived);
       } else {
         if(encrypt.encrypt(uid, config.SECRET) === key) {
@@ -590,7 +592,7 @@ exports.mailActive = function(req, res){
               return res.send(500,{'msg':'user save err.'});
             }
           });
-          res.render('users/setProfile', {
+          res.render('signup/personal_step_four', {
             title: '激活成功',
             key: key,
             uid: uid
@@ -609,17 +611,18 @@ exports.mailActive = function(req, res){
  * 输入公司邀请码后最终的激活
  */
 exports.lastStepActive = function(req, res){
-  var key = req.query.key;
-  var uid = req.query.uid;
+  var key = req.body.key;
+  var uid = req.body.uid;
   User.findOne({_id: uid}).populate('cid').exec(function(err, user) {
     if(err) {
       console.log(err);
       res.render('users/message', message.dbError);
     }
     else if(user) {
-      if(encrypt.encrypt(uid, config.SECRET) === key) {
+      if(key===user.cid.invite_key){
         user.invite_active = true;
         //员工激活后,要把他的具体信息加入部门
+        //此处可以做个api
         if(user.department != null && user.department != undefined){
           var callback = function(err, data) {
             if (err) {
@@ -648,11 +651,12 @@ exports.lastStepActive = function(req, res){
             });
           }
         });
-        res.render('users/setProfile', {
+        res.render('signup/setProfile', {
           title: '激活成功',
-          key: key,
-          uid: uid
         });
+      }
+      else{
+        res.render('users/message', message.invalid);
       }
     }
   });
@@ -724,10 +728,8 @@ exports.setProfile = function(req, res) {
               //req.session.username = user.username;
             }
           });
-          res.render('users/setProfile', {
+          res.render('signup/setProfile', {
             title: '激活成功',
-            key: key,
-            uid: uid
           });
         } else {
           res.render('users/message', message.invalid);

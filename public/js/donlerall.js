@@ -912,7 +912,7 @@ angular.module('donler', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.
 
 var app = angular.module('donler');
 
-app.directive('match', function ($parse) {
+app.directive('match', ['$parse', function ($parse) {
   return {
     require: 'ngModel',
     link: function(scope, elem, attrs, ctrl) {
@@ -923,7 +923,7 @@ app.directive('match', function ($parse) {
       });
     }
   };
-});
+}]);
 app.directive('ngMin', function() {
     return {
         restrict: 'A',

@@ -1,0 +1,18 @@
+extends ../layouts/register
+
+append headExt
+  link(rel="stylesheet" href="/css/company_signup.css")
+block contentExt
+  .dl_container.clearfix
+    .signup_row
+      .block
+        .signup_title.personal_title
+          span 您的邮箱已验证成功!
+        .signup_tips
+          p 为了保证动梨中的全部用户都是真是可信的
+          p 请向您所在公司的donler管理员索要激活码,开启您在donler的精彩生活！
+        .invite_key_container(ng-init="uid='#{uid}'")
+          form(action="/users/lastStepActive" method="post" name="signup_form" novalidate)
+            input.invite_key(type="text" placeholder="输入8位激活码" name="key" required)
+            input(type="text" name="uid" ng-model="uid" ng-show='false')
+            button#submit.invite_button 立即激活

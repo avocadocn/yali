@@ -50,13 +50,19 @@ div(ng-if="active==0 || active==1 || active ==4")
       .input_right
         input.dl-form-control(type="text" name="phone" ng-model="phone")
   .form-group.dl_sm_group
-    .dl_row.center_container
-      label.dl_checkbox.center_content
-        input(type="checkbox" ng-model="checkbox" required)
-        | 我已阅读并同意<a href="/about#law">服务条款</a>
+    .dl_row
+      .label_left
+      .input_right
+        label.dl_checkbox
+          input(type="checkbox" ng-model="checkbox" required)
+          | 我已阅读并同意<a href="/about#law">服务条款</a>
 .form-group.dl_sm_group(ng-show="active!==3 && active!==2")
-  .dl_row.center_container
-    button.dl_btn.dl_btn_large.center_content(type="submit" ng-disabled="active!==1 && active!==4 || active_form.$invalid") 注册
+  .dl_row
+    .label_left
+    .input_right
+      button.dl_btn.btn_submit(type="submit" ng-disabled="active!==1 && active!==4 || active_form.$invalid") 免费注册个人账号
 .form-group.dl_sm_group(ng-show="active==2")
-  .dl_row.center_container
-    button.dl_btn.dl_btn_large.center_content(type="submit") 重发激活邮件
+  .dl_row
+    .label_left
+    .input_right
+      button.dl_btn.btn_submit(type="submit") 重发激活邮件

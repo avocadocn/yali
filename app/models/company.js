@@ -100,7 +100,9 @@ var CompanySchema = new Schema({
     },
     salt: String,
     // 企业注册用的邀请码
-    register_invite_code: [String]
+    register_invite_code: [String],
+    // 企业给用户的邀请码
+    invite_key: String
 });
 
 /**
