@@ -1,5 +1,4 @@
 .rich_comment .component_head {
-  background-color: #97d7c6 !important;
   padding-right: 15px !important;
 }
 .rich_comment .component_head .head_button {
@@ -260,7 +259,7 @@
   margin: 10px 0;
 }
 .score_board .component_head {
-  background-color: #333 !important;
+  background-color: #525e70 !important;
 }
 .score_board .component_body {
   padding: 20px 10px 5px !important;

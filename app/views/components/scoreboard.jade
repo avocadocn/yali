@@ -1,6 +1,7 @@
 .component.score_board(ng-if="scoreBoard.effective")
   .component_head
-    span.title 比分板
+    img.icon_img.left.first(src="/img/icons/clipboard_with_check_mark.png")
+    span.title.left 比分板
   .component_body
     .score_board_body
       .playing_team(ng-repeat="playingTeam in scoreBoard.playingTeams" class="playing_team_{{$index}}")
