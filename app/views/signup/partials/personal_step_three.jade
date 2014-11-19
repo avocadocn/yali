@@ -13,15 +13,15 @@
       .dl_row
         .label_left
           label.control-label(for="email") ＊企业邮箱:
-        .input_right
-          input.dl-form-control(type="text" name="email" ng-model="email" ng-blur="mailCheck()")
+        .input_right.email_check
+          input.dl-form-control(type="text" name="email" ng-model="email" ng-blur="mailCheck()" ng-class="{'pass':active===1,'error':active&&active!==1}")
+        .email_tips
+          img(ng-show='loading' src='/img/loading.gif')
+          i.fa.fa-exclamation-triangle.inactive(ng-show="active&&active!==1")
+          i.fa.fa-check.active(ng-show="active===1")
         input(type="text" name="index" ng-model="active" ng-show='false')
         input(type="text" name="cid" ng-model="cid" ng-show='false')
-      .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
-        p
-        img(ng-show='loading' src='/img/loading.gif')
-        div(ng-show='active==1' ng-cloak)
-          span 此邮箱未被注册!
+      .dl_row.email_tip(ng-show="active&&active!==4&&active!==1" ng-cloak)
         div(ng-show='active==2' ng-cloak)
           p 您的邮箱已注册过,请查收邮件,若未收到请点击重发按钮再次发送。
           p 
@@ -33,5 +33,6 @@
           a(href='/users/signin') 登录
           span 。若是您忘记了密码,
           a(href='/users/forgetPwd') 请点此跳转
-        p
+        div(ng-show='active==5' ng-cloak)
+          span 邮箱后缀错误,请使用公司邮箱地址进行注册
     include personal_form

@@ -66,6 +66,7 @@
 .rich_comment .component_body .rich_comment_form .remind {
   margin: 0;
   margin-left: 40px;
+  color: #999;
 }
 .rich_comment .component_body .rich_comment_form .preview_box {
   margin-top: 5px;
@@ -75,6 +76,7 @@
   float: left;
   position: relative;
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 .rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap .close {
   display: none;
@@ -228,16 +230,11 @@
   background-color: #3ca2e0;
   width: 50px;
 }
+.simple_comment .component_body .rich_comment_form .remind {
+  margin-left: 0;
+}
 .simple_comment .component_body .rich_comment_form .preview_box {
-  display: block;
-}
-.simple_comment .component_body .rich_comment_form .preview_box .remind {
-  display: block;
-}
-.simple_comment .component_body .rich_comment_form .preview_box .preview_img_wrap {
-  float: left;
-  width: 48px;
-  height: 48px;
+  padding-left: 0;
 }
 .simple_comment .component_body .comment {
   padding: 10px 20px;
@@ -621,10 +618,6 @@ h6,
 a {
   color: #28689b;
   cursor: pointer;
-}
-select {
-  border-radius: 0 !important;
-  height: 34px !important;
 }
 button {
   border: none;
@@ -2182,7 +2175,7 @@ input::-webkit-inner-spin-button {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
-  border-radius: 0 !important;
+  border-radius: 0;
   color: #999;
   float: left;
 }
@@ -2659,10 +2652,6 @@ input.ng-invalid.ng-dirty {
 }
 .deckgrid .column-1-4 {
   width: 25%;
-}
-.department_select_width {
-  width: 33.3% !important;
-  margin-right: 0px !important;
 }
 .schedulebox {
   padding: 20px 8px 8px;

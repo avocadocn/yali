@@ -18,9 +18,9 @@ block contentExt
             .signup_tips
               p 我们会严格审核您的申请,
               p 确保每个用户的身份都真实可靠
-          div(ng-show="step===2")
+          div(ng-show="step===2" ng-cloak)
             include partials/personal_step_two
-          div(ng-show="step===3")
+          div(ng-show="step===3" ng-cloak)
             include partials/personal_step_three
 
 append footExt

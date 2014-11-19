@@ -66,6 +66,7 @@
 .rich_comment .component_body .rich_comment_form .remind {
   margin: 0;
   margin-left: 40px;
+  color: #999;
 }
 .rich_comment .component_body .rich_comment_form .preview_box {
   margin-top: 5px;
@@ -75,6 +76,7 @@
   float: left;
   position: relative;
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 .rich_comment .component_body .rich_comment_form .preview_box .preview_img_wrap .close {
   display: none;
@@ -228,16 +230,11 @@
   background-color: #3ca2e0;
   width: 50px;
 }
+.simple_comment .component_body .rich_comment_form .remind {
+  margin-left: 0;
+}
 .simple_comment .component_body .rich_comment_form .preview_box {
-  display: block;
-}
-.simple_comment .component_body .rich_comment_form .preview_box .remind {
-  display: block;
-}
-.simple_comment .component_body .rich_comment_form .preview_box .preview_img_wrap {
-  float: left;
-  width: 48px;
-  height: 48px;
+  padding-left: 0;
 }
 .simple_comment .component_body .comment {
   padding: 10px 20px;
@@ -621,10 +618,6 @@ h6,
 a {
   color: #28689b;
   cursor: pointer;
-}
-select {
-  border-radius: 0 !important;
-  height: 34px !important;
 }
 button {
   border: none;
@@ -2182,7 +2175,7 @@ input::-webkit-inner-spin-button {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
-  border-radius: 0 !important;
+  border-radius: 0;
   color: #999;
   float: left;
 }
@@ -2659,10 +2652,6 @@ input.ng-invalid.ng-dirty {
 }
 .deckgrid .column-1-4 {
   width: 25%;
-}
-.department_select_width {
-  width: 33.3% !important;
-  margin-right: 0px !important;
 }
 .schedulebox {
   padding: 20px 8px 8px;
@@ -3310,7 +3299,6 @@ input.ng-invalid.ng-dirty {
 #events-modal .modal-dialog .dl-modal .dl-modal-body {
   display: table;
   padding: 20px;
-<<<<<<< HEAD
   border: none;
 }
 #events-modal .calendar_box {
@@ -3318,12 +3306,6 @@ input.ng-invalid.ng-dirty {
   float: left;
   -moz-box-shadow: 1px 1px 3px #ccc;
   box-shadow: 1px 1px 3px #ccc;
-=======
-}
-#events-modal .calendar_box {
-  width: 362px;
-  float: left;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_box .schedule_type {
   width: 100%;
@@ -3353,7 +3335,6 @@ input.ng-invalid.ng-dirty {
   border-bottom-right-radius: 1em;
   border-top-right-radius: 1em;
 }
-<<<<<<< HEAD
 #events-modal .calendar_box .calendar_nav {
   background-color: #525e70;
   height: 30px;
@@ -3391,17 +3372,6 @@ input.ng-invalid.ng-dirty {
   width: 26px;
   float: right;
   margin: 0;
-=======
-#events-modal .calendar_box .calendar_nav a {
-  width: 70px;
-  text-align: center;
-}
-#events-modal .calendar_box .calendar_nav a .calendar_title {
-  width: 165px;
-}
-#events-modal .calendar_box .calendar_nav .calendar_title {
-  width: 110px;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_box .join_sign {
   width: 20px;
@@ -3411,40 +3381,26 @@ input.ng-invalid.ng-dirty {
   font-size: 14px;
   font-family: Arial;
   line-height: 24px;
-<<<<<<< HEAD
   margin: 0 16px;
-=======
-  margin: 10px 20px;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
   border-radius: initial;
 }
 #events-modal .calendar_view_modal {
   border: 1px solid #f4f4f4;
 }
 #events-modal .calendar_view_modal .cal-context {
-<<<<<<< HEAD
   height: 380px;
-=======
-  height: 422px;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] {
   min-height: 50px;
 }
 #events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day {
-<<<<<<< HEAD
   height: 50px;
   text-align: center;
   margin: 5px 0;
-=======
-  height: 65px;
-  text-align: center;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-month-day span[data-cal-date] {
   margin-top: 22px;
   display: inline-block;
-<<<<<<< HEAD
   margin: 5px 16px 3px;
   border-radius: initial;
 }
@@ -3454,35 +3410,21 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-day-today:hover {
   background-color: inherit;
 }
-=======
-  margin: 5px 20px;
-  border-radius: initial;
-}
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 #events-modal .calendar_view_modal .cal-month-box [class*="cal-cell"] .cal-day-today span[data-cal-date] {
   background-color: inherit;
 }
 #events-modal .calendar_view_modal .calendar_tips {
   height: 40px;
-<<<<<<< HEAD
   border-top: 1px solid #ccc;
-=======
-  -moz-box-shadow: 1px 1px 3px #ccc;
-  box-shadow: 1px 1px 3px #ccc;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_view_modal .calendar_tips .calendar_tip {
   float: right;
   padding-right: 10px;
 }
 #events-modal .calendar_view_modal .calendar_tips .calendar_tip .join_sign {
-<<<<<<< HEAD
   float: left;
   margin: 10px;
   background-color: #3ca2e0;
-=======
-  margin: 10px;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_view_modal .calendar_tips .calendar_tip .campaign_label {
   line-height: 40px;
@@ -3495,11 +3437,7 @@ input.ng-invalid.ng-dirty {
   margin-left: 20px;
 }
 #events-modal .calendar_event_box .cal-event-time {
-<<<<<<< HEAD
   color: #525e70;
-=======
-  color: #585b6c;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
   padding-top: 10px;
   padding-left: 20px;
 }
@@ -3513,31 +3451,19 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_event_box .cal-event-time .title {
   padding-top: 5px;
   font-size: 14px;
-<<<<<<< HEAD
   color: #3ca2e0;
 }
 #events-modal .calendar_event_box .cal-event-list {
   border: 1px solid #f4f4f4;
   max-height: 400px;
   min-height: 400px;
-=======
-  color: #3498db;
-}
-#events-modal .calendar_event_box .cal-event-list {
-  border: 1px solid #f4f4f4;
-  max-height: 445px;
-  min-height: 445px;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
   background-color: #fff;
   width: 100%;
   margin-left: 20px;
   margin-top: 16px;
-<<<<<<< HEAD
   background-color: #fbfbfb;
   padding-top: 0;
   box-shadow: inset 0 0 1px 0 rgba(0,0,0,0.5);
-=======
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled {
   padding: 0 13px;
@@ -3547,29 +3473,19 @@ input.ng-invalid.ng-dirty {
   text-overflow: ellipsis;
   white-space: nowrap;
   border-bottom: 1px solid #ccc;
-<<<<<<< HEAD
   padding-top: 18px;
   padding-bottom: 12px;
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_head {
   color: #3ca2e0;
-=======
-  padding: 10px 0;
-}
-#events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_head {
-  color: #3498db;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
   font-size: 14px;
   line-height: 14px;
   padding: 0;
   margin: 0 0 6px;
-<<<<<<< HEAD
   font-weight: bold;
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_head .campaign_vs {
   color: #f58464;
-=======
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content {
   float: left;
@@ -3581,15 +3497,11 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_left .team_logo {
   width: 70px;
   height: 70px;
-<<<<<<< HEAD
   margin-right: 8px;
-=======
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_left .campaign_info {
   padding-top: 2px;
   margin: 0;
-<<<<<<< HEAD
   color: #3ca2e0;
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_left .campaign_start {
@@ -3598,23 +3510,14 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_right {
   float: left;
   margin-left: 13px;
-=======
-}
-#events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_right {
-  float: left;
-  margin-left: 20px;
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_right .campaign_info {
   margin: 0;
   line-height: 18px;
-<<<<<<< HEAD
   color: #999;
 }
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_right .campaign_info .content_text {
   padding-left: 10px;
-=======
->>>>>>> 3708a106a8092d80dae7e7a890f24594d786330a
 }
 @-moz-keyframes scaleFade {
   50% {
