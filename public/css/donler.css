@@ -26,12 +26,15 @@
   height: 30px;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .content {
-  padding: 6px 10px;
+  padding: 8px 10px;
   height: 30px;
-  color: #ccc;
-  background-color: #f3fcff;
-  border: solid 1px #d3dbe6;
   font-size: 14px;
+  line-height: 14px;
+  color: #999;
+  background-color: #fbfbfb;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d6d6d6 #eee #fbfbfb #eee;
   margin-left: 10px;
   flex: 1;
 }
@@ -53,7 +56,7 @@
   width: 70px;
   height: 30px;
   color: #fff;
-  background-color: #73a5dd;
+  background-color: #3498db;
   font-size: 14px;
   line-height: 30px;
 }
@@ -135,9 +138,27 @@
 .rich_comment .component_body .comment .comment_content_panel .replies .reply_form .reply_input {
   flex: 1;
   -webkit-flex: 1;
+  padding: 8px 10px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 14px;
+  color: #999;
+  background-color: #fbfbfb;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d6d6d6 #eee #fbfbfb #eee;
+  border-color: #d6d6d6;
+  border-right: none;
 }
-.rich_comment .component_body .comment .comment_content_panel .replies .reply_form .dl_btn_submit {
-  background-color: #73a5dd;
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form .reply_button {
+  width: 70px;
+  height: 30px;
+  color: #fff;
+  background-color: #3498db;
+  font-size: 14px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply_form .reply_button[disabled] {
+  opacity: 0.65;
 }
 .rich_comment .component_body .comment .comment_content_panel .replies .reply {
   margin: 8px 0;
