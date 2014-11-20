@@ -752,11 +752,14 @@ textarea
           float right
           margin-top -3px
           margin-right -2px
-          .fa
-            font-size 14px
-            margin-left 8px
+          // .fa
+          //   font-size 14px
+          //   margin-left 8px
+          .dl_icons
+            margin 2px 2px 0 7px
       .groups
         padding 28px 13px 4px 13px
+        clear both
         .group_label
           line-height 24px
           font-size 14px
@@ -774,8 +777,8 @@ textarea
             position relative
             top -15px
           .group_logo
-            width 32px
-            height 32px
+            width 30px
+            height 30px
           .group_leader
             position absolute
             background-image url('/img/icons/crown.png')
@@ -785,10 +788,19 @@ textarea
             top -13px
             background-repeat no-repeat
       .group_unfold
-        padding-top 10px
         .groups
-          padding 0
-          padding-left 18px
+          padding 10px 0 0 20px
+          float left
+          width 100%
+          border-bottom 1px solid #dedede
+          .group_label
+            float left
+            width 35px
+            height 47px
+            line-height 40px
+          .group_info
+            float left
+            width 170px
   .aside
     width 128px
     margin-right 20px
@@ -2376,16 +2388,16 @@ input.ng-invalid.ng-dirty
   .calendar_view_modal
     border 1px solid borderColor
     .cal-context
-      height 380px
+      height 387px
     .cal-month-box
       .cal-row-fluid
         border-bottom 1px solid borderColor
         [class*="cal-cell"]
           min-height 50px
           .cal-month-day
-            height 50px
+            height 60px
             text-align center
-            margin 5px 0
+            margin 0
             span[data-cal-date]
               margin-top 22px
               display inline-block
@@ -2399,7 +2411,6 @@ input.ng-invalid.ng-dirty
               background-color inherit
     .calendar_tips
       height 40px
-      border-top 1px solid #ccc
       .calendar_tip
         float right
         padding-right 10px

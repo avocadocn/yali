@@ -3,8 +3,8 @@ mixin group_thumbnail(teams)
     span.dl_icons.icon_group
     span.pull-left.head_title 小队
     span.group_count #{teams.length}
-      i.fa(ng-class="{'fa-angle-down':groupShowFlag,'fa-angle-right':!groupShowFlag}" ng-cloak)
-    //- span.dl_icons(ng-class="{'icon_fold':groupShowFlag,'icon_unfold':!groupShowFlag}" ng-click="groupShowFlag=!groupShowFlag;" ng-cloak)
+      //-i.fa(ng-class="{'fa-angle-down':groupShowFlag,'fa-angle-right':!groupShowFlag}" ng-cloak)
+      span.dl_icons(ng-class="{'icon_fold':groupShowFlag,'icon_unfold':!groupShowFlag}" ng-cloak)
   .groups(ng-if="!groupShowFlag")
     each team,i in teams
       if team.gid !=='0'
@@ -14,27 +14,34 @@ mixin group_thumbnail(teams)
             //-.img_div
             if team.leader
               span.group_leader
-            img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
+            img.img.center-block.group_logo(ng-cloak src="#{team.logo}/30/30")
   .group_unfold(ng-if="groupShowFlag")
-    .groups
-      .group_label  管理的小队
+    - var teamLeader =false;
       each team,i in teams
         if team.gid !=='0' && team.leader
-          .center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
-            a.center-block(href="/group/page/#{team._id}")
-              img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
+          - teamLeader = true;
+      if teamLeader
+        .groups
+          .group_label  管理
+          .group_info
+            each team,i in teams
+              if team.gid !=='0' && team.leader
+                .center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
+                  a.center-block(href="/group/page/#{team._id}")
+                    img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
     .groups
-      .group_label  参加的小队
-      each team,i in teams
-        if team.gid !=='0' && !team.leader
-          .center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
-            a.center-block(href="/group/page/#{team._id}")
-              //-if team_class === 'leader'
-              //-.img_div
-              img.img.center-block.group_logo(ng-cloak src="#{team.logo}/32/32")
-      .center-block.group(ng-cloak)
-        a.clearLinkUnderline.center-block(href="/company/home#/team_info")
-          //-if team_class === 'leader'
-          //-.img_div
-          .img.add_group.center-block.group_logo
-            span +
+      .group_label  参加
+      .group_info
+        each team,i in teams
+          if team.gid !=='0' && !team.leader
+            .center-block.group(data-toggle="tooltip" title="#{team.name}" ng-cloak)
+              a.center-block(href="/group/page/#{team._id}")
+                //-if team_class === 'leader'
+                //-.img_div
+                img.img.center-block.group_logo(ng-cloak src="#{team.logo}/30/30")
+        .group(ng-cloak)
+          a.clearLinkUnderline.center-block(title="进入小队列表页面" href="/company/home#/team_info")
+            //-if team_class === 'leader'
+            //-.img_div
+            .img.add_group.center-block.group_logo
+              span +

@@ -1445,12 +1445,12 @@ textarea {
   margin-top: -3px;
   margin-right: -2px;
 }
-.dl_container .side .groupsbox .box_head .group_count .fa {
-  font-size: 14px;
-  margin-left: 8px;
+.dl_container .side .groupsbox .box_head .group_count .dl_icons {
+  margin: 2px 2px 0 7px;
 }
 .dl_container .side .groupsbox .groups {
   padding: 28px 13px 4px 13px;
+  clear: both;
 }
 .dl_container .side .groupsbox .groups .group_label {
   line-height: 24px;
@@ -1472,8 +1472,8 @@ textarea {
   top: -15px;
 }
 .dl_container .side .groupsbox .groups .group .group_logo {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 .dl_container .side .groupsbox .groups .group .group_leader {
   position: absolute;
@@ -1484,12 +1484,21 @@ textarea {
   top: -13px;
   background-repeat: no-repeat;
 }
-.dl_container .side .groupsbox .group_unfold {
-  padding-top: 10px;
-}
 .dl_container .side .groupsbox .group_unfold .groups {
-  padding: 0;
-  padding-left: 18px;
+  padding: 10px 0 0 20px;
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid #dedede;
+}
+.dl_container .side .groupsbox .group_unfold .groups .group_label {
+  float: left;
+  width: 35px;
+  height: 47px;
+  line-height: 40px;
+}
+.dl_container .side .groupsbox .group_unfold .groups .group_info {
+  float: left;
+  width: 170px;
 }
 .dl_container .aside {
   width: 128px;
@@ -3396,7 +3405,7 @@ input.ng-invalid.ng-dirty {
   border: 1px solid #f4f4f4;
 }
 #events-modal .calendar_view_modal .cal-context {
-  height: 380px;
+  height: 387px;
 }
 #events-modal .calendar_view_modal .cal-month-box .cal-row-fluid {
   border-bottom: 1px solid #f4f4f4;
@@ -3405,9 +3414,9 @@ input.ng-invalid.ng-dirty {
   min-height: 50px;
 }
 #events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] .cal-month-day {
-  height: 50px;
+  height: 60px;
   text-align: center;
-  margin: 5px 0;
+  margin: 0;
 }
 #events-modal .calendar_view_modal .cal-month-box .cal-row-fluid [class*="cal-cell"] .cal-month-day span[data-cal-date] {
   margin-top: 22px;
@@ -3426,7 +3435,6 @@ input.ng-invalid.ng-dirty {
 }
 #events-modal .calendar_view_modal .calendar_tips {
   height: 40px;
-  border-top: 1px solid #ccc;
 }
 #events-modal .calendar_view_modal .calendar_tips .calendar_tip {
   float: right;

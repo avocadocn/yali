@@ -116,6 +116,27 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
 			anchorSmoothScroll.scrollTo(id);
 			addCampaign(id);
 		}
+		$scope.reportUser = function(){
+
+		}
+    $scope.getReport = function(comment) {
+      $scope.reportContent = {
+        hostType: 'user',
+        hostContent: {
+          _id: comment._id,
+          content: comment.content,
+          poster: comment.poster
+        },
+        reportType: ''
+      }
+      $('#reportModal').modal('show');
+    }
+
+    $scope.pushReport = function() {
+      Report.publish($scope.reportContent, function(err, msg) {
+        alertify.alert(msg);
+      });
+    };
 		$scope.loadMore = function (id) {
 		  var temp = id.split('_');
 		  $scope.nowYear = temp[0];
