@@ -21,6 +21,11 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       $scope.isShowHomeCourts = data.isShowHomeCourts;
       $scope.role = data.role;
 
+      if ($scope.role==='GUESTHR' || $scope.role==='GUESTLEADER' || $scope.role==='GUEST') {
+        $('#calendar').undelegate('.cal-month-day', 'click');
+        $('#calendar').find('span[data-cal-date]').unbind('click');
+      }
+
       $scope.teamInfo = {
         name: $scope.team.name,
         brief: $scope.team.brief
@@ -296,6 +301,11 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       $('#calendar_title').text(this.getTitle());
       //$('#calendar_operator button').removeClass('active');
       //$('button[data-calendar-view="' + view + '"]').addClass('active');
+
+      // 如果是其它公司访客，不再添加事件
+      if ($scope.role==='GUESTHR' || $scope.role==='GUESTLEADER' || $scope.role==='GUEST') {
+        return;
+      }
 
       $('#calendar').undelegate('.cal-month-day','click').delegate('.cal-month-day','click',function(e){
         $('#events-modal').modal('show');

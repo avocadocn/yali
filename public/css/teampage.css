@@ -36,6 +36,10 @@
 .teampage .loading {
   background: url("/img/loading.gif") center center no-repeat;
 }
+.teampage .no_pointer .cal-month-day,
+.teampage .no_pointer .day {
+  cursor: default !important;
+}
 .teampage .card {
   -moz-box-shadow: 1px 1px 3px #ccc;
   box-shadow: 1px 1px 3px #ccc;

@@ -100,7 +100,7 @@ block contentExt
                   a.prev(data-calendar-nav="prev" href="javascript:void(0)") &lt;
                   span.calendar_date.calendar_title#calendar_title
                   a.next(data-calendar-nav="next" href="javascript:void(0)") &gt;
-              #calendar.calendar_body
+              #calendar.calendar_body(ng-class="{'no_pointer': role==='GUESTHR' || role==='GUESTLEADER' || role==='GUEST'}")
               .calendar_footer
                 .instruction
                   .item
