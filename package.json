@@ -46,7 +46,7 @@
     "soap": "0.5.1",
     "validator": "3.10.0",
     "view-helpers": "~0.1.4",
-    "xss":"~0.1.13"
+    "xss":"~0.1.12"
   },
   "devDependencies": {
     "gulp": "~3.8.10",
