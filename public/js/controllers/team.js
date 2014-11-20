@@ -60,7 +60,14 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
         script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=court_map_initialize";
         document.body.appendChild(script);
       }
-
+      if ($scope.role!=='GUESTHR' && $scope.role!=='GUESTLEADER' && $scope.role!=='GUEST') {
+        Campaign.getCampaignsDateRecord('team', teamId, function(err, record) {
+          if (!err) {
+            $scope.timelines = record;
+            addCampaign(record[0].year + '_' + record[0].month[0].month);
+          }
+        });
+      }
     }
   });
 
@@ -403,12 +410,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
 
 
   // timeline
-  Campaign.getCampaignsDateRecord('team', teamId, function(err, record) {
-    if (!err) {
-      $scope.timelines = record;
-      addCampaign(record[0].year + '_' + record[0].month[0].month);
-    }
-  });
+  
   $scope.nowYear = 'timeline1_0';
   var addCampaign = function(id) {
     var temp = id.split('_');
@@ -448,6 +450,9 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
   };
 
   $scope.scrollTo = function(id) {
+    if ($scope.role==='GUESTHR' || $scope.role==='GUESTLEADER' || $scope.role==='GUEST') {
+      return;
+    }
     var temp = id.split('_');
     $scope.nowYear = temp[0];
     $scope.nowMonth = temp[1];
@@ -457,6 +462,9 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
   };
 
   $scope.loadMore = function(id) {
+    if ($scope.role==='GUESTHR' || $scope.role==='GUESTLEADER' || $scope.role==='GUEST') {
+      return;
+    }
     var temp = id.split('_');
     $scope.nowYear = temp[0];
     $scope.nowMonth = temp[1];

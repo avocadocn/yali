@@ -113,7 +113,7 @@ block contentExt
                     span.circle.circle_many_campaign
                     span.text 2个以上
 
-      .user_timeline.team_timeline(when-scrolled="loadMore" select-class="date_separator")
+      .user_timeline.team_timeline(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" when-scrolled="loadMore" select-class="date_separator")
         .dl_timeline(campaign-card-container)
           .spine
           .year(ng-repeat ="years in timelines")
@@ -132,21 +132,21 @@ block contentExt
 
     .side_panel
       .timeline_control
-        .control_year(ng-class="{'active_year':nowYear=='timeline0'}" ng-click="scrollTo('timeline0_0')")
+        .control_year(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-class="{'active_year':nowYear=='timeline0'}" ng-click="scrollTo('timeline0_0')")
           span 概况
-        .control_year(ng-repeat ="years in timelines" ng-class="{'active_year':nowYear==years.year}" ng-cloak)
+        .control_year(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-repeat ="years in timelines" ng-class="{'active_year':nowYear==years.year}" ng-cloak)
           span(ng-click="nowYear=years.year;scrollTo(years.year+'_'+years.month[0].month)") {{years.year}}
           .months(ng-if="nowYear==years.year")
             .control_month(ng-repeat ="month in years.month")
               a.clearLinkUnderline(ng-class="{'active_month':nowMonth==month.month}" ng-click="scrollTo(years.year+'_'+month.month)")
                 span {{month.month}}月
-        .control_year(ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')")
+        .control_year(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')")
           span 最初
         .button_group
           .icon_button(ng-click="anchorTo('home_court_card')" title="主场"): img.icon(src="/img/map_pin_circle.png")
           .icon_button(ng-click="anchorTo('calendar_card')" title="日历"): img.icon(src="/img/calendar_big.png")
           .icon_button(ng-click="anchorTo('member_card')" title="成员"): img.icon(src="/img/team.png")
-          a.icon_button(ng-href="/photoAlbum/team/{{team._id}}/listView" title="相册"): img.icon(src="/img/photo.png")
+          a.icon_button(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-href="/photoAlbum/team/{{team._id}}/listView" title="相册"): img.icon(src="/img/photo.png")
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
