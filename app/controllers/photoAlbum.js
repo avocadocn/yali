@@ -1298,9 +1298,11 @@ exports.renderGroupPhotoAlbumList = function(req, res, next) {
 
       var thumbnail = company_group.family.filter(function (photo) {
           return !photo.hidden && photo.select;
-        })[0].uri;
+        })[0];
       if (!thumbnail) {
         thumbnail = '/img/family.png';
+      } else {
+        thumbnail = thumbnail.uri;
       }
       var showFilter = function (photo) {
         return !photo.hidden;
@@ -1312,10 +1314,13 @@ exports.renderGroupPhotoAlbumList = function(req, res, next) {
       var familyPhotoAlbum = {
         thumbnail: thumbnail,
         name: company_group.name + '的全家福',
-        photo_count: company_group.family.filter(showFilter).length,
-        update_user: lastPhoto.upload_user,
-        update_date: lastPhoto.upload_date
+        photo_count: company_group.family.filter(showFilter).length
       };
+
+      if (lastPhoto) {
+        familyPhotoAlbum.update_user = lastPhoto.upload_user;
+        familyPhotoAlbum.update_date = lastPhoto.upload_date;
+      }
 
       return res.render('photo_album/photo_album_list', {
         company_group: company_group,

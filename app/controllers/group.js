@@ -1122,7 +1122,7 @@ exports.uploadFamily = function(req, res) {
     next('forbidden');
     return;
   }
-  console.log(req.body, req.files)
+
   if (!req.files || !req.files.family) {
     return res.send(400);
   }

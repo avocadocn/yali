@@ -159,6 +159,7 @@
 .photo_album .photo_album_panel {
   display: block;
   width: 230px;
+  height: 316px;
   border: solid 1px #ededed;
   text-decoration: none;
   background-color: #fff;

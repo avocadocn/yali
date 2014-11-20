@@ -33,11 +33,13 @@ block contentExt
             h6.text-center.album_title
               span.photo_album_name= familyPhotoAlbum.name
           div.update_info.center-block(bs-popover)
-            a(href="/users/home/#{familyPhotoAlbum.update_user._id}")
-              img.update_user_photo.img_user(src="#{familyPhotoAlbum.update_user.photo}/36/36" ng-Mouseover="showUserCard('#{familyPhotoAlbum.update_user._id}','#{familyPhotoAlbum._id}')" id="pop#{familyPhotoAlbum._id}")
-            .pull-left
-              a.update_user_name(href="/users/home/#{familyPhotoAlbum.update_user._id}")= familyPhotoAlbum.update_user.name
-            p.text #{moment(familyPhotoAlbum.update_date).format('YYYY.MM.DD')} 最后更新
+            if familyPhotoAlbum.update_user
+              a(href="/users/home/#{familyPhotoAlbum.update_user._id}")
+                img.update_user_photo.img_user(src="#{familyPhotoAlbum.update_user.photo}/36/36" ng-Mouseover="showUserCard('#{familyPhotoAlbum.update_user._id}','#{familyPhotoAlbum._id}')" id="pop#{familyPhotoAlbum._id}")
+              .pull-left
+                a.update_user_name(href="/users/home/#{familyPhotoAlbum.update_user._id}")= familyPhotoAlbum.update_user.name
+            if familyPhotoAlbum.update_date
+              p.text #{moment(familyPhotoAlbum.update_date).format('YYYY.MM.DD')} 最后更新
       each photo_album in photo_album_list
         .col-sm-3.col-xs-3.photo_album_container
           .photo_album_panel
