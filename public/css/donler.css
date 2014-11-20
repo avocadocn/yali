@@ -619,10 +619,6 @@ a {
   color: #28689b;
   cursor: pointer;
 }
-select {
-  border-radius: 0 !important;
-  height: 34px !important;
-}
 button {
   border: none;
   outline: none;
@@ -2188,7 +2184,7 @@ input::-webkit-inner-spin-button {
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
-  border-radius: 0 !important;
+  border-radius: 0;
   color: #999;
   float: left;
 }
@@ -2665,10 +2661,6 @@ input.ng-invalid.ng-dirty {
 }
 .deckgrid .column-1-4 {
   width: 25%;
-}
-.department_select_width {
-  width: 33.3% !important;
-  margin-right: 0px !important;
 }
 .schedulebox {
   padding: 20px 8px 8px;

@@ -15,12 +15,12 @@ block contentExt
           .component_head(ng-class="{competition: campaign.units.length >= 2}")
             span.title.left.first #{campaign.theme}
             span.sub_title.left(ng-cloak) #{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}
-            span.title.right.last(ng-if="!campaign.isStart" ng-init="startCal=false" ng-show="startCal" ng-cloak)
+            span.title.right.last(ng-if="campaign.isStart === false && campaign.isActive" ng-init="startCal=false" ng-show="startCal" ng-cloak)
               span(count-down target="campaign.start_time" start-cal="startCal" ng-cloak)
               span.count_down_remind &nbsp;后开始
             span.title.right.last(ng-if="campaign.isStart && !campaign.isEnd && campaign.isActive" ng-cloak) 活动正在进行中
             span.title.right.last(ng-if="campaign.isEnd && campaign.isActive" ng-cloak) 活动已结束
-            span.title.right.last(ng-if="!campaign.isActive" ng-cloak) 活动已关闭
+            span.title.right.last(ng-if="campaign.isActive===false" ng-cloak) 活动已关闭
           .component_body
             .unit_container.clearfix
               .unit(ng-repeat="unit in campaign.units" ng-cloak)

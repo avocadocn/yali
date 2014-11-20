@@ -126,6 +126,9 @@
   font-size: 12px;
   line-height: 17px;
 }
+.teampage .info_card .team_info .info_box .error {
+  color: #f3939e;
+}
 .teampage .info_card .team_info .info_box .input_brief {
   width: 100%;
   border: 1px solid #d6d6d6;
