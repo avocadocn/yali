@@ -19,7 +19,8 @@ var mongoose = require('mongoose'),
   message = require('../controllers/message'),
   cache = require('../services/cache/Cache'),
   systemConfig = require('../config/config'),
-  logController =require('../controllers/log');
+  logController =require('../controllers/log'),
+  xss = require('xss');
 var pageSize = 100;
 var blockSize = 20;
 
@@ -864,7 +865,7 @@ exports.editCampaign = function(req, res){
   }
 
   if (req.body.content) {
-    campaign.content=req.body.content;
+    campaign.content=xss(req.body.content);
   }
   var max = Number(req.body.member_max);
   if (!isNaN(max)) {
