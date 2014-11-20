@@ -53,6 +53,8 @@ block content
                   label 邮箱:#{user.email}
                 .dl_row
                   label.register_date 注册时间:#{moment(user.register_date).format('YYYY-MM-DD HH:mm')}
+                .dl_row
+                  button.dl_btn(ng-click="getReport()") 举报
             .dl_info_container.team_info_container.clearfix(ng-init="showMore=false;")
               .info_left
                 label.label_info 加入的小队

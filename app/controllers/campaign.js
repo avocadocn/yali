@@ -1128,7 +1128,7 @@ exports.getUserCampaignsForHome = function(req, res) {
       // else{
       //   _result.push(values[2].concat(values[1]));
       // }
-      // values =[[],[],[],[]];
+      //values =[[],[],[],[]];
       return res.send({ result: 1, campaigns: values });
     }
   });

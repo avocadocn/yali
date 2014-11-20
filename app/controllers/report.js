@@ -43,7 +43,7 @@ exports.pushReport = function  (req, res) {
       report.host_type = req.body.hostType;
       report.host_id = req.body.hostContent._id;
       report.report_type = req.body.reportType;
-      report.content = req.body.hostContent.content;
+      // report.content = req.body.hostContent.content;
       report.content_poster = {
         uid:req.body.hostContent.poster._id,
         cid:req.body.hostContent.poster.cid,

@@ -719,8 +719,8 @@
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip {
   position: absolute;
-  bottom: 30px;
-  left: 75px;
+  bottom: 32px;
+  left: 65px;
   font-size: 14px;
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p {
@@ -728,6 +728,7 @@
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p .dl_btn {
   border-radius: 5px;
+  padding: 7px 11px;
 }
 .user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p .tip_info {
   padding-left: 11px;
@@ -780,8 +781,8 @@
 }
 .user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip {
   position: absolute;
-  top: 168px;
-  left: 270px;
+  top: 217px;
+  left: 275px;
   font-size: 14px;
 }
 .user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p {
@@ -790,6 +791,8 @@
 .user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p .dl_btn {
   border-radius: 5px;
   background-color: #f48361;
+  margin-left: 4px;
+  padding: 7px 17px;
 }
 .user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p .tip_info {
   padding-left: 11px;
