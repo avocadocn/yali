@@ -51,18 +51,18 @@
             ul.nav
               li(ng-show="currentPage&&currentPage!==1")
                 a(ng-click="loadPage(1)") 
-                  img(ng-src="/img/icons/twoleft.png")
+                  i.fa.fa-angle-double-left
               li(ng-show="currentPage&&currentPage!==1")
                 a(ng-click="loadPrePage()") 
-                  img(ng-src="/img/icons/oneleft.png")
+                  i.fa.fa-angle-left
               li(ng-repeat="page in pages track by $index" ng-class="{'active':page===currentPage}")
                 a(ng-click="loadPage({{page}})") {{page}}
               li(ng-show="currentPage!==maxPage")
                 a(ng-click="loadNextPage()")
-                  img(ng-src="/img/icons/oneright.png")
+                  i.fa.fa-angle-right
               li(ng-show="currentPage!==maxPage")
                 a(ng-click="loadPage(maxPage)")
-                  img(ng-src="/img/icons/tworight.png")
+                  i.fa.fa-angle-double-right
         //- 详情
         #detail.detail(ng-show="!isShowMap&&opponent")
           .detailHead.clearfix

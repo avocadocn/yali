@@ -415,7 +415,10 @@
   color: #999;
   padding: 0 5px;
 }
-.search_opponents .tab_content .result .slide #slides .teamlist .page_nav ul .active a {
+.search_opponents .tab_content .result .slide #slides .teamlist .page_nav ul li a i {
+  font-size: 16px;
+}
+.search_opponents .tab_content .result .slide #slides .teamlist .page_nav ul .active>a {
   color: #3ca2e0;
 }
 .search_opponents .tab_content .result .slide #slides .detail {
