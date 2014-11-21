@@ -51,7 +51,7 @@ block contentExt
               button.operator_button.refuse(ng-if="campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 2)" ng-cloak) 拒绝
               button.operator_button.cancel(ng-if="campaign.isWaitingReply && allow.cancel" ng-click="dealProvoke(campaign.units[0].tid, 3)" ng-cloak) 取消
 
-        .component.detail_card(ng-cloak ng-show="!campaign.isEnd")
+        .component.detail_card(ng-cloak ng-show="!campaign.isEnd" ng-init="editingDetail=#{editing}")
           .component_head
             span.icon.left.first
               i.fa.fa-bars
