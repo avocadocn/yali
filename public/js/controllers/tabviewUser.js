@@ -374,7 +374,7 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
   $scope.selcet_team = function(index){
     $scope.sponsorTeam = $scope.ledTeams[index];
     $scope.selected_index = index;
-    $scope.title=$scope.sponsorTeam.name;
+    $rootScope.modal=2;
   };
   //选择类型
   $scope.selectMold=function(name){

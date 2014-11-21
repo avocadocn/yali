@@ -1,17 +1,11 @@
-form(name="search_form_2")
-  .dl_modal_header
-    button.close.dl_close(class="close" data-dismiss="modal" aria-hidden="true")
-      img(ng-src='/img/icons/icon_close.png')
-    span 请选择您想选择与之动一下的小队
-  .dl_modal_body.clearfix
-    .dl_modal_container
-      .dl_row.team_select.clearfix(ng-repeat="team in ledTeams track by $index" ng-class="{'active':selected_index==$index}" ng-click="selcet_team($index)")
-        .dl_md_2
-          img.size_56(ng-src="{{team.logo}}")
-        .dl_md_10
-          .dl_row
-            a(href="/group/page/{{team._id}}" target="_blank") {{team.name}}
-          span 队员人数:{{team.member.length}}
-  .dl_modal_footer.clearfix
-    //- button.cancel_btn.dl_btn_large(data-dismiss="modal") #{__("CANCEL")}
-    button.dl_btn.dl_modal_btn(ng-click="provoke_select(2)" ng-disabled="selected_index==-1") 就用TA动！
+.dl_modal_body.clearfix
+  .dl_modal_container
+    .select
+      span 请选择您想用来发活动的小队
+    .units(ng-cloak)
+      .unit(ng-repeat="team in ledTeams track by $index" ng-class="{'right':$index%2==1}" ng-click="selcet_team($index)")
+        img.logo(ng-src="{{team.logo}}")
+        .text
+          span {{team.name}}
+        .buttons
+          button.button 就用TA动

@@ -633,10 +633,6 @@ searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope',
       }
     };
 
-    $scope.preStep=function(){
-      $('#sponsorProvokeModel').modal('hide');
-    };
-
     $scope.provoke=function(){
       var _data = {
         theme : $scope.theme,

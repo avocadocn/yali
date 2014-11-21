@@ -1,47 +1,142 @@
+@require('variables')
 .dl_campaign_modal
+  ::-webkit-input-placeholder /* WebKit browsers */
+    color #989898
+  :-moz-placeholder /* Mozilla Firefox 4 to 18 */
+    color #989898
+  ::-moz-placeholder /* Mozilla Firefox 19+ */
+    color #989898
+  :-ms-input-placeholder /* Internet Explorer 10+ */
+    color #989898
   margin 30px auto
-  position relative
   background-color #F0F0F0
-  border 1px solid
   background-clip padding-box
-  outline 0
-  border-radius 0
-  box-shadow 0
-  webkit-box-shadow 0
-  width 480px
-  padding 39px
+  width 460px
   .dl_modal_header 
-    min-height 55px
-    color #3ca2e0
-    font-size 14px
-    .dl_close
-      margin-right -30px
-      margin-top -30px
-      img
-        height 14px
-    .preStep
-      color #bbb
-      font-size 12px
+    height 30px
+    .headline
+      background-color #3ca2e0
+      color #fff
+      font-size 14px
+      padding 8px 10px
+      .head_logo
+        margin-right 10px
+      .dl_close
+        float right
+        font-size 18px
+        background-color transparent
+        color #fff
+        padding 0
   .dl_modal_body
     position relative
-    .dl_modal_subtitle
-      height 30px
-      padding 7px 0
-      color #999
+    background-color #fff
+    //-通用
+    .unit
+      .text
+        float left
+        line-height 1
+        width 310px
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
+        color #999
+      .logo
+        width 50px
+        height 50px
+        float left
+        margin-right 10px
+      .button
+        height 25px
+        color #fff
+        text-align center
+        padding 8px
+        line-height 1
+    .dl_modal_sponsor
+      border-bottom 1px solid #cdcdcd
+      background-color #fbfbfb
+      padding 20px
+      .logo
+        width 30px
+        height 30px
+      .tname
+        width 310px
+        float left
+        font-size 14px
+        line-height 1
+        margin-top 4px
+      .button
+        width 70px
+        padding 7px
+        background-color blueBtnColor
+      .dl_modal_subtitle
+        height 20px
+        color #999
+        float left
+      .groups
+        max-height 300px
+        overflow auto
+        width 400px
+        .group
+          float left
+          padding-bottom 5px
+          width 48px
+    .dl_modal_content
+      padding 20px
       float left
+      .dl_modal_container
+        margin-bottom 10px
     .dl_modal_container
       width 100%
       float left
       clear left
+      .select
+        margin 20px
+        color #9b9b9b
+      .units
+        background-color #fbfbfb
+        max-height 600px
+        padding 20px 10px 20px 20px
+        overflow auto
+        margin 0 20px 20px
+        .unit.right
+          margin-right 0
+        .unit
+          float left
+          width 182px
+          height 70px
+          padding 10px
+          cursor pointer
+          background-color #edebec
+          border-radius 5px
+          margin-right 15px
+          margin-bottom 15px
+          border 1px solid blueBtnColor
+          box-shadow 1px 1px 3px #c8cac7
+          &:hover
+            box-shadow 0 0 0
+            .buttons
+              .button
+                background-color blueBtnColor
+                box-shadow 0 0 0
+          .text
+            width 100px
+            font-size 14px
+          .buttons
+            margin-top 11px
+            float left
+            .button
+              width 100px
+              background-color #ccc
+              box-shadow 1px 1px 2px #c8cac7
       .dl-form-control
         min-height 30px
         padding 5px
       .dl_modal_half_container
-        width 195px
+        width 205px
         float left
         margin-right 10px
         .input-group-addon
-          background-color #ccc
+          background-color #999
           border-color #bbb
           padding 0 8px
           font-size 16px
@@ -54,15 +149,19 @@
       .dl_modal_input
         border-radius 0
         font-size 12px
+        border 0
+        background-color #f5f5f5
+        box-shadow inset 0px 2px 1px #d0d0d0
       .dl_modal_input_container
-        width 340px
+        width 390px
         float left
       .dl_modal_button
-        width 60px
+        width 30px
         height 30px
         float right
+        font-size 20px
         .dl_map_btn
-          background-color #73a5dd
+          background-color #999
           color white
           padding 6px 0
           text-align center
@@ -77,27 +176,21 @@
           background-size 13px 13px
           background-position 8px 8px
           padding-left 20px !important
-      .groups
-        max-height 300px
-        overflow auto
-        width 400px
-        .group
-          float left
-          padding-bottom 5px
-          width 48px
       .input-group
         .input-group-btn
           .input-group-addon
-            width 60px
+            width 30px
             height 30px
-            background-color #ccc
+            background-color #999
             color white
+            padding 6px 9px
+            font-size 18px
           .dropdown-menu
-            width 400px
+            width 420px
             margin 0
             left auto
             right 0
-            border-top 0
+            border 1px solid #f5f5f5
             max-height 160px
             overflow auto
             li
@@ -117,17 +210,15 @@
         background-position 0px 15px
         background-size 30px 30px
         background-repeat no-repeat
-      .dl_md_2
-        margin-left 40px
     .dl_modal_map_container
-      height 150px
-      margin-top 30px
+      height 300px
       .map_height
-        height 150px
+        height 300px
   .dl_modal_footer
+    background-color #fff
     width 100%
-    height 50px
-    margin-top 40px
+    height 60px
+    padding 0 20px 20px
     .dl_modal_btn
       width 100%
       height 100%
