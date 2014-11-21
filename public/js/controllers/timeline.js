@@ -117,22 +117,6 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
 			addCampaign(id);
 		}
 
-    // $scope.getReport = function() {
-    //   $scope.reportContent = {
-    //     hostType: 'user',
-    //     hostContent: {
-    //       poster: userId
-    //     },
-    //     reportType: ''
-    //   }
-    //   $('#reportModal').modal('show');
-    // }
-
-    // $scope.pushReport = function() {
-    //   Report.publish($scope.reportContent, function(err, msg) {
-    //     alertify.alert(msg);
-    //   });
-    // };
 		$scope.loadMore = function (id) {
 		  var temp = id.split('_');
 		  $scope.nowYear = temp[0];

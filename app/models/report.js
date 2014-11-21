@@ -24,7 +24,7 @@ var Report = new Schema({
   //3:诈骗
   //4:人身攻击
   //5:泄露我的隐私
-
+  // 6: 虚假资料
   create_date:{
     type:Date,
     default: Date.now
@@ -33,6 +33,7 @@ var Report = new Schema({
     type:Date,
     default: Date.now
   },
+  //举报人
   poster:{
     poster_type:{
       type:String,

@@ -6,7 +6,7 @@ append headExt
   link(rel="stylesheet" href="/lib/pen/src/pen.css")
 
 block contentExt
-  .campaign_detail.dl_container(ng-controller="campaignController" ng-init="editing=#{editing};")
+  .campaign_detail.dl_container(report-contain ng-controller="campaignController" ng-init="editing=#{editing};")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .campaign_panel
@@ -276,7 +276,7 @@ block contentExt
                   img.logo(ng-src="{{unit.logo}}")
                   span.name(title="{{unit.name}}") {{unit.name}}
                   button.join(ng-click="join(unit.cid, unit.tid)") 参加这个小队
-
+    report-modal
 append footExt
   script(src="/js/directives/count_down.js")
   script(src="/js/bootstrap-tagsinput.js")

@@ -261,27 +261,6 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         });
       };
 
-
-      $scope.getReport = function(comment) {
-        $scope.reportContent = {
-          hostType: 'comment',
-          hostContent: {
-            _id: comment._id,
-            content: comment.content,
-            poster: comment.poster
-          },
-          reportType: ''
-        }
-        $('#reportModal').modal('show');
-      }
-
-      $scope.pushReport = function() {
-        Report.publish($scope.reportContent, function(err, msg) {
-          alertify.alert(msg);
-        });
-      };
-
-
       $scope.nextPage = function () {
         Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
           if (err) {

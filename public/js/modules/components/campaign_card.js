@@ -51,7 +51,6 @@ angular.module('donler.components.campaignCard', [])
   //   };
   // })
   .directive('campaignCard', function () {
-
     return {
       restrict: 'E',
       replace: true,

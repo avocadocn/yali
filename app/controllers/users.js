@@ -1022,6 +1022,7 @@ exports.timeLine = function(req,res){
       });
       var nowUser = {
         _id:req.profile._id,
+        cid:req.profile.cid,
         nickname:req.profile.nickname,
         realname:req.profile.realname,
         department:req.profile.department,

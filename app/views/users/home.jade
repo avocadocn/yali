@@ -15,13 +15,13 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
         .no_campaign_tip
           p 没有活动怎么办？进入
           p
-            button.dl_btn.dl_btn_small 小队列表
+            a.clearLinkUnderline.dl_btn.dl_btn_small(href="/company/home#/team_info") 小队列表
             span.tip_info 加入更多小队！
       else if containerClass=='recent_competition'
         .no_campaign_tip
           p
             span 点击
-            button.dl_btn.dl_btn_small 找对手
+            a.clearLinkUnderline.dl_btn.dl_btn_small(href="/users/searchOpponents") 找对手
             span.tip_info 向其他小队发起挑战
     .campaign(ng-class="{true: 'campaign_detail', false: 'campaign_base'}[(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}']" ng-repeat="item in #{items}" ng-if="#{detailFlag} ||$index<2||#{containerClass}||nowShow=='#{containerClass}'" ng-cloak)
       a.campaign_head.clearLinkUnderline(ng-href="/campaign/detail/{{item._id}}" target="_blank" title="进入活动详情页面")
@@ -90,7 +90,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
           simple-comment(component-id="{{item.components.RichComment[0]}}" allow-publish="{{item.allow.publishComment}}" comment-num=3)
 block panel
   #user_data(data-uid='#{uid}')
-  .campaigns_container.clearfix(ng-controller="recentCampaignController")
+  .campaigns_container.clearfix(report-contain ng-controller="recentCampaignController")
     .campaign_filter(ng-cloak)
       ul
         li.recent_all(ng-click="campaignFilter('all')" title="显示所有的活动") 
@@ -112,6 +112,7 @@ block panel
     +campaignsContainer('正在进行','recent_now','nowCampaigns',true)
     +campaignsContainer('即将开始','recent_join','recentJoinedCampaigns',true)
     //- .now.no_campaign(ng-if="nowCampaigns.length==0" ng-cloak)
+    report-modal
   include ../users/user_modal
   if role !== 'HR'
     .schedule_small(ng-controller="ScheduleSmallController" ng-cloak)
@@ -148,22 +149,22 @@ block aside
       include ../partials/group_thumbnail
       +group_thumbnail(myteam)
   if user_role =='LEADER'
-    a.clearLinkUnderline(href="javascript:void(0);" ng-click="newCampaign()")
-      .sponsor_container.sponsor(data-spy="affix" data-offset-top="260" title="发布活动")
+    .sponsor_container.sponsor(data-spy="affix" data-offset-top="260" title="发布活动")
+      a.clearLinkUnderline.fullparent(href="javascript:void(0);" ng-click="newCampaign()")
         span.dl_icons.icon_speaker
         label 发活动
-    a.clearLinkUnderline(href="/users/searchOpponents" data-spy="affix")
-      .sponsor_container.provoke(data-spy="affix" data-offset-top="260" title="进入找对手页面")
+    .sponsor_container.provoke(data-spy="affix" data-offset-top="260" title="进入找对手页面")
+      a.clearLinkUnderline.fullparent(href="/users/searchOpponents")
         span.dl_icons.icon_binoculars
         label 找对手
-  a.clearLinkUnderline(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
-    .old_campaign_container.commentCampaign(data-spy="affix" data-offset-top="260" title="查看有讨论的活动")
+  .old_campaign_container.commentCampaign(data-spy="affix" data-offset-top="260" title="查看有讨论的活动")
+    a.clearLinkUnderline.fullparent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
       span.dl_icons.comment_w
       label.label_info 活动讨论
       label.news_count(ng-cloak) {{newReply.length}}
         i.fa.fa-angle-right
-  a.clearLinkUnderline(href="/users/timeLine/#{uid}")
-    .old_campaign_container.timeline_container(data-spy="affix" data-offset-top="260" title="进入活动足迹页面")
+  .old_campaign_container.timeline_container(data-spy="affix" data-offset-top="260" title="进入活动足迹页面")
+    a.clearLinkUnderline.fullparent(href="/users/timeLine/#{uid}")
       span.dl_icons.footprint
       label 活动足迹
       i.fa.fa-angle-double-right.pull-right

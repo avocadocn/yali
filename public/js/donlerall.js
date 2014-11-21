@@ -51,7 +51,6 @@ angular.module('donler.components.campaignCard', [])
   //   };
   // })
   .directive('campaignCard', function () {
-
     return {
       restrict: 'E',
       replace: true,
@@ -77,7 +76,7 @@ angular.module('donler.components.campaignCard', [])
   })
 'use strict';
 
-angular.module('donler.components', ['donler.components.richComment', 'donler.components.scoreBoard', 'donler.components.imageBox', 'donler.components.campaignCard']);
+angular.module('donler.components', ['donler.components.richComment', 'donler.components.scoreBoard', 'donler.components.imageBox', 'donler.components.campaignCard', 'donler.components.report']);
 'use strict';
 
 angular.module('donler.components.imageBox', [])
@@ -370,6 +369,92 @@ angular.module('donler.components.imageBox', [])
 
 'use strict';
 
+angular.module('donler.components.report', [])
+
+  .controller('ReportCtrl', ['$scope', 'Report', function ($scope, Report) {
+    this.pushReport = function() {
+      Report.publish($scope.reportContent, function(err, msg) {
+        alertify.alert(msg);
+      });
+    };
+    this.getReport = function (hostType,hostId,hostContent) {
+      var _hostContent;
+      if(hostType=='user'){
+        _hostContent={
+          poster: {
+            nickname:hostContent.name,
+            _id:hostId,
+            cid:hostContent.cid
+          },
+          _id:hostId
+        }
+      }
+      else {
+        _hostContent ={
+          poster: hostContent.poster,
+          content:hostContent.content
+        }
+      }
+      $scope.reportContent = {
+        hostType: hostType,
+        hostId:hostId,
+        hostContent: _hostContent,
+        reportType: ''
+      }
+      angular.element('#report_modal').modal('show');
+    };
+  }])
+
+  .directive('reportButton',function () {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope:{
+        hostType:'@',
+        hostId:'@',
+        hostContent:'='
+      },
+      template: '<a ng-click="getReport(hostType,hostId,hostContent)"> 举报</a>',
+      require: '^reportContain',
+      link: function (scope, ele, attrs, ctrl) {
+        scope.getReport = function (hostType,hostId,hostContent) {
+          ctrl.getReport(hostType,hostId,hostContent)
+        }
+      }
+    };
+
+  })
+  .directive('reportModal',function () {
+    var reportModalLoad = true;
+    return {
+      restrict: 'E',
+      replace: true,
+      scope:true,
+      templateUrl: '/components/reportModal/template',
+      require: '^reportContain',
+      link: function (scope, ele, attrs, ctrl) {
+        scope.pushReport = function () {
+          ctrl.pushReport();
+        };
+        scope.reportModalLoad =reportModalLoad;
+        if(reportModalLoad){
+          reportModalLoad = false;
+        }
+      }
+    };
+
+  })
+  .directive('reportContain',function () {
+    return {
+      restrict: 'A',
+      controller: 'ReportCtrl',
+      link: function (scope, ele, attrs, ctrl) {
+      }
+    };
+
+  })
+'use strict';
+
 angular.module('donler.components.richComment', ['angularFileUpload'])
 
   .controller('RichCommentCtrl', ['$scope', '$http', '$element','$timeout', 'Comment', 'Report', 'FileUploader',
@@ -630,27 +715,6 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
           }
         });
       };
-
-
-      $scope.getReport = function(comment) {
-        $scope.reportContent = {
-          hostType: 'comment',
-          hostContent: {
-            _id: comment._id,
-            content: comment.content,
-            poster: comment.poster
-          },
-          reportType: ''
-        }
-        $('#reportModal').modal('show');
-      }
-
-      $scope.pushReport = function() {
-        Report.publish($scope.reportContent, function(err, msg) {
-          alertify.alert(msg);
-        });
-      };
-
 
       $scope.nextPage = function () {
         Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {

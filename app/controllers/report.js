@@ -17,8 +17,9 @@ exports.pushReport = function  (req, res) {
     post_type:req.user.provider
   }
   var _option = {
-    host_id: req.body.hostContent._id,
-    status:'verifying'
+    host_id: req.body.hostId,
+    status:'verifying',
+    host_type:req.body.hostType
   }
   if(req.user.provider ==='company'){
     _poster.cid = req.user._id;
@@ -41,9 +42,9 @@ exports.pushReport = function  (req, res) {
     else{
       var report = new Report();
       report.host_type = req.body.hostType;
-      report.host_id = req.body.hostContent._id;
+      report.host_id = req.body.hostId;
       report.report_type = req.body.reportType;
-      // report.content = req.body.hostContent.content;
+      report.content = req.body.hostContent.content;
       report.content_poster = {
         uid:req.body.hostContent.poster._id,
         cid:req.body.hostContent.poster.cid,

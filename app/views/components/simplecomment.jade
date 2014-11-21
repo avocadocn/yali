@@ -24,7 +24,8 @@
         .comment_footer.clearfix
           span.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
           .pull-right.operator
-            a.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport(comment)") 举报
+            report-button.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" host-id="{{comment._id}}" host-type="comment" host-content="comment")
+            //- a.text.dl_mouse_hover( ng-click="getReport(comment)") 举报
             a.delete.text.dl_mouse_hover(ng-if="comment.delete_permission" ng-click="deleteComment(comment)") 删除
             a.reply.text(ng-click="toggleComment(comment)")
               img.reply_icon(src="/img/comment.png")
@@ -53,4 +54,3 @@
       ul.pagination(ng-if="pages.length > 1")
         li(ng-repeat="page in pages" ng-class="{'active': nowPage===$index}")
           a(href="#rich_comment_box" ng-click="changePage($index)") {{$index + 1}}
-  include ../partials/report_modal

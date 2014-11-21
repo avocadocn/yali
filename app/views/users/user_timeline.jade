@@ -7,9 +7,10 @@ block content
   .wrap.user_page
     include ../partials/home_nav
     .dl_container.clearfix
-      .main(ng-controller="timelineController")
+      .main(report-contain ng-controller="timelineController")
         block panel
           #user_data(data-id="#{user._id}")
+          report-modal
           .timeline_control
             .control_year(ng-class="{'active_year':nowYear=='timeline0'}" ng-click="scrollTo('timeline0_0')")
               span 现在
@@ -53,8 +54,8 @@ block content
                   label 邮箱:#{user.email}
                 .dl_row
                   label.register_date 注册时间:#{moment(user.register_date).format('YYYY-MM-DD HH:mm')}
-                //- .dl_row
-                //-   button.dl_btn(ng-click="getReport()") 举报
+                .dl_row(ng-init="reportContent={name:'#{user.nickname}',cid:'#{user.cid}'}")
+                  report-button(host-id="#{user._id}" host-type="user" host-content="reportContent")
             .dl_info_container.team_info_container.clearfix(ng-init="showMore=false;")
               .info_left
                 label.label_info 加入的小队
@@ -105,9 +106,7 @@ block content
                     span #{moment(user.register_date).format('YYYY-MM-DD HH:mm')} 注册
             else
               .loademp.text-center #{__("NO_TIMELINE")}
-          //- include ../partials/report_modal
   include ../partials/user_footer
-
 
 
 append footExt
