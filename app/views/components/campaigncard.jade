@@ -35,7 +35,7 @@
       div(class="photos_{{item.photo_list.length}}" ng-switch-when="2")
         img.photo.lazyload(ng-repeat="img in item.photo_list " class="photo_{{$index}}" data-src="{{img.uri}}/195/180")
       div(class="photos_{{item.photo_list.length}}" ng-switch-when="3")
-        img.photo.lazyload(ng-repeat="img in item.photo_list " class="photo_{{$index}}" data-src="{{($index==0?img.uri+'/195/290':img.uri+'/195/240')}}")
+        img.photo.lazyload(ng-repeat="img in item.photo_list " class="photo_{{$index}}" data-src="{{($index==0?img.uri+'/195/290':img.uri+'/195/140')}}")
       div(class="photos_{{item.photo_list.length}}" ng-switch-when="4")
         img.photo.lazyload(ng-repeat="img in item.photo_list " class="photo_{{$index}}" data-src="{{($index==0 || $index==3)?img.uri+'/160/145':img.uri+'/230/145'}}")
     .timeline_head(ng-class="{'top_border':item.photo_list.length==0&&item.unitInfos.length<2}")
