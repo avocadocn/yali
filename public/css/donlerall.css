@@ -3038,9 +3038,6 @@ input.ng-invalid.ng-dirty {
   padding: 10px;
   font-size: 14px;
 }
-.timeline_element .timeline_head.top_border {
-  border-top: 1px solid #efefef;
-}
 .timeline_element a {
   color: #aaa;
 }
