@@ -913,7 +913,6 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
     // 判断是否是第一次加载视图，用于$scope.$digest()
     var firstLoad = true;
     $scope.campaignsType = 'all';
-
     $scope.calendar = function(isCalendar) {
       $scope.isCalendar = isCalendar;
       $scope.getCampaigns($scope.campaignsType);
