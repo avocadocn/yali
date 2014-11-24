@@ -43,6 +43,7 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
     $rootScope.loading = false;
   });
   $rootScope.getTeam=function(tid){
+    $rootScope.hasSelected = true;
     $http.get('/group/oneTeam/'+tid).success(function(data,status){
       $rootScope.myTeam = data;
       $rootScope.selectedStatus = 'active';
@@ -62,11 +63,12 @@ searchOpponents.run(['$rootScope', '$http', function($rootScope,$http) {
     $rootScope.getTeam(tid);
     window.location.hash = '#/sameCity/'+tid;
     $rootScope.selectedStatus = 'active';
-    $rootScope.myTeam = true;
+    $rootScope.hasSelected = true;
     $rootScope.tid = tid;
   };
   $rootScope.changeTeam = function(){
     $rootScope.myTeam = null;
+    $rootScope.hasSelected = false;
     window.location.hash= '#/';
     $rootScope.selectTeamId = null;
     $rootScope.selectedStatus='unactive';

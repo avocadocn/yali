@@ -12,7 +12,7 @@ block content
           .headline
             img(ng-src="/img/icons/telescope.png")
             span 寻找对手，发起挑战!
-          .my_teams.clearfix(ng-show="!myTeam")
+          .my_teams.clearfix(ng-if="!hasSelected" ng-cloak)
             .select
               span 选择你要用来发起挑战的队伍
             .units
@@ -26,7 +26,7 @@ block content
                       button.button 为它选对手
                     else
                       button.button 给它推荐对手
-          .selected_team(ng-show="myTeam")
+          .selected_team(ng-if="hasSelected")
             p 挑战发起方
             .my_team.clearfix
               img.logo(ng-src="{{myTeam.logo}}")
