@@ -96,6 +96,7 @@ block content
                   .month(ng-repeat ="month in years.month")
                     .date_separator(id='{{years.year}}_{{month.month}}' data-load="{{month.campaigns.length}}")
                       span.span(ng-click="scrollTo(years.year+'_'+month.month)") {{years.year}}-{{month.month}}
+                    .timeline_loading(ng-if="month.loading")
                     .column.column_left
                       campaign-card(ng-repeat="campaign in month.campaigns" ng-if="$index%2===0" item="campaign" role="#{user.role}")
                     .column.column_right

@@ -89,9 +89,11 @@ timeline.controller('timelineController',['$scope', '$http', '$location', '$root
 							if($scope.timelines[i].month[j].month==temp[1]){
 								if(!$scope.timelines[i].month[j].campaigns&&!$scope.timelines[i].month[j].loaded){
 									var yearIndex=i,monthIndex = j;
+									$scope.timelines[i].month[j].loading = true;
 									Campaign.getCampaignsData(hostType,userId,paging,function(err,timeline){
 										if(!err){
 											$scope.timelines[yearIndex].month[monthIndex].campaigns = timeline.campaigns;
+											$scope.timelines[yearIndex].month[monthIndex].loading = false;
 											return timeline.campaigns.length;
 										}
 									});

@@ -426,9 +426,11 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
               if (!$scope.timelines[i].month[j].campaigns && !$scope.timelines[i].month[j].loaded) {
                 var yearIndex = i,
                   monthIndex = j;
+                $scope.timelines[i].month[j].loading = true;
                 Campaign.getCampaignsData('team', teamId, paging, function(err, timeline) {
                   if (!err) {
                     $scope.timelines[yearIndex].month[monthIndex].campaigns = timeline.campaigns;
+                    $scope.timelines[yearIndex].month[monthIndex].loading = false;
                     return timeline.campaigns.length;
                   }
                 });

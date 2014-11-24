@@ -207,6 +207,12 @@ Timeline UI Base
   background-color: #ccc;
   height: 100%;
 }
+.dl_timeline .timeline_loading {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  background: url("/img/loading.gif") center center no-repeat;
+}
 .dl_timeline .column .timeline_element {
   background-color: #fff;
   border: 1px solid #ddd;
