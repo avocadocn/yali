@@ -116,7 +116,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             cbox.host_id = data.componentData.hostId;
             cbox.photo_album_id = data.componentData.photoAlbumId;
             $scope.photoAlbumId = data.componentData.photoAlbumId;
-
+            $scope.userPhoto = data.componentData.userPhoto;
             Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
               if (err) {
                 alertify.alert('获取评论失败，请刷新页面重试');
@@ -330,7 +330,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         commentNum:'@',
         afterRender:'&'
       },
-      templateUrl: '/components/SimpleComment/template'
+      templateUrl: '/component_templates/simple_comment.html'
     }
   })
 
@@ -344,7 +344,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         photoAlbumId: '@',
         allowPublish: '@'
       },
-      templateUrl: '/components/RichComment/template'
+      templateUrl: '/component_templates/rich_comment.html'
     }
   })
 

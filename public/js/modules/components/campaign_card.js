@@ -61,7 +61,7 @@ angular.module('donler.components.campaignCard', [])
         cid: '@',
         tid: '@'
       },
-      templateUrl: '/components/campaignCard/template',
+      templateUrl: '/component_templates/campaign_card.html',
       controller: 'CampaignCardCtrl',
       link: function (scope, ele, attrs, ctrl) {
         scope.join = function (cid, tid) {

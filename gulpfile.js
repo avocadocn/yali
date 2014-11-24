@@ -8,6 +8,7 @@ var rename = require("gulp-rename");
 var sourcemaps = require('gulp-sourcemaps');
 var watch = require('gulp-watch');
 var changed = require('gulp-changed');
+var jade = require('gulp-jade');
 
 gulp.task('nodemon', function () {
   nodemon({
@@ -128,6 +129,14 @@ gulp.task('js:donler', function () {
 gulp.task('js', ['js:library', 'js:donler']);
 
 
+gulp.task('jade', function () {
+  var src = './app/views/components/*.jade';
+  gulp.src(src)
+    .pipe(watch(src))
+    .pipe(jade())
+    .pipe(gulp.dest('./public/component_templates'));
+});
+
 gulp.task('watch:donlerCss', function () {
   gulp.watch(donlerCssSrc, {
     interval: 1000,
@@ -140,6 +149,6 @@ gulp.task('watch:donlerJs', function () {
 gulp.task('watch', ['watch:donlerCss', 'watch:donlerJs']);
 
 
-gulp.task('develop', ['nodemon', 'stylus', 'css', 'js', 'watch']);
+gulp.task('develop', ['nodemon', 'stylus', 'css', 'js', 'jade', 'watch']);
 gulp.task('default', ['develop']);
 

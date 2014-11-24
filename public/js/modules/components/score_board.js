@@ -267,7 +267,7 @@ angular.module('donler.components.scoreBoard', [])
       restrict: 'E',
       replace: true,
       controller: 'ScoreBoardCtrl',
-      templateUrl: '/components/ScoreBoard/template',
+      templateUrl: '/component_templates/score_board.html',
       scope: {
         componentId: '@'
       }

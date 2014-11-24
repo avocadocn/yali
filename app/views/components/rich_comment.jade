@@ -6,7 +6,7 @@
     form.rich_comment_form(name="comment_form" ng-if="allowPublish" novalidate)
       .comment_control
         .user_photo
-          img(src="#{global_user.photo}/30/30")
+          img(ng-src="{{userPhoto}}/30/30")
         input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder"  maxlength=140 required)
         label.img_selector(for="photos")
           img.upload_img(src="/img/upload_img.png")
@@ -56,4 +56,4 @@
         li(ng-repeat="page in pages" ng-class="{'active': nowPage===$index}")
           a(href="#rich_comment_box" ng-click="changePage($index)") {{$index + 1}}
 
-  include ../components/reportmodal
+  include ../components/report_modal

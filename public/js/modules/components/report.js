@@ -61,7 +61,7 @@ angular.module('donler.components.report', [])
       restrict: 'E',
       replace: true,
       scope:true,
-      templateUrl: '/components/reportModal/template',
+      templateUrl: '/component_templates/report_modal.html',
       require: '^reportContain',
       link: function (scope, ele, attrs, ctrl) {
         scope.pushReport = function () {

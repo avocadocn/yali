@@ -61,7 +61,7 @@ angular.module('donler.components.campaignCard', [])
         cid: '@',
         tid: '@'
       },
-      templateUrl: '/components/campaignCard/template',
+      templateUrl: '/component_templates/campaign_card.html',
       controller: 'CampaignCardCtrl',
       link: function (scope, ele, attrs, ctrl) {
         scope.join = function (cid, tid) {
@@ -151,7 +151,7 @@ angular.module('donler.components.imageBox', [])
       scope: {
         images: '='
       },
-      templateUrl: '/components/ImageBox/template',
+      templateUrl: '/component_templates/image_box.html',
       controller: 'ImageBoxCtrl',
       link: function (scope, ele, attrs, ctrl) {
         var images = scope.images;
@@ -233,7 +233,7 @@ angular.module('donler.components.imageBox', [])
         images: '=',
         photoAlbumId:'='
       },
-      templateUrl: '/components/preImageBox/template',
+      templateUrl: '/component_templates/preimage_box.html',
       controller: 'ImageBoxCtrl',
       link: function (scope, ele, attrs, ctrl) {
         if (scope.images.length > 0) {
@@ -430,7 +430,7 @@ angular.module('donler.components.report', [])
       restrict: 'E',
       replace: true,
       scope:true,
-      templateUrl: '/components/reportModal/template',
+      templateUrl: '/component_templates/report_modal.html',
       require: '^reportContain',
       link: function (scope, ele, attrs, ctrl) {
         scope.pushReport = function () {
@@ -571,7 +571,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             cbox.host_id = data.componentData.hostId;
             cbox.photo_album_id = data.componentData.photoAlbumId;
             $scope.photoAlbumId = data.componentData.photoAlbumId;
-
+            $scope.userPhoto = data.componentData.userPhoto;
             Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
               if (err) {
                 alertify.alert('获取评论失败，请刷新页面重试');
@@ -785,7 +785,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         commentNum:'@',
         afterRender:'&'
       },
-      templateUrl: '/components/SimpleComment/template'
+      templateUrl: '/component_templates/simple_comment.html'
     }
   })
 
@@ -799,7 +799,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         photoAlbumId: '@',
         allowPublish: '@'
       },
-      templateUrl: '/components/RichComment/template'
+      templateUrl: '/component_templates/rich_comment.html'
     }
   })
 
@@ -1091,7 +1091,7 @@ angular.module('donler.components.scoreBoard', [])
       restrict: 'E',
       replace: true,
       controller: 'ScoreBoardCtrl',
-      templateUrl: '/components/ScoreBoard/template',
+      templateUrl: '/component_templates/score_board.html',
       scope: {
         componentId: '@'
       }

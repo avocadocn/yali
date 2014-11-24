@@ -73,7 +73,8 @@ RichComment.methods = {
     callback({
       hostType: this.host_type,
       hostId: this.host_id,
-      photoAlbumId: this.photo_album_id
+      photoAlbumId: this.photo_album_id,
+      userPhoto: user.photo
     });
   }
 

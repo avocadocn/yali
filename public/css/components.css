@@ -521,7 +521,7 @@
   flex: 1;
 }
 .image_box .preview .image_nav {
-  display: -webkit-flex-;
+  display: -webkit-flex;
   display: flex;
   margin-top: 10px;
 }

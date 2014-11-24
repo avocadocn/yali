@@ -72,7 +72,7 @@ angular.module('donler.components.imageBox', [])
       scope: {
         images: '='
       },
-      templateUrl: '/components/ImageBox/template',
+      templateUrl: '/component_templates/image_box.html',
       controller: 'ImageBoxCtrl',
       link: function (scope, ele, attrs, ctrl) {
         var images = scope.images;
@@ -154,7 +154,7 @@ angular.module('donler.components.imageBox', [])
         images: '=',
         photoAlbumId:'='
       },
-      templateUrl: '/components/preImageBox/template',
+      templateUrl: '/component_templates/preimage_box.html',
       controller: 'ImageBoxCtrl',
       link: function (scope, ele, attrs, ctrl) {
         if (scope.images.length > 0) {
