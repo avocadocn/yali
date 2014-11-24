@@ -2299,7 +2299,7 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 
 exports.getCampaignDateRecord = function (req, res) {
   // todo 权限判断
-  var cacheName;
+  var cacheName,finishLimit='';
   var options ={
     'active':true
   };
@@ -2310,9 +2310,13 @@ exports.getCampaignDateRecord = function (req, res) {
   else if(req.params.hostType=='user'){
     cacheName ='UserPageCampaignDateRecord';
     options['campaign_unit.member._id'] = mongoose.Types.ObjectId(req.params.hostId);
+    if(req.user._id.toString()==req.params.hostId.toString()){
+      options.finish=true;
+      finishLimit ='1';
+    }
   }
   cache.createCache(cacheName);
-  var dateRecord = cache.get(cacheName, req.params.hostId);
+  var dateRecord = cache.get(cacheName, req.params.hostId+finishLimit);
   if (dateRecord) {
     res.send({ result: 1, dateRecord: dateRecord });
   } else {

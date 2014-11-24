@@ -521,7 +521,7 @@
   flex: 1;
 }
 .image_box .preview .image_nav {
-  display: -webkit-flex-;
+  display: -webkit-flex;
   display: flex;
   margin-top: 10px;
 }
@@ -1369,7 +1369,7 @@ textarea {
   background-image: url("/img/icons/edit.png");
 }
 .dl_container .dl_icons.icon_group {
-  margin-top: -3px;
+  margin-top: -2px;
   margin-left: -2px;
   background-image: url("/img/icons/group.png");
 }
@@ -1428,7 +1428,7 @@ textarea {
   font-size: 14px;
 }
 .dl_container .side .groupsbox .box_head {
-  padding: 10px;
+  padding: 8px 10px;
   background-color: #525e70;
   height: 30px;
   border-top-left-radius: 2px;
@@ -1438,11 +1438,12 @@ textarea {
 .dl_container .side .groupsbox .box_head .group_count {
   color: #fff;
   float: right;
-  margin-top: -3px;
+  margin-top: -2px;
   margin-right: -2px;
+  font-size: 14px;
 }
 .dl_container .side .groupsbox .box_head .group_count .dl_icons {
-  margin: 2px 2px 0 7px;
+  margin: 1px 2px 0 7px;
 }
 .dl_container .side .groupsbox .groups {
   padding: 28px 13px 4px 13px;
