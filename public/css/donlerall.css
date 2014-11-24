@@ -3167,6 +3167,9 @@ input.ng-invalid.ng-dirty {
   float: right;
   text-align: right;
 }
+.timeline_element .multi_remind .operator .remind {
+  height: 50px;
+}
 .timeline_element .multi_remind .operator .remind .count_down {
   height: 25px;
 }

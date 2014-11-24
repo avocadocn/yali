@@ -280,8 +280,8 @@ var messageConcat = function(messages,rootScope,scope,reset){
   return new_messages;
 }
 
-tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope','$location', 'Campaign',
-  function($http, $scope, $rootScope, $location, Campaign) {
+tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScope','$location', 'Campaign','anchorSmoothScroll',
+  function($http, $scope, $rootScope, $location, Campaign,anchorSmoothScroll) {
     // $rootScope.recentUnjoinedCampaigns = [];
     // $rootScope.recentJoinedCampaigns = [];
     // $rootScope.nowCampaigns = [];
@@ -309,6 +309,7 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
     // }
     $scope.campaignFilter = function(type){
       $scope.nowShow = type;
+      anchorSmoothScroll.scrollTo(0);
     }
   }
 ]);

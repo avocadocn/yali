@@ -157,19 +157,19 @@ block aside
       a.clearLinkUnderline.fullparent(href="/users/searchOpponents")
         span.dl_icons.icon_binoculars
         label 找对手
-  .old_campaign_container.commentCampaign(data-spy="affix" data-offset-top="260" title="查看有讨论的活动")
+  .old_campaign_container.commentCampaign(class="#{user_role=='LEADER'?'affix_leader':''}" data-spy="affix" data-offset-top="260" title="查看有讨论的活动")
     a.clearLinkUnderline.fullparent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
       span.dl_icons.comment_w
       label.label_info 活动讨论
       label.news_count(ng-cloak) {{newReply.length}}
         i.fa.fa-angle-right
-  .old_campaign_container.timeline_container(data-spy="affix" data-offset-top="260" title="进入活动足迹页面")
+  .old_campaign_container.timeline_container(class="#{user_role=='LEADER'?'affix_leader':''}" data-spy="affix" data-offset-top="260" title="进入活动足迹页面")
     a.clearLinkUnderline.fullparent(href="/users/timeLine/#{uid}")
       span.dl_icons.footprint
       label 活动足迹
       i.fa.fa-angle-double-right.pull-right
   if role !== 'HR'
-    .schedule_small(ng-controller="ScheduleSmallController" ng-cloak data-spy="affix" data-offset-top="260")
+    .schedule_small(class="#{user_role=='LEADER'?'affix_leader':''}" ng-controller="ScheduleSmallController" ng-cloak data-spy="affix" data-offset-top="260")
       include ../partials/schedule_list
       include ../partials/calendar_modal
   .icon_backtop(ng-click="bakckTop()" data-spy="affix" data-offset-top="10")

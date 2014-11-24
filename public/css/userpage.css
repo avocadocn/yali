@@ -871,6 +871,9 @@
   background-color: #525e70;
 }
 .user_page .dl_container .side .old_campaign_container.commentCampaign.affix {
+  top: 60px;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign.affix.affix_leader {
   top: 100px;
 }
 .user_page .dl_container .side .old_campaign_container.commentCampaign:hover {
@@ -894,6 +897,9 @@
   background-size: cover;
 }
 .user_page .dl_container .side .old_campaign_container.timeline_container.affix {
+  top: 100px;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container.affix.affix_leader {
   top: 140px;
 }
 .user_page .dl_container .side .old_campaign_container.timeline_container .fa {
@@ -1036,7 +1042,10 @@
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .schedule_small.affix {
-  top: 190px;
+  top: 140px;
+}
+.user_page .dl_container .schedule_small.affix.affix_leader {
+  top: 180px;
 }
 .user_page .dl_container .schedule_small .schedulebox_small {
   padding: 0;
