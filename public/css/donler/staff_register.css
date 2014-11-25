@@ -1218,9 +1218,6 @@ textarea {
 .pen-menu {
   box-shadow: none !important;
 }
-.pen-menu .pen-icon {
-  font: 14px Georgia serif !important;
-}
 .dl_container {
   width: 960px;
   min-width: 960px;

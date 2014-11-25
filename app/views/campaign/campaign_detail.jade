@@ -1,5 +1,8 @@
 extends ../layouts/user_base
 
+append headExt
+  link(rel="stylesheet" href="/lib/pen/src/pen.css")
+
 block contentExt
   .campaign_detail.dl_container(report-contain ng-controller="campaignController" ng-init="editing=#{editing};")
     include ../partials/breadcrumb

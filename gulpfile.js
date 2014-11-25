@@ -52,8 +52,7 @@ gulp.task('css:library', function () {
     './public/lib/bootstrap-calendar/css/calendar.css',
     './public/css/library/font-awesome.css',
     './public/css/library/jquery.Jcrop.min.css',
-    './public/css/library/bootstrap-tagsinput.css',
-    './public/lib/pen/src/pen.css'
+    './public/css/library/bootstrap-tagsinput.css'
   ])
     .pipe(concat('library.css'))
     .pipe(gulp.dest('./public/css'))
@@ -100,8 +99,8 @@ gulp.task('js:library', function () {
     './public/js/language/zh-CN.js',
     './public/lib/bootstrap-calendar/js/calendar.js',
     './public/js/bootstrap-tagsinput.js',
-    './public/lib/pen/src/pen.js',
     './public/lib/pen/src/markdown.js',
+    './public/lib/pen/src/pen.js',
     './public/js/jquery.Jcrop.min.js',
     './public/lib/jquery-form/jquery.form.js',
     './public/lib/linkage-selector/linkage-selector.js',
