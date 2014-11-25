@@ -9,6 +9,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var watch = require('gulp-watch');
 var changed = require('gulp-changed');
 var jade = require('gulp-jade');
+var clean = require('gulp-clean');
 
 gulp.task('nodemon', function () {
   nodemon({
@@ -36,7 +37,7 @@ gulp.task('stylus', function () {
   gulp.src(src)
     .pipe(watch(src))
     .pipe(stylus())
-    .pipe(gulp.dest('./public/css'));
+    .pipe(gulp.dest('./public/css/donler'));
 });
 
 
@@ -46,7 +47,11 @@ gulp.task('css:library', function () {
     './public/lib/alertify.js/themes/alertify.core.css',
     './public/lib/alertify.js/themes/alertify.default.css',
     './public/lib/angular-carousel/dist/angular-carousel.min.css',
-    './public/lib/bootstrap-calendar/css/calendar.css'
+    './public/lib/bootstrap-calendar/css/calendar.css',
+    './public/css/library/font-awesome.css',
+    './public/css/library/jquery.Jcrop.min.css',
+    './public/css/library/bootstrap-tagsinput.css',
+    './public/lib/pen/src/pen.css'
   ])
     .pipe(concat('library.css'))
     .pipe(gulp.dest('./public/css'))
@@ -55,15 +60,7 @@ gulp.task('css:library', function () {
     .pipe(gulp.dest('./public/css'));
 });
 var donlerCssSrc = [
-  './public/css/donler.css',
-  './public/css/timeline.css',
-  './public/css/custom_alertify.css',
-  './public/css/dl_card.css',
-  './public/css/custom_calendar.css',
-  './public/css/group_select.css',
-  './public/css/campaign_list.css',
-  './public/css/tree.css',
-  './public/css/components.css'
+  './public/css/donler/**.css'
 ];
 gulp.task('css:donler', function () {
   gulp.src(donlerCssSrc)
@@ -135,6 +132,18 @@ gulp.task('jade', function () {
     .pipe(watch(src))
     .pipe(jade())
     .pipe(gulp.dest('./public/component_templates'));
+});
+
+gulp.task('clean', function () {
+  gulp.src([
+      './public/css/donler/**.css',
+      './public/css/donlerall.css',
+      './public/css/donlerall.min.css',
+      './public/css/library.css',
+      './public/css/library.min.css'
+    ], {read: false})
+    .pipe(clean())
+    .pipe(gulp.dest('./public/css/trash'));
 });
 
 gulp.task('watch:donlerCss', function () {

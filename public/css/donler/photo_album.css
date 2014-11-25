@@ -55,6 +55,9 @@
   background-color: rgba(0,0,0,0.4);
   color: #fff;
   text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .photo_album .left {
   position: absolute;

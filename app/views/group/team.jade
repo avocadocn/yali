@@ -1,8 +1,5 @@
 extends ../layouts/user_base
 
-append headExt
-  link(rel="stylesheet" href="/css/teampage.css")
-
 block contentExt
   .teampage.dl_container(report-contain ng-controller="TeamPageController")
     #data(data-id="#{teamId}" data-gid="#{groupId}")

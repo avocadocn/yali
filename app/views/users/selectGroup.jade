@@ -1,8 +1,5 @@
 extends ../layouts/register
 
-block headExt
-  link(rel="stylesheet" href="/css/group_select.css")
-
 block contentExt
   .text-center.h3.group_head='请选择' + group_head + '兴趣小队组件'
   .groups.row(ng-controller='GroupsController' ng-init="cid='#{cid}'")
