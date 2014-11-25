@@ -365,6 +365,11 @@ campaignContainer(color)
           dl_shadow()
           border-radius 2px
           width 100%
+          .campaign_loading
+            width 30px
+            height 30px
+            margin 0 auto
+            background url("/img/loading.gif") center center no-repeat
           .container_head
             cursor pointer
             height 39px
@@ -641,16 +646,20 @@ campaignContainer(color)
         height 100%
         display inline-block
       .icon_backtop
-        visibility hidden
+        position fixed
         cursor pointer
         width 30px
         height 40px
         background-image url('/img/icons/rocket.png')
+        left 50%
+        margin-left 500px
+        bottom -100px
+        transition bottom 0.5s
+        -moz-transition bottom 0.5s /* Firefox 4 */
+        -webkit-transition bottom 0.5s /* Safari and Chrome */
+        -o-transition bottom 0.5s /* Opera */
         &.affix
-          bottom 70px 
-          left 50%
-          margin-left 500px
-          visibility visible
+          bottom 70px
       .old_campaign_container
         height 30px
         color #ffffff
@@ -691,6 +700,7 @@ campaignContainer(color)
             margin-right 5px
             font-size 28px
             line-height 20px
+            color #fff
           .footprint
             background-image url('/img/icons/footprint.png')
             margin 2px 12px 0 4px
@@ -732,7 +742,7 @@ campaignContainer(color)
           &.affix
             top 60px
             left 50%
-            margin-left 360px
+            margin-left 362px
           &:hover
             background-color #da7659
         label

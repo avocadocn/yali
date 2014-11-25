@@ -21,7 +21,7 @@ tabViewUser.directive('eatClick', function() {
             event.preventDefault();
         });
     }
-})
+});
 tabViewUser.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider
@@ -74,8 +74,20 @@ tabViewUser.config(['$routeProvider',
       });
   }]);
 
-tabViewUser.run(['$rootScope','$location','$interval','$http','anchorSmoothScroll', 'Report','Campaign',
-  function($rootScope,$location,$interval,$http,anchorSmoothScroll,Report,Campaign) {
+tabViewUser.run(['$rootScope','$location','$interval','$http','$timeout','anchorSmoothScroll', 'Report','Campaign',
+  function($rootScope,$location,$interval,$http,$timeout,anchorSmoothScroll,Report,Campaign) {
+
+    // $rootScope.$watch('groupShowFlag',function(){
+      $timeout(function(){
+        angular.element('.affix_directive').affix({
+          offset: {
+            top: function(){
+              return angular.element('.groupsbox').height()+120;
+            }
+          }
+        });
+      });
+    // });
     $rootScope.message_for_group = false;
     var getRecentCommentTime = 10 * 60 * 1000;
     $rootScope.newReply=[];
