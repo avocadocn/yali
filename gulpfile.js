@@ -10,6 +10,9 @@ var watch = require('gulp-watch');
 var changed = require('gulp-changed');
 var jade = require('gulp-jade');
 var clean = require('gulp-clean');
+var cache = require('gulp-cached');
+var debug = require('gulp-debug');
+var newer = require('gulp-newer');
 
 gulp.task('nodemon', function () {
   nodemon({
@@ -24,7 +27,6 @@ gulp.task('nodemon', function () {
       "NODE_ENV": "development"
     },
   })
-    // .on('change', ['lint'])
     .on('restart', function () {
       console.log('app restarted!')
     });
@@ -147,15 +149,12 @@ gulp.task('clean', function () {
 });
 
 gulp.task('watch:donlerCss', function () {
-  gulp.watch(donlerCssSrc, {
-    interval: 1000,
-    debounceDelay: 1000
-  }, ['css:donler']);
+  gulp.watch(donlerCssSrc, ['css:donler']);
 });
 gulp.task('watch:donlerJs', function () {
   gulp.watch(donlerJsSrc, ['js:donler']);
 });
-gulp.task('watch', ['watch:donlerCss', 'watch:donlerJs']);
+gulp.task('watch', ['watch:donlerJs', 'watch:donlerCss']);
 
 
 gulp.task('develop', ['nodemon', 'stylus', 'css', 'js', 'jade', 'watch']);
