@@ -219,7 +219,7 @@ exports.validateError = function(req, res) {
 exports.validateConfirm = function(req, res) {
   if (req.session.company_id !== '') {
     res.render('company/validate/confirm', {
-      title: '验证成功,可以进行下一步!'
+      title: '验证成功!'
     });
   }
 };
@@ -239,7 +239,6 @@ exports.select = function(req, res) {
 };
 //配合路由渲染邀请链接页面
 exports.invite = function(req, res) {
-  var inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.company_id, config.SECRET) + '&cid=' + req.session.company_id;
   var companyId = req.session.company_id;
   req.session.company_id = null;
   Company.findOne({
@@ -249,6 +248,8 @@ exports.invite = function(req, res) {
       console.log('不存在公司');
       return res.status(404).send('不存在该公司');
     }
+    var invite_key = encodeURIComponent(company.invite_key).replace(/'/g,"%27").replace(/"/g,"%22");
+    var inviteUrl = 'http://'+req.headers.host+'/users/invite?key='+invite_key+'&cid=' + companyId;
     res.render('company/validate/invite', {
       title: '邀请链接',
       inviteLink: inviteUrl,
@@ -482,8 +483,6 @@ exports.validate = function(req, res) {
     function(err, user) {
       if (user) {
         if (!user.status.active) {
-          //到底要不要限制验证邮件的时间呢?
-          //废话,当然要
           if (encrypt.encrypt(_id, config.SECRET) === key) {
             var time_limit = config.COMPANY_VALIDATE_TIMELIMIT;
             if (parseInt(new Date().getTime()) - parseInt(user.status.date) > time_limit) {
@@ -562,7 +561,6 @@ exports.officialNameCheck = function(req, res) {
     'info.official_name': official_name
   }, function(err, company) {
     if (err || company) {
-      console.log(company);
       res.send(true);
     } else {
       res.send(false);
@@ -935,7 +933,8 @@ exports.getAccount = function(req, res, next) {
             }
           });
         }
-        _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + _company.invite_key + '&cid=' + companyId;
+        var invite_key = encodeURIComponent(_company.invite_key).replace(/'/g,"%27").replace(/"/g,"%22");
+        _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + invite_key + '&cid=' + companyId;
       }
       return res.send({
         'result': 1,

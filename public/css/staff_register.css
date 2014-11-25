@@ -647,36 +647,9 @@ textarea {
 .transparent {
   opacity: 0;
 }
-.bg_change:hover {
-  cursor: pointer;
-  background-color: #f8f8f3;
-}
 .loading_div {
   background: url("/img/loading.gif") center 38px no-repeat;
   min-height: 100px;
-}
-.comment_height_limit {
-  height: auto;
-  max-height: 190px;
-}
-.mouse_hidden {
-  opacity: 0.3;
-}
-.mouse_hidden:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-.comment_right {
-  float: right;
-  margin-right: 10px;
-}
-.message_group {
-  margin-left: 100px;
-  width: 700px;
-  margin-top: 50px;
-}
-.line_top {
-  margin-top: -20px !important;
 }
 .company_message_select {
   width: 90px;
@@ -687,9 +660,6 @@ textarea {
   margin-left: 15px;
   padding: 0;
   margin: 10px 0;
-}
-.comment_tool_bottom {
-  margin-top: -45px !important;
 }
 .comment_top {
   margin-top: -5px !important;
@@ -714,34 +684,14 @@ textarea {
 .cursor_next {
   cursor: url("/img/pic_next.cur"), auto;
 }
-.dl_btn_score {
-  width: 100px;
-  height: 50px;
-  background: #f20;
-}
 .dl_center {
   text-align: center;
-}
-.dl_box {
-  width: 275px;
-  height: 150px;
-  margin-left: -32px;
 }
 .dl_cover {
   border-style: solid;
   border-color: #f22;
   border-width: 2px;
   border-radius: 100%;
-  width: 48px;
-  height: 48px;
-}
-.dl_cover_message {
-  border-style: solid;
-  border-color: #f22;
-  border-width: 2px;
-  border-radius: 1%;
-  position: absolute;
-  z-index: 1000;
   width: 48px;
   height: 48px;
 }
@@ -763,20 +713,6 @@ textarea {
   background-color: #cd270d;
   border-radius: 100%;
   color: #f4f4f4;
-}
-.dl_corner {
-  margin-top: -48px;
-  margin-left: 120px;
-  font-size: 12px;
-  position: absolute;
-  z-index: 1000;
-  width: auto;
-  height: auto;
-  background-color: #cd270d;
-  radius: 500px;
-  border-radius: 500px;
-  color: #f4f4f4;
-  padding: 2px 10px 0;
 }
 .dl_user_name_small {
   display: inline-block;
@@ -813,13 +749,6 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.dl_block {
-  display: block;
-}
-.dl_label {
-  color: #cc847f;
-  font-size: 12px !important;
 }
 .dl_mouse_hover_block .dl_mouse_hover {
   display: none;
@@ -900,18 +829,6 @@ textarea {
 }
 .dl_comment_area .dl_row {
   min-height: 24px;
-}
-.dl_area {
-  margin-right: 15px;
-}
-.dl_tip {
-  float: left;
-  position: absolute;
-  margin-left: 10px;
-  margin-top: 8px;
-  height: 10px;
-  width: 200px;
-  color: #f00;
 }
 .quit-modal {
   position: relative;

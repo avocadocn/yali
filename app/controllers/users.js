@@ -297,7 +297,7 @@ exports.invite = function(req, res) {
     req.logout();
     res.locals.global_user = null;
   }
-  var key = req.query.key;
+  var key = decodeURIComponent(req.query.key);
   var cid = req.query.cid;
   req.session.cid = req.query.cid; //给注册页显示部门用
   if(key == undefined || cid == undefined) {
@@ -319,6 +319,7 @@ exports.invite = function(req, res) {
           cname: company.info.official_name
         });
       }else{
+        console.log('key错误');
         res.render('users/message', {title: 'error', message: 'bad request'});
       }
     })

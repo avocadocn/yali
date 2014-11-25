@@ -1,6 +1,15 @@
-//公司激活链接验证错误,待完善
-extends company_auth
+extends ../layouts/register
 
-block auth
-      label.col-md-4.control-label(for="error") 验证错误!
-      .col-md-8
+append headExt
+  link(rel="stylesheet" href="/css/company_signup.css")
+
+block contentExt
+  .dl_container.clearfix
+    .signup_row
+      .block
+        .signup_title.company_title
+          span 企业注册
+        .signup_tips
+          p 验证错误
+        if (message && message.length)
+          .signup_tips= message
