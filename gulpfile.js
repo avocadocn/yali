@@ -98,7 +98,14 @@ gulp.task('js:library', function () {
     './public/lib/angular-file-upload/angular-file-upload.min.js',
     './public/lib/underscore/underscore.js',
     './public/js/language/zh-CN.js',
-    './public/lib/bootstrap-calendar/js/calendar.js'
+    './public/lib/bootstrap-calendar/js/calendar.js',
+    './public/js/bootstrap-tagsinput.js',
+    './public/lib/pen/src/pen.js',
+    './public/lib/pen/src/markdown.js',
+    './public/js/jquery.Jcrop.min.js',
+    './public/lib/jquery-form/jquery.form.js',
+    './public/lib/linkage-selector/linkage-selector.js',
+    './public/lib/cropit/dist/jquery.cropit.min.js'
   ])
     .pipe(concat('library.js'))
     .pipe(gulp.dest('./public/js'))
@@ -111,8 +118,10 @@ gulp.task('js:library', function () {
 var donlerJsSrc = [
   './public/js/modules/**/*.js',
   './public/js/app.js',
-  './public/js/service/**.js',
   './public/js/controllers/message_header.js',
+  './public/js/service/**.js',
+  './public/js/directives/**.js',
+  './public/js/edit_logo.js',
   './public/js/dl_card.js'
 ];
 gulp.task('js:donler', function () {

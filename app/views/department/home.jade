@@ -63,8 +63,5 @@ block aside
           a.thumbnail_cell(href="/photoAlbum/#{photo_album._id}/detailView")
             img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}/120/120")
             p.thumbnail_name.text-center= photo_album.name
-
 append footExt
-  script(src="/lib/jquery-form/jquery.form.js")
-  script(src="/js/jquery.Jcrop.min.js")
   script(src="/js/controllers/department.js")
