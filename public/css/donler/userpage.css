@@ -428,6 +428,12 @@
   border-radius: 2px;
   width: 100%;
 }
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_loading {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  background: url("/img/loading.gif") center center no-repeat;
+}
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head {
   cursor: pointer;
   height: 39px;
@@ -842,17 +848,21 @@
   display: inline-block;
 }
 .user_page .dl_container .side .icon_backtop {
-  visibility: hidden;
+  position: fixed;
   cursor: pointer;
   width: 30px;
   height: 40px;
   background-image: url("/img/icons/rocket.png");
+  left: 50%;
+  margin-left: 500px;
+  bottom: -100px;
+  transition: bottom 0.5s;
+  -moz-transition: bottom 0.5s;
+  -webkit-transition: bottom 0.5s;
+  -o-transition: bottom 0.5s;
 }
 .user_page .dl_container .side .icon_backtop.affix {
   bottom: 70px;
-  left: 50%;
-  margin-left: 500px;
-  visibility: visible;
 }
 .user_page .dl_container .side .old_campaign_container {
   height: 30px;
@@ -906,6 +916,7 @@
   margin-right: 5px;
   font-size: 28px;
   line-height: 20px;
+  color: #fff;
 }
 .user_page .dl_container .side .old_campaign_container.timeline_container .footprint {
   background-image: url("/img/icons/footprint.png");
@@ -959,7 +970,7 @@
 .user_page .dl_container .side .sponsor_container.provoke.affix {
   top: 60px;
   left: 50%;
-  margin-left: 360px;
+  margin-left: 362px;
 }
 .user_page .dl_container .side .sponsor_container.provoke:hover {
   background-color: #da7659;

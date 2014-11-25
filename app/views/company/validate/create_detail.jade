@@ -1,35 +1,42 @@
-.row.signup_row
-  .col-xs-12.col-sm-5.text-right
-    .block_left
-      h1.text-right
-        small 加入
-        | 动梨
-  .col-xs-12.col-sm-7(ng-controller="DetailController")
-    form.block_right.center-block.form-horizontal(name="createForm")
-      h3.text-center 恭喜！您已经成功通过验证！
-      .form-group.dl_sm_group
-        .col-xs-offset-4.col-xs-8
-          p 现在可以完成注册，加入动梨啦！
+.dl_container.clearfix
+  .signup_row
+    .block.block_left.notification_block
+      .signup_title.company_title
+        span 企业注册
+      .signup_tips
+        p 恭喜您已通过验证，
+        p 现在就完成注册，加入动梨吧~
+    form.block.block_left.signup_block.form-horizontal(name="createForm" ng-controller="DetailController")
       .form-group.dl_sm_group(ng-class="{'has-error':createForm.official_name.$invalid && createForm.official_name.$dirty}")
-        label.col-xs-4.control-label(for="official_name" ) *官方简称：
-        .col-xs-8
-          input#official_name.form-control.dl_full_control(type="text" name="official_name" ng-model="detail.official_name" mix-maxlength="20" ng-pattern="/^[0-9a-zA-Z\u4e00-\u9fa5]*$/" ng-blur="detail.officialNameCheck()" placeholder="请参考企业名称/品牌名称" tooltip-placement="right" tooltip="{{createForm.official_name.$invalid && createForm.official_name.$dirty ? '您企业的简称或者品牌名称，便于识别' : ''}}" required)
-          span.dl_tip(ng-if="!detail.check_name") {{detail.check_name_value}}
-          span.dl_tip(ng-if="createForm.official_name.$error.mixlength") 请输入在20个英文字符或10个中文字符以内的名称
-          span.dl_tip(ng-if="createForm.official_name.$error.pattern") 企业官方名称只能包含中文、英文、数字
+        .dl_row
+          .label_left
+            label.control-label(for="official_name" ) *官方简称：
+          .input_right
+            input#official_name.dl-form-control(type="text" name="official_name" ng-model="detail.official_name" mix-maxlength="20" ng-pattern="/^[0-9a-zA-Z\u4e00-\u9fa5]*$/" ng-blur="detail.officialNameCheck()" placeholder="请参考企业名称/品牌名称" required)
+            span.dl_tip(ng-if="!detail.check_name") {{detail.check_name_value}}
+            span.dl_tip(ng-if="createForm.official_name.$error.mixlength") 请输入在20个英文字符或10个中文字符以内的名称
+            span.dl_tip(ng-if="createForm.official_name.$error.pattern") 企业官方名称只能包含中文、英文、数字
       .form-group.dl_sm_group(ng-class="{'has-error':createForm.username.$invalid && createForm.username.$dirty}")
-        label.col-xs-4.control-label(for="username") *用户名：
-        .col-xs-8
-          input#username.form-control.dl_full_control(type="text" name="username" ng-model="detail.username" placeholder="公司登录时的账号" ng-blur="detail.usernameCheck()" ng-minlength=4 tooltip-placement="right" tooltip="{{createForm.username.$invalid && createForm.username.$dirty ? '请使用4-20位英文和数字组合及“_”' : ''}}" required)
-          span.dl_tip(ng-if="!detail.check_username") {{detail.check_username_value}}
+        .dl_row
+          .label_left
+            label.control-label(for="username") *用户名：
+          .input_right
+            input#username.dl-form-control(type="text" name="username" ng-model="detail.username" placeholder="公司登录时的账号" ng-blur="detail.usernameCheck()" ng-minlength=4 tooltip-placement="right" tooltip="{{createForm.username.$invalid && createForm.username.$dirty ? '请使用4-20位英文和数字组合及“_”' : ''}}" required)
+            span.dl_tip(ng-if="!detail.check_username") {{detail.check_username_value}}
+      .form-group.dl_sm_group(ng-class="{'has-error':createForm.password.$invalid && createForm.password.$dirty}")
+        .dl_row
+          .label_left
+            label.control-label(for="password") *密码：
+          .input_right
+            input#password.dl-form-control(type="password" name="password" ng-model="detail.password" ng-minlength=6  tooltip-placement="right" tooltip="{{createForm.password.$invalid && createForm.password.$dirty ? '密码不得少于6位' : ''}}" required)
+      .form-group.dl_sm_group(ng-class="{'has-error':createForm.confirmPassword.$invalid && createForm.confirmPassword.$dirty}")
+        .dl_row
+          .label_left
+            label.control-label(for="password") *密码确认：
+          .input_right
+            input#password.dl-form-control(type="password" name="confirmPassword" ng-model="detail.confirmPassword" ng-minlength=6 match="detail.password" required)
       .form-group.dl_sm_group
-        label.col-xs-4.control-label(for="password") *密码：
-        .col-xs-8
-          input#password.form-control.dl_full_control(type="password" name="password" ng-model="detail.password" ng-minlength=6 required)
-      .form-group.dl_sm_group
-        label.col-xs-4.control-label(for="password") *密码确认：
-        .col-xs-8
-          input#password.form-control.dl_full_control(type="password" name="confirmPassword" ng-model="detail.confirmPassword" ng-minlength=6 match="detail.password" required)
-      .form-group.dl_sm_group
-        .col-xs-offset-4.col-xs-8
-          button.btn.btn-primary.dl_btn.dl_full_control(ng-disabled="createForm.$invalid || !detail.check_name || !detail.check_username" ng-click="detail.create_detail()") 创建
+        .dl_row
+          .label_left
+          .input_right
+            button.dl_btn.btn_submit.dl_full_control(ng-disabled="createForm.$invalid || !detail.check_name || !detail.check_username" ng-click="detail.create_detail()") 创建公司账号

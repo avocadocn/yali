@@ -5,6 +5,19 @@
   width: 775px;
   margin: auto;
 }
+.signup_row .center .invite_block {
+  width: 480px;
+  padding-top: 50px;
+}
+.signup_row .center .invite_block .add_domain {
+  margin-top: 50px;
+}
+.signup_row .center .invite_block .add_domain .add_domain_div {
+  margin: 5px;
+}
+.signup_row .center .invite_block .index_link {
+  margin-top: 15px;
+}
 .signup_row .block {
   width: 455px;
   float: left;
@@ -37,6 +50,13 @@
 .signup_row .block .company_title {
   color: #f48361;
 }
+.signup_row .block .dl_tip {
+  float: left;
+  margin-left: 10px;
+  margin-top: 8px;
+  width: 400px;
+  color: #f00;
+}
 .signup_row .block_left {
   margin-right: 50px;
 }
@@ -47,6 +67,9 @@
   border-radius: 8px;
   border: 2px solid #f48361;
   padding: 38px;
+}
+.signup_row .signup_block .form-group.has-error input.ng-invalid {
+  box-shadow: 0 0px 1px 1px #ffc0cb;
 }
 .signup_row .signup_block .dl_sm_group .dl_row {
   min-height: 45px;
@@ -149,9 +172,6 @@
   height: 40px !important;
   background-color: #f48361;
 }
-.signup_row .signup_block .dl_sm_group .dl_tip {
-  position: relative;
-}
 .signup_row .signup_block .dl_sm_group .center_container {
   width: 350px;
   text-align: center;
@@ -181,19 +201,6 @@
   width: 140px;
   border: none;
   padding: 10px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block {
-  width: 480px;
-  padding-top: 50px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block .add_domain {
-  margin-top: 50px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block .add_domain .add_domain_div {
-  margin: 5px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block .index_link {
-  margin-top: 15px;
 }
 .signup_row .personal_signup {
   border: 2px solid #3ca2e0;

@@ -6,6 +6,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
       span= containerTitle
       i.fa.pull-right(ng-if="#{items}.length>2" ng-class="{'fa-angle-right':!#{containerClass}&&nowShow!=='#{containerClass}','fa-angle-down':#{containerClass} || nowShow=='#{containerClass}'}")
       span.campaign_count {{#{items}.length}}
+    .campaign_loading(ng-if="#{items}==undefined")
     div(ng-class="{'no_campaign':true}" ng-if="campaignLoaded && #{items}.length==0 && nowShow=='#{containerClass}'" ng-cloak)
       if containerClass=='recent_unjoin'
         .no_campaign_tip
@@ -137,32 +138,31 @@ block aside
           a.clearLinkUnderline(href='/company/home' target="_blank" ng-cloak) #{cname}
           if department
             a.clearLinkUnderline(href='/department/home/#{department._id}' target="_blank" ng-cloak) #{department.name}
-  if role !== 'HR'
-    .groupsbox(ng-init="showFlag=false;")
-      include ../partials/group_thumbnail
-      +group_thumbnail(myteam)
+  .groupsbox(ng-init="groupShowFlag=false;")
+    include ../partials/group_thumbnail
+    +group_thumbnail(myteam)
   if user_role =='LEADER'
-    .sponsor_container.sponsor(data-spy="affix" data-offset-top="260" title="发布活动")
+    .sponsor_container.sponsor.affix_directive(title="发布活动")
       a.clearLinkUnderline.fullparent(href="javascript:void(0);" ng-click="newCampaign()")
         span.dl_icons.icon_speaker
         label 发活动
-    .sponsor_container.provoke(data-spy="affix" data-offset-top="260" title="进入找对手页面")
+    .sponsor_container.provoke.affix_directive(title="进入找对手页面")
       a.clearLinkUnderline.fullparent(href="/users/searchOpponents")
         span.dl_icons.icon_binoculars
         label 找对手
-  .old_campaign_container.commentCampaign(class="#{user_role=='LEADER'?'affix_leader':''}" data-spy="affix" data-offset-top="260" title="查看有讨论的活动")
+  .old_campaign_container.commentCampaign.affix_directive(class="#{user_role=='LEADER'?'affix_leader':''}" title="查看有讨论的活动")
     a.clearLinkUnderline.fullparent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
       span.dl_icons.comment_w
       label.label_info 活动讨论
       label.news_count(ng-cloak) {{newReply.length}}
         i.fa.fa-angle-right
-  .old_campaign_container.timeline_container(class="#{user_role=='LEADER'?'affix_leader':''}" data-spy="affix" data-offset-top="260" title="进入活动足迹页面")
+  .old_campaign_container.timeline_container.affix_directive(class="#{user_role=='LEADER'?'affix_leader':''}" title="进入活动足迹页面")
     a.clearLinkUnderline.fullparent(href="/users/timeLine/#{uid}")
       span.dl_icons.footprint
       label 活动足迹
       i.fa.fa-angle-double-right.pull-right
   if role !== 'HR'
-    .schedule_small(class="#{user_role=='LEADER'?'affix_leader':''}" ng-controller="ScheduleSmallController" ng-cloak data-spy="affix" data-offset-top="260")
+    .schedule_small.affix_directive(class="#{user_role=='LEADER'?'affix_leader':''}" ng-controller="ScheduleSmallController" ng-cloak)
       include ../partials/schedule_list
       include ../partials/calendar_modal
   .icon_backtop(ng-click="bakckTop()" data-spy="affix" data-offset-top="10")

@@ -779,6 +779,19 @@
   width: 775px;
   margin: auto;
 }
+.signup_row .center .invite_block {
+  width: 480px;
+  padding-top: 50px;
+}
+.signup_row .center .invite_block .add_domain {
+  margin-top: 50px;
+}
+.signup_row .center .invite_block .add_domain .add_domain_div {
+  margin: 5px;
+}
+.signup_row .center .invite_block .index_link {
+  margin-top: 15px;
+}
 .signup_row .block {
   width: 455px;
   float: left;
@@ -811,6 +824,13 @@
 .signup_row .block .company_title {
   color: #f48361;
 }
+.signup_row .block .dl_tip {
+  float: left;
+  margin-left: 10px;
+  margin-top: 8px;
+  width: 400px;
+  color: #f00;
+}
 .signup_row .block_left {
   margin-right: 50px;
 }
@@ -821,6 +841,9 @@
   border-radius: 8px;
   border: 2px solid #f48361;
   padding: 38px;
+}
+.signup_row .signup_block .form-group.has-error input.ng-invalid {
+  box-shadow: 0 0px 1px 1px #ffc0cb;
 }
 .signup_row .signup_block .dl_sm_group .dl_row {
   min-height: 45px;
@@ -923,9 +946,6 @@
   height: 40px !important;
   background-color: #f48361;
 }
-.signup_row .signup_block .dl_sm_group .dl_tip {
-  position: relative;
-}
 .signup_row .signup_block .dl_sm_group .center_container {
   width: 350px;
   text-align: center;
@@ -955,19 +975,6 @@
   width: 140px;
   border: none;
   padding: 10px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block {
-  width: 480px;
-  padding-top: 50px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block .add_domain {
-  margin-top: 50px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block .add_domain .add_domain_div {
-  margin: 5px;
-}
-.signup_row .signup_block .dl_sm_group .invite_block .index_link {
-  margin-top: 15px;
 }
 .signup_row .personal_signup {
   border: 2px solid #3ca2e0;
@@ -2948,36 +2955,9 @@ textarea {
 .transparent {
   opacity: 0;
 }
-.bg_change:hover {
-  cursor: pointer;
-  background-color: #f8f8f3;
-}
 .loading_div {
   background: url("/img/loading.gif") center 38px no-repeat;
   min-height: 100px;
-}
-.comment_height_limit {
-  height: auto;
-  max-height: 190px;
-}
-.mouse_hidden {
-  opacity: 0.3;
-}
-.mouse_hidden:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-.comment_right {
-  float: right;
-  margin-right: 10px;
-}
-.message_group {
-  margin-left: 100px;
-  width: 700px;
-  margin-top: 50px;
-}
-.line_top {
-  margin-top: -20px !important;
 }
 .company_message_select {
   width: 90px;
@@ -2988,9 +2968,6 @@ textarea {
   margin-left: 15px;
   padding: 0;
   margin: 10px 0;
-}
-.comment_tool_bottom {
-  margin-top: -45px !important;
 }
 .comment_top {
   margin-top: -5px !important;
@@ -3015,34 +2992,14 @@ textarea {
 .cursor_next {
   cursor: url("/img/pic_next.cur"), auto;
 }
-.dl_btn_score {
-  width: 100px;
-  height: 50px;
-  background: #f20;
-}
 .dl_center {
   text-align: center;
-}
-.dl_box {
-  width: 275px;
-  height: 150px;
-  margin-left: -32px;
 }
 .dl_cover {
   border-style: solid;
   border-color: #f22;
   border-width: 2px;
   border-radius: 100%;
-  width: 48px;
-  height: 48px;
-}
-.dl_cover_message {
-  border-style: solid;
-  border-color: #f22;
-  border-width: 2px;
-  border-radius: 1%;
-  position: absolute;
-  z-index: 1000;
   width: 48px;
   height: 48px;
 }
@@ -3064,20 +3021,6 @@ textarea {
   background-color: #cd270d;
   border-radius: 100%;
   color: #f4f4f4;
-}
-.dl_corner {
-  margin-top: -48px;
-  margin-left: 120px;
-  font-size: 12px;
-  position: absolute;
-  z-index: 1000;
-  width: auto;
-  height: auto;
-  background-color: #cd270d;
-  radius: 500px;
-  border-radius: 500px;
-  color: #f4f4f4;
-  padding: 2px 10px 0;
 }
 .dl_user_name_small {
   display: inline-block;
@@ -3114,13 +3057,6 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.dl_block {
-  display: block;
-}
-.dl_label {
-  color: #cc847f;
-  font-size: 12px !important;
 }
 .dl_mouse_hover_block .dl_mouse_hover {
   display: none;
@@ -3201,18 +3137,6 @@ textarea {
 }
 .dl_comment_area .dl_row {
   min-height: 24px;
-}
-.dl_area {
-  margin-right: 15px;
-}
-.dl_tip {
-  float: left;
-  position: absolute;
-  margin-left: 10px;
-  margin-top: 8px;
-  height: 10px;
-  width: 200px;
-  color: #f00;
 }
 .quit-modal {
   position: relative;
@@ -8189,36 +8113,9 @@ textarea {
 .transparent {
   opacity: 0;
 }
-.bg_change:hover {
-  cursor: pointer;
-  background-color: #f8f8f3;
-}
 .loading_div {
   background: url("/img/loading.gif") center 38px no-repeat;
   min-height: 100px;
-}
-.comment_height_limit {
-  height: auto;
-  max-height: 190px;
-}
-.mouse_hidden {
-  opacity: 0.3;
-}
-.mouse_hidden:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-.comment_right {
-  float: right;
-  margin-right: 10px;
-}
-.message_group {
-  margin-left: 100px;
-  width: 700px;
-  margin-top: 50px;
-}
-.line_top {
-  margin-top: -20px !important;
 }
 .company_message_select {
   width: 90px;
@@ -8229,9 +8126,6 @@ textarea {
   margin-left: 15px;
   padding: 0;
   margin: 10px 0;
-}
-.comment_tool_bottom {
-  margin-top: -45px !important;
 }
 .comment_top {
   margin-top: -5px !important;
@@ -8256,34 +8150,14 @@ textarea {
 .cursor_next {
   cursor: url("/img/pic_next.cur"), auto;
 }
-.dl_btn_score {
-  width: 100px;
-  height: 50px;
-  background: #f20;
-}
 .dl_center {
   text-align: center;
-}
-.dl_box {
-  width: 275px;
-  height: 150px;
-  margin-left: -32px;
 }
 .dl_cover {
   border-style: solid;
   border-color: #f22;
   border-width: 2px;
   border-radius: 100%;
-  width: 48px;
-  height: 48px;
-}
-.dl_cover_message {
-  border-style: solid;
-  border-color: #f22;
-  border-width: 2px;
-  border-radius: 1%;
-  position: absolute;
-  z-index: 1000;
   width: 48px;
   height: 48px;
 }
@@ -8305,20 +8179,6 @@ textarea {
   background-color: #cd270d;
   border-radius: 100%;
   color: #f4f4f4;
-}
-.dl_corner {
-  margin-top: -48px;
-  margin-left: 120px;
-  font-size: 12px;
-  position: absolute;
-  z-index: 1000;
-  width: auto;
-  height: auto;
-  background-color: #cd270d;
-  radius: 500px;
-  border-radius: 500px;
-  color: #f4f4f4;
-  padding: 2px 10px 0;
 }
 .dl_user_name_small {
   display: inline-block;
@@ -8355,13 +8215,6 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.dl_block {
-  display: block;
-}
-.dl_label {
-  color: #cc847f;
-  font-size: 12px !important;
 }
 .dl_mouse_hover_block .dl_mouse_hover {
   display: none;
@@ -8442,18 +8295,6 @@ textarea {
 }
 .dl_comment_area .dl_row {
   min-height: 24px;
-}
-.dl_area {
-  margin-right: 15px;
-}
-.dl_tip {
-  float: left;
-  position: absolute;
-  margin-left: 10px;
-  margin-top: 8px;
-  height: 10px;
-  width: 200px;
-  color: #f00;
 }
 .quit-modal {
   position: relative;
@@ -12866,6 +12707,12 @@ Timeline UI Base
   border-radius: 2px;
   width: 100%;
 }
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_loading {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  background: url("/img/loading.gif") center center no-repeat;
+}
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head {
   cursor: pointer;
   height: 39px;
@@ -13280,17 +13127,21 @@ Timeline UI Base
   display: inline-block;
 }
 .user_page .dl_container .side .icon_backtop {
-  visibility: hidden;
+  position: fixed;
   cursor: pointer;
   width: 30px;
   height: 40px;
   background-image: url("/img/icons/rocket.png");
+  left: 50%;
+  margin-left: 500px;
+  bottom: -100px;
+  transition: bottom 0.5s;
+  -moz-transition: bottom 0.5s;
+  -webkit-transition: bottom 0.5s;
+  -o-transition: bottom 0.5s;
 }
 .user_page .dl_container .side .icon_backtop.affix {
   bottom: 70px;
-  left: 50%;
-  margin-left: 500px;
-  visibility: visible;
 }
 .user_page .dl_container .side .old_campaign_container {
   height: 30px;
@@ -13344,6 +13195,7 @@ Timeline UI Base
   margin-right: 5px;
   font-size: 28px;
   line-height: 20px;
+  color: #fff;
 }
 .user_page .dl_container .side .old_campaign_container.timeline_container .footprint {
   background-image: url("/img/icons/footprint.png");
@@ -13397,7 +13249,7 @@ Timeline UI Base
 .user_page .dl_container .side .sponsor_container.provoke.affix {
   top: 60px;
   left: 50%;
-  margin-left: 360px;
+  margin-left: 362px;
 }
 .user_page .dl_container .side .sponsor_container.provoke:hover {
   background-color: #da7659;
