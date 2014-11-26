@@ -317,7 +317,7 @@ app.directive('ngThumb', ['$window',
   }
 ]);
 
-app.run(['$rootScope', function ($rootScope) {
+app.run(['$rootScope', 'anchorSmoothScroll',function ($rootScope,anchorSmoothScroll) {
     alertify.set({
       buttonFocus: "none",
       labels: {
@@ -325,6 +325,9 @@ app.run(['$rootScope', function ($rootScope) {
         cancel: '取消'
       }
     });
+    $rootScope.bakckTop = function(){
+      anchorSmoothScroll.scrollTo(0);
+    }
     $rootScope.shortTrim = function(value){
       //中文
       if(escape(value).indexOf("%u")>=0){

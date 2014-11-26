@@ -97,9 +97,6 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$timeout','anchor
     $rootScope.$on("$routeChangeSuccess",function(){
       $rootScope.loading = false;
     });
-    $rootScope.bakckTop = function(){
-      anchorSmoothScroll.scrollTo(0);
-    }
     $rootScope.pushReport = function(){
       Report.publish($rootScope.reportContent,function(err,msg){
         alertify.alert(msg);

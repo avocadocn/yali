@@ -859,24 +859,6 @@
   height: 100%;
   display: inline-block;
 }
-.user_page .dl_container .side .icon_backtop {
-  position: fixed;
-  cursor: pointer;
-  width: 30px;
-  height: 40px;
-  background-image: url("/img/sprites/dl_sprites.png");
-  background-position: -45px -80px;
-  left: 50%;
-  margin-left: 500px;
-  bottom: -100px;
-  transition: bottom 0.5s;
-  -moz-transition: bottom 0.5s;
-  -webkit-transition: bottom 0.5s;
-  -o-transition: bottom 0.5s;
-}
-.user_page .dl_container .side .icon_backtop.affix {
-  bottom: 70px;
-}
 .user_page .dl_container .side .old_campaign_container {
   height: 30px;
   color: #fff;
