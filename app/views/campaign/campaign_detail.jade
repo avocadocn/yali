@@ -4,7 +4,7 @@ append headExt
   link(rel="stylesheet" href="/lib/pen/src/pen.css")
 
 block contentExt
-  .campaign_detail.dl_container(report-contain ng-controller="campaignController" ng-init="editing=#{editing};")
+  .campaign_detail.dl_container(report-contain ng-controller="campaignController")
     include ../partials/breadcrumb
     +breadcrumb(links)
     .campaign_panel
@@ -14,7 +14,7 @@ block contentExt
             span.title.left.first #{campaign.theme}
             span.sub_title.left(ng-cloak) #{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}
             span.title.right.last(ng-if="campaign.isStart === false && campaign.isActive" ng-init="startCal=false" ng-show="startCal" ng-cloak)
-              span(count-down target="campaign.start_time" start-cal="startCal" ng-cloak)
+              span(count-down target="campaign.start_time" start-cal="startCal" isEnd="campaign.isStart" ng-cloak)
               span.count_down_remind &nbsp;后开始
             span.title.right.last(ng-if="campaign.isStart && !campaign.isEnd && campaign.isActive" ng-cloak) 活动正在进行中
             span.title.right.last(ng-if="campaign.isEnd && campaign.isActive" ng-cloak) 活动已结束
@@ -69,7 +69,7 @@ block contentExt
               .text_dark.clearfix
                 span.pull-left 活动简介：
                 span.pull-left(ng-if="!campaign.content || campaign.content === ''") 无
-                .campaign_intro(ng-if="campaign.content" ng-cloak)!= campaign.content
+                .campaign_intro(ng-if="campaign.content" ng-bind-html="campaign.contentHTML" ng-cloak)
               .text_dark(ng-if="campaign.tags.length > 0") 活动标签：
                 .tags
                   span.tag(ng-repeat="tag in campaign.tags") {{tag}}
