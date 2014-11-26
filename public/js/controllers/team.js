@@ -350,7 +350,15 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     });
   });
 
-
+  var modalCalendar;
+  $('#events-modal').on('shown.bs.modal', function (e) {
+    $('#events-modal').find('[data-calendar-nav]').click(function() {
+      modalCalendar.navigate($(this).data('calendar-nav'));
+    });
+    $('#events-modal').find('[data-calendar-nav="today"]').click(function() {
+      modalCalendar.navigate($(this).data('calendar-nav'));
+    });
+  });
   var initModalCalendar = function(events_source, start_time, reloadEventList) {
     var modalOptions = {
       events_source: events_source,
@@ -369,17 +377,6 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       },
       onAfterViewLoad: function(view) {
         $('#calendar_title_modal').text(this.getTitle());
-        //$('#calendar_operator button').removeClass('active');
-        //$('button[data-calendar-view="' + view + '"]').addClass('active');
-        $('#events-modal').undelegate('[data-calendar-nav]', 'click').delegate('[data-calendar-nav]', 'click', function() {
-          modalCalendar.navigate($(this).data('calendar-nav'));
-        });
-        $('#events-modal').undelegate('[data-calendar-nav="today"]', 'click').delegate('[data-calendar-nav]', 'click', function() {
-          modalCalendar.navigate($(this).data('calendar-nav'));
-        });
-        $('#events-modal').undelegate('[data-calendar-view]', 'click').delegate('[data-calendar-view]', 'click', function() {
-          modalCalendar.view($(this).data('calendar-view'));
-        });
         if (start_time) {
           $('#events-modal').find("[data-cal-date='" + start_time + "']").parent().mouseenter().click();
         } else if (reloadEventList) {
@@ -399,7 +396,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     if (start_time) {
       modalOptions.day = start_time;
     }
-    var modalCalendar = $('#modal_calendar').calendar(modalOptions);
+    modalCalendar = $('#modal_calendar').calendar(modalOptions);
   };
 
   $scope.getCalendarCampaigns = function (type) {
@@ -410,7 +407,6 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
 
 
   // timeline
-  
   $scope.nowYear = 'timeline1_0';
   var addCampaign = function(id) {
     var temp = id.split('_');
