@@ -560,6 +560,117 @@ textarea
   box-shadow none !important
   .pen-icon
     font 14px Georgia serif !important
+.dl_icons
+  height 16px
+  width 16px
+  margin-top 2px
+  margin-left 4px
+  float left
+  background-repeat no-repeat
+  background-image url('/img/sprites/dl_sprites.png')
+  &.icon_dllogo
+    background-position -200px -120px
+    width 200px
+    height 30px
+  &.icon_speaker
+    background-position -162px 0
+  &.icon_binoculars
+    background-position -202px -42px
+  &.icon_info
+    height 14px
+    margin-right 4px
+    margin-left 0
+    margin-top 0
+    background-position -284px -3px
+  &.info_edit
+    margin 7px 13px
+    background-position -160px -44px
+  &.info_edit_blue
+    background-position -81px -44px
+  &.icon_group
+    margin-top -2px
+    margin-left 0
+    background-position -202px 1px
+  &.comment_w
+    background-position -82px 0
+    margin-top 3px
+  // &.icon_drarrow
+  //   margin-right 4px
+  //   margin-top 5px
+  //   background-image url('/img/icons/dubblearrow.png')
+  &.icon_bgrarrow
+    background-position -201px -81px
+  &.icon_fold
+    height 14px
+    width 14px
+    float right
+    margin 8px 2px 0 25px
+    background-position -323px -3px
+  &.icon_unfold
+    height 14px
+    width 14px
+    float right
+    margin 8px 2px 0 25px
+    background-position -363px -3px
+  &.icon_calendar
+    margin-right 20px
+    margin-top 7px
+    margin-left -2px
+    background-position -244px -2px
+  &.icon_reply
+    float right
+    background-position -122px -2px
+  &.icon_reply_blue
+    float right
+    background-position -240px -80px
+  &.icon_team
+    margin 0
+    background-position -2px -121px
+  &.icon_calendar_red
+    background-position -280px -81px
+    height 18px
+    width 18px
+  &.icon_map_pin
+    background-position -360px -81px
+  &.icon_homecourt
+    margin 0
+    background-position -160px -120px
+  &.icon_photo
+    background-position -41px -121px
+    width 19px
+  &.icon_message
+    background-position -41px 1px
+  &.icon_users_relation
+    background-position -2px -3px
+  &.icon_warning
+    background-position -122px -44px
+  &.icon_comment_bubble
+    background-position -82px -2px
+  &.icon_edit_half
+    background-position -85px -85px
+    width 30px
+    height 30px
+  &.icon_pinstar
+    display inline-block
+    float none
+    margin-top 0
+    background-position -121px -42px
+  &.icon_building_tower
+    display inline-block
+    float none
+    margin-top 0
+    background-position -45px -41px
+  &.icon_confused
+    display inline-block
+    background-position -85px -85px
+  &.icon_sunshine
+    background-position -121px -121px
+    margin-top 0
+  &.icon_leader
+    background-position -41px -120px
+  &.icon_information
+    background-position -82px -121px
+    margin-top 0
 .dl_container
   width 960px
   min-width 960px
@@ -589,54 +700,6 @@ textarea
       background-color cardbgColor
       &:hover
         background-color cardbgColor
-  .dl_icons
-    height 16px
-    width 16px
-    margin-top 2px
-    margin-left 4px
-    float left
-    background-repeat no-repeat
-    background-size contain
-    &.icon_speaker
-      
-      background-image url('/img/icons/speakerwithhandle.png')
-    &.icon_binoculars
-      background-image url('/img/icons/binoculars.png')
-    &.icon_info
-      height 14px
-      margin-right 4px
-      margin-left 2px
-      margin-top 0
-      background-image url('/img/icons/personalinfo.png')
-    &.info_edit
-      margin 7px 13px
-      background-image url('/img/icons/edit.png')
-    &.icon_group
-      margin-top -2px
-      margin-left -2px
-      background-image url('/img/icons/group.png')
-    &.comment_w
-      background-image url('/img/icons/comment_bubble_w.png')
-      margin-top 3px
-    // &.icon_drarrow
-    //   margin-right 4px
-    //   margin-top 5px
-    //   background-image url('/img/icons/dubblearrow.png')
-    &.icon_bgrarrow
-      background-image url('/img/icons/bgarrow.png')
-    &.icon_fold
-      height 14px
-      width 14px
-      float right
-      margin 8px 2px 0 25px
-      background-image url('/img/icons/fold.png')
-    &.icon_unfold
-      height 14px
-      width 14px
-      float right
-      margin 8px 2px 0 25px
-      background-image url('/img/icons/unfold.png')
-
   .main
     width 660px
     max-width 960px
@@ -705,11 +768,12 @@ textarea
             height 30px
           .group_leader
             position absolute
-            background-image url('/img/icons/crown.png')
+            background-image url('/img/sprites/dl_sprites.png')
             width 25px
             height 18px
             left 6px
             top -13px
+            background-position -284px -42px
             background-repeat no-repeat
       .group_unfold
         .groups
@@ -905,14 +969,14 @@ textarea
 .join_btn, .quit_btn, .search_btn, .provoke_btn
   text-align center
   cursor pointer
-  background-image url('/img/icons/single_add.png')
+  background-image url('/img/sprites/dl_sprites.png')
   background-repeat no-repeat
   padding-left 30px !important
-  background-position 5px 5px
+  background-position -357px -76px
 
 .quit_btn
-  background-image url('/img/icons/single_delete.png')
   background-color transparent
+  background-position -357px -36px
   border 1px solid #fff
   color #fff
   line-height 1
@@ -2190,7 +2254,7 @@ input.ng-invalid.ng-dirty
       padding 5px 10px
       text-align right
       background-color #FBFBFB
-      .reply_icon
+      .icon_reply
         margin-right 7px
 #events-modal
   .modal-dialog
@@ -2276,15 +2340,6 @@ input.ng-invalid.ng-dirty
       clear both
       border-top-left-radius 2px
       border-top-right-radius 2px
-      .icon_calendar
-        height 14px
-        width 14px
-        margin-right 24px
-        margin-top 9px
-        float left
-        background-repeat no-repeat
-        background-size contain
-        background-image url('/img/icons/calendar.png')
       .calendar_nav_container
         text-align center
         .calendar_title

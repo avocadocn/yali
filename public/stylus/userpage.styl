@@ -329,6 +329,10 @@ campaignContainer(color)
               background-color #efefef
               .fileter_info
                 color #666
+            &.active
+              background-color #efefef
+              .fileter_info
+                color #666
             .fileter_info
               color #999
             .campaign_num
@@ -512,10 +516,11 @@ campaignContainer(color)
                 padding 3px 18px 4px 0
                 width 100%
                 text-align right
+                float right
                 &:hover
                   background-color #eceded
-                .reply_icon
-                  margin-right 15px
+                .icon_reply
+                  margin-right 7px
           .campaign_base
             height 51px
             .campaign_head
@@ -650,7 +655,8 @@ campaignContainer(color)
         cursor pointer
         width 30px
         height 40px
-        background-image url('/img/icons/rocket.png')
+        background-image url('/img/sprites/dl_sprites.png')
+        background-position -45px -80px
         left 50%
         margin-left 500px
         bottom -100px
@@ -702,7 +708,7 @@ campaignContainer(color)
             line-height 20px
             color #fff
           .footprint
-            background-image url('/img/icons/footprint.png')
+            background-position -162px -80px
             margin 2px 12px 0 4px
         label
           font-size 14px
@@ -761,7 +767,7 @@ campaignContainer(color)
           color #fff
           padding 8px
           font-size 14px
-          line-height 12px
+          line-height 14px
           .label_info
             margin 1px 0px 0px 7px
           .icon_container
@@ -844,15 +850,6 @@ campaignContainer(color)
           clear both
           border-top-left-radius 2px
           border-top-right-radius 2px
-          .icon_calendar
-            height 14px
-            width 14px
-            margin-right 24px
-            margin-top 9px
-            float left
-            background-repeat no-repeat
-            background-size contain
-            background-image url('/img/icons/calendar.png')
           .calendar_title
             width 106px
             text-align center

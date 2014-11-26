@@ -44,7 +44,7 @@
       span {{item.head}}
   .comments(ng-if="item.components.RichComment")
     a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$root.showComment==item.components.RichComment[0]?'':item.components.RichComment[0];")
-      img.reply_icon(src="/img/comment_grey.png")
-      | {{item.comment_sum}}条评论
+      span.pull-right {{item.comment_sum}}条评论
+      span.dl_icons.icon_reply
     .comment_list(ng-if="$root.showComment==item.components.RichComment[0]")
       simple-comment(component-id="{{item.components.RichComment[0]}}" allow-publish="{{item.allow.publishComment}}" comment-num=3)

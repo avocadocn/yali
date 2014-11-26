@@ -49,6 +49,8 @@
 .rich_comment .component_body .rich_comment_form .comment_control .img_selector .upload_img {
   margin-top: 7px;
   width: 20px;
+  color: #73a5dd;
+  font-size: 18px;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .publish {
   margin-left: 5px;
@@ -126,9 +128,8 @@
 .rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply {
   color: #73a5dd;
 }
-.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply_icon {
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .icon_reply_blue {
   margin-right: 7px;
-  height: 12px;
 }
 .rich_comment .component_body .comment .comment_content_panel .replies {
   margin-top: 20px;
@@ -192,6 +193,9 @@
 .rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .text {
   margin-left: 5px;
   font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .icon_reply_blue {
+  margin-right: 7px;
 }
 .rich_comment .component_body .pager {
   margin: 0;
@@ -647,36 +651,9 @@ textarea {
 .transparent {
   opacity: 0;
 }
-.bg_change:hover {
-  cursor: pointer;
-  background-color: #f8f8f3;
-}
 .loading_div {
   background: url("/img/loading.gif") center 38px no-repeat;
   min-height: 100px;
-}
-.comment_height_limit {
-  height: auto;
-  max-height: 190px;
-}
-.mouse_hidden {
-  opacity: 0.3;
-}
-.mouse_hidden:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-.comment_right {
-  float: right;
-  margin-right: 10px;
-}
-.message_group {
-  margin-left: 100px;
-  width: 700px;
-  margin-top: 50px;
-}
-.line_top {
-  margin-top: -20px !important;
 }
 .company_message_select {
   width: 90px;
@@ -687,9 +664,6 @@ textarea {
   margin-left: 15px;
   padding: 0;
   margin: 10px 0;
-}
-.comment_tool_bottom {
-  margin-top: -45px !important;
 }
 .comment_top {
   margin-top: -5px !important;
@@ -714,34 +688,14 @@ textarea {
 .cursor_next {
   cursor: url("/img/pic_next.cur"), auto;
 }
-.dl_btn_score {
-  width: 100px;
-  height: 50px;
-  background: #f20;
-}
 .dl_center {
   text-align: center;
-}
-.dl_box {
-  width: 275px;
-  height: 150px;
-  margin-left: -32px;
 }
 .dl_cover {
   border-style: solid;
   border-color: #f22;
   border-width: 2px;
   border-radius: 100%;
-  width: 48px;
-  height: 48px;
-}
-.dl_cover_message {
-  border-style: solid;
-  border-color: #f22;
-  border-width: 2px;
-  border-radius: 1%;
-  position: absolute;
-  z-index: 1000;
   width: 48px;
   height: 48px;
 }
@@ -763,20 +717,6 @@ textarea {
   background-color: #cd270d;
   border-radius: 100%;
   color: #f4f4f4;
-}
-.dl_corner {
-  margin-top: -48px;
-  margin-left: 120px;
-  font-size: 12px;
-  position: absolute;
-  z-index: 1000;
-  width: auto;
-  height: auto;
-  background-color: #cd270d;
-  radius: 500px;
-  border-radius: 500px;
-  color: #f4f4f4;
-  padding: 2px 10px 0;
 }
 .dl_user_name_small {
   display: inline-block;
@@ -813,13 +753,6 @@ textarea {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.dl_block {
-  display: block;
-}
-.dl_label {
-  color: #cc847f;
-  font-size: 12px !important;
 }
 .dl_mouse_hover_block .dl_mouse_hover {
   display: none;
@@ -900,18 +833,6 @@ textarea {
 }
 .dl_comment_area .dl_row {
   min-height: 24px;
-}
-.dl_area {
-  margin-right: 15px;
-}
-.dl_tip {
-  float: left;
-  position: absolute;
-  margin-left: 10px;
-  margin-top: 8px;
-  height: 10px;
-  width: 200px;
-  color: #f00;
 }
 .quit-modal {
   position: relative;
@@ -1304,6 +1225,144 @@ textarea {
 .pen-menu .pen-icon {
   font: 14px Georgia serif !important;
 }
+.dl_icons {
+  height: 16px;
+  width: 16px;
+  margin-top: 2px;
+  margin-left: 4px;
+  float: left;
+  background-repeat: no-repeat;
+  background-image: url("/img/sprites/dl_sprites.png");
+}
+.dl_icons.icon_dllogo {
+  background-position: -200px -120px;
+  width: 200px;
+  height: 30px;
+}
+.dl_icons.icon_speaker {
+  background-position: -162px 0;
+}
+.dl_icons.icon_binoculars {
+  background-position: -202px -42px;
+}
+.dl_icons.icon_info {
+  height: 14px;
+  margin-right: 4px;
+  margin-left: 0;
+  margin-top: 0;
+  background-position: -284px -3px;
+}
+.dl_icons.info_edit {
+  margin: 7px 13px;
+  background-position: -160px -44px;
+}
+.dl_icons.info_edit_blue {
+  background-position: -81px -44px;
+}
+.dl_icons.icon_group {
+  margin-top: -2px;
+  margin-left: 0;
+  background-position: -202px 1px;
+}
+.dl_icons.comment_w {
+  background-position: -82px 0;
+  margin-top: 3px;
+}
+.dl_icons.icon_bgrarrow {
+  background-position: -201px -81px;
+}
+.dl_icons.icon_fold {
+  height: 14px;
+  width: 14px;
+  float: right;
+  margin: 8px 2px 0 25px;
+  background-position: -323px -3px;
+}
+.dl_icons.icon_unfold {
+  height: 14px;
+  width: 14px;
+  float: right;
+  margin: 8px 2px 0 25px;
+  background-position: -363px -3px;
+}
+.dl_icons.icon_calendar {
+  margin-right: 20px;
+  margin-top: 7px;
+  margin-left: -2px;
+  background-position: -244px -2px;
+}
+.dl_icons.icon_reply {
+  float: right;
+  background-position: -122px -2px;
+}
+.dl_icons.icon_reply_blue {
+  float: right;
+  background-position: -240px -80px;
+}
+.dl_icons.icon_team {
+  margin: 0;
+  background-position: -2px -121px;
+}
+.dl_icons.icon_calendar_red {
+  background-position: -280px -81px;
+  height: 18px;
+  width: 18px;
+}
+.dl_icons.icon_map_pin {
+  background-position: -360px -81px;
+}
+.dl_icons.icon_homecourt {
+  margin: 0;
+  background-position: -160px -120px;
+}
+.dl_icons.icon_photo {
+  background-position: -41px -121px;
+  width: 19px;
+}
+.dl_icons.icon_message {
+  background-position: -41px 1px;
+}
+.dl_icons.icon_users_relation {
+  background-position: -2px -3px;
+}
+.dl_icons.icon_warning {
+  background-position: -122px -44px;
+}
+.dl_icons.icon_comment_bubble {
+  background-position: -82px -2px;
+}
+.dl_icons.icon_edit_half {
+  background-position: -85px -85px;
+  width: 30px;
+  height: 30px;
+}
+.dl_icons.icon_pinstar {
+  display: inline-block;
+  float: none;
+  margin-top: 0;
+  background-position: -121px -42px;
+}
+.dl_icons.icon_building_tower {
+  display: inline-block;
+  float: none;
+  margin-top: 0;
+  background-position: -45px -41px;
+}
+.dl_icons.icon_confused {
+  display: inline-block;
+  background-position: -85px -85px;
+}
+.dl_icons.icon_sunshine {
+  background-position: -121px -121px;
+  margin-top: 0;
+}
+.dl_icons.icon_leader {
+  background-position: -41px -120px;
+}
+.dl_icons.icon_information {
+  background-position: -82px -121px;
+  margin-top: 0;
+}
 .dl_container {
   width: 960px;
   min-width: 960px;
@@ -1341,58 +1400,6 @@ textarea {
 }
 .dl_container .top_side .nav-tabs>li.active>a:hover {
   background-color: #fff;
-}
-.dl_container .dl_icons {
-  height: 16px;
-  width: 16px;
-  margin-top: 2px;
-  margin-left: 4px;
-  float: left;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.dl_container .dl_icons.icon_speaker {
-  background-image: url("/img/icons/speakerwithhandle.png");
-}
-.dl_container .dl_icons.icon_binoculars {
-  background-image: url("/img/icons/binoculars.png");
-}
-.dl_container .dl_icons.icon_info {
-  height: 14px;
-  margin-right: 4px;
-  margin-left: 2px;
-  margin-top: 0;
-  background-image: url("/img/icons/personalinfo.png");
-}
-.dl_container .dl_icons.info_edit {
-  margin: 7px 13px;
-  background-image: url("/img/icons/edit.png");
-}
-.dl_container .dl_icons.icon_group {
-  margin-top: -2px;
-  margin-left: -2px;
-  background-image: url("/img/icons/group.png");
-}
-.dl_container .dl_icons.comment_w {
-  background-image: url("/img/icons/comment_bubble_w.png");
-  margin-top: 3px;
-}
-.dl_container .dl_icons.icon_bgrarrow {
-  background-image: url("/img/icons/bgarrow.png");
-}
-.dl_container .dl_icons.icon_fold {
-  height: 14px;
-  width: 14px;
-  float: right;
-  margin: 8px 2px 0 25px;
-  background-image: url("/img/icons/fold.png");
-}
-.dl_container .dl_icons.icon_unfold {
-  height: 14px;
-  width: 14px;
-  float: right;
-  margin: 8px 2px 0 25px;
-  background-image: url("/img/icons/unfold.png");
 }
 .dl_container .main {
   width: 660px;
@@ -1474,11 +1481,12 @@ textarea {
 }
 .dl_container .side .groupsbox .groups .group .group_leader {
   position: absolute;
-  background-image: url("/img/icons/crown.png");
+  background-image: url("/img/sprites/dl_sprites.png");
   width: 25px;
   height: 18px;
   left: 6px;
   top: -13px;
+  background-position: -284px -42px;
   background-repeat: no-repeat;
 }
 .dl_container .side .groupsbox .group_unfold .groups {
@@ -1717,14 +1725,14 @@ textarea {
 .provoke_btn {
   text-align: center;
   cursor: pointer;
-  background-image: url("/img/icons/single_add.png");
+  background-image: url("/img/sprites/dl_sprites.png");
   background-repeat: no-repeat;
   padding-left: 30px !important;
-  background-position: 5px 5px;
+  background-position: -357px -76px;
 }
 .quit_btn {
-  background-image: url("/img/icons/single_delete.png");
   background-color: transparent;
+  background-position: -357px -36px;
   border: 1px solid #fff;
   color: #fff;
   line-height: 1;
@@ -3256,7 +3264,7 @@ input.ng-invalid.ng-dirty {
   text-align: right;
   background-color: #fbfbfb;
 }
-.timeline_element .comments a.comment_num .reply_icon {
+.timeline_element .comments a.comment_num .icon_reply {
   margin-right: 7px;
 }
 #events-modal .modal-dialog {
@@ -3360,16 +3368,6 @@ input.ng-invalid.ng-dirty {
   clear: both;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
-}
-#events-modal .calendar_box .calendar_nav .icon_calendar {
-  height: 14px;
-  width: 14px;
-  margin-right: 24px;
-  margin-top: 9px;
-  float: left;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-image: url("/img/icons/calendar.png");
 }
 #events-modal .calendar_box .calendar_nav .calendar_nav_container {
   text-align: center;
@@ -4841,6 +4839,8 @@ Timeline UI Base
 .rich_comment .component_body .rich_comment_form .comment_control .img_selector .upload_img {
   margin-top: 7px;
   width: 20px;
+  color: #73a5dd;
+  font-size: 18px;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .publish {
   margin-left: 5px;
@@ -4918,9 +4918,8 @@ Timeline UI Base
 .rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply {
   color: #73a5dd;
 }
-.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply_icon {
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .icon_reply_blue {
   margin-right: 7px;
-  height: 12px;
 }
 .rich_comment .component_body .comment .comment_content_panel .replies {
   margin-top: 20px;
@@ -4984,6 +4983,9 @@ Timeline UI Base
 .rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .text {
   margin-left: 5px;
   font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .icon_reply_blue {
+  margin-right: 7px;
 }
 .rich_comment .component_body .pager {
   margin: 0;

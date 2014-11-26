@@ -1,6 +1,6 @@
 .component.rich_comment#rich_comment_box(bs-popover)
   .component_head
-    img.icon_img.left.first(src="/img/icons/comment_bubble_w.png")
+    span.icon_img.left.first.dl_icons.icon_comment_bubble
     span.title.left 活动讨论
   .component_body
     form.rich_comment_form(name="comment_form" ng-if="allowPublish" novalidate)
@@ -9,7 +9,7 @@
           img(ng-src="{{userPhoto}}/30/30")
         input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder"  maxlength=140 required)
         label.img_selector(for="photos")
-          img.upload_img(src="/img/upload_img.png")
+          i.upload_img.fa.fa-picture-o
           input.hidden#photos(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
         button.publish(ng-click="publish(new_comment.text,comment_form)" ng-disabled="comment_form.$invalid") 发言
       p.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;

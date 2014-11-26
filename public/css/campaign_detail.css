@@ -194,6 +194,8 @@
 .campaign_detail .base_card .component_body .notice_container .edit {
   height: 14px;
   cursor: pointer;
+  float: none;
+  display: inline-block;
 }
 .campaign_detail .base_card .component_body .notice_container .save {
   color: #3ca2e0;
@@ -390,6 +392,9 @@
 .campaign_detail .map_card .component_head {
   background-color: #525e70;
 }
+.campaign_detail .map_card .component_head .fa-map-marker {
+  color: #fff;
+}
 .campaign_detail .map_card .component_body {
   padding: 0;
 }
@@ -431,6 +436,7 @@
 }
 .campaign_detail .photo_album_card .view {
   margin-top: 74px;
+  color: #fff;
 }
 .campaign_detail .photo_album_card .text {
   margin-top: 15px;

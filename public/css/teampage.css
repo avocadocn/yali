@@ -101,6 +101,8 @@
   margin-left: 10px;
   height: 14px;
   cursor: pointer;
+  display: inline-block;
+  float: none;
 }
 .teampage .info_card .team_info .info_box .input_name {
   border: 1px solid #d6d6d6;
@@ -212,6 +214,7 @@
 .teampage .member_card .header .icon {
   float: left;
   max-height: 14px;
+  margin: 0;
 }
 .teampage .member_card .header .title {
   float: left;
@@ -228,9 +231,9 @@
   line-height: 1;
   cursor: pointer;
 }
-.teampage .member_card .header .count .arrow_right {
+.teampage .member_card .header .count .fa {
   margin-left: 5px;
-  margin-bottom: 3px;
+  font-size: 16px;
 }
 .teampage .member_card .members {
   padding: 0 10px;
@@ -386,9 +389,10 @@
 }
 .teampage .home_court_card .home_court_nav .icon {
   float: left;
-  margin: 8px 0;
+  margin: 7px 0;
   margin-right: 20px;
-  max-height: 14px;
+  max-height: 16px;
+  color: #f48361;
 }
 .teampage .home_court_card .home_court_nav .tabs {
   float: left;
@@ -452,9 +456,8 @@
 }
 .teampage .calendar_card .calendar_nav .icon {
   float: left;
-  margin-top: 9px;
+  margin-top: 7px;
   margin-left: 10px;
-  height: 14px;
 }
 .teampage .calendar_card .calendar_nav .title {
   height: 30px;
@@ -735,16 +738,6 @@
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
-.teampage .calendar_modal .schedulebox .calendar_nav .icon_calendar {
-  height: 14px;
-  width: 14px;
-  margin-right: 24px;
-  margin-top: 9px;
-  float: left;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-image: url("/img/icons/calendar.png");
-}
 .teampage .calendar_modal .schedulebox .calendar_nav .calendar_title {
   width: 106px;
   text-align: center;
@@ -819,7 +812,11 @@
   border-bottom-right-radius: 1em;
 }
 .teampage .side_panel .button_group .icon_button .icon {
-  height: 16px;
+  vertical-align: middle;
+  margin: 0 auto;
+  display: inline-block;
+  float: none;
+  color: #f48361;
 }
 .teampage .team_timeline .dl_timeline {
   padding-top: 0;

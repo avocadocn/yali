@@ -4,7 +4,7 @@
       .comment_control
         input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder" maxlength=140 required)
         label.img_selector(for="photos{{$id}}")
-          img.upload_img(src="/img/upload_img.png")
+          i.upload_img.fa.fa-picture-o
           input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
         button.publish(ng-click="publish(new_comment.text)" ng-disabled="comment_form{{$id}}.$invalid") 评论
       span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
@@ -28,8 +28,9 @@
             //- a.text.dl_mouse_hover( ng-click="getReport(comment)") 举报
             a.delete.text.dl_mouse_hover(ng-if="comment.delete_permission" ng-click="deleteComment(comment)") 删除
             a.reply.text(ng-click="toggleComment(comment)")
-              img.reply_icon(src="/img/comment.png")
-              | {{comment.reply_count || 0}}条回复
+              span.pull-right {{comment.reply_count || 0}}条回复
+              span.dl_icons.icon_reply_blue
+              
         .replies(ng-if="comment.replying")
           form.reply_form(name="reply_form" ng-if="allowPublish")
             input.reply_input(toggle-focus="comment.replying" type="text" ng-model="comment.new_reply" placeholder="{{currentPlaceholder.reply}}" ng-focus="currentPlaceholder.reply=''" ng-blur="currentPlaceholder.reply=originPlaceholder" required)

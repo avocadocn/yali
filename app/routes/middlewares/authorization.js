@@ -303,7 +303,7 @@ exports.userAuthorize = function(req, res, next) {
   if (!req.user) {
     return res.redirect('/');
   }
-  if(req.route.path==='/users/home' && !req.profile){
+  if(req.user.provider=='user'&&req.route.path==='/users/home' && !req.profile){
     req.role = 'OWNER';
   }
   else{

@@ -49,6 +49,8 @@
 .rich_comment .component_body .rich_comment_form .comment_control .img_selector .upload_img {
   margin-top: 7px;
   width: 20px;
+  color: #73a5dd;
+  font-size: 18px;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .publish {
   margin-left: 5px;
@@ -126,9 +128,8 @@
 .rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply {
   color: #73a5dd;
 }
-.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply_icon {
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .icon_reply_blue {
   margin-right: 7px;
-  height: 12px;
 }
 .rich_comment .component_body .comment .comment_content_panel .replies {
   margin-top: 20px;
@@ -192,6 +193,9 @@
 .rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .text {
   margin-left: 5px;
   font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .icon_reply_blue {
+  margin-right: 7px;
 }
 .rich_comment .component_body .pager {
   margin: 0;
@@ -592,7 +596,7 @@ html {
   font-size: 62.5%;
 }
 body {
-  font-family: STHeiti, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: STHeiti, "Microsoft YaHei", MingLiu, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   line-height: 18px;
   color: #666;
@@ -610,10 +614,10 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: STHeiti, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: STHeiti, "Microsoft YaHei", MingLiu, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 * {
-  font-family: STHeiti, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: STHeiti, "Microsoft YaHei", MingLiu, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 a {
   color: #28689b;
@@ -1266,50 +1270,73 @@ textarea {
   margin-left: 4px;
   float: left;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-image: url("/img/sprites/dl_sprites.png");
 }
 .dl_container .dl_icons.icon_speaker {
-  background-image: url("/img/icons/speakerwithhandle.png");
+  background-position: -162px 0;
 }
 .dl_container .dl_icons.icon_binoculars {
-  background-image: url("/img/icons/binoculars.png");
+  background-position: -202px -42px;
 }
 .dl_container .dl_icons.icon_info {
   height: 14px;
   margin-right: 4px;
-  margin-left: 2px;
+  margin-left: 0;
   margin-top: 0;
-  background-image: url("/img/icons/personalinfo.png");
+  background-position: -284px -3px;
 }
 .dl_container .dl_icons.info_edit {
   margin: 7px 13px;
-  background-image: url("/img/icons/edit.png");
+  background-position: -160px -44px;
 }
 .dl_container .dl_icons.icon_group {
   margin-top: -2px;
-  margin-left: -2px;
-  background-image: url("/img/icons/group.png");
+  margin-left: 0;
+  background-position: -202px 1px;
 }
 .dl_container .dl_icons.comment_w {
-  background-image: url("/img/icons/comment_bubble_w.png");
+  background-position: -82px 0;
   margin-top: 3px;
 }
 .dl_container .dl_icons.icon_bgrarrow {
-  background-image: url("/img/icons/bgarrow.png");
+  background-position: -201px -81px;
 }
 .dl_container .dl_icons.icon_fold {
   height: 14px;
   width: 14px;
   float: right;
   margin: 8px 2px 0 25px;
-  background-image: url("/img/icons/fold.png");
+  background-position: -323px -3px;
 }
 .dl_container .dl_icons.icon_unfold {
   height: 14px;
   width: 14px;
   float: right;
   margin: 8px 2px 0 25px;
-  background-image: url("/img/icons/unfold.png");
+  background-position: -363px -3px;
+}
+.dl_container .dl_icons.icon_calendar {
+  margin-right: 20px;
+  margin-top: 7px;
+  margin-left: -2px;
+  background-position: -244px -2px;
+}
+.dl_container .dl_icons.icon_reply {
+  float: right;
+  background-position: -122px -2px;
+}
+.dl_container .dl_icons.icon_reply_blue {
+  float: right;
+  background-position: -240px -80px;
+}
+.dl_container .dl_icons.icon_team {
+  background-position: -2px -121px;
+}
+.dl_container .dl_icons.icon_calendar_red {
+  background-position: -320px -80px;
+}
+.dl_container .dl_icons.icon_map_pin {
+  background-position: -362px -80px;
 }
 .dl_container .main {
   width: 660px;
@@ -1391,11 +1418,12 @@ textarea {
 }
 .dl_container .side .groupsbox .groups .group .group_leader {
   position: absolute;
-  background-image: url("/img/icons/crown.png");
+  background-image: url("/img/sprites/dl_sprites.png");
   width: 25px;
   height: 18px;
   left: 6px;
   top: -13px;
+  background-position: -284px -42px;
   background-repeat: no-repeat;
 }
 .dl_container .side .groupsbox .group_unfold .groups {

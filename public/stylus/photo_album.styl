@@ -287,21 +287,32 @@ contentBdColor = #ededed
         height 20px
         background-color white
         opacity 0
+        font-size 14px
+        padding-left 4px
       .star
-        background url('/img/star.png') center
+        background-color #fff
+        color #3ca2df
+        // background url('/img/star.png') center
         &:hover
-          background url('/img/star_mouseover_selected.png') center
+          background-color #3ca2df
+          color #fff
+          // background url('/img/star_mouseover_selected.png') center
       .delete
         margin-top 5px
-        background url('/img/delete.png') center
+        background-color #f6f6f6
+        color #a4a4a4
+        // background url('/img/delete.png') center
         &:hover
-          background url('/img/delete_mouseover.png') center
+          background-color #e7e8e8
+          // background url('/img/delete_mouseover.png') center
 
   .photo.active
     border 2px solid #3498db
     .star
       opacity 1
-      background url('/img/star_mouseover_selected.png') center
+      background-color #3ca2df
+      color #fff
+      // background url('/img/star_mouseover_selected.png') center
 
   .cropper
     margin-left auto

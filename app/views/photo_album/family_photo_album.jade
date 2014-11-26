@@ -37,8 +37,8 @@ block contentExt
         img.photo_img(ng-src="{{photo.uri}}/resize/180/145")
         if allow.editTeam === true
           .button_group
-            button.star(ng-click="toggleSelect($index)" title="{{photo.select===true?'不使用该照片':'使用该照片作为全家福'}}")
-            button.delete(ng-click="deletePhoto($index)" title="删除该照片")
+            button.fa.fa-star.star(ng-click="toggleSelect($index)" title="{{photo.select===true?'不使用该照片':'使用该照片作为全家福'}}")
+            button.fa.fa-trash.delete(ng-click="deletePhoto($index)" title="删除该照片")
 
   #data(data-id="#{companyGroup._id}")
 

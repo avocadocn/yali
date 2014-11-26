@@ -45,8 +45,9 @@
   font-size: 14px;
   padding: 10px 20px;
 }
-.search_opponents .head_container .headline img {
+.search_opponents .head_container .headline .icon_binoculars {
   margin-right: 10px;
+  margin-top: -1px;
 }
 .search_opponents .head_container .my_teams {
   margin: 20px;
@@ -162,6 +163,9 @@
   font-size: 16px;
   height: 100%;
 }
+.search_opponents .tab_view .opponent_tab_style a span {
+  vertical-align: top;
+}
 .search_opponents .tab_view .opponent_tab_style .nav_img {
   width: 23px;
   height: 20px;
@@ -185,15 +189,14 @@
   color: #fff;
 }
 .search_opponents .tab_view .search .search_button {
-  height: 20px;
-  width: 20px;
+  height: 25px;
+  width: 28px;
   position: absolute;
   right: 20px;
-  top: 5px;
-  background-image: url("/img/icons/search_o.png");
-  background-size: 20px 20px;
-  background-repeat: no-repeat;
+  top: 2px;
   background-color: transparent;
+  color: #fff;
+  font-size: 22px;
 }
 .search_opponents .tab_view.unactive .opponent_tab_style {
   background-color: #ccc !important;
@@ -465,7 +468,7 @@
 .search_opponents .tab_content .result .slide #slides .detail .detailContent .block {
   margin-bottom: 30px;
 }
-.search_opponents .tab_content .result .slide #slides .detail .detailContent .block img {
+.search_opponents .tab_content .result .slide #slides .detail .detailContent .block .dl_icons {
   margin-right: 10px;
 }
 .search_opponents .tab_content .result .slide #slides .detail .detailContent .block .title {

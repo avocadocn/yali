@@ -30,7 +30,7 @@ block contentExt
             .notice_container
               form.publish(name="noticeForm")
                 span.title 最新公告
-                img.edit(ng-if="allow.edit && !editingNotice" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" title="发新公告" ng-click="togglePublishNotice()" ng-cloak)
+                span.dl_icons.info_edit_blue.edit(ng-if="allow.edit && !editingNotice" title="发新公告" ng-click="togglePublishNotice()" ng-cloak)
                 span.save(ng-click="publishNotice()" ng-if="editingNotice && noticeForm.notice.$valid" ng-cloak) 保存
                 span.cancel(ng-click="togglePublishNotice()" ng-if="editingNotice" ng-cloak) 取消
                 textarea.notice_text(ng-if="editingNotice" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" ng-cloak required)
@@ -56,9 +56,9 @@ block contentExt
             span.icon.left.first
               i.fa.fa-bars
             span.title.left 活动信息
-            img.icon_img.right.last.op_icon(title="展开" ng-if="detailFold" src="/img/icons/unfold.png" ng-click="toggleFoldDetail()")
-            img.icon_img.right.last.op_icon(title="收起" ng-if="!detailFold" src="/img/icons/fold.png" ng-click="toggleFoldDetail()")
-            img.icon_img.right.op_icon(title="编辑" ng-if="campaign.isActive && !editingDetail && allow.edit" ng-click="toggleEdit()" src="/img/icons/edit.png" ng-cloak)
+            span.dl_icons.icon_img.right.last.op_icon.icon_unfold(title="展开" ng-if="detailFold" ng-click="toggleFoldDetail()")
+            span.dl_icons.icon_img.right.last.op_icon.icon_fold(title="收起" ng-if="!detailFold" ng-click="toggleFoldDetail()")
+            span.dl_icons.icon_img.right.op_icon.info_edit(title="编辑" ng-if="campaign.isActive && !editingDetail && allow.edit" ng-click="toggleEdit()" ng-cloak)
             span.title.save.right(ng-if="editingDetail" ng-click="save()" ng-cloak) 保存
             span.title.cancel.right(ng-if="editingDetail" ng-click="toggleEdit()" ng-cloak) 取消
           .component_body(ng-show="!detailFold")
@@ -110,7 +110,7 @@ block contentExt
                 input.detail_input.member_min(type="number" ng-model="modelData.member_min" ng-max="{{modelData.member_max}}")
                 span 人
                 span.close_campaign.pull-right(ng-click="cancel()")
-                  img.icon_close(src="/img/warning.png")
+                  i.fa.fa-exclamation-triangle
                   | 关闭活动
 
 
@@ -123,7 +123,7 @@ block contentExt
 
         .component.map_card(class="#{helper.start('order-2')} #{helper.end('order-5')}")
           .component_head
-            img.icon_img.left.first(src="/img/map-pin-circle.png")
+            i.icon_img.left.first.fa.fa-map-marker.fa-lg
             span.title.left 活动地点
             if campaign.location.coordinates.length==2
               a.right.last(title="查看大图" href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
@@ -138,7 +138,7 @@ block contentExt
         if isActive
           .component.member_card(class="#{helper.start('order-3')} #{helper.end('order-3')}")
             .component_head
-              img.icon_img.left.first(src="/img/icons/users_relation.png")
+              span.icon_img.left.first.dl_icons.icon_users_relation
               span.title.left 成员
               span.icon.op_icon.right.last(title="查看所有成员" ng-click="openMemberModal()")
                 i.fa.fa-angle-right
@@ -150,7 +150,7 @@ block contentExt
         if isActive
           .component.photo_album_card(class="#{helper.start('order-4')} #{helper.end('order-4')}")
             a.photo_wrap(href="/photoAlbum/#{campaign.photo_album._id}/detailView")
-              img.view(src="/img/icons/view.png")
+              i.fa.fa-chevron-circle-right.fa-3x.view
               p.text 影集
             if photo
               img(src="#{photo}/240/180")

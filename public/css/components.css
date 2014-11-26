@@ -49,6 +49,8 @@
 .rich_comment .component_body .rich_comment_form .comment_control .img_selector .upload_img {
   margin-top: 7px;
   width: 20px;
+  color: #73a5dd;
+  font-size: 18px;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .publish {
   margin-left: 5px;
@@ -126,9 +128,8 @@
 .rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply {
   color: #73a5dd;
 }
-.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .reply_icon {
+.rich_comment .component_body .comment .comment_content_panel .comment_footer .operator .icon_reply_blue {
   margin-right: 7px;
-  height: 12px;
 }
 .rich_comment .component_body .comment .comment_content_panel .replies {
   margin-top: 20px;
@@ -192,6 +193,9 @@
 .rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .text {
   margin-left: 5px;
   font-size: 12px;
+}
+.rich_comment .component_body .comment .comment_content_panel .replies .reply .operator .icon_reply_blue {
+  margin-right: 7px;
 }
 .rich_comment .component_body .pager {
   margin: 0;

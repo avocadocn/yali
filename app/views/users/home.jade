@@ -85,8 +85,9 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
       .comments(ng-if="(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}'")
         //- a.clearLinkUnderline.pull-right.vote(ng-if="!item.confirm_status") {{item.campaign_unit[item.team[0]].positive}}个赞成
         a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$root.showComment=='#{containerClass}'+$index?null:'#{containerClass}'+$index;")
-          img.reply_icon(src="/img/comment_grey.png")
-          span {{item.comment_sum}}条评论
+          span.pull-right {{item.comment_sum}}条评论
+          span.dl_icons.icon_reply
+            
         .comment_list(ng-if="$root.showComment=='#{containerClass}'+$index")
           simple-comment(component-id="{{item.components.RichComment[0]}}" allow-publish="{{item.allow.publishComment}}" comment-num=3)
 block panel
@@ -94,18 +95,18 @@ block panel
   .campaigns_container.clearfix(report-contain ng-controller="recentCampaignController")
     .campaign_filter(ng-cloak)
       ul
-        li.recent_all(ng-click="campaignFilter('all')" title="显示所有的活动") 
+        li.recent_all(ng-click="campaignFilter('all')" ng-class="{'active':nowShow=='all'}" title="显示所有的活动") 
           span.fileter_info 全部
-        li.recent_unjoin(ng-click="campaignFilter('recent_unjoin')"  title="显示新的活动")
+        li.recent_unjoin(ng-click="campaignFilter('recent_unjoin')" ng-class="{'active':nowShow=='recent_unjoin'}" title="显示新的活动")
           span.fileter_info 新的活动
           span.campaign_num {{recentUnjoinedCampaigns.length}}
-        li.recent_competition(ng-click="campaignFilter('recent_competition')"  title="显示挑战请求") 
+        li.recent_competition(ng-click="campaignFilter('recent_competition')" ng-class="{'active':nowShow=='recent_competition'}" title="显示挑战请求") 
           span.fileter_info 挑战
           span.campaign_num {{competitions.length}}
-        li.recent_now(ng-click="campaignFilter('recent_now')"  title="显示正在进行的活动")
+        li.recent_now(ng-click="campaignFilter('recent_now')" ng-class="{'active':nowShow=='recent_now'}" title="显示正在进行的活动")
           span.fileter_info 正在进行
           span.campaign_num {{nowCampaigns.length}}
-        li.recent_join(ng-click="campaignFilter('recent_join')"  title="显示即将开始的活动")
+        li.recent_join(ng-click="campaignFilter('recent_join')" ng-class="{'active':nowShow=='recent_join'}" title="显示即将开始的活动")
           span.fileter_info 即将开始
           span.campaign_num {{recentJoinedCampaigns.length}}
     +campaignsContainer('新的活动','recent_unjoin','recentUnjoinedCampaigns',false)

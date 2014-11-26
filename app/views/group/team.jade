@@ -16,10 +16,10 @@ block contentExt
               .team_info
                 .logo_box
                   img.logo(ng-src="{{team.logo}}")
-                  a.edit(ng-if="allow.editTeam" ng-href="/group/{{team._id}}/editLogo" title="修改logo"): img(src="/img/edit_logo.png" ng-cloak)
+                  a.edit(ng-if="allow.editTeam" ng-href="/group/{{team._id}}/editLogo" title="修改logo"): span.dl_icons.icon_edit_half
                 form.info_box(name="infoForm")
                   h3.name(ng-cloak ng-if="!isEditingInfo") {{team.name}}
-                    img.edit(ng-if="allow.editTeam" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" ng-click="editInfo()" title="修改小队信息" ng-cloak)
+                    span.dl_icons.info_edit_blue.edit(ng-if="allow.editTeam" ng-click="editInfo()" title="修改小队信息" ng-cloak)
                   input.input_name(name="name" ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.name" required)
                   a.save(ng-cloak ng-if="isEditingInfo && infoForm.$valid" ng-click="saveInfo()") 保存
                   a.cancel(ng-cloak ng-if="isEditingInfo" ng-click="cancelEditInfo()") 取消
@@ -50,10 +50,10 @@ block contentExt
 
             .card.member_card#member_card
               .header
-                img.icon(src="/img/team.png")
+                span.dl_icons.icon_team.icon
                 h3.title 队员
                 span.count(ng-click="openMemberModal()" ng-cloak title="查看全部队员") {{team.memberCount}}
-                  img.arrow_right(src="/img/chevron_arrow_in_right_direction.png")
+                  i.fa.fa-angle-right
               .members(bs-popover ng-if="role==='LEADER' || role==='MEMBER' || role==='PARTNER' || role==='HR'")
                 .leader_box(ng-if="team.leaders.length > 0")
                   img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50" ng-Mouseenter="showUserCard(leader._id, leader._id + 'member_card')" id="pop{{leader._id}}member_card" rel="popover")
@@ -70,7 +70,7 @@ block contentExt
               carousel(interval="5000" ng-if="team.familyPhotos.length > 0" ng-cloak)
                 slide(ng-repeat="photo in team.familyPhotos")
                   a(ng-href="/photoAlbum/family/{{team._id}}" title="点击进入全家福相册"): img(ng-src="{{photo.uri}}/420/340")
-              a.edit(ng-if="allow.editTeamFamily && team.familyPhotos.length > 0" ng-href="/photoAlbum/family/{{team._id}}" title="修改全家福"): img(src="/img/edit_logo.png" ng-cloak)
+              a.edit(ng-if="allow.editTeamFamily && team.familyPhotos.length > 0" ng-href="/photoAlbum/family/{{team._id}}" title="修改全家福"): span.dl_icons.icon_edit_half
               a.upload(ng-if="allow.editTeamFamily && team.familyPhotos.length === 0" ng-href="/photoAlbum/family/{{team._id}}" ng-cloak) 上传小队全家福
               .remind(ng-if="!allow.editTeamFamily && team.familyPhotos.length === 0" ng-cloak)
                 .remind_triangle
@@ -81,11 +81,11 @@ block contentExt
           .team_col(ng-if="isShowHomeCourts")
             .card.home_court_card#home_court_card(ng-if="isShowHomeCourts")
               .home_court_nav
-                img.icon(src="/img/map_pin_circle.png")
+                i.fa.fa-map-marker.fa-lg.icon
                 .tabs(ng-init="courtIndex=0;")
                   .tab(ng-click="courtIndex=0;" ng-class="{'active': courtIndex==0}") 主场一
                   .tab(ng-click="courtIndex=1;" ng-class="{'active': courtIndex==1}") 主场二
-                img.edit(ng-if="allow.editTeam" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" data-toggle="modal" data-target="#homeCourtModal" ng-cloak title="修改主场")
+                span.dl_icons.info_edit_blue.edit(ng-if="allow.editTeam" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" data-toggle="modal" data-target="#homeCourtModal" ng-cloak title="修改主场")
               .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
                 p(ng-cloak ng-if="homeCourt.name&&homeCourt.loc.coordinates.length!==2") {{homeCourt.name}}
                 a(ng-cloak ng-if="homeCourt.loc.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
@@ -95,7 +95,7 @@ block contentExt
           .team_col
             .card.calendar_card#calendar_card
               #calendar_nav.calendar_nav
-                img.icon(src="/img/calendar_big.png")
+                span.dl_icons.icon_calendar_red.icon
                 .title
                   a.prev(data-calendar-nav="prev" href="javascript:void(0)") &lt;
                   span.calendar_date.calendar_title#calendar_title
@@ -144,10 +144,10 @@ block contentExt
         .control_year(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')")
           span 最初
         .button_group
-          .icon_button(ng-click="anchorTo('home_court_card')" title="主场"): img.icon(src="/img/map_pin_circle.png")
-          .icon_button(ng-click="anchorTo('calendar_card')" title="日历"): img.icon(src="/img/calendar_big.png")
-          .icon_button(ng-click="anchorTo('member_card')" title="成员"): img.icon(src="/img/team.png")
-          a.icon_button(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-href="/photoAlbum/team/{{team._id}}/listView" title="相册"): img.icon(src="/img/photo.png")
+          .icon_button(ng-click="anchorTo('home_court_card')" title="主场"): i.fa.fa-map-marker.fa-lg.icon
+          .icon_button(ng-click="anchorTo('calendar_card')" title="日历"): span.dl_icons.icon_calendar_red.icon
+          .icon_button(ng-click="anchorTo('member_card')" title="成员"): span.dl_icons.icon_team.icon
+          a.icon_button(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-href="/photoAlbum/team/{{team._id}}/listView" title="相册"): i.fa.fa-image.fa-lg.icon
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
@@ -156,7 +156,7 @@ block contentExt
       .modal-dialog
         .modal-content
           .modal_header
-            img.icon(src="/img/team.png")
+            span.dl_icons.icon_team.icon
             h3.title 队员
             span.subtitle ({{teamMembers.length}})
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
@@ -173,7 +173,7 @@ block contentExt
       .modal-dialog
         .modal-content
           .modal_header
-            img.icon(src="/img/placeholder_on_map_paper_in_perspective.png")
+            span.dl_icons.icon_homecourt.icon
             h3.title 主场
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
           .modal_body
@@ -210,7 +210,7 @@ block contentExt
             .calendar_box
               .calendar_nav#calendar_nav_modal
                 a.clearLinkUnderline.calendar_nav_today(data-calendar-nav="today" href="javascript:void(0)") 今天
-                span.icon_calendar
+                span.dl_icons.icon_calendar
                 .calendar_nav_container
                   a.clearLinkUnderline(data-calendar-nav="prev" href="javascript:void(0)") &lt;
                   a.clearLinkUnderline.calendar_title

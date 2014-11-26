@@ -1,7 +1,7 @@
 .loading_div(ng-show = 'loading')
 .result.clearfix(ng-show = '!loading')
   if pleaseSelect
-    img.confused(ng-src="/img/icons/confused.png")
+    span.dl_icons.icon_confused.nav_img.confused
     span.text 请先选择队伍,再进行搜索
   else
     //- 主场信息
@@ -86,7 +86,7 @@
                 span.content.lastline(ng-if="opponent.home_court.length>1") 主场二:{{opponent.home_court[1].name}}
             .block.clearfix(ng-show="opponent.newestCampaign")
               .title
-                img(ng-src="/img/icons/sunshine.png")
+                span.dl_icons.icon_sunshine
                 span 最新活动
               .text
                 span.content 开始时间:{{opponent.newestCampaign.start_time | date:'yyyy-MM-dd HH:mm' | dateView}}
@@ -96,13 +96,13 @@
                 span.content.lastline 活动地点:{{opponent.newestCampaign.location.name}}
             .block.clearfix
               .title
-                img(ng-src="/img/icons/leader.png")
+                span.dl_icons.icon_leader
                 span 小队队长
               .text
                 span.content.lastline {{opponent.leader[0].nickname}}
             .block.clearfix
               .title
-                img(ng-src="/img/icons/information.png")
+                span.dl_icons.icon_information
                 span 小队简介
               .text
                 span.content.lastline {{opponent.brief}}

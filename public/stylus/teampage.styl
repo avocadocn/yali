@@ -71,6 +71,8 @@
           margin-left 10px
           height 14px
           cursor pointer
+          display inline-block
+          float none
         .input_name
           border 1px solid #d6d6d6
           color #999999
@@ -150,6 +152,7 @@
       .icon
         float left
         max-height 14px
+        margin 0
       .title
         float left
         margin 0
@@ -163,9 +166,9 @@
         font-size 14px
         line-height 1
         cursor pointer
-        .arrow_right
+        .fa
           margin-left 5px
-          margin-bottom 3px
+          font-size 16px
     .members
       clearfix()
       padding 0 10px
@@ -273,9 +276,10 @@
       border-bottom 1px solid #efefef
       .icon
         float left
-        margin 8px 0
+        margin 7px 0
         margin-right 20px
-        max-height 14px
+        max-height 16px
+        color #f48361
       .tabs
         clearfix()
         float left
@@ -316,9 +320,9 @@
       line-height 30px
       .icon
         float left
-        margin-top 9px
+        margin-top 7px
         margin-left 10px
-        height 14px
+        
       .title
         height 30px
         line-height 30px
@@ -522,15 +526,6 @@
         clear both
         border-top-left-radius 2px
         border-top-right-radius 2px
-        .icon_calendar
-          height 14px
-          width 14px
-          margin-right 24px
-          margin-top 9px
-          float left
-          background-repeat no-repeat
-          background-size contain
-          background-image url('/img/icons/calendar.png')
         .calendar_title
           width 106px
           text-align center
@@ -593,7 +588,11 @@
           border-bottom-left-radius 1em
           border-bottom-right-radius 1em
         .icon
-          height 16px
+          vertical-align middle
+          margin 0 auto
+          display inline-block
+          float none
+          color #f48361
 
   .team_timeline
     .dl_timeline

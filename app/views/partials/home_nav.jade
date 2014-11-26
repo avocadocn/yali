@@ -20,7 +20,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
       if global_user.provider === 'user'
         //-.navbar-header
         a.navbar-brand(href="/")
-          img.logo(src="/img/dl_logol.png")
+          span.dl_icons.icon_dllogo.logo
         //-button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#personal_nav")
           span.sr-only Toggle navigation
           span.icon-bar
@@ -40,7 +40,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               span.m_l_5.user_name #{global_user.nickname}
           li
             a(href="#" data-toggle="dropdown")
-              img(src='/img/icons/setting.png/16/16')
+              i.fa.fa-cog.fa-lg
             ul.dl_menu.dropdown-menu(role="menu")
               li
                 a.dl_menu_a(href="/users/home") #{__("PERSONAL_HOME")}
@@ -53,13 +53,13 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
           li
             a(href="/message/home#/message_all")
               span.dl_msg_corner(ng-if="o>0" ng-cloak)
-              img(src='/img/icons/message.png/20/15')
+              span.dl_icons.icon_message
               //- li
               //-   a.dl_menu_a(href="/message/home#/send") 发送消息
       if global_user.provider === 'company'
         //- .navbar-header
         a.navbar-brand(href="/")
-          img.logo(src="/img/dl_logol.png")
+          span.dl_icons.icon_dllogo.logo
         //- button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav")
           span.sr-only Toggle navigation
           span.icon-bar
@@ -74,7 +74,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
               span.m_l_5 #{global_user.info.official_name}
           li
             a(href="#" data-toggle="dropdown")
-              img(src='/img/icons/setting.png/16/16')
+              i.fa.fa-cog.fa-lg
             ul.dl_menu.dropdown-menu(role="menu")
               li
                 a.dl_menu_a(href="/company/home#/company_info") #{__("COMPANY_INFO")}
@@ -89,4 +89,4 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
           li
             a(href="/message/home#/message_all")
               span.dl_msg_corner(ng-if="o>0" ng-cloak)
-              img(src='/img/icons/message.png/20/15')
+              span.dl_icons.icon_message

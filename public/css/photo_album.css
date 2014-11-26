@@ -286,26 +286,32 @@
   height: 20px;
   background-color: #fff;
   opacity: 0;
+  font-size: 14px;
+  padding-left: 4px;
 }
 .family_photo_album .photo .button_group .star {
-  background: url("/img/star.png") center;
+  background-color: #fff;
+  color: #3ca2df;
 }
 .family_photo_album .photo .button_group .star:hover {
-  background: url("/img/star_mouseover_selected.png") center;
+  background-color: #3ca2df;
+  color: #fff;
 }
 .family_photo_album .photo .button_group .delete {
   margin-top: 5px;
-  background: url("/img/delete.png") center;
+  background-color: #f6f6f6;
+  color: #a4a4a4;
 }
 .family_photo_album .photo .button_group .delete:hover {
-  background: url("/img/delete_mouseover.png") center;
+  background-color: #e7e8e8;
 }
 .family_photo_album .photo.active {
   border: 2px solid #3498db;
 }
 .family_photo_album .photo.active .star {
   opacity: 1;
-  background: url("/img/star_mouseover_selected.png") center;
+  background-color: #3ca2df;
+  color: #fff;
 }
 .family_photo_album .cropper {
   margin-left: auto;
