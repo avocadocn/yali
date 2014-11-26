@@ -126,7 +126,6 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$timeout','anchor
 
     }
     $rootScope.join = function (index,tid) {
-
       Campaign.join({
         campaignId: $rootScope.recentUnjoinedCampaigns[index]._id,
         cid: $rootScope.recentUnjoinedCampaigns[index].cid,
@@ -137,7 +136,13 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$timeout','anchor
         } else {
           $rootScope.recentUnjoinedCampaigns[index].join_flag =1;
           var _temp = $rootScope.recentUnjoinedCampaigns.splice(index,1);
-          $rootScope.recentJoinedCampaigns.push(_temp[0]);
+          if(_temp[0].start_flag){
+            $rootScope.nowCampaigns.push(_temp[0]);
+          }
+          else{
+            $rootScope.recentJoinedCampaigns.push(_temp[0]);
+          }
+          
           alertify.alert('参加活动成功');
         }
       });
