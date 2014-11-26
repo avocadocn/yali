@@ -1598,7 +1598,7 @@ exports.getCampaignDataForDetailPage = function (req, res) {
   var isWaitingReply = (ct === 4 || ct === 5 || ct === 7) && campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
 
   var isActive = campaign.active;
-  if (campaign.confirm_status === false) {
+  if (isStart && campaign.confirm_status === false) {
     isActive = false;
   }
 
@@ -1845,7 +1845,7 @@ exports.renderCampaignDetail = function (req, res, next) {
     isStart: isStart,
     isEnd: isEnd,
     isJoin: isJoin,
-    isActive: campaign.active && campaign.confirm_status !== false,
+    isActive: campaign.active && campaign.confirm_status !== false && isStart,
     notices: req.notices,
     moment: moment,
     allow: allow,

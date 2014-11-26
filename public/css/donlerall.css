@@ -11747,36 +11747,41 @@ input.ng-invalid.ng-dirty {
   margin-left: 415px;
   top: 70px;
 }
-.teampage .side_panel .timeline_control .control_year {
-  border-left: 6px solid #ccd3e1;
-  padding-left: 6px;
-  margin-bottom: 10px;
+.teampage .side_panel .timeline_control .control_year .year,
+.teampage .side_panel .timeline_control .control_year .month {
+  display: block;
+  margin-bottom: 4px;
+  border-left: 4px solid #ccd3e1;
+  padding-left: 12px;
   font-size: 18px;
+  line-height: 26px;
   color: #ccd3e1;
+  text-decoration: none;
   cursor: pointer;
 }
-.teampage .side_panel .timeline_control .control_year:hover {
-  border-left: 6px solid #ccc;
-  color: #ccc;
-}
-.teampage .side_panel .timeline_control .control_year .control_month {
-  margin-left: 10px;
-  text-align: center;
-}
-.teampage .side_panel .timeline_control .control_year .control_month a {
-  color: #ccd3e1;
-  font-size: 14px;
-}
-.teampage .side_panel .timeline_control .active_year {
+.teampage .side_panel .timeline_control .control_year .year:hover,
+.teampage .side_panel .timeline_control .control_year .month:hover {
   color: #3ba3e0;
-  border-left: 6px solid #3ba3e0;
+  border-left-color: #3ba3e0;
 }
-.teampage .side_panel .timeline_control .active_year:hover {
+.teampage .side_panel .timeline_control .control_year .active_year {
+  padding-left: 10px;
+  font-size: 20px;
+  line-height: 36px;
   color: #3ba3e0;
-  border-left: 6px solid #3ba3e0;
+  border-left-color: #3ba3e0;
 }
-.teampage .side_panel .timeline_control .active_year a.active_month {
+.teampage .side_panel .timeline_control .control_year .active_year:hover {
   color: #3ba3e0;
+  border-left-color: #3ba3e0;
+}
+.teampage .side_panel .timeline_control .control_year .active_year_months .month {
+  border-left-color: #999;
+  color: #999;
+}
+.teampage .side_panel .timeline_control .control_year .active_year_months .active_month {
+  color: #3ba3e0;
+  border-left-color: #3ba3e0;
 }
 .teampage .side_panel .button_group {
   width: 50px;
