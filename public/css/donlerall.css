@@ -241,17 +241,18 @@
 .campaign_detail .base_card .component_body .operator_container .operator_button {
   width: 70px;
   height: 30px;
+  margin-top: 20px;
   font-size: 14px;
   color: #fff;
   background-color: #3498db;
+}
+.campaign_detail .base_card .component_body .operator_container .operator_button:first-child {
+  margin-top: 0;
 }
 .campaign_detail .base_card .component_body .operator_container .cancel,
 .campaign_detail .base_card .component_body .operator_container .refuse,
 .campaign_detail .base_card .component_body .operator_container .quit {
   background-color: #ccc;
-}
-.campaign_detail .base_card .component_body .operator_container .refuse {
-  margin-top: 20px;
 }
 .campaign_detail .base_card .component_body .operator_container .access {
   background-color: #f48361;

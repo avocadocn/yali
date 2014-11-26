@@ -14,7 +14,7 @@ block contentExt
             span.title.left.first #{campaign.theme}
             span.sub_title.left(ng-cloak) #{campaign.campaign_unit[0].team.name || campaign.campaign_unit[0].company.name}
             span.title.right.last(ng-if="campaign.isStart === false && campaign.isActive" ng-init="startCal=false" ng-show="startCal" ng-cloak)
-              span(count-down target="campaign.start_time" start-cal="startCal" isEnd="campaign.isStart" ng-cloak)
+              span(count-down target="campaign.start_time" start-cal="startCal" is-end="campaign.isStart" ng-cloak)
               span.count_down_remind &nbsp;后开始
             span.title.right.last(ng-if="campaign.isStart && !campaign.isEnd && campaign.isActive" ng-cloak) 活动正在进行中
             span.title.right.last(ng-if="campaign.isEnd && campaign.isActive" ng-cloak) 活动已结束
@@ -45,9 +45,9 @@ block contentExt
             .operator_container
               button.operator_button.join(ng-if="campaign.isActive && !campaign.isWaitingReply && !campaign.isDeadline && allowJoinUnits.length>0 && !campaign.isJoin && !campaign.isEnd" ng-click="openJoinModal()" ng-cloak) 参加
               button.operator_button.quit(ng-if="campaign.isActive && !campaign.isWaitingReply && campaign.isJoin && !campaign.isEnd" ng-click="quit()" ng-cloak) 退出
-              button.operator_button.access(ng-if="campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 1)" ng-cloak) 接受
-              button.operator_button.refuse(ng-if="campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 2)" ng-cloak) 拒绝
-              button.operator_button.cancel(ng-if="campaign.isWaitingReply && allow.cancel" ng-click="dealProvoke(campaign.units[0].tid, 3)" ng-cloak) 取消
+              button.operator_button.access(ng-if="campaign.isActive && campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 1)" ng-cloak) 接受
+              button.operator_button.refuse(ng-if="campaign.isActive && campaign.isWaitingReply && allow.response" ng-click="dealProvoke(campaign.units[1].tid, 2)" ng-cloak) 拒绝
+              button.operator_button.cancel(ng-if="campaign.isActive && campaign.isWaitingReply && allow.cancel" ng-click="dealProvoke(campaign.units[0].tid, 3)" ng-cloak) 取消
 
         .component.detail_card(ng-cloak ng-show="!campaign.isEnd" ng-init="editingDetail=#{editing}")
           .component_head
