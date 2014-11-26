@@ -234,9 +234,17 @@ exports.info = function (req, res) {
         role = 'PARTNER';
       }
     } else {
-      if (req.user.isLeader()) {
-        role = 'GUESTLEADER';
-      } else {
+      if(req.user.role == 'LEADER'){
+        for(var i=0;i<req.user.team.length;i++){
+          if(req.user.team[i].leader==true && req.user.team[i].gid==req.companyGroup.gid){
+            role = 'GUESTLEADER';//同类型
+            break;
+          }
+        }
+        if(role !== 'GUESTLEADER'){
+          role = 'GUEST';
+        }
+      }else{
         role = 'GUEST';
       }
     }
