@@ -1838,6 +1838,11 @@ exports.renderCampaignDetail = function (req, res, next) {
     photo = photoList[0].uri;
   }
 
+  var isActive = campaign.isActive;
+  if (campaign.confirm_status !== false && isStart) {
+    isActive = false;
+  }
+
   res.render('campaign/campaign_detail', {
     campaign: campaign,
     components: campaign.formatComponents(),
@@ -1845,7 +1850,7 @@ exports.renderCampaignDetail = function (req, res, next) {
     isStart: isStart,
     isEnd: isEnd,
     isJoin: isJoin,
-    isActive: campaign.active && campaign.confirm_status !== false && isStart,
+    isActive: isActive,
     notices: req.notices,
     moment: moment,
     allow: allow,
