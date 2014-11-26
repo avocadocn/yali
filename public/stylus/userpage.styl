@@ -39,29 +39,35 @@ campaignContainer(color)
         margin-left 415px
         top 70px
         .control_year
-          border-left 6px solid #CCD3E1
-          padding-left 6px
-          margin-bottom 10px
-          font-size 18px
-          color #CCD3E1
-          cursor pointer
-          &:hover
-            border-left 6px solid #ccc
-            color #ccc
-          .control_month
-            margin-left 10px
-            text-align center
-            a
-              color #CCD3E1
-              font-size 14px
-        .active_year
-          color #3ba3e0
-          border-left 6px solid #3ba3e0
-          &:hover
+          .year, .month
+            display block
+            margin-bottom 4px
+            border-left 4px solid #CCD3E1
+            padding-left 12px
+            font-size 18px
+            line-height 26px
+            color #CCD3E1
+            text-decoration none
+            cursor pointer
+            &:hover
+              color #3ba3e0
+              border-left-color #3ba3e0
+          .active_year
+            padding-left 10px
+            font-size 20px
+            line-height 36px
             color #3ba3e0
-            border-left 6px solid #3ba3e0
-          a.active_month
-            color #3ba3e0
+            border-left-color #3ba3e0
+            &:hover
+              color #3ba3e0
+              border-left-color #3ba3e0
+          .active_year_months
+            .month
+              border-left-color #999999
+              color #999999
+            .active_month
+              color #3ba3e0
+              border-left-color #3ba3e0
       .dl_info_container
         background-color #fff
         width 865px

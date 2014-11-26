@@ -1502,36 +1502,62 @@ app.filter('day', function() {
   }
 });
 app.filter('week', function() {
-return function(input) {
-// input will be ginger in the usage below
-switch(new Date(input).getDay()){
-  case 0:
-  input = '周日';
-  break;
-  case 1:
-  input = '周一';
-  break;
-  case 2:
-  input = '周二';
-  break;
-  case 3:
-  input = '周三';
-  break;
-  case 4:
-  input = '周四';
-  break;
-  case 5:
-  input = '周五';
-  break;
-  case 6:
-  input = '周六';
-  break;
-  default:
-  input = '';
-}
-return input;
-}
+  return function(input) {
+    // input will be ginger in the usage below
+    switch (new Date(input).getDay()) {
+      case 0:
+        input = '周日';
+        break;
+      case 1:
+        input = '周一';
+        break;
+      case 2:
+        input = '周二';
+        break;
+      case 3:
+        input = '周三';
+        break;
+      case 4:
+        input = '周四';
+        break;
+      case 5:
+        input = '周五';
+        break;
+      case 6:
+        input = '周六';
+        break;
+      default:
+        input = '';
+    }
+    return input;
+  }
 });
+app.filter('monthPrefixZero', function () {
+  return function (input) {
+    if (input < 10) {
+      return '0' + input;
+    } else {
+      return input;
+    }
+  };
+});
+'use strict';
+
+var messageApp = angular.module('donler');
+
+messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
+  $rootScope.o = 0;
+}]);
+
+
+messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
+    if(location.pathname != '/message/home'){
+      $http.get('/message/header').success(function(data, status) {
+          var messages = data.msg;
+          $rootScope.o = messages.length;
+      });
+    }
+}]);
 'use strict';
 
 angular.module('donler')
@@ -2352,21 +2378,230 @@ donler.factory('Team', ['$http', function($http) {
 }])
 'use strict';
 
-var messageApp = angular.module('donler');
+angular.module('donler')
 
-messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
-  $rootScope.o = 0;
-}]);
+  .directive('countDown', function () {
+    return {
+      restrict: 'A',
+      scope: {
+        endText: '@',
+        target: '=',
+        isEnd: '=',
+        startCal: '='
+      },
+      link: function (scope, element, attrs) {
+        var endText = scope.endText ? scope.endText : '活动已开始';
+        scope.$watch('target', function (newVal, oldVal) {
+          if (newVal) {
+            if (handle) {
+              clearInterval(handle);
+            }
+            var handle = setInterval(function() {
+              var startTime = new Date(newVal);
+              startTime.setSeconds(startTime.getSeconds());
+              if (startTime < Date.now()) {
+                element.text(endText);
+                scope.isEnd = true;
+                scope.$apply();
+                clearInterval(handle);
+                return;
+              }
+              var during = moment.duration(moment(startTime).diff(Date.now()));
+              var remindText = '';
+              var startAdd = false; // 是否开始添加
+              var addedCount = 0; // 添加了几次
+              var isFinishedAdd = false; // 是否添加完毕
 
+              var addText = function (value, measure) {
+                var text = value + measure;
+                if (value > 0) {
+                  if (!startAdd) {
+                    startAdd = true;
+                  }
+                  if (!isFinishedAdd) {
+                    remindText += text;
+                    addedCount += 1;
+                    if (addedCount >= 2) {
+                      isFinishedAdd = true;
+                    }
+                  }
+                } else {
+                  if (startAdd) {
+                    addedCount += 1;
+                    if (addedCount >= 2) {
+                      isFinishedAdd = true;
+                    }
+                  }
+                }
+              };
 
-messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-    if(location.pathname != '/message/home'){
-      $http.get('/message/header').success(function(data, status) {
-          var messages = data.msg;
-          $rootScope.o = messages.length;
-      });
+              addText(during.years(), '年');
+              addText(during.months(), '个月');
+              addText(during.days(), '天');
+              addText(during.hours(), '小时');
+              addText(during.minutes(), '分');
+              addText(during.seconds(), '秒');
+
+              element.text(remindText);
+              if (scope.startCal === false) {
+                scope.startCal = true;
+                scope.$apply();
+              }
+            }, 1000);
+          }
+        });
+
+      }
     }
-}]);
+  });
+
+
+
+'use strict';
+
+(function($) {
+  $(function() {
+
+    var logo = $('#logo');
+    var preview_big = $('#preview_big');
+    var preview_middle = $('#preview_middle');
+    var preview_small = $('#preview_small');
+    var save_button = $('#save_button');
+    var remind = $('#remind');
+    var return_uri = $('#return_uri').val();
+
+    var jcrop_img = $('#jcrop_img');
+    var jcrop_api;
+
+    var getFilePath = function(input, callback) {
+      var file = input.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function(e) {
+        callback(this.result);
+      };
+    };
+
+    logo.change(function() {
+      if (logo.val() === null || logo.val() === '') {
+        save_button[0].disabled = true;
+      } else {
+        if (logo[0].files[0].type.indexOf('image') === -1) {
+          save_button[0].disabled = true;
+          remind.text('请选择图片文件');
+          return;
+        } else if (logo[0].files[0].size > 1024 * 1024 * 5) {
+          save_button[0].disabled = true;
+          remind.text('上传的文件大小不可以超过5M');
+          return;
+        } else {
+          save_button[0].disabled = false;
+        }
+      }
+
+      getFilePath(logo[0], function(path) {
+
+        jcrop_img[0].onload = function() {
+
+          var showPreview = function(coords) {
+            var imgx = jcrop_img.width();
+            var imgy = jcrop_img.height();
+
+            // 裁剪参数，单位为百分比
+            $('#w').val(coords.w / imgx);
+            $('#h').val(coords.h / imgy);
+            $('#x').val(coords.x / imgx);
+            $('#y').val(coords.y / imgy);
+
+            var thumbnails = [preview_big, preview_middle, preview_small];
+            var sizes = [150, 50, 27]; // size.x = size.y
+
+            for(var i = 0; i < thumbnails.length; i++) {
+
+              var rx = sizes[i] / coords.w;
+              var ry = sizes[i] / coords.h;
+              thumbnails[i].css({
+                width: Math.round(rx * imgx) + 'px',
+                height: Math.round(ry * imgy) + 'px',
+                marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+                marginTop: '-' + Math.round(ry * coords.y) + 'px'
+              });
+            }
+          };
+
+          var width = jcrop_img.width();
+          var height = jcrop_img.height();
+
+          preview_big.width(width).height(height);
+          preview_middle.width(width).height(height);
+          preview_small.width(width).height(height);
+
+          jcrop_img.Jcrop({
+            setSelect: [0, 0, 128, 128],
+            aspectRatio: 1,
+            onSelect: showPreview,
+            onChange: showPreview
+          }, function() {
+            jcrop_api = this;
+          });
+        };
+
+        if (jcrop_api) {
+          jcrop_api.destroy();
+          jcrop_img.attr('style', '');
+        }
+        jcrop_img.attr('src', path);
+        preview_big.attr('src', path);
+        preview_middle.attr('src', path);
+        preview_small.attr('src', path);
+
+      });
+
+    });
+
+    $('#edit_logo_form').ajaxForm(function(data, status) {
+      if (status === 'success' && data.result === 1) {
+        var body = {
+            'border': '1px',
+            'border-radius': '0px',
+            'top' : '50px',
+            'left' : '55%',
+            'width' : '350px'
+        };
+
+        var buttons = {
+            'border-top' : '0px',
+            'background' : '#fff',
+            'text-align' : 'center'
+        }
+
+        var button = {
+            'margin-left' : '0px',
+            'padding' : '6px 15px',
+            'box-shadow' : '0px 0px 0px #ffffff',
+            'background-color' : '#3498db'
+        }
+
+        $(".alertify-buttons").css(buttons);
+        $(".alertify").css(body);
+        $(".alertify-button").css(button);
+        window.location = return_uri;
+      } else {
+        $('#loading_modal').modal('hide');
+        alertify.alert("修改失败，请重试!");
+      }
+    });
+
+    $('#edit_logo_form').submit(function() {
+      $('#loading_modal').modal();
+      $(this).ajaxSubmit();
+      return false;
+    });
+
+
+  });
+
+}(jQuery));
 'use strict';
 (function($){
 	var $loading, $wrap, timers = [], optsArray = [], currentObj, currentOpts = {},

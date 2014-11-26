@@ -3,7 +3,7 @@
 var timeline = angular.module('donler');
 
 
-timeline.directive('whenScrolled', function($window) {
+timeline.directive('whenScrolled', ['$window', function ($window) {
 	return function(scope, elm, attr) {
 		var raw = elm[0];
 		var selectClass=angular.element(raw).attr('select-class');
@@ -62,7 +62,7 @@ timeline.directive('whenScrolled', function($window) {
 			lastScrollTop = _scrollTop;
 		});
 	};
-});
+}]);
 
 timeline.controller('timelineController',['$scope', '$http', '$location', '$rootScope', 'anchorSmoothScroll', 'Campaign', 
 	function ($scope, $http, $location, $rootScope, anchorSmoothScroll, Campaign) {

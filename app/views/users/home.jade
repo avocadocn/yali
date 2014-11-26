@@ -1,9 +1,5 @@
 extends ../layouts/user
 
-append headExt
-  link(rel="stylesheet" href="/css/tree.css")
-  link(rel="stylesheet" href="/css/userpage.css")
-
 mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
   .user_campaigns_container(ng-init="#{containerClass}=#{detailFlag};" class="#{containerClass}" ng-class="{'card_campaign':#{detailFlag}||nowShow=='#{containerClass}'}" ng-if="(nowShow=='all'||nowShow=='#{containerClass}')" ng-cloak)
     .container_head(ng-click="#{containerClass}=!#{containerClass};" ng-cloak)

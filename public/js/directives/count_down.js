@@ -13,7 +13,6 @@ angular.module('donler')
       },
       link: function (scope, element, attrs) {
         var endText = scope.endText ? scope.endText : '活动已开始';
-
         scope.$watch('target', function (newVal, oldVal) {
           if (newVal) {
             if (handle) {
@@ -25,6 +24,7 @@ angular.module('donler')
               if (startTime < Date.now()) {
                 element.text(endText);
                 scope.isEnd = true;
+                scope.$apply();
                 clearInterval(handle);
                 return;
               }

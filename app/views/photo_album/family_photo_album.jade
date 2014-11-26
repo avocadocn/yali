@@ -1,8 +1,5 @@
 extend ../layouts/user_base
 
-append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
-
 block contentExt
   .dl_container.photo_album.family_photo_album(ng-controller="FamilyPhotoAlbumCtrl")
     header.clearfix
@@ -44,5 +41,4 @@ block contentExt
 
 
 append footExt
-  script(src="/lib/cropit/dist/jquery.cropit.min.js")
   script(src="/js/controllers/family_photo_album.js")

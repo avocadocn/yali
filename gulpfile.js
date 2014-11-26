@@ -9,6 +9,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var watch = require('gulp-watch');
 var changed = require('gulp-changed');
 var jade = require('gulp-jade');
+var clean = require('gulp-clean');
+var cache = require('gulp-cached');
+var debug = require('gulp-debug');
+var newer = require('gulp-newer');
 
 gulp.task('nodemon', function () {
   nodemon({
@@ -23,7 +27,6 @@ gulp.task('nodemon', function () {
       "NODE_ENV": "development"
     },
   })
-    // .on('change', ['lint'])
     .on('restart', function () {
       console.log('app restarted!')
     });
@@ -36,7 +39,7 @@ gulp.task('stylus', function () {
   gulp.src(src)
     .pipe(watch(src))
     .pipe(stylus())
-    .pipe(gulp.dest('./public/css'));
+    .pipe(gulp.dest('./public/css/donler'));
 });
 
 
@@ -46,7 +49,10 @@ gulp.task('css:library', function () {
     './public/lib/alertify.js/themes/alertify.core.css',
     './public/lib/alertify.js/themes/alertify.default.css',
     './public/lib/angular-carousel/dist/angular-carousel.min.css',
-    './public/lib/bootstrap-calendar/css/calendar.css'
+    './public/lib/bootstrap-calendar/css/calendar.css',
+    './public/css/library/font-awesome.css',
+    './public/css/library/jquery.Jcrop.min.css',
+    './public/css/library/bootstrap-tagsinput.css'
   ])
     .pipe(concat('library.css'))
     .pipe(gulp.dest('./public/css'))
@@ -55,15 +61,7 @@ gulp.task('css:library', function () {
     .pipe(gulp.dest('./public/css'));
 });
 var donlerCssSrc = [
-  './public/css/donler.css',
-  './public/css/timeline.css',
-  './public/css/custom_alertify.css',
-  './public/css/dl_card.css',
-  './public/css/custom_calendar.css',
-  './public/css/group_select.css',
-  './public/css/campaign_list.css',
-  './public/css/tree.css',
-  './public/css/components.css'
+  './public/css/donler/**.css'
 ];
 gulp.task('css:donler', function () {
   gulp.src(donlerCssSrc)
@@ -99,7 +97,14 @@ gulp.task('js:library', function () {
     './public/lib/angular-file-upload/angular-file-upload.min.js',
     './public/lib/underscore/underscore.js',
     './public/js/language/zh-CN.js',
-    './public/lib/bootstrap-calendar/js/calendar.js'
+    './public/lib/bootstrap-calendar/js/calendar.js',
+    './public/js/bootstrap-tagsinput.js',
+    './public/lib/pen/src/markdown.js',
+    './public/lib/pen/src/pen.js',
+    './public/js/jquery.Jcrop.min.js',
+    './public/lib/jquery-form/jquery.form.js',
+    './public/lib/linkage-selector/linkage-selector.js',
+    './public/lib/cropit/dist/jquery.cropit.min.js'
   ])
     .pipe(concat('library.js'))
     .pipe(gulp.dest('./public/js'))
@@ -112,8 +117,10 @@ gulp.task('js:library', function () {
 var donlerJsSrc = [
   './public/js/modules/**/*.js',
   './public/js/app.js',
-  './public/js/service/**.js',
   './public/js/controllers/message_header.js',
+  './public/js/service/**.js',
+  './public/js/directives/**.js',
+  './public/js/edit_logo.js',
   './public/js/dl_card.js'
 ];
 gulp.task('js:donler', function () {
@@ -137,16 +144,25 @@ gulp.task('jade', function () {
     .pipe(gulp.dest('./public/component_templates'));
 });
 
+gulp.task('clean', function () {
+  gulp.src([
+      './public/css/donler/**.css',
+      './public/css/donlerall.css',
+      './public/css/donlerall.min.css',
+      './public/css/library.css',
+      './public/css/library.min.css'
+    ], {read: false})
+    .pipe(clean())
+    .pipe(gulp.dest('./public/css/trash'));
+});
+
 gulp.task('watch:donlerCss', function () {
-  gulp.watch(donlerCssSrc, {
-    interval: 1000,
-    debounceDelay: 1000
-  }, ['css:donler']);
+  gulp.watch(donlerCssSrc, ['css:donler']);
 });
 gulp.task('watch:donlerJs', function () {
   gulp.watch(donlerJsSrc, ['js:donler']);
 });
-gulp.task('watch', ['watch:donlerCss', 'watch:donlerJs']);
+gulp.task('watch', ['watch:donlerJs', 'watch:donlerCss']);
 
 
 gulp.task('develop', ['nodemon', 'stylus', 'css', 'js', 'jade', 'watch']);

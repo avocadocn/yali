@@ -403,33 +403,42 @@ app.filter('day', function() {
   }
 });
 app.filter('week', function() {
-return function(input) {
-// input will be ginger in the usage below
-switch(new Date(input).getDay()){
-  case 0:
-  input = '周日';
-  break;
-  case 1:
-  input = '周一';
-  break;
-  case 2:
-  input = '周二';
-  break;
-  case 3:
-  input = '周三';
-  break;
-  case 4:
-  input = '周四';
-  break;
-  case 5:
-  input = '周五';
-  break;
-  case 6:
-  input = '周六';
-  break;
-  default:
-  input = '';
-}
-return input;
-}
+  return function(input) {
+    // input will be ginger in the usage below
+    switch (new Date(input).getDay()) {
+      case 0:
+        input = '周日';
+        break;
+      case 1:
+        input = '周一';
+        break;
+      case 2:
+        input = '周二';
+        break;
+      case 3:
+        input = '周三';
+        break;
+      case 4:
+        input = '周四';
+        break;
+      case 5:
+        input = '周五';
+        break;
+      case 6:
+        input = '周六';
+        break;
+      default:
+        input = '';
+    }
+    return input;
+  }
+});
+app.filter('monthPrefixZero', function () {
+  return function (input) {
+    if (input < 10) {
+      return '0' + input;
+    } else {
+      return input;
+    }
+  };
 });

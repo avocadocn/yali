@@ -2,7 +2,7 @@
 
 var campaignApp = angular.module('donler');
 
-campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', function ($scope, $http, Campaign) {
+campaignApp.controller('campaignController', ['$scope', '$http', '$sce', 'Campaign', function ($scope, $http, $sce, Campaign) {
 
   var data = document.getElementById('campaign_data').dataset;
   var campaignId = data.id;
@@ -12,6 +12,7 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       alertify.alert('获取活动数据失败，请刷新页面重试。');
     } else {
       $scope.campaign = data.campaign;
+      $scope.campaign.contentHTML = $sce.trustAsHtml($scope.campaign.content);
       if ($scope.campaign.isStart && $scope.campaign.isActive) {
         $scope.detailFold = true;
       }
@@ -161,7 +162,17 @@ campaignApp.controller('campaignController', ['$scope', '$http', 'Campaign', fun
       if (err) {
         alertify.alert(err);
       } else {
-        window.location='/campaign/detail/' + campaignId;
+        var oriLocation = '/campaign/detail/' + campaignId;
+        if (window.location.search != "") {
+          window.location = oriLocation;
+        } else {
+          $scope.campaign.contentHTML = $sce.trustAsHtml($scope.modelData.content);
+          $scope.campaign.member_max = $scope.modelData.member_max;
+          $scope.campaign.member_min = $scope.modelData.member_min;
+          $scope.campaign.deadline = $scope.modelData.deadline;
+          $scope.campaign.tags = $scope.modelData.tags.split(',');
+          $scope.editingDetail = false;
+        }
       }
     });
   };

@@ -1,8 +1,5 @@
 extend ../layouts/user_base
 
-append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
-
 block contentExt
   .dl_container.photo_album
     header.clearfix
@@ -64,7 +61,6 @@ block contentExt
               p.text #{moment(photo_album.update_date).format('YYYY.MM.DD')} 最后更新
 
 append footExt
-  script(src="/lib/jquery-form/jquery.form.js")
   script.
     $('.js_ajax_form').ajaxForm(function(data, status) {
       if (status === 'success') {

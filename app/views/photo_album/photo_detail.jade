@@ -1,8 +1,5 @@
 extend ../layouts/user_base
 
-append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
-
 block contentExt
   .dl_container.photo_album(ng-controller="PhotoDetailCtrl" ng-init="photo_id='#{photo_detail._id}'")
     include ../partials/breadcrumb
@@ -85,5 +82,4 @@ block contentExt
             button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该照片
       include ../partials/report_modal
 append footExt
-  script(src="/lib/jquery-form/jquery.form.js")
   script(src="/js/controllers/photo_detail.js")

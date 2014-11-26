@@ -2,8 +2,7 @@ form(name="provoke_form" novalidate)
   .dl_modal_header
     .headline
         i.fa.fa-binoculars.head_logo
-        span#myModalLabel(ng-show='modal==3') {{team_opposite.name}} V.S #{tname}{{myTname}}
-        span#myModalLabel(ng-show='modal==1') #{tname}{{myTname}} V.S {{team_opposite.name}}
+        span#myModalLabel {{myTname}} V.S {{team_opposite.name}}
         button.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
           i.fa.fa-times
   .dl_modal_body.clearfix

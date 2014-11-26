@@ -1,8 +1,5 @@
 extends ../layouts/company
 
-append headExt
-  link(rel="stylesheet" href="/css/tree.css")
-  link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
 block baseInfo
   .dl_container.clearfix
     .aside
@@ -86,6 +83,5 @@ block panel
   #bottom
 block aside
 append footExt
-  script(src="/lib/linkage-selector/linkage-selector.js")
   script(src="/js/controllers/tabviewCompany.js")
-  script(src="/js/bootstrap-tagsinput.js")
+

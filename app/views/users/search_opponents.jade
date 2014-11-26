@@ -1,8 +1,5 @@
 extends ../layouts/base
 
-append headExt
-  link(rel="stylesheet" href="/css/search_opponents.css")
-
 block content
   .wrap
     include ../partials/home_nav
@@ -59,7 +56,4 @@ block content
   include ../partials/user_footer
 
 append footExt
-  script(src="/js/language/zh-CN.js")
   script(src="/js/controllers/searchOpponents.js")
-  script(src="/js/service/campaign.js")
-  script(src="/js/service/search.js")

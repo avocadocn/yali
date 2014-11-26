@@ -35,6 +35,7 @@ var getTeamAllCampaigns = function (tid, query, callback) {
   Campaign.find({
     'tid': tid,
     'active': true,
+    'confirm_status': { '$ne': false },
     'start_time': {
       '$lte': new Date(parseInt(query.to))
     },
@@ -63,6 +64,7 @@ var getTeamPlayingCampaigns = function (tid, query, callback) {
   Campaign.find({
     'tid': tid,
     'active': true,
+    'confirm_status': { '$ne': false },
     'start_time': {
       '$lte': Math.min(new Date(parseInt(query.to)), Date.now())
     },
@@ -91,6 +93,7 @@ var getTeamFutureCampaigns = function (tid, query, callback) {
   Campaign.find({
     'tid': tid,
     'active': true,
+    'confirm_status': { '$ne': false },
     'start_time': {
       '$gte': Date.now(),
       '$lte': new Date(parseInt(query.to))
@@ -120,6 +123,7 @@ var getTeamEndCampaigns = function (tid, query, callback) {
   Campaign.find({
     'tid': tid,
     'active': true,
+    'confirm_status': true,
     'start_time': {
       '$lte': new Date(parseInt(query.to))
     },
@@ -1502,7 +1506,8 @@ exports.addRichCommentIfNot = function (req, res, next) {
 exports.getNotices = function (req, res, next) {
   MessageContent.find({
     'campaign_id': req.campaign._id,
-    'status': 'undelete'
+    'status': 'undelete',
+    'auto': false
   })
     .sort('-post_date')
     .exec()
@@ -1589,8 +1594,14 @@ exports.getCampaignDataForDetailPage = function (req, res) {
   var isEnd = campaign.end_time < Date.now();
   var isDeadline = campaign.deadline < Date.now();
   var membersForCard = campaign.members.slice(0, 10);
-  //没开始没关掉并且是比赛，验证需不需要应答
-  var isWaitingReply = (ct === 4 || ct === 5 || ct === 7) && !isStart && campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
+  //没关掉并且是比赛，验证需不需要应答
+  var isWaitingReply = (ct === 4 || ct === 5 || ct === 7) && campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
+
+  var isActive = campaign.active;
+  if (isStart && campaign.confirm_status === false) {
+    isActive = false;
+  }
+
   //应答权限判断
   var response = {
     canCancel: false,
@@ -1662,7 +1673,7 @@ exports.getCampaignDataForDetailPage = function (req, res) {
     isStart: isStart,
     isEnd: isEnd,
     isJoin: isJoin,
-    isActive: campaign.active,
+    isActive: isActive,
     isDeadline: isDeadline,
     isWaitingReply: isWaitingReply,
     membersForCard: membersForCard,
@@ -1827,6 +1838,11 @@ exports.renderCampaignDetail = function (req, res, next) {
     photo = photoList[0].uri;
   }
 
+  var isActive = campaign.isActive;
+  if (campaign.confirm_status !== false && isStart) {
+    isActive = false;
+  }
+
   res.render('campaign/campaign_detail', {
     campaign: campaign,
     components: campaign.formatComponents(),
@@ -1834,7 +1850,7 @@ exports.renderCampaignDetail = function (req, res, next) {
     isStart: isStart,
     isEnd: isEnd,
     isJoin: isJoin,
-    isActive: campaign.active,
+    isActive: isActive,
     notices: req.notices,
     moment: moment,
     allow: allow,
@@ -2370,7 +2386,6 @@ exports.getCampaignDateRecord = function (req, res) {
 exports.getCampaignData = function (req, res) {
   // todo 权限判断
 
-  // todo 获取活动数据
   var now = new Date();
   var year = req.query.year || now.getFullYear();
   var month = req.query.month || now.getMonth();
@@ -2379,7 +2394,8 @@ exports.getCampaignData = function (req, res) {
   var nextMonth = new Date(year, month);
   var options ={
     start_time: { $gte: thisMonth, $lt: nextMonth },
-    'active':true
+    'active':true,
+    'confirm_status': { '$ne': false } // 旧数据没有此属性，新数据默认为true
   };
   if(req.params.hostType=='team'){
     options.tid = mongoose.Types.ObjectId(req.params.hostId);

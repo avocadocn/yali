@@ -1,8 +1,5 @@
 extends ../layouts/base
 
-append headExt
-  link(rel="stylesheet" href="/css/userpage.css")
-
 block content
   .wrap.user_page
     include ../partials/home_nav
@@ -12,16 +9,14 @@ block content
           #user_data(data-id="#{user._id}")
           report-modal
           .timeline_control
-            .control_year(ng-class="{'active_year':nowYear=='timeline0'}" ng-click="scrollTo('timeline0_0')")
-              span 现在
-            .control_year(ng-repeat ="years in timelines" ng-class="{'active_year':nowYear==years.year}")
-              span(ng-click="nowYear=years.year;scrollTo(years.year+'_'+years.month[0].month)") {{years.year}}
-              .months(ng-if="nowYear==years.year")
-                .control_month(ng-repeat ="month in years.month")
-                  a.clearLinkUnderline(ng-class="{'active_month':nowMonth==month.month}" ng-click="scrollTo(years.year+'_'+month.month)")
-                    span {{month.month}}月
-            .control_year(ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')")
-              span 最初
+            .control_year
+              span.year(ng-class="{'active_year':nowYear=='timeline0'}" ng-click="scrollTo('timeline0_0')") 现在
+            .control_year(ng-repeat ="years in timelines" ng-cloak)
+              span.year(ng-click="scrollTo(years.year+'_'+years.month[0].month)" ng-class="{'active_year':nowYear==years.year}") {{years.year}}
+              div(ng-if="nowYear==years.year" ng-class="{'active_year_months': nowYear==years.year}")
+                a.month(ng-repeat ="month in years.month" ng-class="{'active_month':nowMonth==month.month}" ng-click="scrollTo(years.year+'_'+month.month)") {{month.month | monthPrefixZero}}月
+            .control_year
+              span.year(ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')") 最初
           if user.role !=='OWNER'
             .dl_info_container.base_info_container.clearfix
               .info_container.logo_container

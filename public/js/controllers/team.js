@@ -8,14 +8,13 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
   var teamId = data.id;
 
   // 这并不是好的做法，仅仅是为了下面两个发活动的controller
-  $rootScope.teamId = data.id;
-  $rootScope.groupId = data.gid;
-
+  $rootScope.teamId = teamId;
   Team.getTeamInfo(teamId, function (err, data) {
     if (err) {
       alertify.alert('抱歉，获取数据失败，请刷新页面重试。');
     } else {
       $scope.team = data.team;
+      $rootScope.team_opposite = {'_id':teamId,'name':data.team.name};
       $scope.team._id = teamId;
       $scope.allow = data.allow;
       $scope.isShowHomeCourts = data.isShowHomeCourts;
@@ -350,7 +349,15 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     });
   });
 
-
+  var modalCalendar;
+  $('#events-modal').on('shown.bs.modal', function (e) {
+    $('#events-modal').find('[data-calendar-nav]').click(function() {
+      modalCalendar.navigate($(this).data('calendar-nav'));
+    });
+    $('#events-modal').find('[data-calendar-nav="today"]').click(function() {
+      modalCalendar.navigate($(this).data('calendar-nav'));
+    });
+  });
   var initModalCalendar = function(events_source, start_time, reloadEventList) {
     var modalOptions = {
       events_source: events_source,
@@ -369,17 +376,6 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       },
       onAfterViewLoad: function(view) {
         $('#calendar_title_modal').text(this.getTitle());
-        //$('#calendar_operator button').removeClass('active');
-        //$('button[data-calendar-view="' + view + '"]').addClass('active');
-        $('#events-modal').undelegate('[data-calendar-nav]', 'click').delegate('[data-calendar-nav]', 'click', function() {
-          modalCalendar.navigate($(this).data('calendar-nav'));
-        });
-        $('#events-modal').undelegate('[data-calendar-nav="today"]', 'click').delegate('[data-calendar-nav]', 'click', function() {
-          modalCalendar.navigate($(this).data('calendar-nav'));
-        });
-        $('#events-modal').undelegate('[data-calendar-view]', 'click').delegate('[data-calendar-view]', 'click', function() {
-          modalCalendar.view($(this).data('calendar-view'));
-        });
         if (start_time) {
           $('#events-modal').find("[data-cal-date='" + start_time + "']").parent().mouseenter().click();
         } else if (reloadEventList) {
@@ -399,7 +395,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     if (start_time) {
       modalOptions.day = start_time;
     }
-    var modalCalendar = $('#modal_calendar').calendar(modalOptions);
+    modalCalendar = $('#modal_calendar').calendar(modalOptions);
   };
 
   $scope.getCalendarCampaigns = function (type) {
@@ -410,7 +406,6 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
 
 
   // timeline
-  
   $scope.nowYear = 'timeline1_0';
   var addCampaign = function(id) {
     var temp = id.split('_');
@@ -617,4 +612,157 @@ donler.controller('SponsorController', ['$http', '$scope', '$rootScope', 'Campai
     };
   }
 ]);
+
+donler.controller('ProvokeController', ['$http', '$scope', '$rootScope', 'Campaign',
+  function($http, $scope, $rootScope, Campaign) {
+    $scope.location = {
+      name: '',
+      coordinates: []
+    };
+    $scope.modal = 0;
+    // $('#sponsorProvokeModel').on('show.bs.modal', function (e) {
+      Campaign.getLedTeams($rootScope.teamId, function(status, teamdata) {
+        if (!status) {
+          $scope.ledTeams = teamdata.teams;
+          if ($scope.ledTeams.length === 1) {
+            $scope.selcet_team(0);
+          }else{
+            $scope.modal = 2;
+          }
+        }
+        if (!window.map_ready) {
+          window.campaign_map_initialize = $scope.initialize;
+          var script = document.createElement("script");
+          script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+          document.body.appendChild(script);
+        } else {
+          $scope.initialize();
+        }
+      });
+    // });
+
+    $("#competition_start_time").on("changeDate", function(ev) {
+      var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+      $scope.competition_date = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+      $('#competition_end_time').datetimepicker('setStartDate', dateUTC);
+    });
+    $("#competition_end_time").on("changeDate", function(ev) {
+      var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+      $('#competition_start_time').datetimepicker('setEndDate', dateUTC);
+    });
+
+    var placeSearchCallBack = function(data) {
+      $scope.locationmap.clearMap();
+      var lngX = data.poiList.pois[0].location.getLng();
+      var latY = data.poiList.pois[0].location.getLat();
+      $scope.location.coordinates = [lngX, latY];
+      var nowPoint = new AMap.LngLat(lngX, latY);
+      var markerOption = {
+        map: $scope.locationmap,
+        position: nowPoint,
+        draggable: true
+      };
+      var mar = new AMap.Marker(markerOption);
+      var changePoint = function(e) {
+        var p = mar.getPosition();
+        $scope.location.coordinates = [p.getLng(), p.getLat()];
+      };
+      $scope.locationmap.setFitView();
+      AMap.event.addListener(mar, "dragend", changePoint);
+    }
+    $scope.initialize = function() {
+      $scope.locationmap = new AMap.Map("competitionMapDetail");            // 创建Map实例
+      $scope.locationmap.plugin(["AMap.CitySearch"], function() {
+        $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+          $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+            pageSize:1,
+            pageIndex:1
+          });
+          AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+        });
+        //实例化城市查询类
+        var citysearch = new AMap.CitySearch();
+        //自动获取用户IP，返回当前城市
+        citysearch.getLocalCity();
+        //citysearch.getCityByIp("123.125.114.*");
+        AMap.event.addListener(citysearch, "complete", function(result){
+          if(result && result.city && result.bounds) {
+            var citybounds = result.bounds;
+            //地图显示当前城市
+            $scope.locationmap.setBounds(citybounds);
+            $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+              $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                pageSize:1,
+                pageIndex:1,
+                city: result.city
+              });
+              AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+            });
+          }
+        });
+        AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+      });
+      window.map_ready =true;
+    };
+
+    $scope.showMap = function() {
+      if ($scope.location.name == '') {
+        alertify.alert('请输入地点');
+        return false;
+      } else if (!$scope.showMapFlag) {
+        $scope.showMapFlag = true;
+        $scope.MSearch.search($scope.location.name); //关键字查询
+      } else {
+        $scope.MSearch.search($scope.location.name); //关键字查询
+      }
+    };
+
+    $scope.selectMold = function(name) {
+      $scope.mold = name;
+    };
+
+    //约战
+    $scope.provoke = function() {
+      if ($scope.member_max < $scope.member_min) {
+        alertify.alert('最少人数须小于最大人数');
+      } else {
+        var _data = {
+          theme: $scope.theme,
+          location: $scope.location,
+          start_time: $scope.start_time,
+          end_time: $scope.end_time,
+          campaign_mold: $scope.mold,
+          team_opposite_id: $rootScope.team_opposite._id
+        };
+        var callback = function(status, data) {
+          if (!status) {
+            window.location = '/campaign/detail/' + data.campaign_id + '?stat=editing';
+          } else {
+            alertify.alert(data.msg);
+          }
+        };
+        Campaign.sponsor('/group/provoke/' + $scope.my_team._id, _data, callback);
+      }
+    };
+
+    $scope.preStep = function() {
+      $scope.modal--;
+    };
+
+    $scope.selcet_team = function(index) {
+      $scope.my_team = $scope.ledTeams[index];
+      $scope.myTname = $scope.my_team.name;
+      $scope.modal=3;
+      Campaign.getMolds('team', $scope.my_team._id, function(status, data) {
+        if (!status) {
+          $scope.mold = data.molds[0].name;
+          $scope.molds = data.molds;
+          $scope.user_cid = data.cid;
+        }
+      });
+      // $rootScope.loadMapIndex = 2;
+    };
+  }
+]);
+
 
