@@ -648,6 +648,18 @@ textarea {
 :-ms-input-placeholder {
   color: #ccc;
 }
+input:focus::-webkit-input-placeholder {
+  color: transparent !important;
+}
+input:focus::-moz-placeholder {
+  color: transparent !important;
+}
+input:focus::-moz-placeholder {
+  color: transparent !important;
+}
+input:focus:-ms-input-placeholder {
+  color: transparent !important;
+}
 .transparent {
   opacity: 0;
 }
