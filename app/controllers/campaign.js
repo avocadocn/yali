@@ -1838,8 +1838,8 @@ exports.renderCampaignDetail = function (req, res, next) {
     photo = photoList[0].uri;
   }
 
-  var isActive = campaign.isActive;
-  if (campaign.confirm_status !== false && isStart) {
+  var isActive = campaign.active;
+  if (campaign.confirm_status === false && isStart) {
     isActive = false;
   }
 
