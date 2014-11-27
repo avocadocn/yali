@@ -4,6 +4,9 @@
 .campaign_detail .loading {
   background: url("/img/loading.gif") center center no-repeat;
 }
+.campaign_detail .fa-chevron-circle-right {
+  color: #fff;
+}
 .campaign_detail .order-1 {
   order: 1;
   -webkit-order: 1;

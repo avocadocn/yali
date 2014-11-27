@@ -4,6 +4,9 @@
 .campaign_detail .loading {
   background: url("/img/loading.gif") center center no-repeat;
 }
+.campaign_detail .fa-chevron-circle-right {
+  color: #fff;
+}
 .campaign_detail .order-1 {
   order: 1;
   -webkit-order: 1;
@@ -3671,7 +3674,9 @@ textarea {
 }
 .dl_icons.icon_confused {
   display: inline-block;
-  background-position: -85px -85px;
+  background-position: 322px -40px;
+  width: 34px;
+  height: 34px;
 }
 .dl_icons.icon_sunshine {
   background-position: -121px -121px;

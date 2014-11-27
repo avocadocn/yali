@@ -125,7 +125,7 @@ block contentExt
             span.title.left 活动地点
             if campaign.location.coordinates.length==2
               a.right.last(title="查看大图" href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
-                img.icon_img(src="/img/icons/view.png")
+                i.fa.fa-chevron-circle-right.fa-lg.icon_img
           .component_body
             if campaign.location.coordinates.length==2
               a(href="http://mo.amap.com/?q=#{campaign.location.coordinates[1]},#{campaign.location.coordinates[0]}&name=#{campaign.location.name}" target="_blank")
@@ -165,7 +165,7 @@ block contentExt
               span.icon.left.first
                 i.fa.fa-bars
               span.title.left 活动信息
-              img.icon_img.op_icon.right.last(title="查看详细" src="/img/icons/view.png" ng-click="showDetailModal()")
+              i.fa.fa-chevron-circle-right.fa-lg.icon_img.op_icon.right.last(title="查看详细" ng-click="showDetailModal()")
             .component_body
               p.text 开始: #{moment(campaign.start_time).format('YYYY-MM-DD HH:mm ddd')}
               p.text 结束: #{moment(campaign.end_time).format('YYYY-MM-DD HH:mm ddd')}
@@ -179,7 +179,7 @@ block contentExt
         .modal-content
           .component(ng-class="{'loading': !loadedMembers }")
             .component_head
-              img.icon_img.left.first(src="/img/icons/users_relation.png")
+              span.icon_img.left.first.dl_icons.icon_users_relation
               span.title.left 活动成员&nbsp;(#{campaign.members.length})
               span.icon.op_icon.right.last(data-dismiss="modal" aria-hidden="true")
                 i.fa.fa-times

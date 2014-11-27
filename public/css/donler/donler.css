@@ -1352,7 +1352,9 @@ textarea {
 }
 .dl_icons.icon_confused {
   display: inline-block;
-  background-position: -85px -85px;
+  background-position: 322px -40px;
+  width: 34px;
+  height: 34px;
 }
 .dl_icons.icon_sunshine {
   background-position: -121px -121px;
