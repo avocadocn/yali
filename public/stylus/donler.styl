@@ -40,6 +40,16 @@ textarea
   color #ccc
 :-ms-input-placeholder /* Internet Explorer 10+ */
   color #ccc
+
+input:focus::-webkit-input-placeholder /* WebKit browsers */
+  color transparent !important
+input:focus::-moz-placeholder /* Mozilla Firefox 4 to 18 */
+  color transparent !important
+input:focus::-moz-placeholder /* Mozilla Firefox 19+ */
+  color transparent !important
+input:focus:-ms-input-placeholder /* Internet Explorer 10+ */
+  color transparent !important
+
 .transparent
   opacity 0
 
