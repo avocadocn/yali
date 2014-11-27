@@ -17,7 +17,7 @@
         .preview_img_wrap(ng-repeat="item in uploader.queue")
           .close(ng-click="item.remove()") &times;
           div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
-    .comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments")
+    .comment.clearfix(ng-repeat="comment in comments")
       .comment_user_info
         a(href="/users/home/{{comment.poster._id}}")
           img.user_photo(ng-src="{{comment.poster.photo}}/30/30" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
@@ -26,25 +26,25 @@
           a.user_name(href="/users/home/{{comment.poster._id}}" ng-cloak) {{comment.poster.nickname}}
           p.text(ng-cloak) {{comment.content}}
           image-box(images="comment.photos")
-        .comment_footer.clearfix
+        .comment_footer.clearfix.dl_mouse_hover_block
           span.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
           .pull-right.operator
             report-button.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" host-id="{{comment._id}}" host-type="comment" host-content="comment")
             a.delete.text.dl_mouse_hover(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
             a.reply.text(ng-click="toggleComment(comment)")
-              img.reply_icon(src="/img/comment.png")
-              | {{comment.reply_count || 0}}条回复
+              span.pull-right {{comment.reply_count || 0}}条回复
+              span.dl_icons.icon_reply_blue
         .replies(ng-if="comment.replying")
           form.reply_form(name="reply_form" ng-if="allowPublish")
             input.reply_input(toggle-focus="comment.replying" type="text" ng-model="comment.new_reply" placeholder="{{currentPlaceholder.reply}}" ng-focus="currentPlaceholder.reply=''" ng-blur="currentPlaceholder.reply=originPlaceholder" required)
             button.reply_button(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
-          .reply.text(ng-repeat="reply in comment.replies")
+          .reply.text.dl_mouse_hover_block(ng-repeat="reply in comment.replies")
             a.user_name(ng-href="/users/home/{{reply.poster._id}}" ng-Mouseenter="showUserCard(reply.poster._id,reply._id)" id='pop{{reply._id}}' rel='popover')
-              span {{reply.poster.nickname}}
+              span {{reply.poster.nickname}}:
             span {{reply.content}}
             span.reply_date ({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})
             .operator
-              a.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport(reply)") 举报
+              report-button.text.dl_mouse_hover(ng-if="reply.status=='active' && !reply.delete_permission" host-id="{{reply._id}}" host-type="comment" host-content="reply")
               a.text.dl_mouse_hover(ng-if="reply.delete_permission" ng-click="removeReply(comment, $index)") 删除
 
     ul.pager(ng-if="pages[0].nextStartDate")

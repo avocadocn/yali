@@ -3535,6 +3535,24 @@ input.ng-invalid.ng-dirty {
 #events-modal .calendar_event_box .cal-event-list ul.list-unstyled .custom_calendar_li .campaign_content .info_right .campaign_info .content_text {
   padding-left: 10px;
 }
+.icon_backtop {
+  position: fixed;
+  cursor: pointer;
+  width: 30px;
+  height: 40px;
+  background-image: url("/img/sprites/dl_sprites.png");
+  background-position: -45px -80px;
+  left: 50%;
+  margin-left: 500px;
+  bottom: -100px;
+  transition: bottom 0.5s;
+  -moz-transition: bottom 0.5s;
+  -webkit-transition: bottom 0.5s;
+  -o-transition: bottom 0.5s;
+}
+.icon_backtop.affix {
+  bottom: 70px;
+}
 @-moz-keyframes scaleFade {
   50% {
     opacity: 1;
