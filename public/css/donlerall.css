@@ -3061,13 +3061,15 @@ textarea {
   padding: 0 2rem;
 }
 .dl_head .user_img {
-  display: inline-block;
+  display: block;
+  float: left;
 }
 .dl_head .user_img img {
   display: block;
 }
 .dl_head .user_name {
-  display: inline-block;
+  display: block;
+  float: left;
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -6247,12 +6249,12 @@ input.ng-invalid.ng-dirty {
   width: 100%;
   height: 750px;
   margin: 0 auto;
-  background: url("/img/index/cake.png") no-repeat bottom left -30px, url("/img/index/luggage.png") no-repeat top left -300px, url("/img/index/dl_promo_bg.jpg") center center no-repeat;
+  background: url("/img/index/cake.png") no-repeat -30px bottom, url("/img/index/luggage.png") no-repeat -300px top, url("/img/index/dl_promo_bg.jpg") center center no-repeat;
 }
 .index_background .promo .promo_background {
   min-width: 960px;
   height: 750px;
-  background: url("/img/index/foot.png") no-repeat bottom right 24%, url("/img/index/basketball.png") no-repeat 93% 50%, url("/img/index/ukelele.png") no-repeat top right 45%, url("/img/index/bbq.png") no-repeat top right 6%;
+  background: url("/img/index/foot.png") no-repeat 76% bottom, url("/img/index/basketball.png") no-repeat 93% 50%, url("/img/index/ukelele.png") no-repeat 55% top, url("/img/index/bbq.png") no-repeat 94% top;
 }
 .index_background .promo .promo_background .index_container {
   width: auto;
@@ -8327,13 +8329,15 @@ textarea {
   padding: 0 2rem;
 }
 .dl_head .user_img {
-  display: inline-block;
+  display: block;
+  float: left;
 }
 .dl_head .user_img img {
   display: block;
 }
 .dl_head .user_name {
-  display: inline-block;
+  display: block;
+  float: left;
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;

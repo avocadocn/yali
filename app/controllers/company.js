@@ -1262,7 +1262,6 @@ exports.timeLine = function(req, res) {
         }
         //多队
         else if(ct!==6&&ct!==2){
-          console.log(ct,campaign._id,campaign.campaign_unit);
           // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
           for(var i = 0;i<campaign.campaign_unit.length;i++){
             var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].company,companyId,'_id');
