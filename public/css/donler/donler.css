@@ -1364,7 +1364,7 @@ input:focus:-ms-input-placeholder {
 }
 .dl_icons.icon_confused {
   display: inline-block;
-  background-position: 322px -40px;
+  background-position: -322px -40px;
   width: 34px;
   height: 34px;
 }
