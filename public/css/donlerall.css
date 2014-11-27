@@ -3061,13 +3061,15 @@ textarea {
   padding: 0 2rem;
 }
 .dl_head .user_img {
-  display: inline-block;
+  display: block;
+  float: left;
 }
 .dl_head .user_img img {
   display: block;
 }
 .dl_head .user_name {
-  display: inline-block;
+  display: block;
+  float: left;
   max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;

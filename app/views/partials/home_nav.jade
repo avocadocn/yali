@@ -34,7 +34,7 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
             li
               a(href="/department/home/#{global_user.department._id}") #{global_user.department.name}
           li
-            a(href="/users/home")
+            a.clearfix(href="/users/home")
               span.user_img
                 img.size_20.img_user(src="#{global_user.photo}")
               span.m_l_5.user_name #{global_user.nickname}
@@ -68,10 +68,10 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
         //- .collapse.navbar-collapse#HR_nav
         ul.nav.navbar-nav.pull-right
           li
-            a(href="/company/home")
-              span
-                img.size_20(src="#{global_user.info.logo}")
-              span.m_l_5 #{global_user.info.official_name}
+            a.clearfix(href="/company/home")
+              span.user_img
+                img.size_20.img_user(src="#{global_user.info.logo}")
+              span.m_l_5.user_name #{global_user.info.official_name}
           li
             a(href="#" data-toggle="dropdown")
               i.fa.fa-cog.fa-lg
