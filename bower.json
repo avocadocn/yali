@@ -18,7 +18,7 @@
     "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.9",
     "cropit": "~0.1.9",
     "jquery-form": "3.46.0",
-    "linkage-selector": "0.1.4",
+    "linkage-selector": "0.1.5",
     "moment": "^2.7.0",
     "smalot-bootstrap-datetimepicker": "latest",
     "pen": "https://github.com/afeidonler/pen.git#master",

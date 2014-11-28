@@ -9,7 +9,7 @@ form.block.block_left.signup_block.form-horizontal(ng-controller="signupControll
         label.control-label(for="name") *公司全称:
       .input_right
         input#name.dl-form-control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" ng-minlength=1 required)
-  .form-group.dl_sm_group(data-role="linkage-selector" data-src="/region" data-select="province city district")
+  .form-group.dl_sm_group#cities(data-src="/region" data-select="province city district")
     .dl_row
       .label_left
         label.control-label(for="province") *城市:
@@ -17,7 +17,7 @@ form.block.block_left.signup_block.form-horizontal(ng-controller="signupControll
         .select_box
           select#province.dl-form-control(type="text" name="province" ng-model= "province")
         .select_box
-          select#city.dl-form-control(type="text" name="city" ng-model= "city")
+          select#city.dl-form-control(type="text" name="city" ng-model="city")
         .select_box(last_child)
           select#region.dl-form-control(type="text" name="district" ng-model="district" )
   .form-group.dl_sm_group(ng-class="{'has-error':signup_form.address.$invalid && signup_form.address.$dirty}")

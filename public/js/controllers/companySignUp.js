@@ -9,6 +9,8 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
   $scope.check_value = '正在检查邮箱是否存在...';
   $scope.code_value = '正在检查邀请码有效性...';
 
+  var selector = new LinkageSelector(document.getElementById('cities'));
+
   $scope.mailRegCheck = function() {
     $scope.reg = (pattern.test($scope.email));
     $scope.check = false;
