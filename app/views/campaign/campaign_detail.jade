@@ -32,6 +32,7 @@ block contentExt
                 span.save(ng-click="publishNotice()" ng-if="editingNotice && noticeForm.notice.$valid" ng-cloak) 保存
                 span.cancel(ng-click="togglePublishNotice()" ng-if="editingNotice" ng-cloak) 取消
                 textarea.notice_text(ng-if="editingNotice" name="notice" ng-model="notice.content" placeholder="{{notice.placeholder}}" ng-focus="notice.placeholder=''" ng-blur="notice.placeholder = notice.placeholderText" mix-maxlength="280" ng-cloak required)
+                p.notice_error(ng-if="editingNotice && noticeForm.notice.$error.mixlength") 公告字数请控制在140字以内
               .notices(ng-cloak)
                 .notice(ng-if="notices.length > 0 && !unfoldNotice")
                   p.main_text {{notices[0].content}}

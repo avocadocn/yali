@@ -215,6 +215,10 @@
 .campaign_detail .base_card .component_body .notice_container .notice {
   margin: 5px 0;
 }
+.campaign_detail .base_card .component_body .notice_container .notice_error {
+  color: #f48361;
+  text-align: right;
+}
 .campaign_detail .base_card .component_body .notice_container .main_text {
   margin: 0;
   color: #999;
