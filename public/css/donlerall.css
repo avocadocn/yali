@@ -4419,6 +4419,7 @@ input::-webkit-inner-spin-button {
   min-width: 100px !important;
 }
 .dl_menu .dl_menu_a {
+  height: 30px;
   padding-top: 5px;
   padding-bottom: 5px;
   color: #fff !important;
