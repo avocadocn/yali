@@ -4447,6 +4447,7 @@ input::-webkit-inner-spin-button {
 .dl_nav ul li a {
   padding-top: 17px;
   padding-bottom: 13px;
+  height: 50px;
   color: #fff !important;
 }
 .dl_nav .logo {
@@ -6346,7 +6347,7 @@ input.ng-invalid.ng-dirty {
 }
 
 .dl_message_box {
-  padding: 0 5px;
+  padding: 0;
   background-color: #fff;
   line-height: 21px;
   border: 1px solid #e6e6e6;
