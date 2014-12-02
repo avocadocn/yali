@@ -176,14 +176,14 @@ block contentExt
               .home_court
                 .control
                   label.title 主场一：
-                  input.address(type="text" name ="home_court_1" ng-change='changeLocation1()' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_1.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourt[0].name" tooltip-placement="right")
-                .map_container(ng-show='showMap1')
+                  input.address(type="text" name ="home_court_1" ng-change='changeLocation(0)' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_1.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourt[0].name" tooltip-placement="right")
+                .map_container(ng-show='showMaps[0]')
                   .map#courtMap1
               .home_court
                 .control
                   label.title 主场二：
-                  input.address(type="text" name ="home_court_2" ng-change='changeLocation2()' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_2.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourt[1].name" tooltip-placement="right")
-                .map_container(ng-show='showMap2')
+                  input.address(type="text" name ="home_court_2" ng-change='changeLocation(1)' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_2.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourt[1].name" tooltip-placement="right")
+                .map_container(ng-show='showMaps[1]')
                   .map#courtMap2
               button.finish.dl_btn.dl_btn_small(type="button" ng-click="saveHomeCourt()") 完成
 

@@ -47,17 +47,18 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
           $scope.homeCourt[i] = homeCourt;
         }
         if (homeCourt.loc && homeCourt.loc.coordinates && homeCourt.loc.coordinates.length === 2) {
-          $scope['showMap' + (i+1)] = true;
+          $scope.showMaps[i] = true;
         }
       }
-
-      if (!window.map_ready) { //如果没有加载过地图script则加载
+      if (!$rootScope.map_ready) { //如果没有加载过地图script则加载
         window.court_map_initialize = function() {
           $scope.initialize();
         };
         var script = document.createElement("script");
         script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=court_map_initialize";
         document.body.appendChild(script);
+      } else {
+        $scope.initialize();
       }
       if ($scope.role!=='GUESTHR' && $scope.role!=='GUESTLEADER' && $scope.role!=='GUEST') {
         Campaign.getCampaignsDateRecord('team', teamId, function(err, record) {
@@ -96,7 +97,11 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
   // 编辑主场
   $scope.MSearch1 = '';
   $scope.MSearch2 = '';
+  $scope.MSearches = new Array(2);
+  $scope.locationMaps = new Array(2);
   $scope.city = '';
+  var courtEleIds = ['courtMap1', 'courtMap2'];
+  $scope.showMaps = [false, false];
 
   var placeSearchCallBack = function(bindMap, index) {
     return function(data) {
@@ -120,106 +125,80 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     }
   };
 
-  var bindPlaceSearch = function(bindMap, index) {
+  var bindPlaceSearch = function(bindMap, index, forbiddenCity) {
+    var placeSearchOptions = { //构造地点查询类
+      pageSize: 1,
+      pageIndex: 1,
+      city: $scope.city
+    };
+    if (forbiddenCity) {
+      delete placeSearchOptions.city;
+    }
     bindMap.plugin(["AMap.PlaceSearch"], function() {
-      if (index == 0) {
-        $scope.MSearch1 = new AMap.PlaceSearch({ //构造地点查询类
-          pageSize: 1,
-          pageIndex: 1,
-          city: $scope.city
-
-        });
-        AMap.event.addListener($scope.MSearch1, "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
-      } else {
-        $scope.MSearch2 = new AMap.PlaceSearch({ //构造地点查询类
-          pageSize: 1,
-          pageIndex: 1,
-          city: $scope.city
-
-        });
-        AMap.event.addListener($scope.MSearch2, "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
-      }
+      $scope.MSearches[index] = new AMap.PlaceSearch(placeSearchOptions);
+      AMap.event.addListener($scope.MSearches[index], "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
     });
   };
 
   $scope.initialize = function() {
-    $scope.locationmap1 = new AMap.Map("courtMap1");
-    $scope.locationmap2 = new AMap.Map("courtMap2");
-    if ($scope.homeCourt[0].name !== '') {
-      var piont1 = new AMap.LngLat($scope.homeCourt[0].loc.coordinates[0], $scope.homeCourt[0].loc.coordinates[1]);
-      $scope.locationmap1.setZoomAndCenter(15, piont1);
-      var markerOption = {
-        map: $scope.locationmap1,
-        position: piont1,
-        draggable: true
+    var points = new Array(2);
+    for (var i = 0; i < 2; i++) {
+      $scope.locationMaps[i] = new AMap.Map(courtEleIds[i]);
+      if ($scope.homeCourt[i].name !== '') {
+        var loc = $scope.homeCourt[i].loc;
+        points[i] = new AMap.LngLat(loc.coordinates[0], loc.coordinates[1]);
+        $scope.locationMaps[i].setZoomAndCenter(15, points[i]);
+        var markerOption = {
+          map: $scope.locationMaps[i],
+          position: points[i],
+          draggable: true
+        };
+        var mar = new AMap.Marker(markerOption);
+        var changePoint = function(e) {
+          var p = e.lnglat;
+          $scope.homeCourt[i].loc.coordinates = [p.getLng(), p.getLat()];
+        };
+        AMap.event.addListener(mar, "dragend", changePoint);
       };
-      var mar = new AMap.Marker(markerOption);
-      var changePoint = function(e) {
-        var p = e.lnglat;
-        $scope.homeCourt[0].loc.coordinates = [p.getLng(), p.getLat()];
-      };
-      AMap.event.addListener(mar, "dragend", changePoint);
-    };
-
-    if ($scope.homeCourt[1].name !== '') {
-      var piont2 = new AMap.LngLat($scope.homeCourt[1].loc.coordinates[0], $scope.homeCourt[1].loc.coordinates[1]);
-      $scope.locationmap2.setZoomAndCenter(15, piont2);
-      var markerOption = {
-        map: $scope.locationmap2,
-        position: piont2,
-        draggable: true
-      };
-      var marker2 = new AMap.Marker(markerOption);
-      var changePoint = function(e) {
-        var p = e.lnglat;
-        $scope.homeCourt[1].loc.coordinates = [p.getLng(), p.getLat()];
-      };
-      AMap.event.addListener(marker2, "dragend", changePoint);
     }
+
     if ($scope.city != '') {
-      bindPlaceSearch($scope.locationmap1, 0);
-      bindPlaceSearch($scope.locationmap2, 1);
+      bindPlaceSearch($scope.locationMaps[0], 0);
+      bindPlaceSearch($scope.locationMaps[1], 1);
     } else {
-      $scope.locationmap1.plugin(["AMap.CitySearch"], function() {
+
+      $scope.locationMaps[0].plugin(["AMap.CitySearch"], function() {
+        bindPlaceSearch($scope.locationMaps[0], 0, true);
+        bindPlaceSearch($scope.locationMaps[1], 1, true);
         var citysearch = new AMap.CitySearch();
-        citysearch.getLocalCity();
         AMap.event.addListener(citysearch, "complete", function(result) {
           if (result && result.city && result.bounds) {
             var citybounds = result.bounds;
             $scope.city = result.city;
-            bindPlaceSearch($scope.locationmap1, 0);
-            bindPlaceSearch($scope.locationmap2, 1);
+            bindPlaceSearch($scope.locationMaps[0], 0);
+            bindPlaceSearch($scope.locationMaps[1], 1);
           }
         });
         AMap.event.addListener(citysearch, "error", function(result) {
           alert(result.info);
         });
+        citysearch.getLocalCity();
       });
     }
-    window.map_ready = true;
+    $rootScope.map_ready = true;
   };
 
-  $scope.changeLocation1 = function() {
-    $scope.showMap1 = true;
-    if ($scope.MSearch1 != '') {
-      $scope.MSearch1.search($scope.homeCourt[0].name);
+  $scope.changeLocation = function (index) {
+    $scope.showMaps[index] = true;
+    if (!$scope.MSearches[index]) {
+      $scope.MSearches[index].search($scope.homeCourt[index].name);
     } else {
+      // why ?
       $timeout(function() {
-        $scope.MSearch1.search($scope.homeCourt[0].name);
+        $scope.MSearches[index].search($scope.homeCourt[index].name);
       }, 0);
     }
-  };
-
-  $scope.changeLocation2 = function() {
-    $scope.showMap2 = true;
-    if ($scope.MSearch2 != '') {
-      $scope.MSearch2.search($scope.homeCourt[1].name);
-    } else {
-      $timeout(function() {
-        $scope.MSearch2.search($scope.homeCourt[1].name);
-      }, 0);
-    }
-  };
+  }
 
   $scope.saveHomeCourt = function () {
     Team.saveInfo(teamId, {
@@ -487,7 +466,7 @@ donler.controller('SponsorController', ['$http', '$scope', '$rootScope', 'Campai
         });
       }
       //加载地图
-      if (!window.map_ready) {
+      if (!$rootScope.map_ready) {
         window.campaign_map_initialize = $scope.initialize;
         var script = document.createElement("script");
         script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
@@ -570,7 +549,7 @@ donler.controller('SponsorController', ['$http', '$scope', '$rootScope', 'Campai
           alert(result.info);
         });
       });
-      window.map_ready = true;
+      $rootScope.map_ready = true;
     };
     $scope.showMap = function() {
       if ($scope.location.name == '') {
@@ -630,10 +609,10 @@ donler.controller('ProvokeController', ['$http', '$scope', '$rootScope', 'Campai
             $scope.modal = 2;
           }
         }
-        if (!window.map_ready) {
-          window.campaign_map_initialize = $scope.initialize;
+        if (!$rootScope.map_ready) {
+          window.provoke_map_initialize = $scope.initialize;
           var script = document.createElement("script");
-          script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
+          script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=provoke_map_initialize";
           document.body.appendChild(script);
         } else {
           $scope.initialize();
@@ -702,7 +681,7 @@ donler.controller('ProvokeController', ['$http', '$scope', '$rootScope', 'Campai
         });
         AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
       });
-      window.map_ready =true;
+      $rootScope.map_ready =true;
     };
 
     $scope.showMap = function() {
