@@ -92,7 +92,7 @@ block contentExt
               .text_dark.clearfix
                 span.pull-left 活动标签：
                 input.detail_input#taginput(name="tags" type="text" ng-model="modelData.tags")
-              .text_dark.clearfix(ng-if="!campaign.isEnd")
+              .text_dark.clearfix(ng-show="!campaign.isEnd")
                 span.pull-left 报名截止：
                 .input-group.date.form_datetime.pull-left#deadline
                   input.detail_input(type="text" ng-model="modelData.deadline" data-data-format="YYYY-MM-DD HH:mm" readonly)
