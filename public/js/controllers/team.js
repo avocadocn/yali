@@ -19,6 +19,7 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       $scope.allow = data.allow;
       $scope.isShowHomeCourts = data.isShowHomeCourts;
       $scope.role = data.role;
+      $rootScope.role = data.role;
 
       if ($scope.role==='GUESTHR' || $scope.role==='GUESTLEADER' || $scope.role==='GUEST') {
         $('#calendar').undelegate('.cal-month-day', 'click');
@@ -599,27 +600,35 @@ donler.controller('ProvokeController', ['$http', '$scope', '$rootScope', 'Campai
       coordinates: []
     };
     $scope.modal = 0;
-    // $('#sponsorProvokeModel').on('show.bs.modal', function (e) {
-      Campaign.getLedTeams($rootScope.teamId, function(status, teamdata) {
-        if (!status) {
-          $scope.ledTeams = teamdata.teams;
-          if ($scope.ledTeams.length === 1) {
-            $scope.selcet_team(0);
-          }else{
-            $scope.modal = 2;
-          }
-        }
+
+    $('#sponsorProvokeModel').on('show.bs.modal', function (e) {
+      if($scope.modal === 2){
         if (!$rootScope.map_ready) {
-          window.provoke_map_initialize = $scope.initialize;
+          window.campaign_map_initialize = $scope.initialize;
           var script = document.createElement("script");
           script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=provoke_map_initialize";
           document.body.appendChild(script);
         } else {
           $scope.initialize();
         }
-      });
-    // });
-
+      }
+    });
+    
+    $rootScope.$watch('role',function(data){
+      if(data==='GUESTLEADER'){
+        Campaign.getLedTeams($rootScope.teamId, function(status, teamdata) {
+          if (!status) {
+            $scope.ledTeams = teamdata.teams;
+            if ($scope.ledTeams.length === 1) {
+              $scope.selcet_team(0);
+            }else{
+              $scope.modal = 2;
+            }
+          }
+        });
+      }
+    });
+    
     $("#competition_start_time").on("changeDate", function(ev) {
       var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
       $scope.competition_date = moment(dateUTC).format("YYYY-MM-DD HH:mm");
