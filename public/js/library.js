@@ -36734,6 +36734,7 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
     this.$element = $(element)
     this.affixed  =
     this.unpin    = null
+
     this.checkPosition()
   }
 
@@ -36756,8 +36757,9 @@ if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery"
     var offset       = this.options.offset
     var offsetTop    = offset.top
     var offsetBottom = offset.bottom
+
     if (typeof offset != 'object')         offsetBottom = offsetTop = offset
-    if (typeof offsetTop == 'function')    offsetTop    = offset.top();
+    if (typeof offsetTop == 'function')    offsetTop    = offset.top()
     if (typeof offsetBottom == 'function') offsetBottom = offset.bottom()
 
     var affix = this.unpin   != null && (scrollTop + this.unpin <= position.top) ? false :
@@ -50584,7 +50586,7 @@ var LinkageSelector;
                                             var selectValues = selects.map(function(select) {
                                                 return select.value;
                                             });
-                                            onchange(selectValues, selectIndexes);
+                                            onchange && onchange(selectValues, selectIndexes);
                                         }
 
                                     }
@@ -50598,7 +50600,7 @@ var LinkageSelector;
                             var selectValues = selects.map(function(select) {
                                 return select.value;
                             });
-                            onchange(selectValues, selectIndexes);
+                            onchange && onchange(selectValues, selectIndexes);
                         }
                     }
 

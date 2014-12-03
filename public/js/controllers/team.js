@@ -72,6 +72,22 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
     }
   });
 
+  $scope.closeTeam = function () {
+    alertify.confirm('确定要关闭该小队吗？', function (e) {
+      if (e) {
+        Team.active(teamId, false, function (err) {
+          if (err) {
+            alertify.alert('关闭小队失败。');
+          } else {
+            alertify.alert('关闭成功', function (e) {
+              window.location.reload();
+            });
+          }
+        });
+      }
+    });
+  };
+
   // 编辑小队信息
   $scope.isEditingInfo = false;
   $scope.editInfo = function () {

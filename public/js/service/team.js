@@ -118,6 +118,25 @@ donler.factory('Team', ['$http', function($http) {
         .error(function (data, status) {
           callback('error');
         });
+    },
+
+    /**
+     * 激活或关闭小队
+     * @param  {String} id     小队
+     * @param  {Boolean} active 激活或关闭小队
+     */
+    active: function (id, active, callback) {
+      $http.post('/group/activateGroup/' + id, { active: active })
+        .success(function (data, status) {
+          if (data.result === 1) {
+            callback();
+          } else {
+            callback(data.msg);
+          }
+        })
+        .error(function (data, status) {
+          callback('error');
+        });
     }
 
 

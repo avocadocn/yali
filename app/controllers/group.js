@@ -72,7 +72,7 @@ exports.renderInfo = function (req, res) {
 //激活小队
 exports.activateGroup = function(req, res) {
   if(req.role==='HR'){
-    var tid = req.body.tid;
+    var tid = req.body.tid || req.params.teamId;
     var active = req.body.active;
     CompanyGroup.findOne({
       '_id':tid
@@ -263,6 +263,13 @@ exports.info = function (req, res) {
 exports.teampage = function(req, res) {
 
   var team = req.companyGroup;
+  if (!team.active) {
+    if (req.user.provider === 'user') {
+      res.redirect('/users/home');
+    } else if (req.user.provider === 'company') {
+      res.redirect('/company/home');
+    }
+  }
   // 仅提供id，其它所有数据通过group.info获取
   res.render('group/team', { teamId: team._id, groupId: team.gid });
 
