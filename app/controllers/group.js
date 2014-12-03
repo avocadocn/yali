@@ -138,7 +138,8 @@ exports.info = function (req, res) {
     'sponsorCampaign',
     'sponsorProvoke',
     'publishTeamMessage',
-    'editTeamFamily'
+    'editTeamFamily',
+    'belongToCompany'
   ];
   var allow = auth(req.user, {
     companies: [team.cid],
@@ -249,13 +250,24 @@ exports.info = function (req, res) {
       }
     }
   }
+  //是否能动一下
+  if(req.user.role == 'LEADER'&&(role==='MEMBER'||role==='PARTNER'||role==='GUESTLEADER'))
+    allow.dongIt = true;
+  else
+    allow.dongIt = false;
 
+  //button是否为1个
+  if(role==='GUESTLEADER' || (req.user.role !=='LEADER'&&(role==='MEMBER'||role==='PARTNER')))
+    var is_one_button = true;
+  else
+    var is_one_button = false;
   res.send({
     result: 1,
     team: briefTeam,
     allow: allow,
     isShowHomeCourts: isShowHomeCourts,
-    role: role
+    role: role,
+    is_one_button: is_one_button
   });
 };
 
@@ -316,7 +328,7 @@ exports.getLedTeams = function(req,res) {
       return res.send({'result':0,'msg':'获取带领小队失败'});
     }
     else
-     return res.send({'result':1,'teams':companyGroups});
+     return res.send({'result':1,'teams':companyGroups,'opposite_cid':req.companyGroup.cid.toString()});
   });
 };
 

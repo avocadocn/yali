@@ -7768,6 +7768,12 @@ input.ng-invalid.ng-dirty {
   line-height: 30px;
   text-align: center;
   text-decoration: none;
+  display: block;
+  float: left;
+  margin-left: 8px;
+}
+.teampage .info_card .operator .op_button:first-child {
+  margin-left: 20px;
 }
 .teampage .info_card .operator .button_blue {
   background-color: #3ca2e0;
@@ -7778,33 +7784,14 @@ input.ng-invalid.ng-dirty {
 .teampage .info_card .operator .button_gray {
   background-color: #ccc;
 }
-.teampage .info_card .operator .one_button {
+.teampage .info_card .operator.one_button {
   text-align: center;
 }
-.teampage .info_card .operator .one_button .op_button {
+.teampage .info_card .operator.one_button .op_button {
   width: 190px;
-}
-.teampage .info_card .operator .two_button {
-  text-align: center;
-}
-.teampage .info_card .operator .two_button .op_button:last-child {
-  margin-left: 10px;
-}
-.teampage .info_card .operator .four_button:before,
-.teampage .info_card .operator .four_button:after {
-  display: table;
-  content: " ";
-}
-.teampage .info_card .operator .four_button:after {
-  clear: both;
-}
-.teampage .info_card .operator .four_button .op_button {
-  display: block;
-  float: left;
-  margin-left: 8px;
-}
-.teampage .info_card .operator .four_button .op_button:first-child {
-  margin-left: 20px;
+  margin-left: 0;
+  float: none;
+  display: initial;
 }
 .teampage .member_card {
   height: 100px;

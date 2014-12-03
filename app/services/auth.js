@@ -85,7 +85,6 @@ var registeredTasks = {
     team:['leader', 'member']
   },
   sponsorProvoke: {
-    company: ['hr'],
     team: ['leader']
   },
   joinTeam: function (role) {
@@ -121,6 +120,9 @@ var registeredTasks = {
   editTeamFamily: {
     company: ['hr'],
     team: ['leader']
+  },
+  belongToCompany: {
+    company: ['hr','member']
   }
 };
 

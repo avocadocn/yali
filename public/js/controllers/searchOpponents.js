@@ -537,6 +537,7 @@ searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope',
             $scope.molds = data.molds;
             $scope.moldsgot = true;
             $scope.mold = $scope.molds[0].name;
+            $scope.user_cid = data.cid;
           }
         });
       }
@@ -651,11 +652,11 @@ searchOpponents.controller('ProvokeController',['$http', '$scope', '$rootScope',
           alertify.alert('挑战发起失败');
         }                
       }
-      _data.team_opposite_id =$scope.team_opposite._id
+      _data.team_opposite_id =$rootScope.team_opposite._id;
       Campaign.sponsor('/group/provoke/'+$rootScope.myTeam._id,_data,callback);
     };
     
-    $scope.selectMold=function(){
+    $scope.selectMold=function(name){
       $scope.mold = name;
     };
 }]);

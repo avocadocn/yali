@@ -15,7 +15,7 @@ form(name="provoke_form" novalidate)
             input.dl_modal_input.dl-form-control.dl_modal_input_container(type="text" name="mold" ng-model="mold" data-toggle="dropdown" readonly required)
             button.input-group-addon.no_radius(type='button' data-toggle="dropdown")
               i.fa.fa-angle-down
-            ul.dropdown-menu.dropdown-menu-right.no_radius(ng-if="user_cid==='#{cid}'" role="menu")
+            ul.dropdown-menu.dropdown-menu-right.no_radius(ng-if="user_cid===opposite_cid" role="menu")
               li(ng-repeat="select_mold in molds")
                 a(ng-click="selectMold(select_mold.name)") {{select_mold.name}}
       .dl_modal_container

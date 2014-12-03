@@ -25,23 +25,14 @@ block contentExt
                   p.text.brief(ng-cloak ng-if="!isEditingInfo") {{team.brief}}
                   textarea.input_brief(name="brief" ng-cloak ng-if="isEditingInfo" ng-model="teamInfo.brief" mix-maxlength="280")
                   p.error(ng-if="infoForm.brief.$invalid" ng-cloak) 小队简介不能超过140个字。
-              .operator
-                .team_leader.four_button(ng-if="role==='LEADER'" ng-cloak)
-                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
-                  a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
-                  a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
-                  button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
-                .team_member.one_button(ng-if="role==='MEMBER'" ng-cloak)
-                  button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
-                .company_member.one_button(ng-if="role==='PARTNER'" ng-cloak)
-                  button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
-                .company_hr.four_button(ng-if="role==='HR'" ng-cloak)
-                  button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
-                  //- a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
-                  a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
-                  button.op_button.button_gray(ng-if="allow.closeTeam" ng-click="closeTeam()" ng-cloak) 关闭小队
-                .other_company_hr.one_button(ng-if="role==='GUESTHR' || role==='GUESTLEADER'" ng-cloak)
-                  button.op_button.button_red(data-toggle="modal" data-target="#sponsorProvokeModel" ng-cloak) 发起挑战
+              .operator(ng-class="{'one_button': is_one_button===true}")
+                button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
+                a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
+                button.op_button.button_red(ng-if="allow.dongIt" data-toggle="modal" data-target="#sponsorProvokeModel" ng-cloak) 发起挑战
+                a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
+                button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
+                button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
+                button.op_button.button_gray(ng-if="allow.closeTeam" ng-click="closeTeam()" ng-cloak) 关闭小队
 
             .card.member_card#member_card
               .header
@@ -49,12 +40,12 @@ block contentExt
                 h3.title 队员
                 span.count(ng-click="openMemberModal()" ng-cloak title="查看全部队员") {{team.memberCount}}
                   i.fa.fa-angle-right
-              .members(bs-popover ng-if="role==='LEADER' || role==='MEMBER' || role==='PARTNER' || role==='HR'")
+              .members(bs-popover ng-if="allow.belongToCompany")
                 .leader_box(ng-if="team.leaders.length > 0")
                   img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50" ng-Mouseenter="showUserCard(leader._id, leader._id + 'member_card')" id="pop{{leader._id}}member_card" rel="popover")
                 .member_box
                   img.member(ng-repeat="member in team.members" ng-src="{{member.photo}}/50/50" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id="pop{{member._id}}member_card" rel="popover")
-              .members(ng-if="role==='GUESTHR' || role==='GUESTLEADER' || role==='GUEST'")
+              .members(ng-if="!allow.belongToCompany")
                 .leader_box(ng-if="team.leaders.length > 0")
                   img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50")
                 .member_box
@@ -95,7 +86,7 @@ block contentExt
                   a.prev(data-calendar-nav="prev" href="javascript:void(0)") &lt;
                   span.calendar_date.calendar_title#calendar_title
                   a.next(data-calendar-nav="next" href="javascript:void(0)") &gt;
-              #calendar.calendar_body(ng-class="{'no_pointer': role==='GUESTHR' || role==='GUESTLEADER' || role==='GUEST'}")
+              #calendar.calendar_body(ng-class="{'no_pointer': !allow.belongToCompany}")
               .calendar_footer
                 .instruction
                   .item
@@ -108,7 +99,7 @@ block contentExt
                     span.circle.circle_many_campaign
                     span.text 2个以上
 
-      .user_timeline.team_timeline(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" when-scrolled="loadMore" select-class="date_separator")
+      .user_timeline.team_timeline(ng-if="allow.belongToCompany" when-scrolled="loadMore" select-class="date_separator")
         .dl_timeline(campaign-card-container)
           .spine
           .year(ng-repeat ="years in timelines")
@@ -128,19 +119,20 @@ block contentExt
 
     .side_panel
       .timeline_control(ng-init="nowYear='timeline0'")
-        .control_year(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'")
-          span.year(ng-class="{'active_year':nowYear=='timeline0'}" ng-click="scrollTo('timeline0_0')") 概况
-        .control_year(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-repeat ="years in timelines" ng-cloak)
-          span.year(ng-click="scrollTo(years.year+'_'+years.month[0].month)" ng-class="{'active_year':nowYear==years.year}") {{years.year}}
-          div(ng-if="nowYear==years.year" ng-class="{'active_year_months': nowYear==years.year}")
-            a.month(ng-repeat ="month in years.month" ng-class="{'active_month':nowMonth==month.month}" ng-click="scrollTo(years.year+'_'+month.month)") {{month.month | monthPrefixZero}}月
-        .control_year(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'")
-          span.year(ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')") 最初
+        div(ng-if="allow.belongToCompany")
+          .control_year
+            span.year(ng-class="{'active_year':nowYear=='timeline0'}" ng-click="scrollTo('timeline0_0')") 概况
+          .control_year(ng-repeat ="years in timelines" ng-cloak)
+            span.year(ng-click="scrollTo(years.year+'_'+years.month[0].month)" ng-class="{'active_year':nowYear==years.year}") {{years.year}}
+            div(ng-if="nowYear==years.year" ng-class="{'active_year_months': nowYear==years.year}")
+              a.month(ng-repeat ="month in years.month" ng-class="{'active_month':nowMonth==month.month}" ng-click="scrollTo(years.year+'_'+month.month)") {{month.month | monthPrefixZero}}月
+          .control_year
+            span.year(ng-class="{'active_year':nowYear=='timeline1'}" ng-click="scrollTo('timeline1_0')") 最初
         .button_group
           .icon_button(ng-click="anchorTo('home_court_card')" title="主场"): i.fa.fa-map-marker.fa-lg.icon
           .icon_button(ng-click="anchorTo('calendar_card')" title="日历"): span.dl_icons.icon_calendar_red.icon
           .icon_button(ng-click="anchorTo('member_card')" title="成员"): span.dl_icons.icon_team.icon
-          a.icon_button(ng-if="role!=='GUESTHR' && role!=='GUESTLEADER' && role!=='GUEST'" ng-href="/photoAlbum/team/{{team._id}}/listView" title="相册"): i.fa.fa-image.fa-lg.icon
+          a.icon_button(ng-if="allow.belongToCompany" ng-href="/photoAlbum/team/{{team._id}}/listView" title="相册"): i.fa.fa-image.fa-lg.icon
 
     .modal.fade#sponsorCampaignModel(ng-controller="SponsorController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
       include ../campaign/campaign_modal_base
@@ -155,11 +147,11 @@ block contentExt
             h3.title 队员
             span.subtitle ({{teamMembers.length}})
             button.close.dl_close(data-dismiss="modal" aria-hidden="true") &times;
-          .modal_body(ng-if="role==='LEADER' || role==='MEMBER' || role==='PARTNER' || role==='HR'" bs-popover ng-class="{'loading': loadingMembers}")
+          .modal_body(ng-if="allow.belongToCompany" bs-popover ng-class="{'loading': loadingMembers}")
             .member(ng-repeat="member in teamMembers" ng-Mouseenter="showUserCard(member._id, member._id + 'member_modal')" id="pop{{member._id}}member_modal" rel="popover")
               img.photo(ng-src="{{member.photo}}")
               p.nickname(title="{{member.nickname}}") {{member.nickname}}
-          .modal_body(ng-if="role==='GUESTHR' || role==='GUESTLEADER' || role==='GUEST'" ng-class="{'loading': loadingMembers}")
+          .modal_body(ng-if="!allow.belongToCompany" ng-class="{'loading': loadingMembers}")
             .member(ng-repeat="member in teamMembers")
               img.photo(ng-src="{{member.photo}}")
               p.nickname(title="{{member.nickname}}") {{member.nickname}}

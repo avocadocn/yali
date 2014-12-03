@@ -19,7 +19,8 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
       $scope.allow = data.allow;
       $scope.isShowHomeCourts = data.isShowHomeCourts;
       $scope.role = data.role;
-      $rootScope.role = data.role;
+      $scope.is_one_button = data.is_one_button;
+      $rootScope.canProvke = data.allow.dongIt || data.allow.sponsorProvoke;
 
       if ($scope.role==='GUESTHR' || $scope.role==='GUESTLEADER' || $scope.role==='GUEST') {
         $('#calendar').undelegate('.cal-month-day', 'click');
@@ -630,11 +631,12 @@ donler.controller('ProvokeController', ['$http', '$scope', '$rootScope', 'Campai
       }
     });
     
-    $rootScope.$watch('role',function(data){
-      if(data==='GUESTLEADER'){
+    $rootScope.$watch('canProvke',function(data){
+      if(data){
         Campaign.getLedTeams($rootScope.teamId, function(status, teamdata) {
           if (!status) {
             $scope.ledTeams = teamdata.teams;
+            $scope.opposite_cid = teamdata.opposite_cid;
             if ($scope.ledTeams.length === 1) {
               $scope.selcet_team(0);
             }else{

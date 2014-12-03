@@ -19,7 +19,8 @@ donler.factory('Team', ['$http', function($http) {
               team: data.team,
               allow: data.allow,
               isShowHomeCourts: data.isShowHomeCourts,
-              role: data.role
+              role: data.role,
+              is_one_button:data.is_one_button
             });
           } else {
             callback('error');
