@@ -328,7 +328,7 @@ exports.getLedTeams = function(req,res) {
       return res.send({'result':0,'msg':'获取带领小队失败'});
     }
     else
-     return res.send({'result':1,'teams':companyGroups,'opposite_cid':req.companyGroup.cid.toString()});
+     return res.send({'result':1,'teams':companyGroups,'opposite_cid':req.companyGroup?req.companyGroup.cid.toString():''});
   });
 };
 

@@ -140,12 +140,10 @@ exports.getCommentById = function (req, res, next) {
     });
 };
 
+
+
 //获取留言
 exports.getComment = function (req, res) {
-  if (req.role === 'GUEST') {
-    return res.send(403);
-  }
-
   Comment.getComments({
     hostType: req.params.commentType,
     hostId: req.params.hostId
@@ -161,8 +159,6 @@ exports.getComment = function (req, res) {
       res.send({'comments': comments, nextStartDate: nextStartDate, 'user': {'_id': req.user._id}});
     });
   });
-
-
 }
 
 exports.canPublishComment = function (req, res, next) {
@@ -196,10 +192,6 @@ exports.canPublishComment = function (req, res, next) {
 
 //发表留言
 exports.setComment = function (req, res) {
-  // 非Guest、非HR都能发表
-  if (req.role === 'GUEST' || req.role === 'HR') {
-    return res.send(403);
-  }
   var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
   var content = req.body.content;
   var host_type = req.body.host_type.toLowerCase();
