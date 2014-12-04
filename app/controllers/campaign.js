@@ -2011,7 +2011,6 @@ exports.dealProvoke = function(req,res,next) {
     res.status(403);
     next('forbidden');
   }
-  // });
 
   //确认状态变更
   var status = req.body.responseStatus;

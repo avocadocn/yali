@@ -166,7 +166,9 @@ exports.ScoreBoard = {
         if (!scoreBoard) {
           res.send({ result: 0, msg: '找不到该组件' });
         } else {
-
+          if (scoreBoard.status === 2) {
+            return res.status(400).send({msg: '比分已确认。' });
+          }
           var leaderTeam;
           var opponentTid;
 
@@ -190,7 +192,10 @@ exports.ScoreBoard = {
               }
             }
           }
-          scoreBoard.confirm(req.body.data);
+          if(confirmIndex.length==0){
+            return res.status(400).send({msg: '没有确认该比分的权限' });
+          }
+          scoreBoard.confirm(confirmIndex);
           scoreBoard.save(function (err) {
             if (err) {
               next(err);
