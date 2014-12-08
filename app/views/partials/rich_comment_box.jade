@@ -42,24 +42,24 @@
         .pull-right
           a.comment_date.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" ng-click="getReport($index)") 举报
           span.comment_divider &nbsp;
-          a.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
+          //- a.text(ng-click="toggleComment(comment)") 回复({{comment.reply_count || 0}})
           span.comment_divider(ng-if="comment.delete_permission") &nbsp;
           a.comment_date.text(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
-      .replies(ng-if="comment.replying")
-        if role === 'MEMBER' || role === 'LEADER' || role==='PARTNER'
-          form.reply_form(name="reply_form")
-            input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
-            button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
-        p.reply(ng-repeat="reply in comment.replies")
-          a(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.poster._id, reply.poster.nickname)")
-            span {{reply.poster.nickname}}
-          span &nbsp;:&nbsp;
-          span(ng-if="reply.reply_to._id!==comment.poster._id") 回复 {{reply.reply_to.nickname}}:&nbsp;
-          span {{reply.content}}
-          span &nbsp;({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})
-          span &nbsp;
-          a(ng-if="reply.delete_permission" ng-click="removeReply(comment, $index)")
-            span 删除
+      //- .replies(ng-if="comment.replying")
+      //-   if role === 'MEMBER' || role === 'LEADER' || role==='PARTNER'
+      //-     form.reply_form(name="reply_form")
+      //-       input.reply_input(type="text" ng-model="comment.new_reply" placeholder="回复 {{now_reply_to.nickname}}" required)
+      //-       button.dl_btn.dl_btn_submit(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
+      //-   p.reply(ng-repeat="reply in comment.replies")
+      //-     a(href="javascript:void(0);" ng-click="setReplyTo(comment, reply.poster._id, reply.poster.nickname)")
+      //-       span {{reply.poster.nickname}}
+      //-     span &nbsp;:&nbsp;
+      //-     span(ng-if="reply.reply_to._id!==comment.poster._id") 回复 {{reply.reply_to.nickname}}:&nbsp;
+      //-     span {{reply.content}}
+      //-     span &nbsp;({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})
+      //-     span &nbsp;
+      //-     a(ng-if="reply.delete_permission" ng-click="removeReply(comment, $index)")
+      //-       span 删除
 
   ul.pager(ng-if="pages[0].has_next===true")
     li.previous

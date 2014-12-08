@@ -356,9 +356,9 @@ exports.groupSelect = function(req, res) {
         companyGroup.cname = company.info.name;
         companyGroup.gid = selected_groups[i]._id;
         companyGroup.group_type = selected_groups[i].group_type;
-        companyGroup.entity_type = selected_groups[i].entity_type;
+        // companyGroup.entity_type = selected_groups[i].entity_type;
         companyGroup.name = tname;
-        companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type.toLowerCase() + '_on.png';
+        companyGroup.logo = '/img/icons/group/' + selected_groups[i].entity_type.toLowerCase() + '_on.png';
 
         companyGroup.save(function(err) {
           if (err) {
@@ -373,19 +373,19 @@ exports.groupSelect = function(req, res) {
           'name': tname,
           'id': companyGroup._id
         });
-        var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
-        var entity = new Entity();
+        // var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
+        // var entity = new Entity();
 
-        //增强组件目前只能存放这三个字段
-        entity.tid = companyGroup._id; //小队id
-        entity.cid = req.session.company_id; //公司id
-        entity.gid = selected_groups[i]._id; //组件类型id
+        // //增强组件目前只能存放这三个字段
+        // entity.tid = companyGroup._id; //小队id
+        // entity.cid = req.session.company_id; //公司id
+        // entity.gid = selected_groups[i]._id; //组件类型id
 
-        entity.save(function(err) {
-          if (err) {
-            console.log(err);
-          }
-        });
+        // entity.save(function(err) {
+        //   if (err) {
+        //     console.log(err);
+        //   }
+        // });
       }
 
       company.save(function(s_err) {
@@ -427,7 +427,7 @@ exports.saveGroup = function(req, res) {
       companyGroup.cname = company.info.name;
       companyGroup.gid = selected_group._id;
       companyGroup.group_type = selected_group.group_type;
-      companyGroup.entity_type = selected_group.entity_type;
+      // companyGroup.entity_type = selected_group.entity_type;
       companyGroup.name = req.body.tname;
       companyGroup.logo = '/img/icons/group/' + selected_group.entity_type.toLowerCase() + '_on.png';
       companyGroup.city = company.info.city;
@@ -444,19 +444,19 @@ exports.saveGroup = function(req, res) {
         'name': req.body.tname,
         'id': companyGroup._id
       });
-      var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
-      var entity = new Entity();
+      // var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
+      // var entity = new Entity();
 
-      //增强组件目前只能存放这三个字段
-      entity.tid = companyGroup._id; //小队id
-      entity.cid = companyId; //组件类型id
-      entity.gid = selected_group._id; //公司id
+      // //增强组件目前只能存放这三个字段
+      // entity.tid = companyGroup._id; //小队id
+      // entity.cid = companyId; //组件类型id
+      // entity.gid = selected_group._id; //公司id
 
-      entity.save(function(err) {
-        if (err) {
-          console.log(err);
-        }
-      });
+      // entity.save(function(err) {
+      //   if (err) {
+      //     console.log(err);
+      //   }
+      // });
 
       company.save(function(s_err) {
         if (s_err) {
@@ -1149,7 +1149,7 @@ exports.getCompanyTeamsInfo = function(req, res) {
                   'logo': team.logo,
                   'active': team.active,
                   'count': team.count,
-                  'entity_type': team.entity_type,
+                  // 'entity_type': team.entity_type,
                   'leader': team.leader,
                   'member': team.member,
                   'name': team.name,
@@ -1536,7 +1536,7 @@ exports.appointLeader = function(req, res) {
                   gid: company_group.gid,
                   _id: company_group._id,
                   group_type: company_group.group_type,
-                  entity_type: company_group.entity_type,
+                  // entity_type: company_group.entity_type,
                   name: company_group.name,
                   leader: true,
                   logo: company_group.logo

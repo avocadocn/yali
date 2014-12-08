@@ -1207,6 +1207,7 @@ exports.quitGroup = function (req, res){
             User.findOne({_id: uid},
               function (err, user){
                 if(user){
+                  //此处逻辑有错误
                   //从user的group的team中删除此小队
                   var team_index = model_helper.arrayObjectIndexOf(user.team,tid,'_id');
                   if(team_index>-1){
