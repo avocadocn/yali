@@ -535,6 +535,7 @@ exports.resultConfirm = function(req,res,olid,team,competition_id,theme){
 var getPublicMessage = function(req,res,cid){
   var callbackA = function(message_contents,other,req,res){
     if(message_contents.length > 0){
+      console.log(message_contents.length)
       var mcs = [];
       for(var i = 0; i < message_contents.length; i ++){
         mcs.push({
@@ -564,6 +565,7 @@ var getPublicMessage = function(req,res,cid){
               new_mcs.push(mcs[j]);
             }
           }
+          console.log(new_mcs.length)
           if(new_mcs.length > 0){
             var counter = {'i':0};
             async.whilst(
@@ -593,6 +595,7 @@ var getPublicMessage = function(req,res,cid){
                   return res.send({'result':1,'msg':'FAILURED'});
                 }else{
                   console.log('USER_ALREADY_HAS_MSG_AND_NEW');
+                  console.log(counter.i)
                   getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
                 }
               }
@@ -667,6 +670,7 @@ var getPublicMessage = function(req,res,cid){
   }else{
     _condition = {'$or':[{'type':'company','company_id':cid},{'type':'global'}],'post_date':{'$gte':req.user.register_date}};//用户获取公司和系统消息
   }
+  console.log(_condition)
   var paramA = {
     'collection':MessageContent,
     'type':1,
