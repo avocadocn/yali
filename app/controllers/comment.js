@@ -16,7 +16,8 @@ var mongoose = require('mongoose'),
   moment = require('moment'),
   model_helper = require('../helpers/model_helper'),
   auth = require('../services/auth'),
-  photo_album_ctrl = require('./photoAlbum.js');
+  photo_album_ctrl = require('./photoAlbum.js'),
+  async = require('async');
 
 
 var shieldTip = "该评论已经被系统屏蔽";
@@ -226,16 +227,70 @@ exports.setComment = function (req, res) {
       console.log('COMMENT_PUSH_ERROR', err);
       return res.send("{{'COMMENT_PUSH_ERROR'|translate}}");
     } else {
+      res.send(202,{'msg':'SUCCESS','comment':comment});
+      //更新campaign & users
       if (host_type === "campaign" || host_type === "campaign_detail" || host_type === "competition") {
-        Campaign.findByIdAndUpdate(host_id, {'$inc': {'comment_sum': 1}}, function (err, message) {
-          if (err || !message) {
-            return res.send({'msg': 'ERROR', 'comment': []});
-          } else {
-            return res.send({'msg': 'SUCCESS', 'comment': comment});
+        Campaign.findById(host_id,function(err, campaign){
+          campaign.comment_sum++;
+          //如果不在已评论过的人列表
+          if(model_helper.arrayObjectIndexOf(campaign.commentMembers, req.user._id, '_id') === -1){
+            campaign.commentMembers.push({
+              '_id': req.user._id,
+              'nickname': req.user.nickname,
+              'photo': req.user.photo
+            });
           }
+          campaign.save(function(err){
+            if(err){
+              console.log('campaign save error:',err);
+            }
+          });
+
+          //users操作
+          var revalentUids = [];
+          for(var i = 0; i<campaign.members.length; i++){
+            revalentUids.push(campaign.members[i]._id);
+          }
+          for(var i = 0; i<campaign.commentMembers.length;i++){
+            revalentUids.push(campaign.commentMembers[i]._id);
+          }
+          //socket todo
+          var arrayMaxLength = 20;
+          User.find({'_id':{'$in':revalentUids}},function(err,users){
+            if(err){
+              console.log(err);
+            }else{
+              async.map(users,function(user,callback){
+                var campaignIndex = model_helper.arrayObjectIndexOf(user.latest_comment_campaigns,host_id,'_id');
+                if(campaignIndex === -1){//如果user中没有
+                  //放到最前,数组长度到max值时去掉最后面的campaign
+                  user.latest_comment_campaigns.unshift({
+                    '_id': host_id,
+                    'unread': 0
+                  });
+                  if(user.latest_comment_campaigns.length>arrayMaxLength){
+                    user.latest_comment_campaigns.pop();
+                  }
+                }else{//如果存在于user中
+                  //更新到最前,unread数增加
+                  user.latest_comment_campaigns[campaignIndex].unread++;
+                  var campaignNeedUpdate = user.latest_comment_campaigns.splice(campaignIndex,1);
+                  user.latest_comment_campaigns.unshift(campaignNeedUpdate[0]);
+                }
+                user.save(function(err){
+                  if(err){
+                    console.log('user save error:',err);
+                  }else{
+                    callback();
+                  }
+                });
+              },function(err, results) {
+                console.log('done');
+                return;
+              })
+            }
+          })
         });
-      } else {
-        return res.send({'msg': 'SUCCESS', 'comment': comment});
       }
     }
   });

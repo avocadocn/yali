@@ -2,7 +2,7 @@
 .dl_message_box(ng-show = '!loading')
   .message_panel.dl_center(ng-show="all_messages.length==0" ng-cloak)
     span (＞人＜;)您的收件箱暂时木有消息哦~
-  .message_panel(ng-repeat="all_message in all_messages" ng-if="$index >= page_all.up && $index <= page_all.down" ng-click="setToRead($index)")
+  .message_panel(ng-repeat="all_message in all_messages track by $index" ng-if="$index >= page_all.up && $index <= page_all.down" ng-click="setToRead($index)")
     .dl_row.clearfix.line_left
       if provider == 'user'
         .dl_message_head
