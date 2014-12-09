@@ -145,7 +145,7 @@ var UserSchema = new Schema({
         ref: 'Campaign'
     },
     last_comment_time: Date,
-    commentCampaigns: [latestCommentCampaign],//有新评论的讨论列表
+    commentCampaigns: [latestCommentCampaign],//参加了的讨论列表
     unjoinedCommentCampaigns: [latestCommentCampaign] //未参加的讨论列表
 });
 
