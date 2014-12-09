@@ -41,7 +41,7 @@ var _team = new Schema({
     logo: String
 });
 
-var latest_comment_campaign = new Schema({
+var latestCommentCampaign = new Schema({
     _id: Schema.Types.ObjectId,
     unread: {
         type: Number,
@@ -145,7 +145,8 @@ var UserSchema = new Schema({
         ref: 'Campaign'
     },
     last_comment_time: Date,
-    latest_comment_campaigns:[latest_comment_campaign]
+    commentCampaigns: [latestCommentCampaign],//有新评论的讨论列表
+    unjoinedCommentCampaigns: [latestCommentCampaign] //未参加的讨论列表
 });
 
 /**

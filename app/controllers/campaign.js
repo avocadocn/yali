@@ -1967,19 +1967,28 @@ exports.joinCampaign = function (req, res) {
   if (!joinResult.success) {
     return res.send({ result: 0, msg: joinResult.msg });
   } else {
+    var campaignIndex = model_helper.arrayObjectIndexOf(req.user.unjoinedCommentCampaigns,campaign._id,'_id');
+    if(campaignIndex>-1){
+      var campaignNeedUpdate = req.user.unjoinedCommentCampaigns.splice(campaignIndex,1);
+      req.user.commentCampaigns.push(campaignNeedUpdate[0]);
+    }
+    req.user.save(function (err) {
+      if (err)
+        console.log(err);
+    })
     campaign.save(function (err) {
       if (err) {
         console.log(err);
         return res.send({ result: 0, msg: '参加失败，请重试' });
       } else {
         var logBody = {
-        'log_type':'joinCampaign',
-        'userid' : req.user._id,
-        'cid': req.user.cid,
-        'role' : 'user',
-        'campaignid' :campaign._id
-      }
-      logController.addLog(logBody);
+          'log_type':'joinCampaign',
+          'userid' : req.user._id,
+          'cid': req.user.cid,
+          'role' : 'user',
+          'campaignid' :campaign._id
+        }
+        logController.addLog(logBody);
         return res.send({ result: 1 });
       }
     });
@@ -2005,6 +2014,15 @@ exports.quitCampaign = function (req, res) {
 
   var quitResult = campaign.quit(req.user._id);
   if (quitResult) {
+    var campaignIndex = model_helper.arrayObjectIndexOf(req.user.commentCampaigns,campaign._id,'_id');
+    if(campaignIndex > -1){
+      var campaignNeedUpdate = req.user.commentCampaigns.splice(campaignIndex,1);
+      req.user.unjoinedCommentCampaigns.push(campaignNeedUpdate[0]);
+      req.user.save(function (err) {
+        if (err)
+          console.log(err);
+      });
+    }
     campaign.save(function (err) {
       if (err) {
         res.send({ result: 0, msg: '退出活动失败，请重试。' });

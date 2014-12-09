@@ -232,13 +232,19 @@ exports.setComment = function (req, res) {
       if (host_type === "campaign" || host_type === "campaign_detail" || host_type === "competition") {
         Campaign.findById(host_id,function(err, campaign){
           campaign.comment_sum++;
+          var poster = {
+            '_id': req.user._id,
+            'nickname': req.user.nickname,
+            'photo': req.user.photo
+          }
+          campaign.latestComment = {
+            '_id': comment._id,
+            'poster': poster,
+            'content': content
+          };
           //如果不在已评论过的人列表
           if(model_helper.arrayObjectIndexOf(campaign.commentMembers, req.user._id, '_id') === -1){
-            campaign.commentMembers.push({
-              '_id': req.user._id,
-              'nickname': req.user.nickname,
-              'photo': req.user.photo
-            });
+            campaign.commentMembers.push(poster);
           }
           campaign.save(function(err){
             if(err){
@@ -256,26 +262,48 @@ exports.setComment = function (req, res) {
           }
           //socket todo
           var arrayMaxLength = 20;
-          User.find({'_id':{'$in':revalentUids}},function(err,users){
+          User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1},function(err,users){
             if(err){
               console.log(err);
             }else{
               async.map(users,function(user,callback){
-                var campaignIndex = model_helper.arrayObjectIndexOf(user.latest_comment_campaigns,host_id,'_id');
-                if(campaignIndex === -1){//如果user中没有
-                  //放到最前,数组长度到max值时去掉最后面的campaign
-                  user.latest_comment_campaigns.unshift({
-                    '_id': host_id,
-                    'unread': 0
-                  });
-                  if(user.latest_comment_campaigns.length>arrayMaxLength){
-                    user.latest_comment_campaigns.pop();
+                //已参加
+                if(campaign.whichUnit(user._id)) {
+                  var campaignIndex = model_helper.arrayObjectIndexOf(user.commentCampaigns,host_id,'_id');
+                  if(campaignIndex === -1){//如果user中没有
+                    //放到最前,数组长度到max值时去掉最后面的campaign
+                    user.commentCampaigns.unshift({
+                      '_id': host_id,
+                      'unread': 0
+                    });
+                    if(user.commentCampaigns.length>arrayMaxLength){
+                      user.commentCampaigns.length = arrayMaxLength;
+                    }
+                  }else{//如果存在于user中
+                    //更新到最前,如果不是自己发的,unread数增加
+                    if(user._id.toString() != req.user._id.toString())
+                      user.commentCampaigns[campaignIndex].unread++;
+                    var campaignNeedUpdate = user.commentCampaigns.splice(campaignIndex,1);
+                    user.commentCampaigns.unshift(campaignNeedUpdate[0]);
                   }
-                }else{//如果存在于user中
-                  //更新到最前,unread数增加
-                  user.latest_comment_campaigns[campaignIndex].unread++;
-                  var campaignNeedUpdate = user.latest_comment_campaigns.splice(campaignIndex,1);
-                  user.latest_comment_campaigns.unshift(campaignNeedUpdate[0]);
+                }else{
+                  var campaignIndex = model_helper.arrayObjectIndexOf(user.unjoinedCommentCampaigns,host_id,'_id');
+                  if(campaignIndex === -1){//如果user中没有
+                    //放到最前,数组长度到max值时去掉最后面的campaign
+                    user.unjoinedCommentCampaigns.unshift({
+                      '_id': host_id,
+                      'unread': 0
+                    });
+                    if(user.unjoinedCommentCampaigns.length>arrayMaxLength){
+                      user.unjoinedCommentCampaigns.length = arrayMaxLength;
+                    }
+                  }else{//如果存在于user中
+                    //更新到最前,如果不是自己发的,unread数增加
+                    if(user._id.toString() != req.user._id.toString())
+                      user.unjoinedCommentCampaigns[campaignIndex].unread++;
+                    var campaignNeedUpdate = user.unjoinedCommentCampaigns.splice(campaignIndex,1);
+                    user.unjoinedCommentCampaigns.unshift(campaignNeedUpdate[0]);
+                  }
                 }
                 user.save(function(err){
                   if(err){
