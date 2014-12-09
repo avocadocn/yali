@@ -412,10 +412,19 @@
 .campaign_detail .member_card .component_body {
   padding-bottom: 0;
 }
-.campaign_detail .member_card .member_list {
-  margin-top: 10px;
+.campaign_detail .member_card .leader {
+  position: absolute;
+  background-image: url("/img/sprites/dl_sprites.png");
+  width: 19px;
+  height: 13px;
+  top: -12px;
+  left: 7px;
+  background-position: -284px -42px;
+  background-repeat: no-repeat;
 }
 .campaign_detail .member_card .member {
+  position: relative;
+  float: left;
   margin-right: 9px;
   margin-bottom: 20px;
 }

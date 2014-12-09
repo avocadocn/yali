@@ -7,8 +7,8 @@ module.exports = function(app) {
   app.get('/campaign/getCampaigns/:pageType/:pageId/:campaignType/:campaignPage/:campaignBlock', authorization.listAuthorize, campaign.getCampaigns);
   app.post('/campaign/cancel/:campaignId', campaign.cancelCampaign);
   app.get('/campaign/detail/:campaignId', campaign.addRichCommentIfNot, campaign.renderCampaignDetail);
-  app.get('/campaign/:campaignId/pageData', campaign.getCampaignDataForDetailPage);
-  app.get('/campaign/:campaignId/members', campaign.getMembers);
+  app.get('/campaign/:campaignId/pageData', campaign.getCampaignTeams, campaign.getCampaignDataForDetailPage);
+  app.get('/campaign/:campaignId/members',campaign.getCampaignTeams, campaign.getMembers);
   app.get('/campaign/:campaignId/notices', campaign.getNotices);
   app.post('/campaign/edit/:campaignId', campaign.editCampaign);
 

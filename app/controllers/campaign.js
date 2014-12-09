@@ -1528,8 +1528,39 @@ exports.getMembers = function (req, res) {
 
   var resUnits = [];
   campaign.campaign_unit.forEach(function (unit) {
+
+    var members = [];
+    unit.member.forEach(function(member) {
+      members.push({
+        _id: member._id,
+        nickname: member.nickname,
+        photo: member.photo
+      });
+    });
+    // 判断是否是队长
+    if (req.teams) {
+      for (var i = 0; i < members.length; i++) {
+        var member = members[i];
+        for (var j = 0; j < req.teams.length; j++) {
+          var team = req.teams[j];
+          var index = model_helper.arrayObjectIndexOf(team.leader, member._id, '_id');
+          if (index !== -1) {
+            member.isLeader = true;
+            break;
+          }
+        }
+      }
+    }
+    members.sort(function (a, b) {
+      if (!a.isLeader && b.isLeader) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
     var resUnit = {
-      members: unit.member
+      members: members
     };
     if (unit.team) {
       resUnit.name = unit.team.name;
@@ -1541,6 +1572,21 @@ exports.getMembers = function (req, res) {
 
   res.send({ result: 1, units: resUnits, memberCount: campaign.members.length });
 
+};
+
+exports.getCampaignTeams = function (req, res, next) {
+  var campaign = req.campaign;
+  CompanyGroup.find({
+    _id: campaign.tid
+  }).exec()
+    .then(function (teams) {
+      req.teams = teams;
+      next();
+    })
+    .then(null, function (err) {
+      console.log(err);
+      next();
+    });
 };
 
 exports.getCampaignDataForDetailPage = function (req, res) {
@@ -1593,7 +1639,38 @@ exports.getCampaignDataForDetailPage = function (req, res) {
   var isStart = campaign.start_time < Date.now();
   var isEnd = campaign.end_time < Date.now();
   var isDeadline = campaign.deadline < Date.now();
-  var membersForCard = campaign.members.slice(0, 10);
+  var campaignMembers = campaign.members.slice(0, 10);
+  var membersForCard = [];
+  campaignMembers.forEach(function (member) {
+    membersForCard.push({
+      _id: member._id,
+      nickname: member.nickname,
+      photo: member.photo
+    });
+  });
+  // 判断是否是队长
+  if (req.teams) {
+    for (var i = 0; i < membersForCard.length; i++) {
+      var member = membersForCard[i];
+      for (var j = 0; j < req.teams.length; j++) {
+        var team = req.teams[j];
+        var index = model_helper.arrayObjectIndexOf(team.leader, member._id, '_id');
+        if (index !== -1) {
+          member.isLeader = true;
+          break;
+        }
+      }
+    }
+  }
+  membersForCard.sort(function (a, b) {
+    if (!a.isLeader && b.isLeader) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+
   //没关掉并且是比赛，验证需不需要应答
   var isWaitingReply = (ct === 4 || ct === 5 || ct === 7) && campaign.active ? !campaign.campaign_unit[1].start_confirm : false;
 
