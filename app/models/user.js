@@ -41,6 +41,13 @@ var _team = new Schema({
     logo: String
 });
 
+var latest_comment_campaign = new Schema({
+    _id: Schema.Types.ObjectId,
+    unread: {
+        type: Number,
+        default: 0
+    }
+});
 /**
  * User Schema
  */
@@ -137,7 +144,8 @@ var UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Campaign'
     },
-    last_comment_time: Date
+    last_comment_time: Date,
+    latest_comment_campaigns:[latest_comment_campaign]
 });
 
 /**
