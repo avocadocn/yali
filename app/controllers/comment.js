@@ -209,6 +209,7 @@ exports.setComment = function (req, res) {
   comment.content = content;
   comment.host_id = host_id;
   comment.poster = poster;
+  comment.create_date = Date.now();
 
   if (req.session.uploadData) {
     // 如果有上传照片的数据，依然要判断是否过期
@@ -240,7 +241,8 @@ exports.setComment = function (req, res) {
           campaign.latestComment = {
             '_id': comment._id,
             'poster': poster,
-            'content': content
+            'content': content,
+            'createDate': comment.create_date
           };
           //如果不在已评论过的人列表
           if(model_helper.arrayObjectIndexOf(campaign.commentMembers, req.user._id, '_id') === -1){
