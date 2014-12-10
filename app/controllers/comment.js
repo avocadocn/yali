@@ -17,7 +17,8 @@ var mongoose = require('mongoose'),
   model_helper = require('../helpers/model_helper'),
   auth = require('../services/auth'),
   photo_album_ctrl = require('./photoAlbum.js'),
-  async = require('async');
+  async = require('async'),
+  socketClient = require('../services/socketClient');
 
 
 var shieldTip = "该评论已经被系统屏蔽";
@@ -263,6 +264,7 @@ exports.setComment = function (req, res) {
             revalentUids.push(campaign.commentMembers[i]._id);
           }
           //socket todo
+          // socketClient.connect();
           var arrayMaxLength = 20;
           User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1},function(err,users){
             if(err){
