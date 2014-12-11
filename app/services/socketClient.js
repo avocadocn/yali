@@ -9,7 +9,7 @@ var tokenSecret = 'donler';
 var getToken = function(){
   var token = jwt.sign({
     type: "server",
-    id: 'server',
+    id: 'YaliServer',
     exp: moment().add('days', 365).valueOf()
   }, tokenSecret);
   return token;
@@ -20,6 +20,6 @@ socket.on('connect',function(){
   console.log('connected to socket server');
 });
 
-exports.comment = function(uids,campaign,comment){
+exports.pushComment = function(uids,campaign,comment){
   socket.emit('commentFromServer',uids,campaign,comment);
 };

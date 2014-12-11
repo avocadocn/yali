@@ -192,6 +192,80 @@ exports.canPublishComment = function (req, res, next) {
   }
 };
 
+//for push comment
+var updateUserCommentList = function(campaign, user, reqUserId, callback){
+  if(campaign.whichUnit(user._id)) {//已参加
+    var campaignIndex = model_helper.arrayObjectIndexOf(user.commentCampaigns, campaign._id, '_id');
+    if(campaignIndex === -1){//如果user中没有
+      //放到最前,数组长度到max值时去掉最后面的campaign
+      user.commentCampaigns.unshift({
+        '_id': campaign._id,
+        'unread': 0
+      });
+      if(user.commentCampaigns.length>arrayMaxLength){
+        user.commentCampaigns.length = arrayMaxLength;
+      }
+    }else{//如果存在于user中
+      //更新到最前,如果不是自己发的,unread数增加
+      if(user._id.toString() != reqUserId.toString())
+        user.commentCampaigns[campaignIndex].unread++;
+      var campaignNeedUpdate = user.commentCampaigns.splice(campaignIndex,1);
+      user.commentCampaigns.unshift(campaignNeedUpdate[0]);
+    }
+  }else{
+    var campaignIndex = model_helper.arrayObjectIndexOf(user.unjoinedCommentCampaigns, campaign._id, '_id');
+    if(campaignIndex === -1){//如果user中没有
+      //放到最前,数组长度到max值时去掉最后面的campaign
+      user.unjoinedCommentCampaigns.unshift({
+        '_id': campaign._id,
+        'unread': 0
+      });
+      if(user.unjoinedCommentCampaigns.length>arrayMaxLength){
+        user.unjoinedCommentCampaigns.length = arrayMaxLength;
+      }
+    }else{//如果存在于user中
+      //更新到最前,如果不是自己发的,unread数增加
+      if(user._id.toString() != reqUserId.toString())
+        user.unjoinedCommentCampaigns[campaignIndex].unread++;
+      var campaignNeedUpdate = user.unjoinedCommentCampaigns.splice(campaignIndex,1);
+      user.unjoinedCommentCampaigns.unshift(campaignNeedUpdate[0]);
+    }
+  }
+  user.save(function(err){
+    if(err){
+      console.log('user save error:',err);
+    }else{
+      callback();
+    }
+  });
+};
+
+var socketPush = function(campaign, comment, revalentUids){
+  var commentCampaign = {
+    '_id':campaign._id,
+    'theme': campaign.theme,
+    'latestComment': campaign.latestComment
+  };
+  var ct = campaign.campaign_type;
+  if(ct===1){
+    commentCampaign.logo = campaign.campaign_unit[0].company.logo;
+  }
+  else if(ct===2||ct===6){//是单小队/部门活动
+    commentCampaign.logo = campaign.campaign_unit[0].team.logo;
+  }else{//是挑战
+    commentCampaign.logo = '/img/icons/vs.png';//图片todo
+  }
+  var socketComment = {
+    '_id': comment._id,
+    'poster': comment.poster,
+    'createDate': comment.create_date,
+    'content': comment.content
+  };
+  if(comment.photos){
+    socketComment.photos = comment.photos;
+  }
+  socketClient.pushComment(revalentUids, commentCampaign, socketComment);
+}
 //发表留言
 exports.setComment = function (req, res) {
   var host_id = req.body.host_id;  //留言主体的id,这个主体可以是 一条活动、一张照片、一场比赛等等
@@ -238,7 +312,7 @@ exports.setComment = function (req, res) {
             '_id': req.user._id,
             'nickname': req.user.nickname,
             'photo': req.user.photo
-          }
+          };
           campaign.latestComment = {
             '_id': comment._id,
             'poster': poster,
@@ -249,13 +323,8 @@ exports.setComment = function (req, res) {
           if(model_helper.arrayObjectIndexOf(campaign.commentMembers, req.user._id, '_id') === -1){
             campaign.commentMembers.push(poster);
           }
-          campaign.save(function(err){
-            if(err){
-              console.log('campaign save error:',err);
-            }
-          });
 
-          //users操作
+          //socket与users更新
           var revalentUids = [];
           for(var i = 0; i<campaign.members.length; i++){
             revalentUids.push(campaign.members[i]._id);
@@ -263,65 +332,31 @@ exports.setComment = function (req, res) {
           for(var i = 0; i<campaign.commentMembers.length;i++){
             revalentUids.push(campaign.commentMembers[i]._id);
           }
-          //socket todo
-          // socketClient.connect();
+          //---socket
+          socketPush(campaign, comment, revalentUids);
+
+          campaign.save(function(err){
+            if(err){
+              console.log('campaign save error:',err);
+            }
+          });
+
+          //users操作
           var arrayMaxLength = 20;
           User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1},function(err,users){
             if(err){
               console.log(err);
             }else{
               async.map(users,function(user,callback){
-                //已参加
-                if(campaign.whichUnit(user._id)) {
-                  var campaignIndex = model_helper.arrayObjectIndexOf(user.commentCampaigns,host_id,'_id');
-                  if(campaignIndex === -1){//如果user中没有
-                    //放到最前,数组长度到max值时去掉最后面的campaign
-                    user.commentCampaigns.unshift({
-                      '_id': host_id,
-                      'unread': 0
-                    });
-                    if(user.commentCampaigns.length>arrayMaxLength){
-                      user.commentCampaigns.length = arrayMaxLength;
-                    }
-                  }else{//如果存在于user中
-                    //更新到最前,如果不是自己发的,unread数增加
-                    if(user._id.toString() != req.user._id.toString())
-                      user.commentCampaigns[campaignIndex].unread++;
-                    var campaignNeedUpdate = user.commentCampaigns.splice(campaignIndex,1);
-                    user.commentCampaigns.unshift(campaignNeedUpdate[0]);
-                  }
-                }else{
-                  var campaignIndex = model_helper.arrayObjectIndexOf(user.unjoinedCommentCampaigns,host_id,'_id');
-                  if(campaignIndex === -1){//如果user中没有
-                    //放到最前,数组长度到max值时去掉最后面的campaign
-                    user.unjoinedCommentCampaigns.unshift({
-                      '_id': host_id,
-                      'unread': 0
-                    });
-                    if(user.unjoinedCommentCampaigns.length>arrayMaxLength){
-                      user.unjoinedCommentCampaigns.length = arrayMaxLength;
-                    }
-                  }else{//如果存在于user中
-                    //更新到最前,如果不是自己发的,unread数增加
-                    if(user._id.toString() != req.user._id.toString())
-                      user.unjoinedCommentCampaigns[campaignIndex].unread++;
-                    var campaignNeedUpdate = user.unjoinedCommentCampaigns.splice(campaignIndex,1);
-                    user.unjoinedCommentCampaigns.unshift(campaignNeedUpdate[0]);
-                  }
-                }
-                user.save(function(err){
-                  if(err){
-                    console.log('user save error:',err);
-                  }else{
-                    callback();
-                  }
+                updateUserCommentList(campaign, user, req.user._id, function(){
+                  callback();
                 });
               },function(err, results) {
                 console.log('done');
                 return;
               })
             }
-          })
+          });
         });
       }
     }
@@ -334,95 +369,96 @@ exports.setComment = function (req, res) {
  *     to: String,
  *     content: String //回复内容
  */
+//功能关闭 -M 2014/12/10
 exports.reply = function (req, res, next) {
-  //非Guest、HR皆可评,包括比赛对方小队成员
-  if (req.role === 'GUEST' || req.role === 'HR') {
-    return res.send(403);
-  }
-  if (!req.body.to || !req.body.content) {
-    return res.send(400);
-  }
+  // //非Guest、HR皆可评,包括比赛对方小队成员
+  // if (req.role === 'GUEST' || req.role === 'HR') {
+  //   return res.send(403);
+  // }
+  // if (!req.body.to || !req.body.content) {
+  //   return res.send(400);
+  // }
 
-  var comment = req.comment;
+  // var comment = req.comment;
 
-  var createReply = function (target_nickname) {
-    // 创建评论并保存
-    var reply = new Comment({
-      host_type: 'comment',
-      host_id: comment._id,
-      content: req.body.content,
-      poster: {
-        _id: req.user._id,
-        cid: req.user.cid,
-        cname: req.user.cname,
-        nickname: req.user.nickname,
-        realname: req.user.realname,
-        photo: req.user.photo
-      },
-      reply_to: {
-        _id: req.body.to,
-        nickname: target_nickname
-      }
-    });
-    reply.save(function (err) {
-      if (err) {
-        return next(err);
-      } else {
-        if (!comment.reply_count) {
-          comment.reply_count = 0;
-        }
-        comment.reply_count++;
-        comment.save(function (err) {
-          if (err) console.log(err);
-        });
-        // 该回复已保存成功，所以不需要判断目标留言的回复数是否保存成功，都直接返回回复成功信息。
-        // 如果计数偶然保存失败，再回复时还有机会校正。
+  // var createReply = function (target_nickname) {
+  //   // 创建评论并保存
+  //   var reply = new Comment({
+  //     host_type: 'comment',
+  //     host_id: comment._id,
+  //     content: req.body.content,
+  //     poster: {
+  //       _id: req.user._id,
+  //       cid: req.user.cid,
+  //       cname: req.user.cname,
+  //       nickname: req.user.nickname,
+  //       realname: req.user.realname,
+  //       photo: req.user.photo
+  //     },
+  //     reply_to: {
+  //       _id: req.body.to,
+  //       nickname: target_nickname
+  //     }
+  //   });
+  //   reply.save(function (err) {
+  //     if (err) {
+  //       return next(err);
+  //     } else {
+  //       if (!comment.reply_count) {
+  //         comment.reply_count = 0;
+  //       }
+  //       comment.reply_count++;
+  //       comment.save(function (err) {
+  //         if (err) console.log(err);
+  //       });
+  //       // 该回复已保存成功，所以不需要判断目标留言的回复数是否保存成功，都直接返回回复成功信息。
+  //       // 如果计数偶然保存失败，再回复时还有机会校正。
 
-        setDeleteAuth({
-          host_type: 'comment',
-          host_id: comment._id,
-          user: req.user,
-          comments: [reply]
-        }, function (err) {
-          if (err) { console.log(err); }
-          // 设置删除权限失败依然算作回复成功，删除权设置成功都不影响回复是否成功，只影响页面是否有删除按钮
-          // 此时确实也已经回复成功了
-          return res.send({ result: 1, reply: reply });
-        })
+  //       setDeleteAuth({
+  //         host_type: 'comment',
+  //         host_id: comment._id,
+  //         user: req.user,
+  //         comments: [reply]
+  //       }, function (err) {
+  //         if (err) { console.log(err); }
+  //         // 设置删除权限失败依然算作回复成功，删除权设置成功都不影响回复是否成功，只影响页面是否有删除按钮
+  //         // 此时确实也已经回复成功了
+  //         return res.send({ result: 1, reply: reply });
+  //       })
 
-      }
-    });
-  };
+  //     }
+  //   });
+  // };
 
-  var target_nickname;
-  if (req.body.to === comment.poster._id.toString()) {
-    // 如果回复的是该留言，则获取poster的nickname
-    target_nickname = comment.poster.nickname;
-    createReply(target_nickname);
-  } else {
-    Comment.find({ 'host_type': 'comment', 'host_id': comment._id }).exec()
-      .then(function (replies) {
-        // 判断回复目标的合法性，并获取目标昵称
-        var reply_target_validation = false;
-        for (var i = 0; i < replies.length; i++) {
-          var reply = replies[i];
-          if (req.body.to === reply.poster._id.toString()) {
-            reply_target_validation = true;
-            target_nickname = reply.poster.nickname;
-            break;
-          }
-        }
-        if (reply_target_validation === false) {
-          return res.send(400);
-        }
+  // var target_nickname;
+  // if (req.body.to === comment.poster._id.toString()) {
+  //   // 如果回复的是该留言，则获取poster的nickname
+  //   target_nickname = comment.poster.nickname;
+  //   createReply(target_nickname);
+  // } else {
+  //   Comment.find({ 'host_type': 'comment', 'host_id': comment._id }).exec()
+  //     .then(function (replies) {
+  //       // 判断回复目标的合法性，并获取目标昵称
+  //       var reply_target_validation = false;
+  //       for (var i = 0; i < replies.length; i++) {
+  //         var reply = replies[i];
+  //         if (req.body.to === reply.poster._id.toString()) {
+  //           reply_target_validation = true;
+  //           target_nickname = reply.poster.nickname;
+  //           break;
+  //         }
+  //       }
+  //       if (reply_target_validation === false) {
+  //         return res.send(400);
+  //       }
 
-        createReply(target_nickname);
+  //       createReply(target_nickname);
 
-      })
-      .then(null, function (err) {
-        return next(err);
-      });
-  }
+  //     })
+  //     .then(null, function (err) {
+  //       return next(err);
+  //     });
+  // }
 
 };
 
