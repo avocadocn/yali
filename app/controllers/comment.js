@@ -194,6 +194,7 @@ exports.canPublishComment = function (req, res, next) {
 
 //for push comment
 var updateUserCommentList = function(campaign, user, reqUserId, callback){
+  var arrayMaxLength = 20;
   if(campaign.whichUnit(user._id)) {//已参加
     var campaignIndex = model_helper.arrayObjectIndexOf(user.commentCampaigns, campaign._id, '_id');
     if(campaignIndex === -1){//如果user中没有
@@ -326,11 +327,13 @@ exports.setComment = function (req, res) {
 
           //socket与users更新
           var revalentUids = [];
-          for(var i = 0; i<campaign.members.length; i++){
-            revalentUids.push(campaign.members[i]._id);
+          for(var i = 0; i<campaign.members.length; i++) {
+            revalentUids.push(campaign.members[i]._id.toString());
           }
-          for(var i = 0; i<campaign.commentMembers.length;i++){
-            revalentUids.push(campaign.commentMembers[i]._id);
+          for(var i = 0; i<campaign.commentMembers.length;i++) {
+            if(revalentUids.indexOf(campaign.commentMembers[i]._id.toString()) === -1){
+              revalentUids.push(campaign.commentMembers[i]._id.toString());
+            }
           }
           //---socket
           socketPush(campaign, comment, revalentUids);
@@ -342,7 +345,7 @@ exports.setComment = function (req, res) {
           });
 
           //users操作
-          var arrayMaxLength = 20;
+          
           User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1},function(err,users){
             if(err){
               console.log(err);
