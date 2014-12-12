@@ -39,9 +39,6 @@ mixin group_thumbnail(teams)
                 //-if team_class === 'leader'
                 //-.img_div
                 img.img.center-block.group_logo(ng-cloak src="#{team.logo}/30/30")
-        .group(ng-cloak)
-          a.clearLinkUnderline.center-block(title="进入小队列表页面" href="/company/home#/team_info")
-            //-if team_class === 'leader'
-            //-.img_div
-            .img.add_group.center-block.group_logo
-              span +
+        .center-block.group(data-toggle="tooltip" title="add")
+          a.center-block(title="进入小队列表页面" href="/company/home#/team_info")          
+            img.img.center-block.group_logo(ng-cloak src="/img/add.png")
