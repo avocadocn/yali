@@ -59,7 +59,7 @@ var teamPoint = function(){
             campaignNum++;
             participatorNum+=campaign.members.length;
             commentNum += campaign.comment_sum;
-            photoNum += campaign.photoAlbum.photo_count; //属于小队的活动的相片总数
+            photoNum += campaign.photo_album.photo_count; //属于小队的活动的相片总数
           });
           var provoke;
           if(value.score.provoke != undefined || value.score.provoke != null){

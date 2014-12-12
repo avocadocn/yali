@@ -150,7 +150,7 @@ block contentExt
 
         if isActive
           .component.photo_album_card(class="#{helper.start('order-4')} #{helper.end('order-4')}")
-            a.photo_wrap(href="/photoAlbum/#{campaign.photoAlbum._id}/detailView")
+            a.photo_wrap(href="/photoAlbum/#{campaign.photo_album._id}/detailView")
               i.fa.fa-chevron-circle-right.fa-3x.view
               p.text 影集
             if photo

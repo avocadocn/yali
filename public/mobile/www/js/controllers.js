@@ -179,7 +179,7 @@ angular.module('starter.controllers', ['ngTouch', 'ionic.contrib.ui.cards'])
 
   Campaign.getCampaignDetail( $stateParams.id,function(campaign) {
     $scope.campaign = campaign;
-    $scope.photo_album_id = $scope.campaign.photoAlbum;
+    $scope.photo_album_id = $scope.campaign.photo_album;
     $scope.upload_form_url = $scope.base_url + '/photoAlbum/' + $scope.photo_album_id + '/photo';
     $scope.upload_form_url = $sce.trustAsResourceUrl($scope.upload_form_url);
     getPhotoList();

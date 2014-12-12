@@ -232,7 +232,7 @@ var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
 };
 
 // 一个相册的未删除照片（数组）
-var photoThumbnailList = exports.photoThumbnailList = function(photo_album, count) {
+exports.photoThumbnailList = function(photo_album, count) {
   var photo_list = [];
   if (!count) {
     var count = 4;
@@ -366,7 +366,7 @@ var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id,
 };
 
 //- 根据小队ID返回该小组最新相册中的n张图片
-var getNewPhotos = exports.getNewPhotos = function(group_id, count, callback) {
+exports.getNewPhotos = function(group_id, count, callback) {
   if(!count){
     var count= 4;
   }
@@ -1243,7 +1243,6 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
       canCommentCampaign = true;
     }
 
-    var photos = getShowPhotos(photo_album);
     var owner = getPhotoAlbumOwner(req.user, photo_album);
     // todo 编辑和删除的权限判断有些特殊，以后再改为使用auth权限系统判断
     var editAuth = photoAlbumEditAuth(req.user, photo_album);
@@ -1287,7 +1286,6 @@ exports.renderPhotoAlbumDetail = function(req, res, next) {
         _id: photo_album._id,
         name: photo_album.name,
         update_date: photo_album.update_date,
-        photos: photos,
         owner: {
           model: photo_album.owner.model,
           name: owner_name,

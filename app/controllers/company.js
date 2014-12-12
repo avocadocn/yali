@@ -1285,7 +1285,7 @@ exports.timeLine = function(req, res) {
             start_time: campaign.start_time,
             provoke: ct===4||ct===5||ct===7||ct===9,
             year: getYear(campaign),
-            photo_list: photo_album_controller.photoThumbnailList(campaign.photoAlbum, 6)
+            photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
           }
           // todo new time style
           // console.log(campaign);
