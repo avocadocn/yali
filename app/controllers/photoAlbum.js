@@ -25,6 +25,7 @@ var multiparty = require('multiparty');
 // custom
 var config = require('../../config/config');
 var auth = require('../services/auth');
+var helper = require('../helpers/model_helper.js');
 
 
 exports.getPhotoAlbum = function (req, res, next) {
@@ -46,7 +47,7 @@ exports.getPhotoAlbum = function (req, res, next) {
 
 
 // photo_album need populate owner_company_group
-function photoEditAuth(user, photo_album, photo) {
+var photoEditAuth = function (user, photo_album, photo) {
 
   // 照片的上传者
   if (user._id.toString() === photo.upload_user._id.toString()) {
@@ -85,10 +86,10 @@ function photoEditAuth(user, photo_album, photo) {
 
   return false;
 
-}
+};
 
 // photo_album need populate owner_company_group
-function photoAlbumEditAuth(user, photo_album) {
+var photoAlbumEditAuth = function (user, photo_album) {
 
   // 比赛相册不允许修改
   if (photo_album.owner.teams.length === 1 || photo_album.owner.companies.length === 1) {
@@ -124,9 +125,9 @@ function photoAlbumEditAuth(user, photo_album) {
   }
 
   return false;
-}
+};
 
-function photoAlbumDeleteAuth(user, photo_album) {
+var photoAlbumDeleteAuth = function (user, photo_album) {
   var auth = photoAlbumEditAuth(user, photo_album);
   if (auth === false) {
     return false;
@@ -136,10 +137,10 @@ function photoAlbumDeleteAuth(user, photo_album) {
     return false;
   }
   return true;
-}
+};
 
 // photo_album need populate owner_company_group
-function photoUploadAuth(user, photo_album) {
+var photoUploadAuth = function (user, photo_album) {
   // 该照片所属组的成员
   var members = [];
 
@@ -184,7 +185,7 @@ function photoUploadAuth(user, photo_album) {
   }
 
   return false;
-}
+};
 
 /**
  * 按照点击数由大到小排序照片
@@ -212,23 +213,57 @@ var sortByUpdateDate = function(a, b) {
   return b.update_date - a.update_date;
 };
 
+/**
+ * 更新相册最近的照片
+ * @param {Object} photoAlbum
+ * @param {Object} callback 形式为function(err, photos)
+ */
+var updateLatestPhotos = function (photoAlbum, callback) {
+  Photo.find({
+    photo_album: photoAlbum._id,
+    hidden: false
+  }, {
+    _id: true,
+    uri: true,
+    upload_date: true,
+    click: true,
+    name: true
+  })
+    .sort('-upload_date')
+    .limit(10)
+    .exec()
+    .then(function (photos) {
+      photoAlbum.photos = photos;
+      photoAlbum.save(function (err) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, photos);
+        }
+      });
+    })
+    .then(null, function (err) {
+      callback(err);
+    });
+};
 
-
-// 一个相册的第一张未删除的图片的uri, 没有则返回默认图
-var photoAlbumThumbnail = exports.photoAlbumThumbnail = function(photo_album) {
-  var first_photo;
-  for (var i = photo_album.photos.length - 1; i >= 0; i--) {
-  //for (var i = 0; i < photo_album.photos.length; i++) {
-    if (photo_album.photos[i].hidden === false) {
-      first_photo = photo_album.photos[i];
-      break;
+/**
+ * 更新最新照片列表不可靠的相册
+ * @param photoAlbums
+ * @param callback 形式为function(err)
+ */
+var updateIfNotReliable = function (photoAlbums, callback) {
+  async.map(photoAlbums, function (photoAlbum, itemCallback) {
+    if (photoAlbum.reliable === false) {
+      updateLatestPhotos(photoAlbum, function (err) {
+        itemCallback(err);
+      });
+    } else {
+      itemCallback();
     }
-  }
-  if (first_photo) {
-    return first_photo.uri;
-  } else {
-    return '/img/icons/default_photo_album.png';
-  }
+  }, function (err) {
+    callback(err);
+  });
 };
 
 // 一个相册的未删除照片（数组）
@@ -328,41 +363,50 @@ function photoAlbumProcess(res, _id, process) {
   }
 }
 
-//-根据小队id返回整个相册
-var getGroupPhotoAlbumList = exports.getGroupPhotoAlbumList = function(group_id, callback) {
-  CompanyGroup
-  .findById(group_id)
-  .populate('photo_album_list')
-  .exec()
-  .then(function(company_group) {
-    if (!company_group) {
-      return callback();
-    }
-
-    var photo_album_list = [];
-    company_group.photo_album_list.sort(sortByUpdateDate);
-    company_group.photo_album_list.forEach(function(photo_album) {
-      if (photo_album.hidden === true) {
-        return;
-      }
-      if (photo_album.owner.model.type === 'Campaign' && photo_album.photos.length === 0) {
-        return;
-      }
-      photo_album_list.push({
-        _id: photo_album._id,
-        thumbnail: photoAlbumThumbnail(photo_album),
-        name: photo_album.name,
-        photo_count: photo_album.photo_count,
-        update_user: photo_album.update_user,
-        update_date: photo_album.update_date,
-      });
-    });
-    callback(photo_album_list, company_group);
+/**
+ * 返回小队所有未删除的相册
+ * @param teamId
+ * @param callback 形式为function(err, photoAlbums)
+ */
+var getGroupPhotoAlbumList = function(teamId, callback) {
+  PhotoAlbum.find({
+    'owner.teams': teamId,
+    'hidden': false
   })
-  .then(null, function(err) {
-    console.log(err);
-    callback();
-  });
+    .sort('-update_date')
+    .exec()
+    .then(function (photoAlbums) {
+      updateIfNotReliable(photoAlbums, function (err) {
+        if (err) {
+          callback(err);
+        } else {
+          var resPhotoAlbums = [];
+          photoAlbums.forEach(function (photoAlbum) {
+            if (photoAlbum.owner.model.type === 'Campaign' && photoAlbum.photos.length === 0) {
+              return;
+            }
+            var resPhotoAlbum = {
+              _id: photoAlbum._id,
+              name: photoAlbum.name,
+              photo_count: photoAlbum.photo_count,
+              update_user: photoAlbum.update_user,
+              update_date: photoAlbum.update_date
+            };
+            if (photoAlbum.photos.length === 0) {
+              resPhotoAlbum.thumbnail = '/img/icons/default_photo_album.png';
+            } else {
+              resPhotoAlbum.thumbnail = photoAlbum.photos[photoAlbum.photos.length - 1];
+            }
+            resPhotoAlbums.push();
+
+          });
+          callback(null, resPhotoAlbums);
+        }
+      });
+    })
+    .then(null, function (err) {
+      callback(err);
+    });
 };
 
 //- 根据小队ID返回该小组最新相册中的n张图片
@@ -815,7 +859,7 @@ exports.createSinglePhoto = function(req, res, next) {
             }
 
             var photo = new Photo({
-              photoAlbum: req.photoAlbum._id,
+              photo_album: req.photoAlbum._id,
               uri: path.join(uri_dir, photo_name),
               name: part.filename,
               upload_user: upload_user
@@ -833,6 +877,13 @@ exports.createSinglePhoto = function(req, res, next) {
               req.photoAlbum.photo_count += 1;
               req.photoAlbum.upload_user = upload_user;
               req.photoAlbum.update_date = Date.now();
+              req.photoAlbum.pushPhoto({
+                _id: photo._id,
+                uri: photo.uri,
+                upload_date: photo.upload_date,
+                click: photo.click,
+                name: photo.name
+              });
               req.photoAlbum.save(function (err) {
                 if (err) {
                   console.log(err);
@@ -1043,7 +1094,10 @@ exports.deletePhoto = function(req, res) {
           res.send({ result: 1, msg: '删除照片成功' });
         }
       });
-      photoAlbum.correctPhotoCount();
+      if (helper.arrayObjectIndexOf(photoAlbum.photos, photo._id, '_id') !== -1) {
+        photoAlbum.reliable = false;
+      }
+      photoAlbum.photo_count--;
       photoAlbum.save(function(err) {
         // 即使更新相册照片数量失败了，依然算作是删除成功。
         console.log(err);

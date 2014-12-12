@@ -9,30 +9,15 @@ var Schema = mongoose.Schema;
 
 var Photo = new Schema({
   uri: String,
-  thumbnail_uri: String,
-  zoom_uri: String,
   upload_date: {
     type: Date,
     default: Date.now
-  },
-  hidden: {
-    type: Boolean,
-    default: false
   },
   click: {
     type: Number,
     default: 0
   },
-  name: String,
-  tags: [String],
-  upload_user: {
-    _id: Schema.Types.ObjectId,
-    name: String,
-    type: {
-      type: String,
-      enum: ['user', 'hr']
-    }
-  }
+  name: String
 });
 
 
@@ -86,7 +71,12 @@ var PhotoAlbum = new Schema({
     type: Boolean,
     default: false
   },
-  photos: [Photo], // 12.12起的新照片数据不再保存至该数组里
+  photos: [Photo], // 12.12起只保存最近的10张
+  // 最近10张照片列表是否可靠
+  reliable: {
+    type: Boolean,
+    default: true
+  },
   photo_count: {
     type: Number,
     default: 0
@@ -94,15 +84,15 @@ var PhotoAlbum = new Schema({
 });
 
 PhotoAlbum.methods = {
-  // 校正照片计数
-  correctPhotoCount: function () {
-    var count = 0;
-    for (var i = 0; i < this.photos.length; i++) {
-      if (!this.photos[i].hidden) {
-        count++;
-      }
+
+  pushPhoto: function (photo) {
+    var maxLatestPhotoLength = 10;
+    if (this.photos.length < maxLatestPhotoLength) {
+      this.photos.push(photo);
+    } else {
+      this.photos.splice(0, this.photos.length - maxLatestPhotoLength + 1);
+      this.photos.push(photo);
     }
-    this.photo_count = count;
   }
 };
 
