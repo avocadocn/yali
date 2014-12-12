@@ -241,7 +241,7 @@ var updateUserCommentList = function(campaign, user, reqUserId, callback){
   });
 };
 
-var socketPush = function(campaign, comment, revalentUids){
+var socketPush = function(campaign, comment, joinedUids, unjoinedUids){
   var commentCampaign = {
     '_id':campaign._id,
     'theme': campaign.theme,
@@ -265,7 +265,7 @@ var socketPush = function(campaign, comment, revalentUids){
   if(comment.photos){
     socketComment.photos = comment.photos;
   }
-  socketClient.pushComment(revalentUids, commentCampaign, socketComment);
+  socketClient.pushComment(joinedUids, unjoinedUids, commentCampaign, socketComment);
 }
 //发表留言
 exports.setComment = function (req, res) {
@@ -326,17 +326,20 @@ exports.setComment = function (req, res) {
           }
 
           //socket与users更新
-          var revalentUids = [];
+          //参加的人
+          var joinedUids = [];
           for(var i = 0; i<campaign.members.length; i++) {
-            revalentUids.push(campaign.members[i]._id.toString());
+            joinedUids.push(campaign.members[i]._id.toString());
           }
+          //未参加
+          var unjoinedUids = [];
           for(var i = 0; i<campaign.commentMembers.length;i++) {
-            if(revalentUids.indexOf(campaign.commentMembers[i]._id.toString()) === -1){
-              revalentUids.push(campaign.commentMembers[i]._id.toString());
+            if(joinedUids.indexOf(campaign.commentMembers[i]._id.toString()) === -1){
+              unjoinedUids.push(campaign.commentMembers[i]._id.toString());
             }
           }
           //---socket
-          socketPush(campaign, comment, revalentUids);
+          socketPush(campaign, comment, joinedUids, unjoinedUids);
 
           campaign.save(function(err){
             if(err){
@@ -345,7 +348,7 @@ exports.setComment = function (req, res) {
           });
 
           //users操作
-          
+          var revalentUids = joinedUids.concat(unjoinedUids);
           User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1},function(err,users){
             if(err){
               console.log(err);
@@ -357,7 +360,7 @@ exports.setComment = function (req, res) {
               },function(err, results) {
                 console.log('done');
                 return;
-              })
+              });
             }
           });
         });
