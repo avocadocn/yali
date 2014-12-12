@@ -86,7 +86,7 @@ var PhotoAlbum = new Schema({
     type: Boolean,
     default: false
   },
-  photos: [Photo],
+  photos: [Photo], // 12.12起的新照片数据不再保存至该数组里
   photo_count: {
     type: Number,
     default: 0

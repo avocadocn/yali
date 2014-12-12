@@ -447,7 +447,7 @@ exports.timeLine = function(req, res){
           start_time: campaign.start_time,
           provoke:ct===4||ct===5||ct===7||ct===9,
           year: getYear(campaign),
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
+          photo_list: photo_album_controller.photoThumbnailList(campaign.photoAlbum, 6)
         }
         // todo new time style
         // console.log(campaign);
@@ -993,7 +993,7 @@ exports.getCompetition = function(req, res){
     'rst_content': "",
     'moment':moment,
     'confirm_btn_show':false,
-    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photo_album, 4)
+    'photo_thumbnails': photo_album_controller.photoThumbnailList(req.competition.photoAlbum, 4)
   };
   var nowTeamIndex,otherTeamIndex;
   if(req.role==='HR'){

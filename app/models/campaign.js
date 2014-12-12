@@ -160,7 +160,7 @@ var Campaign = new Schema({
   start_time: Date,
   end_time: Date,
   deadline: Date,
-  photo_album: {
+  photoAlbum: {
     type: Schema.Types.ObjectId,
     ref: 'PhotoAlbum'
   },

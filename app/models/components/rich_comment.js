@@ -52,7 +52,7 @@ RichComment.statics = {
       owner: owner,
       host_type: hostType,
       host_id: host._id,
-      photo_album_id: host.populated('photo_album') || host.photo_album
+      photo_album_id: host.populated('photo_album') || host.photoAlbum
     });
 
     richComment.save(function (err) {

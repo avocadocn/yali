@@ -130,7 +130,7 @@ var formatCampaign = function(user, campaign) {
     location: campaign.location,
     member: campaign.member,
     is_join: is_join,
-    photo_album: campaign.photo_album
+    photoAlbum: campaign.photoAlbum
   };
 
 };
