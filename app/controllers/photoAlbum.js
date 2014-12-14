@@ -395,9 +395,9 @@ var getGroupPhotoAlbumList = function(teamId, callback) {
             if (photoAlbum.photos.length === 0) {
               resPhotoAlbum.thumbnail = '/img/icons/default_photo_album.png';
             } else {
-              resPhotoAlbum.thumbnail = photoAlbum.photos[photoAlbum.photos.length - 1];
+              resPhotoAlbum.thumbnail = photoAlbum.photos[photoAlbum.photos.length - 1].uri;
             }
-            resPhotoAlbums.push();
+            resPhotoAlbums.push(resPhotoAlbum);
 
           });
           callback(null, resPhotoAlbums);
@@ -1116,102 +1116,110 @@ exports.readGroupPhotoAlbumList = function(req, res, next) {
     res.status(403);
     return next('forbidden');
   }
-  getGroupPhotoAlbumList(req.params.tid, function(photo_album_list) {
-    if (photo_album_list !== null) {
-      CompanyGroup.findById(req.params.tid).exec()
-      .then(function (company_group) {
-        if (!company_group) {
+  getGroupPhotoAlbumList(req.params.tid, function(err, photoAlbums) {
+    if (err) {
+      return next(err);
+    }
+    CompanyGroup
+      .findById(req.params.tid)
+      .exec()
+      .then(function (team) {
+        if (!team) {
           res.status(404);
           return next('not found');
         }
-        if (req.user.provider === 'company' && req.user._id.toString() !== company_group.cid.toString()
-          || req.user.provider === 'user' && req.user.cid.toString() !== company_group.cid.toString()) {
+        if (req.user.provider === 'company' && req.user._id.toString() !== team.cid.toString()
+          || req.user.provider === 'user' && req.user.cid.toString() !== team.cid.toString()) {
           res.status(403);
           return next('forbidden');
         }
-        return res.send({ result: 1, photo_album_list: photo_album_list });
+        return res.send({ result: 1, photo_album_list: photoAlbums });
       })
       .then(null, function (err) {
-        res.status(500);
-        return next('err');
+        next(err);
       });
-    } else {
-      res.status(404);
-      return next('not found');
-    }
   });
 
 };
 
 
-exports.renderGroupPhotoAlbumList = function(req, res, next) {
+exports.renderGroupPhotoAlbumList = function (req, res, next) {
   if (!req.user) {
     res.status(403);
     return next('forbidden');
   }
-  getGroupPhotoAlbumList(req.params.tid, function(photo_album_list, company_group) {
-    if (photo_album_list !== null) {
-      if (req.user.provider === 'company' && req.user._id.toString() !== company_group.cid.toString()
-        || req.user.provider === 'user' && req.user.cid.toString() !== company_group.cid.toString()) {
-        res.status(403);
-        return next('forbidden');
-      }
-      var links = [
-        {
-          text: company_group.name,
-          url: '/group/page/' + company_group._id
-        },
-        {
-          text: '相册集',
-          active: true
-        }
-      ];
+  getGroupPhotoAlbumList(req.params.tid, function (err, photoAlbums) {
+    if (err) {
+      return next(err);
+    }
 
-      var thumbnail = company_group.family.filter(function (photo) {
+    CompanyGroup.findById(req.params.tid).exec()
+      .then(function (team) {
+        if (!team) {
+          res.status(404);
+          return next('not found');
+        }
+        if (req.user.provider === 'company' && req.user._id.toString() !== team.cid.toString()
+          || req.user.provider === 'user' && req.user.cid.toString() !== team.cid.toString()) {
+          res.status(403);
+          return next('forbidden');
+        }
+        var links = [
+          {
+            text: team.name,
+            url: '/group/page/' + team._id
+          },
+          {
+            text: '相册集',
+            active: true
+          }
+        ];
+
+        var thumbnail = team.family.filter(function (photo) {
           return !photo.hidden && photo.select;
         })[0];
-      if (!thumbnail) {
-        thumbnail = '/img/family.png';
-      } else {
-        thumbnail = thumbnail.uri;
-      }
-      var showFilter = function (photo) {
-        return !photo.hidden;
-      };
-      var lastPhoto = company_group.family.filter(showFilter).sort(function (a, b) {
-        return b.upload_date - a.upload_date;
-      })[0];
+        if (!thumbnail) {
+          thumbnail = '/img/family.png';
+        } else {
+          thumbnail = thumbnail.uri;
+        }
+        var showFilter = function (photo) {
+          return !photo.hidden;
+        };
+        var lastPhoto = team.family.filter(showFilter).sort(function (a, b) {
+          return b.upload_date - a.upload_date;
+        })[0];
 
-      var familyPhotoAlbum = {
-        thumbnail: thumbnail,
-        name: company_group.name + '的全家福',
-        photo_count: company_group.family.filter(showFilter).length
-      };
+        var familyPhotoAlbum = {
+          thumbnail: thumbnail,
+          name: team.name + '的全家福',
+          photo_count: team.family.filter(showFilter).length
+        };
 
-      if (lastPhoto) {
-        familyPhotoAlbum.update_user = lastPhoto.upload_user;
-        familyPhotoAlbum.update_date = lastPhoto.upload_date;
-      }
+        if (lastPhoto) {
+          familyPhotoAlbum.update_user = lastPhoto.upload_user;
+          familyPhotoAlbum.update_date = lastPhoto.upload_date;
+        }
 
-      return res.render('photo_album/photo_album_list', {
-        company_group: company_group,
-        photo_album_list: photo_album_list,
-        familyPhotoAlbum: familyPhotoAlbum,
-        photo: req.user.photo,
-        realname: req.user.realname,
-        role: req.role,
-        owner_id: company_group._id,
-        owner_name: company_group.name,
-        owner_logo: company_group.logo,
-        cid: company_group.cid,
-        moment: moment,
-        links: links,
-        create_auth: req.create_auth
+        return res.render('photo_album/photo_album_list', {
+          company_group: team,
+          photo_album_list: photoAlbums,
+          familyPhotoAlbum: familyPhotoAlbum,
+          photo: req.user.photo,
+          realname: req.user.realname,
+          role: req.role,
+          owner_id: team._id,
+          owner_name: team.name,
+          owner_logo: team.logo,
+          cid: team.cid,
+          moment: moment,
+          links: links,
+          create_auth: req.create_auth
+        });
+      })
+      .then(null, function (err) {
+        next(err);
       });
-    } else {
-      res.status(404);
-      return next('not found');
-    }
   });
 };
 
