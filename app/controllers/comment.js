@@ -526,7 +526,11 @@ exports.deleteComment = function (req, res, next) {
         }
         // 同时在相册移除相应的照片
         if (comment.photos && comment.photos.length > 0) {
-          photo_album_ctrl.deletePhotos(comment.photos, function (err) {
+          var photoIds = [];
+          comment.photos.forEach(function (photo) {
+            photoIds.push(photo._id);
+          });
+          photo_album_ctrl.deletePhotos(photoIds, function (err) {
             if (err) {
               console.log(err);
             }

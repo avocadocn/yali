@@ -4,7 +4,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Photo = new Schema({
-  photoAlbum: Schema.Types.ObjectId,
+  photo_album: Schema.Types.ObjectId,
+  owner: {
+    companies: [Schema.Types.ObjectId],
+    teams: [Schema.Types.ObjectId]
+  },
   uri: String,
   upload_date: {
     type: Date,

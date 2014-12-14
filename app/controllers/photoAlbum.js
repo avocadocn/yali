@@ -209,10 +209,6 @@ var sortByUploadDate = function(a, b) {
   return  b.upload_date - a.upload_date;
 };
 
-var sortByUpdateDate = function(a, b) {
-  return b.update_date - a.update_date;
-};
-
 /**
  * 更新相册最近的照片
  * @param {Object} photoAlbum
@@ -234,6 +230,7 @@ var updateLatestPhotos = function (photoAlbum, callback) {
     .exec()
     .then(function (photos) {
       photoAlbum.photos = photos;
+      photoAlbum.reliable = true;
       photoAlbum.save(function (err) {
         if (err) {
           callback(err);
@@ -267,19 +264,22 @@ var updateIfNotReliable = function (photoAlbums, callback) {
 };
 
 // 一个相册的未删除照片（数组）
-exports.photoThumbnailList = function(photo_album, count) {
-  var photo_list = [];
+exports.photoThumbnailList = function(photoAlbum, count) {
   if (!count) {
-    var count = 4;
+    count = 4;
   }
-  for (var i = 0; i < photo_album.photos.length; i++) {
-    if (photo_album.photos[i].hidden === false) {
-      photo_list.push(photo_album.photos[i]);
+  var photoList = photoAlbum.photos.slice(0, photoAlbum.photos.length);
+  photoList.sort(sortByUploadDate);
+  photoList.sort(sortByClick);
+  // todo 目前该方法有10个地方在用，尽管可以改成异步方法使得能百分百保证获取到正确数据，但改动代价太大，目前处于开发app阶段，不应该在这里消耗太多时间
+  // todo 故采取较优方案：如果照片列表已被标记不可靠，则第一次取的时候仍然取原列表，但去更新这个列表，更新成功后以后就是可靠数据了
+  // todo 在现阶段这是最优解决方案
+  updateIfNotReliable([photoAlbum], function (err) {
+    if (err) {
+      console.log(err);
     }
-  }
-  photo_list.sort(sortByUploadDate);
-  photo_list.sort(sortByClick);
-  return photo_list.slice(0, count);
+  });
+  return photoList.slice(0, count);
 };
 
 // 根据当前登录的用户获取相册的所有者
@@ -322,21 +322,6 @@ function getPhotoAlbumOwner(user, photo_album) {
     company: photo_album.owner.companies[0],
     team: photo_album.owner.teams[0]
   };
-}
-
-// 获取一个相册未删除的照片
-function getShowPhotos(photo_album, count) {
-  var photos = [];
-  for (var i = 0; i < photo_album.photos.length; i++) {
-    if (photo_album.photos[i].hidden === false) {
-      photos.push(photo_album.photos[i]);
-      if(count&&photos.length === count){
-        break;
-      }
-    }
-  }
-  photos.sort(sortByUploadDate);
-  return photos;
 }
 
 function photoAlbumProcess(res, _id, process) {
@@ -412,105 +397,94 @@ var getGroupPhotoAlbumList = function(teamId, callback) {
 //- 根据小队ID返回该小组最新相册中的n张图片
 exports.getNewPhotos = function(group_id, count, callback) {
   if(!count){
-    var count= 4;
+    count= 4;
   }
-  var count_flag = count;
-  CompanyGroup
-  .findById(group_id)
-  .populate('photo_album_list')
-  .exec()
-  .then(function(company_group) {
-    if(!company_group) {
-      throw 'company_group not found';
-    }
-    var photos = [];
-    company_group.photo_album_list.sort(sortByUpdateDate);
-    for(var i =0; i<company_group.photo_album_list.length; i++){
-      //取count个非空相册的照片，每个相册取count张，确保得到最新count张照片
-      if(count_flag ===0 ){
-        break;
-      }
-      else {
-        //相册照片非空
-        if(company_group.photo_album_list[i].photos.length > 0){
-          photos=photos.concat(getShowPhotos(company_group.photo_album_list[i],count));
-          count_flag -- ;
-        }
-      }
-    }
-    photos.sort(sortByUploadDate);
-    if(photos.length>count){//如果超出剪裁成count张
-      photos.length = count;
-    }
-    //console.log(photos);
-    callback(photos);
+
+  Photo.find({
+    'owner.teams': group_id,
+    'hidden': false
+  }, {
+    'uri': true
   })
-  .then(null, function(err){
-    console.log(err);
-    callback(null) ;
-  });
+    .sort('-upload_date')
+    .limit(count)
+    .exec()
+    .then(function (photos) {
+      callback(photos);
+    })
+    .then(null, function (err) {
+      console.log(err);
+      callback();
+    });
 };
 
 
 /**
  * 删除一个相册中的照片
- * @param  {Array}   photos   照片id数组，要求在同一个相册中
+ * @param  {Array}   photoIds   照片id数组，要求在同一个相册中
  * @param  {Function} callback callback(err)
  */
-exports.deletePhotos = function (photos, callback) {
-  PhotoAlbum.findOne({ 'photos._id': photos[0] }).exec()
-  .then(function (photo_album) {
-    if (!photo_album) {
-      callback && callback('not found');
-    } else {
-      photos.forEach(function (comment_photo) {
-        for (var i = 0; i < photo_album.photos.length; i++) {
-          var photo = photo_album.photos[i];
-          if (comment_photo._id.toString() === photo._id.toString()) {
-            var result = photo.uri.match(/^([\s\S]+)\/(([-\w]+)\.[\w]+)$/);
-            var img_path = result[1], img_filename = result[2], img_name = result[3];
+exports.deletePhotos = function (photoIds, callback) {
+  Photo.find({
+    _id: { $in: photoIds },
+    hidden: false
+  }).exec()
+    .then(function (photos) {
+      async.map(photos, function (photo, itemCallback) {
+        var result = photo.uri.match(/^([\s\S]+)\/(([-\w]+)\.[\w]+)$/);
+        var img_path = result[1], img_filename = result[2], img_name = result[3];
 
-            var ori_path = path.join(config.root, 'public', img_path);
-            var size_path = path.join(ori_path, 'size');
+        var ori_path = path.join(config.root, 'public', img_path);
+        var size_path = path.join(ori_path, 'size');
 
-            var remove_size_files = fs.readdirSync(size_path).filter(function (item) {
-              if (item.indexOf(img_name) === -1) {
-                return false;
-              } else {
-                return true;
-              }
-            });
-
-            remove_size_files.forEach(function (filename) {
-              fs.unlinkSync(path.join(size_path, filename));
-            });
-
-            var now = new Date();
-            var date_dir_name = now.getFullYear().toString() + '-' + (now.getMonth() + 1);
-            var move_targe_dir = path.join(config.root, 'img_trash', date_dir_name);
-            if (!fs.existsSync(move_targe_dir)) {
-              mkdirp.sync(move_targe_dir);
-            }
-            // 将上传的图片移至备份目录
-            fs.renameSync(path.join(config.root, 'public', photo.uri), path.join(move_targe_dir, img_filename));
-
-            photo.hidden = true;
-            photo_album.photo_count -= 1;
-            photo_album.save(function (err) {
-              if (err) {
-                callback && callback(err);
-              } else {
-                callback && callback();
-              }
-            })
+        var remove_size_files = fs.readdirSync(size_path).filter(function (item) {
+          if (item.indexOf(img_name) === -1) {
+            return false;
+          } else {
+            return true;
           }
+        });
+
+        remove_size_files.forEach(function (filename) {
+          fs.unlinkSync(path.join(size_path, filename));
+        });
+
+        var now = new Date();
+        var date_dir_name = now.getFullYear().toString() + '-' + (now.getMonth() + 1);
+        var move_targe_dir = path.join(config.root, 'img_trash', date_dir_name);
+        if (!fs.existsSync(move_targe_dir)) {
+          mkdirp.sync(move_targe_dir);
         }
-      })
-    }
-  })
-  .then(null, function (err) {
-    callback && callback(err);
-  });
+        // 将上传的图片移至备份目录
+        fs.renameSync(path.join(config.root, 'public', photo.uri), path.join(move_targe_dir, img_filename));
+
+        photo.hidden = true;
+        photo.save(itemCallback);
+      }, function (err) {
+        callback(err);
+        // 只要更新了照片，就认为是已经删除成功了，不需要判断相册的照片计数是否也更新成功。
+        PhotoAlbum.findOne({
+          'photos._id': photoIds[0]
+        }).exec()
+          .then(function (photoAlbum) {
+            photoAlbum.photo_count -= photoIds.length;
+            photoAlbum.reliable = false;
+            photoAlbum.save(function (err) {
+              if (err) {
+                console.log(err);
+              }
+            });
+          })
+          .then(null, function (err) {
+            console.log(err);
+          });
+
+      });
+    })
+    .then(null, function (err) {
+      callback(err);
+    });
+
 };
 
 
@@ -860,6 +834,10 @@ exports.createSinglePhoto = function(req, res, next) {
 
             var photo = new Photo({
               photo_album: req.photoAlbum._id,
+              owner: {
+                companies: req.photoAlbum.owner.companies,
+                teams: req.photoAlbum.owner.teams
+              },
               uri: path.join(uri_dir, photo_name),
               name: part.filename,
               upload_user: upload_user
@@ -1566,9 +1544,8 @@ exports.readPhotoList = function(req, res, next) {
             }
             return false;
           };
-
           Photo.find({
-            "photo_album": photo_album._id,
+            'photo_album': photo_album._id,
             'hidden': false
           }, { 'hidden': false })
             .sort('-upload_date')

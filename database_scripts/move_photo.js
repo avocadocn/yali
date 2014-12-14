@@ -9,7 +9,11 @@ var photoAlbums = db.photoalbums.find();
 photoAlbums.forEach(function (photoAlbum) {
   photoAlbum.photos.forEach(function (photo) {
     var newPhoto = {
-      photoAlbum: photoAlbum._id,
+      photo_album: photoAlbum._id,
+      owner: {
+        companies: photoAlbum.owner.companies,
+        teams: photoAlbum.owner.teams
+      },
       uri: photo.uri,
       hidden: photo.hidden,
       click: photo.click,
