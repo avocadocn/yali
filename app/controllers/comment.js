@@ -193,6 +193,7 @@ exports.canPublishComment = function (req, res, next) {
 };
 
 //for push comment
+//自己评论就把这个活动拎上来，unread数不增加
 var updateUserCommentList = function(campaign, user, reqUserId, callback){
   var arrayMaxLength = 20;
   if(campaign.whichUnit(user._id)) {//已参加
@@ -201,7 +202,7 @@ var updateUserCommentList = function(campaign, user, reqUserId, callback){
       //放到最前,数组长度到max值时去掉最后面的campaign
       user.commentCampaigns.unshift({
         '_id': campaign._id,
-        'unread': 0
+        'unread': user._id.toString() == reqUserId.toString() ? 0 : 1
       });
       if(user.commentCampaigns.length>arrayMaxLength){
         user.commentCampaigns.length = arrayMaxLength;
@@ -219,7 +220,7 @@ var updateUserCommentList = function(campaign, user, reqUserId, callback){
       //放到最前,数组长度到max值时去掉最后面的campaign
       user.unjoinedCommentCampaigns.unshift({
         '_id': campaign._id,
-        'unread': 0
+        'unread': user._id.toString() == reqUserId.toString() ? 0 : 1
       });
       if(user.unjoinedCommentCampaigns.length>arrayMaxLength){
         user.unjoinedCommentCampaigns.length = arrayMaxLength;
@@ -358,7 +359,6 @@ exports.setComment = function (req, res) {
                   callback();
                 });
               },function(err, results) {
-                console.log('done');
                 return;
               });
             }
