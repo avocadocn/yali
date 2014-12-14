@@ -71,8 +71,8 @@ var PhotoAlbum = new Schema({
     type: Boolean,
     default: false
   },
-  photos: [Photo], // 12.12起只保存最近的10张
-  // 最近10张照片列表是否可靠
+  photos: [Photo], // 12.12起只保存最近的20张
+  // 最近20张照片列表是否可靠
   reliable: {
     type: Boolean,
     default: true
@@ -86,7 +86,7 @@ var PhotoAlbum = new Schema({
 PhotoAlbum.methods = {
 
   pushPhoto: function (photo) {
-    var maxLatestPhotoLength = 10;
+    var maxLatestPhotoLength = 20;
     if (this.photos.length < maxLatestPhotoLength) {
       this.photos.push(photo);
     } else {
