@@ -1631,7 +1631,7 @@ exports.getTimelineForApp = function(req,res){
           start_time: campaign.start_time,
           provoke:campaign.camp.length>0,
           // photo_list[i].thumbnail_uri是缩略图，200*200，photo_list[i].uri是原图
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 4)
+          photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album, 4)
         };
         time_lines.push(tempObj);
       });

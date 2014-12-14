@@ -552,7 +552,7 @@ var formatCampaignForApp = function(user, campaign, nowFlag) {
     'comment_sum':campaign.comment_sum
   };
   if(nowFlag){
-    result.photo_thumbnails = photo_album_controller.photoThumbnailList(campaign.photo_album, 3);
+    result.photo_thumbnails = photo_album_controller.getLatestPhotos(campaign.photo_album, 3);
   }
   return result;
 };
@@ -656,7 +656,7 @@ var formatCampaign = function(campaign,pageType,role,user,other){
       temp.close_flag=true;
     }
     if(_other.photoFlag){
-      temp.photo_thumbnails = photo_album_controller.photoThumbnailList(_campaign.photo_album, 4);
+      temp.photo_thumbnails = photo_album_controller.getLatestPhotos(_campaign.photo_album, 4);
       temp.photo_album_id = _campaign.photo_album._id;
       // temp.camp = _campaign.camp;//...
     }
@@ -1352,7 +1352,7 @@ var findUserNewFinishCampaigns= function(options, skipSize, findTime, res){
         '_id':campaigns[campaign_index]._id,
         'theme': campaigns[campaign_index].theme,
         'formatTime':model_helper.formatTime(campaigns[campaign_index].end_time),
-        'photo_thumbnails': photo_album_controller.photoThumbnailList(campaigns[campaign_index].photo_album, 4)
+        'photo_thumbnails': photo_album_controller.getLatestPhotos(campaigns[campaign_index].photo_album, 4)
       }
       return res.send({ result: 1, campaigns: format_campaigns });
     }
@@ -1910,31 +1910,34 @@ exports.renderCampaignDetail = function (req, res, next) {
   };
 
   var photo;
-  var photoList = photo_album_controller.photoThumbnailList(campaign.photo_album, 1);
-  if (photoList.length > 0) {
-    photo = photoList[0].uri;
-  }
+  photo_album_controller.getLatestPhotos(campaign.photo_album, 1, function (err, photos) {
+    if (photos.length > 0) {
+      photo = photos[0].uri;
+    }
+    var isActive = campaign.active;
+    if (campaign.confirm_status === false && isStart) {
+      isActive = false;
+    }
+    res.render('campaign/campaign_detail', {
+      campaign: campaign,
+      components: campaign.formatComponents(),
+      over: campaign.deadline < Date.now(),
+      isStart: isStart,
+      isEnd: isEnd,
+      isJoin: isJoin,
+      isActive: isActive,
+      notices: req.notices,
+      moment: moment,
+      allow: allow,
+      helper: helper,
+      links: links,
+      editing: editing,
+      photo: photo
+    });
 
-  var isActive = campaign.active;
-  if (campaign.confirm_status === false && isStart) {
-    isActive = false;
-  }
-  res.render('campaign/campaign_detail', {
-    campaign: campaign,
-    components: campaign.formatComponents(),
-    over: campaign.deadline < Date.now(),
-    isStart: isStart,
-    isEnd: isEnd,
-    isJoin: isJoin,
-    isActive: isActive,
-    notices: req.notices,
-    moment: moment,
-    allow: allow,
-    helper: helper,
-    links: links,
-    editing: editing,
-    photo: photo
   });
+
+
 };
 
 
@@ -2574,7 +2577,7 @@ exports.getCampaignData = function (req, res) {
           isStart: campaign.start_time < Date.now(),
           isEnd: campaign.end_time < Date.now(),
           unitInfos: unitInfos,
-          photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album,4)
+          photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album,4)
         }
         tempObj.components = campaign.formatComponents();
         var allow = auth(req.user, {

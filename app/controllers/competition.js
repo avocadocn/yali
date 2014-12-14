@@ -64,7 +64,7 @@ exports.getCompetition = function(req, res, next){
     'competition' : competition,
     'role': req.role,
     'moment':moment,
-    'photo_thumbnails': photo_album_controller.photoThumbnailList(competition.photo_album, 4),
+    'photo_thumbnails': photo_album_controller.getLatestPhotos(competition.photo_album, 4),
     'links': links,
     'cid': cid
   };

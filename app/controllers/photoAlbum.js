@@ -263,20 +263,34 @@ var updateIfNotReliable = function (photoAlbums, callback) {
   });
 };
 
-// 一个相册的未删除照片（数组）
-exports.photoThumbnailList = function(photoAlbum, count) {
+/**
+ * 返回一个相册最近的一些未删除的照片，照片会按点击数排序
+ * @param {Object} photoAlbum 相册
+ * @param {Number} count 需要的照片数，如果大于相册最近照片上限，则返回全部的最近照片
+ * @param {Function} callback 形式为function(err, photos)，可获得可靠数据
+ * @returns {Array} 照片数组，可能会含有不可靠数据
+ */
+exports.getLatestPhotos = function(photoAlbum, count, callback) {
   if (!count) {
     count = 4;
+  } else if (count > photoAlbum.photos.length) {
+    count = photoAlbum.photos.length;
   }
   var photoList = photoAlbum.photos.slice(0, photoAlbum.photos.length);
   photoList.sort(sortByUploadDate);
   photoList.sort(sortByClick);
   // todo 目前该方法有10个地方在用，尽管可以改成异步方法使得能百分百保证获取到正确数据，但改动代价太大，目前处于开发app阶段，不应该在这里消耗太多时间
   // todo 故采取较优方案：如果照片列表已被标记不可靠，则第一次取的时候仍然取原列表，但去更新这个列表，更新成功后以后就是可靠数据了
+  // todo 另外再提供一个可以异步获取可靠数据的回调函数，以便于某些需要可靠数据的地方。
   // todo 在现阶段这是最优解决方案
   updateIfNotReliable([photoAlbum], function (err) {
     if (err) {
-      console.log(err);
+      callback && callback(err);
+    } else {
+      var photoList = photoAlbum.photos.slice(0, photoAlbum.photos.length);
+      photoList.sort(sortByUploadDate);
+      photoList.sort(sortByClick);
+      callback && callback(null, photoList);
     }
   });
   return photoList.slice(0, count);
@@ -1036,6 +1050,16 @@ exports.deletePhoto = function(req, res) {
         return;
       }
 
+      photo.hidden = true;
+      photo.save(function (err) {
+        if (err) {
+          console.log(err);
+          res.send({ result: 0, msg: '删除照片失败' });
+        } else {
+          res.send({ result: 1, msg: '删除照片成功' });
+        }
+      });
+
       var result = photo.uri.match(/^([\s\S]+)\/(([-\w]+)\.[\w]+)$/);
       var img_path = result[1], img_filename = result[2], img_name = result[3];
 
@@ -1063,15 +1087,7 @@ exports.deletePhoto = function(req, res) {
       // 将上传的图片移至备份目录
       fs.renameSync(path.join(config.root, 'public', photo.uri), path.join(move_targe_dir, img_filename));
 
-      photo.hidden = true;
-      photo.save(function (err) {
-        if (err) {
-          console.log(err);
-          res.send({ result: 0, msg: '删除照片失败' });
-        } else {
-          res.send({ result: 1, msg: '删除照片成功' });
-        }
-      });
+
       if (helper.arrayObjectIndexOf(photoAlbum.photos, photo._id, '_id') !== -1) {
         photoAlbum.reliable = false;
       }
