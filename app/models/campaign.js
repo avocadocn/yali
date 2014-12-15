@@ -282,41 +282,41 @@ Campaign.methods = {
         };
       }
     }
+    var _join = function (unit) {
+      for (var i = 0; i < unit.member.length; i++) {
+        if (user._id.toString() === unit.member[i]._id.toString()) {
+          // 用户已经参加该活动
+          return {
+            success: false,
+            msg: '您已经参加该活动'
+          };
+        }
+      }
 
+      for (var i = 0; i < unit.member_quit.length; i++) {
+        if (user._id.toString() === unit.member_quit[i]._id.toString()) {
+          var member = (unit.member_quit.splice(i, 1))[0];
+          unit.member.push(member);
+          return {
+            success: true
+          };
+        }
+      }
+
+      // 用户没有参加
+      unit.member.push({
+        _id: user._id,
+        nickname: user.nickname,
+        photo: user.photo
+      });
+      return {
+        success: true
+      };
+    };
     for (var i = 0; i < this.campaign_unit.length; i++) {
       var unit = this.campaign_unit[i];
 
-      var _join = function (unit) {
-        for (var i = 0; i < unit.member.length; i++) {
-          if (user._id.toString() === unit.member[i]._id.toString()) {
-            // 用户已经参加该活动
-            return {
-              success: false,
-              msg: '您已经参加该活动'
-            };
-          }
-        }
 
-        for (var i = 0; i < unit.member_quit.length; i++) {
-          if (user._id.toString() === unit.member_quit[i]._id.toString()) {
-            var member = (unit.member_quit.splice(i, 1))[0];
-            unit.member.push(member);
-            return {
-              success: true
-            };
-          }
-        }
-
-        // 用户没有参加
-        unit.member.push({
-          _id: user._id,
-          nickname: user.nickname,
-          photo: user.photo
-        });
-        return {
-          success: true
-        };
-      };
       // 非公司活动
       if (targetUnit.tid) {
         if(targetUnit.tid.toString() === unit.team._id.toString()){

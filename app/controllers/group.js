@@ -528,7 +528,7 @@ exports.provoke = function (req, res) {
   .then(function(team_opposite){
     var cname = req.companyGroup.cname;
     var type = 0;
-    if(team_opposite.cid === req.companyGroup.cid){//同公司
+    if(team_opposite.cid._id === req.companyGroup.cid){//同公司
       if(team_opposite.gid === req.companyGroup.gid)//同类型
         type= 4;
       else//同公司不同类型
@@ -547,7 +547,7 @@ exports.provoke = function (req, res) {
           // _id: campaign._id,
           type: 'Campaign'
         },
-        companies: req.companyGroup.cid === team_opposite.cid ? [req.companyGroup.cid] : [req.companyGroup.cid, team_opposite.cid],
+        companies: req.companyGroup.cid === team_opposite.cid._id ? [req.companyGroup.cid] : [req.companyGroup.cid, team_opposite.cid._id],
         teams: [req.companyGroup._id, team_opposite._id]
       },
       name: moment(req.body.start_time).format("YYYY-MM-DD ") + req.body.theme,
@@ -557,7 +557,7 @@ exports.provoke = function (req, res) {
 
     var providerInfo = {
       'tid':[my_team_id,team_opposite._id],
-      'cid':req.companyGroup.cid === team_opposite.cid ? [req.companyGroup.cid] : [req.companyGroup.cid, team_opposite.cid],
+      'cid':req.companyGroup.cid === team_opposite.cid._id ? [req.companyGroup.cid] : [req.companyGroup.cid, team_opposite.cid._id],
       'confirm_status':false,
       'poster':{
         cname:cname,
@@ -573,21 +573,21 @@ exports.provoke = function (req, res) {
     async.waterfall([
       function(callback){
         //查找
-        Company.find({'_id':{'$in':providerInfo.cid}},{'info':1},function(err,companies){
+        Company.findOne({'_id':req.user.cid},{'info':1},function(err,myCompany){
           if(err)
             callback('查找失败'+err);
           else{
-            callback(null,companies);
+            callback(null,myCompany);
           }
         });
       },
-      function(companies,callback){
+      function(myCompany,callback){
         //己方unit
         providerInfo.campaign_unit.push({
           'company':{
-            '_id':companies[0]._id,
-            'name':companies[0].info.official_name,
-            'logo':companies[0].info.logo
+            '_id':myCompany._id,
+            'name':myCompany.info.official_name,
+            'logo':myCompany.info.logo
           },
           'team':{
             '_id':req.companyGroup._id,
@@ -598,10 +598,10 @@ exports.provoke = function (req, res) {
         });
         //对方unit
         providerInfo.campaign_unit.push({
-          'company':{//如果查找时providerInfo.cid里的两个cid一样会跪...
-            '_id':companies.length ===1?companies[0]._id : companies[1]._id,
-            'name':companies.length ===1?companies[0].info.official_name : companies[1].info.official_name,
-            'logo':companies.length ===1?companies[0].info.logo : companies[1].info.logo
+          'company':{
+            '_id':team_opposite.cid._id,
+            'name':team_opposite.cid.info.official_name,
+            'logo':team_opposite.cid.info.logo
           },
           'team':{
             '_id': team_opposite._id,

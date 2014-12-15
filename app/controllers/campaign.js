@@ -1523,7 +1523,6 @@ exports.getNotices = function (req, res, next) {
 
 exports.getMembers = function (req, res) {
   var campaign = req.campaign;
-
   // todo: 权限验证
 
   var resUnits = [];
@@ -1577,7 +1576,7 @@ exports.getMembers = function (req, res) {
 exports.getCampaignTeams = function (req, res, next) {
   var campaign = req.campaign;
   CompanyGroup.find({
-    _id: campaign.tid
+    _id: {'$in':campaign.tid}
   }).exec()
     .then(function (teams) {
       req.teams = teams;
@@ -1961,12 +1960,10 @@ exports.joinCampaign = function (req, res) {
       return res.send(403);
     }
   }
-
   var joinResult = campaign.join({
     cid: req.body.cid,
     tid: req.body.tid
   }, req.user);
-
   if (!joinResult.success) {
     return res.send({ result: 0, msg: joinResult.msg });
   } else {
@@ -1980,7 +1977,6 @@ exports.joinCampaign = function (req, res) {
           console.log(err);
       });
     }
-    
     campaign.save(function (err) {
       if (err) {
         console.log(err);
