@@ -142,7 +142,35 @@ exports.getCommentById = function (req, res, next) {
     });
 };
 
-
+/**
+ * [userReadComment description]
+ * @param  {object} user 用户
+ * @param  {string} campaignId 看的是哪个活动的评论
+ */
+var userReadComment = function (user, campaignId) {
+  var find = false;
+  for(var i=0; i<user.commentCampaigns.length; i++){
+    if(campaignId.toString()===user.commentCampaigns[i]._id.toString()) {
+      user.commentCampaigns[i].unread = 0;
+      find = true;
+      break;
+    }
+  }
+  if(!find){
+    for(var i=0; i<user.unjoinedCommentCampaigns.length; i++){
+      if(campaignId.toString()===user.unjoinedCommentCampaigns[i]._id.toString()) {
+        user.unjoinedCommentCampaigns[i].unread = 0;
+        find = true;
+        break;
+      }
+    }
+  }
+  user.save(function(err){
+    if(err){
+      console.log('user save error:',err);
+    }
+  });
+};
 
 //获取留言
 exports.getComment = function (req, res) {
@@ -159,6 +187,7 @@ exports.getComment = function (req, res) {
       if (err) console.log(err);
       // 即使错误依然会做基本的权限设置（公司可删自己员工的，自己可以删自己的），所以依旧返回数据
       res.send({'comments': comments, nextStartDate: nextStartDate, 'user': {'_id': req.user._id}});
+      userReadComment(req.user, req.params.hostId);
     });
   });
 }
