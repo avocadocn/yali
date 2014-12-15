@@ -572,6 +572,7 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
             cbox.photo_album_id = data.componentData.photoAlbumId;
             $scope.photoAlbumId = data.componentData.photoAlbumId;
             $scope.userPhoto = data.componentData.userPhoto;
+            $scope.gotComponentData = true;
             Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
               if (err) {
                 alertify.alert('获取评论失败，请刷新页面重试');

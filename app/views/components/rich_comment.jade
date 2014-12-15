@@ -6,7 +6,7 @@
     form.rich_comment_form(name="comment_form" ng-if="allowPublish" novalidate)
       .comment_control
         .user_photo
-          img(ng-src="{{userPhoto}}/30/30")
+          img(ng-if="gotComponentData" ng-src="{{userPhoto}}/30/30")
         input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder"  maxlength=140 required)
         label.img_selector(for="photos")
           i.upload_img.fa.fa-picture-o
