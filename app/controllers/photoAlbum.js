@@ -846,81 +846,98 @@ exports.createSinglePhoto = function(req, res, next) {
               return part.resume();
             }
 
-            var photo = new Photo({
-              photo_album: req.photoAlbum._id,
-              owner: {
-                companies: req.photoAlbum.owner.companies,
-                teams: req.photoAlbum.owner.teams
-              },
-              uri: path.join(uri_dir, photo_name),
-              name: part.filename,
-              upload_user: upload_user
-            });
-            photo.save(function (err) {
-              if (err) {
-                res.send(500);
-                return;
-              }
-              var dir = path.join(config.root, 'ori_img', date_dir_name, cid);
-              if (!fs.existsSync(dir)) {
-                mkdirp.sync(dir);
-              }
-              fs.writeFileSync(path.join(dir, photo._id + '.' + ext), data);
-              req.photoAlbum.photo_count += 1;
-              req.photoAlbum.upload_user = upload_user;
-              req.photoAlbum.update_date = Date.now();
-              req.photoAlbum.pushPhoto({
-                _id: photo._id,
-                uri: photo.uri,
-                upload_date: photo.upload_date,
-                click: photo.click,
-                name: photo.name
-              });
-              req.photoAlbum.save(function (err) {
+            try {
+              gm(data).size(function (err, size) {
                 if (err) {
                   console.log(err);
-                  return res.send(500);
+                  res.send(500);
+                  return part.resume();
                 }
 
-                // 将照片_id和uri及第一张图的上传日期存入session
-                // 在1分钟内，发表评论时，如果该session值存在，则将图片信息存入评论中
-                // 发表完评论后清除session，或是再次上传图片时，超过1分钟，清除上次的session
-
-                // 判断session是否存在，是否过期，新建session
-                var now = Date.now();
-                if (!req.session.uploadData) {
-                  req.session.uploadData = {
-                    date: now,
-                    photos: []
-                  };
-                }
-                var aMinuteAgo = now - moment.duration(1, 'minutes').valueOf();
-                aMinuteAgo = new Date(aMinuteAgo);
-
-                // 超过一分钟，重置数据
-                if (aMinuteAgo > req.session.uploadData.date) {
-                  req.session.uploadData.date = now;
-                  req.session.uploadData.photos = [];
-                }
-
-                var new_photo = photo;
-                // 保存photo信息到session中
-                req.session.uploadData.photos.push({
-                  _id: new_photo._id,
-                  uri: new_photo.uri
+                var photo = new Photo({
+                  photo_album: req.photoAlbum._id,
+                  owner: {
+                    companies: req.photoAlbum.owner.companies,
+                    teams: req.photoAlbum.owner.teams
+                  },
+                  uri: path.join(uri_dir, photo_name),
+                  width: size.width,
+                  height: size.height,
+                  name: part.filename,
+                  upload_user: upload_user
                 });
-
-                return res.send({
-                  result: 1,
-                  msg: '上传成功',
-                  photo: {
-                    _id: new_photo._id,
-                    uri: new_photo.uri
+                photo.save(function (err) {
+                  if (err) {
+                    res.send(500);
+                    return;
                   }
+                  var dir = path.join(config.root, 'ori_img', date_dir_name, cid);
+                  if (!fs.existsSync(dir)) {
+                    mkdirp.sync(dir);
+                  }
+                  fs.writeFileSync(path.join(dir, photo._id + '.' + ext), data);
+                  req.photoAlbum.photo_count += 1;
+                  req.photoAlbum.upload_user = upload_user;
+                  req.photoAlbum.update_date = Date.now();
+                  req.photoAlbum.pushPhoto({
+                    _id: photo._id,
+                    uri: photo.uri,
+                    upload_date: photo.upload_date,
+                    click: photo.click,
+                    name: photo.name
+                  });
+                  req.photoAlbum.save(function (err) {
+                    if (err) {
+                      console.log(err);
+                      return res.send(500);
+                    }
+
+                    // 将照片_id和uri及第一张图的上传日期存入session
+                    // 在1分钟内，发表评论时，如果该session值存在，则将图片信息存入评论中
+                    // 发表完评论后清除session，或是再次上传图片时，超过1分钟，清除上次的session
+
+                    // 判断session是否存在，是否过期，新建session
+                    var now = Date.now();
+                    if (!req.session.uploadData) {
+                      req.session.uploadData = {
+                        date: now,
+                        photos: []
+                      };
+                    }
+                    var aMinuteAgo = now - moment.duration(1, 'minutes').valueOf();
+                    aMinuteAgo = new Date(aMinuteAgo);
+
+                    // 超过一分钟，重置数据
+                    if (aMinuteAgo > req.session.uploadData.date) {
+                      req.session.uploadData.date = now;
+                      req.session.uploadData.photos = [];
+                    }
+
+                    var new_photo = photo;
+                    // 保存photo信息到session中
+                    req.session.uploadData.photos.push({
+                      _id: new_photo._id,
+                      uri: new_photo.uri
+                    });
+
+                    return res.send({
+                      result: 1,
+                      msg: '上传成功',
+                      photo: {
+                        _id: new_photo._id,
+                        uri: new_photo.uri
+                      }
+                    });
+                  });
                 });
+                part.resume();
+
               });
-            });
-            part.resume();
+            } catch (e) {
+              console.log(e);
+              res.send(500);
+              return part.resume();
+            }
 
           });
         } catch (e) {
