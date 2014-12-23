@@ -35,7 +35,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
             url: '/company/mailCheck',
             data:{
                 login_email: $scope.email,
-                cid:$rootScope.cid
+                cid:$rootScope.cid//???
             }
         }).success(function(data, status) {
             if(data === "false") {

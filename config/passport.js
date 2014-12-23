@@ -59,7 +59,7 @@ module.exports = function(passport) {
                 }
                 else if (!company.status.active) {
                     return done(null, false, {
-                        message: '您的公司已被关闭'
+                        message: '您的公司账号已被关闭'
                     });
                 }
                 else if (!company.authenticate(password)) {
