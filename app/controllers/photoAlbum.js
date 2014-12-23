@@ -917,7 +917,9 @@ exports.createSinglePhoto = function(req, res, next) {
                     // 保存photo信息到session中
                     req.session.uploadData.photos.push({
                       _id: new_photo._id,
-                      uri: new_photo.uri
+                      uri: new_photo.uri,
+                      width: new_photo.width,
+                      height: new_photo.height
                     });
 
                     return res.send({

@@ -119,8 +119,6 @@ companies.forEach(function (company) {
         campaign.campaign_unit.push(unit);
       });
     } else if (campaign.team.length >= 2 && campaign.campaign_type === 6) {
-      printjson(campaign);
-      print('before');
       campaign.tid = campaign.team;
       campaign.campaign_unit = [];
       var teams = db.companygroups.find({ '_id': { '$in': campaign.tid } });
@@ -163,8 +161,6 @@ companies.forEach(function (company) {
         }
         campaign.campaign_unit.push(unit);
       });
-      printjson(campaign);
-      print('after');
     }
     db.campaigns.save(campaign);
   });
