@@ -7,7 +7,94 @@ var mongoose = require('mongoose'),
     GroupMessage = mongoose.model('GroupMessage'),
     Campaign = mongoose.model('Campaign'),
     Department = mongoose.model('Department'),
+    async = require('async'),
     schedule = require('node-schedule');
+
+var userScore = require('./user_score.js');
+
+/**
+ * 活动结束更新成员积分
+ * @param {Function} callback [description]
+ */
+var addCampaignMemberScore = function (callback) {
+
+  var pageSize = 20;
+  var nowResultLength = 0;
+  var totalCount = 0, successCount = 0, failedCount = 0;
+  var nextQueryId;
+
+  var updateMemberScore = function (campaign, mapCallback) {
+    var memberIds = [];
+    campaign.members.forEach(function (member) {
+      memberIds.push(member._id);
+    });
+
+    User.update({
+      _id: {
+        $in: memberIds
+      }
+    }, {
+      $inc: {
+        "score.officialCampaignSucceded": userScore.scoreItems.officialCampaignSucceded,
+        "score.total": userScore.scoreItems.officialCampaignSucceded
+      }
+    }, {
+      multi: true
+    }, function (err, num) {
+      if (err) {
+        console.log('更新活动成员积分出错:', err, '活动id:', campaign._id);
+        console.log(err.stack);
+        failedCount++;
+      } else {
+        successCount++
+      }
+      mapCallback();
+    });
+
+  };
+
+  async.doWhilst(function (doWhilstCallback) {
+    var query = {
+      finish: false,
+      end_time: {
+        $lt: Date.now()
+      }
+    };
+    if (nextQueryId) {
+      query._id = {
+        $gt: nextQueryId
+      };
+    }
+    Campaign.find(query)
+      .sort('_id')
+      .limit(pageSize)
+      .exec()
+      .then(function (campaigns) {
+        if (campaigns.length > 0) {
+          nextQueryId = campaigns[campaigns.length - 1]._id;
+          nowResultLength = campaigns.length;
+          totalCount += campaigns.length;
+        }
+        async.map(campaigns, updateMemberScore, function (err, results) {
+          doWhilstCallback();
+        })
+
+      })
+      .then(null, function (err) {
+        console.log('查找活动出错:', err);
+        console.log(err.stack);
+        doWhilstCallback();
+      });
+
+  }, function () {
+    return nowResultLength === pageSize;
+  }, function (err) {
+    console.log('[更新活动成员分数]处理活动数:', totalCount, '成功:', successCount, '失败:', failedCount);
+    callback(err);
+  });
+
+}
+
 var finishCampaign = function(){
   //把比赛都开始都没应答的视为关闭
   Campaign.update({'active':true,'start_time':{'$lt':new Date()},'campaign_type':{'$in':[4,5,7,9]},'confirm_status':false},{$set:{'active':false}},{multi:true},function(err,num){
@@ -18,21 +105,35 @@ var finishCampaign = function(){
       console.log('closeNoResponseCompetition:'+num);
     }
   })
-  //把时间到了的设为finish
-  Campaign.update({'finish':false,'end_time': {'$lt':new Date()}},{$set:{'finish':true}},{multi: true},function(err,num){
-    if(err){
-      console.log(err);
+
+  addCampaignMemberScore(function (err) {
+    if (err) {
+      console.log('更新积分出错：', err);
     }
-    else{
-      console.log('finishCampaign:'+num);
-    }
-  });
+
+    // 必须在更新完成员积分后再进行，否则无法查询将要设为结束的活动
+    // 把时间到了的设为finish
+    Campaign.update({'finish':false,'end_time': {'$lt':new Date()}},{$set:{'finish':true}},{multi: true},function(err,num){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('finishCampaign:'+num);
+      }
+    });
+
+  })
+
+  
   //把finish的但是没人参加的活动视为关闭
   //   db.campaigns.find({'$nor':[{'campaign_unit.member':{'$size':{'$gt':0}}}]})
   //   Campaign.find({'finish':true,'campaign_unit':{'$size':1},'campaign_unit.member':{'$size':0}});//可以
   //   Campaign.find({'finish':true,'campaign_unit':{'$size':2},'campaign_unit.0.member':{'$size':0},'campaign_unit.1.member':{'$size':0}})//可以
   // db.campaigns.find({'$not':{'campaign_unit.member':{'$size':{'$gt':0}}}},{'campaign_unit.member':1}).pretty()//无效
   // db.campaigns.find({'campaign_unit.member':{'$size':{'$gt':0}}},{'campaign_unit.member':1}).pretty()
+
+
+
 }
 
 var team_time_out = 30;
