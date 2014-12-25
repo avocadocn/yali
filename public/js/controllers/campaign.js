@@ -1,439 +1,288 @@
 'use strict';
 
 var campaignApp = angular.module('donler');
-campaignApp.directive('maxHeight', function() {
-    return {
-        restrict: 'A',
-        link: function(scope, elem, attr, ctrl) {
-            if(elem.height()>attr.maxHeight){
-                scope.showFold =true;
-            }
-            else{
-                scope.showFold =false;
-            }
+
+campaignApp.controller('campaignController', ['$scope', '$http', '$sce', 'Campaign', function ($scope, $http, $sce, Campaign) {
+
+  var data = document.getElementById('campaign_data').dataset;
+  var campaignId = data.id;
+
+  Campaign.getDetailPageData(campaignId, function (err, data) {
+    if (err) {
+      alertify.alert('获取活动数据失败，请刷新页面重试。');
+    } else {
+      $scope.campaign = data.campaign;
+      $scope.campaign.contentHTML = $sce.trustAsHtml($scope.campaign.content);
+      if ($scope.campaign.isStart && $scope.campaign.isActive) {
+        $scope.detailFold = true;
+      }
+      $scope.allow = data.allow;
+      $scope.modelData = {
+        content: $scope.campaign.content,
+        member_max: $scope.campaign.member_max,
+        member_min: $scope.campaign.member_min,
+        deadline: moment($scope.campaign.deadline).format('YYYY-MM-DD HH:mm')
+      };
+      var tags = '';
+      for (var i = 0; i < $scope.campaign.tags.length; i++) {
+        tags += $scope.campaign.tags[i];
+        if (i != $scope.campaign.tags.length - 1) {
+          tags += ',';
         }
-    };
-});
-campaignApp.controller('campaignController', ['$scope', '$http','$rootScope', 'Comment', function ($scope, $http, $rootScope, Comment) {
-    $scope.private_message_content = {
-        'text':""
-    };
-    $scope.$watch('campaign_id',function(campaign){
-        if(campaign==null){
+      }
+      $scope.modelData.tags = tags;
+      $('#taginput').val(tags);
+      $('#taginput').tagsinput();
+
+      $scope.allowJoinUnits = $scope.campaign.units.filter(function (unit) {
+        return unit.canJoin;
+      });
+    }
+  });
+
+  Campaign.getNotices(campaignId, function (err, notices) {
+    if (!err) {
+      $scope.notices = notices;
+    }
+  });
+  $scope.unfoldNotice = false;
+  $scope.toggleFoldNotice = function () {
+    $scope.unfoldNotice = !$scope.unfoldNotice;
+  };
+
+  $scope.notice = {
+    placeholder: '',
+    placeholderText: '添加公告，让成员随时了解活动动态！（请控制在140字以内）',
+    content: ''
+  };
+  $scope.notice.placeholder = $scope.notice.placeholderText;
+  $scope.publishNotice = function() {
+    if ($scope.notice.content === '') return;
+    $http({
+      method: 'post',
+      url: '/message/push/campaign',
+      data: {
+        campaign_id: campaignId,
+        content: $scope.notice.content
+      }
+    }).success(function(data, status) {
+      if (data.msg === 'SUCCESS') {
+        window.location.reload();
+      }
+    }).error(function(data, status) {
+      //TODO:更改对话框
+      alertify.alert('DATA ERROR');
+    });
+  };
+  $scope.editingNotice = false;
+  $scope.togglePublishNotice = function () {
+    $scope.editingNotice = !$scope.editingNotice;
+  };
+
+  var joinModal = $('#joinModal');
+
+  // 如果同时加入了多个小队，则打开modal，否则直接参加
+  $scope.openJoinModal = function () {
+    if ($scope.allowJoinUnits.length === 1) {
+      $scope.join($scope.allowJoinUnits[0].cid, $scope.allowJoinUnits[0].tid);
+    } else {
+      joinModal.modal('show');
+    }
+  };
+
+  var updateMemberCard = function () {
+    var count = 0;
+    var members = [];
+    (function () {
+      for (var i = 0; i < $scope.memberModalUnits.length; i++) {
+        var unit = $scope.memberModalUnits[i];
+        for (var j = 0; j < unit.members.length; j++) {
+          members.push(unit.members[j]);
+          count++;
+          if (count === 10) {
             return;
+          }
         }
-        Comment.get('campaign', $scope.campaign_id, function (err, comments) {
+      }
+    })();
+    $scope.campaign.membersForCard = members;
+  };
+
+  $scope.join = function (cid, tid) {
+    Campaign.join({
+      campaignId: campaignId,
+      cid: cid,
+      tid: tid
+    }, function (err) {
+      if (err) {
+        alertify.alert(err);
+      } else {
+        $scope.campaign.isJoin = true;
+        getMembers(updateMemberCard);
+        $('#joinModal').modal('hide');
+        alertify.alert('参加活动成功');
+      }
+    });
+  };
+
+  $scope.quit = function () {
+    alertify.confirm('您确定要退出该活动吗？', function (e) {
+      if (e) {
+        Campaign.quit(campaignId, function (err) {
+          if (err) {
+            alertify.alert(err);
+          } else {
+            $scope.campaign.isJoin = false;
+            getMembers(updateMemberCard);
+            alertify.alert('退出活动成功');
+          }
+        });
+      }
+    });
+  };
+
+  $scope.detailFold = false;
+  $scope.toggleFoldDetail = function () {
+    $scope.detailFold = !$scope.detailFold;
+  }
+
+
+  $scope.editingDetail = false;
+
+  $scope.save = function () {
+    if ($scope.detailForm.content.$invalid) {
+      alertify.alert('活动简介不能超过2000字。');
+      return;
+    }
+    if ($scope.modelData.member_min < 0 || $scope.modelData.member_max < 0 || $scope.modelData.member_min > $scope.modelData.member_max || $scope.modelData.member_min < 0) {
+      alertify.alert('请正确填写报名人数!');
+      return;
+    }
+    Campaign.edit(campaignId, $scope.modelData, function (err) {
+      if (err) {
+        alertify.alert(err);
+      } else {
+        var oriLocation = '/campaign/detail/' + campaignId;
+        if (window.location.search != "") {
+          window.location = oriLocation;
+        } else {
+          $scope.campaign.contentHTML = $sce.trustAsHtml($scope.modelData.content);
+          $scope.campaign.member_max = $scope.modelData.member_max;
+          $scope.campaign.member_min = $scope.modelData.member_min;
+          $scope.campaign.deadline = $scope.modelData.deadline;
+          $scope.campaign.tags = $scope.modelData.tags.split(',');
+          $scope.editingDetail = false;
+        }
+      }
+    });
+  };
+
+  $scope.toggleEdit = function () {
+    $scope.editingDetail = !$scope.editingDetail;
+    $scope.detailFold = false;
+  };
+
+  $scope.cancel = function () {
+    alertify.confirm('活动关闭后，不能再编辑该活动、发表评论、上传照片，并且不能重新打开，确定要关闭该活动吗？', function (e) {
+      if (e) {
+        Campaign.cancel(campaignId, function (err) {
+          if (err) {
+            alertify.alert(err);
+          } else {
+            alertify.alert('关闭活动成功', function (e) {
+              window.location.reload();
+            });
+          }
+        });
+      }
+    });
+  };
+  $scope.dealProvoke = function(tid, status) {
+      switch(status){
+        case 1://接受
+          var tip = '是否确认接受该挑战?';
+          break;
+        case 2://拒绝
+          var tip = '是否确认拒绝该挑战?';
+          break;
+        case 3://取消
+          var tip = '是否确认取消发起挑战';
+          break;
+      }
+      alertify.confirm(tip,function(e){
+        if(e){
+          Campaign.dealProvoke(campaignId, tid, status, function (err) {
             if (err) {
-                alertify.alert('获取评论失败，请刷新页面重试');
+              alertify.alert(err);
             } else {
-                if(comments.length > 0){
-                    $scope.comments = comments;
-                    $scope.fixed_sum = comments.length;
-                }
+              window.location.reload();
             }
-        });
-    });
-    $scope.editContentStatus =false;
-    $scope.init = true;
-
-    $scope.comments = [];
-
-    $scope.$watch('campaign_team+campaign_id+member+user_team+role',function(){
-        if($scope.init){
-            if($scope.campaign_team==null){
-                return;
-            }
-            if($scope.campaign_type == '3'){
-                for(var i =0; i < $scope.campaign_team.length; i ++){
-                    $scope.campaign_team[i].join_member = [];
-                    for(var j = 0; j < $scope.member.length; j ++){
-                        if($scope.member[j].team){
-                            if($scope.campaign_team[i]._id.toString() == $scope.member[j].team._id.toString()){
-                                $scope.campaign_team[i].join_member.push({
-                                    '_id' : $scope.member[j].uid,
-                                    'nickname' : $scope.member[j].nickname,
-                                    'photo' : $scope.member[j].photo,
-                                    'team' : $scope.member[j].team
-                                });
-                            }
-                        }
-                    }
-                    for(var k = 0; k < $scope.user_team.length; k ++){
-                        if($scope.user_team[k]._id.toString() == $scope.campaign_team[i]._id.toString()){
-                            $scope.campaign_team[i].leader = $scope.user_team[k].leader;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    });
-    $scope.cancel = function (_id) {
-        alertify.confirm('确认要关闭该活动吗？',function(e){
-            if(e){
-                try {
-                    $http({
-                        method: 'post',
-                        url: '/campaign/cancel/'+_id,
-                        data:{
-                            campaign_id : _id
-                        }
-                    }).success(function(data, status) {
-                        if(data.result===1){
-                            window.location.reload();
-                        }
-                        else{
-                            alertify.alert(data.msg);
-                        }
-                    }).error(function(data, status) {
-                        alertify.alert('DATA ERROR');
-                    });
-                }
-                catch(e) {
-                    console.log(e);
-                }
-            }
-        });
-    };
-
-    $scope.deleteComment = function(index){
-        try {
-            $http({
-                method: 'post',
-                url: '/comment/delete',
-                data:{
-                    comment_id : $scope.comments[index]._id
-                }
-            }).success(function(data, status) {
-                if(data === 'SUCCESS'){
-                    $scope.comments.splice(index,1);
-                    $scope.campaign.comment_sum --;
-                } else {
-                    alertify.alert('DATA ERROR');
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
-
-    $scope.select_index = 0;
-    $scope.selcetJoinTeam = function(index){
-        $scope.join_team = {
-            _id : $scope.join_teams[index]._id,
-            name : $scope.join_teams[index].name,
-            logo : $scope.join_teams[index].logo
-        };
-        $scope.select_index = index;
-    }
-    $scope.joinReady = function(){
-        $scope.join_teams = [];
-        for(var i = 0; i < $scope.user_team.length; i ++){
-            for(var j = 0; j < $scope.campaign_team.length; j ++){
-                if($scope.campaign_team[j]._id.toString() === $scope.user_team[i]._id.toString()){
-                    $scope.join_teams.push({
-                        _id:$scope.user_team[i]._id,
-                        name:$scope.user_team[i].name,
-                        logo:$scope.user_team[i].logo
-                    });
-                    break;
-                }
-            }
-        }
-        if($scope.join_teams.length > 1 && $scope.campaign_type === '3'){
-            $scope.join_teams[0].selected = true;
-            $scope.join_team = {
-                _id : $scope.join_teams[0]._id,
-                name : $scope.join_teams[0].name,
-                logo : $scope.join_teams[0].logo
-            };
-            $('#joinTeamSelectmodal').modal();
-        }else{
-            if($scope.campaign_type != '1'){
-                $scope.join_team = {
-                    _id : $scope.join_teams[0]._id,
-                    name : $scope.join_teams[0].name,
-                    logo : $scope.join_teams[0].logo
-                };
-            }else{
-                $scope.join_team = null;
-            }
-            $scope.joinCampaign();
-        }
-    }
-    $scope.joinCampaign = function () {
-        //$rootScope.donlerAlert($scope.campaign_id);
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/joinCampaign/'+$scope.campaign_id,
-                data:{
-                    campaign_id : $scope.campaign_id,
-                    join_team : $scope.join_team
-                }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    //alert('成功加入该活动!');
-                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.JOIN_CAMPAIGN_SUCCESS);
-                    $scope.join = 1;
-                    if($scope.role==='HR'|| $scope.role ==='LEADER'){
-                        for(var i = 0;i < $scope.member_quit.length; i ++) {
-                            if($scope.member_quit[i].nickname === data.member.nickname) {
-                                $scope.member_quit.splice(i,1);
-                                break;
-                            }
-                        }
-                    }
-                    $scope.member.push({
-                        '_id' : data.member._id,
-                        'nickname' : data.member.nickname,
-                        'photo' : data.member.photo,
-                        'team' : data.member.team
-                    });
-
-                    if($scope.campaign_type == '3'){
-                        for(var i =0; i < $scope.campaign_team.length; i ++){
-                            if($scope.campaign_team[i]._id.toString() == data.member.team._id.toString()){
-                                $scope.campaign_team[i].join_member.push({
-                                    'tt' :data.member.uid,
-                                    '_id' : data.member.uid,
-                                    'nickname' : data.member.nickname,
-                                    'photo' : data.member.photo,
-                                    'team' : data.member.team
-                                });
-                                // console.log($scope.campaign_team[i].join_member);
-                                break;
-                            }
-                        }
-                    }
-                    // console.log($scope.campaign_team);
-                }
-                else{
-                    alertify.alert('DATA ERROR');
-                }
-                $scope.init = false;
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-
-    $scope.quitCampaign = function () {
-        try {
-            $http({
-                method: 'post',
-                url: '/campaign/quitCampaign/'+$scope.campaign_id,
-                data:{
-                    campaign_id : $scope.campaign_id
-                }
-            }).success(function(data, status) {
-                if(data.result===1){
-                    //$rootScope.donlerAlert($rootScope.lang_for_msg[$rootScope.lang_key].value.QUIT_CAMPAIGN_SUCCESS);
-                    //alert('您已退出该活动!');
-                    $scope.join = -1;
-
-                    for(var i = 0;i < $scope.member.length; i ++) {
-                        if($scope.member[i].nickname === data.member.nickname) {
-                            $scope.member.splice(i,1);
-                            break;
-                        }
-                    }
-
-                    if($scope.campaign_type == '3'){
-                        for(var i = 0;i < $scope.campaign_team.length; i ++){
-                            console.log($scope.campaign_team[i].join_member,data.member.uid.toString());
-                            for(var j = 0; j < $scope.campaign_team[i].join_member.length; j++){
-                                if($scope.campaign_team[i].join_member[j]._id.toString() == data.member.uid.toString()){
-                                    $scope.campaign_team[i].join_member.splice(j,1);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if($scope.role==='HR'|| $scope.role ==='LEADER'){
-                        $scope.member_quit.push({
-                            'nickname' : data.member.nickname,
-                            'photo' : data.member.photo
-                        });
-                    }
-                }
-                else{
-                    alertify.alert(data.msg);
-                }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    };
-
-
-    $scope.modalPerticipator = function(index){
-        $scope.team_index = index;
-        $('#sponsorMessageCampaignModel').modal();
-    }
-    $scope.sendToParticipator = function(){
-        try{
-          $http({
-              method: 'post',
-              url: '/message/push/campaign',
-              data:{
-                    team : $scope.campaign_team[$scope.team_index],
-                    campaign_id : $scope.campaign_id,
-                    content : $scope.private_message_content.text
-              }
-          }).success(function(data, status) {
-              if(data.msg === 'SUCCESS'){
-                $scope.private_message_content.text = "";
-
-
-                if($scope.campaign_type == '3'){
-                    for(var k = 0; k < $scope.user_team.length; k ++){
-                        if($scope.user_team[k]._id.toString() == $scope.campaign_team[$scope.team_index]._id.toString()){
-                            $scope.campaign_team[$scope.team_index].leader = $scope.user_team[k].leader;
-                            $rootScope.team_length++;
-                            $rootScope.o ++;
-                            break;
-                        }
-                    }
-                }else{
-                    $rootScope.team_length++;
-                    $rootScope.o ++;
-                }
-              }
-          }).error(function(data, status) {
-              //TODO:更改对话框
-              alertify.alert('DATA ERROR');
           });
         }
-        catch(e){
-            console.log(e);
-        }
-    }
-    $scope.editContent = function(){
-        
-        if(!$scope.editContentStatus){
-            $scope.campaignContent = angular.element('#campaignContent').html();
-            $scope.editContentStatus = !$scope.editContentStatus;
-            var options = {
-                editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
-                class: 'dl_markdown', // {String} class of the editor,
-                textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
-                list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-                stay: false,
-                toolBarId: 'campaignDetailToolBar'
-              }
-            var editor = new Pen(options);
-        }
-        else{
-            try {
-                $http({
-                    method: 'post',
-                    url: '/campaign/edit/'+$scope.campaign_id,
-                    data:{
-                        campaign_id : $scope.campaign_id,
-                        content : $scope.campaignContent
-                    }
-                }).success(function(data, status) {
-                    if(data.result===1){
-                        window.location.reload();
-                    }
-                    else{
-                        alertify.alert(data.msg);
-                    }
-                }).error(function(data, status) {
-                    alertify.alert('DATA ERROR');
-                });
-            }
-            catch(e) {
-                console.log(e);
-            }
-        }
-    }
-    $scope.photos = null;
+      });
+    };
+  $('#deadline').datetimepicker({
+    autoclose: true,
+    language: 'zh-CN',
+    startDate: new Date(),
+    pickerPosition: "top-left"
+  });
 
-    var campaign_data = $('#campaign_data');
-    var cbox = new Comment.CommentBox({
-        host_type: 'campaign_detail',
-        host_id: campaign_data.data('hostId'),
-        photo_album_id: campaign_data.data('photoAlbumId')
+  var options = {
+    editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
+    class: 'dl_markdown', // {String} class of the editor,
+    textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
+    list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+    stay: false,
+    toolBarId: 'campaignDetailToolBar'
+  };
+
+  var editor = new Pen(options);
+
+  $scope.canUnFold = false;
+  var detailModal = $('#campaignDetailModal');
+  detailModal.on('shown.bs.modal', function (e) {
+    var campaignIntroDom = document.getElementById('campaign_intro');
+    if (campaignIntroDom && campaignIntroDom.scrollHeight > 100) {
+      $scope.canUnFold = true;
+      $scope.$apply();
+    }
+  });
+
+  $scope.showDetailModal = function () {
+    detailModal.modal('show');
+  };
+
+  $scope.baseContent = true;
+  $scope.toggleFold = function () {
+    $scope.baseContent = !$scope.baseContent;
+  };
+
+
+  var getMembers = function (callback) {
+    Campaign.getMembers(campaignId, function (err, units, count) {
+      if (!err) {
+        $scope.memberModalUnits = units;
+        $scope.campaign.memberCount = count;
+        $scope.loadedMembers = true;
+        callback && callback();
+      }
     });
-    $scope.uploader = cbox.uploader;
+  };
 
-    $scope.new_comment = {
-        text: ''
-    };
-    $scope.publish = function (content) {
-        cbox.publish(content, function (err, comment) {
-            if (err) {
-                console.log(err);
-            } else {
-                $scope.comments.unshift({
-                    '_id':comment._id,
-                    'host_id' : comment.host_id,
-                    'content' : comment.content,
-                    'create_date' : comment.create_date,
-                    'poster' : comment.poster,
-                    'photos': comment.photos,
-                    'host_type' : comment.host_type,
-                    'delete_permission':true
-                });
-                $scope.new_comment.text = '';
-            }
+  $scope.memberModalTabIndex = 0;
+  $scope.selectTab = function (index) {
+    $scope.memberModalTabIndex = index;
+  };
 
-        });
-    };
+  $scope.openMemberModal = function () {
+    if (!$scope.memberModalUnits) {
+      getMembers();
+    }
+    $('#memberListModal').modal('show');
+  };
 
-    $scope.last_reply_comment;
-    $scope.toggleComment = function (comment) {
-        if ($scope.last_reply_comment && $scope.last_reply_comment != comment) {
-            $scope.last_reply_comment.replying = false;
-        }
-        comment.replying = !comment.replying;
-        $scope.last_reply_comment = comment;
-        if (comment.replying) {
-            $scope.now_reply_to = {
-                _id: comment.poster._id,
-                nickname: comment.poster.nickname
-            };
-        }
-    };
-
-    $scope.setReplyTo = function (comment, to, nickname) {
-        if ($scope.last_reply_comment != comment) {
-            $scope.last_reply_comment.replying = false;
-            $scope.last_reply_comment = comment;
-        }
-        if (!comment.replying) {
-            comment.replying = true;
-        }
-        $scope.now_reply_to = {
-            _id: to,
-            nickname: nickname
-        };
-    };
-    $scope.reply = function (comment, form) {
-        if (!comment.new_reply || comment.new_reply === '') return;
-        Comment.reply(comment._id, $scope.now_reply_to._id, comment.new_reply, function (err, reply) {
-            if (err) {
-                // TO DO
-            } else {
-                if (!comment.replies) {
-                    comment.replies = [];
-                }
-                comment.replies.push(reply);
-                comment.new_reply = "";
-                form.$setPristine();
-            }
-        });
-    };
 
 }]);
+
+

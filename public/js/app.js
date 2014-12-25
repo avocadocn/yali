@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('donler', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.masonry', 'angular-carousel', 'angularFileUpload']);
+angular.module('donler', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.masonry', 'angular-carousel', 'donler.components']);
 
 
 var app = angular.module('donler');
 
-app.directive('match', function ($parse) {
+app.directive('match', ['$parse', function ($parse) {
   return {
     require: 'ngModel',
     link: function(scope, elem, attrs, ctrl) {
@@ -16,7 +16,7 @@ app.directive('match', function ($parse) {
       });
     }
   };
-});
+}]);
 app.directive('ngMin', function() {
     return {
         restrict: 'A',
@@ -137,24 +137,25 @@ app.directive('contenteditable',function() {
             }
             // the difference = pasted string with HTML:
             var pasted = after.substr(pos1, after.length-pos2-pos1);
-            console.log(pasted);
             // strip the tags:
             var replace = pasted.replace(/style\s*=(['\"\s]?)[^'\"]*?\1/gi,'').replace(/class\s*=(['\"\s]?)[^'\"]*?\1/gi,'');
-            console.log(replace);
             // build clean content:
             var replaced = after.substr(0, pos1)+replace+after.substr(pos1+pasted.length);
             // replace the HTML mess with the plain content
             //console.log(replaced);
             e.currentTarget.innerHTML = replaced;
+            changeBind(e);
         }, 100);
       }
       element.bind('focus', function() {
+        element.bind('input',changeBind);
         element.bind('keydown',changeBind);
         element.bind('paste', clearStyle);
       });
       element.bind('blur', function(e) {
+        element.unbind('input',changeBind);
         element.unbind('keydown',changeBind);
-         element.unbind('paste', clearStyle);
+        element.unbind('paste', clearStyle);
         changeBind(e);
       });
       return read = function() {
@@ -164,20 +165,31 @@ app.directive('contenteditable',function() {
   };
 });
 app.directive('mixMaxlength', function() {
-    return {
-        restrict: 'A',
-        require: 'ngModel',
-        link: function(scope, ele, attrs, ctrl) {
-            var length = parseInt(attrs['mixMaxlength']) || 10;
-            scope.$watch(attrs.ngModel, function(newValue, oldValue) {
-                if (newValue && newValue.replace(/[\u4e00-\u9fa5]/g, '**').length > length) {
-                    ctrl.$setValidity('mixlength', false);
-                } else {
-                    ctrl.$setValidity('mixlength', true);
-                }
-            })
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function(scope, ele, attrs, ctrl) {
+      var length = parseInt(attrs['mixMaxlength']) || 10;
+      scope.$watch(attrs.ngModel, function(newValue, oldValue) {
+        if (newValue && newValue.replace(/[\u4e00-\u9fa5]/g, '**').length > length) {
+          ctrl.$setValidity('mixlength', false);
+          ele[0].onkeydown = function (evt) {
+            switch (evt.keyCode) {
+            case 8: // backspace
+            case 46: // delete
+              break;
+            default:
+              evt.preventDefault();
+              break;
+            }
+          };
+        } else {
+          ctrl.$setValidity('mixlength', true);
+          ele[0].onkeydown = null;
         }
+      })
     }
+  }
 });
 app.directive('bootstrapTagsinput', [function() {
 
@@ -316,7 +328,7 @@ app.directive('ngThumb', ['$window',
   }
 ]);
 
-app.run(['$rootScope', function ($rootScope) {
+app.run(['$rootScope', 'anchorSmoothScroll',function ($rootScope,anchorSmoothScroll) {
     alertify.set({
       buttonFocus: "none",
       labels: {
@@ -324,6 +336,9 @@ app.run(['$rootScope', function ($rootScope) {
         cancel: '取消'
       }
     });
+    $rootScope.bakckTop = function(){
+      anchorSmoothScroll.scrollTo(0);
+    }
     $rootScope.shortTrim = function(value){
       //中文
       if(escape(value).indexOf("%u")>=0){
@@ -402,33 +417,42 @@ app.filter('day', function() {
   }
 });
 app.filter('week', function() {
-return function(input) {
-// input will be ginger in the usage below
-switch(new Date(input).getDay()){
-  case 0:
-  input = '周日';
-  break;
-  case 1:
-  input = '周一';
-  break;
-  case 2:
-  input = '周二';
-  break;
-  case 3:
-  input = '周三';
-  break;
-  case 4:
-  input = '周四';
-  break;
-  case 5:
-  input = '周五';
-  break;
-  case 6:
-  input = '周六';
-  break;
-  default:
-  input = '';
-}
-return input;
-}
+  return function(input) {
+    // input will be ginger in the usage below
+    switch (new Date(input).getDay()) {
+      case 0:
+        input = '周日';
+        break;
+      case 1:
+        input = '周一';
+        break;
+      case 2:
+        input = '周二';
+        break;
+      case 3:
+        input = '周三';
+        break;
+      case 4:
+        input = '周四';
+        break;
+      case 5:
+        input = '周五';
+        break;
+      case 6:
+        input = '周六';
+        break;
+      default:
+        input = '';
+    }
+    return input;
+  }
+});
+app.filter('monthPrefixZero', function () {
+  return function (input) {
+    if (input < 10) {
+      return '0' + input;
+    } else {
+      return input;
+    }
+  };
 });

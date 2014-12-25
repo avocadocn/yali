@@ -42,7 +42,7 @@ div(ng-show = '!loading')
           a(ng-href="{{'/group/page/'+group_message.team[0].teamid}}") {{group_message.team[0].name}}
           span 发出的挑战
         span.message_head(ng-switch-when="6") 比赛
-          a(ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+          a(ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
           span 的结果已经确认
         span.message_head(ng-switch-when="7")
           a(ng-href="{{'/company/home/'+group_message.company[0].cid}}") {{group_message.company[0].name}}
@@ -63,8 +63,8 @@ div(ng-show = '!loading')
           span 发起了一个多部门联谊活动
         span(ng-switch-default)
         span.pull-right.join_status_contain(ng-if="group_message.join_role && group_message.join_flag!=undefined" ng-class="{'joined':group_message.join_flag,'campaign':group_message.campaign_flag}")
-        span.pull-right.join_status_text(ng-if="group_message.join_flag && group_message.join_role" ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)") 退出
-        span.pull-right.join_status_text(ng-if="group_message.join_flag==false && group_message.join_role" ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)") 参加
+        span.pull-right.join_status_text(ng-if="group_message.join_flag && group_message.join_role" ng-click="quit(group_message.campaign._id,$index)") 退出
+        span.pull-right.join_status_text(ng-if="group_message.join_flag==false && group_message.join_role" ng-click="join(group_message.campaign._id,$index,group_message.myteam[0]._id)") 参加
         .dl_message
           .triangle(ng-if="group_message.message_type!=6")
           .dl_message_container.clearfix(ng-if="group_message.message_type>=0 && group_message.message_type<6 || group_message.message_type===9 || group_message.message_type===10")
@@ -72,7 +72,7 @@ div(ng-show = '!loading')
               span.message_label 主题:
               span.message_content
                 a(ng-if="group_message.message_type!=4 && group_message.message_type!=5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
-                a(ng-if="!group_message.campaign.finish&&group_message.message_type==4 || group_message.message_type==5 " ng-href="/competition/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
+                a(ng-if="!group_message.campaign.finish&&group_message.message_type==4 || group_message.message_type==5 " ng-href="/campaign/detail/{{group_message.campaign._id}}") {{group_message.campaign.theme}}
                 span(ng-if="group_message.campaign.finish&&group_message.message_type==4") {{group_message.campaign.theme}}
             //- .message_row
             //-   span.message_label 内容:
@@ -107,7 +107,7 @@ div(ng-show = '!loading')
               span.message_label 加入时间 {{group_message.create_time | date:'yyyy-MM-dd HH:mm' | dateView}}
         .message_row(ng-if="group_message.message_type>=0 && group_message.message_type<7&& group_message.message_type!=4 || group_message.message_type===9 || group_message.message_type===10")
           span.message_label {{group_message.create_time_format}}
-          //- a.message_label(ng-if="group_message.both_team" href="/competition/{{group_message.campaign._id}}")  详情
+          //- a.message_label(ng-if="group_message.both_team" href="/campaign/detail/{{group_message.campaign._id}}")  详情
           //- a.message_label(ng-if="group_message.campaign.campaign_type==3" href="/campaign/detail/{{group_message.campaign._id}}")  详情
           span.message_label(ng-if="group_message.message_type!=6 ") 已报名人数：{{group_message.member_num ? group_message.member_num :'0'}}
           span.message_label(ng-if="group_message.join_role&&group_message.join_flag!=undefined&& group_message.message_type!=4") 报名截止#{__("TIME")}: {{group_message.campaign.deadline | date:'yyyy-MM-dd HH:mm' | dateView}}
@@ -116,34 +116,28 @@ div(ng-show = '!loading')
           //- label.pull-right(ng-if="role === 'LEADER'&&message_for_group&&group_message.member_num > 0")
           //-   a(ng-click="modalPerticipator($index)") 私信
           //- label.pull-right.vertical_label(ng-if="group_message.member_num > 0&&role === 'LEADER'&&message_for_group") |
-          span.message_label.pull-right(ng-if="role!='HR'&&group_message.comment_permission")
-            //- span(ng-if="group_message.join_role &&group_message.join_flag!=undefined && !group_message.both_team && group_message.campaign.campaign_type!=3")
-            //-   a.dl_btn.dl_btn_small(ng-click="quit(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag") 退出
-            //-   a.dl_btn.dl_btn_small(ng-click="join(group_message.campaign._id,$index,group_message.campaign.camp[group_message.camp_flag].id)" ng-if="group_message.join_flag==false && (group_message.campaign.member_max==0 || group_message.campaign.member_max>0 && group_message.member_num<group_message.campaign.member_max)") #{__("JOIN")}
-            //-   &nbsp;|
-            if role != 'HR'
-              a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
+          span.message_label.pull-right(ng-if="group_message.comment_permission")
+            a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
         .message_row(ng-if="group_message.message_type==4")
           span.message_label {{group_message.create_time_format}}
           span.message_label(ng-if="group_message.campaign.finish") 挑战已经结束
           //- label.pull-right(ng-if="role === 'LEADER'&&message_for_group&&group_message.member_num > 0")
           //-   a(ng-click="modalPerticipator($index)") 私信
           //- label.pull-right.vertical_label(ng-if="role === 'LEADER'&&group_message.member_num > 0&&group_message.comment_permission") |
-          if role != 'HR'
-            label.pull-right(ng-if="role!='HR'&&group_message.comment_permission")
-              a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
-          label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined&&role!='HR'&&group_message.comment_permission") |
-          a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.camp_flag].vote.positive ? group_message.campaign.camp[group_message.camp_flag].vote.positive :'0'}})
+          label.pull-right(ng-if="group_message.comment_permission")
+            a(ng-click="toggleOperate($index);getComment($index)") 留言 ({{group_message.campaign.comment_sum}})
+          //- label.pull-right.vertical_label(ng-if="group_message.vote_flag!=undefined&&role!='HR'&&group_message.comment_permission") |
+          //- a.pull-right(ng-if="group_message.vote_flag!=undefined" ng-click="vote(group_message.campaign._id,true,$index)") {{group_message.vote_flag == 1 ? "取消" : "赞"}} ({{group_message.campaign.camp[group_message.myteam[0]].vote.positive ? group_message.campaign.camp[group_message.myteam[0]].vote.positive :'0'}})
         .message_row(ng-if="toggle[$index] && group_message.comment_permission")
           .dl_comment_area
-            form.dl_modal_container.clearfix.margin_top_5(name="comment_form" novalidate)
+            form.dl_modal_container.clearfix.margin_top_5(ng-if="role!=='HR'" name="comment_form" novalidate)
               .dl_md_12
                 input.dl-form-control(type="text" name="new_comment" ng-model="new_comment[$index].text" placeholder="请控制在140字以内" maxlength=140 required)
               .dl_md_1
                 button.dl_btn_right(ng-click="comment($index,comment_form)" ng-disabled="comment_form.$invalid") 发表
-            hr
+            hr(ng-if="role!=='HR'")
             .dl_modal_container(bs-popover ng-if="group_message.comments.length > 0")
-              .dl_row(ng-repeat="comment in group_message.comments")
+              .dl_row.dl_mouse_hover_block(ng-repeat="comment in group_message.comments")
                 .row.line_left
                   .dl_md_1.photo(ng-if="comment.poster.cid === '#{cid}'")
                     a(href="/users/home/{{comment.poster._id}}")
@@ -162,8 +156,9 @@ div(ng-show = '!loading')
                       .dl_md_8.comment_top.content
                         p {{comment.content}}
                       .dl_md_2.pull-right.hidden_block(ng-if="comment.delete_permission")
-                        h7.pull-right.margin_right_20
-                          a.mouse_hidden(ng-click="deleteComment($index)") 删除
+                          a(ng-click="deleteComment($index)") 删除
+                      .dl_md_2.pull-right.hidden_block.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission")
+                          a(ng-click="getReport($parent.$parent.$parent.$index,$index)") 举报
                 .dl_row.line_top
                   hr.comment_bottom
   .text-center.message_pager(ng-if="group_messages.length>0")

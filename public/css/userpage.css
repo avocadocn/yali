@@ -1,0 +1,1129 @@
+.user_page .dl_nav {
+  position: fixed;
+  width: 100%;
+  z-index: 50;
+}
+.user_page .dl_container label {
+  font-weight: normal;
+}
+.user_page .dl_container .main {
+  width: 700px;
+  margin-right: 20px;
+  margin-top: 50px;
+}
+.user_page .dl_container .main .timeline_control {
+  width: 60px;
+  position: fixed;
+  left: 50%;
+  margin-left: 415px;
+  top: 70px;
+}
+.user_page .dl_container .main .timeline_control .control_year .year,
+.user_page .dl_container .main .timeline_control .control_year .month {
+  display: block;
+  margin-bottom: 4px;
+  border-left: 4px solid #ccd3e1;
+  padding-left: 12px;
+  font-size: 18px;
+  line-height: 26px;
+  color: #ccd3e1;
+  text-decoration: none;
+  cursor: pointer;
+}
+.user_page .dl_container .main .timeline_control .control_year .year:hover,
+.user_page .dl_container .main .timeline_control .control_year .month:hover {
+  color: #3ba3e0;
+  border-left-color: #3ba3e0;
+}
+.user_page .dl_container .main .timeline_control .control_year .active_year {
+  padding-left: 10px;
+  font-size: 20px;
+  line-height: 36px;
+  color: #3ba3e0;
+  border-left-color: #3ba3e0;
+}
+.user_page .dl_container .main .timeline_control .control_year .active_year:hover {
+  color: #3ba3e0;
+  border-left-color: #3ba3e0;
+}
+.user_page .dl_container .main .timeline_control .control_year .active_year_months .month {
+  border-left-color: #999;
+  color: #999;
+}
+.user_page .dl_container .main .timeline_control .control_year .active_year_months .active_month {
+  color: #3ba3e0;
+  border-left-color: #3ba3e0;
+}
+.user_page .dl_container .main .dl_info_container {
+  background-color: #fff;
+  width: 865px;
+  margin-top: 10px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .main .dl_info_container .info_left {
+  float: left;
+  width: 15%;
+}
+.user_page .dl_container .main .dl_info_container .info_right {
+  float: left;
+  width: 80%;
+}
+.user_page .dl_container .main .dl_info_container .show_more {
+  float: left;
+  width: 5%;
+  font-weight: border;
+  color: #3ba3e0;
+}
+.user_page .dl_container .main .dl_info_container .label_info {
+  color: #3498db;
+  font-size: 14px;
+  margin-right: 53px;
+}
+.user_page .dl_container .main .dl_info_container .team {
+  float: left;
+  margin-right: 13px;
+  width: 60px;
+}
+.user_page .dl_container .main .dl_info_container .team a .team_logo {
+  width: 56px;
+  height: 56px;
+}
+.user_page .dl_container .main .dl_info_container .team a .team_name {
+  margin-top: 10px;
+  margin-bottom: 0;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .dl_info_container .info_container {
+  float: left;
+  width: 37%;
+  padding: 20px;
+  color: #999;
+  height: 100%;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row {
+  min-height: 20px;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row label {
+  margin: 0;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row .nickname {
+  color: #3498db;
+  font-size: 18px;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row .introduce {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .dl_info_container .info_container .dl_row .register_date {
+  color: #f4f4f4;
+}
+.user_page .dl_container .main .dl_info_container .info_container .user_logo {
+  width: 100px;
+  height: 100px;
+}
+.user_page .dl_container .main .dl_info_container .logo_container {
+  width: 22%;
+}
+.user_page .dl_container .main .dl_info_container .base_info {
+  border-right: 1px solid #f4f4f4;
+}
+.user_page .dl_container .main .base_info_container {
+  height: 140px;
+}
+.user_page .dl_container .main .team_info_container {
+  padding: 20px;
+}
+.user_page .dl_container .main .self_info_container {
+  background-image: url("/img/self_back.png");
+  background-size: cover;
+  position: relative;
+  padding: 28px 0 20px 82px;
+  color: #fff;
+}
+.user_page .dl_container .main .self_info_container .self_logo_container {
+  width: 110px;
+}
+.user_page .dl_container .main .self_info_container .self_logo_container .user_logo {
+  border-radius: 100%;
+  border: 3px solid #fff;
+  width: 88px;
+  height: 88px;
+  margin: 0 10px;
+}
+.user_page .dl_container .main .self_info_container .self_logo_container .nickname {
+  text-align: center;
+  width: 110px;
+  padding-top: 11px;
+  font-size: 16px;
+}
+.user_page .dl_container .main .self_info_container .self_logo_container a.back_container span {
+  color: #fff;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.user_page .dl_container .main .self_info_container .self_logo_container a.back_container .back {
+  background-image: url("/img/icons/backarrow.png");
+  background-size: cover;
+  width: 23px;
+  height: 15px;
+  display: inline-block;
+}
+.user_page .dl_container .main .self_info_container .self_logo_container a.back_container .back_btn {
+  margin-left: 10px;
+  height: 20px;
+  line-height: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.user_page .dl_container .main .self_info_container .self_right_container {
+  position: absolute;
+  bottom: 22px;
+  font-size: 14px;
+}
+.user_page .dl_container .main .self_info_container .campaign_count {
+  right: 200px;
+}
+.user_page .dl_container .main .self_info_container .campaign_count .campaign_num {
+  margin: 0 5px;
+  font-size: 20px;
+}
+.user_page .dl_container .main .self_info_container .photo_count {
+  right: 20px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog {
+  width: 900px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal {
+  width: 900px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body {
+  min-height: 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_card_tebcontent {
+  border: none;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_timeline {
+  width: 590px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_unjoin {
+  color: #3498db;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_join {
+  color: #099;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list {
+  border: none;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaign_head {
+  height: 34px;
+  line-height: 24px;
+  font-size: 18px;
+  margin: 0 -35px;
+  padding: 0 20px;
+  border-bottom: 1px solid #f4f4f4;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content {
+  max-height: 600px;
+  overflow-y: auto;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .time_col {
+  width: 60px;
+  color: #999;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .user_logo_col {
+  width: 83px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .year_col .campaign_logo {
+  width: 30px;
+  height: 30px;
+  margin: 8px auto;
+  background-color: #3498db;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail {
+  margin-left: -100px;
+  margin-right: -90px;
+  padding-left: 100px;
+  padding-right: 90px;
+  background-color: #fbfbfb;
+  width: 650px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .content_text {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 5px 0;
+  margin-left: 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .tags {
+  margin: 5px 0;
+  padding: 5px 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .tags .tag {
+  background-color: #c2d3e7;
+  color: #fff;
+  display: inline;
+  margin-right: 10px;
+  padding: 5px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress_text {
+  float: left;
+  width: 80px;
+  line-height: 20px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress_num {
+  float: left;
+  width: 60px;
+  line-height: 20px;
+  margin: 0 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress {
+  float: left;
+  width: 100px;
+  height: 14px;
+  margin: 3px 10px;
+  border-radius: 15px;
+  background-color: #4b6f97;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .progress .progress-bar {
+  background-color: #97d7c6;
+  box-shadow: none;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .member_text .max_num {
+  color: #099;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .time_text {
+  clear: both;
+  padding: 5px 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .content_col .campaign_detail .time_text .rest_time {
+  color: #099;
+  font-size: 14px;
+  margin: 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .operator_col {
+  width: 100px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .dl_campaign_list .campaigns_content .campaign_table .operator_col .dl_btn {
+  margin-right: 30px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_head {
+  color: #8dd4e6;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col {
+  width: 75%;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .theme_container {
+  font-size: 14px;
+  color: #9a9a9a;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .time_container {
+  font-size: 12px;
+  color: #dedede;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .time_container .time_text {
+  margin: 0 10px;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .content_col .comment_container {
+  font-size: 14px;
+  color: #8dd4e6;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .operator_col {
+  padding-right: 0;
+}
+.user_page .dl_container .main #user_modal .modal-dialog .dl-modal .tab-body .recent_comment .campaign_table .operator_col .dl_btn {
+  margin-right: 0;
+}
+.user_page .dl_container .main .campaign_table .time_col {
+  padding: 0;
+}
+.user_page .dl_container .main .campaign_filter {
+  width: 110px;
+  position: fixed;
+  margin-right: 19px;
+  margin-top: 5px;
+  background-color: #fff;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+  border-radius: 2px;
+  padding-top: 10px;
+  left: 50%;
+  margin-left: -481px;
+}
+.user_page .dl_container .main .campaign_filter ul {
+  padding-left: 0;
+}
+.user_page .dl_container .main .campaign_filter ul li {
+  line-height: 25px;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-left: 25px;
+}
+.user_page .dl_container .main .campaign_filter ul li:before {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  left: 12px;
+  top: 9px;
+  border-radius: 100%;
+}
+.user_page .dl_container .main .campaign_filter ul li:hover {
+  background-color: #efefef;
+}
+.user_page .dl_container .main .campaign_filter ul li:hover .fileter_info {
+  color: #666;
+}
+.user_page .dl_container .main .campaign_filter ul li.active {
+  background-color: #efefef;
+}
+.user_page .dl_container .main .campaign_filter ul li.active .fileter_info {
+  color: #666;
+}
+.user_page .dl_container .main .campaign_filter ul li .fileter_info {
+  color: #999;
+}
+.user_page .dl_container .main .campaign_filter ul li .campaign_num {
+  float: right;
+  margin-right: 10px;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_all {
+  color: #666;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_all:before {
+  background-color: #666;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_unjoin {
+  color: #f48361;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_unjoin:before {
+  background-color: #f48361;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_join {
+  color: #3ca2df;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_join:before {
+  background-color: #3ca2df;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_competition {
+  color: #ffc053;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_competition:before {
+  background-color: #ffc053;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_now {
+  color: #13adb6;
+}
+.user_page .dl_container .main .campaign_filter ul .recent_now:before {
+  background-color: #13adb6;
+}
+.user_page .dl_container .main .campaigns_container {
+  width: 570px;
+  float: right;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container {
+  background-color: #fff;
+  float: left;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+  border-radius: 2px;
+  width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_loading {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head {
+  cursor: pointer;
+  height: 39px;
+  line-height: 18px;
+  font-size: 14px;
+  padding: 10px 6px 0 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .campaign_count {
+  float: right;
+  margin-right: 4px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .fa {
+  margin-right: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head img.head_arrow {
+  height: 10px;
+  width: 10px;
+  margin-right: 4px;
+  margin-top: 4px;
+  float: right;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .container_head .span_rotate {
+  transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .no_campaign {
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  position: relative;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign {
+  clear: both;
+  color: #999;
+  border-top: 1px solid #ccc;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head {
+  float: left;
+  width: 100%;
+  padding-top: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head:hover {
+  background-color: #fbfbfb;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head:hover .icon_bgrarrow {
+  opacity: 0.65;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .day_col {
+  float: left;
+  font-size: 24px;
+  width: 50px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .day_col p {
+  margin: 0;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .time_col {
+  float: left;
+  width: 26px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .time_col p {
+  margin: 0;
+  line-height: 12px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .logo_col {
+  float: left;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .logo_col .campaign_logo {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-right: 4px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .content_col {
+  float: left;
+  max-width: 300px;
+  font-size: 12px;
+  color: #b1b1b1;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .content_col p {
+  max-width: 100%;
+  line-height: 16px;
+  margin: 0;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .content_col p .theme_text {
+  color: #666;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .operator_col {
+  float: right;
+  margin-right: 20px;
+  margin-top: 11px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .campaign_head .status_col {
+  float: right;
+  height: 100%;
+  font-size: 18px;
+  padding-right: 20px;
+  padding-top: 8px;
+  margin-bottom: 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos {
+  float: left;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photo {
+  float: left;
+  width: 86px;
+  height: 86px;
+  background: url("/img/loading.gif") center center no-repeat;
+  display: inline-block;
+  margin-right: 0;
+  cursor: pointer;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_1 .photo_0 {
+  width: 570px;
+  height: 300px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_2 .photo_0 {
+  width: 282px;
+  height: 200px;
+  float: left;
+  margin-right: 6px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_2 .photo_1 {
+  width: 282px;
+  height: 200px;
+  float: left;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_0 {
+  width: 282px;
+  height: 305px;
+  margin-left: 5px;
+  float: right;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_1,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_2 {
+  width: 282px;
+  height: 150px;
+  float: right;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_3 .photo_1 {
+  margin-bottom: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_0,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_3 {
+  width: 235px;
+  height: 170px;
+  float: left;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_1,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_2 {
+  width: 330px;
+  height: 170px;
+  float: left;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_0,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_2 {
+  margin-right: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_0,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .photos .photos_4 .photo_1 {
+  margin-bottom: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments {
+  clear: both;
+  background-color: #fbfbfb;
+  min-height: 25px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num {
+  color: #999;
+  padding: 3px 18px 4px 0;
+  width: 100%;
+  text-align: right;
+  float: right;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num:hover {
+  background-color: #eceded;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num .icon_reply {
+  margin-right: 7px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base {
+  height: 51px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .day_col {
+  padding-top: 13px;
+  padding-left: 10px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .time_col {
+  padding-top: 10px;
+  width: 50px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .logo_col {
+  padding-left: 10px;
+  padding-top: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .content_col {
+  padding: 6px 11px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_base .campaign_head .content_col p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail {
+  padding-bottom: 0;
+  padding-top: 0;
+  float: left;
+  width: 100%;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head {
+  padding-top: 15px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .triangle_col {
+  float: left;
+  border-style: solid;
+  border-width: 16px;
+  height: 0;
+  width: 0;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .day_col,
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .time_col {
+  padding: 5px 0 3px 0;
+  line-height: 100%;
+  width: 40px;
+  margin-bottom: 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .logo_col {
+  padding-top: 0;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .content_col {
+  padding: 0;
+  max-width: 265px;
+  padding-left: 10px;
+  margin-bottom: 20px;
+  max-width: 240px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .content_col a p {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col {
+  float: right;
+  height: 100%;
+  font-size: 18px;
+  padding-right: 20px;
+  padding-top: 8px;
+  margin-bottom: 20px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .dl_btn {
+  margin-left: 5px;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .btn_red {
+  background-color: #f48361;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .btn_cancel {
+  background-color: #999;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col .select_item {
+  color: #000;
+}
+.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign_detail .campaign_head .status_col p {
+  margin: 0;
+  line-height: 12px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .container_head {
+  color: #f48361;
+  border-top: 2px solid #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .container_head img.head_arrow {
+  background-color: #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign .status_col {
+  color: #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .time_col {
+  background-color: #f48361;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .campaign_detail .triangle_col {
+  border-color: transparent transparent transparent #f48361;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign {
+  background-image: url("/img/no_new_campaign.png");
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip {
+  position: absolute;
+  bottom: 32px;
+  left: 65px;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p {
+  margin: 6px 1px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p .dl_btn {
+  border-radius: 5px;
+  padding: 7px 11px;
+}
+.user_page .dl_container .main .campaigns_container .recent_unjoin .no_campaign .no_campaign_tip p .tip_info {
+  padding-left: 11px;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .container_head {
+  color: #3ca2df;
+  border-top: 2px solid #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .container_head img.head_arrow {
+  background-color: #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_join .campaign .status_col {
+  color: #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .time_col {
+  background-color: #3ca2df;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .campaign_detail .triangle_col {
+  border-color: transparent transparent transparent #3ca2df;
+}
+.user_page .dl_container .main .campaigns_container .recent_join .no_campaign {
+  background-image: url("/img/no_recent_campaign.png");
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .container_head {
+  color: #ffc053;
+  border-top: 2px solid #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .container_head img.head_arrow {
+  background-color: #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign .status_col {
+  color: #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .time_col {
+  background-color: #ffc053;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .campaign_detail .triangle_col {
+  border-color: transparent transparent transparent #ffc053;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign {
+  background-image: url("/img/no_competition.png");
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip {
+  position: absolute;
+  top: 217px;
+  left: 275px;
+  font-size: 14px;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p {
+  margin: 6px 1px;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p .dl_btn {
+  border-radius: 5px;
+  background-color: #f48361;
+  margin-left: 4px;
+  padding: 7px 17px;
+}
+.user_page .dl_container .main .campaigns_container .recent_competition .no_campaign .no_campaign_tip p .tip_info {
+  padding-left: 11px;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .container_head {
+  color: #13adb6;
+  border-top: 2px solid #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .container_head img.head_arrow {
+  background-color: #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .campaign .day_col,
+.user_page .dl_container .main .campaigns_container .recent_now .campaign .time_col,
+.user_page .dl_container .main .campaigns_container .recent_now .campaign .status_col {
+  color: #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .day_col,
+.user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .time_col {
+  background-color: #13adb6;
+  color: #fff;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .campaign_detail .triangle_col {
+  border-color: transparent transparent transparent #13adb6;
+}
+.user_page .dl_container .main .campaigns_container .recent_now .no_campaign {
+  background-image: url("/img/no_now_campaign.png");
+}
+.user_page .dl_container .main .campaigns_container .card_campaign {
+  background-color: initial;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+.user_page .dl_container .main .campaigns_container .card_campaign .container_head,
+.user_page .dl_container .main .campaigns_container .card_campaign .campaign {
+  background-color: #fff;
+  margin-bottom: 10px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .side {
+  padding-top: 45px;
+  width: 240px;
+}
+.user_page .dl_container .side .fullparent {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+.user_page .dl_container .side .icon_backtop {
+  position: fixed;
+  cursor: pointer;
+  width: 30px;
+  height: 40px;
+  background-image: url("/img/sprites/dl_sprites.png");
+  background-position: -45px -80px;
+  left: 50%;
+  margin-left: 500px;
+  bottom: -100px;
+  transition: bottom 0.5s;
+  -moz-transition: bottom 0.5s;
+  -webkit-transition: bottom 0.5s;
+  -o-transition: bottom 0.5s;
+}
+.user_page .dl_container .side .icon_backtop.affix {
+  bottom: 70px;
+}
+.user_page .dl_container .side .old_campaign_container {
+  height: 30px;
+  color: #fff;
+  line-height: 20px;
+  font-size: 18px;
+  padding: 5px;
+  margin-bottom: 10px;
+  clear: both;
+  border-radius: 2px;
+  width: 240px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign {
+  background-color: #525e70;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign.affix {
+  top: 60px;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign.affix.affix_leader {
+  top: 100px;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign:hover {
+  background-color: #4a5567;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign .label_info {
+  margin-left: 13px;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign .news_count {
+  font-size: 14px;
+  margin-top: 1px;
+  margin-right: 4px;
+  float: right;
+}
+.user_page .dl_container .side .old_campaign_container.commentCampaign .news_count .fa {
+  margin-left: 9px;
+  font-size: 16px;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container {
+  background-image: url("/img/timeline_bg.png");
+  background-size: cover;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container.affix {
+  top: 100px;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container.affix.affix_leader {
+  top: 140px;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container .fa {
+  margin-right: 5px;
+  font-size: 28px;
+  line-height: 20px;
+  color: #fff;
+}
+.user_page .dl_container .side .old_campaign_container.timeline_container .footprint {
+  background-position: -162px -80px;
+  margin: 2px 12px 0 4px;
+}
+.user_page .dl_container .side .old_campaign_container label {
+  font-size: 14px;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+.user_page .dl_container .side .old_campaign_container .icon_right {
+  margin-right: 3px;
+}
+.user_page .dl_container .side .old_campaign_container .full_parent {
+  display: inline-block;
+}
+.user_page .dl_container .side .sponsor_container {
+  height: 30px;
+  color: #fff;
+  line-height: 20px;
+  font-size: 14px;
+  padding: 6px;
+  float: left;
+  width: 118px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .side .sponsor_container:hover .dl_icons {
+  opacity: 0.65;
+}
+.user_page .dl_container .side .sponsor_container a {
+  color: #fff;
+}
+.user_page .dl_container .side .sponsor_container.sponsor {
+  background-color: #3ca2e0;
+  margin-right: 4px;
+}
+.user_page .dl_container .side .sponsor_container.sponsor.affix {
+  top: 60px;
+}
+.user_page .dl_container .side .sponsor_container.sponsor:hover {
+  background-color: #398fc3;
+}
+.user_page .dl_container .side .sponsor_container.provoke {
+  background-color: #f48361;
+  padding-left: 6px;
+}
+.user_page .dl_container .side .sponsor_container.provoke.affix {
+  top: 60px;
+  left: 50%;
+  margin-left: 362px;
+}
+.user_page .dl_container .side .sponsor_container.provoke:hover {
+  background-color: #da7659;
+}
+.user_page .dl_container .side .sponsor_container label {
+  margin-left: 12px;
+  cursor: pointer;
+}
+.user_page .dl_container .side .groupsbox {
+  width: 100%;
+}
+.user_page .dl_container .side .infobox {
+  background-color: #525e70;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 98px;
+  border-radius: 2px;
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .side .infobox .head_title {
+  color: #fff;
+  padding: 8px;
+  font-size: 14px;
+  line-height: 14px;
+}
+.user_page .dl_container .side .infobox .head_title .label_info {
+  margin: 1px 0px 0px 7px;
+}
+.user_page .dl_container .side .infobox .head_title .icon_container {
+  float: right;
+  width: 40x;
+  height: 100%;
+  margin: -8px;
+}
+.user_page .dl_container .side .infobox .head_title .icon_container:hover {
+  background-color: #444e5e;
+}
+.user_page .dl_container .side .infobox .info {
+  clear: both;
+}
+.user_page .dl_container .side .infobox .info .info_left {
+  float: left;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+.user_page .dl_container .side .infobox .info .info_left .user_logo {
+  width: 50px;
+  height: 50px;
+}
+.user_page .dl_container .side .infobox .info .info_right {
+  float: left;
+  padding: 10px;
+  padding-left: 15px;
+  font-size: 12px;
+  width: 170px;
+  height: 70px;
+  background-color: #fff;
+}
+.user_page .dl_container .side .infobox .info .info_right label {
+  margin-bottom: 0;
+}
+.user_page .dl_container .side .infobox .info .info_right .username {
+  color: #3498db;
+  font-size: 16px;
+  min-width: 63px;
+}
+.user_page .dl_container .side .infobox .info .info_right .score_label {
+  color: #edca3c;
+}
+.user_page .dl_container .side .infobox .info .info_right .score {
+  color: #ccc;
+}
+.user_page .dl_container .side .infobox .info .info_right .info_row a {
+  color: #999;
+}
+.user_page .dl_container .schedule_small {
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+}
+.user_page .dl_container .schedule_small.affix {
+  top: 140px;
+}
+.user_page .dl_container .schedule_small.affix.affix_leader {
+  top: 180px;
+}
+.user_page .dl_container .schedule_small .schedulebox_small {
+  padding: 0;
+  border: none;
+  background-color: #fff;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .schedule_operator {
+  cursor: pointer;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips {
+  height: 25px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign {
+  height: 10px;
+  width: 10px;
+  margin: 5px 5px 15px 5px;
+  float: left;
+  border-radius: 100%;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign.length_3 {
+  background-color: #3ca2e0;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign.length_2 {
+  background-color: #6cb8e7;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .join_sign.length_1 {
+  background-color: #a6d6f4;
+  margin-left: 32px;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_tips .campaign_label {
+  line-height: 20px;
+  float: left;
+  font-size: 9px;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_nav {
+  background-color: #525e70;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  margin: 0;
+  clear: both;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_nav .calendar_title {
+  width: 106px;
+  text-align: center;
+  font-size: 14px;
+  margin: 0;
+}
+.user_page .dl_container .schedule_small .schedulebox_small .calendar_nav a {
+  color: #fff;
+  display: inline-block;
+  margin: 0 5px;
+}

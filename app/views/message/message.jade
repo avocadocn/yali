@@ -1,9 +1,5 @@
 extends ../layouts/company
 
-append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
-  link(rel="stylesheet" href="/css/message.css")
-
 block baseInfo
   .dl_container.clearfix
     .aside
@@ -29,7 +25,6 @@ block baseInfo
         .tab-pane.active
           div(ng-view)
 block aside
-
 
 append footExt
   script(src="/js/controllers/message.js")

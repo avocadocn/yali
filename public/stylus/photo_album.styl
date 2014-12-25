@@ -63,6 +63,9 @@ contentBdColor = #ededed
       background-color rgba(0, 0, 0, 0.4)
       color white
       text-decoration none
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
 
 
   // photo_detail page
@@ -98,17 +101,20 @@ contentBdColor = #ededed
   .comment
     position relative
     margin-top 20px
-
     .comment_user_info
       float left
-
+      width 50px
       .user_photo
         width 50px
         height 50px
 
       .user_name
+        display inline-block
+        max-width 50px
         text-decoration none
-
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
     .comment_content_panel
       float left
       margin-left 20px
@@ -117,7 +123,7 @@ contentBdColor = #ededed
         padding 10px
         background-color contentBgColor
         border solid 1px contentBdColor
-        width 450px
+        width 560px
         min-height 50px
 
   .triangle
@@ -155,12 +161,20 @@ contentBdColor = #ededed
   .photo_ori
     max-height 500px
 
+  .pager
+    .pagination
+      margin 0
+    .novisible
+      opacity 0
+    li>a
+      border-radius 0
 
   // photo_album_list page
 
   .photo_album_panel
     display block
     width 230px
+    height 316px
     border solid 1px contentBdColor
     text-decoration none
     background-color #fff
@@ -222,7 +236,7 @@ contentBdColor = #ededed
       overflow hidden
       text-overflow ellipsis
       white-space nowrap
-      
+
 
 
   // thumbnail of group, campaign, competetion pages
@@ -244,3 +258,97 @@ contentBdColor = #ededed
       margin 0
       line-height 20px
 
+.family_photo_album
+  .photo
+    display block
+    width 180px
+    height 145px
+    position relative
+    margin-left 15px
+    box-shadow 3px 3px 3px #ddd
+    &:nth-child(4n+1)
+      margin-left 15px
+    &:nth-child(5n+1)
+      margin-left 0 !important
+    &:hover
+      border 2px solid #3498db
+      .star, .delete
+        opacity 1 !important
+    .photo_img
+      display block
+      width 180px
+      height 145px
+    .button_group
+      position absolute
+      top 5px
+      right 5px
+      width 20px
+      height 45px
+      .star, .delete
+        display block
+        width 20px
+        height 20px
+        background-color white
+        opacity 0
+        font-size 14px
+        padding-left 4px
+      .star
+        background-color #fff
+        color #3ca2df
+        // background url('/img/star.png') center
+        &:hover
+          background-color #3ca2df
+          color #fff
+          // background url('/img/star_mouseover_selected.png') center
+      .delete
+        margin-top 5px
+        background-color #f6f6f6
+        color #a4a4a4
+        // background url('/img/delete.png') center
+        &:hover
+          background-color #e7e8e8
+          // background url('/img/delete_mouseover.png') center
+
+  .photo.active
+    border 2px solid #3498db
+    .star
+      opacity 1
+      background-color #3ca2df
+      color #fff
+      // background url('/img/star_mouseover_selected.png') center
+
+  .cropper
+    margin-left auto
+    margin-right auto
+    width 600px
+    height 420px
+    padding 30px 90px 50px
+    overflow hidden
+  .cropit-image-preview
+    width 420px
+    height 340px
+  .cropit-image-background
+    opacity 0.2
+  .cropit-image-input
+    visibility hidden
+  .operator
+    position relative
+    text-align center
+    .cropit-image-zoom-input
+      display inline-block
+      margin 0 10px
+      line-height 26px
+      vertical-align middle
+      -webkit-appearance none
+      -moz-appearance none
+      appearance none
+      height 5px
+      -webkit-border-radius 5px
+      border-radius 5px
+      outline none
+    .button_sure
+      margin-left 10px
+    .icon_small, .icon_large
+      vertical-align middle
+    .icon_large
+      font-size 17px

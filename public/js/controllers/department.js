@@ -43,7 +43,7 @@ departmentApp.config(['$routeProvider',
         redirectTo: '/message'
       });
 }]);
-departmentApp.run(['$http','$rootScope', '$location', function ($http, $rootScope, $location) {
+departmentApp.run(['$http','$rootScope', '$location', 'Report', function ($http, $rootScope, $location, Report) {
     if($location.hash()!=='')
         $rootScope.nowTab = window.location.hash.substr(2);
     else if($location.path()!=='')
@@ -78,7 +78,11 @@ departmentApp.run(['$http','$rootScope', '$location', function ($http, $rootScop
     $rootScope.messageTypeChange = function(value){
         $rootScope.message_for_group = value;
     }
-
+    $rootScope.pushReport = function(){
+        Report.publish($rootScope.reportContent,function(err,msg){
+            alertify.alert(msg);
+        });
+    }
     //加载地图
     // $rootScope.loadMap = function(index){
     //     $rootScope.loadMapIndex = index;
@@ -120,8 +124,8 @@ departmentApp.controller('TimeLineController', ['$http', '$scope', '$rootScope',
 
 
 
-departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope',
-  function ($http, $scope,$rootScope) {
+departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope', 'Comment',
+  function ($http, $scope,$rootScope, Comment) {
     $scope.private_message_content = {
         'text':""
     };
@@ -245,11 +249,11 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         $scope.message_index = index;
     }
     $scope.getComment = function(index){
-        if($scope.toggle){
+        if($scope.toggle[index]){
             try {
                 $http({
                     method: 'post',
-                    url: '/comment/pull/team/'+$rootScope.teamId,
+                    url: '/comment/pull/campaign/'+$scope.group_messages[index].campaign._id,
                     data:{
                         host_id : $scope.group_messages[index].campaign._id
                     }
@@ -269,29 +273,26 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
     }
 
     $scope.deleteComment = function(index){
-        try {
-            $http({
-                method: 'post',
-                url: '/comment/delete',
-                data:{
-                    comment_id : $scope.group_messages[$scope.message_index].comments[index]._id
+        alertify.confirm('确认要删除该评论吗？',function(e){
+            if(e){
+                try {
+                    Comment.remove($scope.group_messages[$scope.message_index].comments[index]._id, function (err) {
+                        if (err) {
+                            alertify.alert('删除失败，请重试。');
+                        } else {
+                            $scope.group_messages[$scope.message_index].comments.splice(index,1);
+                            $scope.group_messages[$scope.message_index].campaign.comment_sum --;
+                        }
+                    });
                 }
-            }).success(function(data, status) {
-                if(data === 'SUCCESS'){
-                    $scope.group_messages[$scope.message_index].comments.splice(index,1);
-                    $scope.group_messages[$scope.message_index].campaign.comment_sum --;
-                } else {
-                    alertify.alert('DATA ERROR');
+                catch(e) {
+                    console.log(e);
                 }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
-    $scope.comment = function(index){
+            }
+        });
+    };
+
+    $scope.comment = function(index,form){
         if($scope.group_messages[index].comments.length > 0){
             var tmp_comment = $scope.group_messages[index].comments[0];
             if(tmp_comment.poster._id === $scope.user._id){
@@ -301,28 +302,33 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
                 }
             }
         }
+        var message_type = $scope.group_messages[index].message_type;
+        var host_type = message_type>3 && message_type<7? 'competition' : 'campaign';
         try {
             $http({
                 method: 'post',
-                url: '/comment/push',
+                url: '/comment/push/'+host_type+'/'+$scope.group_messages[index].campaign._id,
                 data:{
                     host_id : $scope.group_messages[index].campaign._id,
                     content : $scope.new_comment[index].text,
-                    host_type : 'campaign'
+                    host_type : host_type
                 }
             }).success(function(data, status) {
                 if(data.msg === 'SUCCESS'){
                     $scope.group_messages[index].campaign.comment_sum ++;
                     $scope.group_messages[index].comments.unshift({
                         'show':true,
+                        '_id' : data.comment._id,
                         'host_id' : data.comment.host_id,
                         'content' : data.comment.content,
                         'create_date' : data.comment.create_date,
                         'poster' : data.comment.poster,
                         'host_type' : data.comment.host_type,
-                        'index' : $scope.fixed_sum+1
+                        'index' : $scope.fixed_sum+1,
+                        'delete_permission':true
                     });
                     $scope.new_comment[index].text='';
+                    form.$setPristine();
                 } else {
                     alertify.alert('DATA ERROR');
                 }
@@ -336,7 +342,7 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
     }
     //消除ajax缓存
     $scope.vote = function(competition_id, vote_status, index) {
-         try {
+        try {
             $http({
                 method: 'post',
                 url: '/users/vote',
@@ -415,24 +421,37 @@ departmentApp.controller('GroupMessageController', ['$http','$scope','$rootScope
         }
     };
     //应战
-    $scope.responseProvoke = function(tid,competition_id) {
-         try {
-            $http({
-                method: 'post',
-                url: '/group/responseProvoke/'+$rootScope.teamId,
-                data:{
-                    competition_id : competition_id
-                }
-            }).success(function(data, status) {
-                window.location.reload();
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
+    // $scope.responseProvoke = function(tid,competition_id) {
+    //      try {
+    //         $http({
+    //             method: 'post',
+    //             url: '/group/responseProvoke/'+$rootScope.teamId,
+    //             data:{
+    //                 competition_id : competition_id
+    //             }
+    //         }).success(function(data, status) {
+    //             window.location.reload();
+    //         }).error(function(data, status) {
+    //             alertify.alert('DATA ERROR');
+    //         });
+    //     }
+    //     catch(e) {
+    //         console.log(e);
+    //     }
+    // };
+    $scope.getReport = function(groupMessageIndx,CommentIndex){
+        $rootScope.reportContent = {
+            hostType: 'comment',
+            hostContent:{
+                _id:$scope.group_messages[groupMessageIndx].comments[CommentIndex]._id,
+                content:$scope.group_messages[groupMessageIndx].comments[CommentIndex].content,
+                poster:$scope.group_messages[groupMessageIndx].comments[CommentIndex].poster
+            },
+            reportType:''
+
         }
-        catch(e) {
-            console.log(e);
-        }
-    };
+        $('#reportModal').modal('show');
+    }
 }]);
 
 
@@ -572,25 +591,6 @@ departmentApp.controller('CampaignListController', ['$http', '$scope','$rootScop
     //             else{
     //                 alertify.alert(data.msg);
     //             }
-    //         }).error(function(data, status) {
-    //             alertify.alert('DATA ERROR');
-    //         });
-    //     }
-    //     catch(e) {
-    //         console.log(e);
-    //     }
-    // };
-    // //应战
-    // $scope.responseProvoke = function(competition_id) {
-    //      try {
-    //         $http({
-    //             method: 'post',
-    //             url: '/group/responseProvoke',
-    //             data:{
-    //                 competition_id : competition_id
-    //             }
-    //         }).success(function(data, status) {
-    //             window.location.reload();
     //         }).error(function(data, status) {
     //             alertify.alert('DATA ERROR');
     //         });
@@ -835,7 +835,7 @@ departmentApp.controller('infoController', ['$http', '$scope','$rootScope',funct
 
 
 
-departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','Department',function($http, $scope, $rootScope, Department) {
+departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','Campaign',function($http, $scope, $rootScope, Campaign) {
     $scope.multi = false;          //是否发起多部门会活动
     $scope.departments = [];
     $scope.select_departments = [];
@@ -918,14 +918,15 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
             script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=campaign_map_initialize";
             document.body.appendChild(script);
         }
-        else{
-            $scope.initialize();
+        if(!$scope.moldsgot){
+            Campaign.getMolds('department',0,function(status,data){
+                if(!status){
+                    $scope.molds = data.molds;
+                    $scope.moldsgot = true;
+                    $scope.mold = '其它';
+                }
+            });
         }
-        Department.getTags($scope.did,function(status,data){
-            if(!status){
-                $scope.recommand_tags = data;
-            }
-        });
         $scope.location={name:'',coordinates:[]};
         $("#start_time").on("changeDate",function (ev) {
             var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
@@ -939,14 +940,13 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
             $('#start_time').datetimepicker('setEndDate', dateUTC);
 
         });
-        $("#deadline").on("changeDate",function (ev) {
-            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-            $scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-            $('#end_time').datetimepicker('setEndDate', dateUTC);
-        });
     });
     var placeSearchCallBack = function(data){
         $scope.locationmap.clearMap();
+        if(data.poiList.pois.length==0){
+          alertify.alert('没有符合条件的地点，请重新输入');
+          return;
+        }
         var lngX = data.poiList.pois[0].location.getLng();
         var latY = data.poiList.pois[0].location.getLat();
         $scope.location.coordinates=[lngX, latY];
@@ -968,28 +968,35 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
     $scope.initialize = function(){
         $scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
         $scope.locationmap.plugin(["AMap.CitySearch"], function() {
-            //实例化城市查询类
-            var citysearch = new AMap.CitySearch();
-            //自动获取用户IP，返回当前城市
-            citysearch.getLocalCity();
-            //citysearch.getCityByIp("123.125.114.*");
-            AMap.event.addListener(citysearch, "complete", function(result){
-                if(result && result.city && result.bounds) {
-                    var citybounds = result.bounds;
-                    //地图显示当前城市
-                    $scope.locationmap.setBounds(citybounds);
-                    $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
-                        $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
-                            pageSize:1,
-                            pageIndex:1,
-                            city: result.city
-
-                        });
-                        AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
-                    });
-                }
+          $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+            $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+              pageSize:1,
+              pageIndex:1
             });
-            AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+            AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+          });
+          //实例化城市查询类
+          var citysearch = new AMap.CitySearch();
+          //自动获取用户IP，返回当前城市
+          citysearch.getLocalCity();
+          //citysearch.getCityByIp("123.125.114.*");
+          AMap.event.addListener(citysearch, "complete", function(result){
+              if(result && result.city && result.bounds) {
+                  var citybounds = result.bounds;
+                  //地图显示当前城市
+                  $scope.locationmap.setBounds(citybounds);
+                  $scope.locationmap.plugin(["AMap.PlaceSearch"], function() {      
+                      $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                          pageSize:1,
+                          pageIndex:1,
+                          city: result.city
+
+                      });
+                      AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+                  });
+              }
+          });
+          AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
         });
         window.map_ready =true;
     };
@@ -1006,40 +1013,23 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
            $scope.MSearch.search($scope.location.name); //关键字查询
         }
     };
-    $scope.addTag = function(index) {
-        $scope.recommand_tags[index].disabled = true;
-        $('#tagsinput').tagsinput('add', $scope.recommand_tags[index]._id);
-    };
+    $scope.selectMold=function(name){
+        $scope.mold = name;
+    }
     $scope.sponsor = function() {
         var _data = {
             theme: $scope.theme,
             location: $scope.location,
-            content : $scope.content,
-            tags: $scope.tags ? $scope.tags.split(',') :[]
+            start_time:$scope.start_time,
+            end_time:$scope.end_time,
+            campaign_mold:$scope.mold
         };
         var _url;
         if($scope.multi){
             _url = '/department/'+$scope.did+'/multi_sponsor';
             _data.select_departments=[$scope.main_department];
-            data.time={
-                start:$scope.start_time,
-                end:$scope.end_time,
-                deadline:$scope.deadline
-            };
-            _data.member_num = {
-                min:$scope.member_min,
-                max:$scope.member_max
-            };
-            // console.log($scope.deadline);
-        }else{
+        }else
             _url = '/department/'+$scope.did+'/sponsor';
-            _data.start_time = $scope.start_time;
-            _data.end_time = $scope.end_time;
-            _data.member_min = $scope.member_min;
-            _data.member_max = $scope.member_max;
-            _data.deadline = $scope.deadline;
-            // console.log($scope.deadline);
-        }
         try{
             $http({
                 method: 'post',
@@ -1047,8 +1037,10 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
                 data:_data
             }).success(function(data, status) {
                 //发布活动后跳转到显示活动列表页面
-                window.location.reload();
-
+                if(data.result===1)
+                    window.location = '/campaign/detail/'+data.campaign_id+'?stat=editing';
+                else
+                    alertify.alert('活动发布失败');
             }).error(function(data, status) {
                 //TODO:更改对话框
                 alertify.alert('DATA ERROR');
@@ -1059,7 +1051,4 @@ departmentApp.controller('SponsorController', ['$http', '$scope','$rootScope','D
             console.log(e);
         }
     };
-}]);
-departmentApp.controller('ProvokeController', ['$http', '$scope','$rootScope',function($http, $scope, $rootScope) {
-
 }]);

@@ -3,23 +3,24 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
   if !global_user
     .header_container
       a.navbar-brand(href="/"): img.logo(src="/img/dl_logol.png")
-      .nav.pull-right.dl-top-login
+      .nav.pull-right.dl_top_login
         form.signin.form-horizontal.ng-pristine.ng-valid(action="/users/session" method="post")
           .input-group.input-group-sm
             .input-group-btn
-              input#email.form-control.input-sm.email(type="email" name="username" placeholder="Email地址" required="")
+              input#email.form-control.input-sm.email(type="email" name="username" placeholder="邮箱" required)
             .input-group-btn
-              input#password.form-control.input-sm.password(type="password" name="password" placeholder="密码" required="")
+              input#password.form-control.input-sm.password(type="password" name="password" placeholder="密码" required)
+              a.clearLinkUnderline.forgetPwd(href="/users/forgetPwd" title="忘记密码") ?
             .input-group-btn
-              a.btn.btn-default.btn-sm(href="/users/forgetPwd" title="忘记密码") ?
-              button.btn.btn-primary.btn-sm.btn-submit(type="submit") 登录动梨
-              a.btn.btn-link.btn-sm.btn-signin-link(href="/company/signin") 企业登录
+              button.btn.btn-sm.btn_signin(type="submit") 员工登录
+            .input-group-btn
+              a.clearLinkUnderline.btn.btn-link.btn_signin.btn_company(href="/company/signin") 企业入口
   else
     .dl_head(ng-controller="messageHeaderController")
       if global_user.provider === 'user'
         //-.navbar-header
         a.navbar-brand(href="/")
-          img.logo(src="/img/dl_logol.png")
+          span.dl_icons.icon_dllogo.logo
         //-button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#personal_nav")
           span.sr-only Toggle navigation
           span.icon-bar
@@ -33,14 +34,13 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
             li
               a(href="/department/home/#{global_user.department._id}") #{global_user.department.name}
           li
-            a(href="/users/home")
+            a.clearfix(href="/users/home")
               span.user_img
                 img.size_20.img_user(src="#{global_user.photo}")
               span.m_l_5.user_name #{global_user.nickname}
           li
             a(href="#" data-toggle="dropdown")
-              //-span.glyphicon.glyphicon-cog.m_l_5
-              img(src='/img/icons/setting.png/16/16')
+              i.fa.fa-cog.fa-lg
             ul.dl_menu.dropdown-menu(role="menu")
               li
                 a.dl_menu_a(href="/users/home") #{__("PERSONAL_HOME")}
@@ -53,14 +53,13 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
           li
             a(href="/message/home#/message_all")
               span.dl_msg_corner(ng-if="o>0" ng-cloak)
-              //-span.glyphicon.glyphicon-comment
-              img(src='/img/icons/message.png/20/15')
+              span.dl_icons.icon_message
               //- li
               //-   a.dl_menu_a(href="/message/home#/send") 发送消息
       if global_user.provider === 'company'
         //- .navbar-header
         a.navbar-brand(href="/")
-          img.logo(src="/img/dl_logol.png")
+          span.dl_icons.icon_dllogo.logo
         //- button.dl_btn.dl_navbar-toggle(data-toggle="collapse" data-target="#HR_nav")
           span.sr-only Toggle navigation
           span.icon-bar
@@ -69,14 +68,13 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
         //- .collapse.navbar-collapse#HR_nav
         ul.nav.navbar-nav.pull-right
           li
-            a(href="/company/home")
-              span
-                img.size_20(src="#{global_user.info.logo}")
-              span.m_l_5 #{global_user.info.official_name}
+            a.clearfix(href="/company/home")
+              span.user_img
+                img.size_20.img_user(src="#{global_user.info.logo}")
+              span.m_l_5.user_name #{global_user.info.official_name}
           li
             a(href="#" data-toggle="dropdown")
-              //-span.glyphicon.glyphicon-cog.m_l_5
-              img(src='/img/icons/setting.png/16/16')
+              i.fa.fa-cog.fa-lg
             ul.dl_menu.dropdown-menu(role="menu")
               li
                 a.dl_menu_a(href="/company/home#/company_info") #{__("COMPANY_INFO")}
@@ -91,5 +89,4 @@ nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
           li
             a(href="/message/home#/message_all")
               span.dl_msg_corner(ng-if="o>0" ng-cloak)
-              //-span.glyphicon.glyphicon-comment
-              img(src='/img/icons/message.png/20/15')
+              span.dl_icons.icon_message

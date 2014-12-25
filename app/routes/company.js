@@ -59,7 +59,7 @@ module.exports = function(app, passport) {
     //公司小队查看修改
     app.get('/company/groupList/:companyId', authorization.companyAuthorize, company.renderGroupList);
     //企业发布活动
-    app.post('/company/campaignSponsor/:companyId', authorization.companyAuthorize, company.sponsor);
+    app.post('/company/campaignSponsor/:companyId', company.sponsor);
     app.get('/company/campaigns', company.renderCompanyCampaign);
 
     app.post('/company/appointLeader/:companyId', authorization.companyAuthorize, company.appointLeader);

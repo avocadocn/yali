@@ -3,36 +3,37 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Company = mongoose.model('Company'),
-    CompanyGroup = mongoose.model('CompanyGroup'),
-    async = require('async'),
-    User = mongoose.model('User');
+  Company = mongoose.model('Company'),
+  CompanyGroup = mongoose.model('CompanyGroup'),
+  async = require('async'),
+  User = mongoose.model('User'),
+  auth = require('../services/auth');
 
 
 //TODO
 //根据公司名搜索公司
 exports.getCompany = function (req, res) {
-    var regx = new RegExp(req.body.regx);
-    var companies_rst = [];
-    Company.find({'info.name':regx,'status.active':true}, function (err, companies) {
-        if(err) {
-            return res.send([]);
-        } else {
-            if(companies) {
-                for(var i = 0; i < companies.length; i ++) {
-                    companies_rst.push({
-                        '_id' : companies[i]._id,
-                        'name' : companies[i].info.name,
-                        'team' : companies[i].team,
-                        'logo' : companies[i].info.logo
-                    });
-                }
-                return res.send(companies_rst);
-            } else {
-                return res.send([]);
-            }
+  var regx = new RegExp(req.body.regx);
+  var companies_rst = [];
+  Company.find({'info.name':regx,'status.active':true,'status.mail_active':true}, function (err, companies) {
+    if(err) {
+      return res.send([]);
+    } else {
+      if(companies) {
+        for(var i = 0; i < companies.length; i ++) {
+          companies_rst.push({
+            '_id' : companies[i]._id,
+            'name' : companies[i].info.name,
+            'team' : companies[i].team,
+            'logo' : companies[i].info.logo
+          });
         }
-    });
+        return res.send(companies_rst);
+      } else {
+        return res.send([]);
+      }
+    }
+  });
 };
 
 
@@ -48,10 +49,10 @@ exports.getTeam = function(req, res) {
   if(req.body.operate === 'part') {
     //返回某公司某类型的所有小队
     cid = req.body.cid;
-    condition = {'cid':cid,'gid':gid , '_id':{'$ne': tid}}
+    condition = {'cid':cid, 'gid':gid, '_id':{'$ne': tid}};
   } else {
     //根据队名部分关键字匹配小队
-    condition = {'gid':gid,'name':regx , '_id':{'$ne': tid}}
+    condition = {'gid':gid, 'name':regx, '_id':{'$ne': tid}};
   }
   CompanyGroup.find(condition,function(err, company_groups){
     if(err || !company_groups) {
@@ -65,7 +66,7 @@ exports.getTeam = function(req, res) {
 exports.recommandTeam = function(req,res) {
   var gid = req.body.gid;
   var tid = req.body.tid;
-  CompanyGroup.findOne({'gid':gid,'_id':tid},{'home_court':1},function (err,companyGroup){
+  CompanyGroup.findOne({'gid':gid,'_id':tid},{'home_court':1,'city':1},function (err,companyGroup){
     if(err || !companyGroup){
       console.log(err);
       return res.send(500,{'result':0,'msg':'500'});
@@ -75,7 +76,8 @@ exports.recommandTeam = function(req,res) {
     }
     else{
       var homecourt = companyGroup.home_court[0];
-      CompanyGroup.find({'_id':{$ne:tid},'gid':gid,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},{'_id':1,'name':1,'home_court':1,'logo':1,'score':1})
+      CompanyGroup.find({'gid':gid,'active':true,'city.city':companyGroup.city.city,'_id':{$ne:tid},'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},
+        {'name':1,'home_court':1,'logo':1,'score':1})
       .limit(10)
       .exec(function (err, teams){
         if(err){
@@ -204,3 +206,94 @@ exports.getUserInfo = function(req,res) {
     }
   });
 };
+
+//搜索同城小队,积分排序
+exports.sameCityTeam = function(req,res,next) {
+  var allow = auth(req.user,{
+    companies:[req.companyGroup.cid],
+    teams: [req.params.teamId]
+  },['searchSameCityTeam']);
+  if(!allow.searchSameCityTeam){
+    return res.send(403);
+  }
+  else{
+    var page = req.query.page > 0? req.query.page:1;
+    var city = req.companyGroup.city.city;
+    CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':city,'_id':{'$ne':req.params.teamId},'active':true},
+      page,10,function(err,pageCount,results,itemCount) {
+        if(err){
+          console.log(err);
+          res.status(500);
+          next();
+        }
+        else{
+          var teams = [];
+          for(var i=0;i<results.length;i++){
+            teams.push({'_id':results[i]._id,'logo':results[i].logo,'name':results[i].name,'cname':results[i].cname})
+          }
+          return res.send({'result':1,'teams':teams,'maxPage':pageCount,'city':city});
+        }
+      },{sortBy:{'score.total':-1}});
+  }
+};
+
+exports.nearbyTeam = function(req,res,next) {
+  var companyGroup = req.companyGroup;
+  var homecourt = companyGroup.home_court[req.query.index];
+  var city = req.companyGroup.city.city;
+  var page = req.query.page > 0? req.query.page:1;
+  CompanyGroup.paginate({'gid':req.companyGroup.gid,'city.city':city,'_id':{'$ne':req.params.teamId},'active':true,'home_court':{'$exists':true},'home_court.loc':{'$nearSphere':homecourt.loc.coordinates}},
+    page,10,function(err,pageCount,results,itemCount) {
+      if(err){
+        console.log(err);
+        res.status(500);
+        next();
+      }
+      else{
+        var teams = [];
+        for(var i=0;i<results.length;i++){
+          teams.push({'_id':results[i]._id,'logo':results[i].logo,'name':results[i].name,'cname':results[i].cname,'home_court':results[i].home_court});
+        }
+        return res.send({'result':1,'teams':teams,'maxPage':pageCount});
+      }
+    });
+};
+
+//关键词搜索，先搜索有此关键词的的公司，再搜索此公司的同类型小队或有此关键词的小队
+exports.keywordSearch = function(req,res,next){
+  var companyGroup = req.companyGroup;
+  var regx = new RegExp(req.query.key);
+  var gid = companyGroup.gid;
+  var page = req.query.page > 0? req.query.page:1;
+  Company.find({'info.name':regx,'status.active':true,'status.mail_active':true},{'_id':1,'team':1},function(err,companies){
+    if(err){
+      res.status(500);
+      next(err);
+    }else{
+      var tids=[];
+      for(var i=0;i<companies.length;i++){
+        for(var j=0;j<companies[i].team.length;j++){
+          if(companies[i].team[j].gid===gid){
+            tids.push(companies[i].team[j].id);
+          }
+        }
+      }
+      CompanyGroup.paginate({'$or':[{'_id':{'$in':tids}},{'$and':[{'gid':gid},{'name':regx}]}]},
+        page,10,function(err,pageCount,results,itemCount) {
+          if(err){
+            console.log('??')
+            console.log(err);
+            res.status(500);
+            next();
+          }
+          else{
+            var teams = [];
+            for(var i=0;i<results.length;i++){
+              teams.push({'_id':results[i]._id,'logo':results[i].logo,'name':results[i].name,'cname':results[i].cname,'home_court':results[i].home_court});
+            }
+            return res.send({'result':1,'teams':teams,'maxPage':pageCount});
+          }
+        });
+    }
+  })
+}

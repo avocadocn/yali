@@ -59,12 +59,12 @@ exports.campaign = function(campaign_id){
     if(config.push.status){
       if(config.push.status == 'on'){
 
-        Campaign.findOne({'_id':campaign_id},{'team':1,'_id':1,'theme':1,'cid':1},function (err,campaign){
+        Campaign.findOne({'_id':campaign_id},{'tid':1,'_id':1,'theme':1,'cid':1},function (err,campaign){
           if(err || !campaign){
             //TODO
             //错误日志
           }else{
-            if(campaign.team.length===0){//公司
+            if(campaign.tid.length===0){//公司
               User.find({'cid':campaign.cid[0]},{'_id':1},function (err ,users){
                 if(err || !users){
                   //TODO
@@ -84,8 +84,8 @@ exports.campaign = function(campaign_id){
                 }
               })
             }
-            else if(campaign.team){
-              CompanyGroup.find({'_id':{'$in':campaign.team}},{'member':1,'_id':1},function (err,teams){
+            else if(campaign.tid){
+              CompanyGroup.find({'_id':{'$in':campaign.tid}},{'member':1,'_id':1},function (err,teams){
                 if(err || !teams){
                   //TODO
                   //错误日志

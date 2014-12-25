@@ -1,0 +1,11 @@
+.block.signup_block.personal_signup.form-horizontal
+  .signup_title.personal_title
+    span 个人注册
+  .signup_tips
+    span 第
+    span.tip_number 1
+    span 步：搜索您的公司
+  .search_companies
+    input.dl-form-control.search_input(ng-model="company_name" placeholder="输入您的公司全称" ng-keypress="search($event)"  required)
+    button.search_button(ng-disabled="!company_name" ng-click="search()")
+      i.fa.fa-search

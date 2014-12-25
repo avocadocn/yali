@@ -36,7 +36,6 @@ companyApp.directive('match', function($parse) {
 //企业激活后注册企业用户名和密码
 companyApp.controller('DetailController', ['$http','$scope','$rootScope', function($http,$scope,$rootScope) {
     var _this = this;
-    //$rootScope.lang_key=0;
     this.create_detail = function() {
         try{
             $http({
@@ -65,7 +64,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
     var check_name_value = '正在检查公司名是否存在';
     var check_username_value = '正在检查用户名是否存在';
     this.officialNameCheck = function() {
-        try{
+        if(_this.official_name){
             $http({
                 method: 'post',
                 url: '/company/officialNameCheck',
@@ -73,7 +72,6 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                   official_name: _this.official_name
                 }
             }).success(function(data, status) {
-                console.log('data:'+data);
                 if(data === "false") {
                     _this.check_name_value = "";
                     _this.check_name = true;
@@ -81,18 +79,14 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                     _this.check_name = false;
                     _this.check_name_value = '该公司名已经存在!';
                 }
-                console.log('check_name:'+_this.check_username);
             }).error(function(data, status) {
               //TODO:更改对话框
               alertify.alert('DATA ERROR');
             });
         }
-        catch(e){
-            console.log(e);
-        }
     };
     this.usernameCheck = function() {
-        try{
+        if(_this.username){
             $http({
                 method: 'post',
                 url: '/company/usernameCheck',
@@ -100,7 +94,6 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                   username: _this.username
                 }
             }).success(function(data, status) {
-                console.log('data:'+data);
                 if(data === "false") {
                     _this.check_username_value = "";
                     _this.check_username = true;
@@ -108,14 +101,10 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
                     _this.check_username = false;
                     _this.check_username_value = '该用户名已经存在!';
                 }
-                console.log('check_username:'+_this.check_username);
             }).error(function(data, status) {
               //TODO:更改对话框
               alertify.alert('DATA ERROR');
             });
-        }
-        catch(e){
-            console.log(e);
         }
     };
 

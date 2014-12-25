@@ -1,0 +1,12 @@
+.modal-dialog
+  .dl_campaign_modal
+    .dl_modal_header
+      .headline
+        i.fa.fa-bullhorn.head_logo
+        span 发活动
+        button.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
+          i.fa.fa-times
+    div(ng-show='modal===1')
+      include search_myteam_modal
+    div(ng-show='modal!==1')
+      include campaign_modal

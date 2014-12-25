@@ -220,35 +220,19 @@ var messagePreHandle = function(teams,msg,divide){
           }
         }
       }
-      if(divide){
-        team_messages.push({
-          '_id':msg[i]._id,
-          'content':content,
-          'status':msg[i].status,
-          'date':msg[i].message_content.post_date,
-          'detail':msg[i].message_content.content,
-          'team': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0] : [],
-          'photo': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0].logo : msg[i].message_content.sender[0].photo,
-          'sender':msg[i].message_content.sender[0],
-          'message_type':message_type,
-          'campaign_id':msg[i].message_content.campaign_id,
-          'campaign_name':msg[i].message_content.caption
-        });
-      }else{
-        all_messages.push({
-          '_id':msg[i]._id,
-          'content':content,
-          'status':msg[i].status,
-          'date':msg[i].message_content.post_date,
-          'detail':msg[i].message_content.content,
-          'message_type':message_type,
-          'team': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0] : [],
-          'photo': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0].logo : msg[i].message_content.sender[0].photo,
-          'sender':msg[i].message_content.sender[0],
-          'campaign_id':msg[i].message_content.campaign_id,
-          'campaign_name':msg[i].message_content.caption
-        });
-      }
+      var temp = {
+        '_id':msg[i]._id,
+        'content':content,
+        'status':msg[i].status,
+        'date':msg[i].message_content.post_date,
+        'detail':msg[i].message_content.content,
+        'team': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0] : [],
+        'photo': msg[i].message_content.team.length > 0 ? msg[i].message_content.team[0].logo : msg[i].message_content.sender[0].photo,
+        'sender':msg[i].message_content.sender[0],
+        'message_type':message_type,
+        'campaign_id':msg[i].message_content.campaign_id,
+        'campaign_name':msg[i].message_content.caption
+      };
     }
 
     //公司
@@ -256,43 +240,39 @@ var messagePreHandle = function(teams,msg,divide){
       if(msg[i].message_content.sender.length > 0){
         message_type = 3;
         detail = msg[i].message_content.content;
-        if(divide){
-          company_messages.push({
-            '_id':msg[i]._id,
-            'status':msg[i].status,
-            'date':msg[i].message_content.post_date,
-            'photo':msg[i].message_content.sender[0].photo,
-            'detail':detail,
-            'sender':msg[i].message_content.sender[0],
-            'message_type':message_type
-          });
-        }else{
-          all_messages.push({
-            '_id':msg[i]._id,
-            'status':msg[i].status,
-            'date':msg[i].message_content.post_date,
-            'photo':msg[i].message_content.sender[0].photo,
-            'detail':detail,
-            'sender':msg[i].message_content.sender[0],
-            'message_type':message_type
-          });
-        }
+        var temp={
+          '_id':msg[i]._id,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'photo':msg[i].message_content.sender[0].photo,
+          'detail':detail,
+          'sender':msg[i].message_content.sender[0],
+          'message_type':message_type
+        };
       }
     }
-
     //私人(队长接收)
     if(msg[i].type == 'private'){
       if(msg[i].message_content.team.length > 0){
-        if([2,3].indexOf(msg[i].message_content.team[0].status) > -1){
-
-
-          message_type = 4;
-          sender = {
-            'name': msg[i].message_content.team[0].name
-          }
-          content = msg[i].message_content.team[0].status == 3 ? "接受了您的比赛结果" : "向您发出了一个新的比赛确认";
-          if(divide){
-            private_messages.push({
+        if(msg[i].specific_type.value===6){//推荐比赛
+          message_type = 8;
+          var temp ={
+            '_id':msg[i]._id,
+            'content':content,
+            'detail':'赶紧带着您的小队去动TA一下吧!',
+            'status':msg[i].status,
+            'sender':msg[i].message_content.sender,
+            'date':msg[i].message_content.post_date,
+            'photo':msg[i].message_content.sender[0].photo,
+            'message_type':message_type,
+            'team':msg[i].message_content.team
+          };
+        }else{//比赛相关
+          if([2,3].indexOf(msg[i].message_content.team[0].status) > -1){
+            message_type = 4;
+            sender = {'name': msg[i].message_content.team[0].name};
+            content = msg[i].message_content.team[0].status == 3 ? "接受了您的比赛结果" : "向您发出了一个新的比赛确认";
+            var temp ={
               '_id':msg[i]._id,
               'content':content,
               'detail':msg[i].message_content.caption,
@@ -302,43 +282,29 @@ var messagePreHandle = function(teams,msg,divide){
               'photo':msg[i].message_content.team[0].logo,
               'message_type':message_type,
               'campaign_id':msg[i].message_content.campaign_id
-            });
-          }else{
-            all_messages.push({
-              '_id':msg[i]._id,
-              'content':content,
-              'detail':msg[i].message_content.caption,
-              'status':msg[i].status,
-              'date':msg[i].message_content.post_date,
-              'sender':sender,
-              'photo':msg[i].message_content.team[0].logo,
-              'message_type':message_type,
-              'campaign_id':msg[i].message_content.campaign_id
-            });
+            };
           }
-        }
-        if([0,1,4,5].indexOf(msg[i].message_content.team[0].status) > -1){
-          message_type = 7;
-          sender = {
-            'name': msg[i].message_content.team[0].name
-          }
-          switch(msg[i].message_content.team[0].status){
-            case 0:
-              content = "向您发出了一个新的挑战";
-              break;
-            case 1:
-              content = "接受了您的挑战";
-              break;
-            case 4:
-              content = "拒绝了您发起的挑战";
-              break;
-            case 5:
-              content = "取消了挑战";
-              break;
-            default:break;
-          }
-          if(divide){
-            private_messages.push({
+          if([0,1,4,5].indexOf(msg[i].message_content.team[0].status) > -1){
+            message_type = 7;
+            sender = {
+              'name': msg[i].message_content.team[0].name
+            }
+            switch(msg[i].message_content.team[0].status){
+              case 0:
+                content = "向您发出了一个新的挑战";
+                break;
+              case 1:
+                content = "接受了您的挑战";
+                break;
+              case 4:
+                content = "拒绝了您发起的挑战";
+                break;
+              case 5:
+                content = "取消了挑战";
+                break;
+              default:break;
+            }
+            var temp={
               '_id':msg[i]._id,
               'content':content,
               'status':msg[i].status,
@@ -349,71 +315,40 @@ var messagePreHandle = function(teams,msg,divide){
               'message_type':message_type,
               'team_id':msg[i].message_content.team[1]._id,
               'campaign_id':msg[i].message_content.campaign_id
-            });
-          }else{
-            all_messages.push({
-              '_id':msg[i]._id,
-              'content':content,
-              'status':msg[i].status,
-              'detail':msg[i].message_content.caption,
-              'sender':sender,
-              'date':msg[i].message_content.post_date,
-              'photo':msg[i].message_content.team[0].logo,
-              'message_type':message_type,
-              'team_id':msg[i].message_content.team[1]._id,
-              'campaign_id':msg[i].message_content.campaign_id
-            });
+            };
           }
         }
       }else{
         // p2p
         message_type = 5;
         detail = msg[i].message_content.content;
-        if(divide){
-          private_messages.push({
-            '_id':msg[i]._id,
-            'status':msg[i].status,
-            'date':msg[i].message_content.post_date,
-            'detail':detail,
-            'sender':msg[i].message_content.sender[0].nickname,
-            'photo':msg[i].message_content.sender[0].photo,
-            'message_type':message_type
-          });
-        }else{
-          all_messages.push({
-            '_id':msg[i]._id,
-            'status':msg[i].status,
-            'date':msg[i].message_content.post_date,
-            'detail':detail,
-            'sender':msg[i].message_content.sender[0].nickname,
-            'photo':msg[i].message_content.sender[0].photo,
-            'message_type':message_type
-          });
+        var temp = {
+          '_id':msg[i]._id,
+          'status':msg[i].status,
+          'date':msg[i].message_content.post_date,
+          'detail':detail,
+          'sender':msg[i].message_content.sender[0].nickname,
+          'photo':msg[i].message_content.sender[0].photo,
+          'message_type':message_type
         }
       }
-
     }
 
     //系统
     if(msg[i].type == 'global'){
       message_type = 6;
-      if(divide){
-        private_messages.push({
-          '_id':msg[i]._id,
-          'status':msg[i].status,
-          'date':msg[i].message_content.post_date,
-          'detail':msg[i].message_content.content,
-          'message_type':message_type
-        });
-      }else{
-        all_messages.push({
-          '_id':msg[i]._id,
-          'status':msg[i].status,
-          'date':msg[i].message_content.post_date,
-          'detail':msg[i].message_content.content,
-          'message_type':message_type
-        });
+      var temp = {
+        '_id':msg[i]._id,
+        'status':msg[i].status,
+        'date':msg[i].message_content.post_date,
+        'detail':msg[i].message_content.content,
+        'message_type':message_type
       }
+    }
+    if(divide){
+      team_messages.push(temp);
+    }else{
+      all_messages.push(temp);
     }
   }
   if(divide){

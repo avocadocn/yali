@@ -2,6 +2,7 @@
 
 module.exports = function(app) {
     var index = require('../controllers/index');
+    var schedule = require('../services/schedule');
     app.get('/', index.render);
 
     app.get('/about', index.about);
@@ -11,7 +12,7 @@ module.exports = function(app) {
     app.get('/contact', index.contact);
     //app.get('/test',index.test);
     //app.get('/count',index.count);
-    //app.get('/finish',index.finish);
+    app.get('/finish',schedule.finishCampaign);
     app.post('/feedback',index.feedback);
     app.get('/index/header',index.header);
 };

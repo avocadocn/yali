@@ -108,7 +108,7 @@ if (cluster.isMaster) {
 
 
 // Initializing logger
-logger.init(app, passport, mongoose);
+// logger.init(app, passport, mongoose);
 
 // Expose app
 exports = module.exports = app;

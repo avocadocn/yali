@@ -1,10 +1,7 @@
 extend ../layouts/user_base
 
-append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
-
 block contentExt
-  .dl_container.photo_album
+  .dl_container.photo_album(ng-controller="PhotoDetailCtrl" ng-init="photo_id='#{photo_detail._id}'")
     include ../partials/breadcrumb
     +breadcrumb(links)
     input#return_url(type="hidden" value="#{return_url}")
@@ -22,34 +19,6 @@ block contentExt
         p.text.margin_top_5
           each tag in photo_detail.tags
             span.tag= tag
-        .comment_panel
-          if global_user.provider === 'user'
-            h4 我要留言
-            form.js_ajax_form(action="/comment/push" method="post")
-              input(type="hidden" name="host_id" value="#{photo_detail._id}")
-              input(type="hidden" name="host_type" value="photo")
-              textarea.comment_textarea.form-control(type="text" name="content" required)
-              .clearfix
-                button.dl_btn.dl_btn_small.pull-right.margin_top_5(type="submit") 提交留言
-          section(bs-popover)
-            each comment in comments
-              div.comment.clearfix
-                if comment.poster && comment.poster.cid && user_cid.toString() === comment.poster.cid.toString()
-                  .comment_user_info
-                    a(href="/users/home/#{comment.poster._id}")
-                     img.user_photo.img_user(src="#{comment.poster.photo}" ng-Mouseenter="showUserCard('#{comment.poster._id}','#{comment._id}')" id="pop#{comment._id}")
-                    p: a.user_name(href="/users/home/#{comment.poster._id}")= comment.poster.nickname
-                else
-                  .comment_user_info
-                    img.user_photo.img_user(src="#{comment.poster.photo}")
-                    p: a.user_name= comment.poster.nickname
-                .comment_content_panel
-                  .relative
-                    .triangle_border
-                    .triangle
-                    .comment_content
-                      p= comment.content
-                  p.comment_date.text= moment(comment.create_date).format('YYYY-MM-DD HH:mm:ss')
       .col-xs-offset-1.col-sm-offset-1.col-xs-3.col-sm-3
         .media
           .pull-left
@@ -73,34 +42,5 @@ block contentExt
           form#delete_form.photo_operator_form.js_ajax_form(action="/photoAlbum/#{photo_album._id}/photo/#{photo_detail._id}" method="post")
             input(type="hidden" name="_method" value="delete")
             button#delete_button.dl_btn.dl_btn_small.dl_btn_danger(type="button") 删除该照片
-
-
 append footExt
-  script(src="/lib/jquery-form/jquery.form.js")
-  script.
-    $('.js_ajax_form').ajaxForm(function(data, status) {
-      if (status === 'success') {
-        window.location.reload();
-      }
-    });
-    var deleteForm = $('#delete_form');
-    deleteForm.ajaxForm(function(data, status) {
-      var return_url = $('#return_url').val();
-      window.location.href = return_url;
-    });
-    $('#delete_button').click(function() {
-      alertify.set({
-        buttonFocus: "none",
-        labels: {
-          ok: '确认删除',
-          cancel: '取消'
-        }
-      });
-      alertify.confirm('删除后不可恢复，您确定要删除该照片吗？', function(e) {
-        if (e) {
-          deleteForm.submit();
-        } else {
-
-        }
-      });
-    });
+  script(src="/js/controllers/photo_detail.js")

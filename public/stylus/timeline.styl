@@ -2,6 +2,10 @@
 Timeline UI Base
 ***/
 @require('variables')
+
+dl_shadow()
+  -moz-box-shadow 1px 1px 3px secondaryfontColor /* 老的 Firefox */
+  box-shadow 1px 1px 3px secondaryfontColor
 .timeline
   margin 20px 0 0 0
   padding 0
@@ -237,26 +241,30 @@ Timeline UI Base
     margin-left -2px
     background-color #CCCCCC
     height 100%
+  .timeline_loading
+    width 20px
+    height 20px
+    margin 0 auto
+    background url("/img/loading.gif") center center no-repeat
   .column
     //width 50%
-    
     .timeline_element
       background-color #FFFFFF
       border 1px solid #ddd
       text-shadow none
       width 545px
       position relative
-      position: relative;
       margin 10px 0px
       clear both
       border-radius 0px
       padding 10px
       color #888888
-      
+      dl_shadow()
       &:hover
         cursor pointer
         opacity 1
-        box-shadow 2px 2px 8px rgba(0,0,0,.2)
+        -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
+        box-shadow 3px 3px 3px secondaryfontColor
       &:before
         content ''
         position absolute
@@ -274,85 +282,54 @@ Timeline UI Base
         background-color #BBBBBB
         border 1px solid #FFFFFF
         box-shadow 0px 0px 2px rgba(0, 0, 0, 0.2)
-      .title
-        position relative
-        font-size 10px
-        overflow hidden
-        margin-bottom 10px
-        text-transform uppercase
-        word-break break-all
-        padding 0 5px 5px
-        border-bottom 1px solid #dddddd
-        a
-          color #AAAAAA
-          display block
-          &:hover
-            text-decoration none
-        .head
-          color #AAAAAA
-          font-size 12px
-          line-height 22px
-          max-width 210px
-          word-break break-all
-          overflow hidden
-          text-overflow ellipsis
-          white-space nowrap
-          display inline-block
-          float left
-        .date
-          float left
-          width 460px
-        .timeline-logo
-          margin-right 4px
-          height 40px
-          width 40px
-      .img_scroll
-        // .photos_1
-        //   .photo_0
-        //     width 264px
-        //     height 264px
-        // .photos_2
-        //   .photo_0, .photo_1
-        //     width 131px
-        //     height 131px
-        //     margin-right 1px
-        //   .photo_1
-        //     margin-left 1px
-        //     margin-right 0
-        // .photos_3
-        //   .photo_0
-        //     width 175px
-        //     height 175px
-        //     margin-right 1px
-        //   .photo_1, .photo_2
-        //     width 87px
-        //     height 87px
-        //     margin-bottom 1px
-        //   .photo_2
-        //     margin-bottom 0
-        // .photos_4
-        //   .photo_0
-        //     width 263px
-        //     height 263px
-        //     margin-bottom 1px
-        //   .photo_1, .photo_2, .photo_3
-        //     width 87px
-        //     height 87px
-        //     margin-right 1px
-        .photo 
-          display block
-          float left
-          width 86px
-          height 86px
-          margin-right 1px
-      .content
-        p
-          margin-bottom 0
-        a
-          color #888888
-          display block
-          &:hover
-            text-decoration none
+      // .title
+      //   position relative
+      //   font-size 10px
+      //   overflow hidden
+      //   margin-bottom 10px
+      //   text-transform uppercase
+      //   word-break break-all
+      //   padding 0 5px 5px
+      //   border-bottom 1px solid #dddddd
+      //   a
+      //     color #AAAAAA
+      //     display block
+      //     &:hover
+      //       text-decoration none
+      //   .head
+      //     color #AAAAAA
+      //     font-size 12px
+      //     line-height 22px
+      //     max-width 250px
+      //     word-break break-all
+      //     overflow hidden
+      //     text-overflow ellipsis
+      //     white-space nowrap
+      //     display inline-block
+      //     float left
+      //   .date
+      //     float left
+      //     width 460px
+      //   .timeline-logo
+      //     margin-right 4px
+      //     height 40px
+      //     width 40px
+      // .img_scroll
+      //   .photo
+      //     display block
+      //     float left
+      //     width 86px
+      //     height 86px
+      //     margin-right 1px
+      //     background url("/img/loading.gif") center center no-repeat
+      // .content
+      //   p
+      //     margin-bottom 0
+      //   a
+      //     color #888888
+      //     display block
+      //     &:hover
+      //       text-decoration none
 
     
 
@@ -366,7 +343,7 @@ Timeline UI Base
         right -27px
       &:after
         top 10px
-        right -35px
+        right -34px
 
         
   .column_right
@@ -381,7 +358,7 @@ Timeline UI Base
         left -27px
       &:after
         top 10px
-        left -35px
+        left -34px
 
   .date_separator 
     clear both
@@ -390,7 +367,7 @@ Timeline UI Base
     position relative
 
     .span 
-      //position absolute
+      // position absolute
       display block
       width 150px
       height 30px
@@ -400,8 +377,9 @@ Timeline UI Base
       border 1px solid #BBBBBB
       background-color #FFFFFF
       color #666666
-      //left 50%
-      //margin-left -75px
+      cursor pointer
+      // left 50%
+      // margin-left -75px
 .emptiem
   width 660px
   height 124px
@@ -410,12 +388,133 @@ Timeline UI Base
   border-top 0
 
 
-
-
-
-
-
-
-
-
-
+.user_timeline
+  width 865px
+  .dl_timeline
+    width 100%
+    .spine
+      top 0
+      left 50%
+      margin-left -1px
+      width 2px
+    .full_column
+      width 100%
+      background-color #FFFFFF
+      border 1px solid #ddd
+      text-shadow none
+      position relative
+      margin 10px 0px
+      clear both
+      border-radius 0px
+      padding 10px
+      color #888888
+      margin 0
+      text-align center
+    .column
+      width 50%
+      .timeline_element
+        width 400px
+        padding 0
+        border none
+        &:before
+          content initial
+        &:after
+          border none
+          background-color #999
+        // .timeline_head
+        //   clear both
+        //   padding 10px
+        //   font-size 14px
+        // .comments
+        //   clear both
+        //   background-color #FBFBFB
+        //   a
+        //     color secondaryfontColor
+        //   a.comment_num
+        //     display inline-block
+        //     color #ccc
+        //     width 100%
+        //     padding 5px 10px
+        //     text-align right
+        //     background-color #FBFBFB
+        //     .reply_icon
+        //       margin-right 7px
+        // .title
+        //   margin-bottom 0
+        //   border-bottom none
+        //   padding 10px
+        //   .timeline-logo
+        //     height 30px
+        //     width 30px
+        //     margin-top 7px
+        //     margin-right 2px
+        //   .date
+        //     width 30px
+        //     line-height 13px
+        //     margin 8px 4px
+        //   .name
+        //     line-height 30px
+        //     margin-right 10px
+        //     margin-top 8px
+        //     max-width 250px
+        //     overflow hidden
+        //     text-overflow ellipsis
+        //     white-space nowrap
+        //     text-align center
+        //   .day
+        //     float left
+        //     font-size 28px
+        //     margin 11px 6px
+        //     margin-right 0
+        // .img_scroll
+        //   .photo
+        //     display inline-block
+        //     margin-right 0
+        //   .photos_1
+        //     .photo_0
+        //       width 400px
+        //       height 250px
+        //   .photos_2
+        //     .photo_0,.photo_1
+        //       width 195px
+        //       height 180px
+        //       float left
+        //     .photo_0
+        //       margin-right 10px
+        //   .photos_3
+        //     .photo_0
+        //       width 195px
+        //       height 290px
+        //       margin-left 10px
+        //       float right
+        //     .photo_1, .photo_2
+        //       width 195px
+        //       height 140px
+        //       float right
+        //     .photo_1
+        //       margin-bottom 10px
+        //   .photos_4
+        //     .photo_0,.photo_3
+        //       width 160px
+        //       height 145px
+        //       margin-bottom 5px
+        //       float left
+        //     .photo_1, .photo_2
+        //       width 230px
+        //       height 145px
+        //       margin-bottom 10px
+        //       float left
+        //     .photo_0,.photo_2
+        //       margin-right 10px
+    .column_right
+      margin-left 0
+    .date_separator
+      .span
+        position absolute
+        left 50%
+        margin-left -50px
+        width 100px
+        background-color #ccc
+        color #fff
+        border-radius 10px
+        border none

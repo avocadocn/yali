@@ -6,7 +6,9 @@ var mongoose = require('mongoose'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   Company = mongoose.model('Company'),
   Campaign = mongoose.model('Campaign'),
-  Department = mongoose.model('Department');
+  Department = mongoose.model('Department'),
+  Comment = mongoose.model('Comment'),
+  PhotoAlbum = mongoose.model('PhotoAlbum');
 var userController = require('../../controllers/users');
 /**
  * Generic require login routing middleware
@@ -46,86 +48,86 @@ exports.companyAuthorize = function(req, res, next){
 
 
 exports.commentAuthorize = function(req, res, next) {
+  //pull、push评论不需要分队长非队长，只需cid一样即可，但是为了以防万一以后需要还是设一下member、leader
+  //Owner: 个人 本人
+  //Guest: 非本公司,不论是否是HR
+  //HR: HR
+  //Partner: 本公司成员
+  //Member: 以防万一先作添加,某team/某活动的teams的member
+  //Leader: 以防万一先作添加,某team/某活动的teams的leader
   if (!req.user) {
     return res.redirect('/');
   }
   else {
-    switch(req.params.commentType){
-      case 'campaign':
+    switch(req.params.commentType) {
+      case 'competition':
+      case 'campaign'://活动详情
         Campaign.findOne({'_id':req.params.hostId},function (err, campaign){
           if(err || !campaign){
             res.status(403);
             next('forbidden');
             return;
-          }else{
-            if(campaign.team.indexOf(req.user._id.toString()) > -1){
-              req.role = 'HR';
-              next();
-            }else{
-              campaign.team.forEach(function(team){
-                var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
-                if (team_index>-1){
-                  if(req.user.team[team_index].leader ===true){
-                    req.role = 'LEADER';
-                  }
-                  else if(req.role !== 'LEADER'){
-                    req.role = 'MEMBER';
-                  }
-
-                }
-                else if(req.role==undefined){
-                  req.role = 'PARTNER';
-                }
-              });
-              next();
-            }
           }
+          else if(campaign.cid.indexOf(req.user._id.toString()) > -1){
+            req.role = 'HR';
+          }
+          else if(req.user.cid && campaign.cid.indexOf(req.user.cid.toString())>-1){//是这个公司的员工
+            if(req.user.role==='LEADER'){
+              var _teamIndex;
+              for(var i=0;i<campaign.team.length;i++){
+                _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,campaign.team[i],'_id')
+                if(_teamIndex>-1){
+                  if(req.user.team[_teamIndex].leader===true){
+                    req.role = 'LEADER';
+                    break;
+                  }
+                }
+              }
+            }
+            if(req.role!=='LEADER'){
+              req.role = 'PARTNER';
+            }
+          }else{
+            req.role = 'GUEST';
+          }
+          next();
         });
         break;
-      case 'team':
-        CompanyGroup.findOne({'_id':req.params.hostId},function (err,company_group){
-          if(err || !company_group){
+      case 'photo':
+        //通过album来判断是否是leader
+        PhotoAlbum.findOne({'photos':{"$elemMatch":{'_id':req.params.hostId}}},function (err, photoAlbum){
+          if(err || !photoAlbum){
             res.status(403);
             next('forbidden');
             return;
-          }else{
-            if(req.user._id.toString() === company_group.cid.toString()){
-              req.role === 'HR';
-              next();
-            }else{
-              var _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,company_group._id,'_id');
-              if(_teamIndex>-1){
-                if(req.user.team[_teamIndex].leader === true){
-                  req.role = 'LEADER';
-                }
-                else{
-                  if(req.user.role==='LEADER')
-                    req.role = 'MEMBERLEADER';
-                  else
-                    req.role = 'MEMBER';
+          }
+          else if(photoAlbum.owner.companies.indexOf(req.user._id.toString())>-1){
+            req.role = 'HR';
+            next();
+          }
+          else if(req.user.cid && photoAlbum.owner.companies.indexOf(req.user.cid)>-1){//是此相册所属公司员工
+            if(req.user.role==='LEADER'){
+              var _teamIndex;
+              for(var i=0;i<photoAlbum.owner.teams.length;i++){
+                _teamIndex = model_helper.arrayObjectIndexOf(req.user.team,photoAlbum.owner.teams[i],'_id')
+                if(_teamIndex>-1){
+                  if(req.user.team[_teamIndex].leader===true){
+                    req.role = 'LEADER';
+                    break;
+                  }
                 }
               }
-              else{
-                if(req.user.role==='LEADER')
-                  req.role = 'PARTNERLEADER'
-                else
-                  req.role = 'PARTNER';
-              }
-              next();
             }
+            if(req.role!=='LEADER'){
+              req.role = 'PARTNER';
+            }
+            next();
+          }
+          else{
+            req.role = 'GUEST';
+            next();
           }
         });
-        break;
-      case 'album':
-        if (req.user.provider === 'company') {
-          res.status(403);
-          next('forbidden');
-          return;
-        }
-        next();
-        break;
-      case 'user':
-        next();
         break;
       default:
         res.status(403);
@@ -301,7 +303,7 @@ exports.userAuthorize = function(req, res, next) {
   if (!req.user) {
     return res.redirect('/');
   }
-  if(req.route.path==='/users/home' && !req.profile){
+  if(req.user.provider=='user'&&req.route.path==='/users/home' && !req.profile){
     req.role = 'OWNER';
   }
   else{
@@ -415,23 +417,29 @@ exports.campaginAuthorize = function(req, res, next){
     req.role = 'HR';
   }
   else if(req.user.provider==='user' && req.campaign.cid.indexOf(req.user.cid.toString())>-1){
-    if(req.campaign.team.length===0){
+    if(req.campaign.tid.length===0){
       req.role = 'MEMBER';
+        console.log(4)
     }
     else {
-      req.campaign.team.forEach(function(team){
+      console.log(req.campaign.tid,req.user.team)
+      req.campaign.tid.forEach(function(team){
+        console.log(team)
         var team_index = model_helper.arrayObjectIndexOf(req.user.team,team,'_id');
         if (team_index>-1){
           if(req.user.team[team_index].leader ===true){
             req.role = 'LEADER';
+              console.log(1)
           }
           else if(req.role !== 'LEADER'){
             req.role = 'MEMBER';
+              console.log(2)
           }
 
         }
         else if(req.role==undefined){
           req.role = 'PARTNER';
+            console.log(3)
         }
       });
     }
@@ -439,6 +447,7 @@ exports.campaginAuthorize = function(req, res, next){
   else{
     return res.send(403,'forbidden');
   }
+  console.log(req.role)
   next();
 }
 exports.appToken = function(req, res, next){

@@ -18,7 +18,6 @@ borderColor = #ddd
   small
     span
       margin-right 0
-
 .cal-context
   .cal-row-head
     .cal-cell1
@@ -36,7 +35,7 @@ logoLink()
   border 1px solid borderColor
 .cal-year-box-small [class*="span"],
 .cal-month-box-small [class*="cal-cell"]
-  min-height 50px
+  min-height 30px
 
 .cal-year-box .row-fluid,
 .cal-month-box .cal-row-fluid
@@ -57,11 +56,7 @@ logoLink()
     margin-bottom 5px
 
 .cal-month-day
-  //- .join_sign
-  //-   margin-top 5px
-  //-   margin-left 5px
-  //-   width 16px
-  //-   height 16px
+  cursor pointer
   .join_sign
     margin 10px
     width 6px
@@ -70,6 +65,7 @@ logoLink()
     background-color #3498db
     float left
 
+
   .day
     margin-top 5px
     margin-right 5px
@@ -77,9 +73,68 @@ logoLink()
     margin-top 5px
     margin-right 5px
 
-.cal-month-day-small
-  height 50px
+.calendar_box
+  .cal-context
+    div
+      border none
+    .cal-row-head
+      border-bottom 1px solid #CCC
+      [class*='cal-cell1']
+        padding 1px 0
+    .joined
+      background none
+      color navbarFontColor
+    .cal-month-box
+      .cal-day-today
+        span[data-cal-date]
+          font-size 1.2em
+          background-color #F58464
+          border-radius 100%
+      // .cal-month-day
+      .cal-day-inmonth.cal-month-day-small
+        &.length_3
+          border 1px solid #3ca2e0
+          background-color #3ca2e0
+        &.length_2
+          border 1px solid #6cb8e7
+          background-color #6cb8e7
+        &.length_1
+          border 1px solid #a6d6f4
+          background-color #a6d6f4
+      .cal-month-day-small
+        height 31px
+        border-bottom 1px solid #fff
+        &.cal-day-inmonth:hover
+          border 1px solid #525E70
+        // .join_sign
+        //   margin 0 10px
+        //   width 14px
+        //   height 13px
+        //   color #ffff
+        //   background-color #3498db
+        //   text-align center
+        //   float right
+        //   border-radius 0
+        //   font-size 10px
+        //   font-family Arial
+        //   line-height 14px
+        span[data-cal-date]
+          width 21px
+          height 21px
+          text-align center
+          margin 5px
+          color #fff
+          font-size 12px
+          line-height 23px
 
+.calendar_box_small
+  .cal-row-fluid 
+    .cal-cell1
+      width 34px
+      &[data-cal-row="-day7"]
+        width 35px
+      &[data-cal-row="-day1"]
+        width 35px
 #cal-slide-content
   .event-item
     position relative
@@ -141,6 +196,60 @@ logoLink()
     .join_sign
       margin 0
       background-color #aaa
+
+.teampage
+  .calendar_card
+    .cal-context
+      div
+        border none
+      .joined
+        background none
+        color navbarFontColor
+      .cal-row-head
+        height 18px
+        background-color #fbfbfb
+        border-top 2px solid #efefef
+        border-bottom 1px solid #efefef
+        box-sizing content-box
+        .cal-cell1
+          height 20px
+          line-height 20px
+          padding 0
+      .cal-month-box
+        .cal-row-fluid
+          height 30px
+          margin-top 1px
+        .cal-cell
+          width (100/7)%
+          min-height 0
+        .cal-month-day.cal-day-today
+          padding 5px
+          .day
+            display block
+            margin auto
+            width 20px
+            height 20px
+            line-height 22px
+            background-color #F58464
+            border-radius 100%
+        .cal-month-day
+          height 30px
+          line-height 32px
+          text-align center
+          .day
+            text-align center
+            margin 0
+            color #fff
+            font-size 12px
+            float none !important
+        .cal-day-inmonth.cal-month-day
+          &.length_3
+            background-color #3ca2e0
+          &.length_2
+            background-color #8dc5e8
+          &.length_1
+            background-color #a7d6f2
+
 //-for both teampage and personal page
 #cal-slide-content
   padding 10px 5px
@@ -148,6 +257,8 @@ logoLink()
   border-bottom solid 1px borderColor
   background-image none
   background-color #f1f1f1
+  max-height 190px
+  overflow-y auto
   &:hover
     background-color #f1f1f1
 

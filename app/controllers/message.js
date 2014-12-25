@@ -14,7 +14,8 @@ var mongoose = require('mongoose'),
     Company = mongoose.model('Company'),
     Message = mongoose.model('Message'),
     MessageContent = mongoose.model('MessageContent'),
-    CompanyGroup = mongoose.model('CompanyGroup');
+    CompanyGroup = mongoose.model('CompanyGroup'),
+    auth = require('../services/auth');
 
 
 var time_out = 72*24*3600;
@@ -422,58 +423,34 @@ exports.sendToParticipator = function(req, res){
     };
 
     if(campaign){
-      var team;
-      if(campaign.campaign_type > 1){
-        team = {
-          '_id':campaign.team[0]._id,
-          'name':campaign.team[0].name,
-          'logo':campaign.team[0].logo,
-          'status':0
-        };
-      }
+      var teams = [];
       var members = [];
-      if([4,5,7].indexOf(campaign.campaign_type) > -1){
-        team.status = 1;
-        for(var i = 0; i < campaign.camp.length; i ++){
-          for(var j = 0; j < campaign.camp[i].member.length; j ++){
-            members.push({
-              '_id':campaign.camp[i].member[j].uid
-            });
-          }
-        }
-      }else{
-        if([2,6,8,9].indexOf(campaign.campaign_type) > -1){
-          team.status = 0;
-          for(var i = 0; i < campaign.member.length; i ++){
-            members.push({
-              '_id':campaign.member[i].uid
-            });
-          }
-        }
-        //多小队活动针对某一小队发消息
-        if(campaign.campaign_type == 3){
-          team._id = join_team._id;
-          team.name = join_team.name;
-          team.logo = join_team.logo;
-          for(var i = 0; i < campaign.member.length; i ++){
-            if(campaign.member[i].team){
-              if(campaign.member[i].team._id.toString() === team._id.toString()){
-                members.push({
-                  '_id':campaign.member[i].uid,
-                  'nickname':campaign.member[i].nickname
-                });
-              }
-            }
-          }
-        }
+
+      if (campaign.campaign_type !== 1) {
+        campaign.campaign_unit.forEach(function (unit) {
+          teams.push({
+            _id: unit.team._id,
+            name: unit.team.name,
+            logo: unit.team.logo,
+            status: 0
+          });
+        });
       }
+
+      campaign.members.forEach(function (member) {
+        members.push({
+          _id: member._id,
+          nickname: member.nickname
+        })
+      });
+
       var _param = {
         'members':members,
         'caption':campaign.theme,
         'content':req.body.content,
         'sender':[sender],
-        'team':campaign.campaign_type > 1 ? [team] : [],
-        'company_id':req.user.provider == 'user' ? req.user.cid : req.user._id,
+        'team': teams,
+        'company_id':req.user.getCid(),
         'campaign_id':req.body.campaign_id,
         'req':req,
         'res':res,
@@ -483,15 +460,11 @@ exports.sendToParticipator = function(req, res){
     }
   }
   var param= {
-    'populate':'team',
     'collection':Campaign,
     'type':0,
     'condition':{'_id':req.body.campaign_id},
-    'limit':{'member':1,'theme':1,'team':1,'camp':1,'campaign_type':1},
     'sort':null,
     'callback':callback,
-    '_err':_err,
-    'other_param':req.body.team,
     'req':req,
     'res':res
   };
@@ -619,13 +592,11 @@ var getPublicMessage = function(req,res,cid){
                 if(err){
                   return res.send({'result':1,'msg':'FAILURED'});
                 }else{
-                  console.log('USER_ALREADY_HAS_MSG_AND_NEW');
                   getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
                 }
               }
             );
           }else{
-            console.log('USER_ALREADY_HAS_MSG_AND_OLD');
             getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
           }
         //该用户没有收到任何站内信
@@ -662,7 +633,6 @@ var getPublicMessage = function(req,res,cid){
               if(err){
                 return res.send({'result':1,'msg':'FAILURED'});
               }else{
-                console.log('USER_HAS_NO_MSG_AND_NEW');
                 getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
               }
             }
@@ -684,7 +654,6 @@ var getPublicMessage = function(req,res,cid){
       };
       get(paramB);
     }else{ //没有任何公共消息
-      console.log('NO_NEW_PUBLIC_MSG');
       getMessageForHeader(req,res,{'rec_id':req.user._id,'status':{'$nin':['delete','read']}},{'rec_id':1,'status':1},null);
     }
   }
@@ -995,10 +964,49 @@ exports.renderAll = function(req,res){
     return;
   }
 }
-exports.renderSender = function(req,res){
+exports.renderSender = function(req,res,next){
   res.render('message/send',{'provider':req.user.provider});
 }
 
+exports.recommandTeamToLeader = function(req,res){
+  var allow = auth(req.user, {companies:[req.companyGroup.cid],teams:[req.params.teamId]},['recommandTeamToLeader']);
+  if(allow.recommandTeamToLeader){
+    var MC = new MessageContent({
+      'caption':"Private Message",
+      'sender':[{'_id':req.user._id,'nickname':req.user.nickname,'photo':req.user.photo,'role':'USER'}],
+      'team':[{'_id':req.body.opponent._id,'name':req.body.opponent.name}],
+      'specific_type':{'value':6}
+    });
+    var newMessage = new Message({
+      'rec_id':req.companyGroup.leader[0]._id,
+      'MessageContent':MC._id,
+      'type':'private',
+      'status':'unread',
+      'specific_type':{'value':6}
+    });
+    MC.save(function(err){
+      if(err){
+        res.status(500);
+        next();
+        return;
+      }else{
+        newMessage.save(function(err){
+          if(err){
+            res.status(500);
+            next();
+            return;
+          }else{
+            return res.send({'result':1,'msg':'发送站内信成功!'});
+          }
+        });
+      }
+    });
+  }else{
+    res.status(403);
+    next('forbidden');
+    return;
+  }
+}
 //这些以后站内信分类时会用到的
 /*
 exports.renderPrivate = function(req,res){

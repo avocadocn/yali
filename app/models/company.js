@@ -45,11 +45,11 @@ var CompanySchema = new Schema({
     department:[_department],
     //是否激活
     status: {
-        mail_active:{
+        mail_active:{//邮箱激活
             type: Boolean,
             default: false
         },
-        active: {
+        active: {//是否被后台屏蔽，屏蔽了为false
             type: Boolean,
             default: false
         },
@@ -100,7 +100,9 @@ var CompanySchema = new Schema({
     },
     salt: String,
     // 企业注册用的邀请码
-    register_invite_code: [String]
+    register_invite_code: [String],
+    // 企业给用户的邀请码
+    invite_key: String
 });
 
 /**
@@ -190,6 +192,10 @@ CompanySchema.methods = {
         if (!password || !this.salt) return '';
         var salt = new Buffer(this.salt, 'base64');
         return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+    },
+
+    getCid: function () {
+        return this._id;
     }
 };
 

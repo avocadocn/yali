@@ -28,22 +28,22 @@
         p.text-center.time {{ campaign_item.start_time | date:'HH:mm' }}
       td(class="#{provider}_logo_col")
         a(ng-href="{{campaign_item.link}}")
-          img.campaign_logo(ng-if="campaign_item.type==='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
-          img.campaign_logo(ng-if="campaign_item.type!=='teamcampaign'" ng-src="{{campaign_item.logo}}/64/64")
+          img.campaign_logo(ng-src="{{campaign_item.logo}}/64/64")
       td.content_col
-        p
-          strong 主题:
-          a.theme_text(ng-href="/{{(campaign_item.type=='provoke'?'competition/':'campaign/detail/')+campaign_item._id}}") {{campaign_item.theme}}
-        //- p
-        //-   strong 内容:
-        //-   span.content_text {{campaign_item.content}}
-        p
-          strong #{__("LOCATION")}:
-          span.content_text {{campaign_item.location.name}}
+        a(ng-href="/campaign/detail/{{campaign_item._id}}")
+          p
+            strong 主题:
+            span.theme_text {{campaign_item.theme}}
+          //- p
+          //-   strong 内容:
+          //-   span.content_text {{campaign_item.content}}
+          p
+            strong #{__("LOCATION")}:
+            span.content_text {{campaign_item.location.name}}
       td.operator_col(ng-class="{'joined':campaign_item.join_flag===1}")
         button.dl_btn.cancel_btn.dl_btn_small.pull-right(ng-if="campaign_item.close_flag" ng-click="cancel(campaign_item._id)") 关闭活动
         if provider=='user'
-          button.dl_btn.dl_btn_small.pull-right(ng-if="campaign_item.join_flag !== 1" ng-click="join(campaign_item._id,$index,campaign_item.team_id)") 我要报名
+          button.dl_btn.dl_btn_small.pull-right(ng-if="campaign_item.join_flag !== 1 && !campaign_item.due_flag" ng-click="join(campaign_item._id,$index,campaign_item.team_id)") 我要报名
   .text-center(ng-if="campaigns.length>0")
     button.btn.dl_btn(ng-if="loadMore_flag" ng-click="loadMore()") 加载更多
     span(ng-if="loadOver_flag") 已经加载了所有的活动

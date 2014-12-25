@@ -2,10 +2,17 @@
 
 angular.module('donler')
 
-.controller('PhotoAlbumDetailCtrl', ['$scope', 'PhotoAlbum', 'FileUploader',
-  function($scope, PhotoAlbum, FileUploader) {
+.controller('PhotoAlbumDetailCtrl', ['$scope', 'PhotoAlbum', 'Comment', 'FileUploader',
+  function($scope, PhotoAlbum, Comment, FileUploader) {
 
-    $scope.photo_album_id = window.location.pathname.match(/photoAlbum\/([\w]+)\/detailView/)[1];
+    var data = document.getElementById('data').dataset;
+    $scope.photo_album_id = data.albumId;
+    var ownerModel = {
+      type: data.ownerModelType,
+      id: data.ownerModelId
+    };
+    var canCommentCampaign = data.commentCampaign === 'true';
+
     var photo_album = new PhotoAlbum($scope.photo_album_id);
 
     var getPhotos = function () {
@@ -60,7 +67,7 @@ angular.module('donler')
 
     uploader.filters.push({
       name: 'imageFilter',
-      fn: function(item /*{File|FileLikeObject}*/ , options) {
+      fn: function(item, options) {
         var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
         return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
       }
@@ -68,6 +75,19 @@ angular.module('donler')
 
     uploader.onCompleteAll = function() {
       getPhotos();
+      // 上传完照片后，再发送一个文本内容为空的评论。
+      if (canCommentCampaign) {
+        Comment.publish({
+          host_id: ownerModel.id,
+          host_type: ownerModel.type,
+          content: ''
+        }, function (err) {
+          // 不需要向用户提示失败（用户只是在上传照片，而该操作已成功，发评论失败与此无关），在控制台输出错误信息即可。
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
     };
 
     uploader.onAfterAddingFile = function(item) {

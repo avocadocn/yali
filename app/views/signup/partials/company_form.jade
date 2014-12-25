@@ -1,0 +1,77 @@
+form.block.block_left.signup_block.form-horizontal(ng-controller="signupController" action="/company" method="post" name="signup_form" novalidate)
+  .signup_title.company_title 
+    span 企业注册
+  .signup_tips
+    span 我们会严格审核您的申请，确保每家公司都真实可靠
+  .form-group.dl_sm_group(ng-class="{'has-error':signup_form.name.$invalid && signup_form.name.$dirty}")
+    .dl_row
+      .label_left
+        label.control-label(for="name") *公司全称:
+      .input_right
+        input#name.dl-form-control(type="text" name="name" placeholder="请与贵公司营业执照注册名保持一致" ng-model= "name" ng-minlength=1 required)
+  .form-group.dl_sm_group#cities(data-src="/region" data-select="province city district")
+    .dl_row
+      .label_left
+        label.control-label(for="province") *城市:
+      .input_right.select_right
+        .select_box
+          select#province.dl-form-control(type="text" name="province" ng-model= "province")
+        .select_box
+          select#city.dl-form-control(type="text" name="city" ng-model="city")
+        .select_box(last_child)
+          select#region.dl-form-control(type="text" name="district" ng-model="district" )
+  .form-group.dl_sm_group(ng-class="{'has-error':signup_form.address.$invalid && signup_form.address.$dirty}")
+    .dl_row
+      .label_left
+        label.control-label(for="address") *地址:
+      .input_right
+        input#address.dl-form-control(type="text" name="address" ng-model= "address" required)
+  .form-group.dl_sm_group(ng-class="{'has-error':signup_form.contacts.$invalid && signup_form.contacts.$dirty}")
+    .dl_row
+      .label_left
+        label.control-label(for="contacts") *联系人:
+      .input_right
+        input#contacts.dl-form-control(type="text" name="contacts" ng-model= "contacts" required)
+  .form-group.dl_sm_group(ng-class="{'has-error':signup_form.areacode.$invalid && signup_form.areacode.$dirty || signup_form.number.$invalid && signup_form.number.$dirty || signup_form.extension.$invalid && signup_form.extension.$dirty}")
+    .dl_row
+      .label_left
+        label.control-label(for="lindline_areacode") *公司电话:
+      .input_right
+        .arecode_container
+          input#lindline_areacode.dl-form-control(type="number" name="areacode" placeholder="区号" ng-model= "areacode" ng-minlength=3 ng-maxlength=4 required)
+        .number_container
+          input#lindline_number.dl-form-control(type="number" name="number" placeholder="电话号码" ng-model= "number" required)
+        .extention_container
+          input#lindline_extension.dl-form-control(type="number" name="extension" placeholder="分机" ng-model= "extension")
+  .form-group.dl_sm_group(ng-class="{'has-error':!reg}")
+    .dl_row.clearfix
+      .label_left
+        label.control-label(for="email_host") *电子邮箱:
+      .input_right
+        input#email.dl-form-control(type="text" name="email" ng-model= "email" ng-blur="mailCheck()" ng-change="mailRegCheck()" required)
+        span#check.dl_tip(ng-show="mail_ok&&check_value") {{check_value}}
+  .form-group.dl_sm_group(ng-class="{'has-error':signup_form.phone.$invalid && signup_form.phone.$dirty}")
+    .dl_row
+      .label_left
+        label.control-label(for="phone") 手机号码:
+      .input_right
+        input#phone.dl-form-control(type="number" name="phone" ng-minlength=11 ng-maxlength=11 ng-model= "phone")
+  if is_need_invite
+    .form-group.dl_sm_group(ng-class="{'has-error':signup_form.invite_code.$invalid && signup_form.invite_code.$dirty}")
+      .dl_row
+        .label_left
+          label.control-label(for="invite_code") *邀请码:
+        .input_right
+          input#invite_code.dl-form-control(type="text" name="invite_code" placeholder="测试中,暂不对外开放注册。" ng-model= "invite_code" ng-blur="codeCheck()" required)
+          p#check.dl_tip(ng-show="code_ok&&code_value") {{code_value}}
+  .form-group.dl_sm_group(ng-class="{'has-error':signup_form.checkbox.$invalid && signup_form.checkbox.$dirty}")
+    .dl_row
+      .label_left
+      .service_tip
+        input(type="checkbox" ng-model= "checkbox" required)
+        | &nbsp;我已阅读并同意<a href="/about#law">《法律声明》及《隐私政策》</a>
+  .form-group.dl_sm_group
+    .dl_row
+      .label_left
+      .input_right
+        button#submit.dl_btn.btn_submit.dl_full_control(ng-disabled="!check|| (!code_check&&#{is_need_invite}) || !reg || signup_form.$invalid") 免费注册企业账号

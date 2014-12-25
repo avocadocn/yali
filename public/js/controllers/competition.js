@@ -155,18 +155,26 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
 
     $scope.private_message_content = {
       'text':""
-    }
+    };
+    $scope.pages = [];
+    $scope.nowPage = 0;
     $scope.$watch('competition_id',function(competition_id){
         if(competition_id==null){
             return;
         }
-        Comment.get('campaign', competition_id, function (err, comments) {
+        Comment.get('campaign', competition_id, function (err, comments, has_next) {
             if (err) {
               alertify.alert('获取评论失败，请刷新页面重试');
             } else {
                 if(comments.length > 0){
                     $scope.comments = comments;
-                    $scope.fixed_sum = comments.length;
+                    var page = {
+                        has_next: has_next
+                    };
+                    if (has_next === true) {
+                        page.next_create_date = comments[comments.length - 1].create_date;
+                    }
+                    $scope.pages.push(page);
                 }
             }
         });
@@ -174,6 +182,50 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
           setInterval($scope.pushFormatData,3000);
         }
     });
+
+    $scope.nextPage = function () {
+        Comment.get('campaign', $scope.competition_id, function (err, comments, has_next) {
+            if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+            } else {
+                $scope.comments = comments;
+                $scope.nowPage++;
+                if (!$scope.pages[$scope.nowPage]) {
+                    var page = {
+                        has_next: has_next
+                    };
+                    page.this_create_date = $scope.pages[$scope.nowPage - 1].next_create_date;
+                    if (has_next === true) {
+                        page.next_create_date = comments[comments.length - 1].create_date;
+                    }
+                    $scope.pages.push(page);
+                }
+            }
+        }, $scope.pages[$scope.nowPage].next_create_date);
+    };
+
+    $scope.lastPage = function () {
+        Comment.get('campaign', $scope.competition_id, function (err, comments) {
+            if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+            } else {
+                $scope.comments = comments;
+                $scope.nowPage--;
+            }
+        }, $scope.pages[$scope.nowPage - 1].last_create_date);
+    };
+
+    $scope.changePage = function (index) {
+        Comment.get('campaign', $scope.competition_id, function (err, comments) {
+            if (err) {
+                alertify.alert('获取评论失败，请刷新页面重试');
+            } else {
+                $scope.comments = comments;
+                $scope.nowPage = index;
+            }
+        }, $scope.pages[index].this_create_date);
+    }
+
     $scope.updateFlag = false;
     $scope.comments = [];
     $scope.competition_format = {};
@@ -210,28 +262,24 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
         }
     }
 
-    $scope.deleteComment = function(index){
-        try {
-            $http({
-                method: 'post',
-                url: '/comment/delete',
-                data:{
-                    comment_id : $scope.comments[index]._id
+    $scope.deleteComment = function (index) {
+        alertify.confirm('确认要删除该评论吗？',function (e) {
+            if(e){
+                try {
+                    Comment.remove($scope.comments[index]._id, function (err) {
+                        if (err) {
+                            alertify.alert('删除失败，请重试。');
+                        } else {
+                            $scope.comments.splice(index,1);
+                        }
+                    });
                 }
-            }).success(function(data, status) {
-                if(data === 'SUCCESS'){
-                    $scope.comments.splice(index,1);
-                } else {
-                    alertify.alert('DATA ERROR');
+                catch(e) {
+                    console.log(e);
                 }
-            }).error(function(data, status) {
-                alertify.alert('DATA ERROR');
-            });
-        }
-        catch(e) {
-            console.log(e);
-        }
-    }
+            }
+        });
+    };
 
     $scope.comment = function(){
       if($scope.comments.length > 0){
@@ -246,7 +294,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
       try {
           $http({
               method: 'post',
-              url: '/comment/push',
+              url: '/comment/push/campaign/'+$scope.competition_id,
               data:{
                   host_id : $scope.competition_id,
                   content : $scope.new_comment.text,
@@ -565,7 +613,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
 
   var competition_data = $('#competition_data');
   var cbox = new Comment.CommentBox({
-    host_type: 'campaign_detail',
+    host_type: 'competition',
     host_id: competition_data.data('hostId'),
     photo_album_id: competition_data.data('photoAlbumId')
   });
@@ -595,6 +643,13 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
     });
   };
 
+  var getReplies = function (comment) {
+    Comment.getReplies(comment._id, function (err, replies) {
+      comment.replies = replies;
+      comment.reply_count = replies.length;
+    });
+  };
+
   $scope.last_reply_comment;
   $scope.toggleComment = function(comment) {
     if ($scope.last_reply_comment && $scope.last_reply_comment != comment) {
@@ -603,6 +658,7 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
     comment.replying = !comment.replying;
     $scope.last_reply_comment = comment;
     if (comment.replying) {
+      getReplies(comment);
       $scope.now_reply_to = {
         _id: comment.poster._id,
         nickname: comment.poster.nickname
@@ -634,10 +690,27 @@ groupApp.controller('competitionController', ['$http', '$scope','$rootScope', 'C
         }
         comment.replies.push(reply);
         comment.new_reply = "";
+        comment.reply_count++;
         form.$setPristine();
       }
     });
   };
-
+  $scope.getReport = function(index){
+      $scope.reportContent = {
+          hostType: 'comment',
+          hostContent:{
+              _id:$scope.comments[index]._id,
+              content:$scope.comments[index].content,
+              poster:$scope.comments[index].poster
+          },
+          reportType:''
+      }
+      $('#reportModal').modal('show');
+  }
+  $scope.pushReport = function(){
+      Report.publish($scope.reportContent,function(err,msg){
+          alertify.alert(msg);
+      });
+  }
 
 }]);

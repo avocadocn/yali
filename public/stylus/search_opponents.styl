@@ -1,0 +1,402 @@
+@require('variables')
+.search_opponents
+  color #999
+  box-shadow 0px 1px 3px 3px #e7e7e7
+  //-通用按钮
+  .button
+    height 30px
+    width 100px
+    color #fff
+    text-align center
+    background-color blueBtnColor
+    padding 10px
+    line-height 1
+    box-shadow 1px 1px 2px #c8cac7
+    &:hover
+      background-color blueBtnHoverColor
+      box-shadow 0 0 0
+  .button.btn_small
+    width 60px
+  .button.btn_red
+    background-color redBtnColor
+    &:hover
+      background-color redBtnHoverColor
+  .button.btn_gray
+    background-color #ccc
+  .button.largerFont
+    font-size 14px
+    padding 9px
+  .head_container
+    background-color #fff
+    border-bottom 0
+    .headline
+      height 30px
+      width 100%
+      background-color #f48361
+      color #fff
+      line-height 1
+      font-size 14px
+      padding 10px 20px
+      .icon_binoculars
+        margin-right 10px
+        margin-top -1px
+    .my_teams
+      margin 20px
+      margin-bottom 30px
+      .select
+        margin-bottom 15px
+        font-size 14px
+      .units
+        background-color #fbfbfb
+        max-height 300px
+        padding 20px
+        overflow auto
+        .unit.leader
+          border 1px solid redBtnColor
+          &:hover
+            .button
+              background-color redBtnColor
+        .unit.right
+          margin-right 0
+        .unit
+          float left
+          width 200px
+          height 70px
+          padding 10px
+          cursor pointer
+          background-color #edebec
+          border-radius 5px
+          margin-right 20px
+          margin-bottom 20px
+          border 1px solid blueBtnColor
+          box-shadow 1px 1px 3px #c8cac7
+          &:hover
+            box-shadow 0 0 0
+            .button
+              background-color blueBtnColor
+          .logo
+            width 50px
+            height 50px
+            float left
+            margin-right 10px
+          .text
+            float left
+            .title
+              width 118px
+              overflow hidden
+              text-overflow ellipsis
+              white-space nowrap
+              margin-bottom 10px
+              line-height 1
+              float left
+          .button
+            width 118px
+            height 25px
+            padding 8px
+            background-color #ccc
+            box-shadow 0 0 0
+    .selected_team
+      padding 10px 20px
+      line-height 1
+      .my_team
+        .logo
+          width 50px
+          height 50px
+          float left
+        .text
+          width 700px
+          padding-left 20px
+          float left
+          .tname
+            width 100%
+            height 25px
+            float left
+          .type
+            float left
+            width 70px
+            color #666
+          .leader
+            float left
+        .button
+          float right
+          margin-top 10px
+  .tab_view
+    width 100%
+    background-color #fff
+    .opponent_tab_style
+      width 320px
+      height 40px
+      color #fff
+      float left
+      text-align center
+      a
+        color #fff
+        font-size 16px
+        height 100%
+        span
+          vertical-align top
+      .nav_img
+        width 23px
+        height 20px
+        margin-right 20px
+    .nearbyTeam
+      .nav_img
+        width 16px
+    .search
+      padding 5px
+      a
+        padding 0
+      .searchOpponentInput
+        height 30px
+        width 280px
+        border-radius 5px
+        border 0
+        padding 8px 10px
+        color #fff
+      .search_button
+        height 25px
+        width 28px
+        position absolute
+        right 20px
+        top 2px
+        background-color transparent
+        color #fff
+        font-size 22px
+  .tab_view.unactive
+    //-非active的tab(灰)
+    .opponent_tab_style
+      background-color #ccc !important
+      a
+        &:hover
+          background-color #ccc 
+    .opponent_tab_style.nearbyTeam
+      background-color #afafaf !important
+      a
+        &:hover
+          background-color #afafaf
+    .search
+      .searchOpponentInput
+        background-color #afafaf
+    .result
+      background-color #fbfbfb !important
+      padding 20px
+      .confused
+        float left
+        margin-right 20px
+      .text
+        float left
+        font-size 14px
+        color #c4c4c4
+        margin 12px 0
+  .tab_view.active
+    //-active后的tab
+    .arrow
+      position absolute
+      width 0
+      height 0
+      border-color transparent
+      border-style solid
+      bottom -9px
+      left 50%
+      margin-left -10px
+      border-width 10px 10px 0
+    .sameCity
+      background-color #fec053
+      a
+        &:hover
+          background-color #e6b050
+    .nearbyTeam
+      background-color #3ca2e0
+      a
+        &:hover
+          background-color #398ec4
+    .search
+      background-color #43d3dc
+      a
+        &:hover
+          background-color #43d3dc
+      .searchOpponentInput
+        background-color #19bdc7
+    .sameCity.active
+      &:hover
+        .arrow
+          border-top-color #e6b050
+      .arrow
+        border-top-color #fec053
+    .nearbyTeam.active
+      .arrow
+        border-top-color #3ca2e0
+      &:hover
+        .arrow
+          border-top-color #398ec4
+    .search.active
+      .arrow
+        border-top-color #43d3dc
+  .tab_content
+    .result
+      margin 20px
+      background-color #fff
+      min-height 400px
+      //-通用
+      .text
+        float left
+        .title
+          font-size 14px
+          color #666
+          width 100%
+          float left
+          line-height 1
+        .content
+          width 100%
+          float left
+      .homecourt
+        padding-bottom 10px
+        .text
+          width 200px
+          .title
+            color #999
+            cursor pointer
+            padding-bottom 10px
+          .title.active
+            color #666
+        .button
+          float right
+          margin-top 10px
+      .homecourtSetting
+        .title
+          font-size 14px
+          margin-bottom 25px
+        .court
+          width 100%
+          .text
+            width 60px
+          .input
+            float left
+            width 790px
+            input
+              padding 0 10px
+              width 100%
+              height 30px
+              color #cccccc
+              background-color #fbfbfb
+              border 1px solid #d3dbe6
+              font-size 14px
+            .homecourtMap
+              width 100%
+              height 200px
+              margin 20px 0
+      .slide
+        width 920px
+        overflow hidden
+        #slides
+          width 1490px
+          .map
+            float left
+            .fullMap
+              width 570px
+              height 620px
+          .teamlist
+            background-color #efefef
+            float left
+            width 350px
+            height 620px
+            .teams
+              height 560px
+              .map_head
+                height 30px
+                background-color #ccc
+                width 100%
+                padding 10px 20px
+                line-height 1
+                span
+                  cursor pointer
+                  color #fff
+              .headline
+                height 50px
+                width 100%
+                padding 20px
+                font-size 14px
+                line-height 1
+              .team.selected
+                background-color #fbfbfb
+                border-left 1px solid #efefef
+              .team
+                width 100%
+                float left
+                padding 10px 20px
+                height 50px
+                cursor pointer
+                .logo
+                  width 30px
+                  height 30px
+                  float left
+                .text
+                  width 245px
+                  padding 0 10px
+                  .title
+                    margin-bottom 3px
+            .page_nav
+              width 350px
+              padding 17px 20px
+              border-top 1px solid #ccc
+              ul
+                float right
+                li
+                  float left
+                  a
+                    color #999
+                    padding 0 5px
+                    i
+                      font-size 16px
+                .active>a
+                  color #3ca2e0
+
+          .detail
+            background-color #fbfbfb
+            padding 20px
+            float left
+            width 570px
+            height 620px
+            .detailHead
+              width 100%
+              min-height 90px
+              border-bottom 1px solid #ccc
+              line-height 1
+              .logo
+                float left
+                width 70px
+                height 70px
+              .text
+                max-width 300px
+                padding 0 20px
+                .title
+                  margin-bottom 10px
+                .content
+                  margin-bottom 6px
+              .buttons
+                float right
+                width 60px
+                .button
+                  margin-bottom 10px
+            .detailContent
+              width 100%
+              margin-left 12%
+              padding 20px
+              line-height 1
+              .block
+                margin-bottom 30px
+                .dl_icons
+                  margin-right 10px
+                .title
+                  float left
+                  color #666
+                  width 100px
+                  font-size 14px
+                  margin-bottom 7px
+                .text
+                  width 270px
+                  .content
+                    margin-bottom 7px
+                  .content.lastline
+                    margin-bottom 0
+

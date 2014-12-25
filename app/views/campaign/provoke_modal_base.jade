@@ -1,7 +1,5 @@
 .modal-dialog
-  .dl-modal(ng-show='!modal')
-    include search_modal
-  .dl-modal(ng-show='modal==1||modal==3')
+  .dl_campaign_modal(ng-show='modal==1||modal==3')
     include provoke_modal
-  .dl-modal(ng-show='modal==2')
+  .dl_campaign_modal(ng-show='modal==2')
     include search_myteam_modal

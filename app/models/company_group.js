@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    mongoosePaginate = require('mongoose-paginate');
 
 
 
@@ -55,7 +56,7 @@ var _home_court = new Schema({
 });
 
 /**
- * 企业组件
+ * 公司小队
  */
 var CompanyGroup = new Schema({
     cid: {
@@ -66,6 +67,11 @@ var CompanyGroup = new Schema({
         type: String,
         ref: 'Group'
     },
+    //0：个人小队
+    //1：官方小队
+    group_level: Number,
+    // 如果是部门的小队，则为部门id，否则为false。
+    // 如果为null或undefined，则需要查询部门，来确定是否是部门的小队。
     department: Schema.Types.Mixed,
     group_type: String,
     cname: String,
@@ -118,6 +124,11 @@ var CompanyGroup = new Schema({
         default: true
     },
     home_court: [_home_court],       //主场(可能有多个)
+    city: {//暂时是公司的city,将来若是填了主场，公司改变city时，小队不改变
+        province: String,
+        city: String,
+        district: String
+    },
     create_time:{
         type: Date,
         default: Date.now
@@ -150,5 +161,30 @@ var CompanyGroup = new Schema({
     },
     family: [familyPhoto]
 });
+
+CompanyGroup.plugin(mongoosePaginate);
+
+CompanyGroup.methods = {
+    /**
+     * 用户是否是这个队的成员
+     * @param  {String}  uid
+     * @return {Boolean}
+     */
+    hasMember: function (uid) {
+        for (var i = 0; i < this.member.length; i++) {
+            if (uid.toString() === this.member[i]._id.toString()) {
+                return true;
+            }
+        }
+        for (var i = 0; i < this.leader.length; i++) {
+            if (uid.toString() === this.leader[i]._id.toString()) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+
 
 mongoose.model('CompanyGroup', CompanyGroup);

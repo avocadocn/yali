@@ -41,6 +41,13 @@ var _team = new Schema({
     logo: String
 });
 
+var latestCommentCampaign = new Schema({
+    _id: Schema.Types.ObjectId,
+    unread: {
+        type: Number,
+        default: 0
+    }
+});
 /**
  * User Schema
  */
@@ -63,6 +70,11 @@ var UserSchema = new Schema({
     mail_active:{
         type: Boolean,
         default: false
+    },
+    //是否填了公司验证码
+    invite_active:{
+        type:Boolean,
+        default: true
     },
     hashed_password: String,
     provider: {
@@ -108,7 +120,7 @@ var UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['LEADER','EMPLOYEE']      //HR 队长 普通员工
+        enum: ['LEADER','EMPLOYEE']      //队长 普通员工
     },
     cid: {
         type: Schema.Types.ObjectId,
@@ -127,7 +139,14 @@ var UserSchema = new Schema({
     push_toggle:{                   //推送开关
         type:Boolean,
         default:false
-    }
+    },
+    top_campaign:{
+        type: Schema.Types.ObjectId,
+        ref: 'Campaign'
+    },
+    last_comment_time: Date,
+    commentCampaigns: [latestCommentCampaign],//参加了的讨论列表
+    unjoinedCommentCampaigns: [latestCommentCampaign] //未参加的讨论列表
 });
 
 /**
@@ -197,6 +216,35 @@ UserSchema.methods = {
         if (!password || !this.salt) return '';
         var salt = new Buffer(this.salt, 'base64');
         return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+    },
+
+    /**
+     * 是否是某个队的成员
+     * @param  {Object|String}  tid
+     * @return {Boolean}
+     */
+    isTeamMember: function (tid) {
+        tid = tid.toString();
+        for (var i = 0; i < this.team.length; i++) {
+            if (tid === this.team[i]._id.toString()) {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    isTeamLeader: function (tid) {
+        tid = tid.toString();
+        for (var i = 0; i < this.team.length; i++) {
+            if (tid === this.team[i]._id.toString()) {
+                return this.team[i].leader;
+            }
+        }
+        return false;
+    },
+
+    getCid: function () {
+        return this.cid;
     }
 };
 

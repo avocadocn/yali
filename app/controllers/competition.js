@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
     photo_album_controller = require('./photoAlbum'),
     message = require('../controllers/message.js'),
     Campaign = mongoose.model('Campaign'),
+    MessageContent = mongoose.model('MessageContent'),
     model_helper = require('../helpers/model_helper');
 
 
@@ -30,7 +31,7 @@ function booleanJudge(own,opposite){
   }
 }
 //比赛
-exports.getCompetition = function(req, res){
+exports.getCompetition = function(req, res, next){
   var timeout = Config.COMPETITION_CONFIRM_TIMEOUT;
   if(req.role ==='GUESTHR' || req.role ==='GUEST'){
     res.status(403);
@@ -63,7 +64,7 @@ exports.getCompetition = function(req, res){
     'competition' : competition,
     'role': req.role,
     'moment':moment,
-    'photo_thumbnails': photo_album_controller.photoThumbnailList(competition.photo_album, 4),
+    'photo_thumbnails': photo_album_controller.getLatestPhotos(competition.photo_album, 4),
     'links': links,
     'cid': cid
   };
@@ -130,15 +131,33 @@ exports.getCompetition = function(req, res){
       });
     }
   }
-  //console.log(options);
-  return res.render('competition/football', options);
+  MessageContent.find({'campaign_id':req.params.campaignId,'status':'undelete'}).sort('-post_date').exec().then(function(messageContent){
+    var _messageContent =[];
+    if(messageContent){
+      results[1].forEach(function(_message){
+        _messageContent.push({
+          content: _message.content,
+          post_date:_message.post_date
+        });
+      })
+    }
+    options.messageContent = _messageContent;
+    return res.render('competition/football', options);
+  })
+  .then(null, function(err) {
+    return res.render('competition/football', options);
+  });
+  
 };
 
 
 exports.competition = function(req, res, next, id){
-if(!req.user){
- return res.redirect('/');
-}
+  if(!req.user){
+    return res.redirect('/');
+  }
+  else{
+    return res.redirect('/campaign/detail/'+id);
+  }
   Campaign.findOne({
       '_id':id
     })
@@ -175,7 +194,7 @@ if(!req.user){
 };
 
 //某一方发送或者修改比赛成绩确认消息
-exports.resultConfirm = function (req, res) {
+exports.resultConfirm = function (req, res, next) {
   if(req.role !=='HR' && req.role !=='LEADER'){
     res.status(403);
     next('forbidden');

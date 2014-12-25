@@ -1,18 +1,14 @@
 extends ../layouts/user_base
 
-append headExt
-  link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
-  link(rel="stylesheet" href="/css/edit_logo.css")
-
 block contentExt
-  .dl_container
+  .dl_container.edit_logo
     .row
       .col-xs-12.col-sm-7
         h3
           | 添加或更改小队logo
           &nbsp;
           small: a(href="/group/page/#{id}#/group_info") 返回
-          input#return_uri(type="hidden" value="/group/home/#{id}#/group_info")
+          input#return_uri(type="hidden" value="/group/page/#{id}#/group_info")
         .row.margin_top_20
           .col-xs-4.col-sm-4
             .img_frame
@@ -63,8 +59,3 @@ block contentExt
           .clearfix.loading_box
             .pull-left.loading_div
             h4.pull-left.loading_text 上传中
-
-append footExt
-  script(src="/js/jquery.Jcrop.min.js")
-  script(src="/lib/jquery-form/jquery.form.js")
-  script(src="/js/edit_logo.js")

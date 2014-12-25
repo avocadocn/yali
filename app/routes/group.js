@@ -13,44 +13,39 @@ var bodyParser = express.bodyParser({
 module.exports = function(app) {
   app.get('/group/getgroups', group.getGroups);
   app.get('/group/getCompanyGroups/:companyId', group.getCompanyGroups);
-  app.get('/group/home/:teamId', authorization.teamAuthorize, group.home);
   app.get('/group/page/:teamId', authorization.teamAuthorize, group.teampage);
-  app.get('/team_integrate_page', group.teampagetemplate);
-  app.get('/group/info/:teamId', authorization.teamAuthorize, group.info);
+  app.get('/group/:teamId/info', group.info);
+  app.get('/group/:teamId/members', group.getTeamMembers);
   //获取小队简要信息供弹出窗使用
   //app.get('/group/briefInfo/:teamId', authorization.teamAuthorize, group.getBriefInfo);
   app.get('/group/renderInfo', group.renderInfo);
-  app.post('/group/saveInfo/:teamId', authorization.teamAuthorize, group.saveInfo);
+  app.post('/group/saveInfo/:teamId', group.saveInfo);
   app.get('/group/timeLine/:teamId', authorization.teamAuthorize, group.timeLine);
   app.get('/group/campaign', group.renderCampaigns);
-
   app.get('/group/getGroupMembers/:teamId', authorization.teamAuthorize, group.getGroupMember);
+  app.get('/group/sameCity/:teamId',group.renderSameCity);
+  app.get('/group/sameCity',group.renderSameCity);
+  app.get('/group/nearbyTeam/:teamId',group.renderSameCity);
   //app.get('/group/getMembers', group.renderMember);
   //激活、关闭小队
   app.post('/group/activateGroup/:teamId', authorization.teamAuthorize, group.activateGroup);
-  app.get('/group/getSimiliarTeams/:teamId',authorization.teamAuthorize,group.getSimiliarTeams);
+  app.get('/group/getLedTeams',group.getLedTeams);
+  app.get('/group/getLedTeams/:teamId',authorization.teamAuthorize,group.getLedTeams);
+  app.get('/group/opponentInfo/:teamId',group.getOpponentInfo);
   app.get('/group/competition/:teamId/:competitionId', authorization.teamAuthorize, group.getCompetition);
-
   //获取小队的tags
   app.get('/group/getTags/:teamId', authorization.teamAuthorize, group.getTags);
-
   app.post('/group/updateFormation/:teamId/:competitionId', authorization.teamAuthorize, group.updateFormation);
   //小队发布组内活动
-  app.post('/group/campaignSponsor/:teamId', authorization.teamAuthorize, group.sponsor);
-  //多队活动
-  app.post('/group/campaignSponsor/multi/:cid', authorization.teamAuthorize, group.sponsor);
+  app.post('/group/campaignSponsor/:teamId', group.sponsor);
+  //多队活动//暂时没用
+  // app.post('/group/campaignSponsor/multi/:cid', group.sponsor);
   app.param('teamId',group.group);
-  //约战、应战
-  app.post('/group/provoke/:teamId', authorization.teamAuthorize, group.provoke);
-  app.post('/group/responseProvoke/:teamId', authorization.teamAuthorize, group.responseProvoke);
-  app.post('/group/cancelProvoke/:teamId', authorization.teamAuthorize, group.cancelProvoke);
-
+  //约战
+  app.post('/group/provoke/:teamId', group.provoke);
   app.post('/group/resultConfirm/:teamId/:competitionId', authorization.teamAuthorize, group.resultConfirm);
-
   app.get('/group/:teamId/editLogo', authorization.teamAuthorize, group.editLogo);
-
-  app.post('/group/oneTeam/:teamId', authorization.teamAuthorize, group.getOneTeam);
-
+  app.get('/group/oneTeam/:teamId', group.getOneTeam);
   // for app
   app.get('/group/:teamId/campaigns', authorization.teamAuthorize, group.getCampaignsForApp);
 

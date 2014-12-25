@@ -26,9 +26,12 @@ var mongoose = require('mongoose'),
   moment = require('moment'),
   message = require('../controllers/message'),
   schedule = require('../services/schedule'),
+  auth = require('../services/auth'),
   photo_album_controller = require('./photoAlbum'),
   model_helper = require('../helpers/model_helper'),
-  cache = require('../services/cache/Cache');
+  cache = require('../services/cache/Cache'),
+  campaign_controller =require('../controllers/campaign'),
+  logController =require('../controllers/log');
 
 var mail = require('../services/mail');
 var webpower = require('../services/webpower');
@@ -79,7 +82,6 @@ exports.forgetPwd = function(req, res) {
           });
         }
       });
-
     }
   });
 }
@@ -165,7 +167,15 @@ exports.signout = function(req, res) {
   req.logout();
   res.redirect('/');
 };
+
 exports.loginSuccess = function(req, res) {
+  var logBody = {
+    'log_type':'userlog',
+    'cid' : req.user._id,
+    'role' : 'hr',
+    'ip' :req.headers['x-forwarded-for'] || req.connection.remoteAddress
+  }
+  logController.addLog(logBody);
   res.redirect('/company/home');
 };
 
@@ -184,7 +194,7 @@ exports.signup = function(req, res) {
         if (config) {
           is_need_invite = config.company_register_need_invite;
         }
-        res.render('company/company_signup', {
+        res.render('signup/company_signup', {
           title: '注册',
           is_need_invite: is_need_invite
         });
@@ -209,7 +219,7 @@ exports.validateError = function(req, res) {
 exports.validateConfirm = function(req, res) {
   if (req.session.company_id !== '') {
     res.render('company/validate/confirm', {
-      title: '验证成功,可以进行下一步!'
+      title: '验证成功!'
     });
   }
 };
@@ -229,7 +239,6 @@ exports.select = function(req, res) {
 };
 //配合路由渲染邀请链接页面
 exports.invite = function(req, res) {
-  var inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(req.session.company_id, config.SECRET) + '&cid=' + req.session.company_id;
   var companyId = req.session.company_id;
   req.session.company_id = null;
   Company.findOne({
@@ -239,6 +248,8 @@ exports.invite = function(req, res) {
       console.log('不存在公司');
       return res.status(404).send('不存在该公司');
     }
+    var invite_key = encodeURIComponent(company.invite_key).replace(/'/g,"%27").replace(/"/g,"%22");
+    var inviteUrl = 'http://'+req.headers.host+'/users/invite?key='+invite_key+'&cid=' + companyId;
     res.render('company/validate/invite', {
       title: '邀请链接',
       inviteLink: inviteUrl,
@@ -345,9 +356,9 @@ exports.groupSelect = function(req, res) {
         companyGroup.cname = company.info.name;
         companyGroup.gid = selected_groups[i]._id;
         companyGroup.group_type = selected_groups[i].group_type;
-        companyGroup.entity_type = selected_groups[i].entity_type;
+        // companyGroup.entity_type = selected_groups[i].entity_type;
         companyGroup.name = tname;
-        companyGroup.logo = '/img/icons/group/' + companyGroup.entity_type.toLowerCase() + '_on.png';
+        companyGroup.logo = '/img/icons/group/' + selected_groups[i].entity_type.toLowerCase() + '_on.png';
 
         companyGroup.save(function(err) {
           if (err) {
@@ -362,19 +373,19 @@ exports.groupSelect = function(req, res) {
           'name': tname,
           'id': companyGroup._id
         });
-        var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
-        var entity = new Entity();
+        // var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
+        // var entity = new Entity();
 
-        //增强组件目前只能存放这三个字段
-        entity.tid = companyGroup._id; //小队id
-        entity.cid = req.session.company_id; //公司id
-        entity.gid = selected_groups[i]._id; //组件类型id
+        // //增强组件目前只能存放这三个字段
+        // entity.tid = companyGroup._id; //小队id
+        // entity.cid = req.session.company_id; //公司id
+        // entity.gid = selected_groups[i]._id; //组件类型id
 
-        entity.save(function(err) {
-          if (err) {
-            console.log(err);
-          }
-        });
+        // entity.save(function(err) {
+        //   if (err) {
+        //     console.log(err);
+        //   }
+        // });
       }
 
       company.save(function(s_err) {
@@ -416,10 +427,10 @@ exports.saveGroup = function(req, res) {
       companyGroup.cname = company.info.name;
       companyGroup.gid = selected_group._id;
       companyGroup.group_type = selected_group.group_type;
-      companyGroup.entity_type = selected_group.entity_type;
+      // companyGroup.entity_type = selected_group.entity_type;
       companyGroup.name = req.body.tname;
       companyGroup.logo = '/img/icons/group/' + selected_group.entity_type.toLowerCase() + '_on.png';
-
+      companyGroup.city = company.info.city;
       companyGroup.save(function(err) {
         if (err) {
           console.log(err);
@@ -433,19 +444,19 @@ exports.saveGroup = function(req, res) {
         'name': req.body.tname,
         'id': companyGroup._id
       });
-      var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
-      var entity = new Entity();
+      // var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
+      // var entity = new Entity();
 
-      //增强组件目前只能存放这三个字段
-      entity.tid = companyGroup._id; //小队id
-      entity.cid = companyId; //组件类型id
-      entity.gid = selected_group._id; //公司id
+      // //增强组件目前只能存放这三个字段
+      // entity.tid = companyGroup._id; //小队id
+      // entity.cid = companyId; //组件类型id
+      // entity.gid = selected_group._id; //公司id
 
-      entity.save(function(err) {
-        if (err) {
-          console.log(err);
-        }
-      });
+      // entity.save(function(err) {
+      //   if (err) {
+      //     console.log(err);
+      //   }
+      // });
 
       company.save(function(s_err) {
         if (s_err) {
@@ -472,8 +483,6 @@ exports.validate = function(req, res) {
     function(err, user) {
       if (user) {
         if (!user.status.active) {
-          //到底要不要限制验证邮件的时间呢?
-          //废话,当然要
           if (encrypt.encrypt(_id, config.SECRET) === key) {
             var time_limit = config.COMPANY_VALIDATE_TIMELIMIT;
             if (parseInt(new Date().getTime()) - parseInt(user.status.date) > time_limit) {
@@ -552,7 +561,6 @@ exports.officialNameCheck = function(req, res) {
     'info.official_name': official_name
   }, function(err, company) {
     if (err || company) {
-      console.log(company);
       res.send(true);
     } else {
       res.send(false);
@@ -627,6 +635,7 @@ exports.create = function(req, res) {
             } else {
               throw new Error('邀请码不正确');
             }
+
           });
       } else {
         return Company.create({
@@ -651,6 +660,9 @@ exports.create = function(req, res) {
       company.info.phone = req.body.phone;
       company.provider = 'company';
       company.login_email = req.body.email;
+      //生成随机邀请码
+      var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+      company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
       var _email = req.body.email.split('@');
       if (_email[1])
         company.email.domain.push(_email[1]);
@@ -712,7 +724,7 @@ exports.create = function(req, res) {
                 default:
                   break;
               }
-              return res.render('company/company_signup', {
+              return res.render('signup/company_signup', {
                 company: company
               });
             }
@@ -749,7 +761,7 @@ exports.create = function(req, res) {
     })
     .then(null, function(err) {
       console.log(err);
-      res.render('company/company_signup', {
+      res.render('signup/company_signup', {
         invite_code_err: '邀请码不正确'
       });
     });
@@ -895,17 +907,10 @@ exports.saveGroupInfo = function(req, res) {
   });
 };
 
-exports.getAccount = function(req, res) {
+exports.getAccount = function(req, res, next) {
   var companyId = req.params.companyId;
   Company.findOne({
     '_id': companyId
-  }, {
-    '_id': 0,
-    'username': 1,
-    'login_email': 1,
-    'register_date': 1,
-    'info': 1,
-    'email': 1
   }, function(err, _company) {
     if (err) {
       console.log(err);
@@ -917,7 +922,19 @@ exports.getAccount = function(req, res) {
         'domain': _company.email.domain
       };
       if (req.role === 'HR') {
-        _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + encrypt.encrypt(companyId, config.SECRET) + '&cid=' + companyId;
+        if(!_company.invite_key){
+          var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+          _company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
+          _company.save(function(err){
+            if(err){
+              console.log(err);
+              res.status(500);
+              next();
+            }
+          });
+        }
+        var invite_key = encodeURIComponent(_company.invite_key).replace(/'/g,"%27").replace(/"/g,"%22");
+        _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + invite_key + '&cid=' + companyId;
       }
       return res.send({
         'result': 1,
@@ -964,7 +981,13 @@ exports.saveAccount = function(req, res) {
       if (req.body.info !== undefined && company.info.name !== _company.info.name) {
         schedule.updateCname(req.user._id);
       }
-
+      CompanyGroup.update({'cid':company._id},{$set:{city:req.body.info.city}},{multi:true},function(err,number){
+        if(err){
+          console.log(err);
+        }else{
+          console.log('小队地址更新数:',number);
+        }
+      });
       res.send({
         'result': 1,
         'msg': '更新成功'
@@ -1008,7 +1031,6 @@ exports.getCompanyDepartments = function(req, res, next) {
     });
 };
 
-//TODO -M 改缓存
 //返回公司小队的所有数据,待前台调用
 exports.getCompanyTeamsInfo = function(req, res) {
 
@@ -1052,6 +1074,13 @@ exports.getCompanyTeamsInfo = function(req, res) {
     cache.createCache("EmpTeamInfo"); //是否存在EmpTeamInfo，否则Create
     if (cache.get("EmpTeamInfo", req.params.companyId)) { //查询有没有，有的话数据拿出来
       output.teams = cache.get("EmpTeamInfo", req.params.companyId);
+      output.teams.forEach(function(_team){
+        if (model_helper.arrayObjectIndexOf(req.user.team, _team._id, '_id') > -1) {
+          _team.belong = true;
+        } else {
+          _team.belong = false;
+        }
+      });
       return res.send(output);
     }
   } else if (req.role !== "HR") {
@@ -1120,7 +1149,7 @@ exports.getCompanyTeamsInfo = function(req, res) {
                   'logo': team.logo,
                   'active': team.active,
                   'count': team.count,
-                  'entity_type': team.entity_type,
+                  // 'entity_type': team.entity_type,
                   'leader': team.leader,
                   'member': team.member,
                   'name': team.name,
@@ -1138,12 +1167,6 @@ exports.getCompanyTeamsInfo = function(req, res) {
                 team.set('did', did, {
                   strict: false
                 });
-                //标记是否是某队成员
-                if (model_helper.arrayObjectIndexOf(req.user.team, team._id, '_id') > -1) {
-                  _team.belong = true;
-                } else {
-                  _team.belong = false;
-                }
                 allcallback(null, _team);
               });
             }
@@ -1155,8 +1178,16 @@ exports.getCompanyTeamsInfo = function(req, res) {
               'msg': 'FAILURED'
             });
           } else {
-            output.teams = results;
             cache.set("EmpTeamInfo", req.params.companyId, results, 1000 * 60 * 5);
+            //标记是否是某队成员
+            output.teams = results;
+            output.teams.forEach(function(_team){
+              if (model_helper.arrayObjectIndexOf(req.user.team, _team._id, '_id') > -1) {
+                _team.belong = true;
+              } else {
+                _team.belong = false;
+              }
+            });
             return res.send(output);
           }
         });
@@ -1214,7 +1245,7 @@ exports.timeLine = function(req, res) {
       'cid': req.params.companyId
     })
     .sort('-start_time')
-    .populate('team').populate('cid').populate('photo_album')
+    .populate('photo_album')
     .exec()
     .then(function(campaigns) {
       // todo new time style
@@ -1222,15 +1253,27 @@ exports.timeLine = function(req, res) {
       // todo new time style
       campaigns.forEach(function(campaign) {
         var _head, _logo;
-        if (campaign.camp.length > 0) {
-          _head = campaign.camp[0].name + '对' + campaign.camp[1].name + '的比赛';
-          _logo = campaign.camp[0].cid == companyId ? campaign.camp[0].logo : campaign.camp[1].logo;
-        } else if (campaign.team.length === 0) {
-          _head = '公司活动';
-          _logo = campaign.cid[0].logo;
-        } else {
-          _head = campaign.team[0].name + '活动';
-          _logo = campaign.team[0].logo;
+        var ct = campaign.campaign_type;
+        
+        //公司活动
+        if(ct===1){
+          // _head = '公司活动';
+          _logo = campaign.campaign_unit[0].company.logo;
+        }
+        //多队
+        else if(ct!==6&&ct!==2){
+          // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
+          for(var i = 0;i<campaign.campaign_unit.length;i++){
+            var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].company,companyId,'_id');
+            if(index>-1)
+              _logo = campaign.campaign_unit[i].team.logo;
+          }
+        }
+        //单队
+        else {
+          console.log(ct,campaign._id,campaign.campaign_unit);
+          // _head = campaign.compaign_unit.team.name + '活动';
+          _logo = campaign.campaign_unit[0].team.logo;
         }
         var tempObj = {
             id: campaign._id,
@@ -1240,9 +1283,9 @@ exports.timeLine = function(req, res) {
             content: campaign.content,
             location: campaign.location,
             start_time: campaign.start_time,
-            provoke: campaign.camp.length > 0,
+            provoke: ct===4||ct===5||ct===7||ct===9,
             year: getYear(campaign),
-            photo_list: photo_album_controller.photoThumbnailList(campaign.photo_album, 6)
+            photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album, 6)
           }
           // todo new time style
           // console.log(campaign);
@@ -1493,7 +1536,7 @@ exports.appointLeader = function(req, res) {
                   gid: company_group.gid,
                   _id: company_group._id,
                   group_type: company_group.group_type,
-                  entity_type: company_group.entity_type,
+                  // entity_type: company_group.entity_type,
                   name: company_group.name,
                   leader: true,
                   logo: company_group.logo
@@ -1542,64 +1585,51 @@ exports.getTags = function (req,res) {
   });
 };
 //HR发布一个活动(可能是多个企业)
-exports.sponsor = function(req, res) {
-  if (req.role !== 'HR') {
+exports.sponsor = function(req, res, next) {
+  var allow = auth(req.user, {
+    companies: [req.params.companyId],
+  }, [
+    'sponsorCampaign'
+  ]);
+  if(!allow.sponsorCampaign){
     res.status(403);
     next('forbidden');
     return;
   }
-  var cname = req.user.info.name;
+  var cname = req.user.info.official_name;
   var cid = req.user._id.toString(); //公司id
 
-  var company_in_campaign = req.body.company_in_campaign; //公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是次hr所在的公司!
+  var company_in_campaign = req.body.company_in_campaign; //公司id数组,HR可以发布多个公司一起的的联谊或者约战活动,注意:第一个公司默认就是此hr所在的公司!
 
   if (company_in_campaign === undefined || company_in_campaign === null) {
     company_in_campaign = [cid];
   }
-  var content = req.body.content; //活动内容
-  var location = req.body.location; //活动地点
-  var theme = req.body.theme;
-  var start_time = req.body.start_time;
-  var end_time = req.body.end_time;
-  var deadline = req.body.deadline ? req.body.deadline : req.body.end_time;
-  var member_min = req.body.member_min;
-  var member_max = req.body.member_max;
-  var _now = new Date();
-  if (start_time < _now || end_time < _now || deadline < _now) {
-    return res.send({
-      'result': 0,
-      'msg': '活动的时间比现在更早'
-    });
-  }
-  var campaign = new Campaign();
-  campaign.cname = cname;
-  campaign.cid = company_in_campaign; //参加活动的所有公司的id
-  campaign.poster.cname = cname;
-  campaign.poster.cid = cid;
-  campaign.poster.role = 'HR';
-  campaign.active = true;
-  campaign.content = content;
-  campaign.location = location;
-  campaign.theme = theme;
-  if(req.body.tags.length>0)
-    campaign.tags = req.body.tags;
-  campaign.start_time = start_time;
-  campaign.end_time = end_time;
-  campaign.deadline = deadline;
-  campaign.member_min = member_min;
-  campaign.member_max = member_max;
-
-  campaign.campaign_type = 1;
-
-  var photo_album = new PhotoAlbum({
+  var providerInfo = {
+    'cid':company_in_campaign,
+    'cname':[cname],
+    'poster':{
+      cname:cname,
+      cid:cid,
+      role:'HR'
+    },
+    'campaign_type':1,
+    'campaign_unit':[{
+      'company':{
+        _id:req.user._id,
+        name:req.user.info.official_name,
+        logo:req.user.info.logo
+      }
+    }]//暂时只有一个公司的活动
+  };
+  var photoInfo = {
+    cid:[cid],
     owner: {
       model: {
-        _id: campaign._id,
         type: 'Campaign'
       },
       companies: [req.user._id]
     },
-    name: moment(campaign.start_time).format("YYYY-MM-DD ") + campaign.theme,
+    name: moment(req.body.start_time).format("YYYY-MM-DD ") + req.body.theme,
     update_user: {
       _id: req.user._id,
       name: req.user.info.name,
@@ -1610,41 +1640,19 @@ exports.sponsor = function(req, res) {
       name: req.user.info.name,
       type: 'hr'
     }
-  });
-
-  photo_album.save(function(err) {
-    if (err) {
-      console.log(err);
-      return res.send({
-        'result': 0,
-        'msg': '活动创建失败'
-      });
+  };
+  campaign_controller.newCampaign(req.body,providerInfo,photoInfo,function(status,data){
+    if(status){
+      return res.send({'result':0,'msg':data});
     }
-    campaign.photo_album = photo_album._id;
-    campaign.save(function(err) {
-      if (err) {
-        console.log(err);
-        //检查信息是否重复
-        switch (err.code) {
-          case 11000:
-            break;
-          case 11001:
-            res.status(400).send('该活动已经存在!');
-            break;
-          default:
-            break;
-        }
-        return;
-      } else {
-        push.campaign(campaign._id);
-        res.send({
-          'result': 1,
-          'msg': '活动创建成功'
-        });
-      }
+    else{
+      push.campaign(data.campaign_id);
+      res.send({
+        'result': 1,
+        'campaign_id': data.campaign_id
+      });
 
       //生成动态消息
-
       var groupMessage = new GroupMessage();
       groupMessage.message_type = 0;
       groupMessage.company = {
@@ -1652,15 +1660,14 @@ exports.sponsor = function(req, res) {
         name: cname,
         logo: req.user.info.logo
       };
-      groupMessage.campaign = campaign._id;
+      groupMessage.campaign = data.campaign_id;
       groupMessage.save(function(err) {
         if (err) {
           console.log(err);
         }
       });
-    });
+    }
   });
-
 };
 
 exports.changePassword = function(req, res) {

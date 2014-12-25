@@ -1,0 +1,54 @@
+.component.rich_comment.simple_comment(id="rich_comment_box{{$id}}" bs-popover)
+  .component_body
+    form.rich_comment_form(name="comment_form{{$id}}" ng-if="allowPublish" novalidate)
+      .comment_control
+        input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder" maxlength=140 required)
+        label.img_selector(for="photos{{$id}}")
+          i.upload_img.fa.fa-picture-o
+          input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
+        button.publish(ng-click="publish(new_comment.text)" ng-disabled="comment_form{{$id}}.$invalid") 评论
+      span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
+      .preview_box.clearfix(ng-show="uploader.isHTML5")
+        .preview_img_wrap(ng-repeat="item in uploader.queue")
+          .close(ng-click="item.remove()") &times;
+          div(ng-thumb="{ file: item._file, width: 48, height: 48 }")
+    .comment.clearfix.dl_mouse_hover_block(ng-repeat="comment in comments" ng-if="showMoreComment || !commentNum || $index<commentNum")
+      .comment_user_info
+        a(href="/users/home/{{comment.poster._id}}" )
+          img.user_photo(ng-src="{{comment.poster.photo}}/30/30" ng-Mouseenter="showUserCard(comment.poster._id,comment._id)" id='pop{{comment._id}}' rel='popover')
+      .comment_content_panel
+        .comment_content
+          p.user_name {{comment.poster.nickname}}
+          p.text(ng-cloak) {{comment.content}}
+          image-box(images="comment.photos")
+        .comment_footer.clearfix
+          span.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
+          .pull-right.operator
+            report-button.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" host-id="{{comment._id}}" host-type="comment" host-content="comment")
+            //- a.text.dl_mouse_hover( ng-click="getReport(comment)") 举报
+            a.delete.text.dl_mouse_hover(ng-if="comment.delete_permission" ng-click="deleteComment(comment)") 删除
+        //-     a.reply.text(ng-click="toggleComment(comment)")
+        //-       span.pull-right {{comment.reply_count || 0}}条回复
+        //-       span.dl_icons.icon_reply_blue
+        //- .replies(ng-if="comment.replying")
+        //-   form.reply_form(name="reply_form" ng-if="allowPublish")
+        //-     input.reply_input(toggle-focus="comment.replying" type="text" ng-model="comment.new_reply" placeholder="{{currentPlaceholder.reply}}" ng-focus="currentPlaceholder.reply=''" ng-blur="currentPlaceholder.reply=originPlaceholder" required)
+        //-     button.reply_button(type="button" ng-click="reply(comment, reply_form)" ng-disabled="!comment.new_reply") 回复
+        //-   .reply.text(ng-repeat="reply in comment.replies")
+        //-     a.user_name(ng-href="/users/home/{{reply.poster._id}}" ng-Mouseenter="showUserCard(reply.poster._id,reply._id)" id='pop{{reply._id}}' rel='popover')
+        //-       span {{reply.poster.nickname}}
+        //-     span {{reply.content}}
+        //-     span.reply_date ({{reply.create_date | date:'yyyy-MM-dd HH:mm' | dateView }})
+        //-     .operator
+        //-       report-button.text.dl_mouse_hover(ng-if="reply.status=='active' && !reply.delete_permission" host-id="{{reply._id}}" host-type="comment" host-content="reply")
+        //-       a.text.dl_mouse_hover(ng-if="reply.delete_permission" ng-click="removeReply(comment, $index)") 删除
+    .comment_more(ng-if="!showMoreComment && comments.length-commentNum>0")
+      a.center-block(ng-click="showMore()") 显示剩余的{{comments.length-commentNum}}条评论
+    ul.pager(ng-if="showMoreComment && pages[0].nextStartDate")
+      li.previous
+        a(href="#rich_comment_box" ng-click="lastPage()" ng-class="{'novisible': nowPage === 0}") <<上一页
+      li.next
+        a(href="#rich_comment_box" ng-click="nextPage()" ng-class="{'novisible': !pages[nowPage].nextStartDate}") 下一页>>
+      ul.pagination(ng-if="pages.length > 1")
+        li(ng-repeat="page in pages" ng-class="{'active': nowPage===$index}")
+          a(href="#rich_comment_box" ng-click="changePage($index)") {{$index + 1}}

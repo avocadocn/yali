@@ -27,28 +27,25 @@ module.exports = function(app, passport) {
     app.post('/users/mailCheck', users.mailCheck);
     app.get('/users/invite', users.invite);
     app.post('/users/dealActive', users.dealActive);
+    app.get('/users/mailActive', users.mailActive);
+    app.post('/users/lastStepActive', users.lastStepActive);
     app.get('/users/setProfile', users.setProfile);
 
-
     app.get('/users/campaign/:userId', authorization.userAuthorize, users.renderCampaigns);
+    app.get('/users/commentcampaign/:userId', authorization.userAuthorize, users.renderCommentCampaigns);
     app.get('/users/getCampaigns/:userId', authorization.userAuthorize, users.getCampaigns);
     app.get('/users/getScheduleList/:userId', authorization.userAuthorize,users.renderScheduleList);
-
     app.get('/users/change_password/:userId',authorization.userAuthorize, users.renderChangePassword);
     app.get('/users/getAccount/:userId', authorization.userAuthorize, users.getAccount);
     app.post('/users/saveAccount/:userId', authorization.userAuthorize, users.saveAccount);
     app.post('/users/changePassword/:userId', authorization.userAuthorize, users.changePassword);
     app.get('/users/editInfo/:userId', authorization.userAuthorize, users.editInfo);
     app.get('/users/timeline/:userId', authorization.userAuthorize, users.timeLine);
-    //加入、退出小队
     app.post('/users/joinGroup', users.joinGroup);
     app.post('/users/quitGroup', users.quitGroup);
-
-
-
-
+    app.get('/users/updateCommentTime/:userId', authorization.userAuthorize, users.updateCommentTime);
     app.get('/users/editPhoto/:userId', authorization.userAuthorize, users.editPhoto);
-
+    app.get('/users/searchOpponents',users.renderSearchOpponents);//找对手页面
 
     // for app
     app.post('/users/login', passport.authenticate('user'), users.appLoginSuccess);

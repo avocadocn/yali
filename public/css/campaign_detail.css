@@ -1,143 +1,706 @@
-.dl_detail_container {
-  width: 960px;
-  min-width: 960px;
-  margin: 0 auto;
-  padding-top: 10px;
+.breadcrumb {
+  margin-bottom: 0;
 }
-.dl_detail_container .dl_detail_main {
-  width: 660px;
+.campaign_detail .loading {
+  background: url("/img/loading.gif") center center no-repeat;
+}
+.campaign_detail .order-1 {
+  order: 1;
+  -webkit-order: 1;
+}
+.campaign_detail .order-2 {
+  order: 2;
+  -webkit-order: 2;
+}
+.campaign_detail .order-3 {
+  order: 3;
+  -webkit-order: 3;
+}
+.campaign_detail .order-4 {
+  order: 4;
+  -webkit-order: 4;
+}
+.campaign_detail .order-5 {
+  order: 5;
+  -webkit-order: 5;
+}
+.campaign_detail .order-6 {
+  order: 6;
+  -webkit-order: 6;
+}
+.campaign_detail .order-7 {
+  order: 7;
+  -webkit-order: 7;
+}
+.campaign_detail .order-8 {
+  order: 8;
+  -webkit-order: 8;
+}
+.campaign_detail .order-9 {
+  order: 9;
+  -webkit-order: 9;
+}
+.campaign_detail .order-10 {
+  order: 10;
+  -webkit-order: 10;
+}
+.campaign_detail .campaign_panel {
+  display: flex;
+  display: -webkit-flex;
+}
+.campaign_detail .campaign_panel .component {
+  margin-bottom: 10px;
+}
+.campaign_detail .campaign_panel .panel_divider {
+  width: 20px;
+}
+.campaign_detail .campaign_panel .main_panel {
+  width: 700px;
+}
+.campaign_detail .campaign_panel .side_panel {
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: column;
+  -webkit-flex-flow: column;
+  width: 240px;
+}
+.campaign_detail .component {
+  -moz-box-shadow: 1px 1px 3px #ccc;
+  box-shadow: 1px 1px 3px #ccc;
+}
+.campaign_detail .component .component_head {
+  padding: 5px 10px;
+  height: 30px;
+  background-color: #3498db;
+}
+.campaign_detail .component .component_head:before,
+.campaign_detail .component .component_head:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .component .component_head:after {
+  clear: both;
+}
+.campaign_detail .component .component_head .icon_img {
+  height: 14px;
+  margin: 3px 0;
+}
+.campaign_detail .component .component_head .icon {
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+.campaign_detail .component .component_head .op_icon {
+  cursor: pointer;
+}
+.campaign_detail .component .component_head .title {
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+}
+.campaign_detail .component .component_head .sub_title {
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  opacity: 0.6;
+}
+.campaign_detail .component .component_head .left {
   float: left;
+  margin-left: 10px;
+}
+.campaign_detail .component .component_head .first {
+  margin-left: 0;
+}
+.campaign_detail .component .component_head .right {
+  float: right;
   margin-right: 10px;
 }
-.dl_detail_container .dl_detail_main .dl_detail_border {
-  width: 660px;
-  border: 1px solid #ddd;
-  border-top-color: transparent;
-  padding: 20px 10px;
-  background-color: #fff;
+.campaign_detail .component .component_head .last {
+  margin-right: 0;
 }
-.dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_content {
-  width: 450px;
+.campaign_detail .component .component_body {
+  background-color: #fff;
+  padding: 20px;
+}
+.campaign_detail .component .component_body .text_dark,
+.campaign_detail .component .component_body .text {
+  margin: 0;
+  font-size: 12px;
+  line-height: 18px;
+}
+.campaign_detail .component .component_body .text_dark {
+  color: #999;
+}
+.campaign_detail .component .component_body .text {
+  color: #ccc;
+}
+.campaign_detail .progress {
+  margin: 0;
+  margin-right: 10px;
+  display: inline-block;
+  width: 180px;
+  height: 10px;
+  border-radius: 15px;
+  background-color: #525e70;
+}
+.campaign_detail .progress .progress-bar {
+  background-color: #ffc053;
+  box-shadow: none;
+}
+.campaign_detail .base_card .component_head {
+  background-color: #3498db;
+}
+.campaign_detail .base_card .component_head .count_down_remind {
+  font-size: 12px;
+}
+.campaign_detail .base_card .component_head.competition {
+  background-color: #f48361;
+}
+.campaign_detail .base_card .component_body {
+  display: -webkit-flex;
+  display: flex;
+}
+.campaign_detail .base_card .component_body .unit_container .unit {
+  float: left;
+  width: 90px;
+}
+.campaign_detail .base_card .component_body .unit_container .unit .logo {
+  width: 70px;
+  height: 70px;
+  margin-right: 20px;
+}
+.campaign_detail .base_card .component_body .unit_container .unit .name {
+  margin: 10px 0 2px;
+  width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  line-height: 12px;
+  color: #999;
+  text-align: center;
+}
+.campaign_detail .base_card .component_body .notice_container {
+  -webkit-flex: 1;
+  flex: 1;
+  padding: 0 20px;
+}
+.campaign_detail .base_card .component_body .notice_container .title {
+  margin-right: 10px;
+  font-size: 14px;
+  color: #e7ce23;
+}
+.campaign_detail .base_card .component_body .notice_container .edit {
+  height: 14px;
+  cursor: pointer;
+  float: none;
+  display: inline-block;
+}
+.campaign_detail .base_card .component_body .notice_container .save {
+  color: #3ca2e0;
+  cursor: pointer;
+}
+.campaign_detail .base_card .component_body .notice_container .cancel {
+  margin-left: 5px;
+  color: #ccc;
+  cursor: pointer;
+}
+.campaign_detail .base_card .component_body .notice_container .notices {
+  margin-top: 5px;
+}
+.campaign_detail .base_card .component_body .notice_container .notice {
+  margin: 5px 0;
+}
+.campaign_detail .base_card .component_body .notice_container .main_text {
+  margin: 0;
+  color: #999;
+  font-size: 12px;
+  line-height: 18px;
+}
+.campaign_detail .base_card .component_body .notice_container .date {
+  font-size: 12px;
+  line-height: 18px;
+}
+.campaign_detail .base_card .component_body .notice_container .toggle_fold {
+  color: #3ca2e0;
+  cursor: pointer;
+}
+.campaign_detail .base_card .component_body .notice_container .notice_text {
+  margin-top: 10px;
+  padding: 6px 10px;
+  width: 100%;
+  height: 80px;
+  color: #999;
+  background-color: #fbfbfb;
+  border: 1px solid #d3dbe6;
+  font-size: 14px;
+}
+.campaign_detail .base_card .component_body .operator_container {
+  width: 110px;
+  text-align: right;
+}
+.campaign_detail .base_card .component_body .operator_container .operator_button {
+  width: 70px;
+  height: 30px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #3498db;
+}
+.campaign_detail .base_card .component_body .operator_container .operator_button:first-child {
+  margin-top: 0;
+}
+.campaign_detail .base_card .component_body .operator_container .cancel,
+.campaign_detail .base_card .component_body .operator_container .refuse,
+.campaign_detail .base_card .component_body .operator_container .quit {
+  background-color: #ccc;
+}
+.campaign_detail .base_card .component_body .operator_container .access {
+  background-color: #f48361;
+}
+.campaign_detail .detail_card .component_head {
+  background-color: #ffc053;
+}
+.campaign_detail .detail_card .component_head .save {
+  color: #fff;
+  cursor: pointer;
+}
+.campaign_detail .detail_card .component_head .cancel {
+  color: #999;
+  cursor: pointer;
+}
+.campaign_detail .detail_card .campaign_intro {
+  float: left;
+  width: 600px;
+}
+.campaign_detail .detail_card .detail_input {
+  display: inline-block;
+  width: 400px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 6px;
+  color: #999;
+  background-color: #fbfbfb;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d6d6d6 #eee #fbfbfb #eee;
+}
+.campaign_detail .detail_card .tags {
+  display: inline-block;
+}
+.campaign_detail .detail_card .tags .tag {
+  margin: 8px 0;
+  margin-right: 5px;
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #b1c6d2;
+}
+.campaign_detail .detail_card .deadline_countdown {
+  color: #f48361;
+}
+.campaign_detail .detail_card .detail_editing {
+  margin-bottom: -6px;
+}
+.campaign_detail .detail_card .detail_editing .span_intro {
+  line-height: 18px;
+}
+.campaign_detail .detail_card .detail_editing .detail_editor {
+  height: auto;
+  padding: 0;
+}
+.campaign_detail .detail_card .detail_editing .pen-menu {
+  height: 20px;
+  line-height: 20px;
+  background-color: #efefef;
+}
+.campaign_detail .detail_card .detail_editing .pen-menu .pen-icon {
+  height: 20px;
+  line-height: 20px !important;
+  padding: 0 5px;
+}
+.campaign_detail .detail_card .detail_editing .markdownContainer {
+  padding: 0 5px;
+  line-height: 1;
+  border: none;
+}
+.campaign_detail .detail_card .detail_editing .bootstrap-tagsinput {
+  display: inline-block;
+  width: 400px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 6px;
+  color: #999;
+  background-color: #fbfbfb;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d6d6d6 #eee #fbfbfb #eee;
+}
+.campaign_detail .detail_card .detail_editing .bootstrap-tagsinput .tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  height: 16px;
+  line-height: 20px;
+  background-color: #b1c6d2;
+}
+.campaign_detail .detail_card .detail_editing .bootstrap-tagsinput input {
+  height: 15px;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime {
+  width: 400px;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime .detail_input {
+  width: 380px;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime .input-group-addon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  padding: 0;
+  background-color: #d6d6d6;
+  color: #fff;
+  border: none;
+}
+.campaign_detail .detail_card .detail_editing .form_datetime .glyphicon {
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+}
+.campaign_detail .detail_card .detail_editing .text_dark {
+  line-height: 30px;
+}
+.campaign_detail .detail_card .detail_editing .error {
+  color: #f3939e;
+  margin-left: 60px;
+}
+.campaign_detail .detail_card .detail_editing .member_max {
+  width: 30px;
+}
+.campaign_detail .detail_card .detail_editing .member_min {
+  width: 30px;
+}
+.campaign_detail .detail_card .detail_editing .close_campaign {
+  float: left;
+  color: #f3939e;
+  cursor: pointer;
+}
+.campaign_detail .detail_card .detail_editing .close_campaign .icon_close {
+  margin-right: 5px;
+}
+.campaign_detail .map_card .component_head {
+  background-color: #525e70;
+}
+.campaign_detail .map_card .component_head .fa-map-marker {
+  color: #fff;
+}
+.campaign_detail .map_card .component_body {
+  padding: 0;
+}
+.campaign_detail .member_card .component_head {
+  background-color: #525e70;
+}
+.campaign_detail .member_card .component_body {
+  padding-bottom: 0;
+}
+.campaign_detail .member_card .member_list {
+  margin-top: 10px;
+}
+.campaign_detail .member_card .member {
+  margin-right: 9px;
+  margin-bottom: 20px;
+}
+.campaign_detail .member_card .member:nth-child(5n) {
+  margin-right: 0;
+}
+.campaign_detail .member_card .count {
+  cursor: pointer;
+  line-height: 22px !important;
+}
+.campaign_detail .brief_card .component_head {
+  background-color: #525e70;
+}
+.campaign_detail .photo_album_card {
+  position: relative;
+  height: 180px;
+}
+.campaign_detail .photo_album_card .photo_wrap {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.2);
+  text-align: center;
+  text-decoration: none;
+}
+.campaign_detail .photo_album_card .view {
+  margin-top: 74px;
+  color: #fff;
+}
+.campaign_detail .photo_album_card .text {
+  margin-top: 15px;
+  color: #fff;
+  font-size: 14px;
+}
+.campaign_detail .modal .modal-content {
+  margin-top: 150px;
+  border-radius: 0;
+}
+.campaign_detail .modal .component {
+  height: 400px;
+  box-shadow: none;
+}
+.campaign_detail .member_modal .modal-content .component .component_head {
+  background-color: #525e70;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel:before,
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel:after {
+  clear: both;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list {
+  display: block;
+  float: left;
+  padding: 0;
+  height: 20px;
+  border-radius: 12px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list:before,
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list:after {
+  clear: both;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit {
+  display: block;
+  float: left;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 12px;
+  line-height: 20px;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  background-color: #fbfbfb;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit:first-child {
+  border-left: none;
+  border-bottom-left-radius: 1em;
+  border-top-left-radius: 1em;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit:last-child {
+  border-bottom-right-radius: 1em;
+  border-top-right-radius: 1em;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit .tab {
+  text-decoration: none;
+  color: #ccc;
+  background-color: #fbfbfb;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit.active {
+  background-color: #ccc;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .unit_panel .unit_list .unit.active .tab {
+  color: #fff;
+  background-color: #ccc;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .tab-content {
+  min-height: 0;
+  margin-top: 10px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list:before,
+.campaign_detail .member_modal .modal-content .component .component_body .member_list:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list:after {
+  clear: both;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member {
+  float: left;
+  margin-bottom: 18px;
+  margin-right: 10px;
+  width: 57px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member:nth-child(8n) {
+  margin-right: 0;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member .photo {
+  width: 57px;
+  height: 57px;
+}
+.campaign_detail .member_modal .modal-content .component .component_body .member_list .member .nickname {
+  display: block;
+  margin-top: 10px;
+  color: #ccc;
+  font-size: 12px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.campaign_detail .detail_modal .title {
+  color: #3498db;
+  font-size: 14px;
+}
+.campaign_detail .detail_modal .main_text {
+  color: #999;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+.campaign_detail .detail_modal .component_head {
+  background-color: #525e70;
+}
+.campaign_detail .detail_modal .component_body {
+  padding: 0 !important;
+}
+.campaign_detail .detail_modal .base_info {
+  padding: 0 20px 20px;
+}
+.campaign_detail .detail_modal .base_info .info:before,
+.campaign_detail .detail_modal .base_info .info:after {
+  display: table;
+  content: " ";
+}
+.campaign_detail .detail_modal .base_info .info:after {
+  clear: both;
+}
+.campaign_detail .detail_modal .base_info .info .logo_container {
   float: left;
 }
-.dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_aside {
-  width: 140px;
-  float: right;
+.campaign_detail .detail_modal .base_info .info .logo_container .unit {
+  float: left;
+  margin-right: 20px;
+  width: 70px;
 }
-.dl_detail_container .dl_detail_main .dl_detail_border .dl_detail_aside .dl_btn_medium {
-  width: 128px;
+.campaign_detail .detail_modal .base_info .info .logo_container .unit .logo {
+  width: 70px;
+  height: 70px;
 }
-.dl_detail_container .dl_detail_main .dl_detail_member {
-  width: 660px;
-  background-color: #fff;
-  margin: 10px 0 0;
-  padding: 10px 20px;
-  border: 1px solid #ddd;
+.campaign_detail .detail_modal .base_info .info .logo_container .unit .main_text {
+  margin-top: 10px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 18px;
+  color: #999;
 }
-.dl_detail_container .dl_detail_main .dl_detail_member .dl_content_container {
+.campaign_detail .detail_modal .base_info .info .campaign_info {
+  float: left;
+}
+.campaign_detail .detail_modal .more_info {
+  padding: 0 20px 20px;
+  border-top: 1px solid #eee;
+}
+.campaign_detail .detail_modal .more_info .unfold {
+  margin-top: 10px;
+  font-size: 12px;
+  text-decoration: none;
+}
+.campaign_detail .detail_modal .more_info .text_container {
   position: relative;
 }
-.dl_detail_container .dl_detail_main .dl_detail_member .dl_content_container .base_content_gradient {
+.campaign_detail .detail_modal .more_info .base_content {
+  max-height: 100px;
+  overflow: hidden;
+}
+.campaign_detail .detail_modal .more_info .base_content_gradient {
   height: 20px;
   width: 100%;
   position: absolute;
   bottom: 0;
   cursor: pointer;
-  background: -webkit-linear-gradient(top, transparent, #fff);
+  background: -webkit-linear-gradient(top, rgba(255,255,255,0.1), #fff);
   background: -moz-linear-gradient(top, transparent, #fff);
   background: -o-linear-gradient(top, transparent, #fff);
-  filter: unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)");
+  background: linear-gradient(to bottom, rgba(255,255,255,0.1), #fff);
   -ms-filter: unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)");
-/*IE8*/
+  filter: unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)");
 }
-.dl_detail_container .dl_detail_main .dl_detail_member .dl_content_container .base_content {
-  max-height: 78px;
-  overflow: hidden;
+.campaign_detail .detail_modal .more_info .sub_title {
+  margin-right: 10px;
 }
-.dl_detail_container .dl_detail_main .dl_detail_member .dl_content_container .content_container li {
-  list-style: inherit;
-}
-.dl_detail_container .dl_detail_main .dl_detail_member .member {
-  float: left;
-  margin: 4px;
-}
-.dl_detail_container .dl_detail_main .dl_detail_member .member .item {
-  display: block;
-}
-.dl_detail_container .dl_detail_main .dl_detail_member .member .item .img_contain {
-  display: block;
-}
-.dl_detail_container .dl_detail_main .dl_detail_member .member .item .name {
-  padding-top: 5px;
-  display: block;
-  width: 50px;
-  text-align: center;
+.campaign_detail .detail_modal .more_info .tags .tag {
+  margin-right: 5px;
   display: inline-block;
+  margin-bottom: 4px;
+  padding: 2px 14px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #b1c6d2;
+}
+.campaign_detail .join_modal .modal-content {
+  width: 480px;
+  height: 180px;
+}
+.campaign_detail .join_modal .component {
+  height: auto;
+}
+.campaign_detail .join_modal .component_head {
+  background-color: #fff;
+}
+.campaign_detail .join_modal .component_head .icon {
+  color: #ccc;
+}
+.campaign_detail .join_modal .component_body {
+  padding: 0 40px;
+}
+.campaign_detail .join_modal .remind {
+  margin: 0;
+  color: #999;
+}
+.campaign_detail .join_modal .unit_box {
+  width: 400px;
+  margin-top: 20px;
+}
+.campaign_detail .join_modal .unit {
+  float: left;
+  width: 180px;
+  height: 70px;
+  margin-bottom: 40px;
+  padding: 10px;
+  background-color: #edebec;
+  border: 1px solid #f48361;
+  border-radius: 6px;
+}
+.campaign_detail .join_modal .unit:nth-child(2n) {
+  margin-left: 40px;
+}
+.campaign_detail .join_modal .logo {
+  display: block;
+  float: left;
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+}
+.campaign_detail .join_modal .name {
+  display: block;
+  float: left;
+  width: 98px;
+  font-size: 14px;
+  line-height: 18px;
   overflow: hidden;
+  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.dl_detail_container .dl_detail_main .dl_detail_member .message_item {
-  position: relative;
-  border-bottom: 1px solid #ccc;
-  min-height: 50px;
-  padding: 5px 20px 20px 20px;
-  margin: 0 -20px;
-}
-.dl_detail_container .dl_detail_main .dl_detail_member .message_item:first-of-type {
-  padding-top: 0;
-}
-.dl_detail_container .dl_detail_main .dl_detail_member .message_item:last-child {
-  border: none;
-}
-.dl_detail_container .dl_detail_main .dl_detail_member .message_item .message_content {
-  font-size: 14px;
-}
-.dl_detail_container .dl_button_container {
-  margin-top: 10px;
-}
-.dl_detail_container .dl_detail_side {
-  width: 290px;
-  float: right;
-}
-.dl_detail_container .dl_detail_side .map_container {
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
-  padding: 10px;
-  margin-top: 43px;
-}
-.dl_detail_container .dl_detail_side .map_container .map_size {
-  width: 268px;
-  height: 210px;
-}
-.dl_detail_container .dl_detail_side .photo_container {
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
-  padding: 20px 10px;
-  margin-top: 10px;
-}
-.dl_detail_container .dl_detail_side .locationtitle {
-  margin-top: 15px;
-}
-.border_red {
-  border-top: 3px solid #d12710 !important;
-}
-.dl_detail_row {
-  min-width: 490px;
-  min-height: 35px;
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-.dl_detail_row .dl_detail_label {
-  min-width: 100px;
-  padding: 10px 20px;
-  background-color: #f1f6fa;
+.campaign_detail .join_modal .join {
+  display: block;
   float: left;
+  margin-top: 8px;
+  width: 98px;
+  height: 24px;
+  color: #fff;
+  background-color: #999;
 }
-.dl_detail_row .dl_detail_detail {
-  padding: 10px 15px;
-  min-width: 322px;
-  max-width: 360px;
-  float: left;
-  width: auto;
+.campaign_detail .join_modal .join:hover {
+  background-color: #f48361;
 }

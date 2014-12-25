@@ -1,8 +1,5 @@
 extend ../layouts/user_base
 
-append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
-
 block contentExt
   .dl_container.photo_album(ng-controller="PhotoAlbumDetailCtrl")
     header.clearfix
@@ -15,10 +12,10 @@ block contentExt
           .media-body
             h4.media-heading= photo_album.owner.name
             p.text 相册名:&nbsp;#{photo_album.name}
-            p.text 照片数:&nbsp;#{photo_album.photo_count}
+            p.text 照片数:&nbsp;{{photos.length}}
             p.text 最后更新:&nbsp;#{moment(photo_album.update_date).format('YYYY.MM.DD')}
         .right_down
-          if uploadAuth === true
+          if allow.uploadPhoto === true
             label.dl_btn.dl_btn_small(for="photo") 上传照片
             input.hidden#photo(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
           if editAuth === true || deleteAuth === true
@@ -59,9 +56,9 @@ block contentExt
               span(ng-show="item.isError"): i.glyphicon.glyphicon-remove
               span(ng-show="item.errorMsg") {{item.errorMsg}}
             td(nowrap)
-              button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.denyUpload")
-                span.glyphicon.glyphicon-upload
-                | &nbsp;上传
+              //- button.btn.btn-success.btn-xs(type="button" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || item.denyUpload")
+              //-   span.glyphicon.glyphicon-upload
+              //-   | &nbsp;上传
               //- button.btn.btn-warning.btn-xs(type="button" ng-click="item.cancel()" ng-disabled="!item.isUploading")
               //-   span.glyphicon.glyphicon-ban-circle
               //-   | &nbsp;停止上传
@@ -82,14 +79,13 @@ block contentExt
         button.btn.btn-danger.btn-s(type="button" ng-click="removeAll(uploader)" ng-disabled="!uploader.queue.length || uploader.isUploading")
           | &nbsp;关闭
 
-
-
     hr
     div.photo_panel.clearfix
       a.photo.text-center(ng-repeat="photo in photos" ng-href="/photoAlbum/{{photo_album_id}}/photoView/{{photo._id}}")
         img(ng-src="{{photo.uri}}/resize/200/200")
         p.photo_name {{photo.name}}
 
+    #data(data-album-id="#{photo_album._id}" data-owner-model-type="#{photo_album.owner.model.type}" data-owner-model-id="#{photo_album.owner.model._id}" data-comment-campaign="#{canCommentCampaign}")
 
 append footExt
   script(src="/js/controllers/photo_album.js")

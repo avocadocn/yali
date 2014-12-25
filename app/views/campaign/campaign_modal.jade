@@ -1,128 +1,60 @@
-link(rel="stylesheet" href="/lib/pen/src/pen.css")
-.modal-dialog
-  .dl-modal
-    form(name="campaign_form" novalidate)
-      .dl-modal-header
-        button.head.close.dl_close(type="button" data-dismiss="modal" aria-hidden="true")
-          img(ng-src='/img/icons/icon_close.png')
-        .head#myModalLabel 发活动
-      .dl-modal-body
-        .dl_modal_container(ng-if="dOtMulti")
-          label.subtitle 参加该活动的小队
-          .groups.row.dl_row.groups_box
-            .group.col-md-1(ng-repeat='select_dOt in select_dOts')
-              img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
-        .dl_modal_container
-          label.subtitle #{__("CAMPAIGN")}#{__("THEME")}
-          input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="$parent.theme" placeholder="请控制在20字以内。" tooltip="{{campaign_form.theme.$invalid ? '活动简单描述，请控制在20字以内':''}}" maxlength=20 required)
-        .dl_modal_container(ng-init="baseBrief=true;")
-          label.subtitle #{__("CAMPAIGN")}#{__("BRIEF")}
-          #campaignDetailToolBar
-          #campaignDetail.markdownContainer(name="content" ng-blur="getTags()" ng-model="$parent.content" tooltip="{{campaign_form.content.$invalid ? '活动介绍，请控制在2000字以内':''}}" contenteditable mix-maxlength=4000 required)
-        .dl_modal_container
-          .dl_modal_half_container
-            .dl_modal_half_container
-              label.subtitle #{__("CAMPAIGN")}#{__("START_TIME")}
-            .input-group.date.form_datetime.dl_modal_input#start_time
-              span.input-group-addon.no_radius
-                //img(ng-src='/img/icons/icon_date.png')
-                span.glyphicon.glyphicon-th
-              input.dl-form-control(type="text" ng-model="$parent.start_time" name="startTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.startTime.$invalid ? '请选择活动活动开始时间':''}}" readonly required)
-          .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
-            .dl_modal_half_container
-              label.subtitle #{__("CAMPAIGN")}#{__("END_TIME")}
-            .input-group.date.form_datetime.dl_modal_input#end_time
-              //img(ng-src='/img/icons/icon_date.png')
-              span.input-group-addon.no_radius
-                span.glyphicon.glyphicon-th
-              input.dl-form-control(type="text" ng-model="$parent.end_time" name="endTime" placeholder="Date" data-data-format="YYYY-MM-DD HH:mm" tooltip="{{campaign_form.endTime.$invalid ? '请选择活动活动结束时间':''}}" readonly required)
-        .dl_modal_container
-          .dl_modal_container
-            label.subtitle #{__("CAMPAIGN")}#{__("LOCATION")}
-          .dl_modal_input_container
-            input.dl_modal_input.dl-form-control(type="text" name="location" ng-model="$parent.location.name" placeholder="请输入活动场地的详细地址，并点击后方的“地图”链接进行具体地点标注" maxlength=40 tooltip="{{campaign_form.location.$invalid? '请输入活动地点,最长40字':''}}" required)
-          .dl_modal_button
-            a.clearLinkUnderline.map_btn.dl_btn_small(ng-disabled="$parent.location.name.length==0" ng-click="showMap()") #{__("MAP")}
-        .dl_modal_container.height_200(ng-show="showMapFlag")
-          #mapDetail.height_200
-        .dl_modal_container
-          .dl_modal_container
-            label.subtitle #{__("CAMPAIGN")}#{__("OPTIONAL")}#{__("OPTION")}
-            span (设置人数、报名时间限制)
-            a(ng-show="!show_options" ng-click="show_options=true;")   展开>>
-            a(ng-show="show_options" ng-click="show_options=false")   <<收起
-          .dl_modal_option_container
-            .dl_row.clearfix
-              .dl_modal_label_container
-                span.info_label 活动标签:
-              input#tagsinput(type="text" name="tags" ng-blur="getTags()" ng-model="$parent.tags" data-role="tagsinput")
-            .dl_row.clearfix(ng-if="recommand_tags")
-              .dl_modal_label_container
-                span.info_label 常用标签:
-              .bootstrap-recommandtags(ng-repeat="tag in recommand_tags" ) 
-                span.label.label-info.tag(ng-if="!tag.disabled" ng-click="addTag($index)") {{tag._id}}
-                span.label.label-default.tag(ng-if="tag.disabled") {{tag._id}}
-            div(ng-show="show_options")
-              .dl_row.clearfix
-                .dl_modal_label_container
-                  span.info_label #{__("LEAST")}#{__("ENTRY")}#{__("SUM")}:
-                .dl_modal_other_container
-                  input.dl-form-control(type="number" name="minNumber" ng-model="$parent.member_min" ng-min=0 ng-max="{{$parent.member_max}}" ng-maxlength=10 tooltip="{{campaign_form.minNumber.$invalid? '请正确填写最少人数':''}}")
-                .dl_modal_people_container
-                  span.info_label 人
-                .dl_modal_label_container
-                  span.info_label 报名截止前未达最少人数,您将收到提醒。不填默认为不提醒。
-              .dl_row.clearfix
-                .dl_modal_label_container
-                  span.info_label 报名截止时间:
-                .dl_modal_time_container
-                  .input-group.date.form_datetime#deadline
-                    input.dl-form-control(type="text" ng-model="$parent.deadline" name="dueTime" data-data-format="YYYY-MM-DD HH:mm" readonly)
-                    span.input-group-addon.no_radius
-                      span.glyphicon.glyphicon-th
-                .dl_modal_label_container
-                  span.info_label 如果不选，默认为活动结束停止报名。
-              .dl_row.clearfix
-                .dl_modal_label_container
-                  span.info_label 报名人数上限:
-                .dl_modal_other_container
-                  input.dl-form-control(type="number" name="maxNumber" ng-model="$parent.member_max" ng-min="{{$parent.member_min}}" ng-maxlength=10 tooltip="{{campaign_form.maxNumber.$invalid? '请正确填写人数上限':''}}")
-                .dl_modal_people_container
-                  span.info_label 人
-                .dl_modal_label_container
-                  span.info_label 若活动有人数限定，请填写此项，到达后将停止报名。
-      .dl-modal-footer
-        button.cancel_btn.dl_btn_large.margin_left_30(type='button' data-dismiss="modal") #{__("CANCEL")}
-        button.dl_btn.dl_btn_large(type='button' ng-click='goBack()' data-dismiss="modal" ng-if="dOtMulti") 上一步
-        button.dl_btn.dl_btn_large(type='button' ng-click='sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid") #{__("IMMEDIATE")}#{__("SPONSOR")}
-  script(src="/lib/pen/src/pen.js")
-  script(src="/lib/pen/src/markdown.js")
-  script.
-    $(function() {
-      $('#start_time').datetimepicker({
-        autoclose: true,
-        language: 'zh-CN',
-        startDate: new Date()
-      });
-      $('#end_time').datetimepicker({
-        autoclose: true,
-        language: 'zh-CN',
-        startDate: new Date()
-      });
-      $('#deadline').datetimepicker({
-        autoclose: true,
-        language: 'zh-CN',
-        startDate: new Date(),
-        pickerPosition: "top-left"
-      });
-      var options = {
-        editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
-        class: 'dl_markdown', // {String} class of the editor,
-        textarea: '<textarea name="content" ng-model="$parent.content"></textarea>', // fallback for old browsers
-        list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-        stay: false,
-        toolBarId: 'campaignDetailToolBar'
-      }
-
-      var editor = new Pen(options);
+form(name="campaign_form" novalidate)
+  .dl_modal_body.clearfix
+    .dl_modal_sponsor.unit.clearfix(ng-if="!dOtMulti&&sponsorTeam")
+      img.logo(ng-src="{{sponsorTeam.logo}}")
+      span.text 活动发起方:
+      span.tname {{sponsorTeam.name}}
+      button.button(type="button" ng-click="provoke_select(1)") 更改小队
+    .dl_modal_sponsor(ng-if="dOtMulti")
+      span.dl_modal_subtitle 参加该活动的小队
+      .groups.dl_row.groups_box
+        .group(ng-repeat='select_dOt in select_dOts')
+          img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
+    .dl_modal_content.clearfix
+      .dl_modal_container
+        input.dl_modal_input.dl-form-control(type="text" name="theme" ng-model="theme" placeholder="输入活动主题，限定14字" maxlength=20 required)
+      .dl_modal_container
+        .input-group
+          .input-group-btn
+            input.dl_modal_input.dl-form-control.dl_modal_input_container(type="text" name="mold" ng-model="mold" data-toggle="dropdown" readonly required)
+            button.input-group-addon.no_radius(type='button' data-toggle="dropdown")
+              i.fa.fa-angle-down
+            ul.dropdown-menu.dropdown-menu-right.no_radius(role="menu")
+              li(ng-repeat="select_mold in molds")
+                a(ng-click="selectMold(select_mold.name)") {{select_mold.name}}
+      .dl_modal_container
+        .dl_modal_half_container
+          .input-group.date.form_datetime#start_time
+            input.dl-form-control.dl_modal_input(type="text" ng-model="start_time" name="startTime" placeholder="选择活动开始时间" data-data-format="YYYY-MM-DD HH:mm" readonly required)
+            span.input-group-addon.no_radius
+              span.glyphicon.glyphicon-calendar
+        .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
+          .input-group.date.form_datetime#end_time
+            input.dl-form-control.dl_modal_input(type="text" ng-model="$parent.end_time" name="endTime" placeholder="选择活动结束时间" data-data-format="YYYY-MM-DD HH:mm" readonly required)
+            span.input-group-addon.no_radius
+              span.glyphicon.glyphicon-calendar
+      .dl_modal_container
+        .dl_modal_input_container
+          input.dl_modal_input.dl-form-control(type="text" name="location" ng-model="location.name" placeholder="请输入活动场地的详细地址，并点击后方图标标注" maxlength=40 required)
+        .dl_modal_button
+          button.dl_map_btn(type='button' ng-click="showMap()")
+            i.fa.fa-map-marker
+      .dl_modal_container.dl_modal_map_container(ng-show="showMapFlag")
+        #mapDetail.map_height
+  .dl_modal_footer
+    button.dl_btn.dl_modal_btn(type='button' ng-click='pressed=true;sponsor()' data-dismiss="modal" ng-disabled="campaign_form.$invalid||pressed") #{__("IMMEDIATE")}#{__("SPONSOR")}
+script.
+  $(function() {
+    $('#start_time').datetimepicker({
+      autoclose: true,
+      language: 'zh-CN',
+      startDate: new Date(),
+      pickerPosition:"bottom-left"
     });
+    $('#end_time').datetimepicker({
+      autoclose: true,
+      language: 'zh-CN',
+      startDate: new Date(),
+      pickerPosition:"bottom-left"
+    });
+  });

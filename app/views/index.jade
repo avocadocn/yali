@@ -1,67 +1,25 @@
 extends layouts/base
 
-append headExt
-  link(rel="stylesheet" href="/css/index.css")
-
 block content
   include partials/home_nav
-  section.content
-    .dl_doc
-      section#promo.promo
+  .index_background
+    section.promo
+      .promo_background.clearfix
         .index_container
-          .overview
-                .regbox
-                  p.reginfo
-                    | Donler 企业员工活动互联网工具
-                    | 企业员工哦活动领域里的颠覆者，我们改变传动的组织方式，让活动简单友好，更高效！
-                  a.btn_reg(href="/company/signup" title="企业免费注册") 企业免费注册
-                  p.appinfo
-                    a.btn_app Available on the App Store
-                    | 或直接扫描二维码下载动梨IOS应用
-      section#about.about.section
-        .index_container
-          .dl_row.clearfix
-            .about_card
-              .card.card_1
-                span.title 关于动梨
-                p Donler是企业员工活动领域里的颠覆者，我们致力于提升员工的活动体验，使活动信息直观详尽，发起、参与、管理、统计都简单有序。
-                //-a.btn.btn-default(href="/about") 关于动梨
-            .about_card
-              .card.card_2
-                span.title 如何注册
-                p Donler是一个免费的企业管理工具，企业注册成功后，能够获得特定的员工注册邀请邮件，员工使用企业邮箱完成注册。
-                //-button.btn.btn-default(type="button") 激活个人账户
-            .about_card
-              .card.card_3
-                span.title 告诉朋友
-                p 如果您觉得Donler让您的工作之更余丰富多彩，请把Donler推荐给您的朋友们吧
-                //-button.btn.btn-default(type="button") 推荐给公司HR
-      section#function.function.section
-        .index_container
-          .dl_row.clearfix
-            p.func_title 动梨可以帮你做些什么？
-            .dl_row.clearfix
-              .func_card
-                p.card_1
-                  span.title 构建员工活动体系
-                  | 企业用户通过建立活动小队，任命队长，快速的构建员工活动体系；员工根据自己的兴趣爱好，方便的加入小队。
-              .func_card
-                p.card_2
-                  span.title 日程化的活动管理
-                  | Donler将个人参与的活动用日历形式记录，方便查看和提醒；同时还可以显示参与小队的活动和动态。
-              .func_card
-                p.card_3
-                  span.title 更多的活动和对手
-                  | 通过Donler，小队队长可方便地发起活动，并可通过搜索、擂台等功能找到其他公司的同类小队，发起活动。
-              .func_card
-                p.card_4
-                  span.title 分享记录活动历史
-                  | Donler可以详尽记录公司、小队、个人的活动历史，支持图片的保存，记录大家开心的每个点滴。
+          .regbox
+            img.together(ng-src="/img/index/together.png")
+            .reginfo 
+              p 免费的企业活动管理工具
+              p 流畅的员工活动体验
+              p 融洽的团队关系
+            a.clearLinkUnderline.btn_reg(href="/company/signup" title="免费注册") 免 费 注 册
+            .appinfo
+              img.barcode(ng-src="/img/index/2d_barcodes.png")
+              img.btn_app(ng-src="/img/index/coming_soon.png")
   footer.dl_footer.index_footer
     .dl_container
       .dl_row
         .text_icp
-
           a(href="http://www.miitbeian.gov.cn/" title="沪ICP备14016548号" target="_blank") 沪ICP备14016548号
           span  Copyright &copy; Donler 2014. All Rights Reserved
           a(href="/about#about") 关于我们

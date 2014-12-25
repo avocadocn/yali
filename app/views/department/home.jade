@@ -1,9 +1,5 @@
 extends ../layouts/manager
 
-append headExt
-  link(rel="stylesheet" href="/css/photo_album.css")
-  link(rel="stylesheet" href="/css/jquery.Jcrop.min.css")
-  link(rel="stylesheet" href="/css/bootstrap-tagsinput.css")
 block baseInfo
   .dl_container.clearfix
     .aside
@@ -30,7 +26,7 @@ block baseInfo
           //- button.dl_btn.dl_btn_small(ng-click="loadMap(1)" data-toggle="modal" data-target="#sponsorMultiCampaignModel") 多部门活动
         div(ng-controller="SponsorController" ng-init="did='#{department._id}';cid='#{department.company._id}'")
           div.modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-            include ../campaign/campaign_modal
+            include ../campaign/campaign_modal_base
           div.modal.fade#sponsorMultiCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
             include ../partials/search_department_modal
 
@@ -51,16 +47,12 @@ block panel
     .tab-content
       .tab-pane.active
         div(ng-view)
-
+    include ../partials/report_modal
 block aside
   if (role !=='GUESTHR' && role !=='HR')
-    include ../partials/group_thumbnail
-    if (leader_teams.length)
-      +group_thumbnail(leader_teams,'leader','管理的小队',1)
-    if (selected_teams.length)
-      +group_thumbnail(selected_teams,'active','加入的小队',2)
-    if (unselected_teams.length)
-      +group_thumbnail(unselected_teams,'inactive',__('UNSELECTED_TEAM'),3)
+    .groupsbox
+      include ../partials/group_thumbnail
+      +group_thumbnail(myteam)
   if (role !=='GUESTHR' && role !=='GUEST')
     .photo_album
       p
@@ -71,10 +63,5 @@ block aside
           a.thumbnail_cell(href="/photoAlbum/#{photo_album._id}/detailView")
             img.thumbnail_img.img-thumbnail(src="#{photo_album.uri}/120/120")
             p.thumbnail_name.text-center= photo_album.name
-
 append footExt
-  script(src="/lib/jquery-form/jquery.form.js")
-  script(src="/js/jquery.Jcrop.min.js")
-  script(src="/js/service/department.js")
   script(src="/js/controllers/department.js")
-  script(src="/js/bootstrap-tagsinput.js")

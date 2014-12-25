@@ -1,36 +1,10 @@
 <div class="cal-month-day <%= cls %>">
-	<% if (events.length > 0) { %>
-		<%
-			var joined = false;
-			_.each(events, function(event) {
-				if (event.is_joined === true) {
-					joined = true;
-				}
-			});
-		%>
-		<% if (joined) { %>
-			<!-- <img class="join_sign" src="/img/icons/joined_campaign.ico"/> -->
-			<div class="join_sign"></div>
-		<% } %>
-	<% } %>
-	<span class="pull-right day" data-cal-date="<%= data_day %>" data-cal-view="day" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
-	<%
-		if (events.length > 0) {
-			var count = 0;
-	%>
-		<div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
-			<%
-				_.each(events, function(event) {
-					if (count < 6) {
-			%>
-			<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" target="_blank" data-event-id="<%= event.id %>" data-event-class="<%= event['class'] %>"
-				class="pull-left event <%= event['class'] %>" data-toggle="tooltip"
-				title="<%= event.title %>"><img src="<%= event.logo %>"/></a>
-			<%
-					}
-					count++;
-				});
-			%>
-		</div>
-	<% } %>
+  <% if (cls.search('cal-day-inmonth')>-1) {%>
+    <span class="day" data-cal-date="<%= data_day %>" data-toggle="tooltip" title="<%= tooltip %>"><%= day %></span>
+    <% if (events.length > 0) { %>
+      <div class="join_sign "><%= events.length%></div>
+      <div class="events-list" data-cal-start="<%= start %>" data-cal-end="<%= end %>">
+      </div>
+    <% } %>
+  <% }%>
 </div>
